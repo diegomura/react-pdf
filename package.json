@@ -21,8 +21,8 @@
   "license": "MIT",
   "dependencies": {
     "fbjs": "^0.8.4",
-    "react": "15.3.x",
-    "pdfkit": "*"
+    "pdfkit": "*",
+    "react": "15.3.x"
   },
   "devDependencies": {}
 }

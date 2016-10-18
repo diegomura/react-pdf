@@ -21,23 +21,37 @@ const PDFRendererComponentMixin = {
     context
   ) {
     this.node = this._currentElement;
-    this.mountChildren(this.node.children, transaction, context);
+
+    if (this.node.type != 'document') {
+      switch (this.node.type) {
+        case 'page':
+          // Because the document already starts with a page
+          // we don't call addPage the first time
+          if (context.firstPageSkipped)
+            context.doc.addPage();
+
+          context.firstPageSkipped = true;
+          break;
+        default:
+          context.doc[this.node.type](
+            this.node.props.children,
+            this.node.props
+          );
+      }
+    }
+
+    // Naive way of not mounting TextComponent
+    if (typeof this.node.props.children != 'string') {
+      this.mountChildren(this.node.props.children, transaction, context);
+    }
 
     return this.node;
   },
-
-  receiveComponent(nextElement, transaction, context) {
-    // Typically you would diff the props and apply those to the host
-    // environment, though all we need to do is swap out our _currentElement.
-    const prevElement = this._currentElement;
-    this._currentElement = nextElement;
-
-    // this.updateChildren comes from ReactMultiChild.Mixin
-    this.updateChildren(nextElement.props.children, transaction, context);
-  },
-  // there is no native node
+  // There is no updating for PDF file
+  receiveComponent(){},
+  // There is no native node
   getHostNode() {},
-  // how do you unmount PDF?
+  // How do you unmount PDF?
   unmountComponent() {},
 };
 

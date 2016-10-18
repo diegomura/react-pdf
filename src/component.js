@@ -32,6 +32,19 @@ const PDFRendererComponentMixin = {
 
           context.firstPageSkipped = true;
           break;
+        case 'rect':
+          var {x, y, width, height, cornerRadius} = this.node.props;
+
+          if (cornerRadius) {
+            context.doc.roundedRect(x, x, width, height, cornerRadius).stroke();
+          } else {
+            context.doc.rect(x, x, width, height).stroke();
+          }
+        case 'circle':
+          var {x, y, radius} = this.node.props;
+
+          context.doc.circle(x, x, radius).stroke();
+          break;
         default:
           context.doc[this.node.type](
             this.node.props.children,

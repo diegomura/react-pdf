@@ -12,6 +12,8 @@ let doc =
       <text align="center">
         This is my second text!!
       </text>
+
+      <circle x={50} y={100} radius={50}/>
     </page>
   </document>
 

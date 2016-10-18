@@ -20,10 +20,10 @@ const PDFRendererComponentMixin = {
     nativeContainerInfo,
     context
   ) {
-    this.node = this._currentElement;
+    let node = this.node = this._currentElement;
 
-    if (this.node.type != 'document') {
-      switch (this.node.type) {
+    if (node.type != 'document') {
+      switch (node.type) {
         case 'page':
           // Because the document already starts with a page
           // we don't call addPage the first time
@@ -33,7 +33,7 @@ const PDFRendererComponentMixin = {
           context.firstPageSkipped = true;
           break;
         case 'rect':
-          var {x, y, width, height, cornerRadius} = this.node.props;
+          var {x, y, width, height, cornerRadius} = node.props;
 
           if (cornerRadius) {
             context.doc.roundedRect(x, x, width, height, cornerRadius).stroke();
@@ -41,21 +41,21 @@ const PDFRendererComponentMixin = {
             context.doc.rect(x, x, width, height).stroke();
           }
         case 'circle':
-          var {x, y, radius} = this.node.props;
+          var {x, y, radius} = node.props;
 
           context.doc.circle(x, x, radius).stroke();
           break;
         default:
-          context.doc[this.node.type](
-            this.node.props.children,
-            this.node.props
+          context.doc[node.type](
+            node.props.children,
+            node.props
           );
       }
     }
 
     // Naive way of not mounting TextComponent
-    if (typeof this.node.props.children != 'string') {
-      this.mountChildren(this.node.props.children, transaction, context);
+    if (typeof node.props.children != 'string') {
+      this.mountChildren(node.props.children, transaction, context);
     }
 
     return this.node;

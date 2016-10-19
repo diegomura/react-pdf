@@ -20,7 +20,12 @@ const PDFRendererComponentMixin = {
     nativeContainerInfo,
     context
   ) {
-    let node = this.node = this._currentElement;
+    const node = this.node = this._currentElement;
+    const {children, fillColor, fontSize, ...props} = node.props;
+
+    // Set content fillColor
+    context.doc.fillColor(fillColor || 'black');
+    context.doc.fontSize(fontSize || 12);
 
     if (node.type != 'document') {
       switch (node.type) {
@@ -33,7 +38,7 @@ const PDFRendererComponentMixin = {
           context.firstPageSkipped = true;
           break;
         case 'rect':
-          var {x, y, width, height, cornerRadius} = node.props;
+          var {x, y, width, height, cornerRadius} = props;
 
           if (cornerRadius) {
             context.doc.roundedRect(x, x, width, height, cornerRadius).stroke();
@@ -41,24 +46,21 @@ const PDFRendererComponentMixin = {
             context.doc.rect(x, x, width, height).stroke();
           }
         case 'circle':
-          var {x, y, radius} = node.props;
+          var {x, y, radius} = props;
 
           context.doc.circle(x, x, radius).stroke();
           break;
         default:
-          context.doc[node.type](
-            node.props.children,
-            node.props
-          );
+          context.doc[node.type](children, props);
       }
     }
 
     // Naive way of not mounting TextComponent
-    if (typeof node.props.children != 'string') {
-      this.mountChildren(node.props.children, transaction, context);
+    if (typeof children != 'string') {
+      this.mountChildren(children, transaction, context);
     }
 
-    return this.node;
+    return node;
   },
   // There is no updating for PDF file
   receiveComponent(){},

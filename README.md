@@ -15,7 +15,7 @@ import lorem from './lorem';
 let doc =
   <document>
     <page margin={50}>
-      <text height={200} align="center">
+      <text height={200} align="center" fillColor="red" fontSize={22} underline>
         ~ Lorem ipsum ~
       </text>
       <text columns={3} columnGap={15} align='justify'>
@@ -24,7 +24,7 @@ let doc =
     </page>
   </document>
 
-ReactPDF.render(doc, 'example.pdf')
+ReactPDF.render(doc, './examples/example.pdf')
 ```
 
 [Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/example.pdf)

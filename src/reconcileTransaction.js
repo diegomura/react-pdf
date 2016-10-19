@@ -7,9 +7,9 @@
 
 'use strict';
 
-const CallbackQueue = require('react/lib/CallbackQueue');
-const PooledClass = require('react/lib/PooledClass');
-const Transaction = require('react/lib/Transaction');
+import CallbackQueue from 'react/lib/CallbackQueue';
+import PooledClass from 'react/lib/PooledClass';
+import Transaction from 'react/lib/Transaction';
 
 /**
  * Provides a `CallbackQueue` queue for collecting `onDOMReady` or analogous
@@ -80,4 +80,4 @@ Object.assign(
 
 PooledClass.addPoolingTo(PDFRendererReconcileTransaction);
 
-module.exports = PDFRendererReconcileTransaction;
+export default PDFRendererReconcileTransaction;

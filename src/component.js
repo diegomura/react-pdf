@@ -1,6 +1,6 @@
 'use strict';
 
-const ReactMultiChild = require('react/lib/ReactMultiChild');
+import ReactMultiChild from 'react/lib/ReactMultiChild';
 
 const PDFRendererComponent = function(element) {
   this.node = null;
@@ -74,4 +74,4 @@ Object.assign(
   ReactMultiChild.Mixin
 );
 
-module.exports = PDFRendererComponent;
+export default PDFRendererComponent;

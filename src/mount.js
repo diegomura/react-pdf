@@ -1,13 +1,13 @@
 'use strict';
 
-const instantiateReactComponent = require('react/lib/instantiateReactComponent');
-const ReactInstanceHandles = require('react/lib/ReactInstanceHandles');
-const ReactUpdates = require('react/lib/ReactUpdates');
-const DefaultInjection = require('./injection');
-const ReactElement = require('react/lib/ReactElement');
-const invariant = require('fbjs/lib/invariant');
-const pdf = require('pdfkit');
-const fs = require('fs');
+import fs from 'fs';
+import pdf from 'pdfkit';
+import instantiateReactComponent from 'react/lib/instantiateReactComponent';
+import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
+import ReactUpdates from 'react/lib/ReactUpdates';
+import ReactElement from 'react/lib/ReactElement';
+import DefaultInjection from './injection';
+import invariant from 'fbjs/lib/invariant';
 
 //Inject the unique aspects of your renderer into React core
 DefaultInjection.inject();
@@ -67,4 +67,4 @@ const render = (
   return component;
 };
 
-module.exports = render;
+export default render;

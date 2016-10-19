@@ -1,20 +1,17 @@
-var React = require('react');
-var ReactPDF = require('../');
+import React from 'react';
+import ReactPDF from '../';
+import lorem from './lorem';
 
 let doc =
   <document>
     <page margin={50}>
-      <text>
-        This is my first text!!
+      <text height={200} align="center">
+        ~ Lorem ipsum ~
       </text>
-    </page>
-    <page margin={50}>
-      <text align="center">
-        This is my second text!!
+      <text columns={3} columnGap={15} align='justify'>
+        {lorem}
       </text>
-
-      <circle x={50} y={100} radius={50}/>
     </page>
   </document>
 
-ReactPDF.render(doc, 'example.pdf')
+ReactPDF.render(doc, './examples/example.pdf')

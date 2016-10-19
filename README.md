@@ -2,7 +2,32 @@
 
 > React renderer for creating PDF files
 
-This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental.
+> This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental.
+
+## How it works
+ReactPDF mounter is called ReactPDF and has a render method that recieves a React Element and a path where the PDF file will be generated.
+
+```jsx
+import React from 'react';
+import ReactPDF from '../';
+import lorem from './lorem';
+
+let doc =
+  <document>
+    <page margin={50}>
+      <text height={200} align="center">
+        ~ Lorem ipsum ~
+      </text>
+      <text columns={3} columnGap={15} align='justify'>
+        {lorem}
+      </text>
+    </page>
+  </document>
+
+ReactPDF.render(doc, 'example.pdf')
+```
+
+[Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/example.pdf)
 
 ## Demo
 

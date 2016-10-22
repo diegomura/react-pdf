@@ -6,12 +6,13 @@
 'use strict';
 
 import ReactInjection from 'react/lib/ReactInjection';
+import ReactHostComponent from 'react/lib/ReactHostComponent';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
 import PDFRendererReconcileTransaction from './reconcileTransaction';
 import PDFRendererComponent from './component';
 
 function inject() {
-  (ReactInjection.NativeComponent || ReactInjection.HostComponent).injectGenericComponentClass(
+  ReactInjection.HostComponent.injectGenericComponentClass(
     PDFRendererComponent
   );
 

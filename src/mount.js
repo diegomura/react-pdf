@@ -37,23 +37,15 @@ const render = (
   const component = instantiateReactComponent(nextElement);
 
   ReactUpdates.batchedUpdates(() => {
-    let doc = new pdf;
+    let doc = new pdf();
 
     const transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
 
     doc.pipe(fs.createWriteStream(filePath));
 
     transaction.perform(() => {
-      // The `component` here is an instance of your `ReactCustomRendererComponent` class.
-      component.mountComponent(
-        transaction,
-        rootId,
-        {_idCounter: 0},
-        {
-          doc: doc,
-          firstPageSkipped: false
-        }
-      );
+      // Starts mounting recursive process
+      component.mountComponent(transaction, rootId, null, {doc});
 
       doc.end();
 

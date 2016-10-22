@@ -15,7 +15,7 @@ import lorem from './lorem';
 let doc =
   <document>
     <page margin={50}>
-      <text height={200} align="center" fillColor="red" fontSize={22} underline>
+      <text height={200} align="center" underline>
         ~ Lorem ipsum ~
       </text>
       <text columns={3} columnGap={15} align='justify'>

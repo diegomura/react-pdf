@@ -21,7 +21,6 @@ const GenericComponentMixin = {
 
     switch (node.type) {
       case 'document':
-        break;
       case 'page':
       case 'circle':
       case 'rect':

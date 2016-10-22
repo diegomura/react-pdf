@@ -3,14 +3,14 @@
 import Wrappers from './wrappers';
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 
-const PDFRendererComponent = function(element) {
+const GenericComponent = function(element) {
   this.node = null;
   this._mountImage = null;
   this._renderedChildren = null;
   this._currentElement = element;
 };
 
-const PDFRendererComponentMixin = {
+const GenericComponentMixin = {
   getPublicInstance() {
     return this.node;
   },
@@ -44,9 +44,9 @@ const PDFRendererComponentMixin = {
 };
 
 Object.assign(
-  PDFRendererComponent.prototype,
-  PDFRendererComponentMixin,
+  GenericComponent.prototype,
+  GenericComponentMixin,
   ReactMultiChild.Mixin
 );
 
-export default PDFRendererComponent;
+export default GenericComponent;

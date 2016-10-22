@@ -1,11 +1,11 @@
 'use strict';
 
-const PDFPageComponent = function(element, context) {
+const PageComponent = function(element, context) {
   this._element = element;
   this._context = context;
 };
 
-const PDFPageComponentMixin = {
+const PageComponentMixin = {
   mountComponent() {
     // Because the document already starts with a page
     // we don't call addPage the first time
@@ -17,8 +17,8 @@ const PDFPageComponentMixin = {
 };
 
 Object.assign(
-  PDFPageComponent.prototype,
-  PDFPageComponentMixin
+  PageComponent.prototype,
+  PageComponentMixin
 );
 
-export default PDFPageComponent;
+export default PageComponent;

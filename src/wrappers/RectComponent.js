@@ -1,11 +1,11 @@
 'use strict';
 
-const PDFRectComponent = function(element, context) {
+const RectComponent = function(element, context) {
   this._element = element;
   this._context = context;
 };
 
-const PDFRectComponentMixin = {
+const RectComponentMixin = {
   mountComponent() {
     const node = this._element;
     const {children, x, y, width, height, cornerRadius, ...props} = node.props;
@@ -21,8 +21,8 @@ const PDFRectComponentMixin = {
 };
 
 Object.assign(
-  PDFRectComponent.prototype,
-  PDFRectComponentMixin
+  RectComponent.prototype,
+  RectComponentMixin
 );
 
-export default PDFRectComponent;
+export default RectComponent;

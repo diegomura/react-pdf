@@ -1,11 +1,11 @@
 'use strict';
 
-const PDFCircleComponent = function(element, context) {
+const CircleComponent = function(element, context) {
   this._element = element;
   this._context = context;
 };
 
-const PDFCircleComponentMixin = {
+const CircleComponentMixin = {
   mountComponent() {
     const node = this._element;
     const {x, y, radius} = node.props;
@@ -15,8 +15,8 @@ const PDFCircleComponentMixin = {
 };
 
 Object.assign(
-  PDFCircleComponent.prototype,
-  PDFCircleComponentMixin
+  CircleComponent.prototype,
+  CircleComponentMixin
 );
 
-export default PDFCircleComponent;
+export default CircleComponent;

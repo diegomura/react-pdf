@@ -9,16 +9,16 @@ import ReactInjection from 'react/lib/ReactInjection';
 import ReactHostComponent from 'react/lib/ReactHostComponent';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
 import PDFRendererReconcileTransaction from './reconcileTransaction';
-import PDFRendererComponent from './component';
-import PDFTextComponent from './PDFTextComponent';
+import GenericComponent from './GenericComponent';
+import TextComponent from './TextComponent';
 
 function inject() {
   ReactInjection.HostComponent.injectGenericComponentClass(
-    PDFRendererComponent
+    GenericComponent
   );
 
   ReactInjection.HostComponent.injectTextComponentClass(
-    PDFTextComponent
+    TextComponent
   );
 
   ReactInjection.Updates.injectReconcileTransaction(

@@ -38,7 +38,7 @@ const ON_RENDERER_READY_QUEUEING = {
  */
 const TRANSACTION_WRAPPERS = [ON_RENDERER_READY_QUEUEING];
 
-function PDFRendererReconcileTransaction() {
+function ReconcileTransaction() {
   this.reinitializeTransaction();
   this.reactMountReady = CallbackQueue.getPooled(null);
 }
@@ -72,12 +72,12 @@ const Mixin = {
 };
 
 Object.assign(
-  PDFRendererReconcileTransaction.prototype,
+  ReconcileTransaction.prototype,
   Transaction.Mixin,
-  PDFRendererReconcileTransaction,
+  ReconcileTransaction,
   Mixin
 );
 
-PooledClass.addPoolingTo(PDFRendererReconcileTransaction);
+PooledClass.addPoolingTo(ReconcileTransaction);
 
-export default PDFRendererReconcileTransaction;
+export default ReconcileTransaction;

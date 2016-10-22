@@ -1,10 +1,10 @@
 'use strict';
 
-const PDFTextComponent = function(element) {
+const TextComponent = function(element) {
   this._currentElement = element;
 };
 
-const PDFTextComponentMixin = {
+const TextComponentMixin = {
   mountComponent(transaction, nativeParent, nativeContainerInfo, context) {
     // Just return the text value
     return this._currentElement;
@@ -15,8 +15,8 @@ const PDFTextComponentMixin = {
 };
 
 Object.assign(
-  PDFTextComponent.prototype,
-  PDFTextComponentMixin
+  TextComponent.prototype,
+  TextComponentMixin
 );
 
-export default PDFTextComponent;
+export default TextComponent;

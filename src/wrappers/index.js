@@ -1,11 +1,11 @@
 'use strict';
 
-import PDFPageComponent from './PDFPageComponent';
-import PDFRectComponent from './PDFRectComponent';
-import PDFCircleComponent from './PDFCircleComponent';
+import PageComponent from './PageComponent';
+import RectComponent from './RectComponent';
+import CircleComponent from './CircleComponent';
 
 export default {
-  'page': PDFPageComponent,
-  'rect': PDFRectComponent,
-  'circle': PDFCircleComponent
+  'page': PageComponent,
+  'rect': RectComponent,
+  'circle': CircleComponent
 };

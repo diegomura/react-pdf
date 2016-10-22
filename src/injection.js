@@ -10,10 +10,15 @@ import ReactHostComponent from 'react/lib/ReactHostComponent';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
 import PDFRendererReconcileTransaction from './reconcileTransaction';
 import PDFRendererComponent from './component';
+import PDFTextComponent from './PDFTextComponent';
 
 function inject() {
   ReactInjection.HostComponent.injectGenericComponentClass(
     PDFRendererComponent
+  );
+
+  ReactInjection.HostComponent.injectTextComponentClass(
+    PDFTextComponent
   );
 
   ReactInjection.Updates.injectReconcileTransaction(

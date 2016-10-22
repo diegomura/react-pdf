@@ -15,12 +15,7 @@ const PDFRendererComponentMixin = {
     return this.node;
   },
 
-  mountComponent(
-    transaction,
-    nativeParent,
-    nativeContainerInfo,
-    context
-  ) {
+  mountComponent(transaction, nativeParent, nativeContainerInfo, context) {
     const node = this.node = this._currentElement;
     const {children, ...props} = node.props;
 
@@ -36,10 +31,7 @@ const PDFRendererComponentMixin = {
         context.doc[node.type](children, props);
     }
 
-    // Naive way of not mounting TextComponent
-    if (typeof children != 'string') {
-      this.mountChildren(children, transaction, context);
-    }
+    this.mountChildren(children, transaction, context);
 
     return node;
   },

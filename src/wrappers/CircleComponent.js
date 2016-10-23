@@ -10,7 +10,7 @@ const CircleComponentMixin = {
     const node = this._element;
     const {x, y, radius} = node.props;
 
-    this._context.doc.circle(x, x, radius).stroke();
+    this._context.doc.circle(x, y, radius).stroke();
   }
 };
 

@@ -22,6 +22,7 @@ const GenericComponentMixin = {
     switch (node.type) {
       case 'document':
       case 'page':
+      case 'image':
       case 'circle':
       case 'rect':
         new Wrappers[node.type](node, context).mountComponent();

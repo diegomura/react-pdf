@@ -19,17 +19,7 @@ const GenericComponentMixin = {
     const node = this.node = this._currentElement;
     const {children, ...props} = node.props;
 
-    switch (node.type) {
-      case 'document':
-      case 'page':
-      case 'image':
-      case 'circle':
-      case 'rect':
-        new Wrappers[node.type](node, context).mountComponent();
-        break;
-      default:
-        context.doc[node.type](children, props);
-    }
+    new Wrappers[node.type](node, context).mountComponent();
 
     this.mountChildren(children, transaction, context);
 

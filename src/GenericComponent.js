@@ -5,7 +5,6 @@ import ReactMultiChild from 'react/lib/ReactMultiChild';
 
 const GenericComponent = function(element) {
   this.node = null;
-  this._mountImage = null;
   this._renderedChildren = null;
   this._currentElement = element;
 };
@@ -19,11 +18,9 @@ const GenericComponentMixin = {
     const node = this.node = this._currentElement;
     const {children, ...props} = node.props;
 
-    new Wrappers[node.type](node, context).mountComponent();
+    this._renderedChildren = this.mountChildren(children, transaction, context);
 
-    this.mountChildren(children, transaction, context);
-
-    return node;
+    return new Wrappers[node.type](node, context, this._renderedChildren).mountComponent();
   },
   // There is no updating for PDF file
   receiveComponent(){},

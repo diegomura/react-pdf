@@ -6,6 +6,8 @@ import ImageComponent from './ImageComponent';
 import TextComponent from './TextComponent';
 import RectComponent from './RectComponent';
 import CircleComponent from './CircleComponent';
+import ListComponent from './ListComponent';
+import EmptyComponent from './EmptyComponent';
 
 export default {
   'document': DocumentComponent,
@@ -13,5 +15,7 @@ export default {
   'image': ImageComponent,
   'text': TextComponent,
   'rect': RectComponent,
-  'circle': CircleComponent
+  'circle': CircleComponent,
+  'list': ListComponent,
+  'item': EmptyComponent
 };

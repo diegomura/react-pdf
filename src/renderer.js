@@ -118,9 +118,18 @@ function toPDF(inst) {
     case 'TEXT':
       return inst.text;
     case 'INSTANCE':
-      const doc = inst.rootContainerInstance.doc;
+      const { doc, firstPageSkipped } = inst.rootContainerInstance;
       const {children, ...props} = inst.props;
       console.log(inst.type);
+
+      switch (inst.type) {
+        case 'page':
+          if (firstPageSkipped) {
+            doc.addPage(props);
+          }
+          inst.rootContainerInstance.firstPageSkipped = true;
+          break;
+      }
 
       if (inst.children && inst.children.length) {
         inst.children.map(toPDF);
@@ -141,7 +150,8 @@ var ReactPDFFiberRenderer = {
     var container = {
       children: [],
       tag: 'CONTAINER',
-      doc
+      doc,
+      firstPageSkipped: false
     };
 
     var root = PDFRenderer.createContainer(container);

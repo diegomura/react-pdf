@@ -143,6 +143,16 @@ function toPDF(inst) {
             doc.image(props.src, props);
           }
           break;
+        case 'rect':
+          if (props.cornerRadius) {
+            doc.roundedRect(props.x, props.y, props.width, props.height, props.cornerRadius).stroke();
+          } else {
+            doc.rect(props.x, props.y, props.width, props.height).stroke();
+          }
+          break;
+        case 'circle':
+          doc.circle(props.x, props.y, props.radius).stroke();
+          break;
       }
 
       if (inst.children && inst.children.length) {

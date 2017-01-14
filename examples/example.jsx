@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactPDF from '../';
+import lorem from './lorem';
 
 let doc =
   <document title="Lorem Ipsum" author="@diegomura" otherData="Something else">
@@ -9,11 +10,8 @@ let doc =
         ~ Lorem ipsum ~
       </text>
       <text columns={3} columnGap={15} align='justify'>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        {lorem}
       </text>
-    </page>
-    <page>
-      <text>Test</text>
     </page>
   </document>
 

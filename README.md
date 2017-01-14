@@ -25,7 +25,7 @@ let doc =
     </page>
   </document>
 
-ReactPDF.render(doc, './examples/example.pdf')
+ReactPDF.render(doc, './examples/example.pdf');
 ```
 
 [Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/example.pdf)
@@ -33,16 +33,22 @@ ReactPDF.render(doc, './examples/example.pdf')
 ## Demo
 
 ```bash
+# Clone the repo
 git clone https://github.com/diegomura/react-pdf
 cd react-pdf
+
+# Install dependencies
+yarn install
+  # or
 npm install
 
-# run example script
+# Run example script
+yarn example
+  # or
 npm run example
+
+# Open example doc
+open examples/example.pdf
 ```
 
 Check out for the `example.pdf` file created on the root of the project
-
-## Thanks
-
-* [@iamdustan](https://github.com/iamdustan) for the explanation of how to build a renderer

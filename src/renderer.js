@@ -130,12 +130,17 @@ function toPDF(inst) {
           inst.rootContainerInstance.firstPageSkipped = true;
           break;
         case 'text':
-          const {x, y, ...otherProps} = props;
-
-          if (x && y) {
-            doc.text(children, x, y, otherProps);
+          if (props.x && props.y) {
+            doc.text(children, props.x, props.y, props);
           } else {
-            doc.text(children, otherProps);
+            doc.text(children, props);
+          }
+          break;
+        case 'image':
+          if (props.x && props.y) {
+            doc.image(props.src, props.x, props.y, props);
+          } else {
+            doc.image(props.src, props);
           }
           break;
       }

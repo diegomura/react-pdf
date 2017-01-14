@@ -4,6 +4,8 @@
 
 > This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental.
 
+> Now using the new React Fiber API!
+
 ## How it works
 ReactPDF mounter is called ReactPDF and has a render method that recieves a React Element and a path where the PDF file will be generated.
 

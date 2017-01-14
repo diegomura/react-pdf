@@ -1,10 +1,12 @@
 'use strict';
 
+import fs from 'fs';
+import pdf from 'pdfkit';
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
 
-var TestRenderer = ReactFiberReconciler({
+var PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
     return emptyObject;
   },
@@ -48,8 +50,7 @@ var TestRenderer = ReactFiberReconciler({
   },
 
   commitUpdate(instance, type, oldProps, newProps, rootContainerInstance, internalInstanceHandle) {
-    instance.type = type;
-    instance.props = newProps;
+    // noop
   },
 
   commitMount(instance, type, newProps, rootContainerInstance, internalInstanceHandle) {
@@ -108,102 +109,55 @@ var TestRenderer = ReactFiberReconciler({
   useSyncScheduling: true,
 
   getPublicInstance(inst) {
-    switch (inst.tag) {
-      case 'INSTANCE':
-        const createNodeMock = inst.rootContainerInstance.createNodeMock;
-        return createNodeMock({
-          type: inst.type,
-          props: inst.props,
-        });
-      default:
-        return inst;
-    }
+    return inst;
   },
 });
 
-var defaultTestOptions = {
-  createNodeMock: function() {
-    return null;
-  },
-};
-
-function toJSON(inst) {
+function toPDF(inst) {
   switch (inst.tag) {
     case 'TEXT':
       return inst.text;
     case 'INSTANCE':
-      // We don't include the `children` prop in JSON.
-      // Instead, we will include the actual rendered children.
+      const doc = inst.rootContainerInstance.doc;
       const {children, ...props} = inst.props;
-      let renderedChildren = null;
+      console.log(inst.type);
+
       if (inst.children && inst.children.length) {
-        renderedChildren = inst.children.map(toJSON);
+        inst.children.map(toPDF);
       }
-      const json : ReactTestRendererJSON = {
-        type: inst.type,
-        props: props,
-        children: renderedChildren,
-      };
-      Object.defineProperty(json, '$$typeof', {value: Symbol.for('react.test.json')});
-      return json;
+      return;
     default:
-      throw new Error(`Unexpected node type in toJSON: ${inst.tag}`);
+      throw new Error('Unexpected node type in toPDF: ' + inst.tag);
   }
 }
 
-var ReactTestFiberRenderer = {
-  render(element, options) {
-    var createNodeMock = defaultTestOptions.createNodeMock;
-    if (options && typeof options.createNodeMock === 'function') {
-      createNodeMock = options.createNodeMock;
-    }
+var ReactPDFFiberRenderer = {
+  render(element, filePath) {
+    var doc = new pdf();
+
+    doc.pipe(fs.createWriteStream(filePath));
+
     var container = {
       children: [],
-      createNodeMock,
       tag: 'CONTAINER',
+      doc
     };
-    var root = TestRenderer.createContainer(container);
-    TestRenderer.updateContainer(element, root, null, null);
 
-    return {
-      toJSON() {
-        if (root == null || container == null) {
-          return null;
-        }
-        if (container.children.length === 0) {
-          return null;
-        }
-        if (container.children.length === 1) {
-          return toJSON(container.children[0]);
-        }
-        return container.children.map(toJSON);
-      },
-      update(newElement : ReactElement<any>) {
-        if (root == null) {
-          return;
-        }
-        TestRenderer.updateContainer(newElement, root, null, null);
-      },
-      unmount() {
-        if (root == null) {
-          return;
-        }
-        TestRenderer.updateContainer(null, root, null);
-        container = null;
-        root = null;
-      },
-      getInstance() {
-        if (root == null) {
-          return null;
-        }
-        return TestRenderer.getPublicRootInstance(root);
-      },
-    };
+    var root = PDFRenderer.createContainer(container);
+    PDFRenderer.updateContainer(element, root, null, null);
+
+    if (root == null || container == null) {
+      return null;
+    }
+
+    if (container.children.length === 0) {
+      return null;
+    }
+
+    return toPDF(container.children[0]);
   },
 
-  /* eslint-disable camelcase */
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
-  /* eslint-enable camelcase */
 };
 
-module.exports = ReactTestFiberRenderer;
+module.exports = ReactPDFFiberRenderer;

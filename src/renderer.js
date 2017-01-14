@@ -129,6 +129,15 @@ function toPDF(inst) {
           }
           inst.rootContainerInstance.firstPageSkipped = true;
           break;
+        case 'text':
+          const {x, y, ...otherProps} = props;
+
+          if (x && y) {
+            doc.text(children, x, y, otherProps);
+          } else {
+            doc.text(children, otherProps);
+          }
+          break;
       }
 
       if (inst.children && inst.children.length) {

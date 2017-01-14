@@ -147,14 +147,6 @@ var ReactPDFFiberRenderer = {
     var root = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, root, null, null);
 
-    if (root == null || container == null) {
-      return null;
-    }
-
-    if (container.children.length === 0) {
-      return null;
-    }
-
     toPDF(container.children[0]);
 
     return doc.end();;

@@ -1,6 +1,7 @@
 'use strict';
 
 import fs from 'fs';
+import path from 'path';
 import pdf from 'pdfkit';
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
@@ -120,7 +121,6 @@ function toPDF(inst) {
     case 'INSTANCE':
       const { doc, firstPageSkipped } = inst.rootContainerInstance;
       const {children, ...props} = inst.props;
-      console.log(inst.type);
 
       switch (inst.type) {
         case 'page':
@@ -182,6 +182,8 @@ var ReactPDFFiberRenderer = {
     PDFRenderer.updateContainer(element, root, null, null);
 
     toPDF(container.children[0]);
+
+    console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
 
     return doc.end();;
   },

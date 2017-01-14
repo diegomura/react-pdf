@@ -24,7 +24,8 @@
   "dependencies": {
     "fbjs": "^0.8.4",
     "pdfkit": "*",
-    "react": "15.4.2"
+    "react": "16.0.0-alpha",
+    "react-dom": "16.0.0-alpha"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

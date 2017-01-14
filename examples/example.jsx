@@ -14,6 +14,6 @@ let doc =
     </page>
   </document>
 
-const renderer = ReactPDF.create(doc);
+const renderer = ReactPDF.render(doc);
 
 console.log(renderer.toJSON());

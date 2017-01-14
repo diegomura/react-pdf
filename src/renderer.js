@@ -152,7 +152,7 @@ function toJSON(inst) {
 }
 
 var ReactTestFiberRenderer = {
-  create(element, options) {
+  render(element, options) {
     var createNodeMock = defaultTestOptions.createNodeMock;
     if (options && typeof options.createNodeMock === 'function') {
       createNodeMock = options.createNodeMock;

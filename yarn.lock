@@ -1811,9 +1811,17 @@ rc@~1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
 
-react@15.4.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
+react-dom@16.0.0-alpha:
+  version "16.0.0-alpha"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0-alpha.tgz#51c7e7c0d34342a29614e3a91f3905625fc134af"
+  dependencies:
+    fbjs "^0.8.4"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+
+react@16.0.0-alpha:
+  version "16.0.0-alpha"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-alpha.tgz#bd24eb7e44a4989874dbb68e46dc918c48a3c6f1"
   dependencies:
     fbjs "^0.8.4"
     loose-envify "^1.1.0"

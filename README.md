@@ -4,6 +4,8 @@
 
 > This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental.
 
+> Now using the new React Fiber API!
+
 ## How it works
 ReactPDF mounter is called ReactPDF and has a render method that recieves a React Element and a path where the PDF file will be generated.
 
@@ -25,7 +27,7 @@ let doc =
     </page>
   </document>
 
-ReactPDF.render(doc, './examples/example.pdf')
+ReactPDF.render(doc, './examples/example.pdf');
 ```
 
 [Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/example.pdf)
@@ -33,16 +35,22 @@ ReactPDF.render(doc, './examples/example.pdf')
 ## Demo
 
 ```bash
+# Clone the repo
 git clone https://github.com/diegomura/react-pdf
 cd react-pdf
+
+# Install dependencies
+yarn install
+  # or
 npm install
 
-# run example script
+# Run example script
+yarn example
+  # or
 npm run example
+
+# Open example doc
+open examples/example.pdf
 ```
 
 Check out for the `example.pdf` file created on the root of the project
-
-## Thanks
-
-* [@iamdustan](https://github.com/iamdustan) for the explanation of how to build a renderer

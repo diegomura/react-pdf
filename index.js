@@ -1,5 +1,5 @@
 'use strict';
 
-import render from './src/mount';
+import renderer from './src/renderer';
 
-export default {render};
+export default renderer;

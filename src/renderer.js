@@ -125,6 +125,7 @@ function toPDF(inst) {
       if (inst.children && inst.children.length) {
         inst.children.map(toPDF);
       }
+
       return;
     default:
       throw new Error('Unexpected node type in toPDF: ' + inst.tag);
@@ -154,7 +155,9 @@ var ReactPDFFiberRenderer = {
       return null;
     }
 
-    return toPDF(container.children[0]);
+    toPDF(container.children[0]);
+
+    return doc.end();;
   },
 
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,

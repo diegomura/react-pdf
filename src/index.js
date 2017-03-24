@@ -1,5 +1,5 @@
 'use strict';
 
-import renderer from './src/renderer';
+import renderer from './renderer';
 
 export default renderer;

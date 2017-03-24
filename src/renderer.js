@@ -81,7 +81,7 @@ const PDFRenderer = ReactFiberReconciler({
     return false;
   },
 
-  resetTextContent(testElement): void {
+  resetTextContent(testElement) {
     // noop
   },
 
@@ -101,7 +101,7 @@ const PDFRenderer = ReactFiberReconciler({
     textInstance.text = newText;
   },
 
-  appendChild(parentInstance, child): void {
+  appendChild(parentInstance, child) {
     const index = parentInstance.children.indexOf(child);
     if (index !== -1) {
       parentInstance.children.splice(index, 1);

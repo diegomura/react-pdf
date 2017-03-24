@@ -1,5 +1,5 @@
 'use strict';
 
-import renderer from './src/renderer';
+import renderer, { PDFRenderer } from './src/renderer';
 
-export default renderer;
+export { renderer as default, PDFRenderer };

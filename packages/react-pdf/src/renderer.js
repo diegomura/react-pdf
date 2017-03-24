@@ -227,4 +227,4 @@ const ReactPDFFiberRenderer = {
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
 };
 
-module.exports = ReactPDFFiberRenderer;
+export { ReactPDFFiberRenderer as default, PDFRenderer };

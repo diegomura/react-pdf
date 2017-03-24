@@ -139,6 +139,8 @@ const PDFRenderer = ReactFiberReconciler({
 });
 
 function createPDFInstance(inst) {
+  console.log(inst);
+
   const { doc, firstPageSkipped } = inst.rootContainerInstance;
   const { children, ...props } = inst.props;
 
@@ -182,7 +184,7 @@ function createPDFInstance(inst) {
       doc.circle(props.x, props.y, props.radius).stroke();
       break;
     default:
-      return;
+      break;
   }
 
   if (inst.children && inst.children.length) {

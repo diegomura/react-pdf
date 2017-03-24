@@ -4,14 +4,15 @@
   "description": "A tiny React renderer to generate PDF documents.",
   "main": "./index.js",
   "scripts": {
-    "example:standalone": "cd ./examples/standalone && yarn run start",
+    "example:standalone": "cd ./examples/standalone && npm run start",
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "yarn run build -- --watch",
+    "build:watch": "npm run build -- --watch",
     "precommit": "lint-staged",
     "lint": "eslint performance src --ignore-path .gitignore"
   },
   "lint-staged": {
     "*.js": [
+      "npm run lint",
       "prettier --single-quote --trailing-comma=all --write",
       "git add"
     ]

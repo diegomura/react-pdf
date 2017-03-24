@@ -139,8 +139,6 @@ const PDFRenderer = ReactFiberReconciler({
 });
 
 function createPDFInstance(inst) {
-  console.log(inst);
-
   const { doc, firstPageSkipped } = inst.rootContainerInstance;
   const { children, ...props } = inst.props;
 

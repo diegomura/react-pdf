@@ -5,7 +5,12 @@ import lorem from './lorem';
 const doc = (
   <document author="@diegomura" otherData="Something else" title="Lorem Ipsum">
     <page margin={50}>
-      <image src="./images/react.png" width={200} x={200} y={300} />
+      <image
+        src={`${__dirname}/images/react.png`}
+        width={200}
+        x={200}
+        y={300}
+      />
       <text align="center" underline>
         ~ Lorem ipsum ~
       </text>
@@ -16,4 +21,4 @@ const doc = (
   </document>
 );
 
-ReactPDF.render(doc, './example.pdf');
+ReactPDF.render(doc, `${__dirname}/example.pdf`);

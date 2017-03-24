@@ -45,12 +45,12 @@ yarn install
 npm install
 
 # Run example script
-yarn example
+yarn example:standalone
   # or
-npm run example
+npm run example:standalone
 
 # Open example doc
-open examples/example.pdf
+open examples/standalone/example.pdf
 ```
 
 Check out for the `example.pdf` file created on the root of the project

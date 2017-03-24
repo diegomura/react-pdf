@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "./../../node_modules/.bin/babel-node ./example.jsx"
+    "start": "./../../node_modules/.bin/babel-node ./example.js"
   },
   "repository": {
     "type": "git",

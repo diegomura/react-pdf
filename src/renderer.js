@@ -2,12 +2,12 @@
 
 import fs from 'fs';
 import path from 'path';
-import pdf from 'pdfkit';
+import Pdf from 'pdfkit';
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
 
-var PDFRenderer = ReactFiberReconciler({
+const PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
     return emptyObject;
   },
@@ -24,13 +24,19 @@ var PDFRenderer = ReactFiberReconciler({
     // noop
   },
 
-  createInstance(type, props, rootContainerInstance, hostContext, internalInstanceHandle) {
+  createInstance(
+    type,
+    props,
+    rootContainerInstance,
+    hostContext,
+    internalInstanceHandle,
+  ) {
     return {
       type,
       props,
       children: [],
       rootContainerInstance,
-      tag: 'INSTANCE'
+      tag: 'INSTANCE',
     };
   },
 
@@ -50,11 +56,24 @@ var PDFRenderer = ReactFiberReconciler({
     return true;
   },
 
-  commitUpdate(instance, type, oldProps, newProps, rootContainerInstance, internalInstanceHandle) {
+  commitUpdate(
+    instance,
+    type,
+    oldProps,
+    newProps,
+    rootContainerInstance,
+    internalInstanceHandle,
+  ) {
     // noop
   },
 
-  commitMount(instance, type, newProps, rootContainerInstance, internalInstanceHandle) {
+  commitMount(
+    instance,
+    type,
+    newProps,
+    rootContainerInstance,
+    internalInstanceHandle,
+  ) {
     // noop
   },
 
@@ -62,14 +81,19 @@ var PDFRenderer = ReactFiberReconciler({
     return false;
   },
 
-  resetTextContent(testElement) : void {
+  resetTextContent(testElement): void {
     // noop
   },
 
-  createTextInstance(text, rootContainerInstance, hostContext, internalInstanceHandle) {
+  createTextInstance(
+    text,
+    rootContainerInstance,
+    hostContext,
+    internalInstanceHandle,
+  ) {
     return {
       text,
-      tag: 'TEXT'
+      tag: 'TEXT',
     };
   },
 
@@ -77,7 +101,7 @@ var PDFRenderer = ReactFiberReconciler({
     textInstance.text = newText;
   },
 
-  appendChild(parentInstance, child) : void {
+  appendChild(parentInstance, child): void {
     const index = parentInstance.children.indexOf(child);
     if (index !== -1) {
       parentInstance.children.splice(index, 1);
@@ -104,7 +128,7 @@ var PDFRenderer = ReactFiberReconciler({
   },
 
   scheduleDeferredCallback(fn) {
-    setTimeout(fn, 0, {timeRemaining: Infinity});
+    setTimeout(fn, 0, { timeRemaining: Infinity });
   },
 
   useSyncScheduling: true,
@@ -114,78 +138,90 @@ var PDFRenderer = ReactFiberReconciler({
   },
 });
 
+function createPDFInstance(inst) {
+  const { doc, firstPageSkipped } = inst.rootContainerInstance;
+  const { children, ...props } = inst.props;
+
+  switch (inst.type) {
+    case 'page':
+      if (firstPageSkipped) {
+        doc.addPage(props);
+      }
+      inst.rootContainerInstance.firstPageSkipped = true;
+      break;
+    case 'text':
+      if (props.x && props.y) {
+        doc.text(children, props.x, props.y, props);
+      } else {
+        doc.text(children, props);
+      }
+      break;
+    case 'image':
+      if (props.x && props.y) {
+        doc.image(props.src, props.x, props.y, props);
+      } else {
+        doc.image(props.src, props);
+      }
+      break;
+    case 'rect':
+      if (props.cornerRadius) {
+        doc
+          .roundedRect(
+            props.x,
+            props.y,
+            props.width,
+            props.height,
+            props.cornerRadius,
+          )
+          .stroke();
+      } else {
+        doc.rect(props.x, props.y, props.width, props.height).stroke();
+      }
+      break;
+    case 'circle':
+      doc.circle(props.x, props.y, props.radius).stroke();
+      break;
+    default:
+      return;
+  }
+
+  if (inst.children && inst.children.length) {
+    inst.children.map(toPDF);
+  }
+}
+
 function toPDF(inst) {
   switch (inst.tag) {
     case 'TEXT':
       return inst.text;
     case 'INSTANCE':
-      const { doc, firstPageSkipped } = inst.rootContainerInstance;
-      const {children, ...props} = inst.props;
-
-      switch (inst.type) {
-        case 'page':
-          if (firstPageSkipped) {
-            doc.addPage(props);
-          }
-          inst.rootContainerInstance.firstPageSkipped = true;
-          break;
-        case 'text':
-          if (props.x && props.y) {
-            doc.text(children, props.x, props.y, props);
-          } else {
-            doc.text(children, props);
-          }
-          break;
-        case 'image':
-          if (props.x && props.y) {
-            doc.image(props.src, props.x, props.y, props);
-          } else {
-            doc.image(props.src, props);
-          }
-          break;
-        case 'rect':
-          if (props.cornerRadius) {
-            doc.roundedRect(props.x, props.y, props.width, props.height, props.cornerRadius).stroke();
-          } else {
-            doc.rect(props.x, props.y, props.width, props.height).stroke();
-          }
-          break;
-        case 'circle':
-          doc.circle(props.x, props.y, props.radius).stroke();
-          break;
-      }
-
-      if (inst.children && inst.children.length) {
-        inst.children.map(toPDF);
-      }
-
-      return;
+      return createPDFInstance(inst);
     default:
       throw new Error('Unexpected node type in toPDF: ' + inst.tag);
   }
 }
 
-var ReactPDFFiberRenderer = {
+const ReactPDFFiberRenderer = {
   render(element, filePath) {
-    var doc = new pdf();
+    const doc = new Pdf();
 
     doc.pipe(fs.createWriteStream(filePath));
 
-    var container = {
+    const container = {
       children: [],
       tag: 'CONTAINER',
       doc,
-      firstPageSkipped: false
+      firstPageSkipped: false,
     };
 
-    var root = PDFRenderer.createContainer(container);
+    const root = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, root, null, null);
 
     toPDF(container.children[0]);
 
     console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
 
-    return doc.end();;
+    return doc.end();
   },
 
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,

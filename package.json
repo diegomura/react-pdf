@@ -4,7 +4,7 @@
   "description": "A tiny React renderer to generate PDF documents.",
   "main": "./index.js",
   "scripts": {
-    "example:standalone": "cd ./examples/standalone && npm run start",
+    "example": "babel-node ./examples/example.jsx",
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "npm run build -- --watch",
     "precommit": "lint-staged",

@@ -7,6 +7,8 @@ import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
 
+import { createElement } from './elements';
+
 const PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
     return emptyObject;
@@ -29,23 +31,26 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
-    return {
-      type,
-      props,
-      children: [],
-      rootContainerInstance,
-      tag: 'INSTANCE',
-    };
+    return createElement(type, props);
+    // return {
+    //   type,
+    //   props,
+    //   children: [],
+    //   rootContainerInstance,
+    //   tag: 'INSTANCE',
+    // };
   },
 
   appendInitialChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    parentInstance.children.push(child);
+    console.log(child);
+    child.inject(parentInstance);
+    // const index = parentInstance.children.indexOf(child);
+    // if (index !== -1) {
+    //   parentInstance.children.splice(index, 1);
+    // }
+    // parentInstance.children.push(child);
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -62,7 +67,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -72,7 +77,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -89,12 +94,13 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
-    return {
-      text,
-      tag: 'TEXT',
-    };
+    return createElement('TEXT', { content: 'TEXT' });
+    // return {
+    //   text,
+    //   tag: 'TEXT',
+    // };
   },
 
   commitTextUpdate(textInstance, oldText, newText) {
@@ -102,11 +108,13 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    parentInstance.children.push(child);
+    child.inject(parentInstance);
+
+    // const index = parentInstance.children.indexOf(child);
+    // if (index !== -1) {
+    //   parentInstance.children.splice(index, 1);
+    // }
+    // parentInstance.children.push(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
@@ -119,8 +127,9 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    parentInstance.children.splice(index, 1);
+    child.eject(parentInstance);
+    // const index = parentInstance.children.indexOf(child);
+    // parentInstance.children.splice(index, 1);
   },
 
   scheduleAnimationCallback(fn) {
@@ -171,7 +180,7 @@ function createPDFInstance(inst, doc) {
             props.y,
             props.width,
             props.height,
-            props.cornerRadius
+            props.cornerRadius,
           )
           .stroke();
       } else {
@@ -207,16 +216,12 @@ const ReactPDFFiberRenderer = {
 
     doc.pipe(fs.createWriteStream(filePath));
 
-    const container = {
-      children: [],
-      tag: 'CONTAINER',
-      firstPageSkipped: false,
-    };
+    const container = createElement('DOCUMENT');
 
     const root = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, root, null, null);
 
-    toPDF(container.children[0], doc);
+    // toPDF(container.children[0], doc);
 
     console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
 
@@ -226,4 +231,17 @@ const ReactPDFFiberRenderer = {
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
 };
 
-export { ReactPDFFiberRenderer as default, PDFRenderer, toPDF };
+/* Component constants */
+const View = 'VIEW';
+const Text = 'TEXT';
+const Page = 'PAGE';
+
+export {
+  ReactPDFFiberRenderer as default,
+  PDFRenderer,
+  toPDF,
+  View,
+  Text,
+  Page,
+  createElement,
+};

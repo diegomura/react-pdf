@@ -1,27 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import Pdf from 'react-pdf/lib/pdfkit';
-import blobStream from 'blob-stream';
-import { PDFRenderer, toPDF } from 'react-pdf';
-
-function createDocument(container, iframe) {
-  const doc = new Pdf();
-
-  const stream = doc.pipe(blobStream());
-  toPDF(container.children[0], doc);
-
-  doc.end();
-
-  stream.on('finish', () => {
-    iframe.src = stream.toBlobURL('application/pdf');
-  });
-}
+// import Pdf from 'react-pdf/lib/pdfkit';
+import { PDFRenderer, createElement } from 'react-pdf';
 
 class Document extends Component {
-  container = {
-    children: [],
-    tag: 'CONTAINER',
-    firstPageSkipped: false,
-  };
+  container = createElement('DOCUMENT');
 
   static propTypes = {
     children: PropTypes.any,
@@ -39,9 +21,11 @@ class Document extends Component {
     this.mountNode = PDFRenderer.createContainer(this.container);
     PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
 
-    if (this.embed) {
-      createDocument(this.container, this.embed);
-    }
+    console.log(this.container);
+
+    // if (this.embed) {
+    //   createDocument(this.container, this.embed);
+    // }
   }
 
   onSuccess() {
@@ -51,9 +35,9 @@ class Document extends Component {
   componentDidUpdate() {
     PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
 
-    if (this.embed) {
-      createDocument(this.container, this.embed);
-    }
+    // if (this.embed) {
+    //   createDocument(this.container, this.embed);
+    // }
   }
 
   componentWillUnmount() {

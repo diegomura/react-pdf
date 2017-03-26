@@ -22,7 +22,8 @@
     "fbjs": "^0.8.4",
     "pdfkit": "*",
     "react": "16.0.0-alpha.4",
-    "react-dom": "16.0.0-alpha.4"
+    "react-dom": "16.0.0-alpha.4",
+    "yoga-layout": "^1.2.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

@@ -2,7 +2,11 @@
   "name": "react-pdf-dom",
   "version": "0.1.0",
   "description": "Bindings for react-pdf to render inside a react-dom application",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "babel ./src --out-dir ./lib",
+    "build:watch": "npm run build -- --watch"
+  },
   "keywords": [
     "react",
     "reactjs",
@@ -12,11 +16,15 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "react-pdf": "0.1.0",
+    "blob-stream": "^0.1.3",
+    "pdfkit": "*",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",
-    "pdfkit": "*"
+    "react-pdf": "0.1.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git"
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "devDependencies": {
+    "babel-cli": "^6.24.0"
+  }
 }

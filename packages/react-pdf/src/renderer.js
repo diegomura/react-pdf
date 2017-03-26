@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import Pdf from 'pdfkit';
+import Pdf from './pdfkit';
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
@@ -29,7 +29,7 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return {
       type,
@@ -62,7 +62,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -72,7 +72,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -89,7 +89,7 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return {
       text,
@@ -138,8 +138,8 @@ const PDFRenderer = ReactFiberReconciler({
   },
 });
 
-function createPDFInstance(inst) {
-  const { doc, firstPageSkipped } = inst.rootContainerInstance;
+function createPDFInstance(inst, doc) {
+  const { firstPageSkipped } = inst.rootContainerInstance;
   const { children, ...props } = inst.props;
 
   switch (inst.type) {
@@ -171,7 +171,7 @@ function createPDFInstance(inst) {
             props.y,
             props.width,
             props.height,
-            props.cornerRadius,
+            props.cornerRadius
           )
           .stroke();
       } else {
@@ -186,16 +186,16 @@ function createPDFInstance(inst) {
   }
 
   if (inst.children && inst.children.length) {
-    inst.children.map(toPDF);
+    inst.children.map(instance => toPDF(instance, doc));
   }
 }
 
-function toPDF(inst) {
+function toPDF(inst, doc) {
   switch (inst.tag) {
     case 'TEXT':
       return inst.text;
     case 'INSTANCE':
-      return createPDFInstance(inst);
+      return createPDFInstance(inst, doc);
     default:
       throw new Error('Unexpected node type in toPDF: ' + inst.tag);
   }
@@ -210,14 +210,13 @@ const ReactPDFFiberRenderer = {
     const container = {
       children: [],
       tag: 'CONTAINER',
-      doc,
       firstPageSkipped: false,
     };
 
     const root = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, root, null, null);
 
-    toPDF(container.children[0]);
+    toPDF(container.children[0], doc);
 
     console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
 
@@ -227,4 +226,4 @@ const ReactPDFFiberRenderer = {
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
 };
 
-export { ReactPDFFiberRenderer as default, PDFRenderer };
+export { ReactPDFFiberRenderer as default, PDFRenderer, toPDF };

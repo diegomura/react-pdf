@@ -9,11 +9,12 @@ import renderer, {
   createElement,
 } from './renderer';
 import StyleSheet from './Stylesheet';
+import pdf from './pdf/index.js';
 
 export {
   renderer as default,
   PDFRenderer,
-  toPDF,
+  pdf,
   View,
   Text,
   Page,

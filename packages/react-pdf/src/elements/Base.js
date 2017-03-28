@@ -4,7 +4,6 @@ import isFunction from 'lodash/fp/isFunction';
 import upperFirst from 'lodash/fp/upperFirst';
 
 class Base {
-  root = false; // No root layout node
   children = [];
 
   constructor() {

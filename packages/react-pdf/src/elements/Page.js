@@ -76,6 +76,16 @@ class Page extends Base {
       }
     }
   }
+
+  valueOf() {
+    this.layout.calculateLayout();
+
+    return {
+      Type: 'Page',
+      width: this.layout.getComputedWidth(),
+      height: this.layout.getComputedHeight(),
+    };
+  }
 }
 
 export default Page;

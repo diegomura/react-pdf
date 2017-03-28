@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 // import Pdf from 'react-pdf/lib/pdfkit';
-import { PDFRenderer, createElement } from 'react-pdf';
+import { PDFRenderer, createElement, pdf } from 'react-pdf';
 
 class Document extends Component {
   container = createElement('DOCUMENT');
@@ -12,6 +12,8 @@ class Document extends Component {
   constructor(props) {
     super(props);
 
+    this.renderer = pdf();
+
     this.state = {
       document: undefined,
     };
@@ -20,8 +22,7 @@ class Document extends Component {
   componentDidMount() {
     this.mountNode = PDFRenderer.createContainer(this.container);
     PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
-
-    console.log(this.container);
+    this.renderer.toBlob(this.container);
 
     // if (this.embed) {
     //   createDocument(this.container, this.embed);

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "fbjs": "^0.8.4",
+    "fontkit": "^1.5.4",
     "pdfkit": "*",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",

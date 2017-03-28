@@ -8,7 +8,8 @@ function createElement(type, props) {
 
   switch (type) {
     case 'DOCUMENT':
-      return new Document();
+      instance = new Document();
+      return instance;
     case 'PAGE':
       instance = new Page();
       instance.applyProps(props);

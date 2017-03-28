@@ -31,7 +31,7 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return createElement(type, props);
     // return {
@@ -44,7 +44,6 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendInitialChild(parentInstance, child) {
-    console.log(child);
     child.inject(parentInstance);
     // const index = parentInstance.children.indexOf(child);
     // if (index !== -1) {
@@ -67,7 +66,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -77,7 +76,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -94,8 +93,9 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
+    // return text;
     return createElement('TEXT', { content: 'TEXT' });
     // return {
     //   text,
@@ -108,6 +108,8 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
+    console.log(child, parentInstance);
+
     child.inject(parentInstance);
 
     // const index = parentInstance.children.indexOf(child);
@@ -180,7 +182,7 @@ function createPDFInstance(inst, doc) {
             props.y,
             props.width,
             props.height,
-            props.cornerRadius,
+            props.cornerRadius
           )
           .stroke();
       } else {

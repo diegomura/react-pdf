@@ -25,7 +25,7 @@ class App extends Component {
           <h2>Welcome to React PDF</h2>
         </div>
         <p className="App-intro">
-          <Document>
+          <Document height="100%" width="100%">
             <Page size="A4">
               <View style={styles.container}>
                 <Text>
@@ -38,6 +38,19 @@ class App extends Component {
                 </View>
               </View>
             </Page>
+            <Page size="A4">
+              <View style={styles.container}>
+                <Text>
+                  Dit is tekst
+                </Text>
+                <View style={styles.block}>
+                  <Text>
+                    Dit is nog meer tekst
+                  </Text>
+                </View>
+              </View>
+            </Page>
+
             {/* <document>
               <page margin={50}>
                 {/* <image

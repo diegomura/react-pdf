@@ -1,6 +1,5 @@
 /* global URL */
 import React, { Component, PropTypes } from 'react';
-// import Pdf from 'react-pdf/lib/pdfkit';
 import { PDFRenderer, createElement, pdf } from 'react-pdf';
 
 class Document extends Component {
@@ -8,6 +7,8 @@ class Document extends Component {
 
   static propTypes = {
     children: PropTypes.any,
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
 
   constructor(props) {
@@ -25,13 +26,7 @@ class Document extends Component {
     PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
     this.renderer.toBlob(this.container);
 
-    // console.log(this.renderer.toBase64Url(this.container));
-
     this.embed.src = URL.createObjectURL(this.renderer.toBlob(this.container));
-
-    // if (this.embed) {
-    //   createDocument(this.container, this.embed);
-    // }
   }
 
   onSuccess() {
@@ -40,10 +35,6 @@ class Document extends Component {
 
   componentDidUpdate() {
     PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
-
-    // if (this.embed) {
-    //   createDocument(this.container, this.embed);
-    // }
   }
 
   componentWillUnmount() {
@@ -51,11 +42,14 @@ class Document extends Component {
   }
 
   render() {
+    const { width, height } = this.props;
+
     return (
       <iframe
         ref={container => {
           this.embed = container;
         }}
+        style={{ width, height }}
       />
     );
   }

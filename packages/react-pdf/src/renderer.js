@@ -108,8 +108,6 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    console.log(child, parentInstance);
-
     child.inject(parentInstance);
 
     // const index = parentInstance.children.indexOf(child);

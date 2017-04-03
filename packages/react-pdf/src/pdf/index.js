@@ -58,7 +58,6 @@ function stringEncodeUTF16(object) {
 // Convert JS primitves to PDF;
 // Token from https://github.com/devongovett/pdfkit/blob/63d6e5020f0b3efa3005286476a29905f8d5e843/lib/object.coffee
 function convert(object) {
-  // Only used for resolving references
   if (typeof object === 'function') {
     return object();
   } else if (typeof object === 'string') {
@@ -117,6 +116,10 @@ function pdf() {
 
   // Return the reference for an pdf object
   function getRef(instance) {
+    if (Array.isArray(instance)) {
+      return `[${instance.map(getRef).join(' ')}]`;
+    }
+
     return `${output.indexOf(instance) + 1} 0 R`;
   }
 
@@ -202,7 +205,7 @@ ${offsets[offsets.length - 1]}
     refs.pages = write({
       Type: 'Pages',
       // TODO return pages
-      Pages: () => refs.pageList.map(getRef),
+      Kids: () => getRef(refs.pageList),
       Count: () => refs.pageList.length,
     });
 

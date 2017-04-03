@@ -141,7 +141,7 @@ function pdf() {
     }
 
     function loopItem(item) {
-      input.children.forEach(child => {
+      item.children.forEach(child => {
         const value = getValueOf(child);
 
         if (value.Type === 'Page') {
@@ -149,7 +149,7 @@ function pdf() {
           curPage = pageCount++;
         }
 
-        traverseTree(child);
+        loopItem(child);
       });
     }
 
@@ -218,6 +218,8 @@ ${offsets[offsets.length - 1]}
     const {
       pages,
     } = traverseTree(input);
+
+    console.log(pages);
 
     pages.forEach(({ width, height }) => {
       refs.pageList.push(

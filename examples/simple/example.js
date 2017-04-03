@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPDF, { Page, View, Text, StyleSheet } from 'react-pdf';
+import ReactPDF, { Page, View, Text, StyleSheet, Document } from 'react-pdf';
 import lorem from './lorem';
 
 const styles = StyleSheet.create({
@@ -14,18 +14,20 @@ const styles = StyleSheet.create({
 });
 
 const doc = (
-  <Page size="A4">
-    <View style={styles.container}>
-      <Text>
-        Text
-      </Text>
-      <View style={styles.block}>
+  <Document>
+    <Page size="A4">
+      <View style={styles.container}>
         <Text>
-          {lorem}
+          Text
         </Text>
+        <View style={styles.block}>
+          <Text>
+            {lorem}
+          </Text>
+        </View>
       </View>
-    </View>
-  </Page>
+    </Page>
+  </Document>
 );
 
 ReactPDF.render(doc, `${__dirname}/example.pdf`);

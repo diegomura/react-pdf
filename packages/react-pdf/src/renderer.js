@@ -31,25 +31,13 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     return createElement(type, props);
-    // return {
-    //   type,
-    //   props,
-    //   children: [],
-    //   rootContainerInstance,
-    //   tag: 'INSTANCE',
-    // };
   },
 
   appendInitialChild(parentInstance, child) {
     child.inject(parentInstance);
-    // const index = parentInstance.children.indexOf(child);
-    // if (index !== -1) {
-    //   parentInstance.children.splice(index, 1);
-    // }
-    // parentInstance.children.push(child);
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -66,7 +54,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -76,7 +64,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -93,14 +81,9 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
-    // return text;
     return createElement('TEXT', { content: 'TEXT' });
-    // return {
-    //   text,
-    //   tag: 'TEXT',
-    // };
   },
 
   commitTextUpdate(textInstance, oldText, newText) {
@@ -109,12 +92,6 @@ const PDFRenderer = ReactFiberReconciler({
 
   appendChild(parentInstance, child) {
     child.inject(parentInstance);
-
-    // const index = parentInstance.children.indexOf(child);
-    // if (index !== -1) {
-    //   parentInstance.children.splice(index, 1);
-    // }
-    // parentInstance.children.push(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
@@ -128,8 +105,6 @@ const PDFRenderer = ReactFiberReconciler({
 
   removeChild(parentInstance, child) {
     child.eject(parentInstance);
-    // const index = parentInstance.children.indexOf(child);
-    // parentInstance.children.splice(index, 1);
   },
 
   scheduleAnimationCallback(fn) {
@@ -165,7 +140,7 @@ const ReactPDFFiberRenderer = {
         if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
         fs.close(fd, function() {
           console.log(
-            `📝  PDF successfuly exported on ${path.resolve(filePath)}`
+            `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
           );
         });
       });

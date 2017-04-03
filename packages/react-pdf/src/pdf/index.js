@@ -81,7 +81,6 @@ function convert(object) {
   }
 
   if (Array.isArray(object)) {
-    console.log(object);
     return `[${object.map(convert).join(' ')}]`;
   }
 
@@ -94,7 +93,6 @@ function convert(object) {
 }
 
 function writeOutput(header, body, trailer) {
-  console.log([header, body, trailer].join('\n'));
   return [header, body, trailer].join('\n');
 }
 
@@ -132,8 +130,8 @@ function pdf() {
 
   function traverseTree(input) {
     const pages = [];
-    // let pageCount = 0;
-    // let curPage;
+    let pageCount = 0;
+    let curPage;
 
     function getValueOf(instance) {
       return instance.valueOf();
@@ -145,7 +143,7 @@ function pdf() {
 
         if (value.Type === 'Page') {
           pages.push(value);
-          // curPage = pageCount++;
+          curPage = pageCount++;
         }
 
         traverseTree(child);
@@ -228,19 +226,13 @@ ${offsets[offsets.length - 1]}
       );
     });
 
-    console.log(offsets);
-
     const body = output
       .map((input, index) => createPDFObject(convert(input), index))
       .join('\n\n');
 
     const footer = getCrossReferenceTable(refs.catelog);
 
-    const pdf = writeOutput(header, body, footer);
-
-    console.log(pdf);
-
-    return pdf;
+    return writeOutput(header, body, footer);
   }
 
   function toArrayBuffer(input) {

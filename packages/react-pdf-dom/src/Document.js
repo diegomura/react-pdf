@@ -6,7 +6,7 @@ class Document extends Component {
   container = createElement('DOCUMENT');
 
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.node,
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };

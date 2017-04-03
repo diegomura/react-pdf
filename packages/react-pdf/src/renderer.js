@@ -2,7 +2,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import Pdf from './pdfkit';
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';

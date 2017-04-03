@@ -30,7 +30,7 @@ let doc =
 ReactPDF.render(doc, './examples/example.pdf');
 ```
 
-[Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/example.pdf)
+[Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/simple/example.pdf)
 
 ## Demo
 

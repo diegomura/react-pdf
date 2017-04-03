@@ -4,8 +4,6 @@ import './App.css';
 import { Document } from 'react-pdf-dom';
 import { View, Text, Page, StyleSheet } from 'react-pdf';
 
-// import lorem from './lorem';
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
@@ -29,11 +27,11 @@ class App extends Component {
             <Page size="A4">
               <View style={styles.container}>
                 <Text>
-                  Dit is tekst
+                  Text
                 </Text>
                 <View style={styles.block}>
                   <Text>
-                    Dit is nog meer tekst
+                    More text
                   </Text>
                 </View>
               </View>
@@ -41,32 +39,15 @@ class App extends Component {
             <Page size="A4">
               <View style={styles.container}>
                 <Text>
-                  Dit is tekst
+                  Text
                 </Text>
                 <View style={styles.block}>
                   <Text>
-                    Dit is nog meer tekst
+                    More text
                   </Text>
                 </View>
               </View>
             </Page>
-
-            {/* <document>
-              <page margin={50}>
-                {/* <image
-                  src={require('./images/react.png')}
-                  width={200}
-                  x={200}
-                  y={300}
-                />
-                <text align="center" underline>
-                  ~ Lorem ipsum ~
-                </text>
-                <text align="justify" columnGap={15} columns={3}>
-                  {lorem}
-                </text>
-              </page>
-            </document> */}
           </Document>
         </p>
       </div>

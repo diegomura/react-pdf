@@ -21,14 +21,12 @@ class Base {
     this.layout.removeChild(child.layout, 0);
   }
 
-  inject(parent) {
-    this.parent = parent;
-    parent.appendChild(this);
+  inject(child) {
+    this.appendChild(child);
   }
 
-  eject(parent) {
-    this.parent = null;
-    parent.removeChild(this);
+  eject(child) {
+    this.removeChild(child);
   }
 
   /* Apply styles for yoga */

@@ -37,7 +37,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendInitialChild(parentInstance, child) {
-    child.inject(parentInstance);
+    parentInstance.inject(child);
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -91,20 +91,15 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    child.inject(parentInstance);
+    parentInstance.inject(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    const beforeIndex = parentInstance.children.indexOf(beforeChild);
-    parentInstance.children.splice(beforeIndex, 0, child);
+    // TODO implement insert before
   },
 
   removeChild(parentInstance, child) {
-    child.eject(parentInstance);
+    parentInstance.eject(child);
   },
 
   scheduleAnimationCallback(fn) {

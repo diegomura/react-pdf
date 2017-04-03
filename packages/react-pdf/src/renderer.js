@@ -1,10 +1,13 @@
 'use strict';
+import fs from 'fs';
+import path from 'path';
 
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
 
 import { createElement } from './elements';
+import pdf from './pdf/index.js';
 
 const PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
@@ -28,7 +31,7 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return createElement(type, props);
     // return {
@@ -63,7 +66,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -73,7 +76,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -90,7 +93,7 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // return text;
     return createElement('TEXT', { content: 'TEXT' });
@@ -146,7 +149,27 @@ const PDFRenderer = ReactFiberReconciler({
 
 const ReactPDFFiberRenderer = {
   render(element, filePath) {
-    return null;
+    const container = createElement('DOCUMENT');
+
+    const node = PDFRenderer.createContainer(container);
+    PDFRenderer.updateContainer(element, node, null);
+
+    const output = pdf().toBuffer(container);
+
+    fs.open(filePath, 'w', (e, fd) => {
+      if (e) {
+        throw new Error(`PDF-react 'Error opening file: ${e}'`);
+      }
+
+      fs.write(fd, output, 0, output.length, null, function(err) {
+        if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
+        fs.close(fd, function() {
+          console.log(
+            `📝  PDF successfuly exported on ${path.resolve(filePath)}`
+          );
+        });
+      });
+    });
   },
 
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,

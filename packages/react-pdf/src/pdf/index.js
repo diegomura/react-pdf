@@ -248,7 +248,12 @@ ${offsets[offsets.length - 1]}
     });
   }
 
+  function toBuffer(input) {
+    return new Buffer(toArrayBuffer(input));
+  }
+
   return {
+    toBuffer,
     toBlob,
   };
 }

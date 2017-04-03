@@ -1,7 +1,7 @@
 {
-  "name": "react-pdf",
+  "name": "react-pdf-dom",
   "version": "0.1.0",
-  "description": "A tiny React renderer to generate PDF documents.",
+  "description": "Bindings for react-pdf to render inside a react-dom application",
   "main": "./lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
@@ -15,16 +15,16 @@
   ],
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.24.0"
-  },
   "dependencies": {
-    "fbjs": "^0.8.4",
-    "fontkit": "^1.5.4",
+    "blob-stream": "^0.1.3",
+    "pdfkit": "*",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",
-    "yoga-layout": "^1.2.0"
+    "react-pdf": "0.1.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git"
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "devDependencies": {
+    "babel-cli": "^6.24.0"
+  }
 }

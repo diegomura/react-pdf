@@ -1,11 +1,13 @@
 'use strict';
-
 import fs from 'fs';
 import path from 'path';
-import Pdf from 'pdfkit';
+
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
+
+import { createElement } from './elements';
+import pdf from './pdf/index.js';
 
 const PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
@@ -31,21 +33,11 @@ const PDFRenderer = ReactFiberReconciler({
     hostContext,
     internalInstanceHandle,
   ) {
-    return {
-      type,
-      props,
-      children: [],
-      rootContainerInstance,
-      tag: 'INSTANCE',
-    };
+    return createElement(type, props);
   },
 
   appendInitialChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    parentInstance.children.push(child);
+    parentInstance.inject(child);
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -91,10 +83,7 @@ const PDFRenderer = ReactFiberReconciler({
     hostContext,
     internalInstanceHandle,
   ) {
-    return {
-      text,
-      tag: 'TEXT',
-    };
+    return createElement('TEXT', { content: 'TEXT' });
   },
 
   commitTextUpdate(textInstance, oldText, newText) {
@@ -102,25 +91,15 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    parentInstance.children.push(child);
+    parentInstance.inject(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    const index = parentInstance.children.indexOf(child);
-    if (index !== -1) {
-      parentInstance.children.splice(index, 1);
-    }
-    const beforeIndex = parentInstance.children.indexOf(beforeChild);
-    parentInstance.children.splice(beforeIndex, 0, child);
+    // TODO implement insert before
   },
 
   removeChild(parentInstance, child) {
-    const index = parentInstance.children.indexOf(child);
-    parentInstance.children.splice(index, 1);
+    parentInstance.eject(child);
   },
 
   scheduleAnimationCallback(fn) {
@@ -138,93 +117,44 @@ const PDFRenderer = ReactFiberReconciler({
   },
 });
 
-function createPDFInstance(inst) {
-  const { doc, firstPageSkipped } = inst.rootContainerInstance;
-  const { children, ...props } = inst.props;
-
-  switch (inst.type) {
-    case 'page':
-      if (firstPageSkipped) {
-        doc.addPage(props);
-      }
-      inst.rootContainerInstance.firstPageSkipped = true;
-      break;
-    case 'text':
-      if (props.x && props.y) {
-        doc.text(children, props.x, props.y, props);
-      } else {
-        doc.text(children, props);
-      }
-      break;
-    case 'image':
-      if (props.x && props.y) {
-        doc.image(props.src, props.x, props.y, props);
-      } else {
-        doc.image(props.src, props);
-      }
-      break;
-    case 'rect':
-      if (props.cornerRadius) {
-        doc
-          .roundedRect(
-            props.x,
-            props.y,
-            props.width,
-            props.height,
-            props.cornerRadius,
-          )
-          .stroke();
-      } else {
-        doc.rect(props.x, props.y, props.width, props.height).stroke();
-      }
-      break;
-    case 'circle':
-      doc.circle(props.x, props.y, props.radius).stroke();
-      break;
-    default:
-      break;
-  }
-
-  if (inst.children && inst.children.length) {
-    inst.children.map(toPDF);
-  }
-}
-
-function toPDF(inst) {
-  switch (inst.tag) {
-    case 'TEXT':
-      return inst.text;
-    case 'INSTANCE':
-      return createPDFInstance(inst);
-    default:
-      throw new Error('Unexpected node type in toPDF: ' + inst.tag);
-  }
-}
-
 const ReactPDFFiberRenderer = {
   render(element, filePath) {
-    const doc = new Pdf();
+    const container = createElement('DOCUMENT');
 
-    doc.pipe(fs.createWriteStream(filePath));
+    const node = PDFRenderer.createContainer(container);
+    PDFRenderer.updateContainer(element, node, null);
 
-    const container = {
-      children: [],
-      tag: 'CONTAINER',
-      doc,
-      firstPageSkipped: false,
-    };
+    const output = pdf().toBuffer(container);
 
-    const root = PDFRenderer.createContainer(container);
-    PDFRenderer.updateContainer(element, root, null, null);
+    fs.open(filePath, 'w', (e, fd) => {
+      if (e) {
+        throw new Error(`PDF-react 'Error opening file: ${e}'`);
+      }
 
-    toPDF(container.children[0]);
-
-    console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
-
-    return doc.end();
+      fs.write(fd, output, 0, output.length, null, function(err) {
+        if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
+        fs.close(fd, function() {
+          console.log(
+            `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
+          );
+        });
+      });
+    });
   },
 
   unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
 };
 
-module.exports = ReactPDFFiberRenderer;
+/* Component constants */
+const View = 'VIEW';
+const Text = 'TEXT';
+const Page = 'PAGE';
+
+export {
+  ReactPDFFiberRenderer as default,
+  PDFRenderer,
+  View,
+  Text,
+  Page,
+  createElement,
+};

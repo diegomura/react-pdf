@@ -4,10 +4,6 @@ import toPairsIn from 'lodash/fp/toPairsIn';
 // We only support the latest version
 const VERSION = '1.7';
 
-function Reference(cb) {
-  return cb();
-}
-
 const escapableRe = /[\n\r\t\b\f\(\)\\]/g;
 const escapable = {
   '\n': '\\n',
@@ -65,12 +61,8 @@ function convert(object) {
   // Only used for resolving references
   if (typeof object === 'function') {
     return object();
-  }
-
-  console.log(typeof object, object);
-
-  // String literals are converted to the PDF name type
-  if (typeof object === 'string') {
+  } else if (typeof object === 'string') {
+    // String literals are converted to the PDF name type
     if (!object.startsWith('%PDF')) return `/${object}`;
     return object;
   }
@@ -101,21 +93,33 @@ function convert(object) {
   return String(object);
 }
 
+function writeOutput(header, body, trailer) {
+  console.log([header, body, trailer].join('\n'));
+  return [header, body, trailer].join('\n');
+}
+
 function pdf() {
   let output = [];
-  let pages = [];
-  let index = 1;
+  let offsets = [];
 
   // Reset for new compilation
   function reset() {
     output = [];
-    pages = [];
-    index = 1;
+    offsets = [];
+  }
+
+  function createPDFObject(input, index) {
+    const output = `${index + 1} 0 obj\n${input}\nendobj`;
+
+    // Index should be +1 because first one file header is not taken in account.
+    offsets[index + 1] = offsets[index] + output.length;
+
+    return output;
   }
 
   // Return the reference for an pdf object
   function getRef(instance) {
-    return `${output.indexOf(instance)} 0 R`;
+    return `${output.indexOf(instance) + 1} 0 R`;
   }
 
   function write(instance) {
@@ -128,8 +132,8 @@ function pdf() {
 
   function traverseTree(input) {
     const pages = [];
-    let pageCount = 0;
-    let curPage;
+    // let pageCount = 0;
+    // let curPage;
 
     function getValueOf(instance) {
       return instance.valueOf();
@@ -141,7 +145,7 @@ function pdf() {
 
         if (value.Type === 'Page') {
           pages.push(value);
-          curPage = pageCount++;
+          // curPage = pageCount++;
         }
 
         traverseTree(child);
@@ -156,9 +160,32 @@ function pdf() {
     };
   }
 
+  function getCrossReferenceTable(catalog) {
+    return `
+xref
+0 ${output.length + 1}
+0000000000 65535 f
+${output
+      .map(
+        (item, index) => `${('0000000000' + offsets[index]).slice(-10)} 00000 n`
+      )
+      .join('\n')}
+
+trailer
+${convert({ Size: output.length, Root: () => getRef(catalog) })}
+startxref
+${offsets[offsets.length - 1]}
+%%EOF
+`;
+  }
+
   function buildDocument(input) {
     // Reset output
     reset();
+
+    const header = `%PDF-${VERSION}`;
+
+    offsets[0] = header.length;
 
     // Reusabele object references
     const refs = {
@@ -167,8 +194,6 @@ function pdf() {
       outlines: undefined,
       pageList: [],
     };
-
-    write(`%PDF-${VERSION}`);
 
     refs.catelog = write({
       Type: 'Catalog',
@@ -203,13 +228,23 @@ function pdf() {
       );
     });
 
-    console.log(output.map(convert).join('\n \n'));
+    console.log(offsets);
 
-    // TODO make xref and file trailer
+    const body = output
+      .map((input, index) => createPDFObject(convert(input), index))
+      .join('\n\n');
+
+    const footer = getCrossReferenceTable(refs.catelog);
+
+    const pdf = writeOutput(header, body, footer);
+
+    console.log(pdf);
+
+    return pdf;
   }
 
   function toArrayBuffer(input) {
-    const data = buildDocument(input);
+    return buildDocument(input);
   }
 
   function toBlob(input) {

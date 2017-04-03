@@ -2,7 +2,6 @@
 
 import renderer, {
   PDFRenderer,
-  toPDF,
   View,
   Text,
   Page,

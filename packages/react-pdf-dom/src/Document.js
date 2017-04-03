@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { PDFRenderer, createElement, pdf } from 'react-pdf';
 
 class Document extends Component {
-  container = createElement('DOCUMENT');
+  container = createElement('ROOT');
 
   static propTypes = {
     children: PropTypes.node,

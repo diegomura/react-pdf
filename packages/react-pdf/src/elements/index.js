@@ -1,3 +1,4 @@
+import Catalog from './Catalog';
 import Text from './Text';
 import View from './View';
 import Page from './Page';
@@ -7,8 +8,12 @@ function createElement(type, props) {
   let instance;
 
   switch (type) {
+    case 'ROOT':
+      instance = new Catalog();
+      return instance;
     case 'DOCUMENT':
       instance = new Document();
+      instance.applyProps(props);
       return instance;
     case 'PAGE':
       instance = new Page();
@@ -16,8 +21,6 @@ function createElement(type, props) {
       return instance;
     case 'TEXT':
       instance = new Text();
-      // console.log(instance);
-      // instance.applyProps(props);
       return instance;
     case 'VIEW':
       instance = new View();

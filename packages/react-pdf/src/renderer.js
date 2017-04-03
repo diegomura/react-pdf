@@ -31,7 +31,7 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return createElement(type, props);
   },
@@ -54,7 +54,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -64,7 +64,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     // noop
   },
@@ -81,7 +81,7 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle,
+    internalInstanceHandle
   ) {
     return createElement('TEXT', { content: 'TEXT' });
   },
@@ -119,7 +119,7 @@ const PDFRenderer = ReactFiberReconciler({
 
 const ReactPDFFiberRenderer = {
   render(element, filePath) {
-    const container = createElement('DOCUMENT');
+    const container = createElement('ROOT');
 
     const node = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, node, null);
@@ -135,7 +135,7 @@ const ReactPDFFiberRenderer = {
         if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
         fs.close(fd, function() {
           console.log(
-            `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
+            `📝  PDF successfuly exported on ${path.resolve(filePath)}`
           );
         });
       });
@@ -149,6 +149,7 @@ const ReactPDFFiberRenderer = {
 const View = 'VIEW';
 const Text = 'TEXT';
 const Page = 'PAGE';
+const Document = 'DOCUMENT';
 
 export {
   ReactPDFFiberRenderer as default,
@@ -156,5 +157,6 @@ export {
   View,
   Text,
   Page,
+  Document,
   createElement,
 };

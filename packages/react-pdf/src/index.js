@@ -5,6 +5,7 @@ import renderer, {
   View,
   Text,
   Page,
+  Document,
   createElement,
 } from './renderer';
 import StyleSheet from './Stylesheet';
@@ -17,6 +18,7 @@ export {
   View,
   Text,
   Page,
+  Document,
   StyleSheet,
   createElement,
 };

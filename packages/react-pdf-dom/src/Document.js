@@ -1,6 +1,7 @@
 /* global URL */
 import React, { Component, PropTypes } from 'react';
 import { PDFRenderer, Document, createElement, pdf } from 'react-pdf';
+import omit from 'lodash/fp/omit';
 
 class Container extends Component {
   static displayName = 'Document';
@@ -27,7 +28,9 @@ class Container extends Component {
     this.mountNode = PDFRenderer.createContainer(this.container);
 
     PDFRenderer.updateContainer(
-      <Document>{this.props.children}</Document>,
+      <Document {...omit(['height', 'width', 'children'], this.props)}>
+        {this.props.children}
+      </Document>,
       this.mountNode,
       this,
     );
@@ -38,7 +41,9 @@ class Container extends Component {
 
   componentDidUpdate() {
     PDFRenderer.updateContainer(
-      <Document>{this.props.children}</Document>,
+      <Document {...omit(['height', 'width', 'children'], this.props)}>
+        {this.props.children}
+      </Document>,
       this.mountNode,
       this,
     );

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import { Document as Pdf } from 'react-pdf-dom';
-import { View, Text, Page, Document, StyleSheet } from 'react-pdf';
+import { Document } from 'react-pdf-dom';
+import { View, Text, Page, StyleSheet } from 'react-pdf';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,34 +23,32 @@ class App extends Component {
           <h2>Welcome to React PDF</h2>
         </div>
         <p className="App-intro">
-          <Pdf height="100%" width="100%">
-            <Document>
-              <Page size="A4">
-                <View style={styles.container}>
+          <Document height="100%" width="100%">
+            <Page size="A4">
+              <View style={styles.container}>
+                <Text>
+                  Text
+                </Text>
+                <View style={styles.block}>
                   <Text>
-                    Text
+                    More text
                   </Text>
-                  <View style={styles.block}>
-                    <Text>
-                      More text
-                    </Text>
-                  </View>
                 </View>
-              </Page>
-              <Page size="A4">
-                <View style={styles.container}>
+              </View>
+            </Page>
+            <Page size="A4">
+              <View style={styles.container}>
+                <Text>
+                  Text
+                </Text>
+                <View style={styles.block}>
                   <Text>
-                    Text
+                    More text
                   </Text>
-                  <View style={styles.block}>
-                    <Text>
-                      More text
-                    </Text>
-                  </View>
                 </View>
-              </Page>
-            </Document>
-          </Pdf>
+              </View>
+            </Page>
+          </Document>
         </p>
       </div>
     );

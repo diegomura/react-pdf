@@ -1,8 +1,10 @@
 /* global URL */
 import React, { Component, PropTypes } from 'react';
-import { PDFRenderer, createElement, pdf } from 'react-pdf';
+import { PDFRenderer, Document, createElement, pdf } from 'react-pdf';
 
-class Document extends Component {
+class Container extends Component {
+  static displayName = 'Document';
+
   container = createElement('ROOT');
 
   static propTypes = {
@@ -23,18 +25,23 @@ class Document extends Component {
 
   componentDidMount() {
     this.mountNode = PDFRenderer.createContainer(this.container);
-    PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
-    this.renderer.toBlob(this.container);
 
+    PDFRenderer.updateContainer(
+      <Document>{this.props.children}</Document>,
+      this.mountNode,
+      this,
+    );
+
+    this.renderer.toBlob(this.container);
     this.embed.src = URL.createObjectURL(this.renderer.toBlob(this.container));
   }
 
-  onSuccess() {
-    this.setState({});
-  }
-
   componentDidUpdate() {
-    PDFRenderer.updateContainer(this.props.children, this.mountNode, this);
+    PDFRenderer.updateContainer(
+      <Document>{this.props.children}</Document>,
+      this.mountNode,
+      this,
+    );
   }
 
   componentWillUnmount() {
@@ -55,4 +62,4 @@ class Document extends Component {
   }
 }
 
-export default Document;
+export default Container;

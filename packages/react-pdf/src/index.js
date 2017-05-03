@@ -1,24 +1,22 @@
 'use strict';
 
-import renderer, {
-  PDFRenderer,
-  View,
-  Text,
-  Page,
-  Document,
-  createElement,
-} from './renderer';
+import { PDFRenderer, createElement } from './renderer';
 import StyleSheet from './Stylesheet';
 import pdf from './pdf/index.js';
 
+/* Component constants */
+const View = 'VIEW';
+const Text = 'TEXT';
+const Page = 'PAGE';
+const Document = 'DOCUMENT';
+
 export {
-  renderer as default,
   PDFRenderer,
-  pdf,
   View,
   Text,
   Page,
   Document,
   StyleSheet,
   createElement,
+  pdf,
 };

@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactPDF, { Page, View, Text, StyleSheet, Document } from 'react-pdf';
+import ReactPDF from 'react-pdf-node';
+import { Document, Page, View, Text, StyleSheet } from 'react-pdf';
 import lorem from './lorem';
 
 const styles = StyleSheet.create({

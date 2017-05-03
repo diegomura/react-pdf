@@ -1,14 +1,9 @@
 'use strict';
 
-import fs from 'fs';
-import path from 'path';
-
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
-import ReactGenericBatching from 'react-dom/lib/ReactGenericBatching';
 import emptyObject from 'fbjs/lib/emptyObject';
 
 import { createElement } from './elements';
-import pdf from './pdf/index.js';
 
 const PDFRenderer = ReactFiberReconciler({
   getRootHostContext() {
@@ -118,46 +113,4 @@ const PDFRenderer = ReactFiberReconciler({
   },
 });
 
-const ReactPDFFiberRenderer = {
-  render(element, filePath) {
-    const container = createElement('ROOT');
-
-    const node = PDFRenderer.createContainer(container);
-    PDFRenderer.updateContainer(element, node, null);
-
-    const output = pdf(container).toBuffer();
-
-    fs.open(filePath, 'w', (e, fd) => {
-      if (e) {
-        throw new Error(`PDF-react 'Error opening file: ${e}'`);
-      }
-
-      fs.write(fd, output, 0, output.length, null, function(err) {
-        if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
-        fs.close(fd, function() {
-          console.log(
-            `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
-          );
-        });
-      });
-    });
-  },
-
-  unstable_batchedUpdates: ReactGenericBatching.batchedUpdates,
-};
-
-/* Component constants */
-const View = 'VIEW';
-const Text = 'TEXT';
-const Page = 'PAGE';
-const Document = 'DOCUMENT';
-
-export {
-  ReactPDFFiberRenderer as default,
-  PDFRenderer,
-  View,
-  Text,
-  Page,
-  Document,
-  createElement,
-};
+export { PDFRenderer, createElement };

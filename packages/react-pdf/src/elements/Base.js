@@ -17,16 +17,9 @@ class Base {
 
   removeChild(child) {
     const index = this.children.indexOf(child);
+
     this.children.slice(index, 1);
     this.layout.removeChild(child.layout, 0);
-  }
-
-  inject(child) {
-    this.appendChild(child);
-  }
-
-  eject(child) {
-    this.removeChild(child);
   }
 
   /* Apply styles for yoga */

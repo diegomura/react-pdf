@@ -17,8 +17,6 @@ class Container extends Component {
   constructor(props) {
     super(props);
 
-    this.renderer = pdf();
-
     this.state = {
       document: undefined,
     };
@@ -35,8 +33,7 @@ class Container extends Component {
       this,
     );
 
-    this.renderer.toBlob(this.container);
-    this.embed.src = URL.createObjectURL(this.renderer.toBlob(this.container));
+    this.embed.src = URL.createObjectURL(pdf(this.container).toBlob());
   }
 
   componentDidUpdate() {

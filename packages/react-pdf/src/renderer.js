@@ -1,4 +1,5 @@
 'use strict';
+
 import fs from 'fs';
 import path from 'path';
 
@@ -31,13 +32,13 @@ const PDFRenderer = ReactFiberReconciler({
     props,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     return createElement(type, props);
   },
 
   appendInitialChild(parentInstance, child) {
-    parentInstance.inject(child);
+    parentInstance.appendChild(child);
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -54,7 +55,7 @@ const PDFRenderer = ReactFiberReconciler({
     oldProps,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -64,7 +65,7 @@ const PDFRenderer = ReactFiberReconciler({
     type,
     newProps,
     rootContainerInstance,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     // noop
   },
@@ -81,7 +82,7 @@ const PDFRenderer = ReactFiberReconciler({
     text,
     rootContainerInstance,
     hostContext,
-    internalInstanceHandle
+    internalInstanceHandle,
   ) {
     return createElement('TEXT', { content: 'TEXT' });
   },
@@ -91,7 +92,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    parentInstance.inject(child);
+    parentInstance.appendChild(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
@@ -99,7 +100,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance, child) {
-    parentInstance.eject(child);
+    parentInstance.removeChild(child);
   },
 
   scheduleAnimationCallback(fn) {
@@ -124,7 +125,7 @@ const ReactPDFFiberRenderer = {
     const node = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(element, node, null);
 
-    const output = pdf().toBuffer(container);
+    const output = pdf(container).toBuffer();
 
     fs.open(filePath, 'w', (e, fd) => {
       if (e) {
@@ -135,7 +136,7 @@ const ReactPDFFiberRenderer = {
         if (err) throw new Error(`PDF-react 'Error writing file: ${err}'`);
         fs.close(fd, function() {
           console.log(
-            `📝  PDF successfuly exported on ${path.resolve(filePath)}`
+            `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
           );
         });
       });

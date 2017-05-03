@@ -7,6 +7,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "react-pdf": "0.1.0"
+    "react": "16.0.0-alpha.4",
+    "react-pdf": "0.1.0",
+    "react-pdf-node": "0.1.0"
   }
 }

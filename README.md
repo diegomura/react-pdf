@@ -54,3 +54,7 @@ open examples/standalone/example.pdf
 ```
 
 Check out for the `example.pdf` file created on the root of the project
+
+## License
+
+MIT © [Diego Muracciole](http://github.com/diegomura)

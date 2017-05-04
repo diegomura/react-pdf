@@ -2,7 +2,7 @@
   "name": "react-pdf",
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
-  "main": "./lib/index.js",
+  "main": "./src/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "npm run build -- --watch"

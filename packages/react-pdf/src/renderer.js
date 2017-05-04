@@ -34,7 +34,7 @@ const PDFRenderer = ReactFiberReconciler({
     hostContext,
     internalInstanceHandle,
   ) {
-    return createElement(type, props);
+    return createElement(type, props, rootContainerInstance);
   },
 
   appendInitialChild(parentInstance, child) {
@@ -84,11 +84,11 @@ const PDFRenderer = ReactFiberReconciler({
     hostContext,
     internalInstanceHandle,
   ) {
-    return createElement('TEXT', { content: 'TEXT' });
+    return text;
   },
 
   commitTextUpdate(textInstance, oldText, newText) {
-    textInstance.text = newText;
+    textInstance.chidren = newText;
   },
 
   appendChild(parentInstance, child) {
@@ -96,7 +96,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    // TODO implement insert before
+    // noob
   },
 
   removeChild(parentInstance, child) {

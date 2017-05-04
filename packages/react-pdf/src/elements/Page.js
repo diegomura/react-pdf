@@ -1,4 +1,55 @@
 import Base from './Base';
+import Resources from './Resources';
+import { pdfObject } from './utils';
+
+const DEFAULT_PROPS = {
+  size: 'A4',
+  orientation: 'portrait',
+};
+
+class Page extends Base {
+  constructor(props, root) {
+    super(props, root);
+
+    this.resources = new Resources(null, root);
+  }
+
+  applyProps(props = DEFAULT_PROPS) {
+    super.applyProps(props);
+
+    if (props.size) {
+      const size = SIZES[props.size];
+
+      if (props.orientation === 'landscape') {
+        this.layout.setWidth(size[1]);
+        this.layout.setHeight(size[0]);
+      } else {
+        this.layout.setHeight(size[1]);
+        this.layout.setWidth(size[0]);
+      }
+    }
+  }
+
+  render() {
+    this.layout.calculateLayout();
+
+    const width = this.layout.getComputedWidth();
+    const height = this.layout.getComputedHeight();
+    const childObjects = this.children.map(child => `${child.id} 0 R`);
+
+    const page = pdfObject(this.id, {
+      Type: '/Page',
+      Parent: `${this.parent.id} 0 R`,
+      Contents: `[${childObjects.join(' ')}]`,
+      Resources: `${this.resources.id} 0 R`,
+      MediaBox: `[0 0 ${width} ${height}]`,
+    }) + '\n';
+
+    this.offset = this.root.addOffset(page.length);
+
+    return [page, this.resources.render(), this.renderChildren()].join('');
+  }
+}
 
 const SIZES = {
   '4A0': [4767.87, 6740.79],
@@ -52,40 +103,5 @@ const SIZES = {
   LETTER: [612.00, 792.00],
   TABLOID: [792.00, 1224.00],
 };
-
-const DEFAULT_SIZE = 'A4';
-
-const DEFAULT_PROPS = {
-  size: DEFAULT_SIZE,
-  orientation: 'portrait',
-};
-
-class Page extends Base {
-  applyProps(props = DEFAULT_PROPS) {
-    super.applyProps(props);
-
-    if (props.size) {
-      const size = SIZES[props.size];
-
-      if (props.orientation === 'landscape') {
-        this.layout.setWidth(size[1]);
-        this.layout.setHeight(size[0]);
-      } else {
-        this.layout.setHeight(size[1]);
-        this.layout.setWidth(size[0]);
-      }
-    }
-  }
-
-  valueOf() {
-    this.layout.calculateLayout();
-
-    return {
-      Type: 'Page',
-      width: this.layout.getComputedWidth(),
-      height: this.layout.getComputedHeight(),
-    };
-  }
-}
 
 export default Page;

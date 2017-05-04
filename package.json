@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "fbjs": "^0.8.4",
-    "lerna": "2.0.0-beta.38"
+    "lerna": "2.0.0-beta.38",
+    "lodash.map": "^4.6.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

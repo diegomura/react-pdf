@@ -1,34 +1,33 @@
-import Catalog from './Catalog';
+import Pages from './Pages';
 import Text from './Text';
 import View from './View';
 import Page from './Page';
 import Document from './Document';
 
-function createElement(type, props) {
+function createElement(type, props, root) {
   let instance;
 
   switch (type) {
     case 'ROOT':
-      instance = new Catalog();
-      return instance;
-    case 'DOCUMENT':
       instance = new Document();
-      instance.applyProps(props);
-      return instance;
+      break;
+    case 'DOCUMENT':
+      instance = new Pages(props, root);
+      break;
     case 'PAGE':
-      instance = new Page();
-      instance.applyProps(props);
-      return instance;
+      instance = new Page(props, root);
+      break;
     case 'TEXT':
-      instance = new Text();
-      return instance;
+      instance = new Text(props, root);
+      break;
     case 'VIEW':
-      instance = new View();
-      instance.applyProps(props);
-      return instance;
+      instance = new View(props, root);
+      break;
     default:
-      return undefined;
+      instance = undefined;
   }
+
+  return instance;
 }
 
 export { createElement };

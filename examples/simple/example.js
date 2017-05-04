@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPDF, { Page, View, Text, StyleSheet, Document } from 'react-pdf';
+import ReactPDF, { Page, Text, StyleSheet, Document } from 'react-pdf';
 import lorem from './lorem';
 
 const styles = StyleSheet.create({
@@ -15,17 +15,15 @@ const styles = StyleSheet.create({
 
 const doc = (
   <Document>
+    <Page size="A4" styles={styles}>
+      <Text>
+        ~Lorem Ipsum~
+      </Text>
+    </Page>
     <Page size="A4">
-      <View style={styles.container}>
-        <Text>
-          Text
-        </Text>
-        <View style={styles.block}>
-          <Text>
-            {lorem}
-          </Text>
-        </View>
-      </View>
+      <Text>
+        {lorem}
+      </Text>
     </Page>
   </Document>
 );

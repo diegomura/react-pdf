@@ -53,10 +53,8 @@ const SIZES = {
   TABLOID: [792.00, 1224.00],
 };
 
-const DEFAULT_SIZE = 'A4';
-
 const DEFAULT_PROPS = {
-  size: DEFAULT_SIZE,
+  size: 'A4',
   orientation: 'portrait',
 };
 
@@ -77,13 +75,16 @@ class Page extends Base {
     }
   }
 
-  valueOf() {
+  render() {
     this.layout.calculateLayout();
 
+    const width = this.layout.getComputedWidth();
+    const height = this.layout.getComputedHeight();
+
     return {
-      Type: 'Page',
-      width: this.layout.getComputedWidth(),
-      height: this.layout.getComputedHeight(),
+      Type: '/Page',
+      Parent: `${this.parent.id} 0 R`,
+      MediaBox: `[0 0 ${width} ${height}]`,
     };
   }
 }

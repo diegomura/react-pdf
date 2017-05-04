@@ -4,13 +4,19 @@ import isFunction from 'lodash/fp/isFunction';
 import upperFirst from 'lodash/fp/upperFirst';
 
 class Base {
+  parent = null;
   children = [];
 
-  constructor() {
+  constructor(props) {
     this.layout = Yoga.Node.create();
+
+    if (props) {
+      this.applyProps(props);
+    }
   }
 
   appendChild(child) {
+    child.parent = this;
     this.children.push(child);
     this.layout.insertChild(child.layout, 0);
   }
@@ -18,11 +24,12 @@ class Base {
   removeChild(child) {
     const index = this.children.indexOf(child);
 
+    child.parent = null;
     this.children.slice(index, 1);
     this.layout.removeChild(child.layout, 0);
   }
 
-  /* Apply styles for yoga */
+  // Apply styles for yoga
   applyStyles(styles) {
     const isLayoutFunction = prop =>
       isFunction(this.layout[`set${upperFirst(prop)}`]);

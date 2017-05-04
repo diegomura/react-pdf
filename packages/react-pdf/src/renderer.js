@@ -96,7 +96,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    // TODO implement insert before
+    // noob
   },
 
   removeChild(parentInstance, child) {

@@ -70,7 +70,7 @@ function convert(object) {
   if ({}.toString.call(object) === '[object Object]') {
     return [
       '<<',
-      ...toPairsIn(object).map(([key, val]) => `/${key} ${convert(val)}`),
+      ...toPairsIn(object).map(([key, val]) => `/${key} ${val}`),
       '>>',
     ].join('\n');
   }

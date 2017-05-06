@@ -10,25 +10,24 @@ function createElement(type, props) {
   switch (type) {
     case 'ROOT':
       instance = new Catalog();
-      return instance;
+      break;
     case 'DOCUMENT':
-      instance = new Document();
-      instance.applyProps(props);
-      return instance;
+      instance = new Document(props);
+      break;
     case 'PAGE':
-      instance = new Page();
-      instance.applyProps(props);
-      return instance;
+      instance = new Page(props);
+      break;
     case 'TEXT':
       instance = new Text();
-      return instance;
+      break;
     case 'VIEW':
-      instance = new View();
-      instance.applyProps(props);
-      return instance;
+      instance = new View(props);
+      break;
     default:
-      return undefined;
+      instance = undefined;
   }
+
+  return instance;
 }
 
 export { createElement };

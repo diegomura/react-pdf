@@ -1,31 +1,19 @@
 import React from 'react';
-import ReactPDF, { Page, View, Text, StyleSheet, Document } from 'react-pdf';
-import lorem from './lorem';
+import ReactPDF, { Page, Text, StyleSheet, Document } from 'react-pdf';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-  },
-  block: {
-    maxHeight: 200,
-    maxWidth: 400,
-    flex: 1,
+    flexDirection: 'FLEX_DIRECTION_COLUMN',
   },
 });
 
 const doc = (
   <Document>
-    <Page size="A4">
-      <View style={styles.container}>
-        <Text>
-          Text
-        </Text>
-        <View style={styles.block}>
-          <Text>
-            {lorem}
-          </Text>
-        </View>
-      </View>
+    <Page size="A4" style={styles.container}>
+      <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Text>
+      <Text>
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+      </Text>
     </Page>
   </Document>
 );

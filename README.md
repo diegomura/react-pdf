@@ -11,23 +11,39 @@ ReactPDF mounter is called ReactPDF and has a render method that recieves a Reac
 
 ```jsx
 import React from 'react';
-import ReactPDF from '../';
+import ReactPDF from 'react-pdf-node';
+import { Document, Page, View, Text, StyleSheet } from 'react-pdf';
 import lorem from './lorem';
 
-let doc =
-  <document title="Lorem Ipsum" author="@diegomura" otherData="Something else">
-    <page margin={50}>
-      <image src="examples/images/react.png" x={200} y={300} width={200} />
-      <text align="center" underline>
-        ~ Lorem ipsum ~
-      </text>
-      <text columns={3} columnGap={15} align='justify'>
-        {lorem}
-      </text>
-    </page>
-  </document>
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+  },
+  block: {
+    maxHeight: 200,
+    maxWidth: 400,
+    flex: 1,
+  },
+});
 
-ReactPDF.render(doc, './examples/example.pdf');
+const doc = (
+  <Document>
+    <Page size="A4">
+      <View style={styles.container}>
+        <Text>
+          Text
+        </Text>
+        <View style={styles.block}>
+          <Text>
+            {lorem}
+          </Text>
+        </View>
+      </View>
+    </Page>
+  </Document>
+);
+
+ReactPDF.render(doc, `${__dirname}/example.pdf`);
 ```
 
 [Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/simple/example.pdf)
@@ -39,18 +55,16 @@ ReactPDF.render(doc, './examples/example.pdf');
 git clone https://github.com/diegomura/react-pdf
 cd react-pdf
 
-# Install dependencies
-yarn install
-  # or
-npm install
+# Install dependencies and set symlinks for monorepo
+lerna bootstrap
 
 # Run example script
-yarn example:standalone
+yarn example:simple
   # or
-npm run example:standalone
+npm run example:simple
 
 # Open example doc
-open examples/standalone/example.pdf
+open examples/simple/example.pdf
 ```
 
 Check out for the `example.pdf` file created on the root of the project

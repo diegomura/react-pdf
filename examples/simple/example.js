@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactPDF, { Page, Text, StyleSheet, Document } from 'react-pdf';
+import ReactPDF from 'react-pdf-node';
+import { Page, Text, StyleSheet, Document } from 'react-pdf';
 
 const styles = StyleSheet.create({
   container: {

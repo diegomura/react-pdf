@@ -1,5 +1,5 @@
 import PDFEntry from './PDFEntry';
-import { pdfObject } from './utils';
+import { pdfObject } from '../utils/pdf';
 
 class Pages extends PDFEntry {
   render() {

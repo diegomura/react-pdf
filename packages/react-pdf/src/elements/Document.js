@@ -1,6 +1,6 @@
 import Catalog from './Catalog';
 import Font from './Font';
-import { pdfDictionary } from './utils';
+import { pdfDictionary } from '../utils/pdf';
 
 class Document {
   constructor(props) {

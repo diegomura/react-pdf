@@ -1,7 +1,7 @@
 import PDFEntry from './PDFEntry';
 import Resources from './Resources';
 import GraphicState from './GraphicState';
-import { pdfObject } from './utils';
+import { pdfObject } from '../utils/pdf';
 
 const DEFAULT_PROPS = {
   size: 'A4',

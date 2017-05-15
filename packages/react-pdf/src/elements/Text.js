@@ -1,5 +1,6 @@
 import PDFEntry from './PDFEntry';
-import { pdfObject, pdfStream } from './utils';
+import { toRGB } from '../utils/colors';
+import { pdfObject, pdfStream } from '../utils/pdf';
 
 class Text extends PDFEntry {
   constructor(props, root) {
@@ -18,9 +19,19 @@ class Text extends PDFEntry {
   }
 
   render() {
-    const layout = this.layout.getComputedLayout();
+    const { color } = this.style;
+    const { left, top, height } = this.layout.getComputedLayout();
 
-    const text = `BT\n/F1 18 Tf\n1 0 0 -1 ${layout.left} ${layout.top + layout.height} Tm\n(${this.children})Tj\nET`;
+    const text = [
+      '/DeviceRGB cs', // Color format
+      `${toRGB(color)} scn`, // Color
+      'BT', // Begin Text
+      '/F1 18 Tf', // Font type and size
+      `1 0 0 -1 ${left} ${top + height} Tm`, // Position
+      `(${this.children})Tj`, // Content
+      'ET', // End Text
+    ].join('\n');
+
     const stream = pdfObject(
       this.id,
       pdfStream({ Length: text.length }, text),

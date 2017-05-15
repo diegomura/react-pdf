@@ -1,5 +1,5 @@
 import Base from './Base';
-import { pdfObject, pdfStream } from './utils';
+import { pdfObject, pdfStream } from '../utils/pdf';
 
 class GraphicState extends Base {
   render() {

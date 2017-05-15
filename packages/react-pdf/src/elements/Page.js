@@ -1,17 +1,21 @@
-import Base from './Base';
+import PDFEntry from './PDFEntry';
 import Resources from './Resources';
-import { pdfObject } from './utils';
+import GraphicState from './GraphicState';
+import { pdfObject } from '../utils/pdf';
 
 const DEFAULT_PROPS = {
   size: 'A4',
   orientation: 'portrait',
 };
 
-class Page extends Base {
+class Page extends PDFEntry {
   constructor(props, root) {
     super(props, root);
 
     this.resources = new Resources(null, root);
+    this.graphicState = new GraphicState(null, root);
+
+    this.graphicState.parent = this;
   }
 
   applyProps(props = DEFAULT_PROPS) {
@@ -40,14 +44,19 @@ class Page extends Base {
     const page = pdfObject(this.id, {
       Type: '/Page',
       Parent: `${this.parent.id} 0 R`,
-      Contents: `[${childObjects.join(' ')}]`,
+      Contents: `[${this.graphicState.id} 0 R ${childObjects.join(' ')}]`,
       Resources: `${this.resources.id} 0 R`,
       MediaBox: `[0 0 ${width} ${height}]`,
     }) + '\n';
 
     this.offset = this.root.addOffset(page.length);
 
-    return [page, this.resources.render(), this.renderChildren()].join('');
+    return [
+      page,
+      this.graphicState.render(),
+      this.resources.render(),
+      this.renderChildren(),
+    ].join('');
   }
 }
 

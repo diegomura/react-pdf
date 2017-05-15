@@ -1,11 +1,11 @@
 import Catalog from './Catalog';
 import Font from './Font';
-import { pdfDictionary } from './utils';
+import { pdfDictionary } from '../utils/pdf';
 
 class Document {
   constructor(props) {
     this.nodes = [];
-    this.header = '%PDF-1.7\n';
+    this.header = '%PDF-1.7\n%����\n';
     this.offset = this.header.length;
 
     this.font = new Font(null, this);

@@ -1,7 +1,7 @@
-import Base from './Base';
-import { pdfObject, pdfDictionary } from './utils';
+import PDFEntry from './PDFEntry';
+import { pdfObject, pdfDictionary } from '../utils/pdf';
 
-class Resources extends Base {
+class Resources extends PDFEntry {
   render() {
     const resources = pdfObject(this.id, {
       ProcSet: '[/PDF/Text]',

@@ -6,13 +6,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'FLEX_DIRECTION_COLUMN',
   },
+  lorem: {
+    color: 'red',
+  },
+  sed: {
+    color: '#0000FF',
+  },
 });
 
 const doc = (
   <Document>
     <Page size="A4" style={styles.container}>
-      <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit</Text>
-      <Text>
+      <Text style={styles.lorem}>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      </Text>
+      <Text style={styles.sed}>
         Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
       </Text>
     </Page>

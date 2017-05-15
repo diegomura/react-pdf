@@ -1,7 +1,7 @@
-import Base from './Base';
-import { pdfObject } from './utils';
+import PDFEntry from './PDFEntry';
+import { pdfObject } from '../utils/pdf';
 
-class Font extends Base {
+class Font extends PDFEntry {
   constructor(props, root) {
     super(props, root);
 

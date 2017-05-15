@@ -1,13 +1,7 @@
-import Base from './Base';
+import PDFEntry from './PDFEntry';
 import { pdfObject } from './utils';
 
-class Pages extends Base {
-  constructor(props, root) {
-    super(props, root);
-
-    this.type = 'Pages';
-  }
-
+class Pages extends PDFEntry {
   render() {
     const childObjects = this.children.map(child => `${child.id} 0 R`);
 

@@ -1,12 +1,12 @@
-import Base from './Base';
+import PDFEntry from './PDFEntry';
 import { pdfObject, pdfStream } from './utils';
 
-class Text extends Base {
+class Text extends PDFEntry {
   constructor(props, root) {
     super(props, root);
 
-    this.layout.setWidth(40);
-    this.layout.setHeight(40);
+    this.layout.setWidth(18);
+    this.layout.setHeight(18);
   }
 
   appendChild(child) {
@@ -19,7 +19,8 @@ class Text extends Base {
 
   render() {
     const layout = this.layout.getComputedLayout();
-    const text = `BT\n/F1 18 Tf\n1 0 0 1 ${layout.left} ${841 - layout.top - layout.height} Tm\n(${this.children})Tj\nET`;
+
+    const text = `BT\n/F1 18 Tf\n1 0 0 -1 ${layout.left} ${layout.top + layout.height} Tm\n(${this.children})Tj\nET`;
     const stream = pdfObject(
       this.id,
       pdfStream({ Length: text.length }, text),

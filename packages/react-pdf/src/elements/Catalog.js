@@ -1,7 +1,7 @@
-import Base from './Base';
+import PDFEntry from './PDFEntry';
 import { pdfObject } from './utils';
 
-class Catalog extends Base {
+class Catalog extends PDFEntry {
   render() {
     return super.render(
       pdfObject(this.id, {

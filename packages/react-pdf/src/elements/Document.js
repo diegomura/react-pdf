@@ -5,7 +5,7 @@ import { pdfDictionary } from './utils';
 class Document {
   constructor(props) {
     this.nodes = [];
-    this.header = '%PDF-1.7\n';
+    this.header = '%PDF-1.7\n%����\n';
     this.offset = this.header.length;
 
     this.font = new Font(null, this);

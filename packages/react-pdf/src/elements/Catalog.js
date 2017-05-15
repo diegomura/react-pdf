@@ -1,5 +1,5 @@
 import PDFEntry from './PDFEntry';
-import { pdfObject } from './utils';
+import { pdfObject } from '../utils/pdf';
 
 class Catalog extends PDFEntry {
   render() {

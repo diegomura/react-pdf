@@ -1,5 +1,5 @@
 import PDFEntry from './PDFEntry';
-import { pdfObject, pdfDictionary } from './utils';
+import { pdfObject, pdfDictionary } from '../utils/pdf';
 
 class Resources extends PDFEntry {
   render() {

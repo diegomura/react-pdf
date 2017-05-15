@@ -12,33 +12,29 @@ ReactPDF mounter is called ReactPDF and has a render method that recieves a Reac
 ```jsx
 import React from 'react';
 import ReactPDF from 'react-pdf-node';
-import { Document, Page, View, Text, StyleSheet } from 'react-pdf';
-import lorem from './lorem';
+import { Page, Text, StyleSheet, Document } from 'react-pdf';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
+    flexDirection: 'FLEX_DIRECTION_COLUMN',
   },
-  block: {
-    maxHeight: 200,
-    maxWidth: 400,
-    flex: 1,
+  lorem: {
+    color: 'red'
   },
+  sed: {
+    color: '#0000FF'
+  }
 });
 
 const doc = (
   <Document>
-    <Page size="A4">
-      <View style={styles.container}>
-        <Text>
-          Text
-        </Text>
-        <View style={styles.block}>
-          <Text>
-            {lorem}
-          </Text>
-        </View>
-      </View>
+    <Page size="A4" style={styles.container}>
+      <Text style={styles.lorem}>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      </Text>
+      <Text style={styles.sed}>
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+      </Text>
     </Page>
   </Document>
 );

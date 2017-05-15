@@ -7,7 +7,8 @@ class Base {
   constructor(props, root) {
     this.id = id++;
     this.root = root;
-    this.props = props;
+    this.props = props || {};
+    this.style = this.props.style || {};
   }
 
   appendChild(child) {

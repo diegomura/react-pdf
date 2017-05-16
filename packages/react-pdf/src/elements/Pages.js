@@ -3,7 +3,7 @@ import { pdfObject } from '../utils/pdf';
 
 class Pages extends PDFEntry {
   render() {
-    const childObjects = this.children.map(child => `${child.id} 0 R`);
+    const childObjects = this.children.map(child => child.ref());
 
     return super.render(
       pdfObject(this.id, {

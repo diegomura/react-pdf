@@ -49,6 +49,33 @@ class PDFObject extends Base {
     });
   }
 
+  hasChildren() {
+    return Array.isArray(this.children) && this.children.length !== 0;
+  }
+
+  getChildrenRefs() {
+    if (this.hasChildren()) {
+      return this.children.map(child =>
+        [child.ref(), ...child.getChildrenRefs()].join(' '));
+    }
+
+    return [];
+  }
+
+  getAbsoluteLayout() {
+    const myLayout = this.layout.getComputedLayout();
+    const parentLayout = this.parent.getAbsoluteLayout
+      ? this.parent.getAbsoluteLayout()
+      : { left: 0, top: 0 };
+
+    return {
+      left: myLayout.left + parentLayout.left,
+      top: myLayout.top + parentLayout.top,
+      height: myLayout.height,
+      width: myLayout.width,
+    };
+  }
+
   renderChildren() {
     return this.children.map(child => child.render()).join('');
   }

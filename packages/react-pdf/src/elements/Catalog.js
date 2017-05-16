@@ -6,7 +6,7 @@ class Catalog extends PDFEntry {
     return super.render(
       pdfObject(this.id, {
         Type: '/Catalog',
-        Pages: `${this.children[0].id} 0 R`,
+        Pages: this.children[0].ref(),
       }) + '\n',
     );
   }

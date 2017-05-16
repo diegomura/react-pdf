@@ -22,6 +22,10 @@ class Base {
     child.parent = null;
     this.children.slice(index, 1);
   }
+
+  ref() {
+    return `${this.id} 0 R`;
+  }
 }
 
 export default Base;

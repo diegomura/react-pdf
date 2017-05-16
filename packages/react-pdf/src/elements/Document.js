@@ -55,7 +55,7 @@ class Document {
       'trailer',
       pdfDictionary({
         Size: this.nodes.length,
-        Root: `${this.catalog.id} 0 R`,
+        Root: this.catalog.ref(),
       }),
       'startxref',
       this.offset,

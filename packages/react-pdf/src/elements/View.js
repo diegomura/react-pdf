@@ -1,8 +1,19 @@
-import Base from './Base';
+import PDFEntry from './PDFEntry';
+import { pdfObject, pdfStream } from '../utils/pdf';
 
-class View extends Base {
+class View extends PDFEntry {
   render() {
-    return super.render();
+    const { left, top, width, height } = this.layout.getComputedLayout();
+
+    const rect = [
+      '/DeviceRGB cs',
+      `${left} ${top} ${width} ${height} re`,
+      'S',
+    ].join('\n');
+
+    return super.render(
+      pdfObject(this.id, pdfStream({ Length: rect.length }, rect)) + '\n',
+    );
   }
 }
 

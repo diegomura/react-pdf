@@ -7,7 +7,7 @@ class Resources extends PDFEntry {
       ProcSet: '[/PDF/Text]',
       Font: pdfDictionary(
         {
-          [this.root.font.name]: `${this.root.font.id} 0 R`,
+          [this.root.font.name]: this.root.font.ref(),
         },
         true,
       ),

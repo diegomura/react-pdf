@@ -37,15 +37,13 @@ class Page extends PDFEntry {
   render() {
     this.layout.calculateLayout();
 
-    const width = this.layout.getComputedWidth();
-    const height = this.layout.getComputedHeight();
-    const childObjects = this.children.map(child => `${child.id} 0 R`);
+    const { width, height } = this.layout.getComputedLayout();
 
     const page = pdfObject(this.id, {
       Type: '/Page',
-      Parent: `${this.parent.id} 0 R`,
-      Contents: `[${this.graphicState.id} 0 R ${childObjects.join(' ')}]`,
-      Resources: `${this.resources.id} 0 R`,
+      Parent: this.parent.ref(),
+      Contents: `[${this.graphicState.ref()} ${this.getChildrenRefs().join(' ')}]`,
+      Resources: this.resources.ref(),
       MediaBox: `[0 0 ${width} ${height}]`,
     }) + '\n';
 

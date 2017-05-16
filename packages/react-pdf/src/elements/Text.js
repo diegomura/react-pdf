@@ -20,7 +20,7 @@ class Text extends PDFEntry {
 
   render() {
     const { color } = this.style;
-    const { left, top, height } = this.layout.getComputedLayout();
+    const { left, top, height } = this.getAbsoluteLayout();
 
     const text = [
       '/DeviceRGB cs', // Color format

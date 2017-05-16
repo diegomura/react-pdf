@@ -29,12 +29,16 @@ const styles = StyleSheet.create({
 const doc = (
   <Document>
     <Page size="A4" style={styles.container}>
-      <Text style={styles.lorem}>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </Text>
-      <Text style={styles.sed}>
-        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-      </Text>
+      <View>
+        <Text style={styles.lorem}>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.sed}>
+          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+        </Text>
+      </View>
     </Page>
   </Document>
 );

@@ -3,6 +3,7 @@ import toPairsIn from 'lodash/fp/toPairsIn';
 import isFunction from 'lodash/fp/isFunction';
 import upperFirst from 'lodash/fp/upperFirst';
 import Base from './Base';
+import yogaValue from '../utils/yogaValue';
 
 class PDFObject extends Base {
   constructor(props, root) {
@@ -39,14 +40,13 @@ class PDFObject extends Base {
   }
 
   applyStyles(styles) {
-    const isLayoutFunction = prop =>
-      isFunction(this.layout[`set${upperFirst(prop)}`]);
+    const isLayoutFunction = prop => isFunction(this.layout[prop]);
 
     toPairsIn(styles).map(([prop, value]) => {
       const setter = `set${upperFirst(prop)}`;
 
       if (isLayoutFunction(setter)) {
-        this.layout[setter](Yoga[value]);
+        this.layout[setter](yogaValue(prop, value));
       }
     });
   }

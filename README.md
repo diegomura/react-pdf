@@ -16,7 +16,7 @@ import { Page, Text, StyleSheet, Document } from 'react-pdf';
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'FLEX_DIRECTION_COLUMN',
+    flexDirection: 'column',
   },
   lorem: {
     color: 'red'

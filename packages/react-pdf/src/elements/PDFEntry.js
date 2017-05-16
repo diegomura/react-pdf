@@ -43,8 +43,10 @@ class PDFObject extends Base {
       isFunction(this.layout[`set${upperFirst(prop)}`]);
 
     toPairsIn(styles).map(([prop, value]) => {
-      if (isLayoutFunction(prop)) {
-        this.layout[`set${upperFirst(prop)}`](Yoga[value]);
+      const setter = `set${upperFirst(prop)}`;
+
+      if (isLayoutFunction(setter)) {
+        this.layout[setter](Yoga[value]);
       }
     });
   }

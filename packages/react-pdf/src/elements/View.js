@@ -3,7 +3,7 @@ import { pdfObject, pdfStream } from '../utils/pdf';
 
 class View extends PDFEntry {
   render() {
-    const { left, top, width, height } = this.layout.getAbsoluteLayout();
+    const { left, top, width, height } = this.getAbsoluteLayout();
 
     const rect = [
       '/DeviceRGB cs',

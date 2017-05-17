@@ -7,22 +7,25 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   lorem: {
-    color: 'red',
+    color: '#ff8c8c',
   },
   sed: {
-    color: '#0000FF',
+    color: '#4f4baf',
+  },
+  background: {
+    backgroundColor: '#dadada',
   },
 });
 
 const doc = (
   <Document>
     <Page size="A4" style={styles.container}>
-      <View>
+      <View style={styles.background}>
         <Text style={styles.lorem}>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit
         </Text>
       </View>
-      <View>
+      <View style={styles.background}>
         <Text style={styles.sed}>
           Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
         </Text>

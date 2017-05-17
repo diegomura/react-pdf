@@ -15,5 +15,5 @@ export const pdfObject = (id, object) => {
   return `${id} 0 obj\n${object}\nendobj`;
 };
 
-export const pdfStream = (object, stream) =>
-  `${pdfDictionary(object)}\nstream\n${stream}\nendstream`;
+export const pdfStream = stream =>
+  `${pdfDictionary({ Length: stream.length })}\nstream\n${stream}\nendstream`;

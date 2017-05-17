@@ -32,10 +32,7 @@ class Text extends PDFEntry {
       'ET', // End Text
     ].join('\n');
 
-    const stream = pdfObject(
-      this.id,
-      pdfStream({ Length: text.length }, text),
-    ) + '\n';
+    const stream = pdfObject(this.id, pdfStream(text)) + '\n';
 
     this.offset = this.root.addOffset(stream.length);
 

@@ -23,18 +23,21 @@ const styles = StyleSheet.create({
   },
   sed: {
     color: '#0000FF'
-  }
+  },
+  background: {
+    backgroundColor: '#dadada',
+  },
 });
 
 const doc = (
   <Document>
     <Page size="A4" style={styles.container}>
-      <View>
+      <View style={styles.background}>
         <Text style={styles.lorem}>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit
         </Text>
       </View>
-      <View>
+      <View style={styles.background}>
         <Text style={styles.sed}>
           Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
         </Text>

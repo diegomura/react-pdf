@@ -1,37 +1,50 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react';
 import ReactPDF from 'react-pdf-node';
-import { Page, Text, View, StyleSheet, Document } from 'react-pdf';
+import { Page, Text, View, Document } from 'react-pdf';
+import styles from './styles';
+import palette from './palette';
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-  },
-  lorem: {
-    color: '#ff8c8c',
-  },
-  sed: {
-    color: '#4f4baf',
-  },
-  background: {
-    backgroundColor: '#dadada',
-  },
-});
+const toggle = direction => direction === 'column' ? 'row' : 'column';
 
+// Creates Fractal Component that renders it's step with a background color
+const Fractal = ({ steps, direction = 'column' }) => {
+  if (steps === 0) {
+    return <View />;
+  }
+
+  const fractalStyle = {
+    flexGrow: 1,
+    backgroundColor: palette[steps],
+  };
+
+  return (
+    <View style={styles[direction]}>
+      <Fractal direction={toggle(direction)} steps={steps - 1} />
+      <View style={fractalStyle}>
+        <Text style={styles.text}>{steps}</Text>
+      </View>
+    </View>
+  );
+};
+
+// Create Document Component
 const doc = (
   <Document>
-    <Page size="A4" style={styles.container}>
-      <View style={styles.background}>
-        <Text style={styles.lorem}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit
-        </Text>
-      </View>
-      <View style={styles.background}>
-        <Text style={styles.sed}>
-          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-        </Text>
-      </View>
+    <Page size="A4">
+      <Fractal steps={18} />
+    </Page>
+
+    <Page orientation="landscape" size="A4">
+      <Fractal steps={14} />
+    </Page>
+
+    <Page size="B4">
+      <Fractal steps={10} />
     </Page>
   </Document>
 );
 
+// Renders document and save it
 ReactPDF.render(doc, `${__dirname}/example.pdf`);

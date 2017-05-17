@@ -19,7 +19,7 @@ class Text extends PDFEntry {
   }
 
   render() {
-    const { color } = this.style;
+    const { color = 'black' } = this.style;
     const { left, top, height } = this.getAbsoluteLayout();
 
     const text = [

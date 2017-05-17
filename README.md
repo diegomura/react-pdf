@@ -12,43 +12,56 @@ ReactPDF mounter is called ReactPDF and has a render method that recieves a Reac
 ```jsx
 import React from 'react';
 import ReactPDF from 'react-pdf-node';
-import { Page, Text, StyleSheet, Document } from 'react-pdf';
+import { Page, Text, View, Document } from 'react-pdf';
+import styles from './styles'
+import palette from './palette';
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-  },
-  lorem: {
-    color: 'red'
-  },
-  sed: {
-    color: '#0000FF'
-  },
-  background: {
-    backgroundColor: '#dadada',
-  },
-});
+const toggle = (direction) => direction === 'column' ? 'row' : 'column';
 
+// Creates Fractal Component that renders it's step with a background color
+const Fractal = ({ steps, direction = 'column' }) => {
+  if (steps === 0) {
+    return <View />;
+  }
+
+  const fractalStyle = {
+    flexGrow: 1,
+    backgroundColor: palette[steps]
+  };
+
+  return (
+    <View style={styles[direction]}>
+      <Fractal
+        steps={steps - 1}
+        direction={toggle(direction)} />
+      <View style={fractalStyle}>
+        <Text style={styles.text}>{steps}</Text>
+      </View>
+    </View>
+  );
+}
+
+// Create Document Component
 const doc = (
   <Document>
-    <Page size="A4" style={styles.container}>
-      <View style={styles.background}>
-        <Text style={styles.lorem}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit
-        </Text>
-      </View>
-      <View style={styles.background}>
-        <Text style={styles.sed}>
-          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-        </Text>
-      </View>
+    <Page size="A4">
+      <Fractal steps={18} />
+    </Page>
+
+    <Page size="A4" orientation='landscape'>
+      <Fractal steps={14} />
+    </Page>
+
+    <Page size="B4">
+      <Fractal steps={10} />
     </Page>
   </Document>
 );
 
+// Renders document and save it
 ReactPDF.render(doc, `${__dirname}/example.pdf`);
 ```
-
+[Check out the full example here](https://github.com/diegomura/react-pdf/tree/master/examples/simple) or
 [Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/simple/example.pdf)
 
 ## Demo

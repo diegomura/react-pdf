@@ -48,7 +48,7 @@ const yogaValue = (prop, value) => {
       }
       break;
     default:
-      throw new Error(`Invalid flexbox value for ${prop}`);
+      return value;
   }
 };
 

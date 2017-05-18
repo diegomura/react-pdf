@@ -59,6 +59,7 @@ ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 > Coming soon
 
 ## Examples
+For each example, try opening `output.pdf` to see the result.
 
 <table>
 	<tbody>

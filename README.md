@@ -61,8 +61,8 @@ const doc = (
 // Renders document and save it
 ReactPDF.render(doc, `${__dirname}/example.pdf`);
 ```
-[Check out the full example here](https://github.com/diegomura/react-pdf/tree/master/examples/simple) or
-[Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/simple/example.pdf)
+[Check out the result](https://github.com/diegomura/react-pdf/blob/master/examples/simple/example.pdf) or the rest of the example [here](https://github.com/diegomura/react-pdf/tree/master/examples/simple)
+
 
 ## Demo
 

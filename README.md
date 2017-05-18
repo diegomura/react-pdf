@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexGrow: 1
   }
-);
+});
 ```
 
 ### Render in DOM
@@ -42,7 +42,7 @@ import ReactDOM from 'react-dom';
 const App = () => (
   <div>
     <MyDocument />
-  <div>
+  </div>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

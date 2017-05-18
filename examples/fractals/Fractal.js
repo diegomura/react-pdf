@@ -1,8 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
-import ReactPDF from 'react-pdf-node';
-import { Page, Text, View, Document } from 'react-pdf';
+import { Text, View } from 'react-pdf';
 import styles from './styles';
 import palette from './palette';
 
@@ -31,22 +30,4 @@ const Fractal = ({ steps, direction = 'column' }) => {
   );
 };
 
-// Create Document Component
-const doc = (
-  <Document>
-    <Page size="A4">
-      <Fractal steps={18} />
-    </Page>
-
-    <Page orientation="landscape" size="A4">
-      <Fractal steps={14} />
-    </Page>
-
-    <Page size="B4">
-      <Fractal steps={10} />
-    </Page>
-  </Document>
-);
-
-// Renders document and save it
-ReactPDF.render(doc, `${__dirname}/example.pdf`);
+export default Fractal;

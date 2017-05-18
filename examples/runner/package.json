@@ -2,7 +2,7 @@
   "name": "react-pdf-simple-example",
   "version": "0.0.0",
   "description": "React PDF Example",
-  "main": "./example.js",
+  "main": "./index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "private": true,

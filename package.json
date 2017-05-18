@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
-    "example:simple": "babel-node ./examples/simple/example.js",
+    "example:runner": "babel-node ./examples/runner/index.js",
     "precommit": "lint-staged",
     "lint": "eslint performance src --ignore-path .gitignore"
   },
@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "fbjs": "^0.8.4",
-    "lerna": "2.0.0-beta.38"
+    "lerna": "2.0.0-beta.38",
+    "lodash.times": "^4.3.2"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

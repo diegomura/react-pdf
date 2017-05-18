@@ -16,6 +16,8 @@ const Fractal = ({ steps, direction = 'column' }) => {
 
   const fractalStyle = {
     flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: palette[steps],
   };
 

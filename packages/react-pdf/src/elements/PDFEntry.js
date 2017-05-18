@@ -34,21 +34,30 @@ class PDFObject extends Base {
   }
 
   applyProps(props) {
+    const isLayoutFunction = prop => isFunction(this.layout[prop]);
+
     if (props.style) {
-      this.applyStyles(props.style);
+      toPairsIn(props.style).map(([attribute, value]) => {
+        const setter = `set${upperFirst(attribute)}`;
+
+        if (isLayoutFunction(setter)) {
+          this.applyStyle(attribute, value);
+        }
+      });
     }
   }
 
-  applyStyles(styles) {
-    const isLayoutFunction = prop => isFunction(this.layout[prop]);
+  applyStyle(attribute, value) {
+    const setter = `set${upperFirst(attribute)}`;
 
-    toPairsIn(styles).map(([prop, value]) => {
-      const setter = `set${upperFirst(prop)}`;
-
-      if (isLayoutFunction(setter)) {
-        this.layout[setter](yogaValue(prop, value));
-      }
-    });
+    switch (attribute) {
+      case 'margin':
+      case 'padding':
+        this.layout[setter](Yoga.EDGE_ALL, value);
+        break;
+      default:
+        this.layout[setter](yogaValue(attribute, value));
+    }
   }
 
   hasChildren() {

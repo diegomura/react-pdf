@@ -23,13 +23,13 @@ class Text extends PDFEntry {
     const { left, top, height } = this.getAbsoluteLayout();
 
     const text = [
-      '/DeviceRGB cs', // Color format
-      `${toRGB(color)} scn`, // Color
-      'BT', // Begin Text
-      '/F1 18 Tf', // Font type and size
-      `1 0 0 -1 ${left} ${top + height} Tm`, // Position
-      `(${this.children})Tj`, // Content
-      'ET', // End Text
+      '/DeviceRGB cs',
+      `${toRGB(color)} scn`,
+      'BT',
+      '/F1 18 Tf',
+      `1 0 0 -1 ${left} ${top + height} Tm`,
+      `(${this.children})Tj`,
+      'ET',
     ].join('\n');
 
     const stream = pdfObject(this.id, pdfStream(text)) + '\n';

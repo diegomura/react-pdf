@@ -9,6 +9,7 @@ export default StyleSheet.create({
     flexGrow: 1,
   },
   text: {
+    margin: 10,
     color: 'white',
   },
 });

@@ -7,6 +7,8 @@ class View extends PDFEntry {
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { backgroundColor } = this.style;
 
+    this.layout.setPadding(8, 50);
+
     const rect = [
       '/DeviceRGB cs',
       backgroundColor ? `${toRGB(backgroundColor)} scn` : '',

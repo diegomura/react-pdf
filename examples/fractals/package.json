@@ -1,0 +1,14 @@
+{
+  "name": "@react-pdf/example-fractals",
+  "version": "0.1.4",
+  "description": "React PDF Examples",
+  "private": true,
+  "main": "./index.js",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@react-pdf/core": "^0.1.0",
+    "@react-pdf/node": "^0.1.4",
+    "react": "16.0.0-alpha.4"
+  }
+}

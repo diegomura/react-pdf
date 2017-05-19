@@ -1,8 +1,9 @@
 {
-  "name": "@react-pdf/examples",
+  "name": "@react-pdf/example-page-layout",
   "version": "0.1.4",
   "description": "React PDF Examples",
   "main": "./index.js",
+  "private": true,
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {

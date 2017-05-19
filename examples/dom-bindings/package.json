@@ -1,5 +1,6 @@
 {
-  "name": "dom-bindings",
+  "name": "@react-pdf/example-dom-bindings",
+  "private": true,
   "version": "0.1.0",
   "dependencies": {
     "react": "^15.4.2",

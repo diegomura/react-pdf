@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
+    "build": "lerna run build --ignore @react-pdf/example-*",
+    "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/example-*",
+    "prepublish": "npm run build",
+    "postinstall": "lerna bootstrap",
     "example": "babel-node ./examples/index.js",
     "precommit": "lint-staged",
     "lint": "eslint performance src --ignore-path .gitignore"
@@ -31,7 +35,6 @@
     "babel-register": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-prettier": "^2.1.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",

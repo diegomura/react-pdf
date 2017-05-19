@@ -1,12 +1,12 @@
 {
   "name": "@react-pdf/node",
   "version": "0.1.4",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "npm run build -- --watch"
+    "build:watch": "babel ./src --out-dir ./lib --watch"
   },
   "dependencies": {
     "@react-pdf/core": "^0.1.0",

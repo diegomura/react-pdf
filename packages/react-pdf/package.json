@@ -2,10 +2,10 @@
   "name": "@react-pdf/core",
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
-  "main": "./src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "npm run build -- --watch"
+    "build:watch": "babel ./src --out-dir ./lib --watch"
   },
   "keywords": [
     "react",

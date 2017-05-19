@@ -1,11 +1,11 @@
 {
-  "name": "react-pdf-node",
-  "version": "0.1.0",
+  "name": "@react-pdf/node",
+  "version": "0.1.3",
   "main": "src/index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "react": "16.0.0-alpha.4",
-    "react-pdf": "0.1.0"
+    "@react-pdf/core": "^0.1.0",
+    "react": "16.0.0-alpha.4"
   }
 }

@@ -2,8 +2,8 @@
 /* eslint react/jsx-sort-props: 0 */
 
 import React from 'react';
-import ReactPDF from 'react-pdf-node';
-import { Page, View, Document, StyleSheet } from 'react-pdf';
+import ReactPDF from '@react-pdf/node';
+import { Page, View, Document, StyleSheet } from '@react-pdf/core';
 import { times } from 'lodash';
 
 import Header from './Header';

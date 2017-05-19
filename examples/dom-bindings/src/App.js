@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import { Document } from 'react-pdf-dom';
-import { View, Text, Page, StyleSheet } from 'react-pdf';
+import { Document } from '@react-pdf/dom';
+import { View, Text, Page, StyleSheet } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   container: {

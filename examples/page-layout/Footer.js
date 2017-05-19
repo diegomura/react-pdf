@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-pdf';
+import { View, StyleSheet } from '@react-pdf/core';
 
 const Footer = () => <View style={styles.footer} />;
 

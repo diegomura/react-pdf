@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { PDFRenderer, createElement, pdf } from 'react-pdf';
+import { PDFRenderer, createElement, pdf } from '@react-pdf/core';
 
 export default {
   render(element, filePath) {

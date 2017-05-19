@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-pdf';
+import { View, StyleSheet } from '@react-pdf/core';
 
 const Body = ({ children }) => (
   <View style={styles.body}>

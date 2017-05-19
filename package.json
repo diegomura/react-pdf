@@ -1,5 +1,5 @@
 {
-  "name": "react-pdf",
+  "name": "@react-pdf/build",
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {

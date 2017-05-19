@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-pdf';
+import { Text, View, StyleSheet } from '@react-pdf/core';
 
 const Header = ({ title }) => (
   <View style={styles.header}>

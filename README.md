@@ -6,7 +6,7 @@
 
 ```jsx
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from 'react-pdf';
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/core';
 
 // Create Document Component
 const MyDocument = () => (
@@ -51,7 +51,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ### Save in a file
 ```jsx
-import ReactPDF from 'react-pdf-node';
+import ReactPDF from '@react-pdf/node';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```

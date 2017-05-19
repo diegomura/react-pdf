@@ -1,6 +1,6 @@
 /* global URL */
 import React, { Component, PropTypes } from 'react';
-import { PDFRenderer, Document, createElement, pdf } from 'react-pdf';
+import { PDFRenderer, Document, createElement, pdf } from '@react-pdf/core';
 import omit from 'lodash/fp/omit';
 
 class Container extends Component {

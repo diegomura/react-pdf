@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-pdf';
+import { View, StyleSheet } from '@react-pdf/core';
 
 const MIN_WIDTH = 100;
 const MAX_WIDTH = 280;

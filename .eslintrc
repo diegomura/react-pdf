@@ -11,15 +11,18 @@
   },
   "extends": [
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "plugin:jest/recommended"
   ],
   "plugins": [
     "promise",
-    "react"
+    "react",
+    "jest"
   ],
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "globals": {
     "document": false,

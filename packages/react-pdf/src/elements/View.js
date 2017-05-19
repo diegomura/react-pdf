@@ -12,7 +12,7 @@ class View extends PDFEntry {
     const rect = [
       '/DeviceRGB cs',
       backgroundColor ? `${toRGB(backgroundColor)} scn` : '',
-      `${left} ${top} ${width} ${height} re`,
+      backgroundColor ? `${left} ${top} ${width} ${height} re` : '',
       backgroundColor ? 'f' : '',
     ].join('\n');
 

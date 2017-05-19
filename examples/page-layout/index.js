@@ -28,7 +28,6 @@ const TemplatePage = ({ title, lines = 20 }) => (
 const styles = StyleSheet.create({
   main: {
     padding: 30,
-    backgroundColor: 'white',
   },
 });
 

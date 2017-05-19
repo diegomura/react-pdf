@@ -4,6 +4,7 @@
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
     "build": "lerna run build --ignore @react-pdf/example-*",
+    "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/example-*",
     "example": "babel-node ./examples/index.js",
     "precommit": "lint-staged",
     "lint": "eslint performance src --ignore-path .gitignore"

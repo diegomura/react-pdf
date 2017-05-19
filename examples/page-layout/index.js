@@ -13,7 +13,7 @@ import Line from './Line';
 import Footer from './Footer';
 
 const TemplatePage = ({ title, lines = 20 }) => (
-  <Page size="A4">
+  <Page size="A4" style={styles.page}>
     <Header title={title} />
     <Body>
       <Aside />
@@ -26,6 +26,9 @@ const TemplatePage = ({ title, lines = 20 }) => (
 );
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#E4E4E4',
+  },
   main: {
     padding: 30,
   },

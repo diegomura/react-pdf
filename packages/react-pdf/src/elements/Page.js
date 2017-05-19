@@ -1,4 +1,5 @@
 import PDFEntry from './PDFEntry';
+import Rectangle from './Rectangle';
 import Resources from './Resources';
 import GraphicState from './GraphicState';
 import { pdfObject } from '../utils/pdf';
@@ -34,15 +35,32 @@ class Page extends PDFEntry {
     }
   }
 
+  createsBackgroundColor() {
+    const layout = this.layout.getComputedLayout();
+
+    return new Rectangle({ ...layout, style: this.style });
+  }
+
+  renderContents() {
+    const contents = [
+      this.backgroundColor.ref(),
+      this.graphicState.ref(),
+      this.getChildrenRefs().join(' '),
+    ].join(' ');
+
+    return `[${contents}]`;
+  }
+
   render() {
     this.layout.calculateLayout();
+    this.backgroundColor = this.createsBackgroundColor();
 
     const { width, height } = this.layout.getComputedLayout();
 
     const page = pdfObject(this.id, {
       Type: '/Page',
       Parent: this.parent.ref(),
-      Contents: `[${this.graphicState.ref()} ${this.getChildrenRefs().join(' ')}]`,
+      Contents: this.renderContents(),
       Resources: this.resources.ref(),
       MediaBox: `[0 0 ${width} ${height}]`,
     }) + '\n';
@@ -51,6 +69,7 @@ class Page extends PDFEntry {
 
     return [
       page,
+      this.backgroundColor.render(),
       this.graphicState.render(),
       this.resources.render(),
       this.renderChildren(),

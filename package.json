@@ -35,7 +35,6 @@
     "babel-register": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-prettier": "^2.1.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",

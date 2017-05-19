@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "npm run build -- --watch"
+    "build:watch": "yarn run build -- --watch"
   },
   "keywords": [
     "react",

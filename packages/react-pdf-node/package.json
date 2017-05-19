@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "npm run build -- --watch"
+    "build:watch": "yarn run build -- --watch"
   },
   "dependencies": {
     "@react-pdf/core": "^0.1.0",

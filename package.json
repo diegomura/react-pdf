@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
-    "example:runner": "babel-node ./examples/runner/index.js",
+    "example": "babel-node ./examples/index.js",
     "precommit": "lint-staged",
     "lint": "eslint performance src --ignore-path .gitignore"
   },

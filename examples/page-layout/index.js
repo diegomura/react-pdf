@@ -18,7 +18,7 @@ const TemplatePage = ({ title, lines = 20 }) => (
     <Body>
       <Aside />
       <View style={styles.main}>
-        {times(lines, (line, i) => <Line key={i} />)}
+        {times(lines, line => <Line key={line} />)}
       </View>
     </Body>
     <Footer />

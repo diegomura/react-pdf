@@ -1,7 +1,7 @@
 {
-  "name": "react-pdf-simple-example",
+  "name": "react-pdf-examples",
   "version": "0.0.0",
-  "description": "React PDF Example",
+  "description": "React PDF Examples",
   "main": "./index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",

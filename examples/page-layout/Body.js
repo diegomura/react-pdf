@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexDirection: 'row',
     alignItems: 'stretch',
-    backgroundColor: 'white',
   },
 });
 

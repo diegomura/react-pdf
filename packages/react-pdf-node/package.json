@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/node",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "src/index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",

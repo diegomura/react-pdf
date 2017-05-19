@@ -4,8 +4,15 @@
   "main": "src/index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "babel ./src --out-dir ./lib",
+    "build:watch": "npm run build -- --watch"
+  },
   "dependencies": {
     "@react-pdf/core": "^0.1.0",
     "react": "16.0.0-alpha.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0"
   }
 }

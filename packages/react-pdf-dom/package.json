@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "yarn run build -- --watch"
+    "build:watch": "babel ./src --out-dir ./lib --watch"
   },
   "keywords": [
     "react",

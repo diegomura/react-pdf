@@ -16,7 +16,7 @@ class PDFObject extends Base {
     root.addNode(this);
 
     if (props) {
-      this.applyProps(props);
+      this.applyProps(this.props);
     }
   }
 
@@ -67,7 +67,8 @@ class PDFObject extends Base {
   getChildrenRefs() {
     if (this.hasChildren()) {
       return this.children.map(child =>
-        [child.ref(), ...child.getChildrenRefs()].join(' '));
+        [child.ref(), ...child.getChildrenRefs()].join(' '),
+      );
     }
 
     return [];

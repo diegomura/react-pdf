@@ -283,7 +283,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 10.494688034057617 28.451065063476562 Tm
 (1)Tj
 ET
@@ -308,7 +308,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 10.494688034057617 67.35319519042969 Tm
 (2)Tj
 ET
@@ -333,7 +333,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 49.48406410217285 47.902130126953125 Tm
 (3)Tj
 ET
@@ -358,7 +358,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 29.989376068115234 106.70639038085938 Tm
 (4)Tj
 ET
@@ -383,7 +383,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 88.9681282043457 67.80426025390625 Tm
 (5)Tj
 ET
@@ -408,7 +408,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 49.97875213623047 147.41278076171875 Tm
 (6)Tj
 ET
@@ -433,7 +433,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 129.9362564086914 88.6085205078125 Tm
 (7)Tj
 ET
@@ -458,7 +458,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 70.95750427246094 190.82555770874023 Tm
 (8)Tj
 ET
@@ -483,7 +483,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 173.87250900268555 111.21703338623047 Tm
 (9)Tj
 ET
@@ -508,7 +508,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 93.91500091552734 239.6511001586914 Tm
 (10)Tj
 ET
@@ -533,7 +533,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 223.74500274658203 137.43406677246094 Tm
 (11)Tj
 ET
@@ -558,7 +558,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 120.83000183105469 299.3022003173828 Tm
 (12)Tj
 ET
@@ -583,7 +583,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 285.49000549316406 170.86813354492188 Tm
 (13)Tj
 ET
@@ -608,7 +608,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 155.66000366210938 380.6043930053711 Tm
 (14)Tj
 ET
@@ -633,7 +633,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 370.9800109863281 218.7362518310547 Tm
 (15)Tj
 ET
@@ -658,7 +658,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 206.32000732421875 505.20875549316406 Tm
 (16)Tj
 ET
@@ -683,7 +683,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 503.96002197265625 295.4725036621094 Tm
 (17)Tj
 ET
@@ -708,7 +708,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 288.6400146484375 716.4175109863281 Tm
 (18)Tj
 ET
@@ -932,7 +932,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 14.499141693115234 29.137813568115234 Tm
 (1)Tj
 ET
@@ -957,7 +957,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 14.499141693115234 69.4134407043457 Tm
 (2)Tj
 ET
@@ -982,7 +982,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 61.4974250793457 49.27562713623047 Tm
 (3)Tj
 ET
@@ -1007,7 +1007,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 37.99828338623047 110.82687950134277 Tm
 (4)Tj
 ET
@@ -1032,7 +1032,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 112.9948501586914 70.55125045776367 Tm
 (5)Tj
 ET
@@ -1057,7 +1057,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 65.99656677246094 155.65375137329102 Tm
 (6)Tj
 ET
@@ -1082,7 +1082,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 177.98969650268555 94.10250091552734 Tm
 (7)Tj
 ET
@@ -1107,7 +1107,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 102.99312591552734 207.30750274658203 Tm
 (8)Tj
 ET
@@ -1132,7 +1132,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 269.97937774658203 122.20500183105469 Tm
 (9)Tj
 ET
@@ -1157,7 +1157,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 157.9862518310547 272.61500549316406 Tm
 (10)Tj
 ET
@@ -1182,7 +1182,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 415.95875549316406 159.41000366210938 Tm
 (11)Tj
 ET
@@ -1207,7 +1207,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 248.97250366210938 365.2300109863281 Tm
 (12)Tj
 ET
@@ -1232,7 +1232,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 669.9175109863281 214.82000732421875 Tm
 (13)Tj
 ET
@@ -1257,7 +1257,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 411.94500732421875 512.4600219726562 Tm
 (14)Tj
 ET
@@ -1437,7 +1437,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 26.20812225341797 40.072343826293945 Tm
 (1)Tj
 ET
@@ -1462,7 +1462,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 26.20812225341797 102.21703147888184 Tm
 (2)Tj
 ET
@@ -1487,7 +1487,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 96.6243667602539 71.14468765258789 Tm
 (3)Tj
 ET
@@ -1512,7 +1512,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 61.41624450683594 176.43406295776367 Tm
 (4)Tj
 ET
@@ -1537,7 +1537,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 183.24873733520508 114.28937530517578 Tm
 (5)Tj
 ET
@@ -1562,7 +1562,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 112.8324966430664 286.86812591552734 Tm
 (6)Tj
 ET
@@ -1587,7 +1587,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 318.4974899291992 181.57875061035156 Tm
 (7)Tj
 ET
@@ -1612,7 +1612,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 196.6649932861328 469.7362518310547 Tm
 (8)Tj
 ET
@@ -1637,7 +1637,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 550.9949798583984 297.1575012207031 Tm
 (9)Tj
 ET
@@ -1662,7 +1662,7 @@ stream
 /DeviceRGB cs
 1 1 1 scn
 BT
-/F1 18 Tf
+/F1 10 Tf
 1 0 0 -1 345.3299865722656 797.4725036621094 Tm
 (10)Tj
 ET

@@ -10,6 +10,7 @@ export default StyleSheet.create({
   },
   text: {
     margin: 10,
+    fontSize: 10,
     color: 'white',
   },
 });

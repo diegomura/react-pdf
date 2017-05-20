@@ -1,4 +1,4 @@
-import Pages from './Pages';
+import Root from './Root';
 import Text from './Text';
 import View from './View';
 import Page from './Page';
@@ -9,10 +9,10 @@ function createElement(type, props, root) {
 
   switch (type) {
     case 'ROOT':
-      instance = new Document();
+      instance = new Root();
       break;
     case 'DOCUMENT':
-      instance = new Pages(props, root);
+      instance = new Document(props, root);
       break;
     case 'PAGE':
       instance = new Page(props, root);

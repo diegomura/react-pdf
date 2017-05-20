@@ -15,7 +15,7 @@ class PDFObject extends Base {
     // Register node with Document to create the reference table
     root.addNode(this);
 
-    if (props) {
+    if (this.props) {
       this.applyProps(this.props);
     }
   }

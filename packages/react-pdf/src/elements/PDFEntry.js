@@ -5,7 +5,7 @@ import upperFirst from 'lodash/fp/upperFirst';
 import Base from './Base';
 import yogaValue from '../utils/yogaValue';
 
-class PDFObject extends Base {
+class PDFEntry extends Base {
   constructor(props, root) {
     super(props, root);
 
@@ -100,4 +100,4 @@ class PDFObject extends Base {
   }
 }
 
-export default PDFObject;
+export default PDFEntry;

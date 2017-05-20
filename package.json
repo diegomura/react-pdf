@@ -4,12 +4,13 @@
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
     "build": "lerna run build --ignore @react-pdf/example-*",
-    "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/example-*",
+    "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/examples",
     "prepublish": "npm run build",
     "postinstall": "lerna bootstrap",
     "example": "babel-node ./examples/index.js",
     "precommit": "lint-staged",
-    "lint": "eslint performance src --ignore-path .gitignore"
+    "lint": "eslint performance src --ignore-path .gitignore",
+    "test": "jest --config .jestrc"
   },
   "lint-staged": {
     "*.js": [
@@ -29,12 +30,14 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-prettier": "^2.1.0",
+    "eslint-plugin-jest": "^20.0.3",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
@@ -43,6 +46,7 @@
   },
   "dependencies": {
     "fbjs": "^0.8.12",
+    "jest": "^20.0.3",
     "lerna": "^2.0.0-rc.4",
     "lodash.times": "^4.3.2"
   },

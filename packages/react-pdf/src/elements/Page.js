@@ -22,6 +22,8 @@ class Page extends PDFEntry {
   applyProps(props) {
     super.applyProps(props);
 
+    props = Object.assign({}, Page.defaultProps, props);
+
     if (props.size) {
       const size = SIZES[props.size];
 

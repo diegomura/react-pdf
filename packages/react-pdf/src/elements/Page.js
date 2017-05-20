@@ -8,6 +8,7 @@ class Page extends PDFEntry {
   static defaultProps = {
     size: 'A4',
     orientation: 'portrait',
+    style: {},
   };
 
   constructor(props, root) {

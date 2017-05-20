@@ -3,6 +3,10 @@ import { toRGB } from '../utils/colors';
 import { pdfObject, pdfStream } from '../utils/pdf';
 
 class Rectangle extends Base {
+  static defaultProps = {
+    style: {},
+  };
+
   render() {
     const { backgroundColor } = this.style;
     const { left, top, width, height } = this.props;

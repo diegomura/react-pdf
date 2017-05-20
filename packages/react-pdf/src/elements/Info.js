@@ -2,8 +2,12 @@ import Base from './Base';
 import { pdfObject, pdfDate } from '../utils/pdf';
 
 class Info extends Base {
+  static defaultProps = {
+    keywords: [],
+  };
+
   render() {
-    const { title, author, subject, keywords = [] } = this.props;
+    const { title, author, subject, keywords } = this.props;
 
     return (
       pdfObject(this.id, {

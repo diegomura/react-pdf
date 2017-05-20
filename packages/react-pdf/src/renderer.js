@@ -33,7 +33,9 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendInitialChild(parentInstance, child) {
-    parentInstance.appendChild(child);
+    if (parentInstance !== child) {
+      parentInstance.appendChild(child);
+    }
   },
 
   finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
@@ -87,7 +89,9 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    parentInstance.appendChild(child);
+    if (parentInstance !== child) {
+      parentInstance.appendChild(child);
+    }
   },
 
   insertBefore(parentInstance, child, beforeChild) {

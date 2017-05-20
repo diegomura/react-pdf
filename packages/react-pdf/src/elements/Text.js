@@ -19,14 +19,14 @@ class Text extends PDFEntry {
   }
 
   render() {
-    const { color = 'black' } = this.style;
+    const { fontSize = 18, color = 'black' } = this.style;
     const { left, top, height } = this.getAbsoluteLayout();
 
     const text = [
       '/DeviceRGB cs',
       `${toRGB(color)} scn`,
       'BT',
-      '/F1 18 Tf',
+      `/F1 ${fontSize} Tf`,
       `1 0 0 -1 ${left} ${top + height} Tm`,
       `(${this.children})Tj`,
       'ET',

@@ -24,9 +24,14 @@ const pdf = input => {
     return new Buffer(parse(input));
   }
 
+  function toString() {
+    return parse(input);
+  }
+
   return {
     toBuffer,
     toBlob,
+    toString,
   };
 };
 

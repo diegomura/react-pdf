@@ -1,4 +1,9 @@
-<big><h1 align="center">react-pdf</h1></big>
+<div align="center">
+  <big>
+    <h1>react-pdf</h1>
+  </big>
+</div>
+
 
 > React renderer for creating PDF files on the browser, mobile and server
 

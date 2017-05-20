@@ -4,12 +4,12 @@ import Resources from './Resources';
 import GraphicState from './GraphicState';
 import { pdfObject } from '../utils/pdf';
 
-const DEFAULT_PROPS = {
-  size: 'A4',
-  orientation: 'portrait',
-};
-
 class Page extends PDFEntry {
+  static defaultProps = {
+    size: 'A4',
+    orientation: 'portrait',
+  };
+
   constructor(props, root) {
     super(props, root);
 
@@ -19,8 +19,10 @@ class Page extends PDFEntry {
     this.graphicState.parent = this;
   }
 
-  applyProps(props = DEFAULT_PROPS) {
+  applyProps(props) {
     super.applyProps(props);
+
+    props = Object.assign({}, Page.defaultProps, props);
 
     if (props.size) {
       const size = SIZES[props.size];
@@ -57,13 +59,14 @@ class Page extends PDFEntry {
 
     const { width, height } = this.layout.getComputedLayout();
 
-    const page = pdfObject(this.id, {
-      Type: '/Page',
-      Parent: this.parent.ref(),
-      Contents: this.renderContents(),
-      Resources: this.resources.ref(),
-      MediaBox: `[0 0 ${width} ${height}]`,
-    }) + '\n';
+    const page =
+      pdfObject(this.id, {
+        Type: '/Page',
+        Parent: this.parent.ref(),
+        Contents: this.renderContents(),
+        Resources: this.resources.ref(),
+        MediaBox: `[0 0 ${width} ${height}]`,
+      }) + '\n';
 
     this.offset = this.root.addOffset(page.length);
 

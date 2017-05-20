@@ -15,8 +15,8 @@ class PDFEntry extends Base {
     // Register node with Document to create the reference table
     root.addNode(this);
 
-    if (props) {
-      this.applyProps(props);
+    if (this.props) {
+      this.applyProps(this.props);
     }
   }
 

@@ -1,14 +1,23 @@
 let id = 1;
 
 class Base {
+  static defaultProps = {
+    style: {},
+  };
+
   parent = null;
   children = [];
 
   constructor(props, root) {
     this.id = id++;
     this.root = root;
-    this.props = props || {};
-    this.style = this.props.style || {};
+
+    this.props = {
+      ...this.constructor.defaultProps,
+      ...props,
+    };
+
+    this.style = this.props.style;
   }
 
   appendChild(child) {

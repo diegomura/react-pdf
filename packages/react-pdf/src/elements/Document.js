@@ -73,12 +73,12 @@ class Document {
     ].join('\n');
   }
 
-  render() {
+  async render() {
     return [
       this.header,
       this.info.render(),
       this.font.render(),
-      this.catalog.render(),
+      await this.catalog.render(),
       this.renderReferenceTable(),
       this.renderTrailer(),
     ].join('');

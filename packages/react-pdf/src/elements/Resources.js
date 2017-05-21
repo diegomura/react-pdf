@@ -1,17 +1,15 @@
-import PDFEntry from './PDFEntry';
+import Base from './Base';
 import { pdfObject, pdfDictionary } from '../utils/pdf';
 
-class Resources extends PDFEntry {
+class Resources extends Base {
   render() {
-    const resources = pdfObject(this.id, {
-      ProcSet: '[/PDF/Text]',
-      Font: pdfDictionary(
-        {
-          [this.root.font.name]: this.root.font.ref(),
-        },
-        true,
-      ),
-    }) + '\n';
+    const { font } = this.root;
+
+    const resources =
+      pdfObject(this.id, {
+        ProcSet: '[/PDF/Text]',
+        Font: pdfDictionary({ [font.name]: font.ref() }, true),
+      }) + '\n';
 
     this.offset = this.root.addOffset(resources.length);
 

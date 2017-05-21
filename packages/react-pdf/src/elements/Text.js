@@ -1,8 +1,8 @@
-import PDFEntry from './PDFEntry';
+import Base from './Base';
 import { toRGB } from '../utils/colors';
 import { pdfObject, pdfStream } from '../utils/pdf';
 
-class Text extends PDFEntry {
+class Text extends Base {
   constructor(props, root) {
     super(props, root);
 
@@ -18,7 +18,7 @@ class Text extends PDFEntry {
     this.children = null;
   }
 
-  render() {
+  async render() {
     const { fontSize = 18, color = 'black' } = this.style;
     const { left, top, height } = this.getAbsoluteLayout();
 

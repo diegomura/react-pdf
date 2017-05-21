@@ -1,7 +1,7 @@
-import PDFEntry from './PDFEntry';
+import Base from './Base';
 import { pdfObject } from '../utils/pdf';
 
-class Pages extends PDFEntry {
+class Pages extends Base {
   render() {
     const childObjects = this.children.map(child => child.ref());
 

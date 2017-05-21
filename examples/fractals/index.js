@@ -1,4 +1,4 @@
-/* eslint react/prop-types: 0 */
+/* eslint react/prop-types: 0, react/jsx-sort-props: 0 */
 
 import React from 'react';
 import ReactPDF from '../../packages/react-pdf-node';
@@ -6,7 +6,12 @@ import { Page, Document } from '../../packages/react-pdf';
 import Fractal from './Fractal';
 
 const doc = (
-  <Document>
+  <Document
+    title="Fractals"
+    author="John Doe"
+    subject="Rendering fractals with react-pdf"
+    keywords={['react', 'pdf', 'fractals']}
+  >
     <Page size="A4">
       <Fractal steps={18} />
     </Page>

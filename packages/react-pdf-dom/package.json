@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/dom",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Bindings for react-pdf to render inside a react-dom application",
   "main": "./lib/index.js",
   "scripts": {

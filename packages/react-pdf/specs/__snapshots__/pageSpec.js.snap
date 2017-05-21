@@ -30,7 +30,7 @@ endobj
 /Parent 6 0 R
 /Contents [7 0 R 5 0 R ]
 /Resources 4 0 R
-/MediaBox [0 0 595.280029296875 841.8900146484375]
+/MediaBox [0 0 595 842]
 >>
 endobj
 7 0 obj
@@ -46,10 +46,10 @@ endstream
 endobj
 5 0 obj
 <<
-/Length 31
+/Length 17
 >>
 stream
-1 0 0 -1 0 841.8900146484375 cm
+1 0 0 -1 0 842 cm
 endstream
 endobj
 4 0 obj
@@ -64,7 +64,7 @@ xref
 0000000015 00000 n
 0000000095 00000 n
 0000000201 00000 n
-0000000341 00000 n
+0000000314 00000 n
 0000000144 00000 n
 trailer
 <<
@@ -72,7 +72,7 @@ trailer
 /Root 2 0 R
 >>
 startxref
-403
+376
 %%EOF"
 `;
 
@@ -106,26 +106,26 @@ endobj
 /Parent 20 0 R
 /Contents [21 0 R 19 0 R ]
 /Resources 18 0 R
-/MediaBox [0 0 595.280029296875 841.8900146484375]
+/MediaBox [0 0 595 842]
 >>
 endobj
 21 0 obj
 <<
-/Length 102
+/Length 75
 >>
 stream
 /DeviceRGB cs
 1 0.38823529411764707 0.2784313725490196 scn
-0 0 595.280029296875 841.8900146484375 re
+0 0 595 842 re
 f
 endstream
 endobj
 19 0 obj
 <<
-/Length 31
+/Length 17
 >>
 stream
-1 0 0 -1 0 841.8900146484375 cm
+1 0 0 -1 0 842 cm
 endstream
 endobj
 18 0 obj
@@ -140,7 +140,7 @@ xref
 0000000015 00000 n
 0000000096 00000 n
 0000000206 00000 n
-0000000351 00000 n
+0000000324 00000 n
 0000000147 00000 n
 trailer
 <<
@@ -148,7 +148,7 @@ trailer
 /Root 16 0 R
 >>
 startxref
-415
+388
 %%EOF"
 `;
 
@@ -182,7 +182,7 @@ endobj
 /Parent 13 0 R
 /Contents [14 0 R 12 0 R ]
 /Resources 11 0 R
-/MediaBox [0 0 2383.93994140625 3370.389892578125]
+/MediaBox [0 0 2384 3370]
 >>
 endobj
 14 0 obj
@@ -198,10 +198,10 @@ endstream
 endobj
 12 0 obj
 <<
-/Length 31
+/Length 18
 >>
 stream
-1 0 0 -1 0 3370.389892578125 cm
+1 0 0 -1 0 3370 cm
 endstream
 endobj
 11 0 obj
@@ -216,7 +216,7 @@ xref
 0000000015 00000 n
 0000000095 00000 n
 0000000204 00000 n
-0000000349 00000 n
+0000000324 00000 n
 0000000145 00000 n
 trailer
 <<
@@ -224,7 +224,7 @@ trailer
 /Root 9 0 R
 >>
 startxref
-412
+387
 %%EOF"
 `;
 
@@ -258,7 +258,7 @@ endobj
 /Parent 27 0 R
 /Contents [28 0 R 26 0 R ]
 /Resources 25 0 R
-/MediaBox [0 0 841.8900146484375 595.280029296875]
+/MediaBox [0 0 842 595]
 >>
 endobj
 28 0 obj
@@ -274,10 +274,10 @@ endstream
 endobj
 26 0 obj
 <<
-/Length 30
+/Length 17
 >>
 stream
-1 0 0 -1 0 595.280029296875 cm
+1 0 0 -1 0 595 cm
 endstream
 endobj
 25 0 obj
@@ -292,7 +292,7 @@ xref
 0000000015 00000 n
 0000000096 00000 n
 0000000206 00000 n
-0000000351 00000 n
+0000000324 00000 n
 0000000147 00000 n
 trailer
 <<
@@ -300,6 +300,6 @@ trailer
 /Root 23 0 R
 >>
 startxref
-415
+388
 %%EOF"
 `;

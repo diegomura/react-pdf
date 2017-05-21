@@ -5,35 +5,43 @@ exports[`<Page /> Should render A4 blank portrait page by default 1`] = `
 %����
 1 0 obj
 <<
+/Keywords ()
+/CreationDate (D:20170421171546)
+/Creator (react-pdf)
+/Producer (react-pdf)
+>>
+endobj
+2 0 obj
+<<
 /Type /Font
 /Subtype /Type1
 /Name /F1
 /BaseFont /Helvetica
 >>
 endobj
-2 0 obj
-<<
-/Type /Catalog
-/Pages 6 0 R
->>
-endobj
-6 0 obj
-<<
-/Type /Pages
-/Kids [3 0 R]
-/Count 1
->>
-endobj
 3 0 obj
 <<
-/Type /Page
-/Parent 6 0 R
-/Contents [7 0 R 5 0 R ]
-/Resources 4 0 R
-/MediaBox [0 0 595.280029296875 841.8900146484375]
+/Type /Catalog
+/Pages 7 0 R
 >>
 endobj
 7 0 obj
+<<
+/Type /Pages
+/Kids [4 0 R]
+/Count 1
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Parent 7 0 R
+/Contents [8 0 R 6 0 R ]
+/Resources 5 0 R
+/MediaBox [0 0 595 842]
+>>
+endobj
+8 0 obj
 <<
 /Length 16
 >>
@@ -44,18 +52,18 @@ stream
 
 endstream
 endobj
-5 0 obj
+6 0 obj
 <<
-/Length 31
+/Length 17
 >>
 stream
-1 0 0 -1 0 841.8900146484375 cm
+1 0 0 -1 0 842 cm
 endstream
 endobj
-4 0 obj
+5 0 obj
 <<
 /ProcSet [/PDF/Text]
-/Font <</F1 1 0 R>>
+/Font <</F1 2 0 R>>
 >>
 endobj
 xref
@@ -64,22 +72,31 @@ xref
 0000000015 00000 n
 0000000095 00000 n
 0000000201 00000 n
-0000000341 00000 n
+0000000314 00000 n
 0000000144 00000 n
 trailer
 <<
 /Size 5
-/Root 2 0 R
+/Root 3 0 R
+/Info 1 0 R
 >>
 startxref
-403
+376
 %%EOF"
 `;
 
 exports[`<Page /> Should render given background color 1`] = `
 "%PDF-1.7
 %����
-15 0 obj
+17 0 obj
+<<
+/Keywords ()
+/CreationDate (D:20170421171546)
+/Creator (react-pdf)
+/Producer (react-pdf)
+>>
+endobj
+18 0 obj
 <<
 /Type /Font
 /Subtype /Type1
@@ -87,51 +104,51 @@ exports[`<Page /> Should render given background color 1`] = `
 /BaseFont /Helvetica
 >>
 endobj
-16 0 obj
+19 0 obj
 <<
 /Type /Catalog
-/Pages 20 0 R
+/Pages 23 0 R
+>>
+endobj
+23 0 obj
+<<
+/Type /Pages
+/Kids [20 0 R]
+/Count 1
 >>
 endobj
 20 0 obj
 <<
-/Type /Pages
-/Kids [17 0 R]
-/Count 1
->>
-endobj
-17 0 obj
-<<
 /Type /Page
-/Parent 20 0 R
-/Contents [21 0 R 19 0 R ]
-/Resources 18 0 R
-/MediaBox [0 0 595.280029296875 841.8900146484375]
+/Parent 23 0 R
+/Contents [24 0 R 22 0 R ]
+/Resources 21 0 R
+/MediaBox [0 0 595 842]
 >>
 endobj
-21 0 obj
+24 0 obj
 <<
-/Length 102
+/Length 75
 >>
 stream
 /DeviceRGB cs
 1 0.38823529411764707 0.2784313725490196 scn
-0 0 595.280029296875 841.8900146484375 re
+0 0 595 842 re
 f
 endstream
 endobj
-19 0 obj
+22 0 obj
 <<
-/Length 31
+/Length 17
 >>
 stream
-1 0 0 -1 0 841.8900146484375 cm
+1 0 0 -1 0 842 cm
 endstream
 endobj
-18 0 obj
+21 0 obj
 <<
 /ProcSet [/PDF/Text]
-/Font <</F1 15 0 R>>
+/Font <</F1 18 0 R>>
 >>
 endobj
 xref
@@ -140,128 +157,61 @@ xref
 0000000015 00000 n
 0000000096 00000 n
 0000000206 00000 n
-0000000351 00000 n
+0000000324 00000 n
 0000000147 00000 n
 trailer
 <<
 /Size 5
-/Root 16 0 R
+/Root 19 0 R
+/Info 17 0 R
 >>
 startxref
-415
+388
 %%EOF"
 `;
 
 exports[`<Page /> Should render given size 1`] = `
 "%PDF-1.7
 %����
-8 0 obj
-<<
-/Type /Font
-/Subtype /Type1
-/Name /F1
-/BaseFont /Helvetica
->>
-endobj
 9 0 obj
 <<
-/Type /Catalog
-/Pages 13 0 R
->>
-endobj
-13 0 obj
-<<
-/Type /Pages
-/Kids [10 0 R]
-/Count 1
+/Keywords ()
+/CreationDate (D:20170421171546)
+/Creator (react-pdf)
+/Producer (react-pdf)
 >>
 endobj
 10 0 obj
 <<
-/Type /Page
-/Parent 13 0 R
-/Contents [14 0 R 12 0 R ]
-/Resources 11 0 R
-/MediaBox [0 0 2383.93994140625 3370.389892578125]
->>
-endobj
-14 0 obj
-<<
-/Length 16
->>
-stream
-/DeviceRGB cs
-
-
-
-endstream
-endobj
-12 0 obj
-<<
-/Length 31
->>
-stream
-1 0 0 -1 0 3370.389892578125 cm
-endstream
-endobj
-11 0 obj
-<<
-/ProcSet [/PDF/Text]
-/Font <</F1 8 0 R>>
->>
-endobj
-xref
-0 6
-0000000000 65535 f
-0000000015 00000 n
-0000000095 00000 n
-0000000204 00000 n
-0000000349 00000 n
-0000000145 00000 n
-trailer
-<<
-/Size 5
-/Root 9 0 R
->>
-startxref
-412
-%%EOF"
-`;
-
-exports[`<Page /> Should render landscape page 1`] = `
-"%PDF-1.7
-%����
-22 0 obj
-<<
 /Type /Font
 /Subtype /Type1
 /Name /F1
 /BaseFont /Helvetica
 >>
 endobj
-23 0 obj
+11 0 obj
 <<
 /Type /Catalog
-/Pages 27 0 R
+/Pages 15 0 R
 >>
 endobj
-27 0 obj
+15 0 obj
 <<
 /Type /Pages
-/Kids [24 0 R]
+/Kids [12 0 R]
 /Count 1
 >>
 endobj
-24 0 obj
+12 0 obj
 <<
 /Type /Page
-/Parent 27 0 R
-/Contents [28 0 R 26 0 R ]
-/Resources 25 0 R
-/MediaBox [0 0 841.8900146484375 595.280029296875]
+/Parent 15 0 R
+/Contents [16 0 R 14 0 R ]
+/Resources 13 0 R
+/MediaBox [0 0 2384 3370]
 >>
 endobj
-28 0 obj
+16 0 obj
 <<
 /Length 16
 >>
@@ -272,18 +222,18 @@ stream
 
 endstream
 endobj
-26 0 obj
+14 0 obj
 <<
-/Length 30
+/Length 18
 >>
 stream
-1 0 0 -1 0 595.280029296875 cm
+1 0 0 -1 0 3370 cm
 endstream
 endobj
-25 0 obj
+13 0 obj
 <<
 /ProcSet [/PDF/Text]
-/Font <</F1 22 0 R>>
+/Font <</F1 10 0 R>>
 >>
 endobj
 xref
@@ -292,14 +242,100 @@ xref
 0000000015 00000 n
 0000000096 00000 n
 0000000206 00000 n
-0000000351 00000 n
+0000000326 00000 n
 0000000147 00000 n
 trailer
 <<
 /Size 5
-/Root 23 0 R
+/Root 11 0 R
+/Info 9 0 R
 >>
 startxref
-415
+390
+%%EOF"
+`;
+
+exports[`<Page /> Should render landscape page 1`] = `
+"%PDF-1.7
+%����
+25 0 obj
+<<
+/Keywords ()
+/CreationDate (D:20170421171546)
+/Creator (react-pdf)
+/Producer (react-pdf)
+>>
+endobj
+26 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Helvetica
+>>
+endobj
+27 0 obj
+<<
+/Type /Catalog
+/Pages 31 0 R
+>>
+endobj
+31 0 obj
+<<
+/Type /Pages
+/Kids [28 0 R]
+/Count 1
+>>
+endobj
+28 0 obj
+<<
+/Type /Page
+/Parent 31 0 R
+/Contents [32 0 R 30 0 R ]
+/Resources 29 0 R
+/MediaBox [0 0 842 595]
+>>
+endobj
+32 0 obj
+<<
+/Length 16
+>>
+stream
+/DeviceRGB cs
+
+
+
+endstream
+endobj
+30 0 obj
+<<
+/Length 17
+>>
+stream
+1 0 0 -1 0 595 cm
+endstream
+endobj
+29 0 obj
+<<
+/ProcSet [/PDF/Text]
+/Font <</F1 26 0 R>>
+>>
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000015 00000 n
+0000000096 00000 n
+0000000206 00000 n
+0000000324 00000 n
+0000000147 00000 n
+trailer
+<<
+/Size 5
+/Root 27 0 R
+/Info 25 0 R
+>>
+startxref
+388
 %%EOF"
 `;

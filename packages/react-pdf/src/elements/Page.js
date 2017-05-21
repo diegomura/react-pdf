@@ -40,7 +40,7 @@ class Page extends PDFEntry {
   createsBackgroundColor() {
     const layout = this.layout.getComputedLayout();
 
-    return new Rectangle({ ...layout, style: this.style });
+    return new Rectangle({ ...layout, style: this.style || {} });
   }
 
   renderContents() {

@@ -1684,9 +1684,9 @@ xtend@~4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
 
-yoga-layout@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-1.2.0.tgz#63375f5d33f0df1fc99748bc7f3dcfa4c5f10a3a"
+yoga-layout@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-1.5.0.tgz#e1450a4923d057b1ff01621b0a6e69def6a97e1e"
   dependencies:
     autogypi "^0.2.2"
     nbind "^0.3.8"

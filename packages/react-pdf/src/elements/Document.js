@@ -1,4 +1,5 @@
 import Catalog from './Catalog';
+import Info from './Info';
 import Font from './Font';
 import { pdfDictionary } from '../utils/pdf';
 
@@ -8,6 +9,7 @@ class Document {
     this.header = '%PDF-1.7\n%����\n';
     this.offset = this.header.length;
 
+    this.info = new Info(null, this);
     this.font = new Font(null, this);
     this.catalog = new Catalog(props, this);
     this.catalog.parent = this;
@@ -37,10 +39,11 @@ class Document {
   }
 
   renderReferenceTable() {
-    const references = this.nodes
-      .sort((a, b) => a.id > b.id)
-      .map(this.renderReferenceEntry)
-      .join('\n') + '\n';
+    const references =
+      this.nodes
+        .sort((a, b) => a.id > b.id)
+        .map(this.renderReferenceEntry)
+        .join('\n') + '\n';
 
     return [
       'xref',
@@ -56,6 +59,7 @@ class Document {
       pdfDictionary({
         Size: this.nodes.length,
         Root: this.catalog.ref(),
+        Info: this.info.ref(),
       }),
       'startxref',
       this.offset,
@@ -66,6 +70,7 @@ class Document {
   render() {
     return [
       this.header,
+      this.info.render(),
       this.font.render(),
       this.catalog.render(),
       this.renderReferenceTable(),

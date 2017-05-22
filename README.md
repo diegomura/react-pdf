@@ -7,6 +7,8 @@
 
 > React renderer for creating PDF files on the browser, mobile and server
 
+**This project is still in development, so please do not use `react-pdf` on production _yet_. First release soon!**
+
 ## How it works
 
 ```jsx

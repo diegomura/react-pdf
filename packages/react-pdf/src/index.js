@@ -2,7 +2,7 @@
 'use strict';
 
 import { PDFRenderer, createElement } from './renderer';
-import StyleSheet from './stylesheet';
+import StyleSheet from './Stylesheet';
 
 const View = 'VIEW';
 const Text = 'TEXT';

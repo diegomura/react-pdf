@@ -9,7 +9,7 @@ class Info extends Base {
   render() {
     const { title, author, subject, keywords } = this.props;
 
-    return (
+    const info =
       pdfObject(this.id, {
         Title: `(${title})`,
         Author: `(${author})`,
@@ -18,8 +18,11 @@ class Info extends Base {
         CreationDate: `(${pdfDate(new Date())})`,
         Creator: '(react-pdf)',
         Producer: '(react-pdf)',
-      }) + '\n'
-    );
+      }) + '\n';
+
+    this.offset = this.root.addOffset(info.length);
+
+    return info;
   }
 }
 

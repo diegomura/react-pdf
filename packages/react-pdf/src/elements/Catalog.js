@@ -1,8 +1,8 @@
-import PDFEntry from './PDFEntry';
+import Base from './Base';
 import Pages from './Pages';
 import { pdfObject } from '../utils/pdf';
 
-class Catalog extends PDFEntry {
+class Catalog extends Base {
   constructor(props, root) {
     super(props, root);
 
@@ -16,7 +16,7 @@ class Catalog extends PDFEntry {
     this.pages.appendChild(child);
   }
 
-  render() {
+  async render() {
     return super.render(
       pdfObject(this.id, {
         Type: '/Catalog',

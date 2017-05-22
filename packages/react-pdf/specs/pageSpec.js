@@ -3,8 +3,6 @@ import { Document, Page } from '../src';
 import render from './testRenderer';
 
 describe('<Page />', () => {
-  let result;
-
   const page = (props = {}) => (
     <Document>
       <Page {...props} />
@@ -12,32 +10,32 @@ describe('<Page />', () => {
   );
 
   test('Should render A4 blank portrait page by default', () => {
-    result = render(page());
-
-    expect(result).toMatchSnapshot();
+    render(page()).then(result => {
+      expect(result).toMatchSnapshot();
+    });
   });
 
   test('Should render given size', () => {
-    result = render(page({ size: 'A0' }));
-
-    expect(result).toMatchSnapshot();
+    render(page({ size: 'A0' })).then(result => {
+      expect(result).toMatchSnapshot();
+    });
   });
 
   test('Should render given background color', () => {
-    result = render(
+    render(
       page({
         style: {
           backgroundColor: 'tomato',
         },
       }),
-    );
-
-    expect(result).toMatchSnapshot();
+    ).then(result => {
+      expect(result).toMatchSnapshot();
+    });
   });
 
   test('Should render landscape page', () => {
-    result = render(page({ orientation: 'landscape' }));
-
-    expect(result).toMatchSnapshot();
+    render(page({ orientation: 'landscape' })).then(result => {
+      expect(result).toMatchSnapshot();
+    });
   });
 });

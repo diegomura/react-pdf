@@ -3,13 +3,13 @@ import path from 'path';
 import { PDFRenderer, createElement, pdf } from '@react-pdf/core';
 
 export default {
-  render(element, filePath, callback) {
+  async render(element, filePath, callback) {
     const container = createElement('ROOT');
     const node = PDFRenderer.createContainer(container);
 
     PDFRenderer.updateContainer(element, node, null);
 
-    const output = pdf(container).toBuffer();
+    const output = await pdf(container).toBuffer();
 
     fs.open(filePath, 'w', (e, fd) => {
       if (e) {

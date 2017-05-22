@@ -1,7 +1,7 @@
-import PDFEntry from './PDFEntry';
+import Base from './Base';
 import { pdfObject } from '../utils/pdf';
 
-class Font extends PDFEntry {
+class Font extends Base {
   constructor(props, root) {
     super(props, root);
 
@@ -9,12 +9,13 @@ class Font extends PDFEntry {
   }
 
   render() {
-    const font = pdfObject(this.id, {
-      Type: '/Font',
-      Subtype: '/Type1',
-      Name: `/${this.name}`,
-      BaseFont: '/Helvetica',
-    }) + '\n';
+    const font =
+      pdfObject(this.id, {
+        Type: '/Font',
+        Subtype: '/Type1',
+        Name: `/${this.name}`,
+        BaseFont: '/Helvetica',
+      }) + '\n';
 
     this.offset = this.root.addOffset(font.length);
 

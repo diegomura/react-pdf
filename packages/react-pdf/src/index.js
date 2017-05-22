@@ -11,7 +11,13 @@ const Document = 'DOCUMENT';
 
 const pdf = input => {
   function parse(input) {
-    return input.render();
+    const result = input.render();
+
+    if (input.props.onRender) {
+      input.props.onRender();
+    }
+
+    return result;
   }
 
   function toBlob() {

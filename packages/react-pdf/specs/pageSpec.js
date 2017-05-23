@@ -1,15 +1,11 @@
 import React from 'react';
 import { Document, Page } from '../src';
+import MockDate from 'mockdate';
 import render from './testRenderer';
 
 describe('<Page />', () => {
   beforeEach(() => {
-    const DATE_TO_USE = new Date('2016');
-    const _Date = Date;
-    global.Date = jest.fn(() => DATE_TO_USE);
-    global.Date.UTC = _Date.UTC;
-    global.Date.parse = _Date.parse;
-    global.Date.now = _Date.now;
+    MockDate.set(new Date('2016', '1', '1'));
   });
 
   const page = (props = {}) => (

@@ -20,7 +20,7 @@
     "pdfkit": "*",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",
-    "react-pdf": "0.1.0"
+    "@react-pdf/core": "0.1.6"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

@@ -27,10 +27,11 @@
     "lodash.map": "^4.6.0",
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
+    "pdfkit": "^0.8.1",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",
     "reduce": "^1.0.1",
-    "yoga-layout": "^1.2.0"
+    "yoga-layout": "^1.5.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

@@ -1,33 +1,27 @@
-import Text from './Text';
-import View from './View';
-import Page from './Page';
 import Document from './Document';
-import omit from 'lodash/fp/omit';
+import Page from './Page';
+import View from './View';
+import Text from './Text';
+import PDFDocument from 'pdfkit';
 
 function createElement(type, props, root) {
   let instance;
 
   switch (type) {
     case 'ROOT':
-      instance = new Document();
+      instance = new PDFDocument({ autoFirstPage: false });
       break;
     case 'DOCUMENT':
-      /*
-       Since the Document instance is being created by the root element,
-       all we do when the renderer gets to <Document /> is injecting
-       it's props and return the root
-      */
-      root.setProps(omit('children', props));
-      instance = root;
+      instance = new Document(root, props);
       break;
     case 'PAGE':
-      instance = new Page(props, root);
+      instance = new Page(root, props);
       break;
     case 'TEXT':
-      instance = new Text(props, root);
+      instance = new Text(root, props);
       break;
     case 'VIEW':
-      instance = new View(props, root);
+      instance = new View(root, props);
       break;
     default:
       instance = undefined;

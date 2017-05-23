@@ -1,15 +1,6 @@
 import Base from './Base';
-import { toRGB } from '../utils/colors';
-import { pdfObject, pdfStream } from '../utils/pdf';
 
 class Text extends Base {
-  constructor(props, root) {
-    super(props, root);
-
-    this.layout.setWidth(18);
-    this.layout.setHeight(18);
-  }
-
   appendChild(child) {
     this.children = child;
   }
@@ -18,25 +9,51 @@ class Text extends Base {
     this.children = null;
   }
 
+  // Width is the minimum between the text as
+  // it were in one line and the parent's width.
+  getWidth() {
+    const layout = this.getAbsoluteLayout();
+    const parentLayout = this.parent.getAbsoluteLayout();
+
+    return Math.min(
+      this.root.widthOfString(`${this.props.children}`),
+      parentLayout.width,
+      layout.width,
+    );
+  }
+
+  // Then, with that width we calculate the text's
+  // height on the document.
+  getHeight(width) {
+    return this.root.heightOfString(`${this.props.children}`, { width });
+  }
+
+  recalculateLayout() {
+    // Set fontSize to calculate height and width
+    this.root.fontSize(this.style.fontSize || 18);
+
+    const width = this.getWidth();
+    const height = this.getHeight(width);
+
+    this.layout.setWidth(width);
+    this.layout.setHeight(height);
+  }
+
   async render() {
     const { fontSize = 18, color = 'black' } = this.style;
-    const { left, top, height } = this.getAbsoluteLayout();
+    const { left, top, width, height } = this.getAbsoluteLayout();
 
-    const text = [
-      '/DeviceRGB cs',
-      `${toRGB(color)} scn`,
-      'BT',
-      `/F1 ${fontSize} Tf`,
-      `1 0 0 -1 ${left} ${top + height} Tm`,
-      `(${this.children})Tj`,
-      'ET',
-    ].join('\n');
+    this.root.rect(left, top, width, height).stroke();
 
-    const stream = pdfObject(this.id, pdfStream(text)) + '\n';
-
-    this.offset = this.root.addOffset(stream.length);
-
-    return stream;
+    // Increase a bit the width of the text.
+    // If not, the excecution freezes.
+    this.root
+      .fillColor(color)
+      .fontSize(fontSize)
+      .text(this.children, left, top, {
+        width: width + 0.1,
+        height: height + 0.1,
+      });
   }
 }
 

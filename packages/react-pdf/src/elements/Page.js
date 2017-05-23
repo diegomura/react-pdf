@@ -1,9 +1,5 @@
 import Base from './Base';
-import Rectangle from './Rectangle';
-import Resources from './Resources';
-import GraphicState from './GraphicState';
 import sizes from '../utils/pageSizes';
-import { pdfObject } from '../utils/pdf';
 
 class Page extends Base {
   static defaultProps = {
@@ -12,19 +8,8 @@ class Page extends Base {
     style: {},
   };
 
-  constructor(props, root) {
-    super(props, root);
-
-    this.resources = new Resources(null, root);
-    this.graphicState = new GraphicState(null, root);
-
-    this.graphicState.parent = this;
-  }
-
   applyProps(props) {
     super.applyProps(props);
-
-    props = Object.assign({}, Page.defaultProps, props);
 
     if (props.size) {
       const size = sizes[props.size];
@@ -39,46 +24,26 @@ class Page extends Base {
     }
   }
 
-  createsBackgroundColor() {
-    const layout = this.layout.getComputedLayout();
-
-    return new Rectangle({ ...layout, style: this.style }, this.root);
-  }
-
-  renderContents() {
-    const contents = [
-      this.backgroundColor.ref(),
-      this.graphicState.ref(),
-      this.getChildrenRefs().join(' '),
-    ].join(' ');
-
-    return `[${contents}]`;
-  }
-
   async render() {
+    const { size, orientation } = this.props;
+
+    // Since Text needs it's parent layout, we need to calculate flexbox layout
+    // for a first time, then ask each children to recalculate it's layout, to then
+    // calculate flexbox's layout one more time based new widths and heights.
     this.layout.calculateLayout();
-    this.backgroundColor = this.createsBackgroundColor();
+    this.recalculateLayout();
+    this.layout.calculateLayout();
 
-    const { width, height } = this.layout.getComputedLayout();
+    this.root.addPage({ size, layout: orientation });
 
-    const page =
-      pdfObject(this.id, {
-        Type: '/Page',
-        Parent: this.parent.ref(),
-        Contents: this.renderContents(),
-        Resources: this.resources.ref(),
-        MediaBox: `[0 0 ${width} ${height}]`,
-      }) + '\n';
+    if (this.style.backgroundColor) {
+      this.root
+        .fillColor(this.style.backgroundColor)
+        .rect(0, 0, this.root.page.width, this.root.page.height)
+        .fill();
+    }
 
-    this.offset = this.root.addOffset(page.length);
-
-    return [
-      page,
-      this.backgroundColor.render(),
-      this.graphicState.render(),
-      this.resources.render(),
-      await this.renderChildren(),
-    ].join('');
+    await this.renderChildren();
   }
 }
 

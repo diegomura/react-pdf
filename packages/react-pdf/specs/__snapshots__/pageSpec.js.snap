@@ -6,7 +6,7 @@ exports[`<Page /> Should render given background color 1`] = `
 9 0 obj
 <<
 /Keywords ()
-/CreationDate (D:20170422014110)
+/CreationDate (D:20160101000000)
 /Creator (react-pdf)
 /Producer (react-pdf)
 >>
@@ -94,7 +94,7 @@ exports[`<Page /> Should render given size 1`] = `
 1 0 obj
 <<
 /Keywords ()
-/CreationDate (D:20170422014110)
+/CreationDate (D:20160101000000)
 /Creator (react-pdf)
 /Producer (react-pdf)
 >>
@@ -182,7 +182,7 @@ exports[`<Page /> Should render landscape page 1`] = `
 17 0 obj
 <<
 /Keywords ()
-/CreationDate (D:20170422014110)
+/CreationDate (D:20160101000000)
 /Creator (react-pdf)
 /Producer (react-pdf)
 >>

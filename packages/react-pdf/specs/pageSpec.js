@@ -1,8 +1,13 @@
 import React from 'react';
 import { Document, Page } from '../src';
+import MockDate from 'mockdate';
 import render from './testRenderer';
 
 describe('<Page />', () => {
+  beforeEach(() => {
+    MockDate.set(new Date('2016', '1', '1'));
+  });
+
   const page = (props = {}) => (
     <Document>
       <Page {...props} />

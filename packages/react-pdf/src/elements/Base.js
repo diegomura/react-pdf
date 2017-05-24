@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout';
-import toPairsIn from 'lodash/fp/toPairsIn';
-import isFunction from 'lodash/fp/isFunction';
-import upperFirst from 'lodash/fp/upperFirst';
+import toPairsIn from 'lodash.topairsin';
+import isFunction from 'lodash.isfunction';
+import upperFirst from 'lodash.upperfirst';
 import yogaValue from '../utils/yogaValue';
 
 let id = 1;

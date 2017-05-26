@@ -23,9 +23,11 @@ const doc = (
   <Document>
     <Page size="A4">
       <View style={styles.row}>
-        <Text style={styles.block}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </Text>
+        <View style={styles.block}>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Text>
+        </View>
         <View style={styles.red} />
       </View>
     </Page>

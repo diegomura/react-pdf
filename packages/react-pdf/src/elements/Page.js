@@ -31,8 +31,8 @@ class Page extends Base {
     // for a first time, then ask each children to recalculate it's layout, to then
     // calculate flexbox's layout one more time based new widths and heights.
     this.layout.calculateLayout();
-    this.recalculateLayout();
-    this.layout.calculateLayout();
+    // this.recalculateLayout();
+    // this.layout.calculateLayout();
 
     this.root.addPage({ size, layout: orientation });
 

@@ -1,6 +1,24 @@
 import Base from './Base';
+import Yoga from 'yoga-layout';
 
 class Text extends Base {
+  constructor(root, props) {
+    super(root, props);
+
+    this.layout.setMeasureFunc((w, wm, h, hm) => {
+      console.log(`${wm} : ${w} - ${hm} : ${h}`);
+
+      // Set fontSize to calculate height and width
+      this.root.fontSize(this.style.fontSize || 18);
+
+      if (wm === Yoga.MEASURE_MODE_EXACTLY) {
+        return { height: this.getHeight(w) };
+      }
+
+      return {};
+    });
+  }
+
   appendChild(child) {
     this.children = child;
   }
@@ -42,6 +60,8 @@ class Text extends Base {
   async render() {
     const { fontSize = 18, color = 'black' } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
+
+    console.log('render', width, height);
 
     this.root.rect(left, top, width, height).stroke();
 

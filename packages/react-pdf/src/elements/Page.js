@@ -27,14 +27,19 @@ class Page extends Base {
   async render() {
     const { size, orientation } = this.props;
 
-    // Since Text needs it's parent layout, we need to calculate flexbox layout
-    // for a first time, then ask each children to recalculate it's layout, to then
-    // calculate flexbox's layout one more time based new widths and heights.
+    // Since Text needs it's parent layout,
+    // we need to calculate flexbox layout for a first time.
     this.layout.calculateLayout();
-    // this.recalculateLayout();
-    // this.layout.calculateLayout();
 
-    this.root.addPage({ size, layout: orientation });
+    // Then ask each children to recalculate it's layout.
+    // This puts all Text nodes in a dirty state
+    this.recalculateLayout();
+
+    // Finally, calculate flexbox's layout
+    // one more time based new widths and heights.
+    this.layout.calculateLayout();
+
+    this.root.addPage({ size, layout: orientation, margin: 0 });
 
     if (this.style.backgroundColor) {
       this.root

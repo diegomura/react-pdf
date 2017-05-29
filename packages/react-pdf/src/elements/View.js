@@ -6,15 +6,7 @@ class View extends Base {
   };
 
   async render() {
-    const { left, top, width, height } = this.getAbsoluteLayout();
-    const { backgroundColor } = this.style;
-
-    if (backgroundColor) {
-      this.root
-        .fillColor(backgroundColor)
-        .rect(left, top, width, height)
-        .fill();
-    }
+    this.drawBackgroundColor();
 
     await this.renderChildren();
   }

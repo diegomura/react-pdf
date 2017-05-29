@@ -89,6 +89,18 @@ class Base {
     };
   }
 
+  drawBackgroundColor() {
+    const { left, top, width, height } = this.getAbsoluteLayout();
+    const { backgroundColor } = this.style;
+
+    if (backgroundColor) {
+      this.root
+        .fillColor(backgroundColor)
+        .rect(left, top, width, height)
+        .fill();
+    }
+  }
+
   async renderChildren() {
     const childRenders = await Promise.all(
       this.children.map(child => child.render()),

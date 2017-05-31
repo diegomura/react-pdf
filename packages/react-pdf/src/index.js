@@ -39,9 +39,18 @@ const pdf = input => {
   }
 
   async function toString() {
-    // const render = await parse(input);
-    //
-    // return render;
+    let result = '';
+    const render = await parse(input);
+
+    return new Promise(resolve => {
+      render.on('data', function(buffer) {
+        result += buffer;
+      });
+
+      render.on('end', function() {
+        resolve(result);
+      });
+    });
   }
 
   return {

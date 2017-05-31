@@ -7,6 +7,7 @@ import StyleSheet from './Stylesheet';
 const View = 'VIEW';
 const Text = 'TEXT';
 const Page = 'PAGE';
+const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
 const pdf = input => {
@@ -65,6 +66,7 @@ export {
   View,
   Text,
   Page,
+  Image,
   Document,
   StyleSheet,
   createElement,

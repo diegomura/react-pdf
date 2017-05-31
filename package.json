@@ -50,7 +50,8 @@
     "jest": "^20.0.3",
     "lerna": "2.0.0-rc.3",
     "lodash.isnan": "^3.0.2",
-    "lodash.times": "^4.3.2"
+    "lodash.times": "^4.3.2",
+    "request": "^2.81.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

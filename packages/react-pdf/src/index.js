@@ -11,32 +11,46 @@ const Document = 'DOCUMENT';
 
 const pdf = input => {
   async function parse(input) {
-    const result = input.render();
+    const document = input.document;
 
-    if (input.props.onRender) {
-      input.props.onRender();
+    await document.render();
+
+    if (document.props.onRender) {
+      document.props.onRender();
     }
 
-    return result;
+    return input;
   }
 
-  async function toBlob() {
-    const render = await parse(input);
+  function toBlob() {
+    parse(input).then(() => {
+      const stream = input.pipe(Blob());
 
-    return new Blob([render], {
-      type: 'application/pdf',
+      return new Promise(resolve => {
+        stream.on('finish', () => {
+          resolve(stream.toBlob('application/pdf'));
+        });
+      });
     });
   }
 
   async function toBuffer() {
-    const render = await parse(input);
-    return new Buffer(render);
+    return await parse(input);
   }
 
   async function toString() {
+    let result = '';
     const render = await parse(input);
 
-    return render;
+    return new Promise(resolve => {
+      render.on('data', function(buffer) {
+        result += buffer;
+      });
+
+      render.on('end', function() {
+        resolve(result);
+      });
+    });
   }
 
   return {

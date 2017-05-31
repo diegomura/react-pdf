@@ -2,7 +2,6 @@
 
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
-
 import { createElement } from './elements';
 
 const PDFRenderer = ReactFiberReconciler({
@@ -33,8 +32,10 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendInitialChild(parentInstance, child) {
-    if (parentInstance !== child) {
+    if (parentInstance.appendChild) {
       parentInstance.appendChild(child);
+    } else {
+      parentInstance.document = child;
     }
   },
 
@@ -89,8 +90,10 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   appendChild(parentInstance, child) {
-    if (parentInstance !== child) {
+    if (parentInstance.appendChild) {
       parentInstance.appendChild(child);
+    } else {
+      parentInstance.document = child;
     }
   },
 

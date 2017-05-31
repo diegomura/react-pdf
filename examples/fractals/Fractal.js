@@ -5,12 +5,12 @@ import { Text, View } from '@react-pdf/core';
 import styles from './styles';
 import palette from './palette';
 
-const toggle = direction => direction === 'column' ? 'row' : 'column';
+const toggle = direction => (direction === 'column' ? 'row' : 'column');
 
 // Creates Fractal Component that renders it's step with a background color
 const Fractal = ({ steps, direction = 'column' }) => {
   if (steps === 0) {
-    return <View />;
+    return null;
   }
 
   const fractalStyle = {

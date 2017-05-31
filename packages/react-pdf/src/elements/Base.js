@@ -4,27 +4,25 @@ import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
 import yogaValue from '../utils/yogaValue';
 
-let id = 1;
-
 class Base {
   parent = null;
   children = [];
 
-  constructor(props, root) {
-    this.id = id++;
+  static defaultProps = {
+    style: {},
+  };
+
+  constructor(root, props) {
     this.root = root;
-    this.offset = null;
 
     this.props = {
       ...this.constructor.defaultProps,
+      ...Base.defaultProps,
       ...props,
     };
 
     this.style = this.props.style;
     this.layout = Yoga.Node.create();
-
-    // Register node with Document to create the reference table
-    root.addNode(this);
 
     if (this.props) {
       this.applyProps(this.props);
@@ -72,22 +70,13 @@ class Base {
     }
   }
 
-  hasChildren() {
-    return Array.isArray(this.children) && this.children.length !== 0;
-  }
-
-  getChildrenRefs() {
-    if (this.hasChildren()) {
-      return this.children.map(child =>
-        [child.ref(), ...child.getChildrenRefs()].join(' '),
-      );
-    }
-
-    return [];
+  recalculateLayout() {
+    this.children.forEach(child => child.recalculateLayout());
   }
 
   getAbsoluteLayout() {
     const myLayout = this.layout.getComputedLayout();
+
     const parentLayout = this.parent.getAbsoluteLayout
       ? this.parent.getAbsoluteLayout()
       : { left: 0, top: 0 };
@@ -100,27 +89,28 @@ class Base {
     };
   }
 
-  ref() {
-    return `${this.id} 0 R`;
+  drawBackgroundColor() {
+    const { left, top, width, height } = this.getAbsoluteLayout();
+    const { backgroundColor } = this.style;
+
+    if (backgroundColor) {
+      this.root
+        .fillColor(backgroundColor)
+        .rect(left, top, width, height)
+        .fill();
+    }
   }
 
   async renderChildren() {
     const childRenders = await Promise.all(
       this.children.map(child => child.render()),
     );
-    return childRenders.join('');
+    return childRenders;
   }
 
   async render(value) {
-    // Get current offset and increment it
-    this.offset = this.root.addOffset(value.length);
-
     return [value, await this.renderChildren()].join('');
   }
 }
-
-Base.defaultProps = {
-  style: {},
-};
 
 export default Base;

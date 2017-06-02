@@ -1,7 +1,6 @@
 import Yoga from 'yoga-layout';
 import Base from './Base';
-import JPEG from '../utils/jpeg';
-const request = require('request');
+import { fetchImage } from '../utils/image';
 
 class Image extends Base {
   image = null;
@@ -9,15 +8,35 @@ class Image extends Base {
   constructor(root, props) {
     super(root, props);
 
-    this.fetch = this.fetchImage();
+    this.fetch = fetchImage(props.src);
     this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
+  shouldGrow() {
+    return !!this.style.flexGrow;
+  }
+
+  getHeight(width) {
+    const ratio = this.image.width / this.image.height;
+    return width / ratio;
+  }
+
   measureImage(width, widthMode, height, heightMode) {
-    console.log(`${widthMode} : ${width} - ${heightMode} : ${height}`);
     if (this.image) {
       if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-        return { height: width / this.image.getRatio() };
+        return { height: this.shouldGrow() ? height : this.getHeight(width) };
+      }
+
+      if (
+        widthMode === Yoga.MEASURE_MODE_AT_MOST &&
+        heightMode === Yoga.MEASURE_MODE_AT_MOST
+      ) {
+        const imageWidth = Math.min(this.image.width, width);
+
+        return {
+          width: this.shouldGrow() ? NaN : imageWidth,
+          height: this.shouldGrow() ? height : this.getHeight(imageWidth),
+        };
       }
     }
     return {};
@@ -28,28 +47,12 @@ class Image extends Base {
     this.layout.markDirty();
   }
 
-  async fetchImage() {
-    return new Promise((resolve, reject) => {
-      request(
-        {
-          url: this.props.src,
-          method: 'GET',
-          encoding: null,
-        },
-        (error, response, body) => {
-          if (error) {
-            return reject(error);
-          }
-          return resolve(new JPEG(body));
-        },
-      );
-    });
-  }
-
   async render() {
-    const { left, top, width } = this.getAbsoluteLayout();
+    const { left, top, width, height } = this.getAbsoluteLayout();
 
-    this.root.image(this.image.getData(), left, top, { width });
+    this.drawBackgroundColor();
+
+    this.root.image(this.image.data, left, top, { width, height });
   }
 }
 

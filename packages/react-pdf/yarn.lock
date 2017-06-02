@@ -994,10 +994,6 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.0.2"
 
-lodash.isfunction@^3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.8.tgz#4db709fc81bc4a8fd7127a458a5346c5cdce2c6b"
-
 linebreak@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/linebreak/-/linebreak-0.3.0.tgz#0526480a62c05bd679f3e9d99830e09c6a7d0ed6"
@@ -1005,6 +1001,10 @@ linebreak@^0.3.0:
     base64-js "0.0.8"
     brfs "^1.3.0"
     unicode-trie "^0.3.0"
+
+lodash.isfunction@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.8.tgz#4db709fc81bc4a8fd7127a458a5346c5cdce2c6b"
 
 lodash.map@^4.6.0:
   version "4.6.0"
@@ -1252,7 +1252,7 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
-png-js@>=0.1.0:
+png-js@>=0.1.0, png-js@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/png-js/-/png-js-0.1.1.tgz#1cc7c212303acabe74263ec3ac78009580242d93"
 
@@ -1658,10 +1658,6 @@ unicode-properties@^1.0.0:
   dependencies:
     brfs "^1.4.0"
     unicode-trie "^0.3.0"
-
-unicode-trie@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/unicode-trie/-/unicode-trie-0.1.2.tgz#bd3c528bc3360cafdf71f0863cbec29fc0e84ec8"
 
 unicode-trie@^0.3.0:
   version "0.3.1"

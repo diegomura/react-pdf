@@ -52,22 +52,6 @@ class JPEG {
     pos += 2;
     this.width = data.readUInt16BE(pos);
   }
-
-  getWidth() {
-    return this.width;
-  }
-
-  getHeight() {
-    return this.height;
-  }
-
-  getRatio() {
-    return this.width / this.height;
-  }
-
-  getData() {
-    return this.data;
-  }
 }
 
 export default JPEG;

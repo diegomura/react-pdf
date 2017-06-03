@@ -33,7 +33,7 @@ class Page extends Base {
 
     // Then ask each children to recalculate it's layout.
     // This puts all Text nodes in a dirty state
-    this.recalculateLayout();
+    await this.recalculateLayout();
 
     // Finally, calculate flexbox's layout
     // one more time based new widths and heights.

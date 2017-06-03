@@ -70,8 +70,11 @@ class Base {
     }
   }
 
-  recalculateLayout() {
-    this.children.forEach(child => child.recalculateLayout());
+  async recalculateLayout() {
+    const childs = await Promise.all(
+      this.children.map(child => child.recalculateLayout()),
+    );
+    return childs;
   }
 
   getAbsoluteLayout() {

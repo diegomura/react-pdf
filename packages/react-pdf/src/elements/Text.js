@@ -74,7 +74,7 @@ class Text extends Base {
     return !isNan(parentLayout.width) && !isNan(parentLayout.height);
   }
 
-  recalculateLayout() {
+  async recalculateLayout() {
     this.layout.markDirty();
   }
 

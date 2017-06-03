@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     align: 'center',
     backgroundColor: '#e4e4e4',
     textDecoration: 'underline',
+    textTransform: 'uppercase',
   },
   body: {
     flexGrow: 1,

@@ -1,6 +1,7 @@
 import Base from './Base';
 import Yoga from 'yoga-layout';
 import isNan from 'lodash.isnan';
+import upperFirst from 'lodash.upperfirst';
 
 class Text extends Base {
   width = null;
@@ -13,7 +14,7 @@ class Text extends Base {
   }
 
   appendChild(child) {
-    this.children = child;
+    this.children = this.transformText(child);
   }
 
   removeChild(child) {
@@ -26,6 +27,19 @@ class Text extends Base {
 
   getHeight(width) {
     return this.root.heightOfString(`${this.props.children}`, { width });
+  }
+
+  transformText(text) {
+    switch (this.style.textTransform) {
+      case 'uppercase':
+        return text.toUpperCase();
+      case 'lowercase':
+        return text.toLowerCase();
+      case 'capitalize':
+        return upperFirst(text);
+      default:
+        return text;
+    }
   }
 
   // Yoga measurement function. Decides which width and height should the text have
@@ -79,8 +93,13 @@ class Text extends Base {
   }
 
   async render() {
-    const { fontSize = 18, color = 'black', align } = this.style;
-    const { left, top, width } = this.getAbsoluteLayout();
+    const {
+      fontSize = 18,
+      color = 'black',
+      align,
+      textDecoration,
+    } = this.style;
+    const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
 
@@ -89,7 +108,9 @@ class Text extends Base {
       .fontSize(fontSize)
       .text(this.children, left, top, {
         width: width + 0.1, // Increase a bit the width of the text or excecution freezes.
+        height: height + 0.1, // Increase a bit the height of the text or excecution freezes.
         align,
+        underline: textDecoration === 'underline',
       });
   }
 }

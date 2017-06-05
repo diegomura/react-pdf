@@ -14,37 +14,27 @@ describe('<Page />', () => {
     </Document>
   );
 
-  test('Should render A4 blank portrait page by default', done => {
-    render(page()).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
-    });
+  test('Should render A4 blank portrait page by default', async () => {
+    const result = await render(page());
+
+    expect(result).toMatchSnapshot();
   });
 
-  test('Should render given size', done => {
-    render(page({ size: 'A0' })).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
-    });
+  test('Should render given size', async () => {
+    const result = await render(page({ size: 'A0' }));
+
+    expect(result).toMatchSnapshot();
   });
 
-  test('Should render given background color', done => {
-    render(
-      page({
-        style: {
-          backgroundColor: 'tomato',
-        },
-      }),
-    ).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
-    });
+  test('Should render given background color', async () => {
+    const result = await render(page({ style: { backgroundColor: 'tomato' } }));
+
+    expect(result).toMatchSnapshot();
   });
 
-  test('Should render landscape page', done => {
-    render(page({ orientation: 'landscape' })).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
-    });
+  test('Should render landscape page', async () => {
+    const result = await render(page({ orientation: 'landscape' }));
+
+    expect(result).toMatchSnapshot();
   });
 });

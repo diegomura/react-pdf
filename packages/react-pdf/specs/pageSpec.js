@@ -5,7 +5,7 @@ import render from './testRenderer';
 
 describe('<Page />', () => {
   beforeEach(() => {
-    MockDate.set(new Date('2016', '1', '1'));
+    MockDate.set(1434319925275);
   });
 
   const page = (props = {}) => (

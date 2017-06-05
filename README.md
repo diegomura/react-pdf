@@ -1,6 +1,8 @@
 <div align="center">
   <big>
     <h1>react-pdf</h1>
+    <a href="#backers"><img src="https://opencollective.com/react-pdf/backers/badge.svg" alt="Backers on Open Collective" /></a>
+    <a href="#sponsors"><img src="https://opencollective.com/react-pdf/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
   </big>
 </div>
 
@@ -95,6 +97,36 @@ To run an example for yourself, run `yarn example -- <example-name>` locally.
 
 ## Comments
 This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental. You can check out the slides of the talk [here](https://diegomura.github.io/think-react-slides/)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute]](blob/master/CONTRIBUTING.md).
+<a href="graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+
+
+## Backers
+
+Thank you to all our backers! [[Become a backer](https://opencollective.com/react-pdf#backer)]
+
+<a href="https://opencollective.com/react-pdf#backers" target="_blank"><img src="https://opencollective.com/react-pdf/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Thank you to all our sponsors! (please ask your company to also support this open source project by [becoming a sponsor](https://opencollective.com/react-pdf#sponsor))
+
+<a href="https://opencollective.com/react-pdf/sponsor/0/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/1/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/2/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/3/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/4/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/5/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/6/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/7/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/8/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/react-pdf/sponsor/9/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/9/avatar.svg"></a>
+
+
 
 ## License
 

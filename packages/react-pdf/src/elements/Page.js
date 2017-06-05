@@ -8,11 +8,25 @@ class Page extends Base {
     style: {},
   };
 
+  getSize() {
+    const { size } = this.props;
+
+    if (typeof size === 'string') {
+      return sizes[size];
+    } else if (Array.isArray(size)) {
+      return size;
+    } else if (typeof size === 'object' && size.width && size.height) {
+      return [size.width, size.height];
+    } else {
+      throw new Error(`Invalid Page size: ${size}`);
+    }
+  }
+
   applyProps(props) {
     super.applyProps(props);
 
     if (props.size) {
-      const size = sizes[props.size];
+      const size = this.getSize();
 
       if (props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
@@ -25,7 +39,7 @@ class Page extends Base {
   }
 
   async render() {
-    const { size, orientation } = this.props;
+    const { orientation } = this.props;
 
     // Since Text needs it's parent layout,
     // we need to calculate flexbox layout for a first time.
@@ -39,7 +53,7 @@ class Page extends Base {
     // one more time based new widths and heights.
     this.layout.calculateLayout();
 
-    this.root.addPage({ size, layout: orientation, margin: 0 });
+    this.root.addPage({ size: this.getSize(), layout: orientation, margin: 0 });
 
     if (this.style.backgroundColor) {
       this.root

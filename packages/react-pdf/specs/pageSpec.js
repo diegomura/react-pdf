@@ -47,4 +47,18 @@ describe('<Page />', () => {
       done();
     });
   });
+
+  test('Should render custom size by array', done => {
+    render(page({ size: [400, 600] })).then(result => {
+      expect(result).toMatchSnapshot();
+      done();
+    });
+  });
+
+  test('Should render custom size by object', done => {
+    render(page({ size: { width: 400, height: 600 } })).then(result => {
+      expect(result).toMatchSnapshot();
+      done();
+    });
+  });
 });

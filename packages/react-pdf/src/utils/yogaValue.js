@@ -26,6 +26,12 @@ const yogaValue = (prop, value) => {
       return Yoga.JUSTIFY_SPACE_AROUND;
     case 'between':
       return Yoga.JUSTIFY_SPACE_BETWEEN;
+    case 'wrap':
+      return Yoga.WRAP_WRAP;
+    case 'wrap-reverse':
+      return Yoga.WRAP_WRAP_REVERSE;
+    case 'nowrap':
+      return Yoga.WRAP_NO_WRAP;
     case 'flex-start':
       if (prop === 'justifyContent') {
         return Yoga.JUSTIFY_FLEX_START;
@@ -86,8 +92,5 @@ const yogaValue = (prop, value) => {
 // UNIT_POINT: 1,
 // UNIT_PERCENT: 2,
 // UNIT_AUTO: 3,
-// WRAP_NO_WRAP: 0,
-// WRAP_WRAP: 1,
-// WRAP_WRAP_REVERSE: 2,
 
 export default yogaValue;

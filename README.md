@@ -1,8 +1,6 @@
 <div align="center">
   <big>
     <h1>react-pdf</h1>
-    <a href="#backers"><img src="https://opencollective.com/react-pdf/backers/badge.svg" alt="Backers on Open Collective" /></a>
-    <a href="#sponsors"><img src="https://opencollective.com/react-pdf/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
   </big>
 </div>
 

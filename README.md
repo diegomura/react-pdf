@@ -108,24 +108,6 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/reac
 
 <a href="https://opencollective.com/react-pdf#backers" target="_blank"><img src="https://opencollective.com/react-pdf/backers.svg?width=890"></a>
 
-
-## Sponsors
-
-Thank you to all our sponsors! (please ask your company to also support this open source project by [becoming a sponsor](https://opencollective.com/react-pdf#sponsor))
-
-<a href="https://opencollective.com/react-pdf/sponsor/0/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/1/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/2/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/3/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/4/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/5/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/6/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/7/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/8/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/react-pdf/sponsor/9/website" target="_blank"><img src="https://opencollective.com/react-pdf/sponsor/9/avatar.svg"></a>
-
-
-
 ## License
 
 MIT © [Diego Muracciole](http://github.com/diegomura)

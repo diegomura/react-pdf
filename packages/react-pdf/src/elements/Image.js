@@ -9,7 +9,6 @@ class Image extends Base {
     super(root, props);
 
     this.fetch = fetchImage(props.src);
-    this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
   shouldGrow() {
@@ -21,30 +20,40 @@ class Image extends Base {
     return width / ratio;
   }
 
+  getWidth(height) {
+    const ratio = this.image.width / this.image.height;
+    return height * ratio;
+  }
+
   measureImage(width, widthMode, height, heightMode) {
-    if (this.image) {
-      if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-        return { height: this.shouldGrow() ? height : this.getHeight(width) };
-      }
-
-      if (
-        widthMode === Yoga.MEASURE_MODE_AT_MOST &&
-        heightMode === Yoga.MEASURE_MODE_AT_MOST
-      ) {
-        const imageWidth = Math.min(this.image.width, width);
-
-        return {
-          width: this.shouldGrow() ? NaN : imageWidth,
-          height: this.shouldGrow() ? height : this.getHeight(imageWidth),
-        };
-      }
+    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
+      return { height: this.getHeight(width) };
     }
-    return {};
+
+    if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
+      return { width: this.getWidth(height) };
+    }
+
+    if (
+      widthMode === Yoga.MEASURE_MODE_AT_MOST &&
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
+      const imageWidth = Math.min(this.image.width, width);
+
+      return {
+        width: imageWidth,
+        height: this.getHeight(imageWidth),
+      };
+    }
   }
 
   async recalculateLayout() {
     this.image = await this.fetch;
-    this.layout.markDirty();
+
+    if (!this.shouldGrow()) {
+      this.layout.setMeasureFunc(this.measureImage.bind(this));
+      this.layout.markDirty();
+    }
   }
 
   async render() {

@@ -7,16 +7,16 @@ import { Document, Page, Text, Image, StyleSheet } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   page: { flexDirection: 'row' },
-  image: { flexGrow: 1, backgroundColor: 'grey' },
-  text: { flexGrow: 1, backgroundColor: 'red', color: 'white' },
+  image: { flexGrow: 8, backgroundColor: 'grey' },
+  text: { flexGrow: 3, backgroundColor: '#f0f0f0', color: '#212121' },
 });
 
 const doc = (
   <Document>
-    <Page style={styles.page} orientation="landscape">
+    <Page style={styles.page} size={[1500, 600]}>
       <Image
         style={styles.image}
-        src="http://img2.uploadhouse.com/fileuploads/16647/16647300b64c37cfde74abcb69e3b130ed834f0e.png"
+        src="https://static.pexels.com/photos/26822/pexels-photo.jpg"
       />
       <Text style={styles.text}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit,

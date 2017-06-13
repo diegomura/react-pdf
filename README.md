@@ -96,6 +96,18 @@ To run an example for yourself, run `yarn example -- <example-name>` locally.
 ## Comments
 This project was created to show some concepts on a [talk](https://www.meetup.com/ReactJS-Uruguay/events/234567399/), and it's purely experimental. You can check out the slides of the talk [here](https://diegomura.github.io/think-react-slides/)
 
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute]](blob/master/CONTRIBUTING.md).
+<a href="graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+
+
+## Backers
+
+Thank you to all our backers! [[Become a backer](https://opencollective.com/react-pdf#backer)]
+
+<a href="https://opencollective.com/react-pdf#backers" target="_blank"><img src="https://opencollective.com/react-pdf/backers.svg?width=890"></a>
+
 ## License
 
 MIT © [Diego Muracciole](http://github.com/diegomura)

@@ -9,6 +9,7 @@
   "dependencies": {
     "@react-pdf/core": "^0.2.0",
     "@react-pdf/node": "^0.2.0",
+    "lodash.times": "^4.3.2",
     "react": "16.0.0-alpha.4"
   }
 }

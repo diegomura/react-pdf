@@ -1,7 +1,6 @@
 import Base from './Base';
 import Yoga from 'yoga-layout';
-import isNan from 'lodash.isnan';
-import upperFirst from 'lodash.upperfirst';
+import { isNan, upperFirst } from 'lodash';
 
 class Text extends Base {
   width = null;

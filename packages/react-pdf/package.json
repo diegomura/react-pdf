@@ -24,6 +24,7 @@
     "fontkit": "^1.5.4",
     "hex-rgb": "^1.0.0",
     "lodash.isfunction": "^3.0.8",
+    "lodash.isnan": "^3.0.2",
     "lodash.map": "^4.6.0",
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",

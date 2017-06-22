@@ -49,8 +49,6 @@
     "fbjs": "^0.8.12",
     "jest": "^20.0.3",
     "lerna": "2.0.0-rc.3",
-    "lodash.isnan": "^3.0.2",
-    "lodash.times": "^4.3.2",
     "opencollective": "^1.0.3",
     "request": "^2.81.0"
   },

@@ -1,9 +1,12 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/5600341/27467077-b914a118-57b5-11e7-96f7-ee3326037591.png" height="400px"></p>
 
-
 React renderer for creating PDF files on the browser, mobile and server
 
 **This project is still in development, so please do not use `react-pdf` on production _yet_. First release soon!**
+
+[![npm](https://img.shields.io/npm/v/@react-pdf/core.svg)](https://www.npmjs.com/package/@react-pdf/core)
+[![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
+[![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
 
 ## How it works
 

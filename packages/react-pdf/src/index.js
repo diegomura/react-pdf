@@ -6,6 +6,7 @@ import StyleSheet from './Stylesheet';
 
 const View = 'VIEW';
 const Text = 'TEXT';
+const Link = 'LINK';
 const Page = 'PAGE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
@@ -65,6 +66,7 @@ export {
   PDFRenderer,
   View,
   Text,
+  Link,
   Page,
   Image,
   Document,

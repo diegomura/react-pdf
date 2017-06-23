@@ -1,7 +1,7 @@
-# <p align="center"><img src="https://user-images.githubusercontent.com/5600341/27467077-b914a118-57b5-11e7-96f7-ee3326037591.png" height="400px"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/5600341/27467077-b914a118-57b5-11e7-96f7-ee3326037591.png" height="400px"></p>
 
 
-> React renderer for creating PDF files on the browser, mobile and server
+React renderer for creating PDF files on the browser, mobile and server
 
 **This project is still in development, so please do not use `react-pdf` on production _yet_. First release soon!**
 

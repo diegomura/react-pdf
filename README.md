@@ -1,8 +1,6 @@
-<div align="center">
-  <big>
-    <h1>react-pdf</h1>
-  </big>
-</div>
+# <p align="center">
+  <img src="https://user-images.githubusercontent.com/5600341/27467077-b914a118-57b5-11e7-96f7-ee3326037591.png" height="460px">
+</p>
 
 
 > React renderer for creating PDF files on the browser, mobile and server

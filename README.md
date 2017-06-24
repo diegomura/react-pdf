@@ -1,4 +1,4 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/5600341/27467077-b914a118-57b5-11e7-96f7-ee3326037591.png" height="400px"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="400px"></p>
 
 React renderer for creating PDF files on the browser, mobile and server
 

@@ -19,20 +19,21 @@
     "babel-cli": "^6.24.0"
   },
   "dependencies": {
-    "color-name": "^1.1.2",
     "fbjs": "^0.8.4",
     "fontkit": "^1.5.4",
-    "hex-rgb": "^1.0.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.isnan": "^3.0.2",
     "lodash.map": "^4.6.0",
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
+    "normalize-css-color": "^1.0.2",
     "pdfkit": "^0.8.1",
     "png-js": "^0.1.1",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4",
     "reduce": "^1.0.1",
+    "request": "^2.81.0",
+    "string-hash": "^1.1.3",
     "yoga-layout": "^1.5.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",

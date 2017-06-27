@@ -391,10 +391,6 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-color-name@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.2.tgz#5c8ab72b64bd2215d617ae9559ebb148475cf98d"
-
 combined-stream@^1.0.5, combined-stream@~1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.5.tgz#938370a57b4a51dea2c77c15d5c5fdf895164009"
@@ -497,9 +493,9 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-emscripten-library-decorator@~0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/emscripten-library-decorator/-/emscripten-library-decorator-0.2.0.tgz#54f08075a9f82d7091729fd1daa97aa0e025d4f3"
+emscripten-library-decorator@~0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/emscripten-library-decorator/-/emscripten-library-decorator-0.2.2.tgz#d035f023e2a84c68305cc842cdeea38e67683c40"
 
 encoding@^0.1.11:
   version "0.1.12"
@@ -794,10 +790,6 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-hex-rgb@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hex-rgb/-/hex-rgb-1.0.0.tgz#532275697cb9823e052429b184c6781d46cfdf49"
-
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
@@ -1084,17 +1076,17 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-nan@^2.3.0, nan@^2.5.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
+nan@^2.3.0, nan@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
 nbind@^0.3.8:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.9.tgz#adddbe119f1a5eb3e07b79903b2040502546e6ef"
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.12.tgz#5b022d45950c1d664b360b54e6c29fa2fa5b8a59"
   dependencies:
-    emscripten-library-decorator "~0.2.0"
+    emscripten-library-decorator "~0.2.2"
     mkdirp "~0.5.1"
-    nan "^2.5.0"
+    nan "^2.6.2"
 
 node-fetch@^1.0.1:
   version "1.6.3"
@@ -1104,8 +1096,8 @@ node-fetch@^1.0.1:
     is-stream "^1.0.1"
 
 node-gyp@^3.4.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.6.0.tgz#7474f63a3a0501161dda0b6341f022f14c423fa6"
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.6.2.tgz#9bfbe54562286284838e750eac05295853fa1c60"
   dependencies:
     fstream "^1.0.0"
     glob "^7.0.3"
@@ -1147,6 +1139,10 @@ nopt@^4.0.1:
   dependencies:
     abbrev "1"
     osenv "^0.1.4"
+
+normalize-css-color@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/normalize-css-color/-/normalize-css-color-1.0.2.tgz#02991e97cccec6623fe573afbbf0de6a1f3e9f8d"
 
 normalize-path@^2.0.1:
   version "2.1.1"
@@ -1546,6 +1542,10 @@ static-module@^1.1.0:
     shallow-copy "~0.0.1"
     static-eval "~0.2.0"
     through2 "~0.4.1"
+
+string-hash@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.3.tgz#e8aafc0ac1855b4666929ed7dd1275df5d6c811b"
 
 string-width@^1.0.1:
   version "1.0.2"

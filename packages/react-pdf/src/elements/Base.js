@@ -2,7 +2,7 @@ import Yoga from 'yoga-layout';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
-import yogaValue from '../utils/yogaValue';
+import StyleSheet from '../stylesheet';
 
 class Base {
   parent = null;
@@ -21,7 +21,7 @@ class Base {
       ...props,
     };
 
-    this.style = this.props.style;
+    this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.create();
 
     if (this.props) {
@@ -44,15 +44,9 @@ class Base {
   }
 
   applyProps(props) {
-    const isLayoutFunction = prop => isFunction(this.layout[prop]);
-
-    if (props.style) {
-      toPairsIn(props.style).map(([attribute, value]) => {
-        const setter = `set${upperFirst(attribute)}`;
-
-        if (isLayoutFunction(setter)) {
-          this.applyStyle(attribute, value);
-        }
+    if (this.style) {
+      toPairsIn(this.style).map(([attribute, value]) => {
+        this.applyStyle(attribute, value);
       });
     }
   }
@@ -62,11 +56,51 @@ class Base {
 
     switch (attribute) {
       case 'margin':
+        this.layout.setMargin(Yoga.EDGE_ALL, value);
+        break;
+      case 'marginTop':
+        this.layout.setMargin(Yoga.EDGE_TOP, value);
+        break;
+      case 'marginRight':
+        this.layout.setMargin(Yoga.EDGE_RIGHT, value);
+        break;
+      case 'marginBottom':
+        this.layout.setMargin(Yoga.EDGE_BOTTOM, value);
+        break;
+      case 'marginLeft':
+        this.layout.setMargin(Yoga.EDGE_LEFT, value);
+        break;
+      case 'marginHorizontal':
+        this.layout.setMargin(Yoga.EDGE_HORIZONTAL, value);
+        break;
+      case 'marginVertical':
+        this.layout.setMargin(Yoga.EDGE_VERTICAL, value);
+        break;
       case 'padding':
-        this.layout[setter](Yoga.EDGE_ALL, value);
+        this.layout.setPadding(Yoga.EDGE_ALL, value);
+        break;
+      case 'paddingTop':
+        this.layout.setPadding(Yoga.EDGE_TOP, value);
+        break;
+      case 'paddingRight':
+        this.layout.setPadding(Yoga.EDGE_RIGHT, value);
+        break;
+      case 'paddingBottom':
+        this.layout.setPadding(Yoga.EDGE_BOTTOM, value);
+        break;
+      case 'paddingLeft':
+        this.layout.setPadding(Yoga.EDGE_LEFT, value);
+        break;
+      case 'paddingHorizontal':
+        this.layout.setPadding(Yoga.EDGE_HORIZONTAL, value);
+        break;
+      case 'paddingVertical':
+        this.layout.setPadding(Yoga.EDGE_VERTICAL, value);
         break;
       default:
-        this.layout[setter](yogaValue(attribute, value));
+        if (isFunction(this.layout[setter])) {
+          this.layout[setter](value);
+        }
     }
   }
 

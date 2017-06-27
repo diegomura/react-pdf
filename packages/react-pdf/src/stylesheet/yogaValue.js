@@ -1,7 +1,15 @@
 import Yoga from 'yoga-layout';
 
 const yogaValue = (prop, value) => {
+  const isAlignType = prop =>
+    prop === 'alignItems' || prop === 'alignContent' || prop === 'alignSelf';
+
   switch (value) {
+    case 'auto':
+      if (prop === 'alignSelf') {
+        return Yoga.ALIGN_AUTO;
+      }
+      break;
     case 'flex':
       return Yoga.DISPLAY_FLEX;
     case 'none':
@@ -19,9 +27,19 @@ const yogaValue = (prop, value) => {
     case 'baseline':
       return Yoga.ALIGN_BASELINE;
     case 'space-around':
-      return Yoga.ALIGN_SPACE_AROUND;
+      if (prop === 'justifyContent') {
+        return Yoga.JUSTIFY_SPACE_AROUND;
+      } else if (isAlignType(prop)) {
+        return Yoga.ALIGN_SPACE_AROUND;
+      }
+      break;
     case 'space-between':
-      return Yoga.ALIGN_SPACE_BETWEEN;
+      if (prop === 'justifyContent') {
+        return Yoga.JUSTIFY_SPACE_BETWEEN;
+      } else if (isAlignType(prop)) {
+        return Yoga.ALIGN_SPACE_BETWEEN;
+      }
+      break;
     case 'around':
       return Yoga.JUSTIFY_SPACE_AROUND;
     case 'between':
@@ -35,21 +53,21 @@ const yogaValue = (prop, value) => {
     case 'flex-start':
       if (prop === 'justifyContent') {
         return Yoga.JUSTIFY_FLEX_START;
-      } else if (prop === 'alignItems') {
+      } else if (isAlignType(prop)) {
         return Yoga.ALIGN_FLEX_START;
       }
       break;
     case 'flex-end':
       if (prop === 'justifyContent') {
         return Yoga.JUSTIFY_FLEX_END;
-      } else if (prop === 'alignItems') {
+      } else if (isAlignType(prop)) {
         return Yoga.ALIGN_FLEX_END;
       }
       break;
     case 'center':
       if (prop === 'justifyContent') {
         return Yoga.JUSTIFY_CENTER;
-      } else if (prop === 'alignItems') {
+      } else if (isAlignType(prop)) {
         return Yoga.ALIGN_CENTER;
       }
       break;
@@ -58,7 +76,7 @@ const yogaValue = (prop, value) => {
   }
 };
 
-// These are not developed yet
+// These are not supported yet
 
 // ALIGN_AUTO: 0,
 // DIMENSION_WIDTH: 0,

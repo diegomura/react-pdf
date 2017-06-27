@@ -2,6 +2,7 @@ import Document from './Document';
 import Page from './Page';
 import View from './View';
 import Text from './Text';
+import Link from './Link';
 import Image from './Image';
 import PDFDocument from 'pdfkit';
 
@@ -20,6 +21,9 @@ function createElement(type, props, root) {
       break;
     case 'TEXT':
       instance = new Text(root, props);
+      break;
+    case 'LINK':
+      instance = new Link(root, props);
       break;
     case 'IMAGE':
       instance = new Image(root, props);

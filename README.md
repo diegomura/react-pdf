@@ -72,6 +72,16 @@ For each example, try opening `output.pdf` to see the result.
 <table>
 	<tbody>
 		<tr>
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/text/thumb.png">
+        <br>
+        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/text/">Text</a>
+      </td>  
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/images/thumb.png">
+        <br>
+        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/images/">Images</a>
+      </td> 
 			<td align="center" valign="top">
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/page-layout/thumb.png">
 				<br>
@@ -81,17 +91,7 @@ For each example, try opening `output.pdf` to see the result.
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/fractals/thumb.png">
 				<br>
 				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/fractals/">Fractals</a>
-			</td>  
-			<td align="center" valign="top">
-				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/text/thumb.png">
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/text/">Text</a>
-			</td>  
-			<td align="center" valign="top">
-				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/images/thumb.png">
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/images/">Images</a>
-			</td>  
+			</td>   
 		</tr>
 	</tbody>
 </table>

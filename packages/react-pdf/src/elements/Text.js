@@ -14,19 +14,33 @@ class Text extends Base {
   }
 
   appendChild(child) {
-    this.children = this.transformText(child);
+    if (typeof child === 'string') {
+      this.children.push(this.transformText(child));
+    } else {
+      this.children.push(child);
+    }
   }
 
   removeChild(child) {
     this.children = null;
   }
 
+  getRawValue() {
+    return this.children.reduce((acc, child) => {
+      if (typeof child === 'string') {
+        return acc + child;
+      } else {
+        return acc + child.getRawValue();
+      }
+    }, '');
+  }
+
   getWidth() {
-    return this.root.widthOfString(`${this.props.children}`);
+    return this.root.widthOfString(this.getRawValue());
   }
 
   getHeight(width) {
-    return this.root.heightOfString(`${this.props.children}`, { width });
+    return this.root.heightOfString(this.getRawValue(), { width });
   }
 
   transformText(text) {
@@ -92,26 +106,42 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  async render() {
-    const {
-      fontSize = 18,
-      color = 'black',
+  renderText(text, isFirstNode) {
+    const { align = 'left', textDecoration } = this.style;
+
+    this.root.text(text, {
       align,
-      textDecoration,
-    } = this.style;
+      link: '',
+      continued: true,
+      underline: textDecoration === 'underline',
+    });
+  }
+
+  async render() {
     const { left, top, width, height } = this.getAbsoluteLayout();
+    const { fontSize = 18, color = 'black' } = this.style;
 
     this.drawBackgroundColor();
 
-    this.root
-      .fillColor(color)
-      .fontSize(fontSize)
-      .text(this.children, left, top, {
-        width: width + 0.1, // Increase a bit the width of the text or excecution freezes.
-        height: height + 0.1, // Increase a bit the height of the text or excecution freezes.
-        align,
-        underline: textDecoration === 'underline',
-      });
+    // Set coordinates, dimentions and continued text
+    this.root.text('', left, top, {
+      continued: true,
+      width: width + 0.1, // Increase a bit the width of the text or excecution freezes.
+      height: height + 0.1, // Increase a bit the height of the text or excecution freezes.
+    });
+
+    this.children.forEach((child, index) => {
+      this.root.fillColor(color).fontSize(fontSize);
+
+      if (typeof child === 'string') {
+        this.renderText(child);
+      } else {
+        child.render({ inline: true });
+      }
+    });
+
+    // Text should not longer be continuos
+    this.root.text('', { continued: false });
   }
 }
 

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import ReactPDF from '@react-pdf/node';
-import { Document, Page, View, Text, StyleSheet } from '@react-pdf/core';
+import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   title: {
@@ -49,7 +49,12 @@ const styles = StyleSheet.create({
 const doc = (
   <Document>
     <Page size="A4">
-      <Text style={styles.title}>Lorem Ipsum</Text>
+      <Link
+        style={styles.title}
+        src="https://es.wikipedia.org/wiki/Lorem_ipsum"
+      >
+        Lorem Ipsum
+      </Link>
       <View style={styles.body}>
         <View style={styles.row}>
           <Text style={styles.text}>
@@ -57,7 +62,8 @@ const doc = (
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
             nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum.
           </Text>
           <View style={styles.fill1} />
         </View>
@@ -68,7 +74,8 @@ const doc = (
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
             nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum.
           </Text>
         </View>
         <View style={styles.row}>
@@ -77,7 +84,8 @@ const doc = (
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
             nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum.
           </Text>
           <View style={styles.fill3} />
         </View>
@@ -88,7 +96,8 @@ const doc = (
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
             nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum.
           </Text>
         </View>
       </View>

@@ -55,9 +55,6 @@ class Base {
     const setter = `set${upperFirst(attribute)}`;
 
     switch (attribute) {
-      case 'margin':
-        this.layout.setMargin(Yoga.EDGE_ALL, value);
-        break;
       case 'marginTop':
         this.layout.setMargin(Yoga.EDGE_TOP, value);
         break;
@@ -70,15 +67,6 @@ class Base {
       case 'marginLeft':
         this.layout.setMargin(Yoga.EDGE_LEFT, value);
         break;
-      case 'marginHorizontal':
-        this.layout.setMargin(Yoga.EDGE_HORIZONTAL, value);
-        break;
-      case 'marginVertical':
-        this.layout.setMargin(Yoga.EDGE_VERTICAL, value);
-        break;
-      case 'padding':
-        this.layout.setPadding(Yoga.EDGE_ALL, value);
-        break;
       case 'paddingTop':
         this.layout.setPadding(Yoga.EDGE_TOP, value);
         break;
@@ -90,12 +78,6 @@ class Base {
         break;
       case 'paddingLeft':
         this.layout.setPadding(Yoga.EDGE_LEFT, value);
-        break;
-      case 'paddingHorizontal':
-        this.layout.setPadding(Yoga.EDGE_HORIZONTAL, value);
-        break;
-      case 'paddingVertical':
-        this.layout.setPadding(Yoga.EDGE_VERTICAL, value);
         break;
       default:
         if (isFunction(this.layout[setter])) {
@@ -123,6 +105,15 @@ class Base {
       top: myLayout.top + parentLayout.top,
       height: myLayout.height,
       width: myLayout.width,
+    };
+  }
+
+  getComputedPadding() {
+    return {
+      top: this.layout.getComputedPadding(Yoga.EDGE_TOP),
+      right: this.layout.getComputedPadding(Yoga.EDGE_RIGHT),
+      bottom: this.layout.getComputedPadding(Yoga.EDGE_BOTTOM),
+      left: this.layout.getComputedPadding(Yoga.EDGE_LEFT),
     };
   }
 

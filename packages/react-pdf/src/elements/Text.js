@@ -118,16 +118,18 @@ class Text extends Base {
   }
 
   async render() {
+    const padding = this.getComputedPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { fontSize = 18, color = 'black' } = this.style;
 
     this.drawBackgroundColor();
 
     // Set coordinates, dimentions and continued text
-    this.root.text('', left, top, {
+    // Increase a bit the width and height of the text or excecution freezes.
+    this.root.text('', left + padding.left, top + padding.top, {
       continued: true,
-      width: width + 0.1, // Increase a bit the width of the text or excecution freezes.
-      height: height + 0.1, // Increase a bit the height of the text or excecution freezes.
+      width: width - padding.left - padding.right + 0.1,
+      height: height - padding.top - padding.bottom + 0.1,
     });
 
     this.children.forEach((child, index) => {

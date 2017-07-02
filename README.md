@@ -100,7 +100,7 @@ To run an example for yourself, run `yarn example -- <example-name>` locally.
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute]](blob/master/CONTRIBUTING.md).
+This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
 <a href="https://github.com/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 

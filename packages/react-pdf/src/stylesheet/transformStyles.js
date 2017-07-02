@@ -2,6 +2,34 @@ import yogaValue from './yogaValue';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 const styleShortHands = {
+  margin: {
+    marginTop: true,
+    marginRight: true,
+    marginBottom: true,
+    marginLeft: true,
+  },
+  marginHorizontal: {
+    marginLeft: true,
+    marginRight: true,
+  },
+  marginVertical: {
+    marginTop: true,
+    marginBottom: true,
+  },
+  padding: {
+    paddingTop: true,
+    paddingRight: true,
+    paddingBottom: true,
+    paddingLeft: true,
+  },
+  paddingHorizontal: {
+    paddingLeft: true,
+    paddingRight: true,
+  },
+  paddingVertical: {
+    paddingTop: true,
+    paddingBottom: true,
+  },
   borderColor: {
     borderTopColor: true,
     borderRightColor: true,
@@ -60,6 +88,12 @@ const transformStyles = style => {
       case 'textAlignVertical':
         resolvedStyle.verticalAlign = value === 'center' ? 'middle' : value;
         break;
+      case 'margin':
+      case 'marginHorizontal':
+      case 'marginVertical':
+      case 'padding':
+      case 'paddingHorizontal':
+      case 'paddingVertical':
       case 'borderColor':
       case 'borderRadius':
       case 'borderStyle':

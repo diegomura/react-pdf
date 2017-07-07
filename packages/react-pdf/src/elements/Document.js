@@ -19,10 +19,9 @@ class Document {
   }
 
   async renderChildren() {
-    const childRenders = await Promise.all(
-      this.children.map(child => child.render()),
-    );
-    return childRenders;
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].render();
+    }
   }
 
   async render() {

@@ -2,7 +2,8 @@
 'use strict';
 
 import { PDFRenderer, createElement } from './renderer';
-import StyleSheet from './Stylesheet';
+import StyleSheet from './stylesheet';
+import Font from './font';
 
 const View = 'VIEW';
 const Text = 'TEXT';
@@ -68,6 +69,7 @@ export {
   Text,
   Link,
   Page,
+  Font,
   Image,
   Document,
   StyleSheet,

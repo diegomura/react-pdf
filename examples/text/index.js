@@ -3,7 +3,15 @@
 
 import React from 'react';
 import ReactPDF from '@react-pdf/node';
-import { Document, Page, View, Text, Link, StyleSheet } from '@react-pdf/core';
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  Link,
+  Font,
+  StyleSheet,
+} from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   title: {
@@ -13,6 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e4e4e4',
     textDecoration: 'underline',
     textTransform: 'uppercase',
+    fontFamily: 'Roboto',
   },
   body: {
     flexGrow: 1,
@@ -27,6 +36,7 @@ const styles = StyleSheet.create({
   text: {
     flexGrow: 3,
     margin: 10,
+    fontFamily: 'Oswald',
   },
   fill1: {
     flexGrow: 2,
@@ -45,6 +55,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#e29e37',
   },
 });
+
+Font.register(`${__dirname}/fonts/Roboto-Regular.ttf`, { family: 'Roboto' });
+Font.register(
+  'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf',
+  { family: 'Oswald' },
+);
 
 const doc = (
   <Document>

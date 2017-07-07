@@ -130,14 +130,9 @@ class Base {
   }
 
   async renderChildren() {
-    const childRenders = await Promise.all(
-      this.children.map(child => child.render()),
-    );
-    return childRenders;
-  }
-
-  async render(value) {
-    return [value, await this.renderChildren()].join('');
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].render();
+    }
   }
 }
 

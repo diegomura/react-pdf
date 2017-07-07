@@ -21,6 +21,7 @@
   "dependencies": {
     "fbjs": "^0.8.4",
     "fontkit": "^1.5.4",
+    "is-url": "^1.2.2",
     "lodash.isfunction": "^3.0.8",
     "lodash.isnan": "^3.0.2",
     "lodash.map": "^4.6.0",

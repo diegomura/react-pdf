@@ -1,41 +1,9 @@
 import Text from './Text';
 
+const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
+
 class Link extends Text {
-  async render({ inline } = {}) {
-    const {
-      align,
-      fontSize = 18,
-      color = 'blue',
-      textDecoration = 'underline',
-    } = this.style;
-
-    if (inline) {
-      this.root.fillColor(color).fontSize(fontSize).text(this.children, {
-        link: this._getSrc(),
-        continued: true,
-        underline: textDecoration === 'underline',
-      });
-    } else {
-      this.drawBackgroundColor();
-
-      const { left, top, width, height } = this.getAbsoluteLayout();
-
-      this.root
-        .fillColor(color)
-        .fontSize(fontSize)
-        .text(this.children, left, top, {
-          link: this._getSrc(),
-          width: width + 0.1,
-          height: height + 0.1,
-          align,
-          underline: textDecoration === 'underline',
-        });
-    }
-  }
-
-  _getSrc() {
-    const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
-
+  getSrc() {
     let { src } = this.props;
 
     if (typeof src === 'string' && !src.match(PROTOCOL_REGEXP)) {
@@ -43,6 +11,54 @@ class Link extends Text {
     }
 
     return src;
+  }
+
+  renderInlineLink() {
+    const {
+      fontSize = 18,
+      color = 'blue',
+      textDecoration = 'underline',
+    } = this.style;
+
+    this.root.fillColor(color).fontSize(fontSize).text(this.children, {
+      link: this.getSrc(),
+      continued: true,
+      underline: textDecoration === 'underline',
+    });
+  }
+
+  renderBlockLink() {
+    const {
+      align,
+      fontSize = 18,
+      color = 'blue',
+      textDecoration = 'underline',
+    } = this.style;
+
+    const { left, top, width, height } = this.getAbsoluteLayout();
+
+    this.drawBackgroundColor();
+
+    this.root
+      .fillColor(color)
+      .fontSize(fontSize)
+      .text(this.children, left, top, {
+        link: this.getSrc(),
+        width: width + 0.1,
+        height: height + 0.1,
+        align,
+        underline: textDecoration === 'underline',
+      });
+  }
+
+  async render({ inline } = {}) {
+    await this.loadFont();
+
+    if (inline) {
+      this.renderInlineLink();
+    } else {
+      this.renderBlockLink();
+    }
   }
 }
 

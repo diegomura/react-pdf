@@ -1,4 +1,5 @@
 import Base from './Base';
+import Font from '../font';
 import Yoga from 'yoga-layout';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
@@ -106,8 +107,21 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  renderText(text, isFirstNode) {
+  async loadFont() {
+    const { fontFamily } = this.style;
+
+    if (fontFamily) {
+      await Font.load(fontFamily, this.root);
+      this.root.font(fontFamily);
+    } else {
+      this.root.font('Helvetica');
+    }
+  }
+
+  async renderText(text, isFirstNode) {
     const { align = 'left', textDecoration } = this.style;
+
+    await this.loadFont();
 
     this.root.text(text, {
       align,
@@ -132,15 +146,18 @@ class Text extends Base {
       height: height - padding.top - padding.bottom + 0.1,
     });
 
-    this.children.forEach((child, index) => {
+    // Render childs: text and inline elements
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+
       this.root.fillColor(color).fontSize(fontSize);
 
       if (typeof child === 'string') {
-        this.renderText(child);
+        await this.renderText(child);
       } else {
-        child.render({ inline: true });
+        await child.render({ inline: true });
       }
-    });
+    }
 
     // Text should not longer be continuos
     this.root.text('', { continued: false });

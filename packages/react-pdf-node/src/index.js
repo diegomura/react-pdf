@@ -13,12 +13,18 @@ export default {
     const stream = fs.createWriteStream(filePath);
     output.pipe(stream);
 
-    stream.on('finish', function() {
-      if (callback) {
-        callback(output, filePath);
-      }
+    await new Promise((resolve, reject) => {
+      stream.on('finish', () => {
+        if (callback) {
+          callback(output, filePath);
+        }
+        resolve(output);
 
-      console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
+        console.log(
+          `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
+        );
+      });
+      stream.on('error', reject);
     });
   },
 };

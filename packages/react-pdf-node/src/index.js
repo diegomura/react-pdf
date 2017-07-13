@@ -10,12 +10,21 @@ export default {
     PDFRenderer.updateContainer(element, node, null);
 
     const output = await pdf(container).toBuffer();
-    output.pipe(fs.createWriteStream(filePath));
+    const stream = fs.createWriteStream(filePath);
+    output.pipe(stream);
 
-    if (callback) {
-      callback(output, filePath);
-    }
+    await new Promise((resolve, reject) => {
+      stream.on('finish', () => {
+        if (callback) {
+          callback(output, filePath);
+        }
+        resolve(output);
 
-    console.log(`📝  PDF successfuly exported on ${path.resolve(filePath)}`);
+        console.log(
+          `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
+        );
+      });
+      stream.on('error', reject);
+    });
   },
 };

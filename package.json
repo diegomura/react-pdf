@@ -3,8 +3,9 @@
   "version": "0.4.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
-    "build": "lerna run build --ignore @react-pdf/example-*",
+    "build": "npm run build:clean && lerna run build --ignore @react-pdf/example-*",
     "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/examples",
+    "build:clean": "lerna run build:clean",
     "prepublish": "npm run build",
     "postinstall": "lerna bootstrap && opencollective postinstall",
     "example": "babel-node ./examples/index.js",

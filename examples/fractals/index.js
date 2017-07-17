@@ -26,6 +26,4 @@ const doc = (
   </Document>
 );
 
-ReactPDF.render(doc, `${__dirname}/output.pdf`, () => {
-  console.log('Fractals rendered!');
-});
+ReactPDF.render(doc, `${__dirname}/output.pdf`);

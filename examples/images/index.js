@@ -22,7 +22,7 @@ const doc = (
     <Page style={styles.page} size={[1500, 600]}>
       <Image
         style={styles.image}
-        src="https://static.pexels.com/photos/26822/pexels-photo.jpg"
+        src="http://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg"
       />
       <Text style={styles.text}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit,

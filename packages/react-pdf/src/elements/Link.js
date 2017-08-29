@@ -38,6 +38,7 @@ class Link extends Text {
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
+    this.drawBorders();
 
     this.root
       .fillColor(color)

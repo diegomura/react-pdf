@@ -3,6 +3,7 @@ import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
 import StyleSheet from '../stylesheet';
+import Borders from '../mixins/borders';
 
 class Base {
   parent = null;
@@ -79,6 +80,18 @@ class Base {
       case 'paddingLeft':
         this.layout.setPadding(Yoga.EDGE_LEFT, value);
         break;
+      case 'borderTopWidth':
+        this.layout.setBorder(Yoga.EDGE_TOP, value);
+        break;
+      case 'borderRightWidth':
+        this.layout.setBorder(Yoga.EDGE_RIGHT, value);
+        break;
+      case 'borderBottomWidth':
+        this.layout.setBorder(Yoga.EDGE_BOTTOM, value);
+        break;
+      case 'borderLeftWidth':
+        this.layout.setBorder(Yoga.EDGE_LEFT, value);
+        break;
       default:
         if (isFunction(this.layout[setter])) {
           this.layout[setter](value);
@@ -135,5 +148,7 @@ class Base {
     }
   }
 }
+
+Object.assign(Base.prototype, Borders);
 
 export default Base;

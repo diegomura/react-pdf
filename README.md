@@ -96,7 +96,15 @@ For each example, try opening `output.pdf` to see the result.
 	</tbody>
 </table>
 
-To run an example for yourself, run `yarn example -- <example-name>` locally.
+```sh
+# To run the examples, first clone the project and install the dependencies: 
+git clone https://github.com/diegomura/react-pdf.git
+cd react-pdf
+yarn install
+
+# Then, run `yarn example -- <example-name>`
+yarn example -- fractals
+```
 
 ## Contributors
 

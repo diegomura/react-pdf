@@ -96,13 +96,14 @@ For each example, try opening `output.pdf` to see the result.
 	</tbody>
 </table>
 
+To run the examples, first clone the project and install the dependencies: 
 ```sh
-# To run the examples, first clone the project and install the dependencies: 
 git clone https://github.com/diegomura/react-pdf.git
 cd react-pdf
 yarn install
-
-# Then, run `yarn example -- <example-name>`
+```
+Then, run `yarn example -- <example-name>`
+```sh
 yarn example -- fractals
 ```
 

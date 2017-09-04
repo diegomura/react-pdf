@@ -7,6 +7,7 @@ class View extends Base {
 
   async render() {
     this.drawBackgroundColor();
+    this.drawBorders();
 
     await this.renderChildren();
   }

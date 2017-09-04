@@ -137,6 +137,7 @@ class Text extends Base {
     const { fontSize = 18, color = 'black' } = this.style;
 
     this.drawBackgroundColor();
+    this.drawBorders();
 
     // Set coordinates, dimentions and continued text
     // Increase a bit the width and height of the text or excecution freezes.

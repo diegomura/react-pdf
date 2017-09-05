@@ -92,10 +92,39 @@ class Base {
       case 'borderLeftWidth':
         this.layout.setBorder(Yoga.EDGE_LEFT, value);
         break;
+      case 'position':
+        this.layout.setPositionType(
+          value === 'absolute'
+            ? Yoga.POSITION_TYPE_ABSOLUTE
+            : Yoga.POSITION_TYPE_RELATIVE,
+        );
+        break;
+      case 'top':
+        this.setPosition(Yoga.EDGE_TOP, value);
+        break;
+      case 'right':
+        this.setPosition(Yoga.EDGE_RIGHT, value);
+        break;
+      case 'bottom':
+        this.setPosition(Yoga.EDGE_BOTTOM, value);
+        break;
+      case 'left':
+        this.setPosition(Yoga.EDGE_LEFT, value);
+        break;
       default:
         if (isFunction(this.layout[setter])) {
           this.layout[setter](value);
         }
+    }
+  }
+
+  setPosition(edge, value) {
+    const isPercent = /^(\d+)?%$/g.exec(value);
+
+    if (isPercent) {
+      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPosition(edge, value);
     }
   }
 

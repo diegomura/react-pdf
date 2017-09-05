@@ -36,7 +36,7 @@
     "reduce": "^1.0.1",
     "request": "^2.81.0",
     "string-hash": "^1.1.3",
-    "yoga-layout": "^1.5.0"
+    "yoga-layout": "^1.6.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

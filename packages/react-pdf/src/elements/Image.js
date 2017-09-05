@@ -61,6 +61,7 @@ class Image extends Base {
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
+    this.drawBorders();
 
     this.root.image(this.image.data, left + padding.left, top + padding.top, {
       width: width - padding.left - padding.right,

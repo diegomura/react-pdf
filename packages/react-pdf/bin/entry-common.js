@@ -135,9 +135,10 @@ module.exports = function(bind, lib) {
         unit = value.unit;
         asNumber = value.valueOf();
       } else {
-        unit = typeof value === `string` && value.endsWith(`%`)
-          ? constants.UNIT_PERCENT
-          : constants.UNIT_POINT;
+        unit =
+          typeof value === `string` && value.endsWith(`%`)
+            ? constants.UNIT_PERCENT
+            : constants.UNIT_POINT;
         asNumber = parseFloat(value);
       }
 

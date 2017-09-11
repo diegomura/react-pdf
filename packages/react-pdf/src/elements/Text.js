@@ -1,6 +1,6 @@
 import Base from './Base';
 import Font from '../font';
-import Yoga from 'yoga-layout';
+import Yoga from '../../bin';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 

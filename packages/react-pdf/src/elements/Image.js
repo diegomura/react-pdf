@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout';
+import Yoga from '../../bin';
 import Base from './Base';
 import { fetchImage } from '../utils/image';
 

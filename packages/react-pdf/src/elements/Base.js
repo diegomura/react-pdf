@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout';
+import Yoga from '../../bin';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
@@ -23,7 +23,7 @@ class Base {
     };
 
     this.style = StyleSheet.resolve(this.props.style);
-    this.layout = Yoga.Node.create();
+    this.layout = Yoga.Node.createDefault();
 
     if (this.props) {
       this.applyProps(this.props);

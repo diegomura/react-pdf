@@ -71,11 +71,13 @@ class Text extends Base {
       return { height: this.style.flexGrow ? NaN : this.height };
     }
 
-    // If we have a known height, we just keep the (previously calculated)
-    // width as it is, by returning NaN
+    // If we have a known height and flexGrow, we just keep the (previously calculated)
+    // width as it is, by returning NaN. Otherwise, we calculate the text width.
     if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
       this.height = height;
-      return { width: NaN };
+      this.width = this.style.flexGrow ? NaN : this.getWidth();
+
+      return { width: this.width };
     }
 
     // If we know nothing, we skip this measurement step until the parent

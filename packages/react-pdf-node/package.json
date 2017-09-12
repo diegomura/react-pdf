@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/node",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "main": "lib/index.js",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "build:clean": "node_modules/.bin/rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.4.3",
+    "@react-pdf/core": "^0.4.5",
     "react": "16.0.0-alpha.4"
   },
   "devDependencies": {

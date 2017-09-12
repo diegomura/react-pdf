@@ -10,13 +10,13 @@
     "postinstall": "lerna bootstrap && opencollective postinstall",
     "example": "babel-node ./examples/index.js",
     "precommit": "npm run example -- all && git add . && lint-staged",
-    "lint": "eslint performance src --ignore-path .gitignore",
+    "lint": "eslint performance src",
     "test": "jest --config .jestrc"
   },
   "lint-staged": {
     "*.js": [
       "npm run lint",
-      "prettier --single-quote --trailing-comma=all --write",
+      "prettier --write",
       "git add"
     ]
   },
@@ -44,7 +44,7 @@
     "husky": "^0.13.2",
     "lint-staged": "^3.4.2",
     "mockdate": "^2.0.1",
-    "prettier": "^1.3.1"
+    "prettier": "^1.6.1"
   },
   "dependencies": {
     "jest": "^20.0.4",

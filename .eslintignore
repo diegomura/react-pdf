@@ -1,0 +1,3 @@
+.gitignore
+packages/react-pdf/bin/*
+packages/react-pdf/scripts/*

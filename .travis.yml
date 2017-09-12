@@ -9,6 +9,13 @@ os:
  - osx
  - linux
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.9.3
+
 matrix:
   fast_finish: true
 

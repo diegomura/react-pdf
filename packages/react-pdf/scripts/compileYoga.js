@@ -18,5 +18,5 @@ copyFile(yogaSrc + '/sources/entry-common.js', bin + '/entry-common.js');
 copyFile(yogaSrc + '/sources/YGEnums.js', bin + '/YGEnums.js');
 copyFile(
   yogaSrc + '/build/Release/nbind.node',
-  bin + '/' + nodeVersion + '/nbind.node',
+  bin + '/' + nodeVersion + '/nbind.node'
 );

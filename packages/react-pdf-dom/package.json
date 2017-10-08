@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/dom",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Bindings for react-pdf to render inside a react-dom application",
   "main": "./lib/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/core": "^0.4.5",
+    "@react-pdf/core": "^0.4.6",
     "blob-stream": "^0.1.3",
     "pdfkit": "*",
     "react": "16.0.0-alpha.4",

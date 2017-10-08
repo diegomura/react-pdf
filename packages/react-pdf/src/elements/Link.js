@@ -14,13 +14,9 @@ class Link extends Text {
   }
 
   renderInlineLink() {
-    const {
-      fontSize = 18,
-      color = 'blue',
-      textDecoration = 'underline',
-    } = this.style;
+    const { color = 'blue', textDecoration = 'underline' } = this.style;
 
-    this.root.fillColor(color).fontSize(fontSize).text(this.children, {
+    this.root.fillColor(color).text(this.children, {
       link: this.getSrc(),
       continued: true,
       underline: textDecoration === 'underline',
@@ -28,32 +24,25 @@ class Link extends Text {
   }
 
   renderBlockLink() {
-    const {
-      align,
-      fontSize = 18,
-      color = 'blue',
-      textDecoration = 'underline',
-    } = this.style;
+    const { align, color = 'blue', textDecoration = 'underline' } = this.style;
 
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
     this.drawBorders();
 
-    this.root
-      .fillColor(color)
-      .fontSize(fontSize)
-      .text(this.children, left, top, {
-        link: this.getSrc(),
-        width: width + 0.1,
-        height: height + 0.1,
-        align,
-        underline: textDecoration === 'underline',
-      });
+    this.root.fillColor(color).text(this.children, left, top, {
+      link: this.getSrc(),
+      width,
+      height,
+      align,
+      underline: textDecoration === 'underline',
+    });
   }
 
   async render({ inline } = {}) {
-    await this.loadFont();
+    this.setFontSize();
+    this.setFontFamily();
 
     if (inline) {
       this.renderInlineLink();

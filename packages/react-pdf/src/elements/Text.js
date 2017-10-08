@@ -1,5 +1,4 @@
 import Base from './Base';
-import Font from '../font';
 import Yoga from '../../bin';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
@@ -44,6 +43,14 @@ class Text extends Base {
     return this.root.heightOfString(this.getRawValue(), { width });
   }
 
+  setFontSize() {
+    this.root.fontSize(this.style.fontSize || 18);
+  }
+
+  setFontFamily() {
+    this.root.font(this.style.fontFamily || 'Helvetica');
+  }
+
   transformText(text) {
     switch (this.style.textTransform) {
       case 'uppercase':
@@ -60,8 +67,9 @@ class Text extends Base {
   // Yoga measurement function. Decides which width and height should the text have
   // based on the available parent dimentions and their modes (exactly or at most)
   measureText(width, widthMode, height, heightMode) {
-    // Set fontSize to calculate correct height and width
-    this.root.fontSize(this.style.fontSize || 18);
+    // Set fontSize and fontFamily to calculate correct height and width
+    this.setFontSize();
+    this.setFontFamily();
 
     // If we have a known width, we just calculate the height of the text.
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
@@ -109,21 +117,8 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  async loadFont() {
-    const { fontFamily } = this.style;
-
-    if (fontFamily) {
-      await Font.load(fontFamily, this.root);
-      this.root.font(fontFamily);
-    } else {
-      this.root.font('Helvetica');
-    }
-  }
-
   async renderText(text, isFirstNode) {
     const { align = 'left', textDecoration } = this.style;
-
-    await this.loadFont();
 
     this.root.text(text, {
       align,
@@ -136,7 +131,7 @@ class Text extends Base {
   async render() {
     const padding = this.getComputedPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const { fontSize = 18, color = 'black' } = this.style;
+    const { color = 'black' } = this.style;
 
     this.drawBackgroundColor();
     this.drawBorders();
@@ -145,15 +140,17 @@ class Text extends Base {
     // Increase a bit the width and height of the text or excecution freezes.
     this.root.text('', left + padding.left, top + padding.top, {
       continued: true,
-      width: width - padding.left - padding.right + 0.1,
-      height: height - padding.top - padding.bottom + 0.1,
+      width: width - padding.left - padding.right,
+      height: height - padding.top - padding.bottom,
     });
 
     // Render childs: text and inline elements
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
 
-      this.root.fillColor(color).fontSize(fontSize);
+      this.setFontSize();
+      this.setFontFamily();
+      this.root.fillColor(color);
 
       if (typeof child === 'string') {
         await this.renderText(child);

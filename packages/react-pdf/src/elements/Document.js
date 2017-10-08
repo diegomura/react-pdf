@@ -1,3 +1,5 @@
+import Font from '../font';
+
 class Document {
   children = [];
 
@@ -18,6 +20,24 @@ class Document {
     this.children.slice(index, 1);
   }
 
+  async loadFonts() {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.style && node.style.fontFamily) {
+        await Font.load(node.style.fontFamily, this.root);
+      }
+
+      if (node.children) {
+        node.children.forEach(childNode => {
+          listToExplore.push(childNode);
+        });
+      }
+    }
+  }
+
   async renderChildren() {
     for (let i = 0; i < this.children.length; i++) {
       await this.children[i].render();
@@ -25,6 +45,7 @@ class Document {
   }
 
   async render() {
+    await this.loadFonts();
     await this.renderChildren();
 
     this.root.end();

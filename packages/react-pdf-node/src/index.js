@@ -1,15 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import { PDFRenderer, createElement, pdf } from '@react-pdf/core';
+import { createElement, pdf, PDFRenderer } from '@react-pdf/core';
 
 export default {
-  async render(element, filePath, callback) {
+  async renderToStream(element) {
     const container = createElement('ROOT');
     const node = PDFRenderer.createContainer(container);
 
     PDFRenderer.updateContainer(element, node, null);
 
-    const output = await pdf(container).toBuffer();
+    return await pdf(container).toBuffer();
+  },
+  async renderToFile(element, filePath, callback) {
+    const output = await this.renderToStream(element);
     const stream = fs.createWriteStream(filePath);
     output.pipe(stream);
 
@@ -21,10 +24,13 @@ export default {
         resolve(output);
 
         console.log(
-          `📝  PDF successfuly exported on ${path.resolve(filePath)}`,
+          `📝  PDF successfully exported on ${path.resolve(filePath)}`,
         );
       });
       stream.on('error', reject);
     });
+  },
+  async render(element, filePath, callback) {
+    return await this.renderToFile(element, filePath, callback);
   },
 };

@@ -39,7 +39,7 @@ You can also reach us at hello@react-pdf.opencollective.com.
 ### Contributors
 
 Thank you to all the people who have already contributed to react-pdf!
-<a href="graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+<a href="/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 
 ### Backers

@@ -1,6 +1,13 @@
 import Font from '../font';
 
 class Document {
+  static defaultProps = {
+    author: null,
+    keywords: null,
+    subject: null,
+    title: null,
+  };
+
   children = [];
 
   constructor(root, props) {
@@ -18,6 +25,23 @@ class Document {
 
     child.parent = null;
     this.children.slice(index, 1);
+  }
+
+  addMetaData() {
+    const { title, author, subject, keywords } = this.props;
+    // The object keys need to start with a capital letter by the PDF spec
+    if (title) {
+      this.root.info.Title = title;
+    }
+    if (author) {
+      this.root.info.Author = author;
+    }
+    if (subject) {
+      this.root.info.Subject = subject;
+    }
+    if (keywords) {
+      this.root.info.Keywords = keywords;
+    }
   }
 
   async loadFonts() {
@@ -45,6 +69,7 @@ class Document {
   }
 
   async render() {
+    this.addMetaData();
     await this.loadFonts();
     await this.renderChildren();
 

@@ -62,7 +62,12 @@ Font.register(`${__dirname}/fonts/fonts/Lato/Lato-Bold.ttf`, {
 });
 
 const Resume = () => (
-  <Document>
+  <Document
+    author="Luke Skywalker"
+    keywords="awesome, resume, start wars"
+    subject="The resume of Luke Skywalker"
+    title="Resume"
+  >
     <Page size="A4">
       <Header />
       <View style={styles.container}>

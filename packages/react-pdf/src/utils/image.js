@@ -2,9 +2,32 @@ import PNG from 'png-js';
 import JPEG from './jpeg';
 const request = require('request');
 
-export const fetchImage = src => {
-  const extension = src.split('.').pop();
+function getImage(body, extension) {
+  switch (extension.toLowerCase()) {
+    case 'jpg':
+    case 'jpeg':
+      return new JPEG(body);
+    case 'png':
+      return new PNG(body);
+    default:
+      throw new Error(`Image type not supported: ${extension}`);
+  }
+}
 
+export const fetchImage = src => {
+  if (typeof src === 'object') {
+    if (src.data && src.format) {
+      // Local file given
+      return new Promise((resolve, reject) =>
+        resolve(getImage(src.data, src.format)),
+      );
+    }
+    throw new Error(
+      `Invalid data given for local file: ${JSON.stringify(src)}`,
+    );
+  }
+
+  const extension = src.split('.').pop();
   return new Promise((resolve, reject) => {
     request(
       {
@@ -17,19 +40,7 @@ export const fetchImage = src => {
           return reject(error);
         }
 
-        let image;
-        switch (extension.toLowerCase()) {
-          case 'jpg':
-          case 'jpeg':
-            image = new JPEG(body);
-            break;
-          case 'png':
-            image = new PNG(body);
-            break;
-          default:
-            throw new Error(`Image type not supported: ${extension}`);
-        }
-
+        const image = getImage(body, extension);
         return resolve(image);
       },
     );

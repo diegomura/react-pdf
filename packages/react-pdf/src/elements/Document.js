@@ -28,7 +28,8 @@ class Document {
   }
 
   addMetaData() {
-    const { title, author, subject, keywords } = this.props;
+    const { title, author, subject, keywords, creator, producer } = this.props;
+
     // The object keys need to start with a capital letter by the PDF spec
     if (title) {
       this.root.info.Title = title;
@@ -42,6 +43,9 @@ class Document {
     if (keywords) {
       this.root.info.Keywords = keywords;
     }
+
+    this.root.info.Creator = creator || 'react-pdf';
+    this.root.info.Producer = producer || 'react-pdf';
   }
 
   async loadFonts() {

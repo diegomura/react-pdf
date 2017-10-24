@@ -1,10 +1,12 @@
 import React from 'react';
+import fs from 'fs';
 import { Document, Page, View, Image } from '../src';
 import MockDate from 'mockdate';
 import render from './testRenderer';
 
 const imageUrl =
   'https://user-images.githubusercontent.com/5600341/27065042-31afea66-4fd1-11e7-9e7f-6f192bb351f6.jpg';
+const localImage = fs.readFileSync('./27065042-31afea66-4fd1-11e7-9e7f-6f192bb351f6.jpg');
 
 describe('<Image />', () => {
   beforeEach(() => {
@@ -17,10 +19,19 @@ describe('<Image />', () => {
       done();
     });
 
-  test('Should render just a image', done => {
+  test('Should render just a image over http', done => {
     matchSnapshot(
       <Page>
         <Image src={imageUrl} />
+      </Page>,
+      done,
+    );
+  });
+
+  test('Should render just a local image', done => {
+    matchSnapshot(
+      <Page>
+        <Image src={{data: localImage, format: 'jpg'}} />
       </Page>,
       done,
     );

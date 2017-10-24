@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Document /> Should be able to set Author metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+/Author (John Doe)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000181 00000 n 
+0000000132 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+233
+%%EOF
+"
+`;
+
+exports[`<Document /> Should be able to set Creator metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (other app)
+/CreationDate (D:20150614221205Z)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000162 00000 n 
+0000000113 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+214
+%%EOF
+"
+`;
+
+exports[`<Document /> Should be able to set Keywords metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+/Keywords (lorem, ipsum)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000187 00000 n 
+0000000138 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+239
+%%EOF
+"
+`;
+
+exports[`<Document /> Should be able to set Producer metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (other app)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000162 00000 n 
+0000000113 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+214
+%%EOF
+"
+`;
+
+exports[`<Document /> Should be able to set Subject metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+/Subject (Whatever)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000182 00000 n 
+0000000133 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+234
+%%EOF
+"
+`;
+
+exports[`<Document /> Should be able to set Title metadata 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+/Title (Test)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000176 00000 n 
+0000000127 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+228
+%%EOF
+"
+`;
+
+exports[`<Document /> Should not render metadata if not specified 1`] = `
+"%PDF-1.3
+%����
+3 0 obj
+<<
+/Producer (react-pdf)
+/Creator (react-pdf)
+/CreationDate (D:20150614221205Z)
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Pages
+/Count 0
+/Kids []
+>>
+endobj
+xref
+0 4
+0000000000 65535 f 
+0000000162 00000 n 
+0000000113 00000 n 
+0000000015 00000 n 
+trailer
+<<
+/Size 4
+/Root 2 0 R
+/Info 3 0 R
+>>
+startxref
+214
+%%EOF
+"
+`;

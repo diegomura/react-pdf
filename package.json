@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/build",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "scripts": {
     "build": "npm run build:clean && lerna run build --ignore @react-pdf/example-*",

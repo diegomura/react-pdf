@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "A tiny React renderer to generate PDF documents.",
   "main": "lib/index.js",
   "scripts": {

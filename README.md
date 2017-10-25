@@ -10,6 +10,8 @@ React renderer for creating PDF files on the browser, mobile and server
 
 ## How it works
 
+Add `@react-pdf/core` to your project, like this: `$ yarn add @react-pdf/core`
+
 ```jsx
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/core';

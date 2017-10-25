@@ -1084,17 +1084,9 @@ nan@^2.3.0, nan@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
-nbind@^0.3.13:
+nbind@^0.3.13, nbind@^0.3.8:
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.13.tgz#0b9722ab80e7f74e7705ca3de9e6773bafc80b86"
-  dependencies:
-    emscripten-library-decorator "~0.2.2"
-    mkdirp "~0.5.1"
-    nan "^2.6.2"
-
-nbind@^0.3.8:
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.12.tgz#5b022d45950c1d664b360b54e6c29fa2fa5b8a59"
   dependencies:
     emscripten-library-decorator "~0.2.2"
     mkdirp "~0.5.1"

@@ -8,6 +8,18 @@ React renderer for creating PDF files on the browser, mobile and server
 [![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
 [![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
 
+## How to install
+```sh
+# You should always install the core package
+yarn add @react-pdf/core
+
+# And also the bindings that you need
+yarn add @react-pdf/node
+yarn add @react-pdf/dom
+yarn add @react-pdf/mobile
+```
+<p align="right">* DOM and mobile bindings are not functional yet.</p>
+
 ## How it works
 
 ```jsx

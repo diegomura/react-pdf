@@ -7,7 +7,7 @@
     "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/examples",
     "build:clean": "lerna run build:clean",
     "prepublish": "npm run build",
-    "postinstall": "lerna bootstrap && opencollective postinstall",
+    "postinstall": "lerna bootstrap",
     "example": "babel-node ./examples/index.js",
     "precommit": "npm run example -- all && git add . && lint-staged",
     "lint": "eslint performance src",
@@ -48,8 +48,7 @@
   },
   "dependencies": {
     "jest": "^20.0.4",
-    "lerna": "2.0.0-rc.5",
-    "opencollective": "^1.0.3"
+    "lerna": "2.0.0-rc.5"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

@@ -17,10 +17,12 @@
   ],
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "yoga-layout": "^1.6.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
-    "rimraf": "^2.6.1",
-    "yoga-layout": "^1.6.0"
+    "rimraf": "^2.6.1"
   },
   "dependencies": {
     "fbjs": "^0.8.4",

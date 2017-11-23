@@ -1,4 +1,4 @@
-import Yoga from '../bin';
+import Yoga from 'yoga-layout';
 import { StyleSheet } from '../src';
 
 describe('StyleSheet', () => {

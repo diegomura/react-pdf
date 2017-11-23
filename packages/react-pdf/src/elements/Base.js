@@ -1,4 +1,4 @@
-import Yoga from '../../bin';
+import Yoga from 'yoga-layout';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';

@@ -130,6 +130,11 @@ yarn example -- fractals
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
 <a href="https://github.com/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
+## Sponsors
+
+Thank you to all our sponsors! [[Become a sponsors](https://opencollective.com/react-pdf#sponsors)]
+
+<a href="https://opencollective.com/react-pdf#sponsors" target="_blank"><img src="https://opencollective.com/react-pdf/sponsors.svg?width=890"></a>
 
 ## Backers
 

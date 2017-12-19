@@ -9,6 +9,12 @@ class Page extends Base {
     style: {},
   };
 
+  constructor(root, props) {
+    super(root, props);
+
+    this.currentSubPage = 0;
+  }
+
   getSize() {
     const { size } = this.props;
 
@@ -60,14 +66,18 @@ class Page extends Base {
     }
   }
 
+  wrapPage() {
+    const pagesNeeded = this.children.reduce((acc, child) => {
+      return Math.max(acc, child.wrapElement ? child.wrapElement() : 1);
+    }, 1);
+
+    return new Array(pagesNeeded).fill(this);
+  }
+
   async render() {
     const { orientation } = this.props;
 
-    // Since Text needs it's parent layout,
-    // we need to calculate flexbox layout for a first time.
-    this.layout.calculateLayout();
-
-    // Then ask each children to recalculate it's layout.
+    // Ask each children to recalculate it's layout.
     // This puts all Text nodes in a dirty state
     await this.recalculateLayout();
 
@@ -84,7 +94,9 @@ class Page extends Base {
         .fill();
     }
 
-    await this.renderChildren();
+    await this.renderChildren(this);
+
+    this.currentSubPage++;
   }
 }
 

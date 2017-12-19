@@ -75,6 +75,19 @@ class Document {
   async render() {
     this.addMetaData();
     await this.loadFonts();
+
+    // Since Text needs it's parent layout,
+    // we need to calculate flexbox layout for a first time.
+    this.children.forEach(child => {
+      child.layout.calculateLayout();
+    });
+
+    // Wrap up pages that need extra space
+    this.children = this.children.reduce(
+      (acc, child) => [...acc, ...child.wrapPage()],
+      [],
+    );
+
     await this.renderChildren();
 
     this.root.end();

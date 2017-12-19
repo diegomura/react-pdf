@@ -9,7 +9,7 @@ const lorem =
   amet suscipit purus ipsum et ligula. Cras placerat, tellus fringilla viverra \
   maximus, ex metus vulputate ante, finibus dapibus eros dolor fermentum massa.';
 
-describe('<Text />', () => {
+describe.skip('<Text />', () => {
   beforeEach(() => {
     MockDate.set(1434319925275);
   });

@@ -168,7 +168,15 @@ class Base {
       right: this.layout.getComputedMargin(Yoga.EDGE_RIGHT),
       bottom: this.layout.getComputedMargin(Yoga.EDGE_BOTTOM),
       left: this.layout.getComputedMargin(Yoga.EDGE_LEFT),
-    };
+    }
+  }
+
+  getWidth() {
+    return this.layout.getComputedWidth();
+  }
+
+  getHeight() {
+    return this.layout.getComputedHeight();
   }
 
   getComputedStyles() {
@@ -202,9 +210,9 @@ class Base {
     }
   }
 
-  async renderChildren() {
+  async renderChildren(page) {
     for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
+      await this.children[i].render(page);
     }
   }
 }

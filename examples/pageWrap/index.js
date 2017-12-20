@@ -7,7 +7,7 @@ import { Document, Page, Text } from '@react-pdf/core';
 
 const doc = (
   <Document>
-    <Page>
+    <Page wrap>
       <Text>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultrices
         cursus placerat. Nulla et enim non justo viverra dictum. Aliquam urna

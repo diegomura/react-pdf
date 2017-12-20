@@ -7,6 +7,7 @@ class Page extends Base {
     size: 'A4',
     orientation: 'portrait',
     style: {},
+    wrap: false,
   };
 
   constructor(root, props) {
@@ -67,6 +68,10 @@ class Page extends Base {
   }
 
   wrapPage() {
+    // Since Text needs it's parent layout,
+    // we need to calculate flexbox layout for a first time.
+    this.layout.calculateLayout();
+
     const pagesNeeded = this.children.reduce((acc, child) => {
       return Math.max(acc, child.wrapElement ? child.wrapElement() : 1);
     }, 1);

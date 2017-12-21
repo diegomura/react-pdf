@@ -118,6 +118,17 @@ For each example, try opening `output.pdf` to see the result.
 		</tr>
 	</tbody>
 </table>
+<table>
+	<tbody>
+		<tr>
+      <td align="center" valign="top">
+        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/pageWrap/thumb.png">
+        <br>
+        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/pageWrap/">Page wrap</a>
+      </td>  
+		</tr>
+	</tbody>
+</table>
 
 To run the examples, first clone the project and install the dependencies:
 ```sh

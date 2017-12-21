@@ -15,23 +15,23 @@ class Image extends Base {
     return !!this.getComputedStyles().flexGrow;
   }
 
-  getHeight(width) {
+  calculateHeight(width) {
     const ratio = this.image.width / this.image.height;
     return width / ratio;
   }
 
-  getWidth(height) {
+  calculateWidth(height) {
     const ratio = this.image.width / this.image.height;
     return height * ratio;
   }
 
   measureImage(width, widthMode, height, heightMode) {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      return { height: this.getHeight(width) };
+      return { height: this.calculateHeight(width) };
     }
 
     if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
-      return { width: this.getWidth(height) };
+      return { width: this.calculateWidth(height) };
     }
 
     if (
@@ -42,7 +42,7 @@ class Image extends Base {
 
       return {
         width: imageWidth,
-        height: this.getHeight(imageWidth),
+        height: this.calculateHeight(imageWidth),
       };
     }
   }

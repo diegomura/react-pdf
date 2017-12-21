@@ -5,7 +5,7 @@ import render from './testRenderer';
 
 const src = 'http://www.github.com/diegomura/react-pdf';
 
-describe.skip('<Link />', () => {
+describe('<Link />', () => {
   beforeEach(() => {
     MockDate.set(1434319925275);
   });

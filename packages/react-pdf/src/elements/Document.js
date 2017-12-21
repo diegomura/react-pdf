@@ -75,13 +75,6 @@ class Document {
   async render() {
     this.addMetaData();
     await this.loadFonts();
-
-    // Wrap up pages that need extra space
-    this.children = this.children.reduce((acc, child) => {
-      const wrappedPages = child.props.wrap ? child.wrapPage() : [child];
-      return [...acc, ...wrappedPages];
-    }, []);
-
     await this.renderChildren();
 
     this.root.end();

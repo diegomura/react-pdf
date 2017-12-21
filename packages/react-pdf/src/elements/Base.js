@@ -27,6 +27,7 @@ class Base {
 
     this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();
+    this.currentSubPage = 0;
 
     if (this.props) {
       this.applyProps(this.props);
@@ -43,8 +44,8 @@ class Base {
     const index = this.children.indexOf(child);
 
     child.parent = null;
-    this.children.slice(index, 1);
-    this.layout.removeChild(child.layout, index);
+    this.children.splice(index, 1);
+    this.layout.removeChild(child.layout);
   }
 
   applyProps(props) {
@@ -172,11 +173,23 @@ class Base {
   }
 
   getWidth() {
-    return this.layout.getComputedWidth();
+    return (
+      this.layout.getComputedWidth() +
+      this.layout.getComputedMargin(Yoga.EDGE_LEFT) +
+      this.layout.getComputedMargin(Yoga.EDGE_RIGTH) -
+      this.layout.getComputedPadding(Yoga.EDGE_LEFT) -
+      this.layout.getComputedPadding(Yoga.EDGE_RIGTH)
+    );
   }
 
   getHeight() {
-    return this.layout.getComputedHeight();
+    return (
+      this.layout.getComputedHeight() +
+      this.layout.getComputedMargin(Yoga.EDGE_TOP) +
+      this.layout.getComputedMargin(Yoga.EDGE_BOTTOM) -
+      this.layout.getComputedPadding(Yoga.EDGE_TOP) -
+      this.layout.getComputedPadding(Yoga.EDGE_BOTTOM)
+    );
   }
 
   getComputedStyles() {
@@ -210,9 +223,40 @@ class Base {
     }
   }
 
-  async renderChildren(page) {
+  async renderWrapChildren(page) {
+    const renderedChilds = [];
+    let availableHeight = this.parent.getHeight();
+
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      const childHeight = child.getHeight();
+
+      if (availableHeight >= childHeight) {
+        await child.render(page);
+        renderedChilds.push(child);
+
+        availableHeight -= childHeight;
+      } else {
+        page.addNewSubpage(++this.currentSubPage);
+        break;
+      }
+    }
+
+    // Remove childs
+    renderedChilds.forEach(this.removeChild.bind(this));
+  }
+
+  async renderPlainChildren(page) {
     for (let i = 0; i < this.children.length; i++) {
       await this.children[i].render(page);
+    }
+  }
+
+  async renderChildren(page) {
+    if (page.props.wrap) {
+      await this.renderWrapChildren(page);
+    } else {
+      await this.renderPlainChildren(page);
     }
   }
 }

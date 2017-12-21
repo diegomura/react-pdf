@@ -180,10 +180,10 @@ class Text extends Base {
       } else {
         await child.render({ inline: true });
       }
-
-      // Text should not longer be continuos
-      this.root.text('', { continued: false });
     }
+
+    // Text should not longer be continuos
+    this.root.text('', { continued: false });
   }
 }
 

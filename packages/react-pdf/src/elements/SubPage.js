@@ -35,6 +35,12 @@ class SubPage extends Base {
   async render(page) {
     const { orientation } = this.props;
 
+    // Since Text needs it's parent layout,
+    // we need to calculate flexbox layout for a first time.
+    this.children.forEach(child => {
+      child.layout.calculateLayout();
+    });
+
     // Ask each children to recalculate it's layout.
     // This puts all Text nodes in a dirty state
     await this.recalculateLayout();

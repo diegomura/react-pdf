@@ -37,9 +37,7 @@ class SubPage extends Base {
 
     // Since Text needs it's parent layout,
     // we need to calculate flexbox layout for a first time.
-    this.children.forEach(child => {
-      child.layout.calculateLayout();
-    });
+    this.layout.calculateLayout();
 
     // Ask each children to recalculate it's layout.
     // This puts all Text nodes in a dirty state
@@ -57,7 +55,6 @@ class SubPage extends Base {
         .rect(0, 0, this.root.page.width, this.root.page.height)
         .fill();
     }
-
     await this.renderChildren(page);
   }
 }

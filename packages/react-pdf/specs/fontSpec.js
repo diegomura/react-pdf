@@ -55,13 +55,20 @@ describe('Font', () => {
 
     matchSnapshot(
       <Page>
-        <Text style={{ fontFamily: 'Oswald' }}>
-          {lorem}
-        </Text>
+        <Text style={{ fontFamily: 'Oswald' }}>{lorem}</Text>
       </Page>,
       done,
     );
   });
 
-  test('should be able to load a font from file');
+  test('should be able to load a font from file', done => {
+    Font.register(`${__dirname}/font.ttf`, { family: 'Roboto' });
+
+    matchSnapshot(
+      <Page>
+        <Text style={{ fontFamily: 'Roboto' }}>{lorem}</Text>
+      </Page>,
+      done,
+    );
+  });
 });

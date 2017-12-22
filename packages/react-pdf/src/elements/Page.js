@@ -16,6 +16,7 @@ class Page {
     this.root = root;
     this.props = { ...Page.defaultProps, ...props };
     this.children = [];
+    this.initialSubpage = null;
 
     this.addInitialSubpage();
   }
@@ -51,15 +52,11 @@ class Page {
     newSubpage.parent = this;
 
     this.children.push(newSubpage);
+    this.initialSubpage = newSubpage;
   }
 
   addNewSubpage() {
-    const originalSubpage = this.children[0];
-    const newSubpage = new SubPage(this.root, this.props);
-
-    newSubpage.parent = this;
-    newSubpage.layout = originalSubpage.layout;
-    newSubpage.children = originalSubpage.children;
+    const newSubpage = this.initialSubpage.clone();
 
     this.children.push(newSubpage);
   }

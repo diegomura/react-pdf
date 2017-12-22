@@ -57,7 +57,7 @@ class Image extends Base {
   }
 
   async render() {
-    const padding = this.getComputedPadding();
+    const padding = this.getPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();

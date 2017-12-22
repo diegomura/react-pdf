@@ -7,6 +7,7 @@ import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import { inheritedProperties } from '../utils/styles';
+import { splitElement } from '../utils/wrapping';
 
 class Base {
   parent = null;
@@ -27,6 +28,7 @@ class Base {
 
     this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();
+    this.canBeSplitted = false;
 
     if (this.props) {
       this.applyProps(this.props);
@@ -153,7 +155,7 @@ class Base {
     };
   }
 
-  getComputedPadding() {
+  getPadding() {
     return {
       top: this.layout.getComputedPadding(Yoga.EDGE_TOP),
       right: this.layout.getComputedPadding(Yoga.EDGE_RIGHT),
@@ -162,13 +164,13 @@ class Base {
     };
   }
 
-  getComputedMargin() {
+  getMargin() {
     return {
       top: this.layout.getComputedMargin(Yoga.EDGE_TOP),
       right: this.layout.getComputedMargin(Yoga.EDGE_RIGHT),
       bottom: this.layout.getComputedMargin(Yoga.EDGE_BOTTOM),
       left: this.layout.getComputedMargin(Yoga.EDGE_LEFT),
-    }
+    };
   }
 
   getWidth() {
@@ -222,6 +224,28 @@ class Base {
     }
   }
 
+  clone() {
+    const clone = new this.constructor(this.root, this.props);
+
+    clone.parent = this.parent;
+    clone.layout = this.layout;
+    clone.children = this.children;
+
+    return clone;
+  }
+
+  async fillRemainingSpace(element, availableHeight) {
+    if (element.canBeSplitted) {
+      const getHeight = value =>
+        this.root.heightOfString(value, { width: this.getWidth() });
+
+      const newElement = splitElement(element, availableHeight, getHeight);
+      await newElement.render();
+    }
+
+    return;
+  }
+
   async renderWrapChildren(page) {
     const renderedChilds = [];
     let availableHeight = this.parent.getHeight();
@@ -236,6 +260,8 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
+        await this.fillRemainingSpace(child, availableHeight);
+
         page.addNewSubpage();
         break;
       }

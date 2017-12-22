@@ -20,7 +20,7 @@ const splitPage = (words, availableHeight, getHeight) => {
   return result || 1;
 };
 
-export const chunkStringIntoPages = (string, availableHeight, getHeight) => {
+export const chunkString = (string, availableHeight, getHeight) => {
   const results = [];
   const words = string.split(' ');
 
@@ -29,4 +29,24 @@ export const chunkStringIntoPages = (string, availableHeight, getHeight) => {
     results.push(words.splice(0, pageIndex).join(' '));
   }
   return results;
+};
+
+// Given an element and an availableHeight, returns a new element that fits
+// into it and edits the original one with the remaining content
+// TODO: split nested children
+export const splitElement = (element, availableHeight, getHeight) => {
+  const newElement = element.clone();
+  const margin = element.getMargin();
+  const padding = element.getPadding();
+
+  const lines = chunkString(
+    element.getRawValue(),
+    availableHeight - padding.top - padding.bottom - margin.top - margin.bottom,
+    getHeight,
+  );
+
+  newElement.children = [lines[0]];
+  element.children = [lines[1]];
+
+  return newElement;
 };

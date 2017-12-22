@@ -12,6 +12,7 @@ class Text extends Base {
     super(root, props);
 
     this.layout.setMeasureFunc(this.measureText.bind(this));
+    this.canBeSplitted = true;
   }
 
   appendChild(child) {
@@ -147,7 +148,7 @@ class Text extends Base {
   }
 
   async render(page) {
-    const padding = this.getComputedPadding();
+    const padding = this.getPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { color = 'black' } = this.getComputedStyles();
 

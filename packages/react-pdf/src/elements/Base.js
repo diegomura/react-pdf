@@ -236,8 +236,20 @@ class Base {
 
   async fillRemainingSpace(element, availableHeight) {
     if (element.canBeSplitted) {
-      const getHeight = value =>
-        this.root.heightOfString(value, { width: this.getWidth() });
+      const getHeight = value => {
+        element.setFontSize();
+        const elementMargin = element.getMargin();
+        const elementPadding = element.getPadding();
+
+        return this.root.heightOfString(value, {
+          width:
+            this.getWidth() -
+            elementMargin.right -
+            elementMargin.left -
+            elementPadding.right -
+            elementPadding.left,
+        });
+      };
 
       const newElement = splitElement(element, availableHeight, getHeight);
       await newElement.render();

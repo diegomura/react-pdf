@@ -1,3 +1,5 @@
+const SAFETY_HEIGHT = 15;
+
 const splitPage = (words, availableHeight, getHeight) => {
   let minIndex = 0;
   let maxIndex = words.length;
@@ -21,14 +23,17 @@ const splitPage = (words, availableHeight, getHeight) => {
 };
 
 export const chunkString = (string, availableHeight, getHeight) => {
-  const results = [];
-  const words = string.split(' ');
-
-  while (words.length > 0) {
+  if (availableHeight > SAFETY_HEIGHT) {
+    const words = string.split(' ');
     const pageIndex = splitPage(words, availableHeight, getHeight);
-    results.push(words.splice(0, pageIndex).join(' '));
+
+    return [
+      words.slice(0, pageIndex).join(' '),
+      words.slice(pageIndex).join(' '),
+    ];
   }
-  return results;
+
+  return ['', string];
 };
 
 // Given an element and an availableHeight, returns a new element that fits

@@ -3,3 +3,5 @@ node_modules
 lib
 .jshintrc
 assets
+.idea
+.DS_Store

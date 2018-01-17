@@ -2,6 +2,28 @@
 # yarn lockfile v1
 
 
+"@react-pdf/core@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/core/-/core-0.5.1.tgz#d02d61db47a5490460c735ee695de0c124f9b1f3"
+  dependencies:
+    fbjs "^0.8.4"
+    fontkit "^1.5.4"
+    is-url "^1.2.2"
+    lodash.isfunction "^3.0.8"
+    lodash.isnan "^3.0.2"
+    lodash.map "^4.6.0"
+    lodash.topairsin "^4.3.0"
+    lodash.upperfirst "^4.3.1"
+    nbind "^0.3.13"
+    normalize-css-color "^1.0.2"
+    pdfkit "^0.8.1"
+    png-js "^0.1.1"
+    react "16.0.0-alpha.4"
+    react-dom "16.0.0-alpha.4"
+    reduce "^1.0.1"
+    request "^2.81.0"
+    string-hash "^1.1.3"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -256,6 +278,10 @@ balanced-match@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
+base64-js@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
+
 base64-js@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
@@ -269,16 +295,6 @@ bcrypt-pbkdf@^1.0.0:
 binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
-
-blob-stream@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/blob-stream/-/blob-stream-0.1.3.tgz#98d668af6996e0f32ef666d06e215ccc7d77686c"
-  dependencies:
-    blob "0.0.4"
-
-blob@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/blob/-/blob-0.0.4.tgz#bcf13052ca54463f30f9fc7e95b9a47630a94921"
 
 block-stream@*:
   version "0.0.9"
@@ -307,7 +323,7 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
-brfs@^1.4.0:
+brfs@^1.3.0, brfs@^1.4.0:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/brfs/-/brfs-1.4.3.tgz#db675d6f5e923e6df087fca5859c9090aaed3216"
   dependencies:
@@ -487,6 +503,10 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
+emscripten-library-decorator@~0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/emscripten-library-decorator/-/emscripten-library-decorator-0.2.2.tgz#d035f023e2a84c68305cc842cdeea38e67683c40"
+
 encoding@^0.1.11:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
@@ -585,6 +605,18 @@ falafel@^1.0.0:
     isarray "0.0.1"
     object-keys "^1.0.6"
 
+fbjs@^0.8.4:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
+  dependencies:
+    core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.9"
+
 fbjs@^0.8.9:
   version "0.8.11"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.11.tgz#340b590b8a2278a01ef7467c07a16da9b753db24"
@@ -614,6 +646,22 @@ fill-range@^2.1.0:
 fontkit@^1.0.0:
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/fontkit/-/fontkit-1.5.4.tgz#d6d56371110bf7449b54c6cf6b3263ea1c0303b1"
+  dependencies:
+    babel-runtime "^6.11.6"
+    brfs "^1.4.0"
+    brotli "^1.2.0"
+    browserify-optional "^1.0.0"
+    clone "^1.0.1"
+    deep-equal "^1.0.0"
+    dfa "^1.0.0"
+    restructure "^0.5.3"
+    tiny-inflate "^1.0.2"
+    unicode-properties "^1.0.0"
+    unicode-trie "^0.3.0"
+
+fontkit@^1.5.4:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/fontkit/-/fontkit-1.7.7.tgz#ebaf2d8f3fedf302ae3c64b4beeaddc247fcdbb1"
   dependencies:
     babel-runtime "^6.11.6"
     brfs "^1.4.0"
@@ -892,6 +940,10 @@ is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
 
+is-url@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/is-url/-/is-url-1.2.2.tgz#498905a593bf47cc2d9e7f738372bbf7696c7f26"
+
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -972,11 +1024,33 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.0.2"
 
-linebreak@~0.1.0:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/linebreak/-/linebreak-0.1.2.tgz#67ef2db4a4698902e87eba9a0ee4f8490aa717e6"
+linebreak@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/linebreak/-/linebreak-0.3.0.tgz#0526480a62c05bd679f3e9d99830e09c6a7d0ed6"
   dependencies:
-    unicode-trie "^0.1.1"
+    base64-js "0.0.8"
+    brfs "^1.3.0"
+    unicode-trie "^0.3.0"
+
+lodash.isfunction@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.8.tgz#4db709fc81bc4a8fd7127a458a5346c5cdce2c6b"
+
+lodash.isnan@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lodash.isnan/-/lodash.isnan-3.0.2.tgz#82ed04a5f9ea8bd6226d0c26af0cac32f4507745"
+
+lodash.map@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
+
+lodash.topairsin@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/lodash.topairsin/-/lodash.topairsin-4.3.0.tgz#1a6966d46484898fca42522286f1529a4397ad3b"
+
+lodash.upperfirst@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
 
 lodash@^4.2.0:
   version "4.17.4"
@@ -1030,7 +1104,7 @@ minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
-"mkdirp@>=0.5 0", mkdirp@^0.5.1:
+"mkdirp@>=0.5 0", mkdirp@^0.5.1, mkdirp@~0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
@@ -1043,6 +1117,18 @@ ms@0.7.2:
 nan@^2.3.0:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
+
+nan@^2.7.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
+
+nbind@^0.3.13:
+  version "0.3.14"
+  resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.14.tgz#ea85b685ae86801012509062f6ce4d639a19b864"
+  dependencies:
+    emscripten-library-decorator "~0.2.2"
+    mkdirp "~0.5.1"
+    nan "^2.7.0"
 
 node-fetch@^1.0.1:
   version "1.6.3"
@@ -1071,6 +1157,10 @@ nopt@^4.0.1:
   dependencies:
     abbrev "1"
     osenv "^0.1.4"
+
+normalize-css-color@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/normalize-css-color/-/normalize-css-color-1.0.2.tgz#02991e97cccec6623fe573afbbf0de6a1f3e9f8d"
 
 normalize-path@^2.0.1:
   version "2.0.1"
@@ -1101,7 +1191,7 @@ object-inspect@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-0.4.0.tgz#f5157c116c1455b243b06ee97703392c5ad89fec"
 
-object-keys@^1.0.6:
+object-keys@^1.0.6, object-keys@~1.0.0:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
 
@@ -1166,19 +1256,19 @@ path-parse@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.5.tgz#3c1adf871ea9cd6c9431b6ea2bd74a0ff055c4c1"
 
-pdfkit@*:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/pdfkit/-/pdfkit-0.8.0.tgz#0b3f7c0c3b00cc4f7f69e46d85d2a7cbb3818af6"
+pdfkit@^0.8.1:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/pdfkit/-/pdfkit-0.8.3.tgz#ec99a57fc55ca309726f856456da14418f5330e3"
   dependencies:
     fontkit "^1.0.0"
-    linebreak "~0.1.0"
+    linebreak "^0.3.0"
     png-js ">=0.1.0"
 
 performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
-png-js@>=0.1.0:
+png-js@>=0.1.0, png-js@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/png-js/-/png-js-0.1.1.tgz#1cc7c212303acabe74263ec3ac78009580242d93"
 
@@ -1247,10 +1337,6 @@ react-dom@16.0.0-alpha.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
 
-react-pdf@0.1.0:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-0.0.10.tgz#57b827c03143d7b82eb8b5a3d545703ec39a8764"
-
 react@16.0.0-alpha.4:
   version "16.0.0-alpha.4"
   resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-alpha.4.tgz#1c25369aeee934df86466cf4f09144c7f6e3fac2"
@@ -1297,6 +1383,12 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
+
+reduce@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/reduce/-/reduce-1.0.1.tgz#14fa2e5ff1fc560703a020cbb5fbaab691565804"
+  dependencies:
+    object-keys "~1.0.0"
 
 regenerator-runtime@^0.10.0:
   version "0.10.3"
@@ -1369,6 +1461,12 @@ restructure@^0.5.3:
 rimraf@2, rimraf@^2.5.1, rimraf@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+  dependencies:
+    glob "^7.0.5"
+
+rimraf@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
     glob "^7.0.5"
 
@@ -1462,6 +1560,10 @@ static-module@^1.1.0:
     shallow-copy "~0.0.1"
     static-eval "~0.2.0"
     through2 "~0.4.1"
+
+string-hash@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.3.tgz#e8aafc0ac1855b4666929ed7dd1275df5d6c811b"
 
 string-width@^1.0.1:
   version "1.0.2"
@@ -1578,10 +1680,6 @@ unicode-properties@^1.0.0:
   dependencies:
     brfs "^1.4.0"
     unicode-trie "^0.3.0"
-
-unicode-trie@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/unicode-trie/-/unicode-trie-0.1.2.tgz#bd3c528bc3360cafdf71f0863cbec29fc0e84ec8"
 
 unicode-trie@^0.3.0:
   version "0.3.1"

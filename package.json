@@ -42,9 +42,11 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
+    "json-loader": "^0.5.7",
     "lint-staged": "^3.4.2",
     "mockdate": "^2.0.1",
-    "prettier": "^1.6.1"
+    "prettier": "^1.6.1",
+    "transform-loader": "^0.2.4"
   },
   "dependencies": {
     "jest": "^20.0.4",

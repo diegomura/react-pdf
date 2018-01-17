@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/dom",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Bindings for react-pdf to render inside a react-dom application",
   "main": "./lib/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/core": "^0.6.0",
+    "@react-pdf/core": "^0.6.1",
     "prop-types": "^15.6.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",

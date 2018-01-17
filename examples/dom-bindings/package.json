@@ -7,8 +7,8 @@
     "lint": "node_modules/.bin/eslint src/"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.6.0",
-    "@react-pdf/dom": "^0.6.0",
+    "@react-pdf/core": "^0.6.1",
+    "@react-pdf/dom": "^0.6.1",
     "babel-polyfill": "^6.26.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
@@ -34,5 +34,5 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
-  "version": "0.6.0"
+  "version": "0.6.1"
 }

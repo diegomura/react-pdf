@@ -6,8 +6,7 @@
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "babel ./src --out-dir ./lib --watch",
-    "build:clean": "node_modules/.bin/rimraf ./lib",
-    "precompile": "node ./scripts/compileYoga.js"
+    "build:clean": "node_modules/.bin/rimraf ./lib"
   },
   "keywords": [
     "react",
@@ -19,8 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.0",
-    "rimraf": "^2.6.1",
-    "yoga-layout": "^1.6.0"
+    "rimraf": "^2.6.1"
   },
   "dependencies": {
     "fbjs": "^0.8.4",
@@ -31,7 +29,6 @@
     "lodash.map": "^4.6.0",
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
-    "nbind": "^0.3.13",
     "normalize-css-color": "^1.0.2",
     "pdfkit": "^0.8.1",
     "png-js": "^0.1.1",
@@ -39,7 +36,8 @@
     "react-dom": "16.0.0-alpha.4",
     "reduce": "^1.0.1",
     "request": "^2.81.0",
-    "string-hash": "^1.1.3"
+    "string-hash": "^1.1.3",
+    "yoga-layout": "^1.6.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git"

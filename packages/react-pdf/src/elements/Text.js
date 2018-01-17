@@ -1,5 +1,5 @@
 import Base from './Base';
-import Yoga from '../../bin';
+import Yoga from 'yoga-layout';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 

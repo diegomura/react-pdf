@@ -1,4 +1,4 @@
-import Yoga from '../../bin';
+import Yoga from 'yoga-layout';
 
 const yogaValue = (prop, value) => {
   const isAlignType = prop =>

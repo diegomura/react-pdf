@@ -1,5 +1,6 @@
 /* global URL */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { PDFRenderer, Document, createElement, pdf } from '@react-pdf/core';
 import omit from 'lodash/fp/omit';
 

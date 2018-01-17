@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
-
 import { Document } from '@react-pdf/dom';
 import { View, Text, Page, StyleSheet } from '@react-pdf/core';
 
@@ -26,25 +24,17 @@ class App extends Component {
           <Document height="100%" width="100%">
             <Page size="A4">
               <View style={styles.container}>
-                <Text>
-                  Text
-                </Text>
+                <Text>Text</Text>
                 <View style={styles.block}>
-                  <Text>
-                    More text
-                  </Text>
+                  <Text>More text</Text>
                 </View>
               </View>
             </Page>
             <Page size="A4">
               <View style={styles.container}>
-                <Text>
-                  Text
-                </Text>
+                <Text>Text</Text>
                 <View style={styles.block}>
-                  <Text>
-                    More text
-                  </Text>
+                  <Text>More text</Text>
                 </View>
               </View>
             </Page>

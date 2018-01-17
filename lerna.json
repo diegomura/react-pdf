@@ -1,8 +1,9 @@
 {
-  "lerna": "2.0.0-rc.3",
+  "lerna": "2.7.1",
   "packages": [
     "packages/*",
-    "examples/"
+    "examples/",
+    "examples/dom-bindings"
   ],
   "version": "0.5.1",
   "npmClient": "yarn"

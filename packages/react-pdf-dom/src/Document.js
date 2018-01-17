@@ -33,7 +33,11 @@ class Container extends Component {
       this,
     );
 
-    this.embed.src = URL.createObjectURL(pdf(this.container).toBlob());
+    pdf(this.container)
+      .toBlob()
+      .then(blob => {
+        this.embed.src = URL.createObjectURL(blob);
+      });
   }
 
   componentDidUpdate() {

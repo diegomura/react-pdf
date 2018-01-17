@@ -2,8 +2,8 @@
   "name": "@react-pdf/example-dom-bindings",
   "private": true,
   "dependencies": {
-    "@react-pdf/core": "^0.5.1",
-    "@react-pdf/dom": "^0.5.1",
+    "@react-pdf/core": "^0.6.0",
+    "@react-pdf/dom": "^0.6.0",
     "babel-polyfill": "^6.26.0",
     "react": "16.0.0-alpha.4",
     "react-dom": "16.0.0-alpha.4"
@@ -85,5 +85,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "version": "0.6.0"
 }

@@ -1,0 +1,22 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : [
+    "prettier",
+    "airbnb"
+  ],
+  "plugins": [],
+  "env": {
+    "es6" : true,
+    "browser" : true,
+  },
+  "globals" : {
+    "API_URL": true
+  },
+  "rules": {
+    "arrow-parens": 0,
+    "object-curly-newline": 0,
+    "react/jsx-filename-extension": 0,
+    "react/forbid-prop-types": 0,
+    "react/require-default-props": 0,
+  }
+}

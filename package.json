@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "jest": "^20.0.4",
-    "lerna": "2.0.0-rc.5"
+    "lerna": "2.7.1"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

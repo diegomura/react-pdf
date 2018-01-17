@@ -1,9 +1,9 @@
-/* global Blob */
 'use strict';
 
 import { PDFRenderer, createElement } from './renderer';
 import StyleSheet from './stylesheet';
 import Font from './font';
+import BlobStream from 'blob-stream';
 
 const View = 'VIEW';
 const Text = 'TEXT';
@@ -25,15 +25,17 @@ const pdf = input => {
     return input;
   }
 
-  function toBlob() {
-    parse(input).then(() => {
-      const stream = input.pipe(Blob());
+  async function toBlob() {
+    await parse(input);
 
-      return new Promise(resolve => {
-        stream.on('finish', () => {
-          resolve(stream.toBlob('application/pdf'));
-        });
+    const stream = input.pipe(BlobStream());
+
+    return new Promise((resolve, reject) => {
+      stream.on('finish', () => {
+        resolve(stream.toBlob('application/pdf'));
       });
+
+      stream.on('error', reject);
     });
   }
 

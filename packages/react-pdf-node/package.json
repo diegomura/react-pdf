@@ -7,11 +7,10 @@
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "babel ./src --out-dir ./lib --watch",
-    "build:clean": "node_modules/.bin/rimraf ./lib"
+    "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.5.1",
-    "react": "16.0.0-alpha.4"
+    "@react-pdf/core": "^0.5.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

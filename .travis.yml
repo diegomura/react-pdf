@@ -5,10 +5,13 @@ node_js:
  - '6'
 
 os:
- - osx
+  - osx
+  - linux
 
-matrix:
-  fast_finish: true
+addons:
+  apt:
+    sources: ['ubuntu-toolchain-r-test']
+    packages: ['g++-4.9']
 
 cache:
   yarn: true
@@ -16,6 +19,8 @@ cache:
   - node_modules
 
 before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.9 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CFLAGS="$CFLAGS -std=c99" ; fi
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 

@@ -1,36 +1,10 @@
 'use strict';
 
-import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
+import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
 import { createElement } from './elements';
 
 const PDFRenderer = ReactFiberReconciler({
-  getRootHostContext() {
-    return emptyObject;
-  },
-
-  getChildHostContext() {
-    return emptyObject;
-  },
-
-  prepareForCommit() {
-    // noop
-  },
-
-  resetAfterCommit() {
-    // noop
-  },
-
-  createInstance(
-    type,
-    props,
-    rootContainerInstance,
-    hostContext,
-    internalInstanceHandle,
-  ) {
-    return createElement(type, props, rootContainerInstance);
-  },
-
   appendInitialChild(parentInstance, child) {
     if (parentInstance.appendChild) {
       parentInstance.appendChild(child);
@@ -39,84 +13,98 @@ const PDFRenderer = ReactFiberReconciler({
     }
   },
 
-  finalizeInitialChildren(testElement, type, props, rootContainerInstance) {
-    return false;
+  createInstance(type, props, internalInstanceHandle) {
+    return createElement(type, props, internalInstanceHandle);
   },
 
-  prepareUpdate(testElement, type, oldProps, newProps, hostContext) {
-    return true;
-  },
-
-  commitUpdate(
-    instance,
-    type,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    internalInstanceHandle,
-  ) {
-    // noop
-  },
-
-  commitMount(
-    instance,
-    type,
-    newProps,
-    rootContainerInstance,
-    internalInstanceHandle,
-  ) {
-    // noop
-  },
-
-  shouldSetTextContent(props) {
-    return false;
-  },
-
-  resetTextContent(testElement) {
-    // noop
-  },
-
-  createTextInstance(
-    text,
-    rootContainerInstance,
-    hostContext,
-    internalInstanceHandle,
-  ) {
+  createTextInstance(text, rootContainerInstance, internalInstanceHandle) {
     return text;
   },
 
-  commitTextUpdate(textInstance, oldText, newText) {
-    textInstance.chidren = newText;
+  finalizeInitialChildren(domElement, type, props) {
+    return false;
   },
 
-  appendChild(parentInstance, child) {
-    if (parentInstance.appendChild) {
-      parentInstance.appendChild(child);
-    } else {
-      parentInstance.document = child;
-    }
+  getPublicInstance(instance) {
+    return instance;
   },
 
-  insertBefore(parentInstance, child, beforeChild) {
-    // noob
+  prepareForCommit() {
+    // Noop
   },
 
-  removeChild(parentInstance, child) {
-    parentInstance.removeChild(child);
+  prepareUpdate(domElement, type, oldProps, newProps) {
+    return true;
   },
 
-  scheduleAnimationCallback(fn) {
-    setTimeout(fn);
+  resetAfterCommit() {
+    // Noop
   },
 
-  scheduleDeferredCallback(fn) {
-    setTimeout(fn, 0, { timeRemaining: Infinity });
+  resetTextContent(domElement) {
+    // Noop
   },
+
+  getRootHostContext() {
+    return emptyObject;
+  },
+
+  getChildHostContext() {
+    return emptyObject;
+  },
+
+  shouldSetTextContent(type, props) {
+    return false;
+  },
+
+  now: () => {},
 
   useSyncScheduling: true,
 
-  getPublicInstance(inst) {
-    return inst;
+  mutation: {
+    appendChild(parentInstance, child) {
+      if (parentInstance.appendChild) {
+        parentInstance.appendChild(child);
+      } else {
+        parentInstance.document = child;
+      }
+    },
+
+    appendChildToContainer(parentInstance, child) {
+      if (parentInstance.appendChild) {
+        parentInstance.appendChild(child);
+      } else {
+        parentInstance.document = child;
+      }
+    },
+
+    insertBefore(parentInstance, child, beforeChild) {
+      // noob
+    },
+
+    insertInContainerBefore(parentInstance, child, beforeChild) {
+      // noob
+    },
+
+    removeChild(parentInstance, child) {
+      parentInstance.removeChild(child);
+    },
+
+    removeChildFromContainer(parentInstance, child) {
+      parentInstance.removeChild(child);
+    },
+
+    commitTextUpdate(textInstance, oldText, newText) {
+      textInstance.chidren = newText;
+    },
+
+    commitMount(instance, type, newProps) {
+      // Noop
+    },
+
+    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+      // noop
+    },
   },
 });
 

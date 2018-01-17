@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "build:watch": "babel ./src --out-dir ./lib --watch"
+    "build:watch": "babel ./src --out-dir ./lib --watch",
+    "build:clean": "rimraf ./lib"
   },
   "keywords": [
     "react",
@@ -16,15 +17,12 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/core": "^0.5.1",
-    "blob-stream": "^0.1.3",
-    "pdfkit": "*",
-    "react": "16.0.0-alpha.4",
-    "react-dom": "16.0.0-alpha.4"
+    "@react-pdf/core": "^0.5.1"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "devDependencies": {
-    "babel-cli": "^6.24.0"
+    "babel-cli": "^6.24.0",
+    "rimraf": "^2.6.2"
   }
 }

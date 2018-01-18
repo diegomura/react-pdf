@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   footer: {
     fontSize: 12,
     fontFamily: 'Lato Bold',
-    align: 'center',
+    textAlign: 'center',
     marginTop: 25,
     marginHorizontal: 30,
     paddingVertical: 10,

@@ -19,7 +19,6 @@ yarn add @react-pdf/node
 yarn add @react-pdf/dom
 yarn add @react-pdf/mobile
 ```
-<p align="right">* DOM and mobile bindings are not functional yet.</p>
 
 ## How it works
 

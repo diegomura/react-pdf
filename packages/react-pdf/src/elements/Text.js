@@ -1,5 +1,6 @@
 import Base from './Base';
 import Yoga from 'yoga-layout';
+import warning from 'fbjs/lib/warning';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 
@@ -118,10 +119,15 @@ class Text extends Base {
   }
 
   async renderText(text, isFirstNode) {
-    const { align = 'left', textDecoration } = this.style;
+    const { textAlign = 'left', align, textDecoration } = this.style;
+
+    warning(
+      !align,
+      '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
+    );
 
     this.root.text(text, {
-      align,
+      align: align || textAlign,
       link: '',
       continued: true,
       underline: textDecoration === 'underline',

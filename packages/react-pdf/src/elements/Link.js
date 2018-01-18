@@ -1,3 +1,4 @@
+import warning from 'fbjs/lib/warning';
 import Text from './Text';
 
 const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
@@ -24,9 +25,18 @@ class Link extends Text {
   }
 
   renderBlockLink() {
-    const { align, color = 'blue', textDecoration = 'underline' } = this.style;
-
+    const {
+      align,
+      textAlign,
+      color = 'blue',
+      textDecoration = 'underline',
+    } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
+
+    warning(
+      !align,
+      '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Link node',
+    );
 
     this.drawBackgroundColor();
     this.drawBorders();
@@ -35,7 +45,7 @@ class Link extends Text {
       link: this.getSrc(),
       width,
       height,
-      align,
+      align: align || textAlign,
       underline: textDecoration === 'underline',
     });
   }

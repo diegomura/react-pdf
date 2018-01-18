@@ -3,9 +3,9 @@
   "version": "0.6.3",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server",
-    "build": "./node_modules/.bin/webpack -p",
-    "lint": "node_modules/.bin/eslint src/"
+    "start": "webpack-dev-server",
+    "build": "webpack -p",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@react-pdf/core": "^0.6.3",
@@ -13,11 +13,10 @@
     "babel-polyfill": "^6.26.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "whatwg-fetch": "^2.0.3"
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
@@ -32,6 +31,7 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "style-loader": "^0.19.0",
+    "transform-loader": "^0.2.4",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   }

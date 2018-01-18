@@ -6,8 +6,8 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.6.3",
-    "@react-pdf/dom": "^0.6.3",
+    "@react-pdf/core": "../../packages/react-pdf",
+    "@react-pdf/dom": "../../packages/react-pdf-dom",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

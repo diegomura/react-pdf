@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from '@react-pdf/core';
 import Title from './Title';
 import List, { Item } from './List';
@@ -121,10 +122,10 @@ const Experience = () => (
 );
 
 ExperienceEntry.propTypes = {
-  company: React.PropTypes.string,
-  date: React.PropTypes.string,
-  details: React.PropTypes.array,
-  position: React.PropTypes.string,
+  company: PropTypes.string,
+  date: PropTypes.string,
+  details: PropTypes.array,
+  position: PropTypes.string,
 };
 
 export default Experience;

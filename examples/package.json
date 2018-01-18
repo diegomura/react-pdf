@@ -11,6 +11,7 @@
     "@react-pdf/node": "^0.5.1",
     "chalk": "^2.0.1",
     "lodash.times": "^4.3.2",
-    "react": "16.0.0-alpha.4"
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0"
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from '@react-pdf/core';
 import Title from './Title';
 import List, { Item } from './List';
@@ -38,8 +39,8 @@ const Skills = () => (
 );
 
 SkillEntry.propTypes = {
-  name: React.PropTypes.string,
-  skills: React.PropTypes.array,
+  name: PropTypes.string,
+  skills: PropTypes.array,
 };
 
 export default Skills;

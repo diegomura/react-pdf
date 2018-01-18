@@ -9,7 +9,7 @@
     "prepublish": "npm run build",
     "postinstall": "lerna bootstrap",
     "example": "babel-node ./examples/index.js",
-    "precommit": "npm run example -- all && git add . && lint-staged",
+    "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
     "test": "jest --config .jestrc"
   },

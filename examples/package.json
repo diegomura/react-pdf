@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/examples",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "React PDF Examples",
   "main": "./index.js",
   "private": true,

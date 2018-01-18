@@ -8,8 +8,8 @@
     "lint": "node_modules/.bin/eslint src/"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.6.1",
-    "@react-pdf/dom": "^0.6.1",
+    "@react-pdf/core": "^0.6.3",
+    "@react-pdf/dom": "^0.6.3",
     "babel-polyfill": "^6.26.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

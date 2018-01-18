@@ -1,16 +1,12 @@
 {
   "parser"  : "babel-eslint",
   "extends" : [
-    "prettier",
     "airbnb"
   ],
   "plugins": [],
   "env": {
     "es6" : true,
     "browser" : true,
-  },
-  "globals" : {
-    "API_URL": true
   },
   "rules": {
     "arrow-parens": 0,

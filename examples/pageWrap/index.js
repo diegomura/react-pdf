@@ -33,11 +33,28 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     marginHorizontal: 100,
   },
+  header: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'grey',
+  },
+  footer: {
+    position: 'absolute',
+    fontSize: 12,
+    bottom: 40,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    color: 'grey',
+  },
 });
 
 const doc = (
   <Document>
     <Page style={styles.body} wrap>
+      <Text style={styles.header} fixed>
+        ~ Created with react-pdf ~
+      </Text>
       <Text style={styles.title}>Don Quijote de la Mancha</Text>
       <Text style={styles.author}>Miguel de Cervantes</Text>
       <Image
@@ -201,6 +218,9 @@ const doc = (
         rocín, y confirmándose a sí mismo, se dió a entender que no le faltaba
         otra cosa, sino buscar una dama de quien enamorarse, porque el caballero
         andante sin amores, era árbol sin hojas y sin fruto, y cuerpo sin alma.
+      </Text>
+      <Text style={styles.footer} fixed>
+        ~ Don Quijote de la Mancha ~
       </Text>
     </Page>
   </Document>

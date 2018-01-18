@@ -63,6 +63,7 @@ const PDFRenderer = ReactFiberReconciler({
 
   mutation: {
     appendChild(parentInstance, child) {
+      console.log(child);
       if (parentInstance.appendChild) {
         parentInstance.appendChild(child);
       } else {

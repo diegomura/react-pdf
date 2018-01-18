@@ -259,10 +259,11 @@ class Base {
   }
 
   async renderWrapChildren(page) {
+    let i;
     const renderedChilds = [];
     let availableHeight = this.parent.getHeight();
 
-    for (let i = 0; i < this.children.length; i++) {
+    for (i = 0; i < this.children.length; i++) {
       const child = this.children[i];
       const childHeight = child.getHeight();
 
@@ -279,8 +280,20 @@ class Base {
       }
     }
 
-    // Remove childs
-    renderedChilds.forEach(this.removeChild.bind(this));
+    // Render remaining fixed children
+    for (let j = i; j < this.children.length; j++) {
+      const child = this.children[j];
+      if (child.props.fixed) {
+        await child.render(page);
+      }
+    }
+
+    // Remove rendered childs
+    renderedChilds.forEach(child => {
+      if (!child.props.fixed) {
+        this.removeChild(child);
+      }
+    });
   }
 
   async renderPlainChildren(page) {

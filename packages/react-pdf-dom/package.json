@@ -17,7 +17,8 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/core": "^0.5.1"
+    "@react-pdf/core": "^0.5.1",
+    "prop-types": "^15.6.0"
   },
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

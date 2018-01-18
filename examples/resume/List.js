@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
@@ -37,11 +38,11 @@ export const Item = ({ children }) => (
 );
 
 List.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 Item.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 export default List;

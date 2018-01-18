@@ -1,5 +1,6 @@
 /* global URL */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { PDFRenderer, Document, createElement, pdf } from '@react-pdf/core';
 import omit from 'lodash/fp/omit';
 
@@ -7,12 +8,6 @@ class Container extends Component {
   static displayName = 'Document';
 
   container = createElement('ROOT');
-
-  static propTypes = {
-    children: PropTypes.node,
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  };
 
   constructor(props) {
     super(props);
@@ -67,5 +62,11 @@ class Container extends Component {
     );
   }
 }
+
+Container.propTypes = {
+  children: PropTypes.node,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
 
 export default Container;

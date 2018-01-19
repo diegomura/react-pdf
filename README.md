@@ -55,7 +55,13 @@ const MyDocument = () => (
 ```
 
 ### Render in DOM
+
+**Note:** you need add `transform-loader` like [in example](/examples/dom-bindings/webpack.config.js#L16)
+
 ```jsx
+// to fix "regeneratorRuntime is not defined", which causes by "@react-pdf/*"
+// also you can use "babel-polyfill"
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -88,7 +94,7 @@ For each example, try opening `output.pdf` to see the result.
         <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/text/thumb.png">
         <br>
         <a href="https://github.com/diegomura/react-pdf/tree/master/examples/text/">Text</a>
-      </td>  
+      </td>
       <td align="center" valign="top">
         <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/images/thumb.png">
         <br>
@@ -98,17 +104,17 @@ For each example, try opening `output.pdf` to see the result.
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/resume/thumb.png">
 				<br>
 				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/resume/">Resume</a>
-			</td>  
+			</td>
 			<td align="center" valign="top">
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/fractals/thumb.png">
 				<br>
 				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/fractals/">Fractals</a>
-			</td>   
+			</td>
 			<td align="center" valign="top">
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/knobs/thumb.png">
 				<br>
 				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/knobs/">Knobs</a>
-			</td>   
+			</td>
 		</tr>
 	</tbody>
 </table>

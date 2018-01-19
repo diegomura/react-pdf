@@ -1,11 +1,11 @@
 {
+  "private": true,
   "name": "@react-pdf/examples",
   "version": "0.6.3",
-  "description": "React PDF Examples",
-  "main": "./index.js",
-  "private": true,
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
+  "description": "React PDF Examples",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "main": "./index.js",
   "dependencies": {
     "@react-pdf/core": "^0.6.3",
     "@react-pdf/node": "^0.6.3",

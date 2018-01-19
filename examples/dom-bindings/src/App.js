@@ -1,58 +1,32 @@
-import React, { Component } from 'react';
-import './App.css';
-
+import React from 'react';
 import { Document } from '@react-pdf/dom';
-import { View, Text, Page, StyleSheet } from '@react-pdf/core';
+import { Page } from '@react-pdf/core';
+import Fractal from './Fractal';
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-  },
-  block: {
-    maxHeight: 200,
-    maxWidth: 400,
-    flex: 1,
-  },
-});
+const App = () => (
+  <div className="app">
+    <div className="header">
+      <h2>React PDF DOM bindings</h2>
+    </div>
+    <Document
+      title="Fractals"
+      author="John Doe"
+      subject="Rendering fractals with react-pdf"
+      keywords={['react', 'pdf', 'fractals']}
+    >
+      <Page size="A4">
+        <Fractal steps={18} />
+      </Page>
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React PDF</h2>
-        </div>
-        <p className="App-intro">
-          <Document height="100%" width="100%">
-            <Page size="A4">
-              <View style={styles.container}>
-                <Text>
-                  Text
-                </Text>
-                <View style={styles.block}>
-                  <Text>
-                    More text
-                  </Text>
-                </View>
-              </View>
-            </Page>
-            <Page size="A4">
-              <View style={styles.container}>
-                <Text>
-                  Text
-                </Text>
-                <View style={styles.block}>
-                  <Text>
-                    More text
-                  </Text>
-                </View>
-              </View>
-            </Page>
-          </Document>
-        </p>
-      </div>
-    );
-  }
-}
+      <Page orientation="landscape" size="A4">
+        <Fractal steps={14} />
+      </Page>
+
+      <Page size="B4">
+        <Fractal steps={10} />
+      </Page>
+    </Document>
+  </div>
+);
 
 export default App;

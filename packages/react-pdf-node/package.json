@@ -1,9 +1,9 @@
 {
   "name": "@react-pdf/node",
   "version": "0.6.3",
-  "main": "lib/index.js",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "license": "MIT",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "babel ./src --out-dir ./lib --watch",

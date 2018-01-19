@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import './App.css';
+
 import { Document } from '@react-pdf/dom';
 import { View, Text, Page, StyleSheet } from '@react-pdf/core';
-import Fractal from './Fractal';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,28 +18,38 @@ const styles = StyleSheet.create({
 class App extends Component {
   render() {
     return (
-      <div className="app">
-        <div className="header">
-          <h2>React PDF DOM bindings</h2>
+      <div className="App">
+        <div className="App-header">
+          <h2>Welcome to React PDF</h2>
         </div>
-        <Document
-          title="Fractals"
-          author="John Doe"
-          subject="Rendering fractals with react-pdf"
-          keywords={['react', 'pdf', 'fractals']}
-        >
-          <Page size="A4">
-            <Fractal steps={18} />
-          </Page>
-
-          <Page orientation="landscape" size="A4">
-            <Fractal steps={14} />
-          </Page>
-
-          <Page size="B4">
-            <Fractal steps={10} />
-          </Page>
-        </Document>
+        <p className="App-intro">
+          <Document height="100%" width="100%">
+            <Page size="A4">
+              <View style={styles.container}>
+                <Text>
+                  Text
+                </Text>
+                <View style={styles.block}>
+                  <Text>
+                    More text
+                  </Text>
+                </View>
+              </View>
+            </Page>
+            <Page size="A4">
+              <View style={styles.container}>
+                <Text>
+                  Text
+                </Text>
+                <View style={styles.block}>
+                  <Text>
+                    More text
+                  </Text>
+                </View>
+              </View>
+            </Page>
+          </Document>
+        </p>
       </div>
     );
   }

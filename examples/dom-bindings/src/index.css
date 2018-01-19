@@ -11,24 +11,7 @@ body {
   font-family: sans-serif;
 }
 
-iframe {
-  flex: 1;
-}
-
 #root {
   height: 100%;
   width: 100%;
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
-.header {
-  padding: 20px;
-  color: black;
-  text-align: center;
 }

@@ -1,7 +1,12 @@
 {
-  presets: [
-    "es2015",
-    "react",
-    "stage-0"
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "loose": true
+      }
+    ],
+    "react"
   ]
 }

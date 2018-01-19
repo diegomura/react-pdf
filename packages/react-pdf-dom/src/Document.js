@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PDFRenderer, Document, createElement, pdf } from '@react-pdf/core';
-import omit from 'lodash/fp/omit';
+import omit from 'lodash.omit';
 
 class Container extends Component {
   static displayName = 'Document';

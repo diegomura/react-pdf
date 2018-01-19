@@ -1276,7 +1276,7 @@ object-inspect@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-0.4.0.tgz#f5157c116c1455b243b06ee97703392c5ad89fec"
 
-object-keys@^1.0.6, object-keys@~1.0.0:
+object-keys@^1.0.6:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
 
@@ -1429,14 +1429,6 @@ rc@^1.1.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
-
-react-dom@16.0.0-alpha.4:
-  version "16.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0-alpha.4.tgz#feb5782eea58d945afcb0bed110deda9df75818a"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
 
 react-reconciler@^0.7.0:
   version "0.7.0"

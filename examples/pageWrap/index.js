@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Subtitle = ({ firstChapter, children }) => (
-  <Text style={styles.subtitle} break={!firstChapter}>
+const Subtitle = ({ children, ...props }) => (
+  <Text style={styles.subtitle} {...props}>
     {children}
   </Text>
 );
@@ -67,7 +67,7 @@ const doc = (
         style={styles.image}
         src="http://static.donquijote.org/images/blogs/dq-reg/don-quijote-de-la-mancha.jpg"
       />
-      <Subtitle firstChapter>
+      <Subtitle>
         Capítulo I: Que trata de la condición y ejercicio del famoso hidalgo D.
         Quijote de la Mancha
       </Subtitle>
@@ -141,7 +141,7 @@ const doc = (
         toda aquella máquina de aquellas soñadas invenciones que leía, que para
         él no había otra historia más cierta en el mundo.
       </Text>
-      <Subtitle>
+      <Subtitle break>
         Capítulo II: Que trata de la primera salida que de su tierra hizo el
         ingenioso Don Quijote
       </Subtitle>

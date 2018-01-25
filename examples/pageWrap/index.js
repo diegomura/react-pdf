@@ -49,6 +49,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const Subtitle = ({ firstChapter, children }) => (
+  <Text style={styles.subtitle} break={!firstChapter}>
+    {children}
+  </Text>
+);
+
 const doc = (
   <Document>
     <Page style={styles.body} wrap>
@@ -61,10 +67,10 @@ const doc = (
         style={styles.image}
         src="http://static.donquijote.org/images/blogs/dq-reg/don-quijote-de-la-mancha.jpg"
       />
-      <Text style={styles.subtitle}>
+      <Subtitle firstChapter>
         Capítulo I: Que trata de la condición y ejercicio del famoso hidalgo D.
         Quijote de la Mancha
-      </Text>
+      </Subtitle>
       <Text style={styles.text}>
         En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha
         mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga
@@ -135,89 +141,92 @@ const doc = (
         toda aquella máquina de aquellas soñadas invenciones que leía, que para
         él no había otra historia más cierta en el mundo.
       </Text>
-      <Text style={styles.text}>
-        Decía él, que el Cid Ruy Díaz había sido muy buen caballero; pero que no
-        tenía que ver con el caballero de la ardiente espada, que de sólo un
-        revés había partido por medio dos fieros y descomunales gigantes. Mejor
-        estaba con Bernardo del Carpio, porque en Roncesvalle había muerto a
-        Roldán el encantado, valiéndose de la industria de Hércules, cuando
-        ahogó a Anteo, el hijo de la Tierra, entre los brazos. Decía mucho bien
-        del gigante Morgante, porque con ser de aquella generación gigantesca,
-        que todos son soberbios y descomedidos, él solo era afable y bien
-        criado; pero sobre todos estaba bien con Reinaldos de Montalbán, y más
-        cuando le veía salir de su castillo y robar cuantos topaba, y cuando en
-        Allende robó aquel ídolo de Mahoma, que era todo de oro, según dice su
-        historia. Diera él, por dar una mano de coces al traidor de Galalón, al
-        ama que tenía y aun a su sobrina de añadidura.
-      </Text>
+      <Subtitle>
+        Capítulo II: Que trata de la primera salida que de su tierra hizo el
+        ingenioso Don Quijote
+      </Subtitle>
       <Image
         style={styles.image}
         src="https://panampost.com/wp-content/uploads/don-quijote-lessons.jpg"
       />
       <Text style={styles.text}>
-        En efecto, rematado ya su juicio, vino a dar en el más extraño
-        pensamiento que jamás dio loco en el mundo, y fue que le pareció
-        convenible y necesario, así para el aumento de su honra, como para el
-        servicio de su república, hacerse caballero andante, e irse por todo el
-        mundo con sus armas y caballo a buscar las aventuras, y a ejercitarse en
-        todo aquello que él había leído, que los caballeros andantes se
-        ejercitaban, deshaciendo todo género de agravio, y poniéndose en
-        ocasiones y peligros, donde acabándolos, cobrase eterno nombre y fama.
-        Imaginábase el pobre ya coronado por el valor de su brazo por lo menos
-        del imperio de Trapisonda: y así con estos tan agradables pensamientos,
-        llevado del estraño gusto que en ellos sentía, se dió priesa a poner en
-        efecto lo que deseaba. Y lo primero que hizo, fue limpiar unas armas,
-        que habían sido de sus bisabuelos, que, tomadas de orín y llenas de
-        moho, luengos siglos había que estaban puestas y olvidadas en un rincón.
-        Limpiólas y aderezólas lo mejor que pudo; pero vió que tenían una gran
-        falta, y era que no tenía celada de encaje, sino morrión simple; mas a
-        esto suplió su industria, porque de cartones hizo un modo de media
-        celada, que encajada con el morrión, hacía una apariencia de celada
-        entera. Es verdad que para probar si era fuerte, y podía estar al riesgo
-        de una cuchillada, sacó su espada, y le dió dos golpes, y con el primero
-        y en un punto deshizo lo que había hecho en una semana: y no dejó de
-        parecerle mal la facilidad con que la había hecho pedazos, y por
-        asegurarse de este peligro, lo tornó a hacer de nuevo, poniéndole unas
-        barras de hierro por de dentro de tal manera, que él quedó satisfecho de
-        su fortaleza; y, sin querer hacer nueva experiencia de ella, la diputó y
-        tuvo por celada finísima de encaje.
+        Hechas, pues, estas prevenciones, no quiso aguardar más tiempo a poner
+        en efeto su pensamiento, apretándole a ello la falta que él pensaba que
+        hacía en el mundo su tardanza, según eran los agravios que pensaba
+        deshacer, tuertos que enderezar, sinrazones que emendar y abusos que
+        mejorar y deudas que satisfacer. Y así, sin dar parte a persona alguna
+        de su intención y sin que nadie le viese, una mañana, antes del día, que
+        era uno de los calurosos del mes de Julio, se armó de todas sus armas,
+        subió sobre Rocinante, puesta su mal compuesta celada, embrazó su
+        adarga, tomó su lanza y por la puerta falsa de un corral salió al campo
+        con grandísimo contento y alborozo de ver con cuánta facilidad había
+        dado principio a su buen deseo. Mas apenas se vio en el campo cuando le
+        asaltó un pensamiento terrible, y tal, que por poco le hiciera dejar la
+        comenzada empresa; y fue que le vino a la memoria que no era armado
+        caballero, y que, conforme a ley de caballería, ni podía ni debía tomar
+        armas con ningún caballero; y puesto que lo fuera, había de llevar armas
+        blancas, como novel caballero, sin empresa en el escudo, hasta que por
+        su esfuerzo la ganase. Estos pensamientos le hicieron titubear en su
+        propósito; mas pudiendo más su locura que otra razón alguna, propuso de
+        hacerse armar caballero del primero que topase, a imitación de otros
+        muchos que así lo hicieron, según él había leído en los libros que tal
+        le tenían. En lo de las armas blancas, pensaba limpiarlas de manera, en
+        teniendo lugar, que lo fuesen más que un arminio; y con esto se quietó18
+        y prosiguió su camino, sin llevar otro que aquel que su caballo quería,
+        creyendo que en aquello consistía la fuerza de las aventuras
       </Text>
       <Text style={styles.text}>
-        Fue luego a ver a su rocín, y aunque tenía más cuartos que un real, y
-        más tachas que el caballo de Gonela, que tantum pellis, et ossa fuit, le
-        pareció que ni el Bucéfalo de Alejandro, ni Babieca el del Cid con él se
-        igualaban. Cuatro días se le pasaron en imaginar qué nombre le podría:
-        porque, según se decía él a sí mismo, no era razón que caballo de
-        caballero tan famoso, y tan bueno él por sí, estuviese sin nombre
-        conocido; y así procuraba acomodársele, de manera que declarase quien
-        había sido, antes que fuese de caballero andante, y lo que era entones:
-        pues estaba muy puesto en razón, que mudando su señor estado, mudase él
-        también el nombre; y le cobrase famoso y de estruendo, como convenía a
-        la nueva orden y al nuevo ejercicio que ya profesaba: y así después de
-        muchos nombres que formó, borró y quitó, añadió, deshizo y tornó a hacer
-        en su memoria e imaginación, al fin le vino a llamar Rocinante, nombre a
-        su parecer alto, sonoro y significativo de lo que había sido cuando fue
-        rocín, antes de lo que ahora era, que era antes y primero de todos los
-        rocines del mundo.
+        Yendo, pues, caminando nuestro flamante aventurero, iba hablando consigo
+        mesmo, y diciendo: —¿Quién duda, sino que en los venideros tiempos,
+        cuando salga a luz la verdadera historia de mis famosos hechos, que el
+        sabio que los escribiere no ponga, cuando llegue a contar esta mi
+        primera salida tan de mañana, desta manera?: Apenas había el rubicundo
+        Apolo tendido por la faz de la ancha y espaciosa tierra las doradas
+        hebras de sus hermosos cabellos, y apenas los pequeños y pintados
+        pajarillos con sus arpadas lenguas habían saludado con dulce y meliflua
+        armonía la venida de la rosada Aurora, que, dejando la blanda cama del
+        celoso marido, por las puertas y balcones del manchego horizonte a los
+        mortales se mostraba, cuando el famoso caballero don Quijote de la
+        Mancha, dejando las ociosas plumas, subió sobre su famoso caballo
+        Rocinante y comenzó a caminar por el antiguo y conocido Campo de
+        Montiel.
       </Text>
       <Text style={styles.text}>
-        Puesto nombre y tan a su gusto a su caballo, quiso ponérsele a sí mismo,
-        y en este pensamiento, duró otros ocho días, y al cabo se vino a llamar
-        don Quijote, de donde como queda dicho, tomaron ocasión los autores de
-        esta tan verdadera historia, que sin duda se debía llamar Quijada, y no
-        Quesada como otros quisieron decir. Pero acordándose que el valeroso
-        Amadís, no sólo se había contentado con llamarse Amadís a secas, sino
-        que añadió el nombre de su reino y patria, por hacerla famosa, y se
-        llamó Amadís de Gaula, así quiso, como buen caballero, añadir al suyo el
-        nombre de la suya, y llamarse don Quijote de la Mancha, con que a su
-        parecer declaraba muy al vivo su linaje y patria, y la honraba con tomar
-        el sobrenombre della.
+        Y era la verdad que por él caminaba; y añadió diciendo: —Dichosa edad y
+        siglo dichoso aquel adonde saldrán a luz las famosas hazañas mías,
+        dignas de entallarse en bronces, esculpirse en mármoles y pintarse en
+        tablas, para memoria en lo futuro. ¡Oh tú, sabio encantador, quienquiera
+        que seas, a quien ha de tocar el ser coronista desta peregrina historia!
+        Ruégote que no te olvides de mi buen Rocinante, compañero eterno mío en
+        todos mis caminos y carreras.
       </Text>
       <Text style={styles.text}>
-        Limpias, pues, sus armas, hecho del morrión celada, puesto nombre a su
-        rocín, y confirmándose a sí mismo, se dió a entender que no le faltaba
-        otra cosa, sino buscar una dama de quien enamorarse, porque el caballero
-        andante sin amores, era árbol sin hojas y sin fruto, y cuerpo sin alma.
+        Luego volvía diciendo, como si verdaderamente fuera enamorado: —¡Oh
+        princesa Dulcinea, señora deste cautivo corazón! Mucho agravio me
+        habedes fecho en despedirme y reprocharme con el riguroso afincamiento
+        de mandarme no parecer ante la vuestra fermosura. Plégaos, señora, de
+        membraros deste vuestro sujeto corazón, que tantas cuitas por vuestro
+        amor padece. Con estos iba ensartando otros disparates, todos al modo de
+        los que sus libros le habían enseñado, imitando en cuanto podía su
+        lenguaje. Con esto caminaba tan despacio, y el sol entraba tan apriesa y
+        con tanto ardor, que fuera bastante a derretirle los sesos, si algunos
+        tuviera
+      </Text>
+      <Text style={styles.text}>
+        Casi todo aquel día caminó sin acontecerle cosa que de contar fuese, de
+        lo cual se desesperaba, porque quisiera topar luego luego con quien
+        hacer experiencia del valor de su fuerte brazo. Autores hay que dicen
+        que la primera aventura que le avino fue la del Puerto Lápice, otros
+        dicen que la de los molinos de viento; pero lo que yo he podido
+        averiguar en este caso, y lo que he hallado escrito en los anales de la
+        Mancha, es que él anduvo todo aquel día, y, al anochecer, su rocín y él
+        se hallaron cansados y muertos de hambre, y que, mirando a todas partes
+        por ver si descubriría algún castillo o alguna majada de pastores donde
+        recogerse y adonde pudiese remediar su mucha hambre y necesidad, vio, no
+        lejos del camino por donde iba, una venta,que fue como si viera una
+        estrella que, no a los portales, sino a los alcázares de su redención le
+        encaminaba. Diose priesa a caminar, y llegó a ella a tiempo que
+        anochecía.
       </Text>
       <Text style={styles.footer} fixed>
         ~ Don Quijote de la Mancha ~

@@ -260,14 +260,19 @@ class Base {
 
   async renderWrapChildren(page) {
     let i;
-    const renderedChilds = [];
+    let isFirstElement = true;
     let availableHeight = this.parent.getHeight();
+
+    const renderedChilds = [];
 
     for (i = 0; i < this.children.length; i++) {
       const child = this.children[i];
       const childHeight = child.getHeight();
 
-      if (availableHeight >= childHeight) {
+      if (child.props.break && !isFirstElement) {
+        page.addNewSubpage();
+        break;
+      } else if (availableHeight >= childHeight) {
         await child.render(page);
         renderedChilds.push(child);
 
@@ -277,6 +282,10 @@ class Base {
 
         page.addNewSubpage();
         break;
+      }
+
+      if (!child.props.fixed) {
+        isFirstElement = false;
       }
     }
 

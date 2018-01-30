@@ -91,7 +91,9 @@ const PDFRenderer = ReactFiberReconciler({
     },
 
     removeChildFromContainer(parentInstance, child) {
-      parentInstance.removeChild(child);
+      if (parentInstance.removeChild) {
+        parentInstance.removeChild(child);
+      }
     },
 
     commitTextUpdate(textInstance, oldText, newText) {

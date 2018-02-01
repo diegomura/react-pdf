@@ -63,6 +63,10 @@ class Image extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
 
+    if (this.props.debug) {
+      this.debug();
+    }
+
     this.root.image(this.image.data, left + padding.left, top + padding.top, {
       width: width - padding.left - padding.right,
       height: height - padding.top - padding.bottom,

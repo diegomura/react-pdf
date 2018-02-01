@@ -3,6 +3,7 @@ import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
 import StyleSheet from '../stylesheet';
+import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 
 class Base {
@@ -159,6 +160,15 @@ class Base {
     };
   }
 
+  getComputedMargin() {
+    return {
+      top: this.layout.getComputedMargin(Yoga.EDGE_TOP),
+      right: this.layout.getComputedMargin(Yoga.EDGE_RIGHT),
+      bottom: this.layout.getComputedMargin(Yoga.EDGE_BOTTOM),
+      left: this.layout.getComputedMargin(Yoga.EDGE_LEFT),
+    };
+  }
+
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { backgroundColor } = this.style;
@@ -178,6 +188,7 @@ class Base {
   }
 }
 
+Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
 
 export default Base;

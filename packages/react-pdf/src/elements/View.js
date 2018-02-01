@@ -9,6 +9,10 @@ class View extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
 
+    if (this.props.debug) {
+      this.debug();
+    }
+
     await this.renderChildren();
   }
 }

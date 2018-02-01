@@ -234,7 +234,7 @@ class Base {
     return clone;
   }
 
-  async fillRemainingSpace(element, availableHeight) {
+  async fillRemainingSpace(page, element, availableHeight) {
     if (element.canBeSplitted) {
       const getHeight = value => {
         element.setFontSize();
@@ -253,9 +253,30 @@ class Base {
 
       const newElement = splitElement(element, availableHeight, getHeight);
       await newElement.render();
-    }
+    } else {
+      const renderedChilds = [];
 
-    return;
+      for (let i = 0; i < element.children.length; i++) {
+        const child = element.children[i];
+        const childHeight = child.getHeight();
+
+        if (availableHeight >= childHeight) {
+          await child.render(page);
+          renderedChilds.push(child);
+
+          availableHeight -= childHeight;
+        } else {
+          break;
+        }
+      }
+
+      // Remove rendered childs
+      renderedChilds.forEach(child => {
+        if (!child.props.fixed) {
+          element.removeChild(child);
+        }
+      });
+    }
   }
 
   async renderWrapChildren(page) {
@@ -278,7 +299,7 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
-        await this.fillRemainingSpace(child, availableHeight);
+        await this.fillRemainingSpace(page, child, availableHeight);
 
         page.addNewSubpage();
         break;

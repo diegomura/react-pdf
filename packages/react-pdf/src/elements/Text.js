@@ -160,7 +160,6 @@ class Text extends Base {
     }
 
     // Set coordinates, dimentions and continued text
-    // Increase a bit the width and height of the text or excecution freezes.
     this.root.text('', left + padding.left, top + padding.top, {
       continued: true,
       width: width - padding.left - padding.right,

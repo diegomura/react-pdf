@@ -85,8 +85,8 @@ const Debug = {
   },
   debug() {
     const layout = this.getAbsoluteLayout();
-    const padding = this.getComputedPadding();
-    const margin = this.getComputedMargin();
+    const padding = this.getPadding();
+    const margin = this.getMargin();
 
     this.root.save();
 

@@ -4,7 +4,9 @@ const Debug = {
     this.root.opacity(1);
     this.root.fillColor('black');
     this.root.text(
-      `${layout.width} x ${layout.height}`,
+      `${layout.width + margin.left + margin.right} x ${layout.height +
+        margin.top +
+        margin.bottom}`,
       layout.left - margin.left,
       layout.top - margin.top - 4,
     );

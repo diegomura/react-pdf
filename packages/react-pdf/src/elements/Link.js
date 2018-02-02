@@ -41,6 +41,10 @@ class Link extends Text {
     this.drawBackgroundColor();
     this.drawBorders();
 
+    if (this.props.debug) {
+      this.debug();
+    }
+
     this.root.fillColor(color).text(this.children, left, top, {
       link: this.getSrc(),
       width,

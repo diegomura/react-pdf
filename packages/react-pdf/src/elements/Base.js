@@ -2,9 +2,11 @@ import Yoga from 'yoga-layout';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
+import pick from 'lodash.pick';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
+import { inheritedProperties } from '../utils/styles';
 
 class Base {
   parent = null;
@@ -169,9 +171,28 @@ class Base {
     };
   }
 
+  getComputedStyles() {
+    let element = this.parent;
+    let inheritedStyles = {};
+
+    while (element && element.parent) {
+      inheritedStyles = {
+        ...element.parent.style,
+        ...element.style,
+        ...inheritedStyles,
+      };
+      element = element.parent;
+    }
+
+    return {
+      ...pick(inheritedStyles, inheritedProperties),
+      ...this.style,
+    };
+  }
+
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const { backgroundColor } = this.style;
+    const { backgroundColor } = this.getComputedStyles();
 
     if (backgroundColor) {
       this.root

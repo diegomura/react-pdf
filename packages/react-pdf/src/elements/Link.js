@@ -30,7 +30,7 @@ class Link extends Text {
       textAlign,
       color = 'blue',
       textDecoration = 'underline',
-    } = this.style;
+    } = this.getComputedStyles();
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     warning(

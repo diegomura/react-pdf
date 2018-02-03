@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@react-pdf/native",
   "version": "0.6.3",
   "license": "MIT",

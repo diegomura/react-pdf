@@ -57,7 +57,7 @@ const Borders = {
       borderRightStyle = 'solid',
       borderBottomStyle = 'solid',
       borderLeftStyle = 'solid',
-    } = this.style;
+    } = this.getComputedStyles();
 
     // Save current graphics stack
     this.root.save();

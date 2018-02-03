@@ -12,7 +12,7 @@ class Image extends Base {
   }
 
   shouldGrow() {
-    return !!this.style.flexGrow;
+    return !!this.getComputedStyles().flexGrow;
   }
 
   getHeight(width) {

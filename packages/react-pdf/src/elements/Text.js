@@ -45,15 +45,15 @@ class Text extends Base {
   }
 
   setFontSize() {
-    this.root.fontSize(this.style.fontSize || 18);
+    this.root.fontSize(this.getComputedStyles().fontSize || 18);
   }
 
   setFontFamily() {
-    this.root.font(this.style.fontFamily || 'Helvetica');
+    this.root.font(this.getComputedStyles().fontFamily || 'Helvetica');
   }
 
   transformText(text) {
-    switch (this.style.textTransform) {
+    switch (this.getComputedStyles().textTransform) {
       case 'uppercase':
         return text.toUpperCase();
       case 'lowercase':
@@ -119,7 +119,7 @@ class Text extends Base {
   }
 
   async renderText(text, isFirstNode) {
-    const { textAlign = 'left', align, textDecoration } = this.style;
+    const { textAlign, align, textDecoration } = this.getComputedStyles();
 
     warning(
       !align,
@@ -137,7 +137,7 @@ class Text extends Base {
   async render() {
     const padding = this.getComputedPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const { color = 'black' } = this.style;
+    const { color = 'black' } = this.getComputedStyles();
 
     this.drawBackgroundColor();
     this.drawBorders();

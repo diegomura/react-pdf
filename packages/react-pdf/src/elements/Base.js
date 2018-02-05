@@ -7,6 +7,7 @@ import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import { inheritedProperties } from '../utils/styles';
+import { splitElement } from '../utils/wrapping';
 
 class Base {
   parent = null;
@@ -27,6 +28,7 @@ class Base {
 
     this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();
+    this.canBeSplitted = false;
 
     if (this.props) {
       this.applyProps(this.props);
@@ -43,8 +45,8 @@ class Base {
     const index = this.children.indexOf(child);
 
     child.parent = null;
-    this.children.slice(index, 1);
-    this.layout.removeChild(child.layout, index);
+    this.children.splice(index, 1);
+    this.layout.removeChild(child.layout);
   }
 
   applyProps(props) {
@@ -153,7 +155,7 @@ class Base {
     };
   }
 
-  getComputedPadding() {
+  getPadding() {
     return {
       top: this.layout.getComputedPadding(Yoga.EDGE_TOP),
       right: this.layout.getComputedPadding(Yoga.EDGE_RIGHT),
@@ -162,13 +164,33 @@ class Base {
     };
   }
 
-  getComputedMargin() {
+  getMargin() {
     return {
       top: this.layout.getComputedMargin(Yoga.EDGE_TOP),
       right: this.layout.getComputedMargin(Yoga.EDGE_RIGHT),
       bottom: this.layout.getComputedMargin(Yoga.EDGE_BOTTOM),
       left: this.layout.getComputedMargin(Yoga.EDGE_LEFT),
     };
+  }
+
+  getWidth() {
+    return (
+      this.layout.getComputedWidth() +
+      this.layout.getComputedMargin(Yoga.EDGE_LEFT) +
+      this.layout.getComputedMargin(Yoga.EDGE_RIGTH) -
+      this.layout.getComputedPadding(Yoga.EDGE_LEFT) -
+      this.layout.getComputedPadding(Yoga.EDGE_RIGTH)
+    );
+  }
+
+  getHeight() {
+    return (
+      this.layout.getComputedHeight() +
+      this.layout.getComputedMargin(Yoga.EDGE_TOP) +
+      this.layout.getComputedMargin(Yoga.EDGE_BOTTOM) -
+      this.layout.getComputedPadding(Yoga.EDGE_TOP) -
+      this.layout.getComputedPadding(Yoga.EDGE_BOTTOM)
+    );
   }
 
   getComputedStyles() {
@@ -202,9 +224,119 @@ class Base {
     }
   }
 
-  async renderChildren() {
+  clone() {
+    const clone = new this.constructor(this.root, this.props);
+
+    clone.parent = this.parent;
+    clone.layout = this.layout;
+    clone.children = this.children;
+
+    return clone;
+  }
+
+  async fillRemainingSpace(page, element, availableHeight) {
+    if (element.canBeSplitted) {
+      const getHeight = value => {
+        element.setFontSize();
+        const elementMargin = element.getMargin();
+        const elementPadding = element.getPadding();
+
+        return this.root.heightOfString(value, {
+          width:
+            this.getWidth() -
+            elementMargin.right -
+            elementMargin.left -
+            elementPadding.right -
+            elementPadding.left,
+        });
+      };
+
+      const newElement = splitElement(element, availableHeight, getHeight);
+      await newElement.render();
+    } else {
+      const renderedChilds = [];
+
+      for (let i = 0; i < element.children.length; i++) {
+        const child = element.children[i];
+        const childHeight = child.getHeight();
+
+        if (availableHeight >= childHeight) {
+          await child.render(page);
+          renderedChilds.push(child);
+
+          availableHeight -= childHeight;
+        } else {
+          break;
+        }
+      }
+
+      // Remove rendered childs
+      renderedChilds.forEach(child => {
+        if (!child.props.fixed) {
+          element.removeChild(child);
+        }
+      });
+    }
+  }
+
+  async renderWrapChildren(page) {
+    let i;
+    let isFirstElement = true;
+    let availableHeight = this.parent.getHeight();
+
+    const renderedChilds = [];
+
+    for (i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      const childHeight = child.getHeight();
+
+      if (child.props.break && !isFirstElement) {
+        page.addNewSubpage();
+        break;
+      } else if (availableHeight >= childHeight) {
+        await child.render(page);
+        renderedChilds.push(child);
+
+        availableHeight -= childHeight;
+      } else {
+        await this.fillRemainingSpace(page, child, availableHeight);
+
+        page.addNewSubpage();
+        break;
+      }
+
+      if (!child.props.fixed) {
+        isFirstElement = false;
+      }
+    }
+
+    // Render remaining fixed children
+    for (let j = i; j < this.children.length; j++) {
+      const child = this.children[j];
+      if (child.props.fixed) {
+        await child.render(page);
+      }
+    }
+
+    // Remove rendered childs
+    renderedChilds.forEach(child => {
+      if (!child.props.fixed) {
+        this.removeChild(child);
+      }
+    });
+  }
+
+  async renderPlainChildren(page) {
     for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
+      await this.children[i].render(page);
+    }
+  }
+
+  async renderChildren(page) {
+    if (page.props.wrap) {
+      await this.renderWrapChildren(page);
+    } else {
+      await this.renderPlainChildren(page);
     }
   }
 }

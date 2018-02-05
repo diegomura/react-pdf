@@ -5,7 +5,7 @@ class View extends Base {
     style: {},
   };
 
-  async render() {
+  async render(page) {
     this.drawBackgroundColor();
     this.drawBorders();
 
@@ -13,7 +13,7 @@ class View extends Base {
       this.debug();
     }
 
-    await this.renderChildren();
+    await this.renderChildren(page);
   }
 }
 

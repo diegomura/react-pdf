@@ -1,90 +1,60 @@
-import Base from './Base';
-import warning from 'fbjs/lib/warning';
-import sizes from '../utils/pageSizes';
+import SubPage from './SubPage';
 
-class Page extends Base {
+class Page {
+  parent = null;
+  children = [];
+
   static defaultProps = {
     size: 'A4',
     orientation: 'portrait',
     style: {},
+    wrap: false,
   };
 
-  getSize() {
-    const { size } = this.props;
+  constructor(root, props) {
+    this.root = root;
+    this.props = { ...Page.defaultProps, ...props };
+    this.children = [];
+    this.initialSubpage = null;
 
-    if (typeof size === 'string') {
-      return sizes[size];
-    } else if (Array.isArray(size)) {
-      return size;
-    } else if (typeof size === 'object' && size.width && size.height) {
-      return [size.width, size.height];
-    } else {
-      throw new Error(`Invalid Page size: ${size}`);
-    }
+    this.addInitialSubpage();
   }
 
-  resetMargins() {
-    if (
-      !!this.style.marginTop ||
-      !!this.style.marginBottom ||
-      !!this.style.marginLeft ||
-      !!this.style.marginRight
-    ) {
-      warning(
-        false,
-        'Margin values are not allowed on Page element. Use padding instead.',
-      );
+  addInitialSubpage() {
+    const newSubpage = new SubPage(this.root, this.props);
 
-      this.style.marginTop = 0;
-      this.style.marginBottom = 0;
-      this.style.marginLeft = 0;
-      this.style.marginRight = 0;
-    }
+    newSubpage.parent = this;
+
+    this.children.push(newSubpage);
+    this.initialSubpage = newSubpage;
   }
 
-  applyProps(props) {
-    this.resetMargins();
+  addNewSubpage() {
+    const newSubpage = this.initialSubpage.clone();
 
-    super.applyProps(props);
+    this.children.push(newSubpage);
+  }
 
-    if (props.size) {
-      const size = this.getSize();
+  appendChild(child) {
+    this.children[0].appendChild(child);
+  }
 
-      if (props.orientation === 'landscape') {
-        this.layout.setWidth(size[1]);
-        this.layout.setHeight(size[0]);
-      } else {
-        this.layout.setHeight(size[1]);
-        this.layout.setWidth(size[0]);
-      }
-    }
+  removeChild(child) {
+    this.children[0].removeChild(child);
+  }
+
+  getWidth() {
+    return this.children[0].getWidth();
+  }
+
+  getHeight() {
+    return this.children[0].getHeight();
   }
 
   async render() {
-    const { orientation } = this.props;
-
-    // Since Text needs it's parent layout,
-    // we need to calculate flexbox layout for a first time.
-    this.layout.calculateLayout();
-
-    // Then ask each children to recalculate it's layout.
-    // This puts all Text nodes in a dirty state
-    await this.recalculateLayout();
-
-    // Finally, calculate flexbox's layout
-    // one more time based new widths and heights.
-    this.layout.calculateLayout();
-
-    this.root.addPage({ size: this.getSize(), layout: orientation, margin: 0 });
-
-    if (this.style.backgroundColor) {
-      this.root
-        .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.root.page.width, this.root.page.height)
-        .fill();
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].render(this);
     }
-
-    await this.renderChildren();
   }
 }
 

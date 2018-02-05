@@ -1,8 +1,8 @@
-import Base from './Base';
 import Yoga from 'yoga-layout';
-import warning from 'fbjs/lib/warning';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
+import warning from 'fbjs/lib/warning';
+import Base from './Base';
 
 class Text extends Base {
   width = null;
@@ -12,6 +12,7 @@ class Text extends Base {
     super(root, props);
 
     this.layout.setMeasureFunc(this.measureText.bind(this));
+    this.canBeSplitted = true;
   }
 
   appendChild(child) {
@@ -36,11 +37,11 @@ class Text extends Base {
     }, '');
   }
 
-  getWidth() {
+  calculateWidth() {
     return this.root.widthOfString(this.getRawValue());
   }
 
-  getHeight(width) {
+  calculateHeight(width) {
     return this.root.heightOfString(this.getRawValue(), { width });
   }
 
@@ -75,7 +76,7 @@ class Text extends Base {
     // If we have a known width, we just calculate the height of the text.
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
       this.width = width;
-      this.height = this.getHeight(this.width);
+      this.height = this.calculateHeight(this.width);
 
       return { height: this.style.flexGrow ? NaN : this.height };
     }
@@ -84,7 +85,7 @@ class Text extends Base {
     // width as it is, by returning NaN. Otherwise, we calculate the text width.
     if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
       this.height = height;
-      this.width = this.style.flexGrow ? NaN : this.getWidth();
+      this.width = this.style.flexGrow ? NaN : this.calculateWidth();
 
       return { width: this.width };
     }
@@ -100,8 +101,8 @@ class Text extends Base {
       !this.width &&
       !this.height
     ) {
-      this.width = Math.min(width, this.getWidth());
-      this.height = this.getHeight(this.width);
+      this.width = Math.min(width, this.calculateWidth());
+      this.height = this.calculateHeight(this.width);
 
       return { width: this.width, height: this.height };
     }
@@ -118,8 +119,20 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
+  // wrapElement() {
+  //   const parentWidth = this.parent.getWidth();
+  //
+  //   this.children = chunkStringIntoPages(
+  //     this.getRawValue(),
+  //     this.parent.getHeight(),
+  //     line => this.root.heightOfString(line, { width: parentWidth }),
+  //   );
+  //
+  //   return this.children.length;
+  // }
+
   async renderText(text, isFirstNode) {
-    const { textAlign, align, textDecoration } = this.getComputedStyles();
+    const { textAlign = 'left', align, textDecoration } = this.getComputedStyles();
 
     warning(
       !align,
@@ -134,8 +147,8 @@ class Text extends Base {
     });
   }
 
-  async render() {
-    const padding = this.getComputedPadding();
+  async render(page) {
+    const padding = this.getPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { color = 'black' } = this.getComputedStyles();
 
@@ -147,7 +160,6 @@ class Text extends Base {
     }
 
     // Set coordinates, dimentions and continued text
-    // Increase a bit the width and height of the text or excecution freezes.
     this.root.text('', left + padding.left, top + padding.top, {
       continued: true,
       width: width - padding.left - padding.right,

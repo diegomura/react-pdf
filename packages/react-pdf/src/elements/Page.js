@@ -1,4 +1,3 @@
-import warning from 'fbjs/lib/warning';
 import SubPage from './SubPage';
 
 class Page {
@@ -19,31 +18,6 @@ class Page {
     this.initialSubpage = null;
 
     this.addInitialSubpage();
-  }
-
-  resetMargins() {
-    if (
-      !!this.style.marginTop ||
-      !!this.style.marginBottom ||
-      !!this.style.marginLeft ||
-      !!this.style.marginRight
-    ) {
-      warning(
-        false,
-        'Margin values are not allowed on Page element. Use padding instead.',
-      );
-
-      this.style.marginTop = 0;
-      this.style.marginBottom = 0;
-      this.style.marginLeft = 0;
-      this.style.marginRight = 0;
-    }
-  }
-
-  applyProps(props) {
-    this.resetMargins();
-
-    super.applyProps(props);
   }
 
   addInitialSubpage() {

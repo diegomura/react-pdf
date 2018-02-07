@@ -8,7 +8,6 @@ import { Document, Page, Text, Image, StyleSheet } from '@react-pdf/core';
 const styles = StyleSheet.create({
   body: {
     padding: 35,
-    textAlign: 'center',
   },
   title: {
     fontSize: 24,

@@ -78,6 +78,7 @@ class Document {
     await this.renderChildren();
 
     this.root.end();
+    Font.reset();
   }
 }
 

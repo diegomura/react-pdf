@@ -126,4 +126,22 @@ describe('<Text />', () => {
       done,
     );
   });
+
+  test('Should log a warning if a styles props was supplied', done => {
+    console.errorCount = 0;
+    console.error = () => console.errorCount++;
+
+    render(
+      <Document>
+        <Page>
+          <View styles={{}}>
+            <Text styles={{}}>Should have been 'style'</Text>
+          </View>
+        </Page>
+      </Document>,
+    ).then(() => {
+      expect(console.errorCount).toBe(2);
+      done();
+    });
+  });
 });

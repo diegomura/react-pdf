@@ -132,7 +132,11 @@ class Text extends Base {
   // }
 
   async renderText(text, isFirstNode) {
-    const { textAlign = 'left', align, textDecoration } = this.getComputedStyles();
+    const {
+      textAlign = 'left',
+      align,
+      textDecoration,
+    } = this.getComputedStyles();
 
     warning(
       !align,

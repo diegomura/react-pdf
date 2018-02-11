@@ -3,6 +3,7 @@ import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
 import pick from 'lodash.pick';
+import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
@@ -25,6 +26,8 @@ class Base {
       ...Base.defaultProps,
       ...props,
     };
+
+    warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
 
     this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();

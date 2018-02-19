@@ -32,7 +32,7 @@
     "png-js": "0.1.1",
     "react-reconciler": "^0.7.0",
     "request": "^2.81.0",
-    "yoga-layout": "1.6.0"
+    "yoga-layout": "1.9.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

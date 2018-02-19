@@ -98,7 +98,7 @@ const PDFRenderer = ReactFiberReconciler({
     },
 
     commitTextUpdate(textInstance, oldText, newText) {
-      textInstance.chidren = newText;
+      textInstance.children = newText;
     },
 
     commitMount(instance, type, newProps) {

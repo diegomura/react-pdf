@@ -7,4 +7,4 @@
 
 **Description:**
 
-**How to replicate issue (if applies):**
+**How to replicate issue including code snippet (if applies):**

@@ -1,20 +1,17 @@
-import Base from './Base';
 import warning from 'fbjs/lib/warning';
-import sizes from '../utils/pageSizes';
+import Base from './Base';
 
 class SubPage extends Base {
-  getSize() {
-    const { size } = this.props;
+  get size() {
+    return this.parent.getSize();
+  }
 
-    if (typeof size === 'string') {
-      return sizes[size];
-    } else if (Array.isArray(size)) {
-      return size;
-    } else if (typeof size === 'object' && size.width && size.height) {
-      return [size.width, size.height];
-    } else {
-      throw new Error(`Invalid Page size: ${size}`);
-    }
+  get style() {
+    return this.parent.style;
+  }
+
+  set style(style) {
+    return style;
   }
 
   resetMargins() {
@@ -36,15 +33,14 @@ class SubPage extends Base {
     }
   }
 
-  applyProps(props) {
+  applyProps() {
+    super.applyProps();
     this.resetMargins();
 
-    super.applyProps(props);
+    if (this.props.size) {
+      const size = this.size;
 
-    if (props.size) {
-      const size = this.getSize();
-
-      if (props.orientation === 'landscape') {
+      if (this.props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
         this.layout.setHeight(size[0]);
       } else {
@@ -52,6 +48,10 @@ class SubPage extends Base {
         this.layout.setWidth(size[0]);
       }
     }
+  }
+
+  getPage() {
+    return this.parent;
   }
 
   async render(page) {
@@ -69,7 +69,7 @@ class SubPage extends Base {
     // one more time based new widths and heights.
     this.layout.calculateLayout();
 
-    this.root.addPage({ size: this.getSize(), layout: orientation, margin: 0 });
+    this.root.addPage({ size: this.size, layout: orientation, margin: 0 });
 
     if (this.style.backgroundColor) {
       this.root

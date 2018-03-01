@@ -17,9 +17,15 @@ import Skills from './Skills';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    '@media max-width: 400': {
+      flexDirection: 'column',
+    },
   },
   image: {
     marginBottom: 10,
+    '@media max-width: 400': {
+      width: 290,
+    },
   },
   leftColumn: {
     flexDirection: 'column',
@@ -27,6 +33,14 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 15,
     marginTop: 20,
+    '@media max-width: 400': {
+      width: 290,
+      marginRight: 30,
+    },
+    '@media orientation: landscape': {
+      width: 200,
+      marginRight: 50,
+    },
   },
   rightColumn: {
     flexDirection: 'column',
@@ -34,6 +48,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 30,
     marginTop: 20,
+    '@media max-width: 400': {
+      marginTop: 10,
+      marginLeft: 30,
+    },
   },
   footer: {
     fontSize: 12,
@@ -45,6 +63,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'gray',
     borderStyle: 'dashed',
+    '@media orientation: landscape': {
+      marginTop: 10,
+    },
   },
 });
 
@@ -61,33 +82,37 @@ Font.register(`${__dirname}/fonts/fonts/Lato/Lato-Bold.ttf`, {
   family: 'Lato Bold',
 });
 
-const Resume = () => (
+const Resume = props => (
+  <Page {...props}>
+    <Header />
+    <View style={styles.container}>
+      <View style={styles.leftColumn}>
+        <Image
+          src="https://images.gr-assets.com/characters/1264613782p8/1783.jpg"
+          style={styles.image}
+        />
+        <Education />
+        <Skills />
+      </View>
+      <View style={styles.rightColumn}>
+        <Experience />
+      </View>
+    </View>
+    <Text style={styles.footer}>This IS the candidate you are looking for</Text>
+  </Page>
+);
+
+const Output = () => (
   <Document
     author="Luke Skywalker"
     keywords="awesome, resume, start wars"
     subject="The resume of Luke Skywalker"
     title="Resume"
   >
-    <Page size="A4">
-      <Header />
-      <View style={styles.container}>
-        <View style={styles.leftColumn}>
-          <Image
-            src="https://images.gr-assets.com/characters/1264613782p8/1783.jpg"
-            style={styles.image}
-          />
-          <Education />
-          <Skills />
-        </View>
-        <View style={styles.rightColumn}>
-          <Experience />
-        </View>
-      </View>
-      <Text style={styles.footer}>
-        This IS the candidate you are looking for
-      </Text>
-    </Page>
+    <Resume size="A4" />
+    <Resume orientation="landscape" size="A4" />
+    <Resume size={[350, 1250]} />
   </Document>
 );
 
-ReactPDF.render(<Resume />, `${__dirname}/output.pdf`);
+ReactPDF.render(<Output />, `${__dirname}/output.pdf`);

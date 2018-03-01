@@ -1,4 +1,6 @@
 import SubPage from './SubPage';
+import StyleSheet from '../stylesheet';
+import sizes from '../utils/pageSizes';
 
 class Page {
   parent = null;
@@ -18,6 +20,32 @@ class Page {
     this.initialSubpage = null;
 
     this.addInitialSubpage();
+  }
+
+  applyProps() {
+    this.style = StyleSheet.resolve(this.props.style);
+
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].applyProps();
+    }
+  }
+
+  getSize() {
+    const { size } = this.props;
+
+    if (typeof size === 'string') {
+      return sizes[size];
+    } else if (Array.isArray(size)) {
+      return size;
+    } else if (typeof size === 'object' && size.width && size.height) {
+      return [size.width, size.height];
+    } else {
+      throw new Error(`Invalid Page size: ${size}`);
+    }
+  }
+
+  getOrientation() {
+    return this.props.orientation;
   }
 
   addInitialSubpage() {

@@ -1,3 +1,4 @@
+import matchMedia from 'media-engine';
 import transformStyles from './transformStyles';
 
 const create = styles => styles;
@@ -22,12 +23,28 @@ const flatten = input => {
   return result;
 };
 
-const resolve = styles => {
+const resolveMediaQueries = (input, container) => {
+  const result = Object.keys(input).reduce((acc, key) => {
+    if (/@media/.test(key)) {
+      return {
+        ...acc,
+        ...matchMedia({ [key]: input[key] }, container),
+      };
+    }
+
+    return { ...acc, [key]: input[key] };
+  }, {});
+
+  return result;
+};
+
+const resolve = (styles, container) => {
   if (!styles) {
     return null;
   }
 
   styles = flatten(styles);
+  styles = resolveMediaQueries(styles, container);
 
   return transformStyles(styles);
 };

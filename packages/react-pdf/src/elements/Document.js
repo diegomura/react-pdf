@@ -66,6 +66,12 @@ class Document {
     }
   }
 
+  applyProps() {
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].applyProps();
+    }
+  }
+
   async renderChildren() {
     for (let i = 0; i < this.children.length; i++) {
       await this.children[i].render();
@@ -74,9 +80,9 @@ class Document {
 
   async render() {
     this.addMetaData();
+    this.applyProps();
     await this.loadFonts();
     await this.renderChildren();
-
     this.root.end();
     Font.reset();
   }

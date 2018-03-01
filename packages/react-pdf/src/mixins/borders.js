@@ -64,8 +64,14 @@ const Borders = {
 
     // border top
     this.drawHorizontalBorder(
-      [left + borderTopWidth / 2, top + borderTopWidth / 2],
-      [left + width - borderTopWidth / 2, top + borderTopWidth / 2],
+      [
+        left + (borderTopLeftRadius > 0 ? borderTopWidth / 2 : 0),
+        top + borderTopWidth / 2,
+      ],
+      [
+        left + width - (borderTopRightRadius > 0 ? borderTopWidth / 2 : 0),
+        top + borderTopWidth / 2,
+      ],
       borderTopLeftRadius,
       borderTopRightRadius,
       borderTopWidth,
@@ -75,10 +81,13 @@ const Borders = {
 
     // border right
     this.drawVerticalBorder(
-      [left + width - borderRightWidth / 2, top + borderRightWidth / 2],
       [
         left + width - borderRightWidth / 2,
-        top + height - borderRightWidth / 2,
+        top + (borderTopRightRadius > 0 ? borderRightWidth / 2 : 0),
+      ],
+      [
+        left + width - borderRightWidth / 2,
+        top + height - (borderBottomRightRadius > 0 ? borderRightWidth / 2 : 0),
       ],
       -borderTopRightRadius,
       -borderBottomRightRadius,
@@ -90,10 +99,15 @@ const Borders = {
     // border bottom
     this.drawHorizontalBorder(
       [
-        left + width - borderBottomWidth / 2,
+        left +
+          width -
+          (borderBottomRightRadius > 0 ? borderBottomWidth / 2 : 0),
         top + height - borderBottomWidth / 2,
       ],
-      [left + borderBottomWidth / 2, top + height - borderBottomWidth / 2],
+      [
+        left + (borderBottomLeftRadius > 0 ? borderBottomWidth / 2 : 0),
+        top + height - borderBottomWidth / 2,
+      ],
       -borderBottomRightRadius,
       -borderBottomLeftRadius,
       borderBottomWidth,
@@ -103,8 +117,14 @@ const Borders = {
 
     // border left
     this.drawVerticalBorder(
-      [left + borderLeftWidth / 2, top + height - borderLeftWidth / 2],
-      [left + borderLeftWidth / 2, top + borderLeftWidth / 2],
+      [
+        left + borderLeftWidth / 2,
+        top + height - (borderBottomLeftRadius > 0 ? borderLeftWidth / 2 : 0),
+      ],
+      [
+        left + borderLeftWidth / 2,
+        top + (borderTopLeftRadius > 0 ? borderLeftWidth / 2 : 0),
+      ],
       borderBottomLeftRadius,
       borderTopLeftRadius,
       borderLeftWidth,

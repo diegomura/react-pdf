@@ -244,6 +244,7 @@ class Base {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
+    clone.style = this.style;
     clone.parent = this.parent;
     clone.layout = this.layout;
     clone.children = this.children;
@@ -316,6 +317,7 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
+        // console.log(child.children);
         await this.fillRemainingSpace(page, child, availableHeight);
 
         page.addNewSubpage();

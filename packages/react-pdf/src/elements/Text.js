@@ -19,6 +19,7 @@ class Text extends Base {
     if (typeof child === 'string') {
       this.children.push(this.transformText(child));
     } else {
+      child.parent = this;
       this.children.push(child);
     }
   }

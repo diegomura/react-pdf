@@ -167,4 +167,19 @@ describe('StyleSheet', () => {
       expand({ borderWidth: 5 }, expectedKeys);
     });
   });
+
+  describe('media queries', () => {
+    test('should resolve media queries', () => {
+      const styles = StyleSheet.resolve(
+        {
+          '@media max-height: 500': {
+            color: 'red',
+          },
+        },
+        { height: 300 },
+      );
+
+      expect(styles).toEqual({ color: 'red' });
+    });
+  });
 });

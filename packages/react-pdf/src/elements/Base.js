@@ -29,13 +29,8 @@ class Base {
 
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
 
-    this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();
     this.canBeSplitted = false;
-
-    if (this.props) {
-      this.applyProps(this.props);
-    }
   }
 
   appendChild(child) {
@@ -52,12 +47,27 @@ class Base {
     this.layout.removeChild(child.layout);
   }
 
-  applyProps(props) {
-    if (this.style) {
-      toPairsIn(this.style).map(([attribute, value]) => {
-        this.applyStyle(attribute, value);
+  applyProps() {
+    const page = this.getPage();
+    const pageSize = page.getSize();
+
+    this.style =
+      this.style ||
+      StyleSheet.resolve(this.props.style, {
+        width: pageSize[0],
+        height: pageSize[1],
+        orientation: page.getOrientation(),
       });
-    }
+
+    toPairsIn(this.style).map(([attribute, value]) => {
+      this.applyStyle(attribute, value);
+    });
+
+    this.children.forEach(child => {
+      if (child.applyProps) {
+        child.applyProps();
+      }
+    });
   }
 
   applyStyle(attribute, value) {
@@ -141,6 +151,10 @@ class Base {
       this.children.map(child => child.recalculateLayout()),
     );
     return childs;
+  }
+
+  getPage() {
+    return this.parent.getPage();
   }
 
   getAbsoluteLayout() {
@@ -230,6 +244,7 @@ class Base {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
+    clone.style = this.style;
     clone.parent = this.parent;
     clone.layout = this.layout;
     clone.children = this.children;
@@ -302,6 +317,7 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
+        // console.log(child.children);
         await this.fillRemainingSpace(page, child, availableHeight);
 
         page.addNewSubpage();

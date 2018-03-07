@@ -39,8 +39,6 @@ export const fetchImage = src => {
           return reject(error);
         }
 
-        let extension = '';
-
         const isPng =
           body[0] === 137 &&
           body[1] === 80 &&
@@ -53,6 +51,7 @@ export const fetchImage = src => {
 
         const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
 
+        let extension = '';
         if (isPng) {
           extension = 'png';
         } else if (isJpg) {

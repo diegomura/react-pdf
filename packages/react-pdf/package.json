@@ -28,7 +28,7 @@
     "lodash.pick": "^4.4.0",
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
-    "media-engine": "^1.0.2",
+    "media-engine": "^1.0.3",
     "pdfkit": "0.8.1",
     "png-js": "0.1.1",
     "react-reconciler": "^0.7.0",

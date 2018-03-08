@@ -1131,9 +1131,9 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
   dependencies:
     js-tokens "^3.0.0"
 
-media-engine@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/media-engine/-/media-engine-1.0.2.tgz#ba7b0b5dd4f8e37c040d5cc8f353886911b59e3f"
+media-engine@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/media-engine/-/media-engine-1.0.3.tgz#be3188f6cd243ea2a40804a35de5a5b032f58dad"
 
 micromatch@^2.1.5:
   version "2.3.11"

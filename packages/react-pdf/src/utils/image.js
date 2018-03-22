@@ -27,7 +27,6 @@ export const fetchImage = src => {
     );
   }
 
-  const extension = src.split('.').pop();
   return new Promise((resolve, reject) => {
     request(
       {
@@ -39,6 +38,25 @@ export const fetchImage = src => {
         if (error) {
           return reject(error);
         }
+
+        const isPng =
+          body[0] === 137 &&
+          body[1] === 80 &&
+          body[2] === 78 &&
+          body[3] === 71 &&
+          body[4] === 13 &&
+          body[5] === 10 &&
+          body[6] === 26 &&
+          body[7] === 10;
+
+        const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
+
+        let extension = '';
+        if (isPng) {
+          extension = 'png';
+        } else if (isJpg) {
+          extension = 'jpg';
+        } else reject(new Error('Not valid image extension'));
 
         const image = getImage(body, extension);
         return resolve(image);

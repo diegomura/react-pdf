@@ -20,7 +20,7 @@ describe('<Image />', () => {
       done();
     });
 
-  test('Should render just a image over http', done => {
+  test('Should render a jpeg image over http', done => {
     matchSnapshot(
       <Page>
         <Image src={imageUrl} />
@@ -29,7 +29,16 @@ describe('<Image />', () => {
     );
   });
 
-  test('Should render just a local image', done => {
+  test('Should render a png image over http', done => {
+    matchSnapshot(
+      <Page>
+        <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/PNG_transparency_demonstration_2.png/300px-PNG_transparency_demonstration_2.png" />
+      </Page>,
+      done,
+    );
+  });
+
+  test('Should render a local image', done => {
     matchSnapshot(
       <Page>
         <Image src={{ data: localImage, format: 'jpg' }} />

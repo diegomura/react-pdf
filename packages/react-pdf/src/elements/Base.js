@@ -317,7 +317,6 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
-        // console.log(child.children);
         await this.fillRemainingSpace(page, child, availableHeight);
 
         page.addNewSubpage();

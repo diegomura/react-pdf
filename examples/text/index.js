@@ -8,7 +8,7 @@ import {
   Page,
   View,
   Text,
-  Link,
+  // Link,
   Font,
   StyleSheet,
 } from '@react-pdf/core';
@@ -65,12 +65,12 @@ Font.register(
 const doc = (
   <Document>
     <Page size="A4">
-      <Link
+      <Text
         style={styles.title}
         src="https://es.wikipedia.org/wiki/Lorem_ipsum"
       >
         Lorem Ipsum
-      </Link>
+      </Text>
       <View style={styles.body}>
         <View style={styles.row}>
           <Text style={styles.text}>

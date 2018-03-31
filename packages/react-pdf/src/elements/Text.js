@@ -1,8 +1,13 @@
 import Yoga from 'yoga-layout';
+import KPLineBreaker from 'linebreaker';
+import { Path, LayoutEngine, AttributedString, Container } from 'textkit';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
-import warning from 'fbjs/lib/warning';
+// import warning from 'fbjs/lib/warning';
 import Base from './Base';
+import Font from '../font';
+
+const layoutEngine = new LayoutEngine({ lineBreaker: new KPLineBreaker() });
 
 class Text extends Base {
   width = null;
@@ -132,31 +137,107 @@ class Text extends Base {
   //   return this.children.length;
   // }
 
-  async renderText(text, isFirstNode) {
+  // async renderText(text, isFirstNode) {
+  //   const {
+  //     textAlign = 'left',
+  //     align,
+  //     textDecoration,
+  //   } = this.getComputedStyles();
+  //
+  //   warning(
+  //     !align,
+  //     '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
+  //   );
+  //
+  //   this.root.text(text, {
+  //     align: align || textAlign,
+  //     link: '',
+  //     continued: true,
+  //     underline: textDecoration === 'underline',
+  //   });
+  // }
+
+  getAttributedString() {
+    const fragments = [];
     const {
-      textAlign = 'left',
-      align,
-      textDecoration,
+      color = 'black',
+      fontFamily = 'Helvetica',
+      fontSize = 18,
     } = this.getComputedStyles();
 
-    warning(
-      !align,
-      '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+
+      if (typeof child === 'string') {
+        const font = Font.getFont(fontFamily).data;
+
+        fragments.push({
+          string: child,
+          attributes: {
+            font,
+            color,
+            fontSize,
+          },
+        });
+      } else {
+        // await child.render({ inline: true });
+      }
+    }
+
+    return AttributedString.fromFragments(fragments);
+  }
+
+  layoutText() {
+    const padding = this.getPadding();
+    const { left, top, width, height } = this.getAbsoluteLayout();
+
+    const path = new Path();
+    path.rect(
+      left,
+      top,
+      width - padding.left - padding.right,
+      height - padding.top - padding.bottom,
     );
 
-    this.root.text(text, {
-      align: align || textAlign,
-      link: '',
-      continued: true,
-      underline: textDecoration === 'underline',
-    });
+    const attributedString = this.getAttributedString();
+    const container = new Container(path);
+    layoutEngine.layout(attributedString, [container]);
+
+    return container;
+  }
+
+  renderText() {
+    const container = this.layoutText();
+
+    // Render glyphs
+    for (let i = 0; i < container.blocks.length; i++) {
+      const block = container.blocks[i];
+
+      for (const line of block.lines) {
+        this.root.save();
+        this.root.translate(line.rect.x, line.rect.y + line.ascent);
+
+        for (const run of line.glyphRuns) {
+          const { font, fontSize, color } = run.attributes;
+
+          // console.log(font.name);
+
+          this.root.font(font);
+          this.root.fillColor(color);
+          this.root.fontSize(fontSize);
+          this.root._addGlyphs(run.glyphs, run.positions, 0, 0);
+          this.root.translate(run.advanceWidth, 0);
+        }
+
+        this.root.restore();
+        this.root.save();
+        this.root.translate(line.rect.x, line.rect.y);
+        this.root.restore();
+      }
+    }
   }
 
   async render(page) {
-    const padding = this.getPadding();
-    const { left, top, width, height } = this.getAbsoluteLayout();
-    const { color = 'black' } = this.getComputedStyles();
-
     this.drawBackgroundColor();
     this.drawBorders();
 
@@ -164,30 +245,7 @@ class Text extends Base {
       this.debug();
     }
 
-    // Set coordinates, dimentions and continued text
-    this.root.text('', left + padding.left, top + padding.top, {
-      continued: true,
-      width: width - padding.left - padding.right,
-      height: height - padding.top - padding.bottom,
-    });
-
-    // Render childs: text and inline elements
-    for (let i = 0; i < this.children.length; i++) {
-      const child = this.children[i];
-
-      this.setFontSize();
-      this.setFontFamily();
-      this.root.fillColor(color);
-
-      if (typeof child === 'string') {
-        await this.renderText(child);
-      } else {
-        await child.render({ inline: true });
-      }
-    }
-
-    // Text should not longer be continuos
-    this.root.text('', { continued: false });
+    this.renderText();
   }
 }
 

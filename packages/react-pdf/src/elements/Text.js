@@ -137,6 +137,9 @@ class Text extends Base {
       fontSize = 18,
       textAlign = 'left',
       align,
+      textDecoration,
+      textDecorationColor,
+      textDecorationStyle,
     } = this.getComputedStyles();
 
     warning(
@@ -161,6 +164,9 @@ class Text extends Base {
             fontSize,
             link,
             align: textAlign,
+            underline: textDecoration === 'underline',
+            underlineColor: textDecorationColor || color,
+            underlineStyle: textDecorationStyle,
           },
         });
       } else {
@@ -190,6 +196,55 @@ class Text extends Base {
     layoutEngine.layout(attributedString, [container]);
 
     return container;
+  }
+
+  renderDecorationLine(line) {
+    this.root.lineWidth(line.rect.height);
+
+    if (/dashed/.test(line.style)) {
+      this.root.dash(3 * line.rect.height);
+    } else if (/dotted/.test(line.style)) {
+      this.root.dash(line.rect.height);
+    }
+
+    if (/wavy/.test(line.style)) {
+      const dist = Math.max(2, line.rect.height);
+      let step = 1.1 * dist;
+      const stepCount = Math.floor(line.rect.width / (2 * step));
+
+      // Adjust step to fill entire width
+      const remainingWidth = line.rect.width - stepCount * 2 * step;
+      const adjustment = remainingWidth / stepCount / 2;
+      step += adjustment;
+
+      const cp1y = line.rect.y + dist;
+      const cp2y = line.rect.y - dist;
+      let { x } = line.rect;
+
+      this.root.moveTo(line.rect.x, line.rect.y);
+
+      for (let i = 0; i < stepCount; i++) {
+        this.root.bezierCurveTo(
+          x + step,
+          cp1y,
+          x + step,
+          cp2y,
+          x + 2 * step,
+          line.rect.y,
+        );
+        x += 2 * step;
+      }
+    } else {
+      this.root.moveTo(line.rect.x, line.rect.y);
+      this.root.lineTo(line.rect.maxX, line.rect.y);
+
+      if (/double/.test(line.style)) {
+        this.root.moveTo(line.rect.x, line.rect.y + line.rect.height * 2);
+        this.root.lineTo(line.rect.maxX, line.rect.y + line.rect.height * 2);
+      }
+    }
+
+    this.root.stroke(line.color);
   }
 
   renderText() {
@@ -227,6 +282,11 @@ class Text extends Base {
         this.root.restore();
         this.root.save();
         this.root.translate(line.rect.x, line.rect.y);
+
+        for (const decorationLine of line.decorationLines) {
+          this.renderDecorationLine(decorationLine);
+        }
+
         this.root.restore();
       });
     });

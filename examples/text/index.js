@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     backgroundColor: '#e4e4e4',
-    textDecoration: 'underline',
     textTransform: 'uppercase',
     fontFamily: 'Roboto',
   },

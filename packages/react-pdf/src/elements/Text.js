@@ -1,6 +1,12 @@
 import Yoga from 'yoga-layout';
 import KPLineBreaker from 'linebreaker';
-import { Path, LayoutEngine, AttributedString, Container } from 'textkit';
+import {
+  Path,
+  LayoutEngine,
+  AttributedString,
+  Container,
+  TextRenderer,
+} from 'textkit';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 import warning from 'fbjs/lib/warning';
@@ -198,98 +204,11 @@ class Text extends Base {
     return container;
   }
 
-  renderDecorationLine(line) {
-    this.root.lineWidth(line.rect.height);
-
-    if (/dashed/.test(line.style)) {
-      this.root.dash(3 * line.rect.height);
-    } else if (/dotted/.test(line.style)) {
-      this.root.dash(line.rect.height);
-    }
-
-    if (/wavy/.test(line.style)) {
-      const dist = Math.max(2, line.rect.height);
-      let step = 1.1 * dist;
-      const stepCount = Math.floor(line.rect.width / (2 * step));
-
-      // Adjust step to fill entire width
-      const remainingWidth = line.rect.width - stepCount * 2 * step;
-      const adjustment = remainingWidth / stepCount / 2;
-      step += adjustment;
-
-      const cp1y = line.rect.y + dist;
-      const cp2y = line.rect.y - dist;
-      let { x } = line.rect;
-
-      this.root.moveTo(line.rect.x, line.rect.y);
-
-      for (let i = 0; i < stepCount; i++) {
-        this.root.bezierCurveTo(
-          x + step,
-          cp1y,
-          x + step,
-          cp2y,
-          x + 2 * step,
-          line.rect.y,
-        );
-        x += 2 * step;
-      }
-    } else {
-      this.root.moveTo(line.rect.x, line.rect.y);
-      this.root.lineTo(line.rect.maxX, line.rect.y);
-
-      if (/double/.test(line.style)) {
-        this.root.moveTo(line.rect.x, line.rect.y + line.rect.height * 2);
-        this.root.lineTo(line.rect.maxX, line.rect.y + line.rect.height * 2);
-      }
-    }
-
-    this.root.stroke(line.color);
-  }
-
   renderText() {
     const container = this.layoutText();
+    const renderer = new TextRenderer(this.root, { outlineLines: false });
 
-    // Render glyphs by first iterating through all layouted blocks and lines
-    container.blocks.forEach(block => {
-      block.lines.forEach(line => {
-        this.root.save();
-        this.root.translate(line.rect.x, line.rect.y + line.ascent);
-
-        // Iterate through all glyphs streams, called runs
-        line.glyphRuns.forEach(run => {
-          const { font, fontSize, color, link } = run.attributes;
-
-          // Add link annotation to PDF document if needed
-          if (link) {
-            this.root.link(
-              0,
-              -run.height - run.descent,
-              run.advanceWidth,
-              run.height,
-              link,
-            );
-          }
-
-          // Setup font, color and fontsize to finally add the glyphs directly to the document
-          this.root.font(font);
-          this.root.fillColor(color);
-          this.root.fontSize(fontSize);
-          this.root._addGlyphs(run.glyphs, run.positions, 0, 0);
-          this.root.translate(run.advanceWidth, 0);
-        });
-
-        this.root.restore();
-        this.root.save();
-        this.root.translate(line.rect.x, line.rect.y);
-
-        for (const decorationLine of line.decorationLines) {
-          this.renderDecorationLine(decorationLine);
-        }
-
-        this.root.restore();
-      });
-    });
+    renderer.render(container);
   }
 
   async render(page) {

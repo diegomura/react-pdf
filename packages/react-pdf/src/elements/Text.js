@@ -3,7 +3,7 @@ import KPLineBreaker from 'linebreaker';
 import { Path, LayoutEngine, AttributedString, Container } from 'textkit';
 import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
-// import warning from 'fbjs/lib/warning';
+import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import Font from '../font';
 
@@ -163,7 +163,14 @@ class Text extends Base {
       color = 'black',
       fontFamily = 'Helvetica',
       fontSize = 18,
+      textAlign = 'left',
+      align,
     } = this.getComputedStyles();
+
+    warning(
+      !align,
+      '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
+    );
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
@@ -177,6 +184,7 @@ class Text extends Base {
             font,
             color,
             fontSize,
+            align: textAlign,
           },
         });
       } else {
@@ -191,16 +199,17 @@ class Text extends Base {
     const padding = this.getPadding();
     const { left, top, width, height } = this.getAbsoluteLayout();
 
-    const path = new Path();
-    path.rect(
+    // Build textkit container
+    const path = new Path().rect(
       left,
       top,
       width - padding.left - padding.right,
       height - padding.top - padding.bottom,
     );
-
-    const attributedString = this.getAttributedString();
     const container = new Container(path);
+    const attributedString = this.getAttributedString();
+
+    // Do the actual text layout
     layoutEngine.layout(attributedString, [container]);
 
     return container;
@@ -219,8 +228,6 @@ class Text extends Base {
 
         for (const run of line.glyphRuns) {
           const { font, fontSize, color } = run.attributes;
-
-          // console.log(font.name);
 
           this.root.font(font);
           this.root.fillColor(color);

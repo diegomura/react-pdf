@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     flexGrow: 3,
     margin: 10,
     fontFamily: 'Oswald',
+    textAlign: 'justify',
   },
   fill1: {
     flexGrow: 2,

@@ -121,6 +121,10 @@ class Text extends Base {
     return !isNan(parentLayout.width) && !isNan(parentLayout.height);
   }
 
+  getSrc() {
+    return null;
+  }
+
   async recalculateLayout() {
     this.layout.markDirty();
   }
@@ -144,15 +148,18 @@ class Text extends Base {
       const child = this.children[i];
 
       if (typeof child === 'string') {
+        const string = this.transformText(child);
         const obj = Font.getFont(fontFamily);
         const font = obj ? obj.data : font;
+        const link = this.getSrc();
 
         fragments.push({
-          string: child,
+          string,
           attributes: {
             font,
             color,
             fontSize,
+            link,
             align: textAlign,
           },
         });
@@ -196,7 +203,17 @@ class Text extends Base {
         this.root.translate(line.rect.x, line.rect.y + line.ascent);
 
         for (const run of line.glyphRuns) {
-          const { font, fontSize, color } = run.attributes;
+          const { font, fontSize, color, link } = run.attributes;
+
+          if (link) {
+            this.root.link(
+              0,
+              -run.height - run.descent,
+              run.advanceWidth,
+              run.height,
+              link,
+            );
+          }
 
           this.root.font(font);
           this.root.fillColor(color);

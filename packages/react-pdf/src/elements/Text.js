@@ -164,11 +164,11 @@ class Text extends Base {
           },
         });
       } else {
-        // await child.render({ inline: true });
+        fragments.push(...child.getAttributedString());
       }
     }
 
-    return AttributedString.fromFragments(fragments);
+    return fragments;
   }
 
   layoutText() {
@@ -183,7 +183,8 @@ class Text extends Base {
       height - padding.top - padding.bottom,
     );
     const container = new Container(path);
-    const attributedString = this.getAttributedString();
+    const fragments = this.getAttributedString();
+    const attributedString = AttributedString.fromFragments(fragments);
 
     // Do the actual text layout
     layoutEngine.layout(attributedString, [container]);
@@ -194,17 +195,17 @@ class Text extends Base {
   renderText() {
     const container = this.layoutText();
 
-    // Render glyphs
-    for (let i = 0; i < container.blocks.length; i++) {
-      const block = container.blocks[i];
-
-      for (const line of block.lines) {
+    // Render glyphs by first iterating through all layouted blocks and lines
+    container.blocks.forEach(block => {
+      block.lines.forEach(line => {
         this.root.save();
         this.root.translate(line.rect.x, line.rect.y + line.ascent);
 
-        for (const run of line.glyphRuns) {
+        // Iterate through all glyphs streams, called runs
+        line.glyphRuns.forEach(run => {
           const { font, fontSize, color, link } = run.attributes;
 
+          // Add link annotation to PDF document if needed
           if (link) {
             this.root.link(
               0,
@@ -215,19 +216,20 @@ class Text extends Base {
             );
           }
 
+          // Setup font, color and fontsize to finally add the glyphs directly to the document
           this.root.font(font);
           this.root.fillColor(color);
           this.root.fontSize(fontSize);
           this.root._addGlyphs(run.glyphs, run.positions, 0, 0);
           this.root.translate(run.advanceWidth, 0);
-        }
+        });
 
         this.root.restore();
         this.root.save();
         this.root.translate(line.rect.x, line.rect.y);
         this.root.restore();
-      }
-    }
+      });
+    });
   }
 
   async render(page) {

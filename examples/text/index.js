@@ -55,6 +55,12 @@ const styles = StyleSheet.create({
     flexGrow: 2,
     backgroundColor: '#e29e37',
   },
+  big: {
+    fontSize: 22,
+  },
+  red: {
+    color: '#e14427',
+  },
 });
 
 Font.register(`${__dirname}/fonts/Roboto-Regular.ttf`, { family: 'Roboto' });

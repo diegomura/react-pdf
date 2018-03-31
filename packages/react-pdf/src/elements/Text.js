@@ -125,38 +125,6 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  // wrapElement() {
-  //   const parentWidth = this.parent.getWidth();
-  //
-  //   this.children = chunkStringIntoPages(
-  //     this.getRawValue(),
-  //     this.parent.getHeight(),
-  //     line => this.root.heightOfString(line, { width: parentWidth }),
-  //   );
-  //
-  //   return this.children.length;
-  // }
-
-  // async renderText(text, isFirstNode) {
-  //   const {
-  //     textAlign = 'left',
-  //     align,
-  //     textDecoration,
-  //   } = this.getComputedStyles();
-  //
-  //   warning(
-  //     !align,
-  //     '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
-  //   );
-  //
-  //   this.root.text(text, {
-  //     align: align || textAlign,
-  //     link: '',
-  //     continued: true,
-  //     underline: textDecoration === 'underline',
-  //   });
-  // }
-
   getAttributedString() {
     const fragments = [];
     const {
@@ -176,7 +144,8 @@ class Text extends Base {
       const child = this.children[i];
 
       if (typeof child === 'string') {
-        const font = Font.getFont(fontFamily).data;
+        const obj = Font.getFont(fontFamily);
+        const font = obj ? obj.data : font;
 
         fragments.push({
           string: child,
@@ -201,8 +170,8 @@ class Text extends Base {
 
     // Build textkit container
     const path = new Path().rect(
-      left,
-      top,
+      left + padding.left,
+      top + padding.top,
       width - padding.left - padding.right,
       height - padding.top - padding.bottom,
     );

@@ -79,6 +79,16 @@ class Page {
     return this.children[0].getHeight();
   }
 
+  async wrapPage() {
+    const height = this.getSize()[1];
+    let next = this.children[0].splice(height);
+
+    while (next.height > 0) {
+      this.children.push(next);
+      next = next.splice(height);
+    }
+  }
+
   async render() {
     for (let i = 0; i < this.children.length; i++) {
       await this.children[i].render(this);

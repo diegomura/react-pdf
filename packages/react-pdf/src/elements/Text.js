@@ -7,7 +7,6 @@ import {
   Container,
   TextRenderer,
 } from 'textkit';
-import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
@@ -16,14 +15,11 @@ import Font from '../font';
 const layoutEngine = new LayoutEngine({ lineBreaker: new KPLineBreaker() });
 
 class Text extends Base {
-  width = null;
-  height = null;
-
   constructor(root, props) {
     super(root, props);
 
-    this.layout.setMeasureFunc(this.measureText.bind(this));
     this.canBeSplitted = true;
+    this.layout.setMeasureFunc(this.measureText.bind(this));
   }
 
   appendChild(child) {
@@ -37,32 +33,6 @@ class Text extends Base {
 
   removeChild(child) {
     this.children = null;
-  }
-
-  getRawValue() {
-    return this.children.reduce((acc, child) => {
-      if (typeof child === 'string') {
-        return acc + child;
-      } else {
-        return acc + child.getRawValue();
-      }
-    }, '');
-  }
-
-  calculateWidth() {
-    return this.root.widthOfString(this.getRawValue());
-  }
-
-  calculateHeight(width) {
-    return this.root.heightOfString(this.getRawValue(), { width });
-  }
-
-  setFontSize() {
-    this.root.fontSize(this.getComputedStyles().fontSize || 18);
-  }
-
-  setFontFamily() {
-    this.root.font(this.getComputedStyles().fontFamily || 'Helvetica');
   }
 
   transformText(text) {
@@ -81,58 +51,48 @@ class Text extends Base {
   // Yoga measurement function. Decides which width and height should the text have
   // based on the available parent dimentions and their modes (exactly or at most)
   measureText(width, widthMode, height, heightMode) {
-    // Set fontSize and fontFamily to calculate correct height and width
-    this.setFontSize();
-    this.setFontFamily();
-
     // If we have a known width, we just calculate the height of the text.
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.width = width;
-      this.height = this.calculateHeight(this.width);
+      // Layout text with no height (very high number).
+      // Would be probably better to use page height in the future
+      this.container = this.container || this.layoutText(width, 99999);
 
-      return { height: this.style.flexGrow ? NaN : this.height };
+      return {
+        height: this.style.flexGrow ? NaN : this.container.blocks[0].height,
+      };
     }
 
     // If we have a known height and flexGrow, we just keep the (previously calculated)
     // width as it is, by returning NaN. Otherwise, we calculate the text width.
-    if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.height = height;
-      this.width = this.style.flexGrow ? NaN : this.calculateWidth();
-
-      return { width: this.width };
-    }
+    // if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
+    //   this.height = height;
+    //   this.width = this.style.flexGrow ? NaN : this.calculateWidth();
+    //
+    //   return { width: this.width };
+    // }
 
     // If we know nothing, we skip this measurement step until the parent
     // is calculated. Once this happens, we get the minimum of the
     // text width as if were in one line, and the parent's width.
     // Then we calculate the height with it.
-    if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST &&
-      heightMode === Yoga.MEASURE_MODE_AT_MOST &&
-      this.isParentRendered() &&
-      !this.width &&
-      !this.height
-    ) {
-      this.width = Math.min(width, this.calculateWidth());
-      this.height = this.calculateHeight(this.width);
-
-      return { width: this.width, height: this.height };
-    }
+    // if (
+    //   widthMode === Yoga.MEASURE_MODE_AT_MOST &&
+    //   heightMode === Yoga.MEASURE_MODE_AT_MOST &&
+    //   this.isParentRendered() &&
+    //   !this.width &&
+    //   !this.height
+    // ) {
+    //   this.width = Math.min(width, this.calculateWidth());
+    //   this.height = this.calculateHeight(this.width);
+    //
+    //   return { width: this.width, height: this.height };
+    // }
 
     return {};
   }
 
-  isParentRendered() {
-    const parentLayout = this.parent.getAbsoluteLayout();
-    return !isNan(parentLayout.width) && !isNan(parentLayout.height);
-  }
-
   getSrc() {
     return null;
-  }
-
-  async recalculateLayout() {
-    this.layout.markDirty();
   }
 
   getAttributedString() {
@@ -183,17 +143,11 @@ class Text extends Base {
     return fragments;
   }
 
-  layoutText() {
-    const padding = this.getPadding();
-    const { left, top, width, height } = this.getAbsoluteLayout();
+  layoutText(width, height) {
+    // const padding = this.padding;
 
     // Build textkit container
-    const path = new Path().rect(
-      left + padding.left,
-      top + padding.top,
-      width - padding.left - padding.right,
-      height - padding.top - padding.bottom,
-    );
+    const path = new Path().rect(0, 0, width, height);
     const container = new Container(path);
     const fragments = this.getAttributedString();
     const attributedString = AttributedString.fromFragments(fragments);
@@ -204,14 +158,9 @@ class Text extends Base {
     return container;
   }
 
-  renderText() {
-    const container = this.layoutText();
-    const renderer = new TextRenderer(this.root, { outlineLines: false });
-
-    renderer.render(container);
-  }
-
   async render(page) {
+    const { top, left } = this.getAbsoluteLayout();
+
     this.drawBackgroundColor();
     this.drawBorders();
 
@@ -219,7 +168,17 @@ class Text extends Base {
       this.debug();
     }
 
-    this.renderText();
+    // We translate lines based on Yoga container
+    this.container.blocks[0].lines.forEach(line => {
+      line.rect.x += left;
+      line.rect.width += left;
+      line.rect.y += top;
+      line.rect.height += top;
+    });
+
+    // Render text in doc
+    const renderer = new TextRenderer(this.root, { outlineLines: false });
+    renderer.render(this.container);
   }
 }
 

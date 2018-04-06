@@ -54,12 +54,6 @@ const styles = StyleSheet.create({
     flexGrow: 2,
     backgroundColor: '#e29e37',
   },
-  big: {
-    fontSize: 22,
-  },
-  red: {
-    color: '#e14427',
-  },
 });
 
 Font.register(`${__dirname}/fonts/Roboto-Regular.ttf`, { family: 'Roboto' });
@@ -77,7 +71,7 @@ const doc = (
       >
         Lorem Ipsum
       </Link>
-      <View style={styles.body}>
+      <View style={styles.body} debug>
         <View style={styles.row}>
           <Text style={styles.text}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do

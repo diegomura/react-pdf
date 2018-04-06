@@ -66,9 +66,35 @@ class Document {
     }
   }
 
+  async loadImages() {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.constructor.name === 'Image') {
+        await node.fetch();
+      }
+
+      if (node.children) {
+        node.children.forEach(childNode => {
+          listToExplore.push(childNode);
+        });
+      }
+    }
+  }
+
   applyProps() {
     for (let i = 0; i < this.children.length; i++) {
       this.children[i].applyProps();
+    }
+  }
+
+  async wrapChildren() {
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children[i].props.wrap) {
+        await this.children[i].wrapPage();
+      }
     }
   }
 
@@ -82,6 +108,8 @@ class Document {
     this.addMetaData();
     this.applyProps();
     await this.loadFonts();
+    await this.loadImages();
+    await this.wrapChildren();
     await this.renderChildren();
     this.root.end();
     Font.reset();

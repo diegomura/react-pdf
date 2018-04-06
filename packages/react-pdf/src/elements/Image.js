@@ -3,12 +3,11 @@ import Base from './Base';
 import { fetchImage } from '../utils/image';
 
 class Image extends Base {
-  image = null;
-
   constructor(root, props) {
     super(root, props);
 
-    this.fetch = fetchImage(props.src);
+    this.image = null;
+    this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
   shouldGrow() {
@@ -47,17 +46,12 @@ class Image extends Base {
     }
   }
 
-  async recalculateLayout() {
-    this.image = await this.fetch;
-
-    if (!this.shouldGrow()) {
-      this.layout.setMeasureFunc(this.measureImage.bind(this));
-      this.layout.markDirty();
-    }
+  async fetch() {
+    this.image = await fetchImage(this.props.src);
   }
 
   async render() {
-    const padding = this.getPadding();
+    const padding = this.padding;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();

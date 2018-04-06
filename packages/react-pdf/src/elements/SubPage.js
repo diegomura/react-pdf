@@ -54,20 +54,49 @@ class SubPage extends Base {
     return this.parent;
   }
 
+  splice(height) {
+    this.layout.calculateLayout();
+
+    const toErase = [];
+    const result = this.clone();
+    const padding = this.padding;
+
+    this.children.forEach(child => {
+      // If element outside height
+      if (height < child.top) {
+        result.appendChild(child.clone());
+        toErase.push(child);
+      } else if (height < child.top + child.height) {
+        const spliced = child.splice(height - child.top - padding.bottom);
+
+        if (spliced) {
+          result.appendChild(spliced);
+        }
+      }
+    });
+
+    toErase.forEach(child => this.removeChild(child));
+
+    result.applyProps();
+    result.height = this.height - height;
+    result.style.height = result.height;
+
+    return result;
+  }
+
   async render(page) {
     const { orientation } = this.props;
 
     // Since Text needs it's parent layout,
     // we need to calculate flexbox layout for a first time.
-    this.layout.calculateLayout();
 
     // Ask each children to recalculate it's layout.
     // This puts all Text nodes in a dirty state
-    await this.recalculateLayout();
+    // await this.recalculateLayout();
 
     // Finally, calculate flexbox's layout
     // one more time based new widths and heights.
-    this.layout.calculateLayout();
+    // this.layout.calculateLayout();
 
     this.root.addPage({ size: this.size, layout: orientation, margin: 0 });
 
@@ -77,6 +106,7 @@ class SubPage extends Base {
         .rect(0, 0, this.root.page.width, this.root.page.height)
         .fill();
     }
+
     await this.renderChildren(page);
   }
 }

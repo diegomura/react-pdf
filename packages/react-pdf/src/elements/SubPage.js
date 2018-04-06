@@ -64,10 +64,14 @@ class SubPage extends Base {
       if (height < child.top) {
         toErase.push(child);
       } else if (height < child.top + child.height) {
-        const spliced = child.splice(height - child.top - this.paddingBottom);
+        if (!child.props.wrap) {
+          toErase.push(child);
+        } else {
+          const spliced = child.splice(height - child.top - this.paddingBottom);
 
-        if (spliced) {
-          result.appendChild(spliced);
+          if (spliced) {
+            result.appendChild(spliced);
+          }
         }
       }
     });

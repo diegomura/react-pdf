@@ -3,6 +3,7 @@ import Base from './Base';
 class View extends Base {
   static defaultProps = {
     style: {},
+    wrap: true,
   };
 
   splice(height) {
@@ -11,13 +12,16 @@ class View extends Base {
 
     this.children.forEach(child => {
       if (height < child.top) {
-        // result.appendChild(child.clone());
         toErase.push(child);
       } else if (height < child.top + child.height) {
-        const res = child.splice(height - this.marginTop - child.top);
+        if (!child.props.wrap) {
+          toErase.push(child);
+        } else {
+          const res = child.splice(height - this.marginTop - child.top);
 
-        if (res) {
-          result.appendChild(res);
+          if (res) {
+            result.appendChild(res);
+          }
         }
       }
     });

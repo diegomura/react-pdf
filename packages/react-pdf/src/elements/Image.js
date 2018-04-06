@@ -3,6 +3,10 @@ import Base from './Base';
 import { fetchImage } from '../utils/image';
 
 class Image extends Base {
+  static defaultProps = {
+    wrap: false,
+  };
+
   constructor(root, props) {
     super(root, props);
 

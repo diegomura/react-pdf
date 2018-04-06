@@ -92,9 +92,7 @@ class Document {
 
   async wrapChildren() {
     for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i].props.wrap) {
-        await this.children[i].wrapPage();
-      }
+      await this.children[i].wrapPage();
     }
   }
 

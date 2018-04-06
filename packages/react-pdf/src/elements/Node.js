@@ -237,6 +237,15 @@ class Node {
   set margin(value) {
     this._margin = value;
   }
+
+  reset() {
+    this.top = null;
+    this.left = null;
+    this.width = null;
+    this.height = null;
+    this.padding = {};
+    this.margin = {};
+  }
 }
 
 export default Node;

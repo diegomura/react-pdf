@@ -42,9 +42,9 @@ class SubPage extends Base {
 
       if (this.props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
-        this.layout.setHeight(size[0]);
+        // this.layout.setHeight(size[0]);
       } else {
-        this.layout.setHeight(size[1]);
+        // this.layout.setHeight(size[1]);
         this.layout.setWidth(size[0]);
       }
     }
@@ -59,15 +59,12 @@ class SubPage extends Base {
 
     const toErase = [];
     const result = this.clone();
-    const padding = this.padding;
 
     this.children.forEach(child => {
-      // If element outside height
       if (height < child.top) {
-        result.appendChild(child.clone());
         toErase.push(child);
       } else if (height < child.top + child.height) {
-        const spliced = child.splice(height - child.top - padding.bottom);
+        const spliced = child.splice(height - child.top - this.paddingBottom);
 
         if (spliced) {
           result.appendChild(spliced);
@@ -75,11 +72,14 @@ class SubPage extends Base {
       }
     });
 
-    toErase.forEach(child => this.removeChild(child));
+    toErase.forEach(child => {
+      child.reset();
+      this.removeChild(child);
+      result.appendChild(child);
+    });
 
     result.applyProps();
-    result.height = this.height - height;
-    result.style.height = result.height;
+    result.height = this.height + this.paddingBottom - height;
 
     return result;
   }

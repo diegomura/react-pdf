@@ -51,6 +51,7 @@ class Image extends Base {
   }
 
   async render() {
+    const margin = this.margin;
     const padding = this.padding;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
@@ -61,10 +62,17 @@ class Image extends Base {
       this.debug();
     }
 
-    this.root.image(this.image.data, left + padding.left, top + padding.top, {
-      width: width - padding.left - padding.right,
-      height: height - padding.top - padding.bottom,
-    });
+    this.root.image(
+      this.image.data,
+      left + padding.left + margin.left,
+      top + padding.top + margin.top,
+      {
+        width:
+          width - padding.left - padding.right - margin.left - margin.right,
+        height:
+          height - padding.top - padding.bottom - margin.top - margin.bottom,
+      },
+    );
   }
 }
 

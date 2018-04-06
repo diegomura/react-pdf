@@ -43,7 +43,7 @@ class Base extends Node {
   removeChild(child) {
     const index = this.children.indexOf(child);
 
-    if (index) {
+    if (index !== -1) {
       child.parent = null;
       this.children.splice(index, 1);
       this.layout.removeChild(child.layout);
@@ -237,12 +237,7 @@ class Base extends Node {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
-    clone.top = null;
-    clone.left = null;
-    clone.width = null;
-    clone.height = null;
-    clone.padding = {};
-    clone.margin = {};
+    clone.reset();
     clone.children = [];
     clone.style = this.style;
     clone.parent = this.parent;

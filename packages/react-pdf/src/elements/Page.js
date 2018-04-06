@@ -57,6 +57,10 @@ class Page {
     this.initialSubpage = newSubpage;
   }
 
+  getInitialSubpage() {
+    return this.children[0];
+  }
+
   addNewSubpage() {
     const newSubpage = this.initialSubpage.clone();
 
@@ -81,11 +85,11 @@ class Page {
 
   async wrapPage() {
     const height = this.getSize()[1];
-    let next = this.children[0].splice(height);
+    let nextSubpage = this.getInitialSubpage().splice(height);
 
-    while (next.height > 0) {
-      this.children.push(next);
-      next = next.splice(height);
+    while (this.props.wrap && nextSubpage.height > 0) {
+      this.children.push(nextSubpage);
+      nextSubpage = nextSubpage.splice(height);
     }
   }
 

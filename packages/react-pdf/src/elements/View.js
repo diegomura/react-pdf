@@ -6,12 +6,13 @@ class View extends Base {
   };
 
   splice(height) {
+    const toErase = [];
     const result = this.clone();
 
     this.children.forEach(child => {
-      // If element outside height
       if (height < child.top) {
-        result.appendChild(child);
+        // result.appendChild(child.clone());
+        toErase.push(child);
       } else if (height < child.top + child.height) {
         const res = child.splice(height - this.marginTop - child.top);
 
@@ -21,13 +22,18 @@ class View extends Base {
       }
     });
 
+    toErase.forEach(child => {
+      child.reset();
+      this.removeChild(child);
+      result.appendChild(child);
+    });
+
     result.marginBottom = this.marginBottom;
     result.marginTop = 0;
     result.paddingTop = 0;
     result.height = this.height - height;
     this.marginBottom = 0;
     this.paddingBottom = 0;
-
     this.height = height;
 
     return result;

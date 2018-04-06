@@ -25,7 +25,7 @@ Font.register(
 
 const doc = (
   <Document>
-    <Page style={styles.page} size={[1500, 600]}>
+    <Page style={styles.page} size={[1500, 600]} page>
       <Image
         style={styles.image}
         src="http://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg"

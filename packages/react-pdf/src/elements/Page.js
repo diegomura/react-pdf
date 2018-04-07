@@ -13,11 +13,12 @@ class Page {
     wrap: false,
   };
 
-  constructor(root, props) {
+  constructor(root, props, numberBase = 1) {
     this.root = root;
     this.props = { ...Page.defaultProps, ...props };
     this.children = [];
     this.initialSubpage = null;
+    this.numberBase = numberBase;
 
     this.addInitialSubpage();
   }
@@ -49,7 +50,7 @@ class Page {
   }
 
   addInitialSubpage() {
-    const newSubpage = new SubPage(this.root, this.props);
+    const newSubpage = new SubPage(this.root, this.props, this.numberBase);
 
     newSubpage.parent = this;
 

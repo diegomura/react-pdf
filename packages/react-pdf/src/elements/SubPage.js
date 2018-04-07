@@ -2,6 +2,12 @@ import warning from 'fbjs/lib/warning';
 import Base from './Base';
 
 class SubPage extends Base {
+  constructor(root, props, number) {
+    super(root, props);
+
+    this.number = number;
+  }
+
   get size() {
     return this.parent.getSize();
   }
@@ -55,32 +61,33 @@ class SubPage extends Base {
   }
 
   splice(height) {
+    // console.log(this.children[0].height);
     this.layout.calculateLayout();
 
-    const toErase = [];
+    const buffer = [];
     const result = this.clone();
 
-    this.children.forEach(child => {
-      if (height < child.top) {
-        toErase.push(child);
-      } else if (height < child.top + child.height) {
-        if (!child.props.wrap) {
-          toErase.push(child);
-        } else {
-          const spliced = child.splice(height - child.top - this.paddingBottom);
+    result.number = this.number + 1;
 
-          if (spliced) {
-            result.appendChild(spliced);
-          }
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      const isElementOutside = height < child.top;
+      const shouldElementSplit = height < child.top + child.height;
+
+      if (isElementOutside) {
+        buffer.push(child);
+      } else if (shouldElementSplit) {
+        if (!child.props.wrap) {
+          buffer.push(child);
+        } else {
+          result.appendChild(
+            child.splice(height - child.top - this.paddingBottom),
+          );
         }
       }
-    });
+    }
 
-    toErase.forEach(child => {
-      child.reset();
-      this.removeChild(child);
-      result.appendChild(child);
-    });
+    buffer.forEach(child => child.moveTo(result));
 
     result.applyProps();
     result.height = this.height + this.paddingBottom - height;
@@ -90,17 +97,6 @@ class SubPage extends Base {
 
   async render(page) {
     const { orientation } = this.props;
-
-    // Since Text needs it's parent layout,
-    // we need to calculate flexbox layout for a first time.
-
-    // Ask each children to recalculate it's layout.
-    // This puts all Text nodes in a dirty state
-    // await this.recalculateLayout();
-
-    // Finally, calculate flexbox's layout
-    // one more time based new widths and heights.
-    // this.layout.calculateLayout();
 
     this.root.addPage({ size: this.size, layout: orientation, margin: 0 });
 

@@ -35,9 +35,11 @@ class Base extends Node {
   }
 
   appendChild(child) {
-    child.parent = this;
-    this.children.push(child);
-    this.layout.insertChild(child.layout, this.layout.getChildCount());
+    if (child) {
+      child.parent = this;
+      this.children.push(child);
+      this.layout.insertChild(child.layout, this.layout.getChildCount());
+    }
   }
 
   removeChild(child) {
@@ -48,6 +50,12 @@ class Base extends Node {
       this.children.splice(index, 1);
       this.layout.removeChild(child.layout);
     }
+  }
+
+  moveTo(parent) {
+    this.reset();
+    this.parent.removeChild(this);
+    parent.appendChild(this);
   }
 
   applyProps() {
@@ -237,11 +245,11 @@ class Base extends Node {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
-    clone.reset();
+    clone.layout = Yoga.Node.createDefault();
     clone.children = [];
     clone.style = this.style;
     clone.parent = this.parent;
-    clone.layout = Yoga.Node.createDefault();
+    clone.reset();
 
     return clone;
   }

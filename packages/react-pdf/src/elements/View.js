@@ -7,34 +7,29 @@ class View extends Base {
   };
 
   splice(height) {
-    const toErase = [];
+    const buffer = [];
     const result = this.clone();
 
     this.children.forEach(child => {
-      if (height < child.top) {
-        toErase.push(child);
-      } else if (height < child.top + child.height) {
-        if (!child.props.wrap) {
-          toErase.push(child);
-        } else {
-          const res = child.splice(height - this.marginTop - child.top);
+      const isElementOutside = height < child.top;
+      const shouldElementSplit = height < child.top + child.height;
 
-          if (res) {
-            result.appendChild(res);
-          }
+      if (isElementOutside) {
+        buffer.push(child);
+      } else if (shouldElementSplit) {
+        if (!child.props.wrap) {
+          buffer.push(child);
+        } else {
+          result.appendChild(child.splice(height - child.top - this.marginTop));
         }
       }
     });
 
-    toErase.forEach(child => {
-      child.reset();
-      this.removeChild(child);
-      result.appendChild(child);
-    });
+    buffer.forEach(child => child.moveTo(result));
 
-    result.marginBottom = this.marginBottom;
     result.marginTop = 0;
     result.paddingTop = 0;
+    result.marginBottom = this.marginBottom;
     result.height = this.height - height;
     this.marginBottom = 0;
     this.paddingBottom = 0;

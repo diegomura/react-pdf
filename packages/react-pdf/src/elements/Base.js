@@ -247,8 +247,10 @@ class Base extends Node {
 
     clone.reset();
     clone.children = [];
+    clone.width = this.width;
     clone.style = this.style;
     clone.parent = this.parent;
+    clone.height = this.height;
     clone.margin = this.margin;
     clone.padding = this.padding;
     clone.layout = Yoga.Node.createDefault();

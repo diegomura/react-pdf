@@ -10,12 +10,19 @@ class View extends Base {
     const buffer = [];
     const result = this.clone();
 
-    this.children.forEach(child => {
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
       const isElementOutside = height < child.top;
       const shouldElementSplit = height < child.top + child.height;
 
       if (isElementOutside) {
         buffer.push(child);
+      } else if (child.props.fixed) {
+        result.appendChild(child.clone());
+      } else if (child.props.break) {
+        child.props.break = false;
+        buffer.push(...this.children.slice(i));
+        break;
       } else if (shouldElementSplit) {
         if (!child.props.wrap) {
           buffer.push(child);
@@ -23,7 +30,7 @@ class View extends Base {
           result.appendChild(child.splice(height - child.top - this.marginTop));
         }
       }
-    });
+    }
 
     buffer.forEach(child => child.moveTo(result));
 

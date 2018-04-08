@@ -138,4 +138,52 @@ describe('<View />', () => {
     expect(res.children[0].style.backgroundColor).toBe('red');
     expect(res.children[1].style.backgroundColor).toBe('blue');
   });
+
+  test('Fixed elements should persist when spliced', () => {
+    const page = new Page(null, { style: { width: 400, height: 800 } });
+    const parent = new View(null, { style: { width: 400, height: 400 } });
+    const fixed = new View(null, { style: { height: 20 }, fixed: true });
+    const child1 = new View(null, { style: { height: 150 } });
+    const child2 = new View(null, { style: { height: 150 } });
+
+    page.appendChild(parent);
+    parent.appendChild(fixed);
+    parent.appendChild(child1);
+    parent.appendChild(child2);
+    page.applyProps();
+    page.wrapPage();
+
+    const res = parent.splice(100);
+
+    // Assert original view & his children
+    expect(parent.children.length).toBe(2);
+    expect(parent.children[0].height).toBe(20);
+
+    // Assert splice result & his children
+    expect(res.children.length).toBe(3);
+    expect(res.children[0].height).toBe(20);
+  });
+
+  test('Should add page break if break present on splice', () => {
+    const page = new Page(null, { style: { width: 400, height: 800 } });
+    const parent = new View(null, { style: { width: 400, height: 400 } });
+    const child1 = new View(null, { style: { height: 50 } });
+    const child2 = new View(null, { style: { height: 150 }, break: true });
+
+    page.appendChild(parent);
+    parent.appendChild(child1);
+    parent.appendChild(child2);
+    page.applyProps();
+    page.wrapPage();
+
+    const res = parent.splice(100);
+
+    // Assert original view & his children
+    expect(parent.children.length).toBe(1);
+    expect(parent.children[0].style.height).toBe(50);
+
+    // Assert splice result & his children
+    expect(res.children.length).toBe(1);
+    expect(res.children[0].style.height).toBe(150);
+  });
 });

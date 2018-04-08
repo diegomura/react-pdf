@@ -15,6 +15,10 @@ const styles = StyleSheet.create({
 const doc = (
   <Document>
     <Page style={styles.body} size={[500, 800]} wrap>
+      <View
+        style={{ height: 20, backgroundColor: 'green', marginBottom: 10 }}
+        fixed
+      />
       <Image
         style={styles.image}
         src="http://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg"
@@ -25,6 +29,7 @@ const doc = (
       />
       <View
         style={{ height: 200, backgroundColor: 'gray', marginBottom: 10 }}
+        break
       />
       <View
         style={{ height: 200, backgroundColor: 'green', marginBottom: 10 }}

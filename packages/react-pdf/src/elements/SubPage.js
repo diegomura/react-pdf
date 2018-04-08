@@ -61,7 +61,6 @@ class SubPage extends Base {
   }
 
   splice(height) {
-    // console.log(this.children[0].height);
     this.layout.calculateLayout();
 
     const buffer = [];
@@ -76,6 +75,11 @@ class SubPage extends Base {
 
       if (isElementOutside) {
         buffer.push(child);
+      } else if (child.props.fixed) {
+        result.appendChild(child.clone());
+      } else if (child.props.break) {
+        child.props.break = false;
+        buffer.push(...this.children.slice(i));
       } else if (shouldElementSplit) {
         if (!child.props.wrap) {
           buffer.push(child);

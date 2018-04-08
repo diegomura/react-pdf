@@ -29,7 +29,6 @@ class View extends Base {
 
     result.marginTop = 0;
     result.paddingTop = 0;
-    result.marginBottom = this.marginBottom;
     result.height = this.height - height;
     this.marginBottom = 0;
     this.paddingBottom = 0;

@@ -245,15 +245,12 @@ class Base extends Node {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
-    clone.reset();
-    clone.children = [];
     clone.width = this.width;
     clone.style = this.style;
     clone.parent = this.parent;
     clone.height = this.height;
     clone.margin = this.margin;
     clone.padding = this.padding;
-    clone.layout = Yoga.Node.createDefault();
 
     return clone;
   }

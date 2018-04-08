@@ -18,7 +18,9 @@ class View extends Base {
       if (isElementOutside) {
         buffer.push(child);
       } else if (child.props.fixed) {
-        result.appendChild(child.clone());
+        const fixedElement = child.clone();
+        fixedElement.children = child.children;
+        result.appendChild(fixedElement);
       } else if (child.props.break) {
         child.props.break = false;
         buffer.push(...this.children.slice(i));

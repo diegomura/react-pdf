@@ -43,24 +43,19 @@ class Text extends Base {
     return null;
   }
 
-  reset() {
-    super.reset();
-
-    this.layout.setMeasureFunc(this.measureText.bind(this));
-  }
-
   splice(height) {
     const result = this.clone();
+    const engine = this.engine.splice(
+      height - this.marginTop - this.paddingTop,
+    );
 
     result.marginTop = 0;
     result.paddingTop = 0;
     result.width = this.width;
     result.marginBottom = this.marginBottom;
-    result.height = this.height - height - this.paddingTop;
-    result.engine = this.engine.splice(
-      height - this.marginTop - this.paddingTop,
-    );
+    result.engine = engine;
     result.engine.element = result;
+    result.height = engine.height + this.paddingBottom + this.marginBottom;
 
     this.marginBottom = 0;
     this.paddingBottom = 0;

@@ -49,13 +49,14 @@ class Document {
   }
 
   async loadFonts() {
+    const promises = [];
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        await Font.load(node.style.fontFamily, this.root);
+        promises.push(Font.load(node.style.fontFamily, this.root));
       }
 
       if (node.children) {
@@ -64,16 +65,19 @@ class Document {
         });
       }
     }
+
+    await Promise.all(promises);
   }
 
   async loadImages() {
+    const promises = [];
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
       if (node.constructor.name === 'Image') {
-        await node.fetch();
+        promises.push(node.fetch());
       }
 
       if (node.children) {
@@ -82,6 +86,12 @@ class Document {
         });
       }
     }
+
+    await Promise.all(promises);
+  }
+
+  async loadAssets() {
+    await Promise.all([this.loadFonts(), this.loadImages()]);
   }
 
   applyProps() {
@@ -105,8 +115,7 @@ class Document {
   async render() {
     this.addMetaData();
     this.applyProps();
-    await this.loadFonts();
-    await this.loadImages();
+    await this.loadAssets();
     await this.wrapChildren();
     await this.renderChildren();
     this.root.end();

@@ -75,15 +75,17 @@ class TextEngine {
             font,
             color,
             fontSize,
-            link: this.src,
             align: textAlign,
+            link: this.element.src,
             underline: textDecoration === 'underline',
             underlineColor: textDecorationColor || color,
             underlineStyle: textDecorationStyle,
           },
         });
       } else {
-        fragments.push(...child.attributedString);
+        if (child.engine) {
+          fragments.push(...child.engine.attributedString);
+        }
       }
     });
 
@@ -92,7 +94,6 @@ class TextEngine {
 
   lineIndexAtHeight(height) {
     let counter = 0;
-
     for (let i = 0; i < this.lines.length; i++) {
       const line = this.lines[i];
 

@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   text: {
-    flexGrow: 3,
+    width: '60%',
     margin: 10,
     fontFamily: 'Oswald',
     textAlign: 'justify',
   },
   fill1: {
-    flexGrow: 2,
+    width: '40%',
     backgroundColor: '#e14427',
   },
   fill2: {
@@ -71,7 +71,7 @@ const doc = (
       >
         Lorem Ipsum
       </Link>
-      <View style={styles.body} debug>
+      <View style={styles.body}>
         <View style={styles.row}>
           <Text style={styles.text}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do

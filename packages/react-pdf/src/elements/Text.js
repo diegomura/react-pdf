@@ -1,4 +1,5 @@
 import Yoga from 'yoga-layout';
+import isNan from 'lodash.isnan';
 import Base from './Base';
 import TextEngine from './TextEngine';
 
@@ -36,7 +37,21 @@ class Text extends Base {
       };
     }
 
+    if (
+      widthMode === Yoga.MEASURE_MODE_AT_MOST ||
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
+      this.engine.layout(width, 99999);
+
+      return { width, height: this.engine.height };
+    }
+
     return {};
+  }
+
+  isParentRendered() {
+    const parentLayout = this.parent.getAbsoluteLayout();
+    return !isNan(parentLayout.width) && !isNan(parentLayout.height);
   }
 
   get src() {

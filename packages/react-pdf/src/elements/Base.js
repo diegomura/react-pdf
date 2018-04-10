@@ -4,6 +4,7 @@ import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
 import Node from './Node';
 import pick from 'lodash.pick';
+import merge from 'lodash.merge';
 import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
@@ -22,11 +23,12 @@ class Base extends Node {
     this.parent = null;
     this.children = [];
 
-    this.props = {
-      ...this.constructor.defaultProps,
-      ...Base.defaultProps,
-      ...props,
-    };
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      props,
+    );
 
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
 

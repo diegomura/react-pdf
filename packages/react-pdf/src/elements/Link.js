@@ -3,6 +3,13 @@ import Text from './Text';
 const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
 
 class Link extends Text {
+  static defaultProps = {
+    style: {
+      color: 'blue',
+      textDecoration: 'underline',
+    },
+  };
+
   get src() {
     let { src } = this.props;
 
@@ -11,13 +18,6 @@ class Link extends Text {
     }
 
     return src;
-  }
-
-  async render(page) {
-    this.style.color = this.style.color || 'blue';
-    this.style.textDecoration = this.style.textDecoration || 'underline';
-
-    await super.render(page);
   }
 }
 

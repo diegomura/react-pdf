@@ -4,6 +4,7 @@ import standardFonts from './standard';
 import { fetchFont } from '../utils/font';
 
 let fonts = {};
+let hyphenationCallback;
 
 const register = (src, { family, ...otherOptions }) => {
   fonts[family] = {
@@ -14,9 +15,15 @@ const register = (src, { family, ...otherOptions }) => {
   };
 };
 
+const registerHyphenationCallback = callback => {
+  hyphenationCallback = callback;
+};
+
 const getRegisteredFonts = () => Object.keys(fonts);
 
 const getFont = family => fonts[family];
+
+const getHyphenationCallback = () => hyphenationCallback;
 
 const load = async (fontFamily, doc) => {
   const font = fonts[fontFamily];
@@ -61,6 +68,8 @@ const clear = () => {
 export default {
   register,
   getRegisteredFonts,
+  registerHyphenationCallback,
+  getHyphenationCallback,
   getFont,
   load,
   clear,

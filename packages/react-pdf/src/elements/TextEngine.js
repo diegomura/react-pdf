@@ -10,7 +10,9 @@ import {
 } from 'textkit';
 import Font from '../font';
 
-const layoutEngine = new LayoutEngine({ lineBreaker: new KPLineBreaker() });
+// Global layout engine
+// It's created dynamically because it may accept a custom hyphenation callback
+let LAYOUT_ENGINE;
 
 class TextEngine {
   constructor(element) {
@@ -30,6 +32,16 @@ class TextEngine {
         },
       ],
     };
+  }
+
+  get layoutEngine() {
+    if (!LAYOUT_ENGINE) {
+      LAYOUT_ENGINE = new LayoutEngine({
+        lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
+      });
+    }
+
+    return LAYOUT_ENGINE;
   }
 
   get lines() {
@@ -146,7 +158,7 @@ class TextEngine {
     const string = AttributedString.fromFragments(this.attributedString);
 
     // Do the actual text layout
-    layoutEngine.layout(string, [container]);
+    this.layoutEngine.layout(string, [container]);
 
     this.computed = true;
     this._container = container;

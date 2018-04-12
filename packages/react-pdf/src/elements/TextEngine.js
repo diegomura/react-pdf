@@ -7,6 +7,7 @@ import {
   AttributedString,
   Container,
   TextRenderer,
+  JustificationEngine,
 } from 'textkit';
 import Font from '../font';
 
@@ -36,8 +37,13 @@ class TextEngine {
 
   get layoutEngine() {
     if (!LAYOUT_ENGINE) {
+      const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
+
       LAYOUT_ENGINE = new LayoutEngine({
         lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
+        justificationEngine: new JustificationEngine({
+          shrinkWhitespaceFactor,
+        }),
       });
     }
 

@@ -1,6 +1,8 @@
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 
+const ORPHAN_THRESHOLD = 15;
+
 class SubPage extends Base {
   constructor(root, props, number) {
     super(root, props);
@@ -66,29 +68,34 @@ class SubPage extends Base {
   wrap(height) {
     this.layout.calculateLayout();
 
-    const elements = [];
+    const nextPageElements = [];
     const result = this.clone();
 
     result.number = this.number + 1;
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-      const isElementOutside = height < child.top;
-      const shouldElementSplit = height < child.top + child.height;
+      const { fixed, wrap, orphan } = child.props;
 
-      if (child.props.fixed) {
+      const childBottom = child.top + child.height;
+      const isElementOutside = height < child.top;
+      const shouldElementSplit = height < childBottom;
+      const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
+      const isElementOrphan = !orphan && height - childBottom < orphanThreshold;
+
+      if (fixed) {
         const fixedElement = child.clone();
         fixedElement.children = child.children;
         result.appendChild(fixedElement);
-      } else if (isElementOutside) {
-        elements.push(child);
+      } else if (isElementOutside || isElementOrphan) {
+        nextPageElements.push(child);
       } else if (child.props.break) {
         child.props.break = false;
-        elements.push(...this.children.slice(i));
+        nextPageElements.push(...this.children.slice(i));
         break;
       } else if (shouldElementSplit) {
-        if (!child.props.wrap) {
-          elements.push(child);
+        if (!wrap) {
+          nextPageElements.push(child);
         } else {
           result.appendChild(
             child.splice(height - child.top + this.paddingTop),
@@ -97,7 +104,7 @@ class SubPage extends Base {
       }
     }
 
-    elements.forEach(child => child.moveTo(result));
+    nextPageElements.forEach(child => child.moveTo(result));
     result.applyProps();
 
     return result;

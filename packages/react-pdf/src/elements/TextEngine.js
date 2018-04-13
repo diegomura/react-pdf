@@ -25,13 +25,14 @@ class TextEngine {
   }
 
   get container() {
+    const lines = this._container.blocks.reduce(
+      (acc, block) => [...acc, ...block.lines],
+      [],
+    );
+
     return {
       ...this._container,
-      blocks: [
-        {
-          lines: this._container.blocks[0].lines.slice(this.start, this.end),
-        },
-      ],
+      blocks: [{ lines: lines.splice(this.start, this.end) }],
     };
   }
 
@@ -51,7 +52,14 @@ class TextEngine {
   }
 
   get lines() {
-    return this.container ? this.container.blocks[0].lines : [];
+    if (!this.container) {
+      return [];
+    }
+
+    return this.container.blocks.reduce(
+      (acc, block) => [...acc, ...block.lines],
+      [],
+    );
   }
 
   get height() {
@@ -166,9 +174,15 @@ class TextEngine {
     // Do the actual text layout
     this.layoutEngine.layout(string, [container]);
 
+    // Get the total amount of rendered lines
+    const linesCount = container.blocks.reduce(
+      (acc, block) => acc + block.lines.length,
+      0,
+    );
+
     this.computed = true;
     this._container = container;
-    this.end = container.blocks[0].lines.length + 1;
+    this.end = linesCount + 1;
   }
 
   render() {

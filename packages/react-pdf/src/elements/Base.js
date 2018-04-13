@@ -14,6 +14,7 @@ import { inheritedProperties } from '../utils/styles';
 class Base extends Node {
   static defaultProps = {
     style: {},
+    orphan: true,
   };
 
   constructor(root, props) {

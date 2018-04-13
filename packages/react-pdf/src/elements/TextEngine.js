@@ -78,6 +78,7 @@ class TextEngine {
       fontSize = 18,
       textAlign = 'left',
       align,
+      lineHeight,
       textDecoration,
       textDecorationColor,
       textDecorationStyle,
@@ -103,9 +104,10 @@ class TextEngine {
             fontSize,
             align: textAlign,
             link: this.element.src,
+            underlineStyle: textDecorationStyle,
             underline: textDecoration === 'underline',
             underlineColor: textDecorationColor || color,
-            underlineStyle: textDecorationStyle,
+            lineHeight: lineHeight ? lineHeight * fontSize : null,
           },
         });
       } else {

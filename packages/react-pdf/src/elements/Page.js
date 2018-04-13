@@ -85,12 +85,13 @@ class Page {
   }
 
   async wrapPage() {
-    const height = this.getSize()[1];
-    let nextSubpage = this.getInitialSubpage().splice(height);
+    const height =
+      this.getSize()[1] - this.style.paddingTop - this.style.paddingBottom;
+    let nextSubpage = this.getInitialSubpage().wrap(height);
 
-    while (this.props.wrap && nextSubpage.height > 0) {
+    while (this.props.wrap && !nextSubpage.isEmpty()) {
       this.children.push(nextSubpage);
-      nextSubpage = nextSubpage.splice(height);
+      nextSubpage = nextSubpage.wrap(height);
     }
   }
 

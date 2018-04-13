@@ -48,9 +48,7 @@ class SubPage extends Base {
 
       if (this.props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
-        // this.layout.setHeight(size[0]);
       } else {
-        // this.layout.setHeight(size[1]);
         this.layout.setWidth(size[0]);
       }
     }
@@ -60,10 +58,15 @@ class SubPage extends Base {
     return this.parent;
   }
 
-  splice(height) {
+  isEmpty() {
+    const nonFixedChilds = this.children.filter(child => !child.props.fixed);
+    return nonFixedChilds.length === 0;
+  }
+
+  wrap(height) {
     this.layout.calculateLayout();
 
-    const buffer = [];
+    const elements = [];
     const result = this.clone();
 
     result.number = this.number + 1;
@@ -73,45 +76,63 @@ class SubPage extends Base {
       const isElementOutside = height < child.top;
       const shouldElementSplit = height < child.top + child.height;
 
-      if (isElementOutside) {
-        buffer.push(child);
-      } else if (child.props.fixed) {
+      if (child.props.fixed) {
         const fixedElement = child.clone();
         fixedElement.children = child.children;
         result.appendChild(fixedElement);
+      } else if (isElementOutside) {
+        elements.push(child);
       } else if (child.props.break) {
         child.props.break = false;
-        buffer.push(...this.children.slice(i));
+        elements.push(...this.children.slice(i));
         break;
       } else if (shouldElementSplit) {
         if (!child.props.wrap) {
-          buffer.push(child);
+          elements.push(child);
         } else {
           result.appendChild(
-            child.splice(height - child.top - this.paddingBottom),
+            child.splice(height - child.top + this.paddingTop),
           );
         }
       }
     }
 
-    buffer.forEach(child => child.moveTo(result));
-
+    elements.forEach(child => child.moveTo(result));
     result.applyProps();
-    result.height = this.height + this.paddingBottom - height;
 
     return result;
   }
 
-  async render(page) {
-    const { orientation } = this.props;
+  layoutFixedElements() {
+    this.reset();
+    this.layout.setHeight(this.size[1]);
+    this.layout.calculateLayout();
 
-    this.root.addPage({ size: this.size, layout: orientation, margin: 0 });
+    this.children.forEach(child => {
+      if (child.props.fixed) {
+        child.reset();
+      }
+    });
+  }
+
+  async render(page) {
+    this.root.addPage({
+      size: this.size,
+      layout: this.props.orientation,
+      margin: 0,
+    });
+
+    this.layoutFixedElements();
 
     if (this.style.backgroundColor) {
       this.root
         .fillColor(this.style.backgroundColor)
         .rect(0, 0, this.root.page.width, this.root.page.height)
         .fill();
+    }
+
+    if (this.props.debug) {
+      this.debug();
     }
 
     await this.renderChildren(page);

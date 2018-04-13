@@ -7,7 +7,9 @@ import { Document, Page, Text, Image, StyleSheet, Font } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   body: {
-    padding: 35,
+    paddingTop: 35,
+    paddingBottom: 45,
+    paddingHorizontal: 35,
   },
   title: {
     fontSize: 24,
@@ -46,8 +48,8 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     fontSize: 12,
-    bottom: 40,
-    left: 0,
+    bottom: 25,
+    left: 35,
     right: 0,
     textAlign: 'center',
     color: 'grey',
@@ -233,9 +235,9 @@ const doc = (
         encaminaba. Diose priesa a caminar, y llegó a ella a tiempo que
         anochecía.
       </Text>
-      {/* <Text style={styles.footer} fixed>
+      <Text style={styles.footer} fixed>
         ~ Don Quijote de la Mancha ~
-      </Text> */}
+      </Text>
     </Page>
   </Document>
 );

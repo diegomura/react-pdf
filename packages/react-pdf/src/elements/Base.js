@@ -169,6 +169,10 @@ class Base extends Node {
     }
   }
 
+  isAbsolute() {
+    return this.props.style.position === 'absolute';
+  }
+
   getPage() {
     return this.parent.getPage();
   }
@@ -258,8 +262,17 @@ class Base extends Node {
   }
 
   async renderChildren(page) {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render(page);
+    const absoluteChilds = this.children.filter(child => child.isAbsolute());
+    const nonAbsoluteChilds = this.children.filter(
+      child => !child.isAbsolute(),
+    );
+
+    for (let i = 0; i < nonAbsoluteChilds.length; i++) {
+      await nonAbsoluteChilds[i].render(page);
+    }
+
+    for (let i = 0; i < absoluteChilds.length; i++) {
+      await absoluteChilds[i].render(page);
     }
   }
 }

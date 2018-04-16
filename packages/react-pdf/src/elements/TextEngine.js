@@ -171,7 +171,7 @@ class TextEngine {
 
     const path = new Path().rect(0, 0, width, height);
     const container = new Container(path);
-    const string = AttributedString.fromFragments(this.attributedString);
+    const string = AttributedString.fromFragments(this.attributedString).trim();
 
     // Do the actual text layout
     this.layoutEngine.layout(string, [container]);

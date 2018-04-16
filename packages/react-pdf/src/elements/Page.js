@@ -85,8 +85,8 @@ class Page {
   }
 
   async wrapPage() {
-    const height =
-      this.getSize()[1] - this.style.paddingTop - this.style.paddingBottom;
+    const { paddingTop, paddingBottom } = this.style;
+    const height = this.getSize()[1] - paddingTop - paddingBottom;
     let nextSubpage = this.getInitialSubpage().wrap(height);
 
     while (this.props.wrap && !nextSubpage.isEmpty()) {

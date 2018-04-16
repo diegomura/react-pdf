@@ -174,6 +174,10 @@ class Base extends Node {
     return this.props.style.position === 'absolute';
   }
 
+  isEmpty() {
+    return this.children.length === 0;
+  }
+
   getPage() {
     return this.parent.getPage();
   }

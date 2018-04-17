@@ -1,5 +1,6 @@
 import warning from 'fbjs/lib/warning';
 import KPLineBreaker from 'linebreaker';
+import FontSubstitutionEngine from 'font-substitution';
 import upperFirst from 'lodash.upperfirst';
 import {
   Path,
@@ -42,6 +43,7 @@ class TextEngine {
 
       LAYOUT_ENGINE = new LayoutEngine({
         lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
+        fontSubstitutionEngine: new FontSubstitutionEngine(),
         justificationEngine: new JustificationEngine({
           shrinkWhitespaceFactor,
         }),
@@ -93,7 +95,7 @@ class TextEngine {
     this.element.children.forEach(child => {
       if (typeof child === 'string') {
         const obj = Font.getFont(fontFamily);
-        const font = obj ? obj.data : font;
+        const font = obj ? obj.data : fontFamily;
         const string = this.transformText(child, textTransform);
 
         fragments.push({

@@ -36,12 +36,16 @@ class View extends Base {
 
     buffer.forEach(child => child.moveTo(result));
 
+    // If the View has fixed height, we calculate the new element heights.
+    // If not, we set it up as NaN and use Yoga calculated heights as fallback.
+    const h = this.style.height ? height : NaN;
+
     result.marginTop = 0;
     result.paddingTop = 0;
-    result.height = this.height - height;
+    result.height = this.height - h;
     this.marginBottom = 0;
     this.paddingBottom = 0;
-    this.height = height;
+    this.height = h;
 
     return result;
   }

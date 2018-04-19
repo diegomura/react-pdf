@@ -10,6 +10,8 @@
     "logo": "https://opencollective.com/opencollective/logo.txt"
   },
   "dependencies": {
+    "@react-pdf/font-substitution": "latest",
+    "@react-pdf/linebreaker": "latest",
     "jest": "^20.0.4",
     "lerna": "2.7.1",
     "react": "^16.2.0",

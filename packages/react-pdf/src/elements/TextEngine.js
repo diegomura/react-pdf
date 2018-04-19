@@ -1,6 +1,6 @@
 import warning from 'fbjs/lib/warning';
-import KPLineBreaker from 'linebreaker';
-import FontSubstitutionEngine from 'font-substitution';
+import KPLineBreaker from '@react-pdf/linebreaker';
+import FontSubstitutionEngine from '@react-pdf/font-substitution';
 import upperFirst from 'lodash.upperfirst';
 import {
   Path,

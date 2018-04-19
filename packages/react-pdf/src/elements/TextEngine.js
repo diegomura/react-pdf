@@ -79,6 +79,9 @@ class TextEngine {
       fontFamily = 'Helvetica',
       fontSize = 18,
       textAlign = 'left',
+      position,
+      top,
+      bottom,
       align,
       lineHeight,
       textDecoration,
@@ -110,6 +113,7 @@ class TextEngine {
             underline: textDecoration === 'underline',
             underlineColor: textDecorationColor || color,
             lineHeight: lineHeight ? lineHeight * fontSize : null,
+            yOffset: position === 'relative' ? -top || bottom || 0 : null,
           },
         });
       } else {

@@ -30,7 +30,7 @@ class Text extends Base {
 
   measureText(width, widthMode, height, heightMode) {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.engine.layout(width, 99999);
+      this.engine.layout(width);
 
       return {
         height: this.style.flexGrow ? NaN : this.engine.height,
@@ -41,9 +41,12 @@ class Text extends Base {
       widthMode === Yoga.MEASURE_MODE_AT_MOST ||
       heightMode === Yoga.MEASURE_MODE_AT_MOST
     ) {
-      this.engine.layout(width, 99999);
+      this.engine.layout(width);
 
-      return { width, height: this.engine.height };
+      return {
+        height: this.engine.height,
+        width: Math.min(width, this.engine.width),
+      };
     }
 
     return {};

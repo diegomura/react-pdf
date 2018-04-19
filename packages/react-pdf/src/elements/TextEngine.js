@@ -15,6 +15,7 @@ import Font from '../font';
 // Global layout engine
 // It's created dynamically because it may accept a custom hyphenation callback
 let LAYOUT_ENGINE;
+const INFINITY = 99999;
 
 class TextEngine {
   constructor(element) {
@@ -70,6 +71,14 @@ class TextEngine {
     }
 
     return this.lines.reduce((acc, line) => acc + line.height, 0);
+  }
+
+  get width() {
+    if (!this._container) {
+      return -1;
+    }
+
+    return Math.max(...this.lines.map(line => line.advanceWidth));
   }
 
   get attributedString() {
@@ -172,10 +181,10 @@ class TextEngine {
     }
   }
 
-  layout(width, height) {
-    if (this._container || this.computed) return;
+  layout(width, dirty = false) {
+    if (this.computed) return;
 
-    const path = new Path().rect(0, 0, width, height);
+    const path = new Path().rect(0, 0, width, INFINITY);
     const container = new Container(path);
     const string = AttributedString.fromFragments(this.attributedString).trim();
 
@@ -188,7 +197,7 @@ class TextEngine {
       0,
     );
 
-    this.computed = true;
+    this.computed = !dirty;
     this._container = container;
     this.end = linesCount + 1;
   }

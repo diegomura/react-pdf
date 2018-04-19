@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"@react-pdf/font-substitution@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.0.tgz#6b828eede26ec8bd7b7318e1f77e2e58bf3b1b6d"
+
+"@react-pdf/linebreaker@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.0.0.tgz#eb0ecb2161291981be47a7bdef5ea551a792ce64"
+  dependencies:
+    hyphenation.en-us "^0.2.1"
+    hypher "^0.2.5"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -724,6 +735,16 @@ http-signature@~1.2.0:
     assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
+
+hyphenation.en-us@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"
+  dependencies:
+    hypher "*"
+
+hypher@*, hypher@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/hypher/-/hypher-0.2.5.tgz#2fe456ed2a3fd4ed0d9e428617181c59f9a6dd02"
 
 iconv-lite@~0.4.13:
   version "0.4.19"

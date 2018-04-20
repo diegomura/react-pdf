@@ -1,7 +1,6 @@
 import warning from 'fbjs/lib/warning';
 import KPLineBreaker from '@react-pdf/linebreaker';
 import FontSubstitutionEngine from '@react-pdf/font-substitution';
-import upperFirst from 'lodash.upperfirst';
 import {
   Path,
   LayoutEngine,
@@ -9,7 +8,8 @@ import {
   Container,
   TextRenderer,
   JustificationEngine,
-} from 'textkit';
+} from '@react-pdf/textkit';
+import upperFirst from 'lodash.upperfirst';
 import Font from '../font';
 
 // Global layout engine

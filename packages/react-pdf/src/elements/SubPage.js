@@ -98,12 +98,12 @@ class SubPage extends Base {
         nextPageElements.push(...this.children.slice(i));
         break;
       } else if (shouldElementSplit) {
+        const remainingHeight = height - child.top + this.paddingTop;
+
         if (!wrap) {
           nextPageElements.push(child);
         } else {
-          result.appendChild(
-            child.splice(height - child.top + this.paddingTop),
-          );
+          result.appendChild(child.splice(remainingHeight, height));
         }
       }
     }

@@ -1,5 +1,7 @@
 import Base from './Base';
 
+const ORPHAN_THRESHOLD = 15;
+
 class View extends Base {
   static defaultProps = {
     style: {},
@@ -14,18 +16,24 @@ class View extends Base {
     return this.children.every(child => child.isEmpty());
   }
 
-  splice(height) {
+  splice(wrapHeight, pageHeight) {
     const buffer = [];
     const result = this.clone();
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-      const isElementOutside = height < child.top;
-      const shouldElementSplit = height < child.top + child.height;
+      const { fixed, wrap, orphan } = child.props;
 
-      if (isElementOutside) {
+      const childBottom = child.top + child.height;
+      const isElementOutside = wrapHeight < child.top;
+      const shouldElementSplit = wrapHeight < child.top + child.height;
+      const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
+      const isElementOrphan =
+        !orphan && pageHeight - childBottom < orphanThreshold;
+
+      if (isElementOutside || isElementOrphan) {
         buffer.push(child);
-      } else if (child.props.fixed) {
+      } else if (fixed) {
         const fixedElement = child.clone();
         fixedElement.children = child.children;
         result.appendChild(fixedElement);
@@ -34,10 +42,12 @@ class View extends Base {
         buffer.push(...this.children.slice(i));
         break;
       } else if (shouldElementSplit) {
-        if (!child.props.wrap) {
+        const remainingHeight = wrapHeight - child.top - this.marginTop;
+
+        if (!wrap) {
           buffer.push(child);
         } else {
-          result.appendChild(child.splice(height - child.top - this.marginTop));
+          result.appendChild(child.splice(remainingHeight, pageHeight));
         }
       }
     }
@@ -46,7 +56,7 @@ class View extends Base {
 
     // If the View has fixed height, we calculate the new element heights.
     // If not, we set it up as NaN and use Yoga calculated heights as fallback.
-    const h = this.style.height ? height : NaN;
+    const h = this.style.height ? wrapHeight : NaN;
 
     result.marginTop = 0;
     result.paddingTop = 0;

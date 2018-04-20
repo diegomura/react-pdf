@@ -62,7 +62,11 @@ class SubPage extends Base {
 
   isEmpty() {
     const nonFixedChilds = this.children.filter(child => !child.props.fixed);
-    return nonFixedChilds.length === 0;
+    if (nonFixedChilds.length === 0) {
+      return true;
+    }
+
+    return nonFixedChilds.every(child => child.isEmpty());
   }
 
   wrap(height) {

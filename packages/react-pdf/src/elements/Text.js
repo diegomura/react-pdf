@@ -57,6 +57,10 @@ class Text extends Base {
     return !isNan(parentLayout.width) && !isNan(parentLayout.height);
   }
 
+  isEmpty() {
+    return this.engine.lines.length === 0;
+  }
+
   get src() {
     return null;
   }

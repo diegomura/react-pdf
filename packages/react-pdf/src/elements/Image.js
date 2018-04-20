@@ -50,6 +50,10 @@ class Image extends Base {
     }
   }
 
+  isEmpty() {
+    return false;
+  }
+
   async fetch() {
     this.image = await fetchImage(this.props.src);
   }

@@ -6,6 +6,14 @@ class View extends Base {
     wrap: true,
   };
 
+  isEmpty() {
+    if (this.children.length === 0) {
+      return false;
+    }
+
+    return this.children.every(child => child.isEmpty());
+  }
+
   splice(height) {
     const buffer = [];
     const result = this.clone();

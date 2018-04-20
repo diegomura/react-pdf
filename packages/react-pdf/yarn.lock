@@ -9,10 +9,11 @@
     "@react-pdf/pdfkit" "0.8.7"
     "@react-pdf/textkit" "^0.1.0"
 
-"@react-pdf/linebreaker@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.0.1.tgz#9219baa04a8b7ee5c29fa11ef0c8e88c0a79393e"
+"@react-pdf/linebreaker@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.0.2.tgz#818eeb49ad92dad9fb8e2fcc86df94041df5a2d1"
   dependencies:
+    "@react-pdf/textkit" "0.1.0"
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
@@ -24,7 +25,7 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/textkit@^0.1.0":
+"@react-pdf/textkit@0.1.0", "@react-pdf/textkit@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.0.tgz#e75f1c3fb9bf4aac8511d213a01172fe8d2c9b41"
   dependencies:

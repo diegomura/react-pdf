@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@react-pdf/font-substitution@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.2.tgz#810f0171915d5cc6a2d4057e6297d8cae7bd00bd"
+"@react-pdf/font-substitution@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.3.tgz#e8e98b1ae8698393dac8af2f40310a0791aae6c7"
   dependencies:
     "@react-pdf/pdfkit" "0.8.7"
     "@react-pdf/textkit" "^0.1.0"

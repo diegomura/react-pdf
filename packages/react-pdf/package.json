@@ -19,7 +19,7 @@
     "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/font-substitution": "1.0.2",
+    "@react-pdf/font-substitution": "1.0.3",
     "@react-pdf/linebreaker": "1.0.0",
     "@react-pdf/textkit": "^0.1.0",
     "blob-stream": "^0.1.3",

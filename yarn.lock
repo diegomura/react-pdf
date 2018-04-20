@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"@react-pdf/font-substitution@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.0.tgz#6b828eede26ec8bd7b7318e1f77e2e58bf3b1b6d"
+
+"@react-pdf/linebreaker@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.0.0.tgz#eb0ecb2161291981be47a7bdef5ea551a792ce64"
+  dependencies:
+    hyphenation.en-us "^0.2.1"
+    hypher "^0.2.5"
+
 JSONStream@^1.0.4:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.2.tgz#c102371b6ec3a7cf3b847ca00c20bb0fce4c6dea"
@@ -2384,6 +2395,16 @@ husky@^0.13.2:
     find-parent-dir "^0.3.0"
     is-ci "^1.0.9"
     normalize-path "^1.0.0"
+
+hyphenation.en-us@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"
+  dependencies:
+    hypher "*"
+
+hypher@*, hypher@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/hypher/-/hypher-0.2.5.tgz#2fe456ed2a3fd4ed0d9e428617181c59f9a6dd02"
 
 iconv-lite@0.4.19, iconv-lite@^0.4.17, iconv-lite@~0.4.13:
   version "0.4.19"

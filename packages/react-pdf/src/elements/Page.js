@@ -13,11 +13,12 @@ class Page {
     wrap: false,
   };
 
-  constructor(root, props) {
+  constructor(root, props, numberBase = 1) {
     this.root = root;
     this.props = { ...Page.defaultProps, ...props };
     this.children = [];
     this.initialSubpage = null;
+    this.numberBase = numberBase;
 
     this.addInitialSubpage();
   }
@@ -49,12 +50,16 @@ class Page {
   }
 
   addInitialSubpage() {
-    const newSubpage = new SubPage(this.root, this.props);
+    const newSubpage = new SubPage(this.root, this.props, this.numberBase);
 
     newSubpage.parent = this;
 
     this.children.push(newSubpage);
     this.initialSubpage = newSubpage;
+  }
+
+  getInitialSubpage() {
+    return this.children[0];
   }
 
   addNewSubpage() {
@@ -77,6 +82,17 @@ class Page {
 
   getHeight() {
     return this.children[0].getHeight();
+  }
+
+  async wrapPage() {
+    const { paddingTop, paddingBottom } = this.style;
+    const height = this.getSize()[1] - paddingTop - paddingBottom;
+    let nextSubpage = this.getInitialSubpage().wrap(height);
+
+    while (this.props.wrap && !nextSubpage.isEmpty()) {
+      this.children.push(nextSubpage);
+      nextSubpage = nextSubpage.wrap(height);
+    }
   }
 
   async render() {

@@ -2,30 +2,34 @@ import Yoga from 'yoga-layout';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
 import upperFirst from 'lodash.upperfirst';
+import Node from './Node';
 import pick from 'lodash.pick';
+import merge from 'lodash.merge';
 import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import { inheritedProperties } from '../utils/styles';
-import { splitElement } from '../utils/wrapping';
 
-class Base {
-  parent = null;
-  children = [];
-
+class Base extends Node {
   static defaultProps = {
     style: {},
+    orphan: true,
   };
 
   constructor(root, props) {
-    this.root = root;
+    super();
 
-    this.props = {
-      ...this.constructor.defaultProps,
-      ...Base.defaultProps,
-      ...props,
-    };
+    this.root = root;
+    this.parent = null;
+    this.children = [];
+
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      props,
+    );
 
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
 
@@ -34,17 +38,27 @@ class Base {
   }
 
   appendChild(child) {
-    child.parent = this;
-    this.children.push(child);
-    this.layout.insertChild(child.layout, this.layout.getChildCount());
+    if (child) {
+      child.parent = this;
+      this.children.push(child);
+      this.layout.insertChild(child.layout, this.layout.getChildCount());
+    }
   }
 
   removeChild(child) {
     const index = this.children.indexOf(child);
 
-    child.parent = null;
-    this.children.splice(index, 1);
-    this.layout.removeChild(child.layout);
+    if (index !== -1) {
+      child.parent = null;
+      this.children.splice(index, 1);
+      this.layout.removeChild(child.layout);
+    }
+  }
+
+  moveTo(parent) {
+    this.reset();
+    this.parent.removeChild(this);
+    parent.appendChild(this);
   }
 
   applyProps() {
@@ -75,28 +89,28 @@ class Base {
 
     switch (attribute) {
       case 'marginTop':
-        this.layout.setMargin(Yoga.EDGE_TOP, value);
+        this.layout.setMargin(Yoga.EDGE_TOP, this.marginTop || value);
         break;
       case 'marginRight':
-        this.layout.setMargin(Yoga.EDGE_RIGHT, value);
+        this.layout.setMargin(Yoga.EDGE_RIGHT, this.marginRight || value);
         break;
       case 'marginBottom':
-        this.layout.setMargin(Yoga.EDGE_BOTTOM, value);
+        this.layout.setMargin(Yoga.EDGE_BOTTOM, this.marginBottom || value);
         break;
       case 'marginLeft':
-        this.layout.setMargin(Yoga.EDGE_LEFT, value);
+        this.layout.setMargin(Yoga.EDGE_LEFT, this.marginLeft || value);
         break;
       case 'paddingTop':
-        this.layout.setPadding(Yoga.EDGE_TOP, value);
+        this.layout.setPadding(Yoga.EDGE_TOP, this.paddingTop || value);
         break;
       case 'paddingRight':
-        this.layout.setPadding(Yoga.EDGE_RIGHT, value);
+        this.layout.setPadding(Yoga.EDGE_RIGHT, this.paddingRight || value);
         break;
       case 'paddingBottom':
-        this.layout.setPadding(Yoga.EDGE_BOTTOM, value);
+        this.layout.setPadding(Yoga.EDGE_BOTTOM, this.paddingBottom || value);
         break;
       case 'paddingLeft':
-        this.layout.setPadding(Yoga.EDGE_LEFT, value);
+        this.layout.setPadding(Yoga.EDGE_LEFT, this.paddingLeft || value);
         break;
       case 'borderTopWidth':
         this.layout.setBorder(Yoga.EDGE_TOP, value);
@@ -118,16 +132,26 @@ class Base {
         );
         break;
       case 'top':
-        this.setPosition(Yoga.EDGE_TOP, value);
+        this.setPosition(Yoga.EDGE_TOP, this.top || value);
         break;
       case 'right':
-        this.setPosition(Yoga.EDGE_RIGHT, value);
+        this.setPosition(Yoga.EDGE_RIGHT, this.right || value);
         break;
       case 'bottom':
-        this.setPosition(Yoga.EDGE_BOTTOM, value);
+        this.setPosition(Yoga.EDGE_BOTTOM, this.bottom || value);
         break;
       case 'left':
-        this.setPosition(Yoga.EDGE_LEFT, value);
+        this.setPosition(Yoga.EDGE_LEFT, this.left || value);
+        break;
+      case 'width':
+        this.layout.setWidth(
+          this.width - this.marginLeft - this.marginRight || value,
+        );
+        break;
+      case 'height':
+        this.layout.setHeight(
+          this.height - this.marginTop - this.marginBottom || value,
+        );
         break;
       default:
         if (isFunction(this.layout[setter])) {
@@ -146,11 +170,12 @@ class Base {
     }
   }
 
-  async recalculateLayout() {
-    const childs = await Promise.all(
-      this.children.map(child => child.recalculateLayout()),
-    );
-    return childs;
+  isAbsolute() {
+    return this.props.style.position === 'absolute';
+  }
+
+  isEmpty() {
+    return this.children.length === 0;
   }
 
   getPage() {
@@ -158,35 +183,16 @@ class Base {
   }
 
   getAbsoluteLayout() {
-    const myLayout = this.layout.getComputedLayout();
-
+    const parentMargin = this.parent.margin || { left: 0, top: 0 };
     const parentLayout = this.parent.getAbsoluteLayout
       ? this.parent.getAbsoluteLayout()
       : { left: 0, top: 0 };
 
     return {
-      left: myLayout.left + parentLayout.left,
-      top: myLayout.top + parentLayout.top,
-      height: myLayout.height,
-      width: myLayout.width,
-    };
-  }
-
-  getPadding() {
-    return {
-      top: this.layout.getComputedPadding(Yoga.EDGE_TOP),
-      right: this.layout.getComputedPadding(Yoga.EDGE_RIGHT),
-      bottom: this.layout.getComputedPadding(Yoga.EDGE_BOTTOM),
-      left: this.layout.getComputedPadding(Yoga.EDGE_LEFT),
-    };
-  }
-
-  getMargin() {
-    return {
-      top: this.layout.getComputedMargin(Yoga.EDGE_TOP),
-      right: this.layout.getComputedMargin(Yoga.EDGE_RIGHT),
-      bottom: this.layout.getComputedMargin(Yoga.EDGE_BOTTOM),
-      left: this.layout.getComputedMargin(Yoga.EDGE_LEFT),
+      left: this.left + parentMargin.left + parentLayout.left,
+      top: this.top + parentMargin.top + parentLayout.top,
+      height: this.height,
+      width: this.width,
     };
   }
 
@@ -230,13 +236,19 @@ class Base {
   }
 
   drawBackgroundColor() {
+    const margin = this.margin;
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { backgroundColor } = this.getComputedStyles();
 
     if (backgroundColor) {
       this.root
         .fillColor(backgroundColor)
-        .rect(left, top, width, height)
+        .rect(
+          left + margin.left,
+          top + margin.top,
+          width - margin.left - margin.right,
+          height - margin.top - margin.bottom,
+        )
         .fill();
     }
   }
@@ -244,118 +256,28 @@ class Base {
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
+    clone.width = this.width;
     clone.style = this.style;
     clone.parent = this.parent;
-    clone.layout = this.layout;
-    clone.children = this.children;
+    clone.height = this.height;
+    clone.margin = this.margin;
+    clone.padding = this.padding;
 
     return clone;
   }
 
-  async fillRemainingSpace(page, element, availableHeight) {
-    if (element.canBeSplitted) {
-      const getHeight = value => {
-        element.setFontSize();
-        const elementMargin = element.getMargin();
-        const elementPadding = element.getPadding();
-
-        return this.root.heightOfString(value, {
-          width:
-            this.getWidth() -
-            elementMargin.right -
-            elementMargin.left -
-            elementPadding.right -
-            elementPadding.left,
-        });
-      };
-
-      const newElement = splitElement(element, availableHeight, getHeight);
-      await newElement.render();
-    } else {
-      const renderedChilds = [];
-
-      for (let i = 0; i < element.children.length; i++) {
-        const child = element.children[i];
-        const childHeight = child.getHeight();
-
-        if (availableHeight >= childHeight) {
-          await child.render(page);
-          renderedChilds.push(child);
-
-          availableHeight -= childHeight;
-        } else {
-          break;
-        }
-      }
-
-      // Remove rendered childs
-      renderedChilds.forEach(child => {
-        if (!child.props.fixed) {
-          element.removeChild(child);
-        }
-      });
-    }
-  }
-
-  async renderWrapChildren(page) {
-    let i;
-    let isFirstElement = true;
-    let availableHeight = this.parent.getHeight();
-
-    const renderedChilds = [];
-
-    for (i = 0; i < this.children.length; i++) {
-      const child = this.children[i];
-      const childHeight = child.getHeight();
-
-      if (child.props.break && !isFirstElement) {
-        page.addNewSubpage();
-        break;
-      } else if (availableHeight >= childHeight) {
-        await child.render(page);
-        renderedChilds.push(child);
-
-        availableHeight -= childHeight;
-      } else {
-        // console.log(child.children);
-        await this.fillRemainingSpace(page, child, availableHeight);
-
-        page.addNewSubpage();
-        break;
-      }
-
-      if (!child.props.fixed) {
-        isFirstElement = false;
-      }
-    }
-
-    // Render remaining fixed children
-    for (let j = i; j < this.children.length; j++) {
-      const child = this.children[j];
-      if (child.props.fixed) {
-        await child.render(page);
-      }
-    }
-
-    // Remove rendered childs
-    renderedChilds.forEach(child => {
-      if (!child.props.fixed) {
-        this.removeChild(child);
-      }
-    });
-  }
-
-  async renderPlainChildren(page) {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render(page);
-    }
-  }
-
   async renderChildren(page) {
-    if (page.props.wrap) {
-      await this.renderWrapChildren(page);
-    } else {
-      await this.renderPlainChildren(page);
+    const absoluteChilds = this.children.filter(child => child.isAbsolute());
+    const nonAbsoluteChilds = this.children.filter(
+      child => !child.isAbsolute(),
+    );
+
+    for (let i = 0; i < nonAbsoluteChilds.length; i++) {
+      await nonAbsoluteChilds[i].render(page);
+    }
+
+    for (let i = 0; i < absoluteChilds.length; i++) {
+      await absoluteChilds[i].render(page);
     }
   }
 }

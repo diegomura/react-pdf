@@ -1,7 +1,15 @@
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 
+const ORPHAN_THRESHOLD = 15;
+
 class SubPage extends Base {
+  constructor(root, props, number) {
+    super(root, props);
+
+    this.number = number;
+  }
+
   get size() {
     return this.parent.getSize();
   }
@@ -42,9 +50,7 @@ class SubPage extends Base {
 
       if (this.props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
-        this.layout.setHeight(size[0]);
       } else {
-        this.layout.setHeight(size[1]);
         this.layout.setWidth(size[0]);
       }
     }
@@ -54,22 +60,80 @@ class SubPage extends Base {
     return this.parent;
   }
 
+  isEmpty() {
+    const nonFixedChilds = this.children.filter(child => !child.props.fixed);
+    if (nonFixedChilds.length === 0) {
+      return true;
+    }
+
+    return nonFixedChilds.every(child => child.isEmpty());
+  }
+
+  wrap(height) {
+    this.layout.calculateLayout();
+
+    const nextPageElements = [];
+    const result = this.clone();
+
+    result.number = this.number + 1;
+
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      const { fixed, wrap, orphan } = child.props;
+
+      const childBottom = child.top + child.height;
+      const isElementOutside = height < child.top;
+      const shouldElementSplit = height < childBottom;
+      const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
+      const isElementOrphan = !orphan && height - childBottom < orphanThreshold;
+
+      if (fixed) {
+        const fixedElement = child.clone();
+        fixedElement.children = child.children;
+        result.appendChild(fixedElement);
+      } else if (isElementOutside || isElementOrphan) {
+        nextPageElements.push(child);
+      } else if (child.props.break) {
+        child.props.break = false;
+        nextPageElements.push(...this.children.slice(i));
+        break;
+      } else if (shouldElementSplit) {
+        const remainingHeight = height - child.top + this.paddingTop;
+
+        if (!wrap) {
+          nextPageElements.push(child);
+        } else {
+          result.appendChild(child.splice(remainingHeight, height));
+        }
+      }
+    }
+
+    nextPageElements.forEach(child => child.moveTo(result));
+    result.applyProps();
+
+    return result;
+  }
+
+  layoutFixedElements() {
+    this.reset();
+    this.layout.setHeight(this.size[1]);
+    this.layout.calculateLayout();
+
+    this.children.forEach(child => {
+      if (child.props.fixed) {
+        child.reset();
+      }
+    });
+  }
+
   async render(page) {
-    const { orientation } = this.props;
+    this.root.addPage({
+      size: this.size,
+      layout: this.props.orientation,
+      margin: 0,
+    });
 
-    // Since Text needs it's parent layout,
-    // we need to calculate flexbox layout for a first time.
-    this.layout.calculateLayout();
-
-    // Ask each children to recalculate it's layout.
-    // This puts all Text nodes in a dirty state
-    await this.recalculateLayout();
-
-    // Finally, calculate flexbox's layout
-    // one more time based new widths and heights.
-    this.layout.calculateLayout();
-
-    this.root.addPage({ size: this.size, layout: orientation, margin: 0 });
+    this.layoutFixedElements();
 
     if (this.style.backgroundColor) {
       this.root
@@ -77,6 +141,11 @@ class SubPage extends Base {
         .rect(0, 0, this.root.page.width, this.root.page.height)
         .fill();
     }
+
+    if (this.props.debug) {
+      this.debug();
+    }
+
     await this.renderChildren(page);
   }
 }

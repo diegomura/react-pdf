@@ -3,29 +3,35 @@
 
 import React from 'react';
 import ReactPDF from '@react-pdf/node';
-import { Document, Page, Text, Image, StyleSheet } from '@react-pdf/core';
+import { Document, Page, Text, Image, StyleSheet, Font } from '@react-pdf/core';
 
 const styles = StyleSheet.create({
   body: {
-    padding: 35,
+    paddingTop: 35,
+    paddingBottom: 45,
+    paddingHorizontal: 35,
   },
   title: {
     fontSize: 24,
     textAlign: 'center',
-    marginTop: 20,
+    fontFamily: 'Roboto',
   },
   author: {
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 40,
+    fontFamily: 'Roboto',
   },
   subtitle: {
     fontSize: 16,
     margin: 12,
+    fontFamily: 'Roboto',
   },
   text: {
     margin: 12,
     fontSize: 12,
+    fontFamily: 'Roboto',
+    textAlign: 'justify',
   },
   image: {
     height: 150,
@@ -34,19 +40,24 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 12,
-    textAlign: 'center',
     color: 'grey',
+    marginBottom: 15,
+    textAlign: 'center',
+    fontFamily: 'Roboto',
   },
   footer: {
     position: 'absolute',
     fontSize: 12,
-    bottom: 40,
-    left: 0,
+    bottom: 25,
+    left: 35,
     right: 0,
     textAlign: 'center',
     color: 'grey',
+    fontFamily: 'Roboto',
   },
 });
+
+Font.register(`${__dirname}/fonts/Roboto-Regular.ttf`, { family: 'Roboto' });
 
 const Subtitle = ({ children, ...props }) => (
   <Text style={styles.subtitle} {...props}>
@@ -88,7 +99,7 @@ const doc = (
         diferencia en los autores que deste caso escriben), aunque por
         conjeturas verosímiles se deja entender que se llama Quijana; pero esto
         importa poco a nuestro cuento; basta que en la narración dél no se salga
-        un punto de la verdad
+        un punto de la verdad.
       </Text>
       <Text style={styles.text}>
         Es, pues, de saber, que este sobredicho hidalgo, los ratos que estaba
@@ -103,10 +114,7 @@ const doc = (
         parecían de perlas; y más cuando llegaba a leer aquellos requiebros y
         cartas de desafío, donde en muchas partes hallaba escrito: la razón de
         la sinrazón que a mi razón se hace, de tal manera mi razón enflaquece,
-        que con razón me quejo de la vuestra fermosura, y también cuando leía:
-        los altos cielos que de vuestra divinidad divinamente con las estrellas
-        se fortifican, y os hacen merecedora del merecimiento que merece la
-        vuestra grandeza.
+        que con razón me quejo.
       </Text>
       <Text style={styles.text}>
         Con estas y semejantes razones perdía el pobre caballero el juicio, y
@@ -170,8 +178,8 @@ const doc = (
         hacerse armar caballero del primero que topase, a imitación de otros
         muchos que así lo hicieron, según él había leído en los libros que tal
         le tenían. En lo de las armas blancas, pensaba limpiarlas de manera, en
-        teniendo lugar, que lo fuesen más que un arminio; y con esto se quietó18
-        y prosiguió su camino, sin llevar otro que aquel que su caballo quería,
+        teniendo lugar, que lo fuesen más que un arminio; y con esto se quietó y
+        prosiguió su camino, sin llevar otro que aquel que su caballo quería,
         creyendo que en aquello consistía la fuerza de las aventuras
       </Text>
       <Text style={styles.text}>
@@ -222,7 +230,7 @@ const doc = (
         se hallaron cansados y muertos de hambre, y que, mirando a todas partes
         por ver si descubriría algún castillo o alguna majada de pastores donde
         recogerse y adonde pudiese remediar su mucha hambre y necesidad, vio, no
-        lejos del camino por donde iba, una venta,que fue como si viera una
+        lejos del camino por donde iba, una venta, que fue como si viera una
         estrella que, no a los portales, sino a los alcázares de su redención le
         encaminaba. Diose priesa a caminar, y llegó a ella a tiempo que
         anochecía.

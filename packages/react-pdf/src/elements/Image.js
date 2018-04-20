@@ -3,12 +3,15 @@ import Base from './Base';
 import { fetchImage } from '../utils/image';
 
 class Image extends Base {
-  image = null;
+  static defaultProps = {
+    wrap: false,
+  };
 
   constructor(root, props) {
     super(root, props);
 
-    this.fetch = fetchImage(props.src);
+    this.image = null;
+    this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
   shouldGrow() {
@@ -47,17 +50,17 @@ class Image extends Base {
     }
   }
 
-  async recalculateLayout() {
-    this.image = await this.fetch;
+  isEmpty() {
+    return false;
+  }
 
-    if (!this.shouldGrow()) {
-      this.layout.setMeasureFunc(this.measureImage.bind(this));
-      this.layout.markDirty();
-    }
+  async fetch() {
+    this.image = await fetchImage(this.props.src);
   }
 
   async render() {
-    const padding = this.getPadding();
+    const margin = this.margin;
+    const padding = this.padding;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
@@ -67,10 +70,17 @@ class Image extends Base {
       this.debug();
     }
 
-    this.root.image(this.image.data, left + padding.left, top + padding.top, {
-      width: width - padding.left - padding.right,
-      height: height - padding.top - padding.bottom,
-    });
+    this.root.image(
+      this.image.data,
+      left + padding.left + margin.left,
+      top + padding.top + margin.top,
+      {
+        width:
+          width - padding.left - padding.right - margin.left - margin.right,
+        height:
+          height - padding.top - padding.bottom - margin.top - margin.bottom,
+      },
+    );
   }
 }
 

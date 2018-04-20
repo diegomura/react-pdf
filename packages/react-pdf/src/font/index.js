@@ -1,8 +1,10 @@
 import isUrl from 'is-url';
+import fontkit from 'fontkit';
 import standardFonts from './standard';
 import { fetchFont } from '../utils/font';
 
 let fonts = {};
+let hyphenationCallback;
 
 const register = (src, { family, ...otherOptions }) => {
   fonts[family] = {
@@ -13,14 +15,27 @@ const register = (src, { family, ...otherOptions }) => {
   };
 };
 
+const registerHyphenationCallback = callback => {
+  hyphenationCallback = callback;
+};
+
 const getRegisteredFonts = () => Object.keys(fonts);
+
+const getFont = family => fonts[family];
+
+const getHyphenationCallback = () => hyphenationCallback;
 
 const load = async (fontFamily, doc) => {
   const font = fonts[fontFamily];
 
   // We cache the font to avoid fetching it many time
   if (font && !font.data) {
-    font.data = isUrl(font.src) ? await fetchFont(font.src) : font.src;
+    if (isUrl(font.src)) {
+      const data = await fetchFont(font.src);
+      font.data = fontkit.create(data);
+    } else {
+      font.data = fontkit.openSync(font.src);
+    }
   }
 
   // If the font wasn't added to the document yet (aka. loaded), we do.
@@ -53,6 +68,9 @@ const clear = () => {
 export default {
   register,
   getRegisteredFonts,
+  registerHyphenationCallback,
+  getHyphenationCallback,
+  getFont,
   load,
   clear,
   reset,

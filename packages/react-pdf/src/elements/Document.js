@@ -49,13 +49,14 @@ class Document {
   }
 
   async loadFonts() {
+    const promises = [];
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        await Font.load(node.style.fontFamily, this.root);
+        promises.push(Font.load(node.style.fontFamily, this.root));
       }
 
       if (node.children) {
@@ -64,11 +65,44 @@ class Document {
         });
       }
     }
+
+    await Promise.all(promises);
+  }
+
+  async loadImages() {
+    const promises = [];
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.constructor.name === 'Image') {
+        promises.push(node.fetch());
+      }
+
+      if (node.children) {
+        node.children.forEach(childNode => {
+          listToExplore.push(childNode);
+        });
+      }
+    }
+
+    await Promise.all(promises);
+  }
+
+  async loadAssets() {
+    await Promise.all([this.loadFonts(), this.loadImages()]);
   }
 
   applyProps() {
     for (let i = 0; i < this.children.length; i++) {
       this.children[i].applyProps();
+    }
+  }
+
+  async wrapChildren() {
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].wrapPage();
     }
   }
 
@@ -81,7 +115,8 @@ class Document {
   async render() {
     this.addMetaData();
     this.applyProps();
-    await this.loadFonts();
+    await this.loadAssets();
+    await this.wrapChildren();
     await this.renderChildren();
     this.root.end();
     Font.reset();

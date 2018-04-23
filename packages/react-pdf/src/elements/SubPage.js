@@ -11,7 +11,7 @@ class SubPage extends Base {
   }
 
   get size() {
-    return this.parent.getSize();
+    return this.parent.size;
   }
 
   get style() {
@@ -54,6 +54,11 @@ class SubPage extends Base {
         this.layout.setWidth(size[0]);
       }
     }
+  }
+
+  recalculateLayout() {
+    super.recalculateLayout();
+    this.layout.calculateLayout();
   }
 
   getPage() {
@@ -114,10 +119,33 @@ class SubPage extends Base {
     return result;
   }
 
+  callChildFunctions() {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+      const totalPages = this.getPage().subpagesCount;
+
+      if (!node.children) continue;
+
+      node.children = node.children.map(childNode => {
+        if (childNode.constructor.name === 'Func') {
+          return childNode.call({
+            totalPages,
+            pageNumber: this.number,
+          });
+        }
+
+        listToExplore.push(childNode);
+        return childNode;
+      });
+    }
+  }
+
   layoutFixedElements() {
     this.reset();
     this.layout.setHeight(this.size[1]);
-    this.layout.calculateLayout();
+    this.recalculateLayout();
 
     this.children.forEach(child => {
       if (child.props.fixed) {
@@ -133,6 +161,7 @@ class SubPage extends Base {
       margin: 0,
     });
 
+    this.callChildFunctions();
     this.layoutFixedElements();
 
     if (this.style.backgroundColor) {

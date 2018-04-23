@@ -63,14 +63,13 @@ class Base extends Node {
 
   applyProps() {
     const page = this.getPage();
-    const pageSize = page.getSize();
 
     this.style =
       this.style ||
       StyleSheet.resolve(this.props.style, {
-        width: pageSize[0],
-        height: pageSize[1],
-        orientation: page.getOrientation(),
+        width: page.size[0],
+        height: page.size[1],
+        orientation: page.orientation,
       });
 
     toPairsIn(this.style).map(([attribute, value]) => {
@@ -176,6 +175,10 @@ class Base extends Node {
 
   isEmpty() {
     return this.children.length === 0;
+  }
+
+  recalculateLayout() {
+    this.children.forEach(child => child.recalculateLayout());
   }
 
   getPage() {

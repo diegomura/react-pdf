@@ -1,11 +1,10 @@
 'use strict';
 
-import React from 'react';
 import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
 import { createElement } from './elements';
 
-const Renderer = ReactFiberReconciler({
+const PDFRenderer = ReactFiberReconciler({
   appendInitialChild(parentInstance, child) {
     if (parentInstance.appendChild) {
       parentInstance.appendChild(child);
@@ -110,33 +109,5 @@ const Renderer = ReactFiberReconciler({
     },
   },
 });
-
-// Transform function childs (not valid React children), into React elements of type FUNC
-const traverseFunctionChilds = (element, key = 0) => {
-  if (!element || typeof element === 'string' || typeof element === 'number') {
-    return element;
-  }
-
-  if (typeof element === 'function') {
-    return React.createElement('FUNC', { instance: element, key });
-  }
-
-  let children = element.props.children;
-  if (!Array.isArray(children)) {
-    children = [children];
-  }
-
-  const newChildren = children.map(traverseFunctionChilds);
-
-  return React.cloneElement(element, { ...element.props, key }, newChildren);
-};
-
-const PDFRenderer = {
-  ...Renderer,
-  updateContainer: (element, root) => {
-    const a = traverseFunctionChilds(element);
-    Renderer.updateContainer(a, root, null);
-  },
-};
 
 export default PDFRenderer;

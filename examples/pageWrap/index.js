@@ -235,9 +235,11 @@ const doc = (
         encaminaba. Diose priesa a caminar, y llegó a ella a tiempo que
         anochecía.
       </Text>
-      <Text style={styles.footer} fixed>
-        {({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
-      </Text>
+      <Text
+        style={styles.footer}
+        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+        fixed
+      />
     </Page>
   </Document>
 );

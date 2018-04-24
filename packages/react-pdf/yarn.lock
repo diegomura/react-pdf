@@ -9,9 +9,9 @@
     "@react-pdf/pdfkit" "0.8.7"
     "@react-pdf/textkit" "^0.1.0"
 
-"@react-pdf/linebreaker@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.0.2.tgz#818eeb49ad92dad9fb8e2fcc86df94041df5a2d1"
+"@react-pdf/linebreaker@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.1.0.tgz#25df33c842d3847379c7cb1aee40713ddc587f50"
   dependencies:
     "@react-pdf/textkit" "0.1.0"
     hyphenation.en-us "^0.2.1"
@@ -28,6 +28,24 @@
 "@react-pdf/textkit@0.1.0", "@react-pdf/textkit@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.0.tgz#e75f1c3fb9bf4aac8511d213a01172fe8d2c9b41"
+  dependencies:
+    cubic2quad "^1.1.0"
+    font-manager "^0.2.2"
+    fontkit "^1.7.7"
+    grapheme-breaker "^0.3.2"
+    hyphenation.en-us "^0.2.1"
+    hypher "^0.2.4"
+    iconv-lite "^0.4.13"
+    linebreak "^0.1.2"
+    lodash.clone "^4.5.0"
+    lodash.merge "^4.6.1"
+    pdfkit "^0.8.0"
+    svgpath "^2.2.0"
+    unicode-properties "^1.1.0"
+
+"@react-pdf/textkit@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.1.tgz#f2965e26f29bb01ae8d4503aac867218f5d06bf2"
   dependencies:
     cubic2quad "^1.1.0"
     font-manager "^0.2.2"

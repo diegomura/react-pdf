@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.7.7-3",
+  "version": "0.7.7-6",
   "license": "MIT",
   "description": "A tiny React renderer to generate PDF documents.",
   "keywords": [
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@react-pdf/font-substitution": "1.0.3",
-    "@react-pdf/linebreaker": "1.0.2",
-    "@react-pdf/textkit": "^0.1.0",
+    "@react-pdf/linebreaker": "1.1.0",
+    "@react-pdf/textkit": "^0.1.1",
     "blob-stream": "^0.1.3",
     "fbjs": "^0.8.4",
     "fontkit": "https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-1.7.9.tgz",

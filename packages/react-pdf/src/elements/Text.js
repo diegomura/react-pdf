@@ -12,6 +12,11 @@ class Text extends Base {
 
     this.engine = new TextEngine(this);
     this.layout.setMeasureFunc(this.measureText.bind(this));
+    this.renderCallback = props.render;
+  }
+
+  get src() {
+    return null;
   }
 
   appendChild(child) {
@@ -30,7 +35,7 @@ class Text extends Base {
   measureText(width, widthMode, height, heightMode) {
     // If the text has functions inside, we don't measure dimentions right away,
     // but we keep this until all functions are resolved after the layout stage.
-    if (this.hasFunctionsInside()) {
+    if (this.renderCallback) {
       return {};
     }
 
@@ -63,14 +68,6 @@ class Text extends Base {
 
   isEmpty() {
     return this.engine.lines.length === 0;
-  }
-
-  hasFunctionsInside() {
-    return this.children.some(child => child.constructor.name === 'Func');
-  }
-
-  get src() {
-    return null;
   }
 
   splice(height) {

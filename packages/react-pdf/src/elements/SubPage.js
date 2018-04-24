@@ -7,11 +7,15 @@ class SubPage extends Base {
   constructor(root, props, number) {
     super(root, props);
 
-    this.number = number;
+    this._number = number;
+  }
+
+  get page() {
+    return this.parent;
   }
 
   get size() {
-    return this.parent.getSize();
+    return this.parent.size;
   }
 
   get style() {
@@ -20,6 +24,10 @@ class SubPage extends Base {
 
   set style(style) {
     return style;
+  }
+
+  get number() {
+    return this._number + this.page.numberOffset;
   }
 
   resetMargins() {
@@ -56,8 +64,9 @@ class SubPage extends Base {
     }
   }
 
-  getPage() {
-    return this.parent;
+  recalculateLayout() {
+    super.recalculateLayout();
+    this.layout.calculateLayout();
   }
 
   isEmpty() {
@@ -75,7 +84,7 @@ class SubPage extends Base {
     const nextPageElements = [];
     const result = this.clone();
 
-    result.number = this.number + 1;
+    result._number = this._number + 1;
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
@@ -114,10 +123,33 @@ class SubPage extends Base {
     return result;
   }
 
+  callChildFunctions() {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+      const { pageCount } = this.page.document;
+
+      if (!node.children) continue;
+
+      node.children = node.children.map(childNode => {
+        if (childNode.constructor.name === 'Func') {
+          return childNode.call({
+            totalPages: pageCount,
+            pageNumber: this.number,
+          });
+        }
+
+        listToExplore.push(childNode);
+        return childNode;
+      });
+    }
+  }
+
   layoutFixedElements() {
     this.reset();
     this.layout.setHeight(this.size[1]);
-    this.layout.calculateLayout();
+    this.recalculateLayout();
 
     this.children.forEach(child => {
       if (child.props.fixed) {
@@ -133,6 +165,7 @@ class SubPage extends Base {
       margin: 0,
     });
 
+    this.callChildFunctions();
     this.layoutFixedElements();
 
     if (this.style.backgroundColor) {

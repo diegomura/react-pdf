@@ -8,23 +8,31 @@ class Document {
     title: null,
   };
 
-  children = [];
-
   constructor(root, props) {
     this.root = root;
     this.props = props;
+    this.children = [];
+  }
+
+  get pageCount() {
+    return this.children.reduce((acc, page) => acc + page.subpagesCount, 0);
   }
 
   appendChild(child) {
     child.parent = this;
+    child.previousPage = this.children[this.children.length - 1];
     this.children.push(child);
   }
 
   removeChild(child) {
-    const index = this.children.indexOf(child);
-
+    const i = this.children.indexOf(child);
     child.parent = null;
-    this.children.slice(index, 1);
+
+    if (this.children[i + 1]) {
+      this.children[i + 1].previousPage = this.children[i].previousPage;
+    }
+
+    this.children.slice(i, 1);
   }
 
   addMetaData() {

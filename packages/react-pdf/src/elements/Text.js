@@ -1,5 +1,4 @@
 import Yoga from 'yoga-layout';
-import isNan from 'lodash.isnan';
 import Base from './Base';
 import TextEngine from './TextEngine';
 
@@ -29,6 +28,12 @@ class Text extends Base {
   }
 
   measureText(width, widthMode, height, heightMode) {
+    // If the text has functions inside, we don't measure dimentions right away,
+    // but we keep this until all functions are resolved after the layout stage.
+    if (this.hasFunctionsInside()) {
+      return {};
+    }
+
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
       this.engine.layout(width);
 
@@ -52,13 +57,16 @@ class Text extends Base {
     return {};
   }
 
-  isParentRendered() {
-    const parentLayout = this.parent.getAbsoluteLayout();
-    return !isNan(parentLayout.width) && !isNan(parentLayout.height);
+  recalculateLayout() {
+    this.layout.markDirty();
   }
 
   isEmpty() {
     return this.engine.lines.length === 0;
+  }
+
+  hasFunctionsInside() {
+    return this.children.some(child => child.constructor.name === 'Func');
   }
 
   get src() {

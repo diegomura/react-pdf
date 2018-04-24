@@ -4,7 +4,6 @@ import View from './View';
 import Text from './Text';
 import Link from './Link';
 import Image from './Image';
-import Func from './Func';
 import PDFDocument from 'pdfkit';
 
 function createElement(type, props, root) {
@@ -31,9 +30,6 @@ function createElement(type, props, root) {
       break;
     case 'VIEW':
       instance = new View(root, props);
-      break;
-    case 'FUNC':
-      instance = new Func(props);
       break;
     default:
       instance = undefined;

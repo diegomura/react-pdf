@@ -14,10 +14,15 @@ class Page {
     this.root = root;
     this.parent = null;
     this.props = { ...Page.defaultProps, ...props };
+    this.previousPage = null;
     this.children = [];
     this._size = null;
 
     this.addInitialSubpage();
+  }
+
+  get document() {
+    return this.parent;
   }
 
   get orientation() {
@@ -30,6 +35,18 @@ class Page {
 
   get subpagesCount() {
     return this.children.length;
+  }
+
+  get numberOffset() {
+    let result = 0;
+    let page = this.previousPage;
+
+    while (page) {
+      result += page.subpagesCount;
+      page = page.previousPage;
+    }
+
+    return result;
   }
 
   get size() {

@@ -7,7 +7,11 @@ class SubPage extends Base {
   constructor(root, props, number) {
     super(root, props);
 
-    this.number = number;
+    this._number = number;
+  }
+
+  get page() {
+    return this.parent;
   }
 
   get size() {
@@ -20,6 +24,10 @@ class SubPage extends Base {
 
   set style(style) {
     return style;
+  }
+
+  get number() {
+    return this._number + this.page.numberOffset;
   }
 
   resetMargins() {
@@ -61,10 +69,6 @@ class SubPage extends Base {
     this.layout.calculateLayout();
   }
 
-  getPage() {
-    return this.parent;
-  }
-
   isEmpty() {
     const nonFixedChilds = this.children.filter(child => !child.props.fixed);
     if (nonFixedChilds.length === 0) {
@@ -80,7 +84,7 @@ class SubPage extends Base {
     const nextPageElements = [];
     const result = this.clone();
 
-    result.number = this.number + 1;
+    result._number = this._number + 1;
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
@@ -124,14 +128,14 @@ class SubPage extends Base {
 
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
-      const totalPages = this.getPage().subpagesCount;
+      const { pageCount } = this.page.document;
 
       if (!node.children) continue;
 
       node.children = node.children.map(childNode => {
         if (childNode.constructor.name === 'Func') {
           return childNode.call({
-            totalPages,
+            totalPages: pageCount,
             pageNumber: this.number,
           });
         }

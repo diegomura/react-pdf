@@ -37,6 +37,10 @@ class Base extends Node {
     this.canBeSplitted = false;
   }
 
+  get page() {
+    return this.parent.page;
+  }
+
   appendChild(child) {
     if (child) {
       child.parent = this;
@@ -62,14 +66,14 @@ class Base extends Node {
   }
 
   applyProps() {
-    const page = this.getPage();
+    const { size, orientation } = this.page;
 
     this.style =
       this.style ||
       StyleSheet.resolve(this.props.style, {
-        width: page.size[0],
-        height: page.size[1],
-        orientation: page.orientation,
+        width: size[0],
+        height: size[1],
+        orientation: orientation,
       });
 
     toPairsIn(this.style).map(([attribute, value]) => {
@@ -179,10 +183,6 @@ class Base extends Node {
 
   recalculateLayout() {
     this.children.forEach(child => child.recalculateLayout());
-  }
-
-  getPage() {
-    return this.parent.getPage();
   }
 
   getAbsoluteLayout() {

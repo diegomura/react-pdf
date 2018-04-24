@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/dom",
-  "version": "0.7.7-2",
+  "version": "0.7.7-3",
   "license": "MIT",
   "description": "Bindings for react-pdf to render inside a react-dom application",
   "keywords": [
@@ -19,7 +19,7 @@
     "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.7.7-2",
+    "@react-pdf/core": "^0.7.7-3",
     "lodash.omit": "^4.5.0",
     "prop-types": "^15.6.0"
   },

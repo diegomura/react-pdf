@@ -236,7 +236,7 @@ const doc = (
         anochecía.
       </Text>
       <Text style={styles.footer} fixed>
-        ~ Don Quijote de la Mancha ~
+        {({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
       </Text>
     </Page>
   </Document>

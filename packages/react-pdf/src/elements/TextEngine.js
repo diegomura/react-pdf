@@ -181,9 +181,8 @@ class TextEngine {
     }
   }
 
-  layout(width, dirty = false) {
+  layout(width, dirty) {
     if (this.computed) return;
-
     const path = new Path().rect(0, 0, width, INFINITY);
     const container = new Container(path);
     const string = AttributedString.fromFragments(this.attributedString);
@@ -197,7 +196,7 @@ class TextEngine {
       0,
     );
 
-    this.computed = !dirty;
+    this.computed = true;
     this._container = container;
     this.end = linesCount + 1;
   }

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.7.7-2",
+  "version": "0.7.7-3",
   "license": "MIT",
   "description": "A tiny React renderer to generate PDF documents.",
   "keywords": [
@@ -28,7 +28,6 @@
     "is-url": "^1.2.2",
     "lodash.groupby": "^4.6.0",
     "lodash.isfunction": "^3.0.8",
-    "lodash.isnan": "^3.0.2",
     "lodash.isnil": "^4.0.0",
     "lodash.merge": "^4.6.1",
     "lodash.pick": "^4.4.0",

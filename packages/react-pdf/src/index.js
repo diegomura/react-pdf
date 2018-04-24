@@ -1,7 +1,8 @@
 'use strict';
 
-import { PDFRenderer, createElement } from './renderer';
+import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
+import { createElement } from './elements';
 import Font from './font';
 import BlobStream from 'blob-stream';
 

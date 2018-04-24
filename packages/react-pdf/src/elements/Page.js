@@ -3,9 +3,6 @@ import StyleSheet from '../stylesheet';
 import sizes from '../utils/pageSizes';
 
 class Page {
-  parent = null;
-  children = [];
-
   static defaultProps = {
     size: 'A4',
     orientation: 'portrait',
@@ -13,14 +10,63 @@ class Page {
     wrap: false,
   };
 
-  constructor(root, props, numberBase = 1) {
+  constructor(root, props) {
     this.root = root;
+    this.parent = null;
     this.props = { ...Page.defaultProps, ...props };
+    this.previousPage = null;
     this.children = [];
-    this.initialSubpage = null;
-    this.numberBase = numberBase;
+    this._size = null;
 
     this.addInitialSubpage();
+  }
+
+  get document() {
+    return this.parent;
+  }
+
+  get orientation() {
+    return this.props.orientation;
+  }
+
+  get initialSubpage() {
+    return this.children[0];
+  }
+
+  get subpagesCount() {
+    return this.children.length;
+  }
+
+  get numberOffset() {
+    let result = 0;
+    let page = this.previousPage;
+
+    while (page) {
+      result += page.subpagesCount;
+      page = page.previousPage;
+    }
+
+    return result;
+  }
+
+  get size() {
+    if (this._size) {
+      return this._size;
+    }
+
+    const { size } = this.props;
+
+    if (typeof size === 'string') {
+      this._size = sizes[size];
+    } else if (Array.isArray(size)) {
+      this._size = size;
+    } else if (typeof size === 'object' && size.width && size.height) {
+      this._size = [size.width, size.height];
+    } else {
+      throw new Error(`Invalid Page size: ${size}`);
+    }
+
+    return this._size;
   }
 
   applyProps() {
@@ -31,39 +77,9 @@ class Page {
     }
   }
 
-  getSize() {
-    const { size } = this.props;
-
-    if (typeof size === 'string') {
-      return sizes[size];
-    } else if (Array.isArray(size)) {
-      return size;
-    } else if (typeof size === 'object' && size.width && size.height) {
-      return [size.width, size.height];
-    } else {
-      throw new Error(`Invalid Page size: ${size}`);
-    }
-  }
-
-  getOrientation() {
-    return this.props.orientation;
-  }
-
   addInitialSubpage() {
-    const newSubpage = new SubPage(this.root, this.props, this.numberBase);
-
+    const newSubpage = new SubPage(this.root, this.props, 1);
     newSubpage.parent = this;
-
-    this.children.push(newSubpage);
-    this.initialSubpage = newSubpage;
-  }
-
-  getInitialSubpage() {
-    return this.children[0];
-  }
-
-  addNewSubpage() {
-    const newSubpage = this.initialSubpage.clone();
 
     this.children.push(newSubpage);
   }
@@ -76,18 +92,10 @@ class Page {
     this.children[0].removeChild(child);
   }
 
-  getWidth() {
-    return this.children[0].getWidth();
-  }
-
-  getHeight() {
-    return this.children[0].getHeight();
-  }
-
   async wrapPage() {
     const { paddingTop, paddingBottom } = this.style;
-    const height = this.getSize()[1] - paddingTop - paddingBottom;
-    let nextSubpage = this.getInitialSubpage().wrap(height);
+    const height = this.size[1] - paddingTop - paddingBottom;
+    let nextSubpage = this.initialSubpage.wrap(height);
 
     while (this.props.wrap && !nextSubpage.isEmpty()) {
       this.children.push(nextSubpage);

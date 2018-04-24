@@ -130,19 +130,20 @@ class SubPage extends Base {
       const node = listToExplore.shift();
       const { pageCount } = this.page.document;
 
-      if (!node.children) continue;
+      if (node.renderCallback) {
+        const callResult = node.renderCallback({
+          totalPages: pageCount,
+          pageNumber: this.number,
+        });
 
-      node.children = node.children.map(childNode => {
-        if (childNode.constructor.name === 'Func') {
-          return childNode.call({
-            totalPages: pageCount,
-            pageNumber: this.number,
-          });
-        }
+        node.renderCallback = null;
+        node.children = [callResult];
+        continue;
+      }
 
-        listToExplore.push(childNode);
-        return childNode;
-      });
+      if (node.children) {
+        listToExplore.push(...node.children);
+      }
     }
   }
 

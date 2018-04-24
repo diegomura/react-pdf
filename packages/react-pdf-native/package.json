@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@react-pdf/native",
-  "version": "0.7.7-3",
+  "version": "0.7.7-6",
   "license": "MIT",
   "description": "Bindings for react-pdf to render inside a react-native application",
   "keywords": [
@@ -20,7 +20,7 @@
     "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/core": "^0.7.7-3",
+    "@react-pdf/core": "^0.7.7-6",
     "lodash.omit": "^4.5.0",
     "prop-types": "^15.6.0",
     "react-native-pdf-view": "^0.3.2"

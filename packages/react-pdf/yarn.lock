@@ -6,16 +6,16 @@
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.5.tgz#4973f50d68c398937b236a35ee021f482bbff5a5"
 
-"@react-pdf/linebreaker@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.1.1.tgz#6a24a96a027bfb8baf8779e925d14c03f7ecbb89"
+"@react-pdf/linebreaker@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.1.2.tgz#ea9fa7dd5cb30352c57f0ac0e95778cf9565b08e"
   dependencies:
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
-"@react-pdf/textkit@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.1.tgz#f2965e26f29bb01ae8d4503aac867218f5d06bf2"
+"@react-pdf/textkit@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.2.tgz#f0ed086fb52f51b034ddac1f8014cbb6a31dcb60"
   dependencies:
     cubic2quad "^1.1.0"
     font-manager "^0.2.2"

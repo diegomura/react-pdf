@@ -2,34 +2,107 @@
 # yarn lockfile v1
 
 
-"@react-pdf/font-substitution@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.5.tgz#4973f50d68c398937b236a35ee021f482bbff5a5"
+"@react-pdf/font-substitution@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.6.tgz#61671b7b3ded297f3ff3a80789c53af156f952c4"
 
-"@react-pdf/linebreaker@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.1.2.tgz#ea9fa7dd5cb30352c57f0ac0e95778cf9565b08e"
+"@react-pdf/fontkit@^1.7.9":
+  version "1.7.9"
+  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.7.9.tgz#b5a550ae3eef31d50220248728687b989107b6b3"
   dependencies:
+    babel-runtime "^6.11.6"
+    brfs "^1.4.0"
+    brotli "^1.2.0"
+    browserify-optional "^1.0.0"
+    clone "^1.0.1"
+    deep-equal "^1.0.0"
+    dfa "^1.0.0"
+    restructure "^0.5.3"
+    tiny-inflate "^1.0.2"
+    unicode-properties "^1.0.0"
+    unicode-trie "^0.3.0"
+
+"@react-pdf/linebreaker@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.0.tgz#2ac1b04fd2007b042adb8d1c05786f67201aeb84"
+  dependencies:
+    "@textkit/linebreaker" "^0.1.4"
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
-"@react-pdf/textkit@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.1.2.tgz#f0ed086fb52f51b034ddac1f8014cbb6a31dcb60"
+"@react-pdf/pdfkit@^0.8.7":
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz#b4e603698a34df5f00d71262c6aa0b6506a289b1"
+  dependencies:
+    fontkit "^1.0.0"
+    linebreak "^0.3.0"
+    png-js ">=0.1.0"
+
+"@react-pdf/text-layout@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.1.1.tgz#442b8dcebb07e162bb915054cf280be01f167ac5"
+  dependencies:
+    "@react-pdf/font-substitution" "^1.0.6"
+    "@react-pdf/linebreaker" "^1.2.0"
+    "@textkit/core" "^0.1.4"
+    "@textkit/justification-engine" "^0.1.4"
+    "@textkit/line-fragment-generator" "^0.1.4"
+    "@textkit/script-itemizer" "^0.1.4"
+    "@textkit/tab-engine" "^0.1.4"
+    "@textkit/text-decoration-engine" "^0.1.4"
+    "@textkit/truncation-engine" "^0.1.4"
+
+"@textkit/core@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.4.tgz#2fdded1bc7eca49fa89a10f21c9d62bf58b0b955"
   dependencies:
     cubic2quad "^1.1.0"
-    font-manager "^0.2.2"
-    fontkit "^1.7.7"
-    grapheme-breaker "^0.3.2"
-    hyphenation.en-us "^0.2.1"
-    hypher "^0.2.4"
     iconv-lite "^0.4.13"
-    linebreak "^0.1.2"
-    lodash.clone "^4.5.0"
-    lodash.merge "^4.6.1"
-    pdfkit "^0.8.0"
     svgpath "^2.2.0"
     unicode-properties "^1.1.0"
+
+"@textkit/justification-engine@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.4.tgz#9f3916f32723e57122b0535e00a8835f14527626"
+  dependencies:
+    lodash.clone "^4.5.0"
+    lodash.merge "^4.6.1"
+
+"@textkit/line-fragment-generator@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.4.tgz#e8bda46f201237e1cceda95650b0f322e56a6bb2"
+
+"@textkit/linebreaker@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.4.tgz#6daa8500596b2d57bb11d7d2e17f78b01b675947"
+  dependencies:
+    hyphenation.en-us "^0.2.1"
+    hypher "^0.2.4"
+    linebreak "^0.1.2"
+
+"@textkit/pdf-renderer@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.4.tgz#43221c4e200e958da43e7b5bdc80cee8dd068eb7"
+
+"@textkit/script-itemizer@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/script-itemizer/-/script-itemizer-0.1.4.tgz#e785cce09d94b46784cec9e5c1b707b6ae991c9c"
+  dependencies:
+    unicode-properties "^1.1.0"
+
+"@textkit/tab-engine@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/tab-engine/-/tab-engine-0.1.4.tgz#9646012f07a7dcc9f0c06076e1b51538cd088065"
+
+"@textkit/text-decoration-engine@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.4.tgz#2865e83b798206bcf386ad7c07f05d73ec8add85"
+
+"@textkit/truncation-engine@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@textkit/truncation-engine/-/truncation-engine-0.1.4.tgz#30ebaed59fe5d32e9610743ecc8fbb502fb2ef26"
+  dependencies:
+    grapheme-breaker "^0.3.2"
 
 abbrev@1:
   version "1.1.1"
@@ -712,13 +785,7 @@ fill-range@^2.1.0:
     repeat-element "^1.1.2"
     repeat-string "^1.5.2"
 
-font-manager@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/font-manager/-/font-manager-0.2.2.tgz#18a1c5b6ec7f91e22a17c71cbbaa0ea4e68e3a44"
-  dependencies:
-    nan "~2.2.0"
-
-fontkit@^1.0.0, fontkit@^1.7.7, "fontkit@https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-1.7.9.tgz":
+fontkit@^1.0.0:
   version "1.7.9"
   resolved "https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-1.7.9.tgz#b5a550ae3eef31d50220248728687b989107b6b3"
   dependencies:
@@ -1295,10 +1362,6 @@ nan@^2.3.0, nan@^2.7.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
 
-nan@~2.2.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.2.1.tgz#d68693f6b34bb41d66bc68b3a4f9defc79d7149b"
-
 nbind@^0.3.14:
   version "0.3.14"
   resolved "https://registry.yarnpkg.com/nbind/-/nbind-0.3.14.tgz#ea85b685ae86801012509062f6ce4d639a19b864"
@@ -1463,14 +1526,6 @@ path-is-absolute@^1.0.0, path-is-absolute@^1.0.1:
 path-parse@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.5.tgz#3c1adf871ea9cd6c9431b6ea2bd74a0ff055c4c1"
-
-pdfkit@^0.8.0, "pdfkit@https://registry.npmjs.org/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz":
-  version "0.8.7"
-  resolved "https://registry.npmjs.org/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz#b4e603698a34df5f00d71262c6aa0b6506a289b1"
-  dependencies:
-    fontkit "^1.0.0"
-    linebreak "^0.3.0"
-    png-js ">=0.1.0"
 
 performance-now@^0.2.0:
   version "0.2.0"

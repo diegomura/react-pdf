@@ -1,8 +1,8 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.7.7-8",
+  "version": "0.7.7-9",
   "license": "MIT",
-  "description": "A tiny React renderer to generate PDF documents.",
+  "description": "A React renderer to generate PDF documents.",
   "keywords": [
     "react",
     "reactjs",
@@ -19,12 +19,12 @@
     "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/font-substitution": "1.0.5",
-    "@react-pdf/linebreaker": "1.1.2",
-    "@react-pdf/textkit": "0.1.2",
+    "@react-pdf/fontkit": "^1.7.9",
+    "@react-pdf/pdfkit": "^0.8.7",
+    "@react-pdf/text-layout": "0.2.0",
+    "@textkit/pdf-renderer": "^0.1.4",
     "blob-stream": "^0.1.3",
     "fbjs": "^0.8.4",
-    "fontkit": "https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-1.7.9.tgz",
     "is-url": "^1.2.2",
     "lodash.groupby": "^4.6.0",
     "lodash.isfunction": "^3.0.8",
@@ -34,7 +34,6 @@
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
     "media-engine": "^1.0.3",
-    "pdfkit": "https://registry.npmjs.org/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz",
     "png-js": "0.1.1",
     "react-reconciler": "^0.7.0",
     "request": "^2.81.0",
@@ -46,9 +45,5 @@
   },
   "peerDependencies": {
     "react": "^16.0.0"
-  },
-  "resolutions": {
-    "pdfkit": "https://registry.npmjs.org/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz",
-    "fontkit": "https://registry.npmjs.org/@react-pdf/fontkit/-/fontkit-1.7.9.tgz"
   }
 }

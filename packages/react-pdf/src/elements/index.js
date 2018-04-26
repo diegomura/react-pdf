@@ -1,10 +1,10 @@
+import PDFDocument from '@react-pdf/pdfkit';
 import Document from './Document';
 import Page from './Page';
 import View from './View';
 import Text from './Text';
 import Link from './Link';
 import Image from './Image';
-import PDFDocument from 'pdfkit';
 
 function createElement(type, props, root) {
   let instance;

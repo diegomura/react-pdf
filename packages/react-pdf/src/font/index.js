@@ -1,5 +1,5 @@
 import isUrl from 'is-url';
-import fontkit from 'fontkit';
+import fontkit from '@react-pdf/fontkit';
 import standardFonts from './standard';
 import { fetchFont } from '../utils/font';
 

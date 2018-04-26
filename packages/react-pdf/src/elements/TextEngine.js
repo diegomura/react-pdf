@@ -1,14 +1,12 @@
 import warning from 'fbjs/lib/warning';
-import KPLineBreaker from '@react-pdf/linebreaker';
-import FontSubstitutionEngine from '@react-pdf/font-substitution';
+import createPDFRenderer from '@textkit/pdf-renderer';
 import {
+  Rect,
   Path,
   LayoutEngine,
   AttributedString,
   Container,
-  TextRenderer,
-  JustificationEngine,
-} from '@react-pdf/textkit';
+} from '@react-pdf/text-layout';
 import upperFirst from 'lodash.upperfirst';
 import Font from '../font';
 
@@ -16,6 +14,8 @@ import Font from '../font';
 // It's created dynamically because it may accept a custom hyphenation callback
 let LAYOUT_ENGINE;
 const INFINITY = 99999;
+
+const PDFRenderer = createPDFRenderer({ Rect });
 
 class TextEngine {
   constructor(element) {
@@ -40,15 +40,8 @@ class TextEngine {
 
   get layoutEngine() {
     if (!LAYOUT_ENGINE) {
-      const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
-
-      LAYOUT_ENGINE = new LayoutEngine({
-        lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
-        fontSubstitutionEngine: new FontSubstitutionEngine(),
-        justificationEngine: new JustificationEngine({
-          shrinkWhitespaceFactor,
-        }),
-      });
+      // lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
+      LAYOUT_ENGINE = new LayoutEngine();
     }
 
     return LAYOUT_ENGINE;
@@ -214,7 +207,7 @@ class TextEngine {
       line.rect.y += top + margin.top + padding.top - initialX;
     });
 
-    const renderer = new TextRenderer(this.element.root, {
+    const renderer = new PDFRenderer(this.element.root, {
       outlineLines: false,
     });
     renderer.render(this.container);

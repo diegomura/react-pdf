@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@react-pdf/font-substitution@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.0.6.tgz#61671b7b3ded297f3ff3a80789c53af156f952c4"
+"@react-pdf/font-substitution@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.1.0.tgz#28b86966d706c9fade78eff11799cf85e5b8d48e"
 
 "@react-pdf/fontkit@^1.7.9":
   version "1.7.9"
@@ -22,9 +22,9 @@
     unicode-properties "^1.0.0"
     unicode-trie "^0.3.0"
 
-"@react-pdf/linebreaker@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.0.tgz#2ac1b04fd2007b042adb8d1c05786f67201aeb84"
+"@react-pdf/linebreaker@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.3.tgz#78475748b5584f52b12b0e4091d318e822d365b5"
   dependencies:
     "@textkit/linebreaker" "^0.1.4"
     hyphenation.en-us "^0.2.1"
@@ -38,39 +38,39 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.1.1.tgz#442b8dcebb07e162bb915054cf280be01f167ac5"
+"@react-pdf/text-layout@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.5.tgz#6bba54bbcd54332e8b6f38a50b677f965bf6a96f"
   dependencies:
-    "@react-pdf/font-substitution" "^1.0.6"
-    "@react-pdf/linebreaker" "^1.2.0"
-    "@textkit/core" "^0.1.4"
-    "@textkit/justification-engine" "^0.1.4"
-    "@textkit/line-fragment-generator" "^0.1.4"
-    "@textkit/script-itemizer" "^0.1.4"
-    "@textkit/tab-engine" "^0.1.4"
-    "@textkit/text-decoration-engine" "^0.1.4"
-    "@textkit/truncation-engine" "^0.1.4"
+    "@react-pdf/font-substitution" "^1.1.0"
+    "@react-pdf/linebreaker" "^1.2.3"
+    "@textkit/core" "^0.1.7"
+    "@textkit/justification-engine" "^0.1.6"
+    "@textkit/line-fragment-generator" "^0.1.6"
+    "@textkit/script-itemizer" "^0.1.6"
+    "@textkit/tab-engine" "^0.1.6"
+    "@textkit/text-decoration-engine" "^0.1.6"
+    "@textkit/truncation-engine" "^0.1.6"
 
-"@textkit/core@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.4.tgz#2fdded1bc7eca49fa89a10f21c9d62bf58b0b955"
+"@textkit/core@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.7.tgz#b94adc677671b6728c17530b1f427905a08ecf98"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"
     svgpath "^2.2.0"
     unicode-properties "^1.1.0"
 
-"@textkit/justification-engine@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.4.tgz#9f3916f32723e57122b0535e00a8835f14527626"
+"@textkit/justification-engine@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.6.tgz#7027572bb04823dd8f510b4440356e5af60acdb7"
   dependencies:
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
-"@textkit/line-fragment-generator@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.4.tgz#e8bda46f201237e1cceda95650b0f322e56a6bb2"
+"@textkit/line-fragment-generator@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.6.tgz#fb055a8db116606c80f7bc8de2cb12596a107449"
 
 "@textkit/linebreaker@^0.1.4":
   version "0.1.4"
@@ -84,23 +84,23 @@
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.4.tgz#43221c4e200e958da43e7b5bdc80cee8dd068eb7"
 
-"@textkit/script-itemizer@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/script-itemizer/-/script-itemizer-0.1.4.tgz#e785cce09d94b46784cec9e5c1b707b6ae991c9c"
+"@textkit/script-itemizer@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/script-itemizer/-/script-itemizer-0.1.6.tgz#4fecb0047be403626c05ac5d0aaa01a424760a35"
   dependencies:
     unicode-properties "^1.1.0"
 
-"@textkit/tab-engine@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/tab-engine/-/tab-engine-0.1.4.tgz#9646012f07a7dcc9f0c06076e1b51538cd088065"
+"@textkit/tab-engine@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/tab-engine/-/tab-engine-0.1.6.tgz#9cdf32ccfa0435f87a404147766dbff4dcec8aa1"
 
-"@textkit/text-decoration-engine@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.4.tgz#2865e83b798206bcf386ad7c07f05d73ec8add85"
+"@textkit/text-decoration-engine@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.6.tgz#16936d971252bb3c13849cb405698fe2fd4a47b3"
 
-"@textkit/truncation-engine@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/truncation-engine/-/truncation-engine-0.1.4.tgz#30ebaed59fe5d32e9610743ecc8fbb502fb2ef26"
+"@textkit/truncation-engine@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/truncation-engine/-/truncation-engine-0.1.6.tgz#337938fbc4b4ae857db26b44afce581526463ff9"
   dependencies:
     grapheme-breaker "^0.3.2"
 

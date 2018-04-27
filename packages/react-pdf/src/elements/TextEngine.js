@@ -15,6 +15,7 @@ import Font from '../font';
 let LAYOUT_ENGINE;
 const INFINITY = 99999;
 
+// TODO: Import and pass Textkit as a whole
 const PDFRenderer = createPDFRenderer({ Rect });
 
 class TextEngine {
@@ -40,8 +41,9 @@ class TextEngine {
 
   get layoutEngine() {
     if (!LAYOUT_ENGINE) {
-      // lineBreaker: new KPLineBreaker(Font.getHyphenationCallback()),
-      LAYOUT_ENGINE = new LayoutEngine();
+      LAYOUT_ENGINE = new LayoutEngine({
+        hyphenationCallback: Font.getHyphenationCallback(),
+      });
     }
 
     return LAYOUT_ENGINE;

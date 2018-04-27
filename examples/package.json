@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "@react-pdf/examples",
-  "version": "0.7.7-8",
+  "version": "0.7.7-9",
   "license": "MIT",
   "description": "React PDF Examples",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "main": "./index.js",
   "dependencies": {
-    "@react-pdf/core": "^0.7.7-8",
-    "@react-pdf/node": "^0.7.7-8",
+    "@react-pdf/core": "^0.7.7-9",
+    "@react-pdf/node": "^0.7.7-9",
     "chalk": "^2.0.1",
     "lodash.times": "^4.3.2",
     "prop-types": "^15.6.0",

@@ -22,9 +22,9 @@
     unicode-properties "^1.0.0"
     unicode-trie "^0.3.0"
 
-"@react-pdf/linebreaker@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.2.tgz#dda4780e1e22340a00b22cfa2e27bdfdf717fb69"
+"@react-pdf/linebreaker@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.3.tgz#78475748b5584f52b12b0e4091d318e822d365b5"
   dependencies:
     "@textkit/linebreaker" "^0.1.4"
     hyphenation.en-us "^0.2.1"
@@ -38,12 +38,12 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.4.tgz#ea57fa4de6637cf1d089067b62d470a29140fe52"
+"@react-pdf/text-layout@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.5.tgz#6bba54bbcd54332e8b6f38a50b677f965bf6a96f"
   dependencies:
     "@react-pdf/font-substitution" "^1.1.0"
-    "@react-pdf/linebreaker" "^1.2.2"
+    "@react-pdf/linebreaker" "^1.2.3"
     "@textkit/core" "^0.1.7"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"

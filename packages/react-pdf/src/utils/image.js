@@ -10,7 +10,7 @@ function getImage(body, extension) {
     case 'png':
       return new PNG(body);
     default:
-      throw new Error(`Image type not supported: ${extension}`);
+      return null;
   }
 }
 
@@ -35,8 +35,8 @@ export const fetchImage = src => {
         encoding: null,
       },
       (error, response, body) => {
-        if (error) {
-          return reject(error);
+        if (error || response.statusCode !== 200) {
+          reject(new Error(`Couldn't fetch image: ${src}`));
         }
 
         const isPng =
@@ -56,10 +56,11 @@ export const fetchImage = src => {
           extension = 'png';
         } else if (isJpg) {
           extension = 'jpg';
-        } else reject(new Error('Not valid image extension'));
+        } else {
+          return reject(new Error('Not valid image extension'));
+        }
 
-        const image = getImage(body, extension);
-        return resolve(image);
+        return resolve(getImage(body, extension));
       },
     );
   });

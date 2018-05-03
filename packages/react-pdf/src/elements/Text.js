@@ -2,6 +2,8 @@ import Yoga from 'yoga-layout';
 import Base from './Base';
 import TextEngine from './TextEngine';
 
+const WIDOW_THREASHOLD = 20;
+
 class Text extends Base {
   static defaultProps = {
     wrap: true,
@@ -70,11 +72,34 @@ class Text extends Base {
     return this.engine.lines.length === 0;
   }
 
-  splice(height) {
-    const result = this.clone();
-    const engine = this.engine.splice(
-      height - this.marginTop - this.paddingTop,
+  hasOrphans(linesQuantity, slicedLines) {
+    return slicedLines === 1 && linesQuantity !== 1;
+  }
+
+  hasWidows(linesQuantity, slicedLines) {
+    return (
+      linesQuantity !== 1 &&
+      linesQuantity - slicedLines === 1 &&
+      linesQuantity < WIDOW_THREASHOLD
     );
+  }
+
+  splice(height) {
+    let engine;
+    const linesQuantity = this.engine.lines.length;
+    const sliceHeight = height - this.marginTop - this.paddingTop;
+    const slicedLines = this.engine.lineIndexAtHeight(sliceHeight);
+
+    if (
+      this.hasOrphans(linesQuantity, slicedLines) ||
+      this.hasWidows(linesQuantity, slicedLines)
+    ) {
+      engine = this.engine.splice(0);
+    } else {
+      engine = this.engine.splice(sliceHeight);
+    }
+
+    const result = this.clone();
 
     result.marginTop = 0;
     result.paddingTop = 0;

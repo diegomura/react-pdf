@@ -90,8 +90,8 @@ class SubPage extends Base {
       const child = this.children[i];
       const { fixed, wrap, orphan } = child.props;
 
-      const childBottom = child.top + child.height;
       const isElementOutside = height < child.top;
+      const childBottom = child.top + child.height - this.paddingTop;
       const shouldElementSplit = height < childBottom;
       const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
       const isElementOrphan = !orphan && height - childBottom < orphanThreshold;

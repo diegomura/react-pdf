@@ -10,6 +10,7 @@ const register = (src, { family, ...otherOptions }) => {
   fonts[family] = {
     src,
     loaded: false,
+    loading: false,
     data: null,
     ...otherOptions,
   };
@@ -29,7 +30,9 @@ const load = async (fontFamily, doc) => {
   const font = fonts[fontFamily];
 
   // We cache the font to avoid fetching it many time
-  if (font && !font.data) {
+  if (font && !font.data && !font.loading) {
+    font.loading = true;
+
     if (isUrl(font.src)) {
       const data = await fetchFont(font.src);
       font.data = fontkit.create(data);

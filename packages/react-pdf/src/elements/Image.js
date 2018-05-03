@@ -55,7 +55,12 @@ class Image extends Base {
   }
 
   async fetch() {
-    this.image = await fetchImage(this.props.src);
+    try {
+      this.image = await fetchImage(this.props.src);
+    } catch (e) {
+      this.image = { width: 0, height: 0 };
+      console.warn(e.message);
+    }
   }
 
   async render() {
@@ -70,17 +75,19 @@ class Image extends Base {
       this.debug();
     }
 
-    this.root.image(
-      this.image.data,
-      left + padding.left + margin.left,
-      top + padding.top + margin.top,
-      {
-        width:
-          width - padding.left - padding.right - margin.left - margin.right,
-        height:
-          height - padding.top - padding.bottom - margin.top - margin.bottom,
-      },
-    );
+    if (this.image.data) {
+      this.root.image(
+        this.image.data,
+        left + padding.left + margin.left,
+        top + padding.top + margin.top,
+        {
+          width:
+            width - padding.left - padding.right - margin.left - margin.right,
+          height:
+            height - padding.top - padding.bottom - margin.top - margin.bottom,
+        },
+      );
+    }
   }
 }
 

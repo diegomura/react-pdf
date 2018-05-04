@@ -49,6 +49,23 @@ class Page {
     return result;
   }
 
+  get width() {
+    return this.size[0];
+  }
+
+  get height() {
+    return this.size[1];
+  }
+
+  get padding() {
+    return {
+      top: this.style.paddingTop,
+      right: this.style.paddingRight,
+      bottom: this.style.paddingBottom,
+      left: this.style.paddingLeft,
+    };
+  }
+
   get size() {
     if (this._size) {
       return this._size;
@@ -94,7 +111,7 @@ class Page {
 
   async wrapPage() {
     const { paddingTop, paddingBottom } = this.style;
-    const height = this.size[1] - paddingTop - paddingBottom;
+    const height = this.height - paddingTop - paddingBottom;
     let nextSubpage = this.initialSubpage.wrap(height);
 
     while (this.props.wrap && !nextSubpage.isEmpty()) {

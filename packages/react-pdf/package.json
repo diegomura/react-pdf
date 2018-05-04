@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.7.7-19",
+  "version": "0.7.7-21",
   "license": "MIT",
   "description": "A React renderer to generate PDF documents.",
   "keywords": [
@@ -21,7 +21,7 @@
   "dependencies": {
     "@react-pdf/fontkit": "^1.7.9",
     "@react-pdf/pdfkit": "^0.8.7",
-    "@react-pdf/text-layout": "0.2.6",
+    "@react-pdf/text-layout": "0.2.8",
     "@textkit/pdf-renderer": "^0.1.4",
     "blob-stream": "^0.1.3",
     "fbjs": "^0.8.4",

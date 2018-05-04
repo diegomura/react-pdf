@@ -2,6 +2,11 @@ import Yoga from 'yoga-layout';
 import Base from './Base';
 import { fetchImage } from '../utils/image';
 
+const SAFETY_HEIGHT = 10;
+
+// We manage two bounding boxes in this class:
+//  - Yoga node: Image bounding box. Adjust based on image and page size
+//  - Image node: Real image container. In most cases equals Yoga node, except if image is bigger than page
 class Image extends Base {
   static defaultProps = {
     wrap: false,
@@ -11,6 +16,8 @@ class Image extends Base {
     super(root, props);
 
     this.image = null;
+    this.imageWidth = null;
+    this.imageHeight = null;
     this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
@@ -18,23 +25,39 @@ class Image extends Base {
     return !!this.getComputedStyles().flexGrow;
   }
 
-  calculateHeight(width) {
-    const ratio = this.image.width / this.image.height;
-    return width / ratio;
-  }
-
-  calculateWidth(height) {
-    const ratio = this.image.width / this.image.height;
-    return height * ratio;
-  }
-
   measureImage(width, widthMode, height, heightMode) {
+    const imageMargin = this.margin;
+    const pagePadding = this.page.padding;
+    const ratio = this.image.width / this.image.height;
+    const pageArea =
+      this.page.height -
+      pagePadding.top -
+      pagePadding.bottom -
+      imageMargin.top -
+      imageMargin.bottom -
+      SAFETY_HEIGHT;
+
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      return { height: this.calculateHeight(width) };
+      const scaledHeight = width / ratio;
+
+      if (pageArea < scaledHeight) {
+        this.imageWidth = pageArea * ratio;
+        this.imageHeight = pageArea;
+
+        return { height: pageArea };
+      }
+
+      this.imageWidth = width;
+      this.imageHeight = scaledHeight;
+
+      return { height: scaledHeight };
     }
 
     if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
-      return { width: this.calculateWidth(height) };
+      this.imageHeight = height;
+      this.imageWidth = height * ratio;
+
+      return { width: height * ratio };
     }
 
     if (
@@ -64,7 +87,6 @@ class Image extends Base {
   }
 
   async render() {
-    const margin = this.margin;
     const padding = this.padding;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
@@ -76,16 +98,16 @@ class Image extends Base {
     }
 
     if (this.image.data) {
+      // Inner offset between yoga node and image box
+      // Makes image centered inside Yoga node
+      const xOffset = (width - this.imageWidth) / 2;
+      const yOffset = (height - this.imageHeight) / 2;
+
       this.root.image(
         this.image.data,
-        left + padding.left + margin.left,
-        top + padding.top + margin.top,
-        {
-          width:
-            width - padding.left - padding.right - margin.left - margin.right,
-          height:
-            height - padding.top - padding.bottom - margin.top - margin.bottom,
-        },
+        left + padding.left + xOffset,
+        top + padding.top + yOffset,
+        { width: this.imageWidth, height: this.imageHeight },
       );
     }
   }

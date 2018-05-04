@@ -22,11 +22,11 @@
     unicode-properties "^1.0.0"
     unicode-trie "^0.3.0"
 
-"@react-pdf/linebreaker@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.3.tgz#78475748b5584f52b12b0e4091d318e822d365b5"
+"@react-pdf/linebreaker@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.5.tgz#0eaf642495c36bfbecd8f4c3287bb6f7490545ae"
   dependencies:
-    "@textkit/linebreaker" "^0.1.4"
+    "@textkit/linebreaker" "^0.1.5"
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
@@ -38,13 +38,13 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.5.tgz#6bba54bbcd54332e8b6f38a50b677f965bf6a96f"
+"@react-pdf/text-layout@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.8.tgz#f03368328fd247c929ed3a1fd39daee912c6a17f"
   dependencies:
     "@react-pdf/font-substitution" "^1.1.0"
-    "@react-pdf/linebreaker" "^1.2.3"
-    "@textkit/core" "^0.1.7"
+    "@react-pdf/linebreaker" "^1.2.5"
+    "@textkit/core" "^0.1.8"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"
     "@textkit/script-itemizer" "^0.1.6"
@@ -52,9 +52,9 @@
     "@textkit/text-decoration-engine" "^0.1.6"
     "@textkit/truncation-engine" "^0.1.6"
 
-"@textkit/core@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.7.tgz#b94adc677671b6728c17530b1f427905a08ecf98"
+"@textkit/core@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.8.tgz#0e0061bf6b992c52b85c6532e45ecdaca1e455ef"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"
@@ -72,9 +72,9 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.6.tgz#fb055a8db116606c80f7bc8de2cb12596a107449"
 
-"@textkit/linebreaker@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.4.tgz#6daa8500596b2d57bb11d7d2e17f78b01b675947"
+"@textkit/linebreaker@^0.1.5":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.6.tgz#8446b4f3602fb8c3135f7f2eeae01088010ed602"
   dependencies:
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.4"

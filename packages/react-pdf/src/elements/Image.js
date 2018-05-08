@@ -87,6 +87,7 @@ class Image extends Base {
   }
 
   async render() {
+    const margin = this.margin;
     const padding = this.padding;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
@@ -96,6 +97,13 @@ class Image extends Base {
     if (this.props.debug) {
       this.debug();
     }
+
+    // If image box dimentions are null, we use yoga dimensions
+    // This can happen when measureImage is not called, due to fixed width and height
+    this.imageWidth =
+      this.imageWidth || this.width - margin.right - margin.left;
+    this.imageHeight =
+      this.imageHeight || this.height - margin.top - margin.bottom;
 
     if (this.image.data) {
       // Inner offset between yoga node and image box

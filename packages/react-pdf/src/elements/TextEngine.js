@@ -8,6 +8,7 @@ import {
   Container,
 } from '@react-pdf/text-layout';
 import upperFirst from 'lodash.upperfirst';
+import { embedEmojis } from '../utils/emoji';
 import Font from '../font';
 
 // Global layout engine
@@ -25,6 +26,7 @@ class TextEngine {
     this.start = 0;
     this.end = 0;
     this.computed = false;
+    this.preprocessors = [embedEmojis];
   }
 
   get container() {
@@ -105,7 +107,7 @@ class TextEngine {
         const font = obj ? obj.data : fontFamily;
         const string = this.transformText(child, textTransform);
 
-        fragments.push({
+        let fragment = {
           string,
           attributes: {
             font,
@@ -119,7 +121,13 @@ class TextEngine {
             lineHeight: lineHeight ? lineHeight * fontSize : null,
             yOffset: position === 'relative' ? -top || bottom || 0 : null,
           },
-        });
+        };
+
+        for (const preprocessor of this.preprocessors) {
+          fragment = preprocessor(fragment);
+        }
+
+        fragments.push(fragment);
       } else {
         if (child.engine) {
           fragments.push(...child.engine.attributedString);

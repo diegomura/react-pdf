@@ -1,4 +1,5 @@
 import Font from '../font';
+import { fetchEmojis } from '../utils/emoji';
 
 class Document {
   static defaultProps = {
@@ -77,6 +78,25 @@ class Document {
     await Promise.all(promises);
   }
 
+  async loadEmojis() {
+    const promises = [];
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (typeof node === 'string') {
+        promises.push(fetchEmojis(node));
+      } else if (node.children) {
+        node.children.forEach(childNode => {
+          listToExplore.push(childNode);
+        });
+      }
+    }
+
+    await Promise.all(promises);
+  }
+
   async loadImages() {
     const promises = [];
     const listToExplore = this.children.slice(0);
@@ -123,6 +143,7 @@ class Document {
   async render() {
     this.addMetaData();
     this.applyProps();
+    await this.loadEmojis();
     await this.loadAssets();
     await this.wrapChildren();
     await this.renderChildren();

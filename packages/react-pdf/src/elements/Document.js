@@ -86,7 +86,7 @@ class Document {
       const node = listToExplore.shift();
 
       if (typeof node === 'string') {
-        promises.push(fetchEmojis(node));
+        promises.push(...fetchEmojis(node));
       } else if (node.children) {
         node.children.forEach(childNode => {
           listToExplore.push(childNode);

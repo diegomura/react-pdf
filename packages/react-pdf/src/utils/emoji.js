@@ -1,56 +1,104 @@
-import unicode from 'emoji-unicode-map';
+/* eslint-disable no-cond-assign */
+import emojiRegex from 'emoji-regex';
 import { Attachment } from '@react-pdf/text-layout';
+import Font from '../font';
 import { fetchImage } from '../utils/image';
 
+// Caches emoji images data
 const emojis = {};
-const ranges = [
-  '\ud83c[\udf00-\udfff]', // U+1F300 to U+1F3FF
-  '\ud83d[\udc00-\ude4f]', // U+1F400 to U+1F64F
-  '\ud83d[\ude80-\udeff]', // U+1F680 to U+1F6FF
-].join('|');
+const regex = emojiRegex();
+
+const reflect = promise => (...args) => promise(...args).then(v => v, e => e);
+
+const fetchEmojiImage = reflect(fetchImage);
+
+const getCodePoints = string =>
+  Array.from(string)
+    .map(char => char.codePointAt(0).toString(16))
+    .join('-');
+
+const buildEmojiUrl = emoji => {
+  const { url, format } = Font.getEmojiSource();
+  return `${url}${getCodePoints(emoji)}.${format}`;
+};
 
 export const fetchEmojis = string => {
-  const match = string.match(ranges);
+  const emojiSource = Font.getEmojiSource();
 
-  if (match) {
+  if (!emojiSource || !emojiSource.url) {
+    console.warn('Emoji source not registered');
+    return [];
+  }
+
+  const promises = [];
+
+  let match;
+  while ((match = regex.exec(string))) {
     const emoji = match[0];
-    const emojiName = unicode.get(emoji);
 
-    if (!emojis[emojiName] || emojis[emojiName].loading) {
-      emojis[emojiName] = { loading: true };
+    if (!emojis[emoji] || emojis[emoji].loading) {
+      const emojiUrl = buildEmojiUrl(emoji);
 
-      return fetchImage(
-        `https://assets.github.com/images/icons/emoji/${emojiName}.png`,
-      ).then(image => {
-        emojis[emojiName].loading = false;
-        emojis[emojiName].data = image.data;
+      emojis[emoji] = { loading: true };
+
+      promises.push(
+        fetchEmojiImage(emojiUrl).then(image => {
+          emojis[emoji].loading = false;
+          emojis[emoji].data = image.data;
+        }),
+      );
+    }
+  }
+
+  return promises;
+};
+
+export const embedEmojis = fragments => {
+  const result = [];
+
+  for (let i = 0; i < fragments.length; i++) {
+    const fragment = fragments[i];
+
+    let match;
+    let lastIndex = 0;
+
+    while ((match = regex.exec(fragment.string))) {
+      const index = match.index;
+      const emoji = match[0];
+      const emojiSize = fragment.attributes.fontSize;
+      const chunk = fragment.string.slice(lastIndex, index + match[0].length);
+
+      // If emoji image was found, we create a new fragment with the
+      // correct attachment and object substitution character;
+      if (emojis[emoji] && emojis[emoji].data) {
+        result.push({
+          string: chunk.replace(match, Attachment.CHARACTER),
+          attributes: {
+            ...fragment.attributes,
+            attachment: new Attachment(emojiSize, emojiSize, {
+              yOffset: Math.floor(emojiSize * 0.1),
+              image: emojis[emoji].data,
+            }),
+          },
+        });
+      } else {
+        // If no emoji data, we just replace the emoji with a nodef char
+        result.push({
+          string: chunk.replace(match, String.fromCharCode(0)),
+          attributes: fragment.attributes,
+        });
+      }
+
+      lastIndex = index + emoji.length;
+    }
+
+    if (lastIndex < fragment.string.length) {
+      result.push({
+        string: fragment.string.slice(lastIndex),
+        attributes: fragment.attributes,
       });
     }
   }
 
-  return null;
-};
-
-export const embedEmojis = ({ string, attributes }) => {
-  const match = string.match(ranges);
-
-  if (match) {
-    const emoji = match[0];
-    const emojiName = unicode.get(emoji);
-    const emojiSize = attributes.fontSize;
-    const attachment = new Attachment(emojiSize, emojiSize, {
-      yOffset: Math.floor(emojiSize * 0.1),
-      image: emojis[emojiName].data,
-    });
-
-    return {
-      string: string.replace(match, Attachment.CHARACTER),
-      attributes: {
-        attachment,
-        ...attributes,
-      },
-    };
-  }
-
-  return { string, attributes };
+  return result;
 };

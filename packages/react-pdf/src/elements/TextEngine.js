@@ -79,7 +79,7 @@ class TextEngine {
   }
 
   get attributedString() {
-    const fragments = [];
+    let fragments = [];
     const {
       color = 'black',
       fontFamily = 'Helvetica',
@@ -107,7 +107,7 @@ class TextEngine {
         const font = obj ? obj.data : fontFamily;
         const string = this.transformText(child, textTransform);
 
-        let fragment = {
+        fragments.push({
           string,
           attributes: {
             font,
@@ -121,19 +121,17 @@ class TextEngine {
             lineHeight: lineHeight ? lineHeight * fontSize : null,
             yOffset: position === 'relative' ? -top || bottom || 0 : null,
           },
-        };
-
-        for (const preprocessor of this.preprocessors) {
-          fragment = preprocessor(fragment);
-        }
-
-        fragments.push(fragment);
+        });
       } else {
         if (child.engine) {
           fragments.push(...child.engine.attributedString);
         }
       }
     });
+
+    for (const preprocessor of this.preprocessors) {
+      fragments = preprocessor(fragments);
+    }
 
     return fragments;
   }

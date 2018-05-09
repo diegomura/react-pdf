@@ -9,7 +9,7 @@ const imageUrl =
   'https://user-images.githubusercontent.com/5600341/27065042-31afea66-4fd1-11e7-9e7f-6f192bb351f6.jpg';
 const localImage = fs.readFileSync(path.join(__dirname, 'test.jpg'));
 
-describe('<Image />', () => {
+describe.skip('<Image />', () => {
   beforeEach(() => {
     MockDate.set(1434319925275);
   });

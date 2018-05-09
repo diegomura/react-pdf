@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/core",
-  "version": "0.7.7-22",
+  "version": "0.7.7-23",
   "license": "MIT",
   "description": "A React renderer to generate PDF documents.",
   "keywords": [

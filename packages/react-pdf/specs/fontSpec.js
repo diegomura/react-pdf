@@ -50,7 +50,7 @@ describe('Font', () => {
     expect(Font.getRegisteredFonts()).toEqual([]);
   });
 
-  test('should be able to load font from url', done => {
+  test.skip('should be able to load font from url', done => {
     Font.register(oswaldUrl, { family: 'Oswald' });
 
     matchSnapshot(
@@ -61,7 +61,7 @@ describe('Font', () => {
     );
   });
 
-  test('should be able to load a font from file', done => {
+  test.skip('should be able to load a font from file', done => {
     Font.register(`${__dirname}/font.ttf`, { family: 'Roboto' });
 
     matchSnapshot(
@@ -70,5 +70,27 @@ describe('Font', () => {
       </Page>,
       done,
     );
+  });
+
+  test('should get undefined hyphenation callback if not registered', () => {
+    expect(Font.getHyphenationCallback()).toBe(undefined);
+  });
+
+  test('should get registered hyphenation callback', () => {
+    const callbackMock = () => {};
+    Font.registerHyphenationCallback(callbackMock);
+
+    expect(Font.getHyphenationCallback()).toBe(callbackMock);
+  });
+
+  test('should get undefined emoji source if not registered', () => {
+    expect(Font.getEmojiSource()).toBe(undefined);
+  });
+
+  test('should get registered emoji source', () => {
+    const sourceMock = { url: 'foo', format: 'bar' };
+    Font.registerEmojiSource(sourceMock);
+
+    expect(Font.getEmojiSource()).toEqual(sourceMock);
   });
 });

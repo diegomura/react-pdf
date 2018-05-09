@@ -10,7 +10,7 @@ const boxStyle = {
   position: 'absolute',
 };
 
-describe('absolute position', () => {
+describe.skip('absolute position', () => {
   beforeEach(() => {
     MockDate.set(1434319925275);
   });

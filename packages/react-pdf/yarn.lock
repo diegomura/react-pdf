@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@react-pdf/font-substitution@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/font-substitution/-/font-substitution-1.1.0.tgz#28b86966d706c9fade78eff11799cf85e5b8d48e"
-
 "@react-pdf/fontkit@^1.7.9":
   version "1.7.9"
   resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.7.9.tgz#b5a550ae3eef31d50220248728687b989107b6b3"
@@ -22,14 +18,6 @@
     unicode-properties "^1.0.0"
     unicode-trie "^0.3.0"
 
-"@react-pdf/linebreaker@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@react-pdf/linebreaker/-/linebreaker-1.2.5.tgz#0eaf642495c36bfbecd8f4c3287bb6f7490545ae"
-  dependencies:
-    "@textkit/linebreaker" "^0.1.5"
-    hyphenation.en-us "^0.2.1"
-    hypher "^0.2.5"
-
 "@react-pdf/pdfkit@^0.8.7":
   version "0.8.7"
   resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-0.8.7.tgz#b4e603698a34df5f00d71262c6aa0b6506a289b1"
@@ -38,23 +26,24 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.2.8.tgz#f03368328fd247c929ed3a1fd39daee912c6a17f"
+"@react-pdf/text-layout@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.1.tgz#0d8bfcf49c8492974e49bd0b671cfaf77a5c473f"
   dependencies:
-    "@react-pdf/font-substitution" "^1.1.0"
-    "@react-pdf/linebreaker" "^1.2.5"
-    "@textkit/core" "^0.1.8"
+    "@textkit/core" "^0.1.9"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"
+    "@textkit/linebreaker" "^0.1.5"
     "@textkit/script-itemizer" "^0.1.6"
     "@textkit/tab-engine" "^0.1.6"
     "@textkit/text-decoration-engine" "^0.1.6"
     "@textkit/truncation-engine" "^0.1.6"
+    hyphenation.en-us "^0.2.1"
+    hypher "^0.2.5"
 
-"@textkit/core@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.8.tgz#0e0061bf6b992c52b85c6532e45ecdaca1e455ef"
+"@textkit/core@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.9.tgz#eab183c87e4adef5142007e55d3c73bedff242ae"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"
@@ -80,9 +69,9 @@
     hypher "^0.2.4"
     linebreak "^0.1.2"
 
-"@textkit/pdf-renderer@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.4.tgz#43221c4e200e958da43e7b5bdc80cee8dd068eb7"
+"@textkit/pdf-renderer@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.6.tgz#c7ba9e0b6a150a67dcb6eac43e8e023f283443f3"
 
 "@textkit/script-itemizer@^0.1.6":
   version "0.1.6"

@@ -9,6 +9,7 @@ import {
 } from '@react-pdf/text-layout';
 import upperFirst from 'lodash.upperfirst';
 import { embedEmojis } from '../utils/emoji';
+import { ignoreChars } from '../utils/ignorableChars';
 import Font from '../font';
 
 // Global layout engine
@@ -26,7 +27,7 @@ class TextEngine {
     this.start = 0;
     this.end = 0;
     this.computed = false;
-    this.preprocessors = [embedEmojis];
+    this.preprocessors = [ignoreChars, embedEmojis];
   }
 
   get container() {

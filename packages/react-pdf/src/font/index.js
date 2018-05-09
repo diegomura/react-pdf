@@ -4,6 +4,7 @@ import standardFonts from './standard';
 import { fetchFont } from '../utils/font';
 
 let fonts = {};
+let emojiSource;
 let hyphenationCallback;
 
 const register = (src, { family, ...otherOptions }) => {
@@ -20,9 +21,15 @@ const registerHyphenationCallback = callback => {
   hyphenationCallback = callback;
 };
 
+const registerEmojiSource = ({ url, format = 'png' }) => {
+  emojiSource = { url, format };
+};
+
 const getRegisteredFonts = () => Object.keys(fonts);
 
 const getFont = family => fonts[family];
+
+const getEmojiSource = () => emojiSource;
 
 const getHyphenationCallback = () => hyphenationCallback;
 
@@ -51,7 +58,7 @@ const load = async (fontFamily, doc) => {
 
   if (!font && !standardFonts.includes(fontFamily)) {
     throw new Error(
-      `Font familiy not registered: ${fontFamily}. Please register it calling Font.register() method.`,
+      `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
     );
   }
 };
@@ -70,7 +77,9 @@ const clear = () => {
 
 export default {
   register,
+  getEmojiSource,
   getRegisteredFonts,
+  registerEmojiSource,
   registerHyphenationCallback,
   getHyphenationCallback,
   getFont,

@@ -141,14 +141,18 @@ class Document {
   }
 
   async render() {
-    this.addMetaData();
-    this.applyProps();
-    await this.loadEmojis();
-    await this.loadAssets();
-    await this.wrapChildren();
-    await this.renderChildren();
-    this.root.end();
-    Font.reset();
+    try {
+      this.addMetaData();
+      this.applyProps();
+      await this.loadEmojis();
+      await this.loadAssets();
+      await this.wrapChildren();
+      await this.renderChildren();
+      this.root.end();
+      Font.reset();
+    } catch (e) {
+      console.log('>>>>', e);
+    }
   }
 }
 

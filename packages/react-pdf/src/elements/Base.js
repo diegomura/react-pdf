@@ -257,7 +257,7 @@ class Base extends Node {
   }
 
   wrapHeight(height) {
-    return height;
+    return Math.min(height, this.height);
   }
 
   clone() {

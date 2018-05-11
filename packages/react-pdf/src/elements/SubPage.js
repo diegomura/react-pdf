@@ -102,6 +102,24 @@ class SubPage extends Base {
         child.props.break = false;
         nextPageElements.push(...this.children.slice(i));
         break;
+      } else if (minPresenceAhead) {
+        let childIndex = 1;
+        let presenceAhead = 0;
+        let nextChild = this.children[i + childIndex];
+        let isElementInside = height > nextChild.top;
+
+        while (nextChild && isElementInside) {
+          isElementInside = height > nextChild.top;
+          presenceAhead += nextChild.wrapHeight(
+            height - nextChild.top - this.marginTop,
+          );
+          nextChild = this.children[i + childIndex++];
+        }
+
+        if (presenceAhead < minPresenceAhead) {
+          nextPageElements.push(...this.children.slice(i));
+          break;
+        }
       } else if (shouldElementSplit) {
         const remainingHeight = height - child.top + this.paddingTop;
 
@@ -109,13 +127,6 @@ class SubPage extends Base {
           nextPageElements.push(child);
         } else {
           result.appendChild(child.splice(remainingHeight, height));
-        }
-      } else if (minPresenceAhead) {
-        const nextChild = this.children[i + 1];
-        const remainingHeight = height - nextChild.top - this.marginTop;
-
-        if (nextChild.wrapHeight(remainingHeight) < minPresenceAhead) {
-          result.appendChild(child.splice(0));
         }
       }
     }

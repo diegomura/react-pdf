@@ -92,13 +92,19 @@ class Text extends Base {
     const sliceHeight = height - this.marginTop - this.paddingTop;
     const slicedLines = this.engine.lineIndexAtHeight(sliceHeight);
 
-    if (linesQuantity < orphans + widows || slicedLines < orphans) {
-      return 0;
+    let wrapHeight = height;
+
+    if (linesQuantity < orphans) {
+      wrapHeight = height;
+    } else if (slicedLines < orphans) {
+      wrapHeight = 0;
+    } else if (linesQuantity === orphans + widows) {
+      wrapHeight = this.engine.heightAtLineIndex(orphans - 1);
     } else if (linesQuantity - slicedLines < widows) {
-      return height - this.engine.heightAtLineIndex(widows - 1);
-    } else {
-      return sliceHeight;
+      wrapHeight = height - this.engine.heightAtLineIndex(widows - 1);
     }
+
+    return Math.min(wrapHeight, this.height);
   }
 
   splice(height) {

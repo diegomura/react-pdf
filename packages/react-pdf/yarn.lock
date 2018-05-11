@@ -26,24 +26,24 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.1.tgz#0d8bfcf49c8492974e49bd0b671cfaf77a5c473f"
+"@react-pdf/text-layout@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.3.tgz#98953b118bbe19040774670045b9adb6f3b8e766"
   dependencies:
-    "@textkit/core" "^0.1.9"
+    "@textkit/core" "^0.1.10"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"
-    "@textkit/linebreaker" "^0.1.5"
+    "@textkit/linebreaker" "^0.1.6"
     "@textkit/script-itemizer" "^0.1.6"
     "@textkit/tab-engine" "^0.1.6"
-    "@textkit/text-decoration-engine" "^0.1.6"
+    "@textkit/text-decoration-engine" "^0.1.7"
     "@textkit/truncation-engine" "^0.1.6"
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
-"@textkit/core@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.9.tgz#eab183c87e4adef5142007e55d3c73bedff242ae"
+"@textkit/core@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.10.tgz#f6a7654164d694aaa27c8855a2e2ce38128d7e98"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"
@@ -61,7 +61,7 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.6.tgz#fb055a8db116606c80f7bc8de2cb12596a107449"
 
-"@textkit/linebreaker@^0.1.5":
+"@textkit/linebreaker@^0.1.6":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.6.tgz#8446b4f3602fb8c3135f7f2eeae01088010ed602"
   dependencies:
@@ -83,9 +83,9 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@textkit/tab-engine/-/tab-engine-0.1.6.tgz#9cdf32ccfa0435f87a404147766dbff4dcec8aa1"
 
-"@textkit/text-decoration-engine@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.6.tgz#16936d971252bb3c13849cb405698fe2fd4a47b3"
+"@textkit/text-decoration-engine@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.7.tgz#15ffb21c1c1d638016eae81ef6c8531f6ef5dfa4"
 
 "@textkit/truncation-engine@^0.1.6":
   version "0.1.6"

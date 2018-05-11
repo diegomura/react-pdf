@@ -7,6 +7,8 @@ const WIDOW_THREASHOLD = 20;
 class Text extends Base {
   static defaultProps = {
     wrap: true,
+    widows: 2,
+    orphans: 2,
   };
 
   constructor(root, props) {
@@ -84,21 +86,24 @@ class Text extends Base {
     );
   }
 
-  splice(height) {
-    let engine;
+  wrapHeight(height) {
+    const { orphans, widows } = this.props;
     const linesQuantity = this.engine.lines.length;
     const sliceHeight = height - this.marginTop - this.paddingTop;
     const slicedLines = this.engine.lineIndexAtHeight(sliceHeight);
 
-    if (
-      this.hasOrphans(linesQuantity, slicedLines) ||
-      this.hasWidows(linesQuantity, slicedLines)
-    ) {
-      engine = this.engine.splice(0);
+    if (linesQuantity < orphans + widows || slicedLines < orphans) {
+      return 0;
+    } else if (linesQuantity - slicedLines < widows) {
+      return height - this.engine.heightAtLineIndex(widows - 1);
     } else {
-      engine = this.engine.splice(sliceHeight);
+      return sliceHeight;
     }
+  }
 
+  splice(height) {
+    const wrapHeight = this.wrapHeight(height);
+    const engine = this.engine.splice(wrapHeight);
     const result = this.clone();
 
     result.marginTop = 0;

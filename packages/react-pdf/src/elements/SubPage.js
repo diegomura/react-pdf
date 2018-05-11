@@ -1,8 +1,6 @@
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 
-const ORPHAN_THRESHOLD = 15;
-
 class SubPage extends Base {
   constructor(root, props, number) {
     super(root, props);
@@ -88,19 +86,17 @@ class SubPage extends Base {
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-      const { fixed, wrap, orphan } = child.props;
+      const { fixed, wrap, minPresenceAhead } = child.props;
 
       const isElementOutside = height < child.top;
       const childBottom = child.top + child.height - this.paddingTop;
       const shouldElementSplit = height < childBottom;
-      const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
-      const isElementOrphan = !orphan && height - childBottom < orphanThreshold;
 
       if (fixed) {
         const fixedElement = child.clone();
         fixedElement.children = child.children;
         result.appendChild(fixedElement);
-      } else if (isElementOutside || isElementOrphan) {
+      } else if (isElementOutside) {
         nextPageElements.push(child);
       } else if (child.props.break) {
         child.props.break = false;
@@ -113,6 +109,13 @@ class SubPage extends Base {
           nextPageElements.push(child);
         } else {
           result.appendChild(child.splice(remainingHeight, height));
+        }
+      } else if (minPresenceAhead) {
+        const nextChild = this.children[i + 1];
+        const remainingHeight = height - nextChild.top - this.marginTop;
+
+        if (nextChild.wrapHeight(remainingHeight) < minPresenceAhead) {
+          result.appendChild(child.splice(0));
         }
       }
     }

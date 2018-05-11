@@ -152,6 +152,17 @@ class TextEngine {
     return this.lines.length;
   }
 
+  heightAtLineIndex(index) {
+    let counter = 0;
+
+    for (let i = 0; i <= index; i++) {
+      const line = this.lines[i];
+      counter += line.height;
+    }
+
+    return counter;
+  }
+
   splice(height) {
     const result = this.clone();
     const index = this.lineIndexAtHeight(height);

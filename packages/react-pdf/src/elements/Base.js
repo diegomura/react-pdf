@@ -14,7 +14,7 @@ import { inheritedProperties } from '../utils/styles';
 class Base extends Node {
   static defaultProps = {
     style: {},
-    orphan: true,
+    minPresenceAhead: 0,
   };
 
   constructor(root, props) {
@@ -254,6 +254,10 @@ class Base extends Node {
         )
         .fill();
     }
+  }
+
+  wrapHeight(height) {
+    return height;
   }
 
   clone() {

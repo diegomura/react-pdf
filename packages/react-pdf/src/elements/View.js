@@ -1,7 +1,5 @@
 import Base from './Base';
 
-const ORPHAN_THRESHOLD = 15;
-
 class View extends Base {
   static defaultProps = {
     style: {},
@@ -22,16 +20,11 @@ class View extends Base {
 
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-      const { fixed, wrap, orphan } = child.props;
-
-      const childBottom = child.top + child.height;
+      const { fixed, wrap, minPresenceAhead } = child.props;
       const isElementOutside = wrapHeight < child.top;
       const shouldElementSplit = wrapHeight < child.top + child.height;
-      const orphanThreshold = child.props.orphanThreshold || ORPHAN_THRESHOLD;
-      const isElementOrphan =
-        !orphan && pageHeight - childBottom < orphanThreshold;
 
-      if (isElementOutside || isElementOrphan) {
+      if (isElementOutside) {
         buffer.push(child);
       } else if (fixed) {
         const fixedElement = child.clone();
@@ -48,6 +41,13 @@ class View extends Base {
           buffer.push(child);
         } else {
           result.appendChild(child.splice(remainingHeight, pageHeight));
+        }
+      } else if (minPresenceAhead) {
+        const nextChild = this.children[i + 1];
+        const remainingHeight = wrapHeight - nextChild.top - this.marginTop;
+
+        if (nextChild.wrapHeight(remainingHeight) < minPresenceAhead) {
+          result.appendChild(child.splice(0));
         }
       }
     }

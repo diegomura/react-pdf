@@ -151,7 +151,7 @@ class Document {
       this.root.end();
       Font.reset();
     } catch (e) {
-      console.log('>>>>', e);
+      throw e;
     }
   }
 }

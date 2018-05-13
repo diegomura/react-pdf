@@ -11,6 +11,8 @@ import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import { inheritedProperties } from '../utils/styles';
 
+const PERCENT = /^(\d+)?%$/g;
+
 class Base extends Node {
   static defaultProps = {
     style: {},
@@ -87,6 +89,28 @@ class Base extends Node {
     });
   }
 
+  setDimension(attr, value) {
+    const fixedMethod = `set${upperFirst(attr)}`;
+    const percentMethod = `${fixedMethod}Percent`;
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout[percentMethod](parseInt(isPercent[1], 10));
+    } else {
+      this.layout[fixedMethod](value);
+    }
+  }
+
+  setPosition(edge, value) {
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPosition(edge, value);
+    }
+  }
+
   applyStyle(attribute, value) {
     const setter = `set${upperFirst(attribute)}`;
 
@@ -147,29 +171,22 @@ class Base extends Node {
         this.setPosition(Yoga.EDGE_LEFT, this.left || value);
         break;
       case 'width':
-        this.layout.setWidth(
-          this.width - this.marginLeft - this.marginRight || value,
+      case 'height':
+        this.setDimension(
+          attribute,
+          this[attribute] - this.marginLeft - this.marginRight || value,
         );
         break;
-      case 'height':
-        this.layout.setHeight(
-          this.height - this.marginTop - this.marginBottom || value,
-        );
+      case 'minHeight':
+      case 'maxHeight':
+      case 'minWidth':
+      case 'maxWidth':
+        this.setDimension(attribute, value);
         break;
       default:
         if (isFunction(this.layout[setter])) {
           this.layout[setter](value);
         }
-    }
-  }
-
-  setPosition(edge, value) {
-    const isPercent = /^(\d+)?%$/g.exec(value);
-
-    if (isPercent) {
-      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
-    } else {
-      this.layout.setPosition(edge, value);
     }
   }
 

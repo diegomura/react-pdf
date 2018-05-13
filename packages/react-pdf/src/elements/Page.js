@@ -74,7 +74,7 @@ class Page {
     const { size } = this.props;
 
     if (typeof size === 'string') {
-      this._size = sizes[size];
+      this._size = sizes[size.toUpperCase()];
     } else if (Array.isArray(size)) {
       this._size = size;
     } else if (typeof size === 'object' && size.width && size.height) {

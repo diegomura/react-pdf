@@ -6,7 +6,7 @@ const Debug = {
     this.root.text(
       `${layout.width} x ${layout.height}`,
       layout.left,
-      layout.top - 4,
+      Math.max(layout.top - 4, 0),
     );
   },
   debugContent(layout, margin, padding) {

@@ -16,8 +16,6 @@ class Image extends Base {
     super(root, props);
 
     this.image = null;
-    this.imageWidth = null;
-    this.imageHeight = null;
     this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
@@ -28,7 +26,7 @@ class Image extends Base {
   measureImage(width, widthMode, height, heightMode) {
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
-    const ratio = this.image.width / this.image.height;
+
     const pageArea =
       this.page.height -
       pagePadding.top -
@@ -37,27 +35,27 @@ class Image extends Base {
       imageMargin.bottom -
       SAFETY_HEIGHT;
 
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      const scaledHeight = width / ratio;
-
-      if (pageArea < scaledHeight) {
-        this.imageWidth = pageArea * ratio;
-        this.imageHeight = pageArea;
-
-        return { height: pageArea };
-      }
-
-      this.imageWidth = width;
-      this.imageHeight = scaledHeight;
-
-      return { height: scaledHeight };
+    if (
+      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === Yoga.MEASURE_MODE_UNDEFINED
+    ) {
+      const scaledHeight = width / this.ratio;
+      return { height: Math.min(pageArea, scaledHeight) };
     }
 
-    if (heightMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.imageHeight = height;
-      this.imageWidth = height * ratio;
+    if (
+      heightMode === Yoga.MEASURE_MODE_EXACTLY &&
+      widthMode === Yoga.MEASURE_MODE_UNDEFINED
+    ) {
+      return { width: height * this.ratio };
+    }
 
-      return { width: height * ratio };
+    if (
+      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === Yoga.MEASURE_MODE_AT_MOST
+    ) {
+      const scaledHeight = width / this.ratio;
+      return { height: Math.min(height, pageArea, scaledHeight) };
     }
 
     if (
@@ -71,10 +69,16 @@ class Image extends Base {
         height: this.calculateHeight(imageWidth),
       };
     }
+
+    return { height, width };
   }
 
   isEmpty() {
     return false;
+  }
+
+  get ratio() {
+    return this.image.data ? this.image.width / this.image.height : 1;
   }
 
   async fetch() {
@@ -89,7 +93,7 @@ class Image extends Base {
   async render() {
     const margin = this.margin;
     const padding = this.padding;
-    const { left, top, width, height } = this.getAbsoluteLayout();
+    const { left, top } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
     this.drawBorders();
@@ -98,24 +102,19 @@ class Image extends Base {
       this.debug();
     }
 
-    // If image box dimentions are null, we use yoga dimensions
-    // This can happen when measureImage is not called, due to fixed width and height
-    this.imageWidth =
-      this.imageWidth || this.width - margin.right - margin.left;
-    this.imageHeight =
-      this.imageHeight || this.height - margin.top - margin.bottom;
-
     if (this.image.data) {
       // Inner offset between yoga node and image box
       // Makes image centered inside Yoga node
-      const xOffset = (width - this.imageWidth) / 2;
-      const yOffset = (height - this.imageHeight) / 2;
+      const containerWidth = this.width - margin.right - margin.left;
+      const containerHeight = this.height - margin.top - margin.bottom;
+      const imageWidth = containerHeight * this.ratio;
+      const xOffset = (containerWidth - imageWidth) / 2;
 
       this.root.image(
         this.image.data,
         left + padding.left + xOffset,
-        top + padding.top + yOffset,
-        { width: this.imageWidth, height: this.imageHeight },
+        top + padding.top,
+        { width: imageWidth, height: containerHeight },
       );
     }
   }

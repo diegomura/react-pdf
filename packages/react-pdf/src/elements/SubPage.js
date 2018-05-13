@@ -56,8 +56,10 @@ class SubPage extends Base {
 
       if (this.props.orientation === 'landscape') {
         this.layout.setWidth(size[1]);
+        this.layout.setHeight(size[0]);
       } else {
         this.layout.setWidth(size[0]);
+        this.layout.setHeight(size[1]);
       }
     }
   }
@@ -163,7 +165,6 @@ class SubPage extends Base {
 
   layoutFixedElements() {
     this.reset();
-    this.layout.setHeight(this.size[1]);
     this.recalculateLayout();
 
     this.children.forEach(child => {

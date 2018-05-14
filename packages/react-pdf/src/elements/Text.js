@@ -96,7 +96,7 @@ class Text extends Base {
 
     if (linesQuantity < orphans) {
       wrapHeight = height;
-    } else if (slicedLines < orphans) {
+    } else if (slicedLines < orphans || linesQuantity < orphans + widows) {
       wrapHeight = 0;
     } else if (linesQuantity === orphans + widows) {
       wrapHeight = this.engine.heightAtLineIndex(orphans - 1);

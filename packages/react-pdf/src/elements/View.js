@@ -14,6 +14,24 @@ class View extends Base {
     return this.children.every(child => child.isEmpty());
   }
 
+  wrapHeight(height) {
+    const { wrap } = this.props;
+
+    if (!wrap && height < this.height) {
+      return 0;
+    }
+
+    let result = 0;
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children.height > height) {
+        break;
+      }
+
+      result += this.children.height;
+    }
+    return result;
+  }
+
   splice(wrapHeight, pageHeight) {
     const buffer = [];
     const result = this.clone();

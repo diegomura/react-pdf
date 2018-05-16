@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@react-pdf/fontkit@^1.7.9":
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.7.9.tgz#b5a550ae3eef31d50220248728687b989107b6b3"
+"@react-pdf/fontkit@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.8.0.tgz#2d146e4da874679afe756e199409c186d4c1adac"
   dependencies:
     babel-runtime "^6.11.6"
     brfs "^1.4.0"
@@ -26,24 +26,23 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.3.tgz#98953b118bbe19040774670045b9adb6f3b8e766"
+"@react-pdf/text-layout@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.4.tgz#1e6f8b3d0cb060faba24b2c4b88a721cb0d1f899"
   dependencies:
-    "@textkit/core" "^0.1.10"
+    "@textkit/core" "^0.1.11"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"
     "@textkit/linebreaker" "^0.1.6"
     "@textkit/script-itemizer" "^0.1.6"
-    "@textkit/tab-engine" "^0.1.6"
     "@textkit/text-decoration-engine" "^0.1.7"
     "@textkit/truncation-engine" "^0.1.6"
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
-"@textkit/core@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.10.tgz#f6a7654164d694aaa27c8855a2e2ce38128d7e98"
+"@textkit/core@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.11.tgz#a07b1cd13beb28f39c1e347f90a68c57ad238ad2"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"
@@ -78,10 +77,6 @@
   resolved "https://registry.yarnpkg.com/@textkit/script-itemizer/-/script-itemizer-0.1.6.tgz#4fecb0047be403626c05ac5d0aaa01a424760a35"
   dependencies:
     unicode-properties "^1.1.0"
-
-"@textkit/tab-engine@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@textkit/tab-engine/-/tab-engine-0.1.6.tgz#9cdf32ccfa0435f87a404147766dbff4dcec8aa1"
 
 "@textkit/text-decoration-engine@^0.1.7":
   version "0.1.7"

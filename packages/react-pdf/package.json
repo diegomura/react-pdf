@@ -19,9 +19,9 @@
     "build:clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@react-pdf/fontkit": "^1.7.9",
+    "@react-pdf/fontkit": "^1.8.0",
     "@react-pdf/pdfkit": "^0.8.7",
-    "@react-pdf/text-layout": "0.3.3",
+    "@react-pdf/text-layout": "0.3.4",
     "@textkit/pdf-renderer": "^0.1.6",
     "blob-stream": "^0.1.3",
     "emoji-regex": "^6.5.1",

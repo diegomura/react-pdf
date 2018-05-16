@@ -44,7 +44,7 @@ const load = async (fontFamily, doc) => {
       const data = await fetchFont(font.src);
       font.data = fontkit.create(data);
     } else {
-      font.data = fontkit.openSync(font.src);
+      font.data = fontkit.create(font.src);
     }
   }
 

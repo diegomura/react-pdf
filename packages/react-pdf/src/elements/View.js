@@ -33,7 +33,7 @@ class View extends Base {
   }
 
   splice(wrapHeight, pageHeight) {
-    const buffer = [];
+    const nextViewElements = [];
     const result = this.clone();
 
     for (let i = 0; i < this.children.length; i++) {
@@ -43,14 +43,14 @@ class View extends Base {
       const shouldElementSplit = wrapHeight < child.top + child.height;
 
       if (isElementOutside) {
-        buffer.push(child);
+        nextViewElements.push(child);
       } else if (fixed) {
         const fixedElement = child.clone();
         fixedElement.children = child.children;
         result.appendChild(fixedElement);
       } else if (child.props.break) {
         child.props.break = false;
-        buffer.push(...this.children.slice(i));
+        nextViewElements.push(...this.children.slice(i));
         break;
       } else if (minPresenceAhead) {
         let childIndex = 1;
@@ -67,21 +67,21 @@ class View extends Base {
         }
 
         if (presenceAhead < minPresenceAhead) {
-          buffer.push(...this.children.slice(i));
+          nextViewElements.push(...this.children.slice(i));
           break;
         }
       } else if (shouldElementSplit) {
         const remainingHeight = wrapHeight - child.top - this.marginTop;
 
         if (!wrap) {
-          buffer.push(child);
+          nextViewElements.push(child);
         } else {
           result.appendChild(child.splice(remainingHeight, pageHeight));
         }
       }
     }
 
-    buffer.forEach(child => child.moveTo(result));
+    nextViewElements.forEach(child => child.moveTo(result));
 
     // If the View has fixed height, we calculate the new element heights.
     // If not, we set it up as NaN and use Yoga calculated heights as fallback.

@@ -26,11 +26,11 @@
     linebreak "^0.3.0"
     png-js ">=0.1.0"
 
-"@react-pdf/text-layout@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.4.tgz#1e6f8b3d0cb060faba24b2c4b88a721cb0d1f899"
+"@react-pdf/text-layout@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/text-layout/-/text-layout-0.3.5.tgz#0bfcc348406858975a629b659ace74ef884a6a40"
   dependencies:
-    "@textkit/core" "^0.1.11"
+    "@textkit/core" "0.1.12"
     "@textkit/justification-engine" "^0.1.6"
     "@textkit/line-fragment-generator" "^0.1.6"
     "@textkit/linebreaker" "^0.1.6"
@@ -40,9 +40,9 @@
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.5"
 
-"@textkit/core@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.11.tgz#a07b1cd13beb28f39c1e347f90a68c57ad238ad2"
+"@textkit/core@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@textkit/core/-/core-0.1.12.tgz#f7454dd7b53609ab8280d246abd2e0ca162e2d5a"
   dependencies:
     cubic2quad "^1.1.0"
     iconv-lite "^0.4.13"

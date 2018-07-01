@@ -55,6 +55,7 @@ const MyDocument = () => (
 ### Render in DOM
 
 **Note:** you need add `transform-loader` like [in example](/examples/dom-bindings/webpack.config.js#L16)
+
 **Note:** Import `Document` from `@react-pdf/dom` instead of the core when used in the DOM
 
 ```jsx

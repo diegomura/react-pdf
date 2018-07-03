@@ -21,7 +21,7 @@ class Container extends Component {
     this.mountNode = PDFRenderer.createContainer(this.container);
 
     PDFRenderer.updateContainer(
-      <Document {...omit(['height', 'width', 'children'], this.props)}>
+      <Document {...omit(['height', 'width', 'children', 'popup', 'onDone'], this.props)}>
         {this.props.children}
       </Document>,
       this.mountNode,
@@ -31,7 +31,15 @@ class Container extends Component {
     pdf(this.container)
       .toBlob()
       .then(blob => {
-        this.embed.src = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
+        if (this.props.popup) {
+          window.open(url);
+          if (this.props.onDone) {
+            this.props.onDone();
+          }
+        } else {
+          this.embed.src = url;
+        }
       });
   }
 
@@ -67,6 +75,8 @@ Container.propTypes = {
   children: PropTypes.node,
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  popup: PropTypes.bool,
+  onDone: PropTypes.func,
 };
 
 export default Container;

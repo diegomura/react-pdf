@@ -1,8 +1,7 @@
 /* global URL */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { PDFRenderer, Document, createElement, pdf } from '@react-pdf/core';
 import omit from 'lodash.omit';
+import { PDFRenderer, Document, createElement, pdf } from '../index';
 
 class Container extends Component {
   static displayName = 'Document';
@@ -62,11 +61,5 @@ class Container extends Component {
     );
   }
 }
-
-Container.propTypes = {
-  children: PropTypes.node,
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
 
 export default Container;

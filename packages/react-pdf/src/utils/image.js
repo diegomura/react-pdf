@@ -1,6 +1,8 @@
 import PNG from 'png-js';
 import JPEG from './jpeg';
-const request = require('request');
+require('isomorphic-fetch');
+
+const Buffer = require('buffer/').Buffer;
 
 function getImage(body, extension) {
   switch (extension.toLowerCase()) {
@@ -27,41 +29,39 @@ export const fetchImage = src => {
     );
   }
 
-  return new Promise((resolve, reject) => {
-    request(
-      {
-        url: src,
-        method: 'GET',
-        encoding: null,
-      },
-      (error, response, body) => {
-        if (error || response.statusCode !== 200) {
-          reject(new Error(`Couldn't fetch image: ${src}`));
-        }
+  return fetch(src)
+    .then(response => {
+      if (response.buffer) {
+        return response.buffer();
+      }
+      return response.arrayBuffer();
+    })
+    .then(arrayBuffer => Buffer.from(arrayBuffer))
+    .then(body => {
+      const isPng =
+        body[0] === 137 &&
+        body[1] === 80 &&
+        body[2] === 78 &&
+        body[3] === 71 &&
+        body[4] === 13 &&
+        body[5] === 10 &&
+        body[6] === 26 &&
+        body[7] === 10;
 
-        const isPng =
-          body[0] === 137 &&
-          body[1] === 80 &&
-          body[2] === 78 &&
-          body[3] === 71 &&
-          body[4] === 13 &&
-          body[5] === 10 &&
-          body[6] === 26 &&
-          body[7] === 10;
+      const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
 
-        const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
+      let extension = '';
+      if (isPng) {
+        extension = 'png';
+      } else if (isJpg) {
+        extension = 'jpg';
+      } else {
+        throw new Error('Not valid image extension');
+      }
 
-        let extension = '';
-        if (isPng) {
-          extension = 'png';
-        } else if (isJpg) {
-          extension = 'jpg';
-        } else {
-          return reject(new Error('Not valid image extension'));
-        }
-
-        return resolve(getImage(body, extension));
-      },
-    );
-  });
+      return getImage(body, extension);
+    })
+    .catch(() => {
+      throw new Error(`Couldn't fetch image: ${src}`);
+    });
 };

@@ -1,19 +1,13 @@
-const request = require('request');
+require('isomorphic-fetch');
+const Buffer = require('buffer/').Buffer;
 
-export const fetchFont = src =>
-  new Promise((resolve, reject) => {
-    request(
-      {
-        url: src,
-        method: 'GET',
-        encoding: null,
-      },
-      (error, response, body) => {
-        if (error) {
-          return reject(error);
-        }
-
-        return resolve(body);
-      },
-    );
-  });
+export const fetchFont = src => {
+  return fetch(src)
+    .then(response => {
+      if (response.buffer) {
+        return response.buffer();
+      }
+      return response.arrayBuffer();
+    })
+    .then(arrayBuffer => Buffer.from(arrayBuffer));
+};

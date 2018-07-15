@@ -132,8 +132,9 @@ class Text extends Base {
   //   return this.children.length;
   // }
 
-  async renderText(text, isFirstNode) {
+  async renderText(text) {
     const {
+      color = 'black',
       textAlign = 'left',
       align,
       textDecoration,
@@ -144,7 +145,10 @@ class Text extends Base {
       '"align" style prop will be deprecated on future versions. Please use "textAlign" instead in Text node',
     );
 
-    this.root.text(text, {
+    this.setFontSize();
+    this.setFontFamily();
+
+    this.root.fillColor(color).text(text, {
       align: align || textAlign,
       link: '',
       continued: true,
@@ -152,33 +156,28 @@ class Text extends Base {
     });
   }
 
-  async render(page) {
-    const padding = this.getPadding();
-    const { left, top, width, height } = this.getAbsoluteLayout();
-    const { color = 'black' } = this.getComputedStyles();
+  async render({ inline }) {
+    if (!inline) {
+      // Set coordinates, dimentions and continued text
+      const padding = this.getPadding();
+      const { left, top, width, height } = this.getAbsoluteLayout();
+      this.drawBackgroundColor();
+      this.drawBorders();
 
-    this.drawBackgroundColor();
-    this.drawBorders();
+      if (this.props.debug) {
+        this.debug();
+      }
 
-    if (this.props.debug) {
-      this.debug();
+      this.root.text('', left + padding.left, top + padding.top, {
+        continued: true,
+        width: width - padding.left - padding.right,
+        height: height - padding.top - padding.bottom,
+      });
     }
-
-    // Set coordinates, dimentions and continued text
-    this.root.text('', left + padding.left, top + padding.top, {
-      continued: true,
-      width: width - padding.left - padding.right,
-      height: height - padding.top - padding.bottom,
-    });
 
     // Render childs: text and inline elements
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-
-      this.setFontSize();
-      this.setFontFamily();
-      this.root.fillColor(color);
-
       if (typeof child === 'string') {
         await this.renderText(child);
       } else {
@@ -186,8 +185,10 @@ class Text extends Base {
       }
     }
 
-    // Text should not longer be continuos
-    this.root.text('', { continued: false });
+    if (!inline) {
+      // Text should not longer be continuos
+      this.root.text('', { continued: false });
+    }
   }
 }
 

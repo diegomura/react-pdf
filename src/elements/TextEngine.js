@@ -1,16 +1,16 @@
 import warning from 'fbjs/lib/warning';
 import createPDFRenderer from '@textkit/pdf-renderer';
+import upperFirst from 'lodash.upperfirst';
+import { embedEmojis } from '../utils/emoji';
+import { ignoreChars } from '../utils/ignorableChars';
+import Font from '../font';
 import {
   Rect,
   Path,
   LayoutEngine,
   AttributedString,
   Container,
-} from '@react-pdf/text-layout';
-import upperFirst from 'lodash.upperfirst';
-import { embedEmojis } from '../utils/emoji';
-import { ignoreChars } from '../utils/ignorableChars';
-import Font from '../font';
+} from '../layout';
 
 // Global layout engine
 // It's created dynamically because it may accept a custom hyphenation callback

@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { createElement, pdf, PDFRenderer } from '../index';
+import { createElement, pdf, PDFRenderer } from './index';
 
-export * from '../index';
+export * from './index';
 
 export default {
   async renderToStream(element) {

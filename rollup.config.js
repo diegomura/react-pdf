@@ -1,6 +1,7 @@
 import nodeResolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
+import uglify from 'rollup-plugin-uglify';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import ignore from 'rollup-plugin-ignore';
 import pkg from './package.json';
@@ -24,24 +25,24 @@ const commonPlugins = [
   nodeResolve(),
   babel({
     exclude: 'node_modules/**',
+    presets: ['stage-0', 'react'],
+    plugins: ['external-helpers'],
   }),
 ];
 
 const configBase = {
   globals: { react: 'React' },
-  external: ['react', 'prop-types'].concat(
+  external: ['fbjs/lib/emptyObject', 'fbjs/lib/warning'].concat(
     Object.keys(pkg.dependencies),
     Object.keys(pkg.peerDependencies),
   ),
   plugins: commonPlugins,
-  // sourcemap: true,
 };
 
-const nodeConfig = Object.assign({}, configBase, {
-  input: './src/node/index.js',
-  external: ['fs'],
+const serverConfig = Object.assign({}, configBase, {
+  input: './src/node.js',
   output: [
-    getESM({ file: 'dist/react-pdf.esm.js' }),
+    getESM({ file: 'dist/react-pdf.es.js' }),
     getCJS({ file: 'dist/react-pdf.cjs.js' }),
   ],
   plugins: configBase.plugins.concat(
@@ -49,20 +50,43 @@ const nodeConfig = Object.assign({}, configBase, {
       __SERVER__: JSON.stringify(true),
     }),
   ),
+  external: configBase.external.concat(['fs', 'path']),
+});
+
+const serverProdConfig = Object.assign({}, serverConfig, {
+  output: [
+    getESM({ file: 'dist/react-pdf.es.min.js' }),
+    getCJS({ file: 'dist/react-pdf.cjs.min.js' }),
+  ],
+  plugins: serverConfig.plugins.concat(uglify()),
 });
 
 const browserConfig = Object.assign({}, configBase, {
-  input: './src/dom/index.js',
+  input: './src/dom.js',
   output: [
-    getESM({ file: 'dist/react-pdf.browser.esm.js' }),
+    getESM({ file: 'dist/react-pdf.browser.es.js' }),
     getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
   ],
   plugins: configBase.plugins.concat(
     replace({
       __SERVER__: JSON.stringify(false),
+      'png-js': 'png-js/png.js',
     }),
-    ignore(['fs']),
+    ignore(['fs', 'path']),
   ),
 });
 
-export default [nodeConfig, browserConfig];
+const browserProdConfig = Object.assign({}, browserConfig, {
+  output: [
+    getESM({ file: 'dist/react-pdf.browser.es.min.js' }),
+    getCJS({ file: 'dist/react-pdf.browser.cjs.min.js' }),
+  ],
+  plugins: browserConfig.plugins.concat(uglify()),
+});
+
+export default [
+  serverConfig,
+  serverProdConfig,
+  browserConfig,
+  browserProdConfig,
+];

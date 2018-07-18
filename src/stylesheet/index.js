@@ -57,7 +57,7 @@ const absoluteFillObject = {
   right: 0,
 };
 
-module.exports = {
+export default {
   hairlineWidth: 1,
   create,
   resolve,

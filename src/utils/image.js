@@ -1,5 +1,6 @@
-import PNG from 'png-js';
 import JPEG from './jpeg';
+
+const PNG = require('png-js');
 require('isomorphic-fetch');
 
 const Buffer = require('buffer/').Buffer;

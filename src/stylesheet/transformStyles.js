@@ -116,4 +116,4 @@ const transformStyles = style => {
   return resolvedStyle;
 };
 
-module.exports = transformStyles;
+export default transformStyles;

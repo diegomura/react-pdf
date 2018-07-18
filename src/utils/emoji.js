@@ -1,7 +1,7 @@
 /* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
-import { Attachment } from '@react-pdf/text-layout';
 import Font from '../font';
+import { Attachment } from '../layout';
 import { fetchImage } from '../utils/image';
 
 // Caches emoji images data

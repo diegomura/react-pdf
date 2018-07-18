@@ -1,9 +1,14 @@
 /* global URL */
 import React, { Component } from 'react';
 import omit from 'lodash.omit';
-import { PDFRenderer, Document, createElement, pdf } from '../index';
+import {
+  pdf,
+  PDFRenderer,
+  createElement,
+  Document as Container,
+} from './index';
 
-class Container extends Component {
+export class Document extends Component {
   static displayName = 'Document';
 
   container = createElement('ROOT');
@@ -20,9 +25,9 @@ class Container extends Component {
     this.mountNode = PDFRenderer.createContainer(this.container);
 
     PDFRenderer.updateContainer(
-      <Document {...omit(['height', 'width', 'children'], this.props)}>
+      <Container {...omit(['height', 'width', 'children'], this.props)}>
         {this.props.children}
-      </Document>,
+      </Container>,
       this.mountNode,
       this,
     );
@@ -36,9 +41,9 @@ class Container extends Component {
 
   componentDidUpdate() {
     PDFRenderer.updateContainer(
-      <Document {...omit(['height', 'width', 'children'], this.props)}>
+      <Container {...omit(['height', 'width', 'children'], this.props)}>
         {this.props.children}
-      </Document>,
+      </Container>,
       this.mountNode,
       this,
     );
@@ -62,4 +67,15 @@ class Container extends Component {
   }
 }
 
-export default Container;
+export {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  StyleSheet,
+  PDFRenderer,
+  createElement,
+} from './index';

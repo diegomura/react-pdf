@@ -16,7 +16,8 @@
     "example": "babel-node ./examples/index.js",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
-    "test": "jest --config .jestrc"
+    "test": "jest --config .jestrc",
+    "test:size": "bundlesize"
   },
   "dependencies": {
     "@react-pdf/fontkit": "^1.11.0",
@@ -59,6 +60,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
+    "bundlesize": "^0.17.0",
     "eslint": "^3.19.0",
     "eslint-config-prettier": "^2.1.0",
     "eslint-plugin-jest": "^20.0.3",
@@ -88,6 +90,16 @@
       "git add"
     ]
   },
+  "bundlesize": [
+    {
+      "path": "./dist/react-pdf.cjs.min.js",
+      "maxSize": "15kB"
+    },
+    {
+      "path": "./dist/react-pdf.browser.cjs.min.js",
+      "maxSize": "15kB"
+    }
+  ],
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",

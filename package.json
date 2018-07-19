@@ -1,5 +1,6 @@
 {
   "name": "@react-pdf/react-pdf",
+  "version": "0.0.3",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -11,9 +12,10 @@
     "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"
   },
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "build": "rimraf ./dist && rollup -c",
+    "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
+    "prepublish": "npm run build",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
     "test": "jest --config .jestrc",
@@ -90,6 +92,9 @@
       "git add"
     ]
   },
+  "files": [
+    "dist"
+  ],
   "bundlesize": [
     {
       "path": "./dist/react-pdf.cjs.min.js",

@@ -1,38 +1,65 @@
 import fs from 'fs';
 import path from 'path';
-import { createElement, pdf, PDFRenderer } from './index';
+import {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  Document,
+  StyleSheet,
+  PDFRenderer,
+  createElement,
+} from './index';
 
 export * from './index';
 
-export default {
-  async renderToStream(element) {
-    const container = createElement('ROOT');
-    const node = PDFRenderer.createContainer(container);
+const renderToStream = async element => {
+  const container = createElement('ROOT');
+  const node = PDFRenderer.createContainer(container);
 
-    PDFRenderer.updateContainer(element, node, null);
+  PDFRenderer.updateContainer(element, node, null);
 
-    return await pdf(container).toBuffer();
-  },
-  async renderToFile(element, filePath, callback) {
-    const output = await this.renderToStream(element);
-    const stream = fs.createWriteStream(filePath);
-    output.pipe(stream);
+  return await pdf(container).toBuffer();
+};
 
-    await new Promise((resolve, reject) => {
-      stream.on('finish', () => {
-        if (callback) {
-          callback(output, filePath);
-        }
-        resolve(output);
+const renderToFile = async (element, filePath, callback) => {
+  const output = await renderToStream(element);
+  const stream = fs.createWriteStream(filePath);
+  output.pipe(stream);
 
-        console.log(
-          `📝  PDF successfully exported on ${path.resolve(filePath)}`,
-        );
-      });
-      stream.on('error', reject);
+  await new Promise((resolve, reject) => {
+    stream.on('finish', () => {
+      if (callback) {
+        callback(output, filePath);
+      }
+      resolve(output);
+
+      console.log(`📝  PDF successfully exported on ${path.resolve(filePath)}`);
     });
-  },
-  async render(element, filePath, callback) {
-    return await this.renderToFile(element, filePath, callback);
-  },
+    stream.on('error', reject);
+  });
+};
+
+const render = async (element, filePath, callback) => {
+  return await renderToFile(element, filePath, callback);
+};
+
+export default {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  Document,
+  StyleSheet,
+  PDFRenderer,
+  createElement,
+  renderToStream,
+  renderToFile,
+  render,
 };

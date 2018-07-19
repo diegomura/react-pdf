@@ -1,5 +1,6 @@
 {
   "name": "@react-pdf/react-pdf",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -14,6 +15,7 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "example": "babel-node ./examples/index.js",
+    "prepublish": "npm run build",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
     "test": "jest --config .jestrc",

@@ -15,6 +15,10 @@ class Document {
     this.children = [];
   }
 
+  get name() {
+    return 'Document';
+  }
+
   get pageCount() {
     return this.children.reduce((acc, page) => acc + page.subpagesCount, 0);
   }
@@ -104,7 +108,7 @@ class Document {
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
-      if (node.constructor.name === 'Image') {
+      if (node.name === 'Image') {
         promises.push(node.fetch());
       }
 

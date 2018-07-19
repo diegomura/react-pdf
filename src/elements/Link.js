@@ -10,6 +10,10 @@ class Link extends Text {
     },
   };
 
+  get name() {
+    return 'Link';
+  }
+
   get src() {
     let { src } = this.props;
 

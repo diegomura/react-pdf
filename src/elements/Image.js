@@ -19,6 +19,10 @@ class Image extends Base {
     this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
+  get name() {
+    return 'Image';
+  }
+
   shouldGrow() {
     return !!this.getComputedStyles().flexGrow;
   }

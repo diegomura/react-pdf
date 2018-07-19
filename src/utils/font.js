@@ -1,4 +1,5 @@
-require('isomorphic-fetch');
+import fetch from 'isomorphic-fetch';
+
 const Buffer = require('buffer/').Buffer;
 
 export const fetchFont = src => {

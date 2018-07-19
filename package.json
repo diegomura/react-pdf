@@ -12,16 +12,17 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "watch": "rollup -c -w",
     "example": "babel-node ./examples/index.js",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
     "test": "jest --config .jestrc"
   },
   "dependencies": {
-    "@react-pdf/fontkit": "^1.10.0",
-    "@react-pdf/pdfkit": "^0.9.0",
-    "@react-pdf/textkit-core": "0.1.13",
-    "@react-pdf/script-itemizer": "^0.1.7",
+    "@react-pdf/fontkit": "^1.11.0",
+    "@react-pdf/pdfkit": "^1.0.0",
+    "@react-pdf/script-itemizer": "^0.1.8",
+    "@react-pdf/textkit-core": "0.1.14",
     "@textkit/justification-engine": "^0.1.6",
     "@textkit/line-fragment-generator": "^0.1.6",
     "@textkit/linebreaker": "^0.1.6",

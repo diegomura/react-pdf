@@ -6,6 +6,10 @@ class View extends Base {
     wrap: true,
   };
 
+  get name() {
+    return 'View';
+  }
+
   isEmpty() {
     if (this.children.length === 0) {
       return false;

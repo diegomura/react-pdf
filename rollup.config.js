@@ -37,6 +37,7 @@ const configBase = {
     Object.keys(pkg.peerDependencies),
   ),
   plugins: commonPlugins,
+  sourcemap: true,
 };
 
 const serverConfig = Object.assign({}, configBase, {

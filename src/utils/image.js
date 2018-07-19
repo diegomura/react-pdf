@@ -1,7 +1,7 @@
+import fetch from 'isomorphic-fetch';
 import JPEG from './jpeg';
 
 const PNG = require('png-js');
-require('isomorphic-fetch');
 
 const Buffer = require('buffer/').Buffer;
 
@@ -37,7 +37,12 @@ export const fetchImage = src => {
       }
       return response.arrayBuffer();
     })
-    .then(arrayBuffer => Buffer.from(arrayBuffer))
+    .then(arrayBuffer => {
+      if (arrayBuffer.constructor.name === 'Buffer') {
+        return arrayBuffer;
+      }
+      return Buffer.from(arrayBuffer);
+    })
     .then(body => {
       const isPng =
         body[0] === 137 &&

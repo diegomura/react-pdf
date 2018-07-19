@@ -27,8 +27,7 @@
   "globals": {
     "document": false,
     "navigator": false,
-    "window": false,
-    "fetch": false
+    "window": false
   },
   "rules": {
     "camelcase": 0,

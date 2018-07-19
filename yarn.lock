@@ -2,11 +2,11 @@
 # yarn lockfile v1
 
 
-"@react-pdf/fontkit@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.10.0.tgz#6a2bd6cfabd6f4c3a012e1f2b5b216445f371593"
+"@react-pdf/fontkit@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.11.0.tgz#2492ffca9454be2a52eb2aba01eacdf2a11ce9fd"
   dependencies:
-    "@react-pdf/unicode-properties" "^2.1.0"
+    "@react-pdf/unicode-properties" "^2.2.0"
     brfs "^1.4.0"
     brotli "^1.2.0"
     browserify-optional "^1.0.0"
@@ -17,29 +17,29 @@
     tiny-inflate "^1.0.2"
     unicode-trie "^0.3.0"
 
-"@react-pdf/pdfkit@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-0.9.0.tgz#7558d50cfc1c16ba272d3991245d9b1133035dce"
+"@react-pdf/pdfkit@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.0.0.tgz#752408c11f77466e7c85054b40de636b4e5b0d0d"
   dependencies:
-    "@react-pdf/fontkit" "^1.10.0"
+    "@react-pdf/fontkit" "^1.11.0"
     png-js ">=0.1.0"
 
-"@react-pdf/script-itemizer@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.7.tgz#614946cf228e2a708643fd8fbbc76b1618168934"
+"@react-pdf/script-itemizer@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.8.tgz#192994f26be0b822f283eedc38ffc30b07eed04b"
   dependencies:
-    "@react-pdf/unicode-properties" "^2.1.0"
+    "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.13.tgz#0f68f9bb8cbf266aa6c5afbd92239e7cf24d1f4d"
+"@react-pdf/textkit-core@0.1.14":
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.14.tgz#bc777eb258e609a9e595aa06fb8e416edee8948b"
   dependencies:
-    "@react-pdf/unicode-properties" "^2.1.0"
+    "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"
 
-"@react-pdf/unicode-properties@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/unicode-properties/-/unicode-properties-2.1.0.tgz#869a840d4be7db219b30d548323286ac499c7f01"
+"@react-pdf/unicode-properties@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/unicode-properties/-/unicode-properties-2.2.0.tgz#f109eaac244ceb108011d4038cee4cc787cb40f3"
   dependencies:
     unicode-trie "^0.3.0"
 

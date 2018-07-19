@@ -21,6 +21,10 @@ class Page {
     this.addInitialSubpage();
   }
 
+  get name() {
+    return 'Page';
+  }
+
   get document() {
     return this.parent;
   }
@@ -110,7 +114,7 @@ class Page {
   }
 
   async wrapPage() {
-    const { paddingTop, paddingBottom } = this.style;
+    const { paddingTop = 0, paddingBottom = 0 } = this.style;
     const height = this.height - paddingTop - paddingBottom;
     let nextSubpage = this.initialSubpage.wrap(height);
 

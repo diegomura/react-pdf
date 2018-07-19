@@ -19,6 +19,10 @@ class Text extends Base {
     this.renderCallback = props.render;
   }
 
+  get name() {
+    return 'Text';
+  }
+
   get src() {
     return null;
   }
@@ -72,7 +76,7 @@ class Text extends Base {
     // For Text, we also inherit relative positioning because this is how
     // we define text yOffset, which should be applied for inline childs also
     if (
-      this.parent.constructor.name === 'Text' &&
+      this.parent.name === 'Text' &&
       this.parent.style.position === 'relative'
     ) {
       styles.top = styles.top || this.parent.style.top;

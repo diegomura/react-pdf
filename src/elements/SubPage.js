@@ -8,6 +8,10 @@ class SubPage extends Base {
     this._number = number;
   }
 
+  get name() {
+    return 'SubPage';
+  }
+
   get page() {
     return this.parent;
   }

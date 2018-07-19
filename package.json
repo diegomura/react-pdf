@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/react-pdf",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -92,6 +92,9 @@
       "git add"
     ]
   },
+  "files": [
+    "dist"
+  ],
   "bundlesize": [
     {
       "path": "./dist/react-pdf.cjs.min.js",

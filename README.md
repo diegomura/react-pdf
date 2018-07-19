@@ -9,20 +9,14 @@ React renderer for creating PDF files on the browser, mobile and server
 
 ## How to install
 ```sh
-# You should always install the core package
-yarn add @react-pdf/core
-
-# And also the bindings that you need
-yarn add @react-pdf/node
-yarn add @react-pdf/dom
-yarn add @react-pdf/mobile
+yarn add @react-pdf/react-pdf
 ```
 
 ## How it works
 
 ```jsx
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/core';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/core';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -54,27 +48,17 @@ const MyDocument = () => (
 
 ### Render in DOM
 
-**Note:** you need add `transform-loader` like [in example](/examples/dom-bindings/webpack.config.js#L16)
-
 ```jsx
-// to fix "regeneratorRuntime is not defined", which causes by "@react-pdf/*"
-// also you can use "babel-polyfill"
-import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const App = () => (
-  <div>
-    <MyDocument />
-  </div>
-);
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ```
 
 ### Save in a file
 ```jsx
-import ReactPDF from '@react-pdf/node';
+import React from 'react';
+import ReactPDF from '@react-pdf/react-pdf';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```

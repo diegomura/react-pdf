@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/react-pdf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -12,8 +12,8 @@
     "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"
   },
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "build": "rimraf ./dist && rollup -c",
+    "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
     "prepublish": "npm run build",
     "precommit": "git add . && lint-staged",

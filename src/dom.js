@@ -3,6 +3,13 @@ import React, { Component } from 'react';
 import omit from 'lodash.omit';
 import {
   pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  StyleSheet,
   PDFRenderer,
   createElement,
   Document as Container,
@@ -79,3 +86,17 @@ export {
   PDFRenderer,
   createElement,
 } from './index';
+
+export default {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  Document,
+  StyleSheet,
+  PDFRenderer,
+  createElement,
+};

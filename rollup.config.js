@@ -24,9 +24,9 @@ const commonPlugins = [
   sourceMaps(),
   nodeResolve(),
   babel({
-    exclude: 'node_modules/**',
-    presets: ['stage-0', 'react'],
+    presets: [['es2015', { modules: false }], 'react', 'stage-2'],
     plugins: ['external-helpers'],
+    runtimeHelpers: true,
   }),
 ];
 

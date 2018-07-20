@@ -33,7 +33,7 @@ const getEmojiSource = () => emojiSource;
 
 const getHyphenationCallback = () => hyphenationCallback;
 
-const load = async (fontFamily, doc) => {
+const load = async function(fontFamily, doc) {
   const font = fonts[fontFamily];
 
   // We cache the font to avoid fetching it many time
@@ -63,7 +63,7 @@ const load = async (fontFamily, doc) => {
   }
 };
 
-const reset = () => {
+const reset = function() {
   for (const font in fonts) {
     if (fonts.hasOwnProperty(font)) {
       fonts[font].loaded = false;
@@ -71,7 +71,7 @@ const reset = () => {
   }
 };
 
-const clear = () => {
+const clear = function() {
   fonts = {};
 };
 

@@ -60,7 +60,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
     "bundlesize": "^0.17.0",
     "eslint": "^3.19.0",
@@ -98,11 +98,11 @@
   "bundlesize": [
     {
       "path": "./dist/react-pdf.cjs.min.js",
-      "maxSize": "15kB"
+      "maxSize": "17kB"
     },
     {
       "path": "./dist/react-pdf.browser.cjs.min.js",
-      "maxSize": "15kB"
+      "maxSize": "17kB"
     }
   ],
   "collective": {

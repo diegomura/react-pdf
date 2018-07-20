@@ -16,7 +16,7 @@ import {
 
 export * from './index';
 
-const renderToStream = async element => {
+const renderToStream = async function(element) {
   const container = createElement('ROOT');
   const node = PDFRenderer.createContainer(container);
 
@@ -25,7 +25,7 @@ const renderToStream = async element => {
   return await pdf(container).toBuffer();
 };
 
-const renderToFile = async (element, filePath, callback) => {
+const renderToFile = async function(element, filePath, callback) {
   const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
   output.pipe(stream);
@@ -43,7 +43,7 @@ const renderToFile = async (element, filePath, callback) => {
   });
 };
 
-const render = async (element, filePath, callback) => {
+const render = async function(element, filePath, callback) {
   return await renderToFile(element, filePath, callback);
 };
 

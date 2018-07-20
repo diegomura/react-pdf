@@ -17,9 +17,9 @@
     tiny-inflate "^1.0.2"
     unicode-trie "^0.3.0"
 
-"@react-pdf/pdfkit@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.1.0.tgz#6e059aca96d44c5ae4503147628700a222ddbb21"
+"@react-pdf/pdfkit@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.1.1.tgz#07a35d193b145809359dfc5657827fe62390d292"
   dependencies:
     "@react-pdf/fontkit" "^1.11.0"
     "@react-pdf/png-js" "^1.0.0"

@@ -47,7 +47,6 @@ const MyDocument = () => (
 ```
 
 ### Render in DOM
-
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';

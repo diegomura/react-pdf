@@ -66,9 +66,9 @@
     hypher "^0.2.4"
     linebreak "^0.1.2"
 
-"@textkit/pdf-renderer@^0.1.7":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.8.tgz#00bfabca45835e79a6f7cd5638f6ee62f50e4006"
+"@textkit/pdf-renderer@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.9.tgz#a136975a2aff1055e31c3606c42066d00ea3dcf1"
 
 "@textkit/text-decoration-engine@^0.1.8":
   version "0.1.8"

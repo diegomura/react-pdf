@@ -48,7 +48,7 @@ const serverConfig = Object.assign({}, configBase, {
   ],
   plugins: configBase.plugins.concat(
     replace({
-      __SERVER__: JSON.stringify(true),
+      BROWSER: JSON.stringify(false),
     }),
   ),
   external: configBase.external.concat(['fs', 'path']),
@@ -70,8 +70,7 @@ const browserConfig = Object.assign({}, configBase, {
   ],
   plugins: configBase.plugins.concat(
     replace({
-      __SERVER__: JSON.stringify(false),
-      'png-js': 'png-js/png.js',
+      BROWSER: JSON.stringify(true),
     }),
     ignore(['fs', 'path']),
   ),

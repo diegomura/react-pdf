@@ -29,14 +29,14 @@ class StandardFont {
 
   getGlyph(id) {
     if (!this.glyphs[id]) {
-      this.glyphs[id] = {
-        id,
-        _font: this.src,
-        name: this.src.font.characterToGlyph(id),
-      };
+      this.glyphs[id] = this.src.font.characterToGlyph(id);
     }
 
-    return this.glyphs[id];
+    return {
+      id,
+      _font: this.src,
+      name: this.glyphs[id],
+    };
   }
 
   hasGlyphForCodePoint(codePoint) {

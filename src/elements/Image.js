@@ -116,8 +116,8 @@ class Image extends Base {
 
       this.root.image(
         this.image.data,
-        left + padding.left + xOffset,
-        top + padding.top,
+        left + padding.left + margin.left + xOffset,
+        top + padding.top + margin.top,
         { width: imageWidth, height: containerHeight },
       );
     }

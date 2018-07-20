@@ -17,12 +17,16 @@
     tiny-inflate "^1.0.2"
     unicode-trie "^0.3.0"
 
-"@react-pdf/pdfkit@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.0.0.tgz#752408c11f77466e7c85054b40de636b4e5b0d0d"
+"@react-pdf/pdfkit@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.1.0.tgz#6e059aca96d44c5ae4503147628700a222ddbb21"
   dependencies:
     "@react-pdf/fontkit" "^1.11.0"
-    png-js ">=0.1.0"
+    "@react-pdf/png-js" "^1.0.0"
+
+"@react-pdf/png-js@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
 
 "@react-pdf/script-itemizer@^0.1.8":
   version "0.1.8"
@@ -3762,10 +3766,6 @@ pinkie@^2.0.0:
 pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
-
-png-js@0.1.1, png-js@>=0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/png-js/-/png-js-0.1.1.tgz#1cc7c212303acabe74263ec3ac78009580242d93"
 
 prebuild-install@^2.3.0:
   version "2.5.3"

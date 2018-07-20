@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch';
+import PNG from '@react-pdf/png-js';
 import JPEG from './jpeg';
-
-const PNG = require('png-js');
 
 const Buffer = require('buffer/').Buffer;
 

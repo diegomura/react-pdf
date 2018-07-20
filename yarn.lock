@@ -47,32 +47,32 @@
   dependencies:
     unicode-trie "^0.3.0"
 
-"@textkit/justification-engine@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.6.tgz#7027572bb04823dd8f510b4440356e5af60acdb7"
+"@textkit/justification-engine@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.7.tgz#e296b404f09901684ccd6f0fe3713e39000dfd82"
   dependencies:
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
-"@textkit/line-fragment-generator@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.6.tgz#fb055a8db116606c80f7bc8de2cb12596a107449"
+"@textkit/line-fragment-generator@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.7.tgz#fdd117c01aadc95216e5d17aeaaa7bbc23d9a65b"
 
-"@textkit/linebreaker@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.6.tgz#8446b4f3602fb8c3135f7f2eeae01088010ed602"
+"@textkit/linebreaker@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.7.tgz#dd976a3e8b1d4c48a67e52d379900fc886f0d3ae"
   dependencies:
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.4"
     linebreak "^0.1.2"
 
-"@textkit/pdf-renderer@^0.1.6":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.7.tgz#5d517f78f4dbcd459c446811c32b2d2a2565c5d2"
+"@textkit/pdf-renderer@^0.1.7":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.8.tgz#00bfabca45835e79a6f7cd5638f6ee62f50e4006"
 
-"@textkit/text-decoration-engine@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.7.tgz#15ffb21c1c1d638016eae81ef6c8531f6ef5dfa4"
+"@textkit/text-decoration-engine@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.8.tgz#8695fdea4a7731b53d82192dce7100120233e6d7"
 
 abab@^1.0.3:
   version "1.0.4"

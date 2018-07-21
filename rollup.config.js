@@ -3,6 +3,7 @@ import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import sourceMaps from 'rollup-plugin-sourcemaps';
+import bundleSize from 'rollup-plugin-bundle-size';
 import ignore from 'rollup-plugin-ignore';
 import pkg from './package.json';
 
@@ -28,14 +29,16 @@ const commonPlugins = [
     plugins: ['external-helpers'],
     runtimeHelpers: true,
   }),
+  bundleSize(),
 ];
 
 const configBase = {
   globals: { react: 'React' },
-  external: ['fbjs/lib/emptyObject', 'fbjs/lib/warning'].concat(
-    Object.keys(pkg.dependencies),
-    Object.keys(pkg.peerDependencies),
-  ),
+  external: [
+    'fbjs/lib/emptyObject',
+    'fbjs/lib/warning',
+    '@react-pdf/pdfkit',
+  ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
   sourcemap: true,
 };

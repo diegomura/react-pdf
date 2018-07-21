@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/react-pdf",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@react-pdf/fontkit": "^1.11.0",
-    "@react-pdf/pdfkit": "^1.1.1",
+    "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/script-itemizer": "^0.1.9",
     "@react-pdf/textkit-core": "0.1.15",
@@ -76,6 +76,7 @@
     "rimraf": "^2.6.1",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-bundle-size": "https://github.com/vimeo/rollup-plugin-bundle-size",
     "rollup-plugin-ignore": "^1.0.3",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",

@@ -5,6 +5,7 @@ React renderer for creating PDF files on the browser, mobile and server
 [![npm](https://img.shields.io/npm/v/@react-pdf/core.svg)](https://www.npmjs.com/package/@react-pdf/core)
 [![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
 [![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-pdf)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ## How to install
@@ -47,7 +48,6 @@ const MyDocument = () => (
 ```
 
 ### Render in DOM
-
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';

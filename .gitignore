@@ -1,6 +1,6 @@
 node_modules
 *.log
-lib
+dist
 .jshintrc
 assets
 .idea

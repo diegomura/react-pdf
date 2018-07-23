@@ -5,24 +5,19 @@ React renderer for creating PDF files on the browser, mobile and server
 [![npm](https://img.shields.io/npm/v/@react-pdf/core.svg)](https://www.npmjs.com/package/@react-pdf/core)
 [![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
 [![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-pdf)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ## How to install
 ```sh
-# You should always install the core package
-yarn add @react-pdf/core
-
-# And also the bindings that you need
-yarn add @react-pdf/node
-yarn add @react-pdf/dom
-yarn add @react-pdf/mobile
+yarn add @react-pdf/react-pdf
 ```
 
 ## How it works
 
 ```jsx
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/core';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/core';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -53,30 +48,17 @@ const MyDocument = () => (
 ```
 
 ### Render in DOM
-
-**Note:** you need add `transform-loader` like [in example](/examples/dom-bindings/webpack.config.js#L16)
-
-**Note:** Import `Document` from `@react-pdf/dom` instead of the core when used in the DOM
-
 ```jsx
-// to fix "regeneratorRuntime is not defined", which causes by "@react-pdf/*"
-// also you can use "babel-polyfill"
-import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const App = () => (
-  <div>
-    <MyDocument />
-  </div>
-);
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ```
 
 ### Save in a file
 ```jsx
-import ReactPDF from '@react-pdf/node';
+import React from 'react';
+import ReactPDF from '@react-pdf/react-pdf';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```

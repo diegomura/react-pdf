@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     backgroundColor: '#e4e4e4',
-    textDecoration: 'underline',
     textTransform: 'uppercase',
     fontFamily: 'Roboto',
   },
@@ -34,12 +33,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   text: {
-    flexGrow: 3,
+    width: '60%',
     margin: 10,
     fontFamily: 'Oswald',
+    textAlign: 'justify',
   },
   fill1: {
-    flexGrow: 2,
+    width: '40%',
     backgroundColor: '#e14427',
   },
   fill2: {

@@ -28,7 +28,8 @@
     "document": false,
     "navigator": false,
     "window": false,
-    "BROWSER": false
+    "BROWSER": false,
+    "URL": false
   },
   "rules": {
     "camelcase": 0,

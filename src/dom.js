@@ -1,6 +1,5 @@
-/* global URL */
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
-import omit from 'lodash.omit';
 import {
   pdf,
   View,
@@ -31,10 +30,11 @@ export class Document extends Component {
   componentDidMount() {
     this.mountNode = PDFRenderer.createContainer(this.container);
 
+    // Omit some props
+    const { height, width, children, ...props } = this.props;
+
     PDFRenderer.updateContainer(
-      <Container {...omit(['height', 'width', 'children'], this.props)}>
-        {this.props.children}
-      </Container>,
+      <Container {...props}>{this.props.children}</Container>,
       this.mountNode,
       this,
     );
@@ -47,10 +47,11 @@ export class Document extends Component {
   }
 
   componentDidUpdate() {
+    // Omit some props
+    const { height, width, children, ...props } = this.props;
+
     PDFRenderer.updateContainer(
-      <Container {...omit(['height', 'width', 'children'], this.props)}>
-        {this.props.children}
-      </Container>,
+      <Container {...props}>{this.props.children}</Container>,
       this.mountNode,
       this,
     );

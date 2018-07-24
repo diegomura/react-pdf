@@ -7,8 +7,6 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "main": "./index.js",
   "dependencies": {
-    "@react-pdf/core": "^0.7.7-12",
-    "@react-pdf/node": "^0.7.7-12",
     "chalk": "^2.0.1",
     "lodash.times": "^4.3.2",
     "prop-types": "^15.6.0",

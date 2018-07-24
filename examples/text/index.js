@@ -2,8 +2,7 @@
 /* eslint react/jsx-sort-props: 0 */
 
 import React from 'react';
-import ReactPDF from '@react-pdf/node';
-import {
+import ReactPDF, {
   Document,
   Page,
   View,
@@ -11,7 +10,7 @@ import {
   Link,
   Font,
   StyleSheet,
-} from '@react-pdf/core';
+} from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   title: {

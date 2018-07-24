@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Text, View, StyleSheet } from '@react-pdf/core';
+import { Link, Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   container: {

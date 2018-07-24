@@ -1,5 +1,5 @@
 import React from 'react';
-import {
+import ReactPDF, {
   Text,
   Document,
   Font,
@@ -7,8 +7,7 @@ import {
   StyleSheet,
   Image,
   View,
-} from '@react-pdf/core';
-import ReactPDF from '@react-pdf/node';
+} from '../../dist/react-pdf.es.js';
 import Header from './Header';
 import Education from './Education';
 import Experience from './Experience';

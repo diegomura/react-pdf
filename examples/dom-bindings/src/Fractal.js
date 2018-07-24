@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
-import { Text, View } from '@react-pdf/core';
+import { Text, View } from '@react-pdf/react-pdf';
 import styles from './styles';
 import palette from './palette';
 

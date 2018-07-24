@@ -2,8 +2,13 @@
 /* eslint react/jsx-sort-props: 0 */
 
 import React from 'react';
-import ReactPDF from '@react-pdf/node';
-import { Document, Page, View, Text, StyleSheet } from '@react-pdf/core';
+import ReactPDF, {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+} from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   select: {
@@ -41,14 +46,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Knob = ({ value }) =>
+const Knob = ({ value }) => (
   <View style={[styles.knob, { left: `${value - 3}%` }]}>
-    <Text style={{ fontSize: 8, marginTop: 4 }}>
-      {value}
-    </Text>
-  </View>;
+    <Text style={{ fontSize: 8, marginTop: 4 }}>{value}</Text>
+  </View>
+);
 
-const Select = props =>
+const Select = props => (
   <View style={styles.select}>
     <Text style={[styles.text, { marginRight: '15px' }]}>0%</Text>
     <View style={styles.bar}>
@@ -56,7 +60,8 @@ const Select = props =>
       <Knob {...props} />
     </View>
     <Text style={[styles.text, { marginLeft: '15px' }]}>100%</Text>
-  </View>;
+  </View>
+);
 
 const doc = (
   <Document>

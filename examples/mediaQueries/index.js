@@ -2,8 +2,12 @@
 /* eslint react/jsx-sort-props: 0 */
 
 import React from 'react';
-import ReactPDF from '@react-pdf/node';
-import { Document, Page, View, StyleSheet } from '@react-pdf/core';
+import ReactPDF, {
+  Document,
+  Page,
+  View,
+  StyleSheet,
+} from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   body: {

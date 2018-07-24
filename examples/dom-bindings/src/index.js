@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime'; // to fix `regeneratorRuntime is not defined`, which causes by `@react-pdf/*`
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

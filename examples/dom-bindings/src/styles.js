@@ -1,4 +1,4 @@
-import { StyleSheet } from '@react-pdf/core';
+import { StyleSheet } from '@react-pdf/react-pdf';
 
 export default StyleSheet.create({
   row: {

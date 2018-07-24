@@ -1,6 +1,5 @@
 import React from 'react';
-import { Document } from '@react-pdf/dom';
-import { Page } from '@react-pdf/core';
+import { Document, Page } from '@react-pdf/react-pdf';
 import Fractal from './Fractal';
 
 const App = () => (

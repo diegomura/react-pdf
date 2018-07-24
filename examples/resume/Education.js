@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/core';
+import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 
 import Title from './Title';
 

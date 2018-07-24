@@ -2,8 +2,14 @@
 /* eslint react/jsx-sort-props: 0 */
 
 import React from 'react';
-import ReactPDF from '@react-pdf/node';
-import { Document, Page, Text, Image, StyleSheet, Font } from '@react-pdf/core';
+import ReactPDF, {
+  Document,
+  Page,
+  Text,
+  Image,
+  StyleSheet,
+  Font,
+} from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   page: { flexDirection: 'row' },

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet } from '@react-pdf/core';
+import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   item: {

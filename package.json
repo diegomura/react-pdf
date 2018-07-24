@@ -11,6 +11,7 @@
     "./dist/react-pdf.es.js": "./dist/react-pdf.browser.es.js",
     "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"
   },
+  "react-native": "./dist/react-pdf.native.cjs.js",
   "scripts": {
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
@@ -23,7 +24,6 @@
   },
   "dependencies": {
     "@react-pdf/fontkit": "^1.11.0",
-    "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/script-itemizer": "^0.1.9",
     "@react-pdf/textkit-core": "0.1.15",
@@ -77,6 +77,8 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-bundle-size": "https://github.com/vimeo/rollup-plugin-bundle-size",
     "rollup-plugin-ignore": "^1.0.3",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.2.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-sourcemaps": "^0.4.2",

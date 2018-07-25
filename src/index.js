@@ -1,5 +1,3 @@
-'use strict';
-
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
 import { createElement } from './elements';

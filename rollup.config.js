@@ -21,16 +21,30 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const commonPlugins = [
-  sourceMaps(),
-  nodeResolve(),
-  babel({
-    presets: [['es2015', { modules: false }], 'react', 'stage-2'],
-    plugins: ['external-helpers'],
-    runtimeHelpers: true,
-  }),
-  bundleSize(),
-];
+const babelConfig = ({ browser }) => ({
+  babelrc: false,
+  exclude: 'node_modules/**',
+  presets: [
+    [
+      'env',
+      {
+        loose: true,
+        modules: false,
+        targets: browser
+          ? { browsers: ['last 2 versions', 'IE 11'] }
+          : { node: '8.11.3' },
+      },
+    ],
+    'react',
+  ],
+  plugins: [
+    'external-helpers',
+    'transform-object-rest-spread',
+    ['transform-class-properties', { loose: true }],
+  ],
+});
+
+const commonPlugins = [sourceMaps(), nodeResolve(), bundleSize()];
 
 const configBase = {
   globals: { react: 'React' },
@@ -50,6 +64,7 @@ const serverConfig = Object.assign({}, configBase, {
     getCJS({ file: 'dist/react-pdf.cjs.js' }),
   ],
   plugins: configBase.plugins.concat(
+    babel(babelConfig({ browser: false })),
     replace({
       BROWSER: JSON.stringify(false),
     }),
@@ -72,6 +87,7 @@ const browserConfig = Object.assign({}, configBase, {
     getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
   ],
   plugins: configBase.plugins.concat(
+    babel(babelConfig({ browser: true })),
     replace({
       BROWSER: JSON.stringify(true),
     }),

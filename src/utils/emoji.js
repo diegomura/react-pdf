@@ -22,17 +22,10 @@ const buildEmojiUrl = emoji => {
   return `${url}${getCodePoints(emoji)}.${format}`;
 };
 
-let warnPrinted = false;
 export const fetchEmojis = string => {
   const emojiSource = Font.getEmojiSource();
 
-  if (!emojiSource || !emojiSource.url) {
-    if (!warnPrinted) {
-      console.warn('Emoji source not registered');
-      warnPrinted = true;
-    }
-    return [];
-  }
+  if (!emojiSource || !emojiSource.url) return [];
 
   const promises = [];
 

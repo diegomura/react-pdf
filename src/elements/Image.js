@@ -70,7 +70,7 @@ class Image extends Base {
 
       return {
         width: imageWidth,
-        height: this.calculateHeight(imageWidth),
+        height: imageWidth / this.ratio,
       };
     }
 
@@ -111,14 +111,17 @@ class Image extends Base {
       // Makes image centered inside Yoga node
       const containerWidth = this.width - margin.right - margin.left;
       const containerHeight = this.height - margin.top - margin.bottom;
-      const imageWidth = containerHeight * this.ratio;
-      const xOffset = (containerWidth - imageWidth) / 2;
+      const imageWidth = Math.min(containerHeight * this.ratio, containerWidth);
+      const xOffset = Math.max((containerWidth - imageWidth) / 2, 0);
 
       this.root.image(
         this.image.data,
         left + padding.left + margin.left + xOffset,
         top + padding.top + margin.top,
-        { width: imageWidth, height: containerHeight },
+        {
+          width: imageWidth - padding.left - padding.right,
+          height: containerHeight - padding.top - padding.bottom,
+        },
       );
     }
   }

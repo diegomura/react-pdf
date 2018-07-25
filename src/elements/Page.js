@@ -63,10 +63,10 @@ class Page {
 
   get padding() {
     return {
-      top: this.style.paddingTop,
-      right: this.style.paddingRight,
-      bottom: this.style.paddingBottom,
-      left: this.style.paddingLeft,
+      top: this.style.paddingTop || 0,
+      right: this.style.paddingRight || 0,
+      bottom: this.style.paddingBottom || 0,
+      left: this.style.paddingLeft || 0,
     };
   }
 

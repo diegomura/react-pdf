@@ -17,7 +17,7 @@ yarn add @react-pdf/react-pdf
 
 ```jsx
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/core';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/react-pdf';
 
 // Create styles
 const styles = StyleSheet.create({

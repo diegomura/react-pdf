@@ -200,6 +200,8 @@ class SubPage extends Base {
     }
 
     await this.renderChildren(page);
+
+    this.page.renderRuler();
   }
 }
 

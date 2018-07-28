@@ -1,6 +1,7 @@
 import SubPage from './SubPage';
 import StyleSheet from '../stylesheet';
 import sizes from '../utils/pageSizes';
+import Ruler from '../mixins/ruler';
 
 class Page {
   static defaultProps = {
@@ -77,6 +78,7 @@ class Page {
 
     const { size } = this.props;
 
+    // Calculate size
     if (typeof size === 'string') {
       this._size = sizes[size.toUpperCase()];
     } else if (Array.isArray(size)) {
@@ -87,12 +89,34 @@ class Page {
       throw new Error(`Invalid Page size: ${size}`);
     }
 
+    // Adjust size for ruler
+    if (this.hasHorizontalRuler) {
+      this._size[0] += this.getRulerWidth();
+    }
+
+    if (this.hasVerticalRuler) {
+      this._size[1] += this.getRulerWidth();
+    }
+
     return this._size;
   }
 
   applyProps() {
     this.style = StyleSheet.resolve(this.props.style);
 
+    // Add some padding if ruler present, so we can see the whole page inside it
+    const rulerWidth = this.getRulerWidth();
+    const { paddingTop = 0, paddingLeft = 0 } = this.style;
+
+    if (this.hasHorizontalRuler()) {
+      this.style.paddingTop = paddingTop + rulerWidth;
+    }
+
+    if (this.hasVerticalRuler()) {
+      this.style.paddingLeft = paddingLeft + rulerWidth;
+    }
+
+    // Apply props to page childrens
     for (let i = 0; i < this.children.length; i++) {
       this.children[i].applyProps();
     }
@@ -130,5 +154,7 @@ class Page {
     }
   }
 }
+
+Object.assign(Page.prototype, Ruler);
 
 export default Page;

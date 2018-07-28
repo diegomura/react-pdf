@@ -263,11 +263,12 @@ class Base extends Node {
     if (backgroundColor) {
       this.root
         .fillColor(backgroundColor)
-        .rect(
+        .roundedRect(
           left + margin.left,
           top + margin.top,
           width - margin.left - margin.right,
           height - margin.top - margin.bottom,
+          5,
         )
         .fill();
     }

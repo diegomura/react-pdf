@@ -30,7 +30,6 @@ class Image extends Base {
   measureImage(width, widthMode, height, heightMode) {
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
-
     const pageArea =
       this.page.height -
       pagePadding.top -
@@ -49,7 +48,8 @@ class Image extends Base {
 
     if (
       heightMode === Yoga.MEASURE_MODE_EXACTLY &&
-      widthMode === Yoga.MEASURE_MODE_UNDEFINED
+      (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
+        widthMode === Yoga.MEASURE_MODE_UNDEFINED)
     ) {
       return { width: height * this.ratio };
     }

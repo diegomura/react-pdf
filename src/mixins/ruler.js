@@ -37,8 +37,8 @@ const Ruler = {
     if (typeof value === 'string') {
       const percentage = matchPercentage(value);
       if (percentage) {
-        const width = this.width - RULER_WIDTH;
-        return Math.round(width / percentage);
+        const width = this.width - (this.hasVerticalRuler() ? RULER_WIDTH : 0);
+        return width / percentage;
       }
       throw new Error('Page: Invalid horizontal steps value');
     }
@@ -54,8 +54,9 @@ const Ruler = {
     if (typeof value === 'string') {
       const percentage = matchPercentage(value);
       if (percentage) {
-        const height = this.height - RULER_WIDTH;
-        return Math.round(height / percentage);
+        const height =
+          this.height - (this.hasHorizontalRuler() ? RULER_WIDTH : 0);
+        return height / percentage;
       }
       throw new Error('Page: Invalid horizontal steps value');
     }
@@ -103,7 +104,7 @@ const Ruler = {
         .lineTo(offset + step, RULER_WIDTH)
         .stroke(LINE_COLOR)
         .fillColor('black')
-        .text(`${step}`, offset + step + 1, 1);
+        .text(`${Math.round(step)}`, offset + step + 1, 1);
     });
 
     hRange.map(step => {
@@ -133,7 +134,7 @@ const Ruler = {
         .lineTo(RULER_WIDTH, offset + step)
         .stroke(LINE_COLOR)
         .fillColor('black')
-        .text(`${step}`, 1, offset + step + 1);
+        .text(`${Math.round(step)}`, 1, offset + step + 1);
     });
 
     vRange.map(step => {

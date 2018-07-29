@@ -171,10 +171,15 @@ class Base extends Node {
         this.setPosition(Yoga.EDGE_LEFT, this.left || value);
         break;
       case 'width':
-      case 'height':
         this.setDimension(
           attribute,
           this[attribute] - this.marginLeft - this.marginRight || value,
+        );
+        break;
+      case 'height':
+        this.setDimension(
+          attribute,
+          this[attribute] - this.marginTop - this.marginBottom || value,
         );
         break;
       case 'minHeight':

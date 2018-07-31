@@ -2,7 +2,6 @@
   "presets": [
     ["env", {
       "loose": true,
-      "modules": false,
       "targets": {
         "node": "8.11.3",
         "browsers": ["last 2 versions", "IE 11"]

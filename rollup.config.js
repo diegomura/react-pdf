@@ -24,7 +24,6 @@ const getESM = override => Object.assign({}, esm, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
   presets: [
     [
       'env',
@@ -61,7 +60,6 @@ const babelConfig = ({ browser }) => ({
     'react',
   ],
   plugins: [
-    'transform-runtime',
     'external-helpers',
     'transform-object-rest-spread',
     ['transform-class-properties', { loose: true }],

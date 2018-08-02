@@ -24,6 +24,7 @@ const getESM = override => Object.assign({}, esm, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
+  runtimeHelpers: true,
   presets: [
     [
       'env',
@@ -31,13 +32,36 @@ const babelConfig = ({ browser }) => ({
         loose: true,
         modules: false,
         targets: browser
-          ? { browsers: ['last 2 versions', 'IE 11'] }
+          ? {
+              browsers: [
+                '> 0.05%',
+                'not dead',
+                'not ie 11',
+                'not android 4.1',
+                'not android 4.2',
+                'not android 4.4',
+                'not android 4.4.3',
+                'not chrome 29',
+                'not chrome 43',
+                'not chrome 49',
+                'not chrome 54',
+                'not firefox 47',
+                'not firefox 48',
+                'not firefox 51',
+                'not firefox 52',
+                'not ios 8.1',
+                'not ios 9.3',
+                'not safari 5.1',
+                'not safari 9.1',
+              ],
+            }
           : { node: '8.11.3' },
       },
     ],
     'react',
   ],
   plugins: [
+    'transform-runtime',
     'external-helpers',
     'transform-object-rest-spread',
     ['transform-class-properties', { loose: true }],
@@ -52,6 +76,15 @@ const configBase = {
     'fbjs/lib/emptyObject',
     'fbjs/lib/warning',
     '@react-pdf/pdfkit',
+    'babel-runtime/core-js/promise',
+    'babel-runtime/helpers/objectWithoutProperties',
+    'babel-runtime/helpers/extends',
+    'babel-runtime/core-js/object/keys',
+    'babel-runtime/core-js/array/from',
+    'babel-runtime/core-js/json/stringify',
+    'babel-runtime/core-js/object/assign',
+    'babel-runtime/helpers/asyncToGenerator',
+    'babel-runtime/core-js/get-iterator',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
   sourcemap: true,

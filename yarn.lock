@@ -29,15 +29,15 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
 
-"@react-pdf/script-itemizer@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.9.tgz#51a5959eb283663a543f54cbcf648d4dcde75f9f"
+"@react-pdf/script-itemizer@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.10.tgz#d5906f14956edb0e87d659f4e8e6fde8a1df6318"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@0.1.15":
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.15.tgz#ed21c13e321a91f56b865cba31c0e1ebcca30563"
+"@react-pdf/textkit-core@^0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.16.tgz#b75c2568416f2fc29f96c2052b49ee1819d4ef61"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"
@@ -48,32 +48,32 @@
   dependencies:
     unicode-trie "^0.3.0"
 
-"@textkit/justification-engine@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.7.tgz#e296b404f09901684ccd6f0fe3713e39000dfd82"
+"@textkit/justification-engine@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/justification-engine/-/justification-engine-0.1.8.tgz#2e063f3556d056da07c4d96a14e1b92e45820bb1"
   dependencies:
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
-"@textkit/line-fragment-generator@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.7.tgz#fdd117c01aadc95216e5d17aeaaa7bbc23d9a65b"
+"@textkit/line-fragment-generator@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.8.tgz#e49b71723a24b524f5470e8f6759ccb56fa5e10d"
 
-"@textkit/linebreaker@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.7.tgz#dd976a3e8b1d4c48a67e52d379900fc886f0d3ae"
+"@textkit/linebreaker@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.8.tgz#cafb2de39d1a61d4f6bd387573a3261f940dde7c"
   dependencies:
     hyphenation.en-us "^0.2.1"
     hypher "^0.2.4"
     linebreak "^0.1.2"
 
-"@textkit/pdf-renderer@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.9.tgz#a136975a2aff1055e31c3606c42066d00ea3dcf1"
+"@textkit/pdf-renderer@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.10.tgz#0e076b2eae0d0f8e3430ae1b4378d9b6c46244ba"
 
-"@textkit/text-decoration-engine@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.8.tgz#8695fdea4a7731b53d82192dce7100120233e6d7"
+"@textkit/text-decoration-engine@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@textkit/text-decoration-engine/-/text-decoration-engine-0.1.9.tgz#fa77241d891892d1ebf2232c0afc54229b46361b"
 
 abab@^1.0.3:
   version "1.0.4"
@@ -854,6 +854,12 @@ babel-plugin-transform-regenerator@^6.22.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.26.0.tgz#e0703696fbde27f0a3efcacf8b4dca2f7b3a8f2f"
   dependencies:
     regenerator-transform "^0.10.0"
+
+babel-plugin-transform-runtime@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
+  dependencies:
+    babel-runtime "^6.22.0"
 
 babel-plugin-transform-strict-mode@^6.24.1:
   version "6.24.1"

@@ -2,7 +2,7 @@
 
 React renderer for creating PDF files on the browser, mobile and server
 
-[![npm](https://img.shields.io/npm/v/@react-pdf/core.svg)](https://www.npmjs.com/package/@react-pdf/react-pdf)
+[![npm](https://img.shields.io/npm/v/@react-pdf/core.svg)](https://www.npmjs.com/package/@react-pdf/renderer)
 [![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
 [![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-pdf)
@@ -10,14 +10,14 @@ React renderer for creating PDF files on the browser, mobile and server
 
 ## How to install
 ```sh
-yarn add @react-pdf/react-pdf
+yarn add @react-pdf/renderer
 ```
 
 ## How it works
 
 ```jsx
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/react-pdf';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -58,7 +58,7 @@ ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ### Save in a file
 ```jsx
 import React from 'react';
-import ReactPDF from '@react-pdf/react-pdf';
+import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```

@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/react-pdf",
+  "name": "@react-pdf/renderer",
   "version": "1.0.0-alpha.12",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

@@ -6,7 +6,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@react-pdf/react-pdf": "../../dist/react-pdf.es.js",
+    "@react-pdf/renderer": "../../dist/react-pdf.es.js",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"

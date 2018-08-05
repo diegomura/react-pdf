@@ -6,7 +6,7 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "dist/react-pdf.cjs.js",
-  "module": "dist/react-pdf.esm.js",
+  "module": "dist/react-pdf.es.js",
   "browser": {
     "./dist/react-pdf.es.js": "./dist/react-pdf.browser.es.js",
     "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"

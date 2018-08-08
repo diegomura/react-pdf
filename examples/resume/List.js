@@ -32,7 +32,9 @@ export const Item = ({ children }) => (
       <Text style={styles.bulletPoint}>•</Text>
     </View>
     <View style={styles.itemRightColumn}>
-      <Text style={styles.itemContent}>{children}</Text>
+      <Text log style={styles.itemContent}>
+        {children}
+      </Text>
     </View>
   </View>
 );

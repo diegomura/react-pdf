@@ -62,7 +62,6 @@ class Text extends Base {
       this.engine.layout(width);
 
       return {
-        height: this.engine.height,
         width: Math.min(width, this.engine.width),
       };
     }
@@ -151,6 +150,18 @@ class Text extends Base {
   async render(page) {
     this.drawBackgroundColor();
     this.drawBorders();
+
+    // Calculate text layout if needed
+    // This can happen if measureText was not called by Yoga
+    if (!this.engine.computed) {
+      this.engine.layout(
+        this.width -
+          this.margin.left -
+          this.margin.right -
+          this.padding.left -
+          this.padding.right,
+      );
+    }
 
     if (this.props.debug) {
       this.debug();

@@ -90,11 +90,11 @@ class Page {
     }
 
     // Adjust size for ruler
-    if (this.hasHorizontalRuler) {
+    if (this.hasHorizontalRuler()) {
       this._size[0] += this.getRulerWidth();
     }
 
-    if (this.hasVerticalRuler) {
+    if (this.hasVerticalRuler()) {
       this._size[1] += this.getRulerWidth();
     }
 

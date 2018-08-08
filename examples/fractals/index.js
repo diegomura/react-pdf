@@ -11,7 +11,7 @@ const doc = (
     subject="Rendering fractals with react-pdf"
     keywords={['react', 'pdf', 'fractals']}
   >
-    <Page size="A4">
+    <Page size="A4" debug>
       <Fractal steps={18} />
     </Page>
 

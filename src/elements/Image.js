@@ -51,7 +51,7 @@ class Image extends Base {
       (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
         widthMode === Yoga.MEASURE_MODE_UNDEFINED)
     ) {
-      return { width: height * this.ratio };
+      return { width: Math.min(height * this.ratio, width) };
     }
 
     if (

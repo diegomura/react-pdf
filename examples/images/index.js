@@ -12,15 +12,21 @@ import ReactPDF, {
 } from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
-  page: { flexDirection: 'row' },
-  image: { flexGrow: 8, backgroundColor: 'grey', padding: 10 },
+  page: {
+    flexDirection: 'row',
+  },
+  image: {
+    width: '60%',
+    padding: 10,
+    backgroundColor: 'grey',
+  },
   text: {
-    flexGrow: 3,
-    fontFamily: 'Oswald',
+    width: '40%',
     backgroundColor: '#f0f0f0',
-    color: '#212121',
     paddingHorizontal: 50,
     paddingVertical: 30,
+    fontFamily: 'Oswald',
+    color: '#212121',
   },
 });
 

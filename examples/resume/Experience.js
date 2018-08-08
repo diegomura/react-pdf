@@ -116,23 +116,23 @@ const experienceData = [
     ],
     position: 'Moisture Farmer',
   },
-].map(experience => {
-  const { company, date, details, position } = experience;
-  return (
-    <ExperienceEntry
-      company={company}
-      date={date}
-      details={details}
-      key={company + position}
-      position={position}
-    />
-  );
-});
+];
 
 const Experience = () => (
   <View>
     <Title>Experience</Title>
-    {experienceData}
+    {experienceData.map(experience => {
+        const { company, date, details, position } = experience;
+        return (
+            <ExperienceEntry
+                company={company}
+                date={date}
+                details={details}
+                key={company + position}
+                position={position}
+            />
+        );
+    })}
   </View>
 );
 

@@ -15,7 +15,12 @@ const PERCENT = /^(\d+)?%$/g;
 
 class Base extends Node {
   static defaultProps = {
-    style: {},
+    style: {
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 0,
+    },
     minPresenceAhead: 0,
   };
 
@@ -263,17 +268,26 @@ class Base extends Node {
   drawBackgroundColor() {
     const margin = this.margin;
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const { backgroundColor } = this.getComputedStyles();
+    const styles = this.getComputedStyles();
 
-    if (backgroundColor) {
+    // We can't set individual radius for each corner on PDF, so we get the higher
+    const borderRadius =
+      Math.max(
+        styles.borderTopLeftRadius,
+        styles.borderTopRightRadius,
+        styles.borderBottomRightRadius,
+        styles.borderBottomLeftRadius,
+      ) || 0;
+
+    if (styles.backgroundColor) {
       this.root
-        .fillColor(backgroundColor)
+        .fillColor(styles.backgroundColor)
         .roundedRect(
           left + margin.left,
           top + margin.top,
           width - margin.left - margin.right,
           height - margin.top - margin.bottom,
-          5,
+          borderRadius,
         )
         .fill();
     }

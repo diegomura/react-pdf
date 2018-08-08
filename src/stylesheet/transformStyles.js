@@ -30,6 +30,20 @@ const styleShortHands = {
     paddingTop: true,
     paddingBottom: true,
   },
+  border: {
+    borderTopColor: true,
+    borderTopStyle: true,
+    borderTopWidth: true,
+    borderRightColor: true,
+    borderRightStyle: true,
+    borderRightWidth: true,
+    borderBottomColor: true,
+    borderBottomStyle: true,
+    borderBottomWidth: true,
+    borderLeftColor: true,
+    borderLeftStyle: true,
+    borderLeftWidth: true,
+  },
   borderTop: {
     borderTopColor: true,
     borderTopStyle: true,
@@ -112,6 +126,7 @@ const expandStyles = style => {
       case 'padding':
       case 'paddingHorizontal':
       case 'paddingVertical':
+      case 'border':
       case 'borderTop':
       case 'borderRight':
       case 'borderBottom':

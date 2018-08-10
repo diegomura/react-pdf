@@ -16,48 +16,41 @@ import {
 } from './index';
 
 export class Document extends Component {
-  container = createElement('ROOT');
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      document: undefined,
-    };
-  }
+  mountNode = null;
 
   componentDidMount() {
-    this.mountNode = PDFRenderer.createContainer(this.container);
-
-    // Omit some props
-    const { height, width, children, ...props } = this.props;
-
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
-
-    pdf(this.container)
-      .toBlob()
-      .then(blob => {
-        this.embed.src = URL.createObjectURL(blob);
-      });
+    this.renderDocument();
   }
 
   componentDidUpdate() {
-    // Omit some props
-    const { height, width, children, ...props } = this.props;
-
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
+    this.renderDocument();
   }
 
   componentWillUnmount() {
     PDFRenderer.updateContainer(null, this.mountNode, this);
+  }
+
+  renderDocument() {
+    // Create new root container for this render
+    const container = createElement('ROOT');
+
+    // Create renderer container
+    this.mountNode = PDFRenderer.createContainer(container);
+
+    // Omit some props
+    const { height, width, children, ...props } = this.props;
+
+    PDFRenderer.updateContainer(
+      <Container {...props}>{this.props.children}</Container>,
+      this.mountNode,
+      this,
+    );
+
+    pdf(container)
+      .toBlob()
+      .then(blob => {
+        this.embed.src = URL.createObjectURL(blob);
+      });
   }
 
   render() {

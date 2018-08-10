@@ -12,26 +12,20 @@ const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
 const pdf = input => {
-  async function parse(input) {
-    const document = input.document;
-
-    await document.render();
-
-    if (document.props.onRender) {
-      document.props.onRender();
-    }
-
-    return input;
-  }
-
   async function toBlob() {
-    await parse(input);
+    await input.document.render();
 
     const stream = input.pipe(BlobStream());
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {
-        resolve(stream.toBlob('application/pdf'));
+        const blob = stream.toBlob('application/pdf');
+
+        if (input.document.props.onRender) {
+          input.document.props.onRender({ blob });
+        }
+
+        resolve(blob);
       });
 
       stream.on('error', reject);
@@ -39,12 +33,16 @@ const pdf = input => {
   }
 
   async function toBuffer() {
-    return await parse(input);
+    if (input.document.props.onRender) {
+      input.document.props.onRender();
+    }
+
+    return await input.document.render();
   }
 
   async function toString() {
     let result = '';
-    const render = await parse(input);
+    const render = input.document.render();
 
     return new Promise(resolve => {
       render.on('data', function(buffer) {
@@ -52,6 +50,10 @@ const pdf = input => {
       });
 
       render.on('end', function() {
+        if (input.document.props.onRender) {
+          input.document.props.onRender({ string: result });
+        }
+
         resolve(result);
       });
     });

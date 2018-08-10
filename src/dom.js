@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
+import { flatStyles } from './utils/styles';
 import {
   pdf,
   View,
@@ -15,8 +16,6 @@ import {
 } from './index';
 
 export class Document extends Component {
-  static displayName = 'Document';
-
   container = createElement('ROOT');
 
   constructor(props) {
@@ -62,18 +61,22 @@ export class Document extends Component {
   }
 
   render() {
-    const { width, height } = this.props;
+    const { className, width, height, style } = this.props;
 
     return (
       <iframe
+        className={className}
         ref={container => {
           this.embed = container;
         }}
-        style={{ width, height }}
+        style={Array.isArray(style) ? flatStyles(style) : style}
       />
     );
   }
 }
+
+Document.displayName = 'Document';
+Document.defaultProps = { style: {} };
 
 export {
   pdf,

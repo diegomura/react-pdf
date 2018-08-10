@@ -10,3 +10,6 @@ export const inheritedProperties = [
   'visibility',
   'wordSpacing',
 ];
+
+export const flatStyles = stylesArray =>
+  stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});

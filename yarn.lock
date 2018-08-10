@@ -35,9 +35,9 @@
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.18.tgz#a697b83e030c349ccef75a9384ef6021b02f51b6"
+"@react-pdf/textkit-core@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.19.tgz#77de2c41f9cbb521f2b8396902ad3505ede8cc14"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"

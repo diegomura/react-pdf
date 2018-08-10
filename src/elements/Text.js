@@ -62,6 +62,7 @@ class Text extends Base {
       this.engine.layout(width);
 
       return {
+        height: this.engine.height,
         width: Math.min(width, this.engine.width),
       };
     }

@@ -13,14 +13,7 @@ const Document = 'DOCUMENT';
 
 const pdf = input => {
   async function parse(input) {
-    const document = input.document;
-
-    await document.render();
-
-    if (document.props.onRender) {
-      document.props.onRender();
-    }
-
+    await input.document.render();
     return input;
   }
 
@@ -31,7 +24,13 @@ const pdf = input => {
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {
-        resolve(stream.toBlob('application/pdf'));
+        const blob = stream.toBlob('application/pdf');
+
+        if (input.document.props.onRender) {
+          input.document.props.onRender({ blob });
+        }
+
+        resolve(blob);
       });
 
       stream.on('error', reject);
@@ -39,6 +38,10 @@ const pdf = input => {
   }
 
   async function toBuffer() {
+    if (input.document.props.onRender) {
+      input.document.props.onRender();
+    }
+
     return await parse(input);
   }
 
@@ -52,6 +55,10 @@ const pdf = input => {
       });
 
       render.on('end', function() {
+        if (input.document.props.onRender) {
+          input.document.props.onRender({ string: result });
+        }
+
         resolve(result);
       });
     });

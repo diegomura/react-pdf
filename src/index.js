@@ -12,13 +12,8 @@ const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
 const pdf = input => {
-  async function parse(input) {
-    await input.document.render();
-    return input;
-  }
-
   async function toBlob() {
-    await parse(input);
+    await input.document.render();
 
     const stream = input.pipe(BlobStream());
 
@@ -42,12 +37,12 @@ const pdf = input => {
       input.document.props.onRender();
     }
 
-    return await parse(input);
+    return await input.document.render();
   }
 
   async function toString() {
     let result = '';
-    const render = await parse(input);
+    const render = input.document.render();
 
     return new Promise(resolve => {
       render.on('data', function(buffer) {

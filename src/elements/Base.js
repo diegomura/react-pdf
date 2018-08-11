@@ -310,6 +310,10 @@ class Base extends Node {
     return clone;
   }
 
+  update() {
+    // noop
+  }
+
   async renderChildren(page) {
     const absoluteChilds = this.children.filter(child => child.isAbsolute());
     const nonAbsoluteChilds = this.children.filter(

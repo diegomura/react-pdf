@@ -137,6 +137,10 @@ class Page {
     this.children[0].removeChild(child);
   }
 
+  update() {
+    // noop
+  }
+
   async wrapPage() {
     const { paddingTop = 0, paddingBottom = 0 } = this.style;
     const height = this.height - paddingTop - paddingBottom;

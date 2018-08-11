@@ -105,7 +105,7 @@ const PDFRenderer = ReactFiberReconciler({
     },
 
     commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      // noop
+      instance.update();
     },
   },
 });

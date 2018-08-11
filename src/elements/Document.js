@@ -132,6 +132,10 @@ class Document {
     }
   }
 
+  update() {
+    // noop
+  }
+
   async wrapChildren() {
     for (let i = 0; i < this.children.length; i++) {
       await this.children[i].wrapPage();

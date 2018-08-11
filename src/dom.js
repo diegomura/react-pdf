@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { flatStyles } from './utils/styles';
 import {
   pdf,
@@ -15,7 +15,7 @@ import {
   Document as Container,
 } from './index';
 
-export class Document extends Component {
+export class Document extends PureComponent {
   mountNode = null;
 
   componentDidMount() {
@@ -38,7 +38,7 @@ export class Document extends Component {
     this.mountNode = PDFRenderer.createContainer(container);
 
     // Omit some props
-    const { height, width, children, ...props } = this.props;
+    const { height, width, style, className, children, ...props } = this.props;
 
     PDFRenderer.updateContainer(
       <Container {...props}>{this.props.children}</Container>,
@@ -48,13 +48,22 @@ export class Document extends Component {
 
     pdf(container)
       .toBlob()
-      .then(blob => {
-        this.embed.src = URL.createObjectURL(blob);
-      });
+      .then(this.updateDocument);
   }
 
+  updateDocument = blob => {
+    if (this.embed) {
+      this.embed.src = URL.createObjectURL(blob);
+    }
+  };
+
   render() {
-    const { className, width, height, style } = this.props;
+    const { className, width, height, shallow } = this.props;
+    const style = { ...this.props.style, width, height };
+
+    if (shallow) {
+      return null;
+    }
 
     return (
       <iframe

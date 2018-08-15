@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from 'react';
+import warning from 'fbjs/lib/warning';
 import { flatStyles } from './utils/styles';
 import {
   pdf,
@@ -11,73 +12,109 @@ import {
   Image,
   StyleSheet,
   PDFRenderer,
-  createElement,
-  Document as Container,
+  createInstance,
+  Document as PDFDocument,
 } from './index';
 
-export class Document extends PureComponent {
-  mountNode = null;
+export const Document = ({ insideViewer, children, ...props }) => {
+  const doc = <PDFDocument {...props}>{children}</PDFDocument>;
+
+  // TODO: Add documentation link to warning message
+  warning(
+    insideViewer,
+    'Please move <Document> inside a PDFViewer or passed to PDFDownloadLink or BlobProvider. Document as root will be deprecated in future versions',
+  );
+
+  return insideViewer ? doc : <PDFViewer {...props}>{doc}</PDFViewer>;
+};
+
+class InternalBlobProvider extends React.PureComponent {
+  state = { blob: null, url: null, loading: true, error: null };
+
+  constructor(props) {
+    super(props);
+
+    // Create new root container for this render
+    this.instance = pdf();
+  }
 
   componentDidMount() {
     this.renderDocument();
+    this.onDocumentUpdate();
   }
 
   componentDidUpdate() {
     this.renderDocument();
-  }
 
-  componentWillUnmount() {
-    PDFRenderer.updateContainer(null, this.mountNode, this);
+    if (this.instance.isDirty()) {
+      this.onDocumentUpdate();
+    }
   }
 
   renderDocument() {
-    // Create new root container for this render
-    const container = createElement('ROOT');
-
-    // Create renderer container
-    this.mountNode = PDFRenderer.createContainer(container);
-
-    // Omit some props
-    const { height, width, style, className, children, ...props } = this.props;
-
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
-
-    pdf(container)
-      .toBlob()
-      .then(this.updateDocument);
+    this.instance.updateContainer(this.props.document);
   }
 
-  updateDocument = blob => {
-    if (this.embed) {
-      this.embed.src = URL.createObjectURL(blob);
-    }
-  };
+  onDocumentUpdate() {
+    this.instance
+      .toBlob()
+      .then(blob => {
+        this.setState({ blob, url: URL.createObjectURL(blob), loading: false });
+      })
+      .catch(error => {
+        this.setState({ error });
+        throw error;
+      });
+  }
 
   render() {
-    const { className, width = null, height = null, style } = this.props;
-
-    return (
-      <iframe
-        className={className}
-        ref={container => {
-          this.embed = container;
-        }}
-        style={
-          Array.isArray(style)
-            ? { width, height, ...flatStyles(style) }
-            : { width, height, ...style }
-        }
-      />
-    );
+    return this.props.children(this.state);
   }
 }
 
-Document.displayName = 'Document';
-Document.defaultProps = { style: {} };
+export const BlobProvider = ({ document: doc, children }) => {
+  const element = React.cloneElement(doc, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={element}>{children}</InternalBlobProvider>
+  );
+};
+
+export const PDFViewer = ({ className, style, children }) => {
+  const doc = React.cloneElement(children, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={doc}>
+      {({ url }) => (
+        <iframe
+          className={className}
+          src={url}
+          style={Array.isArray(style) ? flatStyles(style) : style}
+        />
+      )}
+    </InternalBlobProvider>
+  );
+};
+
+export const PDFDownloadLink = ({
+  document: doc,
+  className,
+  style,
+  fileName,
+  children,
+}) => {
+  const element = React.cloneElement(doc, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={element}>
+      {params => (
+        <a download={fileName} href={params.url}>
+          {typeof children === 'function' ? children(params) : children}
+        </a>
+      )}
+    </InternalBlobProvider>
+  );
+};
 
 export {
   pdf,
@@ -89,7 +126,7 @@ export {
   Image,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
 export default {
@@ -101,7 +138,10 @@ export default {
   Font,
   Image,
   Document,
+  PDFViewer,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  BlobProvider,
+  createInstance,
+  PDFDownloadLink,
 };

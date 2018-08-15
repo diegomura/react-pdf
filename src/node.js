@@ -22,7 +22,7 @@ const renderToStream = async function(element) {
 
   PDFRenderer.updateContainer(element, node, null);
 
-  return await pdf(container).toBuffer();
+  return pdf(container).toBuffer();
 };
 
 const renderToFile = async function(element, filePath, callback) {
@@ -43,8 +43,8 @@ const renderToFile = async function(element, filePath, callback) {
   });
 };
 
-const render = async function(element, filePath, callback) {
-  return await renderToFile(element, filePath, callback);
+const render = function(element, filePath, callback) {
+  return renderToFile(element, filePath, callback);
 };
 
 export default {

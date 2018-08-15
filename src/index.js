@@ -33,11 +33,13 @@ const pdf = input => {
   }
 
   async function toBuffer() {
+    await input.document.render();
+
     if (input.document.props.onRender) {
       input.document.props.onRender();
     }
 
-    return await input.document.render();
+    return input;
   }
 
   async function toString() {

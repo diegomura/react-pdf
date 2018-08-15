@@ -9,26 +9,28 @@ import {
   Page,
   Font,
   Image,
+  Document,
   StyleSheet,
   PDFRenderer,
   createElement,
-  Document as Container,
 } from './index';
 
-export class Document extends PureComponent {
-  mountNode = null;
+export class BlobProvider extends React.PureComponent {
+  state = { blob: null, url: null };
 
   componentDidMount() {
     this.renderDocument();
   }
 
-  componentDidUpdate() {
-    this.renderDocument();
-  }
-
-  componentWillUnmount() {
-    PDFRenderer.updateContainer(null, this.mountNode, this);
-  }
+  // shouldComponentUpdate(newProps, newState) {
+  //   return (
+  //     this.props.document !== newProps.document
+  //   );
+  // }
+  //
+  // componentDidUpdate() {
+  //   this.renderDocument();
+  // }
 
   renderDocument() {
     // Create new root container for this render
@@ -38,47 +40,49 @@ export class Document extends PureComponent {
     this.mountNode = PDFRenderer.createContainer(container);
 
     // Omit some props
-    const { height, width, style, className, children, ...props } = this.props;
+    const { height, width, style, className, ...props } = this.props;
 
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
+    PDFRenderer.updateContainer(this.props.document, this.mountNode, this);
 
     pdf(container)
       .toBlob()
-      .then(this.updateDocument);
+      .then(blob => {
+        this.setState({ blob, url: URL.createObjectURL(blob) });
+      });
   }
 
-  updateDocument = blob => {
-    if (this.embed) {
-      this.embed.src = URL.createObjectURL(blob);
-    }
-  };
-
   render() {
-    const { className, width, height, shallow } = this.props;
-    const style = { ...this.props.style, width, height };
-
-    if (shallow) {
-      return null;
-    }
-
-    return (
-      <iframe
-        className={className}
-        ref={container => {
-          this.embed = container;
-        }}
-        style={Array.isArray(style) ? flatStyles(style) : style}
-      />
-    );
+    return this.props.children(this.state);
   }
 }
 
-Document.displayName = 'Document';
-Document.defaultProps = { style: {} };
+export const PDFViewer = ({ className, style, children }) => (
+  <BlobProvider document={children}>
+    {({ url }) => (
+      <iframe
+        className={className}
+        src={url}
+        style={Array.isArray(style) ? flatStyles(style) : style}
+      />
+    )}
+  </BlobProvider>
+);
+
+export const PDFDownloadLink = ({
+  document: doc,
+  className,
+  style,
+  fileName,
+  children,
+}) => (
+  <BlobProvider document={doc}>
+    {({ url }) => (
+      <a download={fileName} href={url}>
+        {children}
+      </a>
+    )}
+  </BlobProvider>
+);
 
 export {
   pdf,
@@ -88,6 +92,7 @@ export {
   Page,
   Font,
   Image,
+  Document,
   StyleSheet,
   PDFRenderer,
   createElement,
@@ -102,7 +107,10 @@ export default {
   Font,
   Image,
   Document,
+  PDFViewer,
   StyleSheet,
   PDFRenderer,
+  BlobProvider,
   createElement,
+  PDFDownloadLink,
 };

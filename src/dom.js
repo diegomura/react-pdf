@@ -61,7 +61,7 @@ export class Document extends Component {
   }
 
   render() {
-    const { className, width, height, style } = this.props;
+    const { className, width = null, height = null, style } = this.props;
 
     return (
       <iframe
@@ -69,7 +69,11 @@ export class Document extends Component {
         ref={container => {
           this.embed = container;
         }}
-        style={Array.isArray(style) ? flatStyles(style) : style}
+        style={
+          Array.isArray(style)
+            ? { width, height, ...flatStyles(style) }
+            : { width, height, ...style }
+        }
       />
     );
   }

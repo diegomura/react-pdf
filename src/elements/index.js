@@ -1,17 +1,18 @@
-import PDFDocument from '@react-pdf/pdfkit';
+import Root from './Root';
 import Document from './Document';
 import Page from './Page';
 import View from './View';
 import Text from './Text';
 import Link from './Link';
 import Image from './Image';
+import TextInstance from './TextInstance';
 
 function createElement(type, props, root) {
   let instance;
 
   switch (type) {
     case 'ROOT':
-      instance = new PDFDocument({ autoFirstPage: false });
+      instance = new Root();
       break;
     case 'DOCUMENT':
       instance = new Document(root, props);
@@ -21,6 +22,9 @@ function createElement(type, props, root) {
       break;
     case 'TEXT':
       instance = new Text(root, props);
+      break;
+    case 'TEXT_INSTANCE':
+      instance = new TextInstance(root, props);
       break;
     case 'LINK':
       instance = new Link(root, props);

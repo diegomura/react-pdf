@@ -53,6 +53,7 @@ class Base extends Node {
       child.parent = this;
       this.children.push(child);
       this.layout.insertChild(child.layout, this.layout.getChildCount());
+      this.root.markDirty();
     }
   }
 
@@ -63,6 +64,7 @@ class Base extends Node {
       child.parent = null;
       this.children.splice(index, 1);
       this.layout.removeChild(child.layout);
+      this.root.markDirty();
     }
   }
 
@@ -75,13 +77,11 @@ class Base extends Node {
   applyProps() {
     const { size, orientation } = this.page;
 
-    this.style =
-      this.style ||
-      StyleSheet.resolve(this.props.style, {
-        width: size[0],
-        height: size[1],
-        orientation: orientation,
-      });
+    this.style = StyleSheet.resolve(this.props.style, {
+      width: size[0],
+      height: size[1],
+      orientation: orientation,
+    });
 
     toPairsIn(this.style).map(([attribute, value]) => {
       this.applyStyle(attribute, value);
@@ -176,16 +176,8 @@ class Base extends Node {
         this.setPosition(Yoga.EDGE_LEFT, this.left || value);
         break;
       case 'width':
-        this.setDimension(
-          attribute,
-          this[attribute] - this.marginLeft - this.marginRight || value,
-        );
-        break;
       case 'height':
-        this.setDimension(
-          attribute,
-          this[attribute] - this.marginTop - this.marginBottom || value,
-        );
+        this.setDimension(attribute, value);
         break;
       case 'minHeight':
       case 'maxHeight':
@@ -280,7 +272,7 @@ class Base extends Node {
       ) || 0;
 
     if (styles.backgroundColor) {
-      this.root
+      this.root.instance
         .fillColor(styles.backgroundColor)
         .roundedRect(
           left + margin.left,
@@ -310,8 +302,23 @@ class Base extends Node {
     return clone;
   }
 
-  update() {
-    // noop
+  reset() {
+    super.reset();
+
+    this.children.forEach(child => {
+      child.reset();
+    });
+  }
+
+  update(newProps) {
+    this.reset();
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      newProps,
+    );
+    this.root.markDirty();
   }
 
   async renderChildren(page) {

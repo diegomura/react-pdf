@@ -114,7 +114,7 @@ class Image extends Base {
       const imageWidth = Math.min(containerHeight * this.ratio, containerWidth);
       const xOffset = Math.max((containerWidth - imageWidth) / 2, 0);
 
-      this.root.image(
+      this.root.instance.image(
         this.image.data,
         left + padding.left + margin.left + xOffset,
         top + padding.top + margin.top,

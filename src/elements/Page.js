@@ -137,8 +137,14 @@ class Page {
     this.children[0].removeChild(child);
   }
 
-  update() {
-    // noop
+  update(newProps) {
+    this.props = { ...Page.defaultProps, ...newProps };
+  }
+
+  reset() {
+    this.children.forEach(child => {
+      child.reset();
+    });
   }
 
   async wrapPage() {

@@ -1,18 +1,18 @@
 const Debug = {
   debugText(layout) {
-    this.root.fontSize(4);
-    this.root.opacity(1);
-    this.root.fillColor('black');
-    this.root.text(
+    this.root.instance.fontSize(4);
+    this.root.instance.opacity(1);
+    this.root.instance.fillColor('black');
+    this.root.instance.text(
       `${layout.width} x ${layout.height}`,
       layout.left,
       Math.max(layout.top - 4, 0),
     );
   },
   debugContent(layout, margin, padding) {
-    this.root.fillColor('#a1c6e7');
-    this.root.opacity(0.5);
-    this.root
+    this.root.instance.fillColor('#a1c6e7');
+    this.root.instance.opacity(0.5);
+    this.root.instance
       .rect(
         layout.left + padding.left + margin.left,
         layout.top + padding.top + margin.top,
@@ -30,11 +30,11 @@ const Debug = {
       .fill();
   },
   debugPadding(layout, margin, padding) {
-    this.root.fillColor('#c4deb9');
-    this.root.opacity(0.5);
+    this.root.instance.fillColor('#c4deb9');
+    this.root.instance.opacity(0.5);
 
     // Padding top
-    this.root
+    this.root.instance
       .rect(
         layout.left + margin.left + padding.left,
         layout.top + margin.top,
@@ -48,7 +48,7 @@ const Debug = {
       .fill();
 
     // Padding left
-    this.root
+    this.root.instance
       .rect(
         layout.left + margin.left,
         layout.top + margin.top,
@@ -58,7 +58,7 @@ const Debug = {
       .fill();
 
     // Padding right
-    this.root
+    this.root.instance
       .rect(
         layout.left + layout.width - padding.right - margin.right,
         layout.top + margin.top,
@@ -68,7 +68,7 @@ const Debug = {
       .fill();
 
     // Padding bottom
-    this.root
+    this.root.instance
       .rect(
         layout.left + padding.left + margin.left,
         layout.top + layout.height - padding.bottom - margin.bottom,
@@ -82,11 +82,11 @@ const Debug = {
       .fill();
   },
   debugMargin(layout, margin) {
-    this.root.fillColor('#f8cca1');
-    this.root.opacity(0.5);
+    this.root.instance.fillColor('#f8cca1');
+    this.root.instance.opacity(0.5);
 
     // Margin top
-    this.root
+    this.root.instance
       .rect(
         layout.left + margin.left,
         layout.top,
@@ -96,10 +96,12 @@ const Debug = {
       .fill();
 
     // Margin left
-    this.root.rect(layout.left, layout.top, margin.left, layout.height).fill();
+    this.root.instance
+      .rect(layout.left, layout.top, margin.left, layout.height)
+      .fill();
 
     // Margin right
-    this.root
+    this.root.instance
       .rect(
         layout.left + layout.width - margin.right,
         layout.top,
@@ -109,7 +111,7 @@ const Debug = {
       .fill();
 
     // Margin bottom
-    this.root
+    this.root.instance
       .rect(
         layout.left + margin.left,
         layout.top + layout.height - margin.bottom,
@@ -123,14 +125,14 @@ const Debug = {
     const padding = this.padding;
     const margin = this.margin;
 
-    this.root.save();
+    this.root.instance.save();
 
     this.debugContent(layout, margin, padding);
     this.debugPadding(layout, margin, padding);
     this.debugMargin(layout, margin);
     this.debugText(layout);
 
-    this.root.restore();
+    this.root.instance.restore();
   },
 };
 

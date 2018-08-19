@@ -3844,9 +3844,9 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-reconciler@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.7.0.tgz#9614894103e5f138deeeb5eabaf3ee80eb1d026d"
+react-reconciler@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.12.0.tgz#dd3ecd98f64a2d8449298dadab041910cafd2849"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"

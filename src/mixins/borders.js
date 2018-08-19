@@ -2,19 +2,19 @@ const Borders = {
   traceBorder(style, width) {
     switch (style) {
       case 'dashed':
-        this.root.dash(width * 2, { space: width * 1.2 }).stroke();
+        this.root.instance.dash(width * 2, { space: width * 1.2 }).stroke();
         break;
       case 'dotted':
-        this.root.dash(width, { space: width * 1.2 }).stroke();
+        this.root.instance.dash(width, { space: width * 1.2 }).stroke();
         break;
       default:
-        this.root.stroke();
+        this.root.instance.stroke();
     }
   },
   drawHorizontalBorder(p1, p2, r1, r2, width, color, style) {
     if (width <= 0) return;
 
-    this.root
+    this.root.instance
       .lineWidth(width)
       .moveTo(p1[0], p1[1] + r1)
       .quadraticCurveTo(p1[0], p1[1], p1[0] + r1, p1[1])
@@ -27,7 +27,7 @@ const Borders = {
   drawVerticalBorder(p1, p2, r1, r2, width, color, style) {
     if (width <= 0) return;
 
-    this.root
+    this.root.instance
       .lineWidth(width)
       .moveTo(p1[0] + r1, p1[1])
       .quadraticCurveTo(p1[0], p1[1], p1[0], p1[1] - r1)
@@ -61,7 +61,7 @@ const Borders = {
     } = this.getComputedStyles();
 
     // Save current graphics stack
-    this.root.save();
+    this.root.instance.save();
 
     // border top
     this.drawHorizontalBorder(
@@ -148,7 +148,7 @@ const Borders = {
     );
 
     // Restore graphics stack to avoid side effects
-    this.root.restore();
+    this.root.instance.restore();
   },
 };
 

@@ -103,10 +103,10 @@ class TextEngine {
     );
 
     this.element.children.forEach(child => {
-      if (typeof child === 'string') {
+      if (child.value) {
         const obj = Font.getFont(fontFamily);
         const font = obj ? obj.data : fontFamily;
-        const string = this.transformText(child, textTransform);
+        const string = this.transformText(child.value, textTransform);
 
         fragments.push({
           string,
@@ -227,7 +227,7 @@ class TextEngine {
       line.rect.y += top + margin.top + padding.top - initialX;
     });
 
-    const renderer = new PDFRenderer(this.element.root, {
+    const renderer = new PDFRenderer(this.element.root.instance, {
       outlineLines: false,
     });
     renderer.render(this.container);

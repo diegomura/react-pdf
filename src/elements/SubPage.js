@@ -179,7 +179,7 @@ class SubPage extends Base {
   }
 
   async render(page) {
-    this.root.addPage({
+    this.root.instance.addPage({
       size: this.size,
       layout: this.props.orientation,
       margin: 0,
@@ -189,9 +189,14 @@ class SubPage extends Base {
     this.layoutFixedElements();
 
     if (this.style.backgroundColor) {
-      this.root
+      this.root.instance
         .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.root.page.width, this.root.page.height)
+        .rect(
+          0,
+          0,
+          this.root.instance.page.width,
+          this.root.instance.page.height,
+        )
         .fill();
     }
 

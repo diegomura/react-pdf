@@ -5,23 +5,20 @@ import emptyObject from 'fbjs/lib/emptyObject';
 import { createElement } from './elements';
 
 const PDFRenderer = ReactFiberReconciler({
+  supportsMutation: true,
   appendInitialChild(parentInstance, child) {
-    if (parentInstance.appendChild) {
-      parentInstance.appendChild(child);
-    } else {
-      parentInstance.document = child;
-    }
+    parentInstance.appendChild(child);
   },
 
   createInstance(type, props, internalInstanceHandle) {
     return createElement(type, props, internalInstanceHandle);
   },
 
-  createTextInstance(text, rootContainerInstance, internalInstanceHandle) {
-    return text;
+  createTextInstance(text, rootContainerInstance) {
+    return createElement('TEXT_INSTANCE', text, rootContainerInstance);
   },
 
-  finalizeInitialChildren(domElement, type, props) {
+  finalizeInitialChildren(element, type, props) {
     return false;
   },
 
@@ -33,15 +30,33 @@ const PDFRenderer = ReactFiberReconciler({
     // Noop
   },
 
-  prepareUpdate(domElement, type, oldProps, newProps) {
-    return true;
+  prepareUpdate(element, type, oldProps, newProps) {
+    const oldPropsKeys = Object.keys(oldProps);
+    const newPropsKeys = Object.keys(newProps);
+
+    if (oldPropsKeys.length !== newPropsKeys.length) {
+      return true;
+    }
+
+    for (let i = 0; i < oldPropsKeys.length; i++) {
+      const propName = oldPropsKeys[i];
+
+      if (
+        propName !== 'children' &&
+        oldProps[propName] !== newProps[propName]
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   },
 
   resetAfterCommit() {
     // Noop
   },
 
-  resetTextContent(domElement) {
+  resetTextContent(element) {
     // Noop
   },
 
@@ -57,33 +72,17 @@ const PDFRenderer = ReactFiberReconciler({
     return false;
   },
 
-  now: () => {},
+  now: Date.now,
 
   useSyncScheduling: true,
 
   mutation: {
     appendChild(parentInstance, child) {
-      if (parentInstance.appendChild) {
-        parentInstance.appendChild(child);
-      } else {
-        parentInstance.document = child;
-      }
+      parentInstance.appendChild(child);
     },
 
     appendChildToContainer(parentInstance, child) {
-      if (parentInstance.appendChild) {
-        parentInstance.appendChild(child);
-      } else {
-        parentInstance.document = child;
-      }
-    },
-
-    insertBefore(parentInstance, child, beforeChild) {
-      // noob
-    },
-
-    insertInContainerBefore(parentInstance, child, beforeChild) {
-      // noob
+      parentInstance.appendChild(child);
     },
 
     removeChild(parentInstance, child) {
@@ -91,21 +90,15 @@ const PDFRenderer = ReactFiberReconciler({
     },
 
     removeChildFromContainer(parentInstance, child) {
-      if (parentInstance.removeChild) {
-        parentInstance.removeChild(child);
-      }
+      parentInstance.removeChild(child);
     },
 
     commitTextUpdate(textInstance, oldText, newText) {
-      textInstance = newText;
-    },
-
-    commitMount(instance, type, newProps) {
-      // Noop
+      textInstance.update(newText);
     },
 
     commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      instance.update();
+      instance.update(newProps);
     },
   },
 });

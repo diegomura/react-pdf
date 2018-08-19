@@ -18,33 +18,33 @@ import {
 export class BlobProvider extends React.PureComponent {
   state = { blob: null, url: null };
 
-  componentDidMount() {
-    this.renderDocument();
+  constructor(props) {
+    super(props);
+
+    // Create new root container for this render
+    this.container = createElement('ROOT');
+    this.mountNode = PDFRenderer.createContainer(this.container);
   }
 
-  // shouldComponentUpdate(newProps, newState) {
-  //   return (
-  //     this.props.document !== newProps.document
-  //   );
-  // }
-  //
-  // componentDidUpdate() {
-  //   this.renderDocument();
-  // }
+  componentDidMount() {
+    this.renderDocument();
+    this.onDocumentUpdate();
+  }
+
+  componentDidUpdate() {
+    this.renderDocument();
+
+    if (this.container.isDirty) {
+      this.onDocumentUpdate();
+    }
+  }
 
   renderDocument() {
-    // Create new root container for this render
-    const container = createElement('ROOT');
-
-    // Create renderer container
-    this.mountNode = PDFRenderer.createContainer(container);
-
-    // Omit some props
-    const { height, width, style, className, ...props } = this.props;
-
     PDFRenderer.updateContainer(this.props.document, this.mountNode, this);
+  }
 
-    pdf(container)
+  onDocumentUpdate() {
+    pdf(this.container)
       .toBlob()
       .then(blob => {
         this.setState({ blob, url: URL.createObjectURL(blob) });

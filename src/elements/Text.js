@@ -28,16 +28,19 @@ class Text extends Base {
   }
 
   appendChild(child) {
-    if (typeof child === 'string') {
-      this.children.push(child);
-    } else {
+    if (child) {
       child.parent = this;
       this.children.push(child);
     }
   }
 
   removeChild(child) {
-    this.children = null;
+    const index = this.children.indexOf(child);
+
+    if (index !== -1) {
+      child.parent = null;
+      this.children.splice(index, 1);
+    }
   }
 
   measureText(width, widthMode, height, heightMode) {

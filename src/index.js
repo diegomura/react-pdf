@@ -13,9 +13,9 @@ const Document = 'DOCUMENT';
 
 const pdf = input => {
   async function toBlob() {
-    await input.document.render();
+    await input.render();
 
-    const stream = input.pipe(BlobStream());
+    const stream = input.instance.pipe(BlobStream());
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {

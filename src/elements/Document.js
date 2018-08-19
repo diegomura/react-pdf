@@ -45,20 +45,20 @@ class Document {
 
     // The object keys need to start with a capital letter by the PDF spec
     if (title) {
-      this.root.info.Title = title;
+      this.root.instance.info.Title = title;
     }
     if (author) {
-      this.root.info.Author = author;
+      this.root.instance.info.Author = author;
     }
     if (subject) {
-      this.root.info.Subject = subject;
+      this.root.instance.info.Subject = subject;
     }
     if (keywords) {
-      this.root.info.Keywords = keywords;
+      this.root.instance.info.Keywords = keywords;
     }
 
-    this.root.info.Creator = creator || 'react-pdf';
-    this.root.info.Producer = producer || 'react-pdf';
+    this.root.instance.info.Creator = creator || 'react-pdf';
+    this.root.instance.info.Producer = producer || 'react-pdf';
   }
 
   async loadFonts() {
@@ -69,7 +69,7 @@ class Document {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style.fontFamily, this.root));
+        promises.push(Font.load(node.style.fontFamily, this.root.instance));
       }
 
       if (node.children) {
@@ -132,8 +132,14 @@ class Document {
     }
   }
 
-  update() {
-    // noop
+  update(newProps) {
+    this.props = newProps;
+  }
+
+  reset() {
+    this.children.forEach(child => {
+      child.reset();
+    });
   }
 
   async wrapChildren() {
@@ -150,14 +156,16 @@ class Document {
 
   async render() {
     try {
+      console.time('render');
       this.addMetaData();
       this.applyProps();
       await this.loadEmojis();
       await this.loadAssets();
       await this.wrapChildren();
       await this.renderChildren();
-      this.root.end();
+      this.root.instance.end();
       Font.reset();
+      console.timeEnd('render');
     } catch (e) {
       throw e;
     }

@@ -58,7 +58,7 @@ ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ### Save in a file
 ```jsx
 import React from 'react';
-import ReactPDF from '@react-pdf/renderer';
+import ReactPDF from '@react-pdf/node';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```

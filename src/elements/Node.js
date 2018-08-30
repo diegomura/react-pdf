@@ -245,6 +245,7 @@ class Node {
     this.height = null;
     this.padding = {};
     this.margin = {};
+    this.children.forEach(child => child.reset());
   }
 }
 

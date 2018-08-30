@@ -94,10 +94,6 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  isEmpty() {
-    return this.engine.lines.length === 0;
-  }
-
   hasOrphans(linesQuantity, slicedLines) {
     return slicedLines === 1 && linesQuantity !== 1;
   }

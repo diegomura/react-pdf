@@ -1,4 +1,4 @@
-export default {
+const sizes = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],
   A0: [2383.94, 3370.39],
@@ -50,3 +50,25 @@ export default {
   LETTER: [612.0, 792.0],
   TABLOID: [792.0, 1224.0],
 };
+
+// Return page size in an object { width, height } given the passed size and orientation
+// Accepts page type, arraoy or object as parameter
+const getPageSize = (size, orientation = 'portrait') => {
+  let result;
+
+  if (typeof size === 'string') {
+    result = sizes[size.toUpperCase()];
+  } else if (Array.isArray(size)) {
+    result = size;
+  } else if (typeof size === 'object' && size.width && size.height) {
+    result = [size.width, size.height];
+  } else {
+    throw new Error(`Invalid Page size: ${size}`);
+  }
+
+  return orientation === 'portrait'
+    ? { width: result[0], height: result[1] }
+    : { width: result[1], height: result[0] };
+};
+
+export default getPageSize;

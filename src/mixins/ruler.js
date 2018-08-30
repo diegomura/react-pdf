@@ -64,27 +64,28 @@ const Ruler = {
     return value;
   },
   renderRuler() {
-    this.root.instance
-      .save()
-      .lineWidth(LINE_WIDTH)
-      .fontSize(RULER_FONT_SIZE)
-      .opacity(1);
+    const hasHorizontalRuler = this.hasHorizontalRuler();
+    const hasVerticalRuler = this.hasVerticalRuler();
 
-    if (this.hasHorizontalRuler()) {
-      this.drawHorizontalRuler();
-    }
-
-    if (this.hasVerticalRuler()) {
-      this.drawVerticalRuler();
-    }
-
-    if (this.hasHorizontalRuler() && this.hasVerticalRuler()) {
+    if (hasHorizontalRuler || hasVerticalRuler) {
       this.root.instance
-        .rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH)
-        .fill(RULER_COLOR);
-    }
+        .save()
+        .lineWidth(LINE_WIDTH)
+        .fontSize(RULER_FONT_SIZE)
+        .opacity(1);
 
-    this.root.instance.restore();
+      if (hasHorizontalRuler) this.drawHorizontalRuler();
+
+      if (hasVerticalRuler) this.drawVerticalRuler();
+
+      if (hasHorizontalRuler && hasVerticalRuler) {
+        this.root.instance
+          .rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH)
+          .fill(RULER_COLOR);
+      }
+
+      this.root.instance.restore();
+    }
   },
   drawHorizontalRuler() {
     const offset = this.hasVerticalRuler() ? RULER_WIDTH : 0;

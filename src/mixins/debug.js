@@ -1,18 +1,19 @@
 const Debug = {
   debugText(layout) {
-    this.root.instance.fontSize(4);
-    this.root.instance.opacity(1);
-    this.root.instance.fillColor('black');
-    this.root.instance.text(
-      `${layout.width} x ${layout.height}`,
-      layout.left,
-      Math.max(layout.top - 4, 0),
-    );
+    this.root.instance
+      .fontSize(4)
+      .opacity(1)
+      .fillColor('black')
+      .text(
+        `${layout.width} x ${layout.height}`,
+        layout.left,
+        Math.max(layout.top - 4, 1),
+      );
   },
   debugContent(layout, margin, padding) {
-    this.root.instance.fillColor('#a1c6e7');
-    this.root.instance.opacity(0.5);
     this.root.instance
+      .fillColor('#a1c6e7')
+      .opacity(0.5)
       .rect(
         layout.left + padding.left + margin.left,
         layout.top + padding.top + margin.top,
@@ -30,8 +31,7 @@ const Debug = {
       .fill();
   },
   debugPadding(layout, margin, padding) {
-    this.root.instance.fillColor('#c4deb9');
-    this.root.instance.opacity(0.5);
+    this.root.instance.fillColor('#c4deb9').opacity(0.5);
 
     // Padding top
     this.root.instance
@@ -82,8 +82,7 @@ const Debug = {
       .fill();
   },
   debugMargin(layout, margin) {
-    this.root.instance.fillColor('#f8cca1');
-    this.root.instance.opacity(0.5);
+    this.root.instance.fillColor('#f8cca1').opacity(0.5);
 
     // Margin top
     this.root.instance

@@ -14,10 +14,6 @@ class TextInstance {
     this.parent.engine.computed = false;
     this.root.markDirty();
   }
-
-  reset() {
-    // noop
-  }
 }
 
 export default TextInstance;

@@ -48,6 +48,18 @@ class Base extends Node {
     return this.parent.page;
   }
 
+  get wrap() {
+    return this.props.wrap;
+  }
+
+  get fixed() {
+    return this.props.fixed;
+  }
+
+  get absolute() {
+    return this.props.style.position === 'absolute';
+  }
+
   appendChild(child) {
     if (child) {
       child.parent = this;
@@ -68,18 +80,12 @@ class Base extends Node {
     }
   }
 
-  moveTo(parent) {
-    this.reset();
-    this.parent.removeChild(this);
-    parent.appendChild(this);
-  }
-
   applyProps() {
     const { size, orientation } = this.page;
 
     this.style = StyleSheet.resolve(this.props.style, {
-      width: size[0],
-      height: size[1],
+      width: size.width,
+      height: size.height,
       orientation: orientation,
     });
 
@@ -192,23 +198,17 @@ class Base extends Node {
     }
   }
 
-  isAbsolute() {
-    return this.props.style.position === 'absolute';
-  }
-
-  isEmpty() {
-    return this.children.length === 0;
-  }
-
   recalculateLayout() {
     this.children.forEach(child => child.recalculateLayout());
   }
 
   getAbsoluteLayout() {
-    const parentMargin = this.parent.margin || { left: 0, top: 0 };
-    const parentLayout = this.parent.getAbsoluteLayout
-      ? this.parent.getAbsoluteLayout()
-      : { left: 0, top: 0 };
+    const parent = this.parent;
+    const parentMargin = (parent && parent.margin) || { left: 0, top: 0 };
+    const parentLayout =
+      parent && parent.getAbsoluteLayout
+        ? this.parent.getAbsoluteLayout()
+        : { left: 0, top: 0 };
 
     return {
       left: this.left + parentMargin.left + parentLayout.left,
@@ -216,26 +216,6 @@ class Base extends Node {
       height: this.height,
       width: this.width,
     };
-  }
-
-  getWidth() {
-    return (
-      this.layout.getComputedWidth() +
-      this.layout.getComputedMargin(Yoga.EDGE_LEFT) +
-      this.layout.getComputedMargin(Yoga.EDGE_RIGTH) -
-      this.layout.getComputedPadding(Yoga.EDGE_LEFT) -
-      this.layout.getComputedPadding(Yoga.EDGE_RIGTH)
-    );
-  }
-
-  getHeight() {
-    return (
-      this.layout.getComputedHeight() +
-      this.layout.getComputedMargin(Yoga.EDGE_TOP) +
-      this.layout.getComputedMargin(Yoga.EDGE_BOTTOM) -
-      this.layout.getComputedPadding(Yoga.EDGE_TOP) -
-      this.layout.getComputedPadding(Yoga.EDGE_BOTTOM)
-    );
   }
 
   getComputedStyles() {
@@ -285,13 +265,11 @@ class Base extends Node {
     }
   }
 
-  wrapHeight(height) {
-    return Math.min(height, this.height);
-  }
-
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
+    clone.top = this.top;
+    clone.left = this.left;
     clone.width = this.width;
     clone.style = this.style;
     clone.parent = this.parent;
@@ -299,19 +277,12 @@ class Base extends Node {
     clone.margin = this.margin;
     clone.padding = this.padding;
 
+    this.children.forEach(child => clone.appendChild(child.clone()));
+
     return clone;
   }
 
-  reset() {
-    super.reset();
-
-    this.children.forEach(child => {
-      child.reset();
-    });
-  }
-
   update(newProps) {
-    this.reset();
     this.props = merge(
       {},
       this.constructor.defaultProps,
@@ -322,10 +293,8 @@ class Base extends Node {
   }
 
   async renderChildren(page) {
-    const absoluteChilds = this.children.filter(child => child.isAbsolute());
-    const nonAbsoluteChilds = this.children.filter(
-      child => !child.isAbsolute(),
-    );
+    const absoluteChilds = this.children.filter(child => child.absolute);
+    const nonAbsoluteChilds = this.children.filter(child => !child.absolute);
 
     for (let i = 0; i < nonAbsoluteChilds.length; i++) {
       await nonAbsoluteChilds[i].render(page);

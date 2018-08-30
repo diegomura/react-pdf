@@ -1,3 +1,4 @@
+import wrapPages from 'page-wrapping';
 import Font from '../font';
 import { fetchEmojis } from '../utils/emoji';
 
@@ -17,10 +18,6 @@ class Document {
 
   get name() {
     return 'Document';
-  }
-
-  get pageCount() {
-    return this.children.reduce((acc, page) => acc + page.subpagesCount, 0);
   }
 
   appendChild(child) {
@@ -44,18 +41,10 @@ class Document {
     const { title, author, subject, keywords, creator, producer } = this.props;
 
     // The object keys need to start with a capital letter by the PDF spec
-    if (title) {
-      this.root.instance.info.Title = title;
-    }
-    if (author) {
-      this.root.instance.info.Author = author;
-    }
-    if (subject) {
-      this.root.instance.info.Subject = subject;
-    }
-    if (keywords) {
-      this.root.instance.info.Keywords = keywords;
-    }
+    if (title) this.root.instance.info.Title = title;
+    if (author) this.root.instance.info.Author = author;
+    if (subject) this.root.instance.info.Subject = subject;
+    if (keywords) this.root.instance.info.Keywords = keywords;
 
     this.root.instance.info.Creator = creator || 'react-pdf';
     this.root.instance.info.Producer = producer || 'react-pdf';
@@ -127,45 +116,45 @@ class Document {
   }
 
   applyProps() {
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].applyProps();
-    }
+    this.children.forEach(child => child.applyProps());
   }
 
   update(newProps) {
     this.props = newProps;
   }
 
-  reset() {
-    this.children.forEach(child => {
-      child.reset();
-    });
-  }
+  async renderPages() {
+    let pageNumber = 0;
 
-  async wrapChildren() {
     for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].wrapPage();
-    }
-  }
+      const page = this.children[i];
 
-  async renderChildren() {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
+      page.reset();
+      page.layout.calculateLayout();
+
+      if (page.wrap) {
+        const subpages = wrapPages(page, page.size.height);
+        for (let j = 0; j < subpages.length; j++) {
+          const subpage = subpages[j][0];
+          subpage.number = pageNumber++;
+          await subpage.render();
+        }
+      } else {
+        page.number = pageNumber++;
+        await page.render();
+      }
     }
   }
 
   async render() {
     try {
-      console.time('render');
       this.addMetaData();
       this.applyProps();
       await this.loadEmojis();
       await this.loadAssets();
-      await this.wrapChildren();
-      await this.renderChildren();
+      await this.renderPages();
       this.root.instance.end();
       Font.reset();
-      console.timeEnd('render');
     } catch (e) {
       throw e;
     }

@@ -4,6 +4,28 @@ import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
 import { createElement } from './elements';
 
+const objectsEqual = (a, b) => {
+  const oldPropsKeys = Object.keys(a);
+  const newPropsKeys = Object.keys(b);
+
+  if (oldPropsKeys.length !== newPropsKeys.length) {
+    return true;
+  }
+
+  for (let i = 0; i < oldPropsKeys.length; i++) {
+    const propName = oldPropsKeys[i];
+
+    if (propName !== 'children' && a[propName] !== b[propName]) {
+      if (typeof a[propName] === 'object' && typeof b[propName] === 'object') {
+        return objectsEqual(a[propName], b[propName]);
+      }
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const PDFRenderer = ReactFiberReconciler({
   supportsMutation: true,
   appendInitialChild(parentInstance, child) {
@@ -31,25 +53,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   prepareUpdate(element, type, oldProps, newProps) {
-    const oldPropsKeys = Object.keys(oldProps);
-    const newPropsKeys = Object.keys(newProps);
-
-    if (oldPropsKeys.length !== newPropsKeys.length) {
-      return true;
-    }
-
-    for (let i = 0; i < oldPropsKeys.length; i++) {
-      const propName = oldPropsKeys[i];
-
-      if (
-        propName !== 'children' &&
-        oldProps[propName] !== newProps[propName]
-      ) {
-        return true;
-      }
-    }
-
-    return false;
+    return objectsEqual(oldProps, newProps);
   },
 
   resetAfterCommit() {
@@ -76,30 +80,28 @@ const PDFRenderer = ReactFiberReconciler({
 
   useSyncScheduling: true,
 
-  mutation: {
-    appendChild(parentInstance, child) {
-      parentInstance.appendChild(child);
-    },
+  appendChild(parentInstance, child) {
+    parentInstance.appendChild(child);
+  },
 
-    appendChildToContainer(parentInstance, child) {
-      parentInstance.appendChild(child);
-    },
+  appendChildToContainer(parentInstance, child) {
+    parentInstance.appendChild(child);
+  },
 
-    removeChild(parentInstance, child) {
-      parentInstance.removeChild(child);
-    },
+  removeChild(parentInstance, child) {
+    parentInstance.removeChild(child);
+  },
 
-    removeChildFromContainer(parentInstance, child) {
-      parentInstance.removeChild(child);
-    },
+  removeChildFromContainer(parentInstance, child) {
+    parentInstance.removeChild(child);
+  },
 
-    commitTextUpdate(textInstance, oldText, newText) {
-      textInstance.update(newText);
-    },
+  commitTextUpdate(textInstance, oldText, newText) {
+    textInstance.update(newText);
+  },
 
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      instance.update(newProps);
-    },
+  commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+    instance.update(newProps);
   },
 });
 

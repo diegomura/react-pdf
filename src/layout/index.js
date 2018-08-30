@@ -24,4 +24,24 @@ export class LayoutEngine extends BaseLayoutEngine {
   }
 }
 
-export * from '@react-pdf/textkit-core';
+export {
+  Run,
+  BBox,
+  Path,
+  Rect,
+  Point,
+  Block,
+  Range,
+  TabStop,
+  Polygon,
+  RunStyle,
+  GlyphRun,
+  Container,
+  Attachment,
+  GlyphString,
+  LineFragment,
+  ParagraphStyle,
+  DecorationLine,
+  FontDescriptor,
+  AttributedString,
+} from '@react-pdf/textkit-core';

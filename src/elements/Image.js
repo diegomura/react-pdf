@@ -77,21 +77,27 @@ class Image extends Base {
     return { height, width };
   }
 
-  isEmpty() {
-    return false;
-  }
-
   get ratio() {
     return this.image.data ? this.image.width / this.image.height : 1;
   }
 
   async fetch() {
+    if (this.image) return;
+
     try {
       this.image = await fetchImage(this.props.src);
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);
     }
+  }
+
+  clone() {
+    const clone = super.clone();
+
+    clone.image = this.image;
+
+    return clone;
   }
 
   async render() {

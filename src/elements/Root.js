@@ -20,7 +20,6 @@ class Root {
   }
 
   async render() {
-    this.document.reset();
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
     this.isDirty = false;

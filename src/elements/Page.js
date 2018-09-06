@@ -9,13 +9,13 @@ class Page extends Base {
     size: 'A4',
     orientation: 'portrait',
     style: {},
-    wrap: true,
+    wrap: false,
   };
 
   constructor(root, props) {
     super(root, props);
 
-    this.number = null;
+    this._number = null;
     this._size = null;
   }
 
@@ -29,6 +29,14 @@ class Page extends Base {
 
   get page() {
     return this;
+  }
+
+  get number() {
+    return this._number;
+  }
+
+  set number(value) {
+    this._number = value;
   }
 
   get orientation() {
@@ -94,10 +102,7 @@ class Page extends Base {
       this.style.paddingLeft = paddingLeft + rulerWidth;
     }
 
-    // Apply props to page childrens
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].applyProps();
-    }
+    super.applyProps();
   }
 
   // callChildFunctions() {
@@ -105,11 +110,10 @@ class Page extends Base {
   //
   //   while (listToExplore.length > 0) {
   //     const node = listToExplore.shift();
-  //     const { pageCount } = this.page.document;
   //
   //     if (node.renderCallback) {
   //       const callResult = node.renderCallback({
-  //         totalPages: pageCount,
+  //         totalPages: 3, //TODO: Fix this
   //         pageNumber: this.number,
   //       });
   //
@@ -123,18 +127,13 @@ class Page extends Base {
   //     }
   //   }
   // }
-  //
-  // layoutFixedElements() {
-  //   this.recalculateLayout();
-  // }
 
-  // onNodeWrap() {
-  //   this.layout.setHeight(this.pageHeight);
-  //   this.layout.calculateLayout();
-  // }
+  onNodeWrap() {
+    this.calculateLayout();
+  }
 
   update(newProps) {
-    this.props = { ...Page.defaultProps, ...newProps };
+    // this.props = { ...Page.defaultProps, ...newProps };
   }
 
   async render() {
@@ -147,7 +146,8 @@ class Page extends Base {
     });
 
     // this.callChildFunctions();
-    // this.layoutFixedElements();
+
+    this.layout.calculateLayout();
 
     if (this.style.backgroundColor) {
       instance
@@ -156,7 +156,7 @@ class Page extends Base {
         .fill();
     }
 
-    await this.renderChildren(this);
+    await this.renderChildren();
 
     if (this.props.debug) this.debug();
 

@@ -101,34 +101,31 @@ class Image extends Base {
   }
 
   async render() {
-    const margin = this.margin;
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
 
     this.drawBackgroundColor();
     this.drawBorders();
 
-    if (this.props.debug) {
-      this.debug();
-    }
-
     if (this.image.data) {
       // Inner offset between yoga node and image box
       // Makes image centered inside Yoga node
-      const containerWidth = this.width - margin.right - margin.left;
-      const containerHeight = this.height - margin.top - margin.bottom;
-      const imageWidth = Math.min(containerHeight * this.ratio, containerWidth);
-      const xOffset = Math.max((containerWidth - imageWidth) / 2, 0);
+      const imageWidth = Math.min(this.height * this.ratio, this.width);
+      const xOffset = Math.max((this.width - imageWidth) / 2, 0);
 
       this.root.instance.image(
         this.image.data,
-        left + padding.left + margin.left + xOffset,
-        top + padding.top + margin.top,
+        left + padding.left + xOffset,
+        top + padding.top,
         {
           width: imageWidth - padding.left - padding.right,
-          height: containerHeight - padding.top - padding.bottom,
+          height: this.height - padding.top - padding.bottom,
         },
       );
+    }
+
+    if (this.props.debug) {
+      this.debug();
     }
   }
 }

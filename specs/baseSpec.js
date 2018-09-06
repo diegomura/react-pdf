@@ -23,37 +23,6 @@ describe('Base', () => {
     expect(base.props.style.borderBottomLeftRadius).toBe(0);
   });
 
-  test('Should append child correctly', () => {
-    const base = new Base(dummyRoot, { parent: true });
-    const child = new Base(dummyRoot, { child: true });
-
-    base.appendChild(child);
-
-    expect(base.children).toHaveLength(1);
-    expect(base.children[0]).toBe(child);
-    expect(base.layout.getChildCount()).toBe(1);
-    expect(child.parent).toBe(base);
-    expect(child.layout.getParent()).toBeTruthy();
-  });
-
-  test('Should remove child correctly', () => {
-    const base = new Base(dummyRoot, { parent: true });
-    const child1 = new Base(dummyRoot, { child: true });
-    const child2 = new Base(dummyRoot, { child: true });
-
-    base.appendChild(child1);
-    base.appendChild(child2);
-    base.removeChild(child1);
-
-    expect(base.children).toHaveLength(1);
-    expect(base.children[0]).toBe(child2);
-    expect(base.layout.getChildCount()).toBe(1);
-    expect(child1.parent).toBe(null);
-    expect(child1.layout.getParent()).toBe(null);
-    expect(child2.parent).toBe(base);
-    expect(child2.layout.getParent()).toBeTruthy();
-  });
-
   test('Should wrap be true if is in props', () => {
     const base = new Base(dummyRoot, { wrap: true });
 
@@ -159,7 +128,7 @@ describe('Base', () => {
   test('Clone should be different instance', () => {
     const base = new Base(dummyRoot, {});
 
-    expect(base.clone()).not.toEqual(base);
+    expect(base.clone()).not.toBe(base);
   });
 
   test('Clone should be of same class', () => {
@@ -211,7 +180,10 @@ describe('Base', () => {
   test('Clone should have same paddings', () => {
     const base = new Base(dummyRoot, {});
 
-    base.padding = { top: 0, left: 10, right: 20, bottom: 30 };
+    base.paddingTop = 0;
+    base.paddingRight = 20;
+    base.paddingBottom = 30;
+    base.paddingLeft = 10;
 
     const clone = base.clone();
 
@@ -222,7 +194,10 @@ describe('Base', () => {
   test('Clone should have same margins', () => {
     const base = new Base(dummyRoot, {});
 
-    base.margin = { top: 0, left: 10, right: 20, bottom: 30 };
+    base.marginTop = 0;
+    base.marginRight = 20;
+    base.marginBottom = 30;
+    base.marginLeft = 10;
 
     const clone = base.clone();
 

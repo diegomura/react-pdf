@@ -10,15 +10,13 @@ class View extends Base {
     return 'View';
   }
 
-  async render(page) {
+  async render() {
     this.drawBackgroundColor();
     this.drawBorders();
 
-    if (this.props.debug) {
-      this.debug();
-    }
+    await this.renderChildren();
 
-    await this.renderChildren(page);
+    if (this.props.debug) this.debug();
   }
 }
 

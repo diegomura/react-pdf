@@ -22,18 +22,12 @@ class Document {
 
   appendChild(child) {
     child.parent = this;
-    child.previousPage = this.children[this.children.length - 1];
     this.children.push(child);
   }
 
   removeChild(child) {
     const i = this.children.indexOf(child);
     child.parent = null;
-
-    if (this.children[i + 1]) {
-      this.children[i + 1].previousPage = this.children[i].previousPage;
-    }
-
     this.children.slice(i, 1);
   }
 
@@ -129,14 +123,15 @@ class Document {
     for (let i = 0; i < this.children.length; i++) {
       const page = this.children[i];
 
-      page.reset();
-      page.layout.calculateLayout();
+      page.calculateLayout();
 
       if (page.wrap) {
-        const subpages = wrapPages(page, page.size.height);
+        const subpages = wrapPages(page, page.size.height - page.paddingBottom);
+
         for (let j = 0; j < subpages.length; j++) {
-          const subpage = subpages[j][0];
+          const subpage = subpages[j];
           subpage.number = pageNumber++;
+          subpage.height = page.size.height;
           await subpage.render();
         }
       } else {
@@ -147,17 +142,19 @@ class Document {
   }
 
   async render() {
+    console.time('renderPages');
     try {
       this.addMetaData();
-      this.applyProps();
       await this.loadEmojis();
       await this.loadAssets();
+      this.applyProps();
       await this.renderPages();
       this.root.instance.end();
       Font.reset();
     } catch (e) {
       throw e;
     }
+    console.timeEnd('renderPages');
   }
 }
 

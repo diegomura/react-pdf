@@ -204,20 +204,4 @@ describe('Base', () => {
     expect(base.margin).toEqual(clone.margin);
     expect(base.margin).not.toBe(clone.margin);
   });
-
-  test('Clone should also clone children', () => {
-    const base = new Base(dummyRoot, { parent: true });
-    const child = new Base(dummyRoot, { child: true });
-    const subchild = new Base(dummyRoot, { subchild: true });
-
-    base.appendChild(child);
-    child.appendChild(subchild);
-
-    const clone = base.clone();
-
-    expect(clone.children).toHaveLength(1);
-    expect(clone.children[0].parent).toBe(clone);
-    expect(clone.children[0].children).toHaveLength(1);
-    expect(clone.children[0].children[0].parent).toBe(clone.children[0]);
-  });
 });

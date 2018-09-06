@@ -51,8 +51,10 @@ class Document {
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
-      if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style.fontFamily, this.root.instance));
+      if (node.props.style.fontFamily) {
+        promises.push(
+          Font.load(node.props.style.fontFamily, this.root.instance),
+        );
       }
 
       if (node.children) {
@@ -142,7 +144,6 @@ class Document {
   }
 
   async render() {
-    console.time('renderPages');
     try {
       this.addMetaData();
       await this.loadEmojis();
@@ -154,7 +155,6 @@ class Document {
     } catch (e) {
       throw e;
     }
-    console.timeEnd('renderPages');
   }
 }
 

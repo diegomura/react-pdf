@@ -14,17 +14,13 @@ class Text extends Base {
   constructor(root, props) {
     super(root, props);
 
+    this.renderCallback = props.render;
     this.engine = new TextEngine(this);
     this.layout.setMeasureFunc(this.measureText.bind(this));
-    this.renderCallback = props.render;
   }
 
   get name() {
     return 'Text';
-  }
-
-  get src() {
-    return null;
   }
 
   appendChild(child) {
@@ -54,7 +50,8 @@ class Text extends Base {
       this.engine.layout(width);
 
       return {
-        height: this.style.flexGrow ? NaN : this.engine.height,
+        height: this.engine.height,
+        // height: this.style.flexGrow ? NaN : this.engine.height,
       };
     }
 
@@ -76,9 +73,9 @@ class Text extends Base {
   getComputedStyles() {
     const styles = super.getComputedStyles();
 
-    // For Text, we also inherit relative positioning because this is how
-    // we define text yOffset, which should be applied for inline childs also
+    // For Text, we also inherit relative positioning for inline childs also
     if (
+      this.parent &&
       this.parent.name === 'Text' &&
       this.parent.style.position === 'relative'
     ) {
@@ -88,10 +85,6 @@ class Text extends Base {
     }
 
     return styles;
-  }
-
-  recalculateLayout() {
-    this.layout.markDirty();
   }
 
   hasOrphans(linesQuantity, slicedLines) {
@@ -127,27 +120,19 @@ class Text extends Base {
     return Math.min(wrapHeight, this.height);
   }
 
-  splice(height) {
-    const wrapHeight = this.wrapHeight(height);
-    const engine = this.engine.splice(wrapHeight);
-    const result = this.clone();
-
-    result.marginTop = 0;
-    result.paddingTop = 0;
-    result.width = this.width;
-    result.marginBottom = this.marginBottom;
-    result.engine = engine;
-    result.engine.element = result;
-    result.height = engine.height + this.paddingBottom + this.marginBottom;
-
-    this.marginBottom = 0;
-    this.paddingBottom = 0;
-    this.height = height;
-
-    return result;
+  clone() {
+    const clone = super.clone();
+    clone.engine = this.engine;
+    return clone;
   }
 
-  async render(page) {
+  onNodeSplit(height, cloneNode) {
+    const wrapHeight = this.wrapHeight(height);
+
+    cloneNode.engine = this.engine.splice(wrapHeight);
+  }
+
+  async render() {
     this.drawBackgroundColor();
     this.drawBorders();
 

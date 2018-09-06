@@ -195,7 +195,6 @@ class TextEngine {
   }
 
   layout(width, dirty) {
-    if (this.computed) return;
     const path = new Path().rect(0, 0, width, INFINITY);
     const container = new Container(path);
     const string = AttributedString.fromFragments(this.attributedString).trim();
@@ -215,7 +214,6 @@ class TextEngine {
   }
 
   render() {
-    const margin = this.element.margin;
     const padding = this.element.padding;
     const { top, left } = this.element.getAbsoluteLayout();
 
@@ -223,8 +221,8 @@ class TextEngine {
     const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
 
     this.lines.forEach(line => {
-      line.rect.x += left + margin.left + padding.left;
-      line.rect.y += top + margin.top + padding.top - initialX;
+      line.rect.x += left + padding.left;
+      line.rect.y += top + padding.top - initialX;
     });
 
     const renderer = new PDFRenderer(this.element.root.instance, {

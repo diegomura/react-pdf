@@ -51,10 +51,8 @@ class Document {
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
 
-      if (node.props.style.fontFamily) {
-        promises.push(
-          Font.load(node.props.style.fontFamily, this.root.instance),
-        );
+      if (node.style && node.style.fontFamily) {
+        promises.push(Font.load(node.style.fontFamily, this.root.instance));
       }
 
       if (node.children) {
@@ -119,36 +117,40 @@ class Document {
     this.props = newProps;
   }
 
-  async renderPages() {
-    let pageNumber = 0;
+  wrapPages() {
+    let pageCount = 0;
 
-    for (let i = 0; i < this.children.length; i++) {
-      const page = this.children[i];
-
-      page.calculateLayout();
-
+    const pages = this.children.reduce((acc, page) => {
+      const wrapArea = page.size.height - (page.style.paddingBottom || 0);
       if (page.wrap) {
-        const subpages = wrapPages(page, page.size.height - page.paddingBottom);
+        const subpages = wrapPages(page, wrapArea, pageCount);
 
-        for (let j = 0; j < subpages.length; j++) {
-          const subpage = subpages[j];
-          subpage.number = pageNumber++;
-          subpage.height = page.size.height;
-          await subpage.render();
-        }
+        pageCount += subpages.length;
+
+        return [...acc, ...subpages];
       } else {
-        page.number = pageNumber++;
-        await page.render();
+        page.height = page.size.height;
+        return [...acc, page];
       }
+    }, []);
+
+    return pages;
+  }
+
+  async renderPages() {
+    const subpages = this.wrapPages();
+
+    for (let j = 0; j < subpages.length; j++) {
+      await subpages[j].render();
     }
   }
 
   async render() {
     try {
       this.addMetaData();
+      this.applyProps();
       await this.loadEmojis();
       await this.loadAssets();
-      this.applyProps();
       await this.renderPages();
       this.root.instance.end();
       Font.reset();

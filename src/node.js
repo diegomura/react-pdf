@@ -11,13 +11,13 @@ import {
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
 export * from './index';
 
 const renderToStream = async function(element) {
-  const container = createElement('ROOT');
+  const container = createInstance({ type: 'ROOT' });
   const node = PDFRenderer.createContainer(container);
 
   PDFRenderer.updateContainer(element, node, null);
@@ -58,7 +58,7 @@ export default {
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
   renderToStream,
   renderToFile,
   render,

@@ -86,20 +86,6 @@ describe('Document', () => {
     expect(Font.load.mock.calls[1][0]).toBe('Helvetica');
   });
 
-  test('Should assign page numbers', async () => {
-    const doc = new Document(dummyRoot, {});
-    const page1 = new Page(dummyRoot, { wrap: false });
-    const page2 = new Page(dummyRoot, { wrap: false });
-
-    doc.appendChild(page1);
-    doc.appendChild(page2);
-
-    await doc.render();
-
-    expect(page1.number).toBe(0);
-    expect(page2.number).toBe(1);
-  });
-
   test('Should trigger available images loading', async () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});

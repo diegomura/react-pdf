@@ -7,39 +7,25 @@ import Link from './Link';
 import Image from './Image';
 import TextInstance from './TextInstance';
 
-function createElement(type, props, root) {
-  let instance;
+const constructors = {
+  ROOT: Root,
+  PAGE: Page,
+  TEXT: Text,
+  LINK: Link,
+  VIEW: View,
+  IMAGE: Image,
+  DOCUMENT: Document,
+  TEXT_INSTANCE: TextInstance,
+};
 
-  switch (type) {
-    case 'ROOT':
-      instance = new Root();
-      break;
-    case 'DOCUMENT':
-      instance = new Document(root, props);
-      break;
-    case 'PAGE':
-      instance = new Page(root, props);
-      break;
-    case 'TEXT':
-      instance = new Text(root, props);
-      break;
-    case 'TEXT_INSTANCE':
-      instance = new TextInstance(root, props);
-      break;
-    case 'LINK':
-      instance = new Link(root, props);
-      break;
-    case 'IMAGE':
-      instance = new Image(root, props);
-      break;
-    case 'VIEW':
-      instance = new View(root, props);
-      break;
-    default:
-      instance = undefined;
+function createInstance(element, root) {
+  const { type, props } = element;
+
+  if (constructors[type]) {
+    return new constructors[type](root, props);
   }
 
-  return instance;
+  return undefined;
 }
 
-export { createElement };
+export { createInstance };

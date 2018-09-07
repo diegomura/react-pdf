@@ -2,7 +2,7 @@
 
 import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
-import { createElement } from './elements';
+import { createInstance } from './elements';
 
 const objectsEqual = (a, b) => {
   const oldPropsKeys = Object.keys(a);
@@ -33,11 +33,14 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   createInstance(type, props, internalInstanceHandle) {
-    return createElement(type, props, internalInstanceHandle);
+    return createInstance({ type, props }, internalInstanceHandle);
   },
 
   createTextInstance(text, rootContainerInstance) {
-    return createElement('TEXT_INSTANCE', text, rootContainerInstance);
+    return createInstance(
+      { type: 'TEXT_INSTANCE', props: text },
+      rootContainerInstance,
+    );
   },
 
   finalizeInitialChildren(element, type, props) {

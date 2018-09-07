@@ -1,8 +1,10 @@
+import { Fragment } from 'react';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import StyleSheet from '../stylesheet';
 import getPageSize from '../utils/pageSizes';
 import Ruler from '../mixins/ruler';
+import { createInstance } from './index';
 
 class Page extends Base {
   static defaultProps = {
@@ -15,7 +17,6 @@ class Page extends Base {
   constructor(root, props) {
     super(root, props);
 
-    this._number = null;
     this._size = null;
   }
 
@@ -29,14 +30,6 @@ class Page extends Base {
 
   get page() {
     return this;
-  }
-
-  get number() {
-    return this._number;
-  }
-
-  set number(value) {
-    this._number = value;
   }
 
   get orientation() {
@@ -105,49 +98,93 @@ class Page extends Base {
     super.applyProps();
   }
 
-  // callChildFunctions() {
-  //   const listToExplore = this.children.slice(0);
-  //
-  //   while (listToExplore.length > 0) {
-  //     const node = listToExplore.shift();
-  //
-  //     if (node.renderCallback) {
-  //       const callResult = node.renderCallback({
-  //         totalPages: 3, //TODO: Fix this
-  //         pageNumber: this.number,
-  //       });
-  //
-  //       node.renderCallback = null;
-  //       node.children = [callResult];
-  //       continue;
-  //     }
-  //
-  //     if (node.children) {
-  //       listToExplore.push(...node.children);
-  //     }
-  //   }
-  // }
+  addDynamicChild(parent, elements) {
+    if (!elements) return;
+    const children = Array.isArray(elements) ? elements : [elements];
 
-  onNodeWrap() {
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const { type, props } = child;
+
+      if (type !== Fragment) {
+        const instance = createInstance(child, this.root);
+        parent.appendChild(instance);
+        instance.applyProps();
+        this.addDynamicChild(instance, props.children);
+      } else {
+        this.addDynamicChild(parent, props.children);
+      }
+    }
+  }
+
+  renderDynamicNodes(pageNumber) {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.props.render) {
+        const elements = node.props.render({ pageNumber });
+        this.addDynamicChild(node, elements);
+
+        continue;
+      }
+
+      if (node.children) {
+        listToExplore.push(...node.children);
+      }
+    }
+  }
+
+  clearDynamicNodes() {
+    const listToExplore = this.children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.props.render) {
+        node.removeAllChilds();
+      }
+
+      if (node.children) {
+        listToExplore.push(...node.children);
+      }
+    }
+  }
+
+  nodeWillWrap({ pageNumber }) {
+    this.clearDynamicNodes();
+    this.renderDynamicNodes(pageNumber);
     this.calculateLayout();
+  }
+
+  onNodeSplit(height, clone) {
+    clone.marginTop = 0;
+    this.height = height;
+    this.marginBottom = 0;
   }
 
   update(newProps) {
     // this.props = { ...Page.defaultProps, ...newProps };
   }
 
+  clone() {
+    const clone = super.clone();
+    clone._size = this.size;
+    return clone;
+  }
+
   async render() {
     const { instance } = this.root;
+
+    this.height = this.size.height;
+    this.calculateLayout();
 
     instance.addPage({
       size: [this.size.width, this.size.height],
       layout: this.props.orientation,
       margin: 0,
     });
-
-    // this.callChildFunctions();
-
-    this.layout.calculateLayout();
 
     if (this.style.backgroundColor) {
       instance

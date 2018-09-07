@@ -1,6 +1,6 @@
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
-import { createElement } from './elements';
+import { createInstance } from './elements';
 import Font from './font';
 import BlobStream from 'blob-stream';
 
@@ -78,6 +78,6 @@ export {
   Image,
   Document,
   StyleSheet,
-  createElement,
+  createInstance,
   pdf,
 };

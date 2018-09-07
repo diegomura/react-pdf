@@ -150,21 +150,17 @@ class Base extends Node {
 
     clone.copyStyle(this);
     clone.style = this.style;
-    clone.width = this.width;
-    clone.height = this.height;
-    clone.calculateLayout();
 
     return clone;
   }
 
   onNodeSplit(height, clone) {
     clone.marginTop = 0;
+    clone.paddingTop = 0;
+    clone.height = this.height - height;
+    this.height = height;
     this.marginBottom = 0;
-
-    if (this.name !== 'Page') {
-      clone.paddingTop = 0;
-      this.paddingBottom = 0;
-    }
+    this.paddingBottom = 0;
   }
 
   update(newProps) {

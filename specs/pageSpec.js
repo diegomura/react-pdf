@@ -68,7 +68,6 @@ describe('Page', () => {
 
     expect(dummyRoot.instance.addPage.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.addPage.mock.calls[0][0].margin).toBe(0);
-    expect(dummyRoot.instance.addPage.mock.calls[0][0].layout).toBe('portrait');
     expect(dummyRoot.instance.addPage.mock.calls[0][0].size).toEqual([
       595.28,
       841.89,

@@ -182,7 +182,6 @@ class Page extends Base {
 
     instance.addPage({
       size: [this.size.width, this.size.height],
-      layout: this.props.orientation,
       margin: 0,
     });
 

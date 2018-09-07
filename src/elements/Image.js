@@ -38,6 +38,9 @@ class Image extends Base {
       imageMargin.bottom -
       SAFETY_HEIGHT;
 
+    // Skip measure if image data not present yet
+    if (!this.image) return { width: 0, height: 0 };
+
     if (
       widthMode === Yoga.MEASURE_MODE_EXACTLY &&
       heightMode === Yoga.MEASURE_MODE_UNDEFINED

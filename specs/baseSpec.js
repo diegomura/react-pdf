@@ -77,6 +77,7 @@ describe('Base', () => {
     base.width = 500;
     base.height = 300;
 
+    base.calculateLayout();
     base.drawBackgroundColor();
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);
@@ -111,6 +112,7 @@ describe('Base', () => {
     base.width = 500;
     base.height = 300;
 
+    base.calculateLayout();
     base.drawBackgroundColor();
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);

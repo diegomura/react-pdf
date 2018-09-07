@@ -12,7 +12,7 @@ import {
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
 export class BlobProvider extends React.PureComponent {
@@ -22,7 +22,7 @@ export class BlobProvider extends React.PureComponent {
     super(props);
 
     // Create new root container for this render
-    this.container = createElement('ROOT');
+    this.container = createInstance({ type: 'ROOT' });
     this.mountNode = PDFRenderer.createContainer(this.container);
   }
 
@@ -95,7 +95,7 @@ export {
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
 export default {
@@ -111,6 +111,6 @@ export default {
   StyleSheet,
   PDFRenderer,
   BlobProvider,
-  createElement,
+  createInstance,
   PDFDownloadLink,
 };

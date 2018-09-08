@@ -1,11 +1,9 @@
 language: node_js
 
 node_js:
- - '7'
- - '6'
+ - '10'
 
 os:
-  - osx
   - linux
 
 addons:

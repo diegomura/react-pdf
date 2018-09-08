@@ -126,7 +126,7 @@ class Page extends Base {
       if (node.props.render) {
         const elements = node.props.render({ pageNumber });
         this.addDynamicChild(node, elements);
-
+        if (!node.fixed) node.props.render = null;
         continue;
       }
 

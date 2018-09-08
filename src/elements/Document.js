@@ -118,7 +118,7 @@ class Document {
   }
 
   wrapPages() {
-    let pageCount = 0;
+    let pageCount = 1;
 
     const pages = this.children.reduce((acc, page) => {
       const wrapArea = page.size.height - (page.style.paddingBottom || 0);
@@ -143,6 +143,8 @@ class Document {
     for (let j = 0; j < subpages.length; j++) {
       await subpages[j].render();
     }
+
+    return subpages;
   }
 
   async render() {

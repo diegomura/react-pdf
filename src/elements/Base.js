@@ -41,6 +41,10 @@ class Base extends Node {
     return this.props.fixed;
   }
 
+  get minPresenceAhead() {
+    return this.props.minPresenceAhead;
+  }
+
   get absolute() {
     return this.props.style.position === 'absolute';
   }

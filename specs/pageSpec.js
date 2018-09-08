@@ -1,4 +1,4 @@
-import Page from '../src/elements/page';
+import Page from '../src/elements/Page';
 import root from './utils/dummyRoot';
 
 let dummyRoot;

@@ -1,37 +1,18 @@
-import React from 'react';
-import { Document, Page, Text, Font } from '../src';
-import MockDate from 'mockdate';
-import render from './testRenderer';
+import Font from '../src/font';
+import root from './utils/dummyRoot';
 
+let dummyRoot;
 const oswaldUrl =
   'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf';
 
-const lorem =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
-  Proin bibendum, diam non dictum rutrum, ligula velit molestie leo, sit \
-  amet suscipit purus ipsum et ligula. Cras placerat, tellus fringilla viverra \
-  maximus, ex metus vulputate ante, finibus dapibus eros dolor fermentum massa.';
-
-describe.skip('Font', () => {
+describe('Font', () => {
   beforeEach(() => {
-    MockDate.set(1434319925275);
-
-    // pdfkit generates a random tag for internal font name,
-    // so we mock Math.random to *not* be random
-    const mockMath = Object.create(global.Math);
-    mockMath.random = () => 0.5;
-    global.Math = mockMath;
+    dummyRoot = root.reset();
   });
 
   afterEach(() => {
     Font.clear();
   });
-
-  const matchSnapshot = (doc, done) =>
-    render(<Document>{doc}</Document>).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
-    });
 
   test('should be able to register font families', () => {
     Font.register('src', { family: 'MyFont' });
@@ -50,26 +31,27 @@ describe.skip('Font', () => {
     expect(Font.getRegisteredFonts()).toEqual([]);
   });
 
-  test.skip('should be able to load font from url', done => {
+  test('should be able to load font from url', async () => {
     Font.register(oswaldUrl, { family: 'Oswald' });
+    await Font.load('Oswald', dummyRoot.instance);
 
-    matchSnapshot(
-      <Page>
-        <Text style={{ fontFamily: 'Oswald' }}>{lorem}</Text>
-      </Page>,
-      done,
-    );
+    const font = Font.getFont('Oswald');
+
+    expect(font.loaded).toBeTruthy();
+    expect(font.loading).toBeFalsy();
+    expect(font.data).toBeTruthy();
   });
 
-  test.skip('should be able to load a font from file', done => {
-    Font.register(`${__dirname}/font.ttf`, { family: 'Roboto' });
+  test('should be able to load a font from file', async () => {
+    Font.register(`${__dirname}/assets/font.ttf`, { family: 'Roboto' });
 
-    matchSnapshot(
-      <Page>
-        <Text style={{ fontFamily: 'Roboto' }}>{lorem}</Text>
-      </Page>,
-      done,
-    );
+    await Font.load('Roboto', dummyRoot.instance);
+
+    const font = Font.getFont('Roboto');
+
+    expect(font.loaded).toBeTruthy();
+    expect(font.loading).toBeFalsy();
+    expect(font.data).toBeTruthy();
   });
 
   test('should get undefined hyphenation callback if not registered', () => {

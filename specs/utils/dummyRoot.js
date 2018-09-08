@@ -12,6 +12,7 @@ export default {
     instance.addPage = jest.fn().mockReturnValue(instance);
     instance.fillColor = jest.fn().mockReturnValue(instance);
     instance.roundedRect = jest.fn().mockReturnValue(instance);
+    instance.registerFont = jest.fn().mockReturnValue(instance);
 
     return {
       markDirty: jest.fn(),

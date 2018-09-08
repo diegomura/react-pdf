@@ -3596,6 +3596,10 @@ p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
 
+page-wrapping@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/page-wrapping/-/page-wrapping-1.0.1.tgz#7f8c4557c4bdc67cf851ea70afd59e4e8a8c0aeb"
+
 pako@^0.2.5:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"

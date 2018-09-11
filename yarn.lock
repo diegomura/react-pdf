@@ -35,9 +35,9 @@
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@^0.1.19":
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.19.tgz#77de2c41f9cbb521f2b8396902ad3505ede8cc14"
+"@react-pdf/textkit-core@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.20.tgz#c7ce4fb784715a38b306cce7e218a03dfad0ba9e"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"
@@ -3596,9 +3596,9 @@ p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
 
-page-wrapping@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/page-wrapping/-/page-wrapping-1.0.1.tgz#7f8c4557c4bdc67cf851ea70afd59e4e8a8c0aeb"
+page-wrapping@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/page-wrapping/-/page-wrapping-1.0.2.tgz#7d7dd7166f64cf241078af4a885aaf1fae776321"
 
 pako@^0.2.5:
   version "0.2.9"

@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
+import TextInstance from './TextInstance';
 import StyleSheet from '../stylesheet';
 import getPageSize from '../utils/pageSizes';
 import Ruler from '../mixins/ruler';
@@ -106,7 +107,10 @@ class Page extends Base {
       const child = children[i];
       const { type, props } = child;
 
-      if (type !== Fragment) {
+      if (typeof child === 'string') {
+        const instance = new TextInstance(this.root, child);
+        parent.appendChild(instance);
+      } else if (type !== Fragment) {
         const instance = createInstance(child, this.root);
         parent.appendChild(instance);
         instance.applyProps();
@@ -117,14 +121,16 @@ class Page extends Base {
     }
   }
 
-  renderDynamicNodes(pageNumber) {
+  renderDynamicNodes(props, cb) {
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
       const node = listToExplore.shift();
+      const condition = cb ? cb(node) : true;
 
-      if (node.props.render) {
-        const elements = node.props.render({ pageNumber });
+      if (condition && node.props.render) {
+        node.removeAllChilds();
+        const elements = node.props.render(props);
         this.addDynamicChild(node, elements);
         if (!node.fixed) node.props.render = null;
         continue;
@@ -136,25 +142,8 @@ class Page extends Base {
     }
   }
 
-  clearDynamicNodes() {
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (node.props.render) {
-        node.removeAllChilds();
-      }
-
-      if (node.children) {
-        listToExplore.push(...node.children);
-      }
-    }
-  }
-
-  nodeWillWrap({ pageNumber }) {
-    this.clearDynamicNodes();
-    this.renderDynamicNodes(pageNumber);
+  nodeWillWrap(props) {
+    this.renderDynamicNodes(props);
     this.calculateLayout();
   }
 
@@ -164,9 +153,7 @@ class Page extends Base {
     this.marginBottom = 0;
   }
 
-  update(newProps) {
-    // this.props = { ...Page.defaultProps, ...newProps };
-  }
+  update(newProps) {}
 
   clone() {
     const clone = super.clone();

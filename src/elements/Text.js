@@ -1,8 +1,10 @@
 import Yoga from 'yoga-layout';
+import createPDFRenderer from '@textkit/pdf-renderer';
 import Base from './Base';
-import TextEngine from './TextEngine';
+import { Rect, Path, Container } from '../layout';
+import { getAttributedString } from '../utils/attributedString';
 
-const WIDOW_THREASHOLD = 20;
+const PDFRenderer = createPDFRenderer({ Rect });
 
 class Text extends Base {
   static defaultProps = {
@@ -14,8 +16,12 @@ class Text extends Base {
   constructor(root, props) {
     super(root, props);
 
+    this.start = 0;
+    this.end = 0;
+    this.computed = false;
+    this._container = null;
+    this._attributedString = null;
     this.renderCallback = props.render;
-    this.engine = new TextEngine(this);
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
 
@@ -23,10 +29,55 @@ class Text extends Base {
     return 'Text';
   }
 
+  get attributedString() {
+    if (!this._attributedString) {
+      this._attributedString = getAttributedString(this);
+    }
+    return this._attributedString;
+  }
+
+  set attributedString(value) {
+    this._attributedString = value;
+  }
+
+  get container() {
+    const lines = this._container.blocks.reduce(
+      (acc, block) => [...acc, ...block.lines],
+      [],
+    );
+
+    return {
+      ...this._container,
+      blocks: [{ lines: lines.splice(this.start, this.end) }],
+    };
+  }
+
+  get lines() {
+    if (!this.container) return [];
+
+    return this.container.blocks.reduce(
+      (acc, block) => [...acc, ...block.lines],
+      [],
+    );
+  }
+
+  get linesHeight() {
+    if (!this._container) return -1;
+    return this.lines.reduce((acc, line) => acc + line.height, 0);
+  }
+
+  get linesWidth() {
+    if (!this._container) return -1;
+    return Math.max(...this.lines.map(line => line.advanceWidth));
+  }
+
   appendChild(child) {
     if (child) {
       child.parent = this;
       this.children.push(child);
+      this.computed = false;
+      this._attributedString = null;
+      this.markDirty();
     }
   }
 
@@ -36,34 +87,72 @@ class Text extends Base {
     if (index !== -1) {
       child.parent = null;
       this.children.splice(index, 1);
+      this.computed = false;
+      this._attributedString = null;
+      this.markDirty();
     }
   }
 
-  measureText(width, widthMode, height, heightMode) {
-    // If the text has functions inside, we don't measure dimentions right away,
-    // but we keep this until all functions are resolved after the layout stage.
-    if (this.renderCallback) {
-      return {};
+  lineIndexAtHeight(height) {
+    let counter = 0;
+    for (let i = 0; i < this.lines.length; i++) {
+      const line = this.lines[i];
+
+      if (counter + line.height > height) {
+        return i;
+      }
+
+      counter += line.height;
     }
 
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.engine.layout(width);
+    return this.lines.length;
+  }
 
-      return {
-        height: this.engine.height,
-        // height: this.style.flexGrow ? NaN : this.engine.height,
-      };
+  heightAtLineIndex(index) {
+    let counter = 0;
+
+    for (let i = 0; i < index; i++) {
+      const line = this.lines[i];
+      counter += line.height;
+    }
+
+    return counter;
+  }
+
+  layoutText(width, height) {
+    const path = new Path().rect(0, 0, width, height);
+    const container = new Container(path);
+
+    // Do the actual text layout
+    this.root.layoutEngine.layout(this.attributedString, [container]);
+
+    // Get the total amount of rendered lines
+    const linesCount = container.blocks.reduce(
+      (acc, block) => acc + block.lines.length,
+      0,
+    );
+
+    this.computed = true;
+    this._container = container;
+    this.end = linesCount + 1;
+  }
+
+  measureText(width, widthMode, height, heightMode) {
+    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
+      this.layoutText(width, 999999);
+
+      return { height: this.style.flexGrow ? NaN : this.linesHeight };
     }
 
     if (
       widthMode === Yoga.MEASURE_MODE_AT_MOST ||
       heightMode === Yoga.MEASURE_MODE_AT_MOST
     ) {
-      this.engine.layout(width);
+      this.layoutText(width, height);
 
       return {
-        height: this.engine.height,
-        width: Math.min(width, this.engine.width),
+        height: this.linesHeight,
+        width: Math.min(width, this.linesWidth),
       };
     }
 
@@ -73,7 +162,7 @@ class Text extends Base {
   getComputedStyles() {
     const styles = super.getComputedStyles();
 
-    // For Text, we also inherit relative positioning for inline childs also
+    // Inherit relative positioning for inline childs
     if (
       this.parent &&
       this.parent.name === 'Text' &&
@@ -87,49 +176,41 @@ class Text extends Base {
     return styles;
   }
 
-  hasOrphans(linesQuantity, slicedLines) {
-    return slicedLines === 1 && linesQuantity !== 1;
-  }
-
-  hasWidows(linesQuantity, slicedLines) {
-    return (
-      linesQuantity !== 1 &&
-      linesQuantity - slicedLines === 1 &&
-      linesQuantity < WIDOW_THREASHOLD
-    );
-  }
-
   wrapHeight(height) {
     const { orphans, widows } = this.props;
-    const linesQuantity = this.engine.lines.length;
-    const sliceHeight = height - this.marginTop - this.paddingTop;
-    const slicedLines = this.engine.lineIndexAtHeight(sliceHeight);
-
-    let wrapHeight = height;
+    const linesQuantity = this.lines.length;
+    const sliceHeight = height - this.paddingTop;
+    const slicedLine = this.lineIndexAtHeight(sliceHeight);
 
     if (linesQuantity < orphans) {
-      wrapHeight = height;
-    } else if (slicedLines < orphans || linesQuantity < orphans + widows) {
-      wrapHeight = 0;
+      return height;
+    } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
+      return 0;
     } else if (linesQuantity === orphans + widows) {
-      wrapHeight = this.engine.heightAtLineIndex(orphans - 1);
-    } else if (linesQuantity - slicedLines < widows) {
-      wrapHeight = height - this.engine.heightAtLineIndex(widows - 1);
+      return this.heightAtLineIndex(orphans - 1);
+    } else if (linesQuantity - slicedLine < widows) {
+      return height - this.heightAtLineIndex(widows - 1);
     }
 
-    return Math.min(wrapHeight, this.height);
+    return height;
   }
 
-  clone() {
-    const clone = super.clone();
-    clone.engine = this.engine;
-    return clone;
-  }
-
-  onNodeSplit(height, cloneNode) {
+  onNodeSplit(height, clone) {
     const wrapHeight = this.wrapHeight(height);
+    const slicedLineIndex = this.lineIndexAtHeight(wrapHeight);
+    const slicedLine = this.lines[slicedLineIndex - 1];
 
-    cloneNode.engine = this.engine.splice(wrapHeight);
+    clone.marginTop = 0;
+    clone.paddingTop = 0;
+    clone.attributedString = this.attributedString.slice(
+      slicedLine ? slicedLine.stringEnd : 0,
+      this.attributedString.length,
+    );
+
+    this.height = wrapHeight;
+    this.marginBottom = 0;
+    this.paddingBottom = 0;
+    this.end = slicedLineIndex;
   }
 
   async render() {
@@ -138,13 +219,10 @@ class Text extends Base {
 
     // Calculate text layout if needed
     // This can happen if measureText was not called by Yoga
-    if (!this.engine.computed) {
-      this.engine.layout(
-        this.width -
-          this.margin.left -
-          this.margin.right -
-          this.padding.left -
-          this.padding.right,
+    if (!this.computed) {
+      this.layoutText(
+        this.width - this.padding.left - this.padding.right,
+        this.height - this.padding.top - this.padding.bottom,
       );
     }
 
@@ -152,7 +230,22 @@ class Text extends Base {
       this.debug();
     }
 
-    this.engine.render();
+    const padding = this.padding;
+    const { top, left } = this.getAbsoluteLayout();
+
+    // We translate lines based on Yoga container
+    const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
+
+    this.lines.forEach(line => {
+      line.rect.x += left + padding.left;
+      line.rect.y += top + padding.top - initialX;
+    });
+
+    const renderer = new PDFRenderer(this.root.instance, {
+      outlineLines: false,
+    });
+
+    renderer.render(this.container);
   }
 }
 

@@ -26,7 +26,7 @@
     "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/script-itemizer": "^0.1.11",
-    "@react-pdf/textkit-core": "^0.1.19",
+    "@react-pdf/textkit-core": "^0.1.20",
     "@textkit/justification-engine": "^0.1.9",
     "@textkit/line-fragment-generator": "^0.1.9",
     "@textkit/linebreaker": "^0.1.9",
@@ -49,7 +49,7 @@
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
     "media-engine": "^1.0.3",
-    "page-wrapping": "^1.0.1",
+    "page-wrapping": "^1.0.2",
     "react": "^16.4.1",
     "react-reconciler": "^0.12.0",
     "yoga-layout": "1.9.3"

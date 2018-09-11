@@ -9,21 +9,33 @@ const objectsEqual = (a, b) => {
   const newPropsKeys = Object.keys(b);
 
   if (oldPropsKeys.length !== newPropsKeys.length) {
-    return true;
+    return false;
   }
 
   for (let i = 0; i < oldPropsKeys.length; i++) {
     const propName = oldPropsKeys[i];
 
-    if (propName !== 'children' && a[propName] !== b[propName]) {
-      if (typeof a[propName] === 'object' && typeof b[propName] === 'object') {
-        return objectsEqual(a[propName], b[propName]);
+    if (propName === 'render') {
+      if (!a[propName] !== !b[propName]) {
+        return false;
       }
-      return true;
+      continue;
+    }
+
+    if (propName !== 'children' && a[propName] !== b[propName]) {
+      if (
+        typeof a[propName] === 'object' &&
+        typeof b[propName] === 'object' &&
+        objectsEqual(a[propName], b[propName])
+      ) {
+        continue;
+      }
+
+      return false;
     }
   }
 
-  return false;
+  return true;
 };
 
 const PDFRenderer = ReactFiberReconciler({
@@ -56,7 +68,7 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   prepareUpdate(element, type, oldProps, newProps) {
-    return objectsEqual(oldProps, newProps);
+    return !objectsEqual(oldProps, newProps);
   },
 
   resetAfterCommit() {

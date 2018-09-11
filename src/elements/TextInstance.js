@@ -3,25 +3,24 @@ class TextInstance {
     this.root = root;
     this.value = value;
     this.parent = null;
+    this.props = {};
   }
 
   get name() {
     return 'TextInstance';
   }
 
-  reset() {
-    // noop
+  remove() {
+    this.parent.removeChild(this);
   }
 
   clone() {
-    const clone = new this.constructor(this.root, this.value);
-    clone.parent = this.parent;
-    return clone;
+    return new this.constructor(this.root, this.value);
   }
 
   update(value) {
     this.value = value;
-    this.parent.engine.computed = false;
+    this.parent.computed = false;
     this.root.markDirty();
   }
 }

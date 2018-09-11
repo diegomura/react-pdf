@@ -90,6 +90,10 @@ class Node {
     return this.children.length === 0;
   }
 
+  markDirty() {
+    return this.layout.markDirty();
+  }
+
   get position() {
     return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
       ? 'absolute'

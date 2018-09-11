@@ -1,4 +1,5 @@
 import Yoga from 'yoga-layout';
+import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import { fetchImage } from '../utils/image';
 
@@ -97,9 +98,7 @@ class Image extends Base {
 
   clone() {
     const clone = super.clone();
-
     clone.image = this.image;
-
     return clone;
   }
 
@@ -113,18 +112,28 @@ class Image extends Base {
     if (this.image.data) {
       // Inner offset between yoga node and image box
       // Makes image centered inside Yoga node
-      const imageWidth = Math.min(this.height * this.ratio, this.width);
-      const xOffset = Math.max((this.width - imageWidth) / 2, 0);
+      const width =
+        Math.min(this.height * this.ratio, this.width) -
+        padding.left -
+        padding.right;
+      const height = this.height - padding.top - padding.bottom;
+      const xOffset = Math.max((this.width - width) / 2, 0);
 
-      this.root.instance.image(
-        this.image.data,
-        left + padding.left + xOffset,
-        top + padding.top,
-        {
-          width: imageWidth - padding.left - padding.right,
-          height: this.height - padding.top - padding.bottom,
-        },
-      );
+      if (width !== 0 && height !== 0) {
+        this.root.instance.image(
+          this.image.data,
+          left + padding.left + xOffset,
+          top + padding.top,
+          { width, height },
+        );
+      } else {
+        warning(
+          false,
+          `Image with src '${
+            this.props.src
+          }' skipped due to invalid dimensions`,
+        );
+      }
     }
 
     if (this.props.debug) {

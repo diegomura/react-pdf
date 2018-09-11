@@ -19,7 +19,7 @@ const constructors = {
 };
 
 function createInstance(element, root) {
-  const { type, props } = element;
+  const { type, props = {} } = element;
 
   if (constructors[type]) {
     return new constructors[type](root, props);

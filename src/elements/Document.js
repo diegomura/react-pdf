@@ -141,6 +141,14 @@ class Document {
     const subpages = this.wrapPages();
 
     for (let j = 0; j < subpages.length; j++) {
+      // Update dynamic text nodes with total pages info
+      subpages[j].renderDynamicNodes(
+        {
+          pageNumber: j + 1,
+          totalPages: subpages.length,
+        },
+        node => node.name === 'Text',
+      );
       await subpages[j].render();
     }
 

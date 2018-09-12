@@ -35,8 +35,7 @@ class InternalBlobProvider extends React.PureComponent {
     super(props);
 
     // Create new root container for this render
-    this.container = createInstance({ type: 'ROOT' });
-    this.mountNode = PDFRenderer.createContainer(this.container);
+    this.instance = pdf();
   }
 
   componentDidMount() {
@@ -47,17 +46,17 @@ class InternalBlobProvider extends React.PureComponent {
   componentDidUpdate() {
     this.renderDocument();
 
-    if (this.container.isDirty) {
+    if (this.instance.isDirty()) {
       this.onDocumentUpdate();
     }
   }
 
   renderDocument() {
-    PDFRenderer.updateContainer(this.props.document, this.mountNode, this);
+    this.instance.updateContainer(this.props.document);
   }
 
   onDocumentUpdate() {
-    pdf(this.container)
+    this.instance
       .toBlob()
       .then(blob => {
         this.setState({ blob, url: URL.createObjectURL(blob), loading: false });

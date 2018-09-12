@@ -56,13 +56,13 @@ const load = async function(fontFamily, doc) {
     doc.registerFont(fontFamily, font.data);
   }
 
-  font.loading = false;
-
   if (!font && !standardFonts.includes(fontFamily)) {
     throw new Error(
       `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
     );
   }
+
+  font.loading = false;
 };
 
 const reset = function() {

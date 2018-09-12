@@ -1,4 +1,102 @@
 const Borders = {
+  drawBorders() {
+    const { left, top, width, height } = this.getAbsoluteLayout();
+
+    const {
+      borderTopWidth = 0,
+      borderRightWidth = 0,
+      borderBottomWidth = 0,
+      borderLeftWidth = 0,
+      borderTopLeftRadius = 0,
+      borderTopRightRadius = 0,
+      borderBottomRightRadius = 0,
+      borderBottomLeftRadius = 0,
+      borderTopColor = 'black',
+      borderRightColor = 'black',
+      borderBottomColor = 'black',
+      borderLeftColor = 'black',
+      borderTopStyle = 'solid',
+      borderRightStyle = 'solid',
+      borderBottomStyle = 'solid',
+      borderLeftStyle = 'solid',
+    } = this.getComputedStyles();
+
+    // Save current graphics stack
+    this.root.instance.save();
+
+    // border top
+    this.drawHorizontalBorder(
+      [
+        left + (borderTopLeftRadius > 0 ? borderTopWidth / 2 : 0),
+        top + borderTopWidth / 2,
+      ],
+      [
+        left + width - (borderTopRightRadius > 0 ? borderTopWidth / 2 : 0),
+        top + borderTopWidth / 2,
+      ],
+      borderTopLeftRadius,
+      borderTopRightRadius,
+      borderTopWidth,
+      borderTopColor,
+      borderTopStyle,
+    );
+
+    // border right
+    this.drawVerticalBorder(
+      [
+        left + width - borderRightWidth / 2,
+        top + (borderTopRightRadius > 0 ? borderRightWidth / 2 : 0),
+      ],
+      [
+        left + width - borderRightWidth / 2,
+        top + height - (borderBottomRightRadius > 0 ? borderRightWidth / 2 : 0),
+      ],
+      -borderTopRightRadius,
+      -borderBottomRightRadius,
+      borderRightWidth,
+      borderRightColor,
+      borderRightStyle,
+    );
+
+    // border bottom
+    this.drawHorizontalBorder(
+      [
+        left +
+          width -
+          (borderBottomRightRadius > 0 ? borderBottomWidth / 2 : 0),
+        top + height - borderBottomWidth / 2,
+      ],
+      [
+        left + (borderBottomLeftRadius > 0 ? borderBottomWidth / 2 : 0),
+        top + height - borderBottomWidth / 2,
+      ],
+      -borderBottomRightRadius,
+      -borderBottomLeftRadius,
+      borderBottomWidth,
+      borderBottomColor,
+      borderBottomStyle,
+    );
+
+    // border left
+    this.drawVerticalBorder(
+      [
+        left + borderLeftWidth / 2,
+        top + height - (borderBottomLeftRadius > 0 ? borderLeftWidth / 2 : 0),
+      ],
+      [
+        left + borderLeftWidth / 2,
+        top + (borderTopLeftRadius > 0 ? borderLeftWidth / 2 : 0),
+      ],
+      borderBottomLeftRadius,
+      borderTopLeftRadius,
+      borderLeftWidth,
+      borderLeftColor,
+      borderLeftStyle,
+    );
+
+    // Restore graphics stack to avoid side effects
+    this.root.instance.restore();
+  },
   traceBorder(style, width) {
     switch (style) {
       case 'dashed':
@@ -36,119 +134,6 @@ const Borders = {
       .strokeColor(color);
 
     this.traceBorder(style, width);
-  },
-  drawBorders() {
-    const margin = this.margin;
-    const { left, top, width, height } = this.getAbsoluteLayout();
-
-    const {
-      borderTopWidth = 0,
-      borderRightWidth = 0,
-      borderBottomWidth = 0,
-      borderLeftWidth = 0,
-      borderTopLeftRadius = 0,
-      borderTopRightRadius = 0,
-      borderBottomRightRadius = 0,
-      borderBottomLeftRadius = 0,
-      borderTopColor = 'black',
-      borderRightColor = 'black',
-      borderBottomColor = 'black',
-      borderLeftColor = 'black',
-      borderTopStyle = 'solid',
-      borderRightStyle = 'solid',
-      borderBottomStyle = 'solid',
-      borderLeftStyle = 'solid',
-    } = this.getComputedStyles();
-
-    // Save current graphics stack
-    this.root.instance.save();
-
-    // border top
-    this.drawHorizontalBorder(
-      [
-        left + margin.left + (borderTopLeftRadius > 0 ? borderTopWidth / 2 : 0),
-        top + margin.top + borderTopWidth / 2,
-      ],
-      [
-        left +
-          width -
-          margin.right -
-          (borderTopRightRadius > 0 ? borderTopWidth / 2 : 0),
-        top + margin.top + borderTopWidth / 2,
-      ],
-      borderTopLeftRadius,
-      borderTopRightRadius,
-      borderTopWidth,
-      borderTopColor,
-      borderTopStyle,
-    );
-
-    // border right
-    this.drawVerticalBorder(
-      [
-        left + width - margin.right - borderRightWidth / 2,
-        top +
-          margin.top +
-          (borderTopRightRadius > 0 ? borderRightWidth / 2 : 0),
-      ],
-      [
-        left + width - margin.right - borderRightWidth / 2,
-        top +
-          height -
-          margin.bottom -
-          (borderBottomRightRadius > 0 ? borderRightWidth / 2 : 0),
-      ],
-      -borderTopRightRadius,
-      -borderBottomRightRadius,
-      borderRightWidth,
-      borderRightColor,
-      borderRightStyle,
-    );
-
-    // border bottom
-    this.drawHorizontalBorder(
-      [
-        left +
-          width -
-          margin.right -
-          (borderBottomRightRadius > 0 ? borderBottomWidth / 2 : 0),
-        top + height - margin.bottom - borderBottomWidth / 2,
-      ],
-      [
-        left +
-          margin.left +
-          (borderBottomLeftRadius > 0 ? borderBottomWidth / 2 : 0),
-        top + height - margin.bottom - borderBottomWidth / 2,
-      ],
-      -borderBottomRightRadius,
-      -borderBottomLeftRadius,
-      borderBottomWidth,
-      borderBottomColor,
-      borderBottomStyle,
-    );
-
-    // border left
-    this.drawVerticalBorder(
-      [
-        left + margin.left + borderLeftWidth / 2,
-        top +
-          height -
-          margin.bottom -
-          (borderBottomLeftRadius > 0 ? borderLeftWidth / 2 : 0),
-      ],
-      [
-        left + margin.left + borderLeftWidth / 2,
-        top + margin.top + (borderTopLeftRadius > 0 ? borderLeftWidth / 2 : 0),
-      ],
-      borderBottomLeftRadius,
-      borderTopLeftRadius,
-      borderLeftWidth,
-      borderLeftColor,
-      borderLeftStyle,
-    );
-
-    // Restore graphics stack to avoid side effects
-    this.root.instance.restore();
   },
 };
 

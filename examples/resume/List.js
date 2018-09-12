@@ -7,18 +7,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 5,
   },
-  itemLeftColumn: {
-    flexDirection: 'column',
-    marginRight: 10,
-  },
-  itemRightColumn: {
-    flexDirection: 'column',
-    flexGrow: 9,
-  },
   bulletPoint: {
+    width: 10,
     fontSize: 10,
   },
   itemContent: {
+    flex: 1,
     fontSize: 10,
     fontFamily: 'Lato',
   },
@@ -28,14 +22,8 @@ const List = ({ children }) => children;
 
 export const Item = ({ children }) => (
   <View style={styles.item}>
-    <View style={styles.itemLeftColumn}>
-      <Text style={styles.bulletPoint}>•</Text>
-    </View>
-    <View style={styles.itemRightColumn}>
-      <Text log style={styles.itemContent}>
-        {children}
-      </Text>
-    </View>
+    <Text style={styles.bulletPoint}>•</Text>
+    <Text style={styles.itemContent}>{children}</Text>
   </View>
 );
 

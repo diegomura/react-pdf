@@ -32,7 +32,7 @@ class Image extends Base {
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
     const pageArea =
-      this.page.height -
+      this.page.size.height -
       pagePadding.top -
       pagePadding.bottom -
       imageMargin.top -

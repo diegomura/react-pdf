@@ -5,7 +5,6 @@ describe('StyleSheet', () => {
   describe('flexbox attributes', () => {
     const assertFlexbox = (attribute, value, expectedValue) => {
       const styles = StyleSheet.resolve({ [attribute]: value });
-
       return expect(styles[attribute]).toEqual(expectedValue);
     };
 
@@ -126,6 +125,24 @@ describe('StyleSheet', () => {
 
       return expect(Object.keys(stylesheet).sort()).toEqual(expected.sort());
     };
+
+    test('should expand border attribute', () => {
+      const expectedKeys = [
+        'borderTopColor',
+        'borderTopStyle',
+        'borderTopWidth',
+        'borderRightColor',
+        'borderRightStyle',
+        'borderRightWidth',
+        'borderBottomColor',
+        'borderBottomStyle',
+        'borderBottomWidth',
+        'borderLeftColor',
+        'borderLeftStyle',
+        'borderLeftWidth',
+      ];
+      expand({ border: '1px solid red' }, expectedKeys);
+    });
 
     test('should expand borderColor attribute', () => {
       const expectedKeys = [

@@ -16,21 +16,17 @@ import {
 
 export * from './index';
 
-const renderToStream = async function(element) {
-  const container = createInstance({ type: 'ROOT' });
-  const node = PDFRenderer.createContainer(container);
-
-  PDFRenderer.updateContainer(element, node, null);
-
-  return pdf(container).toBuffer();
+const renderToStream = function(element) {
+  return pdf(element).toBuffer();
 };
 
-const renderToFile = async function(element, filePath, callback) {
-  const output = await renderToStream(element);
+const renderToFile = function(element, filePath, callback) {
+  const output = renderToStream(element);
   const stream = fs.createWriteStream(filePath);
+
   output.pipe(stream);
 
-  await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     stream.on('finish', () => {
       if (callback) {
         callback(output, filePath);

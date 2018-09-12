@@ -89,8 +89,14 @@ describe('Document', () => {
   test('Should trigger available images loading', async () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
-    const image1 = new Image(dummyRoot, { src: 'src1' });
-    const image2 = new Image(dummyRoot, { src: 'src2' });
+    const image1 = new Image(dummyRoot, {
+      src: 'src1',
+      style: { width: 10, height: 10 },
+    });
+    const image2 = new Image(dummyRoot, {
+      src: 'src2',
+      style: { width: 10, height: 10 },
+    });
 
     // Simulate fetch successful loading
     const image1Fetch = jest.fn(() => {

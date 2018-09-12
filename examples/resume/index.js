@@ -26,9 +26,6 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 10,
-    '@media max-width: 400': {
-      width: 290,
-    },
   },
   leftColumn: {
     flexDirection: 'column',
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingRight: 15,
     '@media max-width: 400': {
-      width: 290,
+      width: '100%',
       paddingRight: 0,
     },
     '@media orientation: landscape': {

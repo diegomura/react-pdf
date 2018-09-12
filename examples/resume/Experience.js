@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 15,
     '@media max-width: 400': {
+      paddingTop: 10,
       paddingLeft: 0,
     },
   },

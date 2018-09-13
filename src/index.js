@@ -1,9 +1,10 @@
 import React from 'react';
+import BlobStream from 'blob-stream';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
 import { createInstance } from './elements';
 import Font from './font';
-import BlobStream from 'blob-stream';
+import { version } from '../package.json';
 
 const View = 'VIEW';
 const Text = 'TEXT';
@@ -87,6 +88,7 @@ const pdf = input => {
 };
 
 export {
+  version,
   PDFRenderer,
   View,
   Text,

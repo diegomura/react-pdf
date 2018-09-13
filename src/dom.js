@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import warning from 'fbjs/lib/warning';
 import { flatStyles } from './utils/styles';
 import {
   pdf,
@@ -9,78 +10,122 @@ import {
   Page,
   Font,
   Image,
+  version,
   StyleSheet,
   PDFRenderer,
-  createElement,
-  Document as Container,
+  createInstance,
+  Document as PDFDocument,
 } from './index';
 
-export class Document extends Component {
-  container = createElement('ROOT');
+export const Document = ({ insideViewer, children, ...props }) => {
+  const doc = <PDFDocument {...props}>{children}</PDFDocument>;
+
+  // TODO: Add documentation link to warning message
+  warning(
+    insideViewer,
+    'Please move <Document> inside a PDFViewer or passed to PDFDownloadLink or BlobProvider. Document as root will be deprecated in future versions',
+  );
+
+  return insideViewer ? doc : <PDFViewer {...props}>{doc}</PDFViewer>;
+};
+
+class InternalBlobProvider extends React.PureComponent {
+  state = { blob: null, url: null, loading: true, error: null };
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      document: undefined,
-    };
+    // Create new root container for this render
+    this.instance = pdf();
   }
 
   componentDidMount() {
-    this.mountNode = PDFRenderer.createContainer(this.container);
-
-    // Omit some props
-    const { height, width, children, ...props } = this.props;
-
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
-
-    pdf(this.container)
-      .toBlob()
-      .then(blob => {
-        this.embed.src = URL.createObjectURL(blob);
-      });
+    this.renderDocument();
+    this.onDocumentUpdate();
   }
 
   componentDidUpdate() {
-    // Omit some props
-    const { height, width, children, ...props } = this.props;
+    this.renderDocument();
 
-    PDFRenderer.updateContainer(
-      <Container {...props}>{this.props.children}</Container>,
-      this.mountNode,
-      this,
-    );
+    if (this.instance.isDirty()) {
+      this.onDocumentUpdate();
+    }
   }
 
-  componentWillUnmount() {
-    PDFRenderer.updateContainer(null, this.mountNode, this);
+  renderDocument() {
+    this.instance.updateContainer(this.props.document);
+  }
+
+  onDocumentUpdate() {
+    this.instance
+      .toBlob()
+      .then(blob => {
+        this.setState({ blob, url: URL.createObjectURL(blob), loading: false });
+      })
+      .catch(error => {
+        this.setState({ error });
+        throw error;
+      });
   }
 
   render() {
-    const { className, width = null, height = null, style } = this.props;
-
-    return (
-      <iframe
-        className={className}
-        ref={container => {
-          this.embed = container;
-        }}
-        style={
-          Array.isArray(style)
-            ? { width, height, ...flatStyles(style) }
-            : { width, height, ...style }
-        }
-      />
-    );
+    return this.props.children(this.state);
   }
 }
 
-Document.displayName = 'Document';
-Document.defaultProps = { style: {} };
+export const BlobProvider = ({ document: doc, children }) => {
+  if (!doc) {
+    warning(false, 'You should pass a valid document to BlobProvider');
+    return null;
+  }
+
+  const element = React.cloneElement(doc, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={element}>{children}</InternalBlobProvider>
+  );
+};
+
+export const PDFViewer = ({ className, style, children }) => {
+  const doc = React.cloneElement(children, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={doc}>
+      {({ url }) => (
+        <iframe
+          className={className}
+          src={url}
+          style={Array.isArray(style) ? flatStyles(style) : style}
+        />
+      )}
+    </InternalBlobProvider>
+  );
+};
+
+export const PDFDownloadLink = ({
+  document: doc,
+  className,
+  style,
+  fileName,
+  children,
+}) => {
+  if (!doc) {
+    warning(false, 'You should pass a valid document to PDFDownloadLink');
+    return null;
+  }
+
+  const element = React.cloneElement(doc, { insideViewer: true });
+
+  return (
+    <InternalBlobProvider document={element}>
+      {params => (
+        <a download={fileName} href={params.url}>
+          {typeof children === 'function' ? children(params) : children}
+        </a>
+      )}
+    </InternalBlobProvider>
+  );
+};
 
 export {
   pdf,
@@ -90,9 +135,10 @@ export {
   Page,
   Font,
   Image,
+  version,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
 export default {
@@ -103,8 +149,12 @@ export default {
   Page,
   Font,
   Image,
+  version,
   Document,
+  PDFViewer,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  BlobProvider,
+  createInstance,
+  PDFDownloadLink,
 };

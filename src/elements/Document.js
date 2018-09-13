@@ -1,3 +1,4 @@
+import wrapPages from 'page-wrapping';
 import Font from '../font';
 import { fetchEmojis } from '../utils/emoji';
 
@@ -19,24 +20,14 @@ class Document {
     return 'Document';
   }
 
-  get pageCount() {
-    return this.children.reduce((acc, page) => acc + page.subpagesCount, 0);
-  }
-
   appendChild(child) {
     child.parent = this;
-    child.previousPage = this.children[this.children.length - 1];
     this.children.push(child);
   }
 
   removeChild(child) {
     const i = this.children.indexOf(child);
     child.parent = null;
-
-    if (this.children[i + 1]) {
-      this.children[i + 1].previousPage = this.children[i].previousPage;
-    }
-
     this.children.slice(i, 1);
   }
 
@@ -44,21 +35,13 @@ class Document {
     const { title, author, subject, keywords, creator, producer } = this.props;
 
     // The object keys need to start with a capital letter by the PDF spec
-    if (title) {
-      this.root.info.Title = title;
-    }
-    if (author) {
-      this.root.info.Author = author;
-    }
-    if (subject) {
-      this.root.info.Subject = subject;
-    }
-    if (keywords) {
-      this.root.info.Keywords = keywords;
-    }
+    if (title) this.root.instance.info.Title = title;
+    if (author) this.root.instance.info.Author = author;
+    if (subject) this.root.instance.info.Subject = subject;
+    if (keywords) this.root.instance.info.Keywords = keywords;
 
-    this.root.info.Creator = creator || 'react-pdf';
-    this.root.info.Producer = producer || 'react-pdf';
+    this.root.instance.info.Creator = creator || 'react-pdf';
+    this.root.instance.info.Producer = producer || 'react-pdf';
   }
 
   async loadFonts() {
@@ -69,7 +52,7 @@ class Document {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style.fontFamily, this.root));
+        promises.push(Font.load(node.style.fontFamily, this.root.instance));
       }
 
       if (node.children) {
@@ -127,21 +110,49 @@ class Document {
   }
 
   applyProps() {
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].applyProps();
-    }
+    this.children.forEach(child => child.applyProps());
   }
 
-  async wrapChildren() {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].wrapPage();
-    }
+  update(newProps) {
+    this.props = newProps;
   }
 
-  async renderChildren() {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
+  wrapPages() {
+    let pageCount = 1;
+
+    const pages = this.children.reduce((acc, page) => {
+      const wrapArea = page.size.height - (page.style.paddingBottom || 0);
+      if (page.wrap) {
+        const subpages = wrapPages(page, wrapArea, pageCount);
+
+        pageCount += subpages.length;
+
+        return [...acc, ...subpages];
+      } else {
+        page.height = page.size.height;
+        return [...acc, page];
+      }
+    }, []);
+
+    return pages;
+  }
+
+  async renderPages() {
+    const subpages = this.wrapPages();
+
+    for (let j = 0; j < subpages.length; j++) {
+      // Update dynamic text nodes with total pages info
+      subpages[j].renderDynamicNodes(
+        {
+          pageNumber: j + 1,
+          totalPages: subpages.length,
+        },
+        node => node.name === 'Text',
+      );
+      await subpages[j].render();
     }
+
+    return subpages;
   }
 
   async render() {
@@ -150,9 +161,8 @@ class Document {
       this.applyProps();
       await this.loadEmojis();
       await this.loadAssets();
-      await this.wrapChildren();
-      await this.renderChildren();
-      this.root.end();
+      await this.renderPages();
+      this.root.instance.end();
       Font.reset();
     } catch (e) {
       throw e;

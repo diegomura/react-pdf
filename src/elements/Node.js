@@ -1,119 +1,191 @@
 import Yoga from 'yoga-layout';
+import upperFirst from 'lodash.upperfirst';
 
-const ALMOST_ZERO = 0.000001;
+const PERCENT = /^(\d+)?%$/g;
 
 class Node {
-  constructor(root, props) {
-    this._top = null;
-    this._left = null;
-    this._width = null;
-    this._heigth = null;
-    this._padding = {};
-    this._margin = {};
-
+  constructor() {
+    this.parent = null;
+    this.children = [];
+    this.computed = false;
     this.layout = Yoga.Node.createDefault();
   }
 
-  get top() {
-    if (!this._top) {
-      this._top = this.layout.getComputedLayout().top - this.marginTop;
+  appendChild(child) {
+    if (child) {
+      child.parent = this;
+      this.children.push(child);
+      this.layout.insertChild(child.layout, this.layout.getChildCount());
     }
+  }
 
-    return this._top;
+  removeChild(child) {
+    const index = this.children.indexOf(child);
+
+    if (index !== -1) {
+      child.parent = null;
+      this.children.splice(index, 1);
+      this.layout.removeChild(child.layout);
+    }
+  }
+
+  removeAllChilds() {
+    const children = [...this.children];
+    for (let i = 0; i < children.length; i++) {
+      children[i].remove();
+    }
+  }
+
+  remove() {
+    this.parent.removeChild(this);
+  }
+
+  setDimension(attr, value) {
+    const fixedMethod = `set${upperFirst(attr)}`;
+    const percentMethod = `${fixedMethod}Percent`;
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout[percentMethod](parseInt(isPercent[1], 10));
+    } else {
+      this.layout[fixedMethod](value);
+    }
+  }
+
+  setPosition(edge, value) {
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPosition(edge, value);
+    }
+  }
+
+  getAbsoluteLayout() {
+    const parent = this.parent;
+    const parentLayout =
+      parent && parent.getAbsoluteLayout
+        ? parent.getAbsoluteLayout()
+        : { left: 0, top: 0 };
+
+    return {
+      left: this.left + parentLayout.left,
+      top: this.top + parentLayout.top,
+      height: this.height,
+      width: this.width,
+    };
+  }
+
+  copyStyle(node) {
+    this.layout.copyStyle(node.layout);
+  }
+
+  calculateLayout() {
+    this.layout.calculateLayout();
+    this.computed = true;
+  }
+
+  isEmpty() {
+    return this.children.length === 0;
+  }
+
+  markDirty() {
+    return this.layout.markDirty();
+  }
+
+  get position() {
+    return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
+      ? 'absolute'
+      : 'relative';
+  }
+
+  get top() {
+    return this.layout.getComputedTop() || 0;
   }
 
   get left() {
-    if (!this._left) {
-      this._left = this.layout.getComputedLayout().left - this.marginLeft;
-    }
+    return this.layout.getComputedLeft() || 0;
+  }
 
-    return this._left;
+  get right() {
+    return this.layout.getComputedRight() || 0;
+  }
+
+  get bottom() {
+    return this.layout.getComputedBottom() || 0;
   }
 
   get width() {
-    if (!this._width) {
-      this._width =
-        this.layout.getComputedLayout().width +
-        this.marginLeft +
-        this.marginRight;
-    }
+    return this.layout.getComputedWidth();
+  }
 
-    return this._width;
+  get minWidth() {
+    return this.layout.getMinWidth().value;
+  }
+
+  get maxWidth() {
+    return this.layout.getMaxWidth().value;
   }
 
   get height() {
-    if (!this._heigth) {
-      this._heigth =
-        this.layout.getComputedLayout().height +
-        this.marginTop +
-        this.marginBottom;
-    }
+    return this.layout.getComputedHeight();
+  }
 
-    return this._heigth;
+  get minHeight() {
+    return this.layout.getMinHeight().value;
+  }
+
+  get maxHeight() {
+    return this.layout.getMaxHeight().value;
   }
 
   get paddingTop() {
-    if (!this._padding.top) {
-      this._padding.top = this.layout.getComputedPadding(Yoga.EDGE_TOP);
-    }
-
-    return this._padding.top;
+    return this.layout.getComputedPadding(Yoga.EDGE_TOP) || 0;
   }
 
   get paddingRight() {
-    if (!this._padding.right) {
-      this._padding.right = this.layout.getComputedPadding(Yoga.EDGE_RIGHT);
-    }
-
-    return this._padding.right;
+    return this.layout.getComputedPadding(Yoga.EDGE_RIGHT) || 0;
   }
 
   get paddingBottom() {
-    if (!this._padding.bottom) {
-      this._padding.bottom = this.layout.getComputedPadding(Yoga.EDGE_BOTTOM);
-    }
-
-    return this._padding.bottom;
+    return this.layout.getComputedPadding(Yoga.EDGE_BOTTOM) || 0;
   }
 
   get paddingLeft() {
-    if (!this._padding.left) {
-      this._padding.left = this.layout.getComputedPadding(Yoga.EDGE_LEFT);
-    }
-
-    return this._padding.left;
+    return this.layout.getComputedPadding(Yoga.EDGE_LEFT) || 0;
   }
 
   get marginTop() {
-    if (!this._margin.top) {
-      this._margin.top = this.layout.getComputedMargin(Yoga.EDGE_TOP);
-    }
-
-    return this._margin.top;
+    return this.layout.getComputedMargin(Yoga.EDGE_TOP) || 0;
   }
 
   get marginRight() {
-    if (!this._margin.right) {
-      this._margin.right = this.layout.getComputedMargin(Yoga.EDGE_RIGHT);
-    }
-
-    return this._margin.right;
+    return this.layout.getComputedMargin(Yoga.EDGE_RIGHT) || 0;
   }
 
   get marginBottom() {
-    if (!this._margin.bottom) {
-      this._margin.bottom = this.layout.getComputedMargin(Yoga.EDGE_BOTTOM);
-    }
-
-    return this._margin.bottom;
+    return this.layout.getComputedMargin(Yoga.EDGE_BOTTOM) || 0;
   }
 
   get marginLeft() {
-    if (!this._margin.left) {
-      this._margin.left = this.layout.getComputedMargin(Yoga.EDGE_LEFT);
-    }
+    return this.layout.getComputedMargin(Yoga.EDGE_LEFT) || 0;
+  }
 
-    return this._margin.left;
+  get borderTopWidth() {
+    return this.layout.getComputedBorder(Yoga.EDGE_TOP) || 0;
+  }
+
+  get borderRightWidth() {
+    return this.layout.getComputedBorder(Yoga.EDGE_RIGHT) || 0;
+  }
+
+  get borderBottomWidth() {
+    return this.layout.getComputedBorder(Yoga.EDGE_BOTTOM) || 0;
+  }
+
+  get borderLeftWidth() {
+    return this.layout.getComputedBorder(Yoga.EDGE_LEFT) || 0;
   }
 
   get padding() {
@@ -134,117 +206,114 @@ class Node {
     };
   }
 
-  set top(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
+  set position(value) {
+    this.layout.setPositionType(
+      value === 'absolute'
+        ? Yoga.POSITION_TYPE_ABSOLUTE
+        : Yoga.POSITION_TYPE_RELATIVE,
+    );
+  }
 
-    this._top = value;
+  set top(value) {
+    this.setPosition(Yoga.EDGE_TOP, value);
   }
 
   set left(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
+    this.setPosition(Yoga.EDGE_LEFT, value);
+  }
 
-    this._left = value;
+  set right(value) {
+    this.setPosition(Yoga.EDGE_RIGHT, value);
+  }
+
+  set bottom(value) {
+    this.setPosition(Yoga.EDGE_BOTTOM, value);
   }
 
   set width(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
+    this.setDimension('width', value);
+  }
 
-    this._width = value;
+  set minWidth(value) {
+    this.setDimension('minWidth', value);
+  }
+
+  set maxWidth(value) {
+    this.setDimension('maxWidth', value);
   }
 
   set height(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
+    this.setDimension('height', value);
+  }
 
-    this._heigth = value;
+  set minHeight(value) {
+    this.setDimension('minHeight', value);
+  }
+
+  set maxHeight(value) {
+    this.setDimension('maxHeight', value);
   }
 
   set paddingTop(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._padding.top = value;
+    this.layout.setPadding(Yoga.EDGE_TOP, value);
   }
 
   set paddingRight(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._padding.right = value;
+    this.layout.setPadding(Yoga.EDGE_RIGHT, value);
   }
 
   set paddingBottom(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._padding.bottom = value;
+    this.layout.setPadding(Yoga.EDGE_BOTTOM, value);
   }
 
   set paddingLeft(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._padding.left = value;
+    this.layout.setPadding(Yoga.EDGE_LEFT, value);
   }
 
   set marginTop(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._margin.top = value;
+    this.layout.setMargin(Yoga.EDGE_TOP, value);
   }
 
   set marginRight(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._margin.right = value;
+    this.layout.setMargin(Yoga.EDGE_RIGHT, value);
   }
 
   set marginBottom(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._margin.bottom = value;
+    this.layout.setMargin(Yoga.EDGE_BOTTOM, value);
   }
 
   set marginLeft(value) {
-    if (value === 0) {
-      value = ALMOST_ZERO;
-    }
-
-    this._margin.left = value;
+    this.layout.setMargin(Yoga.EDGE_LEFT, value);
   }
 
   set padding(value) {
-    this._padding = value;
+    this.paddingTop = value;
+    this.paddingRight = value;
+    this.paddingBottom = value;
+    this.paddingLeft = value;
   }
 
   set margin(value) {
-    this._margin = value;
+    this.marginTop = value;
+    this.marginRight = value;
+    this.marginBottom = value;
+    this.marginLeft = value;
   }
 
-  reset() {
-    this.top = null;
-    this.left = null;
-    this.width = null;
-    this.height = null;
-    this.padding = {};
-    this.margin = {};
+  set borderTopWidth(value) {
+    this.layout.setBorder(Yoga.EDGE_TOP, value);
+  }
+
+  set borderRightWidth(value) {
+    this.layout.setBorder(Yoga.EDGE_RIGHT, value);
+  }
+
+  set borderBottomWidth(value) {
+    this.layout.setBorder(Yoga.EDGE_BOTTOM, value);
+  }
+
+  set borderLeftWidth(value) {
+    this.layout.setBorder(Yoga.EDGE_LEFT, value);
   }
 }
 

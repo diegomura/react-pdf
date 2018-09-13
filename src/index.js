@@ -1,8 +1,10 @@
+import React from 'react';
+import BlobStream from 'blob-stream';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
-import { createElement } from './elements';
+import { createInstance } from './elements';
 import Font from './font';
-import BlobStream from 'blob-stream';
+import { version } from '../package.json';
 
 const View = 'VIEW';
 const Text = 'TEXT';
@@ -12,17 +14,32 @@ const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
 const pdf = input => {
-  async function toBlob() {
-    await input.document.render();
+  const container = createInstance({ type: 'ROOT' });
+  const mountNode = PDFRenderer.createContainer(container);
 
-    const stream = input.pipe(BlobStream());
+  if (input) {
+    updateContainer(React.cloneElement(input, { insideViewer: true }));
+  }
+
+  function isDirty() {
+    return container.isDirty;
+  }
+
+  function updateContainer(doc) {
+    PDFRenderer.updateContainer(doc, mountNode, null);
+  }
+
+  async function toBlob() {
+    await container.render();
+
+    const stream = container.instance.pipe(BlobStream());
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {
         const blob = stream.toBlob('application/pdf');
 
-        if (input.document.props.onRender) {
-          input.document.props.onRender({ blob });
+        if (container.document.props.onRender) {
+          container.document.props.onRender({ blob });
         }
 
         resolve(blob);
@@ -32,28 +49,28 @@ const pdf = input => {
     });
   }
 
-  async function toBuffer() {
-    await input.document.render();
-
-    if (input.document.props.onRender) {
-      input.document.props.onRender();
+  function toBuffer() {
+    if (container.document.props.onRender) {
+      container.document.props.onRender();
     }
 
-    return input;
+    container.render();
+
+    return container.instance;
   }
 
-  async function toString() {
+  function toString() {
     let result = '';
-    const render = input.document.render();
+    container.render();
 
     return new Promise(resolve => {
-      render.on('data', function(buffer) {
+      container.instance.on('data', function(buffer) {
         result += buffer;
       });
 
-      render.on('end', function() {
-        if (input.document.props.onRender) {
-          input.document.props.onRender({ string: result });
+      container.instance.on('end', function() {
+        if (container.document.props.onRender) {
+          container.document.props.onRender({ string: result });
         }
 
         resolve(result);
@@ -62,6 +79,8 @@ const pdf = input => {
   }
 
   return {
+    isDirty,
+    updateContainer,
     toBuffer,
     toBlob,
     toString,
@@ -69,6 +88,7 @@ const pdf = input => {
 };
 
 export {
+  version,
   PDFRenderer,
   View,
   Text,
@@ -78,6 +98,6 @@ export {
   Image,
   Document,
   StyleSheet,
-  createElement,
+  createInstance,
   pdf,
 };

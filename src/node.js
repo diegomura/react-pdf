@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import {
   pdf,
   View,
@@ -8,44 +7,48 @@ import {
   Page,
   Font,
   Image,
+  version,
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
 } from './index';
 
-export * from './index';
-
-const renderToStream = async function(element) {
-  const container = createElement('ROOT');
-  const node = PDFRenderer.createContainer(container);
-
-  PDFRenderer.updateContainer(element, node, null);
-
-  return pdf(container).toBuffer();
+export const renderToStream = function(element) {
+  return pdf(element).toBuffer();
 };
 
-const renderToFile = async function(element, filePath, callback) {
-  const output = await renderToStream(element);
+export const renderToFile = function(element, filePath, callback) {
+  const output = renderToStream(element);
   const stream = fs.createWriteStream(filePath);
+
   output.pipe(stream);
 
-  await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     stream.on('finish', () => {
-      if (callback) {
-        callback(output, filePath);
-      }
+      if (callback) callback(output, filePath);
       resolve(output);
-
-      console.log(`📝  PDF successfully exported on ${path.resolve(filePath)}`);
     });
     stream.on('error', reject);
   });
 };
 
-const render = function(element, filePath, callback) {
-  return renderToFile(element, filePath, callback);
-};
+export const render = renderToFile;
+
+export {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  version,
+  Document,
+  StyleSheet,
+  PDFRenderer,
+  createInstance,
+} from './index';
 
 export default {
   pdf,
@@ -55,10 +58,11 @@ export default {
   Page,
   Font,
   Image,
+  version,
   Document,
   StyleSheet,
   PDFRenderer,
-  createElement,
+  createInstance,
   renderToStream,
   renderToFile,
   render,

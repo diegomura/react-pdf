@@ -6,6 +6,15 @@ import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    paddingTop: 30,
+    paddingLeft: 15,
+    '@media max-width: 400': {
+      paddingTop: 10,
+      paddingLeft: 0,
+    },
+  },
+  entryContainer: {
     marginBottom: 10,
   },
   date: {
@@ -33,6 +42,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
+    marginBottom: 10,
   },
   leftColumn: {
     flexDirection: 'column',
@@ -55,7 +65,7 @@ const styles = StyleSheet.create({
 const ExperienceEntry = ({ company, details, position, date }) => {
   const title = `${company} | ${position}`;
   return (
-    <View style={styles.container}>
+    <View style={styles.entryContainer}>
       <View style={styles.headerContainer}>
         <View style={styles.leftColumn}>
           <Text style={styles.title}>{title}</Text>
@@ -119,20 +129,17 @@ const experienceData = [
 ];
 
 const Experience = () => (
-  <View>
+  <View style={styles.container}>
     <Title>Experience</Title>
-    {experienceData.map(experience => {
-        const { company, date, details, position } = experience;
-        return (
-            <ExperienceEntry
-                company={company}
-                date={date}
-                details={details}
-                key={company + position}
-                position={position}
-            />
-        );
-    })}
+    {experienceData.map(({ company, date, details, position }) => (
+      <ExperienceEntry
+        company={company}
+        date={date}
+        details={details}
+        key={company + position}
+        position={position}
+      />
+    ))}
   </View>
 );
 

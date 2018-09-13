@@ -64,32 +64,33 @@ const Ruler = {
     return value;
   },
   renderRuler() {
-    this.root
-      .save()
-      .lineWidth(LINE_WIDTH)
-      .fontSize(RULER_FONT_SIZE)
-      .opacity(1);
+    const hasHorizontalRuler = this.hasHorizontalRuler();
+    const hasVerticalRuler = this.hasVerticalRuler();
 
-    if (this.hasHorizontalRuler()) {
-      this.drawHorizontalRuler();
+    if (hasHorizontalRuler || hasVerticalRuler) {
+      this.root.instance
+        .save()
+        .lineWidth(LINE_WIDTH)
+        .fontSize(RULER_FONT_SIZE)
+        .opacity(1);
+
+      if (hasHorizontalRuler) this.drawHorizontalRuler();
+
+      if (hasVerticalRuler) this.drawVerticalRuler();
+
+      if (hasHorizontalRuler && hasVerticalRuler) {
+        this.root.instance
+          .rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH)
+          .fill(RULER_COLOR);
+      }
+
+      this.root.instance.restore();
     }
-
-    if (this.hasVerticalRuler()) {
-      this.drawVerticalRuler();
-    }
-
-    if (this.hasHorizontalRuler() && this.hasVerticalRuler()) {
-      this.root
-        .rect(0, 0, RULER_WIDTH - LINE_WIDTH, RULER_WIDTH - LINE_WIDTH)
-        .fill(RULER_COLOR);
-    }
-
-    this.root.restore();
   },
   drawHorizontalRuler() {
     const offset = this.hasVerticalRuler() ? RULER_WIDTH : 0;
 
-    this.root
+    this.root.instance
       .rect(offset, 0, this.width, RULER_WIDTH)
       .fill(RULER_COLOR)
       .moveTo(this.hasVerticalRuler() ? RULER_WIDTH : 0, RULER_WIDTH)
@@ -99,7 +100,7 @@ const Ruler = {
     const hRange = range(this.width, this.getHorizontalSteps());
 
     hRange.map(step => {
-      this.root
+      this.root.instance
         .moveTo(offset + step, 0)
         .lineTo(offset + step, RULER_WIDTH)
         .stroke(LINE_COLOR)
@@ -109,7 +110,7 @@ const Ruler = {
 
     hRange.map(step => {
       if (step !== 0) {
-        this.root
+        this.root.instance
           .moveTo(offset + step, RULER_WIDTH)
           .lineTo(offset + step, this.height)
           .stroke(GRID_COLOR);
@@ -119,7 +120,7 @@ const Ruler = {
   drawVerticalRuler() {
     const offset = this.hasHorizontalRuler() ? RULER_WIDTH : 0;
 
-    this.root
+    this.root.instance
       .rect(0, offset, RULER_WIDTH, this.height)
       .fill(RULER_COLOR)
       .moveTo(RULER_WIDTH, this.hasHorizontalRuler() ? RULER_WIDTH : 0)
@@ -129,7 +130,7 @@ const Ruler = {
     const vRange = range(this.height, this.getVerticalSteps());
 
     vRange.map(step => {
-      this.root
+      this.root.instance
         .moveTo(0, offset + step)
         .lineTo(RULER_WIDTH, offset + step)
         .stroke(LINE_COLOR)
@@ -139,7 +140,7 @@ const Ruler = {
 
     vRange.map(step => {
       if (step !== 0) {
-        this.root
+        this.root.instance
           .moveTo(RULER_WIDTH, offset + step)
           .lineTo(this.width, offset + step)
           .stroke(GRID_COLOR);

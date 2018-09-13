@@ -2,26 +2,60 @@
 
 import ReactFiberReconciler from 'react-reconciler';
 import emptyObject from 'fbjs/lib/emptyObject';
-import { createElement } from './elements';
+import { createInstance } from './elements';
+
+const objectsEqual = (a, b) => {
+  const oldPropsKeys = Object.keys(a);
+  const newPropsKeys = Object.keys(b);
+
+  if (oldPropsKeys.length !== newPropsKeys.length) {
+    return false;
+  }
+
+  for (let i = 0; i < oldPropsKeys.length; i++) {
+    const propName = oldPropsKeys[i];
+
+    if (propName === 'render') {
+      if (!a[propName] !== !b[propName]) {
+        return false;
+      }
+      continue;
+    }
+
+    if (propName !== 'children' && a[propName] !== b[propName]) {
+      if (
+        typeof a[propName] === 'object' &&
+        typeof b[propName] === 'object' &&
+        objectsEqual(a[propName], b[propName])
+      ) {
+        continue;
+      }
+
+      return false;
+    }
+  }
+
+  return true;
+};
 
 const PDFRenderer = ReactFiberReconciler({
+  supportsMutation: true,
   appendInitialChild(parentInstance, child) {
-    if (parentInstance.appendChild) {
-      parentInstance.appendChild(child);
-    } else {
-      parentInstance.document = child;
-    }
+    parentInstance.appendChild(child);
   },
 
   createInstance(type, props, internalInstanceHandle) {
-    return createElement(type, props, internalInstanceHandle);
+    return createInstance({ type, props }, internalInstanceHandle);
   },
 
-  createTextInstance(text, rootContainerInstance, internalInstanceHandle) {
-    return text;
+  createTextInstance(text, rootContainerInstance) {
+    return createInstance(
+      { type: 'TEXT_INSTANCE', props: text },
+      rootContainerInstance,
+    );
   },
 
-  finalizeInitialChildren(domElement, type, props) {
+  finalizeInitialChildren(element, type, props) {
     return false;
   },
 
@@ -33,15 +67,15 @@ const PDFRenderer = ReactFiberReconciler({
     // Noop
   },
 
-  prepareUpdate(domElement, type, oldProps, newProps) {
-    return true;
+  prepareUpdate(element, type, oldProps, newProps) {
+    return !objectsEqual(oldProps, newProps);
   },
 
   resetAfterCommit() {
     // Noop
   },
 
-  resetTextContent(domElement) {
+  resetTextContent(element) {
     // Noop
   },
 
@@ -57,56 +91,32 @@ const PDFRenderer = ReactFiberReconciler({
     return false;
   },
 
-  now: () => {},
+  now: Date.now,
 
   useSyncScheduling: true,
 
-  mutation: {
-    appendChild(parentInstance, child) {
-      if (parentInstance.appendChild) {
-        parentInstance.appendChild(child);
-      } else {
-        parentInstance.document = child;
-      }
-    },
+  appendChild(parentInstance, child) {
+    parentInstance.appendChild(child);
+  },
 
-    appendChildToContainer(parentInstance, child) {
-      if (parentInstance.appendChild) {
-        parentInstance.appendChild(child);
-      } else {
-        parentInstance.document = child;
-      }
-    },
+  appendChildToContainer(parentInstance, child) {
+    parentInstance.appendChild(child);
+  },
 
-    insertBefore(parentInstance, child, beforeChild) {
-      // noob
-    },
+  removeChild(parentInstance, child) {
+    parentInstance.removeChild(child);
+  },
 
-    insertInContainerBefore(parentInstance, child, beforeChild) {
-      // noob
-    },
+  removeChildFromContainer(parentInstance, child) {
+    parentInstance.removeChild(child);
+  },
 
-    removeChild(parentInstance, child) {
-      parentInstance.removeChild(child);
-    },
+  commitTextUpdate(textInstance, oldText, newText) {
+    textInstance.update(newText);
+  },
 
-    removeChildFromContainer(parentInstance, child) {
-      if (parentInstance.removeChild) {
-        parentInstance.removeChild(child);
-      }
-    },
-
-    commitTextUpdate(textInstance, oldText, newText) {
-      textInstance = newText;
-    },
-
-    commitMount(instance, type, newProps) {
-      // Noop
-    },
-
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      // noop
-    },
+  commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+    instance.update(newProps);
   },
 });
 

@@ -61,6 +61,8 @@ const load = async function(fontFamily, doc) {
       `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
     );
   }
+
+  font.loading = false;
 };
 
 const reset = function() {

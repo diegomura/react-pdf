@@ -1,165 +1,111 @@
-import React from 'react';
 import fs from 'fs';
 import path from 'path';
-import { Document, Page, View, Image } from '../src';
-import MockDate from 'mockdate';
-import render from './testRenderer';
+import Image from '../src/elements/Image';
+import root from './utils/dummyRoot';
 
-const imageUrl =
-  'https://user-images.githubusercontent.com/5600341/27065042-31afea66-4fd1-11e7-9e7f-6f192bb351f6.jpg';
-const localImage = fs.readFileSync(path.join(__dirname, 'test.jpg'));
+let dummyRoot;
 
-describe.skip('<Image />', () => {
+const jpgImageUrl = 'https://react-pdf.org/static/images/quijote1.jpg';
+const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';
+const localImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
+
+describe('Image', () => {
   beforeEach(() => {
-    MockDate.set(1434319925275);
+    dummyRoot = root.reset();
   });
 
-  const matchSnapshot = (doc, done) =>
-    render(<Document>{doc}</Document>).then(result => {
-      expect(result).toMatchSnapshot();
-      done();
+  test('Should not wrap by default', () => {
+    const view = new Image(dummyRoot, {});
+
+    expect(view.wrap).toBeFalsy();
+  });
+
+  test('Should render a jpeg image over http', async () => {
+    const image = new Image(dummyRoot, { src: jpgImageUrl });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a png image over http', async () => {
+    const image = new Image(dummyRoot, { src: pngImageUrl });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a local image', async () => {
+    const image = new Image(dummyRoot, {
+      src: { data: localImage, format: 'jpg' },
     });
 
-  test('Should render a jpeg image over http', done => {
-    matchSnapshot(
-      <Page>
-        <Image src={imageUrl} />
-      </Page>,
-      done,
-    );
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
   });
 
-  test('Should render a png image over http', done => {
-    matchSnapshot(
-      <Page>
-        <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/PNG_transparency_demonstration_2.png/300px-PNG_transparency_demonstration_2.png" />
-      </Page>,
-      done,
-    );
+  test('Should render background when render', async () => {
+    const drawBackgroundColor = jest.fn();
+    const image = new Image(dummyRoot, {
+      style: { backgroundColor: 'tomato' },
+    });
+
+    image.image = {};
+    image.drawBackgroundColor = drawBackgroundColor;
+
+    await image.render();
+
+    expect(drawBackgroundColor.mock.calls).toHaveLength(1);
   });
 
-  test('Should render a local image', done => {
-    matchSnapshot(
-      <Page>
-        <Image src={{ data: localImage, format: 'jpg' }} />
-      </Page>,
-      done,
-    );
+  test('Should render borders when render', async () => {
+    const drawBorders = jest.fn();
+    const image = new Image(dummyRoot, {});
+
+    image.image = {};
+    image.drawBorders = drawBorders;
+
+    await image.render();
+
+    expect(drawBorders.mock.calls).toHaveLength(1);
   });
 
-  test('Should render an image below another', done => {
-    matchSnapshot(
-      <Page>
-        <Image src={imageUrl} />
-        <Image src={imageUrl} />
-      </Page>,
-      done,
-    );
+  test('Should render debug guides if flag true', async () => {
+    const debug = jest.fn();
+    const image = new Image(dummyRoot, { debug: true });
+
+    image.image = {};
+    image.debug = debug;
+
+    await image.render();
+
+    expect(debug.mock.calls).toHaveLength(1);
   });
 
-  test('Should render an image with fixed width', done => {
-    matchSnapshot(
-      <Page>
-        <Image src={imageUrl} style={{ width: 300 }} />
-      </Page>,
-      done,
-    );
+  test('Should not render debug guides if flag false', async () => {
+    const debug = jest.fn();
+    const image = new Image(dummyRoot, {});
+
+    image.image = {};
+    image.debug = debug;
+
+    await image.render();
+
+    expect(debug.mock.calls).toHaveLength(0);
   });
 
-  test('Should render an image with fixed height', done => {
-    matchSnapshot(
-      <Page>
-        <Image src={imageUrl} style={{ height: 300 }} />
-      </Page>,
-      done,
-    );
-  });
+  test.skip('Should render an image with fixed width', () => {});
 
-  test('Should render images with flex 1, within flexDirection column', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'column' }}>
-        <Image src={imageUrl} style={{ flex: 1 }} />
-        <Image src={imageUrl} style={{ flex: 1 }} />
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render images with flex 1, within flexDirection row', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'row' }}>
-        <Image src={imageUrl} style={{ flex: 1 }} />
-        <Image src={imageUrl} style={{ flex: 1 }} />
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render image and view with flex 1, within flexDirection column', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'column' }}>
-        <Image src={imageUrl} style={{ flex: 1 }} />
-        <View style={{ flex: 1, backgroundColor: 'red' }} />
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render image and view with flex 1, within flexDirection row', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'row' }}>
-        <Image src={imageUrl} style={{ flex: 1 }} />
-        <View style={{ flex: 1, backgroundColor: 'red' }} />
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render images with flex 1, within flexDirection column and fixed height', done => {
-    matchSnapshot(
-      <Page>
-        <View style={{ flexDirection: 'column', height: 500 }}>
-          <Image src={imageUrl} style={{ flex: 1 }} />
-          <Image src={imageUrl} style={{ flex: 1 }} />
-        </View>
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render images with flex 1, within flexDirection row and fixed width', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'row' }}>
-        <View style={{ flexDirection: 'row', width: 300 }}>
-          <Image src={imageUrl} style={{ flex: 1 }} />
-          <Image src={imageUrl} style={{ flex: 1 }} />
-        </View>
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render image and view with flex 1, within flexDirection column and fixed height', done => {
-    matchSnapshot(
-      <Page>
-        <View style={{ flexDirection: 'column', height: 500 }}>
-          <Image src={imageUrl} style={{ flex: 1 }} />
-          <View style={{ flex: 1, backgroundColor: 'red' }} />
-        </View>
-      </Page>,
-      done,
-    );
-  });
-
-  test('Should render image and view with flex 1, within flexDirection row and fixed width', done => {
-    matchSnapshot(
-      <Page style={{ flexDirection: 'row' }}>
-        <View style={{ flexDirection: 'row', width: 300 }}>
-          <Image src={imageUrl} style={{ flex: 1 }} />
-          <View style={{ flex: 1, backgroundColor: 'red' }} />
-        </View>
-      </Page>,
-      done,
-    );
-  });
+  test.skip('Should render an image with fixed height', () => {});
 });

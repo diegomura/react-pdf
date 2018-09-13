@@ -14,7 +14,11 @@ import Experience from './Experience';
 import Skills from './Skills';
 
 const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+  },
   container: {
+    flex: 1,
     flexDirection: 'row',
     '@media max-width: 400': {
       flexDirection: 'column',
@@ -22,34 +26,18 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 10,
-    '@media max-width: 400': {
-      width: 290,
-    },
   },
   leftColumn: {
     flexDirection: 'column',
     width: 170,
-    marginLeft: 30,
-    marginRight: 15,
-    marginTop: 20,
+    paddingTop: 30,
+    paddingRight: 15,
     '@media max-width: 400': {
-      width: 290,
-      marginRight: 30,
+      width: '100%',
+      paddingRight: 0,
     },
     '@media orientation: landscape': {
       width: 200,
-      marginRight: 50,
-    },
-  },
-  rightColumn: {
-    flexDirection: 'column',
-    flexGrow: 1,
-    marginLeft: 15,
-    marginRight: 30,
-    marginTop: 20,
-    '@media max-width: 400': {
-      marginTop: 10,
-      marginLeft: 30,
     },
   },
   footer: {
@@ -57,8 +45,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato Bold',
     textAlign: 'center',
     marginTop: 25,
-    marginHorizontal: 30,
-    paddingVertical: 10,
+    paddingTop: 10,
     borderWidth: 3,
     borderColor: 'gray',
     borderStyle: 'dashed',
@@ -82,20 +69,18 @@ Font.register(`${__dirname}/fonts/fonts/Lato/Lato-Bold.ttf`, {
 });
 
 const Resume = props => (
-  <Page {...props}>
+  <Page {...props} style={styles.page}>
     <Header />
     <View style={styles.container}>
       <View style={styles.leftColumn}>
         <Image
-          src="https://images.gr-assets.com/characters/1264613782p8/1783.jpg"
+          src="https://react-pdf.org/static/images/luke.jpg"
           style={styles.image}
         />
         <Education />
         <Skills />
       </View>
-      <View style={styles.rightColumn}>
-        <Experience />
-      </View>
+      <Experience />
     </View>
     <Text style={styles.footer}>This IS the candidate you are looking for</Text>
   </Page>
@@ -110,7 +95,7 @@ const Output = () => (
   >
     <Resume size="A4" />
     <Resume orientation="landscape" size="A4" />
-    <Resume size={[350, 1250]} />
+    <Resume size={[380, 1250]} />
   </Document>
 );
 

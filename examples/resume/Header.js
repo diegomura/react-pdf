@@ -4,10 +4,6 @@ import { Link, Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginTop: 30,
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 0,
     borderBottomWidth: 2,
     borderBottomColor: '#112131',
     borderBottomStyle: 'solid',

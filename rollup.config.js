@@ -5,6 +5,7 @@ import uglify from 'rollup-plugin-uglify';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import bundleSize from 'rollup-plugin-bundle-size';
 import ignore from 'rollup-plugin-ignore';
+import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 const cjs = {
@@ -47,7 +48,7 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [sourceMaps(), nodeResolve(), bundleSize()];
+const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
 
 const configBase = {
   globals: { react: 'React' },

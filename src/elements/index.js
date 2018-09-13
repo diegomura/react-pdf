@@ -4,6 +4,7 @@ import Page from './Page';
 import View from './View';
 import Text from './Text';
 import Link from './Link';
+import Note from './Note';
 import Image from './Image';
 import TextInstance from './TextInstance';
 
@@ -13,6 +14,7 @@ const constructors = {
   TEXT: Text,
   LINK: Link,
   VIEW: View,
+  NOTE: Note,
   IMAGE: Image,
   DOCUMENT: Document,
   TEXT_INSTANCE: TextInstance,

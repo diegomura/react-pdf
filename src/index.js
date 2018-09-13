@@ -10,6 +10,7 @@ const View = 'VIEW';
 const Text = 'TEXT';
 const Link = 'LINK';
 const Page = 'PAGE';
+const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
@@ -95,6 +96,7 @@ export {
   Link,
   Page,
   Font,
+  Note,
   Image,
   Document,
   StyleSheet,

@@ -104,4 +104,8 @@ describe('Image', () => {
 
     expect(debug.mock.calls).toHaveLength(0);
   });
+
+  test.skip('Should render an image with fixed width', () => {});
+
+  test.skip('Should render an image with fixed height', () => {});
 });

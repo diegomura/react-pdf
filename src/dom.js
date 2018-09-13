@@ -119,7 +119,12 @@ export const PDFDownloadLink = ({
   return (
     <InternalBlobProvider document={element}>
       {params => (
-        <a download={fileName} href={params.url}>
+        <a
+          className={className}
+          download={fileName}
+          href={params.url}
+          style={Array.isArray(style) ? flatStyles(style) : style}
+        >
           {typeof children === 'function' ? children(params) : children}
         </a>
       )}

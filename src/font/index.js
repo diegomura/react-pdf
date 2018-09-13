@@ -53,6 +53,7 @@ const load = async function(fontFamily, doc) {
   // Fonts loaded state will be resetted after document is closed.
   if (font && !font.loaded) {
     font.loaded = true;
+    font.loading = false;
     doc.registerFont(fontFamily, font.data);
   }
 
@@ -61,8 +62,6 @@ const load = async function(fontFamily, doc) {
       `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
     );
   }
-
-  font.loading = false;
 };
 
 const reset = function() {

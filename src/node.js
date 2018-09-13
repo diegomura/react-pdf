@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import {
   pdf,
   View,
@@ -14,13 +13,11 @@ import {
   createInstance,
 } from './index';
 
-export * from './index';
-
-const renderToStream = function(element) {
+export const renderToStream = function(element) {
   return pdf(element).toBuffer();
 };
 
-const renderToFile = function(element, filePath, callback) {
+export const renderToFile = function(element, filePath, callback) {
   const output = renderToStream(element);
   const stream = fs.createWriteStream(filePath);
 
@@ -28,20 +25,28 @@ const renderToFile = function(element, filePath, callback) {
 
   return new Promise((resolve, reject) => {
     stream.on('finish', () => {
-      if (callback) {
-        callback(output, filePath);
-      }
+      if (callback) callback(output, filePath);
       resolve(output);
-
-      console.log(`📝  PDF successfully exported on ${path.resolve(filePath)}`);
     });
     stream.on('error', reject);
   });
 };
 
-const render = function(element, filePath, callback) {
-  return renderToFile(element, filePath, callback);
-};
+export const render = renderToFile;
+
+export {
+  pdf,
+  View,
+  Text,
+  Link,
+  Page,
+  Font,
+  Image,
+  Document,
+  StyleSheet,
+  PDFRenderer,
+  createInstance,
+} from './index';
 
 export default {
   pdf,

@@ -73,6 +73,11 @@ class InternalBlobProvider extends React.PureComponent {
 }
 
 export const BlobProvider = ({ document: doc, children }) => {
+  if (!doc) {
+    warning(false, 'You should pass a valid document to BlobProvider');
+    return null;
+  }
+
   const element = React.cloneElement(doc, { insideViewer: true });
 
   return (
@@ -103,6 +108,11 @@ export const PDFDownloadLink = ({
   fileName,
   children,
 }) => {
+  if (!doc) {
+    warning(false, 'You should pass a valid document to PDFDownloadLink');
+    return null;
+  }
+
   const element = React.cloneElement(doc, { insideViewer: true });
 
   return (

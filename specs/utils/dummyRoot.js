@@ -20,6 +20,7 @@ export default {
     instance.strokeColor = jest.fn().mockReturnValue(instance);
     instance.stroke = jest.fn().mockReturnValue(instance);
     instance.dash = jest.fn().mockReturnValue(instance);
+    instance.note = jest.fn().mockReturnValue(instance);
 
     return {
       markDirty: jest.fn(),

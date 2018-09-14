@@ -53,6 +53,17 @@ class Base extends Node {
     this.props.break = value;
   }
 
+  get rotation() {
+    const match = /rotate\((\d+.?\d+)(.+)\)/g.exec(this.style.transform);
+
+    if (match && match[1] && match[2]) {
+      const value = parseFloat(match[1]);
+      return match[2] === 'rad' ? (value * 180) / Math.PI : value;
+    }
+
+    return 0;
+  }
+
   applyProps() {
     const { size, orientation } = this.page;
 
@@ -147,6 +158,14 @@ class Base extends Node {
         .roundedRect(left, top, width, height, borderRadius)
         .fill();
     }
+  }
+
+  applyTransformations() {
+    const { left, top, width, height } = this.getAbsoluteLayout();
+    const origin = [left + width / 2, top + height / 2];
+    const rotation = this.rotation;
+
+    if (rotation) this.root.instance.rotate(this.rotation, { origin });
   }
 
   clone() {

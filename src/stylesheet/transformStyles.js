@@ -156,40 +156,41 @@ const expandStyles = style => {
 const matchBorderShorthand = value => value.match(/(\d+)px?\s(\S+)\s(\S+)/);
 
 // Transforms shorthand border values to correct value
-const processBorders = style => {
-  const propsArray = Object.keys(style);
+const processBorders = (key, value) => {
+  const match = matchBorderShorthand(value);
+
+  if (match) {
+    if (key.match(/.Color/)) {
+      return match[3];
+    } else if (key.match(/.Style/)) {
+      return match[2];
+    } else if (key.match(/.Width/)) {
+      return match[1];
+    } else {
+      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
+    }
+  }
+
+  return value;
+};
+
+const transformStyles = style => {
+  const expandedStyles = expandStyles(style);
+  const propsArray = Object.keys(expandedStyles);
   const resolvedStyle = {};
 
   for (let i = 0; i < propsArray.length; i++) {
     const key = propsArray[i];
-    const value = style[key];
+    const value = expandedStyles[key];
 
-    if (typeof value === 'string' && key.match(/border/)) {
-      const match = matchBorderShorthand(value);
-
-      if (match) {
-        if (key.match(/.Color/)) {
-          resolvedStyle[key] = match[3];
-        } else if (key.match(/.Style/)) {
-          resolvedStyle[key] = match[2];
-        } else if (key.match(/.Width/)) {
-          resolvedStyle[key] = match[1];
-        } else {
-          throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
-        }
-      } else {
-        resolvedStyle[key] = value;
-      }
+    if (key.match(/border/) && typeof value === 'string') {
+      resolvedStyle[key] = processBorders(key, value);
     } else {
       resolvedStyle[key] = value;
     }
   }
 
   return resolvedStyle;
-};
-
-const transformStyles = style => {
-  return processBorders(expandStyles(style));
 };
 
 export default transformStyles;

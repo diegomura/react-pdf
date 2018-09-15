@@ -106,6 +106,8 @@ class Image extends Base {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
 
+    this.root.instance.save();
+    this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
 
@@ -139,6 +141,8 @@ class Image extends Base {
     if (this.props.debug) {
       this.debug();
     }
+
+    this.root.instance.restore();
   }
 }
 

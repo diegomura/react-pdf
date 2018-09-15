@@ -8,6 +8,7 @@ import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
+import Transform from '../mixins/transform';
 import { inheritedProperties } from '../utils/styles';
 
 class Base extends Node {
@@ -203,5 +204,6 @@ Base.defaultProps = {
 
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
+Object.assign(Base.prototype, Transform);
 
 export default Base;

@@ -214,6 +214,8 @@ class Text extends Base {
   }
 
   async render() {
+    this.root.instance.save();
+    this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
 
@@ -246,6 +248,8 @@ class Text extends Base {
     });
 
     renderer.render(this.container);
+
+    this.root.instance.restore();
   }
 }
 

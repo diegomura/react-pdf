@@ -8,6 +8,7 @@ import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
+import Transformations from '../mixins/transformations';
 import { inheritedProperties } from '../utils/styles';
 
 class Base extends Node {
@@ -51,17 +52,6 @@ class Base extends Node {
 
   set break(value) {
     this.props.break = value;
-  }
-
-  get rotation() {
-    const match = /rotate\((\d+.?\d+)(.+)\)/g.exec(this.style.transform);
-
-    if (match && match[1] && match[2]) {
-      const value = parseFloat(match[1]);
-      return match[2] === 'rad' ? (value * 180) / Math.PI : value;
-    }
-
-    return 0;
   }
 
   applyProps() {
@@ -160,14 +150,6 @@ class Base extends Node {
     }
   }
 
-  applyTransformations() {
-    const { left, top, width, height } = this.getAbsoluteLayout();
-    const origin = [left + width / 2, top + height / 2];
-    const rotation = this.rotation;
-
-    if (rotation) this.root.instance.rotate(this.rotation, { origin });
-  }
-
   clone() {
     const clone = new this.constructor(this.root, this.props);
 
@@ -222,5 +204,6 @@ Base.defaultProps = {
 
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
+Object.assign(Base.prototype, Transformations);
 
 export default Base;

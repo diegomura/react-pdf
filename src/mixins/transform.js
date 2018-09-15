@@ -98,7 +98,7 @@ const Transformations = {
   applyTransformations() {
     let match;
     const re = /[a-zA-Z]+\([^)]+\)/g;
-    const transform = this.style.transform || '';
+    const transform = (this.style && this.style.transform) || '';
 
     while ((match = re.exec(transform)) != null) {
       applySingleTransformation(this, match[0]);

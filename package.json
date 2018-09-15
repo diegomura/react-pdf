@@ -18,7 +18,7 @@
     "prepublish": "npm run build",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
-    "test": "jest --config .jestrc",
+    "test": "jest",
     "test:size": "bundlesize"
   },
   "dependencies": {
@@ -75,7 +75,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
-    "jest": "^20.0.4",
+    "jest": "^23.0.0",
     "lint-staged": "^3.4.2",
     "mock-fs": "^4.7.0",
     "mockdate": "^2.0.1",

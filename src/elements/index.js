@@ -27,7 +27,7 @@ function createInstance(element, root) {
     return new constructors[type](root, props);
   }
 
-  return undefined;
+  throw new Error(`Invalid element of type ${type} passed to PDF renderer`);
 }
 
 export { createInstance };

@@ -34,6 +34,7 @@ export const getFragments = instance => {
     textDecorationColor,
     textDecorationStyle,
     textTransform,
+    letterSpacing,
   } = instance.getComputedStyles();
 
   instance.children.forEach(child => {
@@ -50,6 +51,7 @@ export const getFragments = instance => {
           fontSize,
           align: textAlign,
           link: instance.props.src,
+          characterSpacing: letterSpacing,
           underlineStyle: textDecorationStyle,
           underline: textDecoration === 'underline',
           underlineColor: textDecorationColor || color,

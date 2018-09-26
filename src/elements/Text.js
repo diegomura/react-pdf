@@ -2,6 +2,7 @@ import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
 import Base from './Base';
 import { Rect, Path, Container } from '../layout';
+import { getURL } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
 const PDFRenderer = createPDFRenderer({ Rect });
@@ -27,6 +28,10 @@ class Text extends Base {
 
   get name() {
     return 'Text';
+  }
+
+  get src() {
+    return getURL(this.props.src || this.props.href);
   }
 
   get attributedString() {
@@ -171,6 +176,12 @@ class Text extends Base {
       styles.top = styles.top || this.parent.style.top;
       styles.bottom = styles.bottom || this.parent.style.bottom;
       styles.position = styles.position || 'relative';
+    }
+
+    // Apply default link styles
+    if (this.src) {
+      styles.color = styles.color || 'blue';
+      styles.textDecoration = styles.textDecoration || 'underline';
     }
 
     return styles;

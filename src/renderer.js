@@ -45,6 +45,10 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   createInstance(type, props, internalInstanceHandle) {
+    if (type === 'LINK' && typeof props.children === 'string') {
+      return createInstance({ type: 'TEXT', props }, internalInstanceHandle);
+    }
+
     return createInstance({ type, props }, internalInstanceHandle);
   },
 

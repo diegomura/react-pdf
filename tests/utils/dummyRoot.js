@@ -27,8 +27,9 @@ export default {
     instance.link = jest.fn().mockReturnValue(instance);
 
     return {
-      markDirty: jest.fn(),
       instance,
+      markDirty: jest.fn(),
+      layoutEngine: { layout: jest.fn() },
     };
   },
 };

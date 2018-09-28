@@ -38,7 +38,7 @@ export const getFragments = instance => {
   } = instance.getComputedStyles();
 
   instance.children.forEach(child => {
-    if (child.value) {
+    if (child.value !== null && child.value !== undefined) {
       const obj = Font.getFont(fontFamily);
       const font = obj ? obj.data : fontFamily;
       const string = transformText(child.value, textTransform);

@@ -50,7 +50,7 @@ export const getFragments = instance => {
           color,
           fontSize,
           align: textAlign,
-          link: instance.props.src,
+          link: instance.src,
           characterSpacing: letterSpacing,
           underlineStyle: textDecorationStyle,
           underline: textDecoration === 'underline',

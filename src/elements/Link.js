@@ -1,27 +1,20 @@
-import Text from './Text';
+import Base from './Base';
+import { getURL } from '../utils/url';
 
-const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
-
-class Link extends Text {
-  static defaultProps = {
-    style: {
-      color: 'blue',
-      textDecoration: 'underline',
-    },
-  };
-
+class Link extends Base {
   get name() {
     return 'Link';
   }
 
   get src() {
-    let { src } = this.props;
+    return getURL(this.props.src || this.props.href);
+  }
 
-    if (typeof src === 'string' && !src.match(PROTOCOL_REGEXP)) {
-      src = `http://${src}`;
-    }
-
-    return src;
+  async render() {
+    const { top, left, width, height } = this.getAbsoluteLayout();
+    this.root.instance.link(left, top, width, height, this.src);
+    await this.renderChildren();
+    if (this.props.debug) this.debug();
   }
 }
 

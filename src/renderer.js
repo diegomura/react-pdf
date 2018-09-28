@@ -45,6 +45,12 @@ const PDFRenderer = ReactFiberReconciler({
   },
 
   createInstance(type, props, internalInstanceHandle) {
+    // If the Link has a strign child, substitute the instance by a Text, that
+    // will ultimately render the inline Link via the textkit PDF renderer.
+    if (type === 'LINK' && typeof props.children === 'string') {
+      return createInstance({ type: 'TEXT', props }, internalInstanceHandle);
+    }
+
     return createInstance({ type, props }, internalInstanceHandle);
   },
 

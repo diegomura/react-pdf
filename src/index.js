@@ -37,13 +37,17 @@ const pdf = input => {
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {
-        const blob = stream.toBlob('application/pdf');
+        try {
+          const blob = stream.toBlob('application/pdf');
 
-        if (container.document.props.onRender) {
-          container.document.props.onRender({ blob });
+          if (container.document.props.onRender) {
+            container.document.props.onRender({ blob });
+          }
+
+          resolve(blob);
+        } catch (error) {
+          reject(error);
         }
-
-        resolve(blob);
       });
 
       stream.on('error', reject);
@@ -64,18 +68,22 @@ const pdf = input => {
     let result = '';
     container.render();
 
-    return new Promise(resolve => {
-      container.instance.on('data', function(buffer) {
-        result += buffer;
-      });
+    return new Promise((resolve, reject) => {
+      try {
+        container.instance.on('data', function(buffer) {
+          result += buffer;
+        });
 
-      container.instance.on('end', function() {
-        if (container.document.props.onRender) {
-          container.document.props.onRender({ string: result });
-        }
+        container.instance.on('end', function() {
+          if (container.document.props.onRender) {
+            container.document.props.onRender({ string: result });
+          }
 
-        resolve(result);
-      });
+          resolve(result);
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 

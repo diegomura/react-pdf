@@ -16,12 +16,6 @@ describe('Page', () => {
     expect(page.orientation).toBe('portrait');
   });
 
-  test('Should be 72 DPI by default', () => {
-    const page = new Page(dummyRoot, {});
-
-    expect(page.dpi).toBe(72);
-  });
-
   test('Should render given size', () => {
     const page = new Page(dummyRoot, { size: 'A0' });
 
@@ -94,11 +88,5 @@ describe('Page', () => {
       841.89,
     ]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
-  });
-
-  test('Should be able to set DPI', () => {
-    const page = new Page(dummyRoot, { dpi: 400 });
-
-    expect(page.dpi).toBe(400);
   });
 });

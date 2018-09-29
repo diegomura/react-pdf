@@ -9,6 +9,7 @@ import { createInstance } from './index';
 
 class Page extends Base {
   static defaultProps = {
+    dpi: 72,
     size: 'A4',
     orientation: 'portrait',
     style: {},
@@ -37,12 +38,16 @@ class Page extends Base {
     return this.props.orientation;
   }
 
+  get dpi() {
+    return this.props.dpi;
+  }
+
   get size() {
     if (this._size) {
       return this._size;
     }
 
-    this._size = getPageSize(this.props.size, this.orientation);
+    this._size = getPageSize(this.props.size, this.orientation, this.dpi);
 
     // Adjust size for ruler
     if (this.hasHorizontalRuler()) {

@@ -7,6 +7,9 @@ const Borders = {
       borderRightWidth = 0,
       borderBottomWidth = 0,
       borderLeftWidth = 0,
+    } = this;
+
+    const {
       borderTopLeftRadius = 0,
       borderTopRightRadius = 0,
       borderBottomRightRadius = 0,

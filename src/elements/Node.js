@@ -1,7 +1,6 @@
 import Yoga from 'yoga-layout';
 import upperFirst from 'lodash.upperfirst';
-
-const PERCENT = /^(\d+)?%$/g;
+import { parseScalar } from '../utils/units';
 
 class Node {
   constructor() {
@@ -41,25 +40,40 @@ class Node {
   }
 
   setDimension(attr, value) {
+    const scalar = parseScalar(value);
     const fixedMethod = `set${upperFirst(attr)}`;
-    const percentMethod = `${fixedMethod}Percent`;
-    const isPercent = PERCENT.exec(value);
+    const setDimension =
+      scalar.unit === '%' ? `${fixedMethod}Percent` : fixedMethod;
 
-    if (isPercent) {
-      this.layout[percentMethod](parseInt(isPercent[1], 10));
-    } else {
-      this.layout[fixedMethod](value);
-    }
+    this.layout[setDimension](scalar.value);
   }
 
   setPosition(edge, value) {
-    const isPercent = PERCENT.exec(value);
+    const scalar = parseScalar(value);
+    const setDimension =
+      scalar.unit === '%' ? 'setPositionPercent' : 'setPosition';
 
-    if (isPercent) {
-      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
-    } else {
-      this.layout.setPosition(edge, value);
+    this.layout[setDimension](edge, scalar.value);
+  }
+
+  setPadding(edge, value) {
+    const scalar = parseScalar(value);
+    const setPadding = scalar.unit === '%' ? 'setPaddingPercent' : 'setPadding';
+    this.layout[setPadding](edge, scalar.value);
+  }
+
+  setMargin(edge, value) {
+    const scalar = parseScalar(value);
+    const setMargin = scalar.unit === '%' ? 'setMarginPercent' : 'setMargin';
+    this.layout[setMargin](edge, scalar.value);
+  }
+
+  setBorder(edge, value) {
+    const scalar = parseScalar(value);
+    if (scalar.unit === '%') {
+      throw new Error('Node: You cannot set percentage border widths');
     }
+    this.layout.setBorder(edge, scalar.value);
   }
 
   getAbsoluteLayout() {
@@ -255,35 +269,35 @@ class Node {
   }
 
   set paddingTop(value) {
-    this.layout.setPadding(Yoga.EDGE_TOP, value);
+    this.setPadding(Yoga.EDGE_TOP, value);
   }
 
   set paddingRight(value) {
-    this.layout.setPadding(Yoga.EDGE_RIGHT, value);
+    this.setPadding(Yoga.EDGE_RIGHT, value);
   }
 
   set paddingBottom(value) {
-    this.layout.setPadding(Yoga.EDGE_BOTTOM, value);
+    this.setPadding(Yoga.EDGE_BOTTOM, value);
   }
 
   set paddingLeft(value) {
-    this.layout.setPadding(Yoga.EDGE_LEFT, value);
+    this.setPadding(Yoga.EDGE_LEFT, value);
   }
 
   set marginTop(value) {
-    this.layout.setMargin(Yoga.EDGE_TOP, value);
+    this.setMargin(Yoga.EDGE_TOP, value);
   }
 
   set marginRight(value) {
-    this.layout.setMargin(Yoga.EDGE_RIGHT, value);
+    this.setMargin(Yoga.EDGE_RIGHT, value);
   }
 
   set marginBottom(value) {
-    this.layout.setMargin(Yoga.EDGE_BOTTOM, value);
+    this.setMargin(Yoga.EDGE_BOTTOM, value);
   }
 
   set marginLeft(value) {
-    this.layout.setMargin(Yoga.EDGE_LEFT, value);
+    this.setMargin(Yoga.EDGE_LEFT, value);
   }
 
   set padding(value) {
@@ -301,19 +315,19 @@ class Node {
   }
 
   set borderTopWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_TOP, value);
+    this.setBorder(Yoga.EDGE_TOP, value);
   }
 
   set borderRightWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_RIGHT, value);
+    this.setBorder(Yoga.EDGE_RIGHT, value);
   }
 
   set borderBottomWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_BOTTOM, value);
+    this.setBorder(Yoga.EDGE_BOTTOM, value);
   }
 
   set borderLeftWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_LEFT, value);
+    this.setBorder(Yoga.EDGE_LEFT, value);
   }
 }
 

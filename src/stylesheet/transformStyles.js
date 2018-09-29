@@ -153,7 +153,8 @@ const expandStyles = style => {
   return resolvedStyle;
 };
 
-const matchBorderShorthand = value => value.match(/(\d+)px?\s(\S+)\s(\S+)/);
+const matchBorderShorthand = value =>
+  value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/);
 
 // Transforms shorthand border values to correct value
 const processBorders = (key, value) => {
@@ -161,9 +162,9 @@ const processBorders = (key, value) => {
 
   if (match) {
     if (key.match(/.Color/)) {
-      return match[3];
+      return match[4];
     } else if (key.match(/.Style/)) {
-      return match[2];
+      return match[3];
     } else if (key.match(/.Width/)) {
       return match[1];
     } else {

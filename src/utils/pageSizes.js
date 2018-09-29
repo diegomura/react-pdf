@@ -51,9 +51,19 @@ const PAGE_SIZES = {
   TABLOID: [792.0, 1224.0],
 };
 
+const calculatePageSize = (size, dpi) => {
+  const baseSize = PAGE_SIZES[size.toUpperCase()];
+
+  if (!baseSize) {
+    throw new Error(`Page: ${size} is not a valid page size`);
+  }
+
+  return [(baseSize[0] * dpi) / DPI_BASE, (baseSize[1] * dpi) / DPI_BASE];
+};
+
 // Return page size in an object { width, height } given the passed size and orientation
 // Accepts page type, arraoy or object as parameter
-const getPageSize = (size, orientation = 'portrait') => {
+const getPageSize = (size, orientation = 'portrait', dpi = 72) => {
   let result;
 
   if (typeof size === 'string') {
@@ -61,7 +71,10 @@ const getPageSize = (size, orientation = 'portrait') => {
   } else if (Array.isArray(size)) {
     result = size;
   } else if (typeof size === 'object' && size.width && size.height) {
-    result = [size.width, size.height];
+    result =
+      size.unit === 'in'
+        ? [size.width * dpi, size.height * dpi]
+        : [size.width, size.height];
   } else {
     throw new Error(`Invalid Page size: ${size}`);
   }

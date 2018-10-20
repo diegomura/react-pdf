@@ -87,8 +87,7 @@ class Image extends Base {
 
   async fetch() {
     if (this.image) return;
-    // console.log(Buffer.from(this.props.src, 'base64'));
-    // this.image = { data: this.props.src, width: 0, height: 0 };
+
     try {
       this.image = await resolveImage(this.props.src);
     } catch (e) {

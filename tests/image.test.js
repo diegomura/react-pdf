@@ -55,6 +55,20 @@ describe('Image', () => {
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
   });
 
+  test('Should render a base64 image', async () => {
+    const image = new Image(dummyRoot, {
+      src:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==',
+    });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
   test('Should render background when render', async () => {
     const drawBackgroundColor = jest.fn();
     const image = new Image(dummyRoot, {

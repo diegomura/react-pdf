@@ -2,7 +2,7 @@
 import emojiRegex from 'emoji-regex';
 import Font from '../font';
 import { Attachment } from '../layout';
-import { fetchImage } from '../utils/image';
+import { resolveImage } from '../utils/image';
 
 // Caches emoji images data
 const emojis = {};
@@ -10,7 +10,7 @@ const regex = emojiRegex();
 
 const reflect = promise => (...args) => promise(...args).then(v => v, e => e);
 
-const fetchEmojiImage = reflect(fetchImage);
+const fetchEmojiImage = reflect(resolveImage);
 
 const getCodePoints = string =>
   Array.from(string)

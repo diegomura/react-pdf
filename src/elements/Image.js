@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
-import { fetchImage } from '../utils/image';
+import { resolveImage } from '../utils/image';
 
 const SAFETY_HEIGHT = 10;
 
@@ -89,7 +89,7 @@ class Image extends Base {
     if (this.image) return;
 
     try {
-      this.image = await fetchImage(this.props.src);
+      this.image = await resolveImage(this.props.src);
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);

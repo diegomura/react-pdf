@@ -1,4 +1,5 @@
 import yogaValue from './yogaValue';
+import parseScalar from './transformUnits';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 const styleShortHands = {
@@ -183,12 +184,10 @@ const transformStyles = style => {
   for (let i = 0; i < propsArray.length; i++) {
     const key = propsArray[i];
     const value = expandedStyles[key];
+    const isBorderStyle = key.match(/border/) && typeof value === 'string';
+    const resolved = isBorderStyle ? processBorders(key, value) : value;
 
-    if (key.match(/border/) && typeof value === 'string') {
-      resolvedStyle[key] = processBorders(key, value);
-    } else {
-      resolvedStyle[key] = value;
-    }
+    resolvedStyle[key] = parseScalar(resolved);
   }
 
   return resolvedStyle;

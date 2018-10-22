@@ -1,6 +1,7 @@
 import Yoga from 'yoga-layout';
 import upperFirst from 'lodash.upperfirst';
-import { parseScalar } from '../utils/units';
+
+const PERCENT = /^(\d+)?%$/g;
 
 class Node {
   constructor() {
@@ -40,40 +41,52 @@ class Node {
   }
 
   setDimension(attr, value) {
-    const scalar = parseScalar(value);
     const fixedMethod = `set${upperFirst(attr)}`;
-    const setDimension =
-      scalar.unit === '%' ? `${fixedMethod}Percent` : fixedMethod;
+    const percentMethod = `${fixedMethod}Percent`;
+    const isPercent = PERCENT.exec(value);
 
-    this.layout[setDimension](scalar.value);
+    if (isPercent) {
+      this.layout[percentMethod](parseInt(isPercent[1], 10));
+    } else {
+      this.layout[fixedMethod](value);
+    }
   }
 
   setPosition(edge, value) {
-    const scalar = parseScalar(value);
-    const setDimension =
-      scalar.unit === '%' ? 'setPositionPercent' : 'setPosition';
+    const isPercent = PERCENT.exec(value);
 
-    this.layout[setDimension](edge, scalar.value);
+    if (isPercent) {
+      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPosition(edge, value);
+    }
   }
 
   setPadding(edge, value) {
-    const scalar = parseScalar(value);
-    const setPadding = scalar.unit === '%' ? 'setPaddingPercent' : 'setPadding';
-    this.layout[setPadding](edge, scalar.value);
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setPaddingPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPadding(edge, value);
+    }
   }
 
   setMargin(edge, value) {
-    const scalar = parseScalar(value);
-    const setMargin = scalar.unit === '%' ? 'setMarginPercent' : 'setMargin';
-    this.layout[setMargin](edge, scalar.value);
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setMarginPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setMargin(edge, value);
+    }
   }
 
   setBorder(edge, value) {
-    const scalar = parseScalar(value);
-    if (scalar.unit === '%') {
+    if (PERCENT.exec(value)) {
       throw new Error('Node: You cannot set percentage border widths');
     }
-    this.layout.setBorder(edge, scalar.value);
+    this.layout.setBorder(edge, value);
   }
 
   getAbsoluteLayout() {

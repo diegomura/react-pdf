@@ -62,6 +62,33 @@ class Node {
     }
   }
 
+  setPadding(edge, value) {
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setPaddingPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setPadding(edge, value);
+    }
+  }
+
+  setMargin(edge, value) {
+    const isPercent = PERCENT.exec(value);
+
+    if (isPercent) {
+      this.layout.setMarginPercent(edge, parseInt(isPercent[1], 10));
+    } else {
+      this.layout.setMargin(edge, value);
+    }
+  }
+
+  setBorder(edge, value) {
+    if (PERCENT.exec(value)) {
+      throw new Error('Node: You cannot set percentage border widths');
+    }
+    this.layout.setBorder(edge, value);
+  }
+
   getAbsoluteLayout() {
     const parent = this.parent;
     const parentLayout =
@@ -255,35 +282,35 @@ class Node {
   }
 
   set paddingTop(value) {
-    this.layout.setPadding(Yoga.EDGE_TOP, value);
+    this.setPadding(Yoga.EDGE_TOP, value);
   }
 
   set paddingRight(value) {
-    this.layout.setPadding(Yoga.EDGE_RIGHT, value);
+    this.setPadding(Yoga.EDGE_RIGHT, value);
   }
 
   set paddingBottom(value) {
-    this.layout.setPadding(Yoga.EDGE_BOTTOM, value);
+    this.setPadding(Yoga.EDGE_BOTTOM, value);
   }
 
   set paddingLeft(value) {
-    this.layout.setPadding(Yoga.EDGE_LEFT, value);
+    this.setPadding(Yoga.EDGE_LEFT, value);
   }
 
   set marginTop(value) {
-    this.layout.setMargin(Yoga.EDGE_TOP, value);
+    this.setMargin(Yoga.EDGE_TOP, value);
   }
 
   set marginRight(value) {
-    this.layout.setMargin(Yoga.EDGE_RIGHT, value);
+    this.setMargin(Yoga.EDGE_RIGHT, value);
   }
 
   set marginBottom(value) {
-    this.layout.setMargin(Yoga.EDGE_BOTTOM, value);
+    this.setMargin(Yoga.EDGE_BOTTOM, value);
   }
 
   set marginLeft(value) {
-    this.layout.setMargin(Yoga.EDGE_LEFT, value);
+    this.setMargin(Yoga.EDGE_LEFT, value);
   }
 
   set padding(value) {
@@ -301,19 +328,19 @@ class Node {
   }
 
   set borderTopWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_TOP, value);
+    this.setBorder(Yoga.EDGE_TOP, value);
   }
 
   set borderRightWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_RIGHT, value);
+    this.setBorder(Yoga.EDGE_RIGHT, value);
   }
 
   set borderBottomWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_BOTTOM, value);
+    this.setBorder(Yoga.EDGE_BOTTOM, value);
   }
 
   set borderLeftWidth(value) {
-    this.layout.setBorder(Yoga.EDGE_LEFT, value);
+    this.setBorder(Yoga.EDGE_LEFT, value);
   }
 }
 

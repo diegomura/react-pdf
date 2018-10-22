@@ -1,4 +1,4 @@
-const sizes = {
+const PAGE_SIZES = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],
   A0: [2383.94, 3370.39],
@@ -57,7 +57,7 @@ const getPageSize = (size, orientation = 'portrait') => {
   let result;
 
   if (typeof size === 'string') {
-    result = sizes[size.toUpperCase()];
+    result = PAGE_SIZES[size.toUpperCase()];
   } else if (Array.isArray(size)) {
     result = size;
   } else if (typeof size === 'object' && size.width && size.height) {

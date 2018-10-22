@@ -14,7 +14,7 @@ describe('Borders', () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
     const view = new View(dummyRoot, {
-      style: { width: 50, height: 50, borderBottom: '2px solid red' },
+      style: { width: 50, height: 50, borderBottom: '2 solid red' },
     });
 
     doc.appendChild(page);
@@ -23,7 +23,7 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe('2');
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(0);
   });
@@ -32,7 +32,7 @@ describe('Borders', () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
     const view = new View(dummyRoot, {
-      style: { width: 50, height: 50, borderBottom: '2px dashed red' },
+      style: { width: 50, height: 50, borderBottom: '2 dashed red' },
     });
 
     doc.appendChild(page);
@@ -41,7 +41,7 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe('2');
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls[0][0]).toBe(4);
@@ -51,7 +51,7 @@ describe('Borders', () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
     const view = new View(dummyRoot, {
-      style: { width: 50, height: 50, borderBottom: '2px dotted red' },
+      style: { width: 50, height: 50, borderBottom: '2 dotted red' },
     });
 
     doc.appendChild(page);
@@ -60,9 +60,9 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe('2');
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.dash.mock.calls[0][0]).toBe('2');
+    expect(dummyRoot.instance.dash.mock.calls[0][0]).toBe(2);
   });
 });

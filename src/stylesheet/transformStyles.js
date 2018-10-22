@@ -1,4 +1,5 @@
 import yogaValue from './yogaValue';
+import parseScalar from './transformUnits';
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 const styleShortHands = {
@@ -153,7 +154,8 @@ const expandStyles = style => {
   return resolvedStyle;
 };
 
-const matchBorderShorthand = value => value.match(/(\d+)px?\s(\S+)\s(\S+)/);
+const matchBorderShorthand = value =>
+  value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/);
 
 // Transforms shorthand border values to correct value
 const processBorders = (key, value) => {
@@ -161,9 +163,9 @@ const processBorders = (key, value) => {
 
   if (match) {
     if (key.match(/.Color/)) {
-      return match[3];
+      return match[4];
     } else if (key.match(/.Style/)) {
-      return match[2];
+      return match[3];
     } else if (key.match(/.Width/)) {
       return match[1];
     } else {
@@ -182,12 +184,10 @@ const transformStyles = style => {
   for (let i = 0; i < propsArray.length; i++) {
     const key = propsArray[i];
     const value = expandedStyles[key];
+    const isBorderStyle = key.match(/border/) && typeof value === 'string';
+    const resolved = isBorderStyle ? processBorders(key, value) : value;
 
-    if (key.match(/border/) && typeof value === 'string') {
-      resolvedStyle[key] = processBorders(key, value);
-    } else {
-      resolvedStyle[key] = value;
-    }
+    resolvedStyle[key] = parseScalar(resolved);
   }
 
   return resolvedStyle;

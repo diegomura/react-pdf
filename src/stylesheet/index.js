@@ -39,14 +39,13 @@ const resolveMediaQueries = (input, container) => {
 };
 
 const resolve = (styles, container) => {
-  if (!styles) {
-    return null;
-  }
+  if (!styles) return null;
 
   styles = flatten(styles);
   styles = resolveMediaQueries(styles, container);
+  styles = transformStyles(styles);
 
-  return transformStyles(styles);
+  return styles;
 };
 
 const absoluteFillObject = {

@@ -82,12 +82,6 @@ describe('DOM API', () => {
     expect(wrapper.find('iframe')).toHaveLength(1);
   });
 
-  test('Document as root should render iframe viewer, with warning', () => {
-    const wrapper = mount(doc);
-    expect(wrapper.find('iframe')).toHaveLength(1);
-    expect(warning.mock.calls).toHaveLength(1);
-  });
-
   test('PDFDownloadLink as root should anchor tag and children', () => {
     const wrapper = mount(
       <PDFDownloadLink document={doc}>Download</PDFDownloadLink>,

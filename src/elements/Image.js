@@ -11,6 +11,7 @@ const SAFETY_HEIGHT = 10;
 class Image extends Base {
   static defaultProps = {
     wrap: false,
+    cache: true,
   };
 
   constructor(root, props) {
@@ -86,10 +87,8 @@ class Image extends Base {
   }
 
   async fetch() {
-    if (this.image) return;
-
     try {
-      this.image = await resolveImage(this.props.src);
+      this.image = await resolveImage(this.props.src, this.props.cache);
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);

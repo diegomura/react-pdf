@@ -118,4 +118,24 @@ describe('Image', () => {
 
     expect(debug.mock.calls).toHaveLength(0);
   });
+
+  test('Should cache previously loaded images by default', async () => {
+    const image1 = new Image(dummyRoot, { src: jpgImageUrl });
+    const image2 = new Image(dummyRoot, { src: jpgImageUrl });
+
+    await image1.fetch();
+    await image2.fetch();
+
+    expect(image1.image).toBe(image2.image);
+  });
+
+  test('Should not cache previously loaded images if flag false', async () => {
+    const image1 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
+    const image2 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
+
+    await image1.fetch();
+    await image2.fetch();
+
+    expect(image1.image).not.toBe(image2.image);
+  });
 });

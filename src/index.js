@@ -1,4 +1,3 @@
-import React from 'react';
 import BlobStream from 'blob-stream';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
@@ -18,9 +17,7 @@ const pdf = input => {
   const container = createInstance({ type: 'ROOT' });
   const mountNode = PDFRenderer.createContainer(container);
 
-  if (input) {
-    updateContainer(React.cloneElement(input, { insideViewer: true }));
-  }
+  if (input) updateContainer(input);
 
   function isDirty() {
     return container.isDirty;

@@ -18,16 +18,8 @@ import {
   Document as PDFDocument,
 } from './index';
 
-export const Document = ({ insideViewer, children, ...props }) => {
-  const doc = <PDFDocument {...props}>{children}</PDFDocument>;
-
-  // TODO: Add documentation link to warning message
-  warning(
-    insideViewer,
-    'Please move <Document> inside a PDFViewer or passed to PDFDownloadLink or BlobProvider. Document as root will be deprecated in future versions',
-  );
-
-  return insideViewer ? doc : <PDFViewer {...props}>{doc}</PDFViewer>;
+export const Document = ({ children, ...props }) => {
+  return <PDFDocument {...props}>{children}</PDFDocument>;
 };
 
 class InternalBlobProvider extends React.PureComponent {
@@ -80,18 +72,12 @@ export const BlobProvider = ({ document: doc, children }) => {
     return null;
   }
 
-  const element = React.cloneElement(doc, { insideViewer: true });
-
-  return (
-    <InternalBlobProvider document={element}>{children}</InternalBlobProvider>
-  );
+  return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
 };
 
 export const PDFViewer = ({ className, style, children }) => {
-  const doc = React.cloneElement(children, { insideViewer: true });
-
   return (
-    <InternalBlobProvider document={doc}>
+    <InternalBlobProvider document={children}>
       {({ url }) => (
         <iframe
           className={className}
@@ -115,10 +101,8 @@ export const PDFDownloadLink = ({
     return null;
   }
 
-  const element = React.cloneElement(doc, { insideViewer: true });
-
   return (
-    <InternalBlobProvider document={element}>
+    <InternalBlobProvider document={doc}>
       {params => (
         <a
           className={className}

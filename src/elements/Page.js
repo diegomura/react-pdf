@@ -12,7 +12,7 @@ class Page extends Base {
     size: 'A4',
     orientation: 'portrait',
     style: {},
-    wrap: false,
+    wrap: true,
   };
 
   constructor(root, props) {

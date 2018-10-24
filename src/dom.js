@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { PureComponent } from 'react';
+import React from 'react';
 import warning from 'fbjs/lib/warning';
 import { flatStyles } from './utils/styles';
 import {

@@ -43,15 +43,15 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
 
-"@react-pdf/script-itemizer@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.11.tgz#f850ec3b735ae71d26ccc7adfa94e922cc01ebc7"
+"@react-pdf/script-itemizer@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.1.12.tgz#347f7b2c21f19fe5408016ee7a932f45367c091f"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.21.tgz#1697571d3543a31ffb19fc63c13c7e9754ebbb66"
+"@react-pdf/textkit-core@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.1.22.tgz#8c9a9aa67bae2e197a84ef8e803e639a78531521"
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"

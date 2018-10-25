@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-fetch';
 import PNG from '@react-pdf/png-js';
 import JPEG from './jpeg';
+import createCache from './cache';
 
-const imagesCache = {};
+const imagesCache = createCache({ limit: 30 });
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
@@ -87,7 +88,7 @@ const resolveRemoteImage = src => {
 };
 
 export const resolveImage = (src, cache = true) => {
-  if (cache && imagesCache[src]) return imagesCache[src];
+  if (cache && imagesCache.get(src)) return imagesCache.get(src);
 
   let image;
   if (isCompatibleBase64(src)) {
@@ -99,7 +100,7 @@ export const resolveImage = (src, cache = true) => {
   }
 
   if (cache) {
-    imagesCache[src] = image;
+    imagesCache.set(src, image);
   }
 
   return image;

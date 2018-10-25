@@ -125,21 +125,25 @@ class Text extends Base {
   }
 
   layoutText(width, height) {
-    const path = new Path().rect(0, 0, width, height);
-    const container = new Container(path);
-    const attributedString = this.attributedString;
+    // Text layout is expensive. That's why we ensure to only do it once
+    // (except dynamic nodes. Those change content and needs to relayout every time)
+    if (!this._container || this.props.render) {
+      const path = new Path().rect(0, 0, width, height);
+      const container = new Container(path);
+      const attributedString = this.attributedString;
 
-    // Do the actual text layout
-    this.root.layoutEngine.layout(attributedString, [container]);
+      // Do the actual text layout
+      this.root.layoutEngine.layout(attributedString, [container]);
+      this._container = container;
+    }
 
     // Get the total amount of rendered lines
-    const linesCount = container.blocks.reduce(
+    const linesCount = this._container.blocks.reduce(
       (acc, block) => acc + block.lines.length,
       0,
     );
 
     this.computed = true;
-    this._container = container;
     this.end = linesCount + 1;
   }
 
@@ -214,6 +218,7 @@ class Text extends Base {
 
     clone.marginTop = 0;
     clone.paddingTop = 0;
+    clone.start = slicedLineIndex;
     clone.attributedString = this.attributedString.slice(
       slicedLine ? slicedLine.stringEnd : 0,
       this.attributedString.length,
@@ -223,6 +228,17 @@ class Text extends Base {
     this.marginBottom = 0;
     this.paddingBottom = 0;
     this.end = slicedLineIndex;
+  }
+
+  clone() {
+    const text = super.clone();
+
+    // Save calculated layout for non-dynamic clone elements
+    if (!this.props.render && !this.props.fixed) {
+      text._container = this._container;
+    }
+
+    return text;
   }
 
   async render() {

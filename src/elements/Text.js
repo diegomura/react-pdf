@@ -127,9 +127,10 @@ class Text extends Base {
   layoutText(width, height) {
     const path = new Path().rect(0, 0, width, height);
     const container = new Container(path);
+    const attributedString = this.attributedString;
 
     // Do the actual text layout
-    this.root.layoutEngine.layout(this.attributedString, [container]);
+    this.root.layoutEngine.layout(attributedString, [container]);
 
     // Get the total amount of rendered lines
     const linesCount = container.blocks.reduce(

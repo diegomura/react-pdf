@@ -149,8 +149,8 @@ class Page extends Base {
 
   onNodeSplit(height, clone) {
     clone.marginTop = 0;
-    this.height = height;
     this.marginBottom = 0;
+    this.calculateLayout();
   }
 
   update(newProps) {}

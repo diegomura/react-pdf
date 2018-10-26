@@ -241,6 +241,11 @@ class Text extends Base {
     return text;
   }
 
+  update(newProps) {
+    this._container = null;
+    super.update(newProps);
+  }
+
   async render() {
     this.root.instance.save();
     this.applyTransformations();

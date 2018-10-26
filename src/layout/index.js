@@ -10,14 +10,17 @@ import lineBreaker from './linebreaker';
 const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 
 export class LayoutEngine extends BaseLayoutEngine {
-  constructor({ hyphenationCallback }) {
+  constructor({ hyphenationCallback, hyphenationPenalty }) {
     const engines = {
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
       lineFragmentGenerator: lineFragmentGenerator(),
       fontSubstitutionEngine: fontSubstitutionEngine(),
-      lineBreaker: lineBreaker({ hyphenationCallback }),
       justificationEngine: justificationEngine({ shrinkWhitespaceFactor }),
+      lineBreaker: lineBreaker({
+        callback: hyphenationCallback,
+        penalty: hyphenationPenalty,
+      }),
     };
 
     super(engines);

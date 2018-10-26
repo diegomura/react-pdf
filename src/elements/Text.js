@@ -1,8 +1,9 @@
 import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
 import Base from './Base';
-import { Rect, Path, Container } from '../layout';
+import Font from '../font';
 import { getURL } from '../utils/url';
+import { LayoutEngine, Rect, Path, Container } from '../layout';
 import { getAttributedString } from '../utils/attributedString';
 
 const INFINITY = 999999;
@@ -23,6 +24,7 @@ class Text extends Base {
     this.computed = false;
     this._container = null;
     this._attributedString = null;
+    this._layoutEngine = null;
     this.renderCallback = props.render;
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
@@ -75,6 +77,19 @@ class Text extends Base {
   get linesWidth() {
     if (!this._container) return -1;
     return Math.max(...this.lines.map(line => line.advanceWidth));
+  }
+
+  get layoutEngine() {
+    if (!this._layoutEngine) {
+      const { hyphenationPenalty } = this.props;
+      const hyphenationCallback = Font.getHyphenationCallback();
+      this._layoutEngine = new LayoutEngine({
+        hyphenationCallback,
+        hyphenationPenalty,
+      });
+    }
+
+    return this._layoutEngine;
   }
 
   appendChild(child) {
@@ -137,7 +152,7 @@ class Text extends Base {
       const attributedString = this.attributedString;
 
       // Do the actual text layout
-      this.root.layoutEngine.layout(attributedString, [container]);
+      this.layoutEngine.layout(attributedString, [container]);
       this._container = container;
     }
 

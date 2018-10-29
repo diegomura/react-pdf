@@ -106,7 +106,7 @@ export const PDFDownloadLink = ({
       {params => (
         <a
           className={className}
-          download={fileName}
+          download={fileName || 'document.pdf'}
           href={params.url}
           style={Array.isArray(style) ? flatStyles(style) : style}
         >

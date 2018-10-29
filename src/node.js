@@ -34,6 +34,24 @@ export const renderToFile = function(element, filePath, callback) {
   });
 };
 
+const throwEnvironmentError = name => {
+  throw new Error(
+    `${name} is a web specific API. Or you're either using this component on Node, or your bundler is not loading react-pdf from the appropiate web build.`,
+  );
+};
+
+export const PDFViewer = () => {
+  throwEnvironmentError('PDFViewer');
+};
+
+export const PDFDownloadLink = () => {
+  throwEnvironmentError('PDFDownloadLink');
+};
+
+export const BlobProvider = () => {
+  throwEnvironmentError('BlobProvider');
+};
+
 export const render = renderToFile;
 
 export {

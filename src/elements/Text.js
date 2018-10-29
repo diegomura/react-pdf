@@ -5,6 +5,7 @@ import { Rect, Path, Container } from '../layout';
 import { getURL } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
+const INFINITY = 999999;
 const PDFRenderer = createPDFRenderer({ Rect });
 
 class Text extends Base {
@@ -125,6 +126,9 @@ class Text extends Base {
   }
 
   layoutText(width, height) {
+    // IF height null or NaN, we take some liberty on layout height
+    height = height || INFINITY;
+
     // Text layout is expensive. That's why we ensure to only do it once
     // (except dynamic nodes. Those change content and needs to relayout every time)
     if (!this._container || this.props.render) {
@@ -149,7 +153,7 @@ class Text extends Base {
 
   measureText(width, widthMode, height, heightMode) {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.layoutText(width, 999999);
+      this.layoutText(width);
 
       return { height: this.style.flexGrow ? NaN : this.linesHeight };
     }
@@ -256,10 +260,6 @@ class Text extends Base {
       );
     }
 
-    if (this.props.debug) {
-      this.debug();
-    }
-
     const padding = this.padding;
     const { top, left } = this.getAbsoluteLayout();
 
@@ -276,6 +276,10 @@ class Text extends Base {
     });
 
     renderer.render(this.container);
+
+    if (this.props.debug) {
+      this.debug();
+    }
 
     this.root.instance.restore();
   }

@@ -15,7 +15,7 @@ describe('View', () => {
 
   test('Should have null dimensions', async () => {
     const doc = new Document(dummyRoot, {});
-    const page = new Page(dummyRoot, {});
+    const page = new Page(dummyRoot, { wrap: false });
     const note = new Note(dummyRoot, {});
     const text = new TextInstance(dummyRoot, 'Im a note!');
 

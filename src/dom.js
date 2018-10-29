@@ -93,21 +93,28 @@ export const PDFDownloadLink = ({
   document: doc,
   className,
   style,
-  fileName,
   children,
+  fileName = 'document.pdf',
 }) => {
   if (!doc) {
     warning(false, 'You should pass a valid document to PDFDownloadLink');
     return null;
   }
 
+  const downloadOnIE = blob => () => {
+    if (window.navigator.msSaveBlob) {
+      window.navigator.msSaveBlob(blob, fileName);
+    }
+  };
+
   return (
     <InternalBlobProvider document={doc}>
       {params => (
         <a
           className={className}
-          download={fileName || 'document.pdf'}
+          download={fileName}
           href={params.url}
+          onClick={downloadOnIE(params.blob)}
           style={Array.isArray(style) ? flatStyles(style) : style}
         >
           {typeof children === 'function' ? children(params) : children}

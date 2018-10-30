@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 import upperFirst from 'lodash.upperfirst';
 
 const PERCENT = /^(\d+)?%$/g;

@@ -51,7 +51,7 @@
     "page-wrapping": "^1.0.2",
     "react": "^16.4.1",
     "react-reconciler": "^0.12.0",
-    "yoga-layout": "1.9.3"
+    "yoga-layout-prebuilt": "1.9.3"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

@@ -1,12 +1,24 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="400px"></p>
-
-React renderer for creating PDF files on the browser, mobile and server
-
-[![npm](https://img.shields.io/npm/v/@react-pdf/renderer.svg)](https://www.npmjs.com/package/@react-pdf/renderer)
-[![Travis](https://img.shields.io/travis/diegomura/react-pdf.svg)](https://travis-ci.org/diegomura/react-pdf)
-[![license](https://img.shields.io/github/license/diegomura/react-pdf.svg)](https://github.com/diegomura/react-pdf/blob/master/LICENSE)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/react-pdf)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
+  <p align="center">React renderer for creating PDF files on the browser and server<p>
+  <p align="center">
+    <a href="https://www.npmjs.com/package/@react-pdf/renderer">
+      <img src="https://img.shields.io/npm/v/@react-pdf/renderer.svg" />
+    </a>
+    <a href="https://travis-ci.org/diegomura/react-pdf">
+      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
+    </a>
+    <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
+    </a>
+    <a href="https://spectrum.chat/react-pdf">
+      <img src="https://withspectrum.github.io/badge/badge.svg" />
+    </a>
+    <a href="https://github.com/prettier/prettier">
+      <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
+    </a>
+  </p>
+</p>
 
 ## How to install
 ```sh

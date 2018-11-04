@@ -4,20 +4,21 @@ import Page from '../src/elements/Page';
 import Image from '../src/elements/Image';
 import Document from '../src/elements/Document';
 import root from './utils/dummyRoot';
+import Text from '../src/elements/Text';
+import TextInstance from '../src/elements/TextInstance';
+import * as emojiUtils from '../src/utils/emoji';
 
 jest.mock('page-wrapping');
 jest.mock('../src/font');
-
-wrapPages.mockReturnValue([]);
 
 let dummyRoot;
 
 describe('Document', () => {
   beforeEach(() => {
-    wrapPages.mockClear();
-
+    wrapPages.mockReturnValue([]);
     dummyRoot = root.reset();
   });
+  afterEach(jest.resetAllMocks);
 
   test('Should not render extra metadata if not specified', async () => {
     const doc = new Document(dummyRoot, {});
@@ -117,6 +118,27 @@ describe('Document', () => {
 
     expect(image1Fetch.mock.calls).toHaveLength(1);
     expect(image2Fetch.mock.calls).toHaveLength(1);
+  });
+
+  test('Should trigger available emojis loading', async () => {
+    const doc = new Document(dummyRoot, {});
+    const page = new Page(dummyRoot, {});
+    const text = new Text(dummyRoot, {});
+    const textInstance = new TextInstance(dummyRoot, '😁 😊');
+
+    // Simulate fetch successful loading
+    emojiUtils.fetchEmojis = jest.fn(() => [
+      Promise.resolve(),
+      Promise.resolve(),
+    ]);
+
+    doc.appendChild(page);
+    page.appendChild(text);
+    text.appendChild(textInstance);
+
+    await doc.render();
+
+    expect(emojiUtils.fetchEmojis.mock.calls).toHaveLength(1);
   });
 
   test('Should trigger page wrapping if flag true', async () => {

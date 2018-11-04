@@ -17,13 +17,15 @@ describe('Text', () => {
     const text = new Text(dummyRoot, {});
     const textInstance = new TextInstance(dummyRoot, '');
 
+    text.layoutEngine = { layout: jest.fn() };
+
     doc.appendChild(page);
     page.appendChild(text);
     text.appendChild(textInstance);
 
     await doc.render();
 
-    expect(dummyRoot.layoutEngine.layout.mock.calls).toHaveLength(1);
-    expect(dummyRoot.layoutEngine.layout.mock.calls[0][0].string).toBe('');
+    expect(text.layoutEngine.layout.mock.calls).toHaveLength(1);
+    expect(text.layoutEngine.layout.mock.calls[0][0].string).toBe('');
   });
 });

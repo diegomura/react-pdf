@@ -64,10 +64,12 @@ const hyphenateWord = glyphString => {
 
 const hyphenate = words => words.map(word => hyphenateWord(word));
 
-const formatter = (measureText, textAlign, callback) => {
+const formatter = (measureText, textAlign, callback, penalty) => {
   const spaceWidth = measureText(' ');
   const hyphenWidth = measureText('-');
-  const hyphenPenalty = !textAlign || textAlign === 'justify' ? 100 : 600;
+  const hyphenPenalty =
+    penalty || (!textAlign || textAlign === 'justify' ? 100 : 600);
+
   const opts = {
     width: 3,
     stretch: 6,
@@ -77,8 +79,8 @@ const formatter = (measureText, textAlign, callback) => {
   return glyphString => {
     const nodes = [];
     const words = getWords(glyphString);
-    const spaceStretch = spaceWidth * opts.width / opts.stretch;
-    const spaceShrink = spaceWidth * opts.width / opts.shrink;
+    const spaceStretch = (spaceWidth * opts.width) / opts.stretch;
+    const spaceShrink = (spaceWidth * opts.width) / opts.shrink;
     const hyphenationCallback = callback || hyphenate;
     const hyphenatedWords = hyphenationCallback(words, glyphString);
 

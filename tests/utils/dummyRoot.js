@@ -29,7 +29,6 @@ export default {
     return {
       instance,
       markDirty: jest.fn(),
-      layoutEngine: { layout: jest.fn() },
     };
   },
 };

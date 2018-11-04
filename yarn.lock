@@ -76,6 +76,14 @@
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
+<<<<<<< 49afdcfb394b49969653780e7e384e4a3362ab96
+=======
+"@textkit/line-fragment-generator@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.9.tgz#756fc7df9e6cf7519d6a6fb60c91dce3c3310ef4"
+  integrity sha512-8ANIJHsrJE+ngtfjtmXuh5qByUW2w0dYgvm7SFSvU46OA1MahMLOfhLHlEOVwxdtrCjv6Qv5vxmTKjceuOQTcg==
+
+>>>>>>> WIP: Textkit refactoring
 "@textkit/pdf-renderer@^0.1.11":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.11.tgz#2743441f39d486879e4de9a530a2610c0965b49f"
@@ -1442,9 +1450,9 @@ chownr@^1.0.1, chownr@^1.1.1:
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
 
 ci-env@^1.4.0:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/ci-env/-/ci-env-1.6.1.tgz#3e3ef4fc528a2825397f912cfa30cde17ec364cc"
-  integrity sha512-sH0odjml3wEHLGLtdkrAaWcJxwbKyMUa60zedA+zoBfldhI2K75utVChP5Km8410R82aAw4/nflWBHG30+WlPQ==
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/ci-env/-/ci-env-1.7.0.tgz#55cc9f8ff7bb4380de298cbed3ae27c35dcdfd8e"
+  integrity sha512-ifHfV5JmACoTnoPxwjKjUUAekL1UCKZ9EU27GaaSkLVopkV3H1w0eYIpY+aAiX31SVEtTrZFMS94EFETSj0vIA==
 
 ci-info@^1.5.0:
   version "1.6.0"
@@ -2867,6 +2875,13 @@ husky@^0.13.2:
     find-parent-dir "^0.3.0"
     is-ci "^1.0.9"
     normalize-path "^1.0.0"
+
+hyphenation.de@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hyphenation.de/-/hyphenation.de-0.2.1.tgz#366b4a805884c44d59be851b9bf402ccf24e2434"
+  integrity sha1-NmtKgFiExE1ZvoUbm/QCzPJOJDQ=
+  dependencies:
+    hypher "*"
 
 hyphenation.en-us@^0.2.1:
   version "0.2.1"
@@ -4943,7 +4958,7 @@ pseudomap@^1.0.2:
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
   integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
-psl@^1.1.24:
+psl@^1.1.24, psl@^1.1.28:
   version "1.1.29"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.1.29.tgz#60f580d360170bb722a797cc704411e6da850c67"
   integrity sha512-AeUmQ0oLN02flVHXWh9sSJF7mcdFq0ppid/JkErufc3hGIV/AMa8Fo9VgDo/cT2jFdOWoFvHp90qqBH54W+gjQ==
@@ -4969,7 +4984,7 @@ punycode@^1.4.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   integrity sha1-wNWmOycYgArY4esPpSachN1BhF4=
 
-punycode@^2.1.0:
+punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
@@ -5814,7 +5829,14 @@ string.prototype.trim@^1.1.2:
     es-abstract "^1.5.0"
     function-bind "^1.0.2"
 
-string_decoder@^1.1.1, string_decoder@~1.1.1:
+string_decoder@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
+  integrity sha512-6YqyX6ZWEYguAxgZzHGL7SsCeGx3V2TtOTqZz1xSTSWnqsbWwbptafNyvf/ACquZUXV3DANr5BDIwNYe1mN42w==
+  dependencies:
+    safe-buffer "~5.1.0"
+
+string_decoder@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
@@ -6021,7 +6043,15 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tough-cookie@>=2.3.3, tough-cookie@^2.3.4, tough-cookie@~2.4.3:
+tough-cookie@>=2.3.3, tough-cookie@^2.3.4:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"
+  integrity sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==
+  dependencies:
+    psl "^1.1.28"
+    punycode "^2.1.1"
+
+tough-cookie@~2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
   integrity sha512-Q5srk/4vDM54WJsJio3XNn6K2sCG+CQ8G5Wz6bZhRZoAe/+TxjWB/GlFAnYEbkYVlON9FMk/fE3h2RLpPXo4lQ==

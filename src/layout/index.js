@@ -4,6 +4,7 @@ import justificationEngine from '@textkit/justification-engine';
 import textDecorationEngine from '@textkit/text-decoration-engine';
 import lineFragmentGenerator from '@textkit/line-fragment-generator';
 import fontSubstitutionEngine from './fontSubstitution';
+import wordHyphenation from './wordHyphenation';
 import lineBreaker from './linebreaker';
 
 // justificationEngine values
@@ -12,6 +13,7 @@ const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 export class LayoutEngine extends BaseLayoutEngine {
   constructor({ hyphenationCallback, hyphenationPenalty }) {
     const engines = {
+      wordHyphenation: wordHyphenation,
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
       lineFragmentGenerator: lineFragmentGenerator(),
@@ -35,7 +37,6 @@ export {
   Point,
   Block,
   Range,
-  TabStop,
   Polygon,
   RunStyle,
   GlyphRun,

@@ -329,8 +329,9 @@ const linebreak = (nodes, lines, settings) => {
 
 linebreak.infinity = 10000;
 
-linebreak.glue = (width, stretch, shrink) => ({
+linebreak.glue = (width, value, stretch, shrink) => ({
   type: 'glue',
+  value,
   width,
   stretch,
   shrink,

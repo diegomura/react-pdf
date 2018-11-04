@@ -18,7 +18,7 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@react-pdf/fontkit@^1.11.0":
+"@react-pdf/fontkit@^1.11.0", "@react-pdf/fontkit@^1.13.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.13.0.tgz#ec14cc61120e814c1d48cf276771684ec615be9e"
   integrity sha512-g4rxtkSkEbIwDoqZc6ZM2yHq/imqmgGXQuMDnrkM2yI9TpTGhQfJGnz9IrCadrRgOrEx9orxRuTALOxzAce7Kg==
@@ -80,15 +80,6 @@
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/@textkit/line-fragment-generator/-/line-fragment-generator-0.1.9.tgz#756fc7df9e6cf7519d6a6fb60c91dce3c3310ef4"
   integrity sha512-8ANIJHsrJE+ngtfjtmXuh5qByUW2w0dYgvm7SFSvU46OA1MahMLOfhLHlEOVwxdtrCjv6Qv5vxmTKjceuOQTcg==
-
-"@textkit/linebreaker@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@textkit/linebreaker/-/linebreaker-0.1.9.tgz#9ac8cb15ec7cf2e53b61bb3ef87ee4eb6cb8d929"
-  integrity sha512-zVsm9rnDh2UnxmIVg2b0b2PFUIKNjzl2O6o0YVufIhPsoDCP97fNvY3W/a0s4bGsfSX+QMEw51eGPBhqi1Co9Q==
-  dependencies:
-    hyphenation.en-us "^0.2.1"
-    hypher "^0.2.4"
-    linebreak "^0.1.2"
 
 "@textkit/pdf-renderer@^0.1.11":
   version "0.1.11"
@@ -1389,9 +1380,9 @@ camelcase@^4.1.0:
   integrity sha1-1UVjW+HjPFQmScaRc+Xeas+uNN0=
 
 caniuse-lite@^1.0.30000844:
-  version "1.0.30000905"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000905.tgz#8f731ecf5b8553c7154a691c3df3a635a1a3fda5"
-  integrity sha512-cR6ICguvhRrkAjFfBoe54vJQMVOEz7vFmqrV6oor1a7GRg6DdswI40lkiV/QQvAMb4txzTkjSaLaJaiAtSuQzA==
+  version "1.0.30000906"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000906.tgz#7c44e498a2504f7a5db3b4f91285bbc821157a77"
+  integrity sha512-ME7JFX6h0402om/nC/8Lw+q23QvPe2ust9U0ntLmkX9F2zaGwq47fZkjlyHKirFBuq1EM+T/LXBcDdW4bvkCTA==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -1462,7 +1453,7 @@ chokidar@^1.6.1:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chownr@^1.0.1:
+chownr@^1.0.1, chownr@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
@@ -2918,6 +2909,13 @@ husky@^0.13.2:
     is-ci "^1.0.9"
     normalize-path "^1.0.0"
 
+hyphenation.de@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hyphenation.de/-/hyphenation.de-0.2.1.tgz#366b4a805884c44d59be851b9bf402ccf24e2434"
+  integrity sha1-NmtKgFiExE1ZvoUbm/QCzPJOJDQ=
+  dependencies:
+    hypher "*"
+
 hyphenation.en-us@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"
@@ -2925,7 +2923,7 @@ hyphenation.en-us@^0.2.1:
   dependencies:
     hypher "*"
 
-hypher@*, hypher@^0.2.4, hypher@^0.2.5:
+hypher@*, hypher@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/hypher/-/hypher-0.2.5.tgz#2fe456ed2a3fd4ed0d9e428617181c59f9a6dd02"
   integrity sha1-L+RW7So/1O0NnkKGFxgcWfmm3QI=
@@ -3930,13 +3928,6 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-linebreak@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/linebreak/-/linebreak-0.1.2.tgz#67ef2db4a4698902e87eba9a0ee4f8490aa717e6"
-  integrity sha1-Z+8ttKRpiQLofrqaDuT4SQqnF+Y=
-  dependencies:
-    unicode-trie "^0.1.1"
-
 lint-staged@^3.4.2:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-3.6.1.tgz#24423c8b7bd99d96e15acd1ac8cb392a78e58582"
@@ -4284,7 +4275,7 @@ minimist@~0.0.1:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
   integrity sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8=
 
-minipass@^2.2.1, minipass@^2.3.3:
+minipass@^2.2.1, minipass@^2.3.4:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-2.3.5.tgz#cacebe492022497f656b0f0f51e2682a9ed2d848"
   integrity sha512-Gi1W4k059gyRbyVUZQ4mEqLm0YIUiGYfvxhF6SIlk3ui1WVxMTGfGdQ2SInh3PDrRTVvPKgULkpJtT4RH10+VA==
@@ -4292,7 +4283,7 @@ minipass@^2.2.1, minipass@^2.3.3:
     safe-buffer "^5.1.2"
     yallist "^3.0.0"
 
-minizlib@^1.1.0:
+minizlib@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/minizlib/-/minizlib-1.1.1.tgz#6734acc045a46e61d596a43bb9d9cd326e19cc42"
   integrity sha512-TrfjCjk4jLhcJyGMYymBH6oTXcWjYbUAXTHDbtnWHjZC25h0cdajHuPE1zxb4DVmu8crfh+HwH/WMuyLG0nHBg==
@@ -6019,14 +6010,14 @@ tar@^2.0.0:
     inherits "2"
 
 tar@^4:
-  version "4.4.6"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.6.tgz#63110f09c00b4e60ac8bcfe1bf3c8660235fbc9b"
-  integrity sha512-tMkTnh9EdzxyfW+6GK6fCahagXsnYk6kE6S9Gr9pjVdys769+laCTbodXDhPAjzVtEBazRgP0gYqOjnk9dQzLg==
+  version "4.4.7"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.7.tgz#14df45023ffdcd0c233befa2fc01ebb76ee39e7c"
+  integrity sha512-mR3MzsCdN0IEWjZRuF/J9gaWHnTwOvzjqPTcvi1xXgfKTDQRp39gRETPQEfPByAdEOGmZfx1HrRsn8estaEvtA==
   dependencies:
-    chownr "^1.0.1"
+    chownr "^1.1.1"
     fs-minipass "^1.2.5"
-    minipass "^2.3.3"
-    minizlib "^1.1.0"
+    minipass "^2.3.4"
+    minizlib "^1.1.1"
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
@@ -6171,11 +6162,6 @@ underscore@~1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.4.4.tgz#61a6a32010622afa07963bf325203cf12239d604"
   integrity sha1-YaajIBBiKvoHljvzJSA88SI51gQ=
-
-unicode-trie@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/unicode-trie/-/unicode-trie-0.1.2.tgz#bd3c528bc3360cafdf71f0863cbec29fc0e84ec8"
-  integrity sha1-vTxSi8M2DK/fcfCGPL7Cn8DoTsg=
 
 unicode-trie@^0.3.0:
   version "0.3.1"

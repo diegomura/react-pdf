@@ -83,7 +83,7 @@
     "rimraf": "^2.6.1",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-bundle-size": "https://github.com/vimeo/rollup-plugin-bundle-size",
+    "rollup-plugin-bundle-size": "^1.0.2",
     "rollup-plugin-ignore": "^1.0.3",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",

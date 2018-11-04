@@ -92,6 +92,10 @@ class Text extends Base {
     return this._layoutEngine;
   }
 
+  set layoutEngine(instance) {
+    this._layoutEngine = instance;
+  }
+
   appendChild(child) {
     if (child) {
       child.parent = this;
@@ -251,6 +255,8 @@ class Text extends Base {
 
   clone() {
     const text = super.clone();
+
+    text.layoutEngine = this.layoutEngine;
 
     // Save calculated layout for non-dynamic clone elements
     if (!this.props.render && !this.props.fixed) {

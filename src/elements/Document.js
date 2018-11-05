@@ -74,6 +74,8 @@ class Document {
 
       if (typeof node === 'string') {
         promises.push(...fetchEmojis(node));
+      } else if (typeof node.value === 'string') {
+        promises.push(...fetchEmojis(node.value));
       } else if (node.children) {
         node.children.forEach(childNode => {
           listToExplore.push(childNode);

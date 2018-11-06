@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import { resolveImage } from '../utils/image';

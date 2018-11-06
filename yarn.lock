@@ -4882,10 +4882,10 @@ p-try@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
   integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
 
-page-wrapping@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/page-wrapping/-/page-wrapping-1.0.2.tgz#7d7dd7166f64cf241078af4a885aaf1fae776321"
-  integrity sha512-FIRpkHQB4hJwPWjT0DmpHm0NLkm6WBn2tGzPXO3efJWBA2l7sjtFdjAW8QrCvbw5kmP1sO64yroc2HnTlH9LcQ==
+page-wrapping@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/page-wrapping/-/page-wrapping-1.1.0.tgz#8446eb6b17fa7c59d75f0f9c9ece5217ff5f29a4"
+  integrity sha512-DAnqZJ3FHKLXVbdQfvGoHyZRFZL+N1IIZlo2RImFqrZ3scoFS8lOHZoLQxnYbsnCMQkwoEyESd0ZNs5RbEsArA==
 
 pako@^0.2.5:
   version "0.2.9"

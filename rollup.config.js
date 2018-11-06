@@ -53,6 +53,7 @@ const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
 const configBase = {
   globals: { react: 'React' },
   external: [
+    'page-wrapping',
     'fbjs/lib/emptyObject',
     'fbjs/lib/warning',
     '@react-pdf/pdfkit',

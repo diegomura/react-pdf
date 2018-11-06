@@ -99,7 +99,7 @@ class Page extends Base {
     super.applyProps();
   }
 
-  addDynamicChild(parent, elements) {
+  async addDynamicChild(parent, elements) {
     if (!elements) return;
     const children = Array.isArray(elements) ? elements : [elements];
 
@@ -112,16 +112,17 @@ class Page extends Base {
         parent.appendChild(instance);
       } else if (type !== Fragment) {
         const instance = createInstance(child, this.root);
+        await instance.onAppendDynamically();
         parent.appendChild(instance);
         instance.applyProps();
-        this.addDynamicChild(instance, props.children);
+        await this.addDynamicChild(instance, props.children);
       } else {
-        this.addDynamicChild(parent, props.children);
+        await this.addDynamicChild(parent, props.children);
       }
     }
   }
 
-  renderDynamicNodes(props, cb) {
+  async renderDynamicNodes(props, cb) {
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
@@ -131,7 +132,7 @@ class Page extends Base {
       if (condition && node.props.render) {
         node.removeAllChilds();
         const elements = node.props.render(props);
-        this.addDynamicChild(node, elements);
+        await this.addDynamicChild(node, elements);
         if (!node.fixed) node.props.render = null;
         continue;
       }
@@ -142,8 +143,8 @@ class Page extends Base {
     }
   }
 
-  nodeWillWrap(props) {
-    this.renderDynamicNodes(props);
+  async nodeWillWrap(props) {
+    await this.renderDynamicNodes(props);
     this.calculateLayout();
   }
 

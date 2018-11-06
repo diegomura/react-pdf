@@ -121,6 +121,8 @@ class Node {
     return this.layout.markDirty();
   }
 
+  onAppendDynamically() {}
+
   get position() {
     return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
       ? 'absolute'

@@ -119,28 +119,29 @@ class Document {
     this.props = newProps;
   }
 
-  wrapPages() {
+  async wrapPages() {
     let pageCount = 1;
+    const pages = [];
 
-    const pages = this.children.reduce((acc, page) => {
+    for (const page of this.children) {
       const wrapArea = page.size.height - (page.style.paddingBottom || 0);
       if (page.wrap) {
-        const subpages = wrapPages(page, wrapArea, pageCount);
+        const subpages = await wrapPages(page, wrapArea, pageCount);
 
         pageCount += subpages.length;
 
-        return [...acc, ...subpages];
+        pages.push(...subpages);
       } else {
         page.height = page.size.height;
-        return [...acc, page];
+        pages.push(page);
       }
-    }, []);
+    }
 
     return pages;
   }
 
   async renderPages() {
-    const subpages = this.wrapPages();
+    const subpages = await this.wrapPages();
 
     for (let j = 0; j < subpages.length; j++) {
       // Update dynamic text nodes with total pages info

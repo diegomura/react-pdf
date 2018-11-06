@@ -101,6 +101,10 @@ class Image extends Base {
     return clone;
   }
 
+  async onAppendDynamically() {
+    await this.fetch();
+  }
+
   async render() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();

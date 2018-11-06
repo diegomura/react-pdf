@@ -48,7 +48,7 @@
     "lodash.topairsin": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
     "media-engine": "^1.0.3",
-    "page-wrapping": "^1.0.2",
+    "page-wrapping": "^1.1.0",
     "react": "^16.4.1",
     "react-reconciler": "^0.12.0",
     "yoga-layout": "1.9.3"

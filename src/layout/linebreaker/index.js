@@ -16,22 +16,33 @@ export default ({ penalty } = {}) => () => {
       this.tolerance = tolerance || 4;
     }
 
-    applyFallback(syllables, availableWidth) {
-      const breaks = [];
+    applyFallback(glyphString, nodes, availableWidth) {
+      const result = [];
 
-      let currentY = 0;
-      let currentBreak = 0;
-      for (const s of syllables) {
-        if (currentY + s.advanceWidth > availableWidth) {
-          currentY = 0;
-          breaks.push(currentBreak);
-        }
+      // let end = 0;
+      // let count = 0;
 
-        currentBreak += s.end;
-        currentY += s.advanceWidth;
-      }
+      // for (let j = 0; j < nodes.length; j++) {
+      //   const node = nodes[j];
+      //   const futureNode = nodes[j + 1];
 
-      return breaks;
+      //   if (node.type === 'box') {
+      //     if (futureNode.type === 'glue') {
+      //       end = node.value.end;
+      //     }
+
+      //     if (count + node.width > availableWidth) {
+      //       result.push(glyphString.slice(0, end));
+      //       count = 0;
+      //     }
+      //   }
+
+      //   if (node.type !== 'penalty') count += node.width;
+      // }
+
+      // result.push(glyphString.slice(end, glyphString.length));
+
+      return result;
     }
 
     getNodes(glyphString, syllables, { align }) {
@@ -96,22 +107,22 @@ export default ({ penalty } = {}) => () => {
       return lines;
     }
 
-    suggestLineBreak(glyphString, syllables, availableWidth, paragraphStyle) {
+    suggestLineBreak(glyphString, syllables, availableWidths, paragraphStyle) {
       const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
 
       let tolerance = this.tolerance;
-      let breaks = linebreak(nodes, [availableWidth], { tolerance });
+      let breaks = linebreak(nodes, availableWidths, { tolerance });
 
       // Try again with a higher tolerance if the line breaking failed.
       while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
-        breaks = linebreak(nodes, [availableWidth], { tolerance });
+        breaks = linebreak(nodes, availableWidths, { tolerance });
         tolerance += TOLERANCE_STEPS;
       }
 
       const res =
-        breaks.length > 0
-          ? this.applyKnuthAndPlass(glyphString, nodes, breaks.slice(1))
-          : this.applyFallback(glyphString, syllables, availableWidth);
+        breaks.length === 0 || (breaks.length === 1 && breaks[0].position === 0)
+          ? this.applyFallback(glyphString, nodes, availableWidths[0])
+          : this.applyKnuthAndPlass(glyphString, nodes, breaks.slice(1));
 
       return res;
     }

@@ -28,7 +28,6 @@
     "@react-pdf/script-itemizer": "^0.1.12",
     "@react-pdf/textkit-core": "^0.1.23",
     "@textkit/justification-engine": "^0.1.9",
-    "@textkit/line-fragment-generator": "^0.1.9",
     "@textkit/pdf-renderer": "^0.1.11",
     "@textkit/text-decoration-engine": "^0.1.10",
     "babel-runtime": "^6.26.0",

@@ -76,6 +76,7 @@
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
+<<<<<<< 1641ebd4b5e81f91332bd1486a5182cf10f75821
 <<<<<<< 49afdcfb394b49969653780e7e384e4a3362ab96
 =======
 "@textkit/line-fragment-generator@^0.1.9":
@@ -84,6 +85,8 @@
   integrity sha512-8ANIJHsrJE+ngtfjtmXuh5qByUW2w0dYgvm7SFSvU46OA1MahMLOfhLHlEOVwxdtrCjv6Qv5vxmTKjceuOQTcg==
 
 >>>>>>> WIP: Textkit refactoring
+=======
+>>>>>>> Finish refactor
 "@textkit/pdf-renderer@^0.1.11":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.11.tgz#2743441f39d486879e4de9a530a2610c0965b49f"

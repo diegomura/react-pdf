@@ -6,7 +6,6 @@ import { getURL } from '../utils/url';
 import { LayoutEngine, Rect, Path, Container } from '../layout';
 import { getAttributedString } from '../utils/attributedString';
 
-const INFINITY = 999999;
 const PDFRenderer = createPDFRenderer({ Rect });
 
 class Text extends Base {
@@ -146,12 +145,12 @@ class Text extends Base {
 
   layoutText(width, height) {
     // IF height null or NaN, we take some liberty on layout height
-    height = height || INFINITY;
+    const containerHeight = height || this.page.size.height;
 
     // Text layout is expensive. That's why we ensure to only do it once
     // (except dynamic nodes. Those change content and needs to relayout every time)
     if (!this._container || this.props.render) {
-      const path = new Path().rect(0, 0, width, height);
+      const path = new Path().rect(0, 0, width, containerHeight);
       const container = new Container(path);
       const attributedString = this.attributedString;
 
@@ -226,7 +225,7 @@ class Text extends Base {
     } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
       return 0;
     } else if (linesQuantity === orphans + widows) {
-      return this.heightAtLineIndex(orphans - 1);
+      return this.heightAtLineIndex(orphans);
     } else if (linesQuantity - slicedLine < widows) {
       return height - this.heightAtLineIndex(widows - 1);
     }
@@ -237,15 +236,11 @@ class Text extends Base {
   onNodeSplit(height, clone) {
     const wrapHeight = this.wrapHeight(height);
     const slicedLineIndex = this.lineIndexAtHeight(wrapHeight);
-    const slicedLine = this.lines[slicedLineIndex - 1];
 
     clone.marginTop = 0;
     clone.paddingTop = 0;
     clone.start = slicedLineIndex;
-    clone.attributedString = this.attributedString.slice(
-      slicedLine ? slicedLine.stringEnd : 0,
-      this.attributedString.length,
-    );
+    clone.attributedString = this.attributedString;
 
     this.height = wrapHeight;
     this.marginBottom = 0;

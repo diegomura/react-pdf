@@ -14,7 +14,7 @@ const opts = {
 export default ({ penalty } = {}) => () => {
   return class KPLineBreaker {
     constructor(tolerance) {
-      this.tolerance = tolerance || 4;
+      this.tolerance = tolerance || 5;
     }
 
     getNodes(glyphString, syllables, { align }) {
@@ -87,6 +87,7 @@ export default ({ penalty } = {}) => () => {
 
     suggestLineBreak(glyphString, syllables, availableWidths, paragraphStyle) {
       const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
+
       let tolerance = this.tolerance;
       let breaks = linebreak(nodes, availableWidths, { tolerance });
 

@@ -2,7 +2,7 @@ import linebreak from './linebreak';
 
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
-const TOLERANCE_LIMIT = 40;
+const TOLERANCE_LIMIT = 50;
 
 const opts = {
   width: 3,
@@ -13,10 +13,12 @@ const opts = {
 export default ({ penalty } = {}) => () => {
   return class KPLineBreaker {
     constructor(tolerance) {
-      this.tolerance = tolerance || 4;
+      this.tolerance = tolerance || 5;
     }
 
     applyFallback(glyphString, nodes, availableWidth) {
+      console.log('>>>>>>> FALLBACK');
+
       const result = [];
 
       // let end = 0;
@@ -66,7 +68,7 @@ export default ({ penalty } = {}) => () => {
           const value = { value: syllable, start, end: start + syllable.end };
           acc.push(linebreak.box(syllable.advanceWidth, value, hyphenated));
 
-          if (hyphenated) {
+          if (syllables[index + 1] && hyphenated) {
             acc.push(linebreak.penalty(hyphenWidth, hyphenPenalty, 1));
           }
         }
@@ -75,6 +77,9 @@ export default ({ penalty } = {}) => () => {
 
         return acc;
       }, []);
+
+      result.push(linebreak.glue(0, null, linebreak.infinity, 0));
+      result.push(linebreak.penalty(0, -linebreak.infinity, 1));
 
       return result;
     }
@@ -110,13 +115,16 @@ export default ({ penalty } = {}) => () => {
     suggestLineBreak(glyphString, syllables, availableWidths, paragraphStyle) {
       const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
 
+      console.log(nodes);
+
       let tolerance = this.tolerance;
       let breaks = linebreak(nodes, availableWidths, { tolerance });
 
       // Try again with a higher tolerance if the line breaking failed.
       while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
-        breaks = linebreak(nodes, availableWidths, { tolerance });
         tolerance += TOLERANCE_STEPS;
+        console.log('>>>>', tolerance);
+        breaks = linebreak(nodes, availableWidths, { tolerance });
       }
 
       const res =

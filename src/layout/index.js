@@ -2,7 +2,6 @@ import { LayoutEngine as BaseLayoutEngine } from '@react-pdf/textkit-core';
 import scriptItemizer from '@react-pdf/script-itemizer';
 import justificationEngine from '@textkit/justification-engine';
 import textDecorationEngine from '@textkit/text-decoration-engine';
-import lineFragmentGenerator from '@textkit/line-fragment-generator';
 import fontSubstitutionEngine from './fontSubstitution';
 import wordHyphenation from './wordHyphenation';
 import lineBreaker from './linebreaker';
@@ -16,7 +15,6 @@ export class LayoutEngine extends BaseLayoutEngine {
       wordHyphenation: wordHyphenation,
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
-      lineFragmentGenerator: lineFragmentGenerator(),
       fontSubstitutionEngine: fontSubstitutionEngine(),
       justificationEngine: justificationEngine({ shrinkWhitespaceFactor }),
       lineBreaker: lineBreaker({

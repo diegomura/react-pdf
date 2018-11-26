@@ -82,6 +82,13 @@ describe('DOM API', () => {
     expect(wrapper.find('iframe')).toHaveLength(1);
   });
 
+  test('PDFViewer should pass unused props to iframe viewer', () => {
+    const wrapper = mount(
+      <PDFViewer name="PDFViewer-test-name">{doc}</PDFViewer>,
+    );
+    expect(wrapper.find('iframe').prop('name')).toEqual('PDFViewer-test-name');
+  });
+
   test('PDFDownloadLink as root should anchor tag and children', () => {
     const wrapper = mount(
       <PDFDownloadLink document={doc}>Download</PDFDownloadLink>,

@@ -12,15 +12,12 @@ const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 export class LayoutEngine extends BaseLayoutEngine {
   constructor({ hyphenationCallback, hyphenationPenalty }) {
     const engines = {
-      wordHyphenation: wordHyphenation,
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
       fontSubstitutionEngine: fontSubstitutionEngine(),
+      wordHyphenation: wordHyphenation({ hyphenationCallback }),
+      lineBreaker: lineBreaker({ penalty: hyphenationPenalty }),
       justificationEngine: justificationEngine({ shrinkWhitespaceFactor }),
-      lineBreaker: lineBreaker({
-        callback: hyphenationCallback,
-        penalty: hyphenationPenalty,
-      }),
     };
 
     super(engines);

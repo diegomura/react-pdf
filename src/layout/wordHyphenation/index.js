@@ -1,21 +1,27 @@
-import english from 'hyphenation.de';
+import english from 'hyphenation.en-us';
 import Hypher from 'hypher';
 
 const SOFT_HYPHEN_HEX = '\u00ad';
+const hypher = new Hypher(english);
 
-export default () =>
+export default ({ hyphenationCallback }) => () =>
   class {
     constructor() {
       this.cache = {};
-      this.hypher = new Hypher(english);
+    }
+
+    calculateParts(word) {
+      return word.includes(SOFT_HYPHEN_HEX)
+        ? word.split(SOFT_HYPHEN_HEX)
+        : hypher.hyphenate(word);
     }
 
     hyphenateWord(word) {
       if (this.cache[word]) return this.cache[word];
 
-      const parts = word.includes(SOFT_HYPHEN_HEX)
-        ? word.split(SOFT_HYPHEN_HEX)
-        : this.hypher.hyphenate(word);
+      const parts = hyphenationCallback
+        ? hyphenationCallback(word)
+        : this.calculateParts(word);
 
       this.cache[word] = parts;
 

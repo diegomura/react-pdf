@@ -1,4 +1,5 @@
 import linebreak from './linebreak';
+import bestFit from './bestFit';
 
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
@@ -6,45 +7,14 @@ const TOLERANCE_LIMIT = 50;
 
 const opts = {
   width: 3,
-  stretch: 6,
-  shrink: 9,
+  stretch: 3,
+  shrink: 4,
 };
 
 export default ({ penalty } = {}) => () => {
   return class KPLineBreaker {
     constructor(tolerance) {
-      this.tolerance = tolerance || 5;
-    }
-
-    applyFallback(glyphString, nodes, availableWidth) {
-      console.log('>>>>>>> FALLBACK');
-
-      const result = [];
-
-      // let end = 0;
-      // let count = 0;
-
-      // for (let j = 0; j < nodes.length; j++) {
-      //   const node = nodes[j];
-      //   const futureNode = nodes[j + 1];
-
-      //   if (node.type === 'box') {
-      //     if (futureNode.type === 'glue') {
-      //       end = node.value.end;
-      //     }
-
-      //     if (count + node.width > availableWidth) {
-      //       result.push(glyphString.slice(0, end));
-      //       count = 0;
-      //     }
-      //   }
-
-      //   if (node.type !== 'penalty') count += node.width;
-      // }
-
-      // result.push(glyphString.slice(end, glyphString.length));
-
-      return result;
+      this.tolerance = tolerance || 4;
     }
 
     getNodes(glyphString, syllables, { align }) {
@@ -84,13 +54,16 @@ export default ({ penalty } = {}) => () => {
       return result;
     }
 
-    applyKnuthAndPlass(glyphString, nodes, breaks) {
+    breakLines(glyphString, nodes, breaks) {
       let start = 0;
       let end = null;
 
-      const lines = breaks.map(breakPoint => {
+      const lines = breaks.reduce((acc, breakPoint) => {
         const node = nodes[breakPoint.position];
         const prevNode = nodes[breakPoint.position - 1];
+
+        // Last breakpoint corresponds to K&P mandatory final glue
+        if (breakPoint.position === nodes.length - 1) return acc;
 
         let line;
         if (node.type === 'penalty') {
@@ -103,8 +76,8 @@ export default ({ penalty } = {}) => () => {
         }
 
         start = end;
-        return line;
-      });
+        return [...acc, line];
+      }, []);
 
       const lastLine = glyphString.slice(start, glyphString.length);
       lines.push(lastLine);
@@ -114,25 +87,23 @@ export default ({ penalty } = {}) => () => {
 
     suggestLineBreak(glyphString, syllables, availableWidths, paragraphStyle) {
       const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
-
-      console.log(nodes);
-
       let tolerance = this.tolerance;
       let breaks = linebreak(nodes, availableWidths, { tolerance });
 
       // Try again with a higher tolerance if the line breaking failed.
       while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
         tolerance += TOLERANCE_STEPS;
-        console.log('>>>>', tolerance);
         breaks = linebreak(nodes, availableWidths, { tolerance });
       }
 
-      const res =
-        breaks.length === 0 || (breaks.length === 1 && breaks[0].position === 0)
-          ? this.applyFallback(glyphString, nodes, availableWidths[0])
-          : this.applyKnuthAndPlass(glyphString, nodes, breaks.slice(1));
+      if (
+        breaks.length === 0 ||
+        (breaks.length === 1 && breaks[0].position === 0)
+      ) {
+        breaks = bestFit(nodes, availableWidths);
+      }
 
-      return res;
+      return this.breakLines(glyphString, nodes, breaks.slice(1));
     }
   };
 };

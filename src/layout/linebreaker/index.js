@@ -3,12 +3,12 @@ import bestFit from './bestFit';
 
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
-const TOLERANCE_LIMIT = 50;
+const TOLERANCE_LIMIT = 40;
 
 const opts = {
   width: 3,
-  stretch: 3,
-  shrink: 4,
+  stretch: 6,
+  shrink: 9,
 };
 
 export default ({ penalty } = {}) => () => {

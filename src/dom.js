@@ -75,7 +75,7 @@ export const BlobProvider = ({ document: doc, children }) => {
   return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
 };
 
-export const PDFViewer = ({ className, style, children }) => {
+export const PDFViewer = ({ className, style, children, ...props }) => {
   return (
     <InternalBlobProvider document={children}>
       {({ url }) => (
@@ -83,6 +83,7 @@ export const PDFViewer = ({ className, style, children }) => {
           className={className}
           src={url}
           style={Array.isArray(style) ? flatStyles(style) : style}
+          {...props}
         />
       )}
     </InternalBlobProvider>

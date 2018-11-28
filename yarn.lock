@@ -2879,13 +2879,6 @@ husky@^0.13.2:
     is-ci "^1.0.9"
     normalize-path "^1.0.0"
 
-hyphenation.de@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/hyphenation.de/-/hyphenation.de-0.2.1.tgz#366b4a805884c44d59be851b9bf402ccf24e2434"
-  integrity sha1-NmtKgFiExE1ZvoUbm/QCzPJOJDQ=
-  dependencies:
-    hypher "*"
-
 hyphenation.en-us@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"

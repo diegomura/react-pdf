@@ -135,6 +135,25 @@ Then, run `yarn example -- <example-name>`
 yarn example -- fractals
 ```
 
+## How to setup Babel for this project
+```
+yarn add babel-cli babel-preset-env babel-preset-react --dev
+```
+.babelrc
+```
+{
+  "presets": ["env", "react"]
+}
+```
+
+package.json
+```
+"scripts": {
+  "compile": "babel-node src/render.js"
+}
+```
+
+
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).

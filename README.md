@@ -75,6 +75,9 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
+**CAUTION**
+It is for server-side only.
+
 ### Render in mobile
 > Coming soon
 

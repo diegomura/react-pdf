@@ -1,8 +1,8 @@
 import { AttributedString } from '../layout';
 import Font from '../font';
 import { embedEmojis } from './emoji';
+import capitalize from './capitalize';
 import { ignoreChars } from './ignorableChars';
-import upperFirst from './upperFirst';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
@@ -13,7 +13,7 @@ const transformText = (text, transformation) => {
     case 'lowercase':
       return text.toLowerCase();
     case 'capitalize':
-      return upperFirst(text);
+      return capitalize(text);
     default:
       return text;
   }

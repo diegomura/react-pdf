@@ -35,6 +35,40 @@ describe('Node', () => {
     expect(node.height).toBe(40);
   });
 
+  test('Should get integer percentage dimensions', () => {
+    const base = new Node();
+    const child = new Node();
+
+    base.appendChild(child);
+
+    base.width = 100;
+    base.height = 100;
+    child.width = '20%';
+    child.height = '40%';
+
+    base.calculateLayout();
+
+    expect(child.width).toBe(20);
+    expect(child.height).toBe(40);
+  });
+
+  test('Should get float percentage dimensions', () => {
+    const base = new Node();
+    const child = new Node();
+
+    base.appendChild(child);
+
+    base.width = 200;
+    base.height = 200;
+    child.width = '20.5%';
+    child.height = '40.5%';
+
+    base.calculateLayout();
+
+    expect(child.width).toBe(41);
+    expect(child.height).toBe(81);
+  });
+
   test('Should get correct min/max dimensions', () => {
     const node = new Node();
 

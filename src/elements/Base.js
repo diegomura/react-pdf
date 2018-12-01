@@ -1,6 +1,5 @@
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
-import upperFirst from 'lodash.upperfirst';
 import Node from './Node';
 import pick from 'lodash.pick';
 import merge from 'lodash.merge';
@@ -9,6 +8,7 @@ import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Transform from '../mixins/transform';
+import upperFirst from '../utils/upperFirst';
 import { inheritedProperties } from '../utils/styles';
 
 class Base extends Node {

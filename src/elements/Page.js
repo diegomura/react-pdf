@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
+import Yoga from 'yoga-layout-prebuilt';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import TextInstance from './TextInstance';
-import StyleSheet from '../stylesheet';
 import getPageSize from '../utils/pageSizes';
 import Ruler from '../mixins/ruler';
 import { createInstance } from './index';
+import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {
   static defaultProps = {
@@ -38,9 +39,7 @@ class Page extends Base {
   }
 
   get size() {
-    if (this._size) {
-      return this._size;
-    }
+    if (this._size) return this._size;
 
     this._size = getPageSize(this.props.size, this.orientation);
 
@@ -58,45 +57,57 @@ class Page extends Base {
 
   resetMargins() {
     if (
-      !!this.style.marginTop ||
-      !!this.style.marginBottom ||
-      !!this.style.marginLeft ||
-      !!this.style.marginRight
+      !!this.marginTop ||
+      !!this.marginBottom ||
+      !!this.marginLeft ||
+      !!this.marginRight
     ) {
       warning(
         false,
         'Margin values are not allowed on Page element. Use padding instead.',
       );
 
-      this.style.marginTop = 0;
-      this.style.marginBottom = 0;
-      this.style.marginLeft = 0;
-      this.style.marginRight = 0;
+      this.marginTop = 0;
+      this.marginBottom = 0;
+      this.marginLeft = 0;
+      this.marginRight = 0;
     }
   }
 
   applyProps() {
+    super.applyProps();
+
     this.top = 0;
     this.left = 0;
-    this.style = StyleSheet.resolve(this.props.style);
+    this.width = this.size.width;
 
     this.resetMargins();
 
-    this.layout.setWidth(this.size.width);
-
     // Add some padding if ruler present, so we can see the whole page inside it
     const rulerWidth = this.getRulerWidth();
-    const { paddingTop = 0, paddingLeft = 0 } = this.style;
 
     if (this.hasHorizontalRuler()) {
-      this.style.paddingTop = paddingTop + rulerWidth;
+      this.paddingTop = this.paddingTop + rulerWidth;
     }
 
     if (this.hasVerticalRuler()) {
-      this.style.paddingLeft = paddingLeft + rulerWidth;
+      this.paddingLeft = this.paddingLeft + rulerWidth;
     }
+  }
 
-    super.applyProps();
+  setPadding(edge, value) {
+    const isPercent = matchPercent(value);
+    const dimension =
+      edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
+        ? this.size.height
+        : this.size.width;
+
+    if (isPercent) {
+      const percent = parseFloat(isPercent[1], 10) / 100;
+      this.layout.setPadding(edge, dimension * percent);
+    } else {
+      this.layout.setPadding(edge, value);
+    }
   }
 
   async addDynamicChild(parent, elements) {

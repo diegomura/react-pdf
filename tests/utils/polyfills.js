@@ -4,6 +4,6 @@ const raf = cb => {
 
 global.requestAnimationFrame = raf;
 global.cancelAnimationFrame = raf;
-global.URL = { createObjectURL: () => 'some_url' };
+global.URL = { createObjectURL: () => 'some_url', revokeObjectURL: () => null };
 
 export default raf;

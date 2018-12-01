@@ -1,8 +1,8 @@
-import upperFirst from 'lodash.upperfirst';
 import { AttributedString } from '../layout';
 import Font from '../font';
 import { embedEmojis } from './emoji';
 import { ignoreChars } from './ignorableChars';
+import upperFirst from './upperFirst';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 

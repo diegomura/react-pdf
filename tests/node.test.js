@@ -114,6 +114,24 @@ describe('Node', () => {
     expect(child.layout.getParent()).toBeTruthy();
   });
 
+  test('Should append child before correctly', () => {
+    const base = new Node();
+    const child1 = new Node();
+    const child2 = new Node();
+
+    base.appendChild(child1);
+    base.appendChildBefore(child2, child1);
+
+    expect(base.children).toHaveLength(2);
+    expect(base.children[0]).toBe(child2);
+    expect(base.children[1]).toBe(child1);
+    expect(base.layout.getChildCount()).toBe(2);
+    expect(child1.parent).toBe(base);
+    expect(child2.parent).toBe(base);
+    expect(child1.layout.getParent()).toBeTruthy();
+    expect(child2.layout.getParent()).toBeTruthy();
+  });
+
   test('Should remove child correctly', () => {
     const base = new Node();
     const child1 = new Node();

@@ -115,6 +115,10 @@ const PDFRenderer = ReactFiberReconciler({
     parentInstance.appendChild(child);
   },
 
+  insertBefore(parentInstance, child, beforeChild) {
+    parentInstance.appendChildBefore(child, beforeChild);
+  },
+
   removeChild(parentInstance, child) {
     parentInstance.removeChild(child);
   },

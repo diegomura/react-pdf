@@ -18,6 +18,16 @@ class Node {
     }
   }
 
+  appendChildBefore(child, beforeChild) {
+    const index = this.children.indexOf(beforeChild);
+
+    if (index !== -1 && child) {
+      child.parent = this;
+      this.children.splice(index, 0, child);
+      this.layout.insertChild(child.layout, index);
+    }
+  }
+
   removeChild(child) {
     const index = this.children.indexOf(child);
 

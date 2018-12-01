@@ -54,6 +54,31 @@ class Base extends Node {
     this.props.break = value;
   }
 
+  appendChild(child) {
+    super.appendChild(child);
+    this.root.markDirty();
+  }
+
+  appendChildBefore(child, beforeChild) {
+    super.appendChildBefore(child, beforeChild);
+    this.root.markDirty();
+  }
+
+  removeChild(child) {
+    super.removeChild(child);
+    this.root.markDirty();
+  }
+
+  update(newProps) {
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      newProps,
+    );
+    this.root.markDirty();
+  }
+
   applyProps() {
     const { size, orientation } = this.page;
 
@@ -174,16 +199,6 @@ class Base extends Node {
     this.height = height;
     this.marginBottom = 0;
     this.paddingBottom = 0;
-  }
-
-  update(newProps) {
-    this.props = merge(
-      {},
-      this.constructor.defaultProps,
-      Base.defaultProps,
-      newProps,
-    );
-    this.root.markDirty();
   }
 
   async renderChildren() {

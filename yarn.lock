@@ -46,10 +46,10 @@
   resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
   integrity sha1-APy5adykzoKgp2c0E63gOeR7Nh4=
 
-"@react-pdf/script-itemizer@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.2.0.tgz#13187b0913ce255002faf1be5918b4472b155c37"
-  integrity sha512-Lf3expP23leISIcFSN+SXzq4AnUhTrkuqJqclNAPo2xdDAljHu0+6Vq/+nqvbJx8rrmmrVCMd4ms8x+VUhQbYg==
+"@react-pdf/script-itemizer@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/script-itemizer/-/script-itemizer-0.2.1.tgz#673e9a7812823d53e7d41d83515930fb318ae0cb"
+  integrity sha512-2tK9HlhZkjuz2qx63JL79GSOnbdA9pXrpThX/iLpDvNHLTiQUBj2YAekQAbM6wQZexccVSDON7adfFaSRKFXlQ==
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 

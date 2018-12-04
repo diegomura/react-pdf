@@ -15,6 +15,8 @@ class Canvas extends Base {
     this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
+    const { left, top } = this.getAbsoluteLayout();
+    this.root.instance.translate(left, top);
     if (this.props.children) this.props.children(this.root.instance);
     if (this.props.debug) this.debug();
     this.root.instance.restore();

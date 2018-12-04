@@ -59,7 +59,7 @@ const MyDocument = () => (
 );
 ```
 
-### Render in DOM
+### `Web.` Render in DOM
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -67,7 +67,7 @@ import ReactDOM from 'react-dom';
 ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ```
 
-### Save in a file
+### `Node.` Save in a file
 ```jsx
 import React from 'react';
 import ReactPDF from '@react-pdf/renderer';
@@ -75,7 +75,7 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
-### Render in mobile
+### `Native.` Render in mobile
 > Coming soon
 
 ## Examples

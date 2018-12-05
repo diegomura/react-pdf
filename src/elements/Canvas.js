@@ -1,4 +1,5 @@
 import Base from './Base';
+import painter from '../painter';
 
 class Canvas extends Base {
   static defaultProps = {
@@ -17,7 +18,7 @@ class Canvas extends Base {
     this.drawBorders();
     const { left, top } = this.getAbsoluteLayout();
     this.root.instance.translate(left, top);
-    if (this.props.children) this.props.children(this.root.instance);
+    if (this.props.children) this.props.children(painter(this.root.instance));
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }

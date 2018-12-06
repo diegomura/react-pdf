@@ -2,8 +2,8 @@ import { LayoutEngine as BaseLayoutEngine } from '@react-pdf/textkit-core';
 import scriptItemizer from '@react-pdf/script-itemizer';
 import justificationEngine from '@textkit/justification-engine';
 import textDecorationEngine from '@textkit/text-decoration-engine';
-import lineFragmentGenerator from '@textkit/line-fragment-generator';
 import fontSubstitutionEngine from './fontSubstitution';
+import wordHyphenation from './wordHyphenation';
 import lineBreaker from './linebreaker';
 
 // justificationEngine values
@@ -14,13 +14,10 @@ export class LayoutEngine extends BaseLayoutEngine {
     const engines = {
       scriptItemizer: scriptItemizer(),
       decorationEngine: textDecorationEngine(),
-      lineFragmentGenerator: lineFragmentGenerator(),
       fontSubstitutionEngine: fontSubstitutionEngine(),
+      wordHyphenation: wordHyphenation({ hyphenationCallback }),
+      lineBreaker: lineBreaker({ penalty: hyphenationPenalty }),
       justificationEngine: justificationEngine({ shrinkWhitespaceFactor }),
-      lineBreaker: lineBreaker({
-        callback: hyphenationCallback,
-        penalty: hyphenationPenalty,
-      }),
     };
 
     super(engines);
@@ -35,7 +32,6 @@ export {
   Point,
   Block,
   Range,
-  TabStop,
   Polygon,
   RunStyle,
   GlyphRun,

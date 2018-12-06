@@ -1,5 +1,5 @@
 import Base from './Base';
-import painter from '../painter';
+import painter from '../utils/painter';
 
 class Canvas extends Base {
   static defaultProps = {

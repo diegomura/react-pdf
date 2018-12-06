@@ -1,5 +1,6 @@
 const painter = function(instance) {
   return {
+    clip: (...args) => painter(instance.clip(...args)),
     path: (...args) => painter(instance.path(...args)),
     fill: (...args) => painter(instance.fill(...args)),
     font: (...args) => painter(instance.font(...args)),

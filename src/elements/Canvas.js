@@ -18,8 +18,8 @@ class Canvas extends Base {
     this.drawBorders();
     const { left, top, width, height } = this.getAbsoluteLayout();
     this.root.instance.translate(left, top);
-    if (this.props.children)
-      this.props.children(painter(this.root.instance), width, height);
+    if (this.props.paint)
+      this.props.paint(painter(this.root.instance), width, height);
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }

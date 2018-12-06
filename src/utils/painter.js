@@ -1,5 +1,3 @@
-'use strict';
-
 const painter = function(instance) {
   return {
     path: (...args) => painter(instance.path(...args)),

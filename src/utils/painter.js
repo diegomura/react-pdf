@@ -16,6 +16,7 @@ const painter = function(instance) {
     lineWidth: (...args) => painter(instance.lineWidth(...args)),
     translate: (...args) => painter(instance.translate(...args)),
     strokeColor: (...args) => painter(instance.strokeColor(...args)),
+    fillOpacity: (...args) => painter(instance.fillOpacity(...args)),
   };
 };
 

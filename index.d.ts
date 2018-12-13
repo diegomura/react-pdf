@@ -91,6 +91,8 @@ declare module '@react-pdf/renderer' {
       debug?: boolean;
       src: string | {data: Buffer; format: 'png' | 'jpg'};
       cache?: boolean;
+      safePath?: string;
+      allowDangerousPaths?: boolean;
     }
 
     /**

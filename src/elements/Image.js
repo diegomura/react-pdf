@@ -92,8 +92,13 @@ class Image extends Base {
   }
 
   async fetch() {
+    const { src, cache, safePath, allowDangerousPaths } = this.props;
     try {
-      this.image = await resolveImage(this.props.src, this.props.cache);
+      this.image = await resolveImage(src, {
+        cache,
+        safePath,
+        allowDangerousPaths,
+      });
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);

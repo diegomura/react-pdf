@@ -154,6 +154,22 @@ class Base extends Node {
     };
   }
 
+  getLayoutData() {
+    const layout = this.getAbsoluteLayout();
+
+    return {
+      type: this.name,
+      top: layout.top,
+      left: layout.left,
+      width: layout.width,
+      height: layout.height,
+      style: this.getComputedStyles(),
+      children: this.children.map(c => {
+        return c.getLayoutData();
+      }),
+    };
+  }
+
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
     const styles = this.getComputedStyles();

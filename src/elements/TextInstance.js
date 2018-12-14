@@ -10,6 +10,10 @@ class TextInstance {
     return 'TextInstance';
   }
 
+  getLayoutData() {
+    return this.value;
+  }
+
   remove() {
     this.parent.removeChild(this);
   }

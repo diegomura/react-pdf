@@ -165,8 +165,6 @@ class Page extends Base {
     this.calculateLayout();
   }
 
-  update(newProps) {}
-
   clone() {
     const clone = super.clone();
     clone._size = this.size;

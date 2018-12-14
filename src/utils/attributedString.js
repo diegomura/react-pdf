@@ -20,9 +20,12 @@ const transformText = (text, transformation) => {
 };
 
 export const getFragments = instance => {
+  if (!instance) return [{ string: '' }];
+
   let fragments = [];
   const {
     color = 'black',
+    backgroundColor,
     fontFamily = 'Helvetica',
     fontSize = 18,
     textAlign = 'left',
@@ -49,6 +52,7 @@ export const getFragments = instance => {
           font,
           color,
           fontSize,
+          backgroundColor,
           align: textAlign,
           link: instance.src,
           characterSpacing: letterSpacing,

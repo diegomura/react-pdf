@@ -19,6 +19,13 @@ const pdf = input => {
 
   if (input) updateContainer(input);
 
+  function callOnRender(params = {}) {
+    if (container.document.props.onRender) {
+      const layoutData = container.document.getLayoutData();
+      container.document.props.onRender({ ...params, layoutData });
+    }
+  }
+
   function isDirty() {
     return container.isDirty;
   }
@@ -37,9 +44,7 @@ const pdf = input => {
         try {
           const blob = stream.toBlob('application/pdf');
 
-          if (container.document.props.onRender) {
-            container.document.props.onRender({ blob });
-          }
+          callOnRender({ blob });
 
           resolve(blob);
         } catch (error) {
@@ -52,9 +57,7 @@ const pdf = input => {
   }
 
   function toBuffer() {
-    if (container.document.props.onRender) {
-      container.document.props.onRender();
-    }
+    callOnRender();
 
     container.render();
 
@@ -72,10 +75,7 @@ const pdf = input => {
         });
 
         container.instance.on('end', function() {
-          if (container.document.props.onRender) {
-            container.document.props.onRender({ string: result });
-          }
-
+          callOnRender({ string: result });
           resolve(result);
         });
       } catch (error) {

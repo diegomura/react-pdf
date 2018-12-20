@@ -11,6 +11,7 @@
     "./dist/react-pdf.es.js": "./dist/react-pdf.browser.es.js",
     "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"
   },
+  "typings": "index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
@@ -99,7 +100,8 @@
     ]
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "bundlesize": [
     {

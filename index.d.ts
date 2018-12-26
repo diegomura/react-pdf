@@ -20,26 +20,6 @@ declare module '@react-pdf/renderer' {
       creator?: string;
       producer?: string;
       onRender?: () => any;
-      /**
-       * @platform web
-       */
-      shallow?: boolean;
-      /**
-       * @platform web
-       */
-      width?: number;
-      /**
-       * @platform web
-       */
-      height?: number;
-      /**
-       * @platform web
-       */
-      style?: Styles;
-      /**
-       * @platform web
-       */
-      className?: string;
     }
 
     /**
@@ -185,6 +165,8 @@ declare module '@react-pdf/renderer' {
     class BlobProvider extends React.Component<BlobProviderProps> {}
 
     interface PDFViewerProps {
+      width?: number;
+      height?: number;
       style?: Style | Style[];
       className?: string;
       children?: React.ReactElement<DocumentProps>;

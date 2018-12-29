@@ -1,11 +1,13 @@
 const PROTOCOL_REGEXP = /^(http|https|ftp|ftps|mailto)\:\/\//i;
 
-export const getURL = value => {
-  let src = value;
+export const isURL = value => {
+  return typeof value === 'string' && !!value.match(PROTOCOL_REGEXP);
+};
 
-  if (typeof src === 'string' && !src.match(PROTOCOL_REGEXP)) {
-    src = `http://${src}`;
+export const getURL = value => {
+  if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
+    return `http://${value}`;
   }
 
-  return src;
+  return value;
 };

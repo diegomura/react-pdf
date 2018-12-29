@@ -105,14 +105,14 @@ class Image extends Base {
     await this.fetch();
   }
 
-  async render() {
+  renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
 
     this.root.instance.save();
-    this.applyTransformations();
-    this.drawBackgroundColor();
-    this.drawBorders();
+
+    // Clip path to keep image inside border radius
+    this.clip();
 
     if (this.image.data) {
       // Inner offset between yoga node and image box
@@ -140,6 +140,16 @@ class Image extends Base {
         );
       }
     }
+
+    this.root.instance.restore();
+  }
+
+  async render() {
+    this.root.instance.save();
+    this.applyTransformations();
+    this.drawBackgroundColor();
+    this.renderImage();
+    this.drawBorders();
 
     if (this.props.debug) {
       this.debug();

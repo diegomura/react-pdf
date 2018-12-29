@@ -7,6 +7,7 @@ import warning from 'fbjs/lib/warning';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
+import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import upperFirst from '../utils/upperFirst';
 import { inheritedProperties } from '../utils/styles';
@@ -174,20 +175,16 @@ class Base extends Node {
     const { left, top, width, height } = this.getAbsoluteLayout();
     const styles = this.getComputedStyles();
 
-    // We can't set individual radius for each corner on PDF, so we get the higher
-    const borderRadius =
-      Math.max(
-        styles.borderTopLeftRadius,
-        styles.borderTopRightRadius,
-        styles.borderBottomRightRadius,
-        styles.borderBottomLeftRadius,
-      ) || 0;
-
     if (styles.backgroundColor) {
+      this.root.instance.save();
+
+      this.clip();
+
       this.root.instance
         .fillColor(styles.backgroundColor)
-        .roundedRect(left, top, width, height, borderRadius)
-        .fill();
+        .rect(left, top, width, height)
+        .fill()
+        .restore();
     }
   }
 
@@ -243,6 +240,7 @@ Base.defaultProps = {
 
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
+Object.assign(Base.prototype, Clipping);
 Object.assign(Base.prototype, Transform);
 
 export default Base;

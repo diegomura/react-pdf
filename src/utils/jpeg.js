@@ -55,7 +55,7 @@ class JPEG {
 }
 
 JPEG.isValid = function(data) {
-  if (data.readUInt16BE(0) !== 0xffd8) {
+  if (!data || !Buffer.isBuffer(data) || data.readUInt16BE(0) !== 0xffd8) {
     return false;
   }
 

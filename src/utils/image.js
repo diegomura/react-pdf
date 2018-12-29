@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import PNG from '@react-pdf/png-js';
+import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';
 
@@ -8,6 +8,18 @@ const imagesCache = createCache({ limit: 30 });
 const isValidFormat = format => {
   const lower = format.toLowerCase();
   return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
+};
+
+const guessFormat = buffer => {
+  let format;
+
+  if (JPEG.isValid(buffer)) {
+    format = 'jpg';
+  } else if (PNG.isValid(buffer)) {
+    format = 'png';
+  }
+
+  return format;
 };
 
 const isCompatibleBase64 = src =>
@@ -45,6 +57,14 @@ const resolveLocalImage = src => {
   }
 
   throw new Error(`Invalid data given for local file: ${JSON.stringify(src)}`);
+};
+
+const resolveBufferImage = buffer => {
+  const format = guessFormat(buffer);
+
+  if (format) {
+    return new Promise(resolve => resolve(getImage(buffer, format)));
+  }
 };
 
 const resolveRemoteImage = src => {
@@ -88,11 +108,17 @@ const resolveRemoteImage = src => {
 };
 
 export const resolveImage = (src, cache = true) => {
-  if (cache && imagesCache.get(src)) return imagesCache.get(src);
+  const cacheKey = src.data ? src.data.toString() : src;
+
+  if (cache && imagesCache.get(cacheKey)) {
+    return imagesCache.get(cacheKey);
+  }
 
   let image;
   if (isCompatibleBase64(src)) {
     image = resolveBase64Image(src);
+  } else if (Buffer.isBuffer(src)) {
+    image = resolveBufferImage(src);
   } else if (typeof src === 'object') {
     image = resolveLocalImage(src);
   } else {
@@ -100,7 +126,7 @@ export const resolveImage = (src, cache = true) => {
   }
 
   if (cache) {
-    imagesCache.set(src, image);
+    imagesCache.set(cacheKey, image);
   }
 
   return image;

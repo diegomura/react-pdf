@@ -7,7 +7,8 @@ let dummyRoot;
 
 const jpgImageUrl = 'https://react-pdf.org/static/images/quijote1.jpg';
 const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';
-const localImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
+const localJPGImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
+const localPNGImage = fs.readFileSync(path.join(__dirname, 'assets/test.png'));
 
 describe('Image', () => {
   beforeEach(() => {
@@ -44,7 +45,7 @@ describe('Image', () => {
 
   test('Should render a local image', async () => {
     const image = new Image(dummyRoot, {
-      src: { data: localImage, format: 'jpg' },
+      src: { data: localJPGImage, format: 'jpg' },
     });
 
     await image.fetch();
@@ -60,6 +61,28 @@ describe('Image', () => {
       src:
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==',
     });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a buffer jpg image', async () => {
+    const image = new Image(dummyRoot, { src: localJPGImage });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a buffer png image', async () => {
+    const image = new Image(dummyRoot, { src: localPNGImage });
 
     await image.fetch();
     await image.render();
@@ -119,7 +142,7 @@ describe('Image', () => {
     expect(debug.mock.calls).toHaveLength(0);
   });
 
-  test('Should cache previously loaded images by default', async () => {
+  test('Should cache previously loaded remote images by default', async () => {
     const image1 = new Image(dummyRoot, { src: jpgImageUrl });
     const image2 = new Image(dummyRoot, { src: jpgImageUrl });
 
@@ -129,9 +152,39 @@ describe('Image', () => {
     expect(image1.image).toBe(image2.image);
   });
 
-  test('Should not cache previously loaded images if flag false', async () => {
+  test('Should not cache previously loaded remote images if flag false', async () => {
     const image1 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
     const image2 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
+
+    await image1.fetch();
+    await image2.fetch();
+
+    expect(image1.image).not.toBe(image2.image);
+  });
+
+  test('Should cache previously loaded local images by default', async () => {
+    const image1 = new Image(dummyRoot, {
+      src: { data: localJPGImage, format: 'jpg' },
+    });
+    const image2 = new Image(dummyRoot, {
+      src: { data: localJPGImage, format: 'jpg' },
+    });
+
+    await image1.fetch();
+    await image2.fetch();
+
+    expect(image1.image).toBe(image2.image);
+  });
+
+  test('Should not cache previously loaded local images if flag false', async () => {
+    const image1 = new Image(dummyRoot, {
+      src: { data: localJPGImage, format: 'jpg' },
+      cache: false,
+    });
+    const image2 = new Image(dummyRoot, {
+      src: { data: localJPGImage, format: 'jpg' },
+      cache: false,
+    });
 
     await image1.fetch();
     await image2.fetch();

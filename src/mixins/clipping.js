@@ -32,7 +32,7 @@ const Clipping = {
     );
 
     // Border right
-    const rbr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
+    const rbr = Math.min(borderBottomRightRadius, 0.5 * width, 0.5 * height);
     const cbr = rbr * (1.0 - KAPPA);
 
     this.root.instance.lineTo(left + width, top + height - rbr);
@@ -46,7 +46,7 @@ const Clipping = {
     );
 
     // Border bottom
-    const rbl = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
+    const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
     const cbl = rbl * (1.0 - KAPPA);
 
     this.root.instance.lineTo(left + rbl, top + height);
@@ -60,7 +60,7 @@ const Clipping = {
     );
 
     // Border left
-    const rtl = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
+    const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
     const ctl = rtl * (1.0 - KAPPA);
 
     this.root.instance.lineTo(left, top + rtl);

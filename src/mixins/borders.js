@@ -1,3 +1,5 @@
+// Ref: https://www.w3.org/TR/css-backgrounds-3/#borders
+
 // This constant is used to approximate a symmetrical arc using a cubic
 // Bezier curve.
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);

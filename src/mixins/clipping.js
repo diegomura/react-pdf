@@ -13,9 +13,6 @@ const Clipping = {
       borderBottomLeftRadius = 0,
     } = this.getComputedStyles();
 
-    const r = Math.min(5, 0.5 * width, 0.5 * height);
-    const c = r * (1.0 - KAPPA);
-
     // Border top
     const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
     const ctr = rtr * (1.0 - KAPPA);

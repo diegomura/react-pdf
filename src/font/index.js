@@ -44,6 +44,14 @@ const load = async function(fontFamily, doc) {
       const data = await fetchFont(font.src);
       font.data = fontkit.create(data);
     } else {
+      if (BROWSER) {
+        throw new Error(
+          `Invalid font url: ${
+            font.src
+          }. If you use relative url please replace it with absolute one (ex. /font.ttf -> http://localhost:3000/font.ttf)`,
+        );
+      }
+
       font.data = fontkit.openSync(font.src);
     }
   }

@@ -40,7 +40,7 @@ class InternalBlobProvider extends React.PureComponent {
   componentDidUpdate() {
     this.renderDocument();
 
-    if (this.instance.isDirty()) {
+    if (this.instance.isDirty() && !this.state.error) {
       this.onDocumentUpdate();
     }
   }

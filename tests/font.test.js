@@ -75,4 +75,32 @@ describe('Font', () => {
 
     expect(Font.getEmojiSource()).toEqual(sourceMock);
   });
+
+  describe('invalid url', () => {
+    test('should throw `no such file or directory` error', async () => {
+      Font.register('/roboto.ttf', { family: 'Roboto' });
+
+      expect(Font.load('Roboto', dummyRoot.instance)).rejects.toThrowError(
+        'no such file or directory',
+      );
+    });
+
+    describe('in browser', () => {
+      beforeEach(() => {
+        global.BROWSER = true;
+      });
+
+      afterEach(() => {
+        global.BROWSER = false;
+      });
+
+      test('should throw `Invalid font url` error', async () => {
+        Font.register('/roboto.ttf', { family: 'Roboto' });
+
+        expect(Font.load('Roboto', dummyRoot.instance)).rejects.toThrowError(
+          'Invalid font url',
+        );
+      });
+    });
+  });
 });

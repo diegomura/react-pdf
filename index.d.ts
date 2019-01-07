@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 declare module '@react-pdf/renderer' {
-  import React from 'react';
+  import * as React from 'react';
 
   namespace ReactPDF {
     interface Style {

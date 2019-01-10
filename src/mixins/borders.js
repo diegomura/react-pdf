@@ -10,6 +10,7 @@ const Borders = {
     this.drawBorderTop();
     this.drawBorderRight();
     this.drawBorderBottom();
+    this.drawBorderLeft();
 
     this.root.instance.restore();
   },
@@ -207,7 +208,7 @@ const Borders = {
     const innerTopRightRadiusY = Math.max(rtr - borderTopWidth, 0);
     const c3 = innerTopRightRadiusX * (1.0 - KAPPA);
     const c4 = innerTopRightRadiusY * (1.0 - KAPPA);
-    const topRightXCoord = width - Math.max(rtr, borderRightWidth);
+    const topRightXCoord = left + width - Math.max(rtr, borderRightWidth);
 
     // Clip inner top left cap
     instance.bezierCurveTo(
@@ -215,10 +216,10 @@ const Borders = {
       top + borderTopWidth + c4,
       left + width - borderRightWidth - c3,
       top + borderTopWidth,
-      left + topRightXCoord,
+      topRightXCoord,
       top + borderTopWidth,
     );
-    instance.lineTo(left + topRightXCoord, top);
+    instance.lineTo(topRightXCoord, top);
 
     // Move right in case the margin exceedes the radius
     instance.lineTo(left + width - rtr, top);
@@ -397,6 +398,130 @@ const Borders = {
     // Render solid border
     instance.rect(left, top, width, height);
     instance.fillColor(borderBottomColor);
+    instance.fill();
+
+    instance.restore();
+  },
+
+  drawBorderLeft() {
+    const { instance } = this.root;
+    const { borderTopWidth, borderLeftWidth, borderBottomWidth } = this;
+
+    if (!borderLeftWidth) return;
+
+    const { top, left, width, height } = this.getAbsoluteLayout();
+    const {
+      borderTopLeftRadius = 0,
+      borderBottomLeftRadius = 0,
+      borderLeftColor = 'black',
+    } = this.getComputedStyles();
+
+    const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
+    const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
+
+    instance.save();
+
+    // Clip outer left border edge
+    instance.moveTo(left, top + height - rbl);
+    instance.lineTo(left, top + rtl);
+
+    // Ellipse coefficients outer top left cap
+    const c0 = rtl * (1.0 - KAPPA);
+
+    // Clip outer top left cap
+    instance.bezierCurveTo(left, top + c0, left + c0, top, left + rtl, top);
+
+    // Move right in case the margin exceedes the radius
+    const topLeftCoordX = left + Math.max(borderLeftWidth, rtl);
+    instance.lineTo(topLeftCoordX, top);
+
+    // Clip inner top left cap
+    instance.lineTo(topLeftCoordX, top + borderTopWidth);
+
+    // Ellipse coefficients inner top left cap
+    const innerTopLeftRadiusX = Math.max(rtl - borderLeftWidth, 0);
+    const innerTopLeftRadiusY = Math.max(rtl - borderTopWidth, 0);
+    const c1 = innerTopLeftRadiusX * (1.0 - KAPPA);
+    const c2 = innerTopLeftRadiusY * (1.0 - KAPPA);
+
+    // Clip inner top right cap
+    instance.bezierCurveTo(
+      left + borderLeftWidth + c1,
+      top + borderTopWidth,
+      left + borderLeftWidth,
+      top + borderTopWidth + c2,
+      left + borderLeftWidth,
+      top + Math.max(rtl, borderTopWidth),
+    );
+
+    // Clip inner left border edge
+    instance.lineTo(
+      left + borderLeftWidth,
+      top + height - Math.max(rbl, borderBottomWidth),
+    );
+
+    // Ellipse coefficients inner bottom left cap
+    const innerBottomLeftRadiusX = Math.max(rbl - borderLeftWidth, 0);
+    const innerBottomLeftRadiusY = Math.max(rbl - borderBottomWidth, 0);
+    const c3 = innerBottomLeftRadiusX * (1.0 - KAPPA);
+    const c4 = innerBottomLeftRadiusY * (1.0 - KAPPA);
+    const bottomLeftXCoord = left + Math.max(rbl, borderLeftWidth);
+
+    // Clip inner top left cap
+    instance.bezierCurveTo(
+      left + borderLeftWidth,
+      top + height - borderBottomWidth - c4,
+      left + borderLeftWidth + c3,
+      top + height - borderBottomWidth,
+      bottomLeftXCoord,
+      top + height - borderBottomWidth,
+    );
+    instance.lineTo(bottomLeftXCoord, top + height);
+
+    // Move left in case the margin exceedes the radius
+    instance.lineTo(left + rbl, top + height);
+
+    // Ellipse coefficients outer top right cap
+    const c5 = rbl * (1.0 - KAPPA);
+
+    // Clip outer top right cap
+    instance.bezierCurveTo(
+      left + c5,
+      top + height,
+      left,
+      top + height - c5,
+      left,
+      top + height - rbl,
+    );
+
+    instance.closePath();
+    instance.clip();
+
+    // Clip border right cap joins
+    if (borderBottomWidth) {
+      const trSlope = -borderBottomWidth / borderLeftWidth;
+      instance.moveTo(left + width / 2, trSlope * (width / 2) + top + height);
+      instance.lineTo(left, top + height);
+      instance.lineTo(left, top);
+      instance.lineTo(left + width, top);
+      instance.closePath();
+      instance.clip();
+    }
+
+    if (borderBottomWidth) {
+      const trSlope = -borderTopWidth / borderLeftWidth;
+      instance.moveTo(left + width / 2, trSlope * (-width / 2) + top);
+      instance.lineTo(left, top);
+      instance.lineTo(left, top + height);
+      instance.lineTo(left + width, top + height);
+      instance.closePath();
+      instance.clip();
+    }
+
+    // TODO: Support dotted and dashed styles
+    // Render solid border
+    instance.rect(left, top, width, height);
+    instance.fillColor(borderLeftColor);
     instance.fill();
 
     instance.restore();

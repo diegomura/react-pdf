@@ -26,6 +26,7 @@ const Borders = {
       borderTopLeftRadius = 0,
       borderTopRightRadius = 0,
       borderTopColor = 'black',
+      borderTopStyle = 'solid',
     } = this.getComputedStyles();
 
     const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
@@ -129,11 +130,56 @@ const Borders = {
       instance.clip();
     }
 
-    // TODO: Support dotted and dashed styles
-    // Render solid border
-    instance.rect(left, top, width, height);
-    instance.fillColor(borderTopColor);
-    instance.fill();
+    // Draw actual border
+    const topLeftRadiusX = Math.max(rtl - borderLeftWidth / 2, 0);
+    const topLeftRadiusY = Math.max(rtl - borderTopWidth / 2, 0);
+    const topRightRadiusX = Math.max(rtr - borderRightWidth / 2, 0);
+    const topRightRadiusY = Math.max(rtr - borderTopWidth / 2, 0);
+    const c6 = topLeftRadiusX * (1.0 - KAPPA);
+    const c7 = topLeftRadiusY * (1.0 - KAPPA);
+    const c8 = topRightRadiusX * (1.0 - KAPPA);
+    const c9 = topRightRadiusY * (1.0 - KAPPA);
+
+    instance.moveTo(
+      left + borderLeftWidth / 2,
+      top + Math.max(rtl, borderTopWidth),
+    );
+    instance.lineTo(left + borderLeftWidth / 2, top + rtl);
+    instance.bezierCurveTo(
+      left + borderLeftWidth / 2,
+      top + borderTopWidth / 2 + c7,
+      left + borderLeftWidth / 2 + c6,
+      top + borderTopWidth / 2,
+      left + rtl,
+      top + borderTopWidth / 2,
+    );
+    instance.lineTo(left + width - rtr, top + borderTopWidth / 2);
+    instance.bezierCurveTo(
+      left + width - borderRightWidth / 2 - c8,
+      top + borderTopWidth / 2,
+      left + width - borderLeftWidth / 2,
+      top + borderTopWidth / 2 + c9,
+      left + width - borderRightWidth / 2,
+      top + rtr,
+    );
+    instance.lineTo(
+      left + width - borderRightWidth / 2,
+      top + Math.max(rtr, borderTopWidth),
+    );
+
+    instance.strokeColor(borderTopColor);
+    instance.lineWidth(
+      Math.max(borderLeftWidth, borderTopWidth, borderLeftWidth),
+    );
+
+    if (borderTopStyle === 'dashed') {
+      instance.dash(borderTopWidth * 2, { space: borderTopWidth * 1.2 });
+    } else if (borderTopStyle === 'dotted') {
+      instance.dash(borderTopWidth, { space: borderTopWidth * 1.2 });
+    }
+
+    instance.stroke();
+    instance.undash();
 
     // Restore from border top
     instance.restore();
@@ -369,9 +415,6 @@ const Borders = {
     );
     instance.closePath();
     instance.clip();
-
-    // instance.strokeColor('black');
-    // instance.stroke();
 
     // Clip border bottom cap joins
     if (borderRightWidth) {

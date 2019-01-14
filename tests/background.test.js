@@ -24,13 +24,7 @@ describe('Background', () => {
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.fillColor.mock.calls[0][0]).toBe('tomato');
-    expect(dummyRoot.instance.roundedRect.mock.calls[0]).toEqual([
-      0,
-      0,
-      50,
-      50,
-      0,
-    ]);
+    expect(dummyRoot.instance.rect.mock.calls[0]).toEqual([0, 0, 50, 50]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
 
@@ -48,13 +42,7 @@ describe('Background', () => {
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.fillColor.mock.calls[0][0]).toBe('tomato');
-    expect(dummyRoot.instance.roundedRect.mock.calls[0]).toEqual([
-      40,
-      40,
-      50,
-      50,
-      0,
-    ]);
+    expect(dummyRoot.instance.rect.mock.calls[0]).toEqual([40, 40, 50, 50]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
 
@@ -72,13 +60,7 @@ describe('Background', () => {
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.fillColor.mock.calls[0][0]).toBe('tomato');
-    expect(dummyRoot.instance.roundedRect.mock.calls[0]).toEqual([
-      0,
-      0,
-      50,
-      50,
-      0,
-    ]);
+    expect(dummyRoot.instance.rect.mock.calls[0]).toEqual([0, 0, 50, 50]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
 
@@ -101,13 +83,7 @@ describe('Background', () => {
 
     expect(dummyRoot.instance.fillColor.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.fillColor.mock.calls[0][0]).toBe('tomato');
-    expect(dummyRoot.instance.roundedRect.mock.calls[0]).toEqual([
-      0,
-      0,
-      50,
-      50,
-      5,
-    ]);
+    expect(dummyRoot.instance.rect.mock.calls[0]).toEqual([0, 0, 50, 50]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
 });

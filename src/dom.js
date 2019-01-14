@@ -62,6 +62,7 @@ class InternalBlobProvider extends React.PureComponent {
       })
       .catch(error => {
         this.setState({ error });
+        console.error(error);
         throw error;
       });
   }

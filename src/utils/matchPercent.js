@@ -1,3 +1,3 @@
-const matchPercent = value => /(\d+\.?\d*)%/g.exec(value);
+const matchPercent = value => /(-?\d+\.?\d*)%/g.exec(value);
 
 export default matchPercent;

@@ -36,7 +36,7 @@ const getHyphenationCallback = () => hyphenationCallback;
 const load = async function(fontFamily, doc) {
   const font = fonts[fontFamily];
 
-  // We cache the font to avoid fetching it many time
+  // We cache the font to avoid fetching it many times
   if (font && !font.data && !font.loading) {
     font.loading = true;
 
@@ -52,13 +52,17 @@ const load = async function(fontFamily, doc) {
         );
       }
 
-      font.data = fontkit.openSync(font.src);
+      font.data = await new Promise((resolve, reject) =>
+        fontkit.open(font.src, (err, data) =>
+          err ? reject(err) : resolve(data),
+        ),
+      );
     }
   }
 
-  // If the font wasn't added to the document yet (aka. loaded), we do.
+  // If the font wasn't added to the document yet (aka. loaded), we add it.
   // This prevents calling `registerFont` many times for the same font.
-  // Fonts loaded state will be resetted after document is closed.
+  // Fonts loaded state will be reset after the document is closed.
   if (font && !font.loaded) {
     font.loaded = true;
     font.loading = false;

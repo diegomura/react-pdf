@@ -15,6 +15,10 @@ class Root {
     this.document = child;
   }
 
+  removeChild() {
+    this.document = null;
+  }
+
   markDirty() {
     this.isDirty = true;
   }

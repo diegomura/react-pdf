@@ -33,6 +33,13 @@ const objectsEqual = (a, b) => {
 
       return false;
     }
+
+    if (
+      propName === 'children' &&
+      (typeof a[propName] === 'string' || typeof b[propName] === 'string')
+    ) {
+      return a[propName] === b[propName];
+    }
   }
 
   return true;

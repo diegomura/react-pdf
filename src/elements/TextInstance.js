@@ -23,7 +23,6 @@ class TextInstance {
   }
 
   update(value) {
-    console.log('update', this.constructor.name);
     this.value = value;
     this.parent.computed = false;
     this.parent._container = null;

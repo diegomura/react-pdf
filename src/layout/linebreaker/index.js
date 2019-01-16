@@ -7,8 +7,8 @@ const TOLERANCE_LIMIT = 50;
 
 const opts = {
   width: 3,
-  stretch: 3,
-  shrink: 4,
+  stretch: 6,
+  shrink: 9,
 };
 
 export default ({ penalty } = {}) => () => {

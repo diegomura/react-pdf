@@ -2,6 +2,7 @@ import Yoga from 'yoga-layout-prebuilt';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import { resolveImage } from '../utils/image';
+import { resolveObjectFit } from '../utils/objectFit';
 
 const SAFETY_HEIGHT = 10;
 
@@ -120,20 +121,21 @@ class Image extends Base {
     this.clip();
 
     if (this.image.data) {
-      // Inner offset between yoga node and image box
-      // Makes image centered inside Yoga node
-      const width =
-        Math.min(this.height * this.ratio, this.width) -
-        padding.left -
-        padding.right;
-      const height = this.height - padding.top - padding.bottom;
-      const xOffset = Math.max((this.width - width) / 2, 0);
+      const { width, height, xOffset, yOffset } = resolveObjectFit(
+        this.style.objectFit,
+        this.width - padding.left - padding.right,
+        this.height - padding.top - padding.bottom,
+        this.image.width,
+        this.image.height,
+      );
+
+      console.log(width, height, xOffset);
 
       if (width !== 0 && height !== 0) {
         this.root.instance.image(
           this.image.data,
           left + padding.left + xOffset,
-          top + padding.top,
+          top + padding.top + yOffset,
           { width, height },
         );
       } else {

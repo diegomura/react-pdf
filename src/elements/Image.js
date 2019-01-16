@@ -13,6 +13,7 @@ class Image extends Base {
   static defaultProps = {
     wrap: false,
     cache: true,
+    style: {},
   };
 
   constructor(root, props) {
@@ -127,7 +128,7 @@ class Image extends Base {
 
     if (this.image.data) {
       const { width, height, xOffset, yOffset } = resolveObjectFit(
-        this.style.objectFit,
+        this.props.style.objectFit,
         this.width - padding.left - padding.right,
         this.height - padding.top - padding.bottom,
         this.image.width,

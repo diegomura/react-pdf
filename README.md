@@ -75,9 +75,6 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
-### `Native.` Render in mobile
-> Coming soon
-
 ## Examples
 For each example, try opening `output.pdf` to see the result.
 

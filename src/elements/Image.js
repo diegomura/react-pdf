@@ -134,8 +134,6 @@ class Image extends Base {
         this.image.height,
       );
 
-      console.log(width, height, xOffset);
-
       if (width !== 0 && height !== 0) {
         this.root.instance.image(
           this.image.data,

@@ -317,5 +317,8 @@ declare module '@react-pdf/renderer' {
     PDFRenderer,
     version,
     pdf,
+    PDFViewer,
+    BlobProvider,
+    PDFDownloadLink,
   };
 }

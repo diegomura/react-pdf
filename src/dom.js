@@ -81,12 +81,19 @@ export const BlobProvider = ({ document: doc, children }) => {
   return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
 };
 
-export const PDFViewer = ({ className, style, children, ...props }) => {
+export const PDFViewer = ({
+  className,
+  style,
+  children,
+  innerRef,
+  ...props
+}) => {
   return (
     <InternalBlobProvider document={children}>
       {({ url }) => (
         <iframe
           className={className}
+          ref={innerRef}
           src={url}
           style={Array.isArray(style) ? flatStyles(style) : style}
           {...props}

@@ -12,9 +12,6 @@ const Page = 'PAGE';
 const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
-const PDFViewer = 'PDFViewer';
-const BlobProvider = 'BlobProvider';
-const PDFDownloadLink = 'PDFDownloadLink';
 
 const pdf = input => {
   const container = createInstance({ type: 'ROOT' });
@@ -110,7 +107,4 @@ export {
   StyleSheet,
   createInstance,
   pdf,
-  PDFViewer,
-  BlobProvider,
-  PDFDownloadLink,
 };

@@ -1,14 +1,35 @@
-import { isNode } from 'browser-or-node';
+import fs from 'fs';
+import path from 'path';
+import url from 'url';
 import fetch from 'isomorphic-fetch';
 import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';
 
+export const getAbsoluteLocalPath = src => {
+  if (BROWSER) {
+    throw new Error('Cannot check local paths in client-side environment');
+  }
+
+  const { protocol, auth, host, port, hostname, path: pathname } = url.parse(
+    src,
+  );
+  const absolutePath = path.resolve(pathname);
+  if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
+    return undefined;
+  }
+  return absolutePath;
+};
+
 export const isDangerousLocalPath = (
   filename,
   { safePath = './public' } = {},
 ) => {
-  const path = require('path');
+  if (BROWSER) {
+    throw new Error(
+      'Cannot check dangerous local path in client-side environemnt',
+    );
+  }
   const absoluteSafePath = path.resolve(safePath);
   const absoluteFilePath = path.resolve(filename);
   return !absoluteFilePath.startsWith(absoluteSafePath);
@@ -17,34 +38,18 @@ export const isDangerousLocalPath = (
 const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
   new Promise((resolve, reject) => {
     try {
-      const {
-        protocol,
-        auth,
-        host,
-        port,
-        hostname,
-        path,
-      } = require('url').parse(src);
-      const absolutePath = require('path').resolve(path);
-      const fs = require('fs');
-      if (
-        (protocol && protocol !== 'file:') ||
-        auth ||
-        host ||
-        port ||
-        hostname
-      ) {
-        return reject(
-          new Error(
-            'Cannot fetch local file with non-file protocol, host or auth credentials',
-          ),
-        );
+      if (BROWSER) {
+        return reject(new Error('Cannot fetch local file in this environemnt'));
+      }
+      const absolutePath = getAbsoluteLocalPath(src);
+      if (!absolutePath) {
+        return reject(new Error(`Cannot fetch non-local path: ${src}`));
       }
       if (
         !allowDangerousPaths &&
         isDangerousLocalPath(absolutePath, { safePath })
       ) {
-        return reject(new Error(`Cannot fetch dangerous local path: ${path}`));
+        return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
       }
       fs.readFile(absolutePath, (err, data) => {
         if (err) {
@@ -148,7 +153,7 @@ const getImageFormat = body => {
 
 const resolveImageFromUrl = async (src, options) => {
   let body;
-  if (isNode && (src.substr(0, 5) === 'file:' || !/^https?:\/\//.exec(src))) {
+  if (!BROWSER && getAbsoluteLocalPath(src)) {
     body = await fetchLocalFile(src, options);
   } else {
     const response = await fetch(src);

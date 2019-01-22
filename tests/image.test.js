@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import warning from 'fbjs/lib/warning';
 import Image from '../src/elements/Image';
-import { isDangerousLocalPath } from '../src/utils/image';
+import { getAbsoluteLocalPath, isDangerousLocalPath } from '../src/utils/image';
 import root from './utils/dummyRoot';
 
 let dummyRoot;
@@ -15,8 +15,24 @@ const localPNGImage = fs.readFileSync(path.join(__dirname, 'assets/test.png'));
 jest.mock('fbjs/lib/warning');
 
 describe('image utils', () => {
+  test('getAbsoluteLocalPath should return the absolute path for a local path', () => {
+    const filename = '/foo/bar/../baz/../../grep/me/../horrid';
+
+    const result = getAbsoluteLocalPath(filename);
+
+    expect(result).toBe('/grep/horrid');
+  });
+
+  test('getAbsoluteLocalPath should return undefined for a non-local path', () => {
+    const filename = 'http://foo/bar/../baz/../../grep/me/../horrid';
+
+    const result = getAbsoluteLocalPath(filename);
+
+    expect(result).toBe(undefined);
+  });
+
   test('isDangerousLocalPath should correctly identify a dangerous local path', () => {
-    const filename = '/server/app/test/assets/../tests/assets/test.jpg';
+    const filename = '/server/app/test/assets/../forbidden/path/test.jpg';
     const safePath = '/server/app/test/assets';
 
     const result = isDangerousLocalPath(filename, { safePath });
@@ -30,13 +46,6 @@ describe('Image', () => {
 
   beforeEach(() => {
     dummyRoot = root.reset();
-    warning.mockReset();
-    globalWarn = global.console.warn;
-    global.console.warn = jest.fn();
-  });
-
-  afterEach(() => {
-    global.console.warn = globalWarn;
   });
 
   test('Should not wrap by default', () => {
@@ -95,6 +104,10 @@ describe('Image', () => {
   });
 
   test('Should not render a local image from a file in an unsafe path', async () => {
+    warning.mockReset();
+    globalWarn = global.console.warn;
+    global.console.warn = jest.fn();
+
     const image = new Image(dummyRoot, {
       src: '../tests/assets/test.jpg',
       safePath: './tests/assets',
@@ -109,6 +122,8 @@ describe('Image', () => {
     expect(global.console.warn).toHaveBeenCalledWith(
       'Cannot fetch dangerous local path: ../tests/assets/test.jpg',
     );
+
+    global.console.warn = globalWarn;
   });
 
   test('Should render a base64 image', async () => {

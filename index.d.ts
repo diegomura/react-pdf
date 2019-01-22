@@ -301,6 +301,9 @@ declare module '@react-pdf/renderer' {
   const PDFRenderer: typeof ReactPDF.PDFRenderer;
   const version: typeof ReactPDF.version;
   const pdf: typeof ReactPDF.pdf;
+  const PDFViewer: typeof ReactPDF.PDFViewer;
+  const BlobProvider: typeof ReactPDF.BlobProvider;
+  const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
 
   export default ReactPDF;
   export {

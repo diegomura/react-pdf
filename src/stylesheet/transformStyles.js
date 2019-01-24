@@ -1,8 +1,12 @@
 import yogaValue from './yogaValue';
 import parseScalar from './transformUnits';
+import { isBorderStyle, processBorders } from './borders';
+import { isBoxModelStyle, processBoxModel } from './boxModel';
+import { isObjectPositionStyle, processObjectPosition } from './objectPosition';
+
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
-const styleShortHands = {
+const styleShorthands = {
   margin: {
     marginTop: true,
     marginRight: true,
@@ -89,6 +93,10 @@ const styleShortHands = {
     borderBottomWidth: true,
     borderLeftWidth: true,
   },
+  objectPosition: {
+    objectPositionX: true,
+    objectPositionY: true,
+  },
 };
 
 // Expand the shorthand properties to isolate every declaration from the others.
@@ -136,8 +144,9 @@ const expandStyles = style => {
       case 'borderRadius':
       case 'borderStyle':
       case 'borderWidth':
+      case 'objectPosition':
         {
-          const expandedProps = styleShortHands[key];
+          const expandedProps = styleShorthands[key];
           for (const propName in expandedProps) {
             if (hasOwnProperty.call(expandedProps, propName)) {
               resolvedStyle[propName] = value;
@@ -154,28 +163,6 @@ const expandStyles = style => {
   return resolvedStyle;
 };
 
-const matchBorderShorthand = value =>
-  value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/);
-
-// Transforms shorthand border values to correct value
-const processBorders = (key, value) => {
-  const match = matchBorderShorthand(value);
-
-  if (match) {
-    if (key.match(/.Color/)) {
-      return match[4];
-    } else if (key.match(/.Style/)) {
-      return match[3];
-    } else if (key.match(/.Width/)) {
-      return match[1];
-    } else {
-      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
-    }
-  }
-
-  return value;
-};
-
 const transformStyles = style => {
   const expandedStyles = expandStyles(style);
   const propsArray = Object.keys(expandedStyles);
@@ -184,8 +171,17 @@ const transformStyles = style => {
   for (let i = 0; i < propsArray.length; i++) {
     const key = propsArray[i];
     const value = expandedStyles[key];
-    const isBorderStyle = key.match(/border/) && typeof value === 'string';
-    const resolved = isBorderStyle ? processBorders(key, value) : value;
+
+    let resolved;
+    if (isBorderStyle(key, value)) {
+      resolved = processBorders(key, value);
+    } else if (isBoxModelStyle(key, value)) {
+      resolved = processBoxModel(key, value);
+    } else if (isObjectPositionStyle(key, value)) {
+      resolved = processObjectPosition(key, value);
+    } else {
+      resolved = value;
+    }
 
     resolvedStyle[key] = parseScalar(resolved);
   }

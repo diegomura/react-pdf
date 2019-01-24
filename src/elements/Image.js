@@ -120,6 +120,9 @@ class Image extends Base {
   renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
+    const { objectPositionX, objectPositionY } = this.getComputedStyles();
+
+    console.log(objectPositionX, objectPositionY);
 
     this.root.instance.save();
 
@@ -133,6 +136,8 @@ class Image extends Base {
         this.height - padding.top - padding.bottom,
         this.image.width,
         this.image.height,
+        objectPositionX,
+        objectPositionY,
       );
 
       if (width !== 0 && height !== 0) {

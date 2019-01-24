@@ -122,8 +122,6 @@ class Image extends Base {
     const { left, top } = this.getAbsoluteLayout();
     const { objectPositionX, objectPositionY } = this.getComputedStyles();
 
-    console.log(objectPositionX, objectPositionY);
-
     this.root.instance.save();
 
     // Clip path to keep image inside border radius

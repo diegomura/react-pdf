@@ -283,7 +283,7 @@ class Text extends Base {
     const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
 
     this.lines.forEach(line => {
-      line.rect.x += left + padding.left;
+      line.rect.x = left + padding.left;
       line.rect.y += top + padding.top - initialX;
     });
 

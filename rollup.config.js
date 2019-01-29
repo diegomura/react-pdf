@@ -88,7 +88,7 @@ const serverConfig = Object.assign({}, configBase, {
       BROWSER: JSON.stringify(false),
     }),
   ),
-  external: configBase.external.concat(['fs', 'path']),
+  external: configBase.external.concat(['fs', 'path', 'url']),
 });
 
 const serverProdConfig = Object.assign({}, serverConfig, {
@@ -110,7 +110,7 @@ const browserConfig = Object.assign({}, configBase, {
     replace({
       BROWSER: JSON.stringify(true),
     }),
-    ignore(['fs', 'path']),
+    ignore(['fs', 'path', 'url']),
   ),
 });
 

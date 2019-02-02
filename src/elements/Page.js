@@ -144,7 +144,6 @@ class Page extends Base {
         node.removeAllChilds();
         const elements = node.props.render(props);
         await this.addDynamicChild(node, elements);
-        if (!node.fixed) node.props.render = null;
         continue;
       }
 

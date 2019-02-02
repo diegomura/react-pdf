@@ -126,4 +126,256 @@ describe('object-fit', () => {
     expect(result.xOffset).toBe(0);
     expect(result.yOffset).toBe(50);
   });
+
+  test('should fill to content box for portrait images with fixed positions', () => {
+    const result = resolveObjectFit('fill', 200, 200, 40, 80, 20, 40);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should fill to content box for landscape images with fixed positions', () => {
+    const result = resolveObjectFit('fill', 200, 200, 80, 40, 20, 40);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should contain inside content box for portrait images with fixed positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 40, 80, 20, 40);
+
+    expect(result.width).toBe(100);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should contain inside content box for landscape images with fixed positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 80, 40, 20, 40);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(100);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should contain inside content box for portrait images with zero fixed positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 40, 80, 0, 0);
+
+    expect(result.width).toBe(100);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should contain inside content box for landscape images with zero fixed positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 80, 40, 0, 0);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(100);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should cover inside content box for portrait images with fixed positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 40, 80, 20, 40);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(400);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should cover inside content box for landscape images with fixed positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 80, 40, 20, 40);
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should cover inside content box for portrait images with zero fixed positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 40, 80, 0, 0);
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(400);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should cover inside content box for landscape images with zero fixed positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 80, 40, 0, 0);
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should not fit inside content box for smaller portrait images with fixed positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 40, 80, 20, 40);
+
+    expect(result.width).toBe(40);
+    expect(result.height).toBe(80);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should not fit inside content box for bigger portrait images with fixed positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 400, 800, 20, 40);
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(800);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should not fit inside content box for portrait images with zero fixed positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 40, 80, 0, 0);
+
+    expect(result.width).toBe(40);
+    expect(result.height).toBe(80);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should not fit inside content box for landscape images with zero fixed positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 800, 400, 0, 0);
+
+    expect(result.width).toBe(800);
+    expect(result.height).toBe(400);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should fill to content box for portrait images with percentage positions', () => {
+    const result = resolveObjectFit('fill', 200, 200, 40, 80, '20%', '40%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should fill to content box for landscape images with percentage positions', () => {
+    const result = resolveObjectFit('fill', 200, 200, 80, 40, '20%', '40%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should contain inside content box for portrait images with percentage positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 40, 80, '20%', '40%');
+
+    expect(result.width).toBe(100);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(20);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should contain inside content box for landscape images with percentage positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 80, 40, '20%', '40%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(100);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(40);
+  });
+
+  test('should contain inside content box for portrait images with zero percentage positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 40, 80, '0%', '0%');
+
+    expect(result.width).toBe(100);
+    expect(result.height).toBe(200);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
+
+  test('should contain inside content box for landscape images with zero percentage positions', () => {
+    const result = resolveObjectFit('contain', 200, 200, 80, 40, '0%', '0%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(100);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
+
+  test('should cover inside content box for portrait images with percentage positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 40, 80, '20%', '40%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(400);
+    expect(result.xOffset).toBe(0);
+    expect(result.yOffset).toBe(-80);
+  });
+
+  test('should cover inside content box for landscape images with percentage positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 80, 40, '20%', '40%');
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(200);
+    expect(result.xOffset).toBe(-40);
+    expect(result.yOffset).toBe(0);
+  });
+
+  test('should cover inside content box for portrait images with zero percentage positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 40, 80, '0%', '0%');
+
+    expect(result.width).toBe(200);
+    expect(result.height).toBe(400);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
+
+  test('should cover inside content box for landscape images with zero percentage positions', () => {
+    const result = resolveObjectFit('cover', 200, 200, 80, 40, '0%', '0%');
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(200);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
+
+  test('should not fit inside content box for smaller portrait images with percentage positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 40, 80, '20%', '40%');
+
+    expect(result.width).toBe(40);
+    expect(result.height).toBe(80);
+    expect(result.xOffset).toBe(32);
+    expect(result.yOffset).toBe(48);
+  });
+
+  test('should not fit inside content box for bigger portrait images with percentage positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 400, 800, '20%', '40%');
+
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(800);
+    expect(result.xOffset).toBe(-40);
+    expect(result.yOffset).toBe(-240);
+  });
+
+  test('should not fit inside content box for portrait images with zero percentage positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 40, 80, '0%', '0%');
+
+    expect(result.width).toBe(40);
+    expect(result.height).toBe(80);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
+
+  test('should not fit inside content box for landscape images with zero percentage positions', () => {
+    const result = resolveObjectFit('none', 200, 200, 800, 400, '0%', '0%');
+
+    expect(result.width).toBe(800);
+    expect(result.height).toBe(400);
+    expect(Math.abs(result.xOffset)).toBe(0);
+    expect(Math.abs(result.yOffset)).toBe(0);
+  });
 });

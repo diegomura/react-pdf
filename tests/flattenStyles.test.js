@@ -28,4 +28,11 @@ describe('flatten styles', () => {
 
     return expect(flatten).toEqual({ fontSize: 16, color: 'white' });
   });
+
+  test('should flat nested arrays', () => {
+    const styles = [{ fontSize: 16, color: 'white' }, [{ color: 'red' }]];
+    const flatten = StyleSheet.flatten(styles);
+
+    return expect(flatten).toEqual({ fontSize: 16, color: 'red' });
+  });
 });

@@ -41,7 +41,7 @@
     "no-alert": 1,
     "no-array-constructor": 2,
     "no-caller": 2,
-    "no-case-declarations": 2,
+    "no-case-declarations": 0,
     "no-class-assign": 2,
     "no-cond-assign": 2,
     "no-const-assign": 2,

@@ -1,3 +1,5 @@
+import matchPercent from '../utils/matchPercent';
+
 const RULER_WIDTH = 13;
 const RULER_COLOR = 'white';
 const RULER_FONT_SIZE = 5;
@@ -10,12 +12,8 @@ const range = (max, steps) =>
   Array.from({ length: Math.ceil(max / steps) }, (_, i) => i * steps);
 
 const matchPercentage = value => {
-  const match = value.match(/(\d+\.?\d*)%/);
-  if (match) {
-    return 100 / parseFloat(match[1], 10);
-  }
-
-  return null;
+  const match = matchPercent(value);
+  return match ? 100 / match.value : null;
 };
 
 const Ruler = {

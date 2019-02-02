@@ -52,40 +52,40 @@ class Node {
   setDimension(attr, value) {
     const fixedMethod = `set${upperFirst(attr)}`;
     const percentMethod = `${fixedMethod}Percent`;
-    const isPercent = matchPercent(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout[percentMethod](parseFloat(isPercent[1], 10));
+    if (percent) {
+      this.layout[percentMethod](percent.value);
     } else {
       this.layout[fixedMethod](value);
     }
   }
 
   setPosition(edge, value) {
-    const isPercent = matchPercent(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setPositionPercent(edge, parseFloat(isPercent[1], 10));
+    if (percent) {
+      this.layout.setPositionPercent(edge, percent.value);
     } else {
       this.layout.setPosition(edge, value);
     }
   }
 
   setPadding(edge, value) {
-    const isPercent = matchPercent(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setPaddingPercent(edge, parseFloat(isPercent[1], 10));
+    if (percent) {
+      this.layout.setPaddingPercent(edge, percent.value);
     } else {
       this.layout.setPadding(edge, value);
     }
   }
 
   setMargin(edge, value) {
-    const isPercent = matchPercent(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setMarginPercent(edge, parseFloat(isPercent[1], 10));
+    if (percent) {
+      this.layout.setMarginPercent(edge, percent.value);
     } else {
       this.layout.setMargin(edge, value);
     }

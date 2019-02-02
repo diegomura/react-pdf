@@ -22,7 +22,6 @@ const applyContainObjectFit = (cw, ch, iw, ih, px, py) => {
 const applyNoneObjectFit = (cw, ch, iw, ih, px, py) => {
   const width = iw;
   const height = ih;
-
   const xOffset = isNumeric(px) ? px : (cw - width) * 0.5;
   const yOffset = isNumeric(py) ? py : (ch - height) * 0.5;
 

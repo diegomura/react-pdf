@@ -5354,6 +5354,13 @@ rimraf@2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@~2.6.2:
   dependencies:
     glob "^7.0.5"
 
+rollup-plugin-alias@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-alias/-/rollup-plugin-alias-1.5.1.tgz#80cce3a967befda5b09c86abc14a043a78035b46"
+  integrity sha512-pQTYBRNfLedoVOO7AYHNegIavEIp4jKTga5jUi1r//KYgHKGWgG4qJXYhbcWKt2k1FwGlR5wCYoY+IFkme0t4A==
+  dependencies:
+    slash "^2.0.0"
+
 rollup-plugin-babel@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-babel/-/rollup-plugin-babel-2.7.1.tgz#16528197b0f938a1536f44683c7a93d573182f57"
@@ -5610,6 +5617,11 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
   integrity sha1-xB8vbDn8FtHNF61LXYlhFK5HDVU=
+
+slash@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
+  integrity sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
 
 slice-ansi@0.0.4:
   version "0.0.4"

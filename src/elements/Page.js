@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import TextInstance from './TextInstance';

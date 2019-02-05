@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
 import Base from './Base';
 import Font from '../font';

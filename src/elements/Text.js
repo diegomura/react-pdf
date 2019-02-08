@@ -166,7 +166,7 @@ class Text extends Base {
     );
 
     this.computed = true;
-    this.end = linesCount + 1;
+    this.end = this.props.maxLines || linesCount + 1;
   }
 
   measureText(width, widthMode, height, heightMode) {

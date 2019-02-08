@@ -68,11 +68,11 @@ export default ({ penalty } = {}) => () => {
         let line;
         if (node.type === 'penalty') {
           end = glyphString.glyphIndexForStringIndex(prevNode.value.end);
-          line = glyphString.slice(start, end);
+          line = glyphString.copy().slice(start, end);
           line.insertGlyph(line.length, HYPHEN);
         } else {
           end = glyphString.glyphIndexForStringIndex(node.value.end);
-          line = glyphString.slice(start, end);
+          line = glyphString.copy().slice(start, end);
         }
 
         start = end;

@@ -152,3 +152,6 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/reac
 ## License
 
 MIT © [Diego Muracciole](http://github.com/diegomura)
+
+--- 
+![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)

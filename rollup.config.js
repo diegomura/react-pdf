@@ -6,7 +6,12 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import bundleSize from 'rollup-plugin-bundle-size';
 import ignore from 'rollup-plugin-ignore';
 import json from 'rollup-plugin-json';
+import alias from 'rollup-plugin-alias';
 import pkg from './package.json';
+
+const moduleAliases = {
+  'yoga-layout': 'yoga-layout-prebuilt',
+};
 
 const cjs = {
   exports: 'named',
@@ -48,7 +53,7 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
+const commonPlugins = [json(), sourceMaps(), alias(moduleAliases), nodeResolve(), bundleSize()];
 
 const configBase = {
   globals: { react: 'React' },
@@ -88,7 +93,7 @@ const serverConfig = Object.assign({}, configBase, {
       BROWSER: JSON.stringify(false),
     }),
   ),
-  external: configBase.external.concat(['fs', 'path']),
+  external: configBase.external.concat(['fs', 'path', 'url']),
 });
 
 const serverProdConfig = Object.assign({}, serverConfig, {
@@ -110,7 +115,7 @@ const browserConfig = Object.assign({}, configBase, {
     replace({
       BROWSER: JSON.stringify(true),
     }),
-    ignore(['fs', 'path']),
+    ignore(['fs', 'path', 'url']),
   ),
 });
 

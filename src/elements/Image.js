@@ -1,7 +1,8 @@
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import { resolveImage } from '../utils/image';
+import { resolveObjectFit } from '../utils/objectFit';
 
 const SAFETY_HEIGHT = 10;
 
@@ -12,6 +13,7 @@ class Image extends Base {
   static defaultProps = {
     wrap: false,
     cache: true,
+    style: {},
   };
 
   constructor(root, props) {
@@ -92,8 +94,13 @@ class Image extends Base {
   }
 
   async fetch() {
+    const { src, cache, safePath, allowDangerousPaths } = this.props;
     try {
-      this.image = await resolveImage(this.props.src, this.props.cache);
+      this.image = await resolveImage(src, {
+        cache,
+        safePath,
+        allowDangerousPaths,
+      });
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);
@@ -113,6 +120,7 @@ class Image extends Base {
   renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
+    const { objectPositionX, objectPositionY } = this.getComputedStyles();
 
     this.root.instance.save();
 
@@ -120,20 +128,21 @@ class Image extends Base {
     this.clip();
 
     if (this.image.data) {
-      // Inner offset between yoga node and image box
-      // Makes image centered inside Yoga node
-      const width =
-        Math.min(this.height * this.ratio, this.width) -
-        padding.left -
-        padding.right;
-      const height = this.height - padding.top - padding.bottom;
-      const xOffset = Math.max((this.width - width) / 2, 0);
+      const { width, height, xOffset, yOffset } = resolveObjectFit(
+        this.props.style.objectFit,
+        this.width - padding.left - padding.right,
+        this.height - padding.top - padding.bottom,
+        this.image.width,
+        this.image.height,
+        objectPositionX,
+        objectPositionY,
+      );
 
       if (width !== 0 && height !== 0) {
         this.root.instance.image(
           this.image.data,
           left + padding.left + xOffset,
-          top + padding.top,
+          top + padding.top + yOffset,
           { width, height },
         );
       } else {

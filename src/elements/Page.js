@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
 import TextInstance from './TextInstance';
@@ -96,15 +96,15 @@ class Page extends Base {
   }
 
   setPadding(edge, value) {
-    const isPercent = matchPercent(value);
     const dimension =
       edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
         ? this.size.height
         : this.size.width;
 
-    if (isPercent) {
-      const percent = parseFloat(isPercent[1], 10) / 100;
-      this.layout.setPadding(edge, dimension * percent);
+    const match = matchPercent(value);
+
+    if (match) {
+      this.layout.setPadding(edge, dimension * match.percent);
     } else {
       this.layout.setPadding(edge, value);
     }

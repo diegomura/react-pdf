@@ -91,6 +91,8 @@ declare module '@react-pdf/renderer' {
       debug?: boolean;
       src: string | {data: Buffer; format: 'png' | 'jpg'};
       cache?: boolean;
+      safePath?: string;
+      allowDangerousPaths?: boolean;
     }
 
     /**
@@ -165,8 +167,8 @@ declare module '@react-pdf/renderer' {
     class BlobProvider extends React.Component<BlobProviderProps> {}
 
     interface PDFViewerProps {
-      width?: number;
-      height?: number;
+      width?: number | string;
+      height?: number | string;
       style?: Style | Style[];
       className?: string;
       children?: React.ReactElement<DocumentProps>;

@@ -1,16 +1,17 @@
-import nodeResolve from 'rollup-plugin-node-resolve';
-import replace from 'rollup-plugin-replace';
-import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
-import sourceMaps from 'rollup-plugin-sourcemaps';
-import bundleSize from 'rollup-plugin-bundle-size';
-import ignore from 'rollup-plugin-ignore';
 import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
+import babel from 'rollup-plugin-babel';
+import uglify from 'rollup-plugin-uglify';
+import ignore from 'rollup-plugin-ignore';
+import replace from 'rollup-plugin-replace';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import bundleSize from 'rollup-plugin-bundle-size';
+import nodeResolve from 'rollup-plugin-node-resolve';
+
 import pkg from './package.json';
 
 const moduleAliases = {
-  fetch: 'isomorphic-fetch',
+  fetch: 'cross-fetch',
   'yoga-layout': 'yoga-layout-prebuilt',
 };
 

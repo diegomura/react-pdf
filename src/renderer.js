@@ -1,9 +1,11 @@
 'use strict';
 
 import ReactFiberReconciler from 'react-reconciler';
-import emptyObject from 'fbjs/lib/emptyObject';
 import { createInstance } from './elements';
+
 import propsEqual from './utils/propsEqual';
+
+const emptyObject = {};
 
 // If the Link has a strign child or render prop, substitute the instance by a Text,
 // that will ultimately render the inline Link via the textkit PDF renderer.

@@ -2,7 +2,6 @@ import pick from 'lodash.pick';
 import merge from 'lodash.merge';
 import toPairsIn from 'lodash.topairsin';
 import isFunction from 'lodash.isfunction';
-import warning from 'fbjs/lib/warning';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
@@ -10,6 +9,7 @@ import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
+import warning from '../utils/warning';
 import upperFirst from '../utils/upperFirst';
 import { inheritedProperties } from '../stylesheet/inherit';
 

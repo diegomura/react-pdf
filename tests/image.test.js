@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import warning from 'fbjs/lib/warning';
 
 import root from './utils/dummyRoot';
 import Image from '../src/elements/Image';
+import warning from '../src/utils/warning';
 import { getAbsoluteLocalPath, isDangerousLocalPath } from '../src/utils/image';
 
 let dummyRoot;
@@ -13,7 +13,7 @@ const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';
 const localJPGImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 const localPNGImage = fs.readFileSync(path.join(__dirname, 'assets/test.png'));
 
-jest.mock('fbjs/lib/warning');
+jest.mock('../src/utils/warning');
 
 describe('image utils', () => {
   test('getAbsoluteLocalPath should return the absolute path for a local path', () => {

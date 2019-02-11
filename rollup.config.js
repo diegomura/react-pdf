@@ -66,8 +66,6 @@ const commonPlugins = [
 const configBase = {
   globals: { react: 'React' },
   external: [
-    'fbjs/lib/emptyObject',
-    'fbjs/lib/warning',
     '@react-pdf/pdfkit',
     'babel-runtime/core-js/promise',
     'babel-runtime/helpers/objectWithoutProperties',

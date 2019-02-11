@@ -1,12 +1,12 @@
 import { Fragment } from 'react';
 import Yoga from 'yoga-layout';
-import warning from 'fbjs/lib/warning';
 
 import Base from './Base';
+import Ruler from '../mixins/ruler';
+import warning from '../utils/warning';
+import { createInstance } from './index';
 import TextInstance from './TextInstance';
 import getPageSize from '../utils/pageSizes';
-import Ruler from '../mixins/ruler';
-import { createInstance } from './index';
 import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {

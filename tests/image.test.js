@@ -77,6 +77,30 @@ describe('Image', () => {
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
   });
 
+  test('Should render a remote image from src object', async () => {
+    const image = new Image(dummyRoot, { src: { uri: jpgImageUrl } });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a local image from src object', async () => {
+    const image = new Image(dummyRoot, {
+      src: { uri: './tests/assets/test.jpg' },
+    });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
   test('Should render a local image from data', async () => {
     const image = new Image(dummyRoot, {
       src: { data: localJPGImage, format: 'jpg' },

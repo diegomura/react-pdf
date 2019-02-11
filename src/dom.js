@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import warning from 'fbjs/lib/warning';
-import { flatStyles } from './utils/styles';
+
 import {
   pdf,
   View,
@@ -17,6 +17,9 @@ import {
   createInstance,
   Document as PDFDocument,
 } from './index';
+
+const flatStyles = stylesArray =>
+  stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
 
 export const Document = ({ children, ...props }) => {
   return <PDFDocument {...props}>{children}</PDFDocument>;

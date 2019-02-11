@@ -1,5 +1,6 @@
 import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
+
 import Base from './Base';
 import Font from '../font';
 import { getURL } from '../utils/url';
@@ -191,8 +192,8 @@ class Text extends Base {
     return {};
   }
 
-  getComputedStyles() {
-    const styles = super.getComputedStyles();
+  resolveStyles() {
+    const styles = super.resolveStyles();
 
     // Inherit relative positioning for inline childs
     if (

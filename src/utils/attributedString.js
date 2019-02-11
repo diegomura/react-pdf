@@ -1,10 +1,11 @@
 import { AttributedString } from '../layout';
 import Font from '../font';
 import { embedEmojis } from './emoji';
-import capitalize from './capitalize';
 import { ignoreChars } from './ignorableChars';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
+
+const capitalize = value => value.replace(/(^|\s)\S/g, l => l.toUpperCase());
 
 const transformText = (text, transformation) => {
   switch (transformation) {
@@ -38,7 +39,7 @@ export const getFragments = instance => {
     textDecorationStyle,
     textTransform,
     letterSpacing,
-  } = instance.getComputedStyles();
+  } = instance.style;
 
   instance.children.forEach(child => {
     if (child.value !== null && child.value !== undefined) {

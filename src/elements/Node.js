@@ -1,4 +1,5 @@
 import Yoga from 'yoga-layout';
+
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
 

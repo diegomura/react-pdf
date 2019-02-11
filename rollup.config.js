@@ -10,6 +10,7 @@ import alias from 'rollup-plugin-alias';
 import pkg from './package.json';
 
 const moduleAliases = {
+  fetch: 'isomorphic-fetch',
   'yoga-layout': 'yoga-layout-prebuilt',
 };
 
@@ -53,7 +54,13 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [json(), sourceMaps(), alias(moduleAliases), nodeResolve(), bundleSize()];
+const commonPlugins = [
+  json(),
+  sourceMaps(),
+  alias(moduleAliases),
+  nodeResolve(),
+  bundleSize(),
+];
 
 const configBase = {
   globals: { react: 'React' },

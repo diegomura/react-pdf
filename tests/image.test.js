@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import warning from 'fbjs/lib/warning';
+
+import root from './utils/dummyRoot';
 import Image from '../src/elements/Image';
 import { getAbsoluteLocalPath, isDangerousLocalPath } from '../src/utils/image';
-import root from './utils/dummyRoot';
 
 let dummyRoot;
 

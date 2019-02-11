@@ -1,11 +1,11 @@
 import Root from './Root';
-import Document from './Document';
 import Page from './Page';
 import View from './View';
 import Text from './Text';
 import Link from './Link';
 import Note from './Note';
 import Image from './Image';
+import Document from './Document';
 import TextInstance from './TextInstance';
 
 const constructors = {

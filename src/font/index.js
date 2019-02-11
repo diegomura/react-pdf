@@ -1,11 +1,23 @@
 import isUrl from 'is-url';
+import fetch from 'isomorphic-fetch';
 import fontkit from '@react-pdf/fontkit';
+
 import standardFonts from './standard';
-import { fetchFont } from '../utils/font';
 
 let fonts = {};
 let emojiSource;
 let hyphenationCallback;
+
+const fetchFont = src => {
+  return fetch(src)
+    .then(response => {
+      if (response.buffer) {
+        return response.buffer();
+      }
+      return response.arrayBuffer();
+    })
+    .then(arrayBuffer => Buffer.from(arrayBuffer));
+};
 
 const register = (src, { family, ...otherOptions }) => {
   fonts[family] = {

@@ -27,7 +27,7 @@ function drawBorders() {
     borderRightStyle = 'solid',
     borderBottomColor = 'black',
     borderBottomStyle = 'solid',
-  } = this.getComputedStyles();
+  } = this.style;
 
   const style = {
     borderTopColor,

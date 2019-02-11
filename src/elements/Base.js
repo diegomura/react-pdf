@@ -1,22 +1,24 @@
-import toPairsIn from 'lodash.topairsin';
-import isFunction from 'lodash.isfunction';
-import Node from './Node';
 import pick from 'lodash.pick';
 import merge from 'lodash.merge';
+import toPairsIn from 'lodash.topairsin';
+import isFunction from 'lodash.isfunction';
 import warning from 'fbjs/lib/warning';
+
+import Node from './Node';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import upperFirst from '../utils/upperFirst';
-import { inheritedProperties } from '../utils/styles';
+import { inheritedProperties } from '../stylesheet/inherit';
 
 class Base extends Node {
   constructor(root, props) {
     super();
 
     this.root = root;
+    this.style = {};
     this.props = merge(
       {},
       this.constructor.defaultProps,
@@ -81,23 +83,31 @@ class Base extends Node {
   }
 
   applyProps() {
-    const { size, orientation } = this.page;
-
-    this.style = StyleSheet.resolve(this.props.style, {
-      width: size.width,
-      height: size.height,
-      orientation: orientation,
-    });
+    this.style = this.resolveStyles();
 
     toPairsIn(this.style).map(([attribute, value]) => {
       this.applyStyle(attribute, value);
     });
 
     this.children.forEach(child => {
-      if (child.applyProps) {
-        child.applyProps();
-      }
+      if (child.applyProps) child.applyProps();
     });
+  }
+
+  resolveStyles() {
+    const { size, orientation } = this.page;
+
+    const ownStyles = StyleSheet.resolve(this.props.style, {
+      orientation,
+      width: size.width,
+      height: size.height,
+    });
+
+    const inheritedStyles = this.parent
+      ? pick(this.parent.style, inheritedProperties)
+      : {};
+
+    return { ...inheritedStyles, ...ownStyles };
   }
 
   applyStyle(attribute, value) {
@@ -136,25 +146,6 @@ class Base extends Node {
     }
   }
 
-  getComputedStyles() {
-    let element = this.parent;
-    let inheritedStyles = {};
-
-    while (element && element.parent) {
-      inheritedStyles = {
-        ...element.parent.style,
-        ...element.style,
-        ...inheritedStyles,
-      };
-      element = element.parent;
-    }
-
-    return {
-      ...pick(inheritedStyles, inheritedProperties),
-      ...this.style,
-    };
-  }
-
   getLayoutData() {
     const layout = this.getAbsoluteLayout();
 
@@ -163,8 +154,8 @@ class Base extends Node {
       top: layout.top,
       left: layout.left,
       width: layout.width,
+      style: this.style,
       height: layout.height,
-      style: this.getComputedStyles(),
       children: this.children.map(c => {
         return c.getLayoutData();
       }),
@@ -173,15 +164,14 @@ class Base extends Node {
 
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const styles = this.getComputedStyles();
 
-    if (styles.backgroundColor) {
+    if (this.style.backgroundColor) {
       this.root.instance.save();
 
       this.clip();
 
       this.root.instance
-        .fillColor(styles.backgroundColor)
+        .fillColor(this.style.backgroundColor)
         .rect(left, top, width, height)
         .fill()
         .restore();

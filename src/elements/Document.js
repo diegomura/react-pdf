@@ -1,4 +1,5 @@
 import wrapPages from 'page-wrapping';
+
 import Font from '../font';
 import { fetchEmojis } from '../utils/emoji';
 
@@ -12,6 +13,7 @@ class Document {
 
   constructor(root, props) {
     this.root = root;
+    this.style = {};
     this.props = props;
     this.children = [];
     this.subpages = [];

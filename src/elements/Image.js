@@ -1,5 +1,6 @@
 import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
+
 import Base from './Base';
 import { resolveImage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
@@ -28,7 +29,7 @@ class Image extends Base {
   }
 
   shouldGrow() {
-    return !!this.getComputedStyles().flexGrow;
+    return !!this.style.flexGrow;
   }
 
   measureImage(width, widthMode, height, heightMode) {
@@ -120,7 +121,7 @@ class Image extends Base {
   renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
-    const { objectPositionX, objectPositionY } = this.getComputedStyles();
+    const { objectPositionX, objectPositionY } = this.style;
 
     this.root.instance.save();
 

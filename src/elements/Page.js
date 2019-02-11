@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import Yoga from 'yoga-layout';
 import warning from 'fbjs/lib/warning';
+
 import Base from './Base';
 import TextInstance from './TextInstance';
 import getPageSize from '../utils/pageSizes';
@@ -11,9 +12,8 @@ import matchPercent from '../utils/matchPercent';
 class Page extends Base {
   static defaultProps = {
     size: 'A4',
-    orientation: 'portrait',
-    style: {},
     wrap: true,
+    orientation: 'portrait',
   };
 
   constructor(root, props) {

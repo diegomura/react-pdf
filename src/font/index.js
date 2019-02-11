@@ -8,8 +8,8 @@ let fonts = {};
 let emojiSource;
 let hyphenationCallback;
 
-const fetchFont = src => {
-  return fetch(src)
+const fetchFont = (src, options) => {
+  return fetch(src, options)
     .then(response => {
       if (response.buffer) {
         return response.buffer();
@@ -46,14 +46,15 @@ const getEmojiSource = () => emojiSource;
 const getHyphenationCallback = () => hyphenationCallback;
 
 const load = async function(fontFamily, doc) {
-  const font = fonts[fontFamily];
+  const font = getFont(fontFamily);
 
   // We cache the font to avoid fetching it many times
   if (font && !font.data && !font.loading) {
     font.loading = true;
 
     if (isUrl(font.src)) {
-      const data = await fetchFont(font.src);
+      const { src, headers, method, body } = font;
+      const data = await fetchFont(src, { headers, method, body });
       font.data = fontkit.create(data);
     } else {
       if (BROWSER) {

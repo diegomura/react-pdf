@@ -7,6 +7,8 @@ import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';
 
+const IMAGE_CACHE = createCache({ limit: 30 });
+
 export const getAbsoluteLocalPath = src => {
   if (BROWSER) {
     throw new Error('Cannot check local paths in client-side environment');
@@ -63,7 +65,15 @@ const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
     }
   });
 
-const imagesCache = createCache({ limit: 30 });
+const fetchRemoteFile = async (uri, options) => {
+  const response = await fetch(uri, options);
+
+  const buffer = await (response.buffer
+    ? response.buffer()
+    : response.arrayBuffer());
+
+  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
+};
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
@@ -152,30 +162,35 @@ const getImageFormat = body => {
   return extension;
 };
 
+const resolveImageFromSrcObject = async (src, options) => {
+  const { uri, body, headers, method = 'GET' } = src;
+
+  const data =
+    !BROWSER && getAbsoluteLocalPath(uri)
+      ? await fetchLocalFile(uri, options)
+      : await fetchRemoteFile(uri, { body, headers, method });
+
+  const extension = getImageFormat(data);
+
+  return getImage(data, extension);
+};
+
 const resolveImageFromUrl = async (src, options) => {
-  let body;
-  if (!BROWSER && getAbsoluteLocalPath(src)) {
-    body = await fetchLocalFile(src, options);
-  } else {
-    const response = await fetch(src);
-    const buffer = await (response.buffer
-      ? response.buffer()
-      : response.arrayBuffer());
-    body = await (buffer.constructor.name === 'Buffer'
-      ? buffer
-      : Buffer.from(buffer));
-  }
+  const data =
+    !BROWSER && getAbsoluteLocalPath(src)
+      ? await fetchLocalFile(src, options)
+      : await fetchRemoteFile(src);
 
-  const extension = getImageFormat(body);
+  const extension = getImageFormat(data);
 
-  return getImage(body, extension);
+  return getImage(data, extension);
 };
 
 export const resolveImage = (src, { cache = true, ...options } = {}) => {
   const cacheKey = src.data ? src.data.toString() : src;
 
-  if (cache && imagesCache.get(cacheKey)) {
-    return imagesCache.get(cacheKey);
+  if (cache && IMAGE_CACHE.get(cacheKey)) {
+    return IMAGE_CACHE.get(cacheKey);
   }
 
   let image;
@@ -185,6 +200,8 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
     image = resolveBufferImage(src);
   } else if (typeof src === 'object' && src.data) {
     image = resolveImageFromData(src);
+  } else if (typeof src === 'object' && src.uri) {
+    image = resolveImageFromSrcObject(src);
   } else {
     image = resolveImageFromUrl(src, options);
   }
@@ -194,7 +211,7 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
   }
 
   if (cache) {
-    imagesCache.set(cacheKey, image);
+    IMAGE_CACHE.set(cacheKey, image);
   }
 
   return image;

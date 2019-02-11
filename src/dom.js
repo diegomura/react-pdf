@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import warning from 'fbjs/lib/warning';
+
+import warning from '../src/utils/warning';
 
 import {
   pdf,

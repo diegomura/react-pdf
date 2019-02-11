@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout';
-import warning from 'fbjs/lib/warning';
 
 import Base from './Base';
+import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
 

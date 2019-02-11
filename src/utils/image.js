@@ -1,7 +1,8 @@
 import fs from 'fs';
-import path from 'path';
 import url from 'url';
-import fetch from 'isomorphic-fetch';
+import path from 'path';
+import fetch from 'fetch';
+
 import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';

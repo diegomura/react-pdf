@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import warning from 'fbjs/lib/warning';
+
+import warning from '../src/utils/warning';
 import { pdf } from '../src/index';
 import {
   PDFDownloadLink,
@@ -11,8 +12,8 @@ import {
   View,
 } from '../src/dom';
 
-jest.mock('fbjs/lib/warning');
 jest.mock('../src/index');
+jest.mock('../src/utils/warning');
 
 class Blob {}
 

@@ -111,6 +111,8 @@ class Base extends Node {
   }
 
   applyStyle(attribute, value) {
+    if (value === undefined) return;
+
     const setter = `set${upperFirst(attribute)}`;
 
     switch (attribute) {

@@ -92,15 +92,8 @@ class Image extends Base {
   }
 
   get src() {
-    const { src, source } = this.props;
-
-    if (typeof src === 'object') {
-      return { ...src, ...source };
-    } else if (typeof src === 'string') {
-      return { ...source, uri: src };
-    }
-
-    return null;
+    const src = this.props.src || this.props.source;
+    return typeof src === 'string' ? { uri: src } : src;
   }
 
   async fetch() {

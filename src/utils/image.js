@@ -54,12 +54,9 @@ const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
       ) {
         return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
       }
-      fs.readFile(absolutePath, (err, data) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(data);
-      });
+      fs.readFile(absolutePath, (err, data) =>
+        err ? reject(err) : resolve(data),
+      );
     } catch (err) {
       reject(err);
     }
@@ -92,8 +89,8 @@ const guessFormat = buffer => {
   return format;
 };
 
-const isCompatibleBase64 = src =>
-  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(src);
+const isCompatibleBase64 = ({ uri }) =>
+  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(uri);
 
 function getImage(body, extension) {
   switch (extension.toLowerCase()) {
@@ -107,8 +104,8 @@ function getImage(body, extension) {
   }
 }
 
-const resolveBase64Image = src => {
-  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(src);
+const resolveBase64Image = ({ uri }) => {
+  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
   const format = match[1];
   const data = match[2];
 
@@ -176,7 +173,7 @@ const resolveImageFromUrl = async (src, options) => {
 };
 
 export const resolveImage = (src, { cache = true, ...options } = {}) => {
-  const cacheKey = src.data ? src.data.toString() : src;
+  const cacheKey = src.data ? src.data.toString() : src.uri;
 
   if (cache && IMAGE_CACHE.get(cacheKey)) {
     return IMAGE_CACHE.get(cacheKey);

@@ -71,6 +71,7 @@
     "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.2",
     "jest": "^23.0.0",
+    "jest-fetch-mock": "^2.1.0",
     "lint-staged": "^3.4.2",
     "mock-fs": "^4.7.0",
     "mockdate": "^2.0.1",

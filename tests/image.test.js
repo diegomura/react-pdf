@@ -91,6 +91,7 @@ describe('Image', () => {
   test('Should render a local image from src object', async () => {
     const image = new Image(dummyRoot, {
       src: { uri: './tests/assets/test.jpg' },
+      safePath: './tests/assets',
     });
 
     await image.fetch();

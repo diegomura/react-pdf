@@ -162,24 +162,13 @@ const getImageFormat = body => {
   return extension;
 };
 
-const resolveImageFromSrcObject = async (src, options) => {
+const resolveImageFromUrl = async (src, options) => {
   const { uri, body, headers, method = 'GET' } = src;
 
   const data =
     !BROWSER && getAbsoluteLocalPath(uri)
       ? await fetchLocalFile(uri, options)
       : await fetchRemoteFile(uri, { body, headers, method });
-
-  const extension = getImageFormat(data);
-
-  return getImage(data, extension);
-};
-
-const resolveImageFromUrl = async (src, options) => {
-  const data =
-    !BROWSER && getAbsoluteLocalPath(src)
-      ? await fetchLocalFile(src, options)
-      : await fetchRemoteFile(src);
 
   const extension = getImageFormat(data);
 
@@ -200,8 +189,6 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
     image = resolveBufferImage(src);
   } else if (typeof src === 'object' && src.data) {
     image = resolveImageFromData(src);
-  } else if (typeof src === 'object' && src.uri) {
-    image = resolveImageFromSrcObject(src);
   } else {
     image = resolveImageFromUrl(src, options);
   }

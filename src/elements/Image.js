@@ -7,9 +7,6 @@ import { resolveObjectFit } from '../utils/objectFit';
 
 const SAFETY_HEIGHT = 10;
 
-// We manage two bounding boxes in this class:
-//  - Yoga node: Image bounding box. Adjust based on image and page size
-//  - Image node: Real image container. In most cases equals Yoga node, except if image is bigger than page
 class Image extends Base {
   static defaultProps = {
     wrap: false,
@@ -94,10 +91,28 @@ class Image extends Base {
     return this.image.data ? this.image.width / this.image.height : 1;
   }
 
+  get src() {
+    const { src, source } = this.props;
+
+    if (typeof src === 'object') {
+      return { ...src, ...source };
+    } else if (typeof src === 'string') {
+      return { ...source, uri: src };
+    }
+
+    return null;
+  }
+
   async fetch() {
-    const { src, cache, safePath, allowDangerousPaths } = this.props;
+    const { cache, safePath, allowDangerousPaths } = this.props;
+
+    if (!this.src) {
+      warning(false, 'Image should receive either a "src" or "source" prop');
+      return;
+    }
+
     try {
-      this.image = await resolveImage(src, {
+      this.image = await resolveImage(this.src, {
         cache,
         safePath,
         allowDangerousPaths,

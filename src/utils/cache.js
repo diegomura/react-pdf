@@ -1,6 +1,6 @@
 const createCache = ({ limit = 100 } = {}) => {
-  const cache = {};
-  const keys = [];
+  let cache = {};
+  let keys = [];
 
   return {
     get: key => cache[key],
@@ -10,6 +10,10 @@ const createCache = ({ limit = 100 } = {}) => {
         delete cache[keys.shift()];
       }
       cache[key] = value;
+    },
+    reset: () => {
+      cache = {};
+      keys = [];
     },
     length: () => keys.length,
   };

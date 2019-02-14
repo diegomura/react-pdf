@@ -1,13 +1,13 @@
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
-import fetch from 'fetch';
+import fetch from 'cross-fetch';
 
 import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';
 
-const IMAGE_CACHE = createCache({ limit: 30 });
+export const IMAGE_CACHE = createCache({ limit: 30 });
 
 export const getAbsoluteLocalPath = src => {
   if (BROWSER) {

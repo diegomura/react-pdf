@@ -11,7 +11,6 @@ import root from './utils/dummyRoot';
 let dummyRoot;
 const ViewElement = 'VIEW';
 const ImageElement = 'IMAGE';
-// const testImage = 'https://react-pdf.org/static/images/quijote1.jpg';
 const testImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 
 // Only for testing purposes

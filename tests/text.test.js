@@ -69,15 +69,14 @@ describe('Text', () => {
     const textInstance = new TextInstance(dummyRoot, 'sometext');
 
     text.appendChild(textInstance);
-
     text.getAbsoluteLayout = () => ({ top: 20, left: 20 });
     text.layoutText(100, 100);
+
+    const clone = text.clone();
 
     await text.render();
 
     const textRectX = text.lines[0].rect.x;
-
-    const clone = text.clone();
 
     clone.layoutText(100, 100);
     clone.getAbsoluteLayout = () => ({ top: 20, left: 20 });

@@ -249,11 +249,11 @@ class Text extends Base {
       line.rect.y += top + this.padding.top - initialX;
     });
 
-    // Get only correct lines to render (due to node splitted)
-    this.container.blocks = [{ lines: this.lines }];
+    // Mock container only with appropiate lines
+    const container = { ...this.container, blocks: [{ lines: this.lines }] };
 
     // Perform actual text rendering on document
-    new PDFRenderer(this.root.instance, renderOpts).render(this.container);
+    new PDFRenderer(this.root.instance, renderOpts).render(container);
 
     if (this.props.debug) {
       this.debug();

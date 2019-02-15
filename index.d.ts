@@ -113,15 +113,6 @@ declare module '@react-pdf/renderer' {
 
     type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
 
-    interface ImageProps extends NodeProps {
-      debug?: boolean;
-      src: SourceObject;
-      source: SourceObject;
-      cache?: boolean;
-      safePath?: string;
-      allowDangerousPaths?: boolean;
-    }
-
     /**
      * A React component for displaying network or local (Node only) JPG or
      * PNG images, as well as base64 encoded image strings.

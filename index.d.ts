@@ -96,6 +96,23 @@ declare module '@react-pdf/renderer' {
       | { data: Buffer; format: 'png' | 'jpg' };
       | { uri: string; method: HTTPMethod, body: any, headers: any }
 
+    interface BaseImageProps extends NodeProps {
+      debug?: boolean;
+      cache?: boolean;
+      safePath?: string;
+      allowDangerousPaths?: boolean;
+    }
+
+    interface ImageWithSrcProp extends BaseImageProps {
+      src: SourceObject;
+    }
+
+    interface ImageWithSourceProp extends BaseImageProps {
+      source: SourceObject;
+    }
+
+    type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
+
     interface ImageProps extends NodeProps {
       debug?: boolean;
       src: SourceObject;

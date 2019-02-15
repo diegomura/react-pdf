@@ -25,7 +25,7 @@ class TextInstance {
   update(value) {
     this.value = value;
     this.parent.computed = false;
-    this.parent._container = null;
+    this.parent.container = null;
     this.root.markDirty();
   }
 }

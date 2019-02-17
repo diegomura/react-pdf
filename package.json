@@ -46,6 +46,7 @@
     "media-engine": "^1.0.3",
     "page-wrapping": "^1.1.0",
     "react": "^16.4.1",
+    "react-fast-compare": "^2.0.4",
     "react-reconciler": "^0.19.1",
     "yoga-layout-prebuilt": "1.9.3"
   },

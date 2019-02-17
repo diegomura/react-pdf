@@ -55,7 +55,7 @@ class Document {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style.fontFamily, this.root.instance));
+        promises.push(Font.load(node.style.fontFamily));
       }
 
       if (node.children) {
@@ -122,6 +122,24 @@ class Document {
     this.props = newProps;
   }
 
+  updateStubs() {
+    const listToExplore = this.subpages[0].children.slice(0);
+
+    while (listToExplore.length > 0) {
+      const node = listToExplore.shift();
+
+      if (node.stubs) {
+        node.stubs.test = 'Worked!';
+      }
+
+      if (node.children) {
+        node.children.forEach(childNode => {
+          listToExplore.push(childNode);
+        });
+      }
+    }
+  }
+
   getLayoutData() {
     return {
       type: this.name,
@@ -147,33 +165,35 @@ class Document {
       }
     }
 
-    return pages;
+    this.subpages = pages;
   }
 
   async renderPages() {
-    this.subpages = await this.wrapPages();
-
     for (let j = 0; j < this.subpages.length; j++) {
       // Update dynamic text nodes with total pages info
-      this.subpages[j].renderDynamicNodes(
-        {
-          pageNumber: j + 1,
-          totalPages: this.subpages.length,
-        },
-        node => node.name === 'Text',
-      );
+      // this.subpages[j].renderDynamicNodes(
+      //   {
+      //     pageNumber: j + 1,
+      //     totalPages: this.subpages.length,
+      //   },
+      //   node => node.name === 'Text',
+      // );
       await this.subpages[j].render();
     }
+  }
 
-    return this.subpages;
+  async layout() {
+    this.applyProps();
+    await this.loadEmojis();
+    await this.loadAssets();
+    // console.time('wrapPages');
+    await this.wrapPages();
+    // console.timeEnd('wrapPages');
   }
 
   async render() {
     try {
       this.addMetaData();
-      this.applyProps();
-      await this.loadEmojis();
-      await this.loadAssets();
       await this.renderPages();
       this.root.instance.end();
       Font.reset();

@@ -2,7 +2,7 @@ import PDFDocument from '@react-pdf/pdfkit';
 
 class Root {
   constructor() {
-    this.isDirty = false;
+    // this.isDirty = false;
     this.document = null;
     this.instance = null;
   }
@@ -19,14 +19,22 @@ class Root {
     this.document = null;
   }
 
-  markDirty() {
-    this.isDirty = true;
+  // markDirty() {
+  //   this.isDirty = true;
+  // }
+
+  updateStubs() {
+    this.document.updateStubs();
+  }
+
+  async layout() {
+    await this.document.layout();
   }
 
   async render() {
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
-    this.isDirty = false;
+    // this.isDirty = false;
   }
 }
 

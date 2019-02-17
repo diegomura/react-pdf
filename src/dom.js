@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+const isEqual = require('react-fast-compare');
 
 import warning from '../src/utils/warning';
 
@@ -27,48 +28,45 @@ export const Document = ({ children, ...props }) => {
 };
 
 class InternalBlobProvider extends React.PureComponent {
+  instance = pdf();
   state = { blob: null, url: null, loading: true, error: null };
 
-  constructor(props) {
-    super(props);
-
-    // Create new root container for this render
-    this.instance = pdf();
+  async componentDidMount() {
+    await this.renderDocument();
+    await this.onDocumentUpdate();
   }
 
-  componentDidMount() {
-    this.renderDocument();
-    this.onDocumentUpdate();
+  async componentDidUpdate(oldProps) {
+    // console.log(this.props, oldProps);
+    // console.log(isEqual(this.props.document, oldProps.document));
+
+    // await this.renderDocument();
+    // await this.onDocumentUpdate();
+    // await this.renderDocument();
+
+    // if (this.instance.isDirty() && !this.state.error) {
+    //   await this.onDocumentUpdate();
+    // }
   }
 
-  componentDidUpdate() {
-    this.renderDocument();
-
-    if (this.instance.isDirty() && !this.state.error) {
-      this.onDocumentUpdate();
-    }
+  async renderDocument() {
+    await this.instance.updateContainer(this.props.document);
   }
 
-  renderDocument() {
-    this.instance.updateContainer(this.props.document);
-  }
-
-  onDocumentUpdate() {
+  async onDocumentUpdate() {
     const oldBlobUrl = this.state.url;
 
-    this.instance
-      .toBlob()
-      .then(blob => {
-        this.setState(
-          { blob, url: URL.createObjectURL(blob), loading: false },
-          () => URL.revokeObjectURL(oldBlobUrl),
-        );
-      })
-      .catch(error => {
-        this.setState({ error });
-        console.error(error);
-        throw error;
-      });
+    try {
+      const blob = await this.instance.toBlob();
+      this.setState(
+        { blob, url: URL.createObjectURL(blob), loading: false },
+        () => URL.revokeObjectURL(oldBlobUrl),
+      );
+    } catch (error) {
+      this.setState({ error });
+      console.error(error);
+      throw error;
+    }
   }
 
   render() {

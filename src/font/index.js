@@ -45,7 +45,7 @@ const getEmojiSource = () => emojiSource;
 
 const getHyphenationCallback = () => hyphenationCallback;
 
-const load = async function(fontFamily, doc) {
+const load = async function(fontFamily) {
   const font = fonts[fontFamily];
 
   // We cache the font to avoid fetching it many times
@@ -70,15 +70,6 @@ const load = async function(fontFamily, doc) {
         ),
       );
     }
-  }
-
-  // If the font wasn't added to the document yet (aka. loaded), we add it.
-  // This prevents calling `registerFont` many times for the same font.
-  // Fonts loaded state will be reset after the document is closed.
-  if (font && !font.loaded) {
-    font.loaded = true;
-    font.loading = false;
-    doc.registerFont(fontFamily, font.data);
   }
 
   if (!font && !standardFonts.includes(fontFamily)) {

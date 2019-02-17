@@ -1,4 +1,6 @@
+import React from 'react';
 import BlobStream from 'blob-stream';
+
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
 import { createInstance } from './elements';
@@ -13,31 +15,96 @@ const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 
-const pdf = input => {
-  const container = createInstance({ type: 'ROOT' });
-  const mountNode = PDFRenderer.createContainer(container);
+const handler = {
+  get: function(target, prop) {
+    if (!target.stubs[prop]) {
+      target.stubs[prop] = { value: null };
+    }
 
-  if (input) updateContainer(input);
+    return target.stubs[prop].value;
+  },
+  set: function(target, prop, value) {
+    target.stubs[prop].value = value;
+    return true;
+  },
+};
+
+const proxy = new Proxy({ stubs: {} }, handler);
+
+const renderNode = child => {
+  if (!child || typeof child === 'string') {
+    return child;
+  }
+
+  if (typeof child.type === 'function') {
+    return renderNode(child.type(child.props));
+  }
+
+  if (child.props.render) {
+    return renderNode(
+      React.cloneElement(child, {
+        render: null,
+        stubs: proxy,
+        children: child.props.render(proxy),
+      }),
+    );
+  }
+
+  const { children } = child.props;
+
+  return React.cloneElement(child, {
+    children: Array.isArray(children)
+      ? children.map(renderNode)
+      : renderNode(children),
+  });
+};
+
+const renderDynamic = node => {
+  const { children } = node.props;
+
+  return React.cloneElement(node, {
+    children: Array.isArray(children)
+      ? children.map(renderNode)
+      : renderNode(children),
+  });
+};
+
+const pdf = input => {
+  const root = createInstance({ type: 'ROOT' });
+  const container = PDFRenderer.createContainer(root);
+
+  const updateRendererContainer = doc =>
+    new Promise(resolve => {
+      PDFRenderer.updateContainer(renderDynamic(doc), container, null, () =>
+        resolve(),
+      );
+    });
 
   function callOnRender(params = {}) {
-    if (container.document.props.onRender) {
-      const layoutData = container.document.getLayoutData();
-      container.document.props.onRender({ ...params, layoutData });
+    if (root.document.props.onRender) {
+      const layoutData = root.document.getLayoutData();
+      root.document.props.onRender({ ...params, layoutData });
     }
   }
 
-  function isDirty() {
-    return container.isDirty;
-  }
+  // function isDirty() {
+  //   return root.isDirty;
+  // }
 
-  function updateContainer(doc) {
-    PDFRenderer.updateContainer(doc, mountNode, null);
+  async function updateContainer(doc) {
+    await updateRendererContainer(doc);
+    await root.layout();
+
+    root.updateStubs();
+
+    await updateRendererContainer(doc);
+    await root.layout();
   }
 
   async function toBlob() {
-    await container.render();
+    await root.render();
 
-    const stream = container.instance.pipe(BlobStream());
+    const stream = root.instance.pipe(BlobStream());
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {
@@ -59,22 +126,22 @@ const pdf = input => {
   function toBuffer() {
     callOnRender();
 
-    container.render();
+    root.render();
 
-    return container.instance;
+    return root.instance;
   }
 
   function toString() {
     let result = '';
-    container.render();
+    root.render();
 
     return new Promise((resolve, reject) => {
       try {
-        container.instance.on('data', function(buffer) {
+        root.instance.on('data', function(buffer) {
           result += buffer;
         });
 
-        container.instance.on('end', function() {
+        root.instance.on('end', function() {
           callOnRender({ string: result });
           resolve(result);
         });
@@ -84,8 +151,10 @@ const pdf = input => {
     });
   }
 
+  if (input) updateContainer(input);
+
   return {
-    isDirty,
+    // isDirty,
     updateContainer,
     toBuffer,
     toBlob,

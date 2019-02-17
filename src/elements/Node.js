@@ -127,9 +127,9 @@ class Node {
     return this.children.length === 0;
   }
 
-  markDirty() {
-    return this.layout.markDirty();
-  }
+  // markDirty() {
+  //   return this.layout.markDirty();
+  // }
 
   onAppendDynamically() {}
 

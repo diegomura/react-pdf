@@ -26,7 +26,8 @@ class TextInstance {
     this.value = value;
     this.parent.computed = false;
     this.parent.container = null;
-    this.root.markDirty();
+    this.parent.attributedString = null;
+    // this.root.markDirty();
   }
 }
 

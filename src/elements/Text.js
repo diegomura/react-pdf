@@ -65,8 +65,9 @@ class Text extends Base {
       child.parent = this;
       this.children.push(child);
       this.computed = false;
+      this.container = null;
       this.attributedString = null;
-      this.markDirty();
+      // this.markDirty();
     }
   }
 
@@ -77,8 +78,9 @@ class Text extends Base {
       child.parent = null;
       this.children.splice(index, 1);
       this.computed = false;
+      this.container = null;
       this.attributedString = null;
-      this.markDirty();
+      // this.markDirty();
     }
   }
 

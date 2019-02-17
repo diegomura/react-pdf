@@ -19,6 +19,7 @@ class Base extends Node {
 
     this.root = root;
     this.style = {};
+    this.stubs = props.stubs;
     this.props = merge(
       {},
       this.constructor.defaultProps,
@@ -59,17 +60,17 @@ class Base extends Node {
 
   appendChild(child) {
     super.appendChild(child);
-    this.root.markDirty();
+    // this.root.markDirty();
   }
 
   appendChildBefore(child, beforeChild) {
     super.appendChildBefore(child, beforeChild);
-    this.root.markDirty();
+    // this.root.markDirty();
   }
 
   removeChild(child) {
     super.removeChild(child);
-    this.root.markDirty();
+    // this.root.markDirty();
   }
 
   update(newProps) {
@@ -79,7 +80,7 @@ class Base extends Node {
       Base.defaultProps,
       newProps,
     );
-    this.root.markDirty();
+    // this.root.markDirty();
   }
 
   applyProps() {
@@ -185,6 +186,7 @@ class Base extends Node {
 
     clone.copyStyle(this);
     clone.style = this.style;
+    clone.stubs = this.stubs;
 
     return clone;
   }

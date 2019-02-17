@@ -16,10 +16,22 @@ describe('Background', () => {
     expect(() => cache.set('somekey', 'somevalue')).not.toThrow();
   });
 
-  test('should gey key value', () => {
+  test('should get key value', () => {
     const cache = createCache();
     cache.set('somekey', 'somevalue');
     expect(cache.get('somekey')).toEqual('somevalue');
+  });
+
+  test('should reset cache', () => {
+    const cache = createCache();
+    cache.set('somekey', 'somevalue');
+
+    expect(cache.get('somekey')).toEqual('somevalue');
+
+    cache.reset();
+
+    expect(cache.length()).toBe(0);
+    expect(cache.get('somekey')).toBeFalsy();
   });
 
   test('remove elements FIFO if limit exceeded', () => {

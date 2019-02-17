@@ -1,11 +1,13 @@
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
-import fetch from 'fetch';
+import fetch from 'cross-fetch';
 
 import PNG from './png';
 import JPEG from './jpeg';
 import createCache from './cache';
+
+export const IMAGE_CACHE = createCache({ limit: 30 });
 
 export const getAbsoluteLocalPath = src => {
   if (BROWSER) {
@@ -52,18 +54,23 @@ const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
       ) {
         return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
       }
-      fs.readFile(absolutePath, (err, data) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(data);
-      });
+      fs.readFile(absolutePath, (err, data) =>
+        err ? reject(err) : resolve(data),
+      );
     } catch (err) {
       reject(err);
     }
   });
 
-const imagesCache = createCache({ limit: 30 });
+const fetchRemoteFile = async (uri, options) => {
+  const response = await fetch(uri, options);
+
+  const buffer = await (response.buffer
+    ? response.buffer()
+    : response.arrayBuffer());
+
+  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
+};
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
@@ -82,8 +89,8 @@ const guessFormat = buffer => {
   return format;
 };
 
-const isCompatibleBase64 = src =>
-  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(src);
+const isCompatibleBase64 = ({ uri }) =>
+  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(uri);
 
 function getImage(body, extension) {
   switch (extension.toLowerCase()) {
@@ -97,8 +104,8 @@ function getImage(body, extension) {
   }
 }
 
-const resolveBase64Image = src => {
-  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(src);
+const resolveBase64Image = ({ uri }) => {
+  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
   const format = match[1];
   const data = match[2];
 
@@ -153,29 +160,23 @@ const getImageFormat = body => {
 };
 
 const resolveImageFromUrl = async (src, options) => {
-  let body;
-  if (!BROWSER && getAbsoluteLocalPath(src)) {
-    body = await fetchLocalFile(src, options);
-  } else {
-    const response = await fetch(src);
-    const buffer = await (response.buffer
-      ? response.buffer()
-      : response.arrayBuffer());
-    body = await (buffer.constructor.name === 'Buffer'
-      ? buffer
-      : Buffer.from(buffer));
-  }
+  const { uri, body, headers, method = 'GET' } = src;
 
-  const extension = getImageFormat(body);
+  const data =
+    !BROWSER && getAbsoluteLocalPath(uri)
+      ? await fetchLocalFile(uri, options)
+      : await fetchRemoteFile(uri, { body, headers, method });
 
-  return getImage(body, extension);
+  const extension = getImageFormat(data);
+
+  return getImage(data, extension);
 };
 
 export const resolveImage = (src, { cache = true, ...options } = {}) => {
-  const cacheKey = src.data ? src.data.toString() : src;
+  const cacheKey = src.data ? src.data.toString() : src.uri;
 
-  if (cache && imagesCache.get(cacheKey)) {
-    return imagesCache.get(cacheKey);
+  if (cache && IMAGE_CACHE.get(cacheKey)) {
+    return IMAGE_CACHE.get(cacheKey);
   }
 
   let image;
@@ -194,7 +195,7 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
   }
 
   if (cache) {
-    imagesCache.set(cacheKey, image);
+    IMAGE_CACHE.set(cacheKey, image);
   }
 
   return image;

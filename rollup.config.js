@@ -11,7 +11,6 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import pkg from './package.json';
 
 const moduleAliases = {
-  fetch: 'cross-fetch',
   'yoga-layout': 'yoga-layout-prebuilt',
 };
 

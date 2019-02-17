@@ -4,7 +4,11 @@ import path from 'path';
 import root from './utils/dummyRoot';
 import Image from '../src/elements/Image';
 import warning from '../src/utils/warning';
-import { getAbsoluteLocalPath, isDangerousLocalPath } from '../src/utils/image';
+import {
+  IMAGE_CACHE,
+  getAbsoluteLocalPath,
+  isDangerousLocalPath,
+} from '../src/utils/image';
 
 let dummyRoot;
 
@@ -46,6 +50,8 @@ describe('Image', () => {
   let globalWarn = null;
 
   beforeEach(() => {
+    fetch.resetMocks();
+    IMAGE_CACHE.reset();
     dummyRoot = root.reset();
   });
 
@@ -55,7 +61,61 @@ describe('Image', () => {
     expect(view.wrap).toBeFalsy();
   });
 
+  test('Should fetch remote image using GET method by default', async () => {
+    fetch.once(localJPGImage);
+
+    const image = new Image(dummyRoot, { src: jpgImageUrl });
+
+    await image.fetch();
+    await image.render();
+
+    expect(fetch.mock.calls[0][1].method).toBe('GET');
+  });
+
+  test('Should fetch remote image using passed method', async () => {
+    fetch.once(localJPGImage);
+
+    const image = new Image(dummyRoot, {
+      src: { uri: jpgImageUrl, method: 'POST' },
+    });
+
+    await image.fetch();
+    await image.render();
+
+    expect(fetch.mock.calls[0][1].method).toBe('POST');
+  });
+
+  test('Should fetch remote image using passed headers', async () => {
+    fetch.once(localJPGImage);
+
+    const headers = { Authorization: 'Bearer qwerty' };
+    const image = new Image(dummyRoot, {
+      src: { uri: jpgImageUrl, headers },
+    });
+
+    await image.fetch();
+    await image.render();
+
+    expect(fetch.mock.calls[0][1].headers).toEqual(headers);
+  });
+
+  test('Should fetch remote image using passed body', async () => {
+    fetch.once(localJPGImage);
+
+    const body = 'qwerty';
+    const image = new Image(dummyRoot, {
+      src: { uri: jpgImageUrl, body },
+    });
+
+    await image.fetch();
+    await image.render();
+
+    expect(fetch.mock.calls[0][1].body).toEqual(body);
+  });
+
   test('Should render a jpeg image over http', async () => {
+    fetch.once(localJPGImage);
+
     const image = new Image(dummyRoot, { src: jpgImageUrl });
 
     await image.fetch();
@@ -67,7 +127,36 @@ describe('Image', () => {
   });
 
   test('Should render a png image over http', async () => {
+    fetch.once(localPNGImage);
+
     const image = new Image(dummyRoot, { src: pngImageUrl });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a remote image from src object', async () => {
+    fetch.once(localJPGImage);
+
+    const image = new Image(dummyRoot, { src: { uri: jpgImageUrl } });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should render a local image from src object', async () => {
+    const image = new Image(dummyRoot, {
+      src: { uri: './tests/assets/test.jpg' },
+      safePath: './tests/assets',
+    });
 
     await image.fetch();
     await image.render();
@@ -214,6 +303,8 @@ describe('Image', () => {
   });
 
   test('Should cache previously loaded remote images by default', async () => {
+    fetch.once(localJPGImage);
+
     const image1 = new Image(dummyRoot, { src: jpgImageUrl });
     const image2 = new Image(dummyRoot, { src: jpgImageUrl });
 
@@ -224,6 +315,8 @@ describe('Image', () => {
   });
 
   test('Should not cache previously loaded remote images if flag false', async () => {
+    fetch.mockResponse(localJPGImage);
+
     const image1 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
     const image2 = new Image(dummyRoot, { src: jpgImageUrl, cache: false });
 

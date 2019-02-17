@@ -7,9 +7,11 @@ declare module '@react-pdf/renderer' {
     interface Style {
       [property: string]: any;
     }
+
     interface Styles {
       [key: string]: Style;
     }
+
     type Orientation = 'portrait' | 'landscape';
 
     interface DocumentProps {
@@ -52,7 +54,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
-      size?: string | [number, number] | {width: number; height: number};
+      size?: string | [number, number] | { width: number; height: number };
       orientation?: Orientation;
       ruler?: boolean;
       rulerSteps?: number;
@@ -77,7 +79,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
-      render?: (props: {pageNumber: number}) => React.ReactNode;
+      render?: (props: { pageNumber: number }) => React.ReactNode;
       children?: React.ReactNode;
     }
 
@@ -87,13 +89,29 @@ declare module '@react-pdf/renderer' {
      */
     class View extends React.Component<ViewProps> {}
 
-    interface ImageProps extends NodeProps {
+    type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+    type SourceObject =
+      | string
+      | { data: Buffer; format: 'png' | 'jpg' };
+      | { uri: string; method: HTTPMethod, body: any, headers: any }
+
+    interface BaseImageProps extends NodeProps {
       debug?: boolean;
-      src: string | {data: Buffer; format: 'png' | 'jpg'};
       cache?: boolean;
       safePath?: string;
       allowDangerousPaths?: boolean;
     }
+
+    interface ImageWithSrcProp extends BaseImageProps {
+      src: SourceObject;
+    }
+
+    interface ImageWithSourceProp extends BaseImageProps {
+      source: SourceObject;
+    }
+
+    type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
 
     /**
      * A React component for displaying network or local (Node only) JPG or
@@ -108,9 +126,10 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
-      render?: (
-        props: {pageNumber: number; totalPages: number},
-      ) => React.ReactNode;
+      render?: (props: {
+        pageNumber: number;
+        totalPages: number;
+      }) => React.ReactNode;
       children?: React.ReactNode;
       /**
        * How much hyphenated breaks should be avoided.
@@ -201,6 +220,7 @@ declare module '@react-pdf/renderer' {
       url: string;
       format: string;
     }
+
     interface RegisteredFont {
       src: string;
       loaded: boolean;
@@ -208,15 +228,16 @@ declare module '@react-pdf/renderer' {
       data: any;
       [key: string]: any;
     }
+
     type HyphenationCallback = (
       words: string[],
-      glyphString: {[key: string]: any},
+      glyphString: { [key: string]: any },
     ) => string[];
 
     const Font: {
       register: (
         src: string,
-        options: {family: string; [key: string]: any},
+        options: { family: string; [key: string]: any },
       ) => void;
       getEmojiSource: () => EmojiSource;
       getRegisteredFonts: () => string[];
@@ -245,7 +266,7 @@ declare module '@react-pdf/renderer' {
           orientation: Orientation;
         },
       ) => Style;
-      flatten: (...style: (Style[] | Style | undefined)[]) => Style
+      flatten: (...style: (Style[] | Style | undefined)[]) => Style;
       absoluteFillObject: {
         position: 'absolute';
         left: 0;
@@ -262,7 +283,7 @@ declare module '@react-pdf/renderer' {
     const createInstance: (
       element: {
         type: string;
-        props: {[key: string]: any};
+        props: { [key: string]: any };
       },
       root?: any,
     ) => any;
@@ -305,7 +326,7 @@ declare module '@react-pdf/renderer' {
   const pdf: typeof ReactPDF.pdf;
   const PDFViewer: typeof ReactPDF.PDFViewer;
   const BlobProvider: typeof ReactPDF.BlobProvider;
-  const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink
+  const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
 
   export default ReactPDF;
   export {

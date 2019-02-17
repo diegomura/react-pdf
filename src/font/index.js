@@ -1,5 +1,5 @@
-import fetch from 'fetch';
 import isUrl from 'is-url';
+import fetch from 'cross-fetch';
 import fontkit from '@react-pdf/fontkit';
 
 import standardFonts from './standard';
@@ -8,15 +8,14 @@ let fonts = {};
 let emojiSource;
 let hyphenationCallback;
 
-const fetchFont = src => {
-  return fetch(src)
-    .then(response => {
-      if (response.buffer) {
-        return response.buffer();
-      }
-      return response.arrayBuffer();
-    })
-    .then(arrayBuffer => Buffer.from(arrayBuffer));
+const fetchFont = async (src, options) => {
+  const response = await fetch(src, options);
+
+  const buffer = await (response.buffer
+    ? response.buffer()
+    : response.arrayBuffer());
+
+  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
 const register = (src, { family, ...otherOptions }) => {
@@ -46,14 +45,15 @@ const getEmojiSource = () => emojiSource;
 const getHyphenationCallback = () => hyphenationCallback;
 
 const load = async function(fontFamily, doc) {
-  const font = fonts[fontFamily];
+  const font = getFont(fontFamily);
 
   // We cache the font to avoid fetching it many times
   if (font && !font.data && !font.loading) {
     font.loading = true;
 
     if (isUrl(font.src)) {
-      const data = await fetchFont(font.src);
+      const { src, headers, body, method = 'GET' } = font;
+      const data = await fetchFont(src, { headers, method, body });
       font.data = fontkit.create(data);
     } else {
       if (BROWSER) {

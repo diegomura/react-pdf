@@ -10,9 +10,11 @@ const flatten = input => {
 
   const result = input.reduce((acc, style) => {
     if (style) {
-      Object.keys(style).forEach(key => {
-        if (style[key] !== null && style[key] !== undefined) {
-          acc[key] = style[key];
+      const s = Array.isArray(style) ? flatten(style) : style;
+
+      Object.keys(s).forEach(key => {
+        if (s[key] !== null && s[key] !== undefined) {
+          acc[key] = s[key];
         }
       });
     }

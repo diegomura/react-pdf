@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout';
-import upperFirst from 'lodash.upperfirst';
 
-const PERCENT = /^(\d+)?%$/g;
+import upperFirst from '../utils/upperFirst';
+import matchPercent from '../utils/matchPercent';
 
 class Node {
   constructor() {
@@ -16,6 +16,16 @@ class Node {
       child.parent = this;
       this.children.push(child);
       this.layout.insertChild(child.layout, this.layout.getChildCount());
+    }
+  }
+
+  appendChildBefore(child, beforeChild) {
+    const index = this.children.indexOf(beforeChild);
+
+    if (index !== -1 && child) {
+      child.parent = this;
+      this.children.splice(index, 0, child);
+      this.layout.insertChild(child.layout, index);
     }
   }
 
@@ -43,47 +53,47 @@ class Node {
   setDimension(attr, value) {
     const fixedMethod = `set${upperFirst(attr)}`;
     const percentMethod = `${fixedMethod}Percent`;
-    const isPercent = PERCENT.exec(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout[percentMethod](parseInt(isPercent[1], 10));
+    if (percent) {
+      this.layout[percentMethod](percent.value);
     } else {
       this.layout[fixedMethod](value);
     }
   }
 
   setPosition(edge, value) {
-    const isPercent = PERCENT.exec(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setPositionPercent(edge, parseInt(isPercent[1], 10));
+    if (percent) {
+      this.layout.setPositionPercent(edge, percent.value);
     } else {
       this.layout.setPosition(edge, value);
     }
   }
 
   setPadding(edge, value) {
-    const isPercent = PERCENT.exec(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setPaddingPercent(edge, parseInt(isPercent[1], 10));
+    if (percent) {
+      this.layout.setPaddingPercent(edge, percent.value);
     } else {
       this.layout.setPadding(edge, value);
     }
   }
 
   setMargin(edge, value) {
-    const isPercent = PERCENT.exec(value);
+    const percent = matchPercent(value);
 
-    if (isPercent) {
-      this.layout.setMarginPercent(edge, parseInt(isPercent[1], 10));
+    if (percent) {
+      this.layout.setMarginPercent(edge, percent.value);
     } else {
       this.layout.setMargin(edge, value);
     }
   }
 
   setBorder(edge, value) {
-    if (PERCENT.exec(value)) {
+    if (matchPercent(value)) {
       throw new Error('Node: You cannot set percentage border widths');
     }
     this.layout.setBorder(edge, value);
@@ -120,6 +130,8 @@ class Node {
   markDirty() {
     return this.layout.markDirty();
   }
+
+  onAppendDynamically() {}
 
   get position() {
     return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE

@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import warning from 'fbjs/lib/warning';
+
+import warning from '../src/utils/warning';
 import { pdf } from '../src/index';
 import {
   PDFDownloadLink,
@@ -11,8 +12,8 @@ import {
   View,
 } from '../src/dom';
 
-jest.mock('fbjs/lib/warning');
 jest.mock('../src/index');
+jest.mock('../src/utils/warning');
 
 class Blob {}
 
@@ -80,6 +81,13 @@ describe('DOM API', () => {
   test('PDFViewer should render iframe viewer by default', () => {
     const wrapper = mount(<PDFViewer>{doc}</PDFViewer>);
     expect(wrapper.find('iframe')).toHaveLength(1);
+  });
+
+  test('PDFViewer should pass unused props to iframe viewer', () => {
+    const wrapper = mount(
+      <PDFViewer name="PDFViewer-test-name">{doc}</PDFViewer>,
+    );
+    expect(wrapper.find('iframe').prop('name')).toEqual('PDFViewer-test-name');
   });
 
   test('PDFDownloadLink as root should anchor tag and children', () => {

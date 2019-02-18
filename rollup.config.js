@@ -1,12 +1,18 @@
-import nodeResolve from 'rollup-plugin-node-resolve';
-import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
+import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
+import ignore from 'rollup-plugin-ignore';
+import replace from 'rollup-plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import bundleSize from 'rollup-plugin-bundle-size';
-import ignore from 'rollup-plugin-ignore';
-import json from 'rollup-plugin-json';
+import nodeResolve from 'rollup-plugin-node-resolve';
+
 import pkg from './package.json';
+
+const moduleAliases = {
+  'yoga-layout': 'yoga-layout-prebuilt',
+};
 
 const cjs = {
   exports: 'named',
@@ -48,13 +54,17 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
+const commonPlugins = [
+  json(),
+  sourceMaps(),
+  alias(moduleAliases),
+  nodeResolve(),
+  bundleSize(),
+];
 
 const configBase = {
   globals: { react: 'React' },
   external: [
-    'fbjs/lib/emptyObject',
-    'fbjs/lib/warning',
     '@react-pdf/pdfkit',
     'babel-runtime/core-js/promise',
     'babel-runtime/helpers/objectWithoutProperties',
@@ -88,7 +98,7 @@ const serverConfig = Object.assign({}, configBase, {
       BROWSER: JSON.stringify(false),
     }),
   ),
-  external: configBase.external.concat(['fs', 'path']),
+  external: configBase.external.concat(['fs', 'path', 'url']),
 });
 
 const serverProdConfig = Object.assign({}, serverConfig, {
@@ -110,7 +120,7 @@ const browserConfig = Object.assign({}, configBase, {
     replace({
       BROWSER: JSON.stringify(true),
     }),
-    ignore(['fs', 'path']),
+    ignore(['fs', 'path', 'url']),
   ),
 });
 

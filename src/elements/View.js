@@ -2,7 +2,6 @@ import Base from './Base';
 
 class View extends Base {
   static defaultProps = {
-    style: {},
     wrap: true,
   };
 

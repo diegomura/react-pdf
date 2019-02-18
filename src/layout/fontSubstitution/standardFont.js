@@ -4,7 +4,6 @@ class StandardFont {
   constructor(src) {
     this.name = src;
     this.src = PDFFont.open(null, src);
-    this.glyphs = {};
   }
 
   layout(str) {
@@ -28,14 +27,12 @@ class StandardFont {
   }
 
   getGlyph(id) {
-    if (!this.glyphs[id]) {
-      this.glyphs[id] = this.src.font.characterToGlyph(id);
-    }
-
     return {
       id,
       _font: this.src,
-      name: this.glyphs[id],
+      codePoints: [id],
+      isLigature: false,
+      name: this.src.font.characterToGlyph(id),
     };
   }
 

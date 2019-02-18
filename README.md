@@ -59,7 +59,7 @@ const MyDocument = () => (
 );
 ```
 
-### Render in DOM
+### `Web.` Render in DOM
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -67,16 +67,13 @@ import ReactDOM from 'react-dom';
 ReactDOM.render(<MyDocument />, document.getElementById('root'));
 ```
 
-### Save in a file
+### `Node.` Save in a file
 ```jsx
 import React from 'react';
 import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
-
-### Render in mobile
-> Coming soon
 
 ## Examples
 For each example, try opening `output.pdf` to see the result.
@@ -155,3 +152,6 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/reac
 ## License
 
 MIT © [Diego Muracciole](http://github.com/diegomura)
+
+--- 
+![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)

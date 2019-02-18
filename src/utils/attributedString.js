@@ -1,10 +1,11 @@
-import upperFirst from 'lodash.upperfirst';
 import { AttributedString } from '../layout';
 import Font from '../font';
 import { embedEmojis } from './emoji';
 import { ignoreChars } from './ignorableChars';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
+
+const capitalize = value => value.replace(/(^|\s)\S/g, l => l.toUpperCase());
 
 const transformText = (text, transformation) => {
   switch (transformation) {
@@ -13,16 +14,19 @@ const transformText = (text, transformation) => {
     case 'lowercase':
       return text.toLowerCase();
     case 'capitalize':
-      return upperFirst(text);
+      return capitalize(text);
     default:
       return text;
   }
 };
 
 export const getFragments = instance => {
+  if (!instance) return [{ string: '' }];
+
   let fragments = [];
   const {
     color = 'black',
+    backgroundColor,
     fontFamily = 'Helvetica',
     fontSize = 18,
     textAlign = 'left',
@@ -35,7 +39,7 @@ export const getFragments = instance => {
     textDecorationStyle,
     textTransform,
     letterSpacing,
-  } = instance.getComputedStyles();
+  } = instance.style;
 
   instance.children.forEach(child => {
     if (child.value !== null && child.value !== undefined) {
@@ -49,6 +53,7 @@ export const getFragments = instance => {
           font,
           color,
           fontSize,
+          backgroundColor,
           align: textAlign,
           link: instance.src,
           characterSpacing: letterSpacing,

@@ -1,4 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import React, { Fragment } from 'react';
+
 import Page from '../src/elements/Page';
 import View from '../src/elements/View';
 import Image from '../src/elements/Image';
@@ -7,7 +10,8 @@ import root from './utils/dummyRoot';
 
 let dummyRoot;
 const ViewElement = 'VIEW';
-const testImage = 'https://react-pdf.org/static/images/quijote1.jpg';
+const ImageElement = 'IMAGE';
+const testImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 
 // Only for testing purposes
 // Helper function to render document and get subpages in the process.
@@ -454,6 +458,24 @@ describe('Layout', () => {
     expect(subpages[0].children).toHaveLength(1);
     expect(subpages[0].children[0].width).toBe(600);
     expect(subpages[0].children[0].height).toBe(400);
+  });
+
+  test('Should render dynamic images without conditions', async () => {
+    const render = () => <ImageElement src={testImage} />;
+    const size = { width: 600, height: 800 };
+    const doc = new Document(dummyRoot, {});
+    const page = new Page(dummyRoot, { size });
+    const view = new View(dummyRoot, { render });
+
+    doc.appendChild(page);
+    page.appendChild(view);
+
+    const subpages = await renderDocument(doc);
+
+    expect(subpages).toHaveLength(1);
+    expect(subpages[0].children).toHaveLength(1);
+    expect(subpages[0].children[0].children).toHaveLength(1);
+    expect(subpages[0].children[0].children[0].name).toBe('Image');
   });
 
   test('Should render multipe dynamic content without conditions using Fragment', async () => {

@@ -1,18 +1,19 @@
 import { Fragment } from 'react';
-import warning from 'fbjs/lib/warning';
+import Yoga from 'yoga-layout';
+
 import Base from './Base';
-import TextInstance from './TextInstance';
-import StyleSheet from '../stylesheet';
-import getPageSize from '../utils/pageSizes';
 import Ruler from '../mixins/ruler';
+import warning from '../utils/warning';
 import { createInstance } from './index';
+import TextInstance from './TextInstance';
+import getPageSize from '../utils/pageSizes';
+import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {
   static defaultProps = {
     size: 'A4',
-    orientation: 'portrait',
-    style: {},
     wrap: true,
+    orientation: 'portrait',
   };
 
   constructor(root, props) {
@@ -38,9 +39,7 @@ class Page extends Base {
   }
 
   get size() {
-    if (this._size) {
-      return this._size;
-    }
+    if (this._size) return this._size;
 
     this._size = getPageSize(this.props.size, this.orientation);
 
@@ -58,48 +57,60 @@ class Page extends Base {
 
   resetMargins() {
     if (
-      !!this.style.marginTop ||
-      !!this.style.marginBottom ||
-      !!this.style.marginLeft ||
-      !!this.style.marginRight
+      !!this.marginTop ||
+      !!this.marginBottom ||
+      !!this.marginLeft ||
+      !!this.marginRight
     ) {
       warning(
         false,
         'Margin values are not allowed on Page element. Use padding instead.',
       );
 
-      this.style.marginTop = 0;
-      this.style.marginBottom = 0;
-      this.style.marginLeft = 0;
-      this.style.marginRight = 0;
+      this.marginTop = 0;
+      this.marginBottom = 0;
+      this.marginLeft = 0;
+      this.marginRight = 0;
     }
   }
 
   applyProps() {
+    super.applyProps();
+
     this.top = 0;
     this.left = 0;
-    this.style = StyleSheet.resolve(this.props.style);
+    this.width = this.size.width;
 
     this.resetMargins();
 
-    this.layout.setWidth(this.size.width);
-
     // Add some padding if ruler present, so we can see the whole page inside it
     const rulerWidth = this.getRulerWidth();
-    const { paddingTop = 0, paddingLeft = 0 } = this.style;
 
     if (this.hasHorizontalRuler()) {
-      this.style.paddingTop = paddingTop + rulerWidth;
+      this.paddingTop = this.paddingTop + rulerWidth;
     }
 
     if (this.hasVerticalRuler()) {
-      this.style.paddingLeft = paddingLeft + rulerWidth;
+      this.paddingLeft = this.paddingLeft + rulerWidth;
     }
-
-    super.applyProps();
   }
 
-  addDynamicChild(parent, elements) {
+  setPadding(edge, value) {
+    const dimension =
+      edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
+        ? this.size.height
+        : this.size.width;
+
+    const match = matchPercent(value);
+
+    if (match) {
+      this.layout.setPadding(edge, dimension * match.percent);
+    } else {
+      this.layout.setPadding(edge, value);
+    }
+  }
+
+  async addDynamicChild(parent, elements) {
     if (!elements) return;
     const children = Array.isArray(elements) ? elements : [elements];
 
@@ -112,16 +123,17 @@ class Page extends Base {
         parent.appendChild(instance);
       } else if (type !== Fragment) {
         const instance = createInstance(child, this.root);
+        await instance.onAppendDynamically();
         parent.appendChild(instance);
         instance.applyProps();
-        this.addDynamicChild(instance, props.children);
+        await this.addDynamicChild(instance, props.children);
       } else {
-        this.addDynamicChild(parent, props.children);
+        await this.addDynamicChild(parent, props.children);
       }
     }
   }
 
-  renderDynamicNodes(props, cb) {
+  async renderDynamicNodes(props, cb) {
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
@@ -131,7 +143,7 @@ class Page extends Base {
       if (condition && node.props.render) {
         node.removeAllChilds();
         const elements = node.props.render(props);
-        this.addDynamicChild(node, elements);
+        await this.addDynamicChild(node, elements);
         if (!node.fixed) node.props.render = null;
         continue;
       }
@@ -142,8 +154,8 @@ class Page extends Base {
     }
   }
 
-  nodeWillWrap(props) {
-    this.renderDynamicNodes(props);
+  async nodeWillWrap(props) {
+    await this.renderDynamicNodes(props);
     this.calculateLayout();
   }
 
@@ -152,8 +164,6 @@ class Page extends Base {
     this.marginBottom = 0;
     this.calculateLayout();
   }
-
-  update(newProps) {}
 
   clone() {
     const clone = super.clone();

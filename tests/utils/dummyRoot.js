@@ -25,11 +25,15 @@ export default {
     instance.scale = jest.fn().mockReturnValue(instance);
     instance.translate = jest.fn().mockReturnValue(instance);
     instance.link = jest.fn().mockReturnValue(instance);
+    instance.clip = jest.fn().mockReturnValue(instance);
+    instance.bezierCurveTo = jest.fn().mockReturnValue(instance);
+    instance.closePath = jest.fn().mockReturnValue(instance);
+    instance.undash = jest.fn().mockReturnValue(instance);
+    instance.moveTo = jest.fn().mockReturnValue(instance);
 
     return {
       instance,
       markDirty: jest.fn(),
-      layoutEngine: { layout: jest.fn() },
     };
   },
 };

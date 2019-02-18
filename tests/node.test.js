@@ -35,6 +35,40 @@ describe('Node', () => {
     expect(node.height).toBe(40);
   });
 
+  test('Should get integer percentage dimensions', () => {
+    const base = new Node();
+    const child = new Node();
+
+    base.appendChild(child);
+
+    base.width = 100;
+    base.height = 100;
+    child.width = '20%';
+    child.height = '40%';
+
+    base.calculateLayout();
+
+    expect(child.width).toBe(20);
+    expect(child.height).toBe(40);
+  });
+
+  test('Should get float percentage dimensions', () => {
+    const base = new Node();
+    const child = new Node();
+
+    base.appendChild(child);
+
+    base.width = 200;
+    base.height = 200;
+    child.width = '20.5%';
+    child.height = '40.5%';
+
+    base.calculateLayout();
+
+    expect(child.width).toBe(41);
+    expect(child.height).toBe(81);
+  });
+
   test('Should get correct min/max dimensions', () => {
     const node = new Node();
 
@@ -78,6 +112,24 @@ describe('Node', () => {
     expect(base.layout.getChildCount()).toBe(1);
     expect(child.parent).toBe(base);
     expect(child.layout.getParent()).toBeTruthy();
+  });
+
+  test('Should append child before correctly', () => {
+    const base = new Node();
+    const child1 = new Node();
+    const child2 = new Node();
+
+    base.appendChild(child1);
+    base.appendChildBefore(child2, child1);
+
+    expect(base.children).toHaveLength(2);
+    expect(base.children[0]).toBe(child2);
+    expect(base.children[1]).toBe(child1);
+    expect(base.layout.getChildCount()).toBe(2);
+    expect(child1.parent).toBe(base);
+    expect(child2.parent).toBe(base);
+    expect(child1.layout.getParent()).toBeTruthy();
+    expect(child2.layout.getParent()).toBeTruthy();
   });
 
   test('Should remove child correctly', () => {

@@ -1,4 +1,5 @@
 import wrapPages from 'page-wrapping';
+
 import Font from '../font';
 import { fetchEmojis } from '../utils/emoji';
 
@@ -12,8 +13,10 @@ class Document {
 
   constructor(root, props) {
     this.root = root;
+    this.style = {};
     this.props = props;
     this.children = [];
+    this.subpages = [];
   }
 
   get name() {
@@ -119,42 +122,50 @@ class Document {
     this.props = newProps;
   }
 
-  wrapPages() {
-    let pageCount = 1;
+  getLayoutData() {
+    return {
+      type: this.name,
+      children: this.subpages.map(c => c.getLayoutData()),
+    };
+  }
 
-    const pages = this.children.reduce((acc, page) => {
+  async wrapPages() {
+    let pageCount = 1;
+    const pages = [];
+
+    for (const page of this.children) {
       const wrapArea = page.size.height - (page.style.paddingBottom || 0);
       if (page.wrap) {
-        const subpages = wrapPages(page, wrapArea, pageCount);
+        const subpages = await wrapPages(page, wrapArea, pageCount);
 
         pageCount += subpages.length;
 
-        return [...acc, ...subpages];
+        pages.push(...subpages);
       } else {
         page.height = page.size.height;
-        return [...acc, page];
+        pages.push(page);
       }
-    }, []);
+    }
 
     return pages;
   }
 
   async renderPages() {
-    const subpages = this.wrapPages();
+    this.subpages = await this.wrapPages();
 
-    for (let j = 0; j < subpages.length; j++) {
+    for (let j = 0; j < this.subpages.length; j++) {
       // Update dynamic text nodes with total pages info
-      subpages[j].renderDynamicNodes(
+      this.subpages[j].renderDynamicNodes(
         {
           pageNumber: j + 1,
-          totalPages: subpages.length,
+          totalPages: this.subpages.length,
         },
         node => node.name === 'Text',
       );
-      await subpages[j].render();
+      await this.subpages[j].render();
     }
 
-    return subpages;
+    return this.subpages;
   }
 
   async render() {

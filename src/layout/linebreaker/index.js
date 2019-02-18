@@ -1,88 +1,109 @@
-import createLinebreaker from '@textkit/linebreaker';
-import formatter from './formatter';
 import linebreak from './linebreak';
+import bestFit from './bestFit';
 
 const HYPHEN = 0x002d;
-const TOLERANCE_LIMIT = 40;
+const TOLERANCE_STEPS = 5;
+const TOLERANCE_LIMIT = 50;
 
-export default ({ hyphenationCallback } = {}) => Textkit => {
-  const TextkitLinebreaker = createLinebreaker()(Textkit);
-  const fallbackLinebreaker = new TextkitLinebreaker();
+const opts = {
+  width: 3,
+  stretch: 6,
+  shrink: 9,
+};
 
+export default ({ penalty } = {}) => () => {
   return class KPLineBreaker {
     constructor(tolerance) {
       this.tolerance = tolerance || 4;
     }
 
-    suggestLineBreak(glyphString, width, paragraphStyle) {
+    getNodes(glyphString, syllables, { align }) {
+      let start = 0;
+      const hyphenWidth = 5;
+      const hyphenPenalty = penalty || (align === 'justify' ? 100 : 600);
+
+      const result = syllables.reduce((acc, s, index) => {
+        const glyphStart = glyphString.glyphIndexForStringIndex(start);
+        const glyphEnd = glyphString.glyphIndexForStringIndex(start + s.length);
+        const syllable = glyphString.slice(glyphStart, glyphEnd);
+
+        if (syllable.string.trim() === '') {
+          const width = syllable.advanceWidth;
+          const stretch = (width * opts.width) / opts.stretch;
+          const shrink = (width * opts.width) / opts.shrink;
+          const value = { value: syllable, start, end: start + syllable.end };
+          acc.push(linebreak.glue(width, value, stretch, shrink));
+        } else {
+          const hyphenated = syllables[index + 1] !== ' ';
+          const value = { value: syllable, start, end: start + syllable.end };
+          acc.push(linebreak.box(syllable.advanceWidth, value, hyphenated));
+
+          if (syllables[index + 1] && hyphenated) {
+            acc.push(linebreak.penalty(hyphenWidth, hyphenPenalty, 1));
+          }
+        }
+
+        start += s.length;
+
+        return acc;
+      }, []);
+
+      result.push(linebreak.glue(0, null, linebreak.infinity, 0));
+      result.push(linebreak.penalty(0, -linebreak.infinity, 1));
+
+      return result;
+    }
+
+    breakLines(glyphString, nodes, breaks) {
+      let start = 0;
+      let end = null;
+
+      const lines = breaks.reduce((acc, breakPoint) => {
+        const node = nodes[breakPoint.position];
+        const prevNode = nodes[breakPoint.position - 1];
+
+        // Last breakpoint corresponds to K&P mandatory final glue
+        if (breakPoint.position === nodes.length - 1) return acc;
+
+        let line;
+        if (node.type === 'penalty') {
+          end = glyphString.glyphIndexForStringIndex(prevNode.value.end);
+          line = glyphString.copy().slice(start, end);
+          line.insertGlyph(line.length, HYPHEN);
+        } else {
+          end = glyphString.glyphIndexForStringIndex(node.value.end);
+          line = glyphString.copy().slice(start, end);
+        }
+
+        start = end;
+        return [...acc, line];
+      }, []);
+
+      const lastLine = glyphString.slice(start, glyphString.length);
+      lines.push(lastLine);
+
+      return lines;
+    }
+
+    suggestLineBreak(glyphString, syllables, availableWidths, paragraphStyle) {
+      const nodes = this.getNodes(glyphString, syllables, paragraphStyle);
       let tolerance = this.tolerance;
-      const measuredWidth = this.measureWidth(glyphString);
-      const nodes = formatter(
-        measuredWidth,
-        paragraphStyle.align,
-        hyphenationCallback,
-      )(glyphString);
-      let breaks = [];
+      let breaks = linebreak(nodes, availableWidths, { tolerance });
 
       // Try again with a higher tolerance if the line breaking failed.
       while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
-        breaks = linebreak(nodes, [width], { tolerance });
-        tolerance += 2;
+        tolerance += TOLERANCE_STEPS;
+        breaks = linebreak(nodes, availableWidths, { tolerance });
       }
 
-      // Fallback to textkit default's linebreaking algorithm if K&P fails
-      if (breaks.length === 0) {
-        const fallback = fallbackLinebreaker.suggestLineBreak(
-          glyphString,
-          width,
-          paragraphStyle,
-        );
-        if (fallback) return fallback;
-
-        // If fallback didn't worked, we split workd based on width
-        const index = glyphString.glyphIndexAtOffset(width) - 1;
-        glyphString.insertGlyph(index, HYPHEN);
-        return { position: index + 1 };
+      if (
+        breaks.length === 0 ||
+        (breaks.length === 1 && breaks[0].position === 0)
+      ) {
+        breaks = bestFit(nodes, availableWidths);
       }
 
-      if (!breaks[1]) {
-        return { position: glyphString.end };
-      }
-
-      const breakNode = this.findBreakNode(nodes, breaks[1].position);
-      const breakIndex = breakNode.value.end - glyphString.start;
-
-      if (breakNode.hyphenated) {
-        glyphString.insertGlyph(breakIndex, HYPHEN);
-        return { position: breakIndex + 1 };
-      }
-
-      // We kep the blank space at the end of the line to avoid justification issues
-      const offset = glyphString.isWhiteSpace(breakIndex) ? 1 : 0;
-      return { position: breakIndex + offset };
-    }
-
-    measureWidth(glyphString) {
-      const { font, fontSize } = glyphString.glyphRuns[0].attributes;
-
-      return word => {
-        if (typeof word === 'string') {
-          const scale = fontSize / font.unitsPerEm;
-          return font.layout(word).positions[0].xAdvance * scale;
-        }
-
-        return word.advanceWidth;
-      };
-    }
-
-    findBreakNode(nodes, position) {
-      let index = position - 1;
-
-      while (!nodes[index].value) {
-        index -= 1;
-      }
-
-      return nodes[index];
+      return this.breakLines(glyphString, nodes, breaks.slice(1));
     }
   };
 };

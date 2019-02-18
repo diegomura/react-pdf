@@ -1,17 +1,17 @@
 import Yoga from 'yoga-layout';
-import warning from 'fbjs/lib/warning';
+
 import Base from './Base';
+import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
+import { resolveObjectFit } from '../utils/objectFit';
 
 const SAFETY_HEIGHT = 10;
 
-// We manage two bounding boxes in this class:
-//  - Yoga node: Image bounding box. Adjust based on image and page size
-//  - Image node: Real image container. In most cases equals Yoga node, except if image is bigger than page
 class Image extends Base {
   static defaultProps = {
     wrap: false,
     cache: true,
+    style: {},
   };
 
   constructor(root, props) {
@@ -26,7 +26,7 @@ class Image extends Base {
   }
 
   shouldGrow() {
-    return !!this.getComputedStyles().flexGrow;
+    return !!this.style.flexGrow;
   }
 
   measureImage(width, widthMode, height, heightMode) {
@@ -71,12 +71,17 @@ class Image extends Base {
       widthMode === Yoga.MEASURE_MODE_AT_MOST &&
       heightMode === Yoga.MEASURE_MODE_AT_MOST
     ) {
-      const imageWidth = Math.min(this.image.width, width);
-
-      return {
-        width: imageWidth,
-        height: imageWidth / this.ratio,
-      };
+      if (this.ratio > 1) {
+        return {
+          width: width,
+          height: Math.min(width / this.ratio, height),
+        };
+      } else {
+        return {
+          width: Math.min(height * this.ratio, width),
+          height: height,
+        };
+      }
     }
 
     return { height, width };
@@ -86,9 +91,25 @@ class Image extends Base {
     return this.image.data ? this.image.width / this.image.height : 1;
   }
 
+  get src() {
+    const src = this.props.src || this.props.source;
+    return typeof src === 'string' ? { uri: src } : src;
+  }
+
   async fetch() {
+    const { cache, safePath, allowDangerousPaths } = this.props;
+
+    if (!this.src) {
+      warning(false, 'Image should receive either a "src" or "source" prop');
+      return;
+    }
+
     try {
-      this.image = await resolveImage(this.props.src, this.props.cache);
+      this.image = await resolveImage(this.src, {
+        cache,
+        safePath,
+        allowDangerousPaths,
+      });
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);
@@ -101,30 +122,36 @@ class Image extends Base {
     return clone;
   }
 
-  async render() {
+  async onAppendDynamically() {
+    await this.fetch();
+  }
+
+  renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
+    const { objectPositionX, objectPositionY } = this.style;
 
     this.root.instance.save();
-    this.applyTransformations();
-    this.drawBackgroundColor();
-    this.drawBorders();
+
+    // Clip path to keep image inside border radius
+    this.clip();
 
     if (this.image.data) {
-      // Inner offset between yoga node and image box
-      // Makes image centered inside Yoga node
-      const width =
-        Math.min(this.height * this.ratio, this.width) -
-        padding.left -
-        padding.right;
-      const height = this.height - padding.top - padding.bottom;
-      const xOffset = Math.max((this.width - width) / 2, 0);
+      const { width, height, xOffset, yOffset } = resolveObjectFit(
+        this.props.style.objectFit,
+        this.width - padding.left - padding.right,
+        this.height - padding.top - padding.bottom,
+        this.image.width,
+        this.image.height,
+        objectPositionX,
+        objectPositionY,
+      );
 
       if (width !== 0 && height !== 0) {
         this.root.instance.image(
           this.image.data,
           left + padding.left + xOffset,
-          top + padding.top,
+          top + padding.top + yOffset,
           { width, height },
         );
       } else {
@@ -136,6 +163,16 @@ class Image extends Base {
         );
       }
     }
+
+    this.root.instance.restore();
+  }
+
+  async render() {
+    this.root.instance.save();
+    this.applyTransformations();
+    this.drawBackgroundColor();
+    this.renderImage();
+    this.drawBorders();
 
     if (this.props.debug) {
       this.debug();

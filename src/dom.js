@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import warning from 'fbjs/lib/warning';
-import { flatStyles } from './utils/styles';
+
+import warning from '../src/utils/warning';
+
 import {
   pdf,
   View,
@@ -17,6 +18,9 @@ import {
   createInstance,
   Document as PDFDocument,
 } from './index';
+
+const flatStyles = stylesArray =>
+  stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
 
 export const Document = ({ children, ...props }) => {
   return <PDFDocument {...props}>{children}</PDFDocument>;
@@ -40,7 +44,7 @@ class InternalBlobProvider extends React.PureComponent {
   componentDidUpdate() {
     this.renderDocument();
 
-    if (this.instance.isDirty()) {
+    if (this.instance.isDirty() && !this.state.error) {
       this.onDocumentUpdate();
     }
   }
@@ -50,13 +54,19 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   onDocumentUpdate() {
+    const oldBlobUrl = this.state.url;
+
     this.instance
       .toBlob()
       .then(blob => {
-        this.setState({ blob, url: URL.createObjectURL(blob), loading: false });
+        this.setState(
+          { blob, url: URL.createObjectURL(blob), loading: false },
+          () => URL.revokeObjectURL(oldBlobUrl),
+        );
       })
       .catch(error => {
         this.setState({ error });
+        console.error(error);
         throw error;
       });
   }
@@ -75,14 +85,22 @@ export const BlobProvider = ({ document: doc, children }) => {
   return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
 };
 
-export const PDFViewer = ({ className, style, children }) => {
+export const PDFViewer = ({
+  className,
+  style,
+  children,
+  innerRef,
+  ...props
+}) => {
   return (
     <InternalBlobProvider document={children}>
       {({ url }) => (
         <iframe
           className={className}
+          ref={innerRef}
           src={url}
           style={Array.isArray(style) ? flatStyles(style) : style}
+          {...props}
         />
       )}
     </InternalBlobProvider>

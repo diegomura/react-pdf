@@ -1,5 +1,5 @@
 import React from 'react';
-import { pdf, Document, Page } from '../src/index';
+import { pdf, Document, Page, Text } from '../src/index';
 
 describe('pdf', () => {
   test('Should create empty pdf instance', () => {
@@ -48,5 +48,58 @@ describe('pdf', () => {
     const blob = await pdf(doc).toBlob();
 
     expect(blob).toBeTruthy();
+  });
+
+  test('Should call onRender when toBuffer called', done => {
+    const onRender = ({ layoutData }) => {
+      expect(layoutData).toBeTruthy();
+      done();
+    };
+
+    const doc = (
+      <Document onRender={onRender}>
+        <Page>
+          <Text>Hey</Text>
+        </Page>
+      </Document>
+    );
+
+    pdf(doc).toBuffer();
+  });
+
+  test('Should call onRender when toBlob called', done => {
+    const onRender = ({ blob, layoutData }) => {
+      expect(blob).toBeTruthy();
+      expect(layoutData).toBeTruthy();
+      done();
+    };
+
+    const doc = (
+      <Document onRender={onRender}>
+        <Page>
+          <Text>Hey</Text>
+        </Page>
+      </Document>
+    );
+
+    pdf(doc).toBlob();
+  });
+
+  test('Should call onRender when toString called', done => {
+    const onRender = ({ string, layoutData }) => {
+      expect(string).toBeTruthy();
+      expect(layoutData).toBeTruthy();
+      done();
+    };
+
+    const doc = (
+      <Document onRender={onRender}>
+        <Page>
+          <Text>Hey</Text>
+        </Page>
+      </Document>
+    );
+
+    pdf(doc).toString();
   });
 });

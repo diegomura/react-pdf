@@ -54,4 +54,28 @@ class JPEG {
   }
 }
 
+JPEG.isValid = function(data) {
+  if (!data || !Buffer.isBuffer(data) || data.readUInt16BE(0) !== 0xffd8) {
+    return false;
+  }
+
+  let marker;
+  let pos = 2;
+
+  while (pos < data.length) {
+    marker = data.readUInt16BE(pos);
+    pos += 2;
+    if (MARKERS.includes(marker)) {
+      break;
+    }
+    pos += data.readUInt16BE(pos);
+  }
+
+  if (!MARKERS.includes(marker)) {
+    return false;
+  }
+
+  return true;
+};
+
 export default JPEG;

@@ -1,21 +1,24 @@
-import toPairsIn from 'lodash.topairsin';
-import isFunction from 'lodash.isfunction';
-import upperFirst from 'lodash.upperfirst';
-import Node from './Node';
 import pick from 'lodash.pick';
 import merge from 'lodash.merge';
-import warning from 'fbjs/lib/warning';
+import toPairsIn from 'lodash.topairsin';
+import isFunction from 'lodash.isfunction';
+
+import Node from './Node';
 import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
+import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
-import { inheritedProperties } from '../utils/styles';
+import warning from '../utils/warning';
+import upperFirst from '../utils/upperFirst';
+import { inheritedProperties } from '../stylesheet/inherit';
 
 class Base extends Node {
   constructor(root, props) {
     super();
 
     this.root = root;
+    this.style = {};
     this.props = merge(
       {},
       this.constructor.defaultProps,
@@ -54,27 +57,62 @@ class Base extends Node {
     this.props.break = value;
   }
 
-  applyProps() {
-    const { size, orientation } = this.page;
+  appendChild(child) {
+    super.appendChild(child);
+    this.root.markDirty();
+  }
 
-    this.style = StyleSheet.resolve(this.props.style, {
-      width: size.width,
-      height: size.height,
-      orientation: orientation,
-    });
+  appendChildBefore(child, beforeChild) {
+    super.appendChildBefore(child, beforeChild);
+    this.root.markDirty();
+  }
+
+  removeChild(child) {
+    super.removeChild(child);
+    this.root.markDirty();
+  }
+
+  update(newProps) {
+    this.props = merge(
+      {},
+      this.constructor.defaultProps,
+      Base.defaultProps,
+      newProps,
+    );
+    this.root.markDirty();
+  }
+
+  applyProps() {
+    this.style = this.resolveStyles();
 
     toPairsIn(this.style).map(([attribute, value]) => {
       this.applyStyle(attribute, value);
     });
 
     this.children.forEach(child => {
-      if (child.applyProps) {
-        child.applyProps();
-      }
+      if (child.applyProps) child.applyProps();
     });
   }
 
+  resolveStyles() {
+    const { size, orientation } = this.page;
+
+    const ownStyles = StyleSheet.resolve(this.props.style, {
+      orientation,
+      width: size.width,
+      height: size.height,
+    });
+
+    const inheritedStyles = this.parent
+      ? pick(this.parent.style, inheritedProperties)
+      : {};
+
+    return { ...inheritedStyles, ...ownStyles };
+  }
+
   applyStyle(attribute, value) {
+    if (value === undefined) return;
+
     const setter = `set${upperFirst(attribute)}`;
 
     switch (attribute) {
@@ -110,43 +148,35 @@ class Base extends Node {
     }
   }
 
-  getComputedStyles() {
-    let element = this.parent;
-    let inheritedStyles = {};
-
-    while (element && element.parent) {
-      inheritedStyles = {
-        ...element.parent.style,
-        ...element.style,
-        ...inheritedStyles,
-      };
-      element = element.parent;
-    }
+  getLayoutData() {
+    const layout = this.getAbsoluteLayout();
 
     return {
-      ...pick(inheritedStyles, inheritedProperties),
-      ...this.style,
+      type: this.name,
+      top: layout.top,
+      left: layout.left,
+      width: layout.width,
+      style: this.style,
+      height: layout.height,
+      children: this.children.map(c => {
+        return c.getLayoutData();
+      }),
     };
   }
 
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
-    const styles = this.getComputedStyles();
 
-    // We can't set individual radius for each corner on PDF, so we get the higher
-    const borderRadius =
-      Math.max(
-        styles.borderTopLeftRadius,
-        styles.borderTopRightRadius,
-        styles.borderBottomRightRadius,
-        styles.borderBottomLeftRadius,
-      ) || 0;
+    if (this.style.backgroundColor) {
+      this.root.instance.save();
 
-    if (styles.backgroundColor) {
+      this.clip();
+
       this.root.instance
-        .fillColor(styles.backgroundColor)
-        .roundedRect(left, top, width, height, borderRadius)
-        .fill();
+        .fillColor(this.style.backgroundColor)
+        .rect(left, top, width, height)
+        .fill()
+        .restore();
     }
   }
 
@@ -176,16 +206,6 @@ class Base extends Node {
     this.paddingBottom = 0;
   }
 
-  update(newProps) {
-    this.props = merge(
-      {},
-      this.constructor.defaultProps,
-      Base.defaultProps,
-      newProps,
-    );
-    this.root.markDirty();
-  }
-
   async renderChildren() {
     const absoluteChilds = this.children.filter(child => child.absolute);
     const nonAbsoluteChilds = this.children.filter(child => !child.absolute);
@@ -212,6 +232,7 @@ Base.defaultProps = {
 
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
+Object.assign(Base.prototype, Clipping);
 Object.assign(Base.prototype, Transform);
 
 export default Base;

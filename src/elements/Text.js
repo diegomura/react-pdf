@@ -1,11 +1,13 @@
 import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
+
 import Base from './Base';
-import { Rect, Path, Container } from '../layout';
+import Font from '../font';
 import { getURL } from '../utils/url';
+import { LayoutEngine, Rect, Path, Container } from '../layout';
 import { getAttributedString } from '../utils/attributedString';
 
-const INFINITY = 999999;
+const renderOpts = { outlineLines: false };
 const PDFRenderer = createPDFRenderer({ Rect });
 
 class Text extends Base {
@@ -20,10 +22,15 @@ class Text extends Base {
 
     this.start = 0;
     this.end = 0;
+
     this.computed = false;
-    this._container = null;
-    this._attributedString = null;
-    this.renderCallback = props.render;
+    this.container = null;
+    this.attributedString = null;
+    this.layoutEngine = new LayoutEngine({
+      hyphenationPenalty: props.hyphenationPenalty,
+      hyphenationCallback: Font.getHyphenationCallback(),
+    });
+
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
 
@@ -35,45 +42,21 @@ class Text extends Base {
     return getURL(this.props.src || this.props.href);
   }
 
-  get attributedString() {
-    if (!this._attributedString) {
-      this._attributedString = getAttributedString(this);
-    }
-    return this._attributedString;
-  }
-
-  set attributedString(value) {
-    this._attributedString = value;
-  }
-
-  get container() {
-    const lines = this._container.blocks.reduce(
-      (acc, block) => [...acc, ...block.lines],
-      [],
-    );
-
-    return {
-      ...this._container,
-      blocks: [{ lines: lines.splice(this.start, this.end) }],
-    };
-  }
-
   get lines() {
     if (!this.container) return [];
 
-    return this.container.blocks.reduce(
-      (acc, block) => [...acc, ...block.lines],
-      [],
-    );
+    return this.container.blocks
+      .reduce((acc, block) => [...acc, ...block.lines], [])
+      .splice(this.start, this.end);
   }
 
   get linesHeight() {
-    if (!this._container) return -1;
+    if (!this.container) return -1;
     return this.lines.reduce((acc, line) => acc + line.height, 0);
   }
 
   get linesWidth() {
-    if (!this._container) return -1;
+    if (!this.container) return -1;
     return Math.max(...this.lines.map(line => line.advanceWidth));
   }
 
@@ -82,7 +65,7 @@ class Text extends Base {
       child.parent = this;
       this.children.push(child);
       this.computed = false;
-      this._attributedString = null;
+      this.attributedString = null;
       this.markDirty();
     }
   }
@@ -94,20 +77,17 @@ class Text extends Base {
       child.parent = null;
       this.children.splice(index, 1);
       this.computed = false;
-      this._attributedString = null;
+      this.attributedString = null;
       this.markDirty();
     }
   }
 
   lineIndexAtHeight(height) {
     let counter = 0;
+
     for (let i = 0; i < this.lines.length; i++) {
       const line = this.lines[i];
-
-      if (counter + line.height > height) {
-        return i;
-      }
-
+      if (counter + line.height > height) return i;
       counter += line.height;
     }
 
@@ -126,29 +106,31 @@ class Text extends Base {
   }
 
   layoutText(width, height) {
-    // IF height null or NaN, we take some liberty on layout height
-    height = height || INFINITY;
+    this.attributedString = getAttributedString(this);
+
+    // If height null or NaN, we take some liberty on layout height
+    const containerHeight = height || this.page.size.height;
 
     // Text layout is expensive. That's why we ensure to only do it once
     // (except dynamic nodes. Those change content and needs to relayout every time)
-    if (!this._container || this.props.render) {
-      const path = new Path().rect(0, 0, width, height);
+    if (!this.container || this.props.render) {
+      const path = new Path().rect(0, 0, width, containerHeight);
       const container = new Container(path);
       const attributedString = this.attributedString;
 
       // Do the actual text layout
-      this.root.layoutEngine.layout(attributedString, [container]);
-      this._container = container;
+      this.layoutEngine.layout(attributedString, [container]);
+      this.container = container;
     }
 
     // Get the total amount of rendered lines
-    const linesCount = this._container.blocks.reduce(
+    const linesCount = this.container.blocks.reduce(
       (acc, block) => acc + block.lines.length,
       0,
     );
 
+    this.end = this.props.maxLines || linesCount + 1;
     this.computed = true;
-    this.end = linesCount + 1;
   }
 
   measureText(width, widthMode, height, heightMode) {
@@ -173,8 +155,8 @@ class Text extends Base {
     return {};
   }
 
-  getComputedStyles() {
-    const styles = super.getComputedStyles();
+  resolveStyles() {
+    const styles = super.resolveStyles();
 
     // Inherit relative positioning for inline childs
     if (
@@ -207,7 +189,7 @@ class Text extends Base {
     } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
       return 0;
     } else if (linesQuantity === orphans + widows) {
-      return this.heightAtLineIndex(orphans - 1);
+      return this.heightAtLineIndex(orphans);
     } else if (linesQuantity - slicedLine < widows) {
       return height - this.heightAtLineIndex(widows - 1);
     }
@@ -218,15 +200,11 @@ class Text extends Base {
   onNodeSplit(height, clone) {
     const wrapHeight = this.wrapHeight(height);
     const slicedLineIndex = this.lineIndexAtHeight(wrapHeight);
-    const slicedLine = this.lines[slicedLineIndex - 1];
 
     clone.marginTop = 0;
     clone.paddingTop = 0;
     clone.start = slicedLineIndex;
-    clone.attributedString = this.attributedString.slice(
-      slicedLine ? slicedLine.stringEnd : 0,
-      this.attributedString.length,
-    );
+    clone.attributedString = this.attributedString;
 
     this.height = wrapHeight;
     this.marginBottom = 0;
@@ -237,9 +215,11 @@ class Text extends Base {
   clone() {
     const text = super.clone();
 
+    text.layoutEngine = this.layoutEngine;
+
     // Save calculated layout for non-dynamic clone elements
-    if (!this.props.render && !this.props.fixed) {
-      text._container = this._container;
+    if (this.container && !this.props.render) {
+      text.container = this.container.copy();
     }
 
     return text;
@@ -260,22 +240,20 @@ class Text extends Base {
       );
     }
 
-    const padding = this.padding;
-    const { top, left } = this.getAbsoluteLayout();
-
     // We translate lines based on Yoga container
+    const { top, left } = this.getAbsoluteLayout();
     const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
 
     this.lines.forEach(line => {
-      line.rect.x += left + padding.left;
-      line.rect.y += top + padding.top - initialX;
+      line.rect.x += left + this.padding.left;
+      line.rect.y += top + this.padding.top - initialX;
     });
 
-    const renderer = new PDFRenderer(this.root.instance, {
-      outlineLines: false,
-    });
+    // Mock container only with appropiate lines
+    const container = { ...this.container, blocks: [{ lines: this.lines }] };
 
-    renderer.render(this.container);
+    // Perform actual text rendering on document
+    new PDFRenderer(this.root.instance, renderOpts).render(container);
 
     if (this.props.debug) {
       this.debug();

@@ -1,5 +1,4 @@
 {
-  // babel parser to support ES6/7 features
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 7,
@@ -29,19 +28,20 @@
     "navigator": false,
     "window": false,
     "BROWSER": false,
-    "URL": false
+    "URL": false,
+    "fetch": false
   },
   "rules": {
     "camelcase": 0,
     "constructor-super": 2,
-    "default-case": [2, { commentPattern: '^no default$' }],
+    "default-case": [2, { "commentPattern": "^no default$" }],
     "eqeqeq": [2, "allow-null"],
     "handle-callback-err": [2, "^(err|error)$" ],
     "new-cap": [2, { "newIsCap": true, "capIsNew": false }],
     "no-alert": 1,
     "no-array-constructor": 2,
     "no-caller": 2,
-    "no-case-declarations": 2,
+    "no-case-declarations": 0,
     "no-class-assign": 2,
     "no-cond-assign": 2,
     "no-const-assign": 2,

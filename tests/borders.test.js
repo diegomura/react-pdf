@@ -23,7 +23,7 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(4);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(0);
   });
@@ -41,7 +41,7 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(4);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls[0][0]).toBe(4);
@@ -60,7 +60,7 @@ describe('Borders', () => {
     await doc.render();
 
     expect(dummyRoot.instance.lineWidth.mock.calls).toHaveLength(1);
-    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(2);
+    expect(dummyRoot.instance.lineWidth.mock.calls[0][0]).toBe(4);
     expect(dummyRoot.instance.stroke.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.dash.mock.calls[0][0]).toBe(2);

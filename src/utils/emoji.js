@@ -53,7 +53,7 @@ export const fetchEmojis = string => {
       emojis[emoji] = { loading: true };
       const fetchEmojiImage = makeFetchEmojiImage();
       promises.push(
-        fetchEmojiImage(emojiUrl).then(image => {
+        fetchEmojiImage({ uri: emojiUrl }).then(image => {
           emojis[emoji].loading = false;
           emojis[emoji].data = image.data;
         }),

@@ -10,11 +10,24 @@ const regex = emojiRegex();
 
 const reflect = promise => (...args) => promise(...args).then(v => v, e => e);
 
+// Returns a function to be able to mock resolveImage.
 const makeFetchEmojiImage = () => reflect(resolveImage);
+
+/**
+ * When an emoji as no color, it might still have 2 parts,
+ * the canonical emoji and an empty string.
+ * ex.
+ *   (no color) Array.from('❤️') => ["❤", "️"]
+ *   (w/ color) Array.from('👍🏿') => ["👍", "🏿"]
+ *
+ * The empty string needs to be removed otherwise the generated
+ * url will be incorect.
+ */
+const _removeNoColor = x => x !== '️';
 
 const getCodePoints = string =>
   Array.from(string)
-    .filter(x => x !== '️')
+    .filter(_removeNoColor)
     .map(char => char.codePointAt(0).toString(16))
     .join('-');
 

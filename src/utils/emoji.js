@@ -10,10 +10,11 @@ const regex = emojiRegex();
 
 const reflect = promise => (...args) => promise(...args).then(v => v, e => e);
 
-const fetchEmojiImage = reflect(resolveImage);
+const makeFetchEmojiImage = () => reflect(resolveImage);
 
 const getCodePoints = string =>
   Array.from(string)
+    .filter(x => x !== '️')
     .map(char => char.codePointAt(0).toString(16))
     .join('-');
 
@@ -37,7 +38,7 @@ export const fetchEmojis = string => {
       const emojiUrl = buildEmojiUrl(emoji);
 
       emojis[emoji] = { loading: true };
-
+      const fetchEmojiImage = makeFetchEmojiImage();
       promises.push(
         fetchEmojiImage(emojiUrl).then(image => {
           emojis[emoji].loading = false;

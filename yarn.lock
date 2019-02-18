@@ -53,10 +53,10 @@
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.2.tgz#4d5af0bf5b583f02d7160de570f132b3df294e4f"
-  integrity sha512-mKNgQTnuImjvCZlhza9UJhIuj7IiqWrRz5bx84Hn136IFmPZAnV+m43CtUvNRcYOAsA1kAAgvqsW04u3j476uQ==
+"@react-pdf/textkit-core@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.3.tgz#a2012cae16031f7763a5f591e530b7c2c81a354a"
+  integrity sha512-6DTvTn2lCdYvXc8G2K0ZedAkzQZAO5Mh9nVXEKg4RmvIn3N2QkD8gcqGOmPfvDfM70ZA5N4eodWowbOvKtxN3g==
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"
@@ -76,10 +76,10 @@
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
-"@textkit/pdf-renderer@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.11.tgz#2743441f39d486879e4de9a530a2610c0965b49f"
-  integrity sha512-U6v4Th5sR9n1yEW/lmalzgc+bi92iQj4RrmnV63pn6d1kqiibrJsnoxZfaQh/IANitQsYJwz7FNXDyy5TDzlMg==
+"@textkit/pdf-renderer@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.12.tgz#ee444ecd0b3bb17ae8a5a9912218e9b2c0a648b0"
+  integrity sha512-q/YD03lZ4zNaq9w5h76mhAA5HbgyWyJ0RjWvAeQR16M/d21PehDzMKe3rQDyYXMjv6sJG5K7tiwvN70ALFgoBA==
 
 "@textkit/text-decoration-engine@^0.1.10":
   version "0.1.10"
@@ -1914,10 +1914,10 @@ elegant-spinner@^1.0.1:
   resolved "https://registry.yarnpkg.com/elegant-spinner/-/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
 
-emoji-regex@^6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.5.1.tgz#9baea929b155565c11ea41c6626eaa65cef992c2"
-  integrity sha512-PAHp6TxrCy7MGMFidro8uikr+zlJJKJ/Q6mm2ExZ7HwkyR9lSVFfE3kt36qcwa24BQL7y0G9axycGjK1A/0uNQ==
+emoji-regex@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
+  integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
 end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   version "1.4.1"

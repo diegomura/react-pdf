@@ -65,10 +65,7 @@ const getMatrix = transform => {
   return null;
 };
 
-const applySingleTransformation = (element, transform) => {
-  const { left, top, width, height } = element.getAbsoluteLayout();
-  const origin = [left + width / 2, top + height / 2];
-
+const applySingleTransformation = (element, transform, origin) => {
   if (/rotate/g.test(transform)) {
     element.root.instance.rotate(getRotation(transform), { origin });
   } else if (/scaleX/g.test(transform)) {
@@ -98,10 +95,11 @@ const Transformations = {
   applyTransformations() {
     let match;
     const re = /[a-zA-Z]+\([^)]+\)/g;
+    const origin = this.origin;
     const transform = (this.style && this.style.transform) || '';
 
     while ((match = re.exec(transform)) != null) {
-      applySingleTransformation(this, match[0]);
+      applySingleTransformation(this, match[0], origin);
     }
   },
 };

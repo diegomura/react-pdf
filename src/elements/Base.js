@@ -187,6 +187,7 @@ class Base extends Node {
       this.clip();
 
       this.root.instance
+        .fillOpacity(this.style.opacity)
         .fillColor(this.style.backgroundColor)
         .rect(left, top, width, height)
         .fill()

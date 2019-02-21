@@ -5,6 +5,7 @@ export const inheritedProperties = [
   'fontStyle',
   'fontWeight',
   'letterSpacing',
+  'opacity',
   'textDecoration',
   'lineHeight',
   'textAlign',

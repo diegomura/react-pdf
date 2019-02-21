@@ -39,6 +39,7 @@ export const getFragments = instance => {
     textDecorationStyle,
     textTransform,
     letterSpacing,
+    opacity,
   } = instance.style;
 
   instance.children.forEach(child => {
@@ -52,6 +53,7 @@ export const getFragments = instance => {
         attributes: {
           font,
           color,
+          opacity,
           fontSize,
           backgroundColor,
           align: textAlign,

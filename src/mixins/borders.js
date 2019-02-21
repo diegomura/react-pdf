@@ -15,6 +15,7 @@ function drawBorders() {
   } = this;
 
   const {
+    opacity,
     borderTopLeftRadius = 0,
     borderTopRightRadius = 0,
     borderBottomLeftRadius = 0,
@@ -55,6 +56,7 @@ function drawBorders() {
   const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
 
   instance.save();
+  instance.strokeOpacity(opacity);
 
   if (borderTopWidth) {
     instance.save();

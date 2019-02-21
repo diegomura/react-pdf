@@ -10,6 +10,36 @@ describe('Document', () => {
     dummyRoot = root.reset();
   });
 
+  test('Should apply centered origin by default', async () => {
+    const doc = new Document(dummyRoot, {});
+    const page = new Page(dummyRoot, {});
+    const view = new View(dummyRoot, { style: { transform: 'rotate(30deg)' } });
+
+    doc.appendChild(page);
+    page.appendChild(view);
+
+    await doc.render();
+
+    expect(view.style.transformOriginX).toBe('50%');
+    expect(view.style.transformOriginY).toBe('50%');
+  });
+
+  test('Should apply passed origin to transformation', async () => {
+    const doc = new Document(dummyRoot, {});
+    const page = new Page(dummyRoot, {});
+    const view = new View(dummyRoot, {
+      style: { transform: 'rotate(30deg)', transformOrigin: '20 40' },
+    });
+
+    doc.appendChild(page);
+    page.appendChild(view);
+
+    await doc.render();
+
+    expect(dummyRoot.instance.rotate.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.rotate.mock.calls[0][1].origin).toEqual([20, 40]);
+  });
+
   test('Should apply rotation in possitive degrees', async () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});

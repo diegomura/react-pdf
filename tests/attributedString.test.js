@@ -55,4 +55,28 @@ describe('attributedString', () => {
 
     expect(attributedString.runs[0].attributes.backgroundColor).toBe('red');
   });
+
+  test('Should set opacity to attributed string', () => {
+    const text = new Text(null, {});
+    const instance = new TextInstance(null, 'Hey');
+
+    text.style = { opacity: 0.4 }; // Simulate parent stlyes computing
+    text.appendChild(instance);
+
+    const attributedString = getAttributedString(text);
+
+    expect(attributedString.runs[0].attributes.opacity).toBe(0.4);
+  });
+
+  test('Should set zero opacity to attributed string', () => {
+    const text = new Text(null, {});
+    const instance = new TextInstance(null, 'Hey');
+
+    text.style = { opacity: 0 }; // Simulate parent stlyes computing
+    text.appendChild(instance);
+
+    const attributedString = getAttributedString(text);
+
+    expect(attributedString.runs[0].attributes.opacity).toBe(0);
+  });
 });

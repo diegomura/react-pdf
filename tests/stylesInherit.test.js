@@ -72,6 +72,7 @@ describe('Styles inherit', () => {
   };
 
   test('Should inherit color', shouldInherit('color'));
+  test('Should inherit opacity', shouldInherit('opacity'));
   test('Should inherit font size', shouldInherit('fontSize'));
   test('Should inherit text align', shouldInherit('textAlign'));
   test('Should inherit visibility', shouldInherit('visibility'));

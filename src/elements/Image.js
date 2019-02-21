@@ -129,7 +129,7 @@ class Image extends Base {
   renderImage() {
     const padding = this.padding;
     const { left, top } = this.getAbsoluteLayout();
-    const { objectPositionX, objectPositionY } = this.style;
+    const { opacity, objectPositionX, objectPositionY } = this.style;
 
     this.root.instance.save();
 
@@ -148,12 +148,14 @@ class Image extends Base {
       );
 
       if (width !== 0 && height !== 0) {
-        this.root.instance.image(
-          this.image.data,
-          left + padding.left + xOffset,
-          top + padding.top + yOffset,
-          { width, height },
-        );
+        this.root.instance
+          .fillOpacity(opacity)
+          .image(
+            this.image.data,
+            left + padding.left + xOffset,
+            top + padding.top + yOffset,
+            { width, height },
+          );
       } else {
         warning(
           false,

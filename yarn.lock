@@ -53,10 +53,10 @@
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.3.tgz#a2012cae16031f7763a5f591e530b7c2c81a354a"
-  integrity sha512-6DTvTn2lCdYvXc8G2K0ZedAkzQZAO5Mh9nVXEKg4RmvIn3N2QkD8gcqGOmPfvDfM70ZA5N4eodWowbOvKtxN3g==
+"@react-pdf/textkit-core@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.5.tgz#c0d4ebc6b5a6addbf74371db4c5bf9fe6df8279f"
+  integrity sha512-8OhToPefEPfLpHno+vxgyCazEPa5GFpMaL5T+dtmjjxXneZwUCVj+QL9iz8x6HM3G7F58CHogZllWN9d+zvDIg==
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"
@@ -76,10 +76,10 @@
     lodash.clone "^4.5.0"
     lodash.merge "^4.6.1"
 
-"@textkit/pdf-renderer@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.12.tgz#ee444ecd0b3bb17ae8a5a9912218e9b2c0a648b0"
-  integrity sha512-q/YD03lZ4zNaq9w5h76mhAA5HbgyWyJ0RjWvAeQR16M/d21PehDzMKe3rQDyYXMjv6sJG5K7tiwvN70ALFgoBA==
+"@textkit/pdf-renderer@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@textkit/pdf-renderer/-/pdf-renderer-0.1.13.tgz#05b10ee1e5a75152ffff4cde7c13c192c2d223c4"
+  integrity sha512-SWJW94wo4oWXS7VuGsZmJEZveM1UlGALMdIB/EDj+0qGRnf/X4yULIb2cIa8uJZ9juj7zRutLSLofAjHVq4lXw==
 
 "@textkit/text-decoration-engine@^0.1.10":
   version "0.1.10"

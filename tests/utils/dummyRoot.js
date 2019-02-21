@@ -11,6 +11,7 @@ export default {
     instance.restore = jest.fn().mockReturnValue(instance);
     instance.addPage = jest.fn().mockReturnValue(instance);
     instance.fillColor = jest.fn().mockReturnValue(instance);
+    instance.fillOpacity = jest.fn().mockReturnValue(instance);
     instance.roundedRect = jest.fn().mockReturnValue(instance);
     instance.registerFont = jest.fn().mockReturnValue(instance);
     instance.lineWidth = jest.fn().mockReturnValue(instance);
@@ -18,6 +19,7 @@ export default {
     instance.quadraticCurveTo = jest.fn().mockReturnValue(instance);
     instance.lineTo = jest.fn().mockReturnValue(instance);
     instance.strokeColor = jest.fn().mockReturnValue(instance);
+    instance.strokeOpacity = jest.fn().mockReturnValue(instance);
     instance.stroke = jest.fn().mockReturnValue(instance);
     instance.dash = jest.fn().mockReturnValue(instance);
     instance.note = jest.fn().mockReturnValue(instance);

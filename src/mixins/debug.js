@@ -10,8 +10,19 @@ const Debug = {
     this.debugPadding(layout, margin, padding);
     this.debugMargin(layout, margin);
     this.debugText(layout, margin);
+    this.debugOrigin();
 
     this.root.instance.restore();
+  },
+  debugOrigin() {
+    if (this.style.transform) {
+      const origin = this.origin;
+      this.root.instance
+        .circle(origin[0], origin[1], 3)
+        .fill('red')
+        .circle(origin[0], origin[1], 5)
+        .stroke('red');
+    }
   },
   debugText(layout, margin) {
     const roundedWidth = Math.round(this.width + margin.left + margin.right);

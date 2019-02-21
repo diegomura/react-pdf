@@ -79,4 +79,10 @@ describe('attribute expansion', () => {
 
     expand(StyleSheet.resolve({ objectPosition: '50% 50%' }), expectedKeys);
   });
+
+  test('should expand transformOrigin attribute', () => {
+    const expectedKeys = ['transformOriginX', 'transformOriginY'];
+
+    expand(StyleSheet.resolve({ transformOrigin: '50% 50%' }), expectedKeys);
+  });
 });

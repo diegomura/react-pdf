@@ -117,4 +117,46 @@ describe('shorthands', () => {
     expect(stylesheet.objectPositionX).toBe('20%');
     expect(stylesheet.objectPositionY).toBe('30%');
   });
+
+  test('should process single value transformOrigin shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: '20' });
+
+    expect(stylesheet.transformOriginX).toBe(20);
+    expect(stylesheet.transformOriginY).toBe(20);
+  });
+
+  test('should process transformOrigin shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: '20 30' });
+
+    expect(stylesheet.transformOriginX).toBe(20);
+    expect(stylesheet.transformOriginY).toBe(30);
+  });
+
+  test('should process transformOrigin shorthand percentages', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: '20% 30%' });
+
+    expect(stylesheet.transformOriginX).toBe('20%');
+    expect(stylesheet.transformOriginY).toBe('30%');
+  });
+
+  test('should process transformOrigin zero offset shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: 'left top' });
+
+    expect(stylesheet.transformOriginX).toBe('0%');
+    expect(stylesheet.transformOriginY).toBe('0%');
+  });
+
+  test('should process transformOrigin full offset shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: 'right bottom' });
+
+    expect(stylesheet.transformOriginX).toBe('100%');
+    expect(stylesheet.transformOriginY).toBe('100%');
+  });
+
+  test('should process transformOrigin center offset shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ transformOrigin: 'center' });
+
+    expect(stylesheet.transformOriginX).toBe('50%');
+    expect(stylesheet.transformOriginY).toBe('50%');
+  });
 });

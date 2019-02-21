@@ -11,6 +11,7 @@ import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import warning from '../utils/warning';
 import upperFirst from '../utils/upperFirst';
+import matchPercent from '../utils/matchPercent';
 import { inheritedProperties } from '../stylesheet/inherit';
 
 class Base extends Node {
@@ -51,6 +52,19 @@ class Base extends Node {
 
   get absolute() {
     return this.props.style.position === 'absolute';
+  }
+
+  get origin() {
+    const { transformOriginX, transformOriginY } = this.style;
+    const { left, top, width, height } = this.getAbsoluteLayout();
+
+    const percentX = matchPercent(transformOriginX);
+    const percentY = matchPercent(transformOriginY);
+
+    const offsetX = percentX ? width * percentX.percent : transformOriginX;
+    const offsetY = percentY ? height * percentY.percent : transformOriginY;
+
+    return [left + offsetX, top + offsetY];
   }
 
   set break(value) {
@@ -226,6 +240,8 @@ Base.defaultProps = {
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
+    transformOriginX: '50%',
+    transformOriginY: '50%',
   },
   minPresenceAhead: 0,
 };

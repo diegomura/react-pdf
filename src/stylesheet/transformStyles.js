@@ -3,6 +3,10 @@ import parseScalar from './transformUnits';
 import { isBorderStyle, processBorders } from './borders';
 import { isBoxModelStyle, processBoxModel } from './boxModel';
 import { isObjectPositionStyle, processObjectPosition } from './objectPosition';
+import {
+  isTransformOriginStyle,
+  processTransformOrigin,
+} from './transformOrigin';
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -97,6 +101,10 @@ const styleShorthands = {
     objectPositionX: true,
     objectPositionY: true,
   },
+  transformOrigin: {
+    transformOriginX: true,
+    transformOriginY: true,
+  },
 };
 
 // Expand the shorthand properties to isolate every declaration from the others.
@@ -145,6 +153,7 @@ const expandStyles = style => {
       case 'borderStyle':
       case 'borderWidth':
       case 'objectPosition':
+      case 'transformOrigin':
         {
           const expandedProps = styleShorthands[key];
           for (const propName in expandedProps) {
@@ -179,6 +188,8 @@ const transformStyles = style => {
       resolved = processBoxModel(key, value);
     } else if (isObjectPositionStyle(key, value)) {
       resolved = processObjectPosition(key, value);
+    } else if (isTransformOriginStyle(key, value)) {
+      resolved = processTransformOrigin(key, value);
     } else {
       resolved = value;
     }

@@ -1,5 +1,5 @@
 const parseValue = value => {
-  const match = /^(\d*\.?\d+)(in|mm|cm|pt)?$/g.exec(value);
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt)?$/g.exec(value);
 
   if (match) {
     return { value: parseFloat(match[1], 10), unit: match[2] || 'pt' };

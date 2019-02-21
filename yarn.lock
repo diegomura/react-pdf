@@ -53,10 +53,10 @@
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
 
-"@react-pdf/textkit-core@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.4.tgz#3cb3b88255a5fae350e91ecaae48430f170f5738"
-  integrity sha512-ogj8F5jul5Afl4oG9N1cczHCF2riOP1Oap5HuvkxpBDo9Di92wppswpUKyj3K8vzTTU5ad2fqzCepKMcpvgEIw==
+"@react-pdf/textkit-core@0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit-core/-/textkit-core-0.2.5.tgz#c0d4ebc6b5a6addbf74371db4c5bf9fe6df8279f"
+  integrity sha512-8OhToPefEPfLpHno+vxgyCazEPa5GFpMaL5T+dtmjjxXneZwUCVj+QL9iz8x6HM3G7F58CHogZllWN9d+zvDIg==
   dependencies:
     "@react-pdf/unicode-properties" "^2.2.0"
     cubic2quad "^1.1.0"

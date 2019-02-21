@@ -179,16 +179,17 @@ class Base extends Node {
   }
 
   drawBackgroundColor() {
+    const { backgroundColor, opacity = 1 } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
-    if (this.style.backgroundColor) {
+    if (backgroundColor) {
       this.root.instance.save();
 
       this.clip();
 
       this.root.instance
-        .fillOpacity(this.style.opacity)
-        .fillColor(this.style.backgroundColor)
+        .fillOpacity(opacity)
+        .fillColor(backgroundColor)
         .rect(left, top, width, height)
         .fill()
         .restore();

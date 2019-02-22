@@ -2848,17 +2848,10 @@ husky@^0.13.2:
     is-ci "^1.0.9"
     normalize-path "^1.0.0"
 
-hyphenation.en-us@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/hyphenation.en-us/-/hyphenation.en-us-0.2.1.tgz#6b937323ff40da474ecb8c07eaeb79d6ae28fed8"
-  integrity sha1-a5NzI/9A2kdOy4wH6ut51q4o/tg=
-  dependencies:
-    hypher "*"
-
-hypher@*, hypher@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/hypher/-/hypher-0.2.5.tgz#2fe456ed2a3fd4ed0d9e428617181c59f9a6dd02"
-  integrity sha1-L+RW7So/1O0NnkKGFxgcWfmm3QI=
+hyphen@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/hyphen/-/hyphen-1.1.0.tgz#30468e0265ce4cee339d0279a15d174b7a40376b"
+  integrity sha512-dVl15hBzRtvjcKnGBuS1NBtedepXgBwoOz6kByHiw6AdVq9Uh3arIe+o8gHIrkMVCohZovhp6u9iV1rnVqgyPA==
 
 iconv-lite@0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"

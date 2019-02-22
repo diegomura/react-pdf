@@ -1,8 +1,8 @@
-import english from 'hyphenation.en-us';
-import Hypher from 'hypher';
+const createHyphenator = require('hyphen');
+const pattern = require('hyphen/patterns/en-us');
 
 const SOFT_HYPHEN_HEX = '\u00ad';
-const hypher = new Hypher(english);
+const hyphen = createHyphenator(pattern);
 
 export default ({ hyphenationCallback }) => () =>
   class {
@@ -11,9 +11,11 @@ export default ({ hyphenationCallback }) => () =>
     }
 
     calculateParts(word) {
-      return word.includes(SOFT_HYPHEN_HEX)
-        ? word.split(SOFT_HYPHEN_HEX)
-        : hypher.hyphenate(word);
+      if (word.includes(SOFT_HYPHEN_HEX)) {
+        return word.split(SOFT_HYPHEN_HEX);
+      }
+
+      return hyphen(word).split(SOFT_HYPHEN_HEX);
     }
 
     hyphenateWord(word) {

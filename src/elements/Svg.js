@@ -40,9 +40,9 @@ class Svg extends Base {
 
     this.document.init(this.element);
 
-    this.element.parse();
-
     this.renderChildren();
+
+    this.element.parse();
 
     this.document.draw(this.root.instance);
 

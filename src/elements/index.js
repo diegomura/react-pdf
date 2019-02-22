@@ -19,6 +19,7 @@ const constructors = {
   NOTE: Note,
   IMAGE: Image,
   SVG: Svg,
+  G: SvgNode,
   POLYGON: SvgNode,
   DOCUMENT: Document,
   TEXT_INSTANCE: TextInstance,
@@ -28,7 +29,7 @@ function createInstance(element, root) {
   const { type, props = {} } = element;
 
   if (constructors[type]) {
-    return new constructors[type](root, props);
+    return new constructors[type](root, props, type);
   }
 
   throw new Error(`Invalid element of type ${type} passed to PDF renderer`);

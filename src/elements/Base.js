@@ -15,10 +15,11 @@ import matchPercent from '../utils/matchPercent';
 import { inheritedProperties } from '../stylesheet/inherit';
 
 class Base extends Node {
-  constructor(root, props) {
+  constructor(root, props, type) {
     super();
 
     this.root = root;
+    this.type = type;
     this.style = {};
     this.props = merge(
       {},
@@ -197,7 +198,7 @@ class Base extends Node {
   }
 
   clone() {
-    const clone = new this.constructor(this.root, this.props);
+    const clone = new this.constructor(this.root, this.props, this.type);
 
     clone.copyStyle(this);
     clone.style = this.style;

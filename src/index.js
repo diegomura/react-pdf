@@ -13,6 +13,7 @@ const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 const Svg = 'SVG';
+const G = 'G';
 const Polygon = 'POLYGON';
 
 const pdf = input => {
@@ -106,6 +107,7 @@ export {
   Note,
   Image,
   Document,
+  G,
   Svg,
   Polygon,
   StyleSheet,

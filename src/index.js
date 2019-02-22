@@ -12,6 +12,8 @@ const Page = 'PAGE';
 const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
+const Svg = 'SVG';
+const Polygon = 'POLYGON';
 
 const pdf = input => {
   const container = createInstance({ type: 'ROOT' });
@@ -104,6 +106,8 @@ export {
   Note,
   Image,
   Document,
+  Svg,
+  Polygon,
   StyleSheet,
   createInstance,
   pdf,

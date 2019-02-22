@@ -5,6 +5,8 @@ import Text from './Text';
 import Link from './Link';
 import Note from './Note';
 import Image from './Image';
+import Svg from './Svg';
+import SvgNode from './SvgNode';
 import Document from './Document';
 import TextInstance from './TextInstance';
 
@@ -16,6 +18,8 @@ const constructors = {
   VIEW: View,
   NOTE: Note,
   IMAGE: Image,
+  SVG: Svg,
+  POLYGON: SvgNode,
   DOCUMENT: Document,
   TEXT_INSTANCE: TextInstance,
 };

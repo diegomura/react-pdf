@@ -66,6 +66,8 @@ const configBase = {
   globals: { react: 'React' },
   external: [
     '@react-pdf/pdfkit',
+    '@react-pdf/svgkit/dist/SVGDocument',
+    '@react-pdf/svgkit/dist/elements/SVGElement',
     'babel-runtime/core-js/promise',
     'babel-runtime/helpers/objectWithoutProperties',
     'babel-runtime/helpers/extends',

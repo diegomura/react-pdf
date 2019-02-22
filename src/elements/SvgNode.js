@@ -37,7 +37,13 @@ class SvgNode {
   render() {
     const ElementType = SVGElement.parsers[this.type] || SVGElement;
 
-    this.element = new ElementType(this.document, null, this.type, this.props);
+    this.element = new ElementType(
+      this.document,
+      this.parent.element,
+      this.type,
+      this.props,
+    );
+
     this.parent.element.childNodes.push(this.element);
 
     this.renderChildren();

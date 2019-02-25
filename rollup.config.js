@@ -15,6 +15,24 @@ const moduleAliases = {
   'yoga-layout': 'yoga-layout-prebuilt',
 };
 
+const globals = { react: 'React' };
+
+const cjs = {
+  globals,
+  format: 'cjs',
+  exports: 'named',
+  sourcemap: true,
+};
+
+const esm = {
+  globals,
+  format: 'es',
+  sourcemap: true,
+};
+
+const getCJS = override => Object.assign({}, cjs, override);
+const getESM = override => Object.assign({}, esm, override);
+
 const ignoredCircular = [
   {
     importer: 'src/elements/index.js',
@@ -67,10 +85,6 @@ const commonPlugins = [
 ];
 
 const configBase = {
-  output: {
-    globals: { react: 'React' },
-    sourcemap: true,
-  },
   external: [
     '@babel/runtime/core-js/promise',
     '@babel/runtime/helpers/objectWithoutProperties',
@@ -92,6 +106,7 @@ const configBase = {
     '@babel/runtime/helpers/assertThisInitialized',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
+  onwarn,
 };
 
 const getPlugins = ({ browser }) => [
@@ -102,63 +117,48 @@ const getPlugins = ({ browser }) => [
   }),
 ];
 
-const minifyConfig = config => ({
-  ...config,
-  output: { ...config.output, minify: true },
-});
-
 const serverConfig = {
   ...configBase,
   input: './src/node.js',
+  output: [
+    getESM({ file: 'dist/react-pdf.es.js' }),
+    getCJS({ file: 'dist/react-pdf.cjs.js' }),
+  ],
   plugins: getPlugins({ browser: false }),
   external: configBase.external.concat(['fs', 'path', 'url']),
 };
 
-const serverProdConfig = minifyConfig(serverConfig);
+const serverProdConfig = {
+  ...serverConfig,
+  output: [
+    getESM({ file: 'dist/react-pdf.es.min.js' }),
+    getCJS({ file: 'dist/react-pdf.cjs.min.js' }),
+  ],
+  plugins: serverConfig.plugins.concat(terser()),
+};
 
 const browserConfig = {
   ...configBase,
   input: './src/dom.js',
+  output: [
+    getESM({ file: 'dist/react-pdf.browser.es.js' }),
+    getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
+  ],
   plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
 };
 
-const browserProdConfig = minifyConfig(browserConfig);
-
-const moduleOutputs = {
-  cjs: {
-    exports: 'named',
-    format: 'cjs',
-    sourcemap: true,
-  },
-  esm: {
-    format: 'es',
-    sourcemap: true,
-  },
+const browserProdConfig = {
+  ...browserConfig,
+  output: [
+    getESM({ file: 'dist/react-pdf.browser.es.min.js' }),
+    getCJS({ file: 'dist/react-pdf.browser.cjs.min.js' }),
+  ],
+  plugins: browserConfig.plugins.concat(terser()),
 };
 
-const getModulesConfig = config =>
-  Object.values(moduleOutputs).map(output => ({
-    ...config,
-    output: {
-      ...configBase.output,
-      ...output,
-      file: `dist/react-pdf${
-        config.input === './src/dom.js' ? '.browser' : ''
-      }.${output.format}${config.output.minify ? '.min' : ''}.js`,
-    },
-    plugins: config.output.minify
-      ? [...config.plugins, terser()]
-      : config.plugins,
-    onwarn,
-  }));
-
-const outputs = [
+export default [
   serverConfig,
   serverProdConfig,
   browserConfig,
   browserProdConfig,
-]
-  .map(getModulesConfig)
-  .reduce((a, c) => [...a, ...c], []);
-
-export default outputs;
+];

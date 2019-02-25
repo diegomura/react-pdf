@@ -45,6 +45,7 @@ const resolve = (styles, container) => {
 
   styles = flatten(styles);
   styles = resolveMediaQueries(styles, container);
+  // something here to resolve @font-face styles?
   styles = transformStyles(styles);
 
   return styles;

@@ -56,6 +56,7 @@ class Document {
 
       if (node.style && node.style.fontFamily) {
         promises.push(Font.load(node.style.fontFamily, this.root.instance));
+        // change this to only load required fonts based on text content, font stack and font-face rules
       }
 
       if (node.children) {

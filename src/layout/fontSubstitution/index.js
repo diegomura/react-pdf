@@ -20,6 +20,7 @@ export default () => ({ Run }) =>
     }
 
     shouldFallbackToFont(codePoint, font) {
+      // return the correct font for this code point based on font-face and font stack
       return (
         !font.hasGlyphForCodePoint(codePoint) &&
         this.fallbackFont.hasGlyphForCodePoint(codePoint)
@@ -33,6 +34,7 @@ export default () => ({ Run }) =>
       let index = 0;
 
       for (const run of runs) {
+        // get all the relevant fonts that were loaded by Document here
         const defaultFont =
           typeof run.attributes.font === 'string'
             ? this.getOrCreateFont(run.attributes.font)

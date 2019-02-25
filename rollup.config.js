@@ -86,21 +86,10 @@ const commonPlugins = [
 
 const configBase = {
   external: [
-    '@babel/runtime/core-js/promise',
-    '@babel/runtime/helpers/objectWithoutProperties',
     '@babel/runtime/helpers/extends',
-    '@babel/runtime/core-js/object/keys',
-    '@babel/runtime/core-js/array/from',
-    '@babel/runtime/core-js/json/stringify',
-    '@babel/runtime/core-js/object/assign',
     '@babel/runtime/helpers/asyncToGenerator',
-    '@babel/runtime/core-js/get-iterator',
-    '@babel/runtime/helpers/inherits',
-    '@babel/runtime/helpers/classCallCheck',
-    '@babel/runtime/helpers/possibleConstructorReturn',
     '@babel/runtime/regenerator',
     '@babel/runtime/helpers/createClass',
-    '@babel/runtime/helpers/typeof',
     '@babel/runtime/helpers/objectWithoutPropertiesLoose',
     '@babel/runtime/helpers/inheritsLoose',
     '@babel/runtime/helpers/assertThisInitialized',

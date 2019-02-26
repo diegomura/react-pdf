@@ -1,6 +1,7 @@
 import Base from './Base';
 
 import painter from '../utils/painter';
+import warning from '../utils/warning';
 
 class Canvas extends Base {
   static defaultProps = {
@@ -15,6 +16,14 @@ class Canvas extends Base {
   async render() {
     const { left, top, width, height } = this.getAbsoluteLayout();
 
+    const availableWidth = width - this.paddingLeft - this.paddingRight;
+    const availableHeight = height - this.paddingTop - this.paddingBottom;
+
+    warning(
+      availableWidth && availableHeight,
+      'Canvas element has null width or height. Please provide valid values via the `style` prop in order to correctly render it.',
+    );
+
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();
@@ -24,9 +33,6 @@ class Canvas extends Base {
       left + this.paddingLeft,
       top + this.paddingTop,
     );
-
-    const availableWidth = width - this.paddingLeft - this.paddingRight;
-    const availableHeight = height - this.paddingTop - this.paddingBottom;
 
     if (this.props.paint) {
       this.props.paint(

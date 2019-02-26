@@ -6,7 +6,7 @@ import warning from '../utils/warning';
 class Canvas extends Base {
   static defaultProps = {
     style: {},
-    wrap: true,
+    wrap: false,
   };
 
   get name() {

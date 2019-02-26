@@ -1,5 +1,7 @@
-const availableMethods = [
+export const availableMethods = [
+  'dash',
   'clip',
+  'save',
   'path',
   'fill',
   'font',
@@ -9,15 +11,27 @@ const availableMethods = [
   'moveTo',
   'lineTo',
   'stroke',
+  'rotate',
   'circle',
+  'lineCap',
+  'opacity',
+  'ellipse',
+  'polygon',
+  'restore',
+  'lineJoin',
   'fontSize',
   'fillColor',
   'lineWidth',
   'translate',
+  'miterLimit',
   'strokeColor',
   'fillOpacity',
+  'roundedRect',
   'strokeOpacity',
-  'opacity',
+  'bezierCurveTo',
+  'quadraticCurveTo',
+  'linearGradient',
+  'radialGradient',
 ];
 
 const painter = function(instance) {

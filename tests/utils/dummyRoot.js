@@ -32,6 +32,19 @@ export default {
     instance.closePath = jest.fn().mockReturnValue(instance);
     instance.undash = jest.fn().mockReturnValue(instance);
     instance.moveTo = jest.fn().mockReturnValue(instance);
+    instance.path = jest.fn().mockReturnValue(instance);
+    instance.radialGradient = jest.fn().mockReturnValue(instance);
+    instance.linearGradient = jest.fn().mockReturnValue(instance);
+    instance.miterLimit = jest.fn().mockReturnValue(instance);
+    instance.fontSize = jest.fn().mockReturnValue(instance);
+    instance.lineJoin = jest.fn().mockReturnValue(instance);
+    instance.polygon = jest.fn().mockReturnValue(instance);
+    instance.circle = jest.fn().mockReturnValue(instance);
+    instance.ellipse = jest.fn().mockReturnValue(instance);
+    instance.opacity = jest.fn().mockReturnValue(instance);
+    instance.lineCap = jest.fn().mockReturnValue(instance);
+    instance.text = jest.fn().mockReturnValue(instance);
+    instance.font = jest.fn().mockReturnValue(instance);
 
     return {
       instance,

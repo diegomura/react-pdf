@@ -98,6 +98,6 @@ describe('View', () => {
     doc.appendChild(page);
     page.appendChild(note);
 
-    expect(() => note.appendChild(text)).toThrowError();
+    expect(() => note.appendChild(text)).toThrow();
   });
 });

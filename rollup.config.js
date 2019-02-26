@@ -1,7 +1,7 @@
 import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import ignore from 'rollup-plugin-ignore';
 import replace from 'rollup-plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
@@ -9,18 +9,23 @@ import bundleSize from 'rollup-plugin-bundle-size';
 import nodeResolve from 'rollup-plugin-node-resolve';
 
 import pkg from './package.json';
+import chalk from 'chalk';
 
 const moduleAliases = {
   'yoga-layout': 'yoga-layout-prebuilt',
 };
 
+const globals = { react: 'React' };
+
 const cjs = {
-  exports: 'named',
+  globals,
   format: 'cjs',
+  exports: 'named',
   sourcemap: true,
 };
 
 const esm = {
+  globals,
   format: 'es',
   sourcemap: true,
 };
@@ -28,29 +33,46 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
+const ignoredCircular = [
+  {
+    importer: 'src/elements/index.js',
+    message:
+      'Circular dependency: src/elements/index.js -> src/elements/Page.js -> src/elements/index.js',
+  },
+];
+
+const onwarn = warning => {
+  if (
+    warning.code === 'CIRCULAR_DEPENDENCY' &&
+    ignoredCircular.some(
+      circular =>
+        circular.importer === warning.importer &&
+        circular.message === warning.message,
+    )
+  ) {
+    return;
+  }
+  console.warn(chalk.bold.yellow(`(!) ${warning.message}`));
+};
+
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
   runtimeHelpers: true,
   presets: [
     [
-      'env',
-      Object.assign(
-        {},
-        {
-          loose: true,
-          modules: false,
-        },
-        browser ? {} : { targets: { node: '8.11.3' } },
-      ),
+      '@babel/preset-env',
+      {
+        loose: true,
+        modules: false,
+        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+      },
     ],
-    'react',
+    '@babel/preset-react',
   ],
   plugins: [
-    'transform-runtime',
-    'external-helpers',
-    'transform-object-rest-spread',
-    ['transform-class-properties', { loose: true }],
+    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });
 
@@ -63,74 +85,65 @@ const commonPlugins = [
 ];
 
 const configBase = {
-  globals: { react: 'React' },
   external: [
-    '@react-pdf/pdfkit',
-    'babel-runtime/core-js/promise',
-    'babel-runtime/helpers/objectWithoutProperties',
-    'babel-runtime/helpers/extends',
-    'babel-runtime/core-js/object/keys',
-    'babel-runtime/core-js/array/from',
-    'babel-runtime/core-js/json/stringify',
-    'babel-runtime/core-js/object/assign',
-    'babel-runtime/helpers/asyncToGenerator',
-    'babel-runtime/core-js/get-iterator',
-    'babel-runtime/helpers/inherits',
-    'babel-runtime/helpers/classCallCheck',
-    'babel-runtime/helpers/possibleConstructorReturn',
-    'babel-runtime/regenerator',
-    'babel-runtime/helpers/createClass',
-    'babel-runtime/helpers/typeof',
+    '@babel/runtime/helpers/extends',
+    '@babel/runtime/helpers/asyncToGenerator',
+    '@babel/runtime/regenerator',
+    '@babel/runtime/helpers/createClass',
+    '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+    '@babel/runtime/helpers/inheritsLoose',
+    '@babel/runtime/helpers/assertThisInitialized',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
-  sourcemap: true,
+  onwarn,
 };
 
-const serverConfig = Object.assign({}, configBase, {
+const getPlugins = ({ browser }) => [
+  ...configBase.plugins,
+  babel(babelConfig({ browser })),
+  replace({
+    BROWSER: JSON.stringify(browser),
+  }),
+];
+
+const serverConfig = {
+  ...configBase,
   input: './src/node.js',
   output: [
     getESM({ file: 'dist/react-pdf.es.js' }),
     getCJS({ file: 'dist/react-pdf.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: false })),
-    replace({
-      BROWSER: JSON.stringify(false),
-    }),
-  ),
+  plugins: getPlugins({ browser: false }),
   external: configBase.external.concat(['fs', 'path', 'url']),
-});
+};
 
-const serverProdConfig = Object.assign({}, serverConfig, {
+const serverProdConfig = {
+  ...serverConfig,
   output: [
     getESM({ file: 'dist/react-pdf.es.min.js' }),
     getCJS({ file: 'dist/react-pdf.cjs.min.js' }),
   ],
-  plugins: serverConfig.plugins.concat(uglify()),
-});
+  plugins: serverConfig.plugins.concat(terser()),
+};
 
-const browserConfig = Object.assign({}, configBase, {
+const browserConfig = {
+  ...configBase,
   input: './src/dom.js',
   output: [
     getESM({ file: 'dist/react-pdf.browser.es.js' }),
     getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: true })),
-    replace({
-      BROWSER: JSON.stringify(true),
-    }),
-    ignore(['fs', 'path', 'url']),
-  ),
-});
+  plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
+};
 
-const browserProdConfig = Object.assign({}, browserConfig, {
+const browserProdConfig = {
+  ...browserConfig,
   output: [
     getESM({ file: 'dist/react-pdf.browser.es.min.js' }),
     getCJS({ file: 'dist/react-pdf.browser.cjs.min.js' }),
   ],
-  plugins: browserConfig.plugins.concat(uglify()),
-});
+  plugins: browserConfig.plugins.concat(terser()),
+};
 
 export default [
   serverConfig,

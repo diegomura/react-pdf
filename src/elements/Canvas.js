@@ -28,6 +28,7 @@ class Canvas extends Base {
     this.applyTransformations();
     this.drawBackgroundColor();
     this.drawBorders();
+    this.clip();
 
     this.root.instance.translate(
       left + this.paddingLeft,

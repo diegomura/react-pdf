@@ -6,6 +6,7 @@ import Link from './Link';
 import Note from './Note';
 import Image from './Image';
 import Document from './Document';
+import Canvas from './Canvas';
 import TextInstance from './TextInstance';
 
 const constructors = {
@@ -16,6 +17,7 @@ const constructors = {
   VIEW: View,
   NOTE: Note,
   IMAGE: Image,
+  CANVAS: Canvas,
   DOCUMENT: Document,
   TEXT_INSTANCE: TextInstance,
 };

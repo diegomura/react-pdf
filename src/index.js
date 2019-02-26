@@ -12,6 +12,7 @@ const Page = 'PAGE';
 const Note = 'NOTE';
 const Image = 'IMAGE';
 const Document = 'DOCUMENT';
+const Canvas = 'CANVAS';
 
 const pdf = input => {
   const container = createInstance({ type: 'ROOT' });
@@ -104,6 +105,7 @@ export {
   Note,
   Image,
   Document,
+  Canvas,
   StyleSheet,
   createInstance,
   pdf,

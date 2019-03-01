@@ -79,7 +79,10 @@ export default ({ penalty } = {}) => () => {
         return [...acc, line];
       }, []);
 
-      const lastLine = glyphString.slice(start, glyphString.length);
+      const lastLine = glyphString.slice(
+        start,
+        glyphString.glyphIndexForStringIndex(glyphString.string.length),
+      );
       lines.push(lastLine);
 
       return lines;

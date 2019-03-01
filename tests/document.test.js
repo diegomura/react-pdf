@@ -87,6 +87,25 @@ describe('Document', () => {
     expect(Font.load.mock.calls[1][0]).toBe('Helvetica');
   });
 
+  test('Should trigger correct fonts loading given multiple font-families', async () => {
+    const doc = new Document(dummyRoot, {});
+    const page1 = new Page(dummyRoot, {
+      style: { fontFamily: 'Curlz, Curly, CurlyWurly' },
+    });
+    const page2 = new Page(dummyRoot, {
+      style: { fontFamily: 'Roboto, Helvetica' },
+    });
+
+    doc.appendChild(page1);
+    doc.appendChild(page2);
+
+    await doc.render();
+
+    expect(Font.load.mock.calls).toHaveLength(2);
+    expect(Font.load.mock.calls[0][0]).toBe('Curlz');
+    expect(Font.load.mock.calls[1][0]).toBe('Roboto');
+  });
+
   test('Should trigger available images loading', async () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});

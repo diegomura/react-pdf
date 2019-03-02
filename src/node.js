@@ -1,5 +1,4 @@
 import fs from 'fs';
-import util from 'util';
 import toArray from 'stream-to-array';
 import {
   pdf,
@@ -27,15 +26,15 @@ export const renderToStream = function(element) {
 export const renderToFile = function(element, filePath, callback) {
   if(arguments.length === 1 || typeof filePath === 'function'){
     return new Promise((resolve, reject)=>{
-       const output = toBuffer(pdf(element).toBuffer())
-            .then((data) => {
-              if(typeof filePath === 'function'){
-                filePath(data);
-              }
-              return data;
-            })
-            .catch(reject);
-       resolve(output);
+        const output = toBuffer(pdf(element).toBuffer())
+          .then((data) => {
+            if(typeof filePath === 'function'){
+              filePath(data);
+            }
+            return data;
+          })
+          .catch(reject);
+        resolve(output);
     })
   }
   const output = renderToStream(element);

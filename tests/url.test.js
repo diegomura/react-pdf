@@ -15,4 +15,9 @@ describe('getURL', () => {
     const url = 'https://react-pdf.org';
     expect(getURL(url)).toEqual('https://react-pdf.org');
   });
+
+  test('should support mailto protocol', () => {
+    const url = 'mailto:test@example.com';
+    expect(getURL(url)).toEqual('mailto:test@example.com');
+  });
 });

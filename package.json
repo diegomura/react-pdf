@@ -46,6 +46,7 @@
     "page-wrapping": "^1.1.0",
     "react": "^16.8.3",
     "react-reconciler": "^0.20.1",
+    "stream-to-array": "2.3.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "devDependencies": {

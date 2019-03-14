@@ -138,7 +138,7 @@ class Image extends Base {
 
     if (this.image.data) {
       const { width, height, xOffset, yOffset } = resolveObjectFit(
-        this.props.style.objectFit,
+        this.style.objectFit,
         this.width - padding.left - padding.right,
         this.height - padding.top - padding.bottom,
         this.image.width,

@@ -12,6 +12,7 @@ const emptyObject = {};
 const shouldReplaceLink = (type, props) =>
   type === 'LINK' &&
   (typeof props.children === 'string' ||
+    typeof props.children === 'number' ||
     Array.isArray(props.children) ||
     props.render);
 

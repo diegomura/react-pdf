@@ -2,6 +2,7 @@ import yogaValue from './yogaValue';
 import parseScalar from './transformUnits';
 import { isBorderStyle, processBorders } from './borders';
 import { isBoxModelStyle, processBoxModel } from './boxModel';
+import { isFontWeightStyle, processFontWeight } from './transformFontWeight';
 import { isObjectPositionStyle, processObjectPosition } from './objectPosition';
 import {
   isTransformOriginStyle,
@@ -190,6 +191,8 @@ const transformStyles = style => {
       resolved = processObjectPosition(key, value);
     } else if (isTransformOriginStyle(key, value)) {
       resolved = processTransformOrigin(key, value);
+    } else if (isFontWeightStyle(key, value)) {
+      resolved = processFontWeight(value);
     } else {
       resolved = value;
     }

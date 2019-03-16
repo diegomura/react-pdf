@@ -55,7 +55,7 @@ class Document {
       const node = listToExplore.shift();
 
       if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style.fontFamily, this.root.instance));
+        promises.push(Font.load(node.style, this.root.instance));
       }
 
       if (node.children) {

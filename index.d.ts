@@ -94,7 +94,7 @@ declare module '@react-pdf/renderer' {
     type SourceObject =
       | string
       | { data: Buffer; format: 'png' | 'jpg' }
-      | { uri: string; method: HTTPMethod, body: any, headers: any }
+      | { uri: string; method: HTTPMethod; body: any; headers: any };
 
     interface BaseImageProps extends NodeProps {
       debug?: boolean;
@@ -216,9 +216,29 @@ declare module '@react-pdf/renderer' {
      */
     class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
+    type FontStyle = 'normal' | 'italic' | 'oblique';
+
+    type FontWeight =
+      | number
+      | 'thin'
+      | 'ultralight'
+      | 'light'
+      | 'normal'
+      | 'medium'
+      | 'semibold'
+      | 'bold'
+      | 'ultrabold'
+      | 'heavy';
+
     interface EmojiSource {
       url: string;
       format: string;
+    }
+
+    interface FontDescriptor {
+      family: string;
+      fontStyle: FontStyle;
+      fontWeight: FontWeight;
     }
 
     interface RegisteredFont {
@@ -235,10 +255,11 @@ declare module '@react-pdf/renderer' {
     ) => string[];
 
     const Font: {
-      register: (
-        src: string,
-        options: { family: string; [key: string]: any },
-      ) => void;
+      register: (options: {
+        family: string;
+        src: string;
+        [key: string]: any;
+      }) => void;
       getEmojiSource: () => EmojiSource;
       getRegisteredFonts: () => string[];
       registerEmojiSource: (emojiSource: EmojiSource) => void;
@@ -246,9 +267,9 @@ declare module '@react-pdf/renderer' {
         hyphenationCallback: HyphenationCallback,
       ) => void;
       getHyphenationCallback: () => HyphenationCallback;
-      getFont: (fontFamily: string) => RegisteredFont | undefined;
+      getFont: (fontDescriptor: FontDescriptor) => RegisteredFont | undefined;
       load: (
-        fontFamily: string,
+        fontDescriptor: FontDescriptor,
         document: React.ReactElement<DocumentProps>,
       ) => Promise<void>;
       clear: () => void;

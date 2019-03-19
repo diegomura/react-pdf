@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from 'yoga-layout';
 import { StyleSheet } from '../src';
 
 describe('flexbox attributes', () => {

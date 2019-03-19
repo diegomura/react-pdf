@@ -1,4 +1,5 @@
 import fs from 'fs';
+import stream from 'stream';
 import {
   pdf,
   View,
@@ -14,12 +15,24 @@ import {
   PDFRenderer,
   createInstance,
 } from './index';
+import importYoga from './utils/import-yoga';
 
-export const renderToStream = function(element) {
-  return pdf(element).toBuffer();
+const renderToStreamWithAsyncYoga = async (element, passthroughStream) => {
+  const Yoga = await importYoga();
+  const pdfStream = pdf(element, { Yoga }).toBuffer();
+  pdfStream.pipe(passthroughStream);
 };
 
-export const renderToFile = function(element, filePath, callback) {
+export const renderToStream = function (element) {
+  const passthroughStream = new stream.PassThrough();
+  renderToStreamWithAsyncYoga(element, passthroughStream).catch(err => {
+    console.error('Error in renderToStream:', err);
+    throw err;
+  });
+  return passthroughStream;
+};
+
+export const renderToFile = function (element, filePath, callback) {
   const output = renderToStream(element);
   const stream = fs.createWriteStream(filePath);
 

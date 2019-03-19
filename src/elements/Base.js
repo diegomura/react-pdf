@@ -16,7 +16,7 @@ import { inheritedProperties } from '../stylesheet/inherit';
 
 class Base extends Node {
   constructor(root, props) {
-    super();
+    super({ Yoga: root.Yoga });
 
     this.root = root;
     this.style = {};
@@ -115,7 +115,9 @@ class Base extends Node {
       orientation,
       width: size.width,
       height: size.height,
-    });
+    }, {
+        Yoga: this.root.Yoga,
+      });
 
     const inheritedStyles = this.parent
       ? pick(this.parent.style, inheritedProperties)

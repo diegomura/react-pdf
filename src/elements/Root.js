@@ -1,7 +1,11 @@
 import PDFDocument from '@react-pdf/pdfkit';
 
 class Root {
-  constructor() {
+  constructor({ Yoga } = {}) {
+    if (!Yoga) {
+      throw new Error('Must provide Yoga object to Root constructor');
+    }
+    this.Yoga = Yoga;
     this.isDirty = false;
     this.document = null;
     this.instance = null;

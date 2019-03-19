@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-
+import importYoga from './utils/import-yoga';
 import warning from '../src/utils/warning';
 
 import {
@@ -28,25 +28,52 @@ export const Document = ({ children, ...props }) => {
 };
 
 class InternalBlobProvider extends React.PureComponent {
-  state = { blob: null, url: null, loading: true, error: null };
+  state = { yogaLoaded: null, blob: null, url: null, loading: true, error: null };
 
   constructor(props) {
     super(props);
 
-    // Create new root container for this render
-    this.instance = pdf();
+    this.state = {
+      Yoga: importYoga().then(Yoga => {
+        this.Yoga = Yoga;
+        this.setState({
+          ...this.state,
+          yogaLoaded: true,
+        }).catch(error => this.setState({
+          ...this.state,
+          error,
+        }));
+      }),
+    };
   }
 
   componentDidMount() {
+    if (!this.Yoga) return;
+    this.ensureInstance();
+
     this.renderDocument();
     this.onDocumentUpdate();
   }
 
   componentDidUpdate() {
+    if (!this.Yoga) return;
+    this.ensureInstance();
+
     this.renderDocument();
 
     if (this.instance.isDirty() && !this.state.error) {
       this.onDocumentUpdate();
+    }
+  }
+
+  ensureInstance() {
+    if (!this.Yoga) {
+      throw new Error('Cannot create instance without Yoga');
+    }
+
+    if (!this.instance) {
+      // Create new root container for this render
+      this.instance = pdf(undefined, { Yoga: this.Yoga });
     }
   }
 
@@ -73,6 +100,9 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   render() {
+    if (!this.Yoga) return null;
+    this.ensureInstance();
+
     return this.props.children(this.state);
   }
 }

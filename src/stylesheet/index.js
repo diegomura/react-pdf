@@ -40,12 +40,12 @@ const resolveMediaQueries = (input, container) => {
   return result;
 };
 
-const resolve = (styles, container) => {
+const resolve = (styles, container, options) => {
   if (!styles) return null;
 
   styles = flatten(styles);
   styles = resolveMediaQueries(styles, container);
-  styles = transformStyles(styles);
+  styles = transformStyles(styles, options);
 
   return styles;
 };

@@ -73,6 +73,8 @@ const babelConfig = ({ browser }) => ({
   plugins: [
     '@babel/plugin-transform-runtime',
     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    '@babel/plugin-syntax-dynamic-import',
+    'dynamic-import-node-babel-7',
   ],
 });
 
@@ -81,7 +83,7 @@ const commonPlugins = [
   sourceMaps(),
   alias(moduleAliases),
   nodeResolve(),
-  bundleSize(),
+  //bundleSize(),
 ];
 
 const configBase = {
@@ -114,7 +116,7 @@ const serverConfig = {
     getCJS({ file: 'dist/react-pdf.cjs.js' }),
   ],
   plugins: getPlugins({ browser: false }),
-  external: configBase.external.concat(['fs', 'path', 'url']),
+  external: configBase.external.concat(['fs', 'path', 'stream', 'url']),
 };
 
 const serverProdConfig = {
@@ -128,10 +130,14 @@ const serverProdConfig = {
 
 const browserConfig = {
   ...configBase,
+  manualChunks: {
+    'yoga-layout-prebuilt': ['yoga-layout-prebuilt/yoga-layout/dist/entry-browser.js'],
+    'yoga-dom': ['yoga-dom/dist/Yoga.es.js', 'yoga-dom/dist/Yoga.cjs.js'],
+  },
   input: './src/dom.js',
   output: [
-    getESM({ file: 'dist/react-pdf.browser.es.js' }),
-    getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
+    getESM({ dir: 'dist/react-pdf.browser.es' }),
+    getCJS({ dir: 'dist/react-pdf.browser.cjs' }),
   ],
   plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
 };
@@ -139,8 +145,8 @@ const browserConfig = {
 const browserProdConfig = {
   ...browserConfig,
   output: [
-    getESM({ file: 'dist/react-pdf.browser.es.min.js' }),
-    getCJS({ file: 'dist/react-pdf.browser.cjs.min.js' }),
+    getESM({ dir: 'dist/react-pdf.browser.es.min' }),
+    getCJS({ dir: 'dist/react-pdf.browser.cjs.min' }),
   ],
   plugins: browserConfig.plugins.concat(terser()),
 };

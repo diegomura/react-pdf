@@ -1,4 +1,3 @@
-import Yoga from 'yoga-layout';
 import createPDFRenderer from '@textkit/pdf-renderer';
 
 import Base from './Base';
@@ -134,15 +133,15 @@ class Text extends Base {
   }
 
   measureText(width, widthMode, height, heightMode) {
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
+    if (widthMode === this.root.Yoga.MEASURE_MODE_EXACTLY) {
       this.layoutText(width);
 
       return { height: this.style.flexGrow ? NaN : this.linesHeight };
     }
 
     if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
+      widthMode === this.root.Yoga.MEASURE_MODE_AT_MOST ||
+      heightMode === this.root.Yoga.MEASURE_MODE_AT_MOST
     ) {
       this.layoutText(width, height);
 

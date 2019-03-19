@@ -1,5 +1,3 @@
-import Yoga from 'yoga-layout';
-
 import Base from './Base';
 import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
@@ -30,6 +28,8 @@ class Image extends Base {
   }
 
   measureImage(width, widthMode, height, heightMode) {
+    const { Yoga } = this.root;
+
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
     const pageArea =
@@ -160,7 +160,7 @@ class Image extends Base {
         warning(
           false,
           `Image with src '${
-            this.props.src
+          this.props.src
           }' skipped due to invalid dimensions`,
         );
       }

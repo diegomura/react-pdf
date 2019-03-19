@@ -108,7 +108,7 @@ const styleShorthands = {
 };
 
 // Expand the shorthand properties to isolate every declaration from the others.
-const expandStyles = style => {
+const expandStyles = (style, options) => {
   if (!style) return style;
 
   const propsArray = Object.keys(style);
@@ -132,7 +132,7 @@ const expandStyles = style => {
       case 'alignItems':
       case 'alignContent':
       case 'order':
-        resolvedStyle[key] = yogaValue(key, value);
+        resolvedStyle[key] = yogaValue(key, value, options);
         break;
       case 'textAlignVertical':
         resolvedStyle.verticalAlign = value === 'center' ? 'middle' : value;
@@ -172,8 +172,8 @@ const expandStyles = style => {
   return resolvedStyle;
 };
 
-const transformStyles = style => {
-  const expandedStyles = expandStyles(style);
+const transformStyles = (style, options) => {
+  const expandedStyles = expandStyles(style, options);
   const propsArray = Object.keys(expandedStyles);
   const resolvedStyle = {};
 

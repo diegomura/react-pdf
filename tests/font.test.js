@@ -20,14 +20,14 @@ describe('Font', () => {
   });
 
   test('should be able to register font families', () => {
-    Font.register('src', { family: 'MyFont' });
-    Font.register('src', { family: 'MyOtherFont' });
+    Font.register({ family: 'MyFont', src: 'src' });
+    Font.register({ family: 'MyOtherFont', src: 'src' });
 
     expect(Font.getRegisteredFonts()).toEqual(['MyFont', 'MyOtherFont']);
   });
 
   test('should be able to clear registered fonts', () => {
-    Font.register('src', { family: 'MyFont' });
+    Font.register({ family: 'MyFont', src: 'src' });
 
     expect(Font.getRegisteredFonts()).toEqual(['MyFont']);
 
@@ -36,13 +36,30 @@ describe('Font', () => {
     expect(Font.getRegisteredFonts()).toEqual([]);
   });
 
+  test.skip('should show warning when old register API used', async () => {
+    fetch.once(localFont);
+
+    const descriptor = { fontFamily: 'Oswald' };
+
+    Font.register({ family: 'Oswald', src: oswaldUrl });
+    await Font.load(descriptor, dummyRoot.instance);
+
+    const font = Font.getFont(descriptor);
+
+    expect(font.loaded).toBeTruthy();
+    expect(font.loading).toBeFalsy();
+    expect(font.data).toBeTruthy();
+  });
+
   test('should be able to load font from url', async () => {
     fetch.once(localFont);
 
-    Font.register(oswaldUrl, { family: 'Oswald' });
-    await Font.load('Oswald', dummyRoot.instance);
+    const descriptor = { fontFamily: 'Oswald' };
 
-    const font = Font.getFont('Oswald');
+    Font.register({ family: 'Oswald', src: oswaldUrl });
+    await Font.load(descriptor, dummyRoot.instance);
+
+    const font = Font.getFont(descriptor);
 
     expect(font.loaded).toBeTruthy();
     expect(font.loading).toBeFalsy();
@@ -52,8 +69,10 @@ describe('Font', () => {
   test('should fetch remote font using GET method by default', async () => {
     fetch.once(localFont);
 
-    Font.register(oswaldUrl, { family: 'Oswald' });
-    await Font.load('Oswald', dummyRoot.instance);
+    const descriptor = { fontFamily: 'Oswald' };
+
+    Font.register({ family: 'Oswald', src: oswaldUrl });
+    await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].method).toBe('GET');
   });
@@ -61,8 +80,10 @@ describe('Font', () => {
   test('Should fetch remote font using passed method', async () => {
     fetch.once(localFont);
 
-    Font.register(oswaldUrl, { family: 'Oswald', method: 'POST' });
-    await Font.load('Oswald', dummyRoot.instance);
+    const descriptor = { fontFamily: 'Oswald' };
+
+    Font.register({ family: 'Oswald', src: oswaldUrl, method: 'POST' });
+    await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].method).toBe('POST');
   });
@@ -70,10 +91,11 @@ describe('Font', () => {
   test('Should fetch remote font using passed headers', async () => {
     fetch.once(localFont);
 
+    const descriptor = { fontFamily: 'Oswald' };
     const headers = { Authorization: 'Bearer qwerty' };
 
-    Font.register(oswaldUrl, { family: 'Oswald', headers });
-    await Font.load('Oswald', dummyRoot.instance);
+    Font.register({ family: 'Oswald', src: oswaldUrl, headers });
+    await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].headers).toBe(headers);
   });
@@ -81,20 +103,23 @@ describe('Font', () => {
   test('Should fetch remote font using passed body', async () => {
     fetch.once(localFont);
 
+    const descriptor = { fontFamily: 'Oswald' };
     const body = 'qwerty';
 
-    Font.register(oswaldUrl, { family: 'Oswald', body });
-    await Font.load('Oswald', dummyRoot.instance);
+    Font.register({ family: 'Oswald', src: oswaldUrl, body });
+    await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].body).toBe(body);
   });
 
   test('should be able to load a font from file', async () => {
-    Font.register(`${__dirname}/assets/font.ttf`, { family: 'Roboto' });
+    Font.register({ family: 'Roboto', src: `${__dirname}/assets/font.ttf` });
 
-    await Font.load('Roboto', dummyRoot.instance);
+    const descriptor = { fontFamily: 'Roboto' };
 
-    const font = Font.getFont('Roboto');
+    await Font.load(descriptor, dummyRoot.instance);
+
+    const font = Font.getFont(descriptor);
 
     expect(font.loaded).toBeTruthy();
     expect(font.loading).toBeFalsy();
@@ -125,11 +150,11 @@ describe('Font', () => {
 
   describe('invalid url', () => {
     test('should throw `no such file or directory` error', async () => {
-      Font.register('/roboto.ttf', { family: 'Roboto' });
+      Font.register({ family: 'Roboto', src: '/roboto.ttf' });
 
-      expect(Font.load('Roboto', dummyRoot.instance)).rejects.toThrow(
-        'no such file or directory',
-      );
+      expect(
+        Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
+      ).rejects.toThrow('no such file or directory');
     });
 
     describe('in browser', () => {
@@ -142,11 +167,11 @@ describe('Font', () => {
       });
 
       test('should throw `Invalid font url` error', async () => {
-        Font.register('/roboto.ttf', { family: 'Roboto' });
+        Font.register({ family: 'Roboto', src: '/roboto.ttf' });
 
-        expect(Font.load('Roboto', dummyRoot.instance)).rejects.toThrow(
-          'Invalid font url',
-        );
+        expect(
+          Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
+        ).rejects.toThrow('Invalid font url');
       });
     });
   });

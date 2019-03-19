@@ -83,8 +83,8 @@ describe('Document', () => {
     await doc.render();
 
     expect(Font.load.mock.calls).toHaveLength(2);
-    expect(Font.load.mock.calls[0][0]).toBe('Courier');
-    expect(Font.load.mock.calls[1][0]).toBe('Helvetica');
+    expect(Font.load.mock.calls[0][0].fontFamily).toBe('Courier');
+    expect(Font.load.mock.calls[1][0].fontFamily).toBe('Helvetica');
   });
 
   test('Should trigger available images loading', async () => {

@@ -40,7 +40,7 @@ const getFont = descriptor => {
   const { fontFamily } = descriptor;
   const isStandard = standardFonts.includes(fontFamily);
 
-  if (isStandard) return standardFonts[fontFamily];
+  if (isStandard) return null;
 
   if (!fonts[fontFamily]) {
     throw new Error(
@@ -52,6 +52,11 @@ const getFont = descriptor => {
 };
 
 const load = async function(descriptor, doc) {
+  const { fontFamily } = descriptor;
+  const isStandard = standardFonts.includes(fontFamily);
+
+  if (isStandard) return;
+
   const font = getFont(descriptor);
 
   // We cache the font to avoid fetching it many times

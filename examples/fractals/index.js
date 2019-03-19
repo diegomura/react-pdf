@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0, react/jsx-sort-props: 0 */
 
 import React from 'react';
+
 import Fractal from './Fractal';
 import ReactPDF, { Page, Document } from '../../dist/react-pdf.es.js';
 

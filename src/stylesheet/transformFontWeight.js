@@ -14,8 +14,6 @@ const FONT_WEIGHTS = {
 export const isFontWeightStyle = key => key.match(/^fontWeight/);
 
 export const processFontWeight = value => {
-  console.log(value);
-
   if (!value) return FONT_WEIGHTS.normal;
   if (typeof value === 'number') return value;
   return FONT_WEIGHTS[value.toLowerCase()];

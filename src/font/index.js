@@ -24,7 +24,14 @@ const register = (src, data) => {
     fonts[family] = font.create(family);
   }
 
-  fonts[family].register(data);
+  // Bulk loading
+  if (data.fonts) {
+    for (let i = 0; i < data.fonts.length; i++) {
+      fonts[family].register({ family, ...data.fonts[i] });
+    }
+  } else {
+    fonts[family].register(data);
+  }
 };
 
 const getRegisteredFonts = () => Object.keys(fonts);

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import Title from './Title';
 import List, { Item } from './List';
 import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
@@ -20,7 +20,11 @@ const styles = StyleSheet.create({
 const SkillEntry = ({ name, skills }) => (
   <View>
     <Text style={styles.title}>{name}</Text>
-    <List>{skills.map((skill, i) => <Item key={i}>{skill}</Item>)}</List>
+    <List>
+      {skills.map((skill, i) => (
+        <Item key={i}>{skill}</Item>
+      ))}
+    </List>
   </View>
 );
 
@@ -37,10 +41,5 @@ const Skills = () => (
     />
   </View>
 );
-
-SkillEntry.propTypes = {
-  name: PropTypes.string,
-  skills: PropTypes.array,
-};
 
 export default Skills;

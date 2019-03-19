@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 
+import { Text, View, StyleSheet } from '../../dist/react-pdf.es.js';
 import Title from './Title';
 
 const styles = StyleSheet.create({

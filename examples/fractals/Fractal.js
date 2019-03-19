@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react';
+
 import styles from './styles';
 import palette from './palette';
 import { Text, View } from '../../dist/react-pdf.es.js';

@@ -171,6 +171,11 @@ class Page extends Base {
     return clone;
   }
 
+  update(newProps) {
+    super.update(newProps);
+    this._size = null;
+  }
+
   async render() {
     const { instance } = this.root;
 

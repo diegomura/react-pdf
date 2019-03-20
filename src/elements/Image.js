@@ -97,6 +97,8 @@ class Image extends Base {
   }
 
   async fetch() {
+    console.log('>>> Fetching image');
+
     const { cache, safePath, allowDangerousPaths } = this.props;
 
     if (!this.src) {
@@ -110,6 +112,7 @@ class Image extends Base {
         safePath,
         allowDangerousPaths,
       });
+      console.log(this.image);
     } catch (e) {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);

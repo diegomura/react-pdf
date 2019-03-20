@@ -46,7 +46,6 @@ describe('Font', () => {
 
     const font = Font.getFont(descriptor);
 
-    expect(font.loaded).toBeTruthy();
     expect(font.loading).toBeFalsy();
     expect(font.data).toBeTruthy();
   });
@@ -61,7 +60,6 @@ describe('Font', () => {
 
     const font = Font.getFont(descriptor);
 
-    expect(font.loaded).toBeTruthy();
     expect(font.loading).toBeFalsy();
     expect(font.data).toBeTruthy();
   });
@@ -121,7 +119,6 @@ describe('Font', () => {
 
     const font = Font.getFont(descriptor);
 
-    expect(font.loaded).toBeTruthy();
     expect(font.loading).toBeFalsy();
     expect(font.data).toBeTruthy();
   });

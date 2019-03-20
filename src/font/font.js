@@ -28,7 +28,6 @@ class FontSource {
     this.fontWeight = processFontWeight(fontWeight) || 400;
 
     this.data = null;
-    this.loaded = false;
     this.loading = false;
     this.options = options;
   }
@@ -47,14 +46,8 @@ class FontSource {
         ),
       );
     }
-  }
 
-  register(doc) {
-    this.loaded = true;
     this.loading = false;
-
-    // TODO: Should be different for each style?
-    doc.registerFont(this.fontFamily, this.data);
   }
 }
 

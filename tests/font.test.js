@@ -3,15 +3,19 @@ import path from 'path';
 
 import Font from '../src/font';
 import root from './utils/dummyRoot';
+import warning from '../src/utils/warning';
+
+jest.mock('../src/utils/warning');
 
 let dummyRoot;
+const localFont = fs.readFileSync(path.join(__dirname, 'assets/font.ttf'));
 const oswaldUrl =
   'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf';
-const localFont = fs.readFileSync(path.join(__dirname, 'assets/font.ttf'));
 
 describe('Font', () => {
   beforeEach(() => {
     fetch.resetMocks();
+    warning.mockReset();
     dummyRoot = root.reset();
   });
 
@@ -19,35 +23,85 @@ describe('Font', () => {
     Font.clear();
   });
 
-  test('should be able to register font families', () => {
-    Font.register({ family: 'MyFont', src: 'src' });
-    Font.register({ family: 'MyOtherFont', src: 'src' });
-
-    expect(Font.getRegisteredFonts()).toEqual(['MyFont', 'MyOtherFont']);
-  });
-
   test('should be able to clear registered fonts', () => {
     Font.register({ family: 'MyFont', src: 'src' });
 
-    expect(Font.getRegisteredFonts()).toEqual(['MyFont']);
+    expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
 
     Font.clear();
 
-    expect(Font.getRegisteredFonts()).toEqual([]);
+    expect(Font.getRegisteredFontFamilies()).toEqual([]);
   });
 
-  test.skip('should show warning when old register API used', async () => {
+  test('should show warning when old register API used', () => {
     fetch.once(localFont);
 
-    const descriptor = { fontFamily: 'Oswald' };
+    Font.register(oswaldUrl, { family: 'Oswald' });
 
-    Font.register({ family: 'Oswald', src: oswaldUrl });
-    await Font.load(descriptor, dummyRoot.instance);
+    expect(warning.mock.calls).toHaveLength(1);
+  });
 
-    const font = Font.getFont(descriptor);
+  test('should be able to register one font family', () => {
+    Font.register({ family: 'MyFont', src: 'src' });
 
-    expect(font.loading).toBeFalsy();
-    expect(font.data).toBeTruthy();
+    expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
+  });
+
+  test('should be able to register many font families', () => {
+    Font.register({ family: 'MyFont', src: 'src' });
+    Font.register({ family: 'MyOtherFont', src: 'src' });
+
+    expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont', 'MyOtherFont']);
+  });
+
+  test('should be able to register many sources of one font family individually', () => {
+    Font.register({ family: 'MyFont', src: 'src' });
+    Font.register({ family: 'MyFont', src: 'src', fontStyle: 'italic' });
+    Font.register({
+      family: 'MyFont',
+      src: 'src',
+      fontStyle: 'italic',
+      fontWeight: 700,
+    });
+
+    expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
+
+    const fontInstance = Font.getRegisteredFonts()['MyFont'];
+
+    expect(fontInstance.sources).toHaveLength(3);
+    expect(fontInstance.sources[0]).toHaveProperty('fontStyle', 'normal');
+    expect(fontInstance.sources[0]).toHaveProperty('fontWeight', 400);
+    expect(fontInstance.sources[1]).toHaveProperty('fontStyle', 'italic');
+    expect(fontInstance.sources[1]).toHaveProperty('fontWeight', 400);
+    expect(fontInstance.sources[2]).toHaveProperty('fontStyle', 'italic');
+    expect(fontInstance.sources[2]).toHaveProperty('fontWeight', 700);
+  });
+
+  test('should be able to register many sources of one font family in bulk', () => {
+    Font.register({
+      family: 'MyFont',
+      fonts: [
+        { src: 'src' },
+        { src: 'src', fontStyle: 'italic' },
+        {
+          src: 'src',
+          fontStyle: 'italic',
+          fontWeight: 700,
+        },
+      ],
+    });
+
+    expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
+
+    const fontInstance = Font.getRegisteredFonts()['MyFont'];
+
+    expect(fontInstance.sources).toHaveLength(3);
+    expect(fontInstance.sources[0]).toHaveProperty('fontStyle', 'normal');
+    expect(fontInstance.sources[0]).toHaveProperty('fontWeight', 400);
+    expect(fontInstance.sources[1]).toHaveProperty('fontStyle', 'italic');
+    expect(fontInstance.sources[1]).toHaveProperty('fontWeight', 400);
+    expect(fontInstance.sources[2]).toHaveProperty('fontStyle', 'italic');
+    expect(fontInstance.sources[2]).toHaveProperty('fontWeight', 700);
   });
 
   test('should be able to load font from url', async () => {
@@ -121,6 +175,148 @@ describe('Font', () => {
 
     expect(font.loading).toBeFalsy();
     expect(font.data).toBeTruthy();
+  });
+
+  test('should throw error if missing font style is requested', async () => {
+    Font.register({ family: 'Roboto', src: `${__dirname}/assets/font.ttf` }); // normal
+
+    await Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance);
+
+    expect(() =>
+      Font.getFont({ fontFamily: 'Roboto', fontStyle: 'italic' }),
+    ).toThrow();
+  });
+
+  test('should be able to load requested font style source', async () => {
+    Font.register({
+      family: 'Roboto',
+      src: `${__dirname}/assets/font.ttf`,
+      fontStyle: 'italic',
+    });
+
+    const descriptor = { fontFamily: 'Roboto', fontStyle: 'italic' };
+
+    await Font.load(descriptor, dummyRoot.instance);
+
+    const font = Font.getFont(descriptor);
+
+    expect(font.data).toBeTruthy();
+    expect(font.loading).toBeFalsy();
+    expect(font.fontStyle).toEqual('italic');
+  });
+
+  test('should correctly resolve exact font weight if present', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      src,
+      family: 'Roboto',
+      fontWeight: 600,
+    });
+
+    const font = Font.getFont({ fontFamily: 'Roboto', fontWeight: 600 });
+
+    expect(font.fontWeight).toEqual(600);
+  });
+
+  test('should correctly resolve font between target and 500 when target between 400 and 500', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 430 }, { src, fontWeight: 470 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 420 }).fontWeight,
+    ).toEqual(430);
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 450 }).fontWeight,
+    ).toEqual(470);
+  });
+
+  test('should correctly resolve font less than target when target between 400 and 500', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 300 }, { src, fontWeight: 600 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 420 }).fontWeight,
+    ).toEqual(300);
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 450 }).fontWeight,
+    ).toEqual(300);
+  });
+
+  test('should correctly resolve font greater than target when target between 400 and 500', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 600 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 420 }).fontWeight,
+    ).toEqual(600);
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 450 }).fontWeight,
+    ).toEqual(600);
+  });
+
+  test('should correctly resolve font less than target when target below 400', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 100 }, { src, fontWeight: 200 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 300 }).fontWeight,
+    ).toEqual(200);
+  });
+
+  test('should correctly resolve font greater than target when target below 400', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 600 }, { src, fontWeight: 700 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 300 }).fontWeight,
+    ).toEqual(600);
+  });
+
+  test('should correctly resolve font greater than target when target above 500', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 600 }, { src, fontWeight: 700 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 550 }).fontWeight,
+    ).toEqual(600);
+  });
+
+  test('should correctly resolve font less than target when target above 500', async () => {
+    const src = `${__dirname}/assets/font.ttf`;
+
+    Font.register({
+      family: 'Roboto',
+      fonts: [{ src, fontWeight: 200 }, { src, fontWeight: 300 }],
+    });
+
+    expect(
+      Font.getFont({ fontFamily: 'Roboto', fontWeight: 550 }).fontWeight,
+    ).toEqual(300);
   });
 
   test('should get undefined hyphenation callback if not registered', () => {

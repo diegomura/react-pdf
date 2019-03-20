@@ -34,7 +34,9 @@ const register = (src, data) => {
   }
 };
 
-const getRegisteredFonts = () => Object.keys(fonts);
+const getRegisteredFonts = () => fonts;
+
+const getRegisteredFontFamilies = () => Object.keys(fonts);
 
 const getFont = descriptor => {
   const { fontFamily } = descriptor;
@@ -80,6 +82,7 @@ const clear = function() {
 export default {
   register,
   getRegisteredFonts,
+  getRegisteredFontFamilies,
   getFont,
   load,
   clear,

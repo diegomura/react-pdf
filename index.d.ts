@@ -230,6 +230,21 @@ declare module '@react-pdf/renderer' {
       | 'ultrabold'
       | 'heavy';
 
+    interface FontSource {
+      src: string;
+      fontFamily: string;
+      fontStyle: FontStyle;
+      fontWeight: number;
+      data: any;
+      loading: boolean;
+      options: any;
+    }
+
+    interface FontInstance {
+      family: string;
+      sources: FontSource[];
+    }
+
     interface EmojiSource {
       url: string;
       format: string;
@@ -261,7 +276,8 @@ declare module '@react-pdf/renderer' {
         [key: string]: any;
       }) => void;
       getEmojiSource: () => EmojiSource;
-      getRegisteredFonts: () => string[];
+      getRegisteredFonts: () => FontInstance[];
+      getRegisteredFontFamilies: () => string[];
       registerEmojiSource: (emojiSource: EmojiSource) => void;
       registerHyphenationCallback: (
         hyphenationCallback: HyphenationCallback,

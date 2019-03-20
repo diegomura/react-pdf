@@ -173,7 +173,6 @@ class Page extends Base {
 
   update(newProps) {
     super.update(newProps);
-
     this._size = null;
   }
 

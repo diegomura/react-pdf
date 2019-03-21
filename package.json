@@ -35,7 +35,7 @@
     "blob-stream": "^0.1.3",
     "cross-fetch": "^3.0.1",
     "emoji-regex": "^7.0.3",
-    "hyphen": "^1.1.0",
+    "hyphen": "^1.1.1",
     "is-url": "^1.2.4",
     "lodash.groupby": "^4.6.0",
     "lodash.isfunction": "^3.0.9",

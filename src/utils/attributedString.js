@@ -28,6 +28,8 @@ export const getFragments = instance => {
     color = 'black',
     backgroundColor,
     fontFamily = 'Helvetica',
+    fontWeight,
+    fontStyle,
     fontSize = 18,
     textAlign = 'left',
     position,
@@ -44,7 +46,7 @@ export const getFragments = instance => {
 
   instance.children.forEach(child => {
     if (child.value !== null && child.value !== undefined) {
-      const obj = Font.getFont(fontFamily);
+      const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
       const font = obj ? obj.data : fontFamily;
       const string = transformText(child.value, textTransform);
 

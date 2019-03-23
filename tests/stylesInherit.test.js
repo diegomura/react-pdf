@@ -10,9 +10,7 @@ describe('Styles inherit', () => {
     dummyRoot = root.reset();
   });
 
-  const shouldInherit = attribute => async () => {
-    const value = 'Courier';
-
+  const shouldInherit = (attribute, value) => async () => {
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
     const parent = new View(dummyRoot, { style: { [attribute]: value } });
@@ -50,9 +48,9 @@ describe('Styles inherit', () => {
     expect(child2.style[attribute]).not.toBe(value);
   };
 
-  const shouldOverride = (attribute, value) => async () => {
-    const parentValue = 'Courier';
-    const childValue = 'Helvetica';
+  const shouldOverride = (attribute, value1, value2) => async () => {
+    const parentValue = value1 || 'Courier';
+    const childValue = value2 || 'Helvetica';
 
     const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
@@ -71,23 +69,26 @@ describe('Styles inherit', () => {
     expect(child2.style[attribute]).toBe(childValue);
   };
 
-  test('Should inherit color', shouldInherit('color'));
-  test('Should inherit opacity', shouldInherit('opacity'));
-  test('Should inherit font size', shouldInherit('fontSize'));
-  test('Should inherit text align', shouldInherit('textAlign'));
-  test('Should inherit visibility', shouldInherit('visibility'));
-  test('Should inherit font weight', shouldInherit('fontWeight'));
-  test('Should inherit line height', shouldInherit('lineHeight'));
-  test('Should inherit font family', shouldInherit('fontFamily'));
-  test('Should inherit word spacing', shouldInherit('wordSpacing'));
-  test('Should inherit letter spacing', shouldInherit('letterSpacing'));
-  test('Should inherit text decoration', shouldInherit('textDecoration'));
+  test('Should inherit color', shouldInherit('color', 'red'));
+  test('Should inherit opacity', shouldInherit('opacity', 0.5));
+  test('Should inherit font size', shouldInherit('fontSize', 12));
+  test('Should inherit text align', shouldInherit('textAlign', 'center'));
+  test('Should inherit visibility', shouldInherit('visibility', 'none'));
+  test('Should inherit font weight', shouldInherit('fontWeight', 700));
+  test('Should inherit line height', shouldInherit('lineHeight', 12));
+  test('Should inherit font family', shouldInherit('fontFamily', 'Courier'));
+  test('Should inherit word spacing', shouldInherit('wordSpacing', 10));
+  test('Should inherit letter spacing', shouldInherit('letterSpacing', 10));
+  test(
+    'Should inherit text decoration',
+    shouldInherit('textDecoration', 'underline'),
+  );
 
   test('Should override color', shouldOverride('color'));
   test('Should override font size', shouldOverride('fontSize'));
   test('Should override text align', shouldOverride('textAlign'));
   test('Should override visibility', shouldOverride('visibility'));
-  test('Should override font weight', shouldOverride('fontWeight'));
+  test('Should override font weight', shouldOverride('fontWeight', 700, 100));
   test('Should override line height', shouldOverride('lineHeight'));
   test('Should override font family', shouldOverride('fontFamily'));
   test('Should override word spacing', shouldOverride('wordSpacing'));

@@ -1,97 +1,76 @@
-import isUrl from 'is-url';
-import fetch from 'cross-fetch';
-import fontkit from '@react-pdf/fontkit';
-
+import font from './font';
+import emoji from './emoji';
 import standardFonts from './standard';
+import hyphenation from './hyphenation';
+import warning from '../utils/warning';
 
 let fonts = {};
-let emojiSource;
-let hyphenationCallback;
 
-const fetchFont = async (src, options) => {
-  const response = await fetch(src, options);
+const register = (src, data) => {
+  if (typeof src === 'object') {
+    data = src;
+  } else {
+    warning(
+      false,
+      'Font.register will not longer accept the font source as first argument. Please move it into the data object. For more info refer to https://react-pdf.org/fonts',
+    );
 
-  const buffer = await (response.buffer
-    ? response.buffer()
-    : response.arrayBuffer());
+    data.src = src;
+  }
 
-  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
-};
+  const { family } = data;
 
-const register = (src, { family, ...otherOptions }) => {
-  fonts[family] = {
-    src,
-    loaded: false,
-    loading: false,
-    data: null,
-    ...otherOptions,
-  };
-};
+  if (!fonts[family]) {
+    fonts[family] = font.create(family);
+  }
 
-const registerHyphenationCallback = callback => {
-  hyphenationCallback = callback;
-};
-
-const registerEmojiSource = ({ url, format = 'png' }) => {
-  emojiSource = { url, format };
-};
-
-const getRegisteredFonts = () => Object.keys(fonts);
-
-const getFont = family => fonts[family];
-
-const getEmojiSource = () => emojiSource;
-
-const getHyphenationCallback = () => hyphenationCallback;
-
-const load = async function(fontFamily, doc) {
-  const font = getFont(fontFamily);
-
-  // We cache the font to avoid fetching it many times
-  if (font && !font.data && !font.loading) {
-    font.loading = true;
-
-    if (isUrl(font.src)) {
-      const { src, headers, body, method = 'GET' } = font;
-      const data = await fetchFont(src, { headers, method, body });
-      font.data = fontkit.create(data);
-    } else {
-      if (BROWSER) {
-        throw new Error(
-          `Invalid font url: ${
-            font.src
-          }. If you use relative url please replace it with absolute one (ex. /font.ttf -> http://localhost:3000/font.ttf)`,
-        );
-      }
-
-      font.data = await new Promise((resolve, reject) =>
-        fontkit.open(font.src, (err, data) =>
-          err ? reject(err) : resolve(data),
-        ),
-      );
+  // Bulk loading
+  if (data.fonts) {
+    for (let i = 0; i < data.fonts.length; i++) {
+      fonts[family].register({ family, ...data.fonts[i] });
     }
+  } else {
+    fonts[family].register(data);
   }
+};
 
-  // If the font wasn't added to the document yet (aka. loaded), we add it.
-  // This prevents calling `registerFont` many times for the same font.
-  // Fonts loaded state will be reset after the document is closed.
-  if (font && !font.loaded) {
-    font.loaded = true;
-    font.loading = false;
-    doc.registerFont(fontFamily, font.data);
-  }
+const getRegisteredFonts = () => fonts;
 
-  if (!font && !standardFonts.includes(fontFamily)) {
+const getRegisteredFontFamilies = () => Object.keys(fonts);
+
+const getFont = descriptor => {
+  const { fontFamily } = descriptor;
+  const isStandard = standardFonts.includes(fontFamily);
+
+  if (isStandard) return null;
+
+  if (!fonts[fontFamily]) {
     throw new Error(
       `Font family not registered: ${fontFamily}. Please register it calling Font.register() method.`,
     );
+  }
+
+  return fonts[fontFamily].resolve(descriptor);
+};
+
+const load = async function(descriptor, doc) {
+  const { fontFamily } = descriptor;
+  const isStandard = standardFonts.includes(fontFamily);
+
+  if (isStandard) return;
+
+  const font = getFont(descriptor);
+
+  // We cache the font to avoid fetching it many times
+  if (!font.data && !font.loading) {
+    await font.load();
   }
 };
 
 const reset = function() {
   for (const font in fonts) {
     if (fonts.hasOwnProperty(font)) {
-      fonts[font].loaded = false;
+      fonts[font].data = null;
     }
   }
 };
@@ -102,13 +81,12 @@ const clear = function() {
 
 export default {
   register,
-  getEmojiSource,
   getRegisteredFonts,
-  registerEmojiSource,
-  registerHyphenationCallback,
-  getHyphenationCallback,
+  getRegisteredFontFamilies,
   getFont,
   load,
   clear,
   reset,
+  ...emoji,
+  ...hyphenation,
 };

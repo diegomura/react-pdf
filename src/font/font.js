@@ -33,6 +33,8 @@ class FontSource {
   }
 
   async load() {
+    this.loading = true;
+
     if (isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });

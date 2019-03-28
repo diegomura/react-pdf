@@ -177,6 +177,28 @@ describe('Font', () => {
     expect(font.data).toBeTruthy();
   });
 
+  test('should fetch remote font only once', async () => {
+    // Delay fetch response
+    fetch.mockResponse(
+      () =>
+        new Promise(resolve => setTimeout(() => resolve({ body: localFont }))),
+      500,
+    );
+
+    const descriptor = { fontFamily: 'Oswald' };
+
+    Font.register({ family: 'Oswald', src: oswaldUrl });
+
+    const fontResolvers = Promise.all([
+      Font.load(descriptor, dummyRoot.instance),
+      Font.load(descriptor, dummyRoot.instance),
+    ]);
+
+    await fontResolvers;
+
+    expect(fetch.mock.calls).toHaveLength(1);
+  });
+
   test('should throw error if missing font style is requested', async () => {
     Font.register({ family: 'Roboto', src: `${__dirname}/assets/font.ttf` }); // normal
 

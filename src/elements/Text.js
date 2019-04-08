@@ -3,8 +3,8 @@ import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
 
 import Base from './Base';
 import Font from '../font';
-import { getURL } from '../utils/url';
 import layout from '../layout';
+import { getURL } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
 class Text extends Base {

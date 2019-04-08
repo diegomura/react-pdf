@@ -1,7 +1,6 @@
 /* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
 import Font from '../font';
-import { Attachment } from '../layout';
 import { resolveImage } from '../utils/image';
 
 // Caches emoji images data
@@ -83,13 +82,15 @@ export const embedEmojis = fragments => {
       // correct attachment and object substitution character;
       if (emojis[emoji] && emojis[emoji].data) {
         result.push({
-          string: chunk.replace(match, Attachment.CHARACTER),
+          string: chunk.replace(match, String.fromCharCode(0xfffc)),
           attributes: {
             ...fragment.attributes,
-            attachment: new Attachment(emojiSize, emojiSize, {
+            attachment: {
+              width: emojiSize,
+              height: emojiSize,
               yOffset: Math.floor(emojiSize * 0.1),
               image: emojis[emoji].data,
-            }),
+            },
           },
         });
       } else {

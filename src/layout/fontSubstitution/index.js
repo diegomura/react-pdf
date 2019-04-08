@@ -1,72 +1,78 @@
 import StandardFont from './standardFont';
 
-export default () => ({ Run }) =>
-  class FontSubstitutionEngine {
-    constructor() {
-      this.fontCache = {};
+const fontCache = {};
+
+const getFallbackFont = () => {
+  return getOrCreateFont('Helvetica');
+};
+
+const getOrCreateFont = name => {
+  if (fontCache[name]) return fontCache[name];
+
+  const font = new StandardFont(name);
+  fontCache[name] = font;
+
+  return font;
+};
+
+const shouldFallbackToFont = (codePoint, font) => {
+  return (
+    !font.hasGlyphForCodePoint(codePoint) &&
+    getFallbackFont().hasGlyphForCodePoint(codePoint)
+  );
+};
+
+const fontSubstitution = () => ({ string, runs }) => {
+  let lastFont = null;
+  let lastIndex = 0;
+  let index = 0;
+
+  const res = [];
+
+  for (const run of runs) {
+    const defaultFont =
+      typeof run.attributes.font === 'string'
+        ? getOrCreateFont(run.attributes.font)
+        : run.attributes.font;
+
+    if (string.length === 0) {
+      res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
+      break;
     }
 
-    get fallbackFont() {
-      return this.getOrCreateFont('Helvetica');
-    }
+    for (const char of string.slice(run.start, run.end)) {
+      const codePoint = char.codePointAt();
+      const font = shouldFallbackToFont(codePoint, defaultFont)
+        ? getFallbackFont()
+        : defaultFont;
 
-    getOrCreateFont(name) {
-      if (this.fontCache[name]) return this.fontCache[name];
-
-      const font = new StandardFont(name);
-      this.fontCache[name] = font;
-
-      return font;
-    }
-
-    shouldFallbackToFont(codePoint, font) {
-      return (
-        !font.hasGlyphForCodePoint(codePoint) &&
-        this.fallbackFont.hasGlyphForCodePoint(codePoint)
-      );
-    }
-
-    getRuns(string, runs) {
-      const res = [];
-      let lastFont = null;
-      let lastIndex = 0;
-      let index = 0;
-
-      for (const run of runs) {
-        const defaultFont =
-          typeof run.attributes.font === 'string'
-            ? this.getOrCreateFont(run.attributes.font)
-            : run.attributes.font;
-
-        if (string.length === 0) {
-          res.push(new Run(0, 0, { font: defaultFont }));
-          break;
+      // If the default font does not have a glyph and the fallback font does, we use it
+      if (font !== lastFont) {
+        if (lastFont) {
+          res.push({
+            start: lastIndex,
+            end: index,
+            attributes: { font: lastFont },
+          });
         }
 
-        for (const char of string.slice(run.start, run.end)) {
-          const codePoint = char.codePointAt();
-          const font = this.shouldFallbackToFont(codePoint, defaultFont)
-            ? this.fallbackFont
-            : defaultFont;
-
-          // If the default font does not have a glyph and the fallback font does, we use it
-          if (font !== lastFont) {
-            if (lastFont) {
-              res.push(new Run(lastIndex, index, { font: lastFont }));
-            }
-
-            lastFont = font;
-            lastIndex = index;
-          }
-
-          index += char.length;
-        }
+        lastFont = font;
+        lastIndex = index;
       }
 
-      if (lastIndex < string.length) {
-        res.push(new Run(lastIndex, string.length, { font: lastFont }));
-      }
-
-      return res;
+      index += char.length;
     }
-  };
+  }
+
+  if (lastIndex < string.length) {
+    res.push({
+      start: lastIndex,
+      end: string.length,
+      attributes: { font: lastFont },
+    });
+  }
+
+  return { string, runs: res };
+};
+
+export default fontSubstitution;

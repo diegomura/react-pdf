@@ -1,7 +1,4 @@
-import pick from 'lodash.pick';
-import merge from 'lodash.merge';
-import toPairsIn from 'lodash.topairsin';
-import isFunction from 'lodash.isfunction';
+import { mergeAll, pick, toPairsIn } from 'ramda';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
@@ -11,6 +8,7 @@ import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import warning from '../utils/warning';
 import upperFirst from '../utils/upperFirst';
+import isFunction from '../utils/isFunction';
 import matchPercent from '../utils/matchPercent';
 import { inheritedProperties } from '../stylesheet/inherit';
 
@@ -20,12 +18,11 @@ class Base extends Node {
 
     this.root = root;
     this.style = {};
-    this.props = merge(
-      {},
+    this.props = mergeAll([
       this.constructor.defaultProps,
       Base.defaultProps,
       props,
-    );
+    ]);
 
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
   }
@@ -87,12 +84,11 @@ class Base extends Node {
   }
 
   update(newProps) {
-    this.props = merge(
-      {},
+    this.props = mergeAll([
       this.constructor.defaultProps,
       Base.defaultProps,
       newProps,
-    );
+    ]);
     this.root.markDirty();
   }
 
@@ -118,7 +114,7 @@ class Base extends Node {
     });
 
     const inheritedStyles = this.parent
-      ? pick(this.parent.style, inheritedProperties)
+      ? pick(inheritedProperties, this.parent.style)
       : {};
 
     return { ...inheritedStyles, ...ownStyles };

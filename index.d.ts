@@ -93,7 +93,7 @@ declare module '@react-pdf/renderer' {
 
     type SourceObject =
       | string
-      | { data: Buffer; format: 'png' | 'jpg' }
+      | { data: Buffer; format: 'png' | 'jpg' | 'gif' }
       | { uri: string; method: HTTPMethod; body: any; headers: any };
 
     interface BaseImageProps extends NodeProps {
@@ -114,8 +114,8 @@ declare module '@react-pdf/renderer' {
     type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
 
     /**
-     * A React component for displaying network or local (Node only) JPG or
-     * PNG images, as well as base64 encoded image strings.
+     * A React component for displaying network or local (Node only) JPG,
+     * PNG or GIF images, as well as base64 encoded image strings.
      */
     class Image extends React.Component<ImageProps> {}
 

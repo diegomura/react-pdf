@@ -16,8 +16,10 @@ let dummyRoot;
 
 const jpgImageUrl = 'https://react-pdf.org/static/images/quijote1.jpg';
 const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';
+const gifImageUrl = 'https://react-pdf.org/static/images/quijote3.gif';
 const localJPGImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 const localPNGImage = fs.readFileSync(path.join(__dirname, 'assets/test.png'));
+const localGIFImage = fs.readFileSync(path.join(__dirname, 'assets/test.gif'));
 
 jest.mock('../src/utils/warning');
 
@@ -141,6 +143,19 @@ describe('Image', () => {
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
   });
 
+  test('Should render a gif image over http', async () => {
+    fetch.once(localGIFImage);
+
+    const image = new Image(dummyRoot, { src: gifImageUrl });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
   test('Should render a remote image from src object', async () => {
     fetch.once(localJPGImage);
 
@@ -253,6 +268,17 @@ describe('Image', () => {
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
   });
+
+  /* test('Should render a buffer gif image', async () => {
+    const image = new Image(dummyRoot, { src: localGIFImage });
+
+    await image.fetch();
+    await image.render();
+
+    expect(image.image.data).toBeTruthy();
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  }); */
 
   test('Should correctly resolve objectFit styles given a flat `style` prop', async () => {
     const resolveObjectFitSpy = jest.spyOn(objectFit, 'resolveObjectFit');

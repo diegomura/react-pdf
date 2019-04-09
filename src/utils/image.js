@@ -5,6 +5,7 @@ import fetch from 'cross-fetch';
 
 import PNG from './png';
 import JPEG from './jpeg';
+import GIF from './gif';
 import createCache from './cache';
 
 export const IMAGE_CACHE = createCache({ limit: 30 });
@@ -74,7 +75,9 @@ const fetchRemoteFile = async (uri, options) => {
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
-  return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
+  return (
+    lower === 'jpg' || lower === 'jpeg' || lower === 'png' || lower === 'gif'
+  );
 };
 
 const guessFormat = buffer => {
@@ -84,13 +87,15 @@ const guessFormat = buffer => {
     format = 'jpg';
   } else if (PNG.isValid(buffer)) {
     format = 'png';
+  } else if (GIF.isValid(buffer)) {
+    format = 'gif';
   }
 
   return format;
 };
 
 const isCompatibleBase64 = ({ uri }) =>
-  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(uri);
+  /^data:image\/[a-zA-Z]*;base64,[^"]*/.test(uri);
 
 function getImage(body, extension) {
   switch (extension.toLowerCase()) {
@@ -99,38 +104,36 @@ function getImage(body, extension) {
       return new JPEG(body);
     case 'png':
       return new PNG(body);
+    case 'gif':
+      return new GIF(body);
     default:
       return null;
   }
 }
 
-const resolveBase64Image = ({ uri }) => {
-  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
-  const format = match[1];
-  const data = match[2];
+const resolveBase64Image = async ({ uri }) => {
+  const [, format, data] = /^data:image\/([a-zA-Z]*);base64,([^"]*)/.exec(uri);
 
   if (!isValidFormat(format)) {
     throw new Error(`Base64 image invalid format: ${format}`);
   }
 
-  return new Promise(resolve => {
-    return resolve(getImage(Buffer.from(data, 'base64'), format));
-  });
+  return getImage(Buffer.from(data, 'base64'), format);
 };
 
-const resolveImageFromData = src => {
+const resolveImageFromData = async src => {
   if (src.data && src.format) {
-    return new Promise(resolve => resolve(getImage(src.data, src.format)));
+    return getImage(src.data, src.format);
   }
 
   throw new Error(`Invalid data given for local file: ${JSON.stringify(src)}`);
 };
 
-const resolveBufferImage = buffer => {
+const resolveBufferImage = async buffer => {
   const format = guessFormat(buffer);
 
   if (format) {
-    return new Promise(resolve => resolve(getImage(buffer, format)));
+    return getImage(buffer, format);
   }
 };
 
@@ -147,11 +150,16 @@ const getImageFormat = body => {
 
   const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
 
+  // based on https://github.com/sindresorhus/file-type/blob/master/index.js#L65
+  const isGif = body[0] === 71 && body[1] === 73 && body[2] === 70;
+
   let extension = '';
   if (isPng) {
     extension = 'png';
   } else if (isJpg) {
     extension = 'jpg';
+  } else if (isGif) {
+    extension = 'gif';
   } else {
     throw new Error('Not valid image extension');
   }

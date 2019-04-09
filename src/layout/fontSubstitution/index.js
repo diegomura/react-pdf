@@ -2,6 +2,8 @@ import StandardFont from './standardFont';
 
 const fontCache = {};
 
+const IGNORED_CODE_POINTS = [173];
+
 const getFallbackFont = () => {
   return getOrCreateFont('Helvetica');
 };
@@ -17,6 +19,7 @@ const getOrCreateFont = name => {
 
 const shouldFallbackToFont = (codePoint, font) => {
   return (
+    !IGNORED_CODE_POINTS.includes(codePoint) &&
     !font.hasGlyphForCodePoint(codePoint) &&
     getFallbackFont().hasGlyphForCodePoint(codePoint)
   );
@@ -42,9 +45,8 @@ const fontSubstitution = () => ({ string, runs }) => {
 
     for (const char of string.slice(run.start, run.end)) {
       const codePoint = char.codePointAt();
-      const font = shouldFallbackToFont(codePoint, defaultFont)
-        ? getFallbackFont()
-        : defaultFont;
+      const shouldFallback = shouldFallbackToFont(codePoint, defaultFont);
+      const font = shouldFallback ? getFallbackFont() : defaultFont;
 
       // If the default font does not have a glyph and the fallback font does, we use it
       if (font !== lastFont) {

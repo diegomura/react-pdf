@@ -27,7 +27,7 @@
     "@react-pdf/fontkit": "^1.13.0",
     "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
-    "@react-pdf/textkit": "^0.3.0",
+    "@react-pdf/textkit": "^0.3.1",
     "blob-stream": "^0.1.3",
     "cross-fetch": "^3.0.1",
     "emoji-regex": "^7.0.3",

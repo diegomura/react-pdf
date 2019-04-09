@@ -1,5 +1,6 @@
 import Yoga from 'yoga-layout';
 import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
+import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Base from './Base';
 import Font from '../font';
@@ -55,7 +56,9 @@ class Text extends Base {
 
   get linesWidth() {
     if (!this.blocks) return -1;
-    return Math.max(...this.lines.map(line => line.box.width));
+    return Math.max(
+      ...this.lines.map(line => AttributedString.advanceWidth(line)),
+    );
   }
 
   appendChild(child) {

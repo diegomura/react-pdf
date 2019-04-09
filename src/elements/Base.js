@@ -1,4 +1,4 @@
-import { mergeAll, pick, toPairsIn } from 'ramda';
+import { pick, toPairsIn } from 'ramda';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
@@ -7,6 +7,7 @@ import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import warning from '../utils/warning';
+import deepMerge from '../utils/deepMerge';
 import upperFirst from '../utils/upperFirst';
 import isFunction from '../utils/isFunction';
 import matchPercent from '../utils/matchPercent';
@@ -18,7 +19,7 @@ class Base extends Node {
 
     this.root = root;
     this.style = {};
-    this.props = mergeAll([
+    this.props = deepMerge([
       this.constructor.defaultProps,
       Base.defaultProps,
       props,
@@ -84,7 +85,7 @@ class Base extends Node {
   }
 
   update(newProps) {
-    this.props = mergeAll([
+    this.props = deepMerge([
       this.constructor.defaultProps,
       Base.defaultProps,
       newProps,

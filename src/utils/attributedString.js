@@ -1,4 +1,5 @@
-import { AttributedString } from '../layout';
+import AttributedString from '@react-pdf/textkit/attributedString';
+
 import Font from '../font';
 import { embedEmojis } from './emoji';
 import { ignoreChars } from './ignorableChars';
@@ -32,9 +33,6 @@ export const getFragments = instance => {
     fontStyle,
     fontSize = 18,
     textAlign = 'left',
-    position,
-    top,
-    bottom,
     lineHeight,
     textDecoration,
     textDecorationColor,
@@ -65,7 +63,6 @@ export const getFragments = instance => {
           underline: textDecoration === 'underline',
           underlineColor: textDecorationColor || color,
           lineHeight: lineHeight ? lineHeight * fontSize : null,
-          yOffset: position === 'relative' ? -top || bottom || 0 : null,
         },
       });
     } else {
@@ -83,5 +80,5 @@ export const getFragments = instance => {
 };
 
 export const getAttributedString = instance => {
-  return AttributedString.fromFragments(getFragments(instance)).trim();
+  return AttributedString.fromFragments(getFragments(instance));
 };

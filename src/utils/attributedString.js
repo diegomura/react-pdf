@@ -62,6 +62,9 @@ export const getFragments = instance => {
           underlineStyle: textDecorationStyle,
           underline: textDecoration === 'underline',
           underlineColor: textDecorationColor || color,
+          strike: textDecoration === 'line-through',
+          strikeStyle: textDecorationStyle,
+          strikeColor: textDecorationColor || color,
           lineHeight: lineHeight ? lineHeight * fontSize : null,
         },
       });

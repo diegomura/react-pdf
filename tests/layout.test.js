@@ -132,8 +132,8 @@ describe('Layout', () => {
 
   test('Absolute elements should be placed with percent left', async () => {
     const size = { width: 600, height: 800 };
-    const doc = new Document(dummyRoot, { size });
-    const page = new Page(dummyRoot, { wrap: false });
+    const doc = new Document(dummyRoot, {});
+    const page = new Page(dummyRoot, { size, wrap: false });
     const view = new View(dummyRoot, {
       style: { position: 'absolute', left: '10%' },
     });

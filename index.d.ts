@@ -166,6 +166,17 @@ declare module '@react-pdf/renderer' {
 
     class Note extends React.Component<NoteProps> {}
 
+    interface CanvasProps extends NodeProps {
+      debug?: boolean;
+      paint: (
+        painter: any,
+        availableWidth: number,
+        availableHeight: number
+      ) => null;
+    }
+
+    class Canvas extends React.Component<CanvasProps> {}
+
     interface BlobProviderParams {
       blob: Blob | null;
       url: string | null;
@@ -273,6 +284,12 @@ declare module '@react-pdf/renderer' {
       register: (options: {
         family: string;
         src: string;
+        fonts?: [font: {
+          src: string;
+          fontStyle: string;
+          fontWeight: string | number;
+          [key: string]: any;
+        }];
         [key: string]: any;
       }) => void;
       getEmojiSource: () => EmojiSource;
@@ -353,6 +370,7 @@ declare module '@react-pdf/renderer' {
   const View: typeof ReactPDF.View;
   const Image: typeof ReactPDF.Image;
   const Text: typeof ReactPDF.Text;
+  const Canvas: typeof ReactPDF.Canvas;
   const Link: typeof ReactPDF.Link;
   const Note: typeof ReactPDF.Note;
   const Font: typeof ReactPDF.Font;

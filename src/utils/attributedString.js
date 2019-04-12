@@ -39,6 +39,7 @@ export const getFragments = instance => {
     textDecorationStyle,
     textTransform,
     letterSpacing,
+    textIndent,
     opacity,
   } = instance.style;
 
@@ -57,6 +58,7 @@ export const getFragments = instance => {
           fontSize,
           backgroundColor,
           align: textAlign,
+          indent: textIndent,
           link: instance.src,
           characterSpacing: letterSpacing,
           underlineStyle: textDecorationStyle,

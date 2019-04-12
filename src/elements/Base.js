@@ -220,15 +220,8 @@ class Base extends Node {
   }
 
   async renderChildren() {
-    const absoluteChilds = this.children.filter(child => child.absolute);
-    const nonAbsoluteChilds = this.children.filter(child => !child.absolute);
-
-    for (let i = 0; i < nonAbsoluteChilds.length; i++) {
-      await nonAbsoluteChilds[i].render();
-    }
-
-    for (let i = 0; i < absoluteChilds.length; i++) {
-      await absoluteChilds[i].render();
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].render();
     }
   }
 }

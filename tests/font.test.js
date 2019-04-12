@@ -371,23 +371,5 @@ describe('Font', () => {
         Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
       ).rejects.toThrow('no such file or directory');
     });
-
-    describe('in browser', () => {
-      beforeEach(() => {
-        global.BROWSER = true;
-      });
-
-      afterEach(() => {
-        global.BROWSER = false;
-      });
-
-      test('should throw `Invalid font url` error', async () => {
-        Font.register({ family: 'Roboto', src: '/roboto.ttf' });
-
-        expect(
-          Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
-        ).rejects.toThrow('Invalid font url');
-      });
-    });
   });
 });

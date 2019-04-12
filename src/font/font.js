@@ -14,12 +14,6 @@ const fetchFont = async (src, options) => {
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
-const throwInvalidUrl = src => {
-  throw new Error(
-    `Invalid font url: ${src}. If you use relative url please replace it with absolute one (ex. /font.ttf -> http://localhost:3000/font.ttf)`,
-  );
-};
-
 class FontSource {
   constructor(src, fontFamily, fontStyle, fontWeight, options) {
     this.src = src;
@@ -35,13 +29,11 @@ class FontSource {
   async load() {
     this.loading = true;
 
-    if (isUrl(this.src)) {
+    if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data);
     } else {
-      if (BROWSER) throwInvalidUrl(this.src); // Can't load a non-url font in browser
-
       this.data = await new Promise((resolve, reject) =>
         fontkit.open(this.src, (err, data) =>
           err ? reject(err) : resolve(data),

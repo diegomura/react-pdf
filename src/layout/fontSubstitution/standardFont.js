@@ -40,16 +40,29 @@ class StandardFont {
     return this.src.font.characterToGlyph(codePoint) !== '.notdef';
   }
 
+  // Based on empirical observation
   get ascent() {
-    return this.src.ascender;
+    return 900;
   }
 
+  // Based on empirical observation
   get descent() {
-    return this.src.descender;
+    switch (this.name) {
+      case 'Times-Roman':
+      case 'Times-Bold':
+      case 'Times-Italic':
+        return -220;
+      case 'Courier':
+      case 'Courier-Bold':
+      case 'Courier-Oblique':
+        return -230;
+      default:
+        return -200;
+    }
   }
 
   get lineGap() {
-    return this.src.lineGap;
+    return 0;
   }
 
   get unitsPerEm() {

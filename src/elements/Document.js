@@ -111,7 +111,7 @@ class Document {
   }
 
   async loadAssets() {
-    await Promise.all([this.loadFonts(), this.loadImages()]);
+    await Promise.all([this.loadFonts(), this.loadImages(), this.loadEmojis()]);
   }
 
   applyProps() {
@@ -172,7 +172,6 @@ class Document {
     try {
       this.addMetaData();
       this.applyProps();
-      await this.loadEmojis();
       await this.loadAssets();
       await this.renderPages();
       this.root.instance.end();

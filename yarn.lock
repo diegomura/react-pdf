@@ -941,10 +941,10 @@
   resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
   integrity sha1-APy5adykzoKgp2c0E63gOeR7Nh4=
 
-"@react-pdf/textkit@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.3.3.tgz#de89a5c0a7389c147ef8e766c1d8ff6ec165e35c"
-  integrity sha512-HtHoV2k0x5+Q92BwU5UTHUept0i34IhrSeoW21ctxe5B2CevocwYlRn1LPH01usua7fw8099ftEc+GNZFRkpqg==
+"@react-pdf/textkit@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.3.4.tgz#5615a8e4d06e07710f6ac6dca1fa896113e20e28"
+  integrity sha512-NQ8MVdZIDyo+5CWNBtfXGdvvIYhrwXIjIFw9d2ATCSCoImHpYzz/ivzHer/mFxWN6xXrCYv77M56w5D18URCtw==
   dependencies:
     "@babel/runtime" "^7.4.3"
     "@react-pdf/unicode-properties" "^2.2.0"

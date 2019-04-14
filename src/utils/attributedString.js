@@ -97,8 +97,6 @@ export const getFragments = instance => {
     }
   });
 
-  // console.log(fragments);
-
   for (const preprocessor of PREPROCESSORS) {
     fragments = preprocessor(fragments);
   }

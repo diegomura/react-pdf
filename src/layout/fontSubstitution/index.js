@@ -1,8 +1,12 @@
+import { pathOr, last } from 'ramda';
+
 import StandardFont from './standardFont';
 
 const fontCache = {};
 
 const IGNORED_CODE_POINTS = [173];
+
+const getFontSize = pathOr(12, ['attributes', 'fontSize']);
 
 const getFallbackFont = () => {
   return getOrCreateFont('Helvetica');
@@ -33,6 +37,7 @@ const fontSubstitution = () => ({ string, runs }) => {
   const res = [];
 
   for (const run of runs) {
+    const fontSize = getFontSize(run);
     const defaultFont =
       typeof run.attributes.font === 'string'
         ? getOrCreateFont(run.attributes.font)
@@ -54,7 +59,10 @@ const fontSubstitution = () => ({ string, runs }) => {
           res.push({
             start: lastIndex,
             end: index,
-            attributes: { font: lastFont },
+            attributes: {
+              font: lastFont,
+              scale: lastFont ? fontSize / lastFont.unitsPerEm : 0,
+            },
           });
         }
 
@@ -67,10 +75,15 @@ const fontSubstitution = () => ({ string, runs }) => {
   }
 
   if (lastIndex < string.length) {
+    const fontSize = getFontSize(last(runs));
+
     res.push({
       start: lastIndex,
       end: string.length,
-      attributes: { font: lastFont },
+      attributes: {
+        font: lastFont,
+        scale: lastFont ? fontSize / lastFont.unitsPerEm : 0,
+      },
     });
   }
 

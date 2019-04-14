@@ -134,21 +134,9 @@ class Text extends Base {
 
   measureText(width, widthMode, height, heightMode) {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.layoutText(width);
-
-      return { height: this.style.flexGrow ? NaN : this.linesHeight };
-    }
-
-    if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
-    ) {
       this.layoutText(width, height);
 
-      return {
-        height: this.linesHeight,
-        width: Math.min(width, this.linesWidth),
-      };
+      return { height: this.linesHeight };
     }
 
     return {};

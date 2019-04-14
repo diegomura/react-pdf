@@ -109,24 +109,21 @@ class Text extends Base {
   layoutText(width, height) {
     this.attributedString = getAttributedString(this);
 
-    // If height null or NaN, we take some liberty on layout height
-    const containerHeight = height || this.page.size.height;
-
     // Text layout is expensive. That's why we ensure to only do it once
     // (except dynamic nodes. Those change content and needs to relayout every time)
     if (!this.blocks || this.props.render) {
-      const container = { x: 0, y: 0, width, height: containerHeight };
-      const attributedString = this.attributedString;
-
-      // Do the actual text layout
-      this.blocks = layout(attributedString, container, this.layoutOptions);
+      // Do the actual text layout.
+      /// If height null or NaN, we take some liberty on layout height
+      const container = { x: 0, y: 0, width, height: height || Infinity };
+      this.blocks = layout(
+        this.attributedString,
+        container,
+        this.layoutOptions,
+      );
     }
 
     // Get the total amount of rendered lines
-    const linesCount = this.blocks.reduce(
-      (acc, block) => acc + block.length,
-      0,
-    );
+    const linesCount = this.blocks.reduce((acc, b) => acc + b.length, 0);
 
     this.end = this.props.maxLines || linesCount + 1;
     this.computed = true;
@@ -214,13 +211,13 @@ class Text extends Base {
 
   renderText() {
     const { top, left } = this.getAbsoluteLayout();
-    const initialX = this.lines[0] ? this.lines[0].box.y : 0;
+    const initialY = this.lines[0] ? this.lines[0].box.y : 0;
 
     // We translate lines based on Yoga container
     this.root.instance.save();
     this.root.instance.translate(
       left + this.padding.left,
-      top + this.padding.top - initialX,
+      top + this.padding.top - initialY,
     );
 
     // Perform actual text rendering on document

@@ -1,3 +1,4 @@
+import { isNil, propEq, prop, complement, compose } from 'ramda';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
@@ -7,6 +8,13 @@ import { ignoreChars } from './ignorableChars';
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
 const capitalize = value => value.replace(/(^|\s)\S/g, l => l.toUpperCase());
+
+const isImage = propEq('name', 'Image');
+
+const isTextInstance = compose(
+  complement(isNil),
+  prop('value'),
+);
 
 const transformText = (text, transformation) => {
   switch (transformation) {
@@ -43,32 +51,44 @@ export const getFragments = instance => {
     opacity,
   } = instance.style;
 
-  instance.children.forEach(child => {
-    if (child.value !== null && child.value !== undefined) {
-      const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
-      const font = obj ? obj.data : fontFamily;
-      const string = transformText(child.value, textTransform);
+  const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
+  const font = obj ? obj.data : fontFamily;
+  const attributes = {
+    font,
+    color,
+    opacity,
+    fontSize,
+    backgroundColor,
+    align: textAlign,
+    indent: textIndent,
+    link: instance.src,
+    characterSpacing: letterSpacing,
+    underlineStyle: textDecorationStyle,
+    underline: textDecoration === 'underline',
+    underlineColor: textDecorationColor || color,
+    strike: textDecoration === 'line-through',
+    strikeStyle: textDecorationStyle,
+    strikeColor: textDecorationColor || color,
+    lineHeight: lineHeight ? lineHeight * fontSize : null,
+  };
 
+  instance.children.forEach(child => {
+    if (isImage(child)) {
       fragments.push({
-        string,
+        string: String.fromCharCode(0xfffc),
         attributes: {
-          font,
-          color,
-          opacity,
-          fontSize,
-          backgroundColor,
-          align: textAlign,
-          indent: textIndent,
-          link: instance.src,
-          characterSpacing: letterSpacing,
-          underlineStyle: textDecorationStyle,
-          underline: textDecoration === 'underline',
-          underlineColor: textDecorationColor || color,
-          strike: textDecoration === 'line-through',
-          strikeStyle: textDecorationStyle,
-          strikeColor: textDecorationColor || color,
-          lineHeight: lineHeight ? lineHeight * fontSize : null,
+          ...attributes,
+          attachment: {
+            width: child.style.width || fontSize,
+            height: child.style.height || fontSize,
+            image: child.image.data,
+          },
         },
+      });
+    } else if (isTextInstance(child)) {
+      fragments.push({
+        string: transformText(child.value, textTransform),
+        attributes,
       });
     } else {
       if (child) {
@@ -76,6 +96,8 @@ export const getFragments = instance => {
       }
     }
   });
+
+  // console.log(fragments);
 
   for (const preprocessor of PREPROCESSORS) {
     fragments = preprocessor(fragments);

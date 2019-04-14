@@ -114,7 +114,14 @@ class Text extends Base {
     if (!this.blocks || this.props.render) {
       // Do the actual text layout.
       /// If height null or NaN, we take some liberty on layout height
-      const container = { x: 0, y: 0, width, height: height || Infinity };
+      const container = {
+        x: 0,
+        y: 0,
+        width,
+        height: height || Infinity,
+        maxLines: this.style.maxLines,
+        truncateMode: this.style.textOverflow,
+      };
       this.blocks = layout(
         this.attributedString,
         container,
@@ -125,7 +132,7 @@ class Text extends Base {
     // Get the total amount of rendered lines
     const linesCount = this.blocks.reduce((acc, b) => acc + b.length, 0);
 
-    this.end = this.props.maxLines || linesCount + 1;
+    this.end = linesCount + 1;
     this.computed = true;
   }
 

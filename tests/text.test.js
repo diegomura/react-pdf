@@ -143,7 +143,7 @@ describe('Text', () => {
 
   test('Should render maxLines', async () => {
     const page = new Page(dummyRoot, {});
-    const text = new Text(dummyRoot, { maxLines: 2 });
+    const text = new Text(dummyRoot, { style: { maxLines: 2 } });
     const textInstance = new TextInstance(dummyRoot, 'really long text');
 
     page.appendChild(text);

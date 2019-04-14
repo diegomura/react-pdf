@@ -284,12 +284,12 @@ declare module '@react-pdf/renderer' {
       register: (options: {
         family: string;
         src: string;
-        fonts?: [font: {
+        fonts?: {
           src: string;
           fontStyle: string;
           fontWeight: string | number;
           [key: string]: any;
-        }];
+        }[];
         [key: string]: any;
       }) => void;
       getEmojiSource: () => EmojiSource;

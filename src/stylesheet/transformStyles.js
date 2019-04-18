@@ -164,6 +164,9 @@ const expandStyles = style => {
           }
         }
         break;
+      /*    case 'fontFamily':
+        resolvedStyle[key] = typeof value === 'string' ? value.split(',') : Array.isArray(value) ? value : [...value];
+        break; */
       default:
         resolvedStyle[key] = value;
         break;

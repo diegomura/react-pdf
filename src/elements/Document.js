@@ -47,7 +47,7 @@ class Document {
     this.root.instance.info.Producer = producer || 'react-pdf';
   }
 
-  async loadFonts() {
+  async loadFontsAndEmojis() {
     const promises = [];
     const listToExplore = this.children.slice(0);
 
@@ -57,23 +57,6 @@ class Document {
       if (node.style && node.style.fontFamily) {
         promises.push(Font.load(node.style, this.root.instance));
       }
-
-      if (node.children) {
-        node.children.forEach(childNode => {
-          listToExplore.push(childNode);
-        });
-      }
-    }
-
-    await Promise.all(promises);
-  }
-
-  async loadEmojis() {
-    const promises = [];
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
 
       if (typeof node === 'string') {
         promises.push(...fetchEmojis(node));
@@ -111,7 +94,7 @@ class Document {
   }
 
   async loadAssets() {
-    await Promise.all([this.loadFonts(), this.loadImages()]);
+    await Promise.all([this.loadFontsAndEmojis(), this.loadImages()]);
   }
 
   applyProps() {
@@ -172,7 +155,6 @@ class Document {
     try {
       this.addMetaData();
       this.applyProps();
-      await this.loadEmojis();
       await this.loadAssets();
       await this.renderPages();
       this.root.instance.end();

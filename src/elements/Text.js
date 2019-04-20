@@ -143,6 +143,15 @@ class Text extends Base {
       return { height: this.linesHeight };
     }
 
+    if (widthMode === Yoga.MEASURE_MODE_AT_MOST) {
+      this.layoutText(width, height);
+
+      return {
+        height: this.linesHeight,
+        width: Math.min(width, this.linesWidth),
+      };
+    }
+
     return {};
   }
 

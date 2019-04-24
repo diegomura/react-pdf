@@ -53,18 +53,31 @@ const getFont = descriptor => {
   return fonts[fontFamily].resolve(descriptor);
 };
 
-const load = async function(descriptor, doc) {
-  const { fontFamily } = descriptor;
-  const isStandard = standardFonts.includes(fontFamily);
+const load = function({ fontFamily, ...descriptor }, doc, text) {
+  const fontFamilies =
+    typeof fontFamily === 'string'
+      ? fontFamily.split(',').map(family => family.trim())
+      : [...(fontFamily || [])];
+  const promises = [];
 
-  if (isStandard) return;
+  for (const family of fontFamilies) {
+    if (standardFonts.includes(family)) break;
 
-  const font = getFont(descriptor);
+    const font = getFont({ ...descriptor, fontFamily: family });
 
-  // We cache the font to avoid fetching it many times
-  if (!font.data && !font.loading) {
-    await font.load();
+    const textRequiresFont =
+      typeof text === 'string' ? text.search(font.unicodeRange) >= 0 : true;
+
+    // We cache the font to avoid fetching it many times
+    if (textRequiresFont && !font.data && !font.loading) {
+      promises.push(font.load());
+      if (font.unicodeRange.source === '.') {
+        break;
+      }
+    }
   }
+
+  return Promise.all(promises);
 };
 
 const reset = function() {

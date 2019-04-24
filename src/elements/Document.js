@@ -47,41 +47,29 @@ class Document {
     this.root.instance.info.Producer = producer || 'react-pdf';
   }
 
-  async loadFonts() {
+  async loadFontsAndEmojis() {
     const promises = [];
-    const listToExplore = this.children.slice(0);
+    const listToExplore = this.children.map(node => [node, {}]);
 
     while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style, this.root.instance));
-      }
-
-      if (node.children) {
-        node.children.forEach(childNode => {
-          listToExplore.push(childNode);
-        });
-      }
-    }
-
-    await Promise.all(promises);
-  }
-
-  async loadEmojis() {
-    const promises = [];
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
+      const [node, { parentStyle = {} }] = listToExplore.shift();
 
       if (typeof node === 'string') {
-        promises.push(...fetchEmojis(node));
+        promises.push(
+          ...fetchEmojis(node),
+          Font.load(parentStyle, this.root.instance, node),
+        );
       } else if (typeof node.value === 'string') {
-        promises.push(...fetchEmojis(node.value));
+        promises.push(
+          ...fetchEmojis(node.value),
+          Font.load(node.style || parentStyle, this.root.instance, node.value),
+        );
       } else if (node.children) {
         node.children.forEach(childNode => {
-          listToExplore.push(childNode);
+          listToExplore.push([
+            childNode,
+            { parentStyle: { ...parentStyle, ...node.style } },
+          ]);
         });
       }
     }
@@ -111,7 +99,7 @@ class Document {
   }
 
   async loadAssets() {
-    await Promise.all([this.loadFonts(), this.loadImages()]);
+    await Promise.all([this.loadFontsAndEmojis(), this.loadImages()]);
   }
 
   applyProps() {
@@ -172,7 +160,6 @@ class Document {
     try {
       this.addMetaData();
       this.applyProps();
-      await this.loadEmojis();
       await this.loadAssets();
       await this.renderPages();
       this.root.instance.end();

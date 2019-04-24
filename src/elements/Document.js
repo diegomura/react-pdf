@@ -54,22 +54,27 @@ class Document {
 
   async loadFontsAndEmojis() {
     const promises = [];
-    const listToExplore = this.children.slice(0);
+    const listToExplore = this.children.map(node => [node, {}]);
 
     while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style, this.root.instance));
-      }
+      const [node, { parentStyle = {} }] = listToExplore.shift();
 
       if (typeof node === 'string') {
-        promises.push(...fetchEmojis(node));
+        promises.push(
+          ...fetchEmojis(node),
+          Font.load(parentStyle, this.root.instance, node),
+        );
       } else if (typeof node.value === 'string') {
-        promises.push(...fetchEmojis(node.value));
+        promises.push(
+          ...fetchEmojis(node.value),
+          Font.load(node.style || parentStyle, this.root.instance, node.value),
+        );
       } else if (node.children) {
         node.children.forEach(childNode => {
-          listToExplore.push(childNode);
+          listToExplore.push([
+            childNode,
+            { parentStyle: { ...parentStyle, ...node.style } },
+          ]);
         });
       }
     }

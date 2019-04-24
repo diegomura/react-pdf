@@ -74,11 +74,25 @@ describe('Document', () => {
 
   test('Should trigger available fonts loading', async () => {
     const doc = new Document(dummyRoot, {});
+
     const page1 = new Page(dummyRoot, { style: { fontFamily: 'Courier' } });
+    const text1 = new Text(dummyRoot, {});
+    const textInstance1 = new TextInstance(dummyRoot, 'sample text');
+
     const page2 = new Page(dummyRoot, { style: { fontFamily: 'Helvetica' } });
+    const text2 = new Text(dummyRoot, {});
+    const textInstance2 = new TextInstance(dummyRoot, 'sample text');
+
+    text1.layoutEngine = { layout: jest.fn() };
+    text2.layoutEngine = { layout: jest.fn() };
 
     doc.appendChild(page1);
+    page1.appendChild(text1);
+    text1.appendChild(textInstance1);
+
     doc.appendChild(page2);
+    page2.appendChild(text2);
+    text2.appendChild(textInstance2);
 
     await doc.render();
 

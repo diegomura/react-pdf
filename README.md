@@ -63,8 +63,15 @@ const MyDocument = () => (
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { PDFViewer } from '@react-pdf/renderer';
 
-ReactDOM.render(<MyDocument />, document.getElementById('root'));
+const App = () => (
+  <PDFViewer>
+    <MyDocument />
+  </PDFViewer>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
 ### `Node.` Save in a file

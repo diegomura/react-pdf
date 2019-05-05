@@ -182,6 +182,10 @@ class Image extends Base {
 
     this.root.instance.restore();
   }
+
+  cleanup() {
+    this.layout.unsetMeasureFunc();
+  }
 }
 
 export default Image;

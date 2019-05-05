@@ -133,6 +133,10 @@ class Node {
 
   onAppendDynamically() {}
 
+  cleanup() {
+    this.children.forEach(c => c.cleanup());
+  }
+
   get position() {
     return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
       ? 'absolute'

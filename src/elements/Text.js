@@ -265,6 +265,10 @@ class Text extends Base {
 
     this.root.instance.restore();
   }
+
+  cleanup() {
+    this.layout.unsetMeasureFunc();
+  }
 }
 
 export default Text;

@@ -180,6 +180,11 @@ class Document {
       throw e;
     }
   }
+
+  cleanup() {
+    this.children.forEach(c => c.cleanup());
+    this.subpages.forEach(p => p.cleanup());
+  }
 }
 
 export default Document;

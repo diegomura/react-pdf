@@ -26,7 +26,12 @@ class Root {
   async render() {
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
+    this.cleanup();
     this.isDirty = false;
+  }
+
+  cleanup() {
+    this.document.cleanup();
   }
 }
 

@@ -137,6 +137,8 @@ class Node {
 
   cleanup() {
     this.children.forEach(c => c.cleanup());
+    this.layout.unsetMeasureFunc();
+    Yoga.Node.destroy(this.layout);
   }
 
   get position() {

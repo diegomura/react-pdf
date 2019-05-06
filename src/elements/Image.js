@@ -184,6 +184,7 @@ class Image extends Base {
   }
 
   cleanup() {
+    super.cleanup();
     this.layout.unsetMeasureFunc();
   }
 }

@@ -28,6 +28,8 @@ class TextInstance {
     this.parent.container = null;
     this.root.markDirty();
   }
+
+  cleanup() {}
 }
 
 export default TextInstance;

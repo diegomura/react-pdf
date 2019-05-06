@@ -80,6 +80,8 @@ class Text extends Base {
       this.computed = false;
       this.attributedString = null;
       this.markDirty();
+
+      child.cleanup();
     }
   }
 
@@ -267,6 +269,7 @@ class Text extends Base {
   }
 
   cleanup() {
+    super.cleanup();
     this.layout.unsetMeasureFunc();
   }
 }

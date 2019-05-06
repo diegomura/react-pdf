@@ -25,6 +25,8 @@ class Note extends Base {
       child.parent = null;
       this.children.splice(index, 1);
     }
+
+    child.cleanup();
   }
 
   applyProps() {

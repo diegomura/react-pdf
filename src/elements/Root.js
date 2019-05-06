@@ -16,6 +16,7 @@ class Root {
   }
 
   removeChild() {
+    this.document.cleanup();
     this.document = null;
   }
 

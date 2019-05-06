@@ -31,6 +31,7 @@ class Document {
   removeChild(child) {
     const i = this.children.indexOf(child);
     child.parent = null;
+    child.cleanup();
     this.children.slice(i, 1);
   }
 

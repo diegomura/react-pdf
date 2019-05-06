@@ -37,6 +37,8 @@ class Node {
       this.children.splice(index, 1);
       this.layout.removeChild(child.layout);
     }
+
+    child.cleanup();
   }
 
   removeAllChilds() {

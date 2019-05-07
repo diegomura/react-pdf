@@ -1,3 +1,5 @@
+const WHITELISTED_PROPS = ['render', 'onRender', 'paint'];
+
 const propsEqual = (a, b) => {
   const oldPropsKeys = Object.keys(a);
   const newPropsKeys = Object.keys(b);
@@ -9,7 +11,7 @@ const propsEqual = (a, b) => {
   for (let i = 0; i < oldPropsKeys.length; i++) {
     const propName = oldPropsKeys[i];
 
-    if (propName === 'render') {
+    if (WHITELISTED_PROPS.includes(propName)) {
       if (!a[propName] !== !b[propName]) {
         return false;
       }
@@ -30,7 +32,10 @@ const propsEqual = (a, b) => {
 
     if (
       propName === 'children' &&
-      (typeof a[propName] === 'string' || typeof b[propName] === 'string')
+      (typeof a[propName] === 'string' ||
+        typeof b[propName] === 'string' ||
+        typeof a[propName] === 'number' ||
+        typeof b[propName] === 'number')
     ) {
       return a[propName] === b[propName];
     }

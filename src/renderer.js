@@ -1,13 +1,14 @@
 'use strict';
 
 import ReactFiberReconciler from 'react-reconciler';
-import { createInstance } from './elements';
+import * as R from 'ramda';
+// import { createInstance } from './elements';
 
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-// If the Link has a strign child or render prop, substitute the instance by a Text,
+// If the Link has a string child or render prop, substitute the instance by a Text,
 // that will ultimately render the inline Link via the textkit PDF renderer.
 const shouldReplaceLink = (type, props) =>
   type === 'LINK' &&
@@ -16,25 +17,28 @@ const shouldReplaceLink = (type, props) =>
     Array.isArray(props.children) ||
     props.render);
 
+const omitChildren = R.omit(['children']);
+
 const PDFRenderer = ReactFiberReconciler({
   supportsMutation: true,
+
   appendInitialChild(parentInstance, child) {
-    parentInstance.appendChild(child);
+    child.root.isDirty = true;
+    parentInstance.children.push(child);
   },
 
   createInstance(type, props, internalInstanceHandle) {
     const instanceType = shouldReplaceLink(type, props) ? 'TEXT' : type;
-    return createInstance(
-      { type: instanceType, props },
-      internalInstanceHandle,
-    );
+    return {
+      type: instanceType,
+      children: [],
+      props: omitChildren(props),
+      root: internalInstanceHandle,
+    };
   },
 
   createTextInstance(text, rootContainerInstance) {
-    return createInstance(
-      { type: 'TEXT_INSTANCE', props: text },
-      rootContainerInstance,
-    );
+    return { type: 'TEXT_INSTANCE', props: text, root: rootContainerInstance };
   },
 
   finalizeInitialChildren(element, type, props) {
@@ -78,31 +82,36 @@ const PDFRenderer = ReactFiberReconciler({
   useSyncScheduling: true,
 
   appendChild(parentInstance, child) {
-    parentInstance.appendChild(child);
+    child.root.isDirty = true;
+    parentInstance.children.push(child);
   },
 
   appendChildToContainer(parentInstance, child) {
-    parentInstance.appendChild(child);
+    child.root.isDirty = true;
+    parentInstance.children.push(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {
-    parentInstance.appendChildBefore(child, beforeChild);
+    // parentInstance.appendChildBefore(child, beforeChild);
   },
 
   removeChild(parentInstance, child) {
-    parentInstance.removeChild(child);
+    // parentInstance.removeChild(child);
   },
 
   removeChildFromContainer(parentInstance, child) {
-    parentInstance.removeChild(child);
+    // parentInstance.removeChild(child);
   },
 
   commitTextUpdate(textInstance, oldText, newText) {
-    textInstance.update(newText);
+    textInstance.root.isDirty = true;
+    textInstance.props = newText;
+    console.log(textInstance);
   },
 
   commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-    instance.update(newProps);
+    instance.root.isDirty = true;
+    instance.props = newProps;
   },
 });
 

@@ -67,7 +67,6 @@ class Text extends Base {
       this.children.push(child);
       this.computed = false;
       this.attributedString = null;
-      this.markDirty();
     }
   }
 
@@ -79,7 +78,6 @@ class Text extends Base {
       this.children.splice(index, 1);
       this.computed = false;
       this.attributedString = null;
-      this.markDirty();
     }
   }
 

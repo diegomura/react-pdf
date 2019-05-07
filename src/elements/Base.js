@@ -71,17 +71,14 @@ class Base extends Node {
 
   appendChild(child) {
     super.appendChild(child);
-    this.root.markDirty();
   }
 
   appendChildBefore(child, beforeChild) {
     super.appendChildBefore(child, beforeChild);
-    this.root.markDirty();
   }
 
   removeChild(child) {
     super.removeChild(child);
-    this.root.markDirty();
   }
 
   update(newProps) {
@@ -90,7 +87,6 @@ class Base extends Node {
       Base.defaultProps,
       newProps,
     ]);
-    this.root.markDirty();
   }
 
   applyProps() {

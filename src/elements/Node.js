@@ -127,10 +127,6 @@ class Node {
     return this.children.length === 0;
   }
 
-  markDirty() {
-    return this.layout.markDirty();
-  }
-
   onAppendDynamically() {}
 
   get position() {

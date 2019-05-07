@@ -34,6 +34,7 @@
     "is-url": "^1.2.4",
     "media-engine": "^1.0.3",
     "page-wrapping": "^1.1.0",
+    "queue": "^6.0.1",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-reconciler": "^0.20.4",

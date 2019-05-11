@@ -24,15 +24,15 @@ class Root {
     this.isDirty = true;
   }
 
+  cleanup() {
+    this.document.cleanup();
+  }
+
   async render() {
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
     this.cleanup();
     this.isDirty = false;
-  }
-
-  cleanup() {
-    this.document.cleanup();
   }
 }
 

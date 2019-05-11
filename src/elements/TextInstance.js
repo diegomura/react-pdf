@@ -22,14 +22,14 @@ class TextInstance {
     return new this.constructor(this.root, this.value);
   }
 
+  cleanup() {}
+
   update(value) {
     this.value = value;
     this.parent.computed = false;
     this.parent.container = null;
     this.root.markDirty();
   }
-
-  cleanup() {}
 }
 
 export default TextInstance;

@@ -123,6 +123,11 @@ class Document {
     this.props = newProps;
   }
 
+  cleanup() {
+    // this.children.forEach(c => c.cleanup());
+    this.subpages.forEach(p => p.cleanup());
+  }
+
   getLayoutData() {
     return {
       type: this.name,
@@ -180,11 +185,6 @@ class Document {
     } catch (e) {
       throw e;
     }
-  }
-
-  cleanup() {
-    this.children.forEach(c => c.cleanup());
-    this.subpages.forEach(p => p.cleanup());
   }
 }
 

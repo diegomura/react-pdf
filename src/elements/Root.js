@@ -28,6 +28,10 @@ class Root {
     this.document.cleanup();
   }
 
+  finish() {
+    this.document.finish();
+  }
+
   async render() {
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();

@@ -124,8 +124,11 @@ class Document {
   }
 
   cleanup() {
-    // this.children.forEach(c => c.cleanup());
     this.subpages.forEach(p => p.cleanup());
+  }
+
+  finish() {
+    this.children.forEach(c => c.cleanup());
   }
 
   getLayoutData() {

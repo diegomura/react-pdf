@@ -57,10 +57,10 @@ const pdf = input => {
     });
   }
 
-  function toBuffer() {
-    callOnRender();
+  async function toBuffer() {
+    await container.render();
 
-    container.render();
+    callOnRender();
 
     return container.instance;
   }
@@ -87,6 +87,7 @@ const pdf = input => {
 
   return {
     isDirty,
+    container,
     updateContainer,
     toBuffer,
     toBlob,

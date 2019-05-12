@@ -31,6 +31,7 @@ class Document {
   removeChild(child) {
     const i = this.children.indexOf(child);
     child.parent = null;
+    child.cleanup();
     this.children.slice(i, 1);
   }
 
@@ -120,6 +121,14 @@ class Document {
 
   update(newProps) {
     this.props = newProps;
+  }
+
+  cleanup() {
+    this.subpages.forEach(p => p.cleanup());
+  }
+
+  finish() {
+    this.children.forEach(c => c.cleanup());
   }
 
   getLayoutData() {

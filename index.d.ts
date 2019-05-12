@@ -345,16 +345,17 @@ declare module '@react-pdf/renderer' {
     const pdf: (
       document: React.ReactElement<DocumentProps>,
     ) => {
+      container: any;
       isDirty: () => boolean;
       updateContainer: (document: React.ReactElement<any>) => void;
-      toBuffer: () => NodeJS.ReadableStream;
+      toBuffer: () => Promise<NodeJS.ReadableStream>;
       toBlob: () => Promise<Blob>;
       toString: () => string;
     };
 
     const renderToStream: (
       document: React.ReactElement<DocumentProps>,
-    ) => NodeJS.ReadableStream;
+    ) => Promise<NodeJS.ReadableStream>;
 
     const renderToFile: (
       document: React.ReactElement<DocumentProps>,

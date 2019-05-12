@@ -15,12 +15,15 @@ import {
   createInstance,
 } from './index';
 
-export const renderToStream = function(element) {
-  return pdf(element).toBuffer();
+export const renderToStream = async function(element) {
+  const instance = pdf(element);
+  const buffer = await instance.toBuffer();
+  instance.container.finish();
+  return buffer;
 };
 
-export const renderToFile = function(element, filePath, callback) {
-  const output = renderToStream(element);
+export const renderToFile = async function(element, filePath, callback) {
+  const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
 
   output.pipe(stream);

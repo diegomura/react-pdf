@@ -22,6 +22,8 @@ class TextInstance {
     return new this.constructor(this.root, this.value);
   }
 
+  cleanup() {}
+
   update(value) {
     this.value = value;
     this.parent.computed = false;

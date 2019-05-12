@@ -80,6 +80,8 @@ class Text extends Base {
       this.computed = false;
       this.attributedString = null;
       this.markDirty();
+
+      child.cleanup();
     }
   }
 

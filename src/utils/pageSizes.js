@@ -52,7 +52,7 @@ const PAGE_SIZES = {
 };
 
 // Return page size in an object { width, height } given the passed size and orientation
-// Accepts page type, arraoy or object as parameter
+// Accepts page type, array or object as parameter
 const getPageSize = (size, orientation = 'portrait') => {
   let result;
 

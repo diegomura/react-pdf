@@ -1,38 +1,31 @@
+const DPI = 72; // 72pt per inch.
+
 const parseValue = value => {
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw)?$/g.exec(value);
 
   if (match) {
     return { value: parseFloat(match[1], 10), unit: match[2] || 'pt' };
-  } else {
-    return { value, unit: undefined };
   }
+
+  return { value, unit: undefined };
 };
 
 const parseScalar = (value, container) => {
-  let result = {};
   const scalar = parseValue(value);
-
   switch (scalar.unit) {
     case 'in':
-      result = scalar.value * 72;
-      break;
+      return scalar.value * DPI;
     case 'mm':
-      result = scalar.value * (1 / 25.4) * 72;
-      break;
+      return scalar.value * (1 / 25.4) * DPI;
     case 'cm':
-      result = scalar.value * (1 / 2.54) * 72;
-      break;
+      return scalar.value * (1 / 2.54) * DPI;
     case 'vh':
-      result = scalar.value * (container.height / 100);
-      break;
+      return scalar.value * (container.height / 100);
     case 'vw':
-      result = scalar.value * (container.width / 100);
-      break;
+      return scalar.value * (container.width / 100);
     default:
-      result = scalar.value;
+      return scalar.value;
   }
-
-  return result;
 };
 
 export default parseScalar;

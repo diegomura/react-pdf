@@ -173,7 +173,7 @@ const expandStyles = style => {
   return resolvedStyle;
 };
 
-const transformStyles = style => {
+const transformStyles = (style, container) => {
   const expandedStyles = expandStyles(style);
   const propsArray = Object.keys(expandedStyles);
   const resolvedStyle = {};
@@ -197,7 +197,7 @@ const transformStyles = style => {
       resolved = value;
     }
 
-    resolvedStyle[key] = parseScalar(resolved);
+    resolvedStyle[key] = parseScalar(resolved, container);
   }
 
   return resolvedStyle;

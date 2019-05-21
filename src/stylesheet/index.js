@@ -45,7 +45,7 @@ const resolve = (styles, container) => {
 
   styles = flatten(styles);
   styles = resolveMediaQueries(styles, container);
-  styles = transformStyles(styles);
+  styles = transformStyles(styles, container);
 
   return styles;
 };

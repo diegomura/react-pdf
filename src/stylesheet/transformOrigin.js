@@ -2,7 +2,7 @@ export const isTransformOriginStyle = (key, value) =>
   key.match(/^transformOrigin/) && typeof value === 'string';
 
 const matchTransformOrigin = value =>
-  value.match(/(-?\d+(px|in|mm|cm|pt|%)?)|top|right|bottom|left|center/g);
+  value.match(/(-?\d+(px|in|mm|cm|pt|%|vw|vh)?)|top|right|bottom|left|center/g);
 
 const transformOffsetKeywords = value => {
   switch (value) {

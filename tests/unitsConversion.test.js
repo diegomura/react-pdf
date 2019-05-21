@@ -40,6 +40,44 @@ describe('units conversion', () => {
     expect(styles.maxWidth).toBeCloseTo(28.346 * 2, 1);
   });
 
+  test('Should transform width vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { width: '50vw' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.width).toBe(100);
+  });
+
+  test('Should transform min/max width vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { minWidth: '50vw', maxWidth: '20vw' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.minWidth).toBe(100);
+    expect(styles.maxWidth).toBe(40);
+  });
+
+  test('Should transform width vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { width: '50vh' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.width).toBe(200);
+  });
+
+  test('Should transform min/max width vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { minWidth: '50vh', maxWidth: '20vh' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.minWidth).toBe(200);
+    expect(styles.maxWidth).toBe(80);
+  });
+
   test('Should transform height in dimensions', () => {
     const styles = StyleSheet.resolve({ height: '1in' });
 
@@ -123,6 +161,122 @@ describe('units conversion', () => {
     expect(styles.paddingRight).toBe(72);
     expect(styles.paddingBottom).toBe(72);
     expect(styles.paddingLeft).toBe(72);
+  });
+
+  test('Should transform expanded margin vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      {
+        marginTop: '10vw',
+        marginRight: '20vw',
+        marginBottom: '30vw',
+        marginLeft: '40vw',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.marginTop).toBe(20);
+    expect(styles.marginRight).toBe(40);
+    expect(styles.marginBottom).toBe(60);
+    expect(styles.marginLeft).toBe(80);
+  });
+
+  test('Should transform compacted margin vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { margin: '20vw' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.marginTop).toBe(40);
+    expect(styles.marginRight).toBe(40);
+    expect(styles.marginBottom).toBe(40);
+    expect(styles.marginLeft).toBe(40);
+  });
+
+  test('Should transform expanded padding vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      {
+        paddingTop: '10vw',
+        paddingRight: '20vw',
+        paddingBottom: '30vw',
+        paddingLeft: '40vw',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.paddingTop).toBe(20);
+    expect(styles.paddingRight).toBe(40);
+    expect(styles.paddingBottom).toBe(60);
+    expect(styles.paddingLeft).toBe(80);
+  });
+
+  test('Should transform compacted padding vw dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { padding: '20vw' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.paddingTop).toBe(40);
+    expect(styles.paddingRight).toBe(40);
+    expect(styles.paddingBottom).toBe(40);
+    expect(styles.paddingLeft).toBe(40);
+  });
+
+  test('Should transform expanded margin vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      {
+        marginTop: '10vh',
+        marginRight: '20vh',
+        marginBottom: '30vh',
+        marginLeft: '40vh',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.marginTop).toBe(40);
+    expect(styles.marginRight).toBe(80);
+    expect(styles.marginBottom).toBe(120);
+    expect(styles.marginLeft).toBe(160);
+  });
+
+  test('Should transform compacted margin vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { margin: '20vh' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.marginTop).toBe(80);
+    expect(styles.marginRight).toBe(80);
+    expect(styles.marginBottom).toBe(80);
+    expect(styles.marginLeft).toBe(80);
+  });
+
+  test('Should transform expanded padding vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      {
+        paddingTop: '10vh',
+        paddingRight: '20vh',
+        paddingBottom: '30vh',
+        paddingLeft: '40vh',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.paddingTop).toBe(40);
+    expect(styles.paddingRight).toBe(80);
+    expect(styles.paddingBottom).toBe(120);
+    expect(styles.paddingLeft).toBe(160);
+  });
+
+  test('Should transform compacted padding vh dimensions', () => {
+    const styles = StyleSheet.resolve(
+      { padding: '20vh' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.paddingTop).toBe(80);
+    expect(styles.paddingRight).toBe(80);
+    expect(styles.paddingBottom).toBe(80);
+    expect(styles.paddingLeft).toBe(80);
   });
 
   test('Should transform expanded margin mm dimensions', () => {
@@ -289,6 +443,88 @@ describe('units conversion', () => {
     expect(styles.borderRightWidth).toBe(72);
     expect(styles.borderBottomWidth).toBe(72);
     expect(styles.borderLeftWidth).toBe(72);
+  });
+
+  test('Should transform expanded borders in vw', () => {
+    const styles = StyleSheet.resolve(
+      {
+        borderTopWidth: '10vw',
+        borderRightWidth: '20vw',
+        borderBottomWidth: '30vw',
+        borderLeftWidth: '40vw',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(20);
+    expect(styles.borderRightWidth).toBe(40);
+    expect(styles.borderBottomWidth).toBe(60);
+    expect(styles.borderLeftWidth).toBe(80);
+  });
+
+  test('Should transform collapsed borders in vw', () => {
+    const styles = StyleSheet.resolve(
+      { borderWidth: '20vw' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(40);
+    expect(styles.borderRightWidth).toBe(40);
+    expect(styles.borderBottomWidth).toBe(40);
+    expect(styles.borderLeftWidth).toBe(40);
+  });
+
+  test('Should transform shortcut borders in vw', () => {
+    const styles = StyleSheet.resolve(
+      { border: '20vw solid red' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(40);
+    expect(styles.borderRightWidth).toBe(40);
+    expect(styles.borderBottomWidth).toBe(40);
+    expect(styles.borderLeftWidth).toBe(40);
+  });
+
+  test('Should transform expanded borders in vh', () => {
+    const styles = StyleSheet.resolve(
+      {
+        borderTopWidth: '10vh',
+        borderRightWidth: '20vh',
+        borderBottomWidth: '30vh',
+        borderLeftWidth: '40vh',
+      },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(40);
+    expect(styles.borderRightWidth).toBe(80);
+    expect(styles.borderBottomWidth).toBe(120);
+    expect(styles.borderLeftWidth).toBe(160);
+  });
+
+  test('Should transform collapsed borders in vh', () => {
+    const styles = StyleSheet.resolve(
+      { borderWidth: '20vh' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(80);
+    expect(styles.borderRightWidth).toBe(80);
+    expect(styles.borderBottomWidth).toBe(80);
+    expect(styles.borderLeftWidth).toBe(80);
+  });
+
+  test('Should transform shortcut borders in vh', () => {
+    const styles = StyleSheet.resolve(
+      { border: '20vh solid red' },
+      { width: 200, height: 400 },
+    );
+
+    expect(styles.borderTopWidth).toBe(80);
+    expect(styles.borderRightWidth).toBe(80);
+    expect(styles.borderBottomWidth).toBe(80);
+    expect(styles.borderLeftWidth).toBe(80);
   });
 
   test('Should transform expanded borders in mm', () => {

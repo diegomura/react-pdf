@@ -60,7 +60,7 @@ const getPageSize = (size, orientation = 'portrait') => {
     result = PAGE_SIZES[size.toUpperCase()];
   } else if (Array.isArray(size)) {
     result = size;
-  } else if (typeof size === 'object' && size.width && size.height) {
+  } else if (typeof size === 'object' && size.width) {
     result = [size.width, size.height];
   } else {
     throw new Error(`Invalid Page size: ${size}`);

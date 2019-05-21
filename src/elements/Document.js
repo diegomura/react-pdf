@@ -143,8 +143,11 @@ class Document {
     const pages = [];
 
     for (const page of this.children) {
-      const wrapArea = page.size.height - (page.style.paddingBottom || 0);
       if (page.wrap) {
+        const wrapArea = page.isAutoHeight
+          ? Infinity
+          : page.size.height - (page.style.paddingBottom || 0);
+
         const subpages = await wrapPages(page, wrapArea, pageCount);
 
         pageCount += subpages.length;

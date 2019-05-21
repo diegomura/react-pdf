@@ -52,7 +52,7 @@ const PAGE_SIZES = {
 };
 
 // Return page size in an object { width, height } given the passed size and orientation
-// Accepts page type, array or object as parameter
+// Accepts page type string, number, array or object as parameter
 const getPageSize = (size, orientation = 'portrait') => {
   let result;
 
@@ -60,6 +60,8 @@ const getPageSize = (size, orientation = 'portrait') => {
     result = PAGE_SIZES[size.toUpperCase()];
   } else if (Array.isArray(size)) {
     result = size;
+  } else if (typeof size === 'number') {
+    result = [size];
   } else if (typeof size === 'object' && size.width) {
     result = [size.width, size.height];
   } else {

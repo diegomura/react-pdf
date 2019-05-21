@@ -151,7 +151,6 @@ class Document {
 
         pages.push(...subpages);
       } else {
-        page.height = page.size.height;
         pages.push(page);
       }
     }

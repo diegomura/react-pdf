@@ -20,6 +20,12 @@ const parseScalar = (value, container) => {
     case 'cm':
       return scalar.value * (1 / 2.54) * DPI;
     case 'vh':
+      if (container.isAutoHeight) {
+        throw new Error(
+          'vh unit not supported in auto-height pages. Please specify page height if you want to use vh.',
+        );
+      }
+
       return scalar.value * (container.height / 100);
     case 'vw':
       return scalar.value * (container.width / 100);

@@ -106,13 +106,15 @@ class Base extends Node {
   }
 
   resolveStyles() {
-    const { size, orientation } = this.page;
-
-    const ownStyles = StyleSheet.resolve(this.props.style, {
+    const { size, orientation, isAutoHeight } = this.page;
+    const container = {
       orientation,
+      isAutoHeight,
       width: size.width,
       height: size.height,
-    });
+    };
+
+    const ownStyles = StyleSheet.resolve(this.props.style, container);
 
     const inheritedStyles = this.parent
       ? pick(inheritedProperties, this.parent.style)

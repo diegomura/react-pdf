@@ -189,15 +189,17 @@ class Page extends Base {
 
     this.calculateLayout();
 
+    const height = this.isAutoHeight ? this.height : this.size.height;
+
     instance.addPage({
-      size: [this.size.width, this.height],
+      size: [this.size.width, height],
       margin: 0,
     });
 
     if (this.style.backgroundColor) {
       instance
         .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.size.width, this.height)
+        .rect(0, 0, this.size.width, height)
         .fill();
     }
 

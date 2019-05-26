@@ -391,6 +391,7 @@ declare module '@react-pdf/renderer' {
     View,
     Image,
     Text,
+    Canvas,
     Link,
     Note,
     Font,

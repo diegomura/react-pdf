@@ -1,9 +1,9 @@
 import Yoga from 'yoga-layout';
 
-const yogaValue = (prop, value) => {
-  const isAlignType = prop =>
-    prop === 'alignItems' || prop === 'alignContent' || prop === 'alignSelf';
+const isAlignType = prop =>
+  prop === 'alignItems' || prop === 'alignContent' || prop === 'alignSelf';
 
+const yogaValue = (prop, value) => {
   switch (value) {
     case 'auto':
       if (prop === 'alignSelf') {

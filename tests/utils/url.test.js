@@ -1,4 +1,4 @@
-import { getURL } from '../src/utils/url';
+import { getURL } from '../../src/utils/url';
 
 describe('getURL', () => {
   test('should return empty string for missing param', () => {

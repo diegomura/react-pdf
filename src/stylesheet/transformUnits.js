@@ -1,16 +1,28 @@
-const DPI = 72; // 72pt per inch.
+import * as R from 'ramda';
 
+import { DPI } from '../constants';
+
+/**
+ * Parses scalar value in value and unit pairs
+ *
+ * @param {String} scalar value
+ * @returns {Object} parsed value
+ */
 const parseValue = value => {
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw)?$/g.exec(value);
-
-  if (match) {
-    return { value: parseFloat(match[1], 10), unit: match[2] || 'pt' };
-  }
-
-  return { value, unit: undefined };
+  return match
+    ? { value: parseFloat(match[1], 10), unit: match[2] || 'pt' }
+    : { value, unit: undefined };
 };
 
-const parseScalar = (value, container) => {
+/**
+ * Transform given scalar value
+ *
+ * @param {Object} container
+ * @param {String} styles value
+ * @returns {Object} transformed value
+ */
+const transformUnit = R.curryN(2, (container, value) => {
   const scalar = parseValue(value);
   switch (scalar.unit) {
     case 'in':
@@ -20,18 +32,23 @@ const parseScalar = (value, container) => {
     case 'cm':
       return scalar.value * (1 / 2.54) * DPI;
     case 'vh':
-      if (container.isAutoHeight) {
-        throw new Error(
-          'vh unit not supported in auto-height pages. Please specify page height if you want to use vh.',
-        );
-      }
-
       return scalar.value * (container.height / 100);
     case 'vw':
       return scalar.value * (container.width / 100);
     default:
       return scalar.value;
   }
-};
+});
 
-export default parseScalar;
+/**
+ * Transform units on given styles object.
+ * Container is given to calculate vh and vw
+ *
+ * @param {Object} container
+ * @param {Object} styles object
+ * @returns {Object} transformed styles
+ */
+const transformUnits = (container, styles) =>
+  R.map(transformUnit(container), styles);
+
+export default R.curryN(2, transformUnits);

@@ -1,4 +1,4 @@
-import propsEqual from '../src/utils/propsEqual';
+import propsEqual from '../../src/utils/propsEqual';
 
 describe('propsEqual', () => {
   test('should be true for two empty objects', () => {

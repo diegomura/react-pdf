@@ -16,7 +16,7 @@ import {
   version,
   StyleSheet,
   PDFRenderer,
-  createInstance,
+  // createInstance,
   Document as PDFDocument,
 } from './index';
 
@@ -55,21 +55,20 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   onDocumentUpdate() {
-    const oldBlobUrl = this.state.url;
+    // const oldBlobUrl = this.state.url;
 
-    this.instance
-      .toBlob()
-      .then(blob => {
-        this.setState(
-          { blob, url: URL.createObjectURL(blob), loading: false },
-          () => URL.revokeObjectURL(oldBlobUrl),
-        );
-      })
-      .catch(error => {
-        this.setState({ error });
-        console.error(error);
-        throw error;
-      });
+    this.instance.toBlob().then(() => console.log('Render finished'));
+    // .then(blob => {
+    //   this.setState(
+    //     { blob, url: URL.createObjectURL(blob), loading: false },
+    //     () => URL.revokeObjectURL(oldBlobUrl),
+    //   );
+    // })
+    // .catch(error => {
+    //   this.setState({ error });
+    //   console.error(error);
+    //   throw error;
+    // });
   }
 
   render() {
@@ -156,8 +155,8 @@ export {
   version,
   StyleSheet,
   PDFRenderer,
-  createInstance,
-} from './index';
+} from // createInstance,
+'./index';
 
 export default {
   pdf,
@@ -175,6 +174,6 @@ export default {
   StyleSheet,
   PDFRenderer,
   BlobProvider,
-  createInstance,
+  // createInstance,
   PDFDownloadLink,
 };

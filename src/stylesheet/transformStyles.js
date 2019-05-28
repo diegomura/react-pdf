@@ -1,117 +1,133 @@
-import yogaValue from './yogaValue';
-import parseScalar from './transformUnits';
-import { isBorderStyle, processBorders } from './borders';
-import { isBoxModelStyle, processBoxModel } from './boxModel';
-import { isFontWeightStyle, processFontWeight } from './transformFontWeight';
-import { isObjectPositionStyle, processObjectPosition } from './objectPosition';
-import {
-  isTransformOriginStyle,
-  processTransformOrigin,
-} from './transformOrigin';
+import * as R from 'ramda';
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
+import { FONT_WEIGHTS } from '../constants';
 
-const styleShorthands = {
-  margin: {
-    marginTop: true,
-    marginRight: true,
-    marginBottom: true,
-    marginLeft: true,
-  },
-  marginHorizontal: {
-    marginLeft: true,
-    marginRight: true,
-  },
-  marginVertical: {
-    marginTop: true,
-    marginBottom: true,
-  },
-  padding: {
-    paddingTop: true,
-    paddingRight: true,
-    paddingBottom: true,
-    paddingLeft: true,
-  },
-  paddingHorizontal: {
-    paddingLeft: true,
-    paddingRight: true,
-  },
-  paddingVertical: {
-    paddingTop: true,
-    paddingBottom: true,
-  },
-  border: {
-    borderTopColor: true,
-    borderTopStyle: true,
-    borderTopWidth: true,
-    borderRightColor: true,
-    borderRightStyle: true,
-    borderRightWidth: true,
-    borderBottomColor: true,
-    borderBottomStyle: true,
-    borderBottomWidth: true,
-    borderLeftColor: true,
-    borderLeftStyle: true,
-    borderLeftWidth: true,
-  },
-  borderTop: {
-    borderTopColor: true,
-    borderTopStyle: true,
-    borderTopWidth: true,
-  },
-  borderRight: {
-    borderRightColor: true,
-    borderRightStyle: true,
-    borderRightWidth: true,
-  },
-  borderBottom: {
-    borderBottomColor: true,
-    borderBottomStyle: true,
-    borderBottomWidth: true,
-  },
-  borderLeft: {
-    borderLeftColor: true,
-    borderLeftStyle: true,
-    borderLeftWidth: true,
-  },
-  borderColor: {
-    borderTopColor: true,
-    borderRightColor: true,
-    borderBottomColor: true,
-    borderLeftColor: true,
-  },
-  borderRadius: {
-    borderTopLeftRadius: true,
-    borderTopRightRadius: true,
-    borderBottomRightRadius: true,
-    borderBottomLeftRadius: true,
-  },
-  borderStyle: {
-    borderTopStyle: true,
-    borderRightStyle: true,
-    borderBottomStyle: true,
-    borderLeftStyle: true,
-  },
-  borderWidth: {
-    borderTopWidth: true,
-    borderRightWidth: true,
-    borderBottomWidth: true,
-    borderLeftWidth: true,
-  },
-  objectPosition: {
-    objectPositionX: true,
-    objectPositionY: true,
-  },
-  transformOrigin: {
-    transformOriginX: true,
-    transformOriginY: true,
-  },
+const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh)?/g;
+const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh)?/g;
+const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh)?)\s(\S+)\s(\S+)/;
+const TRANSFORM_ORIGIN_REGEX = /(-?\d+(px|in|mm|cm|pt|%|vw|vh)?)|top|right|bottom|left|center/g;
+
+const matchBoxModel = R.match(BOX_MODEL_REGEX);
+const matchObjectPosition = R.match(OBJECT_POSITION_REGEX);
+const matchBorderShorthand = R.match(BORDER_SHORTHAND_REGEX);
+const matchTransformOrigin = R.match(TRANSFORM_ORIGIN_REGEX);
+
+const isFontWeightStyle = key => key.match(/^fontWeight/);
+
+const isBorderStyle = (key, value) =>
+  key.match(/^border/) && typeof value === 'string';
+
+const isBoxModelStyle = (key, value) =>
+  key.match(/^(margin)|(padding)/) && typeof value === 'string';
+
+const isObjectPositionStyle = (key, value) =>
+  key.match(/^objectPosition/) && typeof value === 'string';
+
+const isTransformOriginStyle = (key, value) =>
+  key.match(/^transformOrigin/) && typeof value === 'string';
+
+const processBorders = (key, value) => {
+  const match = matchBorderShorthand(value);
+
+  if (match) {
+    if (key.match(/.Color/)) {
+      return match[4];
+    } else if (key.match(/.Style/)) {
+      return match[3];
+    } else if (key.match(/.Width/)) {
+      return match[1];
+    } else {
+      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
+    }
+  }
+
+  return value;
 };
 
-// Expand the shorthand properties to isolate every declaration from the others.
-const expandStyles = style => {
-  if (!style) return style;
+const processBoxModel = (key, value) => {
+  const match = matchBoxModel(value);
 
+  if (match) {
+    if (key.match(/.Top/)) {
+      return match[0];
+    } else if (key.match(/.Right/)) {
+      return match[1] || match[0];
+    } else if (key.match(/.Bottom/)) {
+      return match[2] || match[0];
+    } else if (key.match(/.Left/)) {
+      return match[3] || match[1] || match[0];
+    } else {
+      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
+    }
+  }
+
+  return value;
+};
+
+export const processFontWeight = (key, value) => {
+  if (!value) return FONT_WEIGHTS.normal;
+  if (typeof value === 'number') return value;
+  return FONT_WEIGHTS[value.toLowerCase()];
+};
+
+export const processObjectPosition = (key, value) => {
+  const match = matchObjectPosition(value);
+
+  if (match) {
+    if (key.match(/.X/)) {
+      return match[0];
+    } else if (key.match(/.Y/)) {
+      return match[1];
+    } else {
+      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
+    }
+  }
+
+  return value;
+};
+
+const transformOffsetKeywords = value => {
+  switch (value) {
+    case 'top':
+    case 'left':
+      return '0%';
+    case 'right':
+    case 'bottom':
+      return '100%';
+    case 'center':
+      return '50%';
+    default:
+      return value;
+  }
+};
+
+// Transforms shorthand transformOrigin values
+const processTransformOrigin = (key, value) => {
+  const match = matchTransformOrigin(value);
+
+  if (match) {
+    let result;
+
+    if (key.match(/.X/)) {
+      result = match[0];
+    } else if (key.match(/.Y/)) {
+      result = match[1] || match[0];
+    } else {
+      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
+    }
+
+    return transformOffsetKeywords(result);
+  }
+
+  return value;
+};
+
+const castInt = R.when(
+  R.complement(R.includes('%')),
+  R.either(v => parseInt(v, 10), R.identity),
+);
+
+const transformStyles = style => {
   const propsArray = Object.keys(style);
   const resolvedStyle = {};
 
@@ -119,85 +135,17 @@ const expandStyles = style => {
     const key = propsArray[i];
     const value = style[key];
 
-    switch (key) {
-      case 'display':
-      case 'flex':
-      case 'flexDirection':
-      case 'flexWrap':
-      case 'flexFlow':
-      case 'flexGrow':
-      case 'flexShrink':
-      case 'flexBasis':
-      case 'justifyContent':
-      case 'alignSelf':
-      case 'alignItems':
-      case 'alignContent':
-      case 'order':
-        resolvedStyle[key] = yogaValue(key, value);
-        break;
-      case 'textAlignVertical':
-        resolvedStyle.verticalAlign = value === 'center' ? 'middle' : value;
-        break;
-      case 'margin':
-      case 'marginHorizontal':
-      case 'marginVertical':
-      case 'padding':
-      case 'paddingHorizontal':
-      case 'paddingVertical':
-      case 'border':
-      case 'borderTop':
-      case 'borderRight':
-      case 'borderBottom':
-      case 'borderLeft':
-      case 'borderColor':
-      case 'borderRadius':
-      case 'borderStyle':
-      case 'borderWidth':
-      case 'objectPosition':
-      case 'transformOrigin':
-        {
-          const expandedProps = styleShorthands[key];
-          for (const propName in expandedProps) {
-            if (hasOwnProperty.call(expandedProps, propName)) {
-              resolvedStyle[propName] = value;
-            }
-          }
-        }
-        break;
-      default:
-        resolvedStyle[key] = value;
-        break;
-    }
-  }
-
-  return resolvedStyle;
-};
-
-const transformStyles = (style, container) => {
-  const expandedStyles = expandStyles(style);
-  const propsArray = Object.keys(expandedStyles);
-  const resolvedStyle = {};
-
-  for (let i = 0; i < propsArray.length; i++) {
-    const key = propsArray[i];
-    const value = expandedStyles[key];
-
-    let resolved;
-    if (isBorderStyle(key, value)) {
-      resolved = processBorders(key, value);
-    } else if (isBoxModelStyle(key, value)) {
-      resolved = processBoxModel(key, value);
-    } else if (isObjectPositionStyle(key, value)) {
-      resolved = processObjectPosition(key, value);
-    } else if (isTransformOriginStyle(key, value)) {
-      resolved = processTransformOrigin(key, value);
-    } else if (isFontWeightStyle(key, value)) {
-      resolved = processFontWeight(value);
-    } else {
-      resolved = value;
-    }
-
-    resolvedStyle[key] = parseScalar(resolved, container);
+    resolvedStyle[key] = R.compose(
+      castInt,
+      R.cond([
+        [isBorderStyle, processBorders],
+        [isBoxModelStyle, processBoxModel],
+        [isObjectPositionStyle, processObjectPosition],
+        [isTransformOriginStyle, processTransformOrigin],
+        [isFontWeightStyle, processFontWeight],
+        [R.T, R.always(value)],
+      ]),
+    )(key, value);
   }
 
   return resolvedStyle;

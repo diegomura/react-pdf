@@ -1,9 +1,12 @@
-import BlobStream from 'blob-stream';
+// import BlobStream from 'blob-stream';
+import * as R from 'ramda';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
-import { createInstance } from './elements';
+// import { createInstance } from './elements';
 import Font from './font';
 import { version } from '../package.json';
+import resolveStyles from './layout/resolveStyles';
+import resolvePageSizes from './layout/resolvePageSizes';
 
 const View = 'VIEW';
 const Text = 'TEXT';
@@ -15,81 +18,89 @@ const Document = 'DOCUMENT';
 const Canvas = 'CANVAS';
 
 const pdf = input => {
-  const container = createInstance({ type: 'ROOT' });
+  const container = { type: 'ROOT', children: [] };
   const mountNode = PDFRenderer.createContainer(container);
 
   if (input) updateContainer(input);
 
-  function callOnRender(params = {}) {
-    if (container.document.props.onRender) {
-      const layoutData = container.document.getLayoutData();
-      container.document.props.onRender({ ...params, layoutData });
-    }
-  }
+  // function callOnRender(params = {}) {
+  //   if (container.document.props.onRender) {
+  //     const layoutData = container.document.getLayoutData();
+  //     container.document.props.onRender({ ...params, layoutData });
+  //   }
+  // }
 
-  function isDirty() {
-    return container.isDirty;
-  }
+  // function isDirty() {
+  //   return container.isDirty;
+  // }
+
+  const render = async () => {
+    return R.compose(
+      R.tap(console.log),
+      resolveStyles,
+      resolvePageSizes,
+    )(container);
+  };
 
   function updateContainer(doc) {
     PDFRenderer.updateContainer(doc, mountNode, null);
   }
 
   async function toBlob() {
-    await container.render();
+    await render();
 
-    const stream = container.instance.pipe(BlobStream());
+    // const stream = container.instance.pipe(BlobStream());
 
-    return new Promise((resolve, reject) => {
-      stream.on('finish', () => {
-        try {
-          const blob = stream.toBlob('application/pdf');
+    // return new Promise((resolve, reject) => {
+    //   stream.on('finish', () => {
+    //     try {
+    //       const blob = stream.toBlob('application/pdf');
 
-          callOnRender({ blob });
+    //       callOnRender({ blob });
 
-          resolve(blob);
-        } catch (error) {
-          reject(error);
-        }
-      });
+    //       resolve(blob);
+    //     } catch (error) {
+    //       reject(error);
+    //     }
+    //   });
 
-      stream.on('error', reject);
-    });
+    //   stream.on('error', reject);
+    // });
   }
 
-  async function toBuffer() {
-    await container.render();
+  // async function toBuffer() {
+  //   await container.render();
 
-    callOnRender();
+  //   callOnRender();
 
-    return container.instance;
-  }
+  //   return container.instance;
+  // }
 
-  function toString() {
-    let result = '';
-    container.render();
+  // function toString() {
+  //   let result = '';
+  //   container.render();
 
-    return new Promise((resolve, reject) => {
-      try {
-        container.instance.on('data', function(buffer) {
-          result += buffer;
-        });
+  //   return new Promise((resolve, reject) => {
+  //     try {
+  //       container.instance.on('data', function(buffer) {
+  //         result += buffer;
+  //       });
 
-        container.instance.on('end', function() {
-          callOnRender({ string: result });
-          resolve(result);
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  //       container.instance.on('end', function() {
+  //         callOnRender({ string: result });
+  //         resolve(result);
+  //       });
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // }
 
   return {
-    isDirty,
+    // isDirty,
     container,
     updateContainer,
-    toBuffer,
+    // toBuffer,
     toBlob,
     toString,
   };
@@ -108,6 +119,6 @@ export {
   Document,
   Canvas,
   StyleSheet,
-  createInstance,
+  // createInstance,
   pdf,
 };

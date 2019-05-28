@@ -1,4 +1,4 @@
-import createCache from '../src/utils/cache';
+import createCache from '../../src/utils/cache';
 
 describe('Background', () => {
   test('should have length 0 by default', () => {

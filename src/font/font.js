@@ -2,7 +2,7 @@ import isUrl from 'is-url';
 import fontkit from '@react-pdf/fontkit';
 import fetch from 'cross-fetch';
 
-import { processFontWeight } from '../stylesheet/transformFontWeight';
+import { processFontWeight } from '../stylesheet/transformStyles';
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);

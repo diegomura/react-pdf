@@ -52,7 +52,7 @@ const mergeStyles = styles =>
   }, {});
 
 /**
- * Flatten styles array into one
+ * Flattens an array of style objects, into one aggregated style object.
  *
  * @param {Array} style objects array
  * @returns {Object} flatted style object

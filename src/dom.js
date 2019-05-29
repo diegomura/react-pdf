@@ -45,9 +45,9 @@ class InternalBlobProvider extends React.PureComponent {
   componentDidUpdate() {
     this.renderDocument();
 
-    if (this.instance.isDirty() && !this.state.error) {
-      this.onDocumentUpdate();
-    }
+    // if (this.instance.isDirty() && !this.state.error) {
+    //   this.onDocumentUpdate();
+    // }
   }
 
   renderDocument() {
@@ -57,13 +57,13 @@ class InternalBlobProvider extends React.PureComponent {
   onDocumentUpdate() {
     // const oldBlobUrl = this.state.url;
 
-    this.instance.toBlob().then(() => console.log('Render finished'));
-    // .then(blob => {
-    //   this.setState(
-    //     { blob, url: URL.createObjectURL(blob), loading: false },
-    //     () => URL.revokeObjectURL(oldBlobUrl),
-    //   );
-    // })
+    this.instance.toBlob().then(blob => {
+      this.setState({ blob });
+      // this.setState(
+      //   { blob, url: URL.createObjectURL(blob), loading: false },
+      //   () => URL.revokeObjectURL(oldBlobUrl),
+      // );
+    });
     // .catch(error => {
     //   this.setState({ error });
     //   console.error(error);
@@ -103,6 +103,63 @@ export const PDFViewer = ({
           {...props}
         />
       )}
+    </InternalBlobProvider>
+  );
+};
+
+const DOMNode = ({ type, box = {}, children = [], style = {}, value }) => {
+  if (type === 'TEXT_INSTANCE') {
+    return <div style={{ boxSizing: 'border-box' }}>{value}</div>;
+  }
+
+  return (
+    <div
+      style={{
+        ...style,
+        width: `${box.width || 0}px`,
+        height: `${box.height || 0}px`,
+        marginTop: `${box.marginTop || 0}px`,
+        marginRight: `${box.marginRight || 0}px`,
+        marginBottom: `${box.marginBottom || 0}px`,
+        marginLeft: `${box.marginLeft || 0}px`,
+        paddingTop: `${box.paddingTop || 0}px`,
+        paddingRight: `${box.paddingRight || 0}px`,
+        paddingBottom: `${box.paddingBottom || 0}px`,
+        paddingLeft: `${box.paddingLeft || 0}px`,
+        fontSize: `${style.fontSize || 0}px`,
+        border: '1px solid black',
+        boxSizing: 'border-box',
+      }}
+    >
+      {children.map((child, i) => (
+        <DOMNode key={i} {...child} />
+      ))}
+    </div>
+  );
+};
+
+export const DOMViewer = ({
+  className,
+  style,
+  children,
+  innerRef,
+  ...props
+}) => {
+  return (
+    <InternalBlobProvider document={children}>
+      {({ blob }) => {
+        if (!blob || Object.keys(blob).length === 0) return null;
+
+        const doc = blob.children[0];
+
+        return (
+          <div style={{ margin: '20px' }}>
+            {doc.children.map(page => (
+              <DOMNode {...page} />
+            ))}
+          </div>
+        );
+      }}
     </InternalBlobProvider>
   );
 };
@@ -154,9 +211,8 @@ export {
   Canvas,
   version,
   StyleSheet,
-  PDFRenderer,
-} from // createInstance,
-'./index';
+  PDFRenderer, // createInstance,
+} from './index';
 
 export default {
   pdf,

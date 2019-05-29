@@ -8,6 +8,7 @@ import { version } from '../package.json';
 import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
 import resolveInheritance from './layout/resolveInheritance';
+import resolveDimensions from './layout/resolveDimensions';
 import {
   VIEW,
   TEXT,
@@ -48,6 +49,7 @@ const pdf = input => {
   const render = async () => {
     console.time('layout');
     const res = R.compose(
+      resolveDimensions,
       resolveInheritance,
       resolveStyles,
       resolvePageSizes,
@@ -64,7 +66,7 @@ const pdf = input => {
   }
 
   async function toBlob() {
-    await render();
+    return render();
 
     // const stream = container.instance.pipe(BlobStream());
 

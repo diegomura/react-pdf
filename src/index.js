@@ -7,15 +7,26 @@ import Font from './font';
 import { version } from '../package.json';
 import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
+import resolveInheritance from './layout/resolveInheritance';
+import {
+  VIEW,
+  TEXT,
+  LINK,
+  PAGE,
+  NOTE,
+  IMAGE,
+  DOCUMENT,
+  CANVAS,
+} from './constants';
 
-const View = 'VIEW';
-const Text = 'TEXT';
-const Link = 'LINK';
-const Page = 'PAGE';
-const Note = 'NOTE';
-const Image = 'IMAGE';
-const Document = 'DOCUMENT';
-const Canvas = 'CANVAS';
+const View = VIEW;
+const Text = TEXT;
+const Link = LINK;
+const Page = PAGE;
+const Note = NOTE;
+const Image = IMAGE;
+const Document = DOCUMENT;
+const Canvas = CANVAS;
 
 const pdf = input => {
   const container = { type: 'ROOT', children: [] };
@@ -35,11 +46,17 @@ const pdf = input => {
   // }
 
   const render = async () => {
-    return R.compose(
-      R.tap(console.log),
+    console.time('layout');
+    const res = R.compose(
+      resolveInheritance,
       resolveStyles,
       resolvePageSizes,
     )(container);
+    console.timeEnd('layout');
+
+    console.log(res);
+
+    return res;
   };
 
   function updateContainer(doc) {

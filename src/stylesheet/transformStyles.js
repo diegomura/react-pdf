@@ -122,10 +122,15 @@ const processTransformOrigin = (key, value) => {
   return value;
 };
 
-const castInt = R.when(
-  R.complement(R.includes('%')),
-  R.either(v => parseInt(v, 10), R.identity),
+const matchNumber = R.when(
+  R.is(String),
+  R.compose(
+    R.complement(R.isEmpty),
+    R.match(/^-?\d*\.?\d*$/),
+  ),
 );
+
+const castInt = R.when(matchNumber, v => parseInt(v, 10));
 
 const transformStyles = style => {
   const propsArray = Object.keys(style);

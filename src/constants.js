@@ -1,3 +1,12 @@
+export const VIEW = 'VIEW';
+export const TEXT = 'TEXT';
+export const LINK = 'LINK';
+export const PAGE = 'PAGE';
+export const NOTE = 'NOTE';
+export const IMAGE = 'IMAGE';
+export const DOCUMENT = 'DOCUMENT';
+export const CANVAS = 'CANVAS';
+
 export const DPI = 72; // 72pt per inch.
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Common_weight_name_mapping

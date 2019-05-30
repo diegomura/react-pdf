@@ -1,38 +1,80 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
+import matchPercent from '../utils/matchPercent';
+
 const YOGA_NODE = '_yogaNode';
+
+const capitalize = R.compose(
+  R.join(''),
+  R.juxt([
+    R.compose(
+      R.toUpper,
+      R.head,
+    ),
+    R.tail,
+  ]),
+);
 
 const isNotTextInstance = R.complement(R.propEq)('type', 'TEXT_INSTANCE');
 
 const insertYogaNodes = parent =>
   R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
 
-const setYogaValues = node => {
-  const width = node.box.width || node.style.width;
-  const height = node.box.height || node.style.height;
+const setDimension = attr => value =>
+  R.tap(yogaNode => {
+    if (value) {
+      const fixedMethod = `set${capitalize(attr)}`;
+      const percentMethod = `${fixedMethod}Percent`;
+      const percent = matchPercent(value);
 
-  if (width) node[YOGA_NODE].setWidth(width);
-  if (height) node[YOGA_NODE].setHeight(height);
-  if (node.style.marginTop)
-    node[YOGA_NODE].setMargin(Yoga.EDGE_TOP, node.style.marginTop);
-  if (node.style.marginRight)
-    node[YOGA_NODE].setMargin(Yoga.EDGE_RIGHT, node.style.marginRight);
-  if (node.style.marginBottom)
-    node[YOGA_NODE].setMargin(Yoga.EDGE_BOTTOM, node.style.marginBottom);
-  if (node.style.marginLeft)
-    node[YOGA_NODE].setMargin(Yoga.EDGE_LEFT, node.style.marginLeft);
-  if (node.style.paddingTop)
-    node[YOGA_NODE].setPadding(Yoga.EDGE_TOP, node.style.paddingTop);
-  if (node.style.paddingRight)
-    node[YOGA_NODE].setPadding(Yoga.EDGE_RIGHT, node.style.paddingRight);
-  if (node.style.paddingBottom)
-    node[YOGA_NODE].setPadding(Yoga.EDGE_BOTTOM, node.style.paddingBottom);
-  if (node.style.paddingLeft)
-    node[YOGA_NODE].setPadding(Yoga.EDGE_LEFT, node.style.paddingLeft);
+      if (percent) {
+        yogaNode[percentMethod](percent.value);
+      } else {
+        yogaNode[fixedMethod](value);
+      }
+    }
+  });
 
-  return node;
-};
+const setMargin = edge => value =>
+  R.tap(yogaNode => {
+    if (value) {
+      yogaNode.setMargin(edge, value);
+    }
+  });
+
+const setPadding = edge => value =>
+  R.tap(yogaNode => {
+    if (value) {
+      yogaNode.setPadding(edge, value);
+    }
+  });
+
+const setWidth = setDimension('width');
+const setHeight = setDimension('height');
+const setMarginTop = setMargin(Yoga.EDGE_TOP);
+const setMarginRight = setMargin(Yoga.EDGE_RIGHT);
+const setMarginBottom = setMargin(Yoga.EDGE_BOTTOM);
+const setMarginLeft = setMargin(Yoga.EDGE_LEFT);
+const setPaddingTop = setPadding(Yoga.EDGE_TOP);
+const setPaddingRight = setPadding(Yoga.EDGE_RIGHT);
+const setPaddingBottom = setPadding(Yoga.EDGE_BOTTOM);
+const setPaddingLeft = setPadding(Yoga.EDGE_LEFT);
+
+const setYogaValues = R.tap(node => {
+  R.compose(
+    setWidth(node.box.width || node.style.width),
+    setHeight(node.box.height || node.style.height),
+    setMarginTop(node.style.marginTop),
+    setMarginRight(node.style.marginRight),
+    setMarginBottom(node.style.marginBottom),
+    setMarginLeft(node.style.marginLeft),
+    setPaddingTop(node.style.paddingTop),
+    setPaddingRight(node.style.paddingRight),
+    setPaddingBottom(node.style.paddingBottom),
+    setPaddingLeft(node.style.paddingLeft),
+  )(node[YOGA_NODE]);
+});
 
 const createYogaNodes = node => {
   const yogaNode = Yoga.Node.createDefault();

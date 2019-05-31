@@ -9,10 +9,6 @@ class Canvas extends Base {
     wrap: false,
   };
 
-  get name() {
-    return 'Canvas';
-  }
-
   async render() {
     const { left, top, width, height } = this.getAbsoluteLayout();
 

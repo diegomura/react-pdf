@@ -33,10 +33,6 @@ class Text extends Base {
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
 
-  get name() {
-    return 'Text';
-  }
-
   get src() {
     return getURL(this.props.src || this.props.href);
   }
@@ -59,30 +55,6 @@ class Text extends Base {
     return Math.max(
       ...this.lines.map(line => AttributedString.advanceWidth(line)),
     );
-  }
-
-  appendChild(child) {
-    if (child) {
-      child.parent = this;
-      this.children.push(child);
-      this.computed = false;
-      this.attributedString = null;
-      this.markDirty();
-    }
-  }
-
-  removeChild(child) {
-    const index = this.children.indexOf(child);
-
-    if (index !== -1) {
-      child.parent = null;
-      this.children.splice(index, 1);
-      this.computed = false;
-      this.attributedString = null;
-      this.markDirty();
-
-      child.cleanup();
-    }
   }
 
   lineIndexAtHeight(height) {
@@ -212,19 +184,6 @@ class Text extends Base {
     this.marginBottom = 0;
     this.paddingBottom = 0;
     this.end = slicedLineIndex;
-  }
-
-  clone() {
-    const text = super.clone();
-
-    text.layoutEngine = this.layoutEngine;
-
-    // Save calculated layout for non-dynamic clone elements
-    if (this.blocks && !this.props.render) {
-      text.blocks = [...this.blocks];
-    }
-
-    return text;
   }
 
   renderText() {

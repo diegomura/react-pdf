@@ -11,30 +11,6 @@ class Document {
     title: null,
   };
 
-  constructor(root, props) {
-    this.root = root;
-    this.style = {};
-    this.props = props;
-    this.children = [];
-    this.subpages = [];
-  }
-
-  get name() {
-    return 'Document';
-  }
-
-  appendChild(child) {
-    child.parent = this;
-    this.children.push(child);
-  }
-
-  removeChild(child) {
-    const i = this.children.indexOf(child);
-    child.parent = null;
-    child.cleanup();
-    this.children.slice(i, 1);
-  }
-
   addMetaData() {
     const { title, author, subject, keywords, creator, producer } = this.props;
 
@@ -113,22 +89,6 @@ class Document {
 
   async loadAssets() {
     await Promise.all([this.loadFonts(), this.loadImages(), this.loadEmojis()]);
-  }
-
-  applyProps() {
-    this.children.forEach(child => child.applyProps());
-  }
-
-  update(newProps) {
-    this.props = newProps;
-  }
-
-  cleanup() {
-    this.subpages.forEach(p => p.cleanup());
-  }
-
-  finish() {
-    this.children.forEach(c => c.cleanup());
   }
 
   getLayoutData() {

@@ -1,4 +1,4 @@
-import { pick, toPairsIn } from 'ramda';
+import { pick } from 'ramda';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
@@ -7,51 +7,13 @@ import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import warning from '../utils/warning';
-import deepMerge from '../utils/deepMerge';
-import upperFirst from '../utils/upperFirst';
-import isFunction from '../utils/isFunction';
 import matchPercent from '../utils/matchPercent';
 import { inheritedProperties } from '../stylesheet/inherit';
 
+// TODO
+warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
+
 class Base extends Node {
-  constructor(root, props) {
-    super();
-
-    this.root = root;
-    this.style = {};
-    this.props = deepMerge([
-      this.constructor.defaultProps,
-      Base.defaultProps,
-      props,
-    ]);
-
-    warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
-  }
-
-  get page() {
-    return this.parent.page;
-  }
-
-  get wrap() {
-    return this.props.wrap;
-  }
-
-  get break() {
-    return this.props.break;
-  }
-
-  get fixed() {
-    return this.props.fixed;
-  }
-
-  get minPresenceAhead() {
-    return this.props.minPresenceAhead;
-  }
-
-  get absolute() {
-    return this.props.style.position === 'absolute';
-  }
-
   get origin() {
     const { transformOriginX, transformOriginY } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
@@ -67,42 +29,6 @@ class Base extends Node {
 
   set break(value) {
     this.props.break = value;
-  }
-
-  appendChild(child) {
-    super.appendChild(child);
-    this.root.markDirty();
-  }
-
-  appendChildBefore(child, beforeChild) {
-    super.appendChildBefore(child, beforeChild);
-    this.root.markDirty();
-  }
-
-  removeChild(child) {
-    super.removeChild(child);
-    this.root.markDirty();
-  }
-
-  update(newProps) {
-    this.props = deepMerge([
-      this.constructor.defaultProps,
-      Base.defaultProps,
-      newProps,
-    ]);
-    this.root.markDirty();
-  }
-
-  applyProps() {
-    this.style = this.resolveStyles();
-
-    toPairsIn(this.style).map(([attribute, value]) => {
-      this.applyStyle(attribute, value);
-    });
-
-    this.children.forEach(child => {
-      if (child.applyProps) child.applyProps();
-    });
   }
 
   resolveStyles() {
@@ -121,44 +47,6 @@ class Base extends Node {
       : {};
 
     return { ...inheritedStyles, ...ownStyles };
-  }
-
-  applyStyle(attribute, value) {
-    if (value === undefined) return;
-
-    const setter = `set${upperFirst(attribute)}`;
-
-    switch (attribute) {
-      case 'marginTop':
-      case 'marginRight':
-      case 'marginBottom':
-      case 'marginLeft':
-      case 'paddingTop':
-      case 'paddingRight':
-      case 'paddingBottom':
-      case 'paddingLeft':
-      case 'borderTopWidth':
-      case 'borderRightWidth':
-      case 'borderBottomWidth':
-      case 'borderLeftWidth':
-      case 'position':
-      case 'top':
-      case 'right':
-      case 'bottom':
-      case 'left':
-      case 'width':
-      case 'height':
-      case 'minHeight':
-      case 'maxHeight':
-      case 'minWidth':
-      case 'maxWidth':
-        this[attribute] = value;
-        break;
-      default:
-        if (isFunction(this.layout[setter])) {
-          this.layout[setter](value);
-        }
-    }
   }
 
   getLayoutData() {
@@ -181,8 +69,6 @@ class Base extends Node {
     const { backgroundColor, opacity = 1 } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
-    console.log(this.name, { left, top, width, height });
-
     if (backgroundColor) {
       this.root.instance.save();
 
@@ -195,15 +81,6 @@ class Base extends Node {
         .fill()
         .restore();
     }
-  }
-
-  clone() {
-    const clone = new this.constructor(this.root, this.props);
-
-    clone.copyStyle(this);
-    clone.style = this.style;
-
-    return clone;
   }
 
   onNodeSplit(height, clone) {

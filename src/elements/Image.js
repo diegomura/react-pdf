@@ -21,10 +21,6 @@ class Image extends Base {
     this.layout.setMeasureFunc(this.measureImage.bind(this));
   }
 
-  get name() {
-    return 'Image';
-  }
-
   shouldGrow() {
     return !!this.style.flexGrow;
   }
@@ -115,12 +111,6 @@ class Image extends Base {
       this.image = { width: 0, height: 0 };
       console.warn(e.message);
     }
-  }
-
-  clone() {
-    const clone = super.clone();
-    clone.image = this.image;
-    return clone;
   }
 
   async onAppendDynamically() {

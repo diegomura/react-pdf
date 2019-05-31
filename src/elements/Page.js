@@ -6,7 +6,6 @@ import Ruler from '../mixins/ruler';
 import warning from '../utils/warning';
 import { createInstance } from './index';
 import TextInstance from './TextInstance';
-import getPageSize from '../utils/pageSizes';
 import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {
@@ -15,49 +14,6 @@ class Page extends Base {
     wrap: true,
     orientation: 'portrait',
   };
-
-  constructor(root, props) {
-    super(root, props);
-
-    this._size = null;
-  }
-
-  get name() {
-    return 'Page';
-  }
-
-  get document() {
-    return this.parent;
-  }
-
-  get page() {
-    return this;
-  }
-
-  get orientation() {
-    return this.props.orientation;
-  }
-
-  get size() {
-    if (this._size) return this._size;
-
-    this._size = getPageSize(this.props.size, this.orientation);
-
-    // Adjust size for ruler
-    if (this.hasHorizontalRuler()) {
-      this._size.width += this.getRulerWidth();
-    }
-
-    if (this.hasVerticalRuler()) {
-      this._size.height += this.getRulerWidth();
-    }
-
-    return this._size;
-  }
-
-  get isAutoHeight() {
-    return typeof this.size.height === 'undefined';
-  }
 
   resetMargins() {
     if (
@@ -75,27 +31,6 @@ class Page extends Base {
       this.marginBottom = 0;
       this.marginLeft = 0;
       this.marginRight = 0;
-    }
-  }
-
-  applyProps() {
-    super.applyProps();
-
-    this.top = 0;
-    this.left = 0;
-    this.width = this.size.width;
-
-    this.resetMargins();
-
-    // Add some padding if ruler present, so we can see the whole page inside it
-    const rulerWidth = this.getRulerWidth();
-
-    if (this.hasHorizontalRuler()) {
-      this.paddingTop = this.paddingTop + rulerWidth;
-    }
-
-    if (this.hasVerticalRuler()) {
-      this.paddingLeft = this.paddingLeft + rulerWidth;
     }
   }
 
@@ -167,17 +102,6 @@ class Page extends Base {
     clone.marginTop = 0;
     this.marginBottom = 0;
     this.calculateLayout();
-  }
-
-  clone() {
-    const clone = super.clone();
-    clone._size = this.size;
-    return clone;
-  }
-
-  update(newProps) {
-    super.update(newProps);
-    this._size = null;
   }
 
   async render() {

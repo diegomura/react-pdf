@@ -1,70 +1,72 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
-import matchPercent from '../utils/matchPercent';
+import getMargin from '../node/getMargin';
+import getPadding from '../node/getPadding';
+import getPosition from '../node/getPosition';
+import getDimension from '../node/getDimension';
+import getBorderWidth from '../node/getBorderWidth';
+import setFlex from '../node/setFlex';
+import setDisplay from '../node/setDisplay';
+import setOverflow from '../node/setOverflow';
+import setFlexWrap from '../node/setFlexWrap';
+import setFlexGrow from '../node/setFlexGrow';
+import setFlexBasis from '../node/setFlexBasis';
+import setAlignSelf from '../node/setAlignSelf';
+import setFlexShrink from '../node/setFlexShrink';
+import setAspectRatio from '../node/setAspectRatio';
+import setAlignContent from '../node/setAlignContent';
+import setPositionType from '../node/setPositionType';
+import setFlexDirection from '../node/setFlexDirection';
+import setJustifyContent from '../node/setJustifyContent';
+import {
+  setMarginTop,
+  setMarginRight,
+  setMarginBottom,
+  setMarginLeft,
+} from '../node/setMargin';
+import {
+  setPaddingTop,
+  setPaddingRight,
+  setPaddingBottom,
+  setPaddingLeft,
+} from '../node/setPadding';
+import {
+  setBorderTop,
+  setBorderRight,
+  setBorderBottom,
+  setBorderLeft,
+} from '../node/setBorderWidth';
+import {
+  setPositionTop,
+  setPositionRight,
+  setPositionBottom,
+  setPositionLeft,
+} from '../node/setPosition';
+import {
+  setWidth,
+  setHeight,
+  setMinWidth,
+  setMaxWidth,
+  setMinHeight,
+  setMaxHeight,
+} from '../node/setDimension';
 
 const YOGA_NODE = '_yogaNode';
-
-const capitalize = R.compose(
-  R.join(''),
-  R.juxt([
-    R.compose(
-      R.toUpper,
-      R.head,
-    ),
-    R.tail,
-  ]),
-);
 
 const isNotTextInstance = R.complement(R.propEq)('type', 'TEXT_INSTANCE');
 
 const insertYogaNodes = parent =>
   R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
 
-const setDimension = attr => value =>
-  R.tap(yogaNode => {
-    if (value) {
-      const fixedMethod = `set${capitalize(attr)}`;
-      const percentMethod = `${fixedMethod}Percent`;
-      const percent = matchPercent(value);
-
-      if (percent) {
-        yogaNode[percentMethod](percent.value);
-      } else {
-        yogaNode[fixedMethod](value);
-      }
-    }
-  });
-
-const setMargin = edge => value =>
-  R.tap(yogaNode => {
-    if (value) {
-      yogaNode.setMargin(edge, value);
-    }
-  });
-
-const setPadding = edge => value =>
-  R.tap(yogaNode => {
-    if (value) {
-      yogaNode.setPadding(edge, value);
-    }
-  });
-
-const setWidth = setDimension('width');
-const setHeight = setDimension('height');
-const setMarginTop = setMargin(Yoga.EDGE_TOP);
-const setMarginRight = setMargin(Yoga.EDGE_RIGHT);
-const setMarginBottom = setMargin(Yoga.EDGE_BOTTOM);
-const setMarginLeft = setMargin(Yoga.EDGE_LEFT);
-const setPaddingTop = setPadding(Yoga.EDGE_TOP);
-const setPaddingRight = setPadding(Yoga.EDGE_RIGHT);
-const setPaddingBottom = setPadding(Yoga.EDGE_BOTTOM);
-const setPaddingLeft = setPadding(Yoga.EDGE_LEFT);
-
 const setYogaValues = R.tap(node => {
   R.compose(
     setWidth(node.box.width || node.style.width),
     setHeight(node.box.height || node.style.height),
+    setMinWidth(node.style.minWidth),
+    setMaxWidth(node.style.maxWidth),
+    setMinHeight(node.style.minHeight),
+    setMaxHeight(node.style.maxHeight),
     setMarginTop(node.style.marginTop),
     setMarginRight(node.style.marginRight),
     setMarginBottom(node.style.marginBottom),
@@ -73,7 +75,28 @@ const setYogaValues = R.tap(node => {
     setPaddingRight(node.style.paddingRight),
     setPaddingBottom(node.style.paddingBottom),
     setPaddingLeft(node.style.paddingLeft),
-  )(node[YOGA_NODE]);
+    setPositionType(node.style.position),
+    setPositionTop(node.style.top),
+    setPositionRight(node.style.rigth),
+    setPositionBottom(node.style.bottom),
+    setPositionLeft(node.style.left),
+    setBorderTop(node.style.borderTopWidth),
+    setBorderRight(node.style.borderRightWidth),
+    setBorderBottom(node.style.borderBottomWidth),
+    setBorderLeft(node.style.borderLeftWidth),
+    setDisplay(node.style.display),
+    setFlexDirection(node.style.flexDirection),
+    setAlignSelf(node.style.alignSelf),
+    setAlignContent(node.style.alignContent),
+    setJustifyContent(node.style.justifyContent),
+    setFlexWrap(node.style.flexWrap),
+    setOverflow(node.style.overflow),
+    setAspectRatio(node.style.aspectRatio),
+    setFlex(node.style.flex),
+    setFlexBasis(node.style.flexBasis),
+    setFlexGrow(node.style.flexGrow),
+    setFlexShrink(node.style.flexShrink),
+  )(node);
 });
 
 const createYogaNodes = node => {
@@ -99,48 +122,16 @@ const createYogaNodes = node => {
 const calculateLayout = R.tap(page => page[YOGA_NODE].calculateLayout());
 
 const persistDimensions = node => {
-  const yogaNode = node[YOGA_NODE];
-  const layout = yogaNode.getComputedLayout();
-
-  const minMaxLayout = {
-    minWidth: yogaNode.getMinWidth().value,
-    maxWidth: yogaNode.getMaxWidth().value,
-    minHeight: yogaNode.getMinHeight().value,
-    maxHeight: yogaNode.getMaxHeight().value,
-  };
-
-  const padding = {
-    paddingTop: yogaNode.getComputedPadding(Yoga.EDGE_TOP) || 0,
-    paddingRight: yogaNode.getComputedPadding(Yoga.EDGE_RIGHT) || 0,
-    paddingBottom: yogaNode.getComputedPadding(Yoga.EDGE_BOTTOM) || 0,
-    paddingLeft: yogaNode.getComputedPadding(Yoga.EDGE_LEFT) || 0,
-  };
-
-  const margin = {
-    marginTop: yogaNode.getComputedMargin(Yoga.EDGE_TOP) || 0,
-    marginRight: yogaNode.getComputedMargin(Yoga.EDGE_RIGHT) || 0,
-    marginBottom: yogaNode.getComputedMargin(Yoga.EDGE_BOTTOM) || 0,
-    marginLeft: yogaNode.getComputedMargin(Yoga.EDGE_LEFT) || 0,
-  };
-
-  const border = {
-    borderTopWidth: yogaNode.getComputedBorder(Yoga.EDGE_TOP) || 0,
-    borderRightWidth: yogaNode.getComputedBorder(Yoga.EDGE_RIGHT) || 0,
-    borderBottomWidth: yogaNode.getComputedBorder(Yoga.EDGE_BOTTOM) || 0,
-    borderLeftWidth: yogaNode.getComputedBorder(Yoga.EDGE_LEFT) || 0,
-  };
-
-  const position = {
-    position:
-      yogaNode.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
-        ? 'absolute'
-        : 'relative',
-  };
-
   return R.evolve({
     children: R.map(R.when(isNotTextInstance, persistDimensions)),
     box: R.always(
-      R.mergeAll([layout, padding, margin, border, position, minMaxLayout]),
+      R.mergeAll([
+        getPadding(node),
+        getMargin(node),
+        getBorderWidth(node),
+        getPosition(node),
+        getDimension(node),
+      ]),
     ),
   })(node);
 };

@@ -9,6 +9,7 @@ import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
 import resolveInheritance from './layout/resolveInheritance';
 import resolveDimensions from './layout/resolveDimensions';
+import resolveAbsoluteCoordinates from './layout/resolveAbsoluteCoordinates';
 import {
   VIEW,
   TEXT,
@@ -49,7 +50,10 @@ const pdf = input => {
   const render = async () => {
     console.time('layout');
     const res = R.compose(
+      resolveAbsoluteCoordinates,
+      // pageWrapping
       resolveDimensions,
+      // fetchAssets,
       resolveInheritance,
       resolveStyles,
       resolvePageSizes,

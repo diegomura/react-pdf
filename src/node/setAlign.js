@@ -25,7 +25,7 @@ const setAlign = attr => value =>
         [R.equals('space-between'), R.always(Yoga.ALIGN_SPACE_BETWEEN)],
         [R.equals('space-around'), R.always(Yoga.ALIGN_SPACE_AROUND)],
         [R.T, R.always(Yoga.ALIGN_AUTO)],
-      ]);
+      ])(value);
 
       yogaNode[`setAlign${capitalize(attr)}`](yogaValue);
     }

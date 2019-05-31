@@ -20,7 +20,7 @@ const setJustifyContent = value =>
         [R.equals('space-around'), R.always(Yoga.JUSTIFY_SPACE_AROUND)],
         [R.equals('space-evenly'), R.always(Yoga.JUSTIFY_SPACE_EVENLY)],
         [R.T, R.always(Yoga.JUSTIFY_FLEX_START)],
-      ]);
+      ])(value);
 
       yogaNode.setJustifyContent(yogaValue);
     }

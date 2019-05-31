@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import setYogaValue from './setYogaValue';
 
 /**
@@ -7,6 +9,9 @@ import setYogaValue from './setYogaValue';
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setFlexShrink = setYogaValue('flex-shrink');
+const setFlexShrink = R.compose(
+  setYogaValue('flexShrink'),
+  R.defaultTo(1),
+);
 
 export default setFlexShrink;

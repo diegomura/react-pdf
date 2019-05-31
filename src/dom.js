@@ -107,79 +107,68 @@ export const PDFViewer = ({
   );
 };
 
-const DOMNode = ({ type, box = {}, children = [], style = {}, value }) => {
-  if (type === 'TEXT_INSTANCE') {
-    return <div style={{ boxSizing: 'border-box' }}>{value}</div>;
+class PageCanvas extends React.Component {
+  componentDidMount() {
+    const ctx = this.canvas.getContext('2d');
+
+    const renderNode = node => {
+      const { width, height, top, left } = node.box;
+
+      ctx.beginPath();
+      ctx.rect(left, top, width, height);
+      ctx.fillStyle = node.style.backgroundColor || 'white';
+      ctx.fill();
+
+      node.children.forEach(renderNode);
+    };
+
+    renderNode(this.props.page);
+
+    this.pngLink.href = this.canvas.toDataURL('image/png');
+    this.jpgLink.href = this.canvas.toDataURL('image/jpg');
   }
 
-  const nodeStyle = {
-    ...style,
-    width: `${box.width || 0}px`,
-    height: `${box.height || 0}px`,
-    marginTop: `${box.marginTop || 0}px`,
-    marginRight: `${box.marginRight || 0}px`,
-    marginBottom: `${box.marginBottom || 0}px`,
-    marginLeft: `${box.marginLeft || 0}px`,
-    paddingTop: `${box.paddingTop || 0}px`,
-    paddingRight: `${box.paddingRight || 0}px`,
-    paddingBottom: `${box.paddingBottom || 0}px`,
-    paddingLeft: `${box.paddingLeft || 0}px`,
-    position: `${style.position || 'relative'}`,
-    fontSize: `${style.fontSize || 0}px`,
-    borderTopWidth: `${style.borderTopWidth || 0}px`,
-    borderRightWidth: `${style.borderRightWidth || 0}px`,
-    borderBottomWidth: `${style.borderBottomWidth || 0}px`,
-    borderLeftWidth: `${style.borderLeftWidth || 0}px`,
-    display: `${style.display || 'flex'}`,
-    borderStyle: 'solid',
-    borderColor: 'black',
-    boxSizing: 'border-box',
-  };
+  render() {
+    const { page } = this.props;
 
-  if (type === 'PAGE') {
     return (
-      <div style={{ ...nodeStyle, border: '1px solid black' }}>
-        {children.map((child, i) => (
-          <DOMNode key={i} {...child} />
-        ))}
-      </div>
+      <React.Fragment>
+        <canvas
+          height={page.box.height}
+          id="myCanvas"
+          ref={ref => (this.canvas = ref)}
+          style={{ border: '1px solid black' }}
+          width={page.box.width}
+        />
+        <a download="doc.png" ref={ref => (this.pngLink = ref)}>
+          Download PNG
+        </a>
+        <a download="doc.jpg" ref={ref => (this.jpgLink = ref)}>
+          Download JPG
+        </a>
+      </React.Fragment>
     );
   }
+}
 
-  return (
-    <div style={nodeStyle}>
-      {children.map((child, i) => (
-        <DOMNode key={i} {...child} />
-      ))}
-    </div>
-  );
-};
+export class DOMViewer extends React.Component {
+  render() {
+    const { className, style, children, innerRef, ...props } = this.props;
 
-export const DOMViewer = ({
-  className,
-  style,
-  children,
-  innerRef,
-  ...props
-}) => {
-  return (
-    <InternalBlobProvider document={children}>
-      {({ blob }) => {
-        if (!blob || Object.keys(blob).length === 0) return null;
+    return (
+      <InternalBlobProvider document={children}>
+        {({ blob }) => {
+          if (!blob || Object.keys(blob).length === 0) return null;
 
-        const doc = blob.children[0];
+          const doc = blob.children[0];
+          const page = doc.children[0];
 
-        return (
-          <div style={{ margin: '20px' }}>
-            {doc.children.map(page => (
-              <DOMNode {...page} />
-            ))}
-          </div>
-        );
-      }}
-    </InternalBlobProvider>
-  );
-};
+          return <PageCanvas page={page} />;
+        }}
+      </InternalBlobProvider>
+    );
+  }
+}
 
 export const PDFDownloadLink = ({
   document: doc,

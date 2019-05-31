@@ -181,6 +181,8 @@ class Base extends Node {
     const { backgroundColor, opacity = 1 } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
 
+    console.log(this.name, { left, top, width, height });
+
     if (backgroundColor) {
       this.root.instance.save();
 

@@ -17,7 +17,7 @@ const setOverflow = value =>
         [R.equals('hidden'), R.always(Yoga.OVERFLOW_HIDDEN)],
         [R.equals('scroll'), R.always(Yoga.OVERFLOW_SCROLL)],
         [R.T, R.always(Yoga.OVERFLOW_VISIBLE)],
-      ]);
+      ])(value);
 
       yogaNode.setOverflow(yogaValue);
     }

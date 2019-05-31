@@ -101,20 +101,20 @@ class Node {
   //   this.layout.setBorder(edge, value);
   // }
 
-  getAbsoluteLayout() {
-    const parent = this.parent;
-    const parentLayout =
-      parent && parent.getAbsoluteLayout
-        ? parent.getAbsoluteLayout()
-        : { left: 0, top: 0 };
+  // getAbsoluteLayout() {
+  //   const parent = this.parent;
+  //   const parentLayout =
+  //     parent && parent.getAbsoluteLayout
+  //       ? parent.getAbsoluteLayout()
+  //       : { left: 0, top: 0 };
 
-    return {
-      left: this.left + parentLayout.left,
-      top: this.top + parentLayout.top,
-      height: this.height,
-      width: this.width,
-    };
-  }
+  //   return {
+  //     left: this.left + parentLayout.left,
+  //     top: this.top + parentLayout.top,
+  //     height: this.height,
+  //     width: this.width,
+  //   };
+  // }
 
   // copyStyle(node) {
   //   this.layout.copyStyle(node.layout);

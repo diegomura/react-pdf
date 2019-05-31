@@ -17,7 +17,7 @@ const setFlexWrap = value =>
         [R.equals('wrap'), R.always(Yoga.WRAP_WRAP)],
         [R.equals('wrap-reverse'), R.always(Yoga.WRAP_WRAP_REVERSE)],
         [R.T, R.always(Yoga.WRAP_NO_WRAP)],
-      ]);
+      ])(value);
 
       yogaNode.setFlexWrap(yogaValue);
     }

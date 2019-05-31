@@ -77,7 +77,7 @@ const setYogaValues = R.tap(node => {
     setPaddingLeft(node.style.paddingLeft),
     setPositionType(node.style.position),
     setPositionTop(node.style.top),
-    setPositionRight(node.style.rigth),
+    setPositionRight(node.style.right),
     setPositionBottom(node.style.bottom),
     setPositionLeft(node.style.left),
     setBorderTop(node.style.borderTopWidth),

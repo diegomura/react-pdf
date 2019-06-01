@@ -1,17 +1,15 @@
 import * as R from 'ramda';
 
-import {
-  setMarginTop,
-  setMarginRight,
-  setMarginBottom,
-  setMarginLeft,
-} from './setMargin';
+import setMargin from './setMargin';
 
+/**
+ * Removes margins on node
+ *
+ * @param {Object} node
+ * @returns {Object} node without margins
+ */
 const removeMargins = R.compose(
-  setMarginTop(0),
-  setMarginRight(0),
-  setMarginBottom(0),
-  setMarginLeft(0),
+  setMargin(0),
   R.dissocPath(['style', 'margin']),
   R.dissocPath(['style', 'marginTop']),
   R.dissocPath(['style', 'marginRight']),

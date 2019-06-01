@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
@@ -37,3 +38,19 @@ export const setMarginBottom = setYogaValue('margin', Yoga.EDGE_BOTTOM);
  * @return {Object} node instance
  */
 export const setMarginLeft = setYogaValue('margin', Yoga.EDGE_LEFT);
+
+/**
+ * Set all margins at once
+ *
+ * @param {Number} margin
+ * @param {Object} node instance
+ * @return {Object} node instance
+ */
+export const setMargin = R.compose(
+  setMarginTop,
+  setMarginRight,
+  setMarginBottom,
+  setMarginLeft,
+);
+
+export default setMargin;

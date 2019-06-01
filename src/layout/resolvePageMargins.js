@@ -2,10 +2,18 @@ import * as R from 'ramda';
 
 import removeMargins from '../node/removeMargins';
 
-export default R.evolve({
+/**
+ * Remove page margins
+ *
+ * @param {Object} document root
+ * @returns {Object} documrnt root without margins on pages
+ */
+const resolvePageMargins = R.evolve({
   children: R.map(
     R.evolve({
       children: R.map(removeMargins),
     }),
   ),
 });
+
+export default resolvePageMargins;

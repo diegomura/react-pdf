@@ -1,17 +1,15 @@
 import * as R from 'ramda';
 
-import {
-  setPaddingTop,
-  setPaddingRight,
-  setPaddingBottom,
-  setPaddingLeft,
-} from './setPadding';
+import setPadding from './setPadding';
 
+/**
+ * Removes padding on node
+ *
+ * @param {Object} node
+ * @returns {Object} node without padding
+ */
 const removePaddings = R.compose(
-  setPaddingTop(0),
-  setPaddingRight(0),
-  setPaddingBottom(0),
-  setPaddingLeft(0),
+  setPadding(0),
   R.dissocPath(['style', 'padding']),
   R.dissocPath(['style', 'paddingTop']),
   R.dissocPath(['style', 'paddingRight']),

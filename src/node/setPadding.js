@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
@@ -37,3 +38,19 @@ export const setPaddingBottom = setYogaValue('padding', Yoga.EDGE_BOTTOM);
  * @return {Object} node instance
  */
 export const setPaddingLeft = setYogaValue('padding', Yoga.EDGE_LEFT);
+
+/**
+ * Set all paddings at once
+ *
+ * @param {Number} margin
+ * @param {Object} node instance
+ * @return {Object} node instance
+ */
+export const setPadding = R.compose(
+  setPaddingTop,
+  setPaddingRight,
+  setPaddingBottom,
+  setPaddingLeft,
+);
+
+export default setPadding;

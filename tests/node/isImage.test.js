@@ -8,6 +8,7 @@ import {
   IMAGE,
   DOCUMENT,
   CANVAS,
+  TEXT_INSTANCE,
 } from '../../src/constants';
 
 describe('node isImage', () => {
@@ -48,6 +49,11 @@ describe('node isImage', () => {
 
   test('Should return true for page', () => {
     const node = { type: PAGE };
+    expect(isImage(node)).toBeFalsy();
+  });
+
+  test('Should return false for text instance', () => {
+    const node = { type: TEXT_INSTANCE };
     expect(isImage(node)).toBeFalsy();
   });
 });

@@ -7,28 +7,13 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-// If the Link has a strign child or render prop, substitute the instance by a Text,
-// that will ultimately render the inline Link via the textkit PDF renderer.
-// const shouldReplaceLink = (type, props) =>
-//   type === 'LINK' &&
-//   (typeof props.children === 'string' ||
-//     typeof props.children === 'number' ||
-//     Array.isArray(props.children) ||
-//     props.render);
-
 const PDFRenderer = ReactFiberReconciler({
   supportsMutation: true,
   appendInitialChild(parentInstance, child) {
     parentInstance.children.push(child);
-    // parentInstance.appendChild(child);
   },
 
   createInstance(type, { style, children, ...props }, internalInstanceHandle) {
-    // const instanceType = shouldReplaceLink(type, props) ? 'TEXT' : type;
-    // return createInstance(
-    //   { type: instanceType, props },
-    //   internalInstanceHandle,
-    // );
     return {
       type,
       box: {},
@@ -40,10 +25,6 @@ const PDFRenderer = ReactFiberReconciler({
 
   createTextInstance(text, rootContainerInstance) {
     return { type: 'TEXT_INSTANCE', value: text };
-    // return createInstance(
-    //   { type: , props: text },
-    //   rootContainerInstance,
-    // );
   },
 
   finalizeInitialChildren(element, type, props) {
@@ -88,12 +69,10 @@ const PDFRenderer = ReactFiberReconciler({
 
   appendChild(parentInstance, child) {
     parentInstance.children.push(child);
-    // parentInstance.appendChild(child);
   },
 
   appendChildToContainer(parentInstance, child) {
     parentInstance.children.push(child);
-    // parentInstance.appendChild(child);
   },
 
   insertBefore(parentInstance, child, beforeChild) {

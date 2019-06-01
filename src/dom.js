@@ -112,14 +112,16 @@ class PageCanvas extends React.Component {
     const ctx = this.canvas.getContext('2d');
 
     const renderNode = node => {
-      const { width, height, top, left } = node.box;
+      if (node.type !== 'TEXT_INSTANCE') {
+        const { width, height, top, left } = node.box;
 
-      ctx.beginPath();
-      ctx.rect(left, top, width, height);
-      ctx.fillStyle = node.style.backgroundColor || 'white';
-      ctx.fill();
+        ctx.beginPath();
+        ctx.rect(left, top, width, height);
+        ctx.fillStyle = node.style.backgroundColor || 'white';
+        ctx.fill();
 
-      node.children.forEach(renderNode);
+        node.children.forEach(renderNode);
+      }
     };
 
     renderNode(this.props.page);

@@ -10,6 +10,7 @@ import resolveDimensions from './layout/resolveDimensions';
 import resolveInheritance from './layout/resolveInheritance';
 import resolvePageMargins from './layout/resolvePageMargins';
 import resolvePagePaddings from './layout/resolvePagePaddings';
+import resolveLinkSubstitution from './layout/resolveLinkSubstitution';
 import resolveAbsoluteCoordinates from './layout/resolveAbsoluteCoordinates';
 import {
   VIEW,
@@ -58,6 +59,7 @@ const pdf = input => {
       resolvePagePaddings,
       resolveInheritance,
       resolveStyles,
+      resolveLinkSubstitution,
       resolvePageMargins,
       resolvePageSizes,
     )(container);

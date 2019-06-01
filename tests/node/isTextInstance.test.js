@@ -1,4 +1,4 @@
-import isText from '../../src/node/isText';
+import isTextInstance from '../../src/node/isTextInstance';
 import {
   VIEW,
   TEXT,
@@ -11,49 +11,49 @@ import {
   TEXT_INSTANCE,
 } from '../../src/constants';
 
-describe('node isText', () => {
+describe('node isTextInstance', () => {
   test('Should return false for view', () => {
     const node = { type: VIEW };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for text', () => {
     const node = { type: TEXT };
-    expect(isText(node)).toBeTruthy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for link', () => {
     const node = { type: LINK };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for note', () => {
     const node = { type: NOTE };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for image', () => {
     const node = { type: IMAGE };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for document', () => {
     const node = { type: DOCUMENT };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for canvas', () => {
     const node = { type: CANVAS };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return true for page', () => {
     const node = { type: PAGE };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeFalsy();
   });
 
   test('Should return false for text instance', () => {
     const node = { type: TEXT_INSTANCE };
-    expect(isText(node)).toBeFalsy();
+    expect(isTextInstance(node)).toBeTruthy();
   });
 });

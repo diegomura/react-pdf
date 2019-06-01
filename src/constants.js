@@ -6,6 +6,7 @@ export const NOTE = 'NOTE';
 export const IMAGE = 'IMAGE';
 export const DOCUMENT = 'DOCUMENT';
 export const CANVAS = 'CANVAS';
+export const TEXT_INSTANCE = 'TEXT_INSTANCE';
 
 export const DPI = 72; // 72pt per inch.
 

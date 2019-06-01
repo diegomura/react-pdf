@@ -6,9 +6,10 @@ import Font from './font';
 import { version } from '../package.json';
 import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
-import resolveInheritance from './layout/resolveInheritance';
 import resolveDimensions from './layout/resolveDimensions';
+import resolveInheritance from './layout/resolveInheritance';
 import resolvePageMargins from './layout/resolvePageMargins';
+import resolvePagePaddings from './layout/resolvePagePaddings';
 import resolveAbsoluteCoordinates from './layout/resolveAbsoluteCoordinates';
 import {
   VIEW,
@@ -54,6 +55,7 @@ const pdf = input => {
       // pageWrapping
       resolveDimensions,
       // fetchAssets,
+      resolvePagePaddings,
       resolveInheritance,
       resolveStyles,
       resolvePageMargins,

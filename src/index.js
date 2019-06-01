@@ -8,6 +8,7 @@ import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
 import resolveInheritance from './layout/resolveInheritance';
 import resolveDimensions from './layout/resolveDimensions';
+import resolvePageMargins from './layout/resolvePageMargins';
 import resolveAbsoluteCoordinates from './layout/resolveAbsoluteCoordinates';
 import {
   VIEW,
@@ -55,6 +56,7 @@ const pdf = input => {
       // fetchAssets,
       resolveInheritance,
       resolveStyles,
+      resolvePageMargins,
       resolvePageSizes,
     )(container);
     console.timeEnd('layout');

@@ -14,9 +14,9 @@ const getOrientation = R.compose(
   R.ifElse(
     R.includes(R.__, VALID_ORIENTATIONS),
     R.identity,
-    R.always(LANDSCAPE),
+    R.always(PORTRAIT),
   ),
-  R.pathOr(LANDSCAPE, ['props', 'orientation']),
+  R.pathOr(PORTRAIT, ['props', 'orientation']),
 );
 
 export default getOrientation;

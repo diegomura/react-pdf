@@ -13,8 +13,8 @@ describe('page getSize', () => {
     const page = { props: { orientation: 'portrait' } };
     const size = getSize(page);
 
-    expect(size).toHaveProperty('width', 841.89);
-    expect(size).toHaveProperty('height', 595.28);
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size).toHaveProperty('height', 841.89);
   });
 
   test('Should accept size string', () => {
@@ -25,8 +25,8 @@ describe('page getSize', () => {
     expect(size).toHaveProperty('height', 1683.78);
   });
 
-  test('Should accept size string in portrait mode', () => {
-    const page = { props: { size: 'A2', orientation: 'portrait' } };
+  test('Should accept size string in landscape mode', () => {
+    const page = { props: { size: 'A2', orientation: 'landscape' } };
     const size = getSize(page);
 
     expect(size).toHaveProperty('width', 1683.78);
@@ -41,8 +41,8 @@ describe('page getSize', () => {
     expect(size).toHaveProperty('height', 200);
   });
 
-  test('Should accept size array in portrait mode', () => {
-    const page = { props: { size: [100, 200], orientation: 'portrait' } };
+  test('Should accept size array in landscape mode', () => {
+    const page = { props: { size: [100, 200], orientation: 'landscape' } };
     const size = getSize(page);
 
     expect(size).toHaveProperty('width', 200);
@@ -57,9 +57,9 @@ describe('page getSize', () => {
     expect(size).toHaveProperty('height', 200);
   });
 
-  test('Should accept size object in portrait mode', () => {
+  test('Should accept size object in landscape mode', () => {
     const page = {
-      props: { size: { width: 100, height: 200 }, orientation: 'portrait' },
+      props: { size: { width: 100, height: 200 }, orientation: 'landscape' },
     };
     const size = getSize(page);
 
@@ -75,8 +75,8 @@ describe('page getSize', () => {
     expect(size).toHaveProperty('height', undefined);
   });
 
-  test('Should accept size number in portrait mode', () => {
-    const page = { props: { size: 100, orientation: 'portrait' } };
+  test('Should accept size number in landscape mode', () => {
+    const page = { props: { size: 100, orientation: 'landscape' } };
     const size = getSize(page);
 
     expect(size).toHaveProperty('width', undefined);

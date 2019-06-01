@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import isPortrait from './isPortrait';
+import isLandscape from './isLandscape';
 import { PAGE_SIZES } from '../constants';
 
 /**
@@ -75,7 +75,7 @@ const getSize = page => {
     R.pathOr('A4', ['props', 'size']),
   )(page);
 
-  return isPortrait(page) ? flipSizeObject(size) : size;
+  return isLandscape(page) ? flipSizeObject(size) : size;
 };
 
 export default getSize;

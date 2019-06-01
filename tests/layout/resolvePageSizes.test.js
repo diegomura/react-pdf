@@ -26,8 +26,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 841.89);
-    expect(document.children[0].box).toHaveProperty('height', 595.28);
+    expect(document.children[0].box).toHaveProperty('width', 595.28);
+    expect(document.children[0].box).toHaveProperty('height', 841.89);
   });
 
   test('Should accept size string', () => {
@@ -47,14 +47,14 @@ describe('layout resolvePageSizes', () => {
     expect(document.children[0].box).toHaveProperty('height', 1683.78);
   });
 
-  test('Should accept size string in portrait mode', () => {
+  test('Should accept size string in landscape mode', () => {
     const root = {
       type: 'ROOT',
       children: [
         {
           type: 'DOCUMENT',
           children: [
-            { type: 'PAGE', props: { size: 'A2', orientation: 'portrait' } },
+            { type: 'PAGE', props: { size: 'A2', orientation: 'landscape' } },
           ],
         },
       ],
@@ -83,7 +83,7 @@ describe('layout resolvePageSizes', () => {
     expect(document.children[0].box).toHaveProperty('height', 200);
   });
 
-  test('Should accept size array in portrait mode', () => {
+  test('Should accept size array in landscape mode', () => {
     const root = {
       type: 'ROOT',
       children: [
@@ -92,7 +92,7 @@ describe('layout resolvePageSizes', () => {
           children: [
             {
               type: 'PAGE',
-              props: { size: [100, 200], orientation: 'portrait' },
+              props: { size: [100, 200], orientation: 'landscape' },
             },
           ],
         },
@@ -124,7 +124,7 @@ describe('layout resolvePageSizes', () => {
     expect(document.children[0].box).toHaveProperty('height', 200);
   });
 
-  test('Should accept size object in portrait mode', () => {
+  test('Should accept size object in landscape mode', () => {
     const root = {
       type: 'ROOT',
       children: [
@@ -135,7 +135,7 @@ describe('layout resolvePageSizes', () => {
               type: 'PAGE',
               props: {
                 size: { width: 100, height: 200 },
-                orientation: 'portrait',
+                orientation: 'landscape',
               },
             },
           ],
@@ -166,14 +166,14 @@ describe('layout resolvePageSizes', () => {
     expect(document.children[0].box).toHaveProperty('height', undefined);
   });
 
-  test('Should accept size number in portrait mode', () => {
+  test('Should accept size number in landscape mode', () => {
     const root = {
       type: 'ROOT',
       children: [
         {
           type: 'DOCUMENT',
           children: [
-            { type: 'PAGE', props: { size: 100, orientation: 'portrait' } },
+            { type: 'PAGE', props: { size: 100, orientation: 'landscape' } },
           ],
         },
       ],

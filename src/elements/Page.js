@@ -9,12 +9,6 @@ import TextInstance from './TextInstance';
 import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {
-  static defaultProps = {
-    size: 'A4',
-    wrap: true,
-    orientation: 'portrait',
-  };
-
   resetMargins() {
     if (
       !!this.marginTop ||

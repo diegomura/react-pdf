@@ -2,7 +2,6 @@
 import * as R from 'ramda';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
-// import { createInstance } from './elements';
 import Font from './font';
 import { version } from '../package.json';
 import resolveStyles from './layout/resolveStyles';

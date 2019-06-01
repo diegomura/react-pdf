@@ -1,5 +1,11 @@
 const isPercent = value => /((-)?\d+\.?\d*)%/g.exec(value);
 
+/**
+ * Get percentage value of input
+ *
+ * @param {String} value
+ * @returns {Object} percent value (if matches)
+ */
 const matchPercent = value => {
   const match = isPercent(value);
 

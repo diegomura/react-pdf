@@ -1,4 +1,4 @@
-import isPage from '../../src/page/isPage';
+import isPage from '../../src/node/isPage';
 import {
   VIEW,
   TEXT,
@@ -10,7 +10,7 @@ import {
   CANVAS,
 } from '../../src/constants';
 
-describe('page isPage', () => {
+describe('node isPage', () => {
   test('Should return false for view', () => {
     const node = { type: VIEW };
     expect(isPage(node)).toBeFalsy();

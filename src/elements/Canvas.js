@@ -4,11 +4,6 @@ import painter from '../utils/painter';
 import warning from '../utils/warning';
 
 class Canvas extends Base {
-  static defaultProps = {
-    style: {},
-    wrap: false,
-  };
-
   async render() {
     const { left, top, width, height } = this.getAbsoluteLayout();
 

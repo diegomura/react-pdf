@@ -1,10 +1,10 @@
 import isPortrait from '../../src/page/isPortrait';
 
 describe('page isPortrait', () => {
-  test('Should return false if no orientation provided', () => {
+  test('Should return true if no orientation provided', () => {
     const page = { props: {} };
 
-    expect(isPortrait(page)).toBeFalsy();
+    expect(isPortrait(page)).toBeTruthy();
   });
 
   test('Should return false if landscape', () => {

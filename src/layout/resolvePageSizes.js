@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 
 import getPageSize from '../page/getSize';
+import assocIfNil from '../utils/assocIfNil';
 
 /**
  * Resolves page size
@@ -14,17 +15,6 @@ const resolvePageSize = page => {
 };
 
 /**
- * Add empt box prop if not present in node
- *
- * @param {Object} node
- * @returns {Object} node with box prop
- */
-const addBoxIfNotPresent = R.when(
-  R.complement(R.has)('box'),
-  R.assoc('box', {}),
-);
-
-/**
  * Resolves page sizes
  *
  * @param {Object} document root
@@ -36,7 +26,7 @@ const resolvePageSizes = R.evolve({
       children: R.map(
         R.compose(
           resolvePageSize,
-          addBoxIfNotPresent,
+          assocIfNil('box', {}),
         ),
       ),
     }),

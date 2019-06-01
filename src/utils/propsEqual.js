@@ -1,3 +1,11 @@
+/**
+ * Checks if two sets of props are equal (recursively)
+ *
+ * @param {Object} props A
+ * @param {Object} props B
+ * @returns {Boolean} props equals?
+ *
+ */
 const propsEqual = (a, b) => {
   const oldPropsKeys = Object.keys(a);
   const newPropsKeys = Object.keys(b);

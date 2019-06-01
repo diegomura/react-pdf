@@ -1,7 +1,12 @@
+import * as R from 'ramda';
+
 import getOrientation from './getOrientation';
 
 import { PORTRAIT } from '../constants';
 
-const isPortrait = page => getOrientation(page) === PORTRAIT;
+const isPortrait = R.compose(
+  R.equals(PORTRAIT),
+  getOrientation,
+);
 
 export default isPortrait;

@@ -107,18 +107,6 @@ class Base extends Node {
   }
 }
 
-Base.defaultProps = {
-  style: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-    transformOriginX: '50%',
-    transformOriginY: '50%',
-  },
-  minPresenceAhead: 0,
-};
-
 Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
 Object.assign(Base.prototype, Clipping);

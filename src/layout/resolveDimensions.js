@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
+import isTextInstance from '../node/isTextInstance';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import getPosition from '../node/getPosition';
@@ -51,14 +52,19 @@ import {
   setMinHeight,
   setMaxHeight,
 } from '../node/setDimension';
+import isImage from '../node/isImage';
+import measureImage from '../image/measureImage';
 
 const YOGA_NODE = '_yogaNode';
 
-const isNotTextInstance = R.complement(R.propEq)('type', 'TEXT_INSTANCE');
+const isNotTextInstance = R.complement(isTextInstance);
 
-const insertYogaNodes = parent =>
-  R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
-
+/**
+ * Set styles valeus into yoga node before layout calculation
+ *
+ * @param {Object} node
+ * @returns {Object} node
+ */
 const setYogaValues = R.tap(node => {
   R.compose(
     setWidth(node.box.width || node.style.width),
@@ -99,8 +105,29 @@ const setYogaValues = R.tap(node => {
   )(node);
 });
 
-const createYogaNodes = node => {
+/**
+ * Inserts child into parent' yoga node
+ *
+ * @param {Object} parent
+ * @param {Object} node
+ * @param {Object} node
+ */
+const insertYogaNodes = parent =>
+  R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
+
+/**
+ * Creates and add yoga node to document tree
+ * Handles measure function for text and image nodes
+ *
+ * @param {Object} node
+ * @returns {Object} node with appended yoga node
+ */
+const createYogaNodes = page => node => {
   const yogaNode = Yoga.Node.createDefault();
+
+  if (isImage(node)) {
+    yogaNode.setMeasureFunc(measureImage(page, node));
+  }
 
   return R.compose(
     R.evolve({
@@ -109,7 +136,7 @@ const createYogaNodes = node => {
           isNotTextInstance,
           R.compose(
             insertYogaNodes(yogaNode),
-            createYogaNodes,
+            createYogaNodes(page),
           ),
         ),
       ),
@@ -119,8 +146,20 @@ const createYogaNodes = node => {
   )(node);
 };
 
+/**
+ * Performs yoga calculation
+ *
+ * @param {Object} node
+ * @returns {Object} node
+ */
 const calculateLayout = R.tap(page => page[YOGA_NODE].calculateLayout());
 
+/**
+ * Saves Yoga layout result into 'box' attribute of node
+ *
+ * @param {Object} node
+ * @returns {Object} node with box data
+ */
 const persistDimensions = node => {
   return R.evolve({
     children: R.map(R.when(isNotTextInstance, persistDimensions)),
@@ -136,6 +175,12 @@ const persistDimensions = node => {
   })(node);
 };
 
+/**
+ * Removes and destroys yoga node frm document tree
+ *
+ * @param {Object} node
+ * @returns {Object} node without yoga node
+ */
 const destroyYogaNodes = node => {
   return R.compose(
     R.dissoc(YOGA_NODE),
@@ -145,13 +190,28 @@ const destroyYogaNodes = node => {
   )(node);
 };
 
-const resolvePageDimensions = R.compose(
-  destroyYogaNodes,
-  persistDimensions,
-  calculateLayout,
-  createYogaNodes,
-);
+/**
+ * Calculates page object layout using Yoga.
+ * Takes node values from 'box' and 'style' attributes, and persist them back into 'box'
+ * Destroy yoga values at the end.
+ *
+ * @param {Object} page object
+ * @returns {Object} page object with correct 'box' layout attributes
+ */
+const resolvePageDimensions = page =>
+  R.compose(
+    destroyYogaNodes,
+    persistDimensions,
+    calculateLayout,
+    createYogaNodes(page),
+  )(page);
 
+/**
+ * Calculates root object layout using Yoga.
+ *
+ * @param {Object} root object
+ * @returns {Object} root object with correct 'box' layout attributes
+ */
 const resolveDimensions = R.evolve({
   children: R.map(
     R.evolve({

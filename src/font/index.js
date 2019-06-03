@@ -53,7 +53,7 @@ const getFont = descriptor => {
   return fonts[fontFamily].resolve(descriptor);
 };
 
-const load = async function(descriptor, doc) {
+const load = async function(descriptor) {
   const { fontFamily } = descriptor;
   const isStandard = standardFonts.includes(fontFamily);
 

@@ -1,48 +1,11 @@
 import { Fragment } from 'react';
-import Yoga from 'yoga-layout';
 
 import Base from './Base';
 import Ruler from '../mixins/ruler';
-import warning from '../utils/warning';
 import { createInstance } from './index';
 import TextInstance from './TextInstance';
-import matchPercent from '../utils/matchPercent';
 
 class Page extends Base {
-  resetMargins() {
-    if (
-      !!this.marginTop ||
-      !!this.marginBottom ||
-      !!this.marginLeft ||
-      !!this.marginRight
-    ) {
-      warning(
-        false,
-        'Margin values are not allowed on Page element. Use padding instead.',
-      );
-
-      this.marginTop = 0;
-      this.marginBottom = 0;
-      this.marginLeft = 0;
-      this.marginRight = 0;
-    }
-  }
-
-  setPadding(edge, value) {
-    const dimension =
-      edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
-        ? this.size.height
-        : this.size.width;
-
-    const match = matchPercent(value);
-
-    if (match) {
-      this.layout.setPadding(edge, dimension * match.percent);
-    } else {
-      this.layout.setPadding(edge, value);
-    }
-  }
-
   async addDynamicChild(parent, elements) {
     if (!elements) return;
     const children = Array.isArray(elements) ? elements : [elements];

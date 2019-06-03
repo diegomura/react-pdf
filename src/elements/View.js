@@ -5,10 +5,6 @@ class View extends Base {
     wrap: true,
   };
 
-  get name() {
-    return 'View';
-  }
-
   async render() {
     this.root.instance.save();
     this.applyTransformations();

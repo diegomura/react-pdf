@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import * as R from 'ramda';
 
+import isPage from './node/isPage';
+import isView from './node/isView';
+import isNote from './node/isNote';
+import isImage from './node/isImage';
 import warning from '../src/utils/warning';
 
 import {
@@ -107,24 +112,74 @@ export const PDFViewer = ({
   );
 };
 
+const renderPage = (node, ctx) => {
+  const { width, height, top, left } = node.box;
+
+  ctx.beginPath();
+  ctx.rect(left, top, width, height);
+  ctx.fillStyle = node.style.backgroundColor || 'white';
+  ctx.fill();
+};
+
+const renderView = (node, ctx) => {
+  const { width, height, top, left } = node.box;
+
+  ctx.beginPath();
+  ctx.rect(left, top, width, height);
+  ctx.fillStyle = node.style.backgroundColor || 'transparent';
+  ctx.fill();
+};
+
+const renderImage = (node, ctx) => {
+  const { width, height, top, left } = node.box;
+
+  const img = document.createElement('img');
+  img.src = node.props.src;
+
+  return new Promise(resolve => {
+    img.onload = () => {
+      ctx.beginPath();
+      ctx.rect(left, top, width, height);
+      ctx.fillStyle = node.style.backgroundColor || 'transparent';
+      ctx.fill();
+      ctx.drawImage(img, left, top, width, height);
+      resolve();
+    };
+  });
+};
+
+const renderNote = (node, ctx) => {
+  const { top, left } = node.box;
+
+  ctx.beginPath();
+  ctx.rect(left - 10, top - 10, 20, 20);
+  ctx.fillStyle = 'yellow';
+  ctx.fill();
+};
+
+const renderNode = ctx => async node => {
+  if (isPage(node)) {
+    await renderPage(node, ctx);
+  } else if (isView(node)) {
+    await renderView(node, ctx);
+  } else if (isImage(node)) {
+    await renderImage(node, ctx);
+  } else if (isNote(node)) {
+    await renderNote(node, ctx);
+  }
+
+  const children = R.propOr([], 'children', node);
+
+  for (let i = 0; i < children.length; i++) {
+    await renderNode(ctx)(children[i]);
+  }
+};
+
 class PageCanvas extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
     const ctx = this.canvas.getContext('2d');
 
-    const renderNode = node => {
-      if (node.type !== 'TEXT_INSTANCE') {
-        const { width, height, top, left } = node.box;
-
-        ctx.beginPath();
-        ctx.rect(left, top, width, height);
-        ctx.fillStyle = node.style.backgroundColor || 'white';
-        ctx.fill();
-
-        node.children.forEach(renderNode);
-      }
-    };
-
-    renderNode(this.props.page);
+    await renderNode(ctx)(this.props.page);
 
     this.pngLink.href = this.canvas.toDataURL('image/png');
     this.jpgLink.href = this.canvas.toDataURL('image/jpg');

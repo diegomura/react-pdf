@@ -5,11 +5,7 @@ import root from './utils/dummyRoot';
 import Page from '../src/elements/Page';
 import Image from '../src/elements/Image';
 import warning from '../src/utils/warning';
-import {
-  IMAGE_CACHE,
-  getAbsoluteLocalPath,
-  isDangerousLocalPath,
-} from '../src/utils/image';
+import { IMAGE_CACHE, getAbsoluteLocalPath } from '../src/utils/image';
 import * as objectFit from '../src/utils/objectFit';
 
 let dummyRoot;
@@ -36,15 +32,6 @@ describe('image utils', () => {
     const result = getAbsoluteLocalPath(filename);
 
     expect(result).toBe(undefined);
-  });
-
-  test('isDangerousLocalPath should correctly identify a dangerous local path', () => {
-    const filename = '/server/app/test/assets/../forbidden/path/test.jpg';
-    const safePath = '/server/app/test/assets';
-
-    const result = isDangerousLocalPath(filename, { safePath });
-
-    expect(result).toBeTruthy();
   });
 });
 

@@ -1,19 +1,10 @@
-import { pick } from 'ramda';
-
-import Node from './Node';
-import StyleSheet from '../stylesheet';
 import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
-import warning from '../utils/warning';
 import matchPercent from '../utils/matchPercent';
-import { inheritedProperties } from '../stylesheet/inherit';
 
-// TODO
-warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
-
-class Base extends Node {
+class Base {
   get origin() {
     const { transformOriginX, transformOriginY } = this.style;
     const { left, top, width, height } = this.getAbsoluteLayout();
@@ -29,24 +20,6 @@ class Base extends Node {
 
   set break(value) {
     this.props.break = value;
-  }
-
-  resolveStyles() {
-    const { size, orientation, isAutoHeight } = this.page;
-    const container = {
-      orientation,
-      isAutoHeight,
-      width: size.width,
-      height: size.height,
-    };
-
-    const ownStyles = StyleSheet.resolve(this.props.style, container);
-
-    const inheritedStyles = this.parent
-      ? pick(inheritedProperties, this.parent.style)
-      : {};
-
-    return { ...inheritedStyles, ...ownStyles };
   }
 
   getLayoutData() {
@@ -98,12 +71,6 @@ class Base extends Node {
     this.height = height;
     this.marginBottom = 0;
     this.paddingBottom = 0;
-  }
-
-  async renderChildren() {
-    for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
-    }
   }
 }
 

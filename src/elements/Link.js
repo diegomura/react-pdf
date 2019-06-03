@@ -1,11 +1,6 @@
 import Base from './Base';
-import { getURL } from '../utils/url';
 
 class Link extends Base {
-  get src() {
-    return getURL(this.props.src || this.props.href);
-  }
-
   async render() {
     const { top, left, width, height } = this.getAbsoluteLayout();
     this.root.instance.link(left, top, width, height, this.src);

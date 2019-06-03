@@ -5,7 +5,6 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 import Base from './Base';
 import Font from '../font';
 import layout from '../layout';
-import { getURL } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
 class Text extends Base {
@@ -31,10 +30,6 @@ class Text extends Base {
     };
 
     this.layout.setMeasureFunc(this.measureText.bind(this));
-  }
-
-  get src() {
-    return getURL(this.props.src || this.props.href);
   }
 
   get lines() {

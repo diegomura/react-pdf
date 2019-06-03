@@ -1,5 +1,11 @@
 import * as R from 'ramda';
 
+/**
+ * Translates relative coordinates to absolute coordinates
+ *
+ * @param {Object} root node
+ * @returns {Object} root node with absolute coordinates
+ */
 const resolveAbsoluteCoordinates = node => {
   const top = R.pathOr(0, ['box', 'top'], node);
   const left = R.pathOr(0, ['box', 'left'], node);

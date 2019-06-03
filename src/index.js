@@ -1,9 +1,10 @@
 // import BlobStream from 'blob-stream';
-import * as R from 'ramda';
 import PDFRenderer from './renderer';
 import StyleSheet from './stylesheet';
 import Font from './font';
 import { version } from '../package.json';
+import asyncCompose from './utils/asyncCompose';
+import resolveAssets from './layout/resolveAssets';
 import resolveStyles from './layout/resolveStyles';
 import resolvePageSizes from './layout/resolvePageSizes';
 import resolveDimensions from './layout/resolveDimensions';
@@ -50,19 +51,21 @@ const pdf = input => {
   // }
 
   const render = async () => {
-    console.time('layout');
-    const res = R.compose(
+    const layout = asyncCompose(
       resolveAbsoluteCoordinates,
       // pageWrapping
       resolveDimensions,
-      // fetchAssets,
+      resolveAssets,
       resolvePagePaddings,
       resolveInheritance,
       resolveStyles,
       resolveLinkSubstitution,
       resolvePageMargins,
       resolvePageSizes,
-    )(container);
+    );
+
+    console.time('layout');
+    const res = await layout(container);
     console.timeEnd('layout');
 
     console.log(res);

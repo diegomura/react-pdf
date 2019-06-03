@@ -1,7 +1,6 @@
 import wrapPages from 'page-wrapping';
 
 import Font from '../font';
-import { fetchEmojis } from '../utils/emoji';
 
 class Document {
   static defaultProps = {
@@ -22,73 +21,6 @@ class Document {
 
     this.root.instance.info.Creator = creator || 'react-pdf';
     this.root.instance.info.Producer = producer || 'react-pdf';
-  }
-
-  async loadFonts() {
-    const promises = [];
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (node.style && node.style.fontFamily) {
-        promises.push(Font.load(node.style, this.root.instance));
-      }
-
-      if (node.children) {
-        node.children.forEach(childNode => {
-          listToExplore.push(childNode);
-        });
-      }
-    }
-
-    await Promise.all(promises);
-  }
-
-  async loadEmojis() {
-    const promises = [];
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (typeof node === 'string') {
-        promises.push(...fetchEmojis(node));
-      } else if (typeof node.value === 'string') {
-        promises.push(...fetchEmojis(node.value));
-      } else if (node.children) {
-        node.children.forEach(childNode => {
-          listToExplore.push(childNode);
-        });
-      }
-    }
-
-    await Promise.all(promises);
-  }
-
-  async loadImages() {
-    const promises = [];
-    const listToExplore = this.children.slice(0);
-
-    while (listToExplore.length > 0) {
-      const node = listToExplore.shift();
-
-      if (node.name === 'Image') {
-        promises.push(node.fetch());
-      }
-
-      if (node.children) {
-        node.children.forEach(childNode => {
-          listToExplore.push(childNode);
-        });
-      }
-    }
-
-    await Promise.all(promises);
-  }
-
-  async loadAssets() {
-    await Promise.all([this.loadFonts(), this.loadImages(), this.loadEmojis()]);
   }
 
   getLayoutData() {

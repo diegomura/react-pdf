@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import matchPercent from '../utils/matchPercent';
 
 /*
- * Translaes page percentage horizontal paddings in fixed onex
+ * Translates page percentage horizontal paddings in fixed ones
  *
  * @param {Object} page container
  * @param {String} padding value
@@ -15,7 +15,7 @@ const resolvePageHorizontalPadding = container => value => {
 };
 
 /**
- * Translaes page percentage vertical paddings in fixed onex
+ * Translates page percentage vertical paddings in fixed ones
  *
  * @param {Object} page container
  * @param {String} padding value

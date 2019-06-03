@@ -1,11 +1,6 @@
-import Yoga from 'yoga-layout';
-
 import Base from './Base';
 import warning from '../utils/warning';
-import { resolveImage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
-
-const SAFETY_HEIGHT = 10;
 
 class Image extends Base {
   static defaultProps = {
@@ -19,98 +14,6 @@ class Image extends Base {
 
     this.image = null;
     this.layout.setMeasureFunc(this.measureImage.bind(this));
-  }
-
-  shouldGrow() {
-    return !!this.style.flexGrow;
-  }
-
-  measureImage(width, widthMode, height, heightMode) {
-    const imageMargin = this.margin;
-    const pagePadding = this.page.padding;
-    const pageArea = this.page.isAutoHeight
-      ? Infinity
-      : this.page.size.height -
-        pagePadding.top -
-        pagePadding.bottom -
-        imageMargin.top -
-        imageMargin.bottom -
-        SAFETY_HEIGHT;
-
-    // Skip measure if image data not present yet
-    if (!this.image) return { width: 0, height: 0 };
-
-    if (
-      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-      heightMode === Yoga.MEASURE_MODE_UNDEFINED
-    ) {
-      const scaledHeight = width / this.ratio;
-      return { height: Math.min(pageArea, scaledHeight) };
-    }
-
-    if (
-      heightMode === Yoga.MEASURE_MODE_EXACTLY &&
-      (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-        widthMode === Yoga.MEASURE_MODE_UNDEFINED)
-    ) {
-      return { width: Math.min(height * this.ratio, width) };
-    }
-
-    if (
-      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
-    ) {
-      const scaledHeight = width / this.ratio;
-      return { height: Math.min(height, pageArea, scaledHeight) };
-    }
-
-    if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST &&
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
-    ) {
-      if (this.ratio > 1) {
-        return {
-          width: width,
-          height: Math.min(width / this.ratio, height),
-        };
-      } else {
-        return {
-          width: Math.min(height * this.ratio, width),
-          height: height,
-        };
-      }
-    }
-
-    return { height, width };
-  }
-
-  get ratio() {
-    return this.image.data ? this.image.width / this.image.height : 1;
-  }
-
-  get src() {
-    const src = this.props.src || this.props.source;
-    return typeof src === 'string' ? { uri: src } : src;
-  }
-
-  async fetch() {
-    const { cache, safePath, allowDangerousPaths } = this.props;
-
-    if (!this.src) {
-      warning(false, 'Image should receive either a "src" or "source" prop');
-      return;
-    }
-
-    try {
-      this.image = await resolveImage(this.src, {
-        cache,
-        safePath,
-        allowDangerousPaths,
-      });
-    } catch (e) {
-      this.image = { width: 0, height: 0 };
-      console.warn(e.message);
-    }
   }
 
   async onAppendDynamically() {

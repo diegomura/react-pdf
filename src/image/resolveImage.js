@@ -3,9 +3,9 @@ import url from 'url';
 import path from 'path';
 import fetch from 'cross-fetch';
 
-import PNG from './png';
-import JPEG from './jpeg';
-import createCache from './cache';
+import PNG from '../utils/png';
+import JPEG from '../utils/jpeg';
+import createCache from '../utils/cache';
 
 export const IMAGE_CACHE = createCache({ limit: 30 });
 
@@ -24,21 +24,7 @@ export const getAbsoluteLocalPath = src => {
   return absolutePath;
 };
 
-export const isDangerousLocalPath = (
-  filename,
-  { safePath = './public' } = {},
-) => {
-  if (BROWSER) {
-    throw new Error(
-      'Cannot check dangerous local path in client-side environemnt',
-    );
-  }
-  const absoluteSafePath = path.resolve(safePath);
-  const absoluteFilePath = path.resolve(filename);
-  return !absoluteFilePath.startsWith(absoluteSafePath);
-};
-
-const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
+const fetchLocalFile = src =>
   new Promise((resolve, reject) => {
     try {
       if (BROWSER) {
@@ -47,12 +33,6 @@ const fetchLocalFile = (src, { safePath, allowDangerousPaths = false } = {}) =>
       const absolutePath = getAbsoluteLocalPath(src);
       if (!absolutePath) {
         return reject(new Error(`Cannot fetch non-local path: ${src}`));
-      }
-      if (
-        !allowDangerousPaths &&
-        isDangerousLocalPath(absolutePath, { safePath })
-      ) {
-        return reject(new Error(`Cannot fetch dangerous local path: ${src}`));
       }
       fs.readFile(absolutePath, (err, data) =>
         err ? reject(err) : resolve(data),
@@ -159,12 +139,12 @@ const getImageFormat = body => {
   return extension;
 };
 
-const resolveImageFromUrl = async (src, options) => {
+const resolveImageFromUrl = async src => {
   const { uri, body, headers, method = 'GET' } = src;
 
   const data =
     !BROWSER && getAbsoluteLocalPath(uri)
-      ? await fetchLocalFile(uri, options)
+      ? await fetchLocalFile(uri)
       : await fetchRemoteFile(uri, { body, headers, method });
 
   const extension = getImageFormat(data);
@@ -172,7 +152,7 @@ const resolveImageFromUrl = async (src, options) => {
   return getImage(data, extension);
 };
 
-export const resolveImage = (src, { cache = true, ...options } = {}) => {
+const resolveImage = (src, { cache = true } = {}) => {
   const cacheKey = src.data ? src.data.toString() : src.uri;
 
   if (cache && IMAGE_CACHE.get(cacheKey)) {
@@ -187,7 +167,7 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
   } else if (typeof src === 'object' && src.data) {
     image = resolveImageFromData(src);
   } else {
-    image = resolveImageFromUrl(src, options);
+    image = resolveImageFromUrl(src);
   }
 
   if (!image) {
@@ -200,3 +180,5 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
 
   return image;
 };
+
+export default resolveImage;

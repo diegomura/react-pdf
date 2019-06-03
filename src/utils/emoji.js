@@ -1,7 +1,8 @@
 /* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
+
 import Font from '../font';
-import { resolveImage } from '../utils/image';
+import resolveImage from '../image/resolveImage';
 
 // Caches emoji images data
 const emojis = {};

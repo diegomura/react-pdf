@@ -24,8 +24,6 @@ before_install:
 
 install:
   - yarn --frozen-lockfile
-  - npm install -g codecov
 
 script:
   - yarn test
-  - codecov

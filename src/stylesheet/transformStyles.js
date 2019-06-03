@@ -130,7 +130,7 @@ const matchNumber = R.when(
   ),
 );
 
-const castInt = R.when(matchNumber, v => parseInt(v, 10));
+const castFloat = R.when(matchNumber, v => parseFloat(v, 10));
 
 const transformStyles = style => {
   const propsArray = Object.keys(style);
@@ -141,7 +141,7 @@ const transformStyles = style => {
     const value = style[key];
 
     resolvedStyle[key] = R.compose(
-      castInt,
+      castFloat,
       R.cond([
         [isBorderStyle, processBorders],
         [isBoxModelStyle, processBoxModel],

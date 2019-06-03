@@ -1,4 +1,3 @@
-import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
@@ -74,7 +73,6 @@ class Base {
   }
 }
 
-Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
 Object.assign(Base.prototype, Clipping);
 Object.assign(Base.prototype, Transform);

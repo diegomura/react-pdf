@@ -60,38 +60,6 @@ class Page extends Base {
     this.marginBottom = 0;
     this.calculateLayout();
   }
-
-  async render() {
-    const { instance } = this.root;
-
-    if (!this.isAutoHeight) {
-      this.height = this.size.height;
-    }
-
-    this.calculateLayout();
-
-    const height = this.isAutoHeight ? this.height : this.size.height;
-
-    instance.addPage({
-      size: [this.size.width, height],
-      margin: 0,
-    });
-
-    if (this.style.backgroundColor) {
-      instance
-        .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.size.width, height)
-        .fill();
-    }
-
-    await this.renderChildren();
-
-    if (this.props.debug) {
-      this.debug();
-    }
-
-    this.renderRuler();
-  }
 }
 
 Object.assign(Page.prototype, Ruler);

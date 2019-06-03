@@ -22,7 +22,9 @@ before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 
-install: yarn --frozen-lockfile
+install:
+  - yarn --frozen-lockfile
+  - npm install -g codecov
 
 script:
   - yarn test

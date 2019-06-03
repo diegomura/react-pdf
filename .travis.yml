@@ -24,4 +24,6 @@ before_install:
 
 install: yarn --frozen-lockfile
 
-script: yarn test
+script:
+  - yarn test
+  - codecov

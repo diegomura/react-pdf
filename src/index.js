@@ -1,18 +1,10 @@
-// import BlobStream from 'blob-stream';
+import BlobStream from 'blob-stream';
 import PDFRenderer from './renderer';
+import layoutDocument from './layout';
+import renderPDF from './pdf/render';
 import StyleSheet from './stylesheet';
 import Font from './font';
 import { version } from '../package.json';
-import asyncCompose from './utils/asyncCompose';
-import resolveAssets from './layout/resolveAssets';
-import resolveStyles from './layout/resolveStyles';
-import resolvePageSizes from './layout/resolvePageSizes';
-import resolveDimensions from './layout/resolveDimensions';
-import resolveInheritance from './layout/resolveInheritance';
-import resolvePageMargins from './layout/resolvePageMargins';
-import resolvePagePaddings from './layout/resolvePagePaddings';
-import resolveLinkSubstitution from './layout/resolveLinkSubstitution';
-import resolveAbsoluteCoordinates from './layout/resolveAbsoluteCoordinates';
 import {
   VIEW,
   TEXT,
@@ -51,26 +43,14 @@ const pdf = input => {
   // }
 
   const render = async () => {
-    const layout = asyncCompose(
-      resolveAbsoluteCoordinates,
-      // pageWrapping
-      resolveDimensions,
-      resolveAssets,
-      resolvePagePaddings,
-      resolveInheritance,
-      resolveStyles,
-      resolveLinkSubstitution,
-      resolvePageMargins,
-      resolvePageSizes,
-    );
-
     console.time('layout');
-    const res = await layout(container);
+    const layout = await layoutDocument(container);
+    const instance = renderPDF(layout);
     console.timeEnd('layout');
 
-    console.log(res);
+    console.log(layout);
 
-    return res;
+    return instance;
   };
 
   function updateContainer(doc) {
@@ -78,25 +58,24 @@ const pdf = input => {
   }
 
   async function toBlob() {
-    return render();
+    const instance = await render();
+    const stream = instance.pipe(BlobStream());
 
-    // const stream = container.instance.pipe(BlobStream());
+    return new Promise((resolve, reject) => {
+      stream.on('finish', () => {
+        try {
+          const blob = stream.toBlob('application/pdf');
 
-    // return new Promise((resolve, reject) => {
-    //   stream.on('finish', () => {
-    //     try {
-    //       const blob = stream.toBlob('application/pdf');
+          // callOnRender({ blob });
 
-    //       callOnRender({ blob });
+          resolve(blob);
+        } catch (error) {
+          reject(error);
+        }
+      });
 
-    //       resolve(blob);
-    //     } catch (error) {
-    //       reject(error);
-    //     }
-    //   });
-
-    //   stream.on('error', reject);
-    // });
+      stream.on('error', reject);
+    });
   }
 
   // async function toBuffer() {

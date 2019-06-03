@@ -10,19 +10,6 @@ class Document {
     title: null,
   };
 
-  addMetaData() {
-    const { title, author, subject, keywords, creator, producer } = this.props;
-
-    // The object keys need to start with a capital letter by the PDF spec
-    if (title) this.root.instance.info.Title = title;
-    if (author) this.root.instance.info.Author = author;
-    if (subject) this.root.instance.info.Subject = subject;
-    if (keywords) this.root.instance.info.Keywords = keywords;
-
-    this.root.instance.info.Creator = creator || 'react-pdf';
-    this.root.instance.info.Producer = producer || 'react-pdf';
-  }
-
   getLayoutData() {
     return {
       type: this.name,

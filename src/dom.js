@@ -60,20 +60,21 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   onDocumentUpdate() {
-    // const oldBlobUrl = this.state.url;
+    const oldBlobUrl = this.state.url;
 
-    this.instance.toBlob().then(blob => {
-      this.setState({ blob });
-      // this.setState(
-      //   { blob, url: URL.createObjectURL(blob), loading: false },
-      //   () => URL.revokeObjectURL(oldBlobUrl),
-      // );
-    });
-    // .catch(error => {
-    //   this.setState({ error });
-    //   console.error(error);
-    //   throw error;
-    // });
+    this.instance
+      .toBlob()
+      .then(blob => {
+        this.setState(
+          { blob, url: URL.createObjectURL(blob), loading: false },
+          () => URL.revokeObjectURL(oldBlobUrl),
+        );
+      })
+      .catch(error => {
+        this.setState({ error });
+        console.error(error);
+        throw error;
+      });
   }
 
   render() {

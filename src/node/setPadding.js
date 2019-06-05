@@ -46,11 +46,12 @@ export const setPaddingLeft = setYogaValue('padding', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setPadding = R.compose(
-  setPaddingTop,
-  setPaddingRight,
-  setPaddingBottom,
-  setPaddingLeft,
-);
+export const setPadding = padding =>
+  R.tap(node => {
+    setPaddingTop(padding)(node);
+    setPaddingRight(padding)(node);
+    setPaddingBottom(padding)(node);
+    setPaddingLeft(padding)(node);
+  });
 
 export default setPadding;

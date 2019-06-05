@@ -12,7 +12,7 @@ const setFlexWrap = value =>
   R.tap(node => {
     const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
+    if (yogaNode) {
       const yogaValue = R.cond([
         [R.equals('wrap'), R.always(Yoga.WRAP_WRAP)],
         [R.equals('wrap-reverse'), R.always(Yoga.WRAP_WRAP_REVERSE)],

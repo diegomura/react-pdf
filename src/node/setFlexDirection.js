@@ -1,6 +1,10 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
+const isRow = R.equals('row');
+const isRowReverse = R.equals('row-reverse');
+const isColumnReverse = R.equals('column-reverse');
+
 /**
  * Set flex direction attribute to node's Yoga instance
  *
@@ -12,14 +16,11 @@ const setFlexDirection = value =>
   R.tap(node => {
     const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
+    if (yogaNode) {
       const yogaValue = R.cond([
-        [R.equals('row'), R.always(Yoga.FLEX_DIRECTION_ROW)],
-        [R.equals('row-reverse'), R.always(Yoga.FLEX_DIRECTION_ROW_REVERSE)],
-        [
-          R.equals('column-reverse'),
-          R.always(Yoga.FLEX_DIRECTION_COLUMN_REVERSE),
-        ],
+        [isRow, R.always(Yoga.FLEX_DIRECTION_ROW)],
+        [isRowReverse, R.always(Yoga.FLEX_DIRECTION_ROW_REVERSE)],
+        [isColumnReverse, R.always(Yoga.FLEX_DIRECTION_COLUMN_REVERSE)],
         [R.T, R.always(Yoga.FLEX_DIRECTION_COLUMN)],
       ])(value);
 

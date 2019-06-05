@@ -12,7 +12,7 @@ const setDisplay = value =>
   R.tap(node => {
     const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
+    if (yogaNode) {
       yogaNode.setDisplay(
         value === 'none' ? Yoga.DISPLAY_NONE : Yoga.DISPLAY_FLEX,
       );

@@ -46,11 +46,12 @@ export const setMarginLeft = setYogaValue('margin', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setMargin = R.compose(
-  setMarginTop,
-  setMarginRight,
-  setMarginBottom,
-  setMarginLeft,
-);
+export const setMargin = margin =>
+  R.tap(node => {
+    setMarginTop(margin)(node);
+    setMarginRight(margin)(node);
+    setMarginBottom(margin)(node);
+    setMarginLeft(margin)(node);
+  });
 
 export default setMargin;

@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
@@ -37,3 +38,20 @@ export const setBorderBottom = setYogaValue('border', Yoga.EDGE_BOTTOM);
  * @return {Object} node instance
  */
 export const setBorderLeft = setYogaValue('border', Yoga.EDGE_LEFT);
+
+/**
+ * Set all border widths at once
+ *
+ * @param {Number} border width
+ * @param {Object} node instance
+ * @return {Object} node instance
+ */
+export const setBorder = width =>
+  R.tap(node => {
+    setBorderTop(width)(node);
+    setBorderRight(width)(node);
+    setBorderBottom(width)(node);
+    setBorderLeft(width)(node);
+  });
+
+export default setBorder;

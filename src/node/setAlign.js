@@ -15,7 +15,7 @@ const setAlign = attr => value =>
   R.tap(node => {
     const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
+    if (yogaNode) {
       const yogaValue = R.cond([
         [R.equals('flex-start'), R.always(Yoga.ALIGN_FLEX_START)],
         [R.equals('center'), R.always(Yoga.ALIGN_CENTER)],

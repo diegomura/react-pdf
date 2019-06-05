@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
@@ -37,3 +38,20 @@ export const setPositionBottom = setYogaValue('position', Yoga.EDGE_BOTTOM);
  * @return {Object} node instance
  */
 export const setPositionLeft = setYogaValue('position', Yoga.EDGE_LEFT);
+
+/**
+ * Set all positions at once
+ *
+ * @param {Number} position
+ * @param {Object} node instance
+ * @return {Object} node instance
+ */
+export const setPosition = position =>
+  R.tap(node => {
+    setPositionTop(position)(node);
+    setPositionRight(position)(node);
+    setPositionBottom(position)(node);
+    setPositionLeft(position)(node);
+  });
+
+export default setPosition;

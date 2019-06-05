@@ -3,13 +3,6 @@ import wrapPages from 'page-wrapping';
 import Font from '../font';
 
 class Document {
-  static defaultProps = {
-    author: null,
-    keywords: null,
-    subject: null,
-    title: null,
-  };
-
   getLayoutData() {
     return {
       type: this.name,

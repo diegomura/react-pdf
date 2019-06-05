@@ -3,15 +3,15 @@ import PDFDocument from '@react-pdf/pdfkit';
 
 import Font from '../font';
 import isPage from '../node/isPage';
-import isView from '../node/isView';
 import isImage from '../node/isImage';
 import isNote from '../node/isNote';
-import renderView from './renderView';
 import renderPage from './renderPage';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
 import addMetadata from './addMetadata';
 import renderDebug from './renderDebug';
+import renderBorders from './renderBorders';
+import renderBackground from './renderBackground';
 
 const renderNode = ctx => node => {
   const renderChildren = R.tap(
@@ -25,20 +25,33 @@ const renderNode = ctx => node => {
     renderDebug(ctx),
     renderChildren,
     R.cond([
-      [isPage, renderPage(ctx)],
-      [isView, renderView(ctx)],
       [isImage, renderImage(ctx)],
       [isNote, renderNote(ctx)],
       [R.T, R.identity],
     ]),
+    renderBorders(ctx),
+    renderBackground(ctx),
+    R.when(isPage, renderPage(ctx)),
   )(node);
 };
+
+const renderDocument = ctx =>
+  R.compose(
+    R.forEach(renderNode(ctx)),
+    R.pathOr([], ['children']),
+  );
+
+const renderRoot = ctx =>
+  R.compose(
+    R.forEach(renderDocument(ctx)),
+    R.pathOr([], ['children']),
+  );
 
 const render = root => {
   const instance = new PDFDocument({ autoFirstPage: false });
 
   addMetadata(instance)(root);
-  renderNode(instance)(root);
+  renderRoot(instance)(root);
 
   instance.end();
   Font.reset();

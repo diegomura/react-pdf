@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 const getRotation = transform => {
   const match = /rotate\((-?\d+.?\d+)(.+)\)/g.exec(transform);
 
@@ -91,17 +93,15 @@ const applySingleTransformation = (element, transform, origin) => {
   }
 };
 
-const Transformations = {
-  applyTransformations() {
-    let match;
-    const re = /[a-zA-Z]+\([^)]+\)/g;
-    const origin = this.origin;
-    const transform = (this.style && this.style.transform) || '';
+const applyTransformations = (ctx, node) => {
+  let match;
+  const re = /[a-zA-Z]+\([^)]+\)/g;
+  const origin = this.origin;
+  const transform = (this.style && this.style.transform) || '';
 
-    while ((match = re.exec(transform)) != null) {
-      applySingleTransformation(this, match[0], origin);
-    }
-  },
+  while ((match = re.exec(transform)) != null) {
+    applySingleTransformation(this, match[0], origin);
+  }
 };
 
-export default Transformations;
+export default R.curryN(2, applyTransformations);

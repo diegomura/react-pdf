@@ -1,93 +1,9 @@
+import * as R from 'ramda';
+
 // Ref: https://www.w3.org/TR/css-backgrounds-3/#borders
 
 // This constant is used to approximate a symmetrical arc using a cubic Bezier curve.
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
-
-function drawBorders() {
-  const { instance } = this.root;
-  const layout = this.getAbsoluteLayout();
-
-  const {
-    borderTopWidth,
-    borderLeftWidth,
-    borderRightWidth,
-    borderBottomWidth,
-  } = this;
-
-  const {
-    opacity,
-    borderTopLeftRadius = 0,
-    borderTopRightRadius = 0,
-    borderBottomLeftRadius = 0,
-    borderBottomRightRadius = 0,
-    borderTopColor = 'black',
-    borderTopStyle = 'solid',
-    borderLeftColor = 'black',
-    borderLeftStyle = 'solid',
-    borderRightColor = 'black',
-    borderRightStyle = 'solid',
-    borderBottomColor = 'black',
-    borderBottomStyle = 'solid',
-  } = this.style;
-
-  const style = {
-    borderTopColor,
-    borderTopWidth,
-    borderTopStyle,
-    borderLeftColor,
-    borderLeftWidth,
-    borderLeftStyle,
-    borderRightColor,
-    borderRightWidth,
-    borderRightStyle,
-    borderBottomColor,
-    borderBottomWidth,
-    borderBottomStyle,
-    borderTopLeftRadius,
-    borderTopRightRadius,
-    borderBottomLeftRadius,
-    borderBottomRightRadius,
-  };
-
-  const { width, height } = layout;
-  const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
-  const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
-  const rbr = Math.min(borderBottomRightRadius, 0.5 * width, 0.5 * height);
-  const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
-
-  instance.save();
-  instance.strokeOpacity(opacity);
-
-  if (borderTopWidth) {
-    instance.save();
-    clipBorderTop(instance, layout, style, rtr, rtl);
-    fillBorderTop(instance, layout, style, rtr, rtl);
-    instance.restore();
-  }
-
-  if (borderRightWidth) {
-    instance.save();
-    clipBorderRight(instance, layout, style, rtr, rbr);
-    fillBorderRight(instance, layout, style, rtr, rbr);
-    instance.restore();
-  }
-
-  if (borderBottomWidth) {
-    instance.save();
-    clipBorderBottom(instance, layout, style, rbl, rbr);
-    fillBorderBottom(instance, layout, style, rbl, rbr);
-    instance.restore();
-  }
-
-  if (borderLeftWidth) {
-    instance.save();
-    clipBorderLeft(instance, layout, style, rbl, rtl);
-    fillBorderLeft(instance, layout, style, rbl, rtl);
-    instance.restore();
-  }
-
-  instance.restore();
-}
 
 const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
   const { top, left, width, height } = layout;
@@ -680,4 +596,99 @@ const fillBorderLeft = (ctx, layout, style, rbl, rtl) => {
   ctx.undash();
 };
 
-export default { drawBorders };
+const shouldRenderBorders = node =>
+  node.box &&
+  (node.box.borderTopWidth ||
+    node.box.borderRightWidth ||
+    node.box.borderBottomWidth ||
+    node.box.borderLeftWidth);
+
+const renderBorders = (ctx, node) => {
+  if (!shouldRenderBorders(node)) return node;
+
+  const {
+    width,
+    height,
+    borderTopWidth,
+    borderLeftWidth,
+    borderRightWidth,
+    borderBottomWidth,
+  } = node.box;
+
+  const {
+    opacity,
+    borderTopLeftRadius = 0,
+    borderTopRightRadius = 0,
+    borderBottomLeftRadius = 0,
+    borderBottomRightRadius = 0,
+    borderTopColor = 'black',
+    borderTopStyle = 'solid',
+    borderLeftColor = 'black',
+    borderLeftStyle = 'solid',
+    borderRightColor = 'black',
+    borderRightStyle = 'solid',
+    borderBottomColor = 'black',
+    borderBottomStyle = 'solid',
+  } = node.style;
+
+  const style = {
+    borderTopColor,
+    borderTopWidth,
+    borderTopStyle,
+    borderLeftColor,
+    borderLeftWidth,
+    borderLeftStyle,
+    borderRightColor,
+    borderRightWidth,
+    borderRightStyle,
+    borderBottomColor,
+    borderBottomWidth,
+    borderBottomStyle,
+    borderTopLeftRadius,
+    borderTopRightRadius,
+    borderBottomLeftRadius,
+    borderBottomRightRadius,
+  };
+
+  const rtr = Math.min(borderTopRightRadius, 0.5 * width, 0.5 * height);
+  const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
+  const rbr = Math.min(borderBottomRightRadius, 0.5 * width, 0.5 * height);
+  const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
+
+  ctx.save();
+  ctx.strokeOpacity(opacity);
+
+  if (borderTopWidth) {
+    ctx.save();
+    clipBorderTop(ctx, node.box, style, rtr, rtl);
+    fillBorderTop(ctx, node.box, style, rtr, rtl);
+    ctx.restore();
+  }
+
+  if (borderRightWidth) {
+    ctx.save();
+    clipBorderRight(ctx, node.box, style, rtr, rbr);
+    fillBorderRight(ctx, node.box, style, rtr, rbr);
+    ctx.restore();
+  }
+
+  if (borderBottomWidth) {
+    ctx.save();
+    clipBorderBottom(ctx, node.box, style, rbl, rbr);
+    fillBorderBottom(ctx, node.box, style, rbl, rbr);
+    ctx.restore();
+  }
+
+  if (borderLeftWidth) {
+    ctx.save();
+    clipBorderLeft(ctx, node.box, style, rbl, rtl);
+    fillBorderLeft(ctx, node.box, style, rbl, rtl);
+    ctx.restore();
+  }
+
+  ctx.restore();
+
+  return node;
+};
+
+export default R.curryN(2, renderBorders);

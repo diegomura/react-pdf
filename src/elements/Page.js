@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 
 import Base from './Base';
-import Ruler from '../mixins/ruler';
 import { createInstance } from './index';
 import TextInstance from './TextInstance';
 
@@ -61,7 +60,5 @@ class Page extends Base {
     this.calculateLayout();
   }
 }
-
-Object.assign(Page.prototype, Ruler);
 
 export default Page;

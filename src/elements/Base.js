@@ -1,6 +1,3 @@
-import Borders from '../mixins/borders';
-import Clipping from '../mixins/clipping';
-import Transform from '../mixins/transform';
 import matchPercent from '../utils/matchPercent';
 
 class Base {
@@ -37,24 +34,6 @@ class Base {
     };
   }
 
-  drawBackgroundColor() {
-    const { backgroundColor, opacity = 1 } = this.style;
-    const { left, top, width, height } = this.getAbsoluteLayout();
-
-    if (backgroundColor) {
-      this.root.instance.save();
-
-      this.clip();
-
-      this.root.instance
-        .fillOpacity(opacity)
-        .fillColor(backgroundColor)
-        .rect(left, top, width, height)
-        .fill()
-        .restore();
-    }
-  }
-
   onNodeSplit(height, clone) {
     this.calculateLayout();
 
@@ -72,9 +51,5 @@ class Base {
     this.paddingBottom = 0;
   }
 }
-
-Object.assign(Base.prototype, Borders);
-Object.assign(Base.prototype, Clipping);
-Object.assign(Base.prototype, Transform);
 
 export default Base;

@@ -1,15 +1,13 @@
 import * as R from 'ramda';
 
+import save from './save';
+import restore from './restore';
+import clipNode from './clipNode';
 import warning from '../utils/warning';
 
-const renderImage = (ctx, node) => {
+const drawImage = ctx => node => {
   const { opacity } = node.style;
   const { width, height, left, top, paddingLeft, paddingTop } = node.box;
-
-  ctx.save();
-
-  // Clip path to keep image inside border radius
-  // this.clip();
 
   if (node.image.data) {
     if (width !== 0 && height !== 0) {
@@ -27,7 +25,16 @@ const renderImage = (ctx, node) => {
     }
   }
 
-  ctx.restore();
+  return node;
+};
+
+const renderImage = (ctx, node) => {
+  R.compose(
+    restore(ctx),
+    drawImage(ctx),
+    clipNode(ctx),
+    save(ctx),
+  )(node);
 
   return node;
 };

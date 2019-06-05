@@ -5,7 +5,9 @@ import Font from '../font';
 import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isNote from '../node/isNote';
+import isLink from '../node/isLink';
 import renderPage from './renderPage';
+import renderLink from './renderLink';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
 import addMetadata from './addMetadata';
@@ -26,6 +28,7 @@ const renderNode = ctx => node => {
     renderChildren,
     R.cond([
       [isImage, renderImage(ctx)],
+      [isLink, renderLink(ctx)],
       [isNote, renderNote(ctx)],
       [R.T, R.identity],
     ]),

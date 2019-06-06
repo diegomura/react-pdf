@@ -53,7 +53,9 @@ import {
   setMaxHeight,
 } from '../node/setDimension';
 import isImage from '../node/isImage';
+import isCanvas from '../node/isCanvas';
 import measureImage from '../image/measureImage';
+import measureCanvas from '../canvas/measureCanvas';
 
 const YOGA_NODE = '_yogaNode';
 
@@ -127,6 +129,10 @@ const createYogaNodes = page => node => {
 
   if (isImage(node)) {
     yogaNode.setMeasureFunc(measureImage(page, node));
+  }
+
+  if (isCanvas(node)) {
+    yogaNode.setMeasureFunc(measureCanvas(page, node));
   }
 
   return R.compose(

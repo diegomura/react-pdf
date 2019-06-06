@@ -34,12 +34,12 @@ export const availableMethods = [
   'radialGradient',
 ];
 
-const painter = function(instance) {
+const painter = function(ctx) {
   const p = availableMethods.reduce(
     (acc, prop) => ({
       ...acc,
       [prop]: (...args) => {
-        instance[prop](...args);
+        ctx[prop](...args);
         return p;
       },
     }),

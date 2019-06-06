@@ -8,10 +8,12 @@ import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isNote from '../node/isNote';
 import isLink from '../node/isLink';
+import isCanvas from '../node/isCanvas';
 import renderPage from './renderPage';
 import renderLink from './renderLink';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
+import renderCanvas from './renderCanvas';
 import addMetadata from './addMetadata';
 import renderDebug from './renderDebug';
 import renderBorders from './renderBorders';
@@ -31,9 +33,10 @@ const renderNode = ctx => node => {
     renderDebug(ctx),
     renderChildren,
     R.cond([
-      [isImage, renderImage(ctx)],
       [isLink, renderLink(ctx)],
       [isNote, renderNote(ctx)],
+      [isImage, renderImage(ctx)],
+      [isCanvas, renderCanvas(ctx)],
       [R.T, R.identity],
     ]),
     renderBorders(ctx),

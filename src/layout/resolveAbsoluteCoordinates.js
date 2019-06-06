@@ -21,6 +21,10 @@ const resolveAbsoluteCoordinates = node => {
             left: R.add(left),
             right: R.add(left),
           }),
+          origin: R.evolve({
+            top: R.add(top),
+            left: R.add(left),
+          }),
         }),
       ),
     ),

@@ -1,19 +1,4 @@
-import matchPercent from '../utils/matchPercent';
-
 class Base {
-  get origin() {
-    const { transformOriginX, transformOriginY } = this.style;
-    const { left, top, width, height } = this.getAbsoluteLayout();
-
-    const percentX = matchPercent(transformOriginX);
-    const percentY = matchPercent(transformOriginY);
-
-    const offsetX = percentX ? width * percentX.percent : transformOriginX;
-    const offsetY = percentY ? height * percentY.percent : transformOriginY;
-
-    return [left + offsetX, top + offsetY];
-  }
-
   set break(value) {
     this.props.break = value;
   }

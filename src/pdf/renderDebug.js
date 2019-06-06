@@ -142,9 +142,9 @@ const debugText = (ctx, node) => {
 const debugOrigin = (ctx, node) => {
   if (node.origin) {
     ctx
-      .circle(node.origin[0], node.origin[1], 3)
+      .circle(node.origin.left, node.origin.top, 3)
       .fill('red')
-      .circle(node.origin[0], node.origin[1], 5)
+      .circle(node.origin.left, node.origin.top, 5)
       .stroke('red');
   }
 };

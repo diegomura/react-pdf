@@ -1,5 +1,6 @@
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
+import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
 import resolveInheritance from './resolveInheritance';
@@ -11,6 +12,7 @@ import asyncCompose from '../utils/asyncCompose';
 
 const layout = asyncCompose(
   resolveAbsoluteCoordinates,
+  resolveOrigins,
   // pageWrapping
   resolveDimensions,
   resolveAssets,

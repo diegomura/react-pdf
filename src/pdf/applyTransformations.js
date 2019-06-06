@@ -1,5 +1,7 @@
 import * as R from 'ramda';
 
+// TODO: Implement using only matrices to support skew and even more operations than css.
+
 const getRotation = transform => {
   const match = /rotate\((-?\d+.?\d+)(.+)\)/g.exec(transform);
 
@@ -67,41 +69,43 @@ const getMatrix = transform => {
   return null;
 };
 
-const applySingleTransformation = (element, transform, origin) => {
+const applySingleTransformation = (ctx, transform, origin) => {
   if (/rotate/g.test(transform)) {
-    element.root.instance.rotate(getRotation(transform), { origin });
+    ctx.rotate(getRotation(transform), { origin });
   } else if (/scaleX/g.test(transform)) {
-    element.root.instance.scale(getScaleX(transform), 1, { origin });
+    ctx.scale(getScaleX(transform), 1, { origin });
   } else if (/scaleY/g.test(transform)) {
-    element.root.instance.scale(1, getScaleY(transform), { origin });
+    ctx.scale(1, getScaleY(transform), { origin });
   } else if (/scale/g.test(transform)) {
-    element.root.instance.scale(getScaleX(transform), getScaleY(transform), {
+    ctx.scale(getScaleX(transform), getScaleY(transform), {
       origin,
     });
   } else if (/translateX/g.test(transform)) {
-    element.root.instance.translate(getTranslateX(transform), 1, { origin });
+    ctx.translate(getTranslateX(transform), 1, { origin });
   } else if (/translateY/g.test(transform)) {
-    element.root.instance.translate(1, getTranslateY(transform), { origin });
+    ctx.translate(1, getTranslateY(transform), { origin });
   } else if (/translate/g.test(transform)) {
-    element.root.instance.translate(
-      getTranslateX(transform),
-      getTranslateY(transform),
-      { origin },
-    );
+    ctx.translate(getTranslateX(transform), getTranslateY(transform), {
+      origin,
+    });
   } else if (/matrix/g.test(transform)) {
-    element.root.instance.transform(...getMatrix(transform));
+    ctx.transform(...getMatrix(transform));
   }
 };
 
 const applyTransformations = (ctx, node) => {
+  if (!node.origin) return node;
+
   let match;
   const re = /[a-zA-Z]+\([^)]+\)/g;
-  const origin = this.origin;
-  const transform = (this.style && this.style.transform) || '';
+  const origin = [node.origin.left, node.origin.top];
+  const transform = (node.style && node.style.transform) || '';
 
   while ((match = re.exec(transform)) != null) {
-    applySingleTransformation(this, match[0], origin);
+    applySingleTransformation(ctx, match[0], origin);
   }
+
+  return node;
 };
 
 export default R.curryN(2, applyTransformations);

@@ -1,4 +1,4 @@
-import { resolveObjectFit } from '../../src/utils/objectFit';
+import resolveObjectFit from '../../src/image/resolveObjectFit';
 
 describe('object-fit', () => {
   test('should fill to content box for portrait images', () => {

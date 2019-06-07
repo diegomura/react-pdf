@@ -15,7 +15,8 @@ const matchTransformOrigin = R.match(TRANSFORM_ORIGIN_REGEX);
 const isFontWeightStyle = key => key.match(/^fontWeight/);
 
 const isBorderStyle = (key, value) =>
-  key.match(/^border/) && typeof value === 'string';
+  key.match(/^border(Top|Right|Bottom|Left)(Color|Width|Style)/) &&
+  typeof value === 'string';
 
 const isBoxModelStyle = (key, value) =>
   key.match(/^(margin)|(padding)/) && typeof value === 'string';

@@ -79,6 +79,8 @@ export const embedEmojis = fragments => {
       const emojiSize = fragment.attributes.fontSize;
       const chunk = fragment.string.slice(lastIndex, index + match[0].length);
 
+      console.log(emojis);
+
       // If emoji image was found, we create a new fragment with the
       // correct attachment and object substitution character;
       if (emojis[emoji] && emojis[emoji].data) {

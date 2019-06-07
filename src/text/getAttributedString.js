@@ -1,21 +1,22 @@
-import { isNil, propEq, prop, complement, compose } from 'ramda';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
+import isImage from '../node/isImage';
 import { embedEmojis } from './emoji';
+import capitalize from '../utils/capitalize';
+import upperFirst from '../utils/upperFirst';
 import { ignoreChars } from './ignorableChars';
+import isTextInstance from '../node/isTextInstance';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const capitalize = value => value.replace(/(^|\s)\S/g, l => l.toUpperCase());
-
-const isImage = propEq('name', 'Image');
-
-const isTextInstance = compose(
-  complement(isNil),
-  prop('value'),
-);
-
+/**
+ * Apply transformation to text string
+ *
+ * @param {String} text
+ * @param {String} transformation type
+ * @returns {String} transformed text
+ */
 const transformText = (text, transformation) => {
   switch (transformation) {
     case 'uppercase':
@@ -24,12 +25,20 @@ const transformText = (text, transformation) => {
       return text.toLowerCase();
     case 'capitalize':
       return capitalize(text);
+    case 'upperfirst':
+      return upperFirst(text);
     default:
       return text;
   }
 };
 
-export const getFragments = instance => {
+/**
+ * Get textkit framgents of given node object
+ *
+ * @param {Object} instance node
+ * @returns {Array} text fragments
+ */
+const getFragments = instance => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
@@ -53,6 +62,7 @@ export const getFragments = instance => {
 
   const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
   const font = obj ? obj.data : fontFamily;
+
   const attributes = {
     font,
     color,
@@ -104,6 +114,13 @@ export const getFragments = instance => {
   return fragments;
 };
 
-export const getAttributedString = instance => {
-  return AttributedString.fromFragments(getFragments(instance));
-};
+/**
+ * Get textkit attributed string from text node
+ *
+ * @param {Object} instance node
+ * @returns {Object} attributed string
+ */
+const getAttributedString = instance =>
+  AttributedString.fromFragments(getFragments(instance));
+
+export default getAttributedString;

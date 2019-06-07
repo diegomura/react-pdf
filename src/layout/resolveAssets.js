@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import Font from '../font';
 import isImage from '../node/isImage';
 import fetchImage from '../image/fetchImage';
-import { fetchEmojis } from '../utils/emoji';
+import { fetchEmojis } from '../text/emoji';
 
 /**
  * Get all asset promises that need to be resolved

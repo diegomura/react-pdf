@@ -1,5 +1,5 @@
 import Font from '../src/font';
-import * as emoji from '../src/utils/emoji';
+import * as emoji from '../src/text/emoji';
 import * as imageUtils from '../src/utils/image';
 
 jest.mock('../src/font');

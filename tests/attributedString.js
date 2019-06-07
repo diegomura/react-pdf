@@ -1,6 +1,6 @@
 import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
-import { getAttributedString } from '../src/utils/attributedString';
+import { getAttributedString } from '../src/text/attributedString';
 
 describe('attributedString', () => {
   test('Should get emtpy attributed string if no instance passed', () => {

@@ -13,7 +13,11 @@ describe('capitalize', () => {
     expect(capitalize('')).toBe('');
   });
 
-  test('should return string with first char capitalized', () => {
+  test('should return single word string capitalized', () => {
     expect(capitalize('reactpdf')).toBe('Reactpdf');
+  });
+
+  test('should return multiple word string capitalized', () => {
+    expect(capitalize('lorem ipsum')).toBe('Lorem Ipsum');
   });
 });

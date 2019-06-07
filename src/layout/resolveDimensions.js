@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
-import isTextInstance from '../node/isTextInstance';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import getPosition from '../node/getPosition';
@@ -52,14 +51,15 @@ import {
   setMinHeight,
   setMaxHeight,
 } from '../node/setDimension';
+import isText from '../node/isText';
 import isImage from '../node/isImage';
 import isCanvas from '../node/isCanvas';
+import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
+import isTextInstance from '../node/isTextInstance';
 
 const YOGA_NODE = '_yogaNode';
-
-const isNotTextInstance = R.complement(isTextInstance);
 
 /**
  * Set styles valeus into yoga node before layout calculation
@@ -117,6 +117,27 @@ const setYogaValues = R.tap(node => {
 const insertYogaNodes = parent =>
   R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
 
+const setMeasureFunc = page => node => {
+  const yogaNode = node[YOGA_NODE];
+
+  if (isText(node)) {
+    yogaNode.setMeasureFunc(measureText(page, node));
+  }
+
+  if (isImage(node)) {
+    yogaNode.setMeasureFunc(measureImage(page, node));
+  }
+
+  if (isCanvas(node)) {
+    yogaNode.setMeasureFunc(measureCanvas(page, node));
+  }
+
+  return node;
+};
+
+const isNotText = R.complement(isText);
+const isNotTextInstance = R.complement(isTextInstance);
+
 /**
  * Creates and add yoga node to document tree
  * Handles measure function for text and image nodes
@@ -127,26 +148,19 @@ const insertYogaNodes = parent =>
 const createYogaNodes = page => node => {
   const yogaNode = Yoga.Node.createDefault();
 
-  if (isImage(node)) {
-    yogaNode.setMeasureFunc(measureImage(page, node));
-  }
-
-  if (isCanvas(node)) {
-    yogaNode.setMeasureFunc(measureCanvas(page, node));
-  }
-
   return R.compose(
-    R.evolve({
-      children: R.map(
-        R.when(
-          isNotTextInstance,
+    setMeasureFunc(page),
+    R.when(
+      isNotText,
+      R.evolve({
+        children: R.map(
           R.compose(
             insertYogaNodes(yogaNode),
             createYogaNodes(page),
           ),
         ),
-      ),
-    }),
+      }),
+    ),
     setYogaValues,
     R.assoc(YOGA_NODE, yogaNode),
   )(node);
@@ -192,7 +206,7 @@ const destroyYogaNodes = node => {
     R.dissoc(YOGA_NODE),
     R.tap(n => Yoga.Node.destroy(n[YOGA_NODE])),
     R.tap(n => n[YOGA_NODE].unsetMeasureFunc()),
-    R.evolve({ children: R.map(R.when(isNotTextInstance, destroyYogaNodes)) }),
+    R.evolve({ children: R.map(R.when(isNotText, destroyYogaNodes)) }),
   )(node);
 };
 

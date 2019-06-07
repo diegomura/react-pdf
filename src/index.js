@@ -45,8 +45,8 @@ const pdf = input => {
   const render = async () => {
     console.time('layout');
     const layout = await layoutDocument(container);
-    const instance = renderPDF(layout);
     console.timeEnd('layout');
+    const instance = renderPDF(layout);
 
     console.log(layout);
 

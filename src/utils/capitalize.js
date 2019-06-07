@@ -1,24 +1,12 @@
-import * as R from 'ramda';
-
 /**
- * Capitalize first letter of string
+ * Capitalize first letter of each word
  *
  * @param {String} string
  * @returns {String} capitalized string
  */
-const capitalize = R.ifElse(
-  R.isNil,
-  R.identity,
-  R.compose(
-    R.join(''),
-    R.juxt([
-      R.compose(
-        R.toUpper,
-        R.head,
-      ),
-      R.tail,
-    ]),
-  ),
-);
+const capitalize = value => {
+  if (!value) return value;
+  return value.replace(/(^|\s)\S/g, l => l.toUpperCase());
+};
 
 export default capitalize;

@@ -4,11 +4,13 @@ import PDFDocument from '@react-pdf/pdfkit';
 import Font from '../font';
 import save from './save';
 import restore from './restore';
+import isText from '../node/isText';
 import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isNote from '../node/isNote';
 import isLink from '../node/isLink';
 import isCanvas from '../node/isCanvas';
+import renderText from './renderText';
 import renderPage from './renderPage';
 import renderLink from './renderLink';
 import renderNote from './renderNote';
@@ -19,6 +21,8 @@ import renderDebug from './renderDebug';
 import renderBorders from './renderBorders';
 import renderBackground from './renderBackground';
 import applyTransformations from './applyTransformations';
+
+const isNotText = R.complement(isText);
 
 const renderNode = ctx => node => {
   const renderChildren = R.tap(
@@ -31,8 +35,9 @@ const renderNode = ctx => node => {
   return R.compose(
     restore(ctx),
     renderDebug(ctx),
-    renderChildren,
+    R.when(isNotText, renderChildren),
     R.cond([
+      [isText, renderText(ctx)],
       [isLink, renderLink(ctx)],
       [isNote, renderNote(ctx)],
       [isImage, renderImage(ctx)],

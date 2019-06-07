@@ -6,7 +6,7 @@ import Document from '../src/elements/Document';
 import root from './utils/dummyRoot';
 import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
-import * as emojiUtils from '../src/utils/emoji';
+import * as emojiUtils from '../src/text/emoji';
 
 jest.mock('page-wrapping');
 jest.mock('../src/font');

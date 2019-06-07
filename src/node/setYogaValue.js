@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import capitalize from '../utils/capitalize';
+import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
 
 /**
@@ -18,7 +18,7 @@ const setYogaValue = (attr, edge) => value =>
 
     if (!R.isNil(value) && yogaNode) {
       const hasEdge = R.complement(R.isNil)(edge);
-      const fixedMethod = `set${capitalize(attr)}`;
+      const fixedMethod = `set${upperFirst(attr)}`;
       const autoMethod = `${fixedMethod}Auto`;
       const percentMethod = `${fixedMethod}Percent`;
       const percent = matchPercent(value);

@@ -1,4 +1,4 @@
-import { pathOr, last } from 'ramda';
+import * as R from 'ramda';
 
 import StandardFont from './standardFont';
 
@@ -6,11 +6,7 @@ const fontCache = {};
 
 const IGNORED_CODE_POINTS = [173];
 
-const getFontSize = pathOr(12, ['attributes', 'fontSize']);
-
-const getFallbackFont = () => {
-  return getOrCreateFont('Helvetica');
-};
+const getFontSize = R.pathOr(12, ['attributes', 'fontSize']);
 
 const getOrCreateFont = name => {
   if (fontCache[name]) return fontCache[name];
@@ -21,13 +17,12 @@ const getOrCreateFont = name => {
   return font;
 };
 
-const shouldFallbackToFont = (codePoint, font) => {
-  return (
-    !IGNORED_CODE_POINTS.includes(codePoint) &&
-    !font.hasGlyphForCodePoint(codePoint) &&
-    getFallbackFont().hasGlyphForCodePoint(codePoint)
-  );
-};
+const getFallbackFont = () => getOrCreateFont('Helvetica');
+
+const shouldFallbackToFont = (codePoint, font) =>
+  !IGNORED_CODE_POINTS.includes(codePoint) &&
+  !font.hasGlyphForCodePoint(codePoint) &&
+  getFallbackFont().hasGlyphForCodePoint(codePoint);
 
 const fontSubstitution = () => ({ string, runs }) => {
   let lastFont = null;
@@ -75,7 +70,7 @@ const fontSubstitution = () => ({ string, runs }) => {
   }
 
   if (lastIndex < string.length) {
-    const fontSize = getFontSize(last(runs));
+    const fontSize = getFontSize(R.last(runs));
 
     res.push({
       start: lastIndex,

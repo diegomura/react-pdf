@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout';
 
-import capitalize from '../utils/capitalize';
+import upperFirst from '../utils/upperFirst';
 
 /**
  * Set generic align attribute to node's Yoga instance
@@ -27,7 +27,7 @@ const setAlign = attr => value =>
         [R.T, R.always(Yoga.ALIGN_AUTO)],
       ])(value);
 
-      yogaNode[`setAlign${capitalize(attr)}`](yogaValue);
+      yogaNode[`setAlign${upperFirst(attr)}`](yogaValue);
     }
   });
 

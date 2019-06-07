@@ -1,5 +1,6 @@
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
+import resolveZIndex from './resolveZIndex';
 import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
@@ -18,6 +19,7 @@ const layout = asyncCompose(
   // pageWrapping
   resolveTextLayout,
   resolvePercentRadius,
+  resolveZIndex,
   resolveDimensions, // Expensive!
   resolveAssets,
   resolveInheritance,

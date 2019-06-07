@@ -1,4 +1,4 @@
-import matchPercent from './matchPercent';
+import matchPercent from '../utils/matchPercent';
 
 const isNumeric = n => {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -85,7 +85,7 @@ const applyFillObjectFit = (cw, ch, px, py) => {
   };
 };
 
-export const resolveObjectFit = (type = 'fill', cw, ch, iw, ih, px, py) => {
+const resolveObjectFit = (type = 'fill', cw, ch, iw, ih, px, py) => {
   switch (type) {
     case 'contain':
       return applyContainObjectFit(cw, ch, iw, ih, px, py);
@@ -99,3 +99,5 @@ export const resolveObjectFit = (type = 'fill', cw, ch, iw, ih, px, py) => {
       return applyFillObjectFit(cw, ch, px, py);
   }
 };
+
+export default resolveObjectFit;

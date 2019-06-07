@@ -28,6 +28,8 @@
     "navigator": false,
     "window": false,
     "BROWSER": false,
+    "Path2D": false,
+    "btoa": false,
     "URL": false,
     "fetch": false
   },

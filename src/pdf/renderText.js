@@ -2,8 +2,6 @@ import * as R from 'ramda';
 import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
 
 const renderText = (ctx, node) => {
-  console.log(node);
-
   const { top, left } = node.box;
   const paddingTop = R.pathOr(0, ['box', 'paddingTop'], node);
   const paddingLeft = R.pathOr(0, ['box', 'paddingLeft'], node);

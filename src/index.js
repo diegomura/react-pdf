@@ -1,5 +1,7 @@
 import BlobStream from 'blob-stream';
-import PDFRenderer from './renderer';
+import PDFDocument from '@react-pdf/pdfkit';
+
+import createRenderer from './renderer';
 import layoutDocument from './layout';
 import renderPDF from './pdf/render';
 import StyleSheet from './stylesheet';
@@ -26,31 +28,49 @@ const Document = DOCUMENT;
 const Canvas = CANVAS;
 
 const pdf = input => {
+  let _isDirty = true;
+
   const container = { type: 'ROOT', children: [] };
+  const PDFRenderer = createRenderer(() => {
+    _isDirty = true;
+  });
   const mountNode = PDFRenderer.createContainer(container);
 
   if (input) updateContainer(input);
 
-  // function callOnRender(params = {}) {
-  //   if (container.document.props.onRender) {
-  //     const layoutData = container.document.getLayoutData();
-  //     container.document.props.onRender({ ...params, layoutData });
-  //   }
-  // }
+  function callOnRender(params = {}) {
+    // if (container.document.props.onRender) {
+    // const layoutData = container.document.getLayoutData();
+    // container.document.props.onRender({ ...params, layoutData });
+    // }
+  }
 
-  // function isDirty() {
-  //   return container.isDirty;
-  // }
+  function isDirty() {
+    return _isDirty;
+  }
 
   const render = async () => {
     console.time('layout');
+    const ctx = new PDFDocument({ autoFirstPage: false });
     const layout = await layoutDocument(container);
-    console.timeEnd('layout');
-    const instance = renderPDF(layout);
+    const instance = renderPDF(ctx, layout);
+    _isDirty = false;
 
-    console.log(layout);
+    console.timeEnd('layout');
 
     return instance;
+  };
+
+  const renderWithContext = async ctx => {
+    const layout = await layoutDocument(container);
+    const instance = renderPDF(ctx, layout);
+    _isDirty = false;
+
+    return instance;
+  };
+
+  const layout = async () => {
+    return layoutDocument(container);
   };
 
   function updateContainer(doc) {
@@ -65,9 +85,7 @@ const pdf = input => {
       stream.on('finish', () => {
         try {
           const blob = stream.toBlob('application/pdf');
-
-          // callOnRender({ blob });
-
+          callOnRender({ blob });
           resolve(blob);
         } catch (error) {
           reject(error);
@@ -107,9 +125,11 @@ const pdf = input => {
   // }
 
   return {
-    // isDirty,
+    layout,
+    isDirty,
     container,
     updateContainer,
+    renderWithContext,
     // toBuffer,
     toBlob,
     toString,
@@ -118,7 +138,6 @@ const pdf = input => {
 
 export {
   version,
-  PDFRenderer,
   View,
   Text,
   Link,
@@ -129,6 +148,5 @@ export {
   Document,
   Canvas,
   StyleSheet,
-  // createInstance,
   pdf,
 };

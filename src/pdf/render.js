@@ -1,5 +1,4 @@
 import * as R from 'ramda';
-import PDFDocument from '@react-pdf/pdfkit';
 
 import Font from '../font';
 import save from './save';
@@ -64,16 +63,14 @@ const renderRoot = ctx =>
     R.pathOr([], ['children']),
   );
 
-const render = root => {
-  const instance = new PDFDocument({ autoFirstPage: false });
+const render = (ctx, root) => {
+  addMetadata(ctx)(root);
+  renderRoot(ctx)(root);
 
-  addMetadata(instance)(root);
-  renderRoot(instance)(root);
-
-  instance.end();
+  ctx.end();
   Font.reset();
 
-  return instance;
+  return ctx;
 };
 
 export default render;

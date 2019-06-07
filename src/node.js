@@ -11,8 +11,6 @@ import {
   version,
   Document,
   StyleSheet,
-  PDFRenderer,
-  // createInstance,
 } from './index';
 
 export const renderToStream = async function(element) {
@@ -69,9 +67,7 @@ export {
   version,
   Document,
   StyleSheet,
-  PDFRenderer,
-} from // createInstance,
-'./index';
+} from './index';
 
 export default {
   pdf,
@@ -85,11 +81,9 @@ export default {
   version,
   Document,
   StyleSheet,
-  PDFRenderer,
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
-  // createInstance,
   renderToStream,
   renderToFile,
   render,

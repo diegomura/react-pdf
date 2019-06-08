@@ -10,15 +10,13 @@ const emptyObject = {};
 const createRenderer = onChange => {
   return ReactFiberReconciler({
     supportsMutation: true,
+
     appendInitialChild(parentInstance, child) {
       parentInstance.children.push(child);
+      onChange();
     },
 
-    createInstance(
-      type,
-      { style, children, ...props },
-      internalInstanceHandle,
-    ) {
+    createInstance(type, { style, children, ...props }) {
       return {
         type,
         box: {},
@@ -74,22 +72,31 @@ const createRenderer = onChange => {
 
     appendChild(parentInstance, child) {
       parentInstance.children.push(child);
+      onChange();
     },
 
     appendChildToContainer(parentInstance, child) {
       parentInstance.children.push(child);
+      onChange();
     },
 
     insertBefore(parentInstance, child, beforeChild) {
-      // parentInstance.appendChildBefore(child, beforeChild);
+      const index = parentInstance.children.indexOf(beforeChild);
+      if (index !== -1 && child)
+        parentInstance.children.splice(index, 0, child);
+      onChange();
     },
 
     removeChild(parentInstance, child) {
-      // parentInstance.removeChild(child);
+      const index = parentInstance.children.indexOf(child);
+      if (index !== -1) parentInstance.children.splice(index, 1);
+      onChange();
     },
 
     removeChildFromContainer(parentInstance, child) {
-      // parentInstance.removeChild(child);
+      const index = parentInstance.children.indexOf(child);
+      if (index !== -1) parentInstance.children.splice(index, 1);
+      onChange();
     },
 
     commitTextUpdate(textInstance, oldText, newText) {

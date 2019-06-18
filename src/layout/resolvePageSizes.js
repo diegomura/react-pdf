@@ -7,11 +7,11 @@ import assocIfNil from '../utils/assocIfNil';
  * Resolves page size
  *
  * @param {Object} page
- * @returns {Object} page with resolved size in box attribute
+ * @returns {Object} page with resolved size in style attribute
  */
 const resolvePageSize = page => {
   const size = getPageSize(page);
-  return R.evolve({ box: R.merge(size) })(page);
+  return R.evolve({ style: R.merge(size) })(page);
 };
 
 /**
@@ -26,7 +26,7 @@ const resolvePageSizes = R.evolve({
       children: R.map(
         R.compose(
           resolvePageSize,
-          assocIfNil('box', {}),
+          assocIfNil('style', {}),
         ),
       ),
     }),

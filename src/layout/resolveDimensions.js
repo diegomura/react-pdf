@@ -52,6 +52,7 @@ import {
   setMaxHeight,
 } from '../node/setDimension';
 import isText from '../node/isText';
+import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isCanvas from '../node/isCanvas';
 import measureText from '../text/measureText';
@@ -60,6 +61,11 @@ import measureCanvas from '../canvas/measureCanvas';
 import isTextInstance from '../node/isTextInstance';
 
 const YOGA_NODE = '_yogaNode';
+const YOGA_CONFIG = Yoga.Config.create();
+
+YOGA_CONFIG.setPointScaleFactor(0);
+
+const isNotPage = R.complement(isPage);
 
 /**
  * Set styles valeus into yoga node before layout calculation
@@ -69,8 +75,7 @@ const YOGA_NODE = '_yogaNode';
  */
 const setYogaValues = R.tap(node => {
   R.compose(
-    setWidth(node.box.width || node.style.width),
-    setHeight(node.box.height || node.style.height),
+    setWidth(node.style.width),
     setMinWidth(node.style.minWidth),
     setMaxWidth(node.style.maxWidth),
     setMinHeight(node.style.minHeight),
@@ -104,6 +109,7 @@ const setYogaValues = R.tap(node => {
     setFlexBasis(node.style.flexBasis),
     setFlexGrow(node.style.flexGrow),
     setFlexShrink(node.style.flexShrink),
+    R.when(isNotPage, setHeight(node.style.height)),
   )(node);
 });
 
@@ -146,7 +152,7 @@ const isNotTextInstance = R.complement(isTextInstance);
  * @returns {Object} node with appended yoga node
  */
 const createYogaNodes = page => node => {
-  const yogaNode = Yoga.Node.createDefault();
+  const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
 
   return R.compose(
     setMeasureFunc(page),

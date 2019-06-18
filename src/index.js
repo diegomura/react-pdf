@@ -31,12 +31,18 @@ const pdf = input => {
   let _isDirty = true;
 
   const container = { type: 'ROOT', children: [] };
-  const PDFRenderer = createRenderer(() => {
-    _isDirty = true;
-  });
+  const PDFRenderer = createRenderer(markAsDirty);
   const mountNode = PDFRenderer.createContainer(container);
 
   if (input) updateContainer(input);
+
+  function isDirty() {
+    return _isDirty;
+  }
+
+  function markAsDirty() {
+    _isDirty = true;
+  }
 
   function callOnRender(params = {}) {
     // if (container.document.props.onRender) {
@@ -45,18 +51,16 @@ const pdf = input => {
     // }
   }
 
-  function isDirty() {
-    return _isDirty;
-  }
-
   const render = async () => {
     console.time('layout');
     const ctx = new PDFDocument({ autoFirstPage: false });
     const layout = await layoutDocument(container);
     const instance = renderPDF(ctx, layout);
+    console.timeEnd('layout');
+
     _isDirty = false;
 
-    console.timeEnd('layout');
+    // console.log(layout);
 
     return instance;
   };

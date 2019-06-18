@@ -9,8 +9,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 595.28);
-    expect(document.children[0].box).toHaveProperty('height', 841.89);
+    expect(document.children[0].style).toHaveProperty('width', 595.28);
+    expect(document.children[0].style).toHaveProperty('height', 841.89);
   });
 
   test('Should default to portrait A4', () => {
@@ -26,8 +26,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 595.28);
-    expect(document.children[0].box).toHaveProperty('height', 841.89);
+    expect(document.children[0].style).toHaveProperty('width', 595.28);
+    expect(document.children[0].style).toHaveProperty('height', 841.89);
   });
 
   test('Should accept size string', () => {
@@ -43,8 +43,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 1190.55);
-    expect(document.children[0].box).toHaveProperty('height', 1683.78);
+    expect(document.children[0].style).toHaveProperty('width', 1190.55);
+    expect(document.children[0].style).toHaveProperty('height', 1683.78);
   });
 
   test('Should accept size string in landscape mode', () => {
@@ -62,8 +62,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 1683.78);
-    expect(document.children[0].box).toHaveProperty('height', 1190.55);
+    expect(document.children[0].style).toHaveProperty('width', 1683.78);
+    expect(document.children[0].style).toHaveProperty('height', 1190.55);
   });
 
   test('Should accept size array', () => {
@@ -79,8 +79,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 100);
-    expect(document.children[0].box).toHaveProperty('height', 200);
+    expect(document.children[0].style).toHaveProperty('width', 100);
+    expect(document.children[0].style).toHaveProperty('height', 200);
   });
 
   test('Should accept size array in landscape mode', () => {
@@ -101,8 +101,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 200);
-    expect(document.children[0].box).toHaveProperty('height', 100);
+    expect(document.children[0].style).toHaveProperty('width', 200);
+    expect(document.children[0].style).toHaveProperty('height', 100);
   });
 
   test('Should accept size object', () => {
@@ -120,8 +120,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 100);
-    expect(document.children[0].box).toHaveProperty('height', 200);
+    expect(document.children[0].style).toHaveProperty('width', 100);
+    expect(document.children[0].style).toHaveProperty('height', 200);
   });
 
   test('Should accept size object in landscape mode', () => {
@@ -145,8 +145,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 200);
-    expect(document.children[0].box).toHaveProperty('height', 100);
+    expect(document.children[0].style).toHaveProperty('width', 200);
+    expect(document.children[0].style).toHaveProperty('height', 100);
   });
 
   test('Should accept size number', () => {
@@ -162,8 +162,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 100);
-    expect(document.children[0].box).toHaveProperty('height', undefined);
+    expect(document.children[0].style).toHaveProperty('width', 100);
+    expect(document.children[0].style).toHaveProperty('height', undefined);
   });
 
   test('Should accept size number in landscape mode', () => {
@@ -181,8 +181,8 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', undefined);
-    expect(document.children[0].box).toHaveProperty('height', 100);
+    expect(document.children[0].style).toHaveProperty('width', undefined);
+    expect(document.children[0].style).toHaveProperty('height', 100);
   });
 
   test('Should resolve several pages', () => {
@@ -202,11 +202,11 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
     const document = result.children[0];
 
-    expect(document.children[0].box).toHaveProperty('width', 595.28);
-    expect(document.children[0].box).toHaveProperty('height', 841.89);
-    expect(document.children[1].box).toHaveProperty('width', 419.53);
-    expect(document.children[1].box).toHaveProperty('height', 595.28);
-    expect(document.children[2].box).toHaveProperty('width', 100);
-    expect(document.children[2].box).toHaveProperty('height', 200);
+    expect(document.children[0].style).toHaveProperty('width', 595.28);
+    expect(document.children[0].style).toHaveProperty('height', 841.89);
+    expect(document.children[1].style).toHaveProperty('width', 419.53);
+    expect(document.children[1].style).toHaveProperty('height', 595.28);
+    expect(document.children[2].style).toHaveProperty('width', 100);
+    expect(document.children[2].style).toHaveProperty('height', 200);
   });
 });

@@ -7,6 +7,7 @@ import resolveDimensions from './resolveDimensions';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import resolvePageMargins from './resolvePageMargins';
+import resolvePageWrapping from './resolvePageWrapping';
 import resolvePagePaddings from './resolvePagePaddings';
 import resolvePercentRadius from './resolvePercentRadius';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
@@ -16,7 +17,7 @@ import asyncCompose from '../utils/asyncCompose';
 const layout = asyncCompose(
   resolveAbsoluteCoordinates,
   resolveOrigins,
-  // pageWrapping
+  resolvePageWrapping,
   resolveTextLayout,
   resolvePercentRadius,
   resolveZIndex,

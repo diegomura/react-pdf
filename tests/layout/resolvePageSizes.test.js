@@ -1,12 +1,14 @@
 import resolvePageSizes from '../../src/layout/resolvePageSizes';
 
+const resolve = resolvePageSizes('style');
+
 describe('layout resolvePageSizes', () => {
   test('Should default to A4', () => {
     const root = {
       type: 'ROOT',
       children: [{ type: 'DOCUMENT', children: [{ type: 'PAGE', props: {} }] }],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 595.28);
@@ -23,7 +25,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 595.28);
@@ -40,7 +42,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 1190.55);
@@ -59,7 +61,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 1683.78);
@@ -76,7 +78,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 100);
@@ -98,7 +100,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 200);
@@ -117,7 +119,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 100);
@@ -142,7 +144,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 200);
@@ -159,7 +161,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 100);
@@ -178,7 +180,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', undefined);
@@ -199,7 +201,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolvePageSizes(root);
+    const result = resolve(root);
     const document = result.children[0];
 
     expect(document.children[0].style).toHaveProperty('width', 595.28);

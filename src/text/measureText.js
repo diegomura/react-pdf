@@ -18,13 +18,13 @@ import linesHeight from './linesHeight';
  */
 const measureText = (page, node, width, widthMode, height, heightMode) => {
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-    node.lines = layoutText(node, width, height);
+    if (!node.lines) node.lines = layoutText(node, width, height);
 
     return { height: linesHeight(node) };
   }
 
   if (widthMode === Yoga.MEASURE_MODE_AT_MOST) {
-    node.lines = layoutText(node, width, height);
+    if (!node.lines) node.lines = layoutText(node, width, height);
 
     return {
       height: linesHeight(node),

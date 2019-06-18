@@ -65,8 +65,6 @@ const YOGA_CONFIG = Yoga.Config.create();
 
 YOGA_CONFIG.setPointScaleFactor(0);
 
-const isNotPage = R.complement(isPage);
-
 /**
  * Set styles valeus into yoga node before layout calculation
  *
@@ -75,6 +73,7 @@ const isNotPage = R.complement(isPage);
  */
 const setYogaValues = R.tap(node => {
   R.compose(
+    R.ifElse(isPage, setHeight(node.box.height), setHeight(node.style.height)),
     setWidth(node.style.width),
     setMinWidth(node.style.minWidth),
     setMaxWidth(node.style.maxWidth),
@@ -109,7 +108,6 @@ const setYogaValues = R.tap(node => {
     setFlexBasis(node.style.flexBasis),
     setFlexGrow(node.style.flexGrow),
     setFlexShrink(node.style.flexShrink),
-    R.when(isNotPage, setHeight(node.style.height)),
   )(node);
 });
 
@@ -211,7 +209,6 @@ const destroyYogaNodes = node => {
   return R.compose(
     R.dissoc(YOGA_NODE),
     R.tap(n => Yoga.Node.destroy(n[YOGA_NODE])),
-    R.tap(n => n[YOGA_NODE].unsetMeasureFunc()),
     R.evolve({ children: R.map(R.when(isNotText, destroyYogaNodes)) }),
   )(node);
 };

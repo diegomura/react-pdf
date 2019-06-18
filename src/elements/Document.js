@@ -29,10 +29,14 @@ class Document {
   }
 
   removeChild(child) {
-    const i = this.children.indexOf(child);
-    child.parent = null;
+    const index = this.children.indexOf(child);
+
+    if (index !== -1) {
+      child.parent = null;
+      this.children.splice(index, 1);
+    }
+
     child.cleanup();
-    this.children.slice(i, 1);
   }
 
   addMetaData() {

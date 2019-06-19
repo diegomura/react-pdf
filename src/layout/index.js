@@ -13,6 +13,7 @@ import resolvePageMargins from './resolvePageMargins';
 import resolvePageWrapping from './resolvePageWrapping';
 import resolvePagePaddings from './resolvePagePaddings';
 import resolvePercentRadius from './resolvePercentRadius';
+import resolvePercentHeight from './resolvePercentHeight';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
 import resolveAbsoluteCoordinates from './resolveAbsoluteCoordinates';
 import asyncCompose from '../utils/asyncCompose';
@@ -20,7 +21,7 @@ import asyncCompose from '../utils/asyncCompose';
 const startTimer = name =>  R.tap(() => console.time(name));
 const endTimer = name =>  R.tap(() => console.timeEnd(name));
 
-const resolvePageStyles = resolvePageSizes('style');
+const resolvePageSizeStyle = resolvePageSizes('style');
 const resolvePageDimensions = resolvePageSizes('box');
 
 const layout = asyncCompose(
@@ -35,12 +36,13 @@ const layout = asyncCompose(
   resolveDimensions,
   resolveAssets,
   resolveInheritance,
+  resolvePercentHeight,
   resolvePagePaddings,
   resolveStyles,
   resolveNoteChildren,
   resolveLinkSubstitution,
   resolvePageMargins,
-  resolvePageStyles,
+  resolvePageSizeStyle,
 );
 
 export default layout;

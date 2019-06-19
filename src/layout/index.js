@@ -7,6 +7,7 @@ import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
 import resolveTextLayout from './resolveTextLayout';
+import resolveNoteChildren from './resolveNoteChildren';
 import resolveInheritance from './resolveInheritance';
 import resolvePageMargins from './resolvePageMargins';
 import resolvePageWrapping from './resolvePageWrapping';
@@ -25,9 +26,9 @@ const resolvePageDimensions = resolvePageSizes('box');
 const layout = asyncCompose(
   resolveAbsoluteCoordinates,
   resolveOrigins,
-  resolveDimensions,
-  resolvePageDimensions,
-  resolvePageWrapping,
+  // resolveDimensions,
+  // resolvePageDimensions,
+  // resolvePageWrapping,
   resolveTextLayout,
   resolvePercentRadius,
   resolveZIndex,
@@ -36,6 +37,7 @@ const layout = asyncCompose(
   resolveInheritance,
   resolvePagePaddings,
   resolveStyles,
+  resolveNoteChildren,
   resolveLinkSubstitution,
   resolvePageMargins,
   resolvePageStyles,

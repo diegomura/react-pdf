@@ -52,6 +52,7 @@ import {
   setMaxHeight,
 } from '../node/setDimension';
 import isText from '../node/isText';
+import isNote from '../node/isNote';
 import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isCanvas from '../node/isCanvas';
@@ -140,6 +141,8 @@ const setMeasureFunc = page => node => {
 };
 
 const isNotText = R.complement(isText);
+const isNotNote = R.complement(isNote);
+const isLayoutElement = R.both(isNotText, isNotNote);
 const isNotTextInstance = R.complement(isTextInstance);
 
 /**
@@ -155,7 +158,7 @@ const createYogaNodes = page => node => {
   return R.compose(
     setMeasureFunc(page),
     R.when(
-      isNotText,
+      isLayoutElement,
       R.evolve({
         children: R.map(
           R.compose(
@@ -209,7 +212,7 @@ const destroyYogaNodes = node => {
   return R.compose(
     R.dissoc(YOGA_NODE),
     R.tap(n => Yoga.Node.destroy(n[YOGA_NODE])),
-    R.evolve({ children: R.map(R.when(isNotText, destroyYogaNodes)) }),
+    R.evolve({ children: R.map(R.when(isLayoutElement, destroyYogaNodes)) }),
   )(node);
 };
 

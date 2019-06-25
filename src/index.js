@@ -54,12 +54,12 @@ const pdf = input => {
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
 
-    let layout;
+    // let layout;
 
     // for (let i = 0; i < 10; i++) {
-      console.time('layout');
-      layout = await layoutDocument(container);
-      console.timeEnd('layout');
+    console.time('layout');
+    const layout = await layoutDocument(container);
+    console.timeEnd('layout');
     // }
 
     const instance = renderPDF(ctx, layout);

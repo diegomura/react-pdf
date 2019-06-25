@@ -105,7 +105,9 @@ const createRenderer = onChange => {
     },
 
     commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      instance.props = newProps;
+      const { style, ...props } = newProps;
+      instance.props = props;
+      instance.style = style;
       onChange();
     },
   });

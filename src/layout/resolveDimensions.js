@@ -66,6 +66,13 @@ const YOGA_CONFIG = Yoga.Config.create();
 
 YOGA_CONFIG.setPointScaleFactor(0);
 
+const setNodeHeight = node =>
+  R.ifElse(
+    isPage,
+    setHeight(node.box.height),
+    setHeight(node.box.height || node.style.height),
+  );
+
 /**
  * Set styles valeus into yoga node before layout calculation
  *
@@ -74,7 +81,7 @@ YOGA_CONFIG.setPointScaleFactor(0);
  */
 const setYogaValues = R.tap(node => {
   R.compose(
-    R.ifElse(isPage, setHeight(node.box.height), setHeight(node.style.height)),
+    setNodeHeight(node),
     setWidth(node.style.width),
     setMinWidth(node.style.minWidth),
     setMaxWidth(node.style.maxWidth),
@@ -224,12 +231,16 @@ const destroyYogaNodes = node => {
  * @param {Object} page object
  * @returns {Object} page object with correct 'box' layout attributes
  */
-const resolvePageDimensions = page =>
-  R.compose(
-    destroyYogaNodes,
-    persistDimensions,
-    calculateLayout,
-    createYogaNodes(page),
+export const resolvePageDimensions = page =>
+  R.ifElse(
+    R.isNil,
+    R.always(null),
+    R.compose(
+      destroyYogaNodes,
+      persistDimensions,
+      calculateLayout,
+      createYogaNodes(page),
+    ),
   )(page);
 
 /**

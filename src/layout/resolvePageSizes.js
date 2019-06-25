@@ -9,7 +9,7 @@ import assocIfNil from '../utils/assocIfNil';
  * @param {Object} page
  * @returns {Object} page with resolved size in style attribute
  */
-const resolvePageSize = key => page => {
+export const resolvePageSize = key => page => {
   const size = getPageSize(page);
   return R.evolve({ [key]: R.merge(R.__, size) })(page);
 };

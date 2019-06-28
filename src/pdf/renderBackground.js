@@ -9,6 +9,7 @@ const drawBackground = ctx => node => {
     const { top, left, width, height } = node.box;
 
     ctx
+      .fillOpacity(node.style.opacity || 1)
       .fillColor(node.style.backgroundColor)
       .rect(left, top, width, height)
       .fill();

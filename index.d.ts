@@ -276,7 +276,7 @@ declare module '@react-pdf/renderer' {
     }
 
     type HyphenationCallback = (
-      words: string[],
+      words: string,
       glyphString: { [key: string]: any },
     ) => string[];
 

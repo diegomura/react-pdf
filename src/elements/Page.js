@@ -48,17 +48,6 @@ class Page extends Base {
       }
     }
   }
-
-  async nodeWillWrap(props) {
-    await this.renderDynamicNodes(props);
-    this.calculateLayout();
-  }
-
-  onNodeSplit(height, clone) {
-    clone.marginTop = 0;
-    this.marginBottom = 0;
-    this.calculateLayout();
-  }
 }
 
 export default Page;

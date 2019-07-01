@@ -15,6 +15,7 @@ import renderLink from './renderLink';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
 import renderCanvas from './renderCanvas';
+import renderRulers from './renderRulers';
 import addMetadata from './addMetadata';
 import renderDebug from './renderDebug';
 import renderBorders from './renderBorders';
@@ -53,7 +54,12 @@ const renderNode = ctx => node => {
 
 const renderDocument = ctx =>
   R.compose(
-    R.forEach(renderNode(ctx)),
+    R.forEach(
+      R.compose(
+        renderRulers(ctx),
+        renderNode(ctx),
+      ),
+    ),
     R.pathOr([], ['children']),
   );
 

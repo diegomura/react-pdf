@@ -98,3 +98,11 @@ export const INHERITED_PROPERTIES = [
   'visibility',
   'wordSpacing',
 ];
+
+export const RULER_WIDTH = 13;
+export const RULER_COLOR = 'white';
+export const RULER_FONT_SIZE = 6;
+export const DEFAULT_RULER_STEPS = 50;
+export const LINE_WIDTH = 0.5;
+export const LINE_COLOR = 'gray';
+export const GRID_COLOR = '#ababab';

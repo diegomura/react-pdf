@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
 import resolveZIndex from './resolveZIndex';
+import resolveRulers from './resolveRulers';
 import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
@@ -25,6 +26,7 @@ const resolvePageSizeStyle = resolvePageSizes('style');
 
 const layout = asyncCompose(
   resolveAbsoluteCoordinates,
+  resolveRulers,
   resolveOrigins,
   endTimer('resolvePageBreaks'),
   resolvePageWrapping,

@@ -161,6 +161,8 @@ const renderDebug = (ctx, node) => {
   debugOrigin(ctx, node);
 
   ctx.restore();
+
+  return node;
 };
 
 export default R.curryN(2, renderDebug);

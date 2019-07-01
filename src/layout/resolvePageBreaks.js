@@ -1,5 +1,7 @@
 import * as R from 'ramda';
 
+import shouldNodeBreak from '../node/shouldBreak';
+import getContentArea from '../page/getContentArea';
 import { resolvePageDimensions } from './resolveDimensions';
 
 const getHeight = R.path(['box', 'height']);
@@ -8,48 +10,11 @@ const getTop = R.pathOr(0, ['box', 'top']);
 
 const getChildren = R.propOr([], 'children');
 
-const getBreak = R.pathOr(false, ['props', 'break']);
+const setChildren = R.assoc('children');
 
-const getPaddingBottom = R.pathOr(0, ['style', 'paddingBottom']);
+const setHeight = R.assocPath(['box', 'height']);
 
-// const getWrap = R.pathOr(true, ['props', 'wrap']);
-
-// const getMinPresenceAhead = R.path(['props', 'minPresenceAhead']);
-
-// const defaultPresenceAhead = element => height =>
-//   Math.min(element.box.height, height);
-
-// const getPresenceAhead = (elements, height) => {
-//   let result = 0;
-
-//   for (let i = 0; i < elements.length; i++) {
-//     const element = elements[i];
-
-//     if (!element.box) continue;
-
-//     const isElementInside = height > element.box.top;
-//     const presenceAhead =
-//       element.props.presenceAhead || defaultPresenceAhead(element);
-
-//     if (element && isElementInside) {
-//       result += presenceAhead(height - element.box.top);
-//     }
-//   }
-
-//   return result;
-// };
-
-// const shouldElementBreak = (child, futureElements, height) => {
-//   const minPresenceAhead = getMinPresenceAhead(child);
-//   const presenceAhead = getPresenceAhead(futureElements, height);
-//   return getBreak(child) || presenceAhead < minPresenceAhead;
-// };
-
-const getWrappingArea = page => {
-  const paddingBottom = getPaddingBottom(page);
-  const height = R.path(['style', 'height'], page);
-  return height - paddingBottom;
-};
+const setBreak = R.assocPath(['props', 'break']);
 
 const breakChildren = (height, node) => {
   const children = getChildren(node);
@@ -62,12 +27,13 @@ const breakChildren = (height, node) => {
     const child = children[i];
     const childTop = getTop(child);
     const childHeight = getHeight(child);
-    const shouldBreak = getBreak(child);
+    const futureElements = children.slice(i + 1);
+    const shouldBreak = shouldNodeBreak(child, futureElements, height);
 
     if (shouldBreak) {
       offset = childTop;
       nextElements = R.compose(
-        R.prepend(R.evolve({ props: { break: R.always(false) } }, child)),
+        R.prepend(setBreak(false, child)),
         R.slice(i + 1, Infinity),
       )(children);
       break;
@@ -79,29 +45,25 @@ const breakChildren = (height, node) => {
     );
 
     if (R.isNil(childsOffset)) {
-      currentElements.push(
-        R.evolve({ children: R.always(currentChildren) })(child),
-      );
+      currentElements.push(setChildren(currentChildren, child));
       continue;
     }
 
     offset = childTop + childsOffset;
 
     currentElements.push(
-      R.evolve({
-        children: R.always(currentChildren),
-        box: {
-          height: R.always(Math.ceil(offset / height) * height - childTop),
-        },
-      })(child),
+      R.compose(
+        setChildren(currentChildren),
+        setHeight(Math.ceil(offset / height) * height - childTop),
+      )(child),
     );
 
     nextElements = R.compose(
       R.prepend(
-        R.evolve({
-          children: R.always(nextChildren),
-          box: { height: R.subtract(R.__, childHeight) },
-        })(child),
+        R.compose(
+          setChildren(nextChildren),
+          setHeight(child.box.height - childHeight),
+        )(child),
       ),
       R.slice(i + 1, Infinity),
     )(children);
@@ -117,22 +79,22 @@ const breakNode = height => node => {
 
   if (R.isNil(offset)) return [node];
 
-  const currentNode = R.evolve({
-    children: R.always(currentChildren),
-    box: { height: R.always(Math.ceil(offset / height) * height) },
-  })(node);
+  const currentNode = R.compose(
+    setChildren(currentChildren),
+    setHeight(Math.ceil(offset / height) * height),
+  )(node);
 
-  const nextNode = R.evolve({
-    children: R.always(nextChildren),
-    box: { height: R.subtract(R.__, offset) },
-  })(node);
+  const nextNode = R.compose(
+    setChildren(nextChildren),
+    setHeight(node.box.height - offset),
+  )(node);
 
   return [currentNode, nextNode];
 };
 
 const breakPage = page => {
   const pages = [];
-  const height = getWrappingArea(page);
+  const height = getContentArea(page);
 
   let subpages = breakNode(height)(page);
   let current = subpages[0];
@@ -144,7 +106,7 @@ const breakPage = page => {
     subpages = R.compose(
       breakNode(height),
       resolvePageDimensions,
-      R.evolve({ box: { height: R.always(null) } }),
+      setHeight(null),
     )(nextPage);
 
     current = subpages[0];

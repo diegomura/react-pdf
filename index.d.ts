@@ -263,8 +263,8 @@ declare module '@react-pdf/renderer' {
 
     interface FontDescriptor {
       family: string;
-      fontStyle: FontStyle;
-      fontWeight: FontWeight;
+      fontStyle?: FontStyle;
+      fontWeight?: FontWeight;
     }
 
     interface RegisteredFont {
@@ -284,13 +284,15 @@ declare module '@react-pdf/renderer' {
       register: (options: {
         family: string;
         src: string;
-        fonts?: {
+        [key: string]: any;
+      } | {
+        family: string;
+        fonts: {
           src: string;
-          fontStyle: string;
-          fontWeight: string | number;
+          fontStyle?: string;
+          fontWeight?: string | number;
           [key: string]: any;
         }[];
-        [key: string]: any;
       }) => void;
       getEmojiSource: () => EmojiSource;
       getRegisteredFonts: () => FontInstance[];

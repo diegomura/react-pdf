@@ -198,12 +198,10 @@ describe('Image', () => {
   });
 
   test('Should render inline image', async () => {
-    fetch.once(localJPGImage);
-
     const page = new Page(dummyRoot, {});
     const view = new View(dummyRoot, {});
 
-    const text = new Text(dummyRoot, { style: { textAlign: 'left' } });
+    const text = new Text(dummyRoot, {});
     const img = new Image(dummyRoot, {
       src: { data: localJPGImage, format: 'jpg' },
     });
@@ -218,6 +216,7 @@ describe('Image', () => {
     view.appendChild(text);
     await img.fetch();
     await page.render();
+    console.log(img.image);
 
     expect(img.image.data).toBeTruthy();
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);

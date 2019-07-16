@@ -13,6 +13,7 @@ import {
   isDangerousLocalPath,
 } from '../src/utils/image';
 import * as objectFit from '../src/utils/objectFit';
+import { getFragments } from '../src/utils/attributedString';
 
 let dummyRoot;
 
@@ -205,20 +206,19 @@ describe('Image', () => {
     const img = new Image(dummyRoot, {
       src: { data: localJPGImage, format: 'jpg' },
     });
-    const imgFetch = jest.fn(() => {
-      img.image = { data: { width: 10, height: 10 } };
-    });
-
-    img.fetch = imgFetch;
 
     page.appendChild(view);
-    text.appendChild(img);
     view.appendChild(text);
+    text.appendChild(img);
     await img.fetch();
     await page.render();
-    console.log(img.image);
+    const fragments = getFragments(page)[0];
 
     expect(img.image.data).toBeTruthy();
+    expect(fragments.string).toBe(String.fromCharCode(0xfffc));
+    expect(fragments.attributes.attachment.width).toBe(18);
+    expect(fragments.attributes.attachment.height).toBe(18);
+    expect(fragments.attributes.attachment.image).toBeTruthy();
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(img.image.data);
   });

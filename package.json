@@ -37,6 +37,7 @@
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-reconciler": "^0.20.4",
+    "scheduler": "^0.14.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "devDependencies": {

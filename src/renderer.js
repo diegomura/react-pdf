@@ -1,13 +1,12 @@
 'use strict';
 
+import ReactFiberReconciler from 'react-reconciler';
 import {
-	unstable_scheduleCallback as schedulePassiveEffects,
-	unstable_cancelCallback as cancelPassiveEffects
+  unstable_scheduleCallback as schedulePassiveEffects,
+  unstable_cancelCallback as cancelPassiveEffects
 } from 'scheduler';
 
-import ReactFiberReconciler from 'react-reconciler';
 import { createInstance } from './elements';
-
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};

@@ -4,8 +4,15 @@ import PNG from '../src/utils/png';
 
 const localJPGImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 const localPNGImage = fs.readFileSync(path.join(__dirname, 'assets/test.png'));
+const interlacedLocalPNGImage = fs.readFileSync(
+  path.join(__dirname, 'assets/interlaced-test.png'),
+);
 
 describe('png', () => {
+  test('should return true for valid interlaced PNG images', () => {
+    expect(PNG.isValid(interlacedLocalPNGImage)).toBeTruthy();
+  });
+
   test('should return true for valid PNG images', () => {
     expect(PNG.isValid(localPNGImage)).toBeTruthy();
   });

@@ -98,7 +98,7 @@ function getImage(body, extension) {
     case 'jpeg':
       return new JPEG(body);
     case 'png':
-      return new PNG(body);
+      return PNG.load(body);
     default:
       return null;
   }

@@ -1,11 +1,11 @@
 import * as R from 'ramda';
 
-const getPaddingBottom = R.pathOr(0, ['style', 'paddingBottom']);
+import getPadding from '../node/getPadding'
 
 const getContentArea = page => {
-  const paddingBottom = getPaddingBottom(page);
+  const { paddingTop, paddingBottom } = getPadding(page);
   const height = R.path(['style', 'height'], page);
-  return height - paddingBottom;
+  return height - paddingTop - paddingBottom;
 };
 
 export default getContentArea;

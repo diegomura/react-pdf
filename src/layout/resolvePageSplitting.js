@@ -1,19 +1,12 @@
 import * as R from 'ramda';
 
 import splitNode from '../node/split';
-
-const getPaddingBottom = R.pathOr(0, ['style', 'paddingBottom']);
-
-const getWrappingArea = page => {
-  const paddingBottom = getPaddingBottom(page);
-  const height = R.path(['style', 'height'], page);
-  return height - paddingBottom;
-};
+import getContentArea from '../page/getContentArea';
 
 const splitPage = page => {
   if (!page) return [];
+  const height = getContentArea(page);
 
-  const height = getWrappingArea(page);
   let splittedPage = splitNode(height, page);
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
@@ -27,15 +20,18 @@ const splitPage = page => {
   return pages;
 };
 
-const resolvePageSplitting = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.compose(
-        R.flatten,
-        R.map(splitPage),
-      ),
-    }),
-  ),
-});
+
+
+const resolvePageSplitting = root =>
+  R.evolve({
+    children: R.map(
+      R.evolve({
+        children: R.compose(
+          R.flatten,
+          R.map(splitPage),
+        ),
+      }),
+    ),
+  })(root);
 
 export default resolvePageSplitting;

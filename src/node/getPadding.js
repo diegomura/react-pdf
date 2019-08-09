@@ -9,7 +9,7 @@ const getComputedPadding = edge => node => {
 };
 
 /**
- * Get Yoga computed magins. Zero otherwise
+ * Get Yoga computed paddings. Zero otherwise
  *
  * @param {Object} node
  * @return {Object} paddings

@@ -153,9 +153,30 @@ const browserProdConfig = {
   plugins: browserConfig.plugins.concat(terser()),
 };
 
+const browserCustomConfig = {
+  ...configBase,
+  input: './src/custom-dom.js',
+  output: [
+    getESM({ file: 'dist/react-pdf.browser-custom.es.js' }),
+    getCJS({ file: 'dist/react-pdf.browser-custom.cjs.js' }),
+  ],
+  plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
+};
+
+const browserCustomProdConfig = {
+  ...browserConfig,
+  output: [
+    getESM({ file: 'dist/react-pdf.browser-custom.es.min.js' }),
+    getCJS({ file: 'dist/react-pdf.browser-custom.cjs.min.js' }),
+  ],
+  plugins: browserConfig.plugins.concat(terser()),
+};
+
 export default [
   serverConfig,
   serverProdConfig,
   browserConfig,
   browserProdConfig,
+  browserCustomConfig,
+  browserCustomProdConfig,
 ];

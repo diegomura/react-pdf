@@ -3,7 +3,7 @@ import React from 'react';
 import Yoga from 'yoga-layout';
 
 import warning from '../src/utils/warning';
-import createReactPDF from './index';
+import createReactPDFDom from './custom-dom';
 const {
   pdf,
   View,
@@ -15,134 +15,14 @@ const {
   Image,
   Canvas,
   version,
+  Document,
+  PDFViewer,
   StyleSheet,
   PDFRenderer,
+  BlobProvider,
   createInstance,
-  Document: PDFDocument,
-} = createReactPDF(Yoga);
-
-const flatStyles = stylesArray =>
-  stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
-
-export const Document = ({ children, ...props }) => {
-  return <PDFDocument {...props}>{children}</PDFDocument>;
-};
-
-class InternalBlobProvider extends React.PureComponent {
-  state = { blob: null, url: null, loading: true, error: null };
-
-  constructor(props) {
-    super(props);
-
-    // Create new root container for this render
-    this.instance = pdf();
-  }
-
-  componentDidMount() {
-    this.renderDocument();
-    this.onDocumentUpdate();
-  }
-
-  componentDidUpdate() {
-    this.renderDocument();
-
-    if (this.instance.isDirty() && !this.state.error) {
-      this.onDocumentUpdate();
-    }
-  }
-
-  renderDocument() {
-    this.instance.updateContainer(this.props.document);
-  }
-
-  onDocumentUpdate() {
-    const oldBlobUrl = this.state.url;
-
-    this.instance
-      .toBlob()
-      .then(blob => {
-        this.setState(
-          { blob, url: URL.createObjectURL(blob), loading: false },
-          () => URL.revokeObjectURL(oldBlobUrl),
-        );
-      })
-      .catch(error => {
-        this.setState({ error });
-        console.error(error);
-        throw error;
-      });
-  }
-
-  render() {
-    return this.props.children(this.state);
-  }
-}
-
-export const BlobProvider = ({ document: doc, children }) => {
-  if (!doc) {
-    warning(false, 'You should pass a valid document to BlobProvider');
-    return null;
-  }
-
-  return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
-};
-
-export const PDFViewer = ({
-  className,
-  style,
-  children,
-  innerRef,
-  ...props
-}) => {
-  return (
-    <InternalBlobProvider document={children}>
-      {({ url }) => (
-        <iframe
-          className={className}
-          ref={innerRef}
-          src={url}
-          style={Array.isArray(style) ? flatStyles(style) : style}
-          {...props}
-        />
-      )}
-    </InternalBlobProvider>
-  );
-};
-
-export const PDFDownloadLink = ({
-  document: doc,
-  className,
-  style,
-  children,
-  fileName = 'document.pdf',
-}) => {
-  if (!doc) {
-    warning(false, 'You should pass a valid document to PDFDownloadLink');
-    return null;
-  }
-
-  const downloadOnIE = blob => () => {
-    if (window.navigator.msSaveBlob) {
-      window.navigator.msSaveBlob(blob, fileName);
-    }
-  };
-
-  return (
-    <InternalBlobProvider document={doc}>
-      {params => (
-        <a
-          className={className}
-          download={fileName}
-          href={params.url}
-          onClick={downloadOnIE(params.blob)}
-          style={Array.isArray(style) ? flatStyles(style) : style}
-        >
-          {typeof children === 'function' ? children(params) : children}
-        </a>
-      )}
-    </InternalBlobProvider>
-  );
-};
+  PDFDownloadLink,
+} = createReactPDFDom(Yoga);
 
 export {
   pdf,
@@ -155,9 +35,13 @@ export {
   Image,
   Canvas,
   version,
+  Document,
+  PDFViewer,
   StyleSheet,
   PDFRenderer,
+  BlobProvider,
   createInstance,
+  PDFDownloadLink,
 };
 
 export default {

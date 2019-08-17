@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import Yoga from 'yoga-layout';
 
 import Base from './Base';
 import Ruler from '../mixins/ruler';
@@ -101,7 +100,7 @@ class Page extends Base {
 
   setPadding(edge, value) {
     const dimension =
-      edge === Yoga.EDGE_TOP || edge === Yoga.EDGE_BOTTOM
+      edge === this.Yoga.EDGE_TOP || edge === this.Yoga.EDGE_BOTTOM
         ? this.size.height
         : this.size.width;
 

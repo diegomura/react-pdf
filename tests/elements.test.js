@@ -1,6 +1,11 @@
+import root from './utils/dummyRoot';
 import { createInstance } from '../src/elements';
 
+let dummyRoot;
 describe('Elements', () => {
+  beforeEach(() => {
+    dummyRoot = root.reset();
+  });
   test('Should create root instance', async () => {
     const instance = createInstance({ type: 'ROOT' });
     expect(instance.name).toBe('Root');
@@ -22,12 +27,12 @@ describe('Elements', () => {
   });
 
   test('Should create image instance', async () => {
-    const instance = createInstance({ type: 'IMAGE' });
+    const instance = createInstance({ type: 'IMAGE' }, dummyRoot);
     expect(instance.name).toBe('Image');
   });
 
   test('Should create text instance', async () => {
-    const instance = createInstance({ type: 'TEXT' });
+    const instance = createInstance({ type: 'TEXT' }, dummyRoot);
     expect(instance.name).toBe('Text');
   });
 

@@ -1,6 +1,7 @@
+import Yoga from 'yoga-layout';
 import BlobStream from 'blob-stream';
 import PDFRenderer from './renderer';
-import StyleSheet from './stylesheet';
+import createStyleSheet from './stylesheet';
 import { createInstance } from './elements';
 import Font from './font';
 import { version } from '../package.json';
@@ -15,7 +16,7 @@ const Document = 'DOCUMENT';
 const Canvas = 'CANVAS';
 
 const pdf = input => {
-  const container = createInstance({ type: 'ROOT' });
+  const container = createInstance({ type: 'ROOT', props: Yoga });
   const mountNode = PDFRenderer.createContainer(container);
 
   if (input) updateContainer(input);
@@ -95,6 +96,7 @@ const pdf = input => {
   };
 };
 
+const StyleSheet = createStyleSheet(Yoga);
 export {
   version,
   PDFRenderer,

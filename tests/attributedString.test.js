@@ -1,8 +1,13 @@
+import root from './utils/dummyRoot';
 import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
 import { getAttributedString } from '../src/utils/attributedString';
 
+let dummyRoot;
 describe('attributedString', () => {
+  beforeEach(() => {
+    dummyRoot = root.reset();
+  });
   test('Should get emtpy attributed string if no instance passed', () => {
     const attributedString = getAttributedString();
 
@@ -10,7 +15,7 @@ describe('attributedString', () => {
   });
 
   test('Should get attributed string from single text node', () => {
-    const text = new Text(null, {});
+    const text = new Text(dummyRoot, {});
     const instance = new TextInstance(null, 'Hey');
 
     text.appendChild(instance);
@@ -22,8 +27,8 @@ describe('attributedString', () => {
   });
 
   test('Should get attributed string with inline texts', () => {
-    const root = new Text(null, {});
-    const inline = new Text(null, {});
+    const root = new Text(dummyRoot, {});
+    const inline = new Text(dummyRoot, {});
     const instance1 = new TextInstance(null, 'Hey');
     const instance2 = new TextInstance(null, 'Ho');
     const instance3 = new TextInstance(null, 'Lets go');
@@ -42,7 +47,7 @@ describe('attributedString', () => {
   });
 
   test('Should set backgroundColor to attributed string', () => {
-    const text = new Text(null, {});
+    const text = new Text(dummyRoot, {});
     const instance = new TextInstance(null, 'Hey');
 
     text.style = { backgroundColor: 'red' }; // Simulate parent stlyes computing
@@ -54,7 +59,7 @@ describe('attributedString', () => {
   });
 
   test('Should set opacity to attributed string', () => {
-    const text = new Text(null, {});
+    const text = new Text(dummyRoot, {});
     const instance = new TextInstance(null, 'Hey');
 
     text.style = { opacity: 0.4 }; // Simulate parent stlyes computing
@@ -66,7 +71,7 @@ describe('attributedString', () => {
   });
 
   test('Should set zero opacity to attributed string', () => {
-    const text = new Text(null, {});
+    const text = new Text(dummyRoot, {});
     const instance = new TextInstance(null, 'Hey');
 
     text.style = { opacity: 0 }; // Simulate parent stlyes computing

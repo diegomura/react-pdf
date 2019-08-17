@@ -1,5 +1,3 @@
-import Yoga from 'yoga-layout';
-
 import Base from './Base';
 import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
@@ -45,32 +43,32 @@ class Image extends Base {
     if (!this.image) return { width: 0, height: 0 };
 
     if (
-      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-      heightMode === Yoga.MEASURE_MODE_UNDEFINED
+      widthMode === this.Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === this.Yoga.MEASURE_MODE_UNDEFINED
     ) {
       const scaledHeight = width / this.ratio;
       return { height: Math.min(pageArea, scaledHeight) };
     }
 
     if (
-      heightMode === Yoga.MEASURE_MODE_EXACTLY &&
-      (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-        widthMode === Yoga.MEASURE_MODE_UNDEFINED)
+      heightMode === this.Yoga.MEASURE_MODE_EXACTLY &&
+      (widthMode === this.Yoga.MEASURE_MODE_AT_MOST ||
+        widthMode === this.Yoga.MEASURE_MODE_UNDEFINED)
     ) {
       return { width: Math.min(height * this.ratio, width) };
     }
 
     if (
-      widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
+      widthMode === this.Yoga.MEASURE_MODE_EXACTLY &&
+      heightMode === this.Yoga.MEASURE_MODE_AT_MOST
     ) {
       const scaledHeight = width / this.ratio;
       return { height: Math.min(height, pageArea, scaledHeight) };
     }
 
     if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST &&
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
+      widthMode === this.Yoga.MEASURE_MODE_AT_MOST &&
+      heightMode === this.Yoga.MEASURE_MODE_AT_MOST
     ) {
       if (this.ratio > 1) {
         return {

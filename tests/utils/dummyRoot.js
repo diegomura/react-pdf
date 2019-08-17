@@ -1,3 +1,5 @@
+import Yoga from 'yoga-layout';
+
 export default {
   reset: () => {
     const instance = {};
@@ -46,9 +48,11 @@ export default {
     instance.text = jest.fn().mockReturnValue(instance);
     instance.font = jest.fn().mockReturnValue(instance);
 
-    return {
+    const root = {
       instance,
       markDirty: jest.fn(),
     };
+    Object.defineProperty(root, 'Yoga', { enumerable: false, value: Yoga });
+    return root;
   },
 };

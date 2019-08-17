@@ -1,8 +1,13 @@
+import root from './utils/dummyRoot';
 import Node from '../src/elements/Node';
 
+let dummyRoot;
 describe('Node', () => {
+  beforeEach(() => {
+    dummyRoot = root.reset();
+  });
   test('Should get correct position', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.position = 'absolute';
 
@@ -12,7 +17,7 @@ describe('Node', () => {
   });
 
   test('Should get correct coordinates', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.top = 20;
     node.left = 40;
@@ -24,7 +29,7 @@ describe('Node', () => {
   });
 
   test('Should get correct dimensions', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.width = 20;
     node.height = 40;
@@ -36,8 +41,8 @@ describe('Node', () => {
   });
 
   test('Should get integer percentage dimensions', () => {
-    const base = new Node();
-    const child = new Node();
+    const base = new Node(dummyRoot.Yoga);
+    const child = new Node(dummyRoot.Yoga);
 
     base.appendChild(child);
 
@@ -53,8 +58,8 @@ describe('Node', () => {
   });
 
   test('Should get float percentage dimensions', () => {
-    const base = new Node();
-    const child = new Node();
+    const base = new Node(dummyRoot.Yoga);
+    const child = new Node(dummyRoot.Yoga);
 
     base.appendChild(child);
 
@@ -70,7 +75,7 @@ describe('Node', () => {
   });
 
   test('Should get correct min/max dimensions', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.minWidth = 20;
     node.minHeight = 40;
@@ -86,7 +91,7 @@ describe('Node', () => {
   });
 
   test('Should get correct padding', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.paddingTop = 10;
     node.paddingRight = 20;
@@ -102,8 +107,8 @@ describe('Node', () => {
   });
 
   test('Should append child correctly', () => {
-    const base = new Node();
-    const child = new Node();
+    const base = new Node(dummyRoot.Yoga);
+    const child = new Node(dummyRoot.Yoga);
 
     base.appendChild(child);
 
@@ -115,9 +120,9 @@ describe('Node', () => {
   });
 
   test('Should append child before correctly', () => {
-    const base = new Node();
-    const child1 = new Node();
-    const child2 = new Node();
+    const base = new Node(dummyRoot.Yoga);
+    const child1 = new Node(dummyRoot.Yoga);
+    const child2 = new Node(dummyRoot.Yoga);
 
     base.appendChild(child1);
     base.appendChildBefore(child2, child1);
@@ -133,9 +138,9 @@ describe('Node', () => {
   });
 
   test('Should remove child correctly', () => {
-    const base = new Node();
-    const child1 = new Node();
-    const child2 = new Node();
+    const base = new Node(dummyRoot.Yoga);
+    const child1 = new Node(dummyRoot.Yoga);
+    const child2 = new Node(dummyRoot.Yoga);
 
     base.appendChild(child1);
     base.appendChild(child2);
@@ -151,7 +156,7 @@ describe('Node', () => {
   });
 
   test('Should get correct margin', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.marginTop = 10;
     node.marginRight = 20;
@@ -167,7 +172,7 @@ describe('Node', () => {
   });
 
   test('Should get correct border', () => {
-    const node = new Node();
+    const node = new Node(dummyRoot.Yoga);
 
     node.borderTopWidth = 10;
     node.borderRightWidth = 20;
@@ -183,8 +188,8 @@ describe('Node', () => {
   });
 
   test('Should copy position correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.position = 'absolute';
 
@@ -195,8 +200,8 @@ describe('Node', () => {
   });
 
   test('Should copy coordinates correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.top = 20;
     node.left = 40;
@@ -209,8 +214,8 @@ describe('Node', () => {
   });
 
   test('Should copy dimensions correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.width = 20;
     node.height = 40;
@@ -223,8 +228,8 @@ describe('Node', () => {
   });
 
   test('Should copy min/max dimensions correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.minWidth = 20;
     node.minHeight = 40;
@@ -241,8 +246,8 @@ describe('Node', () => {
   });
 
   test('Should copy padding correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.paddingTop = 10;
     node.paddingRight = 20;
@@ -259,8 +264,8 @@ describe('Node', () => {
   });
 
   test('Should copy margin correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.marginTop = 10;
     node.marginRight = 20;
@@ -277,8 +282,8 @@ describe('Node', () => {
   });
 
   test('Should copy borders correctly', () => {
-    const node = new Node();
-    const clone = new Node();
+    const node = new Node(dummyRoot.Yoga);
+    const clone = new Node(dummyRoot.Yoga);
 
     node.borderTopWidth = 10;
     node.borderRightWidth = 20;
@@ -295,9 +300,9 @@ describe('Node', () => {
   });
 
   test('Should get absolute layout correctly', () => {
-    const parent = new Node();
-    const child1 = new Node();
-    const child2 = new Node();
+    const parent = new Node(dummyRoot.Yoga);
+    const child1 = new Node(dummyRoot.Yoga);
+    const child2 = new Node(dummyRoot.Yoga);
 
     parent.width = 100;
     parent.height = 100;
@@ -324,10 +329,10 @@ describe('Node', () => {
   });
 
   test('Should get absolute layout correctly for cloned nodes', () => {
-    const parent = new Node();
-    const child = new Node();
-    const cloneParent = new Node();
-    const cloneChild = new Node();
+    const parent = new Node(dummyRoot.Yoga);
+    const child = new Node(dummyRoot.Yoga);
+    const cloneParent = new Node(dummyRoot.Yoga);
+    const cloneChild = new Node(dummyRoot.Yoga);
 
     parent.width = 100;
     parent.height = 100;

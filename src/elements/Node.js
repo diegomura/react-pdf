@@ -1,14 +1,13 @@
-import Yoga from 'yoga-layout';
-
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
 
 class Node {
-  constructor() {
+  constructor(Yoga) {
+    Object.defineProperty(this, 'Yoga', { enumerable: false, value: Yoga });
     this.parent = null;
     this.children = [];
     this.computed = false;
-    this.layout = Yoga.Node.createDefault();
+    this.layout = Yoga ? Yoga.Node.createDefault() : null;
   }
 
   appendChild(child) {
@@ -138,11 +137,11 @@ class Node {
   cleanup() {
     this.children.forEach(c => c.cleanup());
     this.layout.unsetMeasureFunc();
-    Yoga.Node.destroy(this.layout);
+    this.Yoga.Node.destroy(this.layout);
   }
 
   get position() {
-    return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE
+    return this.layout.getPositionType() === this.Yoga.POSITION_TYPE_ABSOLUTE
       ? 'absolute'
       : 'relative';
   }
@@ -188,51 +187,51 @@ class Node {
   }
 
   get paddingTop() {
-    return this.layout.getComputedPadding(Yoga.EDGE_TOP) || 0;
+    return this.layout.getComputedPadding(this.Yoga.EDGE_TOP) || 0;
   }
 
   get paddingRight() {
-    return this.layout.getComputedPadding(Yoga.EDGE_RIGHT) || 0;
+    return this.layout.getComputedPadding(this.Yoga.EDGE_RIGHT) || 0;
   }
 
   get paddingBottom() {
-    return this.layout.getComputedPadding(Yoga.EDGE_BOTTOM) || 0;
+    return this.layout.getComputedPadding(this.Yoga.EDGE_BOTTOM) || 0;
   }
 
   get paddingLeft() {
-    return this.layout.getComputedPadding(Yoga.EDGE_LEFT) || 0;
+    return this.layout.getComputedPadding(this.Yoga.EDGE_LEFT) || 0;
   }
 
   get marginTop() {
-    return this.layout.getComputedMargin(Yoga.EDGE_TOP) || 0;
+    return this.layout.getComputedMargin(this.Yoga.EDGE_TOP) || 0;
   }
 
   get marginRight() {
-    return this.layout.getComputedMargin(Yoga.EDGE_RIGHT) || 0;
+    return this.layout.getComputedMargin(this.Yoga.EDGE_RIGHT) || 0;
   }
 
   get marginBottom() {
-    return this.layout.getComputedMargin(Yoga.EDGE_BOTTOM) || 0;
+    return this.layout.getComputedMargin(this.Yoga.EDGE_BOTTOM) || 0;
   }
 
   get marginLeft() {
-    return this.layout.getComputedMargin(Yoga.EDGE_LEFT) || 0;
+    return this.layout.getComputedMargin(this.Yoga.EDGE_LEFT) || 0;
   }
 
   get borderTopWidth() {
-    return this.layout.getComputedBorder(Yoga.EDGE_TOP) || 0;
+    return this.layout.getComputedBorder(this.Yoga.EDGE_TOP) || 0;
   }
 
   get borderRightWidth() {
-    return this.layout.getComputedBorder(Yoga.EDGE_RIGHT) || 0;
+    return this.layout.getComputedBorder(this.Yoga.EDGE_RIGHT) || 0;
   }
 
   get borderBottomWidth() {
-    return this.layout.getComputedBorder(Yoga.EDGE_BOTTOM) || 0;
+    return this.layout.getComputedBorder(this.Yoga.EDGE_BOTTOM) || 0;
   }
 
   get borderLeftWidth() {
-    return this.layout.getComputedBorder(Yoga.EDGE_LEFT) || 0;
+    return this.layout.getComputedBorder(this.Yoga.EDGE_LEFT) || 0;
   }
 
   get padding() {
@@ -256,25 +255,25 @@ class Node {
   set position(value) {
     this.layout.setPositionType(
       value === 'absolute'
-        ? Yoga.POSITION_TYPE_ABSOLUTE
-        : Yoga.POSITION_TYPE_RELATIVE,
+        ? this.Yoga.POSITION_TYPE_ABSOLUTE
+        : this.Yoga.POSITION_TYPE_RELATIVE,
     );
   }
 
   set top(value) {
-    this.setPosition(Yoga.EDGE_TOP, value);
+    this.setPosition(this.Yoga.EDGE_TOP, value);
   }
 
   set left(value) {
-    this.setPosition(Yoga.EDGE_LEFT, value);
+    this.setPosition(this.Yoga.EDGE_LEFT, value);
   }
 
   set right(value) {
-    this.setPosition(Yoga.EDGE_RIGHT, value);
+    this.setPosition(this.Yoga.EDGE_RIGHT, value);
   }
 
   set bottom(value) {
-    this.setPosition(Yoga.EDGE_BOTTOM, value);
+    this.setPosition(this.Yoga.EDGE_BOTTOM, value);
   }
 
   set width(value) {
@@ -302,35 +301,35 @@ class Node {
   }
 
   set paddingTop(value) {
-    this.setPadding(Yoga.EDGE_TOP, value);
+    this.setPadding(this.Yoga.EDGE_TOP, value);
   }
 
   set paddingRight(value) {
-    this.setPadding(Yoga.EDGE_RIGHT, value);
+    this.setPadding(this.Yoga.EDGE_RIGHT, value);
   }
 
   set paddingBottom(value) {
-    this.setPadding(Yoga.EDGE_BOTTOM, value);
+    this.setPadding(this.Yoga.EDGE_BOTTOM, value);
   }
 
   set paddingLeft(value) {
-    this.setPadding(Yoga.EDGE_LEFT, value);
+    this.setPadding(this.Yoga.EDGE_LEFT, value);
   }
 
   set marginTop(value) {
-    this.setMargin(Yoga.EDGE_TOP, value);
+    this.setMargin(this.Yoga.EDGE_TOP, value);
   }
 
   set marginRight(value) {
-    this.setMargin(Yoga.EDGE_RIGHT, value);
+    this.setMargin(this.Yoga.EDGE_RIGHT, value);
   }
 
   set marginBottom(value) {
-    this.setMargin(Yoga.EDGE_BOTTOM, value);
+    this.setMargin(this.Yoga.EDGE_BOTTOM, value);
   }
 
   set marginLeft(value) {
-    this.setMargin(Yoga.EDGE_LEFT, value);
+    this.setMargin(this.Yoga.EDGE_LEFT, value);
   }
 
   set padding(value) {
@@ -348,19 +347,19 @@ class Node {
   }
 
   set borderTopWidth(value) {
-    this.setBorder(Yoga.EDGE_TOP, value);
+    this.setBorder(this.Yoga.EDGE_TOP, value);
   }
 
   set borderRightWidth(value) {
-    this.setBorder(Yoga.EDGE_RIGHT, value);
+    this.setBorder(this.Yoga.EDGE_RIGHT, value);
   }
 
   set borderBottomWidth(value) {
-    this.setBorder(Yoga.EDGE_BOTTOM, value);
+    this.setBorder(this.Yoga.EDGE_BOTTOM, value);
   }
 
   set borderLeftWidth(value) {
-    this.setBorder(Yoga.EDGE_LEFT, value);
+    this.setBorder(this.Yoga.EDGE_LEFT, value);
   }
 }
 

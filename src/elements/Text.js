@@ -1,4 +1,3 @@
-import Yoga from 'yoga-layout';
 import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
@@ -139,13 +138,13 @@ class Text extends Base {
   }
 
   measureText(width, widthMode, height, heightMode) {
-    if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
+    if (widthMode === this.Yoga.MEASURE_MODE_EXACTLY) {
       this.layoutText(width, height);
 
       return { height: this.linesHeight };
     }
 
-    if (widthMode === Yoga.MEASURE_MODE_AT_MOST) {
+    if (widthMode === this.Yoga.MEASURE_MODE_AT_MOST) {
       this.layoutText(width, height);
 
       return {

@@ -40,12 +40,12 @@ const resolveMediaQueries = (input, container) => {
   return result;
 };
 
-const resolve = (styles, container) => {
+const resolve = Yoga => (styles, container) => {
   if (!styles) return null;
 
   styles = flatten(styles);
   styles = resolveMediaQueries(styles, container);
-  styles = transformStyles(styles, container);
+  styles = transformStyles(styles, container, Yoga);
 
   return styles;
 };
@@ -58,10 +58,12 @@ const absoluteFillObject = {
   right: 0,
 };
 
-export default {
-  hairlineWidth: 1,
-  create,
-  resolve,
-  flatten,
-  absoluteFillObject,
-};
+export default function createStyleSheet(Yoga) {
+  return {
+    hairlineWidth: 1,
+    create,
+    resolve: resolve(Yoga),
+    flatten,
+    absoluteFillObject,
+  };
+}

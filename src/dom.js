@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import Yoga from 'yoga-layout';
 
 import warning from '../src/utils/warning';
-
-import {
+import createReactPDF from './index';
+const {
   pdf,
   View,
   Text,
@@ -17,8 +18,8 @@ import {
   StyleSheet,
   PDFRenderer,
   createInstance,
-  Document as PDFDocument,
-} from './index';
+  Document: PDFDocument,
+} = createReactPDF(Yoga);
 
 const flatStyles = stylesArray =>
   stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
@@ -157,7 +158,7 @@ export {
   StyleSheet,
   PDFRenderer,
   createInstance,
-} from './index';
+};
 
 export default {
   pdf,

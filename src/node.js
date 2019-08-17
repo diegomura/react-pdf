@@ -1,5 +1,7 @@
+import Yoga from 'yoga-layout';
 import fs from 'fs';
-import {
+import createReactPDF from './index';
+const {
   pdf,
   View,
   Text,
@@ -14,7 +16,7 @@ import {
   StyleSheet,
   PDFRenderer,
   createInstance,
-} from './index';
+} = createReactPDF(Yoga);
 
 export const renderToStream = async function(element) {
   const instance = pdf(element);
@@ -73,7 +75,7 @@ export {
   StyleSheet,
   PDFRenderer,
   createInstance,
-} from './index';
+};
 
 export default {
   pdf,

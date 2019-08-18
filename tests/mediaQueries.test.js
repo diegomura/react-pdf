@@ -1,4 +1,4 @@
-import { StyleSheet } from '../src';
+import { StyleSheet } from '../src/node';
 
 describe('media queries', () => {
   test('should resolve max-height media queries on narrow container', () => {

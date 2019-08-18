@@ -1,4 +1,4 @@
-import { StyleSheet } from '../src';
+import { StyleSheet } from '../src/node';
 
 describe('attribute expansion', () => {
   const expand = (stylesheet, expected) => {

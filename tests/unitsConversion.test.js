@@ -1,4 +1,4 @@
-import { StyleSheet } from '../src';
+import { StyleSheet } from '../src/node';
 
 describe('units conversion', () => {
   test('Should transform width in dimensions', () => {

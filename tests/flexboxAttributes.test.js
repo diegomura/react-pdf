@@ -1,5 +1,5 @@
 import Yoga from 'yoga-layout-prebuilt';
-import { StyleSheet } from '../src';
+import { StyleSheet } from '../src/node';
 
 describe('flexbox attributes', () => {
   const assertFlexbox = (attribute, value, expectedValue) => {

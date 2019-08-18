@@ -1,5 +1,5 @@
 import React from 'react';
-import { pdf, Document, Page, Text } from '../src/index';
+import { pdf, Document, Page, Text } from '../src/node';
 
 describe('pdf', () => {
   test('Should create empty pdf instance', () => {

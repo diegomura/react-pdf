@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import warning from '../src/utils/warning';
-import { pdf } from '../src/index';
 import {
+  pdf,
   PDFDownloadLink,
   PDFViewer,
   BlobProvider,
@@ -12,7 +12,17 @@ import {
   View,
 } from '../src/dom';
 
-jest.mock('../src/index');
+// replace pdf in return value of index.default with mocked version
+jest.mock('../src/index', () => {
+  const actual = jest.requireActual('../src/index');
+  return {
+    ...actual,
+    default: Yoga => ({
+      ...actual.default(Yoga),
+      pdf: jest.fn(() => {}),
+    }),
+  };
+});
 jest.mock('../src/utils/warning');
 
 class Blob {}

@@ -1,4 +1,4 @@
-import { StyleSheet } from '../src';
+import { StyleSheet } from '../src/node';
 
 describe('flatten styles', () => {
   test('should return object from an object', () => {

@@ -17,7 +17,7 @@ declare module '@react-pdf/renderer' {
       flexGrow?: number,
       flexShrink?: number,
       flexBasis?: number,
-      justifyContent?: 'space-around' | 'space-between',
+      justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between' | 'space-evenly',
       order?: number,
 
       // Layout?:never,

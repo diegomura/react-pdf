@@ -1,8 +1,13 @@
 import PDFDocument from '@react-pdf/pdfkit';
 
 class Root {
-  constructor(_, Yoga) {
-    Object.defineProperty(this, 'Yoga', { enumerable: false, value: Yoga });
+  constructor(_, yogaRef) {
+    Object.defineProperty(this, 'Yoga', {
+      enumerable: false,
+      get() {
+        return yogaRef.current;
+      },
+    });
     this.isDirty = false;
     this.document = null;
     this.instance = null;

@@ -5,6 +5,12 @@ import warning from './utils/warning';
 import createReactPDFIndex from './index';
 
 export default function createReactPDFDom(Yoga) {
+  const yogaPromise = Promise.resolve(
+    typeof Yoga === 'function' ? Yoga() : Yoga,
+  ).then(yoga => {
+    yogaRef.current = yoga;
+  });
+  const yogaRef = { current: null };
   const {
     pdf,
     View,
@@ -20,7 +26,7 @@ export default function createReactPDFDom(Yoga) {
     PDFRenderer,
     createInstance,
     Document: PDFDocument,
-  } = createReactPDFIndex(Yoga);
+  } = createReactPDFIndex(yogaRef);
 
   const flatStyles = stylesArray =>
     stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
@@ -30,7 +36,13 @@ export default function createReactPDFDom(Yoga) {
   };
 
   class InternalBlobProvider extends React.PureComponent {
-    state = { blob: null, url: null, loading: true, error: null };
+    state = {
+      yogaLoaded: false,
+      blob: null,
+      url: null,
+      loading: true,
+      error: null,
+    };
 
     constructor(props) {
       super(props);
@@ -40,11 +52,16 @@ export default function createReactPDFDom(Yoga) {
     }
 
     componentDidMount() {
+      if (!yogaRef.current) {
+        yogaPromise.then(() => this.setState({ yogaLoaded: true }));
+        return;
+      }
       this.renderDocument();
       this.onDocumentUpdate();
     }
 
     componentDidUpdate() {
+      if (!yogaRef.current) return;
       this.renderDocument();
 
       if (this.instance.isDirty() && !this.state.error) {

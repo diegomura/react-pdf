@@ -14,8 +14,8 @@ const Image = 'IMAGE';
 const Document = 'DOCUMENT';
 const Canvas = 'CANVAS';
 
-const pdf = Yoga => input => {
-  const container = createInstance({ type: 'ROOT', props: Yoga });
+const pdf = yogaRef => input => {
+  const container = createInstance({ type: 'ROOT', props: yogaRef });
   const mountNode = PDFRenderer.createContainer(container);
 
   if (input) updateContainer(input);
@@ -95,8 +95,8 @@ const pdf = Yoga => input => {
   };
 };
 
-export default function createReactPDF(Yoga) {
-  const StyleSheet = createStyleSheet(Yoga);
+export default function createReactPDF(yogaRef) {
+  const StyleSheet = createStyleSheet(yogaRef);
   return {
     version,
     PDFRenderer,
@@ -111,6 +111,6 @@ export default function createReactPDF(Yoga) {
     Canvas,
     StyleSheet,
     createInstance,
-    pdf: pdf(Yoga),
+    pdf: pdf(yogaRef),
   };
 }

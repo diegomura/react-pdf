@@ -16,7 +16,7 @@ const {
   StyleSheet,
   PDFRenderer,
   createInstance,
-} = createReactPDF(Yoga);
+} = createReactPDF({ current: Yoga });
 
 export const renderToStream = async function(element) {
   const instance = pdf(element);

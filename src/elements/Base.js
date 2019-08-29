@@ -114,7 +114,7 @@ class Base extends Node {
       height: size.height,
     };
 
-    const ownStyles = StyleSheet(this.Yoga).resolve(
+    const ownStyles = StyleSheet({ current: this.Yoga }).resolve(
       this.props.style,
       container,
     );

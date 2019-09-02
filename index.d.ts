@@ -54,7 +54,7 @@ declare module '@react-pdf/renderer' {
       lineHeight?: number,
       maxLines?: number, //?
       textAlign?: 'left' | 'right' | 'center' | 'justify', //?
-      textDecoration?: 'line-through' | 'underline',
+      textDecoration?: 'line-through' | 'underline' | 'none',
       textDecorationColor?: string,
       textDecorationStyle?: "dashed" | "dotted" | "solid" | string, //?
       textIndent?: any, //?

@@ -2,7 +2,7 @@ export const isBorderStyle = (key, value) =>
   key.match(/^border/) && typeof value === 'string';
 
 const matchBorderShorthand = value =>
-  value.match(/(\d+(px|in|mm|cm|pt)?)\s(\S+)\s(\S+)/);
+  value.match(/(\d+(px|in|mm|cm|pt|vw|vh)?)\s(\S+)\s(\S+)/);
 
 // Transforms shorthand border values
 export const processBorders = (key, value) => {

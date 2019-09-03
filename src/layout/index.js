@@ -1,46 +1,21 @@
-import { LayoutEngine as BaseLayoutEngine } from '@react-pdf/textkit-core';
-import scriptItemizer from '@react-pdf/script-itemizer';
-import justificationEngine from '@textkit/justification-engine';
-import textDecorationEngine from '@textkit/text-decoration-engine';
-import fontSubstitutionEngine from './fontSubstitution';
-import wordHyphenation from './wordHyphenation';
-import lineBreaker from './linebreaker';
+import layoutEngine from '@react-pdf/textkit/layout';
+import linebreaker from '@react-pdf/textkit/engines/linebreaker';
+import justification from '@react-pdf/textkit/engines/justification';
+import textDecoration from '@react-pdf/textkit/engines/textDecoration';
+import scriptItemizer from '@react-pdf/textkit/engines/scriptItemizer';
+import wordHyphenation from '@react-pdf/textkit/engines/wordHyphenation';
 
-// justificationEngine values
-const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
+import fontSubstitution from './fontSubstitution';
 
-export class LayoutEngine extends BaseLayoutEngine {
-  constructor({ hyphenationCallback, hyphenationPenalty }) {
-    const engines = {
-      scriptItemizer: scriptItemizer(),
-      decorationEngine: textDecorationEngine(),
-      fontSubstitutionEngine: fontSubstitutionEngine(),
-      wordHyphenation: wordHyphenation({ hyphenationCallback }),
-      lineBreaker: lineBreaker({ penalty: hyphenationPenalty }),
-      justificationEngine: justificationEngine({ shrinkWhitespaceFactor }),
-    };
+const engines = {
+  linebreaker,
+  justification,
+  textDecoration,
+  scriptItemizer,
+  wordHyphenation,
+  fontSubstitution,
+};
 
-    super(engines);
-  }
-}
+const engine = layoutEngine(engines);
 
-export {
-  Run,
-  BBox,
-  Path,
-  Rect,
-  Point,
-  Block,
-  Range,
-  Polygon,
-  RunStyle,
-  GlyphRun,
-  Container,
-  Attachment,
-  GlyphString,
-  LineFragment,
-  ParagraphStyle,
-  DecorationLine,
-  FontDescriptor,
-  AttributedString,
-} from '@react-pdf/textkit-core';
+export default engine;

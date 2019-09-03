@@ -16,6 +16,7 @@ class Root {
   }
 
   removeChild() {
+    this.document.cleanup();
     this.document = null;
   }
 
@@ -23,9 +24,18 @@ class Root {
     this.isDirty = true;
   }
 
+  cleanup() {
+    this.document.cleanup();
+  }
+
+  finish() {
+    this.document.finish();
+  }
+
   async render() {
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
+    this.cleanup();
     this.isDirty = false;
   }
 }

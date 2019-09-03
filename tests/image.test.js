@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import root from './utils/dummyRoot';
+import Page from '../src/elements/Page';
 import Image from '../src/elements/Image';
 import warning from '../src/utils/warning';
 import {
@@ -9,6 +10,7 @@ import {
   getAbsoluteLocalPath,
   isDangerousLocalPath,
 } from '../src/utils/image';
+import * as objectFit from '../src/utils/objectFit';
 
 let dummyRoot;
 
@@ -250,6 +252,75 @@ describe('Image', () => {
     expect(image.image.data).toBeTruthy();
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+  });
+
+  test('Should correctly resolve objectFit styles given a flat `style` prop', async () => {
+    const resolveObjectFitSpy = jest.spyOn(objectFit, 'resolveObjectFit');
+    resolveObjectFitSpy.mockClear();
+
+    const page = new Page(dummyRoot, {});
+    const image = new Image(dummyRoot, {
+      style: {
+        objectFit: 'contain',
+        objectPositionX: 42,
+        objectPositionY: 49,
+      },
+    });
+    image.width = 350;
+    image.height = 150;
+    image.image = {
+      data: 'mock image data',
+      width: 200,
+      height: 100,
+    };
+    page.appendChild(image);
+
+    image.applyProps();
+    await image.render();
+
+    expect(resolveObjectFitSpy).toHaveBeenCalledTimes(1);
+    expect(resolveObjectFitSpy.mock.calls[0][0]).toBe('contain');
+
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+    expect(dummyRoot.instance.image.mock.calls[0][1]).toBe(42);
+    expect(dummyRoot.instance.image.mock.calls[0][2]).toBe(49);
+  });
+
+  test('Should correctly resolve objectFit styles given an array `style` prop', async () => {
+    const resolveObjectFitSpy = jest.spyOn(objectFit, 'resolveObjectFit');
+    resolveObjectFitSpy.mockClear();
+
+    const page = new Page(dummyRoot, {});
+    const image = new Image(dummyRoot, {
+      style: [
+        {
+          objectFit: 'contain',
+          objectPositionX: 42,
+          objectPositionY: 49,
+        },
+        undefined,
+      ],
+    });
+    image.width = 350;
+    image.height = 150;
+    image.image = {
+      data: 'mock image data',
+      width: 200,
+      height: 100,
+    };
+    page.appendChild(image);
+
+    image.applyProps();
+    await image.render();
+
+    expect(resolveObjectFitSpy).toHaveBeenCalledTimes(1);
+    expect(resolveObjectFitSpy.mock.calls[0][0]).toBe('contain');
+
+    expect(dummyRoot.instance.image.mock.calls).toHaveLength(1);
+    expect(dummyRoot.instance.image.mock.calls[0][0]).toBe(image.image.data);
+    expect(dummyRoot.instance.image.mock.calls[0][1]).toBe(42);
+    expect(dummyRoot.instance.image.mock.calls[0][2]).toBe(49);
   });
 
   test('Should render background when render', async () => {

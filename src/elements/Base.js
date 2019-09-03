@@ -1,7 +1,4 @@
-import pick from 'lodash.pick';
-import merge from 'lodash.merge';
-import toPairsIn from 'lodash.topairsin';
-import isFunction from 'lodash.isfunction';
+import { pick, toPairsIn } from 'ramda';
 
 import Node from './Node';
 import StyleSheet from '../stylesheet';
@@ -10,7 +7,9 @@ import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
 import warning from '../utils/warning';
+import deepMerge from '../utils/deepMerge';
 import upperFirst from '../utils/upperFirst';
+import isFunction from '../utils/isFunction';
 import matchPercent from '../utils/matchPercent';
 import { inheritedProperties } from '../stylesheet/inherit';
 
@@ -20,12 +19,11 @@ class Base extends Node {
 
     this.root = root;
     this.style = {};
-    this.props = merge(
-      {},
+    this.props = deepMerge([
       this.constructor.defaultProps,
       Base.defaultProps,
       props,
-    );
+    ]);
 
     warning(!this.props.styles, '"styles" prop passed instead of "style" prop');
   }
@@ -87,12 +85,11 @@ class Base extends Node {
   }
 
   update(newProps) {
-    this.props = merge(
-      {},
+    this.props = deepMerge([
       this.constructor.defaultProps,
       Base.defaultProps,
       newProps,
-    );
+    ]);
     this.root.markDirty();
   }
 
@@ -109,16 +106,18 @@ class Base extends Node {
   }
 
   resolveStyles() {
-    const { size, orientation } = this.page;
-
-    const ownStyles = StyleSheet.resolve(this.props.style, {
+    const { size, orientation, isAutoHeight } = this.page;
+    const container = {
       orientation,
+      isAutoHeight,
       width: size.width,
       height: size.height,
-    });
+    };
+
+    const ownStyles = StyleSheet.resolve(this.props.style, container);
 
     const inheritedStyles = this.parent
-      ? pick(this.parent.style, inheritedProperties)
+      ? pick(inheritedProperties, this.parent.style)
       : {};
 
     return { ...inheritedStyles, ...ownStyles };
@@ -223,15 +222,8 @@ class Base extends Node {
   }
 
   async renderChildren() {
-    const absoluteChilds = this.children.filter(child => child.absolute);
-    const nonAbsoluteChilds = this.children.filter(child => !child.absolute);
-
-    for (let i = 0; i < nonAbsoluteChilds.length; i++) {
-      await nonAbsoluteChilds[i].render();
-    }
-
-    for (let i = 0; i < absoluteChilds.length; i++) {
-      await absoluteChilds[i].render();
+    for (let i = 0; i < this.children.length; i++) {
+      await this.children[i].render();
     }
   }
 }

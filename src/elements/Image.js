@@ -32,13 +32,14 @@ class Image extends Base {
   measureImage(width, widthMode, height, heightMode) {
     const imageMargin = this.margin;
     const pagePadding = this.page.padding;
-    const pageArea =
-      this.page.size.height -
-      pagePadding.top -
-      pagePadding.bottom -
-      imageMargin.top -
-      imageMargin.bottom -
-      SAFETY_HEIGHT;
+    const pageArea = this.page.isAutoHeight
+      ? Infinity
+      : this.page.size.height -
+        pagePadding.top -
+        pagePadding.bottom -
+        imageMargin.top -
+        imageMargin.bottom -
+        SAFETY_HEIGHT;
 
     // Skip measure if image data not present yet
     if (!this.image) return { width: 0, height: 0 };
@@ -138,7 +139,7 @@ class Image extends Base {
 
     if (this.image.data) {
       const { width, height, xOffset, yOffset } = resolveObjectFit(
-        this.props.style.objectFit,
+        this.style.objectFit,
         this.width - padding.left - padding.right,
         this.height - padding.top - padding.bottom,
         this.image.width,

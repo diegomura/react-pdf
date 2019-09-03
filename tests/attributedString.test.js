@@ -6,7 +6,6 @@ describe('attributedString', () => {
   test('Should get emtpy attributed string if no instance passed', () => {
     const attributedString = getAttributedString();
 
-    expect(attributedString).toHaveLength(0);
     expect(attributedString.string).toEqual('');
   });
 
@@ -18,7 +17,6 @@ describe('attributedString', () => {
 
     const attributedString = getAttributedString(text);
 
-    expect(attributedString).toHaveLength(3);
     expect(attributedString.runs).toHaveLength(1);
     expect(attributedString.string).toEqual('Hey');
   });
@@ -39,7 +37,6 @@ describe('attributedString', () => {
 
     const attributedString = getAttributedString(root);
 
-    expect(attributedString).toHaveLength(12);
     expect(attributedString.runs).toHaveLength(3);
     expect(attributedString.string).toEqual('HeyHoLets go');
   });

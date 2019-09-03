@@ -1,7 +1,7 @@
 export const isBoxModelStyle = (key, value) =>
   key.match(/^(margin)|(padding)/) && typeof value === 'string';
 
-const matchBoxModel = value => value.match(/\d+(px|in|mm|cm|pt|%)?/g);
+const matchBoxModel = value => value.match(/\d+(px|in|mm|cm|pt|%|vw|vh)?/g);
 
 // Transforms shorthand margin and padding values
 export const processBoxModel = (key, value) => {

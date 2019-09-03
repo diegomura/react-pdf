@@ -37,6 +37,8 @@ class Node {
       this.children.splice(index, 1);
       this.layout.removeChild(child.layout);
     }
+
+    child.cleanup();
   }
 
   removeAllChilds() {
@@ -132,6 +134,12 @@ class Node {
   }
 
   onAppendDynamically() {}
+
+  cleanup() {
+    this.children.forEach(c => c.cleanup());
+    this.layout.unsetMeasureFunc();
+    Yoga.Node.destroy(this.layout);
+  }
 
   get position() {
     return this.layout.getPositionType() === Yoga.POSITION_TYPE_ABSOLUTE

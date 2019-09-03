@@ -159,4 +159,68 @@ describe('shorthands', () => {
     expect(stylesheet.transformOriginX).toBe('50%');
     expect(stylesheet.transformOriginY).toBe('50%');
   });
+
+  test('should process font-weight thin shorthand', () => {
+    const stylesheet1 = StyleSheet.resolve({ fontWeight: 'thin' });
+    const stylesheet2 = StyleSheet.resolve({ fontWeight: 'hairline' });
+
+    expect(stylesheet1.fontWeight).toBe(100);
+    expect(stylesheet2.fontWeight).toBe(100);
+  });
+
+  test('should process font-weight ultralight shorthand', () => {
+    const stylesheet1 = StyleSheet.resolve({ fontWeight: 'ultralight' });
+    const stylesheet2 = StyleSheet.resolve({ fontWeight: 'extralight' });
+
+    expect(stylesheet1.fontWeight).toBe(200);
+    expect(stylesheet2.fontWeight).toBe(200);
+  });
+
+  test('should process font-weight light shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ fontWeight: 'light' });
+
+    expect(stylesheet.fontWeight).toBe(300);
+  });
+
+  test('should process font-weight normal shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ fontWeight: 'normal' });
+
+    expect(stylesheet.fontWeight).toBe(400);
+  });
+
+  test('should process font-weight medium shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ fontWeight: 'medium' });
+
+    expect(stylesheet.fontWeight).toBe(500);
+  });
+
+  test('should process font-weight semibold shorthand', () => {
+    const stylesheet1 = StyleSheet.resolve({ fontWeight: 'semibold' });
+    const stylesheet2 = StyleSheet.resolve({ fontWeight: 'demibold' });
+
+    expect(stylesheet1.fontWeight).toBe(600);
+    expect(stylesheet2.fontWeight).toBe(600);
+  });
+
+  test('should process font-weight bold shorthand', () => {
+    const stylesheet = StyleSheet.resolve({ fontWeight: 'bold' });
+
+    expect(stylesheet.fontWeight).toBe(700);
+  });
+
+  test('should process font-weight ultrabold shorthand', () => {
+    const stylesheet1 = StyleSheet.resolve({ fontWeight: 'ultrabold' });
+    const stylesheet2 = StyleSheet.resolve({ fontWeight: 'extraBold' });
+
+    expect(stylesheet1.fontWeight).toBe(800);
+    expect(stylesheet2.fontWeight).toBe(800);
+  });
+
+  test('should process font-weight heavy shorthand', () => {
+    const stylesheet1 = StyleSheet.resolve({ fontWeight: 'heavy' });
+    const stylesheet2 = StyleSheet.resolve({ fontWeight: 'black' });
+
+    expect(stylesheet1.fontWeight).toBe(900);
+    expect(stylesheet2.fontWeight).toBe(900);
+  });
 });

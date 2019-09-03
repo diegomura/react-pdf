@@ -1,14 +1,12 @@
 import Yoga from 'yoga-layout';
-import createPDFRenderer from '@textkit/pdf-renderer';
+import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
+import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Base from './Base';
 import Font from '../font';
+import layout from '../layout';
 import { getURL } from '../utils/url';
-import { LayoutEngine, Rect, Path, Container } from '../layout';
 import { getAttributedString } from '../utils/attributedString';
-
-const renderOpts = { outlineLines: false };
-const PDFRenderer = createPDFRenderer({ Rect });
 
 class Text extends Base {
   static defaultProps = {
@@ -23,13 +21,14 @@ class Text extends Base {
     this.start = 0;
     this.end = 0;
 
+    this.blocks = null;
     this.computed = false;
-    this.container = null;
     this.attributedString = null;
-    this.layoutEngine = new LayoutEngine({
+    this.layoutOptions = {
       hyphenationPenalty: props.hyphenationPenalty,
       hyphenationCallback: Font.getHyphenationCallback(),
-    });
+      shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
+    };
 
     this.layout.setMeasureFunc(this.measureText.bind(this));
   }
@@ -43,21 +42,23 @@ class Text extends Base {
   }
 
   get lines() {
-    if (!this.container) return [];
+    if (!this.blocks) return [];
 
-    return this.container.blocks
-      .reduce((acc, block) => [...acc, ...block.lines], [])
+    return this.blocks
+      .reduce((acc, block) => [...acc, ...block], [])
       .splice(this.start, this.end);
   }
 
   get linesHeight() {
-    if (!this.container) return -1;
-    return this.lines.reduce((acc, line) => acc + line.height, 0);
+    if (!this.blocks) return -1;
+    return this.lines.reduce((acc, line) => acc + line.box.height, 0);
   }
 
   get linesWidth() {
-    if (!this.container) return -1;
-    return Math.max(...this.lines.map(line => line.advanceWidth));
+    if (!this.blocks) return -1;
+    return Math.max(
+      ...this.lines.map(line => AttributedString.advanceWidth(line)),
+    );
   }
 
   appendChild(child) {
@@ -79,6 +80,8 @@ class Text extends Base {
       this.computed = false;
       this.attributedString = null;
       this.markDirty();
+
+      child.cleanup();
     }
   }
 
@@ -87,8 +90,8 @@ class Text extends Base {
 
     for (let i = 0; i < this.lines.length; i++) {
       const line = this.lines[i];
-      if (counter + line.height > height) return i;
-      counter += line.height;
+      if (counter + line.box.height > height) return i;
+      counter += line.box.height;
     }
 
     return this.lines.length;
@@ -99,7 +102,7 @@ class Text extends Base {
 
     for (let i = 0; i < index; i++) {
       const line = this.lines[i];
-      counter += line.height;
+      counter += line.box.height;
     }
 
     return counter;
@@ -108,42 +111,41 @@ class Text extends Base {
   layoutText(width, height) {
     this.attributedString = getAttributedString(this);
 
-    // If height null or NaN, we take some liberty on layout height
-    const containerHeight = height || this.page.size.height;
-
     // Text layout is expensive. That's why we ensure to only do it once
     // (except dynamic nodes. Those change content and needs to relayout every time)
-    if (!this.container || this.props.render) {
-      const path = new Path().rect(0, 0, width, containerHeight);
-      const container = new Container(path);
-      const attributedString = this.attributedString;
-
-      // Do the actual text layout
-      this.layoutEngine.layout(attributedString, [container]);
-      this.container = container;
+    if (!this.blocks || this.props.render) {
+      // Do the actual text layout.
+      /// If height null or NaN, we take some liberty on layout height
+      const container = {
+        x: 0,
+        y: 0,
+        width,
+        height: height || Infinity,
+        maxLines: this.style.maxLines,
+        truncateMode: this.style.textOverflow,
+      };
+      this.blocks = layout(
+        this.attributedString,
+        container,
+        this.layoutOptions,
+      );
     }
 
     // Get the total amount of rendered lines
-    const linesCount = this.container.blocks.reduce(
-      (acc, block) => acc + block.lines.length,
-      0,
-    );
+    const linesCount = this.blocks.reduce((acc, b) => acc + b.length, 0);
 
-    this.end = this.props.maxLines || linesCount + 1;
+    this.end = linesCount + 1;
     this.computed = true;
   }
 
   measureText(width, widthMode, height, heightMode) {
     if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-      this.layoutText(width);
+      this.layoutText(width, height);
 
-      return { height: this.style.flexGrow ? NaN : this.linesHeight };
+      return { height: this.linesHeight };
     }
 
-    if (
-      widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-      heightMode === Yoga.MEASURE_MODE_AT_MOST
-    ) {
+    if (widthMode === Yoga.MEASURE_MODE_AT_MOST) {
       this.layoutText(width, height);
 
       return {
@@ -218,11 +220,28 @@ class Text extends Base {
     text.layoutEngine = this.layoutEngine;
 
     // Save calculated layout for non-dynamic clone elements
-    if (this.container && !this.props.render) {
-      text.container = this.container.copy();
+    if (this.blocks && !this.props.render) {
+      text.blocks = [...this.blocks];
     }
 
     return text;
+  }
+
+  renderText() {
+    const { top, left } = this.getAbsoluteLayout();
+    const initialY = this.lines[0] ? this.lines[0].box.y : 0;
+
+    // We translate lines based on Yoga container
+    this.root.instance.save();
+    this.root.instance.translate(
+      left + this.padding.left,
+      top + this.padding.top - initialY,
+    );
+
+    // Perform actual text rendering on document
+    PDFRenderer.render(this.root.instance, [this.lines]);
+
+    this.root.instance.restore();
   }
 
   async render() {
@@ -240,20 +259,7 @@ class Text extends Base {
       );
     }
 
-    // We translate lines based on Yoga container
-    const { top, left } = this.getAbsoluteLayout();
-    const initialX = this.lines[0] ? this.lines[0].rect.y : 0;
-
-    this.lines.forEach(line => {
-      line.rect.x += left + this.padding.left;
-      line.rect.y += top + this.padding.top - initialX;
-    });
-
-    // Mock container only with appropiate lines
-    const container = { ...this.container, blocks: [{ lines: this.lines }] };
-
-    // Perform actual text rendering on document
-    new PDFRenderer(this.root.instance, renderOpts).render(container);
+    this.renderText();
 
     if (this.props.debug) {
       this.debug();

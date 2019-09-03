@@ -55,6 +55,10 @@ class Page extends Base {
     return this._size;
   }
 
+  get isAutoHeight() {
+    return typeof this.size.height === 'undefined';
+  }
+
   resetMargins() {
     if (
       !!this.marginTop ||
@@ -171,27 +175,39 @@ class Page extends Base {
     return clone;
   }
 
+  update(newProps) {
+    super.update(newProps);
+    this._size = null;
+  }
+
   async render() {
     const { instance } = this.root;
 
-    this.height = this.size.height;
+    if (!this.isAutoHeight) {
+      this.height = this.size.height;
+    }
+
     this.calculateLayout();
 
+    const height = this.isAutoHeight ? this.height : this.size.height;
+
     instance.addPage({
-      size: [this.size.width, this.size.height],
+      size: [this.size.width, height],
       margin: 0,
     });
 
     if (this.style.backgroundColor) {
       instance
         .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.size.width, this.size.height)
+        .rect(0, 0, this.size.width, height)
         .fill();
     }
 
     await this.renderChildren();
 
-    if (this.props.debug) this.debug();
+    if (this.props.debug) {
+      this.debug();
+    }
 
     this.renderRuler();
   }

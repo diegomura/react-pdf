@@ -74,8 +74,41 @@ describe('Document', () => {
 
   test('Should trigger available fonts loading', async () => {
     const doc = new Document(dummyRoot, {});
+
     const page1 = new Page(dummyRoot, { style: { fontFamily: 'Courier' } });
+    const text1 = new Text(dummyRoot, {});
+    const textInstance1 = new TextInstance(dummyRoot, 'sample text');
+
     const page2 = new Page(dummyRoot, { style: { fontFamily: 'Helvetica' } });
+    const text2 = new Text(dummyRoot, {});
+    const textInstance2 = new TextInstance(dummyRoot, 'sample text');
+
+    text1.layoutEngine = { layout: jest.fn() };
+    text2.layoutEngine = { layout: jest.fn() };
+
+    doc.appendChild(page1);
+    page1.appendChild(text1);
+    text1.appendChild(textInstance1);
+
+    doc.appendChild(page2);
+    page2.appendChild(text2);
+    text2.appendChild(textInstance2);
+
+    await doc.render();
+
+    expect(Font.load.mock.calls).toHaveLength(2);
+    expect(Font.load.mock.calls[0][0].fontFamily).toBe('Courier');
+    expect(Font.load.mock.calls[1][0].fontFamily).toBe('Helvetica');
+  });
+
+  test('Should trigger correct fonts loading given multiple font-families', async () => {
+    const doc = new Document(dummyRoot, {});
+    const page1 = new Page(dummyRoot, {
+      style: { fontFamily: 'Curlz, Curly, CurlyWurly' },
+    });
+    const page2 = new Page(dummyRoot, {
+      style: { fontFamily: 'Roboto, Helvetica' },
+    });
 
     doc.appendChild(page1);
     doc.appendChild(page2);
@@ -83,8 +116,8 @@ describe('Document', () => {
     await doc.render();
 
     expect(Font.load.mock.calls).toHaveLength(2);
-    expect(Font.load.mock.calls[0][0]).toBe('Courier');
-    expect(Font.load.mock.calls[1][0]).toBe('Helvetica');
+    expect(Font.load.mock.calls[0][0]).toBe('Curlz');
+    expect(Font.load.mock.calls[1][0]).toBe('Roboto');
   });
 
   test('Should trigger available images loading', async () => {

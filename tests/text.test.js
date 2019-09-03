@@ -1,14 +1,11 @@
-import Document from '../src/elements/Document';
+import advanceWidth from '@react-pdf/textkit/run/advanceWidth';
+
+import root from './utils/dummyRoot';
 import Page from '../src/elements/Page';
 import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
-import root from './utils/dummyRoot';
 
-jest.mock('@textkit/pdf-renderer', () => () =>
-  class PDFRendererMock {
-    render() {}
-  },
-);
+jest.mock('@react-pdf/textkit/renderers/pdf', () => ({ render: () => {} }));
 
 let dummyRoot;
 
@@ -18,25 +15,19 @@ describe('Text', () => {
   });
 
   test('Should render empty text', async () => {
-    const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
     const text = new Text(dummyRoot, {});
     const textInstance = new TextInstance(dummyRoot, '');
 
-    text.layoutEngine = { layout: jest.fn() };
-
-    doc.appendChild(page);
     page.appendChild(text);
     text.appendChild(textInstance);
 
-    await doc.render();
+    await text.render();
 
-    expect(text.layoutEngine.layout.mock.calls).toHaveLength(1);
-    expect(text.layoutEngine.layout.mock.calls[0][0].string).toBe('');
+    expect(text.lines).toHaveLength(0);
   });
 
   test('Should render aligned left text by default', async () => {
-    const containerWidth = 200;
     const page = new Page(dummyRoot, {});
     const text = new Text(dummyRoot, {});
     const textInstance = new TextInstance(dummyRoot, 'sometext');
@@ -45,11 +36,11 @@ describe('Text', () => {
     text.appendChild(textInstance);
 
     text.applyProps();
-    text.layoutText(containerWidth, 30);
+    text.layoutText(200, 30);
 
     await text.render();
 
-    expect(text.lines[0].rect.x).toBe(0);
+    expect(text.lines[0].box.x).toBe(0);
   });
 
   test('Should render aligned left text', async () => {
@@ -66,7 +57,7 @@ describe('Text', () => {
 
     await text.render();
 
-    expect(text.lines[0].rect.x).toBe(0);
+    expect(text.lines[0].box.x).toBe(0);
   });
 
   test('Should render aligned right text', async () => {
@@ -83,9 +74,9 @@ describe('Text', () => {
 
     await text.render();
 
-    const textWidth = text.lines[0].glyphRuns[0].advanceWidth;
+    const textWidth = advanceWidth(text.lines[0].runs[0]);
 
-    expect(text.lines[0].rect.x).toBe(containerWidth - textWidth);
+    expect(text.lines[0].box.x).toBe(containerWidth - textWidth);
   });
 
   test('Should render aligned center text', async () => {
@@ -102,9 +93,9 @@ describe('Text', () => {
 
     await text.render();
 
-    const textWidth = text.lines[0].glyphRuns[0].advanceWidth;
+    const textWidth = advanceWidth(text.lines[0].runs[0]);
 
-    expect(text.lines[0].rect.x).toBe((containerWidth - textWidth) / 2);
+    expect(text.lines[0].box.x).toBe((containerWidth - textWidth) / 2);
   });
 
   test('Should render single line justified text aligned to the left', async () => {
@@ -121,7 +112,7 @@ describe('Text', () => {
 
     await text.render();
 
-    expect(text.lines[0].rect.x).toBe(0);
+    expect(text.lines[0].box.x).toBe(0);
   });
 
   test('Should render align justified text', async () => {
@@ -142,39 +133,24 @@ describe('Text', () => {
     await text.render();
 
     const lines = text.lines;
-    const glyphPositions = lines[0].glyphRuns[0].positions;
-    const spaceWidth = glyphPositions[glyphPositions.length - 1].xAdvance;
+    const positions = lines[0].runs[0].positions;
+    const spaceWidth = positions[positions.length - 1].xAdvance;
 
     // First line justified. Last line aligned to the left
-    expect(lines[0].rect.width).toBe(containerWidth + spaceWidth);
-    expect(lines[1].rect.width).not.toBe(containerWidth + spaceWidth);
+    expect(lines[0].box.width).toBe(containerWidth + spaceWidth);
+    expect(lines[1].box.width).not.toBe(containerWidth + spaceWidth);
   });
 
   test('Should render maxLines', async () => {
-    const doc = new Document(dummyRoot, {});
     const page = new Page(dummyRoot, {});
-    const text = new Text(dummyRoot, { maxLines: 2 });
+    const text = new Text(dummyRoot, { style: { maxLines: 2 } });
     const textInstance = new TextInstance(dummyRoot, 'really long text');
 
-    text.layoutEngine = {
-      layout: jest.fn((attributedString, containers) => {
-        containers[0].blocks = [
-          {
-            lines: [
-              { rect: { y: 0, x: 0 } },
-              { rect: { y: 0, x: 0 } },
-              { rect: { y: 0, x: 0 } },
-            ],
-          },
-        ];
-      }),
-    };
-
-    doc.appendChild(page);
     page.appendChild(text);
     text.appendChild(textInstance);
 
-    await text.layoutText();
+    text.applyProps();
+    text.layoutText(20, 100); // Force to wrap in many lines
 
     expect(text.lines.length).toEqual(2);
   });
@@ -191,13 +167,13 @@ describe('Text', () => {
 
     await text.render();
 
-    const textRectX = text.lines[0].rect.x;
+    const textRectX = text.lines[0].box.x;
 
     clone.layoutText(100, 100);
     clone.getAbsoluteLayout = () => ({ top: 20, left: 20 });
 
     await clone.render();
 
-    expect(clone.lines[0].rect.x).toEqual(textRectX);
+    expect(clone.lines[0].box.x).toEqual(textRectX);
   });
 });

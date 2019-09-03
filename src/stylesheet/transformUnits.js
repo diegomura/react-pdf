@@ -1,32 +1,37 @@
+const DPI = 72; // 72pt per inch.
+
 const parseValue = value => {
-  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt)?$/g.exec(value);
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw)?$/g.exec(value);
 
   if (match) {
     return { value: parseFloat(match[1], 10), unit: match[2] || 'pt' };
-  } else {
-    return { value, unit: undefined };
   }
+
+  return { value, unit: undefined };
 };
 
-const parseScalar = value => {
-  let result = {};
+const parseScalar = (value, container) => {
   const scalar = parseValue(value);
-
   switch (scalar.unit) {
     case 'in':
-      result = scalar.value * 72;
-      break;
+      return scalar.value * DPI;
     case 'mm':
-      result = scalar.value * (1 / 25.4) * 72;
-      break;
+      return scalar.value * (1 / 25.4) * DPI;
     case 'cm':
-      result = scalar.value * (1 / 2.54) * 72;
-      break;
-    default:
-      result = scalar.value;
-  }
+      return scalar.value * (1 / 2.54) * DPI;
+    case 'vh':
+      if (container.isAutoHeight) {
+        throw new Error(
+          'vh unit not supported in auto-height pages. Please specify page height if you want to use vh.',
+        );
+      }
 
-  return result;
+      return scalar.value * (container.height / 100);
+    case 'vw':
+      return scalar.value * (container.width / 100);
+    default:
+      return scalar.value;
+  }
 };
 
 export default parseScalar;

@@ -1,8 +1,12 @@
 'use strict';
 
 import ReactFiberReconciler from 'react-reconciler';
-import { createInstance } from './elements';
+import {
+  unstable_scheduleCallback as schedulePassiveEffects,
+  unstable_cancelCallback as cancelPassiveEffects,
+} from 'scheduler';
 
+import { createInstance } from './elements';
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
@@ -12,10 +16,13 @@ const emptyObject = {};
 const shouldReplaceLink = (type, props) =>
   type === 'LINK' &&
   (typeof props.children === 'string' ||
+    typeof props.children === 'number' ||
     Array.isArray(props.children) ||
     props.render);
 
 const PDFRenderer = ReactFiberReconciler({
+  schedulePassiveEffects,
+  cancelPassiveEffects,
   supportsMutation: true,
   appendInitialChild(parentInstance, child) {
     parentInstance.appendChild(child);

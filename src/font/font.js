@@ -4,6 +4,8 @@ import fetch from 'cross-fetch';
 
 import { processFontWeight } from '../stylesheet/transformFontWeight';
 
+const ALL_CHARS_REGEX = /./u;
+
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
 
@@ -20,7 +22,8 @@ class FontSource {
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
     this.fontWeight = processFontWeight(fontWeight) || 400;
-    this.unicodeRange = unicodeRange instanceof RegExp ? unicodeRange : /./;
+    this.unicodeRange =
+      unicodeRange instanceof RegExp ? unicodeRange : ALL_CHARS_REGEX;
 
     this.data = null;
     this.loading = false;

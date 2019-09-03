@@ -1,32 +1,78 @@
 import { pathOr, last } from 'ramda';
 
+import Font from '../../font';
 import StandardFont from './standardFont';
 
 const fontCache = {};
 
 const IGNORED_CODE_POINTS = [173];
 
+const STANDARD_FONT_ALIASES = {
+  'sans-serif': 'Helvetica',
+  serif: 'Times-Roman',
+  monospace: 'Courier',
+};
+
 const getFontSize = pathOr(12, ['attributes', 'fontSize']);
 
 const getFallbackFont = () => {
-  return getOrCreateFont('Helvetica');
+  return getFontStack({ font: 'Helvetica' })[0];
 };
 
-const getOrCreateFont = name => {
-  if (fontCache[name]) return fontCache[name];
+const toFontNameStack = (...fontFamilyObjects) =>
+  fontFamilyObjects
+    .map(fontFamilies =>
+      typeof fontFamilies === 'string'
+        ? fontFamilies.split(',').map(f => f.trim())
+        : Array.from(fontFamilies || []),
+    )
+    .flat()
+    .reduce(
+      (fonts, font) => (fonts.includes(font) ? fonts : [...fonts, font]),
+      [],
+    );
 
-  const font = new StandardFont(name);
-  fontCache[name] = font;
+const getFontStack = ({ font, fontFamily, fontStyle, fontWeight }) =>
+  toFontNameStack(font, fontFamily).map(fontFamilyName => {
+    if (typeof fontFamilyName !== 'string') return fontFamilyName;
 
-  return font;
-};
+    const name =
+      STANDARD_FONT_ALIASES[fontFamilyName] ||
+      fontFamilyName + fontStyle ||
+      '' + fontWeight ||
+      '';
 
-const shouldFallbackToFont = (codePoint, font) => {
-  return (
-    !IGNORED_CODE_POINTS.includes(codePoint) &&
-    !font.hasGlyphForCodePoint(codePoint) &&
-    getFallbackFont().hasGlyphForCodePoint(codePoint)
-  );
+    if (fontCache[name]) return fontCache[name];
+
+    try {
+      fontCache[name] = Font.getFont({
+        fontFamily: fontFamilyName,
+        fontWeight,
+        fontStyle,
+      });
+    } catch {}
+
+    try {
+      if (!fontCache[name] || !fontCache[name].data) {
+        fontCache[name] = new StandardFont(fontFamilyName);
+      }
+    } catch {}
+
+    return font;
+  });
+
+const pickFontFromFontStack = (codePoint, fontStack) => {
+  for (const font of [...fontStack, getFallbackFont()]) {
+    if (
+      !IGNORED_CODE_POINTS.includes(codePoint) &&
+      font &&
+      font.hasGlyphForCodePoint &&
+      font.hasGlyphForCodePoint(codePoint)
+    ) {
+      return font;
+    }
+  }
+  return null;
 };
 
 const fontSubstitution = () => ({ string, runs }) => {
@@ -36,22 +82,21 @@ const fontSubstitution = () => ({ string, runs }) => {
 
   const res = [];
 
+  console.log('fontSubstitution called with', { string, runs });
+
   for (const run of runs) {
+    console.log(run);
     const fontSize = getFontSize(run);
-    const defaultFont =
-      typeof run.attributes.font === 'string'
-        ? getOrCreateFont(run.attributes.font)
-        : run.attributes.font;
+    const fontStack = getFontStack(run.attributes);
 
     if (string.length === 0) {
-      res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
+      res.push({ start: 0, end: 0, attributes: { font: fontStack } });
       break;
     }
 
     for (const char of string.slice(run.start, run.end)) {
       const codePoint = char.codePointAt();
-      const shouldFallback = shouldFallbackToFont(codePoint, defaultFont);
-      const font = shouldFallback ? getFallbackFont() : defaultFont;
+      const font = pickFontFromFontStack(codePoint, fontStack);
 
       // If the default font does not have a glyph and the fallback font does, we use it
       if (font !== lastFont) {

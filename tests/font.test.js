@@ -227,6 +227,31 @@ describe('Font', () => {
     expect(font.fontStyle).toEqual('italic');
   });
 
+  test('should load only the fonts required to render a node’s text content', async () => {
+    Font.register({
+      family: 'RobotoX',
+      src: `${__dirname}/assets/font.ttf`,
+      fontStyle: 'italic',
+      unicodeRange: /\u{20}/u,
+    });
+
+    Font.register({
+      family: 'RobotoY',
+      src: `${__dirname}/assets/font.ttf`,
+      fontStyle: 'italic',
+    });
+
+    const descriptor = { fontFamily: 'RobotoX, RobotoY', fontStyle: 'italic' };
+
+    await Font.load(descriptor, dummyRoot.instance, 'hello world');
+
+    const font = Font.getFont(descriptor);
+
+    expect(font.data).toBeTruthy();
+    expect(font.loading).toBeFalsy();
+    expect(font.fontStyle).toEqual('italic');
+  });
+
   test('should correctly resolve exact font weight if present', async () => {
     const src = `${__dirname}/assets/font.ttf`;
 

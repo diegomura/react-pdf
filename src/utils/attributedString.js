@@ -1,7 +1,6 @@
 import { isNil, propEq, prop, complement, compose } from 'ramda';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
-import Font from '../font';
 import { embedEmojis } from './emoji';
 import { ignoreChars } from './ignorableChars';
 
@@ -51,10 +50,10 @@ export const getFragments = instance => {
     opacity,
   } = instance.style;
 
-  const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
-  const font = obj ? obj.data : fontFamily;
   const attributes = {
-    font,
+    fontFamily,
+    fontStyle,
+    fontWeight,
     color,
     opacity,
     fontSize,

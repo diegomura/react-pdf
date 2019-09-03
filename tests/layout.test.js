@@ -18,7 +18,6 @@ const testImage = fs.readFileSync(path.join(__dirname, 'assets/test.jpg'));
 const renderDocument = async doc => {
   doc.addMetaData();
   doc.applyProps();
-  await doc.loadEmojis();
   await doc.loadAssets();
   const subpages = await doc.renderPages();
   doc.root.instance.end();

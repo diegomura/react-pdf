@@ -56,19 +56,19 @@ const styles = StyleSheet.create({
   },
 });
 
-Font.register( {
+Font.register({
   family: 'Open Sans',
   src: `${__dirname}/fonts/fonts/Open_Sans/OpenSans-Regular.ttf`,
 });
-Font.register( {
+Font.register({
   family: 'Lato',
   src: `${__dirname}/fonts/fonts/Lato/Lato-Regular.ttf`,
 });
-Font.register( {
+Font.register({
   family: 'Lato Italic',
   src: `${__dirname}/fonts/fonts/Lato/Lato-Italic.ttf`,
 });
-Font.register( {
+Font.register({
   family: 'Lato Bold',
   src: `${__dirname}/fonts/fonts/Lato/Lato-Bold.ttf`,
 });

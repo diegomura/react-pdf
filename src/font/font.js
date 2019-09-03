@@ -4,6 +4,8 @@ import fetch from 'cross-fetch';
 
 import { processFontWeight } from '../stylesheet/transformFontWeight';
 
+const ALL_CHARS_REGEX = /./u;
+
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
 
@@ -15,11 +17,13 @@ const fetchFont = async (src, options) => {
 };
 
 class FontSource {
-  constructor(src, fontFamily, fontStyle, fontWeight, options) {
+  constructor(src, fontFamily, fontStyle, fontWeight, unicodeRange, options) {
     this.src = src;
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
     this.fontWeight = processFontWeight(fontWeight) || 400;
+    this.unicodeRange =
+      unicodeRange instanceof RegExp ? unicodeRange : ALL_CHARS_REGEX;
 
     this.data = null;
     this.loading = false;
@@ -55,9 +59,16 @@ class Font {
     this.sources = [];
   }
 
-  register({ src, fontWeight, fontStyle, ...options }) {
+  register({ src, fontWeight, fontStyle, unicodeRange, ...options }) {
     this.sources.push(
-      new FontSource(src, this.fontFamily, fontStyle, fontWeight, options),
+      new FontSource(
+        src,
+        this.fontFamily,
+        fontStyle,
+        fontWeight,
+        unicodeRange,
+        options,
+      ),
     );
   }
 

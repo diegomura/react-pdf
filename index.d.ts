@@ -24,10 +24,10 @@ declare module '@react-pdf/renderer' {
 
       bottom?: number | string,
       display?: 'flex' | 'none',
-      left?: number,
+      left?: number | string,
       position?: 'absolute' | 'relative',
-      right?: number,
-      top?: number,
+      right?: number | string,
+      top?: number | string,
 
       // Dimension?:never,
 
@@ -46,12 +46,12 @@ declare module '@react-pdf/renderer' {
 
       // Text?:never,
 
-      fontSize?: number,
+      fontSize?: number | string,
       fontFamily?: string,
       fontStyle?: string | 'normal',
       fontWeight?: number | 'thin' | 'hairline' | 'ultralight' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'demibold' | 'bold' | 'ultrabold' | 'extrabold' | 'heavy' | 'black',
-      letterSpacing?: number, //?
-      lineHeight?: number,
+      letterSpacing?: number | string,
+      lineHeight?: number | string,
       maxLines?: number, //?
       textAlign?: 'left' | 'right', //?
       textDecoration?: 'line-through' | 'underline',
@@ -99,7 +99,7 @@ declare module '@react-pdf/renderer' {
       borderTopColor?: string,
       borderTopStyle?: "dashed" | "dotted" | "solid", // ?
       borderTopWidth?: number | string,
-      borderRight?: never,
+      borderRight?: string,
       borderRightColor?: string,
       borderRightStyle?: "dashed" | "dotted" | "solid", //?
       borderRightWidth?: number | string,

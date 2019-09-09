@@ -115,6 +115,7 @@ declare module '@react-pdf/renderer' {
       borderTopRightRadius?: number | string,
       borderBottomRightRadius?: number | string,
       borderBottomLeftRadius?: number | string,
+      borderRadius?: number | string
     }
 
     interface Styles {

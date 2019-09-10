@@ -102,7 +102,7 @@ declare module '@react-pdf/renderer' {
       borderTopColor?: string,
       borderTopStyle?: "dashed" | "dotted" | "solid", // ?
       borderTopWidth?: number | string,
-      borderRight?: string,
+      borderRight?: number | string,
       borderRightColor?: string,
       borderRightStyle?: "dashed" | "dotted" | "solid", //?
       borderRightWidth?: number | string,

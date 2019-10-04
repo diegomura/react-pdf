@@ -158,6 +158,11 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/advanced#page-breaks
        */
       break?: boolean;
+      /**
+       * Hint that no page wrapping should occur between all sibling elements following the element within n points
+       * @see https://react-pdf.org/advanced#orphan-&-widow-protection
+       */
+      minPresenceAhead?: number;
     }
 
     interface PageProps extends NodeProps {
@@ -248,6 +253,16 @@ declare module '@react-pdf/renderer' {
        * How much hyphenated breaks should be avoided.
        */
       hyphenationCallback?: number;
+      /**
+       * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
+       * @see https://react-pdf.org/advanced#orphan-&-widow-protection
+       */
+      orphans?: number
+      /**
+       * Specifies the minimum number of lines in a text element that must be shown at the top of a page or its container..
+       * @see https://react-pdf.org/advanced#orphan-&-widow-protection
+       */
+      widows?: number
     }
 
     /**

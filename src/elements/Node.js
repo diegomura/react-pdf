@@ -3,12 +3,16 @@ import Yoga from 'yoga-layout';
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
 
+const YOGA_CONFIG = Yoga.Config.create();
+
+YOGA_CONFIG.setPointScaleFactor(0);
+
 class Node {
   constructor() {
     this.parent = null;
     this.children = [];
     this.computed = false;
-    this.layout = Yoga.Node.createDefault();
+    this.layout = Yoga.Node.createWithConfig(YOGA_CONFIG);
   }
 
   appendChild(child) {

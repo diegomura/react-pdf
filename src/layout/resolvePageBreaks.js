@@ -118,12 +118,76 @@ const breakPage = page => {
   return pages;
 };
 
+const removePagePadding = page => {
+  const paddingTop = R.pathOr(0, ['box', 'paddingTop'], page);
+  const paddingBottom = R.pathOr(0, ['box', 'paddingBottom'], page);
+
+  return R.compose(
+    R.assoc('_oldPadding', { paddingTop, paddingBottom }),
+    R.evolve({
+      box: {
+        paddingTop: R.always(0),
+        paddingBottom: R.always(0),
+        height: R.subtract(R.__, paddingTop + paddingBottom),
+      },
+      children: R.map(
+        R.evolve({
+          box: { top: R.subtract(R.__, paddingTop) },
+        }),
+      ),
+    }),
+  )(page);
+};
+
+const removePadding = R.evolve({
+  children: R.map(
+    R.evolve({
+      children: R.map(removePagePadding),
+    }),
+  ),
+});
+
+const restorePadding = R.evolve({
+  children: R.map(
+    R.evolve({
+      children: R.map(restorePagePadding),
+    }),
+  ),
+});
+
+const restorePagePadding = page => {
+  const paddingTop = R.pathOr(0, ['_oldPadding', 'paddingTop'], page);
+  const paddingBottom = R.pathOr(0, ['_oldPadding', 'paddingBottom'], page);
+
+  return R.compose(
+    R.dissoc('_oldPadding'),
+    R.evolve({
+      box: {
+        paddingTop: R.always(paddingTop),
+        paddingBottom: R.always(paddingBottom),
+        height: R.add(paddingTop + paddingBottom),
+      },
+      children: R.map(
+        R.evolve({
+          box: { top: R.add(paddingTop) },
+        }),
+      ),
+    }),
+  )(page);
+};
+
 const resolvePageBreaks = R.evolve({
   children: R.map(
     R.evolve({
       children: R.compose(
         R.flatten,
-        R.map(breakPage),
+        R.map(
+          R.compose(
+            restorePadding,
+            breakPage,
+            removePadding,
+          ),
+        ),
       ),
     }),
   ),

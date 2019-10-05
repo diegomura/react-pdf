@@ -24,7 +24,10 @@ const setAlign = attr => value =>
         [R.equals('baseline'), R.always(Yoga.ALIGN_BASELINE)],
         [R.equals('space-between'), R.always(Yoga.ALIGN_SPACE_BETWEEN)],
         [R.equals('space-around'), R.always(Yoga.ALIGN_SPACE_AROUND)],
-        [R.T, R.always(Yoga.ALIGN_AUTO)],
+        [
+          R.T,
+          R.always(attr === 'items' ? Yoga.ALIGN_STRETCH : Yoga.ALIGN_AUTO),
+        ],
       ])(value);
 
       yogaNode[`setAlign${upperFirst(attr)}`](yogaValue);

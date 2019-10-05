@@ -29,7 +29,7 @@ const splitChildren = (height, node) => {
   return splitNodes(availableHeight, children);
 };
 
-const splitNode = R.curryN(2, (height, node) => {
+const splitNode = (height, node) => {
   if (!node) return [null, null];
 
   const nodeTop = getTop(node);
@@ -39,7 +39,7 @@ const splitNode = R.curryN(2, (height, node) => {
 
   if (isOutside) {
     const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(node);
-    return [null, next, false];
+    return [null, next];
   }
 
   if (shouldSplit) {
@@ -71,7 +71,7 @@ const splitNode = R.curryN(2, (height, node) => {
     return [current, next];
   }
 
-  return [node, null, false];
-});
+  return [node, null];
+};
 
-export default splitNode;
+export default R.curryN(2, splitNode);

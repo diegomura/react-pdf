@@ -13,6 +13,7 @@ import setFlexWrap from '../node/setFlexWrap';
 import setFlexGrow from '../node/setFlexGrow';
 import setFlexBasis from '../node/setFlexBasis';
 import setAlignSelf from '../node/setAlignSelf';
+import setAlignItems from '../node/setAlignItems';
 import setFlexShrink from '../node/setFlexShrink';
 import setAspectRatio from '../node/setAspectRatio';
 import setAlignContent from '../node/setAlignContent';
@@ -108,6 +109,7 @@ const setYogaValues = R.tap(node => {
     setFlexDirection(node.style.flexDirection),
     setAlignSelf(node.style.alignSelf),
     setAlignContent(node.style.alignContent),
+    setAlignItems(node.style.alignItems),
     setJustifyContent(node.style.justifyContent),
     setFlexWrap(node.style.flexWrap),
     setOverflow(node.style.overflow),
@@ -249,12 +251,13 @@ export const resolvePageDimensions = page =>
  * @param {Object} root object
  * @returns {Object} root object with correct 'box' layout attributes
  */
-const resolveDimensions = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(resolvePageDimensions),
-    }),
-  ),
-});
+const resolveDimensions = node =>
+  R.evolve({
+    children: R.map(
+      R.evolve({
+        children: R.map(resolvePageDimensions),
+      }),
+    ),
+  })(node);
 
 export default resolveDimensions;

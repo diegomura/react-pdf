@@ -24,7 +24,7 @@ const hasTextInstanceChilds = R.compose(
 );
 
 /**
- * If the Link has a strign child or render prop, substitute the instance by a Text,
+ * If the Link has a string child or render prop, substitute the instance by a Text,
  * that will ultimately render the inline Link via the textkit PDF renderer.
  *
  * @param {Object} node

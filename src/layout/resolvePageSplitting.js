@@ -20,8 +20,6 @@ const splitPage = page => {
   return pages;
 };
 
-
-
 const resolvePageSplitting = root =>
   R.evolve({
     children: R.map(

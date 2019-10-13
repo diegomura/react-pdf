@@ -65,9 +65,5 @@ const resolvePageStyles = page => {
  * @returns {Object} document root with resolved styles
  */
 export default R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(resolvePageStyles),
-    }),
-  ),
+  children: R.map(resolvePageStyles),
 });

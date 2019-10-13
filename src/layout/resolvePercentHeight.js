@@ -68,11 +68,7 @@ const resolvePagePercentHeight = page =>
  * @return {Object} transformed document root
  */
 const resolvePercentHeight = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(resolvePagePercentHeight),
-    }),
-  ),
+  children: R.map(resolvePagePercentHeight),
 });
 
 export default resolvePercentHeight;

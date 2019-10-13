@@ -21,11 +21,7 @@ const resolveNodeOrigin = node =>
  * @returns {Object} documrnt root
  */
 const resolveOrigin = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(resolveNodeOrigin),
-    }),
-  ),
+  children: R.map(resolveNodeOrigin),
 });
 
 export default resolveOrigin;

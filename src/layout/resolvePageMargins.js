@@ -9,11 +9,7 @@ import removeMargins from '../node/removeMargins';
  * @returns {Object} documrnt root without margins on pages
  */
 const resolvePageMargins = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(removeMargins),
-    }),
-  ),
+  children: R.map(removeMargins),
 });
 
 export default resolvePageMargins;

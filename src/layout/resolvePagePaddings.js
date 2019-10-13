@@ -49,9 +49,5 @@ const resolvePagePaddings = page =>
  * @returns {Object} document root with translated page paddings
  */
 export default R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(resolvePagePaddings),
-    }),
-  ),
+  children: R.map(resolvePagePaddings),
 });

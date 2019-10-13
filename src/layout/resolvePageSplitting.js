@@ -20,16 +20,11 @@ const splitPage = page => {
   return pages;
 };
 
-const resolvePageSplitting = root =>
-  R.evolve({
-    children: R.map(
-      R.evolve({
-        children: R.compose(
-          R.flatten,
-          R.map(splitPage),
-        ),
-      }),
-    ),
-  })(root);
+const resolvePageSplitting = R.evolve({
+  children: R.compose(
+    R.flatten,
+    R.map(splitPage),
+  ),
+});
 
 export default resolvePageSplitting;

@@ -42,11 +42,7 @@ const adjustPageSize = R.compose(
  * @returns {boolean} root with pages size altered by ruler props
  */
 const resolveRulers = R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(adjustPageSize),
-    }),
-  ),
+  children: R.map(adjustPageSize),
 });
 
 export default resolveRulers;

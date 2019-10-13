@@ -253,11 +253,7 @@ export const resolvePageDimensions = page =>
  */
 const resolveDimensions = node =>
   R.evolve({
-    children: R.map(
-      R.evolve({
-        children: R.map(resolvePageDimensions),
-      }),
-    ),
+    children: R.map(resolvePageDimensions),
   })(node);
 
 export default resolveDimensions;

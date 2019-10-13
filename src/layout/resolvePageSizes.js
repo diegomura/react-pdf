@@ -21,15 +21,11 @@ export const resolvePageSize = key => page => {
  * @returns {Object} document root with resolved page sizes
  */
 const resolvePageSizes = key => R.evolve({
-  children: R.map(
-    R.evolve({
-      children: R.map(
-        R.compose(
-          resolvePageSize(key),
-          assocIfNil(key, {}),
-        ),
-      ),
-    }),
+  children:R.map(
+    R.compose(
+      resolvePageSize(key),
+      assocIfNil(key, {}),
+    ),
   ),
 });
 

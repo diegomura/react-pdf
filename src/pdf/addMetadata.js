@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 const getDocumentProp = target => (or, prop) =>
-  R.pathOr(or, ['children', 0, 'props', prop], target);
+  R.pathOr(or, ['props', prop], target);
 
 const setPDFMetadata = target => (key, value) => {
   if (value) target.info[key] = value;
@@ -11,10 +11,10 @@ const setPDFMetadata = target => (key, value) => {
  * Set document instance metadata
  *
  * @param {Object} ctx document instance
- * @param {Object} root document root
+ * @param {Object} doc document root
  */
-const addMetadata = (ctx, root) => {
-  const getProp = getDocumentProp(root);
+const addMetadata = (ctx, doc) => {
+  const getProp = getDocumentProp(doc);
   const setProp = setPDFMetadata(ctx);
 
   const title = getProp(null, 'title');
@@ -31,7 +31,7 @@ const addMetadata = (ctx, root) => {
   setProp('Creator', creator);
   setProp('Producer', producer);
 
-  return root;
+  return doc;
 };
 
 export default R.curryN(2, addMetadata);

@@ -76,7 +76,11 @@ const createRenderer = onChange => {
     },
 
     appendChildToContainer(parentInstance, child) {
-      parentInstance.children.push(child);
+      if (parentInstance.type === 'ROOT') {
+        parentInstance.document = child;
+      } else {
+        parentInstance.children.push(child);
+      }
       onChange();
     },
 

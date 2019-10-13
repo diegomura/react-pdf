@@ -30,7 +30,7 @@ const Canvas = CANVAS;
 const pdf = input => {
   let _isDirty = true;
 
-  const container = { type: 'ROOT', children: [] };
+  const container = { type: 'ROOT', document: null };
   const PDFRenderer = createRenderer(markAsDirty);
   const mountNode = PDFRenderer.createContainer(container);
 
@@ -58,7 +58,7 @@ const pdf = input => {
 
     // for (let i = 0; i < 10; i++) {
     console.time('layout');
-    const layout = await layoutDocument(container);
+    const layout = await layoutDocument(container.document);
     console.timeEnd('layout');
     // }
 

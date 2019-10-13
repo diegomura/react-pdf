@@ -63,15 +63,9 @@ const renderDocument = ctx =>
     R.pathOr([], ['children']),
   );
 
-const renderRoot = ctx =>
-  R.compose(
-    R.forEach(renderDocument(ctx)),
-    R.pathOr([], ['children']),
-  );
-
-const render = (ctx, root) => {
-  addMetadata(ctx)(root);
-  renderRoot(ctx)(root);
+const render = (ctx, doc) => {
+  addMetadata(ctx)(doc);
+  renderDocument(ctx)(doc);
 
   ctx.end();
   Font.reset();

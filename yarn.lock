@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"-ruslan-pdfkit@https://github.com/RuslanNikolov/-ruslan-pdfkit":
+"-ruslan-pdfkit@git://github.com/RuslanNikolov/-ruslan-pdfkit":
   version "1.2.0"
-  resolved "https://github.com/RuslanNikolov/-ruslan-pdfkit#13e0947255f8ec5cdc71fc7726f446dbdb311823"
+  resolved "git://github.com/RuslanNikolov/-ruslan-pdfkit#ad8e8cdf8a5f0d3b786cfd56efcf244793eb2466"
   dependencies:
     "@react-pdf/fontkit" "^1.11.0"
     "@react-pdf/png-js" "^1.0.0"

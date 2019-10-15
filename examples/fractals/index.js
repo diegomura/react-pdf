@@ -18,10 +18,10 @@ const doc = (
     keywords={['react', 'pdf', 'fractals']}
   >
     <Page size="A4">
-      <Link src="#myDist">Link</Link>
+      <Link src="-myDist">Link</Link>
     </Page>
     <Page size="A4">
-      <View dest="#myDist">
+      <View dest="-myDist">
         <Text>Hello</Text>
       </View>
     </Page>

@@ -11,12 +11,12 @@ class Link extends Base {
   }
 
   isSrcDest() {
-    return this.src.slice(0, 1) === '#';
+    return this.src.slice(0, 1) === '-';
   }
 
   async render() {
     const { top, left, width, height } = this.getAbsoluteLayout();
-    this.root.instance[this.isSrcDest() ? 'link' : 'goTo'](
+    this.root.instance[this.isSrcDest() ? 'goTo' : 'link'](
       left,
       top,
       width,

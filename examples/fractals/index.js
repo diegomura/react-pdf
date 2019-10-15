@@ -2,8 +2,13 @@
 
 import React from 'react';
 
-import Fractal from './Fractal';
-import ReactPDF, { Page, Document } from '../../dist/react-pdf.es.js';
+import ReactPDF, {
+  Page,
+  Document,
+  Link,
+  View,
+  Text,
+} from '../../dist/react-pdf.es.js';
 
 const doc = (
   <Document
@@ -13,15 +18,12 @@ const doc = (
     keywords={['react', 'pdf', 'fractals']}
   >
     <Page size="A4">
-      <Fractal steps={18} />
+      <Link src="#myDist">Link</Link>
     </Page>
-
-    <Page orientation="landscape" size="A4">
-      <Fractal steps={14} />
-    </Page>
-
-    <Page size="B4">
-      <Fractal steps={10} />
+    <Page size="A4">
+      <View dest="#myDist">
+        <Text>Hello</Text>
+      </View>
     </Page>
   </Document>
 );

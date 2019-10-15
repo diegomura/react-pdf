@@ -10,9 +10,19 @@ class Link extends Base {
     return getURL(this.props.src || this.props.href);
   }
 
+  isSrcDest() {
+    return this.src.slice(0, 1) === '#';
+  }
+
   async render() {
     const { top, left, width, height } = this.getAbsoluteLayout();
-    this.root.instance.link(left, top, width, height, this.src);
+    this.root.instance[this.isSrcDest() ? 'link' : 'goTo'](
+      left,
+      top,
+      width,
+      height,
+      this.src,
+    );
     await this.renderChildren();
     if (this.props.debug) this.debug();
   }

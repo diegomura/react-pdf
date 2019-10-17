@@ -57,4 +57,17 @@ describe('View', () => {
 
     expect(debug.mock.calls).toHaveLength(0);
   });
+
+  test('Should set destination if dest prop is available', async () => {
+    const setDest = jest.fn();
+    const dest = 'myDest';
+    const view = new View(dummyRoot, { dest });
+
+    view.setDest = setDest;
+
+    await view.render();
+
+    // expect(setDest).toBeCalledWith(dest);
+    expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(dest);
+  });
 });

@@ -9,12 +9,10 @@ class View extends Base {
     return 'View';
   }
 
-  setDest() {
-    this.root.instance.addNamedDestination(this.props.dest);
-  }
-
   async render() {
-    if (this.props.dest) this.setDest();
+    if (this.props.dest) {
+      this.root.instance.addNamedDestination(this.props.dest);
+    }
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();

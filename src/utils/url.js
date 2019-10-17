@@ -12,7 +12,7 @@ export const getURL = value => {
   return value;
 };
 
-const isSrcDest = src => src[0] === '#';
+export const isSrcDest = src => src[0] === '#';
 
 export const setLink = node => {
   const { top, left, width, height } = node.getAbsoluteLayout();

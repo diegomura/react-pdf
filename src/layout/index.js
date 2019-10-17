@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import resolveRefs from './resolveRefs';
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
 // import resolveZIndex from './resolveZIndex';
@@ -9,11 +6,9 @@ import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
 import resolveTextLayout from './resolveTextLayout';
-// import resolvePageBreaks from './resolvePageBreaks';
 import resolvePagination from './resolvePagination';
 import resolveInheritance from './resolveInheritance';
 import resolvePageMargins from './resolvePageMargins';
-// import resolveDynamicNodes from './resolveDynamicNodes';
 import resolveNoteChildren from './resolveNoteChildren';
 import resolvePagePaddings from './resolvePagePaddings';
 import resolvePercentRadius from './resolvePercentRadius';
@@ -44,7 +39,6 @@ const layout = asyncCompose(
   resolveLinkSubstitution,
   resolvePageMargins,
   resolvePageSizeStyle,
-  resolveRefs,
 );
 
 export default layout;

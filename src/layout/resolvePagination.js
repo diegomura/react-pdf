@@ -1,8 +1,7 @@
 import * as R from 'ramda';
 
 import resolveStyles from './resolveStyles';
-import sholdBreak from '../node/shouldBreak';
-import resolvePageSizes from './resolvePageSizes';
+import shouldNodeBreak from '../node/shouldBreak';
 import getContentArea from '../page/getContentArea';
 import resolveInheritance from './resolveInheritance';
 import resolveNoteChildren from './resolveNoteChildren';
@@ -10,6 +9,8 @@ import resolvePercentRadius from './resolvePercentRadius';
 import resolvePercentHeight from './resolvePercentHeight';
 import { resolvePageDimensions } from './resolveDimensions';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
+
+const zero = R.always(0);
 
 const assocChildren = R.assoc('children');
 
@@ -19,44 +20,58 @@ const getHeight = R.path(['box', 'height']);
 
 const getChildren = R.propOr([], 'children');
 
+const hasFixedHeight = R.hasPath(['style', 'height']);
+
 const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
 
-const splitNode = (height, node, futureNodes = []) => {
+const subtractHeight = value =>
+  R.o(R.subtract(R.__, value), R.path(['box', 'height']));
+
+const splitNode = (height, node) => {
   if (!node) return [null, null];
 
   const nodeTop = getTop(node);
-  const nodeHeight = getHeight(node);
-  const isOutside = isElementOutside(height, node);
-  const shouldSplit = height < nodeTop + nodeHeight;
-  const shouldBreak = sholdBreak(node, futureNodes, height);
 
-  if (isOutside || shouldBreak) {
-    const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(node);
-    return [null, next];
-  }
+  const [currentChilds, nextChildren] = splitChildren(height, node);
 
-  if (shouldSplit) {
-    const [currentChilds, nextChildren] = splitChildren(height, node);
+  // TODO: We should keep style untouched
+  const current = R.evolve({
+    children: R.always(currentChilds),
+    style: R.evolve({
+      paddingBottom: zero,
+      borderBottomWidth: zero,
+      borderBottomLeftRadius: zero,
+      borderBottomRightRadius: zero,
+    }),
+    box: {
+      height: R.always(height - nodeTop),
+      borderBottomWidth: zero,
+    },
+  })(node);
 
-    const current = R.evolve({
-      children: R.always(currentChilds),
-      box: {
-        height: R.when(R.always(shouldSplit), R.always(height - nodeTop)),
-      },
-    })(node);
+  const nextHeight = R.ifElse(
+    hasFixedHeight,
+    subtractHeight(height - nodeTop),
+    R.always(null),
+  )(node);
 
-    const next = R.evolve({
-      children: R.always(nextChildren),
-      box: {
-        top: R.always(0),
-        height: R.subtract(R.__, height - nodeTop),
-      },
-    })(node);
+  // TODO: We should keep style untouched
+  const next = R.evolve({
+    children: R.always(nextChildren),
+    style: R.evolve({
+      paddingTop: zero,
+      borderTopWidth: zero,
+      borderTopLeftRadius: zero,
+      borderTopRightRadius: zero,
+    }),
+    box: {
+      top: zero,
+      height: R.always(nextHeight),
+      borderTopWidth: zero,
+    },
+  })(node);
 
-    return [current, next];
-  }
-
-  return [node, null];
+  return [current, next];
 };
 
 const splitNodes = (height, nodes) => {
@@ -65,11 +80,39 @@ const splitNodes = (height, nodes) => {
 
   for (let i = 0; i < nodes.length; i++) {
     const child = nodes[i];
-    const futureNodes = nodes.slice(i);
-    const [currentChild, nextChild] = splitNode(height, child, futureNodes);
+    const futureNodes = nodes.slice(i + 1);
 
-    if (currentChild) currentChildren.push(currentChild);
-    if (nextChild) nextChildren.push(nextChild);
+    const nodeTop = getTop(child);
+    const nodeHeight = getHeight(child);
+    const isOutside = isElementOutside(height, child);
+    const shouldBreak = shouldNodeBreak(child, futureNodes, height);
+    const shouldSplit = height < nodeTop + nodeHeight;
+
+    if (isOutside) {
+      const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(child);
+      nextChildren.push(next);
+      continue;
+    }
+
+    if (shouldBreak) {
+      const next = R.evolve({
+        box: { top: R.subtract(R.__, height) },
+        props: R.evolve({ break: R.always(false) }),
+      })(child);
+      nextChildren.push(next, ...futureNodes);
+      break;
+    }
+
+    if (shouldSplit) {
+      const [currentChild, nextChild] = splitNode(height, child);
+
+      if (currentChild) currentChildren.push(currentChild);
+      if (nextChild) nextChildren.push(nextChild);
+
+      continue;
+    }
+
+    currentChildren.push(child);
   }
 
   return [currentChildren, nextChildren];

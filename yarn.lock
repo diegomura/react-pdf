@@ -4,7 +4,7 @@
 
 "-ruslan-pdfkit@git://github.com/RuslanNikolov/-ruslan-pdfkit":
   version "1.2.0"
-  resolved "git://github.com/RuslanNikolov/-ruslan-pdfkit#ad8e8cdf8a5f0d3b786cfd56efcf244793eb2466"
+  resolved "git://github.com/RuslanNikolov/-ruslan-pdfkit#a50f0bd61235be0984ac405361c0eeaf2ec68ccf"
   dependencies:
     "@react-pdf/fontkit" "^1.11.0"
     "@react-pdf/png-js" "^1.0.0"

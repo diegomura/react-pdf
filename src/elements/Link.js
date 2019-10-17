@@ -11,6 +11,7 @@ class Link extends Base {
   }
 
   isSrcDest() {
+    console.log('in link');
     return this.src.slice(0, 1) === '-';
   }
 

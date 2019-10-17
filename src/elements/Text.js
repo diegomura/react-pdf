@@ -226,11 +226,18 @@ class Text extends Base {
 
     return text;
   }
-
   renderText() {
-    const { top, left } = this.getAbsoluteLayout();
+    const { top, left, width, height } = this.getAbsoluteLayout();
     const initialY = this.lines[0] ? this.lines[0].box.y : 0;
-
+    if (this.src) {
+      this.root.instance[this.isSrcDest() ? 'goTo' : 'link'](
+        left,
+        top,
+        width,
+        height,
+        this.src,
+      );
+    }
     // We translate lines based on Yoga container
     this.root.instance.save();
     this.root.instance.translate(
@@ -242,6 +249,10 @@ class Text extends Base {
     PDFRenderer.render(this.root.instance, [this.lines]);
 
     this.root.instance.restore();
+  }
+
+  isSrcDest() {
+    return this.src[0] === '-';
   }
 
   async render() {

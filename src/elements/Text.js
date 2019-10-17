@@ -5,7 +5,7 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 import Base from './Base';
 import Font from '../font';
 import layout from '../layout';
-import { getURL } from '../utils/url';
+import { getURL, setLink } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
 class Text extends Base {
@@ -226,35 +226,23 @@ class Text extends Base {
 
     return text;
   }
+
   renderText() {
-    const { top, left, width, height } = this.getAbsoluteLayout();
+    const { top, left } = this.getAbsoluteLayout();
     const initialY = this.lines[0] ? this.lines[0].box.y : 0;
-    if (this.src) {
-      this.root.instance[this.isSrcDest() ? 'goTo' : 'link'](
-        left,
-        top,
-        width,
-        height,
-        this.src,
-      );
-    }
+
     // We translate lines based on Yoga container
     this.root.instance.save();
     this.root.instance.translate(
       left + this.padding.left,
       top + this.padding.top - initialY,
     );
-
     // Perform actual text rendering on document
     PDFRenderer.render(this.root.instance, [this.lines]);
+    if (this.src) setLink(this);
 
     this.root.instance.restore();
   }
-
-  isSrcDest() {
-    return this.src[0] === '-';
-  }
-
   async render() {
     this.root.instance.save();
     this.applyTransformations();

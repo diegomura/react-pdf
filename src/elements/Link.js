@@ -1,5 +1,5 @@
 import Base from './Base';
-import { getURL } from '../utils/url';
+import { getURL, setLink } from '../utils/url';
 
 class Link extends Base {
   get name() {
@@ -10,20 +10,8 @@ class Link extends Base {
     return getURL(this.props.src || this.props.href);
   }
 
-  isSrcDest() {
-    console.log('in link');
-    return this.src.slice(0, 1) === '-';
-  }
-
   async render() {
-    const { top, left, width, height } = this.getAbsoluteLayout();
-    this.root.instance[this.isSrcDest() ? 'goTo' : 'link'](
-      left,
-      top,
-      width,
-      height,
-      this.src,
-    );
+    setLink(this);
     await this.renderChildren();
     if (this.props.debug) this.debug();
   }

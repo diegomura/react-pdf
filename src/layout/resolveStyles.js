@@ -36,7 +36,19 @@ const resolveNodeStyles = page => node => {
     style: resolveStyles(container),
     children: R.map(resolveNodeStyles(page)),
   })(node);
+  // return R.compose(
+  //   R.evolve({
+  //     style: resolveStyles(container),
+  //     children: R.map(resolveNodeStyles(page)),
+  //   }),
+  //   resolveSvgStyles
+  // )(node);
 };
+
+// const resolveSvgStyles = node => {
+//   console.log(node);
+//   return node;
+// }
 
 /**
  * Resolves page styles

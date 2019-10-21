@@ -3,13 +3,8 @@ import resolvePagePaddings from '../../src/layout/resolvePagePaddings';
 describe('layout resolvePagePaddings', () => {
   test('Should keep other styles untouched', () => {
     const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [{ type: 'PAGE', style: { color: 'red' } }],
-        },
-      ],
+      type: 'DOCUMENT',
+      children: [{ type: 'PAGE', style: { color: 'red' } }],
     };
     const result = resolvePagePaddings(root);
 
@@ -18,13 +13,8 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should leave numeric paddingTop as it is', () => {
     const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [{ type: 'PAGE', style: { paddingTop: 50 } }],
-        },
-      ],
+      type: 'DOCUMENT',
+      children: [{ type: 'PAGE', style: { paddingTop: 50 } }],
     };
     const result = resolvePagePaddings(root);
 
@@ -33,13 +23,8 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should leave numeric paddingRight as it is', () => {
     const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [{ type: 'PAGE', style: { paddingRight: 50 } }],
-        },
-      ],
+      type: 'DOCUMENT',
+      children: [{ type: 'PAGE', style: { paddingRight: 50 } }],
     };
     const result = resolvePagePaddings(root);
 
@@ -48,13 +33,8 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should leave numeric paddingBottom as it is', () => {
     const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [{ type: 'PAGE', style: { paddingBottom: 50 } }],
-        },
-      ],
+      type: 'DOCUMENT',
+      children: [{ type: 'PAGE', style: { paddingBottom: 50 } }],
     };
     const result = resolvePagePaddings(root);
 
@@ -63,13 +43,8 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should leave numeric paddingLeft as it is', () => {
     const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [{ type: 'PAGE', style: { paddingLeft: 50 } }],
-        },
-      ],
+      type: 'DOCUMENT',
+      children: [{ type: 'PAGE', style: { paddingLeft: 50 } }],
     };
     const result = resolvePagePaddings(root);
 
@@ -78,17 +53,12 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should resolve percent paddingTop', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingTop: '10%' },
-            },
-          ],
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingTop: '10%' },
         },
       ],
     };
@@ -99,17 +69,12 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should resolve percent paddingRight', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingRight: '10%' },
-            },
-          ],
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingRight: '10%' },
         },
       ],
     };
@@ -120,17 +85,12 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should resolve percent paddingBottom', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingBottom: '10%' },
-            },
-          ],
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingBottom: '10%' },
         },
       ],
     };
@@ -141,17 +101,12 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should resolve percent paddingLeft', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingLeft: '10%' },
-            },
-          ],
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingLeft: '10%' },
         },
       ],
     };
@@ -162,27 +117,22 @@ describe('layout resolvePagePaddings', () => {
 
   test('Should resolve several pages', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingTop: 10 },
-            },
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingBottom: '10%' },
-            },
-            {
-              type: 'PAGE',
-              box: { width: 100, height: 200 },
-              style: { paddingRight: 10, paddingLeft: '10%' },
-            },
-          ],
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingTop: 10 },
+        },
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingBottom: '10%' },
+        },
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          style: { paddingRight: 10, paddingLeft: '10%' },
         },
       ],
     };

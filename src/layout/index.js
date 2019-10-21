@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
 // import resolveZIndex from './resolveZIndex';
@@ -23,6 +25,7 @@ import asyncCompose from '../utils/asyncCompose';
 const resolvePageSizeStyle = resolvePageSizes('style');
 
 const layout = asyncCompose(
+  R.tap(console.log),
   resolveAbsoluteCoordinates,
   resolveRulers,
   resolveOrigins,

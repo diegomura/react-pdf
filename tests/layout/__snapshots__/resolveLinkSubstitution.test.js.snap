@@ -8,24 +8,19 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT",
-                },
-              ],
-              "props": Object {
-                "src": "url",
-              },
-              "type": "LINK",
+              "type": "TEXT",
             },
           ],
-          "type": "PAGE",
+          "props": Object {
+            "src": "url",
+          },
+          "type": "LINK",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -37,33 +32,28 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                },
-                Object {
-                  "type": "TEXT_INSTANCE",
-                },
-                Object {
-                  "type": "TEXT_INSTANCE",
-                },
-                Object {
-                  "type": "TEXT_INSTANCE",
-                },
-              ],
-              "props": Object {
-                "src": "url",
-              },
-              "type": "TEXT",
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
             },
           ],
-          "type": "PAGE",
+          "props": Object {
+            "src": "url",
+          },
+          "type": "TEXT",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -75,24 +65,19 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                },
-              ],
-              "props": Object {
-                "src": "url",
-              },
-              "type": "TEXT",
+              "type": "TEXT_INSTANCE",
             },
           ],
-          "type": "PAGE",
+          "props": Object {
+            "src": "url",
+          },
+          "type": "TEXT",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -102,20 +87,15 @@ Object {
     Object {
       "children": Array [
         Object {
-          "children": Array [
-            Object {
-              "props": Object {
-                "render": [Function],
-              },
-              "type": "TEXT",
-            },
-          ],
-          "type": "PAGE",
+          "props": Object {
+            "render": [Function],
+          },
+          "type": "TEXT",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;

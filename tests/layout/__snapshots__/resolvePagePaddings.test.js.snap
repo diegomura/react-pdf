@@ -4,18 +4,13 @@ exports[`layout resolvePagePaddings Should keep other styles untouched 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "color": "red",
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "color": "red",
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -23,18 +18,13 @@ exports[`layout resolvePagePaddings Should leave numeric paddingBottom as it is 
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "paddingBottom": 50,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "paddingBottom": 50,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -42,18 +32,13 @@ exports[`layout resolvePagePaddings Should leave numeric paddingLeft as it is 1`
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "paddingLeft": 50,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "paddingLeft": 50,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -61,18 +46,13 @@ exports[`layout resolvePagePaddings Should leave numeric paddingRight as it is 1
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "paddingRight": 50,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "paddingRight": 50,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -80,18 +60,13 @@ exports[`layout resolvePagePaddings Should leave numeric paddingTop as it is 1`]
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "paddingTop": 50,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "paddingTop": 50,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -99,22 +74,17 @@ exports[`layout resolvePagePaddings Should resolve percent paddingBottom 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingBottom": 20,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingBottom": 20,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -122,22 +92,17 @@ exports[`layout resolvePagePaddings Should resolve percent paddingLeft 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingLeft": 10,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingLeft": 10,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -145,22 +110,17 @@ exports[`layout resolvePagePaddings Should resolve percent paddingRight 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingRight": 10,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingRight": 10,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -168,22 +128,17 @@ exports[`layout resolvePagePaddings Should resolve percent paddingTop 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingTop": 20,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingTop": 20,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -191,42 +146,37 @@ exports[`layout resolvePagePaddings Should resolve several pages 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingTop": 10,
-          },
-          "type": "PAGE",
-        },
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingBottom": 20,
-          },
-          "type": "PAGE",
-        },
-        Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
-          },
-          "style": Object {
-            "paddingLeft": 10,
-            "paddingRight": 10,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingTop": 10,
+      },
+      "type": "PAGE",
+    },
+    Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingBottom": 20,
+      },
+      "type": "PAGE",
+    },
+    Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "style": Object {
+        "paddingLeft": 10,
+        "paddingRight": 10,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;

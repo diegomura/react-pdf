@@ -8,22 +8,17 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                  "value": "",
-                },
-              ],
-              "type": "NOTE",
+              "type": "TEXT_INSTANCE",
+              "value": "",
             },
           ],
-          "type": "PAGE",
+          "type": "NOTE",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -35,22 +30,17 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                  "value": "React freakin pdf ftw",
-                },
-              ],
-              "type": "NOTE",
+              "type": "TEXT_INSTANCE",
+              "value": "React freakin pdf ftw",
             },
           ],
-          "type": "PAGE",
+          "type": "NOTE",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -62,22 +52,17 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                  "value": "React-pdf",
-                },
-              ],
-              "type": "NOTE",
+              "type": "TEXT_INSTANCE",
+              "value": "React-pdf",
             },
           ],
-          "type": "PAGE",
+          "type": "NOTE",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -89,21 +74,16 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT",
-                },
-              ],
-              "type": "VIEW",
+              "type": "TEXT",
             },
           ],
-          "type": "PAGE",
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -115,21 +95,16 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "type": "TEXT_INSTANCE",
-                  "value": "React",
-                },
-              ],
-              "type": "NOTE",
+              "type": "TEXT_INSTANCE",
+              "value": "React",
             },
           ],
-          "type": "PAGE",
+          "type": "NOTE",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;

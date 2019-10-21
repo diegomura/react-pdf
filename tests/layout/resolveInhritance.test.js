@@ -3,36 +3,67 @@ import resolveInheritance from '../../src/layout/resolveInheritance';
 describe('layout resolveInheritance', () => {
   const shouldInherit = prop => () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              style: { [prop]: 'value' },
-              children: [{ type: 'VIEW', style: {} }],
-            },
-          ],
+          type: 'PAGE',
+          style: { [prop]: 'value' },
+          children: [{ type: 'VIEW', style: {} }],
         },
       ],
     };
     const result = resolveInheritance(root);
-    const view = result.children[0].children[0].children[0];
+    const view = result.children[0].children[0];
 
     expect(view.style).toHaveProperty(prop, 'value');
   };
 
   test('Should not inherit invalid property', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
+          style: { backgroundColor: 'value' },
+          children: [{ type: 'VIEW', style: {} }],
+        },
+      ],
+    };
+    const result = resolveInheritance(root);
+    const view = result.children[0].children[0];
+
+    expect(view.style).toHaveProperty('backgroundColor', undefined);
+  });
+
+  test('Should not override descendents styles', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: { color: 'red' },
+          children: [{ type: 'VIEW', style: { color: 'green' } }],
+        },
+      ],
+    };
+    const result = resolveInheritance(root);
+    const view = result.children[0].children[0];
+
+    expect(view.style).toHaveProperty('color', 'green');
+  });
+
+  test('Should only inherit node descendents', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: {},
           children: [
+            { type: 'VIEW', style: {} },
             {
-              type: 'PAGE',
-              style: { backgroundColor: 'value' },
+              type: 'VIEW',
+              style: { color: 'green' },
               children: [{ type: 'VIEW', style: {} }],
             },
           ],
@@ -40,59 +71,8 @@ describe('layout resolveInheritance', () => {
       ],
     };
     const result = resolveInheritance(root);
-    const view = result.children[0].children[0].children[0];
-
-    expect(view.style).toHaveProperty('backgroundColor', undefined);
-  });
-
-  test('Should not override descendents styles', () => {
-    const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              style: { color: 'red' },
-              children: [{ type: 'VIEW', style: { color: 'green' } }],
-            },
-          ],
-        },
-      ],
-    };
-    const result = resolveInheritance(root);
-    const view = result.children[0].children[0].children[0];
-
-    expect(view.style).toHaveProperty('color', 'green');
-  });
-
-  test('Should only inherit node descendents', () => {
-    const root = {
-      type: 'ROOT',
-      children: [
-        {
-          type: 'DOCUMENT',
-          children: [
-            {
-              type: 'PAGE',
-              style: {},
-              children: [
-                { type: 'VIEW', style: {} },
-                {
-                  type: 'VIEW',
-                  style: { color: 'green' },
-                  children: [{ type: 'VIEW', style: {} }],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
-    const result = resolveInheritance(root);
-    const view1 = result.children[0].children[0].children[0];
-    const view2 = result.children[0].children[0].children[1];
+    const view1 = result.children[0].children[0];
+    const view2 = result.children[0].children[1];
     const subview = view2.children[0];
 
     expect(view1.style).toHaveProperty('color', undefined);

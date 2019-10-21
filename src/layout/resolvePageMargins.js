@@ -6,7 +6,7 @@ import removeMargins from '../node/removeMargins';
  * Remove page margins
  *
  * @param {Object} document root
- * @returns {Object} documrnt root without margins on pages
+ * @returns {Object} document root without margins on pages
  */
 const resolvePageMargins = R.evolve({
   children: R.map(removeMargins),

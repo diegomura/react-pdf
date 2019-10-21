@@ -4,41 +4,36 @@ exports[`layout resolveAbsoluteCoordinates should leave page children coordinate
 Object {
   "children": Array [
     Object {
+      "box": Object {
+        "height": 100,
+        "left": 0,
+        "top": 0,
+        "width": 100,
+      },
       "children": Array [
         Object {
           "box": Object {
-            "height": 100,
-            "left": 0,
-            "top": 0,
-            "width": 100,
+            "height": 50,
+            "left": 20,
+            "top": 20,
+            "width": 50,
           },
-          "children": Array [
-            Object {
-              "box": Object {
-                "height": 50,
-                "left": 20,
-                "top": 20,
-                "width": 50,
-              },
-              "type": "VIEW",
-            },
-            Object {
-              "box": Object {
-                "height": 20,
-                "left": 20,
-                "top": 70,
-                "width": 50,
-              },
-              "type": "VIEW",
-            },
-          ],
-          "type": "PAGE",
+          "type": "VIEW",
+        },
+        Object {
+          "box": Object {
+            "height": 20,
+            "left": 20,
+            "top": 70,
+            "width": 50,
+          },
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -46,30 +41,25 @@ exports[`layout resolveAbsoluteCoordinates should leave page coordinates as they
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "box": Object {
-            "height": 100,
-            "left": 0,
-            "top": 0,
-            "width": 100,
-          },
-          "type": "PAGE",
-        },
-        Object {
-          "box": Object {
-            "height": 200,
-            "left": 0,
-            "top": 0,
-            "width": 200,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "box": Object {
+        "height": 100,
+        "left": 0,
+        "top": 0,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+    Object {
+      "box": Object {
+        "height": 200,
+        "left": 0,
+        "top": 0,
+        "width": 200,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -77,51 +67,46 @@ exports[`layout resolveAbsoluteCoordinates should resolve nested children coordi
 Object {
   "children": Array [
     Object {
+      "box": Object {
+        "height": 100,
+        "left": 0,
+        "top": 0,
+        "width": 100,
+      },
       "children": Array [
         Object {
           "box": Object {
-            "height": 100,
-            "left": 0,
-            "top": 0,
-            "width": 100,
+            "height": 50,
+            "left": 20,
+            "top": 20,
+            "width": 50,
           },
           "children": Array [
             Object {
               "box": Object {
-                "height": 50,
+                "height": 30,
                 "left": 20,
                 "top": 20,
-                "width": 50,
+                "width": 40,
               },
-              "children": Array [
-                Object {
-                  "box": Object {
-                    "height": 30,
-                    "left": 20,
-                    "top": 20,
-                    "width": 40,
-                  },
-                  "type": "VIEW",
-                },
-                Object {
-                  "box": Object {
-                    "height": 10,
-                    "left": 40,
-                    "top": 40,
-                    "width": 10,
-                  },
-                  "type": "VIEW",
-                },
-              ],
+              "type": "VIEW",
+            },
+            Object {
+              "box": Object {
+                "height": 10,
+                "left": 40,
+                "top": 40,
+                "width": 10,
+              },
               "type": "VIEW",
             },
           ],
-          "type": "PAGE",
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;

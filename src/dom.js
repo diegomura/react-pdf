@@ -16,6 +16,7 @@ import {
   Note,
   Image,
   Canvas,
+  Svg,
   version,
   StyleSheet,
   // createInstance,
@@ -154,6 +155,7 @@ export {
   Note,
   Image,
   Canvas,
+  Svg,
   version,
   StyleSheet,
 } from './index';
@@ -170,6 +172,7 @@ export default {
   Note,
   Image,
   Canvas,
+  Svg,
   version,
   Document,
   PDFViewer,

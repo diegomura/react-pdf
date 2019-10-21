@@ -3,21 +3,16 @@ import resolveNoteChildren from '../../src/layout/resolveNoteChildren';
 describe('layout resolveStyles', () => {
   test('should leave non note children as they are', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
           children: [
             {
-              type: 'PAGE',
+              type: 'VIEW',
               children: [
                 {
-                  type: 'VIEW',
-                  children: [
-                    {
-                      type: 'TEXT',
-                    },
-                  ],
+                  type: 'TEXT',
                 },
               ],
             },
@@ -32,19 +27,14 @@ describe('layout resolveStyles', () => {
 
   test('should add note without children an empty text instance', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
           children: [
             {
-              type: 'PAGE',
-              children: [
-                {
-                  type: 'NOTE',
-                  children: [],
-                },
-              ],
+              type: 'NOTE',
+              children: [],
             },
           ],
         },
@@ -57,22 +47,17 @@ describe('layout resolveStyles', () => {
 
   test('should leave note single note text instance children as it is', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
           children: [
             {
-              type: 'PAGE',
+              type: 'NOTE',
               children: [
                 {
-                  type: 'NOTE',
-                  children: [
-                    {
-                      type: 'TEXT_INSTANCE',
-                      value: 'React',
-                    },
-                  ],
+                  type: 'TEXT_INSTANCE',
+                  value: 'React',
                 },
               ],
             },
@@ -87,26 +72,21 @@ describe('layout resolveStyles', () => {
 
   test('should concatenate two note text instance children into one', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
           children: [
             {
-              type: 'PAGE',
+              type: 'NOTE',
               children: [
                 {
-                  type: 'NOTE',
-                  children: [
-                    {
-                      type: 'TEXT_INSTANCE',
-                      value: 'React',
-                    },
-                    {
-                      type: 'TEXT_INSTANCE',
-                      value: '-pdf',
-                    },
-                  ],
+                  type: 'TEXT_INSTANCE',
+                  value: 'React',
+                },
+                {
+                  type: 'TEXT_INSTANCE',
+                  value: '-pdf',
                 },
               ],
             },
@@ -121,44 +101,39 @@ describe('layout resolveStyles', () => {
 
   test('should concatenate several note children into one', () => {
     const root = {
-      type: 'ROOT',
+      type: 'DOCUMENT',
       children: [
         {
-          type: 'DOCUMENT',
+          type: 'PAGE',
           children: [
             {
-              type: 'PAGE',
+              type: 'NOTE',
               children: [
                 {
-                  type: 'NOTE',
+                  type: 'TEXT_INSTANCE',
+                  value: 'React ',
+                },
+                {
+                  type: 'VIEW',
                   children: [
                     {
-                      type: 'TEXT_INSTANCE',
-                      value: 'React ',
-                    },
-                    {
-                      type: 'VIEW',
+                      type: 'TEXT',
                       children: [
                         {
-                          type: 'TEXT',
-                          children: [
-                            {
-                              type: 'TEXT_INSTANCE',
-                              value: 'freakin ',
-                            },
-                          ],
-                        },
-                        {
                           type: 'TEXT_INSTANCE',
-                          value: 'pdf ',
+                          value: 'freakin ',
                         },
                       ],
                     },
                     {
                       type: 'TEXT_INSTANCE',
-                      value: 'ftw',
+                      value: 'pdf ',
                     },
                   ],
+                },
+                {
+                  type: 'TEXT_INSTANCE',
+                  value: 'ftw',
                 },
               ],
             },

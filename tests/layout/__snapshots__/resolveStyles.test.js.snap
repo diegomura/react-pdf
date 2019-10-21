@@ -4,43 +4,38 @@ exports[`layout resolveStyles Should resolve nested node styles 1`] = `
 Object {
   "children": Array [
     Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
       "children": Array [
         Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
+          "style": Object {
+            "backgroundColor": "red",
+            "borderBottomColor": "green",
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 28.346456692913385,
+            "borderLeftColor": "green",
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 28.346456692913385,
+            "borderRightColor": "green",
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 28.346456692913385,
+            "borderTopColor": "green",
+            "borderTopStyle": "dotted",
+            "borderTopWidth": 28.346456692913385,
+            "paddingBottom": 28.346456692913385,
+            "paddingLeft": 720,
+            "paddingRight": 720,
+            "paddingTop": 28.346456692913385,
           },
-          "children": Array [
-            Object {
-              "style": Object {
-                "backgroundColor": "red",
-                "borderBottomColor": "green",
-                "borderBottomStyle": "dotted",
-                "borderBottomWidth": 28.346456692913385,
-                "borderLeftColor": "green",
-                "borderLeftStyle": "dotted",
-                "borderLeftWidth": 28.346456692913385,
-                "borderRightColor": "green",
-                "borderRightStyle": "dotted",
-                "borderRightWidth": 28.346456692913385,
-                "borderTopColor": "green",
-                "borderTopStyle": "dotted",
-                "borderTopWidth": 28.346456692913385,
-                "paddingBottom": 28.346456692913385,
-                "paddingLeft": 720,
-                "paddingRight": 720,
-                "paddingTop": 28.346456692913385,
-              },
-              "type": "VIEW",
-            },
-          ],
-          "type": "PAGE",
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -48,43 +43,38 @@ exports[`layout resolveStyles Should resolve nested node styles array 1`] = `
 Object {
   "children": Array [
     Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
       "children": Array [
         Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
+          "style": Object {
+            "backgroundColor": "red",
+            "borderBottomColor": "green",
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 28.346456692913385,
+            "borderLeftColor": "green",
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 28.346456692913385,
+            "borderRightColor": "green",
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 28.346456692913385,
+            "borderTopColor": "green",
+            "borderTopStyle": "dotted",
+            "borderTopWidth": 28.346456692913385,
+            "paddingBottom": 28.346456692913385,
+            "paddingLeft": 720,
+            "paddingRight": 720,
+            "paddingTop": 28.346456692913385,
           },
-          "children": Array [
-            Object {
-              "style": Object {
-                "backgroundColor": "red",
-                "borderBottomColor": "green",
-                "borderBottomStyle": "dotted",
-                "borderBottomWidth": 28.346456692913385,
-                "borderLeftColor": "green",
-                "borderLeftStyle": "dotted",
-                "borderLeftWidth": 28.346456692913385,
-                "borderRightColor": "green",
-                "borderRightStyle": "dotted",
-                "borderRightWidth": 28.346456692913385,
-                "borderTopColor": "green",
-                "borderTopStyle": "dotted",
-                "borderTopWidth": 28.346456692913385,
-                "paddingBottom": 28.346456692913385,
-                "paddingLeft": 720,
-                "paddingRight": 720,
-                "paddingTop": 28.346456692913385,
-              },
-              "type": "VIEW",
-            },
-          ],
-          "type": "PAGE",
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -92,33 +82,28 @@ exports[`layout resolveStyles Should resolve nested node styles media queries 1`
 Object {
   "children": Array [
     Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
       "children": Array [
         Object {
-          "box": Object {
-            "height": 200,
-            "width": 100,
+          "style": Object {
+            "backgroundColor": "green",
           },
-          "children": Array [
-            Object {
-              "style": Object {
-                "backgroundColor": "green",
-              },
-              "type": "VIEW",
-            },
-            Object {
-              "style": Object {
-                "backgroundColor": "red",
-              },
-              "type": "VIEW",
-            },
-          ],
-          "type": "PAGE",
+          "type": "VIEW",
+        },
+        Object {
+          "style": Object {
+            "backgroundColor": "red",
+          },
+          "type": "VIEW",
         },
       ],
-      "type": "DOCUMENT",
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -126,34 +111,29 @@ exports[`layout resolveStyles Should resolve page styles 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "backgroundColor": "red",
-            "borderBottomColor": "green",
-            "borderBottomStyle": "dotted",
-            "borderBottomWidth": 28.346456692913385,
-            "borderLeftColor": "green",
-            "borderLeftStyle": "dotted",
-            "borderLeftWidth": 28.346456692913385,
-            "borderRightColor": "green",
-            "borderRightStyle": "dotted",
-            "borderRightWidth": 28.346456692913385,
-            "borderTopColor": "green",
-            "borderTopStyle": "dotted",
-            "borderTopWidth": 28.346456692913385,
-            "paddingBottom": 28.346456692913385,
-            "paddingLeft": 720,
-            "paddingRight": 720,
-            "paddingTop": 28.346456692913385,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -161,34 +141,29 @@ exports[`layout resolveStyles Should resolve page styles array 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "backgroundColor": "red",
-            "borderBottomColor": "green",
-            "borderBottomStyle": "dotted",
-            "borderBottomWidth": 28.346456692913385,
-            "borderLeftColor": "green",
-            "borderLeftStyle": "dotted",
-            "borderLeftWidth": 28.346456692913385,
-            "borderRightColor": "green",
-            "borderRightStyle": "dotted",
-            "borderRightWidth": 28.346456692913385,
-            "borderTopColor": "green",
-            "borderTopStyle": "dotted",
-            "borderTopWidth": 28.346456692913385,
-            "paddingBottom": 28.346456692913385,
-            "paddingLeft": 720,
-            "paddingRight": 720,
-            "paddingTop": 28.346456692913385,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;
 
@@ -196,42 +171,37 @@ exports[`layout resolveStyles Should resolve several pages styles 1`] = `
 Object {
   "children": Array [
     Object {
-      "children": Array [
-        Object {
-          "style": Object {
-            "borderTopColor": "#FF00000",
-            "borderTopStyle": "solid",
-            "borderTopWidth": 4,
-            "paddingBottom": 28.346456692913385,
-            "paddingLeft": 720,
-            "paddingRight": 720,
-            "paddingTop": 28.346456692913385,
-          },
-          "type": "PAGE",
-        },
-        Object {
-          "style": Object {
-            "backgroundColor": "red",
-            "borderBottomColor": "green",
-            "borderBottomStyle": "dotted",
-            "borderBottomWidth": 28.346456692913385,
-            "borderLeftColor": "green",
-            "borderLeftStyle": "dotted",
-            "borderLeftWidth": 28.346456692913385,
-            "borderRightColor": "green",
-            "borderRightStyle": "dotted",
-            "borderRightWidth": 28.346456692913385,
-            "borderTopColor": "green",
-            "borderTopStyle": "dotted",
-            "borderTopWidth": 28.346456692913385,
-            "fontWeight": 700,
-          },
-          "type": "PAGE",
-        },
-      ],
-      "type": "DOCUMENT",
+      "style": Object {
+        "borderTopColor": "#FF00000",
+        "borderTopStyle": "solid",
+        "borderTopWidth": 4,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
+    },
+    Object {
+      "style": Object {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "fontWeight": 700,
+      },
+      "type": "PAGE",
     },
   ],
-  "type": "ROOT",
+  "type": "DOCUMENT",
 }
 `;

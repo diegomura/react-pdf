@@ -16,6 +16,7 @@ import {
   IMAGE,
   DOCUMENT,
   CANVAS,
+  SVG,
 } from './constants';
 
 const View = VIEW;
@@ -26,6 +27,7 @@ const Note = NOTE;
 const Image = IMAGE;
 const Document = DOCUMENT;
 const Canvas = CANVAS;
+const Svg = SVG;
 
 const pdf = input => {
   let _isDirty = true;
@@ -157,6 +159,7 @@ export {
   Image,
   Document,
   Canvas,
+  Svg,
   StyleSheet,
   pdf,
 };

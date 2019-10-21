@@ -52,6 +52,7 @@ import {
   setMinHeight,
   setMaxHeight,
 } from '../node/setDimension';
+import isSvg from '../node/isSvg';
 import isText from '../node/isText';
 import isNote from '../node/isNote';
 import isPage from '../node/isPage';
@@ -151,8 +152,9 @@ const setMeasureFunc = page => node => {
 
 const isNotText = R.complement(isText);
 const isNotNote = R.complement(isNote);
-const isLayoutElement = R.both(isNotText, isNotNote);
+const isNotSvg = R.complement(isSvg);
 const isNotTextInstance = R.complement(isTextInstance);
+const isLayoutElement = R.allPass([isNotText, isNotNote, isNotSvg]);
 
 /**
  * Creates and add yoga node to document tree

@@ -3,12 +3,14 @@ import * as R from 'ramda';
 import Font from '../font';
 import save from './save';
 import restore from './restore';
+import isSvg from '../node/isSvg';
 import isText from '../node/isText';
 import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isNote from '../node/isNote';
 import isLink from '../node/isLink';
 import isCanvas from '../node/isCanvas';
+import renderSvg from './renderSvg';
 import renderText from './renderText';
 import renderPage from './renderPage';
 import renderLink from './renderLink';
@@ -42,6 +44,7 @@ const renderNode = ctx => node => {
       [isNote, renderNote(ctx)],
       [isImage, renderImage(ctx)],
       [isCanvas, renderCanvas(ctx)],
+      [isSvg, renderSvg(ctx)],
       [R.T, R.identity],
     ]),
     renderBorders(ctx),

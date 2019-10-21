@@ -7,9 +7,18 @@ import transformStyles from '../stylesheet/transformStyles';
 import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
 
 /**
+ * Filter styles with `none` value
+ *
+ * @param {Object} style object
+ * @returns {Object} style without none values
+ */
+const filterNoneValues = R.reject(R.equals('none'));
+
+/**
  * Resolves styles
  *
  * @param {Object} container
+ * @param {Object} node
  * @param {Object} style object
  * @returns {Object} resolved style object
  */
@@ -19,6 +28,7 @@ const resolveStyles = container =>
     transformStyles,
     expandStyles,
     resolveMediaQueries(container),
+    filterNoneValues,
     flattenStyles,
   );
 
@@ -36,19 +46,7 @@ const resolveNodeStyles = page => node => {
     style: resolveStyles(container),
     children: R.map(resolveNodeStyles(page)),
   })(node);
-  // return R.compose(
-  //   R.evolve({
-  //     style: resolveStyles(container),
-  //     children: R.map(resolveNodeStyles(page)),
-  //   }),
-  //   resolveSvgStyles
-  // )(node);
 };
-
-// const resolveSvgStyles = node => {
-//   console.log(node);
-//   return node;
-// }
 
 /**
  * Resolves page styles

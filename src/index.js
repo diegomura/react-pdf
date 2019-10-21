@@ -17,6 +17,14 @@ import {
   DOCUMENT,
   CANVAS,
   SVG,
+  GROUP,
+  PATH,
+  RECT,
+  LINE,
+  CIRCLE,
+  ELLIPSE,
+  POLYGON,
+  POLYLINE,
 } from './constants';
 
 const View = VIEW;
@@ -28,6 +36,14 @@ const Image = IMAGE;
 const Document = DOCUMENT;
 const Canvas = CANVAS;
 const Svg = SVG;
+const G = GROUP;
+const Path = PATH;
+const Rect = RECT;
+const Line = LINE;
+const Circle = CIRCLE;
+const Ellipse = ELLIPSE;
+const Polygon = POLYGON;
+const Polyline = POLYLINE;
 
 const pdf = input => {
   let _isDirty = true;
@@ -160,6 +176,14 @@ export {
   Document,
   Canvas,
   Svg,
+  G,
+  Path,
+  Rect,
+  Line,
+  Circle,
+  Ellipse,
+  Polygon,
+  Polyline,
   StyleSheet,
   pdf,
 };

@@ -1,14 +1,13 @@
-import * as R from 'ramda';
-
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
-// import resolveZIndex from './resolveZIndex';
+import resolveZIndex from './resolveZIndex';
 import resolveRulers from './resolveRulers';
 import resolveOrigins from './resolveOrigins';
 import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
 import resolveTextLayout from './resolveTextLayout';
 import resolvePagination from './resolvePagination';
+import resolveSvgChildren from './resolveSvgChildren';
 import resolveInheritance from './resolveInheritance';
 import resolvePageMargins from './resolvePageMargins';
 import resolveNoteChildren from './resolveNoteChildren';
@@ -25,7 +24,7 @@ import asyncCompose from '../utils/asyncCompose';
 const resolvePageSizeStyle = resolvePageSizes('style');
 
 const layout = asyncCompose(
-  R.tap(console.log),
+  resolveZIndex,
   resolveAbsoluteCoordinates,
   resolveRulers,
   resolveOrigins,
@@ -38,6 +37,7 @@ const layout = asyncCompose(
   resolvePercentHeight,
   resolvePagePaddings,
   resolveStyles,
+  resolveSvgChildren,
   resolveNoteChildren,
   resolveLinkSubstitution,
   resolvePageMargins,

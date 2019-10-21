@@ -8,6 +8,14 @@ export const DOCUMENT = 'DOCUMENT';
 export const CANVAS = 'CANVAS';
 export const TEXT_INSTANCE = 'TEXT_INSTANCE';
 export const SVG = 'SVG';
+export const GROUP = 'G';
+export const PATH = 'PATH';
+export const RECT = 'RECT';
+export const LINE = 'LINE';
+export const CIRCLE = 'CIRCLE';
+export const ELLIPSE = 'ELLIPSE';
+export const POLYGON = 'POLYGON';
+export const POLYLINE = 'POLYLINE';
 
 export const DPI = 72; // 72pt per inch.
 

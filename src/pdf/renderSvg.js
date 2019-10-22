@@ -121,10 +121,23 @@ const drawChildren = ctx => node =>
     R.propOr([], 'children'),
   )(node);
 
+const defaultsZero = R.pathOr(0);
+
+const drawSvg = ctx => node => {
+  const { top, left } = node.box;
+
+  const paddingLeft = defaultsZero('paddingLeft', node.box);
+  const paddingTop = defaultsZero('paddingTop', node.box);
+
+  ctx.save().translate(left + paddingLeft, top + paddingTop);
+
+  drawChildren(ctx)(node);
+};
+
 const renderSvg = (ctx, node) => {
   R.compose(
     restore(ctx),
-    drawChildren(ctx),
+    drawSvg(ctx),
     clipNode(ctx),
     save(ctx),
   )(node);

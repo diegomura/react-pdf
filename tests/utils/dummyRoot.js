@@ -27,8 +27,6 @@ export default {
     instance.scale = jest.fn().mockReturnValue(instance);
     instance.translate = jest.fn().mockReturnValue(instance);
     instance.link = jest.fn().mockReturnValue(instance);
-    instance.goTo = jest.fn().mockReturnValue(instance);
-    instance.addNamedDestination = jest.fn().mockReturnValue(instance);
     instance.clip = jest.fn().mockReturnValue(instance);
     instance.bezierCurveTo = jest.fn().mockReturnValue(instance);
     instance.closePath = jest.fn().mockReturnValue(instance);

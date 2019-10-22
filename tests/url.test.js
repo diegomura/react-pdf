@@ -1,6 +1,4 @@
-import { getURL, isSrcDest, setLink } from '../src/utils/url';
-import Base from '../src/elements/Base';
-import root from './utils/dummyRoot';
+import { getURL } from '../src/utils/url';
 
 describe('getURL', () => {
   test('should return empty string for missing param', () => {
@@ -44,40 +42,5 @@ describe('getURL', () => {
   test('should support whatsapp protocol', () => {
     const url = 'whatsapp://send?text=Hey';
     expect(getURL(url)).toEqual(url);
-  });
-
-  test('isSrcDest', () => {
-    const src = '#myDest';
-    expect(isSrcDest(src)).toBeTruthy();
-  });
-
-  test('setLink when src is valid URL', () => {
-    const dummyRoot = root.reset();
-    const src = 'https://react-pdf.org';
-    const node = new Base(dummyRoot, { src });
-    node.src = src;
-    node.getAbsoluteLayout = jest
-      .fn()
-      .mockReturnValue({ left: 20, top: 20, width: 20, height: 20 });
-    setLink(node);
-    expect(dummyRoot.instance.link).toHaveBeenCalledWith(20, 20, 20, 20, src);
-  });
-
-  test('setLink when src is a valid destination', () => {
-    const dummyRoot = root.reset();
-    const src = '#myDest';
-    const node = new Base(dummyRoot, { src });
-    node.src = src;
-    node.getAbsoluteLayout = jest
-      .fn()
-      .mockReturnValue({ left: 20, top: 20, width: 20, height: 20 });
-    setLink(node);
-    expect(dummyRoot.instance.goTo).toHaveBeenCalledWith(
-      20,
-      20,
-      20,
-      20,
-      src.slice(1),
-    );
   });
 });

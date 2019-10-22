@@ -5,7 +5,7 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 import Base from './Base';
 import Font from '../font';
 import layout from '../layout';
-import { getURL, setLink } from '../utils/url';
+import { getURL } from '../utils/url';
 import { getAttributedString } from '../utils/attributedString';
 
 class Text extends Base {
@@ -239,7 +239,6 @@ class Text extends Base {
     );
     // Perform actual text rendering on document
     PDFRenderer.render(this.root.instance, [this.lines]);
-    if (this.src) setLink(this);
 
     this.root.instance.restore();
   }

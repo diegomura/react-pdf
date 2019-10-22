@@ -1,4 +1,4 @@
-import PDFDocument from '-ruslan-pdfkit';
+import PDFDocument from '@react-pdf/pdfkit';
 
 class Root {
   constructor() {

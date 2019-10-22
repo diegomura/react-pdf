@@ -3,7 +3,6 @@ import Page from '../src/elements/Page';
 import Link from '../src/elements/Link';
 import View from '../src/elements/View';
 import root from './utils/dummyRoot';
-import * as urlUtils from '../src/utils/url';
 
 let dummyRoot;
 
@@ -51,12 +50,5 @@ describe('Link', () => {
 
     expect(dummyRoot.instance.link.mock.calls).toHaveLength(1);
     expect(dummyRoot.instance.link.mock.calls[0]).toEqual([0, 0, 200, 20, src]);
-  });
-
-  test('Should set link functionality on render', async () => {
-    const link = new Link(dummyRoot, { src });
-    const setLinkSpy = jest.spyOn(urlUtils, 'setLink');
-    await link.render();
-    expect(setLinkSpy).toHaveBeenCalledWith(link);
   });
 });

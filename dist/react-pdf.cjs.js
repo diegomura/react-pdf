@@ -3549,6 +3549,11 @@ class Text extends Base {
 
     PDFRenderer$1.render(this.root.instance, [this.lines]);
     if (this.src) setLink(this);
+
+    if (this.props.dest) {
+      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', left, top, null);
+    }
+
     this.root.instance.restore();
   }
 

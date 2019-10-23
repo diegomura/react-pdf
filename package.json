@@ -23,9 +23,9 @@
     "test:size": "bundlesize"
   },
   "dependencies": {
+    "pdfkit": "git://github.com/RuslanNikolov/pdfkit.git",
     "@babel/runtime": "^7.6.2",
     "@react-pdf/fontkit": "^1.13.0",
-    "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/textkit": "^0.3.7",
     "blob-stream": "^0.1.3",

@@ -57,4 +57,13 @@ describe('View', () => {
 
     expect(debug.mock.calls).toHaveLength(0);
   });
+
+  test('Should set destination if dest prop is available', async () => {
+    const dest = 'myDest';
+    const view = new View(dummyRoot, { dest });
+
+    await view.render();
+
+    expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(dest);
+  });
 });

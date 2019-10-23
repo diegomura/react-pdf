@@ -11,12 +11,7 @@ import ReactPDF, {
 } from '../../dist/react-pdf.es.js';
 
 const doc = (
-  <Document
-    title="Fractals"
-    author="John Doe"
-    subject="Rendering fractals with react-pdf"
-    keywords={['react', 'pdf', 'fractals']}
-  >
+  <Document>
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>

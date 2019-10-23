@@ -10,6 +10,7 @@ import renderCircle from './renderCircle';
 import renderEllipse from './renderEllipse';
 import renderPolygon from './renderPolygon';
 import renderPolyline from './renderPolyline';
+import applyTransformations from './applyTransformations';
 import isPath from '../node/isPath';
 import isRect from '../node/isRect';
 import isLine from '../node/isLine';
@@ -47,6 +48,18 @@ const setFillColor = ctx => node => {
 const setOpacity = ctx => node => {
   const opacity = getStyle(null, 'opacity', node);
   if (opacity) ctx.opacity(opacity);
+  return node;
+};
+
+const setFillOpacity = ctx => node => {
+  const fillOpacity = getStyle(null, 'fillOpacity', node);
+  if (fillOpacity) ctx.fillOpacity(fillOpacity);
+  return node;
+};
+
+const setStrokeOpacity = ctx => node => {
+  const strokeOpacity = getStyle(null, 'strokeOpacity', node);
+  if (strokeOpacity) ctx.strokeOpacity(strokeOpacity);
   return node;
 };
 
@@ -92,7 +105,6 @@ const draw = ctx => node => {
 
 const drawNode = ctx =>
   R.compose(
-    restore(ctx),
     draw(ctx),
     R.cond([
       [isPath, renderPath(ctx)],
@@ -105,19 +117,28 @@ const drawNode = ctx =>
       [isPolyline, renderPolyline(ctx)],
       [R.T, warnUnsupportedNode],
     ]),
+    applyTransformations(ctx),
     setOpacity(ctx),
+    setFillOpacity(ctx),
+    setStrokeOpacity(ctx),
     setFillColor(ctx),
     setStrokeColor(ctx),
     setStrokeWidth(ctx),
     setLineJoin(ctx),
     setLineDash(ctx),
     setLineCap(ctx),
-    save(ctx),
   );
 
 const drawChildren = ctx => node =>
   R.compose(
-    R.map(R.o(drawChildren(ctx), drawNode(ctx))),
+    R.map(
+      R.compose(
+        restore(ctx),
+        drawChildren(ctx),
+        drawNode(ctx),
+        save(ctx),
+      ),
+    ),
     R.propOr([], 'children'),
   )(node);
 

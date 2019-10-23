@@ -10,10 +10,12 @@ import renderCircle from './renderCircle';
 import renderEllipse from './renderEllipse';
 import renderPolygon from './renderPolygon';
 import renderPolyline from './renderPolyline';
+import renderSvgImage from './renderSvgImage';
 import applyTransformations from './applyTransformations';
 import isPath from '../node/isPath';
 import isRect from '../node/isRect';
 import isLine from '../node/isLine';
+import isImage from '../node/isImage';
 import isGroup from '../node/isGroup';
 import isCircle from '../node/isCircle';
 import renderGroup from './renderGroup';
@@ -117,6 +119,7 @@ const drawNode = ctx =>
       [isLine, renderLine(ctx)],
       [isGroup, renderGroup(ctx)],
       [isCircle, renderCircle(ctx)],
+      [isImage, renderSvgImage(ctx)],
       [isEllipse, renderEllipse(ctx)],
       [isPolygon, renderPolygon(ctx)],
       [isPolyline, renderPolyline(ctx)],

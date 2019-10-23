@@ -24,7 +24,7 @@ import renderBorders from './renderBorders';
 import renderBackground from './renderBackground';
 import applyTransformations from './applyTransformations';
 
-const isNotText = R.complement(isText);
+const shouldRenderChildren = v => !isText(v) && !isSvg(v);
 
 const renderNode = ctx => node => {
   const renderChildren = R.tap(
@@ -37,7 +37,7 @@ const renderNode = ctx => node => {
   return R.compose(
     restore(ctx),
     renderDebug(ctx),
-    R.when(isNotText, renderChildren),
+    R.when(shouldRenderChildren, renderChildren),
     R.cond([
       [isText, renderText(ctx)],
       [isLink, renderLink(ctx)],

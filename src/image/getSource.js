@@ -1,5 +1,7 @@
 import * as R from 'ramda';
 
+import firstPass from '../utils/firstPass';
+
 /**
  * Get image source
  *
@@ -8,7 +10,11 @@ import * as R from 'ramda';
  */
 const getSource = R.compose(
   R.when(R.is(String), src => ({ uri: src })),
-  R.either(R.path(['props', 'src']), R.path(['props', 'source'])),
+  firstPass(
+    R.path(['props', 'src']),
+    R.path(['props', 'source']),
+    R.path(['props', 'href']),
+  ),
 );
 
 export default getSource;

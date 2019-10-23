@@ -2,22 +2,10 @@ import font from './font';
 import emoji from './emoji';
 import standardFonts from './standard';
 import hyphenation from './hyphenation';
-import warning from '../utils/warning';
 
 let fonts = {};
 
-const register = (src, data) => {
-  if (typeof src === 'object') {
-    data = src;
-  } else {
-    warning(
-      false,
-      'Font.register will not longer accept the font source as first argument. Please move it into the data object. For more info refer to https://react-pdf.org/fonts',
-    );
-
-    data.src = src;
-  }
-
+const register = data => {
   const { family } = data;
 
   if (!fonts[family]) {

@@ -98,6 +98,11 @@ const draw = ctx => node => {
     ctx.fill(style.fillRule);
   } else if (style.stroke) {
     ctx.stroke();
+  } else {
+    ctx.save();
+    ctx.opacity(0);
+    ctx.fill(null);
+    ctx.restore();
   }
 
   return node;
@@ -144,7 +149,89 @@ const drawChildren = ctx => node =>
 
 const defaultsZero = R.pathOr(0);
 
-const drawSvg = ctx => node => {
+const preserveAspectRatio = ctx => node => {
+  const { width, height, viewBox, preserveAspectRatio = {} } = node.props;
+  const { meetOrSlice = 'meet', align = 'xMidYMid' } = preserveAspectRatio;
+
+  if (viewBox == null || width == null || height == null) return node;
+
+  const x = viewBox ? viewBox.minX : 0;
+  const y = viewBox ? viewBox.minY : 0;
+  const logicalWidth = viewBox ? viewBox.maxX - viewBox.minX : width;
+  const logicalHeight = viewBox ? viewBox.maxY - viewBox.minY : height;
+
+  console.log(logicalWidth);
+
+  const logicalRatio = logicalWidth / logicalHeight;
+  const physicalRatio = width / height;
+  const scaleX = width / logicalWidth;
+  const scaleY = height / logicalHeight;
+
+  if (align === 'none') {
+    ctx.scale(scaleX, scaleY);
+    ctx.translate(-x, -y);
+    return node;
+  }
+
+  if (
+    (logicalRatio < physicalRatio && meetOrSlice === 'meet') ||
+    (logicalRatio >= physicalRatio && meetOrSlice === 'slice')
+  ) {
+    ctx.scale(scaleY, scaleY);
+
+    switch (align) {
+      case 'xMinYMin':
+      case 'xMinYMid':
+      case 'xMinYMax':
+        ctx.translate(-x, -y);
+        break;
+
+      case 'xMidYMin':
+      case 'xMidYMid':
+      case 'xMidYMax':
+        ctx.translate(
+          -x - (logicalWidth - (width * logicalHeight) / height) / 2,
+          -y,
+        );
+        break;
+
+      default:
+        ctx.translate(
+          -x - (logicalWidth - (width * logicalHeight) / height),
+          -y,
+        );
+    }
+  } else {
+    ctx.scale(scaleX, scaleX);
+
+    switch (align) {
+      case 'xMinYMin':
+      case 'xMidYMin':
+      case 'xMaxYMin':
+        ctx.translate(-x, -y);
+        break;
+
+      case 'xMinYMid':
+      case 'xMidYMid':
+      case 'xMaxYMid':
+        ctx.translate(
+          -x,
+          -y - (logicalHeight - (height * logicalWidth) / width) / 2,
+        );
+        break;
+
+      default:
+        ctx.translate(
+          -x,
+          -y - (logicalHeight - (height * logicalWidth) / width),
+        );
+    }
+  }
+
+  return node;
+};
+
+const moveToOrigin = ctx => node => {
   const { top, left } = node.box;
 
   const paddingLeft = defaultsZero('paddingLeft', node.box);
@@ -152,13 +239,15 @@ const drawSvg = ctx => node => {
 
   ctx.save().translate(left + paddingLeft, top + paddingTop);
 
-  drawChildren(ctx)(node);
+  return node;
 };
 
 const renderSvg = (ctx, node) => {
   R.compose(
     restore(ctx),
-    drawSvg(ctx),
+    drawChildren(ctx),
+    preserveAspectRatio(ctx),
+    moveToOrigin(ctx),
     clipNode(ctx),
     save(ctx),
   )(node);

@@ -1,7 +1,6 @@
 'use strict';
 
 import ReactFiberReconciler from 'react-reconciler';
-// import { createInstance } from './elements';
 
 import propsEqual from './utils/propsEqual';
 

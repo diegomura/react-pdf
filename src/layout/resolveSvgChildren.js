@@ -25,7 +25,6 @@ const HORIZONTAL_PROPS = ['x', 'x1', 'x2', 'width', 'cx', 'rx'];
 
 const pickStyleProps = node => {
   const styleProps = R.o(R.pick(STYLE_PROPS), R.propOr({}, 'props'))(node);
-
   return R.evolve({ style: R.merge(styleProps) }, node);
 };
 
@@ -41,6 +40,31 @@ const parsePoints = R.compose(
   R.replace(/,/g, ' '),
   R.trim,
 );
+
+const parseAspectRatio = value => {
+  const match = value
+    .replace(/[\s\r\t\n]+/gm, ' ')
+    .replace(/^defer\s/, '')
+    .split(' ');
+
+  const align = match[0] || 'xMidYMid';
+  const meetOrSlice = match[1] || 'meet';
+
+  return { align, meetOrSlice };
+};
+
+const parseViewbox = value => {
+  const values = value.split(/[,\s]+/).map(parseFloat);
+  if (values.length !== 4) return null;
+  return { minX: values[0], minY: values[1], maxX: values[2], maxY: values[3] };
+};
+
+const parseSvgProps = R.evolve({
+  props: R.evolve({
+    viewBox: parseViewbox,
+    preserveAspectRatio: parseAspectRatio,
+  }),
+});
 
 const transformPercent = container =>
   R.mapObjIndexed((value, key) => {
@@ -99,6 +123,7 @@ const resolveSvgRoot = node => {
   return R.compose(
     R.evolve({ children: R.map(resolveSvgNode(container)) }),
     pickStyleProps,
+    parseSvgProps,
   )(node);
 };
 

@@ -71,7 +71,7 @@ const render = (ctx, doc) => {
   renderDocument(ctx)(doc);
 
   ctx.end();
-  Font.reset();
+  Font.reset(); // TODO: move outside
 
   return ctx;
 };

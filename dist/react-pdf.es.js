@@ -2197,6 +2197,37 @@ const getPageSize = (size, orientation = 'portrait') => {
   };
 };
 
+const PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
+const DEST_REGEXP = /^#.+/;
+const getURL = value => {
+  if (!value) return '';
+  if (isSrcDest(value)) return value; // don't modify it if it is a destination
+
+  if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
+    return `http://${value}`;
+  }
+
+  return value;
+};
+const isSrcDest = src => src.match(DEST_REGEXP);
+const setLink = node => {
+  const {
+    top,
+    left,
+    width,
+    height
+  } = node.getAbsoluteLayout();
+  const instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
+  const nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
+  node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
+};
+const setDest = node => {
+  const {
+    top
+  } = node.getAbsoluteLayout();
+  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null);
+};
+
 class Page extends Base {
   constructor(root, props) {
     super(root, props);
@@ -2372,10 +2403,7 @@ class Page extends Base {
       this.debug();
     }
 
-    if (this.props.dest) {
-      instance.addNamedDestination(this.props.dest);
-    }
-
+    if (this.props.dest) setDest(this);
     this.renderRuler();
   }
 
@@ -2399,14 +2427,7 @@ class View extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
     await this.renderChildren();
-
-    if (this.props.dest) {
-      const {
-        top
-      } = this.getAbsoluteLayout();
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-    }
-
+    if (this.props.dest) setDest(this);
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }
@@ -2796,31 +2817,6 @@ const engines = {
   fontSubstitution
 };
 const engine = layoutEngine(engines);
-
-const PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
-const DEST_REGEXP = /^#.+/;
-const getURL = value => {
-  if (!value) return '';
-  if (isSrcDest(value)) return value; // don't modify it if it is a destination
-
-  if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
-    return `http://${value}`;
-  }
-
-  return value;
-};
-const isSrcDest = src => src.match(DEST_REGEXP);
-const setLink = node => {
-  const {
-    top,
-    left,
-    width,
-    height
-  } = node.getAbsoluteLayout();
-  const instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
-  const nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
-  node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
-};
 
 PNG.isValid = function (data) {
   try {
@@ -3550,11 +3546,7 @@ class Text extends Base {
 
     PDFRenderer$1.render(this.root.instance, [this.lines]);
     if (this.src) setLink(this);
-
-    if (this.props.dest) {
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-    }
-
+    if (this.props.dest) setDest(this);
     this.root.instance.restore();
   }
 
@@ -3932,13 +3924,7 @@ class Image extends Base {
       this.debug();
     }
 
-    if (this.props.dest) {
-      const {
-        top
-      } = this.getAbsoluteLayout();
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-    }
-
+    if (this.props.dest) setDest(this);
     this.root.instance.restore();
   }
 

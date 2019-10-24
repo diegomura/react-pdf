@@ -2324,6 +2324,39 @@ var getPageSize = function getPageSize(size, orientation) {
   };
 };
 
+var PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
+var DEST_REGEXP = /^#.+/;
+var getURL = function getURL(value) {
+  if (!value) return '';
+  if (isSrcDest(value)) return value; // don't modify it if it is a destination
+
+  if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
+    return "http://" + value;
+  }
+
+  return value;
+};
+var isSrcDest = function isSrcDest(src) {
+  return src.match(DEST_REGEXP);
+};
+var setLink = function setLink(node) {
+  var _node$getAbsoluteLayo = node.getAbsoluteLayout(),
+      top = _node$getAbsoluteLayo.top,
+      left = _node$getAbsoluteLayo.left,
+      width = _node$getAbsoluteLayo.width,
+      height = _node$getAbsoluteLayo.height;
+
+  var instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
+  var nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
+  node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
+};
+var setDest = function setDest(node) {
+  var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
+      top = _node$getAbsoluteLayo2.top;
+
+  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null);
+};
+
 var Page =
 /*#__PURE__*/
 function (_Base) {
@@ -2612,10 +2645,7 @@ function (_Base) {
                 this.debug();
               }
 
-              if (this.props.dest) {
-                instance.addNamedDestination(this.props.dest);
-              }
-
+              if (this.props.dest) setDest(this);
               this.renderRuler();
 
             case 11:
@@ -2703,8 +2733,6 @@ function (_Base) {
     var _render = _asyncToGenerator(
     /*#__PURE__*/
     _regeneratorRuntime.mark(function _callee() {
-      var _this$getAbsoluteLayo, top;
-
       return _regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -2717,11 +2745,7 @@ function (_Base) {
               return this.renderChildren();
 
             case 6:
-              if (this.props.dest) {
-                _this$getAbsoluteLayo = this.getAbsoluteLayout(), top = _this$getAbsoluteLayo.top;
-                this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-              }
-
+              if (this.props.dest) setDest(this);
               if (this.props.debug) this.debug();
               this.root.instance.restore();
 
@@ -3304,33 +3328,6 @@ var engines = {
   fontSubstitution: fontSubstitution
 };
 var engine = layoutEngine(engines);
-
-var PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
-var DEST_REGEXP = /^#.+/;
-var getURL = function getURL(value) {
-  if (!value) return '';
-  if (isSrcDest(value)) return value; // don't modify it if it is a destination
-
-  if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
-    return "http://" + value;
-  }
-
-  return value;
-};
-var isSrcDest = function isSrcDest(src) {
-  return src.match(DEST_REGEXP);
-};
-var setLink = function setLink(node) {
-  var _node$getAbsoluteLayo = node.getAbsoluteLayout(),
-      top = _node$getAbsoluteLayo.top,
-      left = _node$getAbsoluteLayo.left,
-      width = _node$getAbsoluteLayo.width,
-      height = _node$getAbsoluteLayo.height;
-
-  var instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
-  var nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
-  node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
-};
 
 var fs = {};
 
@@ -4181,11 +4178,7 @@ function (_Base) {
 
     PDFRenderer$1.render(this.root.instance, [this.lines]);
     if (this.src) setLink(this);
-
-    if (this.props.dest) {
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-    }
-
+    if (this.props.dest) setDest(this);
     this.root.instance.restore();
   };
 
@@ -4762,8 +4755,6 @@ function (_Base) {
     var _render = _asyncToGenerator(
     /*#__PURE__*/
     _regeneratorRuntime.mark(function _callee3() {
-      var _this$getAbsoluteLayo2, top;
-
       return _regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
@@ -4778,11 +4769,7 @@ function (_Base) {
                 this.debug();
               }
 
-              if (this.props.dest) {
-                _this$getAbsoluteLayo2 = this.getAbsoluteLayout(), top = _this$getAbsoluteLayo2.top;
-                this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-              }
-
+              if (this.props.dest) setDest(this);
               this.root.instance.restore();
 
             case 8:

@@ -8,6 +8,7 @@ import { createInstance } from './index';
 import TextInstance from './TextInstance';
 import getPageSize from '../utils/pageSizes';
 import matchPercent from '../utils/matchPercent';
+import { setDest } from '../utils/url';
 
 class Page extends Base {
   static defaultProps = {
@@ -208,9 +209,8 @@ class Page extends Base {
     if (this.props.debug) {
       this.debug();
     }
-    if (this.props.dest) {
-      instance.addNamedDestination(this.props.dest)
-    }
+    if (this.props.dest) setDest(this)
+
 
     this.renderRuler();
   }

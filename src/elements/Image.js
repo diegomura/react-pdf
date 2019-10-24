@@ -4,6 +4,7 @@ import Base from './Base';
 import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
+import { setDest } from '../utils/url';
 
 const SAFETY_HEIGHT = 10;
 
@@ -180,10 +181,8 @@ class Image extends Base {
     if (this.props.debug) {
       this.debug();
     }
-    if (this.props.dest) {
-      const { top } = this.getAbsoluteLayout()
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null)
-    }
+    if (this.props.dest) setDest(this)
+
 
     this.root.instance.restore();
   }

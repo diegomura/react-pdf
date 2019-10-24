@@ -1,4 +1,5 @@
 import Base from './Base';
+import { setDest } from '../utils/url'
 
 class View extends Base {
   static defaultProps = {
@@ -15,10 +16,7 @@ class View extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
     await this.renderChildren();
-    if (this.props.dest) {
-      const { top } = this.getAbsoluteLayout()
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
-    }
+    if (this.props.dest) setDest(this)
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }

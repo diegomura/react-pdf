@@ -22,3 +22,8 @@ export const setLink = node => {
 
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
+
+export const setDest = node => {
+  const { top } = node.getAbsoluteLayout();
+  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null)
+}

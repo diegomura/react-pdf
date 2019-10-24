@@ -2401,6 +2401,7 @@ class Page extends Base {
       margin: 0
     });
     setDestination(this);
+    console.log('in page');
 
     if (this.style.backgroundColor) {
       instance.fillColor(this.style.backgroundColor).rect(0, 0, this.size.width, height).fill();

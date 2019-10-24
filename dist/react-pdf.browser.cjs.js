@@ -2348,6 +2348,8 @@ var isSrcDest = function isSrcDest(src) {
   return src.match(DEST_REGEXP);
 };
 var setLink = function setLink(node) {
+  if (!node.src) return;
+
   var _node$getAbsoluteLayo = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo.top,
       left = _node$getAbsoluteLayo.left,
@@ -2358,7 +2360,9 @@ var setLink = function setLink(node) {
   var nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
-var setDest = function setDest(node) {
+var setDestination = function setDestination(node) {
+  if (!node.props.dest) return;
+
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 
@@ -2653,7 +2657,7 @@ function (_Base) {
                 this.debug();
               }
 
-              if (this.props.dest) setDest(this);
+              setDestination(this);
               this.renderRuler();
 
             case 11:
@@ -2753,7 +2757,7 @@ function (_Base) {
               return this.renderChildren();
 
             case 6:
-              if (this.props.dest) setDest(this);
+              setDestination(this);
               if (this.props.debug) this.debug();
               this.root.instance.restore();
 
@@ -4185,8 +4189,8 @@ function (_Base) {
     this.root.instance.translate(left + this.padding.left, top + this.padding.top - initialY); // Perform actual text rendering on document
 
     PDFRenderer$1.render(this.root.instance, [this.lines]);
-    if (this.src) setLink(this);
-    if (this.props.dest) setDest(this);
+    setLink(this);
+    setDestination(this);
     this.root.instance.restore();
   };
 
@@ -4777,7 +4781,7 @@ function (_Base) {
                 this.debug();
               }
 
-              if (this.props.dest) setDest(this);
+              setDestination(this);
               this.root.instance.restore();
 
             case 8:

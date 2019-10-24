@@ -2218,6 +2218,7 @@ const getURL = value => {
 };
 const isSrcDest = src => src.match(DEST_REGEXP);
 const setLink = node => {
+  if (!node.src) return;
   const {
     top,
     left,
@@ -2228,7 +2229,8 @@ const setLink = node => {
   const nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
-const setDest = node => {
+const setDestination = node => {
+  if (!node.props.dest) return;
   const {
     top
   } = node.getAbsoluteLayout();
@@ -2410,7 +2412,7 @@ class Page extends Base {
       this.debug();
     }
 
-    if (this.props.dest) setDest(this);
+    setDestination(this);
     this.renderRuler();
   }
 
@@ -2434,7 +2436,7 @@ class View extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
     await this.renderChildren();
-    if (this.props.dest) setDest(this);
+    setDestination(this);
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }
@@ -3552,8 +3554,8 @@ class Text extends Base {
     this.root.instance.translate(left + this.padding.left, top + this.padding.top - initialY); // Perform actual text rendering on document
 
     PDFRenderer$1.render(this.root.instance, [this.lines]);
-    if (this.src) setLink(this);
-    if (this.props.dest) setDest(this);
+    setLink(this);
+    setDestination(this);
     this.root.instance.restore();
   }
 
@@ -3931,7 +3933,7 @@ class Image extends Base {
       this.debug();
     }
 
-    if (this.props.dest) setDest(this);
+    setDestination(this);
     this.root.instance.restore();
   }
 

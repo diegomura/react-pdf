@@ -15,13 +15,14 @@ const doc = (
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>
-
     <Page size="A4">
+      <View style={{ height: 300 }} />
       <View dest="myDest">
         <Text>Hello</Text>
       </View>
+
     </Page>
-  </Document>
+  </Document >
 );
 
 ReactPDF.render(doc, `${__dirname}/output.pdf`);

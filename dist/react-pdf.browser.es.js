@@ -2699,22 +2699,25 @@ function (_Base) {
     var _render = _asyncToGenerator(
     /*#__PURE__*/
     _regeneratorRuntime.mark(function _callee() {
+      var _this$getAbsoluteLayo, top;
+
       return _regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (this.props.dest) {
-                this.root.instance.addNamedDestination(this.props.dest);
-              }
-
               this.root.instance.save();
               this.applyTransformations();
               this.drawBackgroundColor();
               this.drawBorders();
-              _context.next = 7;
+              _context.next = 6;
               return this.renderChildren();
 
-            case 7:
+            case 6:
+              if (this.props.dest) {
+                _this$getAbsoluteLayo = this.getAbsoluteLayout(), top = _this$getAbsoluteLayo.top;
+                this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
+              }
+
               if (this.props.debug) this.debug();
               this.root.instance.restore();
 

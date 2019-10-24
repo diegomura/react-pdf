@@ -2612,9 +2612,13 @@ function (_Base) {
                 this.debug();
               }
 
+              if (this.props.dest) {
+                instance.addNamedDestination(this.props.dest);
+              }
+
               this.renderRuler();
 
-            case 10:
+            case 11:
             case "end":
               return _context4.stop();
           }
@@ -4179,7 +4183,7 @@ function (_Base) {
     if (this.src) setLink(this);
 
     if (this.props.dest) {
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', left, top, null);
+      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
     }
 
     this.root.instance.restore();
@@ -4758,6 +4762,8 @@ function (_Base) {
     var _render = _asyncToGenerator(
     /*#__PURE__*/
     _regeneratorRuntime.mark(function _callee3() {
+      var _this$getAbsoluteLayo2, top;
+
       return _regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
@@ -4772,9 +4778,14 @@ function (_Base) {
                 this.debug();
               }
 
+              if (this.props.dest) {
+                _this$getAbsoluteLayo2 = this.getAbsoluteLayout(), top = _this$getAbsoluteLayo2.top;
+                this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
+              }
+
               this.root.instance.restore();
 
-            case 7:
+            case 8:
             case "end":
               return _context3.stop();
           }

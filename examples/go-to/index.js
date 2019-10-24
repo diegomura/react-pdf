@@ -8,6 +8,7 @@ import ReactPDF, {
   Link,
   View,
   Text,
+  Image
 } from '../../dist/react-pdf.es.js';
 
 const doc = (
@@ -15,12 +16,10 @@ const doc = (
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>
-    <Page size="A4">
+    <Page size="A4" dest="myDest">
+      <Text>Henlo</Text>
       <View style={{ height: 300 }} />
-      <View dest="myDest">
-        <Text>Hello</Text>
-      </View>
-
+      <Image dest="myDest" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
     </Page>
   </Document >
 );

@@ -2372,6 +2372,10 @@ class Page extends Base {
       this.debug();
     }
 
+    if (this.props.dest) {
+      instance.addNamedDestination(this.props.dest);
+    }
+
     this.renderRuler();
   }
 
@@ -3548,7 +3552,7 @@ class Text extends Base {
     if (this.src) setLink(this);
 
     if (this.props.dest) {
-      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', left, top, null);
+      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
     }
 
     this.root.instance.restore();
@@ -3926,6 +3930,13 @@ class Image extends Base {
 
     if (this.props.debug) {
       this.debug();
+    }
+
+    if (this.props.dest) {
+      const {
+        top
+      } = this.getAbsoluteLayout();
+      this.root.instance.addNamedDestination(this.props.dest, 'XYZ', null, top, null);
     }
 
     this.root.instance.restore();

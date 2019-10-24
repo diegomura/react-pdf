@@ -208,6 +208,9 @@ class Page extends Base {
     if (this.props.debug) {
       this.debug();
     }
+    if (this.props.dest) {
+      instance.addNamedDestination(this.props.dest)
+    }
 
     this.renderRuler();
   }

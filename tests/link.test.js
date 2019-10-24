@@ -53,10 +53,12 @@ describe('Link', () => {
     expect(dummyRoot.instance.link.mock.calls[0]).toEqual([0, 0, 200, 20, src]);
   });
 
-  test('Should set link functionality on render', async () => {
-    const link = new Link(dummyRoot, { src });
+  test('Should call setLink on render', async () => {
+    const link = new Link(dummyRoot, {});
     const setLinkSpy = jest.spyOn(urlUtils, 'setLink');
+
     await link.render();
+
     expect(setLinkSpy).toHaveBeenCalledWith(link);
   });
 });

@@ -19,8 +19,8 @@ const doc = (
     <Page size="A4" >
       <View style={{ height: 300 }} />
 
-      <Text dest="myDest">Henlo</Text>
-      <Image src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
+      <Text >Henlo</Text>
+      <Image dest="myDest" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
     </Page>
   </Document >
 );

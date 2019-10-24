@@ -16,7 +16,9 @@ export const getURL = value => {
 export const isSrcDest = src => src.match(DEST_REGEXP);
 
 export const setLink = node => {
-  if (!node.src) return;
+  if (!node.src) {
+    return;
+  }
 
   const { top, left, width, height } = node.getAbsoluteLayout();
   const instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
@@ -26,7 +28,9 @@ export const setLink = node => {
 };
 
 export const setDestination = node => {
-  if (!node.props.dest) return
+  if (!node.props.dest) {
+    return;
+  }
 
   const { top } = node.getAbsoluteLayout();
   node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null)

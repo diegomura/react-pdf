@@ -2211,7 +2211,10 @@ const getURL = value => {
 };
 const isSrcDest = src => src.match(DEST_REGEXP);
 const setLink = node => {
-  if (!node.src) return;
+  if (!node.src) {
+    return;
+  }
+
   const {
     top,
     left,
@@ -2223,7 +2226,10 @@ const setLink = node => {
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 const setDestination = node => {
-  if (!node.props.dest) return;
+  if (!node.props.dest) {
+    return;
+  }
+
   const {
     top
   } = node.getAbsoluteLayout();
@@ -3916,6 +3922,7 @@ class Image extends Base {
   }
 
   async render() {
+    setDestination(this);
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();
@@ -3926,7 +3933,6 @@ class Image extends Base {
       this.debug();
     }
 
-    setDestination(this);
     this.root.instance.restore();
   }
 

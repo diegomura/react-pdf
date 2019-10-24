@@ -2348,7 +2348,9 @@ var isSrcDest = function isSrcDest(src) {
   return src.match(DEST_REGEXP);
 };
 var setLink = function setLink(node) {
-  if (!node.src) return;
+  if (!node.src) {
+    return;
+  }
 
   var _node$getAbsoluteLayo = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo.top,
@@ -2361,7 +2363,9 @@ var setLink = function setLink(node) {
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 var setDestination = function setDestination(node) {
-  if (!node.props.dest) return;
+  if (!node.props.dest) {
+    return;
+  }
 
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
@@ -4771,6 +4775,7 @@ function (_Base) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
+              setDestination(this);
               this.root.instance.save();
               this.applyTransformations();
               this.drawBackgroundColor();
@@ -4781,7 +4786,6 @@ function (_Base) {
                 this.debug();
               }
 
-              setDestination(this);
               this.root.instance.restore();
 
             case 8:

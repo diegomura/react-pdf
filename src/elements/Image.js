@@ -172,6 +172,7 @@ class Image extends Base {
   }
 
   async render() {
+    setDestination(this);
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();
@@ -181,7 +182,6 @@ class Image extends Base {
     if (this.props.debug) {
       this.debug();
     }
-    setDestination(this);
 
 
     this.root.instance.restore();

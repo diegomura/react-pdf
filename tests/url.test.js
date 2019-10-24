@@ -1,4 +1,4 @@
-import { getURL, isSrcDest, setLink } from '../src/utils/url';
+import { getURL, isSrcDest, setLink, setDestination } from '../src/utils/url';
 import Base from '../src/elements/Base';
 import root from './utils/dummyRoot';
 
@@ -78,7 +78,9 @@ describe('getURL', () => {
     node.getAbsoluteLayout = jest
       .fn()
       .mockReturnValue({ left: 20, top: 20, width: 20, height: 20 });
+
     setLink(node);
+
     expect(dummyRoot.instance.goTo).toHaveBeenCalledWith(
       20,
       20,
@@ -87,4 +89,36 @@ describe('getURL', () => {
       src.slice(1),
     );
   });
+
+  test('setLink when there is no src', () => {
+    const dummyRoot = root.reset();
+    const node = new Base(dummyRoot, {});
+
+    setLink(node)
+
+    expect(dummyRoot.instance.goTo).not.toHaveBeenCalled();
+  })
+
+  test('setDestination if there is no dest', () => {
+    const dummyRoot = root.reset();
+    const node = new Base(dummyRoot, {});
+
+    setDestination(node)
+
+    expect(dummyRoot.instance.addNamedDestination).not.toHaveBeenCalled()
+  })
+
+  test('setDestination', () => {
+    const dummyRoot = root.reset();
+    const dest = 'myDest'
+    const node = new Base(dummyRoot, { dest });
+    const top = 20
+    node.getAbsoluteLayout = jest.fn().mockReturnValue({ top });
+
+    setDestination(node)
+
+    expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(
+      dest, 'XYZ', null, top, null
+    )
+  })
 });

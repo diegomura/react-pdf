@@ -1,5 +1,6 @@
 import View from '../src/elements/View';
 import root from './utils/dummyRoot';
+import * as urlUtils from '../src/utils/url'
 
 let dummyRoot;
 
@@ -58,12 +59,12 @@ describe('View', () => {
     expect(debug.mock.calls).toHaveLength(0);
   });
 
-  test('Should set destination if dest prop is available', async () => {
-    const dest = 'myDest';
-    const view = new View(dummyRoot, { dest });
+  test('call the setDestination on render', async () => {
+    const view = new View(dummyRoot, {});
+    const setDestinationSpy = jest.spyOn(urlUtils, 'setDestination');
 
     await view.render();
 
-    expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(dest);
+    expect(setDestinationSpy).toHaveBeenCalledWith(view);
   });
 });

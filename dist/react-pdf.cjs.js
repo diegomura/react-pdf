@@ -2407,6 +2407,7 @@ class Page extends Base {
       size: [this.size.width, height],
       margin: 0
     });
+    setDestination(this);
 
     if (this.style.backgroundColor) {
       instance.fillColor(this.style.backgroundColor).rect(0, 0, this.size.width, height).fill();
@@ -2418,7 +2419,6 @@ class Page extends Base {
       this.debug();
     }
 
-    setDestination(this);
     this.renderRuler();
   }
 

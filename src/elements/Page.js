@@ -196,6 +196,7 @@ class Page extends Base {
       size: [this.size.width, height],
       margin: 0,
     });
+    setDestination(this)
 
     if (this.style.backgroundColor) {
       instance
@@ -209,7 +210,6 @@ class Page extends Base {
     if (this.props.debug) {
       this.debug();
     }
-    setDestination(this)
 
 
     this.renderRuler();

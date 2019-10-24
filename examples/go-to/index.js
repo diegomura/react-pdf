@@ -16,11 +16,11 @@ const doc = (
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>
-    <Page size="A4" >
+    <Page size="A4" dest="myDest" >
       <View style={{ height: 300 }} />
 
       <Text >Henlo</Text>
-      <Image dest="myDest" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
+      <Image src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
     </Page>
   </Document >
 );

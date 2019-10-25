@@ -75,9 +75,6 @@ export {
   createInstance,
 } from './index';
 
-const word = 'Hello1'
-
-
 export default {
   pdf,
   View,
@@ -99,5 +96,4 @@ export default {
   renderToStream,
   renderToFile,
   render,
-  word
 };

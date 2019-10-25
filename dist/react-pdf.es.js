@@ -2401,7 +2401,6 @@ class Page extends Base {
       margin: 0
     });
     setDestination(this);
-    console.log('in page');
 
     if (this.style.backgroundColor) {
       instance.fillColor(this.style.backgroundColor).rect(0, 0, this.size.width, height).fill();
@@ -4468,7 +4467,6 @@ const BlobProvider = () => {
   throwEnvironmentError('BlobProvider');
 };
 const render = renderToFile;
-const word = 'Hello1';
 var node = {
   pdf,
   View: View$1,
@@ -4489,8 +4487,7 @@ var node = {
   createInstance,
   renderToStream,
   renderToFile,
-  render,
-  word
+  render
 };
 
 export default node;

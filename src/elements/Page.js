@@ -197,7 +197,6 @@ class Page extends Base {
       margin: 0,
     });
     setDestination(this)
-    console.log('in page');
 
     if (this.style.backgroundColor) {
       instance

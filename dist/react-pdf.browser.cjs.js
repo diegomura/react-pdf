@@ -2648,28 +2648,23 @@ function (_Base) {
                 size: [this.size.width, height],
                 margin: 0
               });
-
-              if (this.props.dest) {
-                this.root.instance.addNamedDestination(this.props.dest);
-              }
-
               setDestination(this);
 
               if (this.style.backgroundColor) {
                 instance.fillColor(this.style.backgroundColor).rect(0, 0, this.size.width, height).fill();
               }
 
-              _context4.next = 10;
+              _context4.next = 9;
               return this.renderChildren();
 
-            case 10:
+            case 9:
               if (this.props.debug) {
                 this.debug();
               }
 
               this.renderRuler();
 
-            case 12:
+            case 11:
             case "end":
               return _context4.stop();
           }

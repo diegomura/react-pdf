@@ -94,7 +94,6 @@ const pdf = input => {
     toString,
   };
 };
-const word = 'Hello1'
 
 export {
   version,
@@ -111,5 +110,4 @@ export {
   StyleSheet,
   createInstance,
   pdf,
-  word
 };

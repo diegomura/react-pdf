@@ -4475,6 +4475,7 @@ const BlobProvider = () => {
   throwEnvironmentError('BlobProvider');
 };
 const render = renderToFile;
+const word = 'Hello1';
 var node = {
   pdf,
   View: View$1,
@@ -4495,7 +4496,8 @@ var node = {
   createInstance,
   renderToStream,
   renderToFile,
-  render
+  render,
+  word
 };
 
 exports.renderToStream = renderToStream;

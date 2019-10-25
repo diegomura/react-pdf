@@ -16,14 +16,14 @@ import {
   createInstance,
 } from './index';
 
-export const renderToStream = async function(element) {
+export const renderToStream = async function (element) {
   const instance = pdf(element);
   const buffer = await instance.toBuffer();
   instance.container.finish();
   return buffer;
 };
 
-export const renderToFile = async function(element, filePath, callback) {
+export const renderToFile = async function (element, filePath, callback) {
   const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
 
@@ -75,6 +75,9 @@ export {
   createInstance,
 } from './index';
 
+const word = 'Hello1'
+
+
 export default {
   pdf,
   View,
@@ -96,4 +99,5 @@ export default {
   renderToStream,
   renderToFile,
   render,
+  word
 };

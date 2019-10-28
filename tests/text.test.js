@@ -4,8 +4,9 @@ import root from './utils/dummyRoot';
 import Page from '../src/elements/Page';
 import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
+import * as urlUtils from '../src/utils/url';
 
-jest.mock('@react-pdf/textkit/renderers/pdf', () => ({ render: () => {} }));
+jest.mock('@react-pdf/textkit/renderers/pdf', () => ({ render: () => { } }));
 
 let dummyRoot;
 
@@ -175,5 +176,23 @@ describe('Text', () => {
     await clone.render();
 
     expect(clone.lines[0].box.x).toEqual(textRectX);
+  });
+
+  test('should call setLink on render', async () => {
+    const text = new Text(dummyRoot, {});
+    const setLinkSpy = jest.spyOn(urlUtils, 'setLink');
+
+    await text.render();
+
+    expect(setLinkSpy).toHaveBeenCalledWith(text);
+  });
+
+  test('should call setDestination on render', async () => {
+    const text = new Text(dummyRoot, {});
+    const setDestinationSpy = jest.spyOn(urlUtils, 'setDestination');
+
+    await text.render();
+
+    expect(setDestinationSpy).toHaveBeenCalledWith(text);
   });
 });

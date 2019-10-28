@@ -71,11 +71,11 @@ const pdf = input => {
 
     return new Promise((resolve, reject) => {
       try {
-        container.instance.on('data', function(buffer) {
+        container.instance.on('data', function (buffer) {
           result += buffer;
         });
 
-        container.instance.on('end', function() {
+        container.instance.on('end', function () {
           callOnRender({ string: result });
           resolve(result);
         });

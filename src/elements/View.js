@@ -1,4 +1,5 @@
 import Base from './Base';
+import { setDestination } from '../utils/url'
 
 class View extends Base {
   static defaultProps = {
@@ -15,6 +16,7 @@ class View extends Base {
     this.drawBackgroundColor();
     this.drawBorders();
     await this.renderChildren();
+    setDestination(this);
     if (this.props.debug) this.debug();
     this.root.instance.restore();
   }

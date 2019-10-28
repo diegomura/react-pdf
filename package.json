@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/renderer",
+  "name": "react-pdf-fork",
   "version": "1.6.7",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -17,15 +17,14 @@
     "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
     "prepublish": "npm run build",
-    "precommit": "git add . && lint-staged",
     "lint": "eslint src",
     "test": "jest",
     "test:size": "bundlesize"
   },
   "dependencies": {
+    "pdfkit": "git://github.com/RuslanNikolov/pdfkit.git",
     "@babel/runtime": "^7.6.2",
     "@react-pdf/fontkit": "^1.13.0",
-    "@react-pdf/pdfkit": "^1.2.0",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/textkit": "^0.3.7",
     "blob-stream": "^0.1.3",

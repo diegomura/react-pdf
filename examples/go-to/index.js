@@ -8,25 +8,21 @@ import ReactPDF, {
   Link,
   View,
   Text,
+  Image
 } from '../../dist/react-pdf.es.js';
 
 const doc = (
-  <Document
-    title="Fractals"
-    author="John Doe"
-    subject="Rendering fractals with react-pdf"
-    keywords={['react', 'pdf', 'fractals']}
-  >
+  <Document>
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>
+    <Page size="A4" destination="myDest" >
+      <View style={{ height: 300 }} />
 
-    <Page size="A4">
-      <View dest="myDest">
-        <Text>Hello</Text>
-      </View>
+      <Text >Henlo</Text>
+      <Image src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" />
     </Page>
-  </Document>
+  </Document >
 );
 
 ReactPDF.render(doc, `${__dirname}/output.pdf`);

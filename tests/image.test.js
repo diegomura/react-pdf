@@ -11,6 +11,7 @@ import {
   isDangerousLocalPath,
 } from '../src/utils/image';
 import * as objectFit from '../src/utils/objectFit';
+import * as urlUtils from '../src/utils/url';
 
 let dummyRoot;
 

@@ -99,7 +99,10 @@ const applyTransformations = (ctx, node) => {
   let match;
   const re = /[a-zA-Z]+\([^)]+\)/g;
   const origin = [node.origin.left, node.origin.top];
-  const transform = (node.style && node.style.transform) || '';
+  const transform =
+    (node.style && node.style.transform) ||
+    (node.props && node.props.transform) ||
+    '';
 
   while ((match = re.exec(transform)) != null) {
     applySingleTransformation(ctx, match[0], origin);

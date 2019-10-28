@@ -1,7 +1,12 @@
 import * as R from 'ramda';
 
 import isSvg from '../node/isSvg';
+import getDefs from '../svg/getDefs';
+import detachDefs from '../svg/detachDefs';
+import parsePoints from '../svg/parsePoints';
+import parseViewbox from '../svg/parseViewbox';
 import matchPercent from '../utils/matchPercent';
+import parseAspectRatio from '../svg/parseAspectRatio';
 
 const STYLE_PROPS = [
   'width',
@@ -14,6 +19,7 @@ const STYLE_PROPS = [
   'strokeOpacity',
   'fill',
   'fillRule',
+  'clipPath',
   'transform',
   'strokeLinejoin',
   'strokeLinecap',
@@ -22,49 +28,6 @@ const STYLE_PROPS = [
 
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
 const HORIZONTAL_PROPS = ['x', 'x1', 'x2', 'width', 'cx', 'rx'];
-
-const pickStyleProps = node => {
-  const styleProps = R.o(R.pick(STYLE_PROPS), R.propOr({}, 'props'))(node);
-  return R.evolve({ style: R.merge(styleProps) }, node);
-};
-
-const isOdd = x => x % 2 !== 0;
-const lengthIsOdd = R.o(isOdd, R.prop('length'));
-
-const parsePoints = R.compose(
-  R.splitEvery(2),
-  R.map(parseFloat),
-  R.when(lengthIsOdd, R.slice(0, -1)),
-  R.split(/\s+/),
-  R.replace(/(\d)-(\d)/g, '$1 -$2'),
-  R.replace(/,/g, ' '),
-  R.trim,
-);
-
-const parseAspectRatio = value => {
-  const match = value
-    .replace(/[\s\r\t\n]+/gm, ' ')
-    .replace(/^defer\s/, '')
-    .split(' ');
-
-  const align = match[0] || 'xMidYMid';
-  const meetOrSlice = match[1] || 'meet';
-
-  return { align, meetOrSlice };
-};
-
-const parseViewbox = value => {
-  const values = value.split(/[,\s]+/).map(parseFloat);
-  if (values.length !== 4) return null;
-  return { minX: values[0], minY: values[1], maxX: values[2], maxY: values[3] };
-};
-
-const parseSvgProps = R.evolve({
-  props: R.evolve({
-    viewBox: parseViewbox,
-    preserveAspectRatio: parseAspectRatio,
-  }),
-});
 
 const transformPercent = container =>
   R.mapObjIndexed((value, key) => {
@@ -97,6 +60,8 @@ const parseProps = container =>
           ry: parseFloat,
           cx: parseFloat,
           cy: parseFloat,
+          width: parseFloat,
+          height: parseFloat,
           points: parsePoints,
         }),
         transformPercent(container),
@@ -104,12 +69,14 @@ const parseProps = container =>
     }),
   );
 
-const resolveSvgNode = container => node =>
-  R.compose(
-    R.evolve({ children: R.map(resolveSvgNode(container)) }),
-    pickStyleProps,
-    parseProps(container),
-  )(node);
+const mergeStyles = node => {
+  const style = R.propOr({}, 'style', node);
+  return R.evolve({ props: R.merge(style) }, node);
+};
+
+const removeNoneValues = R.evolve({
+  props: R.map(R.when(R.equals('none'), R.always(null))),
+});
 
 const getRootContainer = R.compose(
   R.map(parseFloat),
@@ -117,13 +84,61 @@ const getRootContainer = R.compose(
   R.prop('props'),
 );
 
+const pickStyleProps = node => {
+  const styleProps = R.o(R.pick(STYLE_PROPS), R.propOr({}, 'props'))(node);
+  return R.evolve({ style: R.merge(styleProps) }, node);
+};
+
+const parseDefs = defs =>
+  R.compose(
+    R.prop(R.__, defs),
+    R.prop(1),
+    R.match(/url\(#(.+)\)/),
+  );
+
+const parseNodeDefs = defs => node =>
+  R.compose(
+    R.evolve({
+      props: R.evolve({
+        clipPath: parseDefs(defs),
+      }),
+    }),
+    R.evolve({ children: R.map(parseNodeDefs(defs)) }),
+  )(node);
+
+const parseSvgDefs = root => {
+  const defs = getDefs(root);
+  return R.evolve({ children: R.map(parseNodeDefs(defs)) }, root);
+};
+
+const parseSvgProps = R.evolve({
+  props: R.evolve({
+    viewBox: parseViewbox,
+    preserveAspectRatio: parseAspectRatio,
+  }),
+});
+
+const parseSvgChildren = container => node =>
+  R.evolve({
+    children: R.map(
+      R.compose(
+        parseSvgChildren(container),
+        parseProps(container),
+        removeNoneValues,
+        mergeStyles,
+      ),
+    ),
+  })(node);
+
 const resolveSvgRoot = node => {
   const container = getRootContainer(node);
 
   return R.compose(
-    R.evolve({ children: R.map(resolveSvgNode(container)) }),
-    pickStyleProps,
+    detachDefs,
+    parseSvgDefs,
     parseSvgProps,
+    pickStyleProps,
+    parseSvgChildren(container),
   )(node);
 };
 

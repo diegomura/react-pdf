@@ -25,6 +25,8 @@ import {
   ELLIPSE,
   POLYGON,
   POLYLINE,
+  DEFS,
+  CLIP_PATH,
 } from './constants';
 
 const View = VIEW;
@@ -44,6 +46,8 @@ const Circle = CIRCLE;
 const Ellipse = ELLIPSE;
 const Polygon = POLYGON;
 const Polyline = POLYLINE;
+const Defs = DEFS;
+const ClipPath = CLIP_PATH;
 
 const pdf = input => {
   let _isDirty = true;
@@ -183,6 +187,8 @@ export {
   Circle,
   Ellipse,
   Polygon,
+  Defs,
+  ClipPath,
   Polyline,
   StyleSheet,
   pdf,

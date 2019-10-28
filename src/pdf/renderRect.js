@@ -3,15 +3,14 @@ import * as R from 'ramda';
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
 const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
-const getStyle = (d, p, v) => R.pathOr(d, ['style', p], v);
 
 const renderRect = ctx => node => {
   const x = getProp(0, 'x', node);
   const y = getProp(0, 'y', node);
   const rx = getProp(0, 'rx', node);
   const ry = getProp(0, 'ry', node);
-  const width = getStyle(0, 'width', node);
-  const height = getStyle(0, 'height', node);
+  const width = getProp(0, 'width', node);
+  const height = getProp(0, 'height', node);
 
   if (!width || !height) return node;
 

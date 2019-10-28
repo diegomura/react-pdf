@@ -16,6 +16,8 @@ export const CIRCLE = 'CIRCLE';
 export const ELLIPSE = 'ELLIPSE';
 export const POLYGON = 'POLYGON';
 export const POLYLINE = 'POLYLINE';
+export const DEFS = 'DEFS';
+export const CLIP_PATH = 'CLIP_PATH';
 
 export const DPI = 72; // 72pt per inch.
 

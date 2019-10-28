@@ -27,58 +27,58 @@ const warnUnsupportedNode = R.tap(node => {
   console.warn(`SVG node of type ${node.type} is not currenty supported`);
 });
 
-const getStyle = (d, p, v) => R.pathOr(d, ['style', p], v);
+const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
 
 const setStrokeWidth = ctx => node => {
-  const lineWidth = getStyle(0, 'strokeWidth', node);
+  const lineWidth = getProp(0, 'strokeWidth', node);
   if (lineWidth) ctx.lineWidth(lineWidth);
   return node;
 };
 
 const setStrokeColor = ctx => node => {
-  const strokeColor = getStyle(null, 'stroke', node);
+  const strokeColor = getProp(null, 'stroke', node);
   if (strokeColor) ctx.strokeColor(strokeColor);
   return node;
 };
 
 const setFillColor = ctx => node => {
-  const fillColor = getStyle(null, 'fill', node);
+  const fillColor = getProp(null, 'fill', node);
   if (fillColor) ctx.fillColor(fillColor);
   return node;
 };
 
 const setOpacity = ctx => node => {
-  const opacity = getStyle(null, 'opacity', node);
+  const opacity = getProp(null, 'opacity', node);
   if (opacity) ctx.opacity(opacity);
   return node;
 };
 
 const setFillOpacity = ctx => node => {
-  const fillOpacity = getStyle(null, 'fillOpacity', node);
+  const fillOpacity = getProp(null, 'fillOpacity', node);
   if (fillOpacity) ctx.fillOpacity(fillOpacity);
   return node;
 };
 
 const setStrokeOpacity = ctx => node => {
-  const strokeOpacity = getStyle(null, 'strokeOpacity', node);
+  const strokeOpacity = getProp(null, 'strokeOpacity', node);
   if (strokeOpacity) ctx.strokeOpacity(strokeOpacity);
   return node;
 };
 
 const setLineJoin = ctx => node => {
-  const lineJoin = getStyle(null, 'strokeLinejoin', node);
+  const lineJoin = getProp(null, 'strokeLinejoin', node);
   if (lineJoin) ctx.lineJoin(lineJoin);
   return node;
 };
 
 const setLineCap = ctx => node => {
-  const lineCap = getStyle(null, 'strokeLinecap', node);
+  const lineCap = getProp(null, 'strokeLinecap', node);
   if (lineCap) ctx.lineCap(lineCap);
   return node;
 };
 
 const setLineDash = ctx => node => {
-  const value = getStyle(null, 'strokeDasharray', node);
+  const value = getProp(null, 'strokeDasharray', node);
 
   if (value) {
     const dashArray = R.compose(
@@ -92,13 +92,13 @@ const setLineDash = ctx => node => {
 };
 
 const draw = ctx => node => {
-  const style = R.propOr({}, 'style', node);
+  const props = R.propOr({}, 'props', node);
 
-  if (style.fill && style.stroke) {
-    ctx.fillAndStroke(style.fillRule);
-  } else if (style.fill) {
-    ctx.fill(style.fillRule);
-  } else if (style.stroke) {
+  if (props.fill && props.stroke) {
+    ctx.fillAndStroke(props.fillRule);
+  } else if (props.fill) {
+    ctx.fill(props.fillRule);
+  } else if (props.stroke) {
     ctx.stroke();
   } else {
     ctx.save();
@@ -110,21 +110,24 @@ const draw = ctx => node => {
   return node;
 };
 
+const renderNode = ctx =>
+  R.cond([
+    [isPath, renderPath(ctx)],
+    [isRect, renderRect(ctx)],
+    [isLine, renderLine(ctx)],
+    [isGroup, renderGroup(ctx)],
+    [isCircle, renderCircle(ctx)],
+    [isImage, renderSvgImage(ctx)],
+    [isEllipse, renderEllipse(ctx)],
+    [isPolygon, renderPolygon(ctx)],
+    [isPolyline, renderPolyline(ctx)],
+    [R.T, warnUnsupportedNode],
+  ]);
+
 const drawNode = ctx =>
   R.compose(
     draw(ctx),
-    R.cond([
-      [isPath, renderPath(ctx)],
-      [isRect, renderRect(ctx)],
-      [isLine, renderLine(ctx)],
-      [isGroup, renderGroup(ctx)],
-      [isCircle, renderCircle(ctx)],
-      [isImage, renderSvgImage(ctx)],
-      [isEllipse, renderEllipse(ctx)],
-      [isPolygon, renderPolygon(ctx)],
-      [isPolyline, renderPolyline(ctx)],
-      [R.T, warnUnsupportedNode],
-    ]),
+    renderNode(ctx),
     applyTransformations(ctx),
     setOpacity(ctx),
     setFillOpacity(ctx),
@@ -137,6 +140,20 @@ const drawNode = ctx =>
     setLineCap(ctx),
   );
 
+const clipPath = ctx => node => {
+  const value = R.path(['props', 'clipPath'], node);
+
+  if (value) {
+    R.compose(
+      () => ctx.clip(),
+      R.forEach(renderNode(ctx)),
+      R.propOr([], 'children'),
+    )(value);
+  }
+
+  return node;
+};
+
 const drawChildren = ctx => node =>
   R.compose(
     R.map(
@@ -144,6 +161,7 @@ const drawChildren = ctx => node =>
         restore(ctx),
         drawChildren(ctx),
         drawNode(ctx),
+        clipPath(ctx),
         save(ctx),
       ),
     ),
@@ -162,8 +180,6 @@ const preserveAspectRatio = ctx => node => {
   const y = viewBox ? viewBox.minY : 0;
   const logicalWidth = viewBox ? viewBox.maxX - viewBox.minX : width;
   const logicalHeight = viewBox ? viewBox.maxY - viewBox.minY : height;
-
-  console.log(logicalWidth);
 
   const logicalRatio = logicalWidth / logicalHeight;
   const physicalRatio = width / height;

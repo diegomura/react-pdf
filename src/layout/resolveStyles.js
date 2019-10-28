@@ -4,6 +4,7 @@ import flattenStyles from '../stylesheet/flatten';
 import expandStyles from '../stylesheet/expandStyles';
 import transformUnits from '../stylesheet/transformUnits';
 import transformStyles from '../stylesheet/transformStyles';
+import transformColors from '../stylesheet/transformColors';
 import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
 
 /**
@@ -25,6 +26,7 @@ const filterNoneValues = R.reject(R.equals('none'));
 const resolveStyles = container =>
   R.compose(
     transformUnits(container),
+    transformColors,
     transformStyles,
     expandStyles,
     resolveMediaQueries(container),
@@ -55,12 +57,13 @@ const resolveNodeStyles = page => node => {
  * @returns {Object} document page with resolved styles
  */
 const resolvePageStyles = page => {
-  const pageBox = R.propOr({}, 'box', page);
+  const box = R.propOr({}, 'box', page);
 
   return R.evolve({
     children: R.map(resolveNodeStyles(page)),
     style: R.compose(
-      transformUnits(pageBox),
+      transformUnits(box),
+      transformColors,
       transformStyles,
       expandStyles,
       flattenStyles,

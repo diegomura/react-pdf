@@ -2,6 +2,9 @@ import resolveImage from './resolveImage';
 import getSource from './getSource';
 import warning from '../utils/warning';
 
+const resolveSrc = async src =>
+  typeof src === 'function' ? { uri: await src() } : src;
+
 const fetchImage = async node => {
   const src = getSource(node);
   const { cache } = node.props;
@@ -12,7 +15,8 @@ const fetchImage = async node => {
   }
 
   try {
-    node.image = await resolveImage(src, { cache });
+    const source = await resolveSrc(src);
+    node.image = await resolveImage(source, { cache });
   } catch (e) {
     node.image = { width: 0, height: 0 };
     console.warn(e.message);

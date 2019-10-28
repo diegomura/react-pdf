@@ -2359,6 +2359,8 @@ var setDestination = function setDestination(node) {
     return;
   }
 
+  console.log('in here', node.name || '');
+
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 

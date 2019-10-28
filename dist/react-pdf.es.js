@@ -2230,6 +2230,7 @@ const setDestination = node => {
     return;
   }
 
+  console.log('in here', node.name || '');
   const {
     top
   } = node.getAbsoluteLayout();

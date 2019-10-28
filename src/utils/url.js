@@ -31,6 +31,7 @@ export const setDestination = node => {
   if (!node.props.dest) {
     return;
   }
+  console.log('in here', node.name || '');
 
   const { top } = node.getAbsoluteLayout();
   node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null)

@@ -2363,7 +2363,7 @@ var setLink = function setLink(node) {
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 var setDestination = function setDestination(node) {
-  if (!node.props.dest) {
+  if (!node.props.destination) {
     return;
   }
 
@@ -2372,7 +2372,7 @@ var setDestination = function setDestination(node) {
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 
-  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null);
+  node.root.instance.addNamedDestination(node.props.destination, 'XYZ', null, top, null);
 };
 
 var Page =

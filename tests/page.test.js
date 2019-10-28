@@ -91,7 +91,7 @@ describe('Page', () => {
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
   test('Should render given background color', async () => {
-    const dest = "myDest";
+    const destination = "myDest";
     const page = new Page(dummyRoot, { style: { backgroundColor: 'tomato' } });
 
     page.applyProps();

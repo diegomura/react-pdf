@@ -16,7 +16,7 @@ const doc = (
     <Page size="A4">
       <Link src="#myDest">Link</Link>
     </Page>
-    <Page size="A4" dest="myDest" >
+    <Page size="A4" destination="myDest" >
       <View style={{ height: 300 }} />
 
       <Text >Henlo</Text>

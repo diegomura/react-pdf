@@ -28,11 +28,11 @@ export const setLink = node => {
 };
 
 export const setDestination = node => {
-  if (!node.props.dest) {
+  if (!node.props.destination) {
     return;
   }
   console.log('in here', node.name || '');
 
   const { top } = node.getAbsoluteLayout();
-  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null)
+  node.root.instance.addNamedDestination(node.props.destination, 'XYZ', null, top, null)
 }

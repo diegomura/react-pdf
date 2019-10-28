@@ -99,7 +99,7 @@ describe('getURL', () => {
     expect(dummyRoot.instance.goTo).not.toHaveBeenCalled();
   })
 
-  test('setDestination if there is no dest', () => {
+  test('setDestination if there is no destination prop', () => {
     const dummyRoot = root.reset();
     const node = new Base(dummyRoot, {});
 
@@ -110,15 +110,15 @@ describe('getURL', () => {
 
   test('setDestination', () => {
     const dummyRoot = root.reset();
-    const dest = 'myDest'
-    const node = new Base(dummyRoot, { dest });
+    const destination = 'myDest'
+    const node = new Base(dummyRoot, { destination });
     const top = 20
     node.getAbsoluteLayout = jest.fn().mockReturnValue({ top });
 
     setDestination(node)
 
     expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(
-      dest, 'XYZ', null, top, null
+      destination, 'XYZ', null, top, null
     )
   })
 });

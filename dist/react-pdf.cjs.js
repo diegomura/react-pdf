@@ -2233,7 +2233,7 @@ const setLink = node => {
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 const setDestination = node => {
-  if (!node.props.dest) {
+  if (!node.props.destination) {
     return;
   }
 
@@ -2241,7 +2241,7 @@ const setDestination = node => {
   const {
     top
   } = node.getAbsoluteLayout();
-  node.root.instance.addNamedDestination(node.props.dest, 'XYZ', null, top, null);
+  node.root.instance.addNamedDestination(node.props.destination, 'XYZ', null, top, null);
 };
 
 class Page extends Base {

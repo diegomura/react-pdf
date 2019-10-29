@@ -1,5 +1,5 @@
 {
-  "name": "react-pdf-renderer",
+  "name": "@react-pdf/renderer",
   "version": "1.6.7",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -16,6 +16,7 @@
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
+    "precommit": "git add . && lint-staged",
     "prepublish": "npm run build",
     "lint": "eslint src",
     "test": "jest",

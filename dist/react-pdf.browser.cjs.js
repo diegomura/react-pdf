@@ -2367,8 +2367,6 @@ var setDestination = function setDestination(node) {
     return;
   }
 
-  console.log('in here', node.name || '');
-
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 
@@ -3138,7 +3136,7 @@ var StandardFont =
 function () {
   function StandardFont(src) {
     this.name = src;
-    this.src = PDFDocument.PDFFontFactory.open(null, src);
+    this.src = PDFDocument.PDFFont.open(null, src);
   }
 
   var _proto = StandardFont.prototype;

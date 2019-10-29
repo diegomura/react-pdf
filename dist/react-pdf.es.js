@@ -2,7 +2,7 @@ import fs from 'fs';
 import BlobStream from 'blob-stream';
 import ReactFiberReconciler from 'react-reconciler';
 import { unstable_scheduleCallback, unstable_cancelCallback } from 'scheduler';
-import PDFDocument, { PDFFontFactory } from 'pdfkit';
+import PDFDocument, { PDFFont } from 'pdfkit';
 import { Fragment } from 'react';
 import Yoga from 'yoga-layout-prebuilt';
 import { mergeDeepWith, isNil, compose, equals, type, toPairsIn, pick, pathOr, last, propEq, complement, prop } from 'ramda';
@@ -2230,7 +2230,6 @@ const setDestination = node => {
     return;
   }
 
-  console.log('in here', node.name || '');
   const {
     top
   } = node.getAbsoluteLayout();
@@ -2662,7 +2661,7 @@ var Font$1 = {
 class StandardFont {
   constructor(src) {
     this.name = src;
-    this.src = PDFFontFactory.open(null, src);
+    this.src = PDFFont.open(null, src);
   }
 
   layout(str) {

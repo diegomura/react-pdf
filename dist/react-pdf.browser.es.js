@@ -8,7 +8,7 @@ import BlobStream from 'blob-stream';
 import ReactFiberReconciler from 'react-reconciler';
 import { unstable_scheduleCallback, unstable_cancelCallback } from 'scheduler';
 import _createClass from '@babel/runtime/helpers/createClass';
-import PDFDocument, { PDFFontFactory } from 'pdfkit';
+import PDFDocument, { PDFFont } from 'pdfkit';
 import Yoga from 'yoga-layout-prebuilt';
 import { mergeDeepWith, isNil, compose, equals, type, toPairsIn, pick, pathOr, last, propEq, complement, prop } from 'ramda';
 import matchMedia from 'media-engine';
@@ -2359,8 +2359,6 @@ var setDestination = function setDestination(node) {
     return;
   }
 
-  console.log('in here', node.name || '');
-
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 
@@ -3130,7 +3128,7 @@ var StandardFont =
 function () {
   function StandardFont(src) {
     this.name = src;
-    this.src = PDFFontFactory.open(null, src);
+    this.src = PDFFont.open(null, src);
   }
 
   var _proto = StandardFont.prototype;

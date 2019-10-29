@@ -2237,7 +2237,6 @@ const setDestination = node => {
     return;
   }
 
-  console.log('in here', node.name || '');
   const {
     top
   } = node.getAbsoluteLayout();
@@ -2669,7 +2668,7 @@ var Font$1 = {
 class StandardFont {
   constructor(src) {
     this.name = src;
-    this.src = PDFDocument.PDFFontFactory.open(null, src);
+    this.src = PDFDocument.PDFFont.open(null, src);
   }
 
   layout(str) {

@@ -3,4 +3,5 @@ node_modules
 .jshintrc
 dist
 .idea
+dist
 .DS_Store

@@ -1,9 +1,9 @@
-import { PDFFontFactory } from 'pdfkit';
+import { PDFFont } from 'pdfkit';
 
 class StandardFont {
   constructor(src) {
     this.name = src;
-    this.src = PDFFontFactory.open(null, src);
+    this.src = PDFFont.open(null, src);
   }
 
   layout(str) {

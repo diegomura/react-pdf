@@ -1,4 +1,4 @@
-import { getURL, isSrcDest, setLink, setDestination } from '../src/utils/url';
+import { getURL, isSrcId, setLink, setDestination } from '../src/utils/url';
 import Base from '../src/elements/Base';
 import root from './utils/dummyRoot';
 
@@ -46,16 +46,16 @@ describe('getURL', () => {
     expect(getURL(url)).toEqual(url);
   });
 
-  test('it should return the value if it is a destination and not url', () => {
+  test('it should return the value if it is a id and not url', () => {
     const src = '#myDest';
     expect(getURL(src)).toBe(src);
   });
 
-  test('isSrcDest', () => {
+  test('isSrcId', () => {
     const validDestSrc = '#myDest';
-    expect(isSrcDest(validDestSrc)).toBeTruthy();
+    expect(isSrcId(validDestSrc)).toBeTruthy();
     const invalidDestSrcs = ['#', 'google.com', 'www.google.com'];
-    invalidDestSrcs.forEach(src => expect(isSrcDest(src)).toBeFalsy());
+    invalidDestSrcs.forEach(src => expect(isSrcId(src)).toBeFalsy());
   });
 
   test('setLink when src is valid URL', () => {
@@ -70,7 +70,7 @@ describe('getURL', () => {
     expect(dummyRoot.instance.link).toHaveBeenCalledWith(20, 20, 20, 20, src);
   });
 
-  test('setLink when src is a valid destination', () => {
+  test('setLink when src is a valid id', () => {
     const dummyRoot = root.reset();
     const src = '#myDest';
     const node = new Base(dummyRoot, { src });
@@ -94,31 +94,35 @@ describe('getURL', () => {
     const dummyRoot = root.reset();
     const node = new Base(dummyRoot, {});
 
-    setLink(node)
+    setLink(node);
 
     expect(dummyRoot.instance.goTo).not.toHaveBeenCalled();
-  })
+  });
 
-  test('setDestination if there is no destination prop', () => {
+  test('setDestination if there is no id prop', () => {
     const dummyRoot = root.reset();
     const node = new Base(dummyRoot, {});
 
-    setDestination(node)
+    setDestination(node);
 
-    expect(dummyRoot.instance.addNamedDestination).not.toHaveBeenCalled()
-  })
+    expect(dummyRoot.instance.addNamedDestination).not.toHaveBeenCalled();
+  });
 
   test('setDestination', () => {
     const dummyRoot = root.reset();
-    const destination = 'myDest'
-    const node = new Base(dummyRoot, { destination });
-    const top = 20
+    const id = 'myDest';
+    const node = new Base(dummyRoot, { id });
+    const top = 20;
     node.getAbsoluteLayout = jest.fn().mockReturnValue({ top });
 
-    setDestination(node)
+    setDestination(node);
 
     expect(dummyRoot.instance.addNamedDestination).toHaveBeenCalledWith(
-      destination, 'XYZ', null, top, null
-    )
-  })
+      id,
+      'XYZ',
+      null,
+      top,
+      null,
+    );
+  });
 });

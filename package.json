@@ -16,6 +16,7 @@
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
+    "precommit": "git add . && lint-staged",
     "prepublish": "npm run build",
     "precommit": "git add . && lint-staged",
     "lint": "eslint src",

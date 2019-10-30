@@ -90,22 +90,6 @@ describe('Page', () => {
     ]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
   });
-  test('Should render given background color', async () => {
-    const destination = "myDest";
-    const page = new Page(dummyRoot, { style: { backgroundColor: 'tomato' } });
-
-    page.applyProps();
-    await page.render();
-
-    expect(dummyRoot.instance.fillColor.mock.calls[0][0]).toBe('tomato');
-    expect(dummyRoot.instance.rect.mock.calls[0]).toEqual([
-      0,
-      0,
-      595.28,
-      841.89,
-    ]);
-    expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
-  });
   test('should call setDestination on render', async () => {
     const page = new Page(dummyRoot, {});
     const setDestinationSpy = jest.spyOn(urlUtils, 'setDestination');
@@ -113,5 +97,5 @@ describe('Page', () => {
     await page.render();
 
     expect(setDestinationSpy).toHaveBeenCalledWith(page);
-  })
+  });
 });

@@ -4,7 +4,7 @@ const DEST_REGEXP = /^#.+/;
 export const getURL = value => {
   if (!value) return '';
 
-  if (isSrcDest(value)) return value; // don't modify it if it is a destination
+  if (isSrcId(value)) return value; // don't modify it if it is an id
 
   if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
     return `http://${value}`;
@@ -13,7 +13,7 @@ export const getURL = value => {
   return value;
 };
 
-export const isSrcDest = src => src.match(DEST_REGEXP);
+export const isSrcId = src => src.match(DEST_REGEXP);
 
 export const setLink = node => {
   if (!node.src) {
@@ -21,17 +21,17 @@ export const setLink = node => {
   }
 
   const { top, left, width, height } = node.getAbsoluteLayout();
-  const instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
-  const nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
+  const instanceMethod = isSrcId(node.src) ? 'goTo' : 'link';
+  const nodeSrc = isSrcId(node.src) ? node.src.slice(1) : node.src;
 
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 
 export const setDestination = node => {
-  if (!node.props.destination) {
+  if (!node.props.id) {
     return;
   }
 
   const { top } = node.getAbsoluteLayout();
-  node.root.instance.addNamedDestination(node.props.destination, 'XYZ', null, top, null)
-}
+  node.root.instance.addNamedDestination(node.props.id, 'XYZ', null, top, null);
+};

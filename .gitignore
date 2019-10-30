@@ -1,7 +1,7 @@
 node_modules
 *.log
+dist
 .jshintrc
 dist
 .idea
-dist
 .DS_Store

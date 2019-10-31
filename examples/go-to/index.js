@@ -7,6 +7,7 @@ import ReactPDF, {
   Document,
   Link,
   View,
+  Image,
 } from '../../dist/react-pdf.es.js';
 
 const doc = (
@@ -17,7 +18,7 @@ const doc = (
 
     <Page size="A4">
       <View style={{ height: 300, backgroundColor: 'black' }} />
-      <View
+      <Image
         id="myDest"
         src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"
       />

@@ -1,4 +1,4 @@
-import { PDFFont } from 'pdfkit';
+import { PDFFont } from '@react-pdf/pdfkit';
 
 class StandardFont {
   constructor(src) {

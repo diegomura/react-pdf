@@ -5014,9 +5014,9 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
-"pdfkit@git://github.com/RuslanNikolov/pdfkit.git#go-to":
+pdfkit@RuslanNikolov/pdfkit#go-to:
   version "1.4.0"
-  resolved "git://github.com/RuslanNikolov/pdfkit.git#f429ef4aa73aa3d6219e9b6cdbf216e7e0bd00f9"
+  resolved "https://codeload.github.com/RuslanNikolov/pdfkit/tar.gz/f429ef4aa73aa3d6219e9b6cdbf216e7e0bd00f9"
   dependencies:
     "@react-pdf/fontkit" "^1.11.0"
     "@react-pdf/png-js" "^1.0.0"

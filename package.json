@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -16,9 +16,7 @@
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
     "example": "babel-node ./examples/index.js",
-    "precommit": "git add . && lint-staged",
     "prepublish": "npm run build",
-    "precommit": "git add . && lint-staged",
     "lint": "eslint src",
     "test": "jest",
     "test:size": "bundlesize"

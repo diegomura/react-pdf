@@ -5510,7 +5510,7 @@ var PDFRenderer = ReactFiberReconciler({
   }
 });
 
-var version = "1.6.8";
+var version = "1.6.9";
 
 var View$1 = 'VIEW';
 var Text$1 = 'TEXT';

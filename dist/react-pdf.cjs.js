@@ -4351,7 +4351,7 @@ const PDFRenderer = ReactFiberReconciler({
 
 });
 
-var version = "1.6.8";
+var version = "1.6.9";
 
 const View$1 = 'VIEW';
 const Text$1 = 'TEXT';

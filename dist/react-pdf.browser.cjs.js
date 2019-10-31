@@ -2336,7 +2336,7 @@ var PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
 var DEST_REGEXP = /^#.+/;
 var getURL = function getURL(value) {
   if (!value) return '';
-  if (isSrcDest(value)) return value; // don't modify it if it is a destination
+  if (isSrcId(value)) return value; // don't modify it if it is an id
 
   if (typeof value === 'string' && !value.match(PROTOCOL_REGEXP)) {
     return "http://" + value;
@@ -2344,7 +2344,7 @@ var getURL = function getURL(value) {
 
   return value;
 };
-var isSrcDest = function isSrcDest(src) {
+var isSrcId = function isSrcId(src) {
   return src.match(DEST_REGEXP);
 };
 var setLink = function setLink(node) {
@@ -2358,19 +2358,19 @@ var setLink = function setLink(node) {
       width = _node$getAbsoluteLayo.width,
       height = _node$getAbsoluteLayo.height;
 
-  var instanceMethod = isSrcDest(node.src) ? 'goTo' : 'link';
-  var nodeSrc = isSrcDest(node.src) ? node.src.slice(1) : node.src;
+  var instanceMethod = isSrcId(node.src) ? 'goTo' : 'link';
+  var nodeSrc = isSrcId(node.src) ? node.src.slice(1) : node.src;
   node.root.instance[instanceMethod](left, top, width, height, nodeSrc);
 };
 var setDestination = function setDestination(node) {
-  if (!node.props.destination) {
+  if (!node.props.id) {
     return;
   }
 
   var _node$getAbsoluteLayo2 = node.getAbsoluteLayout(),
       top = _node$getAbsoluteLayo2.top;
 
-  node.root.instance.addNamedDestination(node.props.destination, 'XYZ', null, top, null);
+  node.root.instance.addNamedDestination(node.props.id, 'XYZ', null, top, null);
 };
 
 var Page =
@@ -5510,7 +5510,7 @@ var PDFRenderer = ReactFiberReconciler({
   }
 });
 
-var version = "1.6.7";
+var version = "1.6.8";
 
 var View$1 = 'VIEW';
 var Text$1 = 'TEXT';

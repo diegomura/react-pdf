@@ -36,11 +36,11 @@ class Image extends Base {
     const pageArea = this.page.isAutoHeight
       ? Infinity
       : this.page.size.height -
-      pagePadding.top -
-      pagePadding.bottom -
-      imageMargin.top -
-      imageMargin.bottom -
-      SAFETY_HEIGHT;
+        pagePadding.top -
+        pagePadding.bottom -
+        imageMargin.top -
+        imageMargin.bottom -
+        SAFETY_HEIGHT;
 
     // Skip measure if image data not present yet
     if (!this.image) return { width: 0, height: 0 };
@@ -162,7 +162,7 @@ class Image extends Base {
         warning(
           false,
           `Image with src '${
-          this.props.src
+            this.props.src
           }' skipped due to invalid dimensions`,
         );
       }
@@ -182,7 +182,6 @@ class Image extends Base {
     if (this.props.debug) {
       this.debug();
     }
-
 
     this.root.instance.restore();
   }

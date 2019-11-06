@@ -1,5 +1,6 @@
 import Page from '../src/elements/Page';
 import root from './utils/dummyRoot';
+import * as urlUtils from '../src/utils/url';
 
 let dummyRoot;
 
@@ -88,5 +89,13 @@ describe('Page', () => {
       841.89,
     ]);
     expect(dummyRoot.instance.fill.mock.calls).toHaveLength(1);
+  });
+  test('should call setDestination on render', async () => {
+    const page = new Page(dummyRoot, {});
+    const setDestinationSpy = jest.spyOn(urlUtils, 'setDestination');
+
+    await page.render();
+
+    expect(setDestinationSpy).toHaveBeenCalledWith(page);
   });
 });

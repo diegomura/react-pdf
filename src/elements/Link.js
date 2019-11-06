@@ -1,5 +1,5 @@
 import Base from './Base';
-import { getURL } from '../utils/url';
+import { getURL, setLink } from '../utils/url';
 
 class Link extends Base {
   get name() {
@@ -11,8 +11,7 @@ class Link extends Base {
   }
 
   async render() {
-    const { top, left, width, height } = this.getAbsoluteLayout();
-    this.root.instance.link(left, top, width, height, this.src);
+    setLink(this);
     await this.renderChildren();
     if (this.props.debug) this.debug();
   }

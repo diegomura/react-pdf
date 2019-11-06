@@ -4,6 +4,7 @@ import Base from './Base';
 import warning from '../utils/warning';
 import { resolveImage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
+import { setDestination } from '../utils/url';
 
 const SAFETY_HEIGHT = 10;
 
@@ -171,6 +172,7 @@ class Image extends Base {
   }
 
   async render() {
+    setDestination(this);
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();

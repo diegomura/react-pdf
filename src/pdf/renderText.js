@@ -9,6 +9,7 @@ const renderText = (ctx, node) => {
 
   ctx.save();
   ctx.translate(left + paddingLeft, top + paddingTop - initialY);
+
   PDFRenderer.render(ctx, [node.lines]);
   ctx.restore();
 

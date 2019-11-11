@@ -1,7 +1,10 @@
 import * as R from 'ramda';
 
+import isSvg from '../node/isSvg';
 import isText from '../node/isText';
 import layoutText from '../text/layoutText';
+
+const isNotSvg = R.complement(isSvg);
 
 const shouldLayoutText = node => isText(node) && !node.lines;
 
@@ -15,7 +18,9 @@ const shouldLayoutText = node => isText(node) && !node.lines;
  */
 const resolveTextLayout = node =>
   R.compose(
-    R.evolve({ children: R.map(resolveTextLayout) }),
+    R.evolve({
+      children: R.map(R.when(isNotSvg, resolveTextLayout)),
+    }),
     R.when(
       shouldLayoutText,
       R.compose(

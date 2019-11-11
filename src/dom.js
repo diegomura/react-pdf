@@ -26,6 +26,7 @@ import {
   Polygon,
   Polyline,
   Defs,
+  Tspan,
   ClipPath,
   version,
   StyleSheet,
@@ -41,33 +42,25 @@ export const Document = ({ children, ...props }) => {
 };
 
 class InternalBlobProvider extends React.PureComponent {
-  instance = pdf();
   renderQueue = queue({ autostart: true, concurrency: 1 });
   state = { blob: null, url: null, loading: true, error: null };
 
   componentDidMount() {
-    this.queueDocumentRender(this.props.document);
+    this.instance = pdf({ onChange: this.queueDocumentRender });
+    this.instance.updateContainer(this.props.document);
 
     this.renderQueue.on('error', this.onRenderFailed);
     this.renderQueue.on('success', this.onRenderSuccessful);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.document !== this.props.document) {
-      this.queueDocumentRender(this.props.document);
-    }
+  componentDidUpdate() {
+    this.instance.updateContainer(this.props.document);
   }
 
-  queueDocumentRender(doc) {
-    this.renderQueue.splice(0, this.renderQueue.length, () => {
-      this.instance.updateContainer(doc);
-
-      if (this.instance.isDirty() && !this.state.error) {
-        return this.instance.toBlob();
-      }
-
-      return Promise.resolve();
-    });
+  queueDocumentRender = () => {
+    this.renderQueue.splice(0, this.renderQueue.length, () => (
+      this.state.error ? Promise.resolve() : this.instance.toBlob()
+    ));
   }
 
   onRenderFailed = error => {
@@ -175,6 +168,7 @@ export {
   Polygon,
   Polyline,
   Defs,
+  Tspan,
   ClipPath,
   version,
   StyleSheet,
@@ -202,6 +196,7 @@ export default {
   Polygon,
   Polyline,
   Defs,
+  Tspan,
   ClipPath,
   version,
   Document,

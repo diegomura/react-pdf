@@ -6,13 +6,16 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const createRenderer = onChange => {
+const createRenderer = ({ onChange }) => {
   return ReactFiberReconciler({
     supportsMutation: true,
 
+    isPrimaryRenderer: false,
+
+    warnsIfNotActing: false,
+
     appendInitialChild(parentInstance, child) {
       parentInstance.children.push(child);
-      onChange();
     },
 
     createInstance(type, { style, children, ...props }) {
@@ -45,9 +48,7 @@ const createRenderer = onChange => {
       return !propsEqual(oldProps, newProps);
     },
 
-    resetAfterCommit(a, b, c) {
-      // Noop
-    },
+    resetAfterCommit: onChange,
 
     resetTextContent(element) {
       // Noop
@@ -71,7 +72,6 @@ const createRenderer = onChange => {
 
     appendChild(parentInstance, child) {
       parentInstance.children.push(child);
-      onChange();
     },
 
     appendChildToContainer(parentInstance, child) {
@@ -80,38 +80,32 @@ const createRenderer = onChange => {
       } else {
         parentInstance.children.push(child);
       }
-      onChange();
     },
 
     insertBefore(parentInstance, child, beforeChild) {
       const index = parentInstance.children.indexOf(beforeChild);
       if (index !== -1 && child)
         parentInstance.children.splice(index, 0, child);
-      onChange();
     },
 
     removeChild(parentInstance, child) {
       const index = parentInstance.children.indexOf(child);
       if (index !== -1) parentInstance.children.splice(index, 1);
-      onChange();
     },
 
     removeChildFromContainer(parentInstance, child) {
       const index = parentInstance.children.indexOf(child);
       if (index !== -1) parentInstance.children.splice(index, 1);
-      onChange();
     },
 
     commitTextUpdate(textInstance, oldText, newText) {
       textInstance.value = newText;
-      onChange();
     },
 
     commitUpdate(instance, updatePayload, type, oldProps, newProps) {
       const { style, ...props } = newProps;
       instance.props = props;
       instance.style = style;
-      onChange();
     },
   });
 };

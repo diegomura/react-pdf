@@ -1,11 +1,15 @@
 import * as R from 'ramda';
 
 import isSvg from '../node/isSvg';
+import isText from '../node/isText';
 import getDefs from '../svg/getDefs';
+import layoutText from '../svg/layoutText';
 import detachDefs from '../svg/detachDefs';
 import parsePoints from '../svg/parsePoints';
+import inheritProps from '../svg/inheritProps';
 import parseViewbox from '../svg/parseViewbox';
 import matchPercent from '../utils/matchPercent';
+import isTextInstance from '../node/isTextInstance';
 import parseAspectRatio from '../svg/parseAspectRatio';
 
 const STYLE_PROPS = [
@@ -113,10 +117,25 @@ const parseSvgDefs = root => {
 
 const parseSvgProps = R.evolve({
   props: R.evolve({
+    width: parseFloat,
+    height: parseFloat,
     viewBox: parseViewbox,
     preserveAspectRatio: parseAspectRatio,
   }),
 });
+
+const wrapBetweenTspan = node => ({
+  type: 'TSPAN',
+  props: {},
+  children: [node],
+});
+
+const addMissingTspan = R.when(
+  isText,
+  R.evolve({
+    children: R.map(R.when(isTextInstance, wrapBetweenTspan)),
+  }),
+);
 
 const parseSvgChildren = container => node =>
   R.evolve({
@@ -124,11 +143,21 @@ const parseSvgChildren = container => node =>
       R.compose(
         parseSvgChildren(container),
         parseProps(container),
+        addMissingTspan,
         removeNoneValues,
         mergeStyles,
       ),
     ),
   })(node);
+
+const parseText = node =>
+  R.ifElse(
+    isText,
+    layoutText,
+    R.evolve({
+      children: R.map(parseText),
+    }),
+  )(node);
 
 const resolveSvgRoot = node => {
   const container = getRootContainer(node);
@@ -136,8 +165,10 @@ const resolveSvgRoot = node => {
   return R.compose(
     detachDefs,
     parseSvgDefs,
+    parseText,
     parseSvgProps,
     pickStyleProps,
+    inheritProps,
     parseSvgChildren(container),
   )(node);
 };

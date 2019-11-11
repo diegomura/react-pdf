@@ -26,6 +26,7 @@ import {
   POLYGON,
   POLYLINE,
   DEFS,
+  TSPAN,
   CLIP_PATH,
 } from './constants';
 
@@ -47,24 +48,15 @@ const Ellipse = ELLIPSE;
 const Polygon = POLYGON;
 const Polyline = POLYLINE;
 const Defs = DEFS;
+const Tspan = TSPAN;
 const ClipPath = CLIP_PATH;
 
-const pdf = input => {
-  let _isDirty = true;
-
+const pdf = ({ initialValue, onChange }) => {
   const container = { type: 'ROOT', document: null };
-  const PDFRenderer = createRenderer(markAsDirty);
+  const PDFRenderer = createRenderer({ onChange });
   const mountNode = PDFRenderer.createContainer(container);
 
-  if (input) updateContainer(input);
-
-  function isDirty() {
-    return _isDirty;
-  }
-
-  function markAsDirty() {
-    _isDirty = true;
-  }
+  if (initialValue) updateContainer(initialValue);
 
   function callOnRender(params = {}) {
     // if (container.document.props.onRender) {
@@ -86,8 +78,6 @@ const pdf = input => {
 
     const instance = renderPDF(ctx, layout);
 
-    _isDirty = false;
-
     // console.log(layout);
 
     return instance;
@@ -96,7 +86,6 @@ const pdf = input => {
   const renderWithContext = async ctx => {
     const layout = await layoutDocument(container);
     const instance = renderPDF(ctx, layout);
-    _isDirty = false;
 
     return instance;
   };
@@ -158,7 +147,6 @@ const pdf = input => {
 
   return {
     layout,
-    isDirty,
     container,
     updateContainer,
     renderWithContext,
@@ -188,6 +176,7 @@ export {
   Ellipse,
   Polygon,
   Defs,
+  Tspan,
   ClipPath,
   Polyline,
   StyleSheet,

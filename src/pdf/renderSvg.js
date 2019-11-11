@@ -7,12 +7,14 @@ import renderPath from './renderPath';
 import renderRect from './renderRect';
 import renderLine from './renderLine';
 import renderCircle from './renderCircle';
+import renderSvgText from './renderSvgText';
 import renderEllipse from './renderEllipse';
 import renderPolygon from './renderPolygon';
 import renderPolyline from './renderPolyline';
 import renderSvgImage from './renderSvgImage';
 import applyTransformations from './applyTransformations';
 import isPath from '../node/isPath';
+import isText from '../node/isText';
 import isRect from '../node/isRect';
 import isLine from '../node/isLine';
 import isImage from '../node/isImage';
@@ -116,6 +118,7 @@ const renderNode = ctx =>
     [isRect, renderRect(ctx)],
     [isLine, renderLine(ctx)],
     [isGroup, renderGroup(ctx)],
+    [isText, renderSvgText(ctx)],
     [isCircle, renderCircle(ctx)],
     [isImage, renderSvgImage(ctx)],
     [isEllipse, renderEllipse(ctx)],

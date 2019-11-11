@@ -3,34 +3,11 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 import Font from '../font';
 import isImage from '../node/isImage';
 import { embedEmojis } from './emoji';
-import capitalize from '../utils/capitalize';
-import upperFirst from '../utils/upperFirst';
+import transformText from './transformText';
 import { ignoreChars } from './ignorableChars';
 import isTextInstance from '../node/isTextInstance';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
-
-/**
- * Apply transformation to text string
- *
- * @param {String} text
- * @param {String} transformation type
- * @returns {String} transformed text
- */
-const transformText = (text, transformation) => {
-  switch (transformation) {
-    case 'uppercase':
-      return text.toUpperCase();
-    case 'lowercase':
-      return text.toLowerCase();
-    case 'capitalize':
-      return capitalize(text);
-    case 'upperfirst':
-      return upperFirst(text);
-    default:
-      return text;
-  }
-};
 
 /**
  * Get textkit framgents of given node object

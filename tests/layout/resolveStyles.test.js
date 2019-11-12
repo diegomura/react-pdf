@@ -162,4 +162,25 @@ describe('layout resolveStyles', () => {
 
     expect(result).toMatchSnapshot();
   });
+
+  test('Should resolve default link styles', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'LINK',
+              style: {},
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
 });

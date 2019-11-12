@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 
+import isLink from '../node/isLink';
 import flattenStyles from '../stylesheet/flatten';
 import expandStyles from '../stylesheet/expandStyles';
 import transformUnits from '../stylesheet/transformUnits';
@@ -34,6 +35,11 @@ const resolveStyles = container =>
     flattenStyles,
   );
 
+const LINK_STYLES = {
+  color: 'blue',
+  textDecoration: 'underline',
+};
+
 /**
  * Resolves node styles
  *
@@ -44,10 +50,13 @@ const resolveStyles = container =>
 const resolveNodeStyles = page => node => {
   const container = R.propOr({}, 'box', page);
 
-  return R.evolve({
-    style: resolveStyles(container),
-    children: R.map(resolveNodeStyles(page)),
-  })(node);
+  return R.o(
+    R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
+    R.evolve({
+      style: resolveStyles(container),
+      children: R.map(resolveNodeStyles(page)),
+    }),
+  )(node);
 };
 
 /**

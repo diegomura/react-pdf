@@ -21,8 +21,6 @@ import asyncCompose from '../utils/asyncCompose';
 // const startTimer = name => R.tap(() => console.time(name));
 // const endTimer = name => R.tap(() => console.timeEnd(name));
 
-const resolvePageSizeStyle = resolvePageSizes('style');
-
 const layout = asyncCompose(
   resolveZIndex,
   resolveAbsoluteCoordinates,
@@ -32,16 +30,16 @@ const layout = asyncCompose(
   resolveTextLayout,
   resolvePercentRadius,
   resolveDimensions,
+  resolveSvg,
   resolveAssets,
   resolveInheritance,
   resolvePercentHeight,
   resolvePagePaddings,
-  resolveSvg,
   resolveStyles,
   resolveNoteChildren,
   resolveLinkSubstitution,
   resolvePageMargins,
-  resolvePageSizeStyle,
+  resolvePageSizes,
 );
 
 export default layout;

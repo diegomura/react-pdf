@@ -1,11 +1,9 @@
 import resolvePageSizes from '../../src/layout/resolvePageSizes';
 
-const resolve = resolvePageSizes('style');
-
 describe('layout resolvePageSizes', () => {
   test('Should default to A4', () => {
     const root = { type: 'DOCUMENT', children: [{ type: 'PAGE', props: {} }] };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 595.28);
     expect(result.children[0].style).toHaveProperty('height', 841.89);
@@ -16,7 +14,7 @@ describe('layout resolvePageSizes', () => {
       type: 'DOCUMENT',
       children: [{ type: 'PAGE', props: { orientation: 'portrait' } }],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 595.28);
     expect(result.children[0].style).toHaveProperty('height', 841.89);
@@ -27,7 +25,7 @@ describe('layout resolvePageSizes', () => {
       type: 'DOCUMENT',
       children: [{ type: 'PAGE', props: { size: 'A2' } }],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 1190.55);
     expect(result.children[0].style).toHaveProperty('height', 1683.78);
@@ -40,7 +38,7 @@ describe('layout resolvePageSizes', () => {
         { type: 'PAGE', props: { size: 'A2', orientation: 'landscape' } },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 1683.78);
     expect(result.children[0].style).toHaveProperty('height', 1190.55);
@@ -51,7 +49,7 @@ describe('layout resolvePageSizes', () => {
       type: 'DOCUMENT',
       children: [{ type: 'PAGE', props: { size: [100, 200] } }],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 100);
     expect(result.children[0].style).toHaveProperty('height', 200);
@@ -67,7 +65,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 200);
     expect(result.children[0].style).toHaveProperty('height', 100);
@@ -80,7 +78,7 @@ describe('layout resolvePageSizes', () => {
         { type: 'PAGE', props: { size: { width: 100, height: 200 } } },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 100);
     expect(result.children[0].style).toHaveProperty('height', 200);
@@ -99,7 +97,7 @@ describe('layout resolvePageSizes', () => {
         },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 200);
     expect(result.children[0].style).toHaveProperty('height', 100);
@@ -110,7 +108,7 @@ describe('layout resolvePageSizes', () => {
       type: 'DOCUMENT',
       children: [{ type: 'PAGE', props: { size: 100 } }],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 100);
     expect(result.children[0].style).toHaveProperty('height', undefined);
@@ -123,7 +121,7 @@ describe('layout resolvePageSizes', () => {
         { type: 'PAGE', props: { size: 100, orientation: 'landscape' } },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', undefined);
     expect(result.children[0].style).toHaveProperty('height', 100);
@@ -138,7 +136,7 @@ describe('layout resolvePageSizes', () => {
         { type: 'PAGE', props: { size: { width: 100, height: 200 } } },
       ],
     };
-    const result = resolve(root);
+    const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 595.28);
     expect(result.children[0].style).toHaveProperty('height', 841.89);

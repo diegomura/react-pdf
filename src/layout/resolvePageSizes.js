@@ -9,9 +9,9 @@ import assocIfNil from '../utils/assocIfNil';
  * @param {Object} page
  * @returns {Object} page with resolved size in style attribute
  */
-export const resolvePageSize = key => page => {
+export const resolvePageSize = page => {
   const size = getPageSize(page);
-  return R.evolve({ [key]: R.merge(R.__, size) })(page);
+  return R.evolve({ style: R.merge(R.__, size) })(page);
 };
 
 /**
@@ -20,11 +20,11 @@ export const resolvePageSize = key => page => {
  * @param {Object} document root
  * @returns {Object} document root with resolved page sizes
  */
-const resolvePageSizes = key => R.evolve({
-  children:R.map(
+const resolvePageSizes = R.evolve({
+  children: R.map(
     R.compose(
-      resolvePageSize(key),
-      assocIfNil(key, {}),
+      resolvePageSize,
+      assocIfNil('style', {}),
     ),
   ),
 });

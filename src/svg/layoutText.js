@@ -31,7 +31,7 @@ const layoutOptions = {
 const getFragments = instance => {
   if (!instance) return [{ string: '' }];
 
-  let fragments = [];
+  const fragments = [];
 
   const {
     fill = 'black',

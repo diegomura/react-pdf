@@ -111,6 +111,24 @@ export const INHERITED_PROPERTIES = [
   'wordSpacing',
 ];
 
+export const SVG_INHERITED_PROPS = [
+  'x',
+  'y',
+  'clipPath',
+  'clipRule',
+  'opacity',
+  'fill',
+  'fillOpacity',
+  'fillRule',
+  'stroke',
+  'strokeLinecap',
+  'strokeLinejoin',
+  'strokeOpacity',
+  'strokeWidth',
+  'textAnchor',
+  ...INHERITED_PROPERTIES,
+];
+
 export const RULER_WIDTH = 13;
 export const RULER_COLOR = 'white';
 export const RULER_FONT_SIZE = 6;

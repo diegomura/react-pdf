@@ -174,15 +174,16 @@ const drawChildren = ctx => node =>
 const defaultsZero = R.pathOr(0);
 
 const preserveAspectRatio = ctx => node => {
-  const { width, height, viewBox, preserveAspectRatio = {} } = node.props;
+  const { width, height } = node.box;
+  const { viewBox, preserveAspectRatio = {} } = node.props;
   const { meetOrSlice = 'meet', align = 'xMidYMid' } = preserveAspectRatio;
 
   if (viewBox == null || width == null || height == null) return node;
 
   const x = viewBox ? viewBox.minX : 0;
   const y = viewBox ? viewBox.minY : 0;
-  const logicalWidth = viewBox ? viewBox.maxX - viewBox.minX : width;
-  const logicalHeight = viewBox ? viewBox.maxY - viewBox.minY : height;
+  const logicalWidth = viewBox ? viewBox.maxX : width;
+  const logicalHeight = viewBox ? viewBox.maxY : height;
 
   const logicalRatio = logicalWidth / logicalHeight;
   const physicalRatio = width / height;

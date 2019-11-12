@@ -58,6 +58,7 @@ import isNote from '../node/isNote';
 import isPage from '../node/isPage';
 import isImage from '../node/isImage';
 import isCanvas from '../node/isCanvas';
+import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
@@ -145,6 +146,10 @@ const setMeasureFunc = page => node => {
 
   if (isCanvas(node)) {
     yogaNode.setMeasureFunc(measureCanvas(page, node));
+  }
+
+  if (isSvg(node)) {
+    yogaNode.setMeasureFunc(measureSvg(page, node));
   }
 
   return node;

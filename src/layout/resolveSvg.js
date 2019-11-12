@@ -2,12 +2,13 @@ import * as R from 'ramda';
 
 import isSvg from '../node/isSvg';
 import isText from '../node/isText';
-import getDefs from '../svg/getDefs';
+
 import layoutText from '../svg/layoutText';
-import detachDefs from '../svg/detachDefs';
+import replaceDefs from '../svg/replaceDefs';
 import parsePoints from '../svg/parsePoints';
-import inheritProps from '../svg/inheritProps';
+import getContainer from '../svg/getContainer';
 import parseViewbox from '../svg/parseViewbox';
+import inheritProps from '../svg/inheritProps';
 import matchPercent from '../utils/matchPercent';
 import isTextInstance from '../node/isTextInstance';
 import parseAspectRatio from '../svg/parseAspectRatio';
@@ -78,41 +79,17 @@ const mergeStyles = node => {
   return R.evolve({ props: R.merge(style) }, node);
 };
 
+const addDefaultProps = R.evolve({
+  props: R.merge({ fill: 'black' }),
+});
+
 const removeNoneValues = R.evolve({
   props: R.map(R.when(R.equals('none'), R.always(null))),
 });
 
-const getRootContainer = R.compose(
-  R.map(parseFloat),
-  R.pick(['width', 'height']),
-  R.prop('props'),
-);
-
 const pickStyleProps = node => {
   const styleProps = R.o(R.pick(STYLE_PROPS), R.propOr({}, 'props'))(node);
   return R.evolve({ style: R.merge(styleProps) }, node);
-};
-
-const parseDefs = defs =>
-  R.compose(
-    R.prop(R.__, defs),
-    R.prop(1),
-    R.match(/url\(#(.+)\)/),
-  );
-
-const parseNodeDefs = defs => node =>
-  R.compose(
-    R.evolve({
-      props: R.evolve({
-        clipPath: parseDefs(defs),
-      }),
-    }),
-    R.evolve({ children: R.map(parseNodeDefs(defs)) }),
-  )(node);
-
-const parseSvgDefs = root => {
-  const defs = getDefs(root);
-  return R.evolve({ children: R.map(parseNodeDefs(defs)) }, root);
 };
 
 const parseSvgProps = R.evolve({
@@ -137,15 +114,21 @@ const addMissingTspan = R.when(
   }),
 );
 
-const parseSvgChildren = container => node =>
+const resolveSvgNode = container =>
+  R.compose(
+    parseProps(container),
+    addMissingTspan,
+    removeNoneValues,
+    addDefaultProps,
+    mergeStyles,
+  );
+
+const resolveChildren = container => node =>
   R.evolve({
     children: R.map(
       R.compose(
-        parseSvgChildren(container),
-        parseProps(container),
-        addMissingTspan,
-        removeNoneValues,
-        mergeStyles,
+        resolveChildren(container),
+        resolveSvgNode(container),
       ),
     ),
   })(node);
@@ -160,23 +143,23 @@ const parseText = node =>
   )(node);
 
 const resolveSvgRoot = node => {
-  const container = getRootContainer(node);
+  const container = getContainer(node);
 
   return R.compose(
-    detachDefs,
-    parseSvgDefs,
+    R.tap(console.log),
+    replaceDefs,
     parseText,
     parseSvgProps,
     pickStyleProps,
     inheritProps,
-    parseSvgChildren(container),
+    resolveChildren(container),
   )(node);
 };
 
-const resolveSvgChildren = node =>
+const resolveSvg = node =>
   R.compose(
-    R.evolve({ children: R.map(resolveSvgChildren) }),
+    R.evolve({ children: R.map(resolveSvg) }),
     R.when(isSvg, resolveSvgRoot),
   )(node);
 
-export default resolveSvgChildren;
+export default resolveSvg;

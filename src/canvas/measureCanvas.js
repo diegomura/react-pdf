@@ -103,7 +103,7 @@ const measureCtx = () => {
 };
 
 /**
- * Yoga canbas measure function
+ * Yoga canvas measure function
  *
  * @param {Object} page
  * @param {Object} node

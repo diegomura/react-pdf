@@ -1,3 +1,4 @@
+import resolveSvg from './resolveSvg';
 import resolveAssets from './resolveAssets';
 import resolveStyles from './resolveStyles';
 import resolveZIndex from './resolveZIndex';
@@ -7,7 +8,6 @@ import resolvePageSizes from './resolvePageSizes';
 import resolveDimensions from './resolveDimensions';
 import resolveTextLayout from './resolveTextLayout';
 import resolvePagination from './resolvePagination';
-import resolveSvgChildren from './resolveSvgChildren';
 import resolveInheritance from './resolveInheritance';
 import resolvePageMargins from './resolvePageMargins';
 import resolveNoteChildren from './resolveNoteChildren';
@@ -36,7 +36,7 @@ const layout = asyncCompose(
   resolveInheritance,
   resolvePercentHeight,
   resolvePagePaddings,
-  resolveSvgChildren,
+  resolveSvg,
   resolveStyles,
   resolveNoteChildren,
   resolveLinkSubstitution,

@@ -1,25 +1,14 @@
 import * as R from 'ramda';
 
-// import runHeight from '@react-pdf/textkit/run/height';
-// import runDescent from '@react-pdf/textkit/run/descent';
-// import advanceWidth from '@react-pdf/textkit/run/advanceWidth';
+import runWidth from '@react-pdf/textkit/run/advanceWidth';
+import lineWidth from '@react-pdf/textkit/attributedString/advanceWidth';
 
 const renderRun = (ctx, run) => {
-  const { font, fontSize, color, link, opacity } = run.attributes;
-
-  // const height = runHeight(run);
-  const height = 40;
-  const descent = -4;
-  // const descent = runDescent(run);
-  const runAdvanceWidth = 99;
-  // const runAdvanceWidth = advanceWidth(run);
+  const runAdvanceWidth = runWidth(run);
+  const { font, fontSize, color, opacity } = run.attributes;
 
   ctx.fillColor(color);
   ctx.fillOpacity(opacity);
-
-  if (link) {
-    ctx.link(0, -height - descent, runAdvanceWidth, height, link);
-  }
 
   if (font.sbix || (font.COLR && font.CPAL)) {
     ctx.save();
@@ -52,16 +41,27 @@ const renderRun = (ctx, run) => {
   ctx.translate(runAdvanceWidth, 0);
 };
 
-const renderSpan = (ctx, line, options) => {
+const renderSpan = (ctx, line, textAnchor) => {
   ctx.save();
 
   const x = R.pathOr(0, ['box', 'x'], line);
   const y = R.pathOr(0, ['box', 'y'], line);
+  const width = lineWidth(line);
 
-  ctx.translate(x, y);
+  switch (textAnchor) {
+    case 'middle':
+      ctx.translate(x - width / 2, y);
+      break;
+    case 'end':
+      ctx.translate(x - width, y);
+      break;
+    default:
+      ctx.translate(x, y);
+      break;
+  }
 
   for (const run of line.runs) {
-    renderRun(ctx, run, options);
+    renderRun(ctx, run);
   }
 
   ctx.restore();
@@ -69,7 +69,7 @@ const renderSpan = (ctx, line, options) => {
 
 const renderSvgText = ctx => node => {
   for (const span of node.children) {
-    renderSpan(ctx, span.lines[0]);
+    renderSpan(ctx, span.lines[0], span.props.textAnchor);
   }
 
   return node;

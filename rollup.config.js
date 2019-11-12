@@ -101,6 +101,8 @@ const configBase = {
     '@react-pdf/textkit/engines/textDecoration',
     '@react-pdf/textkit/engines/scriptItemizer',
     '@react-pdf/textkit/engines/wordHyphenation',
+    '@react-pdf/textkit/run/advanceWidth',
+    '@react-pdf/textkit/attributedString/advanceWidth',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
   onwarn,

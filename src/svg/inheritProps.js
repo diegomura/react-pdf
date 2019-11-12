@@ -1,9 +1,9 @@
 import * as R from 'ramda';
 
-import { INHERITED_PROPERTIES } from '../constants';
+import { SVG_INHERITED_PROPS } from '../constants';
 
 const getInheritProps = R.compose(
-  R.pick(INHERITED_PROPERTIES),
+  R.pick(SVG_INHERITED_PROPS),
   R.propOr({}, 'props'),
 );
 
@@ -20,6 +20,6 @@ const inheritProps = node => {
       ),
     ),
   })(node);
-}
+};
 
 export default inheritProps;

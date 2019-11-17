@@ -35,8 +35,8 @@
     "media-engine": "^1.0.3",
     "page-wrapping": "^1.1.0",
     "ramda": "^0.26.1",
-    "react-reconciler": "^0.21.0",
-    "scheduler": "^0.15.0",
+    "react-reconciler": "^0.24.0",
+    "scheduler": "^0.18.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "peerDependencies": {

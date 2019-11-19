@@ -12,6 +12,8 @@ const matchObjectPosition = R.match(OBJECT_POSITION_REGEX);
 const matchBorderShorthand = R.match(BORDER_SHORTHAND_REGEX);
 const matchTransformOrigin = R.match(TRANSFORM_ORIGIN_REGEX);
 
+const isNumber = R.is(Number);
+
 const isFontWeightStyle = key => key.match(/^fontWeight/);
 
 const isBorderStyle = (key, value) =>
@@ -26,6 +28,12 @@ const isObjectPositionStyle = (key, value) =>
 
 const isTransformOriginStyle = (key, value) =>
   key.match(/^transformOrigin/) && typeof value === 'string';
+
+const isFlexGrow = key => key === 'flexGrow';
+
+const isFlexShrink = key => key === 'flexShrink';
+
+const isFlexBasis = key => key === 'flexBasis';
 
 const processBorders = (key, value) => {
   const match = matchBorderShorthand(value);
@@ -123,6 +131,24 @@ const processTransformOrigin = (key, value) => {
   return value;
 };
 
+const processFlexGrow = (key, value) => {
+  if (isNumber(value)) return value;
+  const matches = value.split(' ');
+  return matches[0];
+};
+
+const processFlexShrink = (key, value) => {
+  if (isNumber(value)) return value;
+  const matches = value.split(' ');
+  return matches[1];
+};
+
+const processFlexBasis = (key, value) => {
+  if (isNumber(value)) return value;
+  const matches = value.split(' ');
+  return matches[2];
+};
+
 const matchNumber = R.when(
   R.is(String),
   R.compose(
@@ -149,6 +175,9 @@ const transformStyles = style => {
         [isObjectPositionStyle, processObjectPosition],
         [isTransformOriginStyle, processTransformOrigin],
         [isFontWeightStyle, processFontWeight],
+        [isFlexGrow, processFlexGrow],
+        [isFlexShrink, processFlexShrink],
+        [isFlexBasis, processFlexBasis],
         [R.T, R.always(value)],
       ]),
     )(key, value);

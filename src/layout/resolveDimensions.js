@@ -6,7 +6,6 @@ import getPadding from '../node/getPadding';
 import getPosition from '../node/getPosition';
 import getDimension from '../node/getDimension';
 import getBorderWidth from '../node/getBorderWidth';
-import setFlex from '../node/setFlex';
 import setDisplay from '../node/setDisplay';
 import setOverflow from '../node/setOverflow';
 import setFlexWrap from '../node/setFlexWrap';
@@ -116,7 +115,6 @@ const setYogaValues = R.tap(node => {
     setFlexWrap(node.style.flexWrap),
     setOverflow(node.style.overflow),
     setAspectRatio(node.style.aspectRatio),
-    setFlex(node.style.flex),
     setFlexBasis(node.style.flexBasis),
     setFlexGrow(node.style.flexGrow),
     setFlexShrink(node.style.flexShrink),

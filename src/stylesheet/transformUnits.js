@@ -10,6 +10,7 @@ import { DPI } from '../constants';
  */
 const parseValue = value => {
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw)?$/g.exec(value);
+
   return match
     ? { value: parseFloat(match[1], 10), unit: match[2] || 'pt' }
     : { value, unit: undefined };

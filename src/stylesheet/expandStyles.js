@@ -100,6 +100,11 @@ const styleShorthands = {
     transformOriginX: true,
     transformOriginY: true,
   },
+  flex: {
+    flexGrow: true,
+    flexShrink: true,
+    flexBasis: true,
+  },
 };
 
 const expandedKeys = R.keys(styleShorthands);

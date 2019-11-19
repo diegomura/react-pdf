@@ -155,6 +155,12 @@ describe('stylesheet expandStyles', () => {
     expand(expandStyles({ padding: '1 2 3 4' }), expectedKeys);
   });
 
+  test('should expand flex attribute', () => {
+    const expectedKeys = ['flexGrow', 'flexShrink', 'flexBasis'];
+
+    expand(expandStyles({ flex: '1 2 20%' }), expectedKeys);
+  });
+
   test('should expand objectPosition attribute', () => {
     const expectedKeys = ['objectPositionX', 'objectPositionY'];
 

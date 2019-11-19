@@ -19,6 +19,8 @@ export const POLYLINE = 'POLYLINE';
 export const DEFS = 'DEFS';
 export const TSPAN = 'TSPAN';
 export const CLIP_PATH = 'CLIP_PATH';
+export const STOP = 'STOP';
+export const LINEAR_GRADIENT = 'LINEAR_GRADIENT';
 
 export const DPI = 72; // 72pt per inch.
 

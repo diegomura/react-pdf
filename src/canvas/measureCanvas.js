@@ -18,6 +18,7 @@ const measureCtx = () => {
 
   const nil = () => ctx;
   const addPoint = (x, y) => points.push([x, y]);
+
   const moveTo = R.compose(
     nil,
     addPoint,
@@ -67,7 +68,7 @@ const measureCtx = () => {
   ctx.rotate = nil;
   ctx.translate = nil;
 
-  // These don't really change dimensions
+  // These don't change dimensions
   ctx.dash = nil;
   ctx.clip = nil;
   ctx.save = nil;

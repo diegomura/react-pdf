@@ -9,17 +9,26 @@ const detachDefs = R.evolve({
   children: R.filter(isNotDefs),
 });
 
+const URL_REGEX = /url\(#(.+)\)/;
+
 const replaceDef = defs =>
   R.compose(
-    R.prop(R.__, defs),
-    R.prop(1),
-    R.match(/url\(#(.+)\)/),
+    R.when(
+      R.test(URL_REGEX),
+      R.compose(
+        R.prop(R.__, defs),
+        R.prop(1),
+        R.match(URL_REGEX),
+      ),
+    ),
+    R.defaultTo(''),
   );
 
 const parseNodeDefs = defs => node =>
   R.compose(
     R.evolve({
       props: R.evolve({
+        fill: replaceDef(defs),
         clipPath: replaceDef(defs),
       }),
     }),

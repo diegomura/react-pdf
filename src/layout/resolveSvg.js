@@ -12,6 +12,7 @@ import inheritProps from '../svg/inheritProps';
 import matchPercent from '../utils/matchPercent';
 import isTextInstance from '../node/isTextInstance';
 import parseAspectRatio from '../svg/parseAspectRatio';
+import { transformColor } from '../stylesheet/transformColors';
 
 const STYLE_PROPS = [
   'width',
@@ -25,6 +26,7 @@ const STYLE_PROPS = [
   'fill',
   'fillRule',
   'clipPath',
+  'offset',
   'transform',
   'strokeLinejoin',
   'strokeLinecap',
@@ -68,6 +70,9 @@ const parseProps = container =>
           width: parseFloat,
           height: parseFloat,
           points: parsePoints,
+          fill: transformColor,
+          stroke: transformColor,
+          stopColor: transformColor,
         }),
         transformPercent(container),
       ),
@@ -146,7 +151,6 @@ const resolveSvgRoot = node => {
   const container = getContainer(node);
 
   return R.compose(
-    R.tap(console.log),
     replaceDefs,
     parseText,
     parseSvgProps,

@@ -1,5 +1,5 @@
 import * as R from 'ramda';
 
-const renderGroup = ctx => R.identity;
+const renderGroup = () => R.identity;
 
 export default renderGroup;

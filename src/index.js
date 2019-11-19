@@ -1,11 +1,11 @@
 import BlobStream from 'blob-stream';
 import PDFDocument from '@react-pdf/pdfkit';
 
-import createRenderer from './renderer';
-import layoutDocument from './layout';
-import renderPDF from './pdf/render';
-import StyleSheet from './stylesheet';
 import Font from './font';
+import renderPDF from './render';
+import layoutDocument from './layout';
+import createRenderer from './renderer';
+import StyleSheet from './stylesheet';
 import { version } from '../package.json';
 import {
   VIEW,
@@ -28,6 +28,8 @@ import {
   DEFS,
   TSPAN,
   CLIP_PATH,
+  STOP,
+  LINEAR_GRADIENT,
 } from './constants';
 
 const View = VIEW;
@@ -50,6 +52,8 @@ const Polyline = POLYLINE;
 const Defs = DEFS;
 const Tspan = TSPAN;
 const ClipPath = CLIP_PATH;
+const Stop = STOP;
+const LinearGradient = LINEAR_GRADIENT;
 
 const pdf = ({ initialValue, onChange }) => {
   const container = { type: 'ROOT', document: null };
@@ -179,6 +183,8 @@ export {
   Tspan,
   ClipPath,
   Polyline,
+  Stop,
+  LinearGradient,
   StyleSheet,
   pdf,
 };

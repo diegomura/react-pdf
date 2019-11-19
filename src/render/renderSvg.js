@@ -29,6 +29,10 @@ const warnUnsupportedNode = R.tap(node => {
   console.warn(`SVG node of type ${node.type} is not currenty supported`);
 });
 
+const isString = R.is(String);
+
+const isNotString = R.complement(isString);
+
 const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
 
 const setStrokeWidth = ctx => node => {
@@ -45,7 +49,7 @@ const setStrokeColor = ctx => node => {
 
 const setFillColor = ctx => node => {
   const fillColor = getProp(null, 'fill', node);
-  if (fillColor) ctx.fillColor(fillColor);
+  if (fillColor && isString(fillColor)) ctx.fillColor(fillColor);
   return node;
 };
 
@@ -93,6 +97,30 @@ const setLineDash = ctx => node => {
   return node;
 };
 
+const setFillGradient = ctx => node => {
+  const fillGradient = getProp(null, 'fill', node);
+
+  if (fillGradient && isNotString(fillGradient)) {
+    console.log(fillGradient);
+
+    const { x1, y1, x2, y2 } = fillGradient.props;
+    const grad = ctx.linearGradient(x1, y1, x2, y2);
+
+    for (let i = 0; i < fillGradient.children.length; i++) {
+      const stop = fillGradient.children[i];
+      grad.stop(
+        stop.props.offset,
+        stop.props.stopColor,
+        stop.props.stopOpacity,
+      );
+    }
+
+    ctx.fill(grad);
+  }
+
+  return node;
+};
+
 const draw = ctx => node => {
   const props = R.propOr({}, 'props', node);
 
@@ -136,6 +164,7 @@ const drawNode = ctx =>
     setFillOpacity(ctx),
     setStrokeOpacity(ctx),
     setFillColor(ctx),
+    setFillGradient(ctx),
     setStrokeColor(ctx),
     setStrokeWidth(ctx),
     setLineJoin(ctx),

@@ -28,6 +28,8 @@ import {
   Defs,
   Tspan,
   ClipPath,
+  Stop,
+  LinearGradient,
   version,
   StyleSheet,
   // createInstance,
@@ -58,10 +60,10 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   queueDocumentRender = () => {
-    this.renderQueue.splice(0, this.renderQueue.length, () => (
-      this.state.error ? Promise.resolve() : this.instance.toBlob()
-    ));
-  }
+    this.renderQueue.splice(0, this.renderQueue.length, () =>
+      this.state.error ? Promise.resolve() : this.instance.toBlob(),
+    );
+  };
 
   onRenderFailed = error => {
     this.setState({ error });
@@ -170,6 +172,8 @@ export {
   Defs,
   Tspan,
   ClipPath,
+  Stop,
+  LinearGradient,
   version,
   StyleSheet,
 } from './index';
@@ -198,6 +202,8 @@ export default {
   Defs,
   Tspan,
   ClipPath,
+  Stop,
+  LinearGradient,
   version,
   Document,
   PDFViewer,

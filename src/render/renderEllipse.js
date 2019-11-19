@@ -22,15 +22,14 @@ export const drawEllipse = (ctx, cx, cy, rx, ry) => {
   ctx.closePath();
 };
 
-const renderEllipse = ctx => node => {
-  const cx = getProp('cx', node);
-  const cy = getProp('cy', node);
-  const rx = getProp('rx', node);
-  const ry = getProp('ry', node);
+const renderEllipse = ctx =>
+  R.tap(node => {
+    const cx = getProp('cx', node);
+    const cy = getProp('cy', node);
+    const rx = getProp('rx', node);
+    const ry = getProp('ry', node);
 
-  drawEllipse(ctx, cx, cy, rx, ry);
-
-  return node;
-};
+    drawEllipse(ctx, cx, cy, rx, ry);
+  });
 
 export default renderEllipse;

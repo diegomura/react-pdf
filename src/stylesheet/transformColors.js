@@ -37,7 +37,7 @@ const parseHsl = R.compose(
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const transformColor = value =>
+export const transformColor = value =>
   R.cond([
     [isRgb, parseRgb],
     [isRgba, parseRgb],

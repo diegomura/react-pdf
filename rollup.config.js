@@ -1,9 +1,9 @@
 import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
-import { terser } from 'rollup-plugin-terser';
 import ignore from 'rollup-plugin-ignore';
 import replace from 'rollup-plugin-replace';
+import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import bundleSize from 'rollup-plugin-bundle-size';
 import nodeResolve from 'rollup-plugin-node-resolve';

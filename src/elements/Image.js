@@ -107,7 +107,8 @@ class Image extends Base {
     }
 
     try {
-      this.image = await resolveImage(this.src, {
+      const src = typeof this.src === 'function' ? await this.src() : this.src;
+      this.image = await resolveImage(src, {
         cache,
         safePath,
         allowDangerousPaths,

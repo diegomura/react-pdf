@@ -1,12 +1,13 @@
 import * as R from 'ramda';
 
+import isSvg from './isSvg';
 import isNote from './isNote';
 import isImage from './isImage';
 import isCanvas from './isCanvas';
 import getNodesHeight from './getNodesHeight';
 
 const getWrap = R.ifElse(
-  R.anyPass([isNote, isImage, isCanvas]),
+  R.anyPass([isSvg, isNote, isImage, isCanvas]),
   R.always(false),
   R.pathOr(true, ['props', 'wrap']),
 );

@@ -1,15 +1,13 @@
 import * as R from 'ramda';
 
-import { drawPolyline } from './renderPolyline';
+import renderPolyline from './renderPolyline';
 
-const renderPolygon = ctx => node => {
-  const points = R.pathOr([], ['props', 'points'], node);
+const closePath = ctx => R.tap(() => ctx.closePath());
 
-  drawPolyline(ctx, points);
-
-  ctx.closePath();
-
-  return node;
-};
+const renderPolygon = ctx =>
+  R.compose(
+    closePath(ctx),
+    renderPolyline(ctx),
+  );
 
 export default renderPolygon;

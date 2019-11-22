@@ -5,7 +5,6 @@ import isText from '../node/isText';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
-import parsePoints from '../svg/parsePoints';
 import getContainer from '../svg/getContainer';
 import parseViewbox from '../svg/parseViewbox';
 import inheritProps from '../svg/inheritProps';
@@ -51,6 +50,11 @@ const transformPercent = container =>
     return value;
   });
 
+const parsePercent = value => {
+  const match = matchPercent(value);
+  return match ? match.percent : value;
+};
+
 const parseProps = container =>
   R.compose(
     R.evolve({
@@ -69,9 +73,11 @@ const parseProps = container =>
           cy: parseFloat,
           width: parseFloat,
           height: parseFloat,
-          points: parsePoints,
+          offset: parsePercent,
           fill: transformColor,
+          opacity: parsePercent,
           stroke: transformColor,
+          stopOpacity: parsePercent,
           stopColor: transformColor,
         }),
         transformPercent(container),

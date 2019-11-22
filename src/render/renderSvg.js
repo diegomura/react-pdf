@@ -24,14 +24,12 @@ import renderGroup from './renderGroup';
 import isEllipse from '../node/isEllipse';
 import isPolygon from '../node/isPolygon';
 import isPolyline from '../node/isPolyline';
+import getBoundingBox from '../svg/getBoundingBox';
+import { LINEAR_GRADIENT, RADIAL_GRADIENT } from '../constants';
 
 const warnUnsupportedNode = R.tap(node => {
   console.warn(`SVG node of type ${node.type} is not currenty supported`);
 });
-
-const isString = R.is(String);
-
-const isNotString = R.complement(isString);
 
 const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
 
@@ -44,12 +42,6 @@ const setStrokeWidth = ctx => node => {
 const setStrokeColor = ctx => node => {
   const strokeColor = getProp(null, 'stroke', node);
   if (strokeColor) ctx.strokeColor(strokeColor);
-  return node;
-};
-
-const setFillColor = ctx => node => {
-  const fillColor = getProp(null, 'fill', node);
-  if (fillColor && isString(fillColor)) ctx.fillColor(fillColor);
   return node;
 };
 
@@ -97,29 +89,98 @@ const setLineDash = ctx => node => {
   return node;
 };
 
-const setFillGradient = ctx => node => {
-  const fillGradient = getProp(null, 'fill', node);
+const hasLinearGradientFill = R.pathEq(
+  ['props', 'fill', 'type'],
+  LINEAR_GRADIENT,
+);
 
-  if (fillGradient && isNotString(fillGradient)) {
-    console.log(fillGradient);
+const hasRadialGradientFill = R.pathEq(
+  ['props', 'fill', 'type'],
+  RADIAL_GRADIENT,
+);
 
-    const { x1, y1, x2, y2 } = fillGradient.props;
-    const grad = ctx.linearGradient(x1, y1, x2, y2);
+// Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
+const setLinearGradientFill = ctx =>
+  R.tap(node => {
+    const bbox = getBoundingBox(node);
+    const gradient = getProp(null, 'fill', node);
 
-    for (let i = 0; i < fillGradient.children.length; i++) {
-      const stop = fillGradient.children[i];
+    const x1 = R.pathOr(0, ['props', 'x1'], gradient);
+    const y1 = R.pathOr(0, ['props', 'y1'], gradient);
+    const x2 = R.pathOr(1, ['props', 'x2'], gradient);
+    const y2 = R.pathOr(0, ['props', 'y2'], gradient);
+
+    const m0 = bbox[2] - bbox[0];
+    const m3 = bbox[3] - bbox[1];
+    const m4 = bbox[0];
+    const m5 = bbox[1];
+
+    const gx1 = m0 * x1 + m4;
+    const gy1 = m3 * y1 + m5;
+    const gx2 = m0 * x2 + m4;
+    const gy2 = m3 * y2 + m5;
+
+    const grad = ctx.linearGradient(gx1, gy1, gx2, gy2);
+
+    gradient.children.forEach(stop => {
       grad.stop(
         stop.props.offset,
         stop.props.stopColor,
         stop.props.stopOpacity,
       );
-    }
+    });
 
     ctx.fill(grad);
-  }
+  });
 
-  return node;
-};
+// Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L155
+const setRadialGradientFill = ctx =>
+  R.tap(node => {
+    const bbox = getBoundingBox(node);
+    const gradient = getProp(null, 'fill', node);
+
+    const cx = R.pathOr(0.5, ['props', 'cx'], gradient);
+    const cy = R.pathOr(0.5, ['props', 'cy'], gradient);
+    const fx = R.pathOr(cx, ['props', 'fx'], gradient);
+    const fy = R.pathOr(cy, ['props', 'fy'], gradient);
+    const r = R.pathOr(0.5, ['props', 'r'], gradient);
+
+    const m0 = bbox[2] - bbox[0];
+    const m3 = bbox[3] - bbox[1];
+    const m4 = bbox[0];
+    const m5 = bbox[1];
+
+    const gr = r * m0;
+    const gcx = m0 * cx + m4;
+    const gcy = m3 * cy + m5;
+    const gfx = m0 * fx + m4;
+    const gfy = m3 * fy + m5;
+
+    const grad = ctx.radialGradient(gfx, gfy, 0, gcx, gcy, gr);
+
+    gradient.children.forEach(stop => {
+      grad.stop(
+        stop.props.offset,
+        stop.props.stopColor,
+        stop.props.stopOpacity,
+      );
+    });
+
+    ctx.fill(grad);
+  });
+
+const setFillColor = ctx =>
+  R.tap(node => {
+    const fillColor = getProp(null, 'fill', node);
+    if (fillColor) ctx.fillColor(fillColor);
+  });
+
+const setFill = ctx =>
+  R.cond([
+    [hasLinearGradientFill, setLinearGradientFill(ctx)],
+    [hasRadialGradientFill, setRadialGradientFill(ctx)],
+    [R.T, setFillColor(ctx)],
+  ]);
 
 const draw = ctx => node => {
   const props = R.propOr({}, 'props', node);
@@ -163,8 +224,7 @@ const drawNode = ctx =>
     setOpacity(ctx),
     setFillOpacity(ctx),
     setStrokeOpacity(ctx),
-    setFillColor(ctx),
-    setFillGradient(ctx),
+    setFill(ctx),
     setStrokeColor(ctx),
     setStrokeWidth(ctx),
     setLineJoin(ctx),

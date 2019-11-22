@@ -30,6 +30,7 @@ import {
   ClipPath,
   Stop,
   LinearGradient,
+  RadialGradient,
   version,
   StyleSheet,
   // createInstance,
@@ -174,6 +175,7 @@ export {
   ClipPath,
   Stop,
   LinearGradient,
+  RadialGradient,
   version,
   StyleSheet,
 } from './index';
@@ -204,6 +206,7 @@ export default {
   ClipPath,
   Stop,
   LinearGradient,
+  RadialGradient,
   version,
   Document,
   PDFViewer,

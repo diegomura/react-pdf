@@ -30,6 +30,7 @@ import {
   CLIP_PATH,
   STOP,
   LINEAR_GRADIENT,
+  RADIAL_GRADIENT,
 } from './constants';
 
 const View = VIEW;
@@ -54,6 +55,7 @@ const Tspan = TSPAN;
 const ClipPath = CLIP_PATH;
 const Stop = STOP;
 const LinearGradient = LINEAR_GRADIENT;
+const RadialGradient = RADIAL_GRADIENT;
 
 const pdf = ({ initialValue, onChange }) => {
   const container = { type: 'ROOT', document: null };
@@ -185,6 +187,7 @@ export {
   Polyline,
   Stop,
   LinearGradient,
+  RadialGradient,
   StyleSheet,
   pdf,
 };

@@ -69,4 +69,22 @@ describe('path getBoundingBox', () => {
 
     expect(bbox).toEqual([50, 20, 200, 170]);
   });
+
+  test('should return polygon bounding box', () => {
+    const bbox = getBoundingBox({
+      type: 'POLYGON',
+      props: { points: '200,10 250,190 160,210' },
+    });
+
+    expect(bbox).toEqual([160, 10, 250, 210]);
+  });
+
+  test('should return polyline bounding box', () => {
+    const bbox = getBoundingBox({
+      type: 'POLYGON',
+      props: { points: '20,20 40,25 60,40 80,120 120,140 200,180' },
+    });
+
+    expect(bbox).toEqual([20, 20, 200, 180]);
+  });
 });

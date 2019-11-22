@@ -9,7 +9,7 @@ const detachDefs = R.evolve({
   children: R.filter(isNotDefs),
 });
 
-const URL_REGEX = /url\(#(.+)\)/;
+const URL_REGEX = /url\(['"]?#([^'"]+)['"]?\)/;
 
 const replaceDef = defs =>
   R.compose(

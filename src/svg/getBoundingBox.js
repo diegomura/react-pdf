@@ -10,6 +10,7 @@ import isPolygon from '../node/isPolygon';
 import isEllipse from '../node/isEllipse';
 import isPolyline from '../node/isPolyline';
 import normalizePath from '../svg/normalizePath';
+import parsePoints from './parsePoints';
 
 // From https://github.com/dy/svg-path-bounds/blob/master/index.js
 const getPathBoundingBox = node => {
@@ -73,14 +74,19 @@ const getRectBoundingBox = node => {
   return [x, y, x + width, y + height];
 };
 
-// TODO: complete
-const getPolylineBoundingBox = node => {
-  return [0, 0, 0, 0];
-};
+const max = R.reduce(R.max, -Infinity);
+const min = R.reduce(R.min, Infinity);
 
-// TODO: complete
-const getPolygonBoundingBox = node => {
-  return [0, 0, 0, 0];
+const getPolylineBoundingBox = node => {
+  const points = R.compose(
+    parsePoints,
+    R.pathOr([], ['props', 'points']),
+  )(node);
+
+  const xValues = R.pluck(0, points);
+  const yValues = R.pluck(1, points);
+
+  return [min(xValues), min(yValues), max(xValues), max(yValues)];
 };
 
 const getBoundingBox = R.cond([
@@ -89,7 +95,7 @@ const getBoundingBox = R.cond([
   [isPath, getPathBoundingBox],
   [isCircle, getCircleBoundingBox],
   [isEllipse, getEllipseBoundingBox],
-  [isPolygon, getPolygonBoundingBox],
+  [isPolygon, getPolylineBoundingBox],
   [isPolyline, getPolylineBoundingBox],
   [R.T, R.always([0, 0, 0, 0])],
 ]);

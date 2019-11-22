@@ -40,11 +40,11 @@ const processBorders = (key, value) => {
 
   if (match) {
     if (key.match(/.Color/)) {
-      return match[4];
+      return match[4] || value;
     } else if (key.match(/.Style/)) {
-      return match[3];
+      return match[3] || value;
     } else if (key.match(/.Width/)) {
-      return match[1];
+      return match[1] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
@@ -58,13 +58,13 @@ const processBoxModel = (key, value) => {
 
   if (match) {
     if (key.match(/.Top/)) {
-      return match[0];
+      return match[0] || value;
     } else if (key.match(/.Right/)) {
-      return match[1] || match[0];
+      return match[1] || match[0] || value;
     } else if (key.match(/.Bottom/)) {
-      return match[2] || match[0];
+      return match[2] || match[0] || value;
     } else if (key.match(/.Left/)) {
-      return match[3] || match[1] || match[0];
+      return match[3] || match[1] || match[0] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
@@ -84,9 +84,9 @@ export const processObjectPosition = (key, value) => {
 
   if (match) {
     if (key.match(/.X/)) {
-      return match[0];
+      return match[0] || value;
     } else if (key.match(/.Y/)) {
-      return match[1];
+      return match[1] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
@@ -118,9 +118,9 @@ const processTransformOrigin = (key, value) => {
     let result;
 
     if (key.match(/.X/)) {
-      result = match[0];
+      result = match[0] || value;
     } else if (key.match(/.Y/)) {
-      result = match[1] || match[0];
+      result = match[1] || match[0] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }

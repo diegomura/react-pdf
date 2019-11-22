@@ -52,7 +52,7 @@ const transformPercent = container =>
 
 const parsePercent = value => {
   const match = matchPercent(value);
-  return match ? match.percent : value;
+  return match ? match.percent : parseFloat(value);
 };
 
 const parseProps = container =>

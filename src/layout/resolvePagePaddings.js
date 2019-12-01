@@ -32,18 +32,23 @@ const resolvePageVerticalPadding = container => value => {
  * @param {Object} page
  * @returns {Object} page with fixed paddings
  */
-const resolvePagePaddings = page =>
-  R.evolve({
+const resolvePagePaddings = page => {
+  const container = R.pathOr({}, ['props', 'size'], page);
+
+  return R.evolve({
     style: R.evolve({
-      paddingLeft: resolvePageHorizontalPadding(page.box),
-      paddingRight: resolvePageHorizontalPadding(page.box),
-      paddingTop: resolvePageVerticalPadding(page.box),
-      paddingBottom: resolvePageVerticalPadding(page.box),
+      paddingLeft: resolvePageHorizontalPadding(container),
+      paddingRight: resolvePageHorizontalPadding(container),
+      paddingTop: resolvePageVerticalPadding(container),
+      paddingBottom: resolvePageVerticalPadding(container),
     }),
   })(page);
+};
 
 /**
  * Translates all pages percentage paddings in fixed ones
+ * This has to be computed from pages calculated size and not by Yoga
+ * because at this point we didn't performed pagination yet.
  *
  * @param {Object} document root
  * @returns {Object} document root with translated page paddings

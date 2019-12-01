@@ -74,6 +74,9 @@ const splitNode = (height, node) => {
   return [current, next];
 };
 
+// Prevent splitting elements by low ecimal numbers
+const SAFTY_THRESHOLD = 0.001;
+
 const splitNodes = (height, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
@@ -86,7 +89,7 @@ const splitNodes = (height, nodes) => {
     const nodeHeight = getHeight(child);
     const isOutside = isElementOutside(height, child);
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
-    const shouldSplit = height < nodeTop + nodeHeight;
+    const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
 
     if (isOutside) {
       const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(child);

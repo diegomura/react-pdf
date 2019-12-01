@@ -2,6 +2,10 @@ import * as R from 'ramda';
 
 import { DPI } from '../constants';
 
+const MM_FACTOR = (1 / 25.4) * DPI;
+
+const CM_FACTOR = (1 / 2.54) * DPI;
+
 /**
  * Parses scalar value in value and unit pairs
  *
@@ -25,13 +29,14 @@ const parseValue = value => {
  */
 const transformUnit = R.curryN(2, (container, value) => {
   const scalar = parseValue(value);
+
   switch (scalar.unit) {
     case 'in':
       return scalar.value * DPI;
     case 'mm':
-      return scalar.value * (1 / 25.4) * DPI;
+      return scalar.value * MM_FACTOR;
     case 'cm':
-      return scalar.value * (1 / 2.54) * DPI;
+      return scalar.value * CM_FACTOR;
     case 'vh':
       return scalar.value * (container.height / 100);
     case 'vw':

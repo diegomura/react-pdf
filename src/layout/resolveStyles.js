@@ -8,6 +8,11 @@ import transformStyles from '../stylesheet/transformStyles';
 import transformColors from '../stylesheet/transformColors';
 import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
 
+const LINK_STYLES = {
+  color: 'blue',
+  textDecoration: 'underline',
+};
+
 /**
  * Filter styles with `none` value
  *
@@ -35,11 +40,6 @@ const resolveStyles = container =>
     flattenStyles,
   );
 
-const LINK_STYLES = {
-  color: 'blue',
-  textDecoration: 'underline',
-};
-
 /**
  * Resolves node styles
  *
@@ -47,17 +47,14 @@ const LINK_STYLES = {
  * @param {Object} document node
  * @returns {Object} node (and subnodes) with resolved styles
  */
-const resolveNodeStyles = page => node => {
-  const container = R.propOr({}, 'box', page);
-
-  return R.o(
+const resolveNodeStyles = container => node =>
+  R.o(
     R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
     R.evolve({
       style: resolveStyles(container),
-      children: R.map(resolveNodeStyles(page)),
+      children: R.map(resolveNodeStyles(container)),
     }),
   )(node);
-};
 
 /**
  * Resolves page styles
@@ -66,12 +63,14 @@ const resolveNodeStyles = page => node => {
  * @returns {Object} document page with resolved styles
  */
 const resolvePageStyles = page => {
-  const box = R.propOr({}, 'box', page);
+  const box = R.prop('box', page);
+  const style = R.prop('style', page);
+  const container = R.isEmpty(box) ? style : box;
 
   return R.evolve({
-    children: R.map(resolveNodeStyles(page)),
+    children: R.map(resolveNodeStyles(container)),
     style: R.compose(
-      transformUnits(box),
+      transformUnits(container),
       transformColors,
       transformStyles,
       expandStyles,

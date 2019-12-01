@@ -1,7 +1,5 @@
 import * as R from 'ramda';
 
-import setMargin from './setMargin';
-
 /**
  * Removes margins on node
  *
@@ -9,7 +7,6 @@ import setMargin from './setMargin';
  * @returns {Object} node without margins
  */
 const removeMargins = R.compose(
-  setMargin(0),
   R.dissocPath(['style', 'margin']),
   R.dissocPath(['style', 'marginTop']),
   R.dissocPath(['style', 'marginRight']),

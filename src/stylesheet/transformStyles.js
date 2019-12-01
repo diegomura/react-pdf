@@ -58,13 +58,13 @@ const processBoxModel = (key, value) => {
 
   if (match) {
     if (key.match(/.Top/)) {
-      return match[0] || value;
+      return match[0];
     } else if (key.match(/.Right/)) {
-      return match[1] || match[0] || value;
+      return match[1] || match[0];
     } else if (key.match(/.Bottom/)) {
-      return match[2] || match[0] || value;
+      return match[2] || match[0];
     } else if (key.match(/.Left/)) {
-      return match[3] || match[1] || match[0] || value;
+      return match[3] || match[1] || match[0];
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
@@ -149,6 +149,8 @@ const processFlexBasis = (key, value) => {
   return matches[2];
 };
 
+const keepSame = (key, value) => value;
+
 const matchNumber = R.when(
   R.is(String),
   R.compose(
@@ -159,31 +161,35 @@ const matchNumber = R.when(
 
 const castFloat = R.when(matchNumber, v => parseFloat(v, 10));
 
-const transformStyles = style => {
-  const propsArray = Object.keys(style);
-  const resolvedStyle = {};
+/**
+ * Transforms style key-value
+ *
+ * @param {String} key style key
+ * @param {String} value style value
+ * @returns {String} transformed style values
+ */
+const transformStyle = R.compose(
+  castFloat,
+  R.cond([
+    [isBorderStyle, processBorders],
+    [isBoxModelStyle, processBoxModel],
+    [isObjectPositionStyle, processObjectPosition],
+    [isTransformOriginStyle, processTransformOrigin],
+    [isFontWeightStyle, processFontWeight],
+    [isFlexGrow, processFlexGrow],
+    [isFlexShrink, processFlexShrink],
+    [isFlexBasis, processFlexBasis],
+    [R.T, keepSame],
+  ]),
+);
 
-  for (let i = 0; i < propsArray.length; i++) {
-    const key = propsArray[i];
-    const value = style[key];
-
-    resolvedStyle[key] = R.compose(
-      castFloat,
-      R.cond([
-        [isBorderStyle, processBorders],
-        [isBoxModelStyle, processBoxModel],
-        [isObjectPositionStyle, processObjectPosition],
-        [isTransformOriginStyle, processTransformOrigin],
-        [isFontWeightStyle, processFontWeight],
-        [isFlexGrow, processFlexGrow],
-        [isFlexShrink, processFlexShrink],
-        [isFlexBasis, processFlexBasis],
-        [R.T, R.always(value)],
-      ]),
-    )(key, value);
-  }
-
-  return resolvedStyle;
-};
+/**
+ * Transforms already expanded styles shortcuts into appropiate values
+ * Ex. marginTopWidth: '2 solid red' -> marginTopWidth: 2
+ *
+ * @param {Object} styles expanded object
+ * @returns {Object} transformed styles
+ */
+const transformStyles = R.mapObjIndexed(R.flip(transformStyle));
 
 export default transformStyles;

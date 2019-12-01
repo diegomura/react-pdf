@@ -37,6 +37,18 @@ describe('shorthands', () => {
     expect(left.marginLeft).toBe(2);
   });
 
+  test('should keep normal margin values as it is', () => {
+    const top = transformStyles({ marginTop: '1' });
+    const right = transformStyles({ marginRight: '2' });
+    const bottom = transformStyles({ marginBottom: '3' });
+    const left = transformStyles({ marginLeft: '4' });
+
+    expect(top.marginTop).toBe(1);
+    expect(right.marginRight).toBe(2);
+    expect(bottom.marginBottom).toBe(3);
+    expect(left.marginLeft).toBe(4);
+  });
+
   test('should process padding shorthand', () => {
     const top = transformStyles({ paddingTop: '1 2 3 4' });
     const right = transformStyles({ paddingRight: '1 2 3 4' });
@@ -73,6 +85,18 @@ describe('shorthands', () => {
     expect(left.paddingLeft).toBe(2);
   });
 
+  test('should keep normal padding values as it is', () => {
+    const top = transformStyles({ paddingTop: '1' });
+    const right = transformStyles({ paddingRight: '2' });
+    const bottom = transformStyles({ paddingBottom: '3' });
+    const left = transformStyles({ paddingLeft: '4' });
+
+    expect(top.paddingTop).toBe(1);
+    expect(right.paddingRight).toBe(2);
+    expect(bottom.paddingBottom).toBe(3);
+    expect(left.paddingLeft).toBe(4);
+  });
+
   test('should process borderWidth shorthand', () => {
     const top = transformStyles({ borderTopWidth: '1 solid blue' });
     const right = transformStyles({ borderRightWidth: '1 solid blue' });
@@ -83,6 +107,18 @@ describe('shorthands', () => {
     expect(right.borderRightWidth).toBe(1);
     expect(bottom.borderBottomWidth).toBe(1);
     expect(left.borderLeftWidth).toBe(1);
+  });
+
+  test('should keep borderWidth as it is', () => {
+    const top = transformStyles({ borderTopWidth: '1' });
+    const right = transformStyles({ borderRightWidth: '2' });
+    const bottom = transformStyles({ borderBottomWidth: '3' });
+    const left = transformStyles({ borderLeftWidth: '4' });
+
+    expect(top.borderTopWidth).toBe(1);
+    expect(right.borderRightWidth).toBe(2);
+    expect(bottom.borderBottomWidth).toBe(3);
+    expect(left.borderLeftWidth).toBe(4);
   });
 
   test('should process borderStyle shorthand', () => {
@@ -97,6 +133,18 @@ describe('shorthands', () => {
     expect(left.borderLeftStyle).toBe('solid');
   });
 
+  test('should keep borderStyle as it is', () => {
+    const top = transformStyles({ borderTopStyle: 'solid' });
+    const right = transformStyles({ borderRightStyle: 'dashed' });
+    const bottom = transformStyles({ borderBottomStyle: 'solid' });
+    const left = transformStyles({ borderLeftStyle: 'dashed' });
+
+    expect(top.borderTopStyle).toBe('solid');
+    expect(right.borderRightStyle).toBe('dashed');
+    expect(bottom.borderBottomStyle).toBe('solid');
+    expect(left.borderLeftStyle).toBe('dashed');
+  });
+
   test('should process borderColor shorthand', () => {
     const top = transformStyles({ borderTopColor: '1 solid blue' });
     const right = transformStyles({ borderRightColor: '1 solid blue' });
@@ -107,6 +155,18 @@ describe('shorthands', () => {
     expect(right.borderRightColor).toBe('blue');
     expect(bottom.borderBottomColor).toBe('blue');
     expect(left.borderLeftColor).toBe('blue');
+  });
+
+  test('should keep borderColor as it is', () => {
+    const top = transformStyles({ borderTopColor: 'blue' });
+    const right = transformStyles({ borderRightColor: 'green' });
+    const bottom = transformStyles({ borderBottomColor: 'red' });
+    const left = transformStyles({ borderLeftColor: 'yellow' });
+
+    expect(top.borderTopColor).toBe('blue');
+    expect(right.borderRightColor).toBe('green');
+    expect(bottom.borderBottomColor).toBe('red');
+    expect(left.borderLeftColor).toBe('yellow');
   });
 
   test('should process objectPosition shorthand', () => {
@@ -120,6 +180,14 @@ describe('shorthands', () => {
   test('should process objectPosition shorthand percentages', () => {
     const x = transformStyles({ objectPositionX: '20% 30%' });
     const y = transformStyles({ objectPositionY: '20% 30%' });
+
+    expect(x.objectPositionX).toBe('20%');
+    expect(y.objectPositionY).toBe('30%');
+  });
+
+  test('should keep objectPosition as it is', () => {
+    const x = transformStyles({ objectPositionX: '20%' });
+    const y = transformStyles({ objectPositionY: '30%' });
 
     expect(x.objectPositionX).toBe('20%');
     expect(y.objectPositionY).toBe('30%');

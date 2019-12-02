@@ -1,10 +1,13 @@
 import * as R from 'ramda';
 
+import isText from '../node/isText';
 import resolveStyles from './resolveStyles';
 import shouldNodeBreak from '../node/shouldBreak';
 import getContentArea from '../page/getContentArea';
 import resolveInheritance from './resolveInheritance';
 import resolveNoteChildren from './resolveNoteChildren';
+import lineIndexAtHeight from '../text/lineIndexAtHeight';
+import heightAtLineIndex from '../text/heightAtLineIndex';
 import resolvePercentRadius from './resolvePercentRadius';
 import resolvePercentHeight from './resolvePercentHeight';
 import { resolvePageDimensions } from './resolveDimensions';
@@ -27,7 +30,7 @@ const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
 const subtractHeight = value =>
   R.o(R.subtract(R.__, value), R.path(['box', 'height']));
 
-const splitNode = (height, node) => {
+const splitView = (node, height) => {
   if (!node) return [null, null];
 
   const nodeTop = getTop(node);
@@ -74,7 +77,78 @@ const splitNode = (height, node) => {
   return [current, next];
 };
 
-// Prevent splitting elements by low ecimal numbers
+const getWidows = R.pathOr(2, ['props', 'widows']);
+
+const getOrphans = R.pathOr(2, ['props', 'orphans']);
+
+const getLineBreak = (node, height) => {
+  const top = getTop(node);
+  const widows = getWidows(node);
+  const orphans = getOrphans(node);
+  const linesQuantity = node.lines.length;
+  const slicedLine = lineIndexAtHeight(node, height - top);
+
+  if (linesQuantity < orphans) {
+    return linesQuantity;
+  } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
+    return 0;
+  } else if (linesQuantity === orphans + widows) {
+    return orphans;
+  } else if (linesQuantity - slicedLine < widows) {
+    return linesQuantity - widows;
+  }
+
+  return slicedLine;
+};
+
+const splitText = (node, height) => {
+  const slicedLineIndex = getLineBreak(node, height);
+  const currentHeight = heightAtLineIndex(node, slicedLineIndex);
+  const nextHeight = node.box.height - currentHeight;
+
+  const current = R.evolve(
+    {
+      lines: R.slice(0, slicedLineIndex),
+      style: R.evolve({
+        marginBottom: zero,
+        paddingBottom: zero,
+        borderBottomWidth: zero,
+        borderBottomLeftRadius: zero,
+        borderBottomRightRadius: zero,
+      }),
+      box: {
+        height: R.always(currentHeight),
+        borderBottomWidth: zero,
+      },
+    },
+    node,
+  );
+
+  const next = R.evolve(
+    {
+      lines: R.slice(slicedLineIndex, Infinity),
+      style: R.evolve({
+        marginTop: zero,
+        paddingTop: zero,
+        borderTopWidth: zero,
+        borderTopLeftRadius: zero,
+        borderTopRightRadius: zero,
+      }),
+      box: {
+        top: zero,
+        height: R.always(nextHeight),
+        borderTopWidth: zero,
+      },
+    },
+    node,
+  );
+
+  return [current, next];
+};
+
+const splitNode = R.ifElse(isText, splitText, splitView);
+
+// Prevent splitting elements by low decimal numbers
 const SAFTY_THRESHOLD = 0.001;
 
 const splitNodes = (height, nodes) => {
@@ -107,7 +181,7 @@ const splitNodes = (height, nodes) => {
     }
 
     if (shouldSplit) {
-      const [currentChild, nextChild] = splitNode(height, child);
+      const [currentChild, nextChild] = splitNode(child, height);
 
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);

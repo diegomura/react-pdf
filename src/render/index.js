@@ -2,18 +2,18 @@ import * as R from 'ramda';
 
 import Font from '../font';
 import save from './save';
+import setLink from './setLink';
 import restore from './restore';
 import isSvg from '../node/isSvg';
 import isText from '../node/isText';
 import isPage from '../node/isPage';
-import isImage from '../node/isImage';
-import isNote from '../node/isNote';
 import isLink from '../node/isLink';
+import isNote from '../node/isNote';
+import isImage from '../node/isImage';
 import isCanvas from '../node/isCanvas';
 import renderSvg from './renderSvg';
 import renderText from './renderText';
 import renderPage from './renderPage';
-import renderLink from './renderLink';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
 import renderCanvas from './renderCanvas';
@@ -21,6 +21,7 @@ import renderRulers from './renderRulers';
 import addMetadata from './addMetadata';
 import renderDebug from './renderDebug';
 import renderBorders from './renderBorders';
+import setDestination from './setDestination';
 import renderBackground from './renderBackground';
 import applyTransformations from './applyTransformations';
 
@@ -37,10 +38,11 @@ const renderNode = ctx => node => {
   return R.compose(
     restore(ctx),
     renderDebug(ctx),
+    setDestination(ctx),
     R.when(shouldRenderChildren, renderChildren),
+    R.when(R.either(isText, isLink), setLink(ctx)),
     R.cond([
       [isText, renderText(ctx)],
-      [isLink, renderLink(ctx)],
       [isNote, renderNote(ctx)],
       [isImage, renderImage(ctx)],
       [isCanvas, renderCanvas(ctx)],

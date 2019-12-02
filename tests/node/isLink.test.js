@@ -56,4 +56,14 @@ describe('node isLink', () => {
     const node = { type: TEXT_INSTANCE };
     expect(isLink(node)).toBeFalsy();
   });
+
+  test('Should return trie for text with src prop', () => {
+    const node = { type: TEXT, props: { src: '#dest' } };
+    expect(isLink(node)).toBeTruthy();
+  });
+
+  test('Should return trie for text with href prop', () => {
+    const node = { type: TEXT, props: { href: '#dest' } };
+    expect(isLink(node)).toBeTruthy();
+  });
 });

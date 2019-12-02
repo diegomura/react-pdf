@@ -43,4 +43,9 @@ describe('getURL', () => {
     const url = 'whatsapp://send?text=Hey';
     expect(getURL(url)).toEqual(url);
   });
+
+  test('it should return the value if it is a id and not url', () => {
+    const src = '#myDest';
+    expect(getURL(src)).toBe(src);
+  });
 });

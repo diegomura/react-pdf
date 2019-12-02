@@ -1,6 +1,10 @@
 'use strict';
 
 import ReactFiberReconciler from 'react-reconciler';
+import {
+  unstable_scheduleCallback as schedulePassiveEffects,
+  unstable_cancelCallback as cancelPassiveEffects,
+} from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
 
@@ -8,6 +12,10 @@ const emptyObject = {};
 
 const createRenderer = ({ onChange }) => {
   return ReactFiberReconciler({
+    schedulePassiveEffects,
+
+    cancelPassiveEffects,
+
     supportsMutation: true,
 
     isPrimaryRenderer: false,

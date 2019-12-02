@@ -64,7 +64,10 @@ const styles = StyleSheet.create({
   },
 });
 
-Font.register(`${__dirname}/fonts/Roboto-Regular.ttf`, { family: 'Roboto' });
+Font.register({
+  family: 'Roboto',
+  src: `${__dirname}/fonts/Roboto-Regular.ttf`,
+});
 
 const Subtitle = ({ children, ...props }) => (
   <Text style={styles.subtitle} {...props}>

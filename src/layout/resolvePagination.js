@@ -216,14 +216,19 @@ const splitPage = page => {
   const height = R.path(['style', 'height'], page);
   const [currentChilds, nextChilds] = splitNodes(contentArea, page.children);
 
-  const currentPage = R.o(
+  const currentPage = R.compose(
+    relayoutPage,
     assocChildren(currentChilds),
     R.assocPath(['box', 'height'], height),
   )(page);
 
   if (R.isEmpty(nextChilds)) return [currentPage, null];
 
-  const nextPage = R.o(relayoutPage, assocChildren(nextChilds))(page);
+  const nextPage = R.compose(
+    relayoutPage,
+    assocChildren(nextChilds),
+    R.dissocPath(['box', 'height']),
+  )(page);
 
   return [currentPage, nextPage];
 };

@@ -2,10 +2,10 @@ import * as R from 'ramda';
 import colorString from 'color-string';
 import hlsToHex from 'hsl-to-hex';
 
-const isRgb = R.test(/rgb\(.+\)/g);
-const isRgba = R.test(/rgba\(.+\)/g);
-const isHsl = R.test(/hsl\(.+\)/g);
-const isHsla = R.test(/hsla\(.+\)/g);
+const isRgb = R.test(/rgb/g);
+const isRgba = R.test(/rgba/g);
+const isHsl = R.test(/hsl/g);
+const isHsla = R.test(/hsla/g);
 
 /**
  * Transform rgb color to hexa
@@ -39,10 +39,10 @@ const parseHsl = R.compose(
  */
 export const transformColor = value =>
   R.cond([
-    [isRgb, parseRgb],
     [isRgba, parseRgb],
-    [isHsl, parseHsl],
+    [isRgb, parseRgb],
     [isHsla, parseHsl],
+    [isHsl, parseHsl],
     [R.T, R.always(value)],
   ])(value);
 

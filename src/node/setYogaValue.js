@@ -3,6 +3,8 @@ import * as R from 'ramda';
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
 
+const isNotNil = R.complement(R.isNil);
+
 /**
  * Set generic yoga attribute to node's Yoga instance, handing `auto`, edges and percentage cases
  *
@@ -17,7 +19,7 @@ const setYogaValue = (attr, edge) => value =>
     const yogaNode = node._yogaNode;
 
     if (!R.isNil(value) && yogaNode) {
-      const hasEdge = R.complement(R.isNil)(edge);
+      const hasEdge = isNotNil(edge);
       const fixedMethod = `set${upperFirst(attr)}`;
       const autoMethod = `${fixedMethod}Auto`;
       const percentMethod = `${fixedMethod}Percent`;

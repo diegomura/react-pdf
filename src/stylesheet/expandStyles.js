@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /**
@@ -107,8 +105,6 @@ const styleShorthands = {
   },
 };
 
-const expandedKeys = R.keys(styleShorthands);
-
 /**
  * Expand the shorthand properties to isolate every declaration from the others.
  *
@@ -125,8 +121,9 @@ const expandStyles = style => {
     const key = propsArray[i];
     const value = style[key];
 
-    if (R.includes(key, expandedKeys)) {
+    if (styleShorthands[key]) {
       const expandedProps = styleShorthands[key];
+
       for (const propName in expandedProps) {
         if (hasOwnProperty.call(expandedProps, propName)) {
           resolvedStyle[propName] = value;

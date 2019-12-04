@@ -21,4 +21,4 @@ const upperFirst = R.ifElse(
   ),
 );
 
-export default upperFirst;
+export default R.memoizeWith(R.identity, upperFirst);

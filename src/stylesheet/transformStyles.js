@@ -39,11 +39,11 @@ const processBorders = (key, value) => {
   const match = matchBorderShorthand(value);
 
   if (match) {
-    if (key.match(/.Color/)) {
+    if (key.match(/Color$/)) {
       return match[4] || value;
-    } else if (key.match(/.Style/)) {
+    } else if (key.match(/Style$/)) {
       return match[3] || value;
-    } else if (key.match(/.Width/)) {
+    } else if (key.match(/Width$/)) {
       return match[1] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
@@ -57,13 +57,13 @@ const processBoxModel = (key, value) => {
   const match = matchBoxModel(value);
 
   if (match) {
-    if (key.match(/.Top/)) {
+    if (key.match(/Top$/)) {
       return match[0];
-    } else if (key.match(/.Right/)) {
+    } else if (key.match(/Right$/)) {
       return match[1] || match[0];
-    } else if (key.match(/.Bottom/)) {
+    } else if (key.match(/Bottom$/)) {
       return match[2] || match[0];
-    } else if (key.match(/.Left/)) {
+    } else if (key.match(/Left$/)) {
       return match[3] || match[1] || match[0];
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
@@ -83,9 +83,9 @@ export const processObjectPosition = (key, value) => {
   const match = matchObjectPosition(value);
 
   if (match) {
-    if (key.match(/.X/)) {
+    if (key.match(/X$/)) {
       return match[0] || value;
-    } else if (key.match(/.Y/)) {
+    } else if (key.match(/Y$/)) {
       return match[1] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
@@ -117,9 +117,9 @@ const processTransformOrigin = (key, value) => {
   if (match) {
     let result;
 
-    if (key.match(/.X/)) {
+    if (key.match(/X$/)) {
       result = match[0] || value;
-    } else if (key.match(/.Y/)) {
+    } else if (key.match(/Y$/)) {
       result = match[1] || match[0] || value;
     } else {
       throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
@@ -151,13 +151,7 @@ const processFlexBasis = (key, value) => {
 
 const keepSame = (key, value) => value;
 
-const matchNumber = R.when(
-  R.is(String),
-  R.compose(
-    R.complement(R.isEmpty),
-    R.match(/^-?\d*\.?\d*$/),
-  ),
-);
+const matchNumber = R.when(R.is(String), R.test(/^-?\d*\.?\d*$/));
 
 const castFloat = R.when(matchNumber, v => parseFloat(v, 10));
 
@@ -166,7 +160,7 @@ const castFloat = R.when(matchNumber, v => parseFloat(v, 10));
  *
  * @param {String} key style key
  * @param {String} value style value
- * @returns {String} transformed style values
+ * @returns {String | Number} transformed style values
  */
 const transformStyle = R.compose(
   castFloat,

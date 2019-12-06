@@ -27,6 +27,8 @@ const hasFixedHeight = R.hasPath(['style', 'height']);
 
 const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
 
+const isFixed = R.pathEq(['props', 'fixed'], true);
+
 const subtractHeight = value =>
   R.o(R.subtract(R.__, value), R.path(['box', 'height']));
 
@@ -165,6 +167,12 @@ const splitNodes = (height, nodes) => {
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
     const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
 
+    if (isFixed(child)) {
+      nextChildren.push(child);
+      currentChildren.push(child);
+      continue;
+    }
+
     if (isOutside) {
       const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(child);
       nextChildren.push(next);
@@ -176,6 +184,7 @@ const splitNodes = (height, nodes) => {
         box: { top: R.subtract(R.__, height) },
         props: R.evolve({ break: R.always(false) }),
       })(child);
+
       nextChildren.push(next, ...futureNodes);
       break;
     }
@@ -211,6 +220,8 @@ const relayoutPage = R.compose(
   resolveLinkSubstitution,
 );
 
+const allFixed = R.all(isFixed);
+
 const splitPage = page => {
   const contentArea = getContentArea(page);
   const height = R.path(['style', 'height'], page);
@@ -222,7 +233,7 @@ const splitPage = page => {
     R.assocPath(['box', 'height'], height),
   )(page);
 
-  if (R.isEmpty(nextChilds)) return [currentPage, null];
+  if (R.isEmpty(nextChilds) || allFixed(nextChilds)) return [currentPage, null];
 
   const nextPage = R.compose(
     relayoutPage,

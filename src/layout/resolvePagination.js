@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import isText from '../node/isText';
 import resolveStyles from './resolveStyles';
 import shouldNodeBreak from '../node/shouldBreak';
+import resolveTextLayout from './resolveTextLayout';
 import getContentArea from '../page/getContentArea';
 import resolveInheritance from './resolveInheritance';
 import resolveNoteChildren from './resolveNoteChildren';
@@ -12,6 +13,9 @@ import resolvePercentRadius from './resolvePercentRadius';
 import resolvePercentHeight from './resolvePercentHeight';
 import { resolvePageDimensions } from './resolveDimensions';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
+
+// Prevent splitting elements by low decimal numbers
+const SAFTY_THRESHOLD = 0.001;
 
 const zero = R.always(0);
 
@@ -23,11 +27,17 @@ const getHeight = R.path(['box', 'height']);
 
 const getChildren = R.propOr([], 'children');
 
+const getWidows = R.pathOr(2, ['props', 'widows']);
+
+const getOrphans = R.pathOr(2, ['props', 'orphans']);
+
 const hasFixedHeight = R.hasPath(['style', 'height']);
 
 const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
 
 const isFixed = R.pathEq(['props', 'fixed'], true);
+
+const isDynamic = R.hasPath(['props', 'render']);
 
 const subtractHeight = value =>
   R.o(R.subtract(R.__, value), R.path(['box', 'height']));
@@ -78,10 +88,6 @@ const splitView = (node, height) => {
 
   return [current, next];
 };
-
-const getWidows = R.pathOr(2, ['props', 'widows']);
-
-const getOrphans = R.pathOr(2, ['props', 'orphans']);
 
 const getLineBreak = (node, height) => {
   const top = getTop(node);
@@ -150,9 +156,6 @@ const splitText = (node, height) => {
 
 const splitNode = R.ifElse(isText, splitText, splitView);
 
-// Prevent splitting elements by low decimal numbers
-const SAFTY_THRESHOLD = 0.001;
-
 const splitNodes = (height, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
@@ -160,6 +163,7 @@ const splitNodes = (height, nodes) => {
   for (let i = 0; i < nodes.length; i++) {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
+    const futureFixedNodes = R.filter(isFixed, futureNodes);
 
     const nodeTop = getTop(child);
     const nodeHeight = getHeight(child);
@@ -185,6 +189,7 @@ const splitNodes = (height, nodes) => {
         props: R.evolve({ break: R.always(false) }),
       })(child);
 
+      currentChildren.push(...futureFixedNodes);
       nextChildren.push(next, ...futureNodes);
       break;
     }
@@ -211,6 +216,7 @@ const splitChildren = (height, node) => {
 };
 
 const relayoutPage = R.compose(
+  resolveTextLayout,
   resolvePercentRadius,
   resolveInheritance,
   resolvePageDimensions,
@@ -222,10 +228,13 @@ const relayoutPage = R.compose(
 
 const allFixed = R.all(isFixed);
 
-const splitPage = page => {
-  const contentArea = getContentArea(page);
+const splitPage = (page, pageNumber) => {
   const height = R.path(['style', 'height'], page);
-  const [currentChilds, nextChilds] = splitNodes(contentArea, page.children);
+
+  const [currentChilds, nextChilds] = R.compose(
+    R.converge(splitNodes, [getContentArea, getChildren]),
+    resolveDynamicPage({ pageNumber }),
+  )(page);
 
   const currentPage = R.compose(
     relayoutPage,
@@ -244,16 +253,55 @@ const splitPage = page => {
   return [currentPage, nextPage];
 };
 
-const paginate = (pageNumber, page) => {
+const shouldResolveDynamicNodes = node =>
+  R.either(
+    isDynamic,
+    R.compose(
+      R.any(shouldResolveDynamicNodes),
+      R.propOr([], 'children'),
+    ),
+  )(node);
+
+const resolveDynamicPage = props =>
+  R.when(
+    shouldResolveDynamicNodes,
+    R.compose(
+      relayoutPage,
+      resolveDynamicNodes(props),
+    ),
+  );
+
+const resolveDynamicNodes = props => node => {
+  const isNodeDynamic = R.always(isDynamic(node));
+
+  const resolveRender = () => {
+    const res = node.props.render(props);
+    return [{ type: 'TEXT_INSTANCE', value: res }];
+  };
+
+  return R.evolve(
+    {
+      children: R.ifElse(
+        isNodeDynamic,
+        resolveRender,
+        R.map(resolveDynamicNodes(props)),
+      ),
+      lines: R.when(isNodeDynamic, R.always([])),
+    },
+    node,
+  );
+};
+
+const paginate = (page, pageNumber) => {
   if (!page) return [];
 
-  let splittedPage = splitPage(page);
+  let splittedPage = splitPage(page, pageNumber);
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(nextPage);
+    splittedPage = splitPage(nextPage, pageNumber + pages.length);
 
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
@@ -262,19 +310,24 @@ const paginate = (pageNumber, page) => {
   return pages;
 };
 
+const resolvePageIndices = (page, pageNumber, pages) => {
+  const totalPages = pages.length;
+  return resolveDynamicPage({ pageNumber: pageNumber + 1, totalPages })(page);
+};
+
 const resolvePagination = doc => {
   let pages = [];
-  let pageNumber = 0;
+  let pageNumber = 1;
 
   for (let i = 0; i < doc.children.length; i++) {
     const page = doc.children[i];
-    const subpages = paginate(pageNumber, page);
+    const subpages = paginate(page, pageNumber);
 
     pageNumber += subpages.length;
     pages = pages.concat(subpages);
   }
 
-  return assocChildren(pages, doc);
+  return assocChildren(pages.map(resolvePageIndices), doc);
 };
 
 export default resolvePagination;

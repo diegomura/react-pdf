@@ -27,19 +27,27 @@ import applyTransformations from './applyTransformations';
 
 const shouldRenderChildren = v => !isText(v) && !isSvg(v);
 
-const renderNode = ctx => node => {
-  const renderChildren = R.tap(
-    R.compose(
-      R.forEach(renderNode(ctx)),
-      R.pathOr([], ['children']),
-    ),
-  );
+const renderChildren = ctx => node => {
+  save(ctx, node);
 
-  return R.compose(
+  ctx.translate(node.box.left, node.box.top);
+
+  R.compose(
+    R.forEach(renderNode(ctx)),
+    R.pathOr([], ['children']),
+  )(node);
+
+  restore(ctx, node);
+
+  return node;
+};
+
+const renderNode = ctx => node =>
+  R.compose(
     restore(ctx),
     renderDebug(ctx),
     setDestination(ctx),
-    R.when(shouldRenderChildren, renderChildren),
+    R.when(shouldRenderChildren, renderChildren(ctx)),
     R.when(R.either(isText, isLink), setLink(ctx)),
     R.cond([
       [isText, renderText(ctx)],
@@ -55,7 +63,6 @@ const renderNode = ctx => node => {
     save(ctx),
     R.when(isPage, renderPage(ctx)),
   )(node);
-};
 
 const renderDocument = ctx =>
   R.compose(

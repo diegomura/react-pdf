@@ -15,7 +15,6 @@ import resolvePagePaddings from './resolvePagePaddings';
 import resolvePercentRadius from './resolvePercentRadius';
 import resolvePercentHeight from './resolvePercentHeight';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
-import resolveAbsoluteCoordinates from './resolveAbsoluteCoordinates';
 import asyncCompose from '../utils/asyncCompose';
 
 // const startTimer = name => R.tap(() => console.time(name));
@@ -23,7 +22,6 @@ import asyncCompose from '../utils/asyncCompose';
 
 const layout = asyncCompose(
   resolveZIndex,
-  resolveAbsoluteCoordinates,
   resolveRulers,
   resolveOrigins,
   resolvePagination,

@@ -45,10 +45,6 @@ const splitView = (node, height) => {
   ];
 };
 
-const elevateNode = d => R.evolve({ box: { top: R.subtract(R.__, d) } });
-
-const elevateNodes = (distance, nodes) => R.map(elevateNode(distance), nodes);
-
 const split = R.ifElse(isText, splitText, splitView);
 
 const splitNodes = (height, nodes) => {
@@ -85,7 +81,7 @@ const splitNodes = (height, nodes) => {
       })(child);
 
       currentChildren.push(...futureFixedNodes);
-      nextChildren.push(next, ...elevateNodes(child.box.top, futureNodes));
+      nextChildren.push(next, ...futureNodes);
       break;
     }
 
@@ -111,7 +107,7 @@ const splitChildren = (height, node) => {
 };
 
 const splitPage = (page, pageNumber) => {
-  const contentArea = getContentArea(page, pageNumber);
+  const contentArea = getContentArea(page);
   const height = R.path(['style', 'height'], page);
   const dynamicPage = resolveDynamicPage({ pageNumber }, page);
 
@@ -129,6 +125,7 @@ const splitPage = (page, pageNumber) => {
   if (R.isEmpty(nextChilds) || allFixed(nextChilds)) return [currentPage, null];
 
   const nextPage = R.compose(
+    relayoutPage,
     assingChildren(nextChilds),
     R.dissocPath(['box', 'height']),
   )(page);

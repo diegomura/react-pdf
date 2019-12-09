@@ -6,7 +6,10 @@ import layoutText from '../text/layoutText';
 
 const isNotSvg = R.complement(isSvg);
 
-const shouldLayoutText = node => isText(node) && R.isEmpty(node.lines);
+const hasLines = node =>
+  node.props.fixed ? !R.isEmpty(node.lines) : !!node.lines;
+
+const shouldLayoutText = node => isText(node) && !hasLines(node);
 
 /**
  * Performs text layout on text node if wasn't calculated before.

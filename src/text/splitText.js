@@ -18,7 +18,9 @@ const getLineBreak = (node, height) => {
   const linesQuantity = node.lines.length;
   const slicedLine = lineIndexAtHeight(node, height - top);
 
-  if (linesQuantity < orphans) {
+  if (slicedLine === 0) {
+    return 0;
+  } else if (linesQuantity < orphans) {
     return linesQuantity;
   } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
     return 0;

@@ -14,12 +14,10 @@ const splitNode = (node, height) => {
 
   const nodeTop = getTop(node);
 
-  // const [currentChilds, nextChildren] = splitChildren(height, node);
-
   // TODO: We should keep style untouched
   const current = R.evolve({
-    // children: R.always(currentChilds),
     style: R.evolve({
+      marginBottom: zero,
       paddingBottom: zero,
       borderBottomWidth: zero,
       borderBottomLeftRadius: zero,
@@ -39,8 +37,8 @@ const splitNode = (node, height) => {
 
   // TODO: We should keep style untouched
   const next = R.evolve({
-    // children: R.always(nextChildren),
     style: R.evolve({
+      marginTop: zero,
       paddingTop: zero,
       borderTopWidth: zero,
       borderTopLeftRadius: zero,

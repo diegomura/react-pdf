@@ -22,16 +22,24 @@ const debugContent = ctx =>
       paddingTop,
       paddingRight,
       paddingBottom,
+      borderLeftWidth,
+      borderTopWidth,
+      borderRightWidth,
+      borderBottomWidth,
     } = node.box;
 
     ctx
       .fillColor(CONTENT_COLOR)
       .opacity(0.5)
       .rect(
-        left + paddingLeft,
-        top + paddingTop,
-        width - paddingLeft - paddingRight,
-        height - paddingTop - paddingBottom,
+        left + paddingLeft + borderLeftWidth,
+        top + paddingTop + borderTopWidth,
+        width - paddingLeft - paddingRight - borderRightWidth - borderLeftWidth,
+        height -
+          paddingTop -
+          paddingBottom -
+          borderTopWidth -
+          borderBottomWidth,
       )
       .fill();
   });
@@ -47,6 +55,10 @@ const debugPadding = ctx =>
       paddingTop,
       paddingRight,
       paddingBottom,
+      borderLeftWidth,
+      borderTopWidth,
+      borderRightWidth,
+      borderBottomWidth,
     } = node.box;
 
     ctx.fillColor(PADDING_COLOR).opacity(0.5);
@@ -54,25 +66,39 @@ const debugPadding = ctx =>
     // Padding top
     ctx
       .rect(
-        left + paddingLeft,
-        top,
-        width - paddingRight - paddingLeft,
+        left + paddingLeft + borderLeftWidth,
+        top + borderTopWidth,
+        width - paddingRight - paddingLeft - borderLeftWidth - borderRightWidth,
         paddingTop,
       )
       .fill();
 
     // Padding left
-    ctx.rect(left, top, paddingLeft, height).fill();
+    ctx
+      .rect(
+        left + borderLeftWidth,
+        top + borderTopWidth,
+        paddingLeft,
+        height - borderTopWidth - borderBottomWidth,
+      )
+      .fill();
 
     // Padding right
-    ctx.rect(left + width - paddingRight, top, paddingRight, height).fill();
+    ctx
+      .rect(
+        left + width - paddingRight - borderRightWidth,
+        top + borderTopWidth,
+        paddingRight,
+        height - borderTopWidth - borderBottomWidth,
+      )
+      .fill();
 
     // Padding bottom
     ctx
       .rect(
-        left + paddingLeft,
-        top + height - paddingBottom,
-        width - paddingRight - paddingLeft,
+        left + paddingLeft + borderLeftWidth,
+        top + height - paddingBottom - borderBottomWidth,
+        width - paddingRight - paddingLeft - borderLeftWidth - borderRightWidth,
         paddingBottom,
       )
       .fill();

@@ -1,5 +1,8 @@
 import * as R from 'ramda';
 
-const restore = ctx => R.tap(() => ctx.restore());
+const restore = (ctx, node) => {
+  ctx.restore();
+  return node;
+};
 
-export default restore;
+export default R.curryN(2, restore);

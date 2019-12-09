@@ -1,5 +1,8 @@
 import * as R from 'ramda';
 
-const save = ctx => R.tap(() => ctx.save());
+const save = (ctx, node) => {
+  ctx.save();
+  return node;
+};
 
-export default save;
+export default R.curryN(2, save);

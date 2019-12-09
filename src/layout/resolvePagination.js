@@ -5,6 +5,7 @@ import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
 import shouldNodeBreak from '../node/shouldBreak';
 import getContentArea from '../page/getContentArea';
+import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
 
@@ -28,6 +29,7 @@ const allFixed = R.all(isFixed);
 const isDynamic = R.hasPath(['props', 'render']);
 
 const relayoutPage = R.compose(
+  resolveTextLayout,
   resolveInheritance,
   resolvePageDimensions,
 );

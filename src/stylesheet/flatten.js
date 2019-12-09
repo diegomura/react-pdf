@@ -1,5 +1,7 @@
 import * as R from 'ramda';
 
+import castArray from '../utils/castArray';
+
 /**
  * Remove nil values from array
  *
@@ -15,22 +17,6 @@ const compact = R.filter(Boolean);
  * @returns {Boolean} is value an array
  */
 const isArray = R.is(Array);
-
-/**
- * Checks if value is not an array
- *
- * @param {any} value
- * @returns {Boolean} isn't value an array
- */
-const isNotArray = R.complement(isArray);
-
-/**
- * Casts value to array
- *
- * @param {any} value
- * @returns {Array} casted value
- */
-const castArray = R.when(isNotArray, v => [v]);
 
 /**
  * Merges style objects array

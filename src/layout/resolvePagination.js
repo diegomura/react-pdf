@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import isText from '../node/isText';
 import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
+import createInstance from '../node/createInstance';
 import shouldNodeBreak from '../node/shouldBreak';
 import getContentArea from '../page/getContentArea';
 import resolveTextLayout from './resolveTextLayout';
@@ -158,7 +159,7 @@ const resolveDynamicNodes = props => node => {
 
   const resolveRender = () => {
     const res = node.props.render(props);
-    return [{ type: 'TEXT_INSTANCE', value: res }];
+    return [createInstance(res)];
   };
 
   return R.evolve(

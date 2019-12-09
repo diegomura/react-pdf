@@ -64,36 +64,14 @@ const pdf = ({ initialValue, onChange }) => {
 
   if (initialValue) updateContainer(initialValue);
 
-  function callOnRender(params = {}) {
-    // if (container.document.props.onRender) {
-    // const layoutData = container.document.getLayoutData();
-    // container.document.props.onRender({ ...params, layoutData });
-    // }
-  }
-
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
 
-    // let layout;
-
-    // for (let i = 0; i < 10; i++) {
     console.time('layout');
     const layout = await layoutDocument(container.document);
     console.timeEnd('layout');
-    // }
 
-    const instance = renderPDF(ctx, layout);
-
-    // console.log(layout);
-
-    return instance;
-  };
-
-  const renderWithContext = async ctx => {
-    const layout = await layoutDocument(container);
-    const instance = renderPDF(ctx, layout);
-
-    return instance;
+    return renderPDF(ctx, layout);
   };
 
   const layout = async () => {
@@ -112,7 +90,6 @@ const pdf = ({ initialValue, onChange }) => {
       stream.on('finish', () => {
         try {
           const blob = stream.toBlob('application/pdf');
-          callOnRender({ blob });
           resolve(blob);
         } catch (error) {
           reject(error);
@@ -123,40 +100,34 @@ const pdf = ({ initialValue, onChange }) => {
     });
   }
 
-  // async function toBuffer() {
-  //   await container.render();
+  async function toBuffer() {
+    return render();
+  }
 
-  //   callOnRender();
+  function toString() {
+    let result = '';
+    const instance = render();
 
-  //   return container.instance;
-  // }
+    return new Promise((resolve, reject) => {
+      try {
+        instance.on('data', function(buffer) {
+          result += buffer;
+        });
 
-  // function toString() {
-  //   let result = '';
-  //   container.render();
-
-  //   return new Promise((resolve, reject) => {
-  //     try {
-  //       container.instance.on('data', function(buffer) {
-  //         result += buffer;
-  //       });
-
-  //       container.instance.on('end', function() {
-  //         callOnRender({ string: result });
-  //         resolve(result);
-  //       });
-  //     } catch (error) {
-  //       reject(error);
-  //     }
-  //   });
-  // }
+        instance.on('end', function() {
+          resolve(result);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 
   return {
     layout,
     container,
     updateContainer,
-    renderWithContext,
-    // toBuffer,
+    toBuffer,
     toBlob,
     toString,
   };

@@ -349,7 +349,7 @@ const moveToOrigin = ctx => node => {
   const paddingLeft = defaultsZero('paddingLeft', node.box);
   const paddingTop = defaultsZero('paddingTop', node.box);
 
-  ctx.save().translate(left + paddingLeft, top + paddingTop);
+  ctx.translate(left + paddingLeft, top + paddingTop);
 
   return node;
 };

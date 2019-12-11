@@ -15,7 +15,7 @@ const getRotation = transform => {
 
 const getTranslateX = transform => {
   const matchX = /translateX\((-?\d+\.?d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?d*).*,\s*(-?\d+\.?d*).*\)/g.exec(
+  const matchGeneric = /translate\((-?\d+\.?d*).*,?\s*(-?\d+\.?d*).*\)/g.exec(
     transform,
   );
 
@@ -27,7 +27,7 @@ const getTranslateX = transform => {
 
 const getTranslateY = transform => {
   const matchY = /translateY\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+  const matchGeneric = /translate\((-?\d+\.?\d*).*,?\s*(-?\d+\.?\d*).*\)/g.exec(
     transform,
   );
 
@@ -39,7 +39,7 @@ const getTranslateY = transform => {
 
 const getScaleX = transform => {
   const matchX = /scaleX\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+  const matchGeneric = /scale\((-?\d+\.?\d*).*,?\s*(-?\d+\.?\d*).*\)/g.exec(
     transform,
   );
 
@@ -51,7 +51,7 @@ const getScaleX = transform => {
 
 const getScaleY = transform => {
   const matchY = /scaleY\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /scale\((-?\d+\.?\d*).*,\s*(-?\d+\.?\d*).*\)/g.exec(
+  const matchGeneric = /scale\((-?\d+\.?\d*).*,?\s*(-?\d+\.?\d*).*\)/g.exec(
     transform,
   );
 

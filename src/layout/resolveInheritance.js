@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 
+import isSvg from '../node/isSvg';
 import { INHERITED_PROPERTIES } from '../constants';
 
 /**
@@ -33,6 +34,8 @@ const mergeStyles = styles =>
  *
  */
 const resolveInheritance = node => {
+  if (isSvg(node)) return node;
+
   const inheritStyles = getInheritStyles(node);
 
   return R.evolve({

@@ -2,10 +2,10 @@ import * as R from 'ramda';
 
 import { FONT_WEIGHTS } from '../constants';
 
-const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh)?/g;
-const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh)?/g;
-const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh)?)\s(\S+)\s(\S+)/;
-const TRANSFORM_ORIGIN_REGEX = /(-?\d+(px|in|mm|cm|pt|%|vw|vh)?)|top|right|bottom|left|center/g;
+const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
+const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
+const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(\S+)/;
+const TRANSFORM_ORIGIN_REGEX = /(-?\d+(px|in|mm|cm|pt|%|vw|vh|px)?)|top|right|bottom|left|center/g;
 
 const matchBoxModel = R.match(BOX_MODEL_REGEX);
 const matchObjectPosition = R.match(OBJECT_POSITION_REGEX);

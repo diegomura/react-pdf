@@ -90,10 +90,6 @@ const mergeStyles = node => {
   return R.evolve({ props: R.merge(style) }, node);
 };
 
-const addDefaultProps = R.evolve({
-  props: R.merge({ fill: 'black' }),
-});
-
 const removeNoneValues = R.evolve({
   props: R.map(R.when(R.equals('none'), R.always(null))),
 });
@@ -130,7 +126,6 @@ const resolveSvgNode = container =>
     parseProps(container),
     addMissingTspan,
     removeNoneValues,
-    addDefaultProps,
     mergeStyles,
   );
 

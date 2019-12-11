@@ -13,7 +13,7 @@ const CM_FACTOR = (1 / 2.54) * DPI;
  * @returns {Object} parsed value
  */
 const parseValue = value => {
-  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw)?$/g.exec(value);
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px)?$/g.exec(value);
 
   return match
     ? { value: parseFloat(match[1], 10), unit: match[2] || 'pt' }

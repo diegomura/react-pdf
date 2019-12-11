@@ -14,6 +14,12 @@ describe('units conversion', () => {
     expect(styles.maxWidth).toBe(72 * 2);
   });
 
+  test('Should transform width px dimensions', () => {
+    const styles = transformUnits({}, { width: '1px' });
+
+    expect(styles.width).toBe(1);
+  });
+
   test('Should transform width mm dimensions', () => {
     const styles = transformUnits({}, { width: '1mm' });
 

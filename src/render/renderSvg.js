@@ -17,9 +17,11 @@ import isPath from '../node/isPath';
 import isText from '../node/isText';
 import isRect from '../node/isRect';
 import isLine from '../node/isLine';
+import isTspan from '../node/isTspan';
 import isImage from '../node/isImage';
 import isGroup from '../node/isGroup';
 import isCircle from '../node/isCircle';
+import isTextInstance from '../node/isTextInstance';
 import renderGroup from './renderGroup';
 import isEllipse from '../node/isEllipse';
 import isPolygon from '../node/isPolygon';
@@ -203,6 +205,8 @@ const draw = ctx => node => {
 
 const renderNode = ctx =>
   R.cond([
+    [isTspan, R.identity],
+    [isTextInstance, R.identity],
     [isPath, renderPath(ctx)],
     [isRect, renderRect(ctx)],
     [isLine, renderLine(ctx)],

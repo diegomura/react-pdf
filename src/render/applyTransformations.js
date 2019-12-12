@@ -15,7 +15,7 @@ const getRotation = transform => {
 
 const getTranslateX = transform => {
   const matchX = /translateX\((-?\d+\.?d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?d*).*,?\s*(-?\d+\.?d*).*\)/g.exec(
+  const matchGeneric = /translate\((-?\d+\.?d*).*(,|\s)\s*(-?\d+\.?d*).*\)/g.exec(
     transform,
   );
 
@@ -27,12 +27,12 @@ const getTranslateX = transform => {
 
 const getTranslateY = transform => {
   const matchY = /translateY\((-?\d+\.?\d*)\)/g.exec(transform);
-  const matchGeneric = /translate\((-?\d+\.?\d*).*,?\s*(-?\d+\.?\d*).*\)/g.exec(
+  const matchGeneric = /translate\((-?\d+\.?\d*).*(,|\s)\s*(-?\d+\.?\d*).*\)/g.exec(
     transform,
   );
 
   if (matchY && matchY[1]) return matchY[1];
-  if (matchGeneric && matchGeneric[2]) return matchGeneric[2];
+  if (matchGeneric && matchGeneric[3]) return matchGeneric[3];
 
   return 0;
 };

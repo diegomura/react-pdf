@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.0",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -41,9 +41,9 @@
     "queue": "^6.0.1",
     "ramda": "^0.26.1",
     "react-reconciler": "^0.23.0",
+    "scheduler": "^0.15.0",
     "svg-arc-to-cubic-bezier": "^3.2.0",
     "svgpath": "^2.2.2",
-    "scheduler": "^0.15.0",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "peerDependencies": {

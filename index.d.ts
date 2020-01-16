@@ -127,6 +127,10 @@ declare module '@react-pdf/renderer' {
 
     type Orientation = 'portrait' | 'landscape';
 
+    interface OnRenderProps {
+      blob?: Blob;
+    }
+
     interface DocumentProps {
       title?: string;
       author?: string;
@@ -134,7 +138,7 @@ declare module '@react-pdf/renderer' {
       keywords?: string;
       creator?: string;
       producer?: string;
-      onRender?: () => any;
+      onRender?: (props: OnRenderProps) => any;
     }
 
     /**

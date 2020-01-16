@@ -82,6 +82,12 @@ const pdf = ({ initialValue, onChange }) => {
     PDFRenderer.updateContainer(doc, mountNode, null);
   }
 
+  function callOnRender(params = {}) {
+    if (container.document.props.onRender) {
+      container.document.props.onRender(params);
+    }
+  }
+
   async function toBlob() {
     const instance = await render();
     const stream = instance.pipe(BlobStream());
@@ -90,6 +96,7 @@ const pdf = ({ initialValue, onChange }) => {
       stream.on('finish', () => {
         try {
           const blob = stream.toBlob('application/pdf');
+          callOnRender({ blob });
           resolve(blob);
         } catch (error) {
           reject(error);
@@ -101,6 +108,7 @@ const pdf = ({ initialValue, onChange }) => {
   }
 
   async function toBuffer() {
+    callOnRender();
     return render();
   }
 

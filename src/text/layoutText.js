@@ -68,5 +68,4 @@ const layoutText = R.compose(
   R.converge(engine, [getAttributedString, getContainer, getLayoutOptions]),
 );
 
-// TODO: Do it memoizable?
 export default layoutText;

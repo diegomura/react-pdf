@@ -68,14 +68,8 @@ const resolvePageStyles = page => {
   const container = R.isEmpty(box) ? style : box;
 
   return R.evolve({
+    style: resolveStyles(container),
     children: R.map(resolveNodeStyles(container)),
-    style: R.compose(
-      transformUnits(container),
-      transformColors,
-      transformStyles,
-      expandStyles,
-      flattenStyles,
-    ),
   })(page);
 };
 

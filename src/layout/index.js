@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 import resolveSvg from './resolveSvg';
 import resolveZIndex from './resolveZIndex';
 import resolveRulers from './resolveRulers';
@@ -17,8 +19,8 @@ import resolvePercentHeight from './resolvePercentHeight';
 import resolveLinkSubstitution from './resolveLinkSubstitution';
 import asyncCompose from '../utils/asyncCompose';
 
-// const startTimer = name => R.tap(() => console.time(name));
-// const endTimer = name => R.tap(() => console.timeEnd(name));
+const startTimer = name => R.tap(() => console.time(name));
+const endTimer = name => R.tap(() => console.timeEnd(name));
 
 const layout = asyncCompose(
   resolveZIndex,
@@ -34,7 +36,9 @@ const layout = asyncCompose(
   resolvePercentHeight,
   resolvePagePaddings,
   resolveStyles,
+  endTimer('timer'),
   resolveNoteChildren,
+  startTimer('timer'),
   resolveLinkSubstitution,
   resolvePageMargins,
   resolvePageSizes,

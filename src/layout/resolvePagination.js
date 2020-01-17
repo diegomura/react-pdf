@@ -207,7 +207,9 @@ const resolvePagination = doc => {
     pages = pages.concat(subpages);
   }
 
-  return assingChildren(pages.map(resolvePageIndices), doc);
+  pages = pages.map(resolvePageIndices);
+
+  return assingChildren(pages, doc);
 };
 
 export default resolvePagination;

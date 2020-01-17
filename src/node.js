@@ -30,9 +30,8 @@ import {
 } from './index';
 
 export const renderToStream = async function(element) {
-  const instance = pdf(element);
+  const instance = pdf({ initialValue: element });
   const buffer = await instance.toBuffer();
-  instance.container.finish();
   return buffer;
 };
 

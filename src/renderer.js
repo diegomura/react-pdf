@@ -10,7 +10,7 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const createRenderer = ({ onChange }) => {
+const createRenderer = ({ onChange = () => {} }) => {
   return ReactFiberReconciler({
     schedulePassiveEffects,
 

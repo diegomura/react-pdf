@@ -67,9 +67,9 @@ const pdf = ({ initialValue, onChange }) => {
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
 
-    console.time('layout');
+    // console.time('layout');
     const layout = await layoutDocument(container.document);
-    console.timeEnd('layout');
+    // console.timeEnd('layout');
 
     return renderPDF(ctx, layout);
   };

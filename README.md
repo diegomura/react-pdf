@@ -21,6 +21,8 @@
   </p>
 </p>
 
+React-pdf exports a set of React primitives that enable you to render things into your document very easily. It also has an API for styling them, using CSS properties and Flexbox layout.
+
 ## How to install
 ```sh
 yarn add @react-pdf/renderer

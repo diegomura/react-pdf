@@ -60,6 +60,10 @@ class InternalBlobProvider extends React.PureComponent {
     this.instance.updateContainer(this.props.document);
   }
 
+  componentWillUnmount() {
+    this.renderQueue.end();
+  }
+
   queueDocumentRender = () => {
     this.renderQueue.splice(0, this.renderQueue.length, () =>
       this.state.error ? Promise.resolve() : this.instance.toBlob(),

@@ -163,6 +163,10 @@ export class CanvasViewer extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.renderQueue.end();
+  }
+
   queueDocumentRender(doc) {
     this.renderQueue.splice(0, this.renderQueue.length, () => {
       this.instance.updateContainer(doc);

@@ -1,124 +1,161 @@
 /// <reference types="node" />
 
-declare module '@react-pdf/renderer' {
   import * as React from 'react';
 
-  namespace ReactPDF {
-    export interface Style {
-      //Flexbox
+  declare namespace ReactPDF {
+    interface Style {
+      // Flexbox
 
-      alignContent?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'space-between' | 'space-around',
-      alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline',
-      alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch',
-      flex?: number,
-      flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse',
-      flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse',
-      flexFlow?: number,
-      flexGrow?: number,
-      flexShrink?: number,
-      flexBasis?: number,
-      justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between' | 'space-evenly',
-      order?: number,
+      alignContent?:
+        | 'flex-start'
+        | 'flex-end'
+        | 'center'
+        | 'stretch'
+        | 'space-between'
+        | 'space-around';
+      alignItems?:
+        | 'flex-start'
+        | 'flex-end'
+        | 'center'
+        | 'stretch'
+        | 'baseline';
+      alignSelf?:
+        | 'auto'
+        | 'flex-start'
+        | 'flex-end'
+        | 'center'
+        | 'baseline'
+        | 'stretch';
+      flex?: number;
+      flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+      flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+      flexFlow?: number;
+      flexGrow?: number;
+      flexShrink?: number;
+      flexBasis?: number;
+      justifyContent?:
+        | 'flex-start'
+        | 'flex-end'
+        | 'center'
+        | 'space-around'
+        | 'space-between'
+        | 'space-evenly';
+      order?: number;
 
       // Layout?:never,
 
-      bottom?: number | string,
-      display?: 'flex' | 'none',
-      left?: number | string,
-      position?: 'absolute' | 'relative',
-      right?: number | string,
-      top?: number | string,
+      bottom?: number | string;
+      display?: 'flex' | 'none';
+      left?: number | string;
+      position?: 'absolute' | 'relative';
+      right?: number | string;
+      top?: number | string;
 
       // Dimension?:never,
 
-      height?: number | string,
-      maxHeight?: number | string,
-      maxWidth?: number | string,
-      minHeight?: number | string,
-      minWidth?: number | string,
-      width?: number | string,
+      height?: number | string;
+      maxHeight?: number | string;
+      maxWidth?: number | string;
+      minHeight?: number | string;
+      minWidth?: number | string;
+      width?: number | string;
 
       // Color?:never,
 
-      backgroundColor?: string,
-      color?: string,
-      opacity?: number,
+      backgroundColor?: string;
+      color?: string;
+      opacity?: number;
 
       // Text?:never,
 
-      fontSize?: number | string,
-      fontFamily?: string,
-      fontStyle?: string | 'normal',
-      fontWeight?: number | 'thin' | 'hairline' | 'ultralight' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'demibold' | 'bold' | 'ultrabold' | 'extrabold' | 'heavy' | 'black',
-      letterSpacing?: number | string,
-      lineHeight?: number | string,
-      maxLines?: number, //?
-      textAlign?: 'left' | 'right' | 'center' | 'justify', //?
-      textDecoration?: 'line-through' | 'underline' | 'none',
-      textDecorationColor?: string,
-      textDecorationStyle?: "dashed" | "dotted" | "solid" | string, //?
-      textIndent?: any, //?
-      textOverflow?: any, //?
-      textTransform?: 'capitalize' | 'lowercase' | 'uppercase',
+      fontSize?: number | string;
+      fontFamily?: string;
+      fontStyle?: string | 'normal';
+      fontWeight?:
+        | number
+        | 'thin'
+        | 'hairline'
+        | 'ultralight'
+        | 'extralight'
+        | 'light'
+        | 'normal'
+        | 'medium'
+        | 'semibold'
+        | 'demibold'
+        | 'bold'
+        | 'ultrabold'
+        | 'extrabold'
+        | 'heavy'
+        | 'black';
+      letterSpacing?: number | string;
+      lineHeight?: number | string;
+      maxLines?: number; // ?
+      textAlign?: 'left' | 'right' | 'center' | 'justify'; // ?
+      textDecoration?: 'line-through' | 'underline' | 'none';
+      textDecorationColor?: string;
+      textDecorationStyle?: 'dashed' | 'dotted' | 'solid' | string; // ?
+      textIndent?: any; // ?
+      textOverflow?: any; // ?
+      textTransform?: 'capitalize' | 'lowercase' | 'uppercase';
 
       // Sizing/positioning?:never,
 
-      objectFit?: string,
-      objectPosition?: number | string,
-      objectPositionX?: number | string,
-      objectPositionY?: number | string,
+      objectFit?: string;
+      objectPosition?: number | string;
+      objectPositionX?: number | string;
+      objectPositionY?: number | string;
 
       // Margin/padding?:never,
 
-      margin?: number | string,
-      marginHorizontal?: number | string,
-      marginVertical?: number | string,
-      marginTop?: number | string,
-      marginRight?: number | string,
-      marginBottom?: number | string,
-      marginLeft?: number | string,
-      padding?: number | string,
-      paddingHorizontal?: number | string,
-      paddingVertical?: number | string,
-      paddingTop?: number | string,
-      paddingRight?: number | string,
-      paddingBottom?: number | string,
-      paddingLeft?: number | string,
+      margin?: number | string;
+      marginHorizontal?: number | string;
+      marginVertical?: number | string;
+      marginTop?: number | string;
+      marginRight?: number | string;
+      marginBottom?: number | string;
+      marginLeft?: number | string;
+      padding?: number | string;
+      paddingHorizontal?: number | string;
+      paddingVertical?: number | string;
+      paddingTop?: number | string;
+      paddingRight?: number | string;
+      paddingBottom?: number | string;
+      paddingLeft?: number | string;
 
       // Transformations?:never,
 
-      transform?: string,
-      transformOrigin?: number | string,
-      transformOriginX?: number | string,
-      transformOriginY?: number | string,
+      transform?: string;
+      transformOrigin?: number | string;
+      transformOriginX?: number | string;
+      transformOriginY?: number | string;
 
       // Borders?:never,
 
-      border?: number | string,
-      borderWidth?: number,
-      borderColor?: string,
-      borderStyle?: "dashed" | "dotted" | "solid",
-      borderTop?: number | string,
-      borderTopColor?: string,
-      borderTopStyle?: "dashed" | "dotted" | "solid", // ?
-      borderTopWidth?: number | string,
-      borderRight?: number | string,
-      borderRightColor?: string,
-      borderRightStyle?: "dashed" | "dotted" | "solid", //?
-      borderRightWidth?: number | string,
-      borderBottom?: number | string,
-      borderBottomColor?: string,
-      borderBottomStyle?: "dashed" | "dotted" | "solid", //?
-      borderBottomWidth?: number | string,
-      borderLeft?: number | string,
-      borderLeftColor?: string,
-      borderLeftStyle?: "dashed" | "dotted" | "solid", //?
-      borderLeftWidth?: number | string,
-      borderTopLeftRadius?: number | string,
-      borderTopRightRadius?: number | string,
-      borderBottomRightRadius?: number | string,
-      borderBottomLeftRadius?: number | string,
-      borderRadius?: number | string
+      border?: number | string;
+      borderWidth?: number;
+      borderColor?: string;
+      borderStyle?: 'dashed' | 'dotted' | 'solid';
+      borderTop?: number | string;
+      borderTopColor?: string;
+      borderTopStyle?: 'dashed' | 'dotted' | 'solid'; // ?
+      borderTopWidth?: number | string;
+      borderRight?: number | string;
+      borderRightColor?: string;
+      borderRightStyle?: 'dashed' | 'dotted' | 'solid'; // ?
+      borderRightWidth?: number | string;
+      borderBottom?: number | string;
+      borderBottomColor?: string;
+      borderBottomStyle?: 'dashed' | 'dotted' | 'solid'; // ?
+      borderBottomWidth?: number | string;
+      borderLeft?: number | string;
+      borderLeftColor?: string;
+      borderLeftStyle?: 'dashed' | 'dotted' | 'solid'; // ?
+      borderLeftWidth?: number | string;
+      borderTopLeftRadius?: number | string;
+      borderTopRightRadius?: number | string;
+      borderBottomRightRadius?: number | string;
+      borderBottomLeftRadius?: number | string;
+      borderRadius?: number | string;
     }
 
     interface Styles {
@@ -257,12 +294,12 @@ declare module '@react-pdf/renderer' {
        * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection
        */
-      orphans?: number
+      orphans?: number;
       /**
        * Specifies the minimum number of lines in a text element that must be shown at the top of a page or its container..
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection
        */
-      widows?: number
+      widows?: number;
     }
 
     /**
@@ -299,7 +336,7 @@ declare module '@react-pdf/renderer' {
       paint: (
         painter: any,
         availableWidth: number,
-        availableHeight: number
+        availableHeight: number,
       ) => null;
     }
 
@@ -409,19 +446,23 @@ declare module '@react-pdf/renderer' {
     ) => string[];
 
     const Font: {
-      register: (options: {
-        family: string;
-        src: string;
-        [key: string]: any;
-      } | {
-        family: string;
-        fonts: {
-          src: string;
-          fontStyle?: string;
-          fontWeight?: string | number;
-          [key: string]: any;
-        }[];
-      }) => void;
+      register: (
+        options:
+          | {
+              family: string;
+              src: string;
+              [key: string]: any;
+            }
+          | {
+              family: string;
+              fonts: Array<{
+                src: string;
+                fontStyle?: string;
+                fontWeight?: string | number;
+                [key: string]: any;
+              }>;
+            },
+      ) => void;
       getEmojiSource: () => EmojiSource;
       getRegisteredFonts: () => FontInstance[];
       getRegisteredFontFamilies: () => string[];
@@ -450,7 +491,7 @@ declare module '@react-pdf/renderer' {
           orientation: Orientation;
         },
       ) => Style;
-      flatten: (...style: (Style[] | Style | undefined)[]) => Style;
+      flatten: (...style: Array<(Style[] | Style | undefined)>) => Style;
       absoluteFillObject: {
         position: 'absolute';
         left: 0;
@@ -464,55 +505,55 @@ declare module '@react-pdf/renderer' {
 
     const PDFRenderer: any;
 
-    const createInstance: (
+    function createInstance(
       element: {
         type: string;
         props: { [key: string]: any };
       },
       root?: any,
-    ) => any;
+    ): any;
 
-    const pdf: (
+    function pdf(
       document: React.ReactElement<DocumentProps>,
-    ) => {
+    ): {
       container: any;
       isDirty: () => boolean;
-      updateContainer: (document: React.ReactElement<any>) => void;
+      updateContainer: (document: React.ReactElement) => void;
       toBuffer: () => Promise<NodeJS.ReadableStream>;
       toBlob: () => Promise<Blob>;
       toString: () => string;
     };
 
-    const renderToStream: (
+    function renderToStream(
       document: React.ReactElement<DocumentProps>,
-    ) => Promise<NodeJS.ReadableStream>;
+    ): Promise<NodeJS.ReadableStream>;
 
-    const renderToFile: (
+    function renderToFile(
       document: React.ReactElement<DocumentProps>,
       filePath: string,
       callback?: (output: NodeJS.ReadableStream, filePath: string) => any,
-    ) => Promise<NodeJS.ReadableStream>;
+    ): Promise<NodeJS.ReadableStream>;
 
     const render: typeof renderToFile;
   }
 
-  const Document: typeof ReactPDF.Document;
-  const Page: typeof ReactPDF.Page;
-  const View: typeof ReactPDF.View;
-  const Image: typeof ReactPDF.Image;
-  const Text: typeof ReactPDF.Text;
-  const Canvas: typeof ReactPDF.Canvas;
-  const Link: typeof ReactPDF.Link;
-  const Note: typeof ReactPDF.Note;
-  const Font: typeof ReactPDF.Font;
-  const StyleSheet: typeof ReactPDF.StyleSheet;
-  const createInstance: typeof ReactPDF.createInstance;
-  const PDFRenderer: typeof ReactPDF.PDFRenderer;
-  const version: typeof ReactPDF.version;
-  const pdf: typeof ReactPDF.pdf;
-  const PDFViewer: typeof ReactPDF.PDFViewer;
-  const BlobProvider: typeof ReactPDF.BlobProvider;
-  const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
+  declare const Document: typeof ReactPDF.Document;
+  declare const Page: typeof ReactPDF.Page;
+  declare const View: typeof ReactPDF.View;
+  declare const Image: typeof ReactPDF.Image;
+  declare const Text: typeof ReactPDF.Text;
+  declare const Canvas: typeof ReactPDF.Canvas;
+  declare const Link: typeof ReactPDF.Link;
+  declare const Note: typeof ReactPDF.Note;
+  declare const Font: typeof ReactPDF.Font;
+  declare const StyleSheet: typeof ReactPDF.StyleSheet;
+  declare const createInstance: typeof ReactPDF.createInstance;
+  declare const PDFRenderer: typeof ReactPDF.PDFRenderer;
+  declare const version: typeof ReactPDF.version;
+  declare const pdf: typeof ReactPDF.pdf;
+  declare const PDFViewer: typeof ReactPDF.PDFViewer;
+  declare const BlobProvider: typeof ReactPDF.BlobProvider;
+  declare const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
 
   export default ReactPDF;
   export {
@@ -534,4 +575,3 @@ declare module '@react-pdf/renderer' {
     BlobProvider,
     PDFDownloadLink,
   };
-}

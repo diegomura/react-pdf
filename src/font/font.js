@@ -46,12 +46,12 @@ class FontSource {
 }
 
 class Font {
-  static create(family) {
-    return new Font(family);
+  static create(fontFamily) {
+    return new Font(fontFamily);
   }
 
-  constructor(family) {
-    this.family = family;
+  constructor(fontFamily) {
+    this.fontFamily = fontFamily;
     this.sources = [];
   }
 

@@ -24,7 +24,7 @@ describe('Font', () => {
   });
 
   test('should be able to clear registered fonts', () => {
-    Font.register({ family: 'MyFont', src: 'src' });
+    Font.register({ fontFamily: 'MyFont', src: 'src' });
 
     expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
 
@@ -36,29 +36,29 @@ describe('Font', () => {
   test('should show warning when old register API used', () => {
     fetch.once(localFont);
 
-    Font.register(oswaldUrl, { family: 'Oswald' });
+    Font.register(oswaldUrl, { fontFamily: 'Oswald' });
 
     expect(warning.mock.calls).toHaveLength(1);
   });
 
-  test('should be able to register one font family', () => {
-    Font.register({ family: 'MyFont', src: 'src' });
+  test('should be able to register one font fontFamily', () => {
+    Font.register({ fontFamily: 'MyFont', src: 'src' });
 
     expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont']);
   });
 
   test('should be able to register many font families', () => {
-    Font.register({ family: 'MyFont', src: 'src' });
-    Font.register({ family: 'MyOtherFont', src: 'src' });
+    Font.register({ fontFamily: 'MyFont', src: 'src' });
+    Font.register({ fontFamily: 'MyOtherFont', src: 'src' });
 
     expect(Font.getRegisteredFontFamilies()).toEqual(['MyFont', 'MyOtherFont']);
   });
 
-  test('should be able to register many sources of one font family individually', () => {
-    Font.register({ family: 'MyFont', src: 'src' });
-    Font.register({ family: 'MyFont', src: 'src', fontStyle: 'italic' });
+  test('should be able to register many sources of one font fontFamily individually', () => {
+    Font.register({ fontFamily: 'MyFont', src: 'src' });
+    Font.register({ fontFamily: 'MyFont', src: 'src', fontStyle: 'italic' });
     Font.register({
-      family: 'MyFont',
+      fontFamily: 'MyFont',
       src: 'src',
       fontStyle: 'italic',
       fontWeight: 700,
@@ -77,9 +77,9 @@ describe('Font', () => {
     expect(fontInstance.sources[2]).toHaveProperty('fontWeight', 700);
   });
 
-  test('should be able to register many sources of one font family in bulk', () => {
+  test('should be able to register many sources of one font fontFamily in bulk', () => {
     Font.register({
-      family: 'MyFont',
+      fontFamily: 'MyFont',
       fonts: [
         { src: 'src' },
         { src: 'src', fontStyle: 'italic' },
@@ -109,7 +109,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Oswald' };
 
-    Font.register({ family: 'Oswald', src: oswaldUrl });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl });
     await Font.load(descriptor, dummyRoot.instance);
 
     const font = Font.getFont(descriptor);
@@ -123,7 +123,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Oswald' };
 
-    Font.register({ family: 'Oswald', src: oswaldUrl });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl });
     await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].method).toBe('GET');
@@ -134,7 +134,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Oswald' };
 
-    Font.register({ family: 'Oswald', src: oswaldUrl, method: 'POST' });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl, method: 'POST' });
     await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].method).toBe('POST');
@@ -146,7 +146,7 @@ describe('Font', () => {
     const descriptor = { fontFamily: 'Oswald' };
     const headers = { Authorization: 'Bearer qwerty' };
 
-    Font.register({ family: 'Oswald', src: oswaldUrl, headers });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl, headers });
     await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].headers).toBe(headers);
@@ -158,14 +158,14 @@ describe('Font', () => {
     const descriptor = { fontFamily: 'Oswald' };
     const body = 'qwerty';
 
-    Font.register({ family: 'Oswald', src: oswaldUrl, body });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl, body });
     await Font.load(descriptor, dummyRoot.instance);
 
     expect(fetch.mock.calls[0][1].body).toBe(body);
   });
 
   test('should be able to load a font from file', async () => {
-    Font.register({ family: 'Roboto', src: `${__dirname}/assets/font.ttf` });
+    Font.register({ fontFamily: 'Roboto', src: `${__dirname}/assets/font.ttf` });
 
     const descriptor = { fontFamily: 'Roboto' };
 
@@ -187,7 +187,7 @@ describe('Font', () => {
 
     const descriptor = { fontFamily: 'Oswald' };
 
-    Font.register({ family: 'Oswald', src: oswaldUrl });
+    Font.register({ fontFamily: 'Oswald', src: oswaldUrl });
 
     const fontResolvers = Promise.all([
       Font.load(descriptor, dummyRoot.instance),
@@ -200,7 +200,7 @@ describe('Font', () => {
   });
 
   test('should throw error if missing font style is requested', async () => {
-    Font.register({ family: 'Roboto', src: `${__dirname}/assets/font.ttf` }); // normal
+    Font.register({ fontFamily: 'Roboto', src: `${__dirname}/assets/font.ttf` }); // normal
 
     await Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance);
 
@@ -211,7 +211,7 @@ describe('Font', () => {
 
   test('should be able to load requested font style source', async () => {
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       src: `${__dirname}/assets/font.ttf`,
       fontStyle: 'italic',
     });
@@ -232,7 +232,7 @@ describe('Font', () => {
 
     Font.register({
       src,
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fontWeight: 600,
     });
 
@@ -245,7 +245,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 430 }, { src, fontWeight: 470 }],
     });
 
@@ -261,7 +261,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 300 }, { src, fontWeight: 600 }],
     });
 
@@ -277,7 +277,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 600 }],
     });
 
@@ -293,7 +293,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 100 }, { src, fontWeight: 200 }],
     });
 
@@ -306,7 +306,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 600 }, { src, fontWeight: 700 }],
     });
 
@@ -319,7 +319,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 600 }, { src, fontWeight: 700 }],
     });
 
@@ -332,7 +332,7 @@ describe('Font', () => {
     const src = `${__dirname}/assets/font.ttf`;
 
     Font.register({
-      family: 'Roboto',
+      fontFamily: 'Roboto',
       fonts: [{ src, fontWeight: 200 }, { src, fontWeight: 300 }],
     });
 
@@ -365,9 +365,9 @@ describe('Font', () => {
 
   describe('invalid url', () => {
     test('should throw `no such file or directory` error', async () => {
-      Font.register({ family: 'Roboto', src: '/roboto.ttf' });
+      Font.register({ fontFamily: 'Roboto', src: '/roboto.ttf' });
 
-      expect(
+      await expect(
         Font.load({ fontFamily: 'Roboto' }, dummyRoot.instance),
       ).rejects.toThrow('no such file or directory');
     });

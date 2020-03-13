@@ -57,7 +57,7 @@ class Font {
 
   register({ src, fontWeight, fontStyle, ...options }) {
     this.sources.push(
-      new FontSource(src, this.fontFamily, fontStyle, fontWeight, options),
+      new FontSource(src, this.family, fontStyle, fontWeight, options),
     );
   }
 
@@ -95,9 +95,7 @@ class Font {
 
     if (!res) {
       throw new Error(
-        `Could not resolve font for ${
-          this.fontFamily
-        }, fontWeight ${fontWeight}`,
+        `Could not resolve font for ${this.family}, fontWeight ${fontWeight}`,
       );
     }
 

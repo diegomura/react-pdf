@@ -14,7 +14,7 @@ class View extends Base {
     this.root.instance.save();
     this.applyTransformations();
     this.drawBackgroundColor();
-    this.clip();
+    if (this.style.overflow === 'hidden') this.clip();
     await this.renderChildren();
     this.drawBorders();
     setDestination(this);

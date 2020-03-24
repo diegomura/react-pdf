@@ -150,6 +150,7 @@ declare module '@react-pdf/renderer' {
     class Document extends React.Component<DocumentProps> {}
 
     interface NodeProps {
+      id?: string;
       style?: Style | Style[];
       /**
        * Render component in all wrapped pages.

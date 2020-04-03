@@ -12,7 +12,6 @@ Object {
         Object {
           "style": Object {
             "color": "blue",
-            "textDecoration": "underline",
           },
           "type": "LINK",
         },

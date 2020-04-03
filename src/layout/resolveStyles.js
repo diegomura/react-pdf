@@ -10,7 +10,6 @@ import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
 
 const LINK_STYLES = {
   color: 'blue',
-  textDecoration: 'underline',
 };
 
 /**

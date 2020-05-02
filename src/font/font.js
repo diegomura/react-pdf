@@ -33,6 +33,8 @@ class FontSource {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data);
+    } else if (this.src.constructor.name === 'Buffer') {
+      this.data = fontkit.create(this.src);
     } else {
       this.data = await new Promise((resolve, reject) =>
         fontkit.open(this.src, (err, data) =>

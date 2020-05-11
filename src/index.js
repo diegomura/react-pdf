@@ -64,6 +64,10 @@ const pdf = ({ initialValue, onChange }) => {
 
   if (initialValue) updateContainer(initialValue);
 
+  const layout = async () => {
+    return layoutDocument(container.document);
+  };
+
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
 
@@ -72,10 +76,6 @@ const pdf = ({ initialValue, onChange }) => {
     console.timeEnd('layout');
 
     return renderPDF(ctx, layout);
-  };
-
-  const layout = async () => {
-    return layoutDocument(container);
   };
 
   function updateContainer(doc) {

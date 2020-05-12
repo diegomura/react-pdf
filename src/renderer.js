@@ -4,31 +4,52 @@ import ReactFiberReconciler from 'react-reconciler';
 import {
   unstable_scheduleCallback as schedulePassiveEffects,
   unstable_cancelCallback as cancelPassiveEffects,
+  unstable_now as now,
 } from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const createRenderer = ({ onChange = () => {} }) => {
+const mapInstanceIds = (node, result = {}) => {
+  result[node.id] = node;
+  if (node.children !== undefined) {
+    node.children.forEach(child => mapInstanceIds(child, result));
+  }
+  return result;
+};
+
+const createRenderer = (layout = {}) => {
+  let instanceCount = 0;
+
+  const layoutIds = mapInstanceIds(layout);
+
   return ReactFiberReconciler({
-    schedulePassiveEffects,
-
-    cancelPassiveEffects,
-
     supportsMutation: true,
 
     isPrimaryRenderer: false,
 
     warnsIfNotActing: false,
 
+    schedulePassiveEffects,
+
+    cancelPassiveEffects,
+
+    now,
+
     appendInitialChild(parentInstance, child) {
       parentInstance.children.push(child);
     },
 
     createInstance(type, { style, children, ...props }) {
+      const id = instanceCount;
+      const existing = layoutIds[id];
+      instanceCount += 1;
+
       return {
+        id,
         type,
+        prevBox: existing !== undefined ? existing.box : undefined,
         box: {},
         style: style || {},
         props: props || {},
@@ -56,7 +77,9 @@ const createRenderer = ({ onChange = () => {} }) => {
       return !propsEqual(oldProps, newProps);
     },
 
-    resetAfterCommit: onChange,
+    resetAfterCommit() {
+      // Noop
+    },
 
     resetTextContent(element) {
       // Noop
@@ -73,10 +96,6 @@ const createRenderer = ({ onChange = () => {} }) => {
     shouldSetTextContent(type, props) {
       return false;
     },
-
-    now: Date.now,
-
-    useSyncScheduling: true,
 
     appendChild(parentInstance, child) {
       parentInstance.children.push(child);

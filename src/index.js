@@ -1,11 +1,11 @@
 import BlobStream from 'blob-stream';
 import PDFDocument from '@react-pdf/pdfkit';
-
 import Font from './font';
 import renderPDF from './render';
 import layoutDocument from './layout';
 import createRenderer from './renderer';
 import StyleSheet from './stylesheet';
+import propsEqual from './utils/propsEqual';
 import { version } from '../package.json';
 import {
   VIEW,
@@ -57,36 +57,30 @@ const Stop = STOP;
 const LinearGradient = LINEAR_GRADIENT;
 const RadialGradient = RADIAL_GRADIENT;
 
-const pdf = ({ initialValue, onChange }) => {
-  const container = { type: 'ROOT', document: null };
-  const PDFRenderer = createRenderer({ onChange });
-  const mountNode = PDFRenderer.createContainer(container);
-
-  if (initialValue) updateContainer(initialValue);
-
-  const layout = async () => {
-    return layoutDocument(container.document);
+const pdf = ({ initialValue }) => {
+  const performLayout = async existingLayout => {
+    const container = { type: 'ROOT', document: null };
+    const PDFRenderer = createRenderer(existingLayout);
+    const mountNode = PDFRenderer.createContainer(container);
+    PDFRenderer.updateContainer(initialValue, mountNode);
+    PDFRenderer.flushPassiveEffects();
+    return await layoutDocument(container.document);
   };
 
   const render = async () => {
-    const ctx = new PDFDocument({ autoFirstPage: false });
-
     console.time('layout');
-    const layout = await layoutDocument(container.document);
-    console.timeEnd('layout');
-
-    return renderPDF(ctx, layout);
-  };
-
-  function updateContainer(doc) {
-    PDFRenderer.updateContainer(doc, mountNode, null);
-  }
-
-  function callOnRender(params = {}) {
-    if (container.document.props.onRender) {
-      container.document.props.onRender(params);
+    let prevLayout = await performLayout();
+    while (true) {
+      const nextLayout = await performLayout(prevLayout);
+      if (propsEqual(nextLayout, prevLayout)) {
+        console.timeEnd('layout');
+        const ctx = new PDFDocument({ autoFirstPage: false });
+        return renderPDF(ctx, nextLayout);
+      } else {
+        prevLayout = nextLayout;
+      }
     }
-  }
+  };
 
   async function toBlob() {
     const instance = await render();
@@ -96,7 +90,6 @@ const pdf = ({ initialValue, onChange }) => {
       stream.on('finish', () => {
         try {
           const blob = stream.toBlob('application/pdf');
-          callOnRender({ blob });
           resolve(blob);
         } catch (error) {
           reject(error);
@@ -108,7 +101,6 @@ const pdf = ({ initialValue, onChange }) => {
   }
 
   async function toBuffer() {
-    callOnRender();
     return render();
   }
 
@@ -132,9 +124,6 @@ const pdf = ({ initialValue, onChange }) => {
   }
 
   return {
-    layout,
-    container,
-    updateContainer,
     toBuffer,
     toBlob,
     toString,

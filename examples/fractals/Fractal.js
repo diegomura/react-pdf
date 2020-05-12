@@ -24,11 +24,13 @@ const Fractal = ({ steps, direction = 'column' }) => {
   const [bounds, setBounds] = useState(null);
   const ref = useRef();
   useEffect(() => {
-    if (ref.current.prevBox !== undefined) {
-      const { width, height } = ref.current.prevBox;
-      if (bounds === null) {
-        setBounds({ width, height });
-      }
+    if (
+      ref.current.prev !== undefined &&
+      ref.current.pass === 1 &&
+      bounds === null
+    ) {
+      const { width, height } = ref.current.prev.box;
+      setBounds({ width, height });
     }
   }, []);
 

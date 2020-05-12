@@ -57,10 +57,10 @@ const Stop = STOP;
 const LinearGradient = LINEAR_GRADIENT;
 const RadialGradient = RADIAL_GRADIENT;
 
-const pdf = ({ initialValue }) => {
-  const performLayout = async existingLayout => {
+const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
+  const performLayout = async (existingLayout, pass) => {
     const container = { type: 'ROOT', document: null };
-    const PDFRenderer = createRenderer(existingLayout);
+    const PDFRenderer = createRenderer(existingLayout, pass);
     const mountNode = PDFRenderer.createContainer(container);
     PDFRenderer.updateContainer(initialValue, mountNode);
     PDFRenderer.flushPassiveEffects();
@@ -69,9 +69,9 @@ const pdf = ({ initialValue }) => {
 
   const render = async () => {
     console.time('layout');
-    let prevLayout = await performLayout();
-    while (true) {
-      const nextLayout = await performLayout(prevLayout);
+    let prevLayout = await performLayout(null, 0);
+    for (let pass = 1; pass < maxPasses; pass++) {
+      const nextLayout = await performLayout(prevLayout, pass);
       if (propsEqual(nextLayout, prevLayout)) {
         console.timeEnd('layout');
         const ctx = new PDFDocument({ autoFirstPage: false });

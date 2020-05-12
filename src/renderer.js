@@ -19,10 +19,10 @@ const mapInstanceIds = (node, result = {}) => {
   return result;
 };
 
-const createRenderer = (layout = {}) => {
+const createRenderer = (layout = {}, pass = 0) => {
   let instanceCount = 0;
 
-  const layoutIds = mapInstanceIds(layout);
+  const layoutIds = mapInstanceIds(layout || {});
 
   return ReactFiberReconciler({
     supportsMutation: true,
@@ -43,13 +43,12 @@ const createRenderer = (layout = {}) => {
 
     createInstance(type, { style, children, ...props }) {
       const id = instanceCount;
-      const existing = layoutIds[id];
+
       instanceCount += 1;
 
       return {
-        id,
         type,
-        prevBox: existing !== undefined ? existing.box : undefined,
+        id,
         box: {},
         style: style || {},
         props: props || {},
@@ -66,7 +65,12 @@ const createRenderer = (layout = {}) => {
     },
 
     getPublicInstance(instance) {
-      return instance;
+      const existing = layoutIds[instance.id];
+      return {
+        ...instance,
+        pass,
+        prev: existing !== undefined ? existing : undefined,
+      };
     },
 
     prepareForCommit() {

@@ -80,6 +80,10 @@ describe('Styles inherit', () => {
   test('Should inherit word spacing', shouldInherit('wordSpacing', 10));
   test('Should inherit letter spacing', shouldInherit('letterSpacing', 10));
   test(
+    'Should inherit text transform',
+    shouldInherit('textTransform', 'uppercase'),
+  );
+  test(
     'Should inherit text decoration',
     shouldInherit('textDecoration', 'underline'),
   );

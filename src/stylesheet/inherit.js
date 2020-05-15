@@ -9,6 +9,7 @@ export const inheritedProperties = [
   'textDecoration',
   'lineHeight',
   'textAlign',
+  'textTransform',
   'visibility',
   'wordSpacing',
 ];

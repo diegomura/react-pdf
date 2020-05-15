@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   detailColumn: {
     flexDirection: 'column',
     flexGrow: 9,
+    textTransform: 'uppercase',
   },
   linkColumn: {
     flexDirection: 'column',
@@ -22,13 +23,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    textTransform: 'uppercase',
     fontFamily: 'Lato Bold',
   },
   subtitle: {
     fontSize: 10,
     justifySelf: 'flex-end',
-    textTransform: 'uppercase',
     fontFamily: 'Lato',
   },
   link: {

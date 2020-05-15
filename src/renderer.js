@@ -7,7 +7,7 @@ import {
   unstable_now as now,
 } from 'scheduler';
 
-import { ROOT, TEXT_INSTANCE } from './constants';
+import { ROOT, TEXT_INSTANCE, SUSPENDED } from './constants';
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
@@ -110,6 +110,10 @@ const createRenderer = (layout = {}, pass = 0) => {
       return false;
     },
 
+    hideInstance(instance) {
+      // Noop
+    },
+
     unhideInstance(instance) {
       // Noop
     },
@@ -120,7 +124,11 @@ const createRenderer = (layout = {}, pass = 0) => {
 
     appendChildToContainer(parentInstance, child) {
       if (parentInstance.type === ROOT) {
-        parentInstance.document = child;
+        if (child.type === SUSPENDED) {
+          parentInstance.suspended = true;
+        } else {
+          parentInstance.document = child;
+        }
       } else {
         parentInstance.children.push(child);
       }
@@ -139,7 +147,11 @@ const createRenderer = (layout = {}, pass = 0) => {
 
     removeChildFromContainer(parentInstance, child) {
       if (parentInstance.type === ROOT) {
-        parentInstance.document = null;
+        if (child.type === SUSPENDED) {
+          parentInstance.suspended = false;
+        } else {
+          parentInstance.document = null;
+        }
       } else {
         const index = parentInstance.children.indexOf(child);
         if (index !== -1) parentInstance.children.splice(index, 1);

@@ -63,7 +63,7 @@ const RadialGradient = RADIAL_GRADIENT;
 const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
   const performLayout = async (existingLayout, pass) => {
     console.time('react');
-    const container = { type: ROOT, document: null };
+    const container = { type: ROOT, suspended: false, document: null };
     const PDFRenderer = createRenderer(existingLayout, pass);
     const mountNode = PDFRenderer.createContainer(container);
     const root = React.createElement(
@@ -73,10 +73,7 @@ const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
     );
     PDFRenderer.updateContainer(root, mountNode);
     PDFRenderer.flushPassiveEffects();
-    while (
-      container.document === null ||
-      container.document.type === SUSPENDED
-    ) {
+    while (container.suspended) {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
     console.timeEnd('react');

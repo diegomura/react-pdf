@@ -1,3 +1,5 @@
+export const ROOT = 'ROOT';
+export const SUSPENDED = 'SUSPENDED';
 export const VIEW = 'VIEW';
 export const TEXT = 'TEXT';
 export const LINK = 'LINK';

@@ -42,14 +42,14 @@
     "parse-svg-path": "^0.1.2",
     "queue": "^6.0.1",
     "ramda": "^0.26.1",
-    "react-reconciler": "^0.25.0",
+    "react-reconciler": "0.0.0-33c3af284",
     "scheduler": "^0.15.0",
     "svg-arc-to-cubic-bezier": "^3.2.0",
     "svgpath": "^2.2.2",
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
+    "react": "0.0.0-experimental-33c3af284",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
@@ -80,7 +80,9 @@
     "mock-fs": "^4.8.0",
     "mockdate": "^2.0.2",
     "prettier": "^1.16.4",
-    "react": "^16.8.6",
+    "react": "0.0.0-experimental-33c3af284",
+    "jimp": "^0.10.3",
+    "@lxsmnsyc/react-suspense-cache": "^0.1.0",
     "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^1.2.3",

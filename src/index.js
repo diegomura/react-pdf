@@ -1,3 +1,4 @@
+import React from 'react';
 import BlobStream from 'blob-stream';
 import PDFDocument from '@react-pdf/pdfkit';
 import Font from './font';
@@ -8,6 +9,8 @@ import StyleSheet from './stylesheet';
 import propsEqual from './utils/propsEqual';
 import { version } from '../package.json';
 import {
+  ROOT,
+  SUSPENDED,
   VIEW,
   TEXT,
   LINK,
@@ -59,22 +62,38 @@ const RadialGradient = RADIAL_GRADIENT;
 
 const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
   const performLayout = async (existingLayout, pass) => {
-    const container = { type: 'ROOT', document: null };
+    console.time('react');
+    const container = { type: ROOT, document: null };
     const PDFRenderer = createRenderer(existingLayout, pass);
     const mountNode = PDFRenderer.createContainer(container);
-    PDFRenderer.updateContainer(initialValue, mountNode);
+    const root = React.createElement(
+      React.Suspense,
+      { fallback: React.createElement(SUSPENDED) },
+      initialValue,
+    );
+    PDFRenderer.updateContainer(root, mountNode);
     PDFRenderer.flushPassiveEffects();
-    return await layoutDocument(container.document);
+    while (
+      container.document === null ||
+      container.document.type === SUSPENDED
+    ) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    console.timeEnd('react');
+    console.time('layout');
+    const layout = await layoutDocument(container.document);
+    console.timeEnd('layout');
+    return layout;
   };
 
   const render = async () => {
-    console.time('layout');
+    console.time('render');
     let prevLayout = await performLayout(null, 0);
     for (let pass = 1; pass < maxPasses; pass++) {
       const nextLayout = await performLayout(prevLayout, pass);
       if (propsEqual(nextLayout, prevLayout)) {
-        console.timeEnd('layout');
         const ctx = new PDFDocument({ autoFirstPage: false });
+        console.timeEnd('render');
         return renderPDF(ctx, nextLayout);
       } else {
         prevLayout = nextLayout;

@@ -7,6 +7,7 @@ import {
   unstable_now as now,
 } from 'scheduler';
 
+import { ROOT, TEXT_INSTANCE } from './constants';
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
@@ -56,8 +57,16 @@ const createRenderer = (layout = {}, pass = 0) => {
       };
     },
 
+    clearContainer(container) {
+      // Noop
+    },
+
+    beforeRemoveInstance() {
+      // noop
+    },
+
     createTextInstance(text, rootContainerInstance) {
-      return { type: 'TEXT_INSTANCE', value: text };
+      return { type: TEXT_INSTANCE, value: text };
     },
 
     finalizeInitialChildren(element, type, props) {
@@ -74,7 +83,7 @@ const createRenderer = (layout = {}, pass = 0) => {
     },
 
     prepareForCommit() {
-      // Noop
+      return null;
     },
 
     prepareUpdate(element, type, oldProps, newProps) {
@@ -101,12 +110,16 @@ const createRenderer = (layout = {}, pass = 0) => {
       return false;
     },
 
+    unhideInstance(instance) {
+      // Noop
+    },
+
     appendChild(parentInstance, child) {
       parentInstance.children.push(child);
     },
 
     appendChildToContainer(parentInstance, child) {
-      if (parentInstance.type === 'ROOT') {
+      if (parentInstance.type === ROOT) {
         parentInstance.document = child;
       } else {
         parentInstance.children.push(child);
@@ -125,8 +138,12 @@ const createRenderer = (layout = {}, pass = 0) => {
     },
 
     removeChildFromContainer(parentInstance, child) {
-      const index = parentInstance.children.indexOf(child);
-      if (index !== -1) parentInstance.children.splice(index, 1);
+      if (parentInstance.type === ROOT) {
+        parentInstance.document = null;
+      } else {
+        const index = parentInstance.children.indexOf(child);
+        if (index !== -1) parentInstance.children.splice(index, 1);
+      }
     },
 
     commitTextUpdate(textInstance, oldText, newText) {

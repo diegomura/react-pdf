@@ -150,6 +150,7 @@ declare module '@react-pdf/renderer' {
     class Document extends React.Component<DocumentProps> {}
 
     interface NodeProps {
+      id?: string;
       style?: Style | Style[];
       /**
        * Render component in all wrapped pages.
@@ -445,7 +446,7 @@ declare module '@react-pdf/renderer' {
 
     const StyleSheet: {
       hairlineWidth: number;
-      create: (styles: Styles) => Styles;
+      create: <T extends Styles>(styles: T) => T;
       resolve: (
         style: Style,
         container: {

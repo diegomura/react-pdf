@@ -36,6 +36,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Oswald',
     textAlign: 'justify',
   },
+  textItalic: {
+    width: '60%',
+    margin: 10,
+    fontFamily: 'Roboto',
+    fontStyle: 'italic',
+    textAlign: 'justify',
+  },
   fill1: {
     width: '40%',
     backgroundColor: '#e14427',
@@ -81,7 +88,7 @@ export default () => (
         </View>
         <View style={styles.row}>
           <View style={styles.fill2} />
-          <Text style={styles.text}>
+          <Text style={styles.textItalic}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -101,7 +108,7 @@ export default () => (
         </View>
         <View style={styles.row}>
           <View style={styles.fill4} />
-          <Text style={styles.text}>
+          <Text style={styles.textItalic}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut

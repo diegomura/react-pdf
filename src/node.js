@@ -27,6 +27,7 @@ import {
   version,
   Document,
   StyleSheet,
+  PDFContext,
 } from './index';
 
 export const renderToStream = async function(element) {
@@ -135,4 +136,5 @@ export default {
   renderToStream,
   renderToFile,
   render,
+  PDFContext,
 };

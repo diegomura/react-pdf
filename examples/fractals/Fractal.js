@@ -1,10 +1,16 @@
 /* eslint react/prop-types: 0 */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 
 import styles from './styles';
 import palette from './palette';
-import { Text, View } from '../../dist/react-pdf.es.js';
+import { Text, View, PDFContext } from '../../dist/react-pdf.es.js';
 
 const toggle = direction => (direction === 'column' ? 'row' : 'column');
 
@@ -21,17 +27,21 @@ const Fractal = ({ steps, direction = 'column' }) => {
     backgroundColor: palette[steps],
   };
 
-  const [bounds, setBounds] = useState(null);
+  const pdf = useContext(PDFContext);
   const ref = useRef();
-  useEffect(() => {
-    if (
-      ref.current.prev !== undefined &&
-      ref.current.pass === 1 &&
-      bounds === null
-    ) {
-      const { width, height } = ref.current.prev.box;
+  const [bounds, setBounds] = useState(null);
+  const onLayout = useCallback(() => {
+    if (bounds === null) {
+      const { width, height } = ref.current.box;
       setBounds({ width, height });
     }
+  }, []);
+
+  useEffect(() => {
+    pdf.on('layout', onLayout);
+    return () => {
+      pdf.off('layout', onLayout);
+    };
   }, []);
 
   return (

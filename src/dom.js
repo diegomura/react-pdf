@@ -35,6 +35,7 @@ import {
   StyleSheet,
   // createInstance,
   Document as PDFDocument,
+  PDFContext,
 } from './index';
 
 const flatStyles = stylesArray =>
@@ -182,6 +183,7 @@ export {
   RadialGradient,
   version,
   StyleSheet,
+  PDFContext,
 } from './index';
 
 export { CanvasViewer } from './canvas';

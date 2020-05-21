@@ -98,6 +98,7 @@ export {
   version,
   Document,
   StyleSheet,
+  PDFContext,
 } from './index';
 
 export default {

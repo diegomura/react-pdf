@@ -1,4 +1,5 @@
 import React from 'react';
+import EventEmitter from 'events';
 import BlobStream from 'blob-stream';
 import PDFDocument from '@react-pdf/pdfkit';
 import Font from './font';
@@ -60,41 +61,70 @@ const Stop = STOP;
 const LinearGradient = LINEAR_GRADIENT;
 const RadialGradient = RADIAL_GRADIENT;
 
+class PDFContextValue extends EventEmitter {}
+
+const PDFContext = React.createContext(null);
+
+const updateRefs = node => {
+  if (node.ref !== undefined) {
+    Object.assign(node.ref, {
+      box: node.box,
+    });
+  }
+
+  if (node.children !== undefined) {
+    node.children.forEach(child => updateRefs(child));
+  }
+};
+
+const excludeRefs = ({ ref, children, ...node }) => {
+  return {
+    ...node,
+    children:
+      children === undefined
+        ? undefined
+        : children.map(child => excludeRefs(child)),
+  };
+};
+
 const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
-  const performLayout = async (existingLayout, pass) => {
-    console.time('react');
-    const container = { type: ROOT, suspended: false, document: null };
-    const PDFRenderer = createRenderer(existingLayout, pass);
-    const mountNode = PDFRenderer.createContainer(container);
+  const PDFRenderer = createRenderer();
+  const context = new PDFContextValue();
+  const container = { type: ROOT, suspended: false, document: null };
+  const mountNode = PDFRenderer.createContainer(container);
+
+  const render = async () => {
     const root = React.createElement(
       React.Suspense,
       { fallback: React.createElement(SUSPENDED) },
-      initialValue,
+      React.createElement(
+        PDFContext.Provider,
+        { value: context },
+        initialValue,
+      ),
     );
-    PDFRenderer.updateContainer(root, mountNode);
-    PDFRenderer.flushPassiveEffects();
-    while (container.suspended) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    console.timeEnd('react');
-    console.time('layout');
-    const layout = await layoutDocument(container.document);
-    console.timeEnd('layout');
-    return layout;
-  };
 
-  const render = async () => {
-    console.time('render');
-    let prevLayout = await performLayout(null, 0);
-    for (let pass = 1; pass < maxPasses; pass++) {
-      const nextLayout = await performLayout(prevLayout, pass);
-      if (propsEqual(nextLayout, prevLayout)) {
-        const ctx = new PDFDocument({ autoFirstPage: false });
-        console.timeEnd('render');
-        return renderPDF(ctx, nextLayout);
-      } else {
-        prevLayout = nextLayout;
+    PDFRenderer.updateContainer(root, mountNode);
+    let prevLayout = null;
+    for (let pass = 0; pass < maxPasses; pass++) {
+      PDFRenderer.flushPassiveEffects();
+      while (container.suspended) {
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
+
+      console.time('layout');
+      const layout = await layoutDocument(container.document);
+      console.timeEnd('layout');
+      if (
+        prevLayout !== null &&
+        propsEqual(excludeRefs(prevLayout), excludeRefs(layout))
+      ) {
+        return renderPDF(new PDFDocument({ autoFirstPage: false }), layout);
+      }
+
+      prevLayout = layout;
+      updateRefs(layout);
+      context.emit('layout');
     }
   };
 
@@ -140,6 +170,7 @@ const pdf = ({ initialValue, maxPasses = Number.MAX_SAFE_INTEGER }) => {
   }
 
   return {
+    container,
     toBuffer,
     toBlob,
     toString,
@@ -174,4 +205,5 @@ export {
   RadialGradient,
   StyleSheet,
   pdf,
+  PDFContext,
 };

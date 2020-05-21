@@ -12,19 +12,7 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const mapInstanceIds = (node, result = {}) => {
-  result[node.id] = node;
-  if (node.children !== undefined) {
-    node.children.forEach(child => mapInstanceIds(child, result));
-  }
-  return result;
-};
-
-const createRenderer = (layout = {}, pass = 0) => {
-  let instanceCount = 0;
-
-  const layoutIds = mapInstanceIds(layout || {});
-
+const createRenderer = () => {
   return ReactFiberReconciler({
     supportsMutation: true,
 
@@ -43,13 +31,9 @@ const createRenderer = (layout = {}, pass = 0) => {
     },
 
     createInstance(type, { style, children, ...props }) {
-      const id = instanceCount;
-
-      instanceCount += 1;
-
       return {
         type,
-        id,
+        ref: {},
         box: {},
         style: style || {},
         props: props || {},
@@ -74,12 +58,7 @@ const createRenderer = (layout = {}, pass = 0) => {
     },
 
     getPublicInstance(instance) {
-      const existing = layoutIds[instance.id];
-      return {
-        ...instance,
-        pass,
-        prev: existing !== undefined ? existing : undefined,
-      };
+      return instance.ref;
     },
 
     prepareForCommit() {

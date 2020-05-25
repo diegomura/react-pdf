@@ -121,6 +121,8 @@ class Page extends Base {
 
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
+      if (!child) continue;
+
       const { type, props } = child;
 
       if (typeof child === 'string') {
@@ -196,7 +198,7 @@ class Page extends Base {
       size: [this.size.width, height],
       margin: 0,
     });
-    setDestination(this)
+    setDestination(this);
 
     if (this.style.backgroundColor) {
       instance
@@ -210,7 +212,6 @@ class Page extends Base {
     if (this.props.debug) {
       this.debug();
     }
-
 
     this.renderRuler();
   }

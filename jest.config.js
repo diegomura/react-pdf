@@ -1,5 +1,5 @@
 module.exports = {
-  testRegex: 'tests/.*?(test)\\.js$',
+  testRegex: 'packages/.*/tests/.*?(test)\\.js$',
   setupFiles: ['<rootDir>tests/internal/setupTests.js'],
   moduleNameMapper: {
     'cross-fetch': 'jest-fetch-mock',

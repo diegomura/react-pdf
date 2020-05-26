@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import absPath from 'abs-svg-path';
 import parsePath from 'parse-svg-path';
+import normalizePath from 'normalize-svg-path';
 
 import isRect from '../utils/isRect';
 import isLine from '../utils/isLine';
@@ -9,8 +10,7 @@ import isCircle from '../utils/isCircle';
 import isPolygon from '../utils/isPolygon';
 import isEllipse from '../utils/isEllipse';
 import isPolyline from '../utils/isPolyline';
-import parsePoints from '../svg/parsePoints';
-import normalizePath from '../svg/normalizePath';
+import parsePoints from './parsePoints';
 
 // From https://github.com/dy/svg-path-bounds/blob/master/index.js
 const getPathBoundingBox = node => {

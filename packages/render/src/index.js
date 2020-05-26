@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import renderNode from './render/renderNode';
+import renderNode from './primitives/renderNode';
 import addMetadata from './operations/addMetadata';
 
 const renderDocument = ctx =>

@@ -18,7 +18,10 @@ const drawBackground = ctx => node => {
   return node;
 };
 
-const shouldRenderBackground = R.hasPath(['style', 'backgroundColor']);
+const shouldRenderBackground = R.both(
+  R.has('box'),
+  R.hasPath(['style', 'backgroundColor']),
+);
 
 const renderBackground = (ctx, node) => {
   R.when(

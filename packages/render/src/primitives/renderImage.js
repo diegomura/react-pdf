@@ -3,7 +3,6 @@ import * as R from 'ramda';
 import save from '../operations/save';
 import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
-// import warning from '../utils/warning';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
 const drawImage = ctx => node => {
@@ -38,10 +37,9 @@ const drawImage = ctx => node => {
           },
         );
     } else {
-      // warning(
-      //   false,
-      //   `Image with src '${node.props.src}' skipped due to invalid dimensions`,
-      // );
+      console.warn(
+        `Image with src '${node.props.src}' skipped due to invalid dimensions`,
+      );
     }
   }
 

@@ -2,7 +2,6 @@ import * as R from 'ramda';
 
 import save from '../operations/save';
 import restore from '../operations/restore';
-// import warning from '../utils/warning';
 
 const drawImage = ctx => node => {
   const { x, y } = node.props;
@@ -19,10 +18,9 @@ const drawImage = ctx => node => {
           height,
         });
     } else {
-      // warning(
-      //   false,
-      //   `Image with src '${node.props.href}' skipped due to invalid dimensions`,
-      // );
+      console.warn(
+        `Image with src '${node.props.href}' skipped due to invalid dimensions`,
+      );
     }
   }
 

@@ -29,7 +29,6 @@ import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
 
-
 const warnUnsupportedNode = R.tap(node => {
   console.warn(`SVG node of type ${node.type} is not currenty supported`);
 });

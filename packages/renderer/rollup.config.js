@@ -120,8 +120,8 @@ const serverConfig = {
   ...configBase,
   input: './src/node.js',
   output: [
-    getESM({ file: 'dist/react-pdf.es.js' }),
-    getCJS({ file: 'dist/react-pdf.cjs.js' }),
+    getESM({ file: 'lib/react-pdf.es.js' }),
+    getCJS({ file: 'lib/react-pdf.cjs.js' }),
   ],
   plugins: getPlugins({ browser: false }),
   external: configBase.external.concat(['fs', 'path', 'url']),
@@ -130,8 +130,8 @@ const serverConfig = {
 const serverProdConfig = {
   ...serverConfig,
   output: [
-    getESM({ file: 'dist/react-pdf.es.min.js' }),
-    getCJS({ file: 'dist/react-pdf.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.es.min.js' }),
+    getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
   ],
   plugins: serverConfig.plugins.concat(terser()),
 };
@@ -140,8 +140,8 @@ const browserConfig = {
   ...configBase,
   input: './src/dom.js',
   output: [
-    getESM({ file: 'dist/react-pdf.browser.es.js' }),
-    getCJS({ file: 'dist/react-pdf.browser.cjs.js' }),
+    getESM({ file: 'lib/react-pdf.browser.es.js' }),
+    getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),
   ],
   plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
 };
@@ -149,8 +149,8 @@ const browserConfig = {
 const browserProdConfig = {
   ...browserConfig,
   output: [
-    getESM({ file: 'dist/react-pdf.browser.es.min.js' }),
-    getCJS({ file: 'dist/react-pdf.browser.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
+    getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),
   ],
   plugins: browserConfig.plugins.concat(terser()),
 };

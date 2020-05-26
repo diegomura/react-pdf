@@ -1,10 +1,11 @@
 import * as R from 'ramda';
 
-const setDestination = ctx =>
-  R.tap(node => {
-    if (node.props.id) {
-      ctx.addNamedDestination(node.props.id, 'XYZ', null, node.box.top, null);
-    }
-  });
+const setDestination = (ctx, node) => {
+  if (node.props?.id) {
+    ctx.addNamedDestination(node.props.id, 'XYZ', null, node.box.top, null);
+  }
 
-export default setDestination;
+  return node;
+}
+
+export default R.curryN(2, setDestination);

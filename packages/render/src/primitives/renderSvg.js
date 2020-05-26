@@ -49,19 +49,19 @@ const setStrokeColor = ctx => node => {
 
 const setOpacity = ctx => node => {
   const opacity = getProp(null, 'opacity', node);
-  if (opacity) ctx.opacity(opacity);
+  if (!R.isNil(opacity)) ctx.opacity(opacity);
   return node;
 };
 
 const setFillOpacity = ctx => node => {
   const fillOpacity = getProp(null, 'fillOpacity', node);
-  if (fillOpacity) ctx.fillOpacity(fillOpacity);
+  if (!R.isNil(fillOpacity)) ctx.fillOpacity(fillOpacity);
   return node;
 };
 
 const setStrokeOpacity = ctx => node => {
   const strokeOpacity = getProp(null, 'strokeOpacity', node);
-  if (strokeOpacity) ctx.strokeOpacity(strokeOpacity);
+  if (!R.isNil(strokeOpacity)) ctx.strokeOpacity(strokeOpacity);
   return node;
 };
 
@@ -80,14 +80,8 @@ const setLineCap = ctx => node => {
 const setLineDash = ctx => node => {
   const value = getProp(null, 'strokeDasharray', node);
 
-  if (value) {
-    const dashArray = R.compose(
-      R.map(R.o(parseFloat, R.trim)),
-      R.split(','),
-    )(value);
+  if (value) ctx.dash(R.split(',', value));
 
-    ctx.dash(dashArray[0], { space: dashArray[1] });
-  }
   return node;
 };
 
@@ -273,10 +267,10 @@ const preserveAspectRatio = ctx => node => {
 
   if (viewBox == null || width == null || height == null) return node;
 
-  const x = viewBox ? viewBox.minX : 0;
-  const y = viewBox ? viewBox.minY : 0;
-  const logicalWidth = viewBox ? viewBox.maxX : width;
-  const logicalHeight = viewBox ? viewBox.maxY : height;
+  const x = viewBox?.minX || 0;
+  const y = viewBox?.minY || 0;
+  const logicalWidth = viewBox?.maxX || width;
+  const logicalHeight = viewBox?.maxY || height;
 
   const logicalRatio = logicalWidth / logicalHeight;
   const physicalRatio = width / height;

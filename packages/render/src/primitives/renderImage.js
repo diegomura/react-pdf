@@ -7,14 +7,17 @@ import resolveObjectFit from '../utils/resolveObjectFit';
 
 const drawImage = ctx => node => {
   const { left, top } = node.box;
-  const { opacity, objectPositionX, objectPositionY } = node.style;
+  const opacity = node.style?.opacity;
+  const objectFit = node.style?.objectFit;
+  const objectPositionX = node.style?.objectPositionX;
+  const objectPositionY = node.style?.objectPositionY;
   const paddingTop = node.box.paddingLeft || 0;
   const paddingRight = node.box.paddingRight || 0;
   const paddingBottom = node.box.paddingBottom || 0;
   const paddingLeft = node.box.paddingLeft || 0;
 
   const { width, height, xOffset, yOffset } = resolveObjectFit(
-    node.style.objectFit,
+    objectFit,
     node.box.width - paddingLeft - paddingRight,
     node.box.height - paddingTop - paddingBottom,
     node.image.width,
@@ -22,6 +25,9 @@ const drawImage = ctx => node => {
     objectPositionX,
     objectPositionY,
   );
+
+  console.log(node.image.data);
+
 
   if (node.image.data) {
     if (width !== 0 && height !== 0) {

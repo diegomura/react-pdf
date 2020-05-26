@@ -7,9 +7,10 @@ import clipNode from '../operations/clipNode';
 const drawBackground = ctx => node => {
   if (node.box && node.style.backgroundColor) {
     const { top, left, width, height } = node.box;
+    const opacity = R.defaultTo(1, node.style?.opacity);
 
     ctx
-      .fillOpacity(node.style.opacity || 1)
+      .fillOpacity(opacity)
       .fillColor(node.style.backgroundColor)
       .rect(left, top, width, height)
       .fill();

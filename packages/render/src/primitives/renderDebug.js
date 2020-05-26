@@ -18,14 +18,14 @@ const debugContent = ctx =>
       top,
       width,
       height,
-      paddingLeft,
-      paddingTop,
-      paddingRight,
-      paddingBottom,
-      borderLeftWidth,
-      borderTopWidth,
-      borderRightWidth,
-      borderBottomWidth,
+      paddingLeft = 0,
+      paddingTop = 0,
+      paddingRight = 0,
+      paddingBottom = 0,
+      borderLeftWidth = 0,
+      borderTopWidth = 0,
+      borderRightWidth = 0,
+      borderBottomWidth = 0,
     } = node.box;
 
     ctx
@@ -51,14 +51,14 @@ const debugPadding = ctx =>
       top,
       width,
       height,
-      paddingLeft,
-      paddingTop,
-      paddingRight,
-      paddingBottom,
-      borderLeftWidth,
-      borderTopWidth,
-      borderRightWidth,
-      borderBottomWidth,
+      paddingLeft = 0,
+      paddingTop = 0,
+      paddingRight = 0,
+      paddingBottom = 0,
+      borderLeftWidth = 0,
+      borderTopWidth = 0,
+      borderRightWidth = 0,
+      borderBottomWidth = 0,
     } = node.box;
 
     ctx.fillColor(PADDING_COLOR).opacity(0.5);
@@ -111,10 +111,10 @@ const debugMargin = ctx =>
       top,
       width,
       height,
-      marginLeft,
-      marginTop,
-      marginRight,
-      marginBottom,
+      marginLeft = 0,
+      marginTop = 0,
+      marginRight = 0,
+      marginBottom = 0,
     } = node.box;
     ctx.fillColor(MARGIN_COLOR).opacity(0.5);
 
@@ -152,10 +152,10 @@ const debugText = ctx =>
       top,
       width,
       height,
-      marginLeft,
-      marginTop,
-      marginRight,
-      marginBottom,
+      marginLeft = 0,
+      marginTop = 0,
+      marginRight = 0,
+      marginBottom = 0,
     } = node.box;
 
     const roundedWidth = Math.round(width + marginLeft + marginRight);

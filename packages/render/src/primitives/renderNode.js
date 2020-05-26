@@ -19,15 +19,20 @@ import isCanvas from '../utils/isCanvas';
 import save from '../operations/save';
 import setLink from '../operations/setLink';
 import restore from '../operations/restore';
+import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 
 const shouldRenderChildren = v => !isText(v) && !isSvg(v);
 
+const isOverflowHidden = R.pathEq(['style', 'overflow'], 'hidden');
+
 const renderChildren = ctx => node => {
   save(ctx, node);
 
-  ctx.translate(node.box.left, node.box.top);
+  if (node.box) {
+    ctx.translate(node.box.left, node.box.top);
+  }
 
   R.compose(
     R.forEach(renderNode(ctx)),
@@ -57,6 +62,9 @@ const renderNode = ctx => node =>
     renderBorders(ctx),
     renderBackground(ctx),
     transform(ctx),
+    R.when(isOverflowHidden, clipNode(ctx)),
     save(ctx),
     R.when(isPage, renderPage(ctx)),
   )(node);
+
+export default renderNode;

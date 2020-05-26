@@ -5,6 +5,8 @@ import * as R from 'ramda';
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
 const clipNode = (ctx, node) => {
+  if (!node.style) return node;
+
   const { top, left, width, height } = node.box;
 
   const {

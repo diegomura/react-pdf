@@ -1,9 +1,11 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
 import Font from '../font';
-import isImage from '../node/isImage';
 import fetchImage from '../image/fetchImage';
 import { fetchEmojis } from '../text/emoji';
+
+const isImage = R.propEq('type', P.Image);
 
 /**
  * Get all asset promises that need to be resolved

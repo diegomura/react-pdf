@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
-const isTspan = R.propEq('type', P.TSPAN);
+const isTspan = R.propEq('type', P.Tspan);
 
 export default isTspan;

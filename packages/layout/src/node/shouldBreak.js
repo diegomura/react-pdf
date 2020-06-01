@@ -1,10 +1,17 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isSvg from './isSvg';
-import isNote from './isNote';
-import isImage from './isImage';
-import isCanvas from './isCanvas';
 import getNodesHeight from './getNodesHeight';
+
+const isType = R.propEq('type');
+
+const isSvg = isType(P.Svg);
+
+const isNote = isType(P.Note);
+
+const isImage = isType(P.Image);
+
+const isCanvas = isType(P.Canvas);
 
 const getWrap = R.ifElse(
   R.anyPass([isSvg, isNote, isImage, isCanvas]),

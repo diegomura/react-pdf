@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 
 const getComputedBorder = edge => yogaNode =>
   yogaNode ? yogaNode.getComputedBorder(edge) : 0;

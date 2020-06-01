@@ -1,7 +1,22 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isSvg from '../node/isSvg';
-import { INHERITED_PROPERTIES } from '../constants';
+const INHERITED_PROPERTIES = [
+  'color',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'opacity',
+  'textDecoration',
+  'lineHeight',
+  'textAlign',
+  'visibility',
+  'wordSpacing',
+];
+
+const isSvg = R.propEq('type', P.Svg);
 
 /**
  * Get styles sub group of inherited properties

@@ -1,61 +1,11 @@
 import BlobStream from 'blob-stream';
+import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
+import layoutDocument from '@react-pdf/layout';
 
-import Font from './font';
-import renderPDF from './render';
-import layoutDocument from './layout';
+// import Font from './font';
 import createRenderer from './renderer';
-import StyleSheet from './stylesheet';
 import { version } from '../package.json';
-import {
-  VIEW,
-  TEXT,
-  LINK,
-  PAGE,
-  NOTE,
-  IMAGE,
-  DOCUMENT,
-  CANVAS,
-  SVG,
-  GROUP,
-  PATH,
-  RECT,
-  LINE,
-  CIRCLE,
-  ELLIPSE,
-  POLYGON,
-  POLYLINE,
-  DEFS,
-  TSPAN,
-  CLIP_PATH,
-  STOP,
-  LINEAR_GRADIENT,
-  RADIAL_GRADIENT,
-} from './constants';
-
-const View = VIEW;
-const Text = TEXT;
-const Link = LINK;
-const Page = PAGE;
-const Note = NOTE;
-const Image = IMAGE;
-const Document = DOCUMENT;
-const Canvas = CANVAS;
-const Svg = SVG;
-const G = GROUP;
-const Path = PATH;
-const Rect = RECT;
-const Line = LINE;
-const Circle = CIRCLE;
-const Ellipse = ELLIPSE;
-const Polygon = POLYGON;
-const Polyline = POLYLINE;
-const Defs = DEFS;
-const Tspan = TSPAN;
-const ClipPath = CLIP_PATH;
-const Stop = STOP;
-const LinearGradient = LINEAR_GRADIENT;
-const RadialGradient = RADIAL_GRADIENT;
 
 const pdf = ({ initialValue, onChange }) => {
   const container = { type: 'ROOT', document: null };
@@ -75,7 +25,7 @@ const pdf = ({ initialValue, onChange }) => {
   };
 
   const layout = async () => {
-    return layoutDocument(container);
+    // return layoutDocument(container);
   };
 
   function updateContainer(doc) {
@@ -141,32 +91,8 @@ const pdf = ({ initialValue, onChange }) => {
   };
 };
 
-export {
-  version,
-  View,
-  Text,
-  Link,
-  Page,
-  Font,
-  Note,
-  Image,
-  Document,
-  Canvas,
-  Svg,
-  G,
-  Path,
-  Rect,
-  Line,
-  Circle,
-  Ellipse,
-  Polygon,
-  Defs,
-  Tspan,
-  ClipPath,
-  Polyline,
-  Stop,
-  LinearGradient,
-  RadialGradient,
-  StyleSheet,
-  pdf,
-};
+const StyleSheet = {
+  create: s => s
+}
+
+export { version, StyleSheet, pdf };

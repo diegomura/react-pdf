@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 
 /**
  * Set position type attribute to node's Yoga instance

@@ -179,12 +179,6 @@ declare module '@react-pdf/renderer' {
       debug?: boolean;
       size?: string | [number, number] | { width: number; height: number };
       orientation?: Orientation;
-      ruler?: boolean;
-      rulerSteps?: number;
-      verticalRuler?: boolean;
-      verticalRulerSteps?: number;
-      horizontalRuler?: boolean;
-      horizontalRulerSteps?: number;
     }
 
     /**

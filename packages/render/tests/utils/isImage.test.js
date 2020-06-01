@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isImage from '../../src/utils/isImage';
 
-const ASSERTED_TYPE = P.IMAGE;
+const ASSERTED_TYPE = P.Image;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is image util', () => {

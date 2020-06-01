@@ -1,6 +1,33 @@
 import * as R from 'ramda';
 
-import { SVG_INHERITED_PROPS } from '../constants';
+const SVG_INHERITED_PROPS = [
+  'x',
+  'y',
+  'clipPath',
+  'clipRule',
+  'opacity',
+  'fill',
+  'fillOpacity',
+  'fillRule',
+  'stroke',
+  'strokeLinecap',
+  'strokeLinejoin',
+  'strokeOpacity',
+  'strokeWidth',
+  'textAnchor',
+  'color',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'opacity',
+  'textDecoration',
+  'lineHeight',
+  'textAlign',
+  'visibility',
+  'wordSpacing',
+];
 
 const getInheritProps = R.compose(
   R.pick(SVG_INHERITED_PROPS),

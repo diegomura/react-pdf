@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isPolygon from '../../src/utils/isPolygon';
 
-const ASSERTED_TYPE = P.POLYGON;
+const ASSERTED_TYPE = P.Polygon;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is polygon util', () => {

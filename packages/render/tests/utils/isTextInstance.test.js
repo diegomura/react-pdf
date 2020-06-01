@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isTextInstance from '../../src/utils/isTextInstance';
 
-const ASSERTED_TYPE = P.TEXT_INSTANCE;
+const ASSERTED_TYPE = P.TextInstance;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is text instance util', () => {

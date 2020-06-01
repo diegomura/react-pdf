@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isLink from '../../src/utils/isLink';
 
-const ASSERTED_TYPE = P.LINK;
+const ASSERTED_TYPE = P.Link;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is link util', () => {

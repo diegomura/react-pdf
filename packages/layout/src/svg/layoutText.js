@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 import layoutEngine from '@react-pdf/textkit/layout';
 import linebreaker from '@react-pdf/textkit/engines/linebreaker';
 import justification from '@react-pdf/textkit/engines/justification';
@@ -9,8 +10,9 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
 import transformText from '../text/transformText';
-import isTextInstance from '../node/isTextInstance';
 import fontSubstitution from '../text/fontSubstitution';
+
+const isTextInstance = R.propEq('type', P.TextIntance);
 
 const engines = {
   linebreaker,

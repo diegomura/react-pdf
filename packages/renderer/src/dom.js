@@ -1,48 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { CanvasViewer } from './canvas';
 
-import warning from '../src/utils/warning';
+import { pdf } from './index';
 
 const queue = require('queue');
-
-import {
-  pdf,
-  View,
-  Text,
-  Link,
-  Page,
-  Font,
-  Note,
-  Image,
-  Canvas,
-  Svg,
-  G,
-  Path,
-  Rect,
-  Line,
-  Circle,
-  Ellipse,
-  Polygon,
-  Polyline,
-  Defs,
-  Tspan,
-  ClipPath,
-  Stop,
-  LinearGradient,
-  RadialGradient,
-  version,
-  StyleSheet,
-  // createInstance,
-  Document as PDFDocument,
-} from './index';
-
-const flatStyles = stylesArray =>
-  stylesArray.reduce((acc, style) => ({ ...acc, ...style }), {});
-
-export const Document = ({ children, ...props }) => {
-  return <PDFDocument {...props}>{children}</PDFDocument>;
-};
 
 class InternalBlobProvider extends React.PureComponent {
   renderQueue = queue({ autostart: true, concurrency: 1 });
@@ -91,7 +52,7 @@ class InternalBlobProvider extends React.PureComponent {
 
 export const BlobProvider = ({ document: doc, children }) => {
   if (!doc) {
-    warning(false, 'You should pass a valid document to BlobProvider');
+    console.warn('You should pass a valid document to BlobProvider');
     return null;
   }
 
@@ -112,7 +73,7 @@ export const PDFViewer = ({
           className={className}
           ref={innerRef}
           src={url}
-          style={Array.isArray(style) ? flatStyles(style) : style}
+          style={style}
           {...props}
         />
       )}
@@ -128,7 +89,7 @@ export const PDFDownloadLink = ({
   fileName = 'document.pdf',
 }) => {
   if (!doc) {
-    warning(false, 'You should pass a valid document to PDFDownloadLink');
+    console.warn('You should pass a valid document to PDFDownloadLink');
     return null;
   }
 
@@ -146,7 +107,7 @@ export const PDFDownloadLink = ({
           download={fileName}
           href={params.url}
           onClick={downloadOnIE(params.blob)}
-          style={Array.isArray(style) ? flatStyles(style) : style}
+          style={style}
         >
           {typeof children === 'function' ? children(params) : children}
         </a>
@@ -155,67 +116,6 @@ export const PDFDownloadLink = ({
   );
 };
 
-export {
-  pdf,
-  View,
-  Text,
-  Link,
-  Page,
-  Font,
-  Note,
-  Image,
-  Canvas,
-  Svg,
-  G,
-  Path,
-  Rect,
-  Line,
-  Circle,
-  Ellipse,
-  Polygon,
-  Polyline,
-  Defs,
-  Tspan,
-  ClipPath,
-  Stop,
-  LinearGradient,
-  RadialGradient,
-  version,
-  StyleSheet,
-} from './index';
+export { pdf, version, StyleSheet } from './index';
 
-export { CanvasViewer } from './canvas';
-
-export default {
-  pdf,
-  View,
-  Text,
-  Link,
-  Page,
-  Font,
-  Note,
-  Image,
-  Canvas,
-  Svg,
-  G,
-  Path,
-  Rect,
-  Line,
-  Circle,
-  Ellipse,
-  Polygon,
-  Polyline,
-  Defs,
-  Tspan,
-  ClipPath,
-  Stop,
-  LinearGradient,
-  RadialGradient,
-  version,
-  Document,
-  PDFViewer,
-  StyleSheet,
-  CanvasViewer,
-  BlobProvider,
-  PDFDownloadLink,
-};
+export * from '@react-pdf/primitives';

@@ -87,7 +87,7 @@ const setLineDash = ctx => node => {
 
 const hasLinearGradientFill = R.pathEq(
   ['props', 'fill', 'type'],
-  P.LINEAR_GRADIENT,
+  P.LinearGradient,
 );
 
 const hasRadialGradientFill = R.pathEq(

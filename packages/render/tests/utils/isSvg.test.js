@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isSvg from '../../src/utils/isSvg';
 
-const ASSERTED_TYPE = P.SVG;
+const ASSERTED_TYPE = P.Svg;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is svg util', () => {

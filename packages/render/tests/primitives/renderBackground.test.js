@@ -6,7 +6,7 @@ import renderBackground from '../../src/primitives/renderBackground';
 describe('primitive renderBackground', () => {
   test('should not render if node has no background', () => {
     const ctx = createCTX();
-    const node = { type: P.VIEW };
+    const node = { type: P.View };
 
     renderBackground(ctx, node);
 
@@ -15,7 +15,7 @@ describe('primitive renderBackground', () => {
 
   test('should not render if has background but no dimensions', () => {
     const ctx = createCTX();
-    const node = { type: P.VIEW, style: { backgroundColor: 'red' } };
+    const node = { type: P.View, style: { backgroundColor: 'red' } };
 
     renderBackground(ctx, node);
 
@@ -26,7 +26,7 @@ describe('primitive renderBackground', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const style = { backgroundColor: 'red' };
-    const node = { type: P.VIEW, style, box };
+    const node = { type: P.View, style, box };
 
     renderBackground(ctx, node);
 
@@ -39,7 +39,7 @@ describe('primitive renderBackground', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const style = { backgroundColor: 'red' };
-    const node = { type: P.VIEW, style, box };
+    const node = { type: P.View, style, box };
 
     renderBackground(ctx, node);
 
@@ -51,7 +51,7 @@ describe('primitive renderBackground', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const style = { backgroundColor: 'red' };
-    const node = { type: P.VIEW, style, box };
+    const node = { type: P.View, style, box };
 
     renderBackground(ctx, node);
 
@@ -62,7 +62,7 @@ describe('primitive renderBackground', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const style = { backgroundColor: 'red', opacity: 0.8 };
-    const node = { type: P.VIEW, style, box };
+    const node = { type: P.View, style, box };
 
     renderBackground(ctx, node);
 
@@ -73,7 +73,7 @@ describe('primitive renderBackground', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const style = { backgroundColor: 'red', opacity: 0 };
-    const node = { type: P.VIEW, style, box };
+    const node = { type: P.View, style, box };
 
     renderBackground(ctx, node);
 

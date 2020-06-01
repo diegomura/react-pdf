@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 
 import setAlignSelf from '../../src/node/setAlignSelf';
 

@@ -1,5 +1,4 @@
 import json from 'rollup-plugin-json';
-import alias from 'rollup-plugin-alias';
 import babel from 'rollup-plugin-babel';
 import ignore from 'rollup-plugin-ignore';
 import replace from 'rollup-plugin-replace';
@@ -9,11 +8,6 @@ import bundleSize from 'rollup-plugin-bundle-size';
 import nodeResolve from 'rollup-plugin-node-resolve';
 
 import pkg from './package.json';
-import chalk from 'chalk';
-
-const moduleAliases = {
-  'yoga-layout': 'yoga-layout-prebuilt',
-};
 
 const globals = { react: 'React' };
 
@@ -32,28 +26,6 @@ const esm = {
 
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
-
-const ignoredCircular = [
-  {
-    importer: 'src/elements/index.js',
-    message:
-      'Circular dependency: src/elements/index.js -> src/elements/Page.js -> src/elements/index.js',
-  },
-];
-
-const onwarn = warning => {
-  if (
-    warning.code === 'CIRCULAR_DEPENDENCY' &&
-    ignoredCircular.some(
-      circular =>
-        circular.importer === warning.importer &&
-        circular.message === warning.message,
-    )
-  ) {
-    return;
-  }
-  console.warn(chalk.bold.yellow(`(!) ${warning.message}`));
-};
 
 const babelConfig = ({ browser }) => ({
   babelrc: false,
@@ -79,7 +51,6 @@ const babelConfig = ({ browser }) => ({
 const commonPlugins = [
   json(),
   sourceMaps(),
-  alias(moduleAliases),
   nodeResolve(),
   bundleSize(),
 ];
@@ -105,7 +76,6 @@ const configBase = {
     '@react-pdf/textkit/attributedString/advanceWidth',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
-  onwarn,
 };
 
 const getPlugins = ({ browser }) => [

@@ -7,7 +7,7 @@ describe('primitive renderCanvas', () => {
   test('should be scoped operation', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const node = { type: P.CANVAS, box, props: {} };
+    const node = { type: P.Canvas, box, props: {} };
 
     renderCanvas(ctx, node);
 
@@ -19,7 +19,7 @@ describe('primitive renderCanvas', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const paint = ctx => expect(ctx).toBeTruthy();
-    const node = { type: P.CANVAS, box, props: { paint } };
+    const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
   });
@@ -28,7 +28,7 @@ describe('primitive renderCanvas', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
     const paint = ctx => expect(ctx.registerFont).toBeFalsy();
-    const node = { type: P.CANVAS, box, props: { paint } };
+    const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
   });
@@ -40,7 +40,7 @@ describe('primitive renderCanvas', () => {
       expect(width).toBe(140);
       expect(height).toBe(200);
     };
-    const node = { type: P.CANVAS, box, props: { paint } };
+    const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
   });
@@ -61,7 +61,7 @@ describe('primitive renderCanvas', () => {
       expect(width).toBe(80);
       expect(height).toBe(160);
     };
-    const node = { type: P.CANVAS, box, props: { paint } };
+    const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
   });

@@ -1,7 +1,7 @@
 import * as R from 'ramda';
+import { TextInstance } from '@react-pdf/primitives';
 
 import castArray from '../utils/castArray';
-import { TEXT_INSTANCE } from '../constants';
 
 const isString = R.is(String);
 
@@ -17,7 +17,7 @@ const isNotString = R.complement(isString);
  */
 const createInstance = element => {
   if (isString(element) || isNumber(element))
-    return { type: TEXT_INSTANCE, value: `${element}` };
+    return { type: TextInstance, value: `${element}` };
 
   if (isNotString(element.type))
     return createInstance(element.type(element.props));

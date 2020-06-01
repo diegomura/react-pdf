@@ -9,7 +9,7 @@ describe('primitive renderEllipse', () => {
   test('should render ellipse correctly', () => {
     const ctx = createCTX();
     const props = { cx: 50, cy: 80, rx: 20, ry: 10 };
-    const node = { type: P.ELLIPSE, props };
+    const node = { type: P.Ellipse, props };
 
     renderEllipse(ctx, node);
 

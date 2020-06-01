@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isPolyline from '../../src/utils/isPolyline';
 
-const ASSERTED_TYPE = P.POLYLINE;
+const ASSERTED_TYPE = P.Polyline;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is polyline util', () => {

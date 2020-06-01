@@ -1,6 +1,7 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isDefs from '../node/isDefs';
+const isDefs = R.propEq('type', P.Defs);
 
 const getChildren = R.propOr([], 'children');
 

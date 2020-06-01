@@ -1,11 +1,27 @@
 import * as R from 'ramda';
 
-import { FONT_WEIGHTS } from '../constants';
-
 const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
 const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
 const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(\S+)/;
 const TRANSFORM_ORIGIN_REGEX = /(-?\d+(px|in|mm|cm|pt|%|vw|vh|px)?)|top|right|bottom|left|center/g;
+
+const FONT_WEIGHTS = {
+  thin: 100,
+  hairline: 100,
+  ultralight: 200,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  demibold: 600,
+  bold: 700,
+  ultrabold: 800,
+  extrabold: 800,
+  heavy: 900,
+  black: 900,
+};
+
 
 const matchBoxModel = R.match(BOX_MODEL_REGEX);
 const matchObjectPosition = R.match(OBJECT_POSITION_REGEX);

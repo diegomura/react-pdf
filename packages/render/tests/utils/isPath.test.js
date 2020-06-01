@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isPath from '../../src/utils/isPath';
 
-const ASSERTED_TYPE = P.PATH;
+const ASSERTED_TYPE = P.Path;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is path util', () => {

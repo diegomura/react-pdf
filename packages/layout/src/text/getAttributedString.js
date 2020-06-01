@@ -1,13 +1,19 @@
+import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
-import isImage from '../node/isImage';
 import { embedEmojis } from './emoji';
 import transformText from './transformText';
 import { ignoreChars } from './ignorableChars';
-import isTextInstance from '../node/isTextInstance';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
+
+const isType = R.propEq('type');
+
+const isImage = isType(P.Image)
+
+const isTextInstance = isType(P.TextInstance);
 
 /**
  * Get textkit framgents of given node object

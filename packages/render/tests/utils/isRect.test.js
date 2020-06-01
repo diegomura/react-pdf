@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isRect from '../../src/utils/isRect';
 
-const ASSERTED_TYPE = P.RECT;
+const ASSERTED_TYPE = P.Rect;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is rect util', () => {

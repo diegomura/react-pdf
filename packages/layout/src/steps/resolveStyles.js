@@ -1,12 +1,14 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isLink from '../node/isLink';
 import flattenStyles from '../stylesheet/flatten';
 import expandStyles from '../stylesheet/expandStyles';
 import transformUnits from '../stylesheet/transformUnits';
 import transformStyles from '../stylesheet/transformStyles';
 import transformColors from '../stylesheet/transformColors';
 import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
+
+const isLink = R.propEq('type', P.Link);
 
 const LINK_STYLES = {
   color: 'blue',

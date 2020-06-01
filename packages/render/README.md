@@ -14,7 +14,7 @@ const render = require('@react-pdf/render');
 const primitives = require('@react-pdf/primitives');
 
 const view = {
-  type: primitives.VIEW,
+  type: primitives.View,
   style: {
     backgroundColor: 'red',
     borderTopLeftRadius: 5,
@@ -39,10 +39,10 @@ const view = {
 };
 
 const doc = {
-  type: primitives.DOCUMENT,
+  type: primitives.Document,
   children: [
     {
-      type: primitives.PAGE,
+      type: primitives.Page,
       box: { width: 400, height: 600 },
       children: [view],
     },

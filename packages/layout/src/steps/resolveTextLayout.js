@@ -1,8 +1,13 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isSvg from '../node/isSvg';
-import isText from '../node/isText';
 import layoutText from '../text/layoutText';
+
+const isType = R.propEq('type');
+
+const isSvg = isType(P.Svg);
+
+const isText = isType(P.Text)
 
 const isNotSvg = R.complement(isSvg);
 

@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
 
 import getRatio from '../image/getRatio';
 import getMargin from '../node/getMargin';

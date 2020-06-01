@@ -23,12 +23,11 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^26.0.1",
     "babel-plugin-add-module-exports": "^1.0.0",
     "chalk": "^2.4.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
-    "eslint": "^5.14.1",
+    "eslint": "^6.6.0",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-promise": "^4.0.1",
@@ -45,7 +44,6 @@
     "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^1.2.3",
-    "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-bundle-size": "^1.0.3",
     "rollup-plugin-ignore": "^1.0.5",
@@ -57,9 +55,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "yarn run lint",
-      "prettier --write",
-      "git add"
+      "echo"
     ]
   },
   "collective": {

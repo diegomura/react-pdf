@@ -1,8 +1,11 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import { TEXT } from '../constants';
-import isLink from '../node/isLink';
-import isTextInstance from '../node/isTextInstance';
+const isType = R.propEq('type');
+
+const isLink = isType(P.Link);
+
+const isTextInstance = isType(P.TextInstance);
 
 /**
  * Checks if node has render prop
@@ -35,7 +38,7 @@ const resolveLinkSubstitution = node =>
     children: R.map(
       R.ifElse(
         R.both(isLink, R.either(hasRenderProp, hasTextInstanceChilds)),
-        R.assoc('type', TEXT),
+        R.assoc('type', P.Text),
         resolveLinkSubstitution,
       ),
     ),

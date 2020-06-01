@@ -1,7 +1,9 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
 import getDefs from './getDefs';
-import isDefs from '../node/isDefs';
+
+const isDefs = R.propEq('type', P.Defs);
 
 const isNotDefs = R.complement(isDefs);
 

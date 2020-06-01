@@ -8,7 +8,7 @@ const PDFDocument = pdfkit.default;
 const ctx = new PDFDocument({ autoFirstPage: false });
 
 const subview = {
-  type: primitives.VIEW,
+  type: primitives.View,
   box: {
     left: 0,
     top: 0,
@@ -24,7 +24,7 @@ const subview = {
 };
 
 const view = {
-  type: primitives.VIEW,
+  type: primitives.View,
   style: {
     backgroundColor: 'red',
     borderTopLeftRadius: 5,
@@ -52,18 +52,18 @@ const view = {
 };
 
 const note = {
-  type: primitives.NOTE,
+  type: primitives.Note,
   box: { left: 200, top: 20 },
   children: [
     {
-      type: primitives.TEXT_INSTANCE,
+      type: primitives.TextInstance,
       value: 'This is a note',
     },
   ],
 };
 
 const circle = {
-  type: primitives.CIRCLE,
+  type: primitives.Circle,
   props: {
     cx: 50,
     cy: 50,
@@ -75,7 +75,7 @@ const circle = {
 };
 
 const rectangle = {
-  type: primitives.RECT,
+  type: primitives.Rect,
   props: {
     x: 100,
     y: 100,
@@ -91,7 +91,7 @@ const rectangle = {
 };
 
 const ellipse = {
-  type: primitives.ELLIPSE,
+  type: primitives.Ellipse,
   props: {
     cx: 150,
     cy: 40,
@@ -104,7 +104,7 @@ const ellipse = {
 };
 
 const line = {
-  type: primitives.LINE,
+  type: primitives.Line,
   props: {
     x1: 0,
     y1: 0,
@@ -116,7 +116,7 @@ const line = {
 };
 
 const polygon = {
-  type: primitives.POLYGON,
+  type: primitives.Polygon,
   props: {
     points: '100,10 40,198 190,78 10,78 160,198',
     fill: 'lime',
@@ -127,7 +127,7 @@ const polygon = {
 };
 
 const polyline = {
-  type: primitives.POLYLINE,
+  type: primitives.Polyline,
   props: {
     points: '0,40 40,40 40,80 80,80 80,120 120,120 120,160',
     fill: 'white',
@@ -138,7 +138,7 @@ const polyline = {
 };
 
 const path = {
-  type: primitives.PATH,
+  type: primitives.Path,
   props: {
     d: 'M150 0 L75 200 L225 200 Z',
     fill: 'black',
@@ -146,7 +146,7 @@ const path = {
 };
 
 const bezier = {
-  type: primitives.PATH,
+  type: primitives.Path,
   props: {
     d: 'M 100 350 q 150 -300 300 0',
     strokeWidth: 5,
@@ -157,10 +157,10 @@ const bezier = {
 };
 
 const linecaps = {
-  type: primitives.GROUP,
+  type: primitives.Group,
   children: [
     {
-      type: primitives.PATH,
+      type: primitives.Path,
       props: {
         d: 'M5 20 l215 0',
         stroke: 'black',
@@ -170,7 +170,7 @@ const linecaps = {
     },
 },
 {
-    type: primitives.PATH,
+    type: primitives.Path,
     props: {
         d: 'M5 40 l215 0',
         stroke: 'black',
@@ -180,7 +180,7 @@ const linecaps = {
     },
 },
 {
-    type: primitives.PATH,
+    type: primitives.Path,
     props: {
         d: 'M5 60 l215 0',
         stroke: 'black',
@@ -193,7 +193,7 @@ const linecaps = {
 };
 
 const svg = {
-  type: primitives.SVG,
+  type: primitives.Svg,
   props: {
     viewBox: {
       minX: 0,
@@ -232,16 +232,16 @@ const svg = {
 };
 
 const doc = {
-  type: primitives.DOCUMENT,
+  type: primitives.Document,
   children: [
     {
-      type: primitives.PAGE,
+      type: primitives.Page,
       props: { size: 'A4' },
       box: { left: 0, top: 0, width: 400, height: 600 },
       children: [view, note, svg],
     },
     {
-      type: primitives.PAGE,
+      type: primitives.Page,
       props: { size: 'A4' },
       box: { left: 0, top: 0, width: 400, height: 200 },
     },

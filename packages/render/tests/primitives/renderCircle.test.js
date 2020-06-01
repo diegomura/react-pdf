@@ -9,7 +9,7 @@ describe('primitive renderCircle', () => {
   test('should render circle correctly', () => {
     const ctx = createCTX();
     const props = { cx: 50, cy: 80, r: 20 };
-    const node = { type: P.CIRCLE, props };
+    const node = { type: P.Circle, props };
 
     renderCircle(ctx, node);
 

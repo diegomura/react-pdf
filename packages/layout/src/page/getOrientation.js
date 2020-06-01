@@ -1,8 +1,6 @@
 import * as R from 'ramda';
 
-import { PORTRAIT, LANDSCAPE } from '../constants';
-
-const VALID_ORIENTATIONS = [PORTRAIT, LANDSCAPE];
+const VALID_ORIENTATIONS = ['portrait', 'landscape'];
 
 /**
  * Get page orientation. Defaults to landscape
@@ -14,9 +12,9 @@ const getOrientation = R.compose(
   R.ifElse(
     R.includes(R.__, VALID_ORIENTATIONS),
     R.identity,
-    R.always(PORTRAIT),
+    R.always('portrait'),
   ),
-  R.pathOr(PORTRAIT, ['props', 'orientation']),
+  R.pathOr('portrait', ['props', 'orientation']),
 );
 
 export default getOrientation;

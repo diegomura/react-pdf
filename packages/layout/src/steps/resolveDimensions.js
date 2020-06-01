@@ -1,5 +1,6 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout';
+import Yoga from 'yoga-layout-prebuilt';
+import * as P from '@react-pdf/primitives';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
@@ -51,22 +52,25 @@ import {
   setMinHeight,
   setMaxHeight,
 } from '../node/setDimension';
-import isSvg from '../node/isSvg';
-import isText from '../node/isText';
-import isNote from '../node/isNote';
-import isPage from '../node/isPage';
-import isImage from '../node/isImage';
-import isCanvas from '../node/isCanvas';
 import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
-import isTextInstance from '../node/isTextInstance';
 
 const YOGA_NODE = '_yogaNode';
 const YOGA_CONFIG = Yoga.Config.create();
 
 YOGA_CONFIG.setPointScaleFactor(0);
+
+const isType = R.propEq('type');
+
+const isSvg = isType(P.Svg);
+const isText = isType(P.Text);
+const isNote = isType(P.Note);
+const isPage = isType(P.Page);
+const isImage = isType(P.Image);
+const isCanvas = isType(P.Canvas);
+const isTextInstance = isType(P.TextInstance);
 
 const setNodeHeight = node =>
   R.ifElse(

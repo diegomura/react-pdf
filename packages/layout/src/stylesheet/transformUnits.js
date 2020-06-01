@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { DPI } from '../constants';
+const DPI = 72; // 72pt per inch.
 
 const MM_FACTOR = (1 / 25.4) * DPI;
 

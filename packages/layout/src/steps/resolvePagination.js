@@ -1,6 +1,6 @@
 import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 
-import isText from '../node/isText';
 import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
 import createInstance from '../node/createInstance';
@@ -9,6 +9,8 @@ import getContentArea from '../page/getContentArea';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
+
+const isText = R.propEq('type', P.Text);
 
 // Prevent splitting elements by low decimal numbers
 const SAFTY_THRESHOLD = 0.001;

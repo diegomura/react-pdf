@@ -1,4 +1,4 @@
-import resolvePercentHeight from '../../src/layout/resolvePercentHeight';
+import resolvePercentHeight from '../../src/steps/resolvePercentHeight';
 
 describe('layout resolvePercentHeight', () => {
   test('Should keep empty document untouched', () => {

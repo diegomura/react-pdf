@@ -1,4 +1,5 @@
-const hasOwnProperty = Object.prototype.hasOwnProperty;
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-prototype-builtins */
 
 /**
  * Expand rules
@@ -117,7 +118,7 @@ const expandStyles = style => {
   const propsArray = Object.keys(style);
   const resolvedStyle = {};
 
-  for (let i = 0; i < propsArray.length; i++) {
+  for (let i = 0; i < propsArray.length; i += 1) {
     const key = propsArray[i];
     const value = style[key];
 
@@ -125,7 +126,7 @@ const expandStyles = style => {
       const expandedProps = styleShorthands[key];
 
       for (const propName in expandedProps) {
-        if (hasOwnProperty.call(expandedProps, propName)) {
+        if (Object.prototype.hasOwnProperty(expandedProps, propName)) {
           resolvedStyle[propName] = value;
         }
       }

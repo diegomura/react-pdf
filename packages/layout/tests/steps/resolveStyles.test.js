@@ -1,4 +1,4 @@
-import resolveStyles from '../../src/layout/resolveStyles';
+import resolveStyles from '../../src/steps/resolveStyles';
 
 describe('layout resolveStyles', () => {
   test('Should resolve page styles', () => {

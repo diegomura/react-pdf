@@ -260,7 +260,7 @@ const drawChildren = ctx => node =>
 
 const defaultsZero = R.pathOr(0);
 
-const preserveAspectRatio = ctx => node => {
+const resolveAspectRatio = ctx => node => {
   const { width, height } = node.box;
   const { viewBox, preserveAspectRatio = {} } = node.props;
   const { meetOrSlice = 'meet', align = 'xMidYMid' } = preserveAspectRatio;
@@ -356,7 +356,7 @@ const renderSvg = (ctx, node) => {
   R.compose(
     restore(ctx),
     drawChildren(ctx),
-    preserveAspectRatio(ctx),
+    resolveAspectRatio(ctx),
     moveToOrigin(ctx),
     clipNode(ctx),
     save(ctx),

@@ -1,4 +1,4 @@
-import resolveInheritance from '../../src/layout/resolveInheritance';
+import resolveInheritance from '../../src/steps/resolveInheritance';
 
 describe('layout resolveInheritance', () => {
   const shouldInherit = prop => () => {

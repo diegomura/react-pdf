@@ -1,4 +1,5 @@
-'use strict';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 
 import ReactFiberReconciler from 'react-reconciler';
 import {

@@ -36,7 +36,7 @@ const availableMethods = [
   'radialGradient',
 ];
 
-const painter = function(ctx) {
+const painter = ctx => {
   const p = availableMethods.reduce(
     (acc, prop) => ({
       ...acc,

@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 import isUrl from 'is-url';
 import fontkit from '@react-pdf/fontkit';
 import fetch from 'cross-fetch';
@@ -95,9 +97,7 @@ class Font {
 
     if (!res) {
       throw new Error(
-        `Could not resolve font for ${
-          this.fontFamily
-        }, fontWeight ${fontWeight}`,
+        `Could not resolve font for ${this.fontFamily}, fontWeight ${fontWeight}`,
       );
     }
 

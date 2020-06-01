@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import Yoga from 'yoga-layout-prebuilt';
 
-import getRatio from '../image/getRatio';
+import getRatio from './getRatio';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import isHeightAuto from '../page/isHeightAuto';
@@ -65,15 +65,15 @@ const measureImage = (page, node, width, widthMode, height, heightMode) => {
   ) {
     if (imageRatio > 1) {
       return {
-        width: width,
+        width,
         height: Math.min(width / imageRatio, height),
       };
-    } else {
-      return {
-        width: Math.min(height * imageRatio, width),
-        height: height,
-      };
     }
+
+    return {
+      height,
+      width: Math.min(height * imageRatio, width),
+    };
   }
 
   return { height, width };

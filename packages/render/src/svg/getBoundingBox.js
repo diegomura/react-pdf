@@ -25,7 +25,7 @@ const getPathBoundingBox = node => {
 
   const bounds = [Infinity, Infinity, -Infinity, -Infinity];
 
-  for (let i = 0, l = path.length; i < l; i++) {
+  for (let i = 0, l = path.length; i < l; i += 1) {
     const points = path[i].slice(1);
 
     for (let j = 0; j < points.length; j += 2) {

@@ -1,4 +1,4 @@
-import resolvePageSizes from '../../src/layout/resolvePageSizes';
+import resolvePageSizes from '../../src/steps/resolvePageSizes';
 
 describe('layout resolvePageSizes', () => {
   test('Should default to A4', () => {

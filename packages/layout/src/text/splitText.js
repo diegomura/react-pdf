@@ -20,13 +20,21 @@ const getLineBreak = (node, height) => {
 
   if (slicedLine === 0) {
     return 0;
-  } else if (linesQuantity < orphans) {
+  }
+
+  if (linesQuantity < orphans) {
     return linesQuantity;
-  } else if (slicedLine < orphans || linesQuantity < orphans + widows) {
+  }
+
+  if (slicedLine < orphans || linesQuantity < orphans + widows) {
     return 0;
-  } else if (linesQuantity === orphans + widows) {
+  }
+
+  if (linesQuantity === orphans + widows) {
     return orphans;
-  } else if (linesQuantity - slicedLine < widows) {
+  }
+
+  if (linesQuantity - slicedLine < widows) {
     return linesQuantity - widows;
   }
 

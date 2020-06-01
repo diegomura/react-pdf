@@ -1,7 +1,7 @@
 import matchPercent from './matchPercent';
 
 const isNumeric = n => {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+  return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);
 };
 
 const applyContainObjectFit = (cw, ch, iw, ih, px, py) => {
@@ -20,14 +20,14 @@ const applyContainObjectFit = (cw, ch, iw, ih, px, py) => {
     const xOffset = isNumeric(px) ? px : (cw - width) * pxv;
 
     return { width, height, xOffset, yOffset };
-  } else {
-    const width = cw;
-    const height = width / ir;
-    const xOffset = isNumeric(px) ? px : 0;
-    const yOffset = isNumeric(py) ? py : (ch - height) * pyv;
-
-    return { width, height, yOffset, xOffset };
   }
+
+  const width = cw;
+  const height = width / ir;
+  const xOffset = isNumeric(px) ? px : 0;
+  const yOffset = isNumeric(py) ? py : (ch - height) * pyv;
+
+  return { width, height, yOffset, xOffset };
 };
 
 const applyNoneObjectFit = (cw, ch, iw, ih, px, py) => {
@@ -58,13 +58,13 @@ const applyCoverObjectFit = (cw, ch, iw, ih, px, py) => {
     const xOffset = isNumeric(px) ? px : 0;
     const yOffset = isNumeric(py) ? py : (ch - height) * pyv;
     return { width, height, yOffset, xOffset };
-  } else {
-    const height = ch;
-    const width = height * ir;
-    const xOffset = isNumeric(px) ? px : (cw - width) * pxv;
-    const yOffset = isNumeric(py) ? py : 0;
-    return { width, height, xOffset, yOffset };
   }
+
+  const height = ch;
+  const width = height * ir;
+  const xOffset = isNumeric(px) ? px : (cw - width) * pxv;
+  const yOffset = isNumeric(py) ? py : 0;
+  return { width, height, xOffset, yOffset };
 };
 
 const applyScaleDownObjectFit = (cw, ch, iw, ih, px, py) => {

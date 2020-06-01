@@ -22,7 +22,6 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-
 const matchBoxModel = R.match(BOX_MODEL_REGEX);
 const matchObjectPosition = R.match(OBJECT_POSITION_REGEX);
 const matchBorderShorthand = R.match(BORDER_SHORTHAND_REGEX);
@@ -57,13 +56,17 @@ const processBorders = (key, value) => {
   if (match) {
     if (key.match(/Color$/)) {
       return match[4] || value;
-    } else if (key.match(/Style$/)) {
-      return match[3] || value;
-    } else if (key.match(/Width$/)) {
-      return match[1] || value;
-    } else {
-      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
+
+    if (key.match(/Style$/)) {
+      return match[3] || value;
+    }
+
+    if (key.match(/Width$/)) {
+      return match[1] || value;
+    }
+
+    throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
   }
 
   return value;
@@ -75,15 +78,21 @@ const processBoxModel = (key, value) => {
   if (match) {
     if (key.match(/Top$/)) {
       return match[0];
-    } else if (key.match(/Right$/)) {
-      return match[1] || match[0];
-    } else if (key.match(/Bottom$/)) {
-      return match[2] || match[0];
-    } else if (key.match(/Left$/)) {
-      return match[3] || match[1] || match[0];
-    } else {
-      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
+
+    if (key.match(/Right$/)) {
+      return match[1] || match[0];
+    }
+
+    if (key.match(/Bottom$/)) {
+      return match[2] || match[0];
+    }
+
+    if (key.match(/Left$/)) {
+      return match[3] || match[1] || match[0];
+    }
+
+    throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
   }
 
   return value;
@@ -101,11 +110,13 @@ export const processObjectPosition = (key, value) => {
   if (match) {
     if (key.match(/X$/)) {
       return match[0] || value;
-    } else if (key.match(/Y$/)) {
-      return match[1] || value;
-    } else {
-      throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
     }
+
+    if (key.match(/Y$/)) {
+      return match[1] || value;
+    }
+
+    throw new Error(`StyleSheet: Invalid '${value}' for '${key}'`);
   }
 
   return value;

@@ -18,7 +18,7 @@ describe('primitive renderCanvas', () => {
   test('should call paint method with ctx', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const paint = ctx => expect(ctx).toBeTruthy();
+    const paint = p => expect(p).toBeTruthy();
     const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
@@ -27,7 +27,7 @@ describe('primitive renderCanvas', () => {
   test('should remove dangerous methods from passed ctx', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const paint = ctx => expect(ctx.registerFont).toBeFalsy();
+    const paint = p => expect(p.registerFont).toBeFalsy();
     const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
@@ -36,7 +36,7 @@ describe('primitive renderCanvas', () => {
   test('should get correct available width and height', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const paint = (ctx, width, height) => {
+    const paint = (_, width, height) => {
       expect(width).toBe(140);
       expect(height).toBe(200);
     };
@@ -57,7 +57,7 @@ describe('primitive renderCanvas', () => {
       paddingBottom: 30,
       paddingRight: 40,
     };
-    const paint = (ctx, width, height) => {
+    const paint = (_, width, height) => {
       expect(width).toBe(80);
       expect(height).toBe(160);
     };

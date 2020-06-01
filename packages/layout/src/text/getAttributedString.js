@@ -4,14 +4,14 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
 import { embedEmojis } from './emoji';
+import ignoreChars from './ignoreChars';
 import transformText from './transformText';
-import { ignoreChars } from './ignorableChars';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
 const isType = R.propEq('type');
 
-const isImage = isType(P.Image)
+const isImage = isType(P.Image);
 
 const isTextInstance = isType(P.TextInstance);
 
@@ -83,14 +83,13 @@ const getFragments = instance => {
         string: transformText(child.value, textTransform),
         attributes,
       });
-    } else {
-      if (child) {
-        fragments.push(...getFragments(child));
-      }
+    } else if (child) {
+      fragments.push(...getFragments(child));
     }
   });
 
-  for (const preprocessor of PREPROCESSORS) {
+  for (let i = 0; i < PREPROCESSORS.length; i += 1) {
+    const preprocessor = PREPROCESSORS[i];
     fragments = preprocessor(fragments);
   }
 

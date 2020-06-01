@@ -1,4 +1,4 @@
-const PROTOCOL_REGEXP = /^([a-z]+\:(\/\/)?)/i;
+const PROTOCOL_REGEXP = /^([a-z]+:(\/\/)?)/i;
 const DEST_REGEXP = /^#.+/;
 
 /**

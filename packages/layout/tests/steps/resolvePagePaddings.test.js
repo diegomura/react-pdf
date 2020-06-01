@@ -1,4 +1,4 @@
-import resolvePagePaddings from '../../src/layout/resolvePagePaddings';
+import resolvePagePaddings from '../../src/steps/resolvePagePaddings';
 
 describe('layout resolvePagePaddings', () => {
   test('Should keep other styles untouched', () => {

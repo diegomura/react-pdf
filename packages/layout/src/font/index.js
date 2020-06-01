@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-prototype-builtins */
+
 import font from './font';
 import emoji from './emoji';
 import standardFonts from './standard';
@@ -14,7 +17,7 @@ const register = data => {
 
   // Bulk loading
   if (data.fonts) {
-    for (let i = 0; i < data.fonts.length; i++) {
+    for (let i = 0; i < data.fonts.length; i += 1) {
       fonts[family].register({ family, ...data.fonts[i] });
     }
   } else {
@@ -41,29 +44,29 @@ const getFont = descriptor => {
   return fonts[fontFamily].resolve(descriptor);
 };
 
-const load = async function(descriptor) {
+const load = async descriptor => {
   const { fontFamily } = descriptor;
   const isStandard = standardFonts.includes(fontFamily);
 
   if (isStandard) return;
 
-  const font = getFont(descriptor);
+  const f = getFont(descriptor);
 
   // We cache the font to avoid fetching it many times
-  if (!font.data && !font.loading) {
-    await font.load();
+  if (!f.data && !f.loading) {
+    await f.load();
   }
 };
 
-const reset = function() {
-  for (const font in fonts) {
-    if (fonts.hasOwnProperty(font)) {
-      fonts[font].data = null;
+const reset = () => {
+  for (const f in fonts) {
+    if (fonts.hasOwnProperty(f)) {
+      fonts[f].data = null;
     }
   }
 };
 
-const clear = function() {
+const clear = () => {
   fonts = {};
 };
 

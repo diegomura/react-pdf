@@ -1,4 +1,4 @@
-import resolveLinkSubstitution from '../../src/layout/resolveLinkSubstitution';
+import resolveLinkSubstitution from '../../src/steps/resolveLinkSubstitution';
 
 describe('layout resolveStyles', () => {
   test('should leave link with text children as it is', () => {

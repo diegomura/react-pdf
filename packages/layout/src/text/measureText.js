@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import * as R from 'ramda';
 import Yoga from 'yoga-layout-prebuilt';
 
@@ -16,7 +18,7 @@ import linesHeight from './linesHeight';
  * @param {Number} heightMode
  * @returns {Object} text width and height
  */
-const measureText = (page, node, width, widthMode, height, heightMode) => {
+const measureText = (page, node, width, widthMode, height) => {
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
     if (!node.lines) node.lines = layoutText(node, width, height);
 

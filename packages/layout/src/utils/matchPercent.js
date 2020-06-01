@@ -10,13 +10,13 @@ const matchPercent = value => {
   const match = isPercent(value);
 
   if (match) {
-    const value = parseFloat(match[1], 10);
-    const percent = value / 100;
+    const f = parseFloat(match[1], 10);
+    const percent = f / 100;
 
     return {
-      value,
       percent,
-      absValue: Math.abs(value),
+      value: f,
+      absValue: Math.abs(f),
       absPercent: Math.abs(percent),
     };
   }

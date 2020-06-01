@@ -11,7 +11,7 @@ const buildSubsetForFont = font =>
     return [...acc, String.fromCharCode(codePoint)];
   }, []);
 
-export const ignoreChars = fragments =>
+const ignoreChars = fragments =>
   fragments.map(fragment => {
     const charSubset = buildSubsetForFont(fragment.attributes.font);
     const subsetRegex = new RegExp(charSubset.join('|'));
@@ -21,3 +21,5 @@ export const ignoreChars = fragments =>
       attributes: fragment.attributes,
     };
   });
+
+export default ignoreChars;

@@ -30,15 +30,21 @@ const setYogaValue = (attr, edge) => value =>
       }
 
       if (percent) {
-        hasEdge
-          ? yogaNode[percentMethod](edge, percent.value)
-          : yogaNode[percentMethod](percent.value);
+        if (hasEdge) {
+          yogaNode[percentMethod](edge, percent.value);
+        } else {
+          yogaNode[percentMethod](percent.value);
+        }
       } else if (value === 'auto') {
-        hasEdge ? yogaNode[autoMethod](edge) : yogaNode[autoMethod]();
+        if (hasEdge) {
+          yogaNode[autoMethod](edge);
+        } else {
+          yogaNode[autoMethod]();
+        }
+      } else if (hasEdge) {
+        yogaNode[fixedMethod](edge, value);
       } else {
-        hasEdge
-          ? yogaNode[fixedMethod](edge, value)
-          : yogaNode[fixedMethod](value);
+        yogaNode[fixedMethod](value);
       }
     }
   });

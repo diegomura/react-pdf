@@ -1,6 +1,7 @@
+/* eslint-disable no-param-reassign */
+
 import resolveImage from './resolveImage';
 import getSource from './getSource';
-import warning from '../utils/warning';
 
 /**
  * Resolves async src if passed
@@ -22,7 +23,7 @@ const fetchImage = async node => {
   const { cache } = node.props;
 
   if (!src) {
-    warning(false, 'Image should receive either a "src" or "source" prop');
+    console.warn(false, 'Image should receive either a "src" or "source" prop');
     return;
   }
 

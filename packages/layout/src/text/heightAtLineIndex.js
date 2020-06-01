@@ -9,7 +9,7 @@ const heightAtLineIndex = (node, index) => {
 
   if (!node.lines) return counter;
 
-  for (let i = 0; i < index; i++) {
+  for (let i = 0; i < index; i += 1) {
     const line = node.lines[i];
 
     if (!line) break;

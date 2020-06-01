@@ -1,4 +1,4 @@
-import resolvePageMargins from '../../src/layout/resolvePageMargins';
+import resolvePageMargins from '../../src/steps/resolvePageMargins';
 
 describe('layout resolvePageMargins', () => {
   test('Should keep other styles untouched', () => {

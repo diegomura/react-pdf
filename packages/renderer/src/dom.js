@@ -7,6 +7,7 @@ const queue = require('queue');
 
 class InternalBlobProvider extends React.PureComponent {
   renderQueue = queue({ autostart: true, concurrency: 1 });
+
   state = { blob: null, url: null, loading: true, error: null };
 
   componentDidMount() {
@@ -62,6 +63,7 @@ export const BlobProvider = ({ document: doc, children }) => {
 export const PDFViewer = ({
   className,
   style,
+  title,
   children,
   innerRef,
   ...props
@@ -70,10 +72,11 @@ export const PDFViewer = ({
     <InternalBlobProvider document={children}>
       {({ url }) => (
         <iframe
-          className={className}
-          ref={innerRef}
           src={url}
+          title={title}
+          ref={innerRef}
           style={style}
+          className={className}
           {...props}
         />
       )}
@@ -103,11 +106,11 @@ export const PDFDownloadLink = ({
     <InternalBlobProvider document={doc}>
       {params => (
         <a
-          className={className}
-          download={fileName}
-          href={params.url}
-          onClick={downloadOnIE(params.blob)}
           style={style}
+          href={params.url}
+          download={fileName}
+          className={className}
+          onClick={downloadOnIE(params.blob)}
         >
           {typeof children === 'function' ? children(params) : children}
         </a>

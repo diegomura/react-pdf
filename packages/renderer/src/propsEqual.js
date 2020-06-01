@@ -14,14 +14,11 @@ const propsEqual = (a, b) => {
     return false;
   }
 
-  for (let i = 0; i < oldPropsKeys.length; i++) {
+  for (let i = 0; i < oldPropsKeys.length; i += 1) {
     const propName = oldPropsKeys[i];
 
-    if (propName === 'render') {
-      if (!a[propName] !== !b[propName]) {
-        return false;
-      }
-      continue;
+    if (propName === 'render' && !a[propName] !== !b[propName]) {
+      return false;
     }
 
     if (propName !== 'children' && a[propName] !== b[propName]) {

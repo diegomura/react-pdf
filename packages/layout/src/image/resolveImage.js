@@ -28,11 +28,13 @@ const fetchLocalFile = src =>
   new Promise((resolve, reject) => {
     try {
       if (BROWSER) {
-        return reject(new Error('Cannot fetch local file in this environemnt'));
+        reject(new Error('Cannot fetch local file in this environemnt'));
+        return;
       }
       const absolutePath = getAbsoluteLocalPath(src);
       if (!absolutePath) {
-        return reject(new Error(`Cannot fetch non-local path: ${src}`));
+        reject(new Error(`Cannot fetch non-local path: ${src}`));
+        return;
       }
       fs.readFile(absolutePath, (err, data) =>
         err ? reject(err) : resolve(data),
@@ -112,6 +114,8 @@ const resolveBufferImage = buffer => {
   if (format) {
     return new Promise(resolve => resolve(getImage(buffer, format)));
   }
+
+  return Promise.resolve();
 };
 
 const getImageFormat = body => {

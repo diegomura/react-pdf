@@ -29,7 +29,7 @@ const defaultPresenceAhead = element => height =>
 const getPresenceAhead = (elements, height) => {
   let result = 0;
 
-  for (let i = 0; i < elements.length; i++) {
+  for (let i = 0; i < elements.length; i += 1) {
     const element = elements[i];
 
     if (!element.box) continue;

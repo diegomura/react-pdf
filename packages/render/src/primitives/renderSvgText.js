@@ -14,7 +14,7 @@ const renderRun = (ctx, run) => {
     ctx.save();
     ctx.translate(0, -run.ascent);
 
-    for (let i = 0; i < run.glyphs.length; i++) {
+    for (let i = 0; i < run.glyphs.length; i += 1) {
       const position = run.positions[i];
       const glyph = run.glyphs[i];
 
@@ -60,17 +60,15 @@ const renderSpan = (ctx, line, textAnchor) => {
       break;
   }
 
-  for (const run of line.runs) {
-    renderRun(ctx, run);
-  }
+  line.runs.forEach(run => renderRun(ctx, run));
 
   ctx.restore();
 };
 
 const renderSvgText = ctx => node => {
-  for (const span of node.children) {
-    renderSpan(ctx, span.lines[0], span.props.textAnchor);
-  }
+  node.children.forEach(span =>
+    renderSpan(ctx, span.lines[0], span.props.textAnchor),
+  );
 
   return node;
 };

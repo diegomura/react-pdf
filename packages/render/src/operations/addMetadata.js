@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import * as R from 'ramda';
 
 const getDocumentProp = target => (or, prop) =>

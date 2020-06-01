@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import warning from '../../src/utils/warning';
 import fetchImage from '../../src/image/fetchImage';
 import { IMAGE_CACHE } from '../../src/image/resolveImage';
 
@@ -14,21 +13,10 @@ const localPNGImage = fs.readFileSync(pngLogalPath);
 const base64Image =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==';
 
-jest.mock('../../src/utils/warning');
-
 describe('image fetchImage', () => {
   beforeEach(() => {
-    warning.mockReset();
     fetch.resetMocks();
     IMAGE_CACHE.reset();
-  });
-
-  test('Should warn if no src available', async () => {
-    const node = { type: 'IMAGE', props: {} };
-
-    await fetchImage(node);
-
-    expect(warning.mock.calls).toHaveLength(1);
   });
 
   test('Should fetch remote image using passed options', async () => {

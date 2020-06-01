@@ -20,7 +20,9 @@ const MARKERS = [
 
 class JPEG {
   data = null;
+
   width = null;
+
   height = null;
 
   constructor(data) {
@@ -54,7 +56,7 @@ class JPEG {
   }
 }
 
-JPEG.isValid = function(data) {
+JPEG.isValid = data => {
   if (!data || !Buffer.isBuffer(data) || data.readUInt16BE(0) !== 0xffd8) {
     return false;
   }

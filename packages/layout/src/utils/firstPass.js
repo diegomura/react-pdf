@@ -11,7 +11,8 @@ const isNotNil = R.complement(R.isNil);
 const firstPass = (...fns) => value => {
   let res;
 
-  for (const fn of fns) {
+  for (let i = 0; i < fns.length; i += 1) {
+    const fn = fns[i];
     res = fn(value);
     if (isNotNil(res)) return res;
   }

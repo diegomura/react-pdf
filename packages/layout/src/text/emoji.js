@@ -8,7 +8,11 @@ import resolveImage from '../image/resolveImage';
 const emojis = {};
 const regex = emojiRegex();
 
-const reflect = promise => (...args) => promise(...args).then(v => v, e => e);
+const reflect = promise => (...args) =>
+  promise(...args).then(
+    v => v,
+    e => e,
+  );
 
 // Returns a function to be able to mock resolveImage.
 const makeFetchEmojiImage = () => reflect(resolveImage);
@@ -67,14 +71,14 @@ export const fetchEmojis = string => {
 export const embedEmojis = fragments => {
   const result = [];
 
-  for (let i = 0; i < fragments.length; i++) {
+  for (let i = 0; i < fragments.length; i += 1) {
     const fragment = fragments[i];
 
     let match;
     let lastIndex = 0;
 
     while ((match = regex.exec(fragment.string))) {
-      const index = match.index;
+      const { index } = match;
       const emoji = match[0];
       const emojiSize = fragment.attributes.fontSize;
       const chunk = fragment.string.slice(lastIndex, index + match[0].length);

@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import * as R from 'ramda';
 
 import getMargin from '../node/getMargin';
@@ -19,10 +21,7 @@ const measureCtx = () => {
   const nil = () => ctx;
   const addPoint = (x, y) => points.push([x, y]);
 
-  const moveTo = R.compose(
-    nil,
-    addPoint,
-  );
+  const moveTo = R.compose(nil, addPoint);
 
   const rect = (x, y, w, h) => {
     addPoint(x, y);
@@ -88,17 +87,9 @@ const measureCtx = () => {
   ctx.linearGradient = nil;
   ctx.radialGradient = nil;
 
-  ctx.getWidth = () =>
-    R.compose(
-      getMax,
-      R.pluck(0),
-    )(points);
+  ctx.getWidth = () => R.compose(getMax, R.pluck(0))(points);
 
-  ctx.getHeight = () =>
-    R.compose(
-      getMax,
-      R.pluck(1),
-    )(points);
+  ctx.getHeight = () => R.compose(getMax, R.pluck(1))(points);
 
   return ctx;
 };

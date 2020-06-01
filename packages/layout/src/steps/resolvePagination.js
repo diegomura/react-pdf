@@ -53,7 +53,7 @@ const splitNodes = (height, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
 
-  for (let i = 0; i < nodes.length; i++) {
+  for (let i = 0; i < nodes.length; i += 1) {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
     const futureFixedNodes = R.filter(isFixed, futureNodes);
@@ -138,19 +138,13 @@ const splitPage = (page, pageNumber) => {
 const shouldResolveDynamicNodes = node =>
   R.either(
     isDynamic,
-    R.compose(
-      R.any(shouldResolveDynamicNodes),
-      R.propOr([], 'children'),
-    ),
+    R.compose(R.any(shouldResolveDynamicNodes), R.propOr([], 'children')),
   )(node);
 
 const resolveDynamicPage = (props, page) =>
   R.when(
     shouldResolveDynamicNodes,
-    R.compose(
-      relayoutPage,
-      resolveDynamicNodes(props),
-    ),
+    R.compose(relayoutPage, resolveDynamicNodes(props)),
   )(page);
 
 const resolveDynamicNodes = props => node => {
@@ -201,7 +195,7 @@ const resolvePagination = doc => {
   let pages = [];
   let pageNumber = 1;
 
-  for (let i = 0; i < doc.children.length; i++) {
+  for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
     const subpages = paginate(page, pageNumber);
 

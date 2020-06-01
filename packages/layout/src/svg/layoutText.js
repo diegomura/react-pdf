@@ -3,9 +3,9 @@ import * as P from '@react-pdf/primitives';
 import layoutEngine from '@react-pdf/textkit/layout';
 import linebreaker from '@react-pdf/textkit/engines/linebreaker';
 import justification from '@react-pdf/textkit/engines/justification';
-import textDecoration from '@react-pdf/textkit/engines/textDecoration';
 import scriptItemizer from '@react-pdf/textkit/engines/scriptItemizer';
 import wordHyphenation from '@react-pdf/textkit/engines/wordHyphenation';
+import decorationEngine from '@react-pdf/textkit/engines/textDecoration';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
 import Font from '../font';
@@ -17,7 +17,7 @@ const isTextInstance = R.propEq('type', P.TextIntance);
 const engines = {
   linebreaker,
   justification,
-  textDecoration,
+  decorationEngine,
   scriptItemizer,
   wordHyphenation,
   fontSubstitution,
@@ -70,10 +70,8 @@ const getFragments = instance => {
         string: transformText(child.value, textTransform),
         attributes,
       });
-    } else {
-      if (child) {
-        fragments.push(...getFragments(child));
-      }
+    } else if (child) {
+      fragments.push(...getFragments(child));
     }
   });
 
@@ -93,10 +91,11 @@ const layoutTspan = node => {
 
   const container = { x, y, width: AlmostInfinity, height: AlmostInfinity };
 
-  const lines = R.compose(
-    R.reduce(R.concat, []),
-    engine,
-  )(attributedString, container, layoutOptions);
+  const lines = R.compose(R.reduce(R.concat, []), engine)(
+    attributedString,
+    container,
+    layoutOptions,
+  );
 
   return R.assoc('lines', lines, node);
 };

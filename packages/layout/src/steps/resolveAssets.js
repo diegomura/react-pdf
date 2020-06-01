@@ -18,26 +18,26 @@ const fetchAssets = node => {
   const listToExplore = node.children.slice(0);
 
   while (listToExplore.length > 0) {
-    const node = listToExplore.shift();
+    const n = listToExplore.shift();
 
-    if (isImage(node)) {
-      promises.push(fetchImage(node));
+    if (isImage(n)) {
+      promises.push(fetchImage(n));
     }
 
-    if (node.style && node.style.fontFamily) {
-      promises.push(Font.load(node.style));
+    if (n.style && n.style.fontFamily) {
+      promises.push(Font.load(n.style));
     }
 
-    if (typeof node === 'string') {
-      promises.push(...fetchEmojis(node));
+    if (typeof n === 'string') {
+      promises.push(...fetchEmojis(n));
     }
 
-    if (typeof node.value === 'string') {
-      promises.push(...fetchEmojis(node.value));
+    if (typeof n.value === 'string') {
+      promises.push(...fetchEmojis(n.value));
     }
 
-    if (node.children) {
-      node.children.forEach(childNode => {
+    if (n.children) {
+      n.children.forEach(childNode => {
         listToExplore.push(childNode);
       });
     }
@@ -54,10 +54,6 @@ const fetchAssets = node => {
  * @returns {Object} root node
  */
 const resolveAssets = node =>
-  R.compose(
-    R.then(R.always(node)),
-    p => Promise.all(p),
-    fetchAssets,
-  )(node);
+  R.compose(R.then(R.always(node)), p => Promise.all(p), fetchAssets)(node);
 
 export default resolveAssets;

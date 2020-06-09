@@ -7,7 +7,7 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "scripts": {
     "build": "lerna run build",
-    "watch": "lerna run watch",
+    "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
     "prepublish": "npm run build",
     "lint": "eslint packages",

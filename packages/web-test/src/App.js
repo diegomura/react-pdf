@@ -1,5 +1,11 @@
 import React from 'react';
-import { Document, Page, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  View,
+  StyleSheet,
+  PDFViewer,
+} from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   page: {
@@ -15,8 +21,8 @@ const styles = StyleSheet.create({
 const MyDocument = () => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <View style={[styles.section, { backgroundColor: 'red' }]}></View>
-      <View style={[styles.section, { backgroundColor: 'yellow' }]}></View>
+      <View style={[styles.section, { backgroundColor: 'red' }]} />
+      <View style={[styles.section, { backgroundColor: 'yellow' }]} />
     </Page>
   </Document>
 );

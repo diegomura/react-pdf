@@ -1,10 +1,8 @@
 /* eslint-disable max-classes-per-file */
 
 import isUrl from 'is-url';
-import fontkit from '@react-pdf/fontkit';
 import fetch from 'cross-fetch';
-
-import { processFontWeight } from '../stylesheet/transformStyles';
+import fontkit from '@react-pdf/fontkit';
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
@@ -21,7 +19,7 @@ class FontSource {
     this.src = src;
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
-    this.fontWeight = processFontWeight(fontWeight) || 400;
+    this.fontWeight = 400;
 
     this.data = null;
     this.loading = false;

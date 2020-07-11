@@ -1,4 +1,4 @@
-import flatten from '../../src/stylesheet/flatten';
+import flatten from '../src/flatten';
 
 describe('stylesheet flatten', () => {
   test('should return empty object for undefined', () => {

@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import colorString from 'color-string';
 import hlsToHex from 'hsl-to-hex';
+import colorString from 'color-string';
 
 const isRgb = R.test(/rgb/g);
 const isRgba = R.test(/rgba/g);
@@ -13,10 +13,7 @@ const isHsla = R.test(/hsla/g);
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const parseRgb = R.compose(
-  colorString.to.hex,
-  colorString.get.rgb,
-);
+const parseRgb = R.compose(colorString.to.hex, colorString.get.rgb);
 
 /**
  * Transform Hsl color to hexa

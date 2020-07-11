@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 
-import castArray from '../utils/castArray';
+const isNotArray = R.complement(R.is(Array));
+
+const castArray = R.when(isNotArray, v => [v]);
 
 /**
  * Remove nil values from array
@@ -43,10 +45,6 @@ const mergeStyles = styles =>
  * @param {Array} style objects array
  * @returns {Object} flatted style object
  */
-const flatten = R.compose(
-  mergeStyles,
-  compact,
-  castArray,
-);
+const flatten = R.compose(mergeStyles, compact, castArray);
 
 export default flatten;

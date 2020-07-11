@@ -5,5 +5,8 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
-  "main": "./src/index.js"
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "jest"
+  }
 }

@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
+import { transformColor } from '@react-pdf/stylesheet/lib/colors';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
@@ -8,7 +9,6 @@ import parseViewbox from '../svg/parseViewbox';
 import inheritProps from '../svg/inheritProps';
 import matchPercent from '../utils/matchPercent';
 import parseAspectRatio from '../svg/parseAspectRatio';
-import { transformColor } from '../stylesheet/transformColors';
 
 const STYLE_PROPS = [
   'width',
@@ -34,11 +34,11 @@ const HORIZONTAL_PROPS = ['x', 'x1', 'x2', 'width', 'cx', 'rx'];
 
 const isType = R.propEq('type');
 
-const isSvg = isType(P.Svg)
+const isSvg = isType(P.Svg);
 
-const isText = isType(P.Text)
+const isText = isType(P.Text);
 
-const isTextInstance = isType(P.TextInstance)
+const isTextInstance = isType(P.TextInstance);
 
 const transformPercent = container =>
   R.mapObjIndexed((value, key) => {
@@ -137,10 +137,7 @@ const resolveSvgNode = container =>
 const resolveChildren = container => node =>
   R.evolve({
     children: R.map(
-      R.compose(
-        resolveChildren(container),
-        resolveSvgNode(container),
-      ),
+      R.compose(resolveChildren(container), resolveSvgNode(container)),
     ),
   })(node);
 

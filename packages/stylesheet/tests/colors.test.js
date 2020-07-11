@@ -1,4 +1,4 @@
-import transformColors from '../../src/stylesheet/transformColors';
+import transformColors from '../src/colors';
 
 describe('colors conversion', () => {
   test('Should keep hex values as they are', () => {

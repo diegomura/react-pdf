@@ -1,5 +1,7 @@
 import * as R from 'ramda';
 
+import shorthands from './shorthands';
+
 const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
 const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
 const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(\S+)/;
@@ -205,12 +207,34 @@ const transformStyle = R.compose(
 );
 
 /**
- * Transforms already expanded styles shortcuts into appropiate values
- * Ex. marginTopWidth: '2 solid red' -> marginTopWidth: 2
+ * Expand the shorthand properties to isolate every declaration from the others.
  *
- * @param {Object} styles expanded object
- * @returns {Object} transformed styles
+ * @param { Object } style object
+ * @returns { Object } expanded style object
  */
-const transformStyles = R.mapObjIndexed(R.flip(transformStyle));
+const expand = style => {
+  if (!style) return style;
 
-export default transformStyles;
+  const propsArray = Object.keys(style);
+  const resolvedStyle = {};
+
+  for (let i = 0; i < propsArray.length; i += 1) {
+    const key = propsArray[i];
+    const value = style[key];
+
+    if (shorthands[key]) {
+      const expandedProps = shorthands[key];
+
+      for (let j = 0; j < expandedProps.length; j += 1) {
+        const propName = expandedProps[j];
+        resolvedStyle[propName] = transformStyle(propName, value);
+      }
+    } else {
+      resolvedStyle[key] = transformStyle(key, value);
+    }
+  }
+
+  return resolvedStyle;
+};
+
+export default expand;

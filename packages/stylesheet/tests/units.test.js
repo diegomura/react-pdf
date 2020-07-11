@@ -1,4 +1,4 @@
-import transformUnits from '../../src/stylesheet/transformUnits';
+import transformUnits from '../src/units';
 
 describe('units conversion', () => {
   test('Should transform width in dimensions', () => {

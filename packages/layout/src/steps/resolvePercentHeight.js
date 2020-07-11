@@ -62,7 +62,8 @@ const resolvePagePercentHeight = page =>
   })(page);
 
 /**
- * Transform all page immediate children with percent height to fixed
+ * Transform all page immediate children with percent height to fixed.
+ * This is needed for computing correct dimensions on pre-pagination layout.
  *
  * @param {Object} document root
  * @return {Object} transformed document root

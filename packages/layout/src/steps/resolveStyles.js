@@ -1,12 +1,6 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
-
-import flattenStyles from '../stylesheet/flatten';
-import expandStyles from '../stylesheet/expandStyles';
-import transformUnits from '../stylesheet/transformUnits';
-import transformStyles from '../stylesheet/transformStyles';
-import transformColors from '../stylesheet/transformColors';
-import resolveMediaQueries from '../stylesheet/resolveMediaQueries';
+import stylesheet from '@react-pdf/stylesheet';
 
 const isLink = R.propEq('type', P.Link);
 
@@ -14,33 +8,6 @@ const LINK_STYLES = {
   color: 'blue',
   textDecoration: 'underline',
 };
-
-/**
- * Filter styles with `none` value
- *
- * @param {Object} style object
- * @returns {Object} style without none values
- */
-const filterNoneValues = R.reject(R.equals('none'));
-
-/**
- * Resolves styles
- *
- * @param {Object} container
- * @param {Object} node
- * @param {Object} style object
- * @returns {Object} resolved style object
- */
-const resolveStyles = container =>
-  R.compose(
-    transformUnits(container),
-    transformColors,
-    transformStyles,
-    expandStyles,
-    resolveMediaQueries(container),
-    filterNoneValues,
-    flattenStyles,
-  );
 
 /**
  * Resolves node styles
@@ -53,7 +20,7 @@ const resolveNodeStyles = container => node =>
   R.o(
     R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
     R.evolve({
-      style: resolveStyles(container),
+      style: stylesheet(container),
       children: R.map(resolveNodeStyles(container)),
     }),
   )(node);
@@ -70,7 +37,7 @@ const resolvePageStyles = page => {
   const container = R.isEmpty(box) ? style : box;
 
   return R.evolve({
-    style: resolveStyles(container),
+    style: stylesheet(container),
     children: R.map(resolveNodeStyles(container)),
   })(page);
 };

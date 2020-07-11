@@ -1,4 +1,4 @@
-import resolveMediaQueries from '../../src/stylesheet/resolveMediaQueries';
+import resolveMediaQueries from '../src/mediaQueries';
 
 describe('media queries', () => {
   test('should resolve max-height media queries on narrow container', () => {

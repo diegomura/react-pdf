@@ -1,7 +1,6 @@
 /* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
 
-import Font from '../font';
 import resolveImage from '../image/resolveImage';
 
 // Caches emoji images data
@@ -35,15 +34,13 @@ const getCodePoints = string =>
     .map(char => char.codePointAt(0).toString(16))
     .join('-');
 
-const buildEmojiUrl = emoji => {
-  const { url, format } = Font.getEmojiSource();
+const buildEmojiUrl = (emoji, source) => {
+  const { url, format } = source;
   return `${url}${getCodePoints(emoji)}.${format}`;
 };
 
-export const fetchEmojis = string => {
-  const emojiSource = Font.getEmojiSource();
-
-  if (!emojiSource || !emojiSource.url) return [];
+export const fetchEmojis = (string, source) => {
+  if (!source || !source.url) return [];
 
   const promises = [];
 
@@ -52,7 +49,7 @@ export const fetchEmojis = string => {
     const emoji = match[0];
 
     if (!emojis[emoji] || emojis[emoji].loading) {
-      const emojiUrl = buildEmojiUrl(emoji);
+      const emojiUrl = buildEmojiUrl(emoji, source);
 
       emojis[emoji] = { loading: true };
       const fetchEmojiImage = makeFetchEmojiImage();
@@ -119,3 +116,5 @@ export const embedEmojis = fragments => {
 
   return result;
 };
+
+export default fetchEmojis;

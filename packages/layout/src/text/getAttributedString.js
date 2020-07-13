@@ -2,7 +2,6 @@ import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
-import Font from '../font';
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
 import transformText from './transformText';
@@ -21,7 +20,7 @@ const isTextInstance = isType(P.TextInstance);
  * @param {Object} instance node
  * @returns {Array} text fragments
  */
-const getFragments = instance => {
+const getFragments = (fontStore, instance) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
@@ -43,7 +42,9 @@ const getFragments = instance => {
     opacity,
   } = instance.style;
 
-  const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
+  const obj = fontStore
+    ? fontStore.getFont({ fontFamily, fontWeight, fontStyle })
+    : null;
   const font = obj ? obj.data : fontFamily;
 
   const attributes = {
@@ -102,7 +103,7 @@ const getFragments = instance => {
  * @param {Object} instance node
  * @returns {Object} attributed string
  */
-const getAttributedString = instance =>
-  AttributedString.fromFragments(getFragments(instance));
+const getAttributedString = (fontStore, instance) =>
+  AttributedString.fromFragments(getFragments(fontStore, instance));
 
-export default getAttributedString;
+export default R.curryN(2, getAttributedString);

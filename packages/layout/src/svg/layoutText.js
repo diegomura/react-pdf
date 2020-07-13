@@ -8,7 +8,6 @@ import wordHyphenation from '@react-pdf/textkit/engines/wordHyphenation';
 import decorationEngine from '@react-pdf/textkit/engines/textDecoration';
 import AttributedString from '@react-pdf/textkit/attributedString';
 
-import Font from '../font';
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';
 
@@ -25,12 +24,7 @@ const engines = {
 
 const engine = layoutEngine(engines);
 
-const layoutOptions = {
-  hyphenationCallback: Font.getHyphenationCallback(),
-  shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
-};
-
-const getFragments = instance => {
+const getFragments = (fontStore, instance) => {
   if (!instance) return [{ string: '' }];
 
   const fragments = [];
@@ -48,7 +42,9 @@ const getFragments = instance => {
     opacity,
   } = instance.props;
 
-  const obj = Font.getFont({ fontFamily, fontWeight, fontStyle });
+  const obj = fontStore
+    ? fontStore.getFont({ fontFamily, fontWeight, fontStyle })
+    : null;
   const font = obj ? obj.data : fontFamily;
 
   const attributes = {
@@ -78,18 +74,26 @@ const getFragments = instance => {
   return fragments;
 };
 
-const getAttributedString = instance =>
-  AttributedString.fromFragments(getFragments(instance));
+const getAttributedString = (fontStore, instance) =>
+  AttributedString.fromFragments(getFragments(fontStore, instance));
 
 const AlmostInfinity = 999999999999;
 
-const layoutTspan = node => {
-  const attributedString = getAttributedString(node);
+const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
+
+const layoutTspan = (fontStore, node) => {
+  const attributedString = getAttributedString(fontStore, node);
 
   const x = R.pathOr(0, ['props', 'x'], node);
   const y = R.pathOr(0, ['props', 'y'], node);
 
   const container = { x, y, width: AlmostInfinity, height: AlmostInfinity };
+
+  const hyphenationCallback = fontStore
+    ? fontStore.getHyphenationCallback()
+    : null;
+
+  const layoutOptions = { hyphenationCallback, shrinkWhitespaceFactor };
 
   const lines = R.compose(R.reduce(R.concat, []), engine)(
     attributedString,
@@ -100,8 +104,9 @@ const layoutTspan = node => {
   return R.assoc('lines', lines, node);
 };
 
-const layoutText = R.evolve({
-  children: R.map(layoutTspan),
-});
+const layoutText = (fontStore, node) =>
+  R.evolve({
+    children: R.map(layoutTspan(fontStore)),
+  })(node);
 
-export default layoutText;
+export default R.curryN(2, layoutText);

@@ -6,7 +6,6 @@ import textDecoration from '@react-pdf/textkit/engines/textDecoration';
 import scriptItemizer from '@react-pdf/textkit/engines/scriptItemizer';
 import wordHyphenation from '@react-pdf/textkit/engines/wordHyphenation';
 
-import Font from '../font';
 import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';
 
@@ -24,12 +23,12 @@ const engine = layoutEngine(engines);
 /**
  * Get layout container for specific text node
  *
- * @param {Object} node
  * @param {Number} width
  * @param {Number} height
+ * @param {Object} node
  * @returns {Object} layout container
  */
-const getContainer = (node, width, height) => {
+const getContainer = (width, height, node) => {
   const maxLines = R.path(['style', 'maxLines'], node);
   const textOverflow = R.path(['style', 'textOverflow'], node);
 
@@ -49,10 +48,10 @@ const getContainer = (node, width, height) => {
  * @param {Object} node instance
  * @returns {Object} layout options
  */
-const getLayoutOptions = node => ({
+const getLayoutOptions = fontStore => node => ({
   hyphenationPenalty: node.props.hyphenationPenalty,
-  hyphenationCallback: Font.getHyphenationCallback(),
   shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
+  hyphenationCallback: fontStore ? fontStore.getHyphenationCallback() : null,
 });
 
 /**
@@ -61,11 +60,17 @@ const getLayoutOptions = node => ({
  * @param {Object} node
  * @param {Number} container width
  * @param {Number} container height
+ * @param {Number} fontStore font store
  * @returns {Array} layout lines
  */
-const layoutText = R.compose(
-  R.reduce(R.concat, []),
-  R.converge(engine, [getAttributedString, getContainer, getLayoutOptions]),
-);
+const layoutText = (node, width, height, fontStore) =>
+  R.compose(
+    R.reduce(R.concat, []),
+    R.converge(engine, [
+      getAttributedString(fontStore),
+      getContainer(width, height),
+      getLayoutOptions(fontStore),
+    ]),
+  )(node);
 
-export default layoutText;
+export default R.curryN(4, layoutText);

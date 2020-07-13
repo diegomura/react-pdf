@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+
 import React from 'react';
 
 import { pdf } from './index';
@@ -119,6 +121,6 @@ export const PDFDownloadLink = ({
   );
 };
 
-export { pdf, version, StyleSheet } from './index';
+export { pdf, version, Font, StyleSheet } from './index';
 
 export * from '@react-pdf/primitives';

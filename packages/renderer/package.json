@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
+    "@react-pdf/font": "^2.0.0",
     "@react-pdf/layout": "^2.0.0",
     "@react-pdf/pdfkit": "^1.4.2",
     "@react-pdf/primitives": "^2.0.0",

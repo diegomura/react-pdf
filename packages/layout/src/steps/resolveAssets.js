@@ -1,9 +1,8 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
-import Font from '../font';
+import fetchEmojis from '../text/emoji';
 import fetchImage from '../image/fetchImage';
-import { fetchEmojis } from '../text/emoji';
 
 const isImage = R.propEq('type', P.Image);
 
@@ -13,9 +12,10 @@ const isImage = R.propEq('type', P.Image);
  * @param {Object} root node
  * @returns {Array} asset promises
  */
-const fetchAssets = node => {
+const fetchAssets = (fontStore, node) => {
   const promises = [];
   const listToExplore = node.children.slice(0);
+  const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
   while (listToExplore.length > 0) {
     const n = listToExplore.shift();
@@ -24,16 +24,16 @@ const fetchAssets = node => {
       promises.push(fetchImage(n));
     }
 
-    if (n.style && n.style.fontFamily) {
-      promises.push(Font.load(n.style));
+    if (fontStore && n.style && n.style.fontFamily) {
+      promises.push(fontStore.load(n.style));
     }
 
     if (typeof n === 'string') {
-      promises.push(...fetchEmojis(n));
+      promises.push(...fetchEmojis(n, emojiSource));
     }
 
     if (typeof n.value === 'string') {
-      promises.push(...fetchEmojis(n.value));
+      promises.push(...fetchEmojis(n.value, emojiSource));
     }
 
     if (n.children) {
@@ -50,10 +50,15 @@ const fetchAssets = node => {
  * Fetch image, font and emoji assets in parallel.
  * Layout process will not be resumed until promise resolves.
  *
+ * @param {Object} fontStore font store
  * @param {Object} root node
  * @returns {Object} root node
  */
-const resolveAssets = node =>
-  R.compose(R.then(R.always(node)), p => Promise.all(p), fetchAssets)(node);
+const resolveAssets = (node, fontStore) =>
+  R.compose(
+    R.then(R.always(node)),
+    p => Promise.all(p),
+    fetchAssets,
+  )(fontStore, node);
 
 export default resolveAssets;

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { pdf, version, StyleSheet } from './index';
+import { pdf, version, Font, StyleSheet } from './index';
 
 export const renderToStream = async function(element) {
   const instance = pdf({ initialValue: element });
@@ -42,10 +42,11 @@ export const BlobProvider = () => {
 
 export const render = renderToFile;
 
-export { pdf, version, StyleSheet } from './index';
+export { pdf, version, Font, StyleSheet } from './index';
 
 export default {
   pdf,
+  Font,
   version,
   StyleSheet,
   PDFViewer,

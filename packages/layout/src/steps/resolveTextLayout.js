@@ -7,7 +7,7 @@ const isType = R.propEq('type');
 
 const isSvg = isType(P.Svg);
 
-const isText = isType(P.Text)
+const isText = isType(P.Text);
 
 const isNotSvg = R.complement(isSvg);
 
@@ -22,12 +22,14 @@ const shouldLayoutText = node => isText(node) && !hasLines(node);
  * but we need to layout those nodes with fixed width and height.
  *
  * @param {Object} node
- * @returns {Object} layouted node
+ * @returns {Object} layout node
  */
-const resolveTextLayout = node =>
-  R.compose(
+const resolveTextLayout = (node, fontStore) => {
+  const mapChild = child => resolveTextLayout(child, fontStore);
+
+  return R.compose(
     R.evolve({
-      children: R.map(R.when(isNotSvg, resolveTextLayout)),
+      children: R.map(R.when(isNotSvg, mapChild)),
     }),
     R.when(
       shouldLayoutText,
@@ -37,11 +39,13 @@ const resolveTextLayout = node =>
             R.identity,
             R.path(['box', 'width']),
             R.path(['box', 'height']),
+            R.always(fontStore),
           ]),
           R.identity,
         ]),
       ),
     ),
   )(node);
+};
 
 export default resolveTextLayout;

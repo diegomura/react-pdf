@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
-    "@react-pdf/fontkit": "^1.13.0",
     "@react-pdf/pdfkit": "^1.4.2",
     "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/primitives": "^2.0.0",
@@ -21,7 +20,6 @@
     "@react-pdf/textkit": "^0.3.7",
     "cross-fetch": "^3.0.4",
     "emoji-regex": "^8.0.0",
-    "is-url": "^1.2.4",
     "queue": "^6.0.1",
     "ramda": "^0.26.1",
     "yoga-layout-prebuilt": "^1.9.3"

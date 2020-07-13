@@ -141,21 +141,21 @@ const resolveChildren = container => node =>
     ),
   })(node);
 
-const parseText = node =>
+const parseText = fontStore => node =>
   R.ifElse(
     isText,
-    layoutText,
+    layoutText(fontStore),
     R.evolve({
       children: R.map(parseText),
     }),
   )(node);
 
-const resolveSvgRoot = node => {
+const resolveSvgRoot = fontStore => node => {
   const container = getContainer(node);
 
   return R.compose(
     replaceDefs,
-    parseText,
+    parseText(fontStore),
     parseSvgProps,
     pickStyleProps,
     inheritProps,
@@ -163,10 +163,13 @@ const resolveSvgRoot = node => {
   )(node);
 };
 
-const resolveSvg = node =>
-  R.compose(
-    R.evolve({ children: R.map(resolveSvg) }),
-    R.when(isSvg, resolveSvgRoot),
+const resolveSvg = (node, fontStore) => {
+  const mapChild = child => resolveSvg(child, fontStore);
+
+  return R.compose(
+    R.evolve({ children: R.map(mapChild) }),
+    R.when(isSvg, resolveSvgRoot(fontStore)),
   )(node);
+};
 
 export default resolveSvg;

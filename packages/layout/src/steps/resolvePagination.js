@@ -31,7 +31,19 @@ const allFixed = R.all(isFixed);
 
 const isDynamic = R.hasPath(['props', 'render']);
 
-const relayoutPage = R.compose(
+const compose = (...fns) => (value, ...args) => {
+  let result = value;
+  const reversedFns = R.reverse(fns);
+
+  for (let i = 0; i < reversedFns.length; i += 1) {
+    const fn = reversedFns[i];
+    result = fn(result, ...args);
+  }
+
+  return result;
+};
+
+const relayoutPage = compose(
   resolveTextLayout,
   resolveInheritance,
   resolvePageDimensions,
@@ -108,18 +120,20 @@ const splitChildren = (height, node) => {
   return splitNodes(availableHeight, children);
 };
 
-const splitPage = (page, pageNumber) => {
+const splitPage = (page, pageNumber, fontStore) => {
   const contentArea = getContentArea(page);
   const height = R.path(['style', 'height'], page);
-  const dynamicPage = resolveDynamicPage({ pageNumber }, page);
+  const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore);
 
   const [currentChilds, nextChilds] = splitNodes(
     contentArea,
     dynamicPage.children,
   );
 
+  const relayout = node => relayoutPage(node, fontStore);
+
   const currentPage = R.compose(
-    relayoutPage,
+    relayout,
     assingChildren(currentChilds),
     R.assocPath(['box', 'height'], height),
   )(page);
@@ -127,7 +141,7 @@ const splitPage = (page, pageNumber) => {
   if (R.isEmpty(nextChilds) || allFixed(nextChilds)) return [currentPage, null];
 
   const nextPage = R.compose(
-    relayoutPage,
+    relayout,
     assingChildren(nextChilds),
     R.dissocPath(['box', 'height']),
   )(page);
@@ -141,11 +155,14 @@ const shouldResolveDynamicNodes = node =>
     R.compose(R.any(shouldResolveDynamicNodes), R.propOr([], 'children')),
   )(node);
 
-const resolveDynamicPage = (props, page) =>
-  R.when(
+const resolveDynamicPage = (props, page, fontStore) => {
+  const relayout = node => relayoutPage(node, fontStore);
+
+  return R.when(
     shouldResolveDynamicNodes,
-    R.compose(relayoutPage, resolveDynamicNodes(props)),
+    R.compose(relayout, resolveDynamicNodes(props)),
   )(page);
+};
 
 const resolveDynamicNodes = props => node => {
   const isNodeDynamic = R.always(isDynamic(node));
@@ -168,16 +185,16 @@ const resolveDynamicNodes = props => node => {
   );
 };
 
-const paginate = (page, pageNumber) => {
+const paginate = (page, pageNumber, fontStore) => {
   if (!page) return [];
 
-  let splittedPage = splitPage(page, pageNumber);
+  let splittedPage = splitPage(page, pageNumber, fontStore);
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(nextPage, pageNumber + pages.length);
+    splittedPage = splitPage(nextPage, pageNumber + pages.length, fontStore);
 
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
@@ -186,24 +203,28 @@ const paginate = (page, pageNumber) => {
   return pages;
 };
 
-const resolvePageIndices = (page, pageNumber, pages) => {
+const resolvePageIndices = fontStore => (page, pageNumber, pages) => {
   const totalPages = pages.length;
-  return resolveDynamicPage({ pageNumber: pageNumber + 1, totalPages }, page);
+  return resolveDynamicPage(
+    { pageNumber: pageNumber + 1, totalPages },
+    page,
+    fontStore,
+  );
 };
 
-const resolvePagination = doc => {
+const resolvePagination = (doc, fontStore) => {
   let pages = [];
   let pageNumber = 1;
 
   for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
-    const subpages = paginate(page, pageNumber);
+    const subpages = paginate(page, pageNumber, fontStore);
 
     pageNumber += subpages.length;
     pages = pages.concat(subpages);
   }
 
-  pages = pages.map(resolvePageIndices);
+  pages = pages.map(resolvePageIndices(fontStore));
 
   return assingChildren(pages, doc);
 };

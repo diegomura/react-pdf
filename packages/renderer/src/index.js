@@ -1,44 +1,39 @@
 import BlobStream from 'blob-stream';
+import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
 
-// import Font from './font';
 import createRenderer from './renderer';
 import { version } from '../package.json';
+
+const fontStore = new FontStore();
 
 const pdf = ({ initialValue, onChange }) => {
   const container = { type: 'ROOT', document: null };
   const PDFRenderer = createRenderer({ onChange });
   const mountNode = PDFRenderer.createContainer(container);
 
+  const updateContainer = doc => {
+    PDFRenderer.updateContainer(doc, mountNode, null);
+  };
+
   if (initialValue) updateContainer(initialValue);
 
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
-
-    console.time('layout');
-    const layout = await layoutDocument(container.document);
-    console.timeEnd('layout');
+    const layout = await layoutDocument(container.document, fontStore);
 
     return renderPDF(ctx, layout);
   };
 
-  const layout = async () => {
-    // return layoutDocument(container);
-  };
-
-  function updateContainer(doc) {
-    PDFRenderer.updateContainer(doc, mountNode, null);
-  }
-
-  function callOnRender(params = {}) {
+  const callOnRender = (params = {}) => {
     if (container.document.props.onRender) {
       container.document.props.onRender(params);
     }
-  }
+  };
 
-  async function toBlob() {
+  const toBlob = async () => {
     const instance = await render();
     const stream = instance.pipe(BlobStream());
 
@@ -55,44 +50,45 @@ const pdf = ({ initialValue, onChange }) => {
 
       stream.on('error', reject);
     });
-  }
+  };
 
-  async function toBuffer() {
+  const toBuffer = async () => {
     callOnRender();
     return render();
-  }
+  };
 
-  function toString() {
+  const toString = () => {
     let result = '';
     const instance = render();
 
     return new Promise((resolve, reject) => {
       try {
-        instance.on('data', function(buffer) {
+        instance.on('data', buffer => {
           result += buffer;
         });
 
-        instance.on('end', function() {
+        instance.on('end', () => {
           resolve(result);
         });
       } catch (error) {
         reject(error);
       }
     });
-  }
+  };
 
   return {
-    layout,
     container,
-    updateContainer,
-    toBuffer,
     toBlob,
+    toBuffer,
     toString,
+    updateContainer,
   };
 };
 
-const StyleSheet = {
-  create: s => s
-}
+const Font = fontStore;
 
-export { version, StyleSheet, pdf };
+const StyleSheet = {
+  create: s => s,
+};
+
+export { version, Font, StyleSheet, pdf };

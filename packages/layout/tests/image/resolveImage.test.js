@@ -7,7 +7,7 @@ const jpgImageUrl = 'https://react-pdf.org/static/images/quijote1.jpg';
 const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';
 const jpgLogalPath = path.join(__dirname, '../assets/test.jpg');
 const localJPGImage = fs.readFileSync(jpgLogalPath);
-const pngLogalPath = path.join(__dirname, '../assets/test.png');
+const pngLogalPath = path.join(__dirname, '../', './assets/test.png');
 const localPNGImage = fs.readFileSync(pngLogalPath);
 
 describe('image resolveImage', () => {
@@ -71,7 +71,9 @@ describe('image resolveImage', () => {
   });
 
   test('Should render a local image from src object', async () => {
-    const image = await resolveImage({ uri: './tests/assets/test.jpg' });
+    const image = await resolveImage({
+      uri: './packages/layout/tests/assets/test.jpg',
+    });
 
     expect(image.data).toBeTruthy();
     expect(image.width).toBeGreaterThan(0);

@@ -26,9 +26,6 @@ const drawImage = ctx => node => {
     objectPositionY,
   );
 
-  console.log(node.image.data);
-
-
   if (node.image.data) {
     if (width !== 0 && height !== 0) {
       ctx
@@ -53,12 +50,7 @@ const drawImage = ctx => node => {
 };
 
 const renderImage = (ctx, node) => {
-  R.compose(
-    restore(ctx),
-    drawImage(ctx),
-    clipNode(ctx),
-    save(ctx),
-  )(node);
+  R.compose(restore(ctx), drawImage(ctx), clipNode(ctx), save(ctx))(node);
 
   return node;
 };

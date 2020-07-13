@@ -1,8 +1,9 @@
 module.exports = {
-  testRegex: 'packages/.*/tests/.*?(test)\\.js$',
   setupFiles: ['<rootDir>setupTests.js'],
-  moduleNameMapper: {
-    'cross-fetch': 'jest-fetch-mock',
-    'yoga-layout-prebuilt': 'yoga-layout-prebuilt',
-  },
+  projects: [
+    '<rootDir>packages/render',
+    '<rootDir>packages/layout',
+    '<rootDir>packages/renderer',
+    '<rootDir>packages/primitives',
+  ],
 };

@@ -18,15 +18,15 @@ import linesHeight from './linesHeight';
  * @param {Number} heightMode
  * @returns {Object} text width and height
  */
-const measureText = (page, node, width, widthMode, height) => {
+const measureText = (page, node, fontStore, width, widthMode, height) => {
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-    if (!node.lines) node.lines = layoutText(node, width, height);
+    if (!node.lines) node.lines = layoutText(node, width, height, fontStore);
 
     return { height: linesHeight(node) };
   }
 
   if (widthMode === Yoga.MEASURE_MODE_AT_MOST) {
-    if (!node.lines) node.lines = layoutText(node, width, height);
+    if (!node.lines) node.lines = layoutText(node, width, height, fontStore);
 
     return {
       height: linesHeight(node),
@@ -37,4 +37,4 @@ const measureText = (page, node, width, widthMode, height) => {
   return {};
 };
 
-export default R.curryN(6, measureText);
+export default R.curryN(7, measureText);

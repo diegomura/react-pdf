@@ -28,7 +28,7 @@ const engine = layoutEngine(engines);
  * @param {Object} node
  * @returns {Object} layout container
  */
-const getContainer = (width, height, node) => {
+const getContainer = (width, height) => node => {
   const maxLines = R.path(['style', 'maxLines'], node);
   const textOverflow = R.path(['style', 'textOverflow'], node);
 

@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
+    "@react-pdf/image": "^2.0.0",
     "@react-pdf/pdfkit": "^1.4.2",
-    "@react-pdf/png-js": "^1.0.0",
     "@react-pdf/primitives": "^2.0.0",
     "@react-pdf/stylesheet": "^2.0.0",
     "@react-pdf/textkit": "^0.3.7",

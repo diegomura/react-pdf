@@ -1,0 +1,21 @@
+{
+  "name": "@react-pdf/examples",
+  "version": "2.0.0",
+  "license": "MIT",
+  "private": true,
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "main": "lib",
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf ./lib && babel src --out-dir lib",
+    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6"
+  }
+}

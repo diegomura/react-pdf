@@ -14,8 +14,7 @@ const setLink = (ctx, node) => {
   const { top, left, width, height } = node.box;
   const src = getSource(node);
   const instanceMethod = isSrcId(src) ? 'goTo' : 'link';
-  // const value = isSrcId(src) ? src.slice(1) : getURL(src);
-  const value = src.slice(1);
+  const value = src ? src.slice(1) : null;
 
   if (value) {
     ctx[instanceMethod](left, top, width, height, value);

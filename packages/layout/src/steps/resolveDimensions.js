@@ -135,11 +135,11 @@ const setYogaValues = R.tap(node => {
 const insertYogaNodes = parent =>
   R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
 
-const setMeasureFunc = page => node => {
+const setMeasureFunc = (page, fontStore) => node => {
   const yogaNode = node[YOGA_NODE];
 
   if (isText(node)) {
-    yogaNode.setMeasureFunc(measureText(page, node));
+    yogaNode.setMeasureFunc(measureText(page, node, fontStore));
   }
 
   if (isImage(node)) {
@@ -170,18 +170,18 @@ const isLayoutElement = R.allPass([isNotText, isNotNote, isNotSvg]);
  * @param {Object} node
  * @returns {Object} node with appended yoga node
  */
-const createYogaNodes = page => node => {
+const createYogaNodes = (page, fontStore) => node => {
   const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
 
   return R.compose(
-    setMeasureFunc(page),
+    setMeasureFunc(page, fontStore),
     R.when(
       isLayoutElement,
       R.evolve({
         children: R.map(
           R.compose(
             insertYogaNodes(yogaNode),
-            createYogaNodes(page),
+            createYogaNodes(page, fontStore),
           ),
         ),
       }),
@@ -242,7 +242,7 @@ const destroyYogaNodes = node => {
  * @param {Object} page object
  * @returns {Object} page object with correct 'box' layout attributes
  */
-export const resolvePageDimensions = page =>
+export const resolvePageDimensions = (page, fontStore) =>
   R.ifElse(
     R.isNil,
     R.always(null),
@@ -250,7 +250,7 @@ export const resolvePageDimensions = page =>
       destroyYogaNodes,
       persistDimensions,
       calculateLayout,
-      createYogaNodes(page),
+      createYogaNodes(page, fontStore),
     ),
   )(page);
 
@@ -260,9 +260,9 @@ export const resolvePageDimensions = page =>
  * @param {Object} root object
  * @returns {Object} root object with correct 'box' layout attributes
  */
-const resolveDimensions = node =>
-  R.evolve({
-    children: R.map(resolvePageDimensions),
-  })(node);
+const resolveDimensions = (node, fontStore) => {
+  const mapChild = child => resolvePageDimensions(child, fontStore);
+  return R.evolve({ children: R.map(mapChild) })(node);
+};
 
 export default resolveDimensions;

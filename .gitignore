@@ -6,4 +6,5 @@ coverage
 .idea
 dist
 .DS_Store
-packages/node-test
+packages/sandbox
+packages/web-test

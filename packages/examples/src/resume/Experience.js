@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 10,
-    fontFamily: 'Lato',
+    // fontFamily: 'Lato',
   },
   headerContainer: {
     flexDirection: 'row',

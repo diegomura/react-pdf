@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'Lato',
   },
   link: {
-    fontFamily: 'Lato',
+    // fontFamily: 'Lato',
     fontSize: 10,
     color: 'black',
     textDecoration: 'none',

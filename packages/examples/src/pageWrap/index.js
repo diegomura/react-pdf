@@ -1,16 +1,5 @@
-/* eslint react/prop-types: 0 */
-/* eslint react/jsx-sort-props: 0 */
-
 import React from 'react';
-
-import ReactPDF, {
-  Document,
-  Page,
-  Text,
-  Image,
-  StyleSheet,
-  Font,
-} from '../../dist/react-pdf.es.js';
+import { Document, Page, Text, Image, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   body: {
@@ -21,23 +10,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: 'center',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   author: {
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 40,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   subtitle: {
     fontSize: 16,
     margin: 12,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   text: {
     margin: 12,
     fontSize: 12,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     textAlign: 'justify',
   },
   image: {
@@ -50,7 +39,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginBottom: 15,
     textAlign: 'center',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   footer: {
     position: 'absolute',
@@ -60,14 +49,14 @@ const styles = StyleSheet.create({
     right: 0,
     textAlign: 'center',
     color: 'grey',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
 });
 
-Font.register({
-  family: 'Roboto',
-  src: `${__dirname}/fonts/Roboto-Regular.ttf`,
-});
+// Font.register({
+//   family: 'Roboto',
+//   src: `${__dirname}/fonts/Roboto-Regular.ttf`,
+// });
 
 const Subtitle = ({ children, ...props }) => (
   <Text style={styles.subtitle} {...props}>
@@ -75,7 +64,7 @@ const Subtitle = ({ children, ...props }) => (
   </Text>
 );
 
-const doc = (
+export default () => (
   <Document>
     <Page style={styles.body} wrap>
       <Text style={styles.header} fixed>
@@ -253,5 +242,3 @@ const doc = (
     </Page>
   </Document>
 );
-
-ReactPDF.render(doc, `${__dirname}/output.pdf`);

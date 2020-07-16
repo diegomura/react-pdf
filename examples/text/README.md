@@ -1,4 +1,4 @@
-<img src="https://github.com/react-pdf/site/blob/master/src/static/images/logo.png" alt="react-pdf logo" width="120px" />
+<img src="https://github.com/react-pdf/site/blob/master/static/images/logo.png" alt="react-pdf logo" width="120px" />
 
 # react-pdf text example
 

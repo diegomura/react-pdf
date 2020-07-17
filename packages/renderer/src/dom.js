@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { pdf } from './index';
+import { pdf, version, Font, StyleSheet } from './index';
 
 const queue = require('queue');
 
@@ -122,5 +122,15 @@ export const PDFDownloadLink = ({
 };
 
 export { pdf, version, Font, StyleSheet } from './index';
+
+export default {
+  pdf,
+  Font,
+  version,
+  StyleSheet,
+  PDFViewer,
+  BlobProvider,
+  PDFDownloadLink,
+};
 
 export * from '@react-pdf/primitives';

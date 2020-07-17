@@ -56,3 +56,5 @@ export default {
   renderToFile,
   render,
 };
+
+export * from '@react-pdf/primitives';

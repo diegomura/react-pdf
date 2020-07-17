@@ -1,4 +1,5 @@
 import fs from 'fs';
+import * as primitives from '@react-pdf/primitives';
 import { pdf, version, Font, StyleSheet } from './index';
 
 export const renderToStream = async function(element) {
@@ -24,7 +25,7 @@ export const renderToFile = async function(element, filePath, callback) {
 
 const throwEnvironmentError = name => {
   throw new Error(
-    `${name} is a web specific API. Or you're either using this component on Node, or your bundler is not loading react-pdf from the appropiate web build.`,
+    `${name} is a web specific API. You're either using this component on Node, or your bundler is not loading react-pdf from the appropriate web build.`,
   );
 };
 
@@ -55,6 +56,7 @@ export default {
   renderToStream,
   renderToFile,
   render,
+  ...primitives,
 };
 
 export * from '@react-pdf/primitives';

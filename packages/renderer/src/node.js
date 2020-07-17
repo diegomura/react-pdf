@@ -48,7 +48,9 @@ export const BlobProvider = () => {
 
 export const render = renderToFile;
 
-export { pdf, version, Font, StyleSheet } from './index';
+export * from './index';
+
+export * from '@react-pdf/primitives';
 
 export default {
   pdf,
@@ -64,5 +66,3 @@ export default {
   render,
   ...primitives,
 };
-
-export * from '@react-pdf/primitives';

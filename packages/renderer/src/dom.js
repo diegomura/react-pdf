@@ -123,7 +123,7 @@ export const PDFDownloadLink = ({
 
 const throwEnvironmentError = name => {
   throw new Error(
-    `${name} is a Node specific API. You're either using this component in Browser, or your bundler is not loading react-pdf from the appropriate web build.`,
+    `${name} is a Node specific API. You're either using this method in a browser, or your bundler is not loading react-pdf from the appropriate web build.`,
   );
 };
 
@@ -142,6 +142,8 @@ export const renderToFile = () => {
 export const render = () => {
   throwEnvironmentError('render');
 };
+
+export * from './index';
 
 export * from '@react-pdf/primitives';
 

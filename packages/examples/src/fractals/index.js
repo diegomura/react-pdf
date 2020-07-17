@@ -1,5 +1,3 @@
-/* eslint react/prop-types: 0, react/jsx-sort-props: 0 */
-
 import React from 'react';
 import { Page, Document } from '@react-pdf/renderer';
 

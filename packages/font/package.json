@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@react-pdf/fontkit": "^1.13.0",
+    "@react-pdf/types": "^2.0.0",
     "cross-fetch": "^3.0.4",
     "is-url": "^1.2.4"
   }

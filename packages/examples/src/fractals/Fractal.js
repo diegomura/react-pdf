@@ -1,9 +1,28 @@
-/* eslint react/prop-types: 0 */
-
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import palette from './palette';
+const palette = [
+  '#781c81',
+  '#521b80',
+  '#442f8b',
+  '#3f4c9f',
+  '#4069b4',
+  '#4582c1',
+  '#4e96bd',
+  '#5aa6a9',
+  '#68b090',
+  '#7ab878',
+  '#8dbc64',
+  '#a2be56',
+  '#b7bd4b',
+  '#c9b843',
+  '#d8ae3d',
+  '#e29e37',
+  '#e78632',
+  '#e6672d',
+  '#e14427',
+  '#d92120',
+];
 
 const styles = StyleSheet.create({
   row: {
@@ -25,7 +44,6 @@ const styles = StyleSheet.create({
 
 const toggle = direction => (direction === 'column' ? 'row' : 'column');
 
-// Creates Fractal Component that renders it's step with a background color
 const Fractal = ({ steps, direction = 'column' }) => {
   if (steps === 0) {
     return null;
@@ -37,7 +55,7 @@ const Fractal = ({ steps, direction = 'column' }) => {
     minHeight: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: palette[steps],
+    backgroundColor: palette[steps % palette.length],
   };
 
   return (

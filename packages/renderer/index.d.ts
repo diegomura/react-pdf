@@ -2,130 +2,18 @@
 
 declare module '@react-pdf/renderer' {
   import * as React from 'react';
+  import {
+    Style,
+    PageSize,
+    FontStore,
+    Orientation,
+    SourceObject,
+  } from '@react-pdf/types';
 
   namespace ReactPDF {
-    export interface Style {
-      //Flexbox
-
-      alignContent?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'space-between' | 'space-around',
-      alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline',
-      alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch',
-      flex?: number,
-      flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse',
-      flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse',
-      flexFlow?: number,
-      flexGrow?: number,
-      flexShrink?: number,
-      flexBasis?: number,
-      justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between' | 'space-evenly',
-      order?: number,
-
-      // Layout?:never,
-
-      bottom?: number | string,
-      display?: 'flex' | 'none',
-      left?: number | string,
-      position?: 'absolute' | 'relative',
-      right?: number | string,
-      top?: number | string,
-
-      // Dimension?:never,
-
-      height?: number | string,
-      maxHeight?: number | string,
-      maxWidth?: number | string,
-      minHeight?: number | string,
-      minWidth?: number | string,
-      width?: number | string,
-
-      // Color?:never,
-
-      backgroundColor?: string,
-      color?: string,
-      opacity?: number,
-
-      // Text?:never,
-
-      fontSize?: number | string,
-      fontFamily?: string,
-      fontStyle?: string | 'normal',
-      fontWeight?: number | 'thin' | 'hairline' | 'ultralight' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'demibold' | 'bold' | 'ultrabold' | 'extrabold' | 'heavy' | 'black',
-      letterSpacing?: number | string,
-      lineHeight?: number | string,
-      maxLines?: number, //?
-      textAlign?: 'left' | 'right' | 'center' | 'justify', //?
-      textDecoration?: 'line-through' | 'underline' | 'none',
-      textDecorationColor?: string,
-      textDecorationStyle?: "dashed" | "dotted" | "solid" | string, //?
-      textIndent?: any, //?
-      textOverflow?: any, //?
-      textTransform?: 'capitalize' | 'lowercase' | 'uppercase',
-
-      // Sizing/positioning?:never,
-
-      objectFit?: string,
-      objectPosition?: number | string,
-      objectPositionX?: number | string,
-      objectPositionY?: number | string,
-
-      // Margin/padding?:never,
-
-      margin?: number | string,
-      marginHorizontal?: number | string,
-      marginVertical?: number | string,
-      marginTop?: number | string,
-      marginRight?: number | string,
-      marginBottom?: number | string,
-      marginLeft?: number | string,
-      padding?: number | string,
-      paddingHorizontal?: number | string,
-      paddingVertical?: number | string,
-      paddingTop?: number | string,
-      paddingRight?: number | string,
-      paddingBottom?: number | string,
-      paddingLeft?: number | string,
-
-      // Transformations?:never,
-
-      transform?: string,
-      transformOrigin?: number | string,
-      transformOriginX?: number | string,
-      transformOriginY?: number | string,
-
-      // Borders?:never,
-
-      border?: number | string,
-      borderWidth?: number,
-      borderColor?: string,
-      borderStyle?: "dashed" | "dotted" | "solid",
-      borderTop?: number | string,
-      borderTopColor?: string,
-      borderTopStyle?: "dashed" | "dotted" | "solid", // ?
-      borderTopWidth?: number | string,
-      borderRight?: number | string,
-      borderRightColor?: string,
-      borderRightStyle?: "dashed" | "dotted" | "solid", //?
-      borderRightWidth?: number | string,
-      borderBottom?: number | string,
-      borderBottomColor?: string,
-      borderBottomStyle?: "dashed" | "dotted" | "solid", //?
-      borderBottomWidth?: number | string,
-      borderLeft?: number | string,
-      borderLeftColor?: string,
-      borderLeftStyle?: "dashed" | "dotted" | "solid", //?
-      borderLeftWidth?: number | string,
-      borderTopLeftRadius?: number | string,
-      borderTopRightRadius?: number | string,
-      borderBottomRightRadius?: number | string,
-      borderBottomLeftRadius?: number | string,
-      borderRadius?: number | string
-    }
-
     interface Styles {
       [key: string]: Style;
     }
-
-    type Orientation = 'portrait' | 'landscape';
 
     interface OnRenderProps {
       blob?: Blob;
@@ -177,7 +65,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
-      size?: string | [number, number] | { width: number; height: number };
+      size?: PageSize;
       orientation?: Orientation;
     }
 
@@ -206,18 +94,9 @@ declare module '@react-pdf/renderer' {
      */
     class View extends React.Component<ViewProps> {}
 
-    type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-
-    type SourceObject =
-      | string
-      | { data: Buffer; format: 'png' | 'jpg' }
-      | { uri: string; method: HTTPMethod; body: any; headers: any };
-
     interface BaseImageProps extends NodeProps {
       debug?: boolean;
       cache?: boolean;
-      safePath?: string;
-      allowDangerousPaths?: boolean;
     }
 
     interface ImageWithSrcProp extends BaseImageProps {
@@ -256,12 +135,12 @@ declare module '@react-pdf/renderer' {
        * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection
        */
-      orphans?: number
+      orphans?: number;
       /**
        * Specifies the minimum number of lines in a text element that must be shown at the top of a page or its container..
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection
        */
-      widows?: number
+      widows?: number;
     }
 
     /**
@@ -298,7 +177,7 @@ declare module '@react-pdf/renderer' {
       paint: (
         painter: any,
         availableWidth: number,
-        availableHeight: number
+        availableHeight: number,
       ) => null;
     }
 
@@ -354,89 +233,7 @@ declare module '@react-pdf/renderer' {
      */
     class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
-    type FontStyle = 'normal' | 'italic' | 'oblique';
-
-    type FontWeight =
-      | number
-      | 'thin'
-      | 'ultralight'
-      | 'light'
-      | 'normal'
-      | 'medium'
-      | 'semibold'
-      | 'bold'
-      | 'ultrabold'
-      | 'heavy';
-
-    interface FontSource {
-      src: string;
-      fontFamily: string;
-      fontStyle: FontStyle;
-      fontWeight: number;
-      data: any;
-      loading: boolean;
-      options: any;
-    }
-
-    interface FontInstance {
-      family: string;
-      sources: FontSource[];
-    }
-
-    interface EmojiSource {
-      url: string;
-      format: string;
-    }
-
-    interface FontDescriptor {
-      family: string;
-      fontStyle?: FontStyle;
-      fontWeight?: FontWeight;
-    }
-
-    interface RegisteredFont {
-      src: string;
-      loaded: boolean;
-      loading: boolean;
-      data: any;
-      [key: string]: any;
-    }
-
-    type HyphenationCallback = (
-      words: string,
-      glyphString: { [key: string]: any },
-    ) => string[];
-
-    const Font: {
-      register: (options: {
-        family: string;
-        src: string;
-        [key: string]: any;
-      } | {
-        family: string;
-        fonts: {
-          src: string;
-          fontStyle?: string;
-          fontWeight?: string | number;
-          [key: string]: any;
-        }[];
-      }) => void;
-      getEmojiSource: () => EmojiSource;
-      getRegisteredFonts: () => FontInstance[];
-      getRegisteredFontFamilies: () => string[];
-      registerEmojiSource: (emojiSource: EmojiSource) => void;
-      registerHyphenationCallback: (
-        hyphenationCallback: HyphenationCallback,
-      ) => void;
-      getHyphenationCallback: () => HyphenationCallback;
-      getFont: (fontDescriptor: FontDescriptor) => RegisteredFont | undefined;
-      load: (
-        fontDescriptor: FontDescriptor,
-        document: React.ReactElement<DocumentProps>,
-      ) => Promise<void>;
-      clear: () => void;
-      reset: () => void;
-    };
+    const Font: FontStore;
 
     const StyleSheet: {
       hairlineWidth: number;
@@ -514,6 +311,7 @@ declare module '@react-pdf/renderer' {
   const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
 
   export default ReactPDF;
+
   export {
     Document,
     Page,

@@ -18,6 +18,7 @@
     "@react-pdf/primitives": "^2.0.0",
     "@react-pdf/stylesheet": "^2.0.0",
     "@react-pdf/textkit": "^0.3.7",
+    "@react-pdf/types": "^2.0.0",
     "cross-fetch": "^3.0.4",
     "emoji-regex": "^8.0.0",
     "queue": "^6.0.1",

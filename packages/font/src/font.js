@@ -33,15 +33,15 @@ class FontSource {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data);
+      this.loading = false;
     } else {
       this.data = await new Promise((resolve, reject) =>
-        fontkit.open(this.src, (err, data) =>
-          err ? reject(err) : resolve(data),
-        ),
+        fontkit.open(this.src, (err, data) => {
+          this.loading = false;
+          return err ? reject(err) : resolve(data);
+        }),
       );
     }
-
-    this.loading = false;
   }
 }
 

@@ -8,6 +8,11 @@ export const renderToStream = async function(element) {
   return buffer;
 };
 
+export const renderToString = function(element) {
+  const instance = pdf({ initialValue: element });
+  return instance.toString();
+};
+
 export const renderToFile = async function(element, filePath, callback) {
   const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
@@ -54,6 +59,7 @@ export default {
   BlobProvider,
   PDFDownloadLink,
   renderToStream,
+  renderToString,
   renderToFile,
   render,
   ...primitives,

@@ -131,6 +131,10 @@ export const renderToStream = () => {
   throwEnvironmentError('renderToStream');
 };
 
+export const renderToString = () => {
+  throwEnvironmentError('renderToString');
+};
+
 export const renderToFile = () => {
   throwEnvironmentError('renderToFile');
 };
@@ -150,6 +154,7 @@ export default {
   BlobProvider,
   PDFDownloadLink,
   renderToStream,
+  renderToString,
   renderToFile,
   render,
   ...primitives,

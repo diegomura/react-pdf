@@ -177,4 +177,5 @@ export default {
   BlobProvider,
   createInstance,
   PDFDownloadLink,
+  InternalBlobProvider
 };

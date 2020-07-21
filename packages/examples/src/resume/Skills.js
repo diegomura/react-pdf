@@ -8,12 +8,12 @@ import List, { Item } from './List';
 
 const styles = StyleSheet.create({
   title: {
-    // fontFamily: 'Lato Bold',
+    fontFamily: 'Lato Bold',
     fontSize: 11,
     marginBottom: 10,
   },
   skills: {
-    // fontFamily: 'Lato',
+    fontFamily: 'Lato',
     fontSize: 10,
     marginBottom: 10,
   },

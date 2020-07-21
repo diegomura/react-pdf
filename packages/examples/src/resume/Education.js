@@ -8,15 +8,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   school: {
-    // fontFamily: 'Lato Bold',
+    fontFamily: 'Lato Bold',
     fontSize: 10,
   },
   degree: {
-    // fontFamily: 'Lato',
+    fontFamily: 'Lato',
     fontSize: 10,
   },
   candidate: {
-    // fontFamily: 'Lato Italic',
+    fontFamily: 'Lato Italic',
     fontSize: 10,
   },
 });

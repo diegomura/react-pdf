@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 11,
-    // fontFamily: 'Lato Italic',
+    fontFamily: 'Lato Italic',
   },
   detailContainer: {
     flexDirection: 'row',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 10,
-    // fontFamily: 'Lato',
+    fontFamily: 'Lato',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: 'black',
     textDecoration: 'none',
-    // fontFamily: 'Lato Bold',
+    fontFamily: 'Lato Bold',
   },
 });
 

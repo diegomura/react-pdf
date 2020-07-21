@@ -23,16 +23,16 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     textTransform: 'uppercase',
-    // fontFamily: 'Lato Bold',
+    fontFamily: 'Lato Bold',
   },
   subtitle: {
     fontSize: 10,
     justifySelf: 'flex-end',
     textTransform: 'uppercase',
-    // fontFamily: 'Lato',
+    fontFamily: 'Lato',
   },
   link: {
-    // fontFamily: 'Lato',
+    fontFamily: 'Lato',
     fontSize: 10,
     color: 'black',
     textDecoration: 'none',

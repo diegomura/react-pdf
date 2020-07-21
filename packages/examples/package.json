@@ -13,7 +13,7 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^2.0.0"
+    "@react-pdf/renderer": "^2.0.0-beta.11"
   },
   "peerDependencies": {
     "react": "^16.8.6"

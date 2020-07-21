@@ -88,6 +88,7 @@ describe('layout resolveInheritance', () => {
   test('Should inherit letterSpacing value', shouldInherit('letterSpacing'));
   test('Should inherit opacity value', shouldInherit('opacity'));
   test('Should inherit textDecoration value', shouldInherit('textDecoration'));
+  test('Should inherit textTransform value', shouldInherit('textTransform'));
   test('Should inherit lineHeight value', shouldInherit('lineHeight'));
   test('Should inherit textAlign value', shouldInherit('textAlign'));
   test('Should inherit visibility value', shouldInherit('visibility'));

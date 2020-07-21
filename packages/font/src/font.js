@@ -14,6 +14,14 @@ const fetchFont = async (src, options) => {
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
+const isDataUrl = dataUrl => {
+  const header = dataUrl.split(',')[0];
+  const hasDataPrefix = header.substring(0, 5) === 'data:';
+  const hasBase64Prefix = header.split(';')[1] === 'base64';
+
+  return hasDataPrefix && hasBase64Prefix;
+};
+
 class FontSource {
   constructor(src, fontFamily, fontStyle, fontWeight, options) {
     this.src = src;
@@ -29,7 +37,9 @@ class FontSource {
   async load() {
     this.loading = true;
 
-    if (BROWSER || isUrl(this.src)) {
+    if (isDataUrl(this.src)) {
+      this.data = fontkit.create(Buffer.from(this.src.split(',')[1], 'base64'));
+    } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data);

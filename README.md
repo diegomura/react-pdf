@@ -94,11 +94,6 @@ For each example, try opening `output.pdf` to see the result.
         <br>
         <a href="https://github.com/diegomura/react-pdf/tree/master/examples/text/">Text</a>
       </td>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/images/thumb.png">
-        <br>
-        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/images/">Images</a>
-      </td>
 			<td align="center" valign="top">
 				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/resume/thumb.png">
 				<br>
@@ -124,21 +119,10 @@ For each example, try opening `output.pdf` to see the result.
         <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/pageWrap/thumb.png">
         <br>
         <a href="https://github.com/diegomura/react-pdf/tree/master/examples/pageWrap/">Page wrap</a>
-      </td>  
+      </td>
 		</tr>
 	</tbody>
 </table>
-
-To run the examples, first clone the project and install the dependencies:
-```sh
-git clone https://github.com/diegomura/react-pdf.git
-cd react-pdf
-yarn install
-```
-Then, run `yarn example -- <example-name>`
-```sh
-yarn example -- fractals
-```
 
 ## Contributors
 
@@ -163,5 +147,5 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_large)
 
---- 
+---
 ![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)

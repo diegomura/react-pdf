@@ -10,6 +10,7 @@ const INHERITED_PROPERTIES = [
   'letterSpacing',
   'opacity',
   'textDecoration',
+  'textTransform',
   'lineHeight',
   'textAlign',
   'visibility',
@@ -54,12 +55,7 @@ const resolveInheritance = node => {
   const inheritStyles = getInheritStyles(node);
 
   return R.evolve({
-    children: R.map(
-      R.compose(
-        resolveInheritance,
-        mergeStyles(inheritStyles),
-      ),
-    ),
+    children: R.map(R.compose(resolveInheritance, mergeStyles(inheritStyles))),
   })(node);
 };
 

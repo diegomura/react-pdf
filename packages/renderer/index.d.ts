@@ -208,6 +208,7 @@ declare module '@react-pdf/renderer' {
       style?: Style | Style[];
       className?: string;
       children?: React.ReactElement<DocumentProps>;
+      innerRef?: React.Ref<HTMLIFrameElement>;
     }
 
     /**

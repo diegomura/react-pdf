@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/font",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.1",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@react-pdf/fontkit": "^1.13.0",
-    "@react-pdf/types": "^2.0.0",
+    "@react-pdf/types": "^2.0.0-beta.1",
     "cross-fetch": "^3.0.4",
     "is-url": "^1.2.4"
   }

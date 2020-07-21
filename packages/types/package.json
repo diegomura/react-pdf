@@ -1,0 +1,9 @@
+{
+  "name": "@react-pdf/types",
+  "version": "2.0.0",
+  "license": "MIT",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "main": "index.d.ts"
+}

@@ -1,2 +1,4 @@
 .gitignore
-examples/dom-bindings
+node_modules
+lib
+rollup.config.js

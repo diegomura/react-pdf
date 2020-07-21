@@ -13,7 +13,7 @@
     "build": "lerna run build",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
-    "prepublish": "npm run build",
+    "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "jest"
   },

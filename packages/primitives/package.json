@@ -8,5 +8,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jest"
-  }
+  },
+  "files": [
+    "src"
+  ]
 }

@@ -20,5 +20,8 @@
     "parse-svg-path": "^0.1.2",
     "ramda": "^0.26.1",
     "svg-arc-to-cubic-bezier": "^3.2.0"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }

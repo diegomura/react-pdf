@@ -17,5 +17,8 @@
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",
     "ramda": "^0.26.1"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }

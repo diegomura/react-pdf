@@ -1,10 +1,16 @@
 import fs from 'fs';
+import * as primitives from '@react-pdf/primitives';
 import { pdf, version, Font, StyleSheet } from './index';
 
 export const renderToStream = async function(element) {
   const instance = pdf({ initialValue: element });
   const buffer = await instance.toBuffer();
   return buffer;
+};
+
+export const renderToString = function(element) {
+  const instance = pdf({ initialValue: element });
+  return instance.toString();
 };
 
 export const renderToFile = async function(element, filePath, callback) {
@@ -24,7 +30,7 @@ export const renderToFile = async function(element, filePath, callback) {
 
 const throwEnvironmentError = name => {
   throw new Error(
-    `${name} is a web specific API. Or you're either using this component on Node, or your bundler is not loading react-pdf from the appropiate web build.`,
+    `${name} is a web specific API. You're either using this component on Node, or your bundler is not loading react-pdf from the appropriate web build.`,
   );
 };
 
@@ -42,7 +48,9 @@ export const BlobProvider = () => {
 
 export const render = renderToFile;
 
-export { pdf, version, Font, StyleSheet } from './index';
+export * from './index';
+
+export * from '@react-pdf/primitives';
 
 export default {
   pdf,
@@ -53,6 +61,8 @@ export default {
   BlobProvider,
   PDFDownloadLink,
   renderToStream,
+  renderToString,
   renderToFile,
   render,
+  ...primitives,
 };

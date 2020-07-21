@@ -283,6 +283,10 @@ declare module '@react-pdf/renderer' {
       document: React.ReactElement<DocumentProps>,
     ) => Promise<NodeJS.ReadableStream>;
 
+    const renderToString: (
+      document: React.ReactElement<DocumentProps>,
+    ) => string;
+
     const renderToFile: (
       document: React.ReactElement<DocumentProps>,
       filePath: string,

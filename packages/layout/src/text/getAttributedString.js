@@ -24,6 +24,7 @@ const getFragments = (fontStore, instance) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
+
   const {
     color = 'black',
     backgroundColor,
@@ -42,9 +43,8 @@ const getFragments = (fontStore, instance) => {
     opacity,
   } = instance.style;
 
-  const obj = fontStore
-    ? fontStore.getFont({ fontFamily, fontWeight, fontStyle })
-    : null;
+  const opts = { fontFamily, fontWeight, fontStyle };
+  const obj = fontStore ? fontStore.getFont(opts) : null;
   const font = obj ? obj.data : fontFamily;
 
   const attributes = {
@@ -66,7 +66,9 @@ const getFragments = (fontStore, instance) => {
     lineHeight: lineHeight ? lineHeight * fontSize : null,
   };
 
-  instance.children.forEach(child => {
+  for (let i = 0; i < instance.children.length; i += 1) {
+    const child = instance.children[i];
+
     if (isImage(child)) {
       fragments.push({
         string: String.fromCharCode(0xfffc),
@@ -87,7 +89,7 @@ const getFragments = (fontStore, instance) => {
     } else if (child) {
       fragments.push(...getFragments(child));
     }
-  });
+  }
 
   for (let i = 0; i < PREPROCESSORS.length; i += 1) {
     const preprocessor = PREPROCESSORS[i];
@@ -103,7 +105,9 @@ const getFragments = (fontStore, instance) => {
  * @param {Object} instance node
  * @returns {Object} attributed string
  */
-const getAttributedString = (fontStore, instance) =>
-  AttributedString.fromFragments(getFragments(fontStore, instance));
+const getAttributedString = R.compose(
+  AttributedString.fromFragments,
+  getFragments,
+);
 
 export default R.curryN(2, getAttributedString);

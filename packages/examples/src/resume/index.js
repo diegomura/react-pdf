@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato Bold',
     textAlign: 'center',
     marginTop: 15,
-    paddingTop: 10,
+    paddingTop: 5,
     borderWidth: 3,
     borderColor: 'gray',
     borderStyle: 'dashed',

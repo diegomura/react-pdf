@@ -221,7 +221,7 @@ const persistDimensions = node => {
 };
 
 /**
- * Removes and destroys yoga node frm document tree
+ * Removes yoga node from document tree
  *
  * @param {Object} node
  * @returns {Object} node without yoga node
@@ -229,10 +229,17 @@ const persistDimensions = node => {
 const destroyYogaNodes = node => {
   return R.compose(
     R.dissoc(YOGA_NODE),
-    R.tap(n => Yoga.Node.destroy(n[YOGA_NODE])),
-    R.evolve({ children: R.map(R.when(isLayoutElement, destroyYogaNodes)) }),
+    R.evolve({ children: R.map(destroyYogaNodes) }),
   )(node);
 };
+
+/**
+ * Free yoga node from document tree
+ *
+ * @param {Object} node
+ * @returns {Object} node without yoga node
+ */
+const freeYogaNodes = R.tap(n => n[YOGA_NODE] && n[YOGA_NODE].freeRecursive());
 
 /**
  * Calculates page object layout using Yoga.
@@ -248,6 +255,7 @@ export const resolvePageDimensions = (page, fontStore) =>
     R.always(null),
     R.compose(
       destroyYogaNodes,
+      freeYogaNodes,
       persistDimensions,
       calculateLayout,
       createYogaNodes(page, fontStore),

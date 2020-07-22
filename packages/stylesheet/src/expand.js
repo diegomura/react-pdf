@@ -31,17 +31,24 @@ const matchTransformOrigin = R.match(TRANSFORM_ORIGIN_REGEX);
 
 const isNumber = R.is(Number);
 
-const isFontWeightStyle = key => key.match(/^fontWeight/);
+const FONT_WEIGHT_REGEX = /^fontWeight/;
+
+const isFontWeightStyle = key => key.match(FONT_WEIGHT_REGEX);
+
+const BORDER_STYLE_REGEX = /^border(Top|Right|Bottom|Left)(Color|Width|Style)/;
 
 const isBorderStyle = (key, value) =>
-  key.match(/^border(Top|Right|Bottom|Left)(Color|Width|Style)/) &&
-  typeof value === 'string';
+  key.match(BORDER_STYLE_REGEX) && typeof value === 'string';
+
+const BOX_MODEL_STYLE_REGEX = /^(margin)|(padding)/;
 
 const isBoxModelStyle = (key, value) =>
-  key.match(/^(margin)|(padding)/) && typeof value === 'string';
+  key.match(BOX_MODEL_STYLE_REGEX) && typeof value === 'string';
+
+const OBJECT_POSITION_STYLE_REGEX = /^objectPosition/;
 
 const isObjectPositionStyle = (key, value) =>
-  key.match(/^objectPosition/) && typeof value === 'string';
+  key.match(OBJECT_POSITION_STYLE_REGEX) && typeof value === 'string';
 
 const isTransformOriginStyle = (key, value) =>
   key.match(/^transformOrigin/) && typeof value === 'string';

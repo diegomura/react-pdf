@@ -44,6 +44,7 @@ export const fetchEmojis = (string, source) => {
   const promises = [];
 
   let match;
+
   while ((match = regex.exec(string))) {
     const emoji = match[0];
 

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 

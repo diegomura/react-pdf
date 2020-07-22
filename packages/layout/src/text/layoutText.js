@@ -20,6 +20,10 @@ const engines = {
 
 const engine = layoutEngine(engines);
 
+const getMaxLines = R.path(['style', 'maxLines']);
+
+const getTextOverflow = R.path(['style', 'textOverflow']);
+
 /**
  * Get layout container for specific text node
  *
@@ -29,8 +33,8 @@ const engine = layoutEngine(engines);
  * @returns {Object} layout container
  */
 const getContainer = (width, height) => node => {
-  const maxLines = R.path(['style', 'maxLines'], node);
-  const textOverflow = R.path(['style', 'textOverflow'], node);
+  const maxLines = getMaxLines(node);
+  const textOverflow = getTextOverflow(node);
 
   return {
     x: 0,

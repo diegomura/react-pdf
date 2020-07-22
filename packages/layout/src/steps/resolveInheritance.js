@@ -53,10 +53,12 @@ const resolveInheritance = node => {
   if (isSvg(node)) return node;
 
   const inheritStyles = getInheritStyles(node);
+  const resolveChild = R.compose(
+    resolveInheritance,
+    mergeStyles(inheritStyles),
+  );
 
-  return R.evolve({
-    children: R.map(R.compose(resolveInheritance, mergeStyles(inheritStyles))),
-  })(node);
+  return R.evolve({ children: R.map(resolveChild) })(node);
 };
 
 export default resolveInheritance;

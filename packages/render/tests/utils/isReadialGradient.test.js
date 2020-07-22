@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import isRadialGradient from '../../src/utils/isRadialGradient';
 
-const ASSERTED_TYPE = P.RADIAL_GRADIENT;
+const ASSERTED_TYPE = P.RadialGradient;
 const PRIMITIVES = Object.keys(P.default);
 
 describe('is radial gradient util', () => {

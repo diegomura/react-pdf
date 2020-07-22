@@ -92,7 +92,7 @@ const hasLinearGradientFill = R.pathEq(
 
 const hasRadialGradientFill = R.pathEq(
   ['props', 'fill', 'type'],
-  P.RADIAL_GRADIENT,
+  P.RadialGradient,
 );
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104

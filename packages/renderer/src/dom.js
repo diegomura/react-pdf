@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-props-no-spreading */
 
 import React from 'react';
 import * as primitives from '@react-pdf/primitives';

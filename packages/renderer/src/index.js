@@ -57,9 +57,9 @@ const pdf = ({ initialValue, onChange }) => {
     return render();
   };
 
-  const toString = () => {
+  const toString = async () => {
     let result = '';
-    const instance = render();
+    const instance = await render();
 
     return new Promise((resolve, reject) => {
       try {

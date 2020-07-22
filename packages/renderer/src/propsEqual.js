@@ -1,3 +1,5 @@
+/* eslint-disable no-continue */
+
 /**
  * Checks if two sets of props are equal (recursively)
  *

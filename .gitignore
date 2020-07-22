@@ -6,5 +6,5 @@ coverage
 .idea
 dist
 .DS_Store
-packages/web-test
-packages/node-test
+packages/test-web
+packages/test-node

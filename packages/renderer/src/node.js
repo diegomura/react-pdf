@@ -2,18 +2,18 @@ import fs from 'fs';
 import * as primitives from '@react-pdf/primitives';
 import { pdf, version, Font, StyleSheet } from './index';
 
-export const renderToStream = async function(element) {
+export const renderToStream = async element => {
   const instance = pdf({ initialValue: element });
   const buffer = await instance.toBuffer();
   return buffer;
 };
 
-export const renderToString = function(element) {
+export const renderToString = element => {
   const instance = pdf({ initialValue: element });
   return instance.toString();
 };
 
-export const renderToFile = async function(element, filePath, callback) {
+export const renderToFile = async (element, filePath, callback) => {
   const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
 

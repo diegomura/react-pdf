@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+// import * as R from 'ramda';
 
 import asyncCompose from './utils/asyncCompose';
 import resolveSvg from './steps/resolveSvg';
@@ -16,11 +16,10 @@ import resolvePercentRadius from './steps/resolvePercentRadius';
 import resolvePercentHeight from './steps/resolvePercentHeight';
 import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
 
-const startTimer = name => R.tap(() => console.time(name));
-const endTimer = name => R.tap(() => console.timeEnd(name));
+// const startTimer = name => R.tap(() => console.time(name));
+// const endTimer = name => R.tap(() => console.timeEnd(name));
 
 const layout = asyncCompose(
-  endTimer('layout'),
   resolveZIndex,
   resolveOrigins,
   resolvePagination,
@@ -35,7 +34,6 @@ const layout = asyncCompose(
   resolveStyles,
   resolveLinkSubstitution,
   resolvePageSizes,
-  startTimer('layout'),
 );
 
 export default layout;

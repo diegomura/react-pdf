@@ -2,7 +2,7 @@ const primitives = require('../src/index');
 
 describe('primitives', () => {
   test('should export group', () => {
-    expect(primitives.Group).toBeTruthy();
+    expect(primitives.G).toBeTruthy();
   });
 
   test('should export svg', () => {

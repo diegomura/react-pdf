@@ -1,4 +1,4 @@
-exports.Group = 'G';
+exports.G = 'G';
 exports.Svg = 'SVG';
 exports.View = 'VIEW';
 exports.Text = 'TEXT';

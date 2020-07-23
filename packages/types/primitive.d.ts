@@ -1,5 +1,5 @@
 export enum Primitive {
-  Group = 'G',
+  G = 'G',
   Svg = 'SVG',
   View = 'VIEW',
   Text = 'TEXT',

@@ -72,6 +72,7 @@ const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
 
   switch (dominantBaseline) {
     case 'middle':
+    case 'central':
       yTranslate = y + capHeight / 2;
       break;
     case 'hanging':

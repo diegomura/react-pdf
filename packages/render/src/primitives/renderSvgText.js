@@ -41,24 +41,57 @@ const renderRun = (ctx, run) => {
   ctx.translate(runAdvanceWidth, 0);
 };
 
-const renderSpan = (ctx, line, textAnchor) => {
+const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   ctx.save();
 
   const x = R.pathOr(0, ['box', 'x'], line);
   const y = R.pathOr(0, ['box', 'y'], line);
+  const font = R.pathOr(1, ['runs', 0, 'attributes', 'font'], line);
+  const scale = R.pathOr(1, ['runs', 0, 'attributes', 'scale'], line);
   const width = lineWidth(line);
+
+  const ascent = font.ascent * scale;
+  const xHeight = font.xHeight * scale;
+  const descent = font.descent * scale;
+  const capHeight = font.capHeight * scale;
+
+  let xTranslate = x;
+  let yTranslate = y;
 
   switch (textAnchor) {
     case 'middle':
-      ctx.translate(x - width / 2, y);
+      xTranslate = x - width / 2;
       break;
     case 'end':
-      ctx.translate(x - width, y);
+      xTranslate = x - width;
       break;
     default:
-      ctx.translate(x, y);
+      xTranslate = x;
       break;
   }
+
+  switch (dominantBaseline) {
+    case 'middle':
+      yTranslate = y + capHeight / 2;
+      break;
+    case 'hanging':
+      yTranslate = y + capHeight;
+      break;
+    case 'mathematical':
+      yTranslate = y + xHeight;
+      break;
+    case 'text-after-edge':
+      yTranslate = y + descent;
+      break;
+    case 'text-before-edge':
+      yTranslate = y + ascent;
+      break;
+    default:
+      yTranslate = y;
+      break;
+  }
+
+  ctx.translate(xTranslate, yTranslate);
 
   line.runs.forEach(run => renderRun(ctx, run));
 
@@ -67,7 +100,12 @@ const renderSpan = (ctx, line, textAnchor) => {
 
 const renderSvgText = ctx => node => {
   node.children.forEach(span =>
-    renderSpan(ctx, span.lines[0], span.props.textAnchor),
+    renderSpan(
+      ctx,
+      span.lines[0],
+      span.props.textAnchor,
+      span.props.dominantBaseline,
+    ),
   );
 
   return node;

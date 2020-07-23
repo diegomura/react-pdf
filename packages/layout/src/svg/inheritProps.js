@@ -15,6 +15,7 @@ const SVG_INHERITED_PROPS = [
   'strokeOpacity',
   'strokeWidth',
   'textAnchor',
+  'dominantBaseline',
   'color',
   'fontFamily',
   'fontSize',

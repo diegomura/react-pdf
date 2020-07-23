@@ -48,6 +48,38 @@ class StandardFont {
   }
 
   // Based on empirical observation
+  get capHeight() {
+    switch (this.name) {
+      case 'Times-Roman':
+      case 'Times-Bold':
+      case 'Times-Italic':
+        return 650;
+      case 'Courier':
+      case 'Courier-Bold':
+      case 'Courier-Oblique':
+        return 550;
+      default:
+        return 690;
+    }
+  }
+
+  // Based on empirical observation
+  get xHeight() {
+    switch (this.name) {
+      case 'Times-Roman':
+      case 'Times-Bold':
+      case 'Times-Italic':
+        return 440;
+      case 'Courier':
+      case 'Courier-Bold':
+      case 'Courier-Oblique':
+        return 390;
+      default:
+        return 490;
+    }
+  }
+
+  // Based on empirical observation
   get descent() {
     switch (this.name) {
       case 'Times-Roman':

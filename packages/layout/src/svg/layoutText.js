@@ -11,15 +11,15 @@ import AttributedString from '@react-pdf/textkit/attributedString';
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';
 
-const isTextInstance = R.propEq('type', P.TextIntance);
+const isTextInstance = R.propEq('type', P.TextInstance);
 
 const engines = {
   linebreaker,
   justification,
-  decorationEngine,
   scriptItemizer,
   wordHyphenation,
   fontSubstitution,
+  textDecoration: decorationEngine,
 };
 
 const engine = layoutEngine(engines);
@@ -60,7 +60,9 @@ const getFragments = (fontStore, instance) => {
     strikeColor: textDecorationColor || fill,
   };
 
-  instance.children.forEach(child => {
+  for (let i = 0; i < instance.children.length; i += 1) {
+    const child = instance.children[i];
+
     if (isTextInstance(child)) {
       fragments.push({
         string: transformText(child.value, textTransform),
@@ -69,7 +71,7 @@ const getFragments = (fontStore, instance) => {
     } else if (child) {
       fragments.push(...getFragments(child));
     }
-  });
+  }
 
   return fragments;
 };
@@ -81,7 +83,7 @@ const AlmostInfinity = 999999999999;
 
 const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 
-const layoutTspan = (fontStore, node) => {
+const layoutTspan = fontStore => node => {
   const attributedString = getAttributedString(fontStore, node);
 
   const x = R.pathOr(0, ['props', 'x'], node);

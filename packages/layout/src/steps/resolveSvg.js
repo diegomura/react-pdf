@@ -146,7 +146,7 @@ const parseText = fontStore => node =>
     isText,
     layoutText(fontStore),
     R.evolve({
-      children: R.map(parseText),
+      children: R.map(parseText(fontStore)),
     }),
   )(node);
 

@@ -499,7 +499,7 @@ declare module '@react-pdf/renderer' {
 
     const render: typeof renderToFile;
   }
-
+  type Style = ReactPDF.Style
   const Document: typeof ReactPDF.Document;
   const Page: typeof ReactPDF.Page;
   const View: typeof ReactPDF.View;
@@ -530,6 +530,7 @@ declare module '@react-pdf/renderer' {
     Note,
     Font,
     StyleSheet,
+    Style,
     createInstance,
     PDFRenderer,
     version,

@@ -219,6 +219,7 @@ declare module '@react-pdf/renderer' {
       cache?: boolean;
       safePath?: string;
       allowDangerousPaths?: boolean;
+      id?: string;
     }
 
     interface ImageWithSrcProp extends BaseImageProps {

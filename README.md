@@ -83,6 +83,20 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
+
+### `Express` Send PDF in a response
+```jsx
+import React from 'react';
+import ReactPDF from '@react-pdf/renderer';
+
+const pdfStream = await ReactPDF.renderToStream(<MyDocument />);
+
+res.setHeader('Content-Type', 'application/pdf');
+pdfStream.pipe(res);
+
+pdfStream.on('end', () => console.log('Done streaming, response sent.'));
+```
+
 ## Examples
 For each example, try opening `output.pdf` to see the result.
 

@@ -2,7 +2,7 @@ import Yoga from 'yoga-layout';
 
 import Base from './Base';
 import warning from '../utils/warning';
-import { resolveImage } from '../utils/image';
+import { resolveImage, getDimensionsWarningMessage } from '../utils/image';
 import { resolveObjectFit } from '../utils/objectFit';
 import { setDestination } from '../utils/url';
 
@@ -160,12 +160,8 @@ class Image extends Base {
             { width, height },
           );
       } else {
-        warning(
-          false,
-          `Image with src '${
-            this.props.src
-          }' skipped due to invalid dimensions`,
-        );
+        const message = getDimensionsWarningMessage(this.src);
+        warning(false, message);
       }
     }
 

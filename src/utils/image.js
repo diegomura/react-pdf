@@ -200,3 +200,35 @@ export const resolveImage = (src, { cache = true, ...options } = {}) => {
 
   return image;
 };
+
+export const getDimensionsWarningMessage = source => {
+  const { uri } = source;
+  const baseWarningReason = 'skipped due to invalid dimensions';
+  const genericWarningMessage = () => `Image ${baseWarningReason}`;
+  const regularUrlWarningMessage = uri =>
+    `Image with src '${uri}' ${baseWarningReason}`;
+  const base64DataUrlWarningMessage = extension =>
+    `${extension} Image with base64 data URI ${baseWarningReason}`;
+
+  if (!source || !uri) {
+    return genericWarningMessage();
+  }
+
+  if (typeof source === 'string') {
+    return regularUrlWarningMessage(source);
+  }
+
+  if (typeof source !== 'object') {
+    return genericWarningMessage();
+  }
+
+  if (!isCompatibleBase64(source)) {
+    return regularUrlWarningMessage(uri);
+  }
+
+  const startIndex = 'data:image/'.length;
+  const endIndex = uri.indexOf(';base64');
+  const extension = uri.substring(startIndex, endIndex).toUpperCase();
+
+  return base64DataUrlWarningMessage(extension);
+};

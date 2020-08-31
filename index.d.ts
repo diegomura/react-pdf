@@ -199,6 +199,7 @@ declare module '@react-pdf/renderer' {
       debug?: boolean;
       render?: (props: { pageNumber: number }) => React.ReactNode;
       children?: React.ReactNode;
+      id?: string;
     }
 
     /**
@@ -250,6 +251,7 @@ declare module '@react-pdf/renderer' {
         totalPages: number;
       }) => React.ReactNode;
       children?: React.ReactNode;
+      id?: string;
       /**
        * How much hyphenated breaks should be avoided.
        */

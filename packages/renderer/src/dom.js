@@ -32,6 +32,7 @@ class InternalBlobProvider extends React.PureComponent {
   }
 
   queueDocumentRender = () => {
+    this.setState({ loading: true });
     this.renderQueue.splice(0, this.renderQueue.length, () =>
       this.state.error ? Promise.resolve() : this.instance.toBlob(),
     );

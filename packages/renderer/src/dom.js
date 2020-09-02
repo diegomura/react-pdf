@@ -29,6 +29,9 @@ class InternalBlobProvider extends React.PureComponent {
 
   componentWillUnmount() {
     this.renderQueue.end();
+    if (this.state.url) {
+      URL.revokeObjectURL(this.state.url);
+    }
   }
 
   queueDocumentRender = () => {

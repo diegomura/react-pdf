@@ -21,8 +21,10 @@ class InternalBlobProvider extends React.PureComponent {
     this.renderQueue.on('success', this.onRenderSuccessful);
   }
 
-  componentDidUpdate() {
-    this.instance.updateContainer(this.props.document);
+  componentDidUpdate(prevProps) {
+    if (prevProps.document !== this.props.document) {
+      this.instance.updateContainer(this.props.document);
+    }
   }
 
   componentWillUnmount() {

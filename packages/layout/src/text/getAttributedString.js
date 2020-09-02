@@ -87,7 +87,7 @@ const getFragments = (fontStore, instance) => {
         attributes,
       });
     } else if (child) {
-      fragments.push(...getFragments(child));
+      fragments.push(...getFragments(fontStore, child));
     }
   }
 

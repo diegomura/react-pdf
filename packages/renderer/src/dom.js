@@ -47,7 +47,7 @@ class InternalBlobProvider extends React.PureComponent {
     const oldBlobUrl = this.state.url;
 
     this.setState(
-      { blob, url: URL.createObjectURL(blob), loading: false },
+      { blob, url: URL.createObjectURL(blob), loading: false, error: null },
       () => URL.revokeObjectURL(oldBlobUrl),
     );
   };

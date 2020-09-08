@@ -21,15 +21,21 @@ class InternalBlobProvider extends React.PureComponent {
     this.renderQueue.on('success', this.onRenderSuccessful);
   }
 
-  componentDidUpdate() {
-    this.instance.updateContainer(this.props.document);
+  componentDidUpdate(prevProps) {
+    if (prevProps.document !== this.props.document) {
+      this.instance.updateContainer(this.props.document);
+    }
   }
 
   componentWillUnmount() {
     this.renderQueue.end();
+    if (this.state.url) {
+      URL.revokeObjectURL(this.state.url);
+    }
   }
 
   queueDocumentRender = () => {
+    this.setState({ loading: true });
     this.renderQueue.splice(0, this.renderQueue.length, () =>
       this.state.error ? Promise.resolve() : this.instance.toBlob(),
     );
@@ -44,7 +50,7 @@ class InternalBlobProvider extends React.PureComponent {
     const oldBlobUrl = this.state.url;
 
     this.setState(
-      { blob, url: URL.createObjectURL(blob), loading: false },
+      { blob, url: URL.createObjectURL(blob), loading: false, error: null },
       () => URL.revokeObjectURL(oldBlobUrl),
     );
   };

@@ -139,7 +139,7 @@ class Image extends Base {
     // Clip path to keep image inside border radius
     this.clip();
 
-    if (this.image.data) {
+    if (this.image && this.image.data) {
       const { width, height, xOffset, yOffset } = resolveObjectFit(
         this.style.objectFit,
         this.width - padding.left - padding.right,
@@ -167,6 +167,11 @@ class Image extends Base {
           }' skipped due to invalid dimensions`,
         );
       }
+    } else {
+      warning(
+        false,
+        `Image skipped because src prop is ${this.props.src}`,
+      );
     }
 
     this.root.instance.restore();

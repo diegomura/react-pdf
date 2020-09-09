@@ -209,10 +209,16 @@ declare module '@react-pdf/renderer' {
 
     type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-    type SourceObject =
+    type BaseSourceObject =
       | string
+      | Buffer
       | { data: Buffer; format: 'png' | 'jpg' }
-      | { uri: string; method: HTTPMethod; body: any; headers: any };
+      | { uri: string; method: HTTPMethod; body: any; headers: any }
+      | undefined;
+
+    type SourceObject =
+      | BaseSourceObject
+      | (() => BaseSourceObject | Promise<BaseSourceObject>);
 
     interface BaseImageProps extends NodeProps {
       debug?: boolean;

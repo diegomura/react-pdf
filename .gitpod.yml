@@ -1,0 +1,14 @@
+tasks:
+  - name: Auto Build
+    init: |
+      yarn install
+      gp sync-done boot
+    command: yarn watch
+
+  - name: Fractals Example
+    init: |
+      gp sync-await boot
+      yarn example -- fractals
+    command: gp open examples/fractals/output.pdf
+    openMode: split-right
+

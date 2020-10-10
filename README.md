@@ -18,6 +18,7 @@
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
     </a>
     <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=shield"/></a>
+    <a href="https://gitpod.io/from-referrer/"><img src="https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod" alt="Gitpod Ready-to-Code"/></a>
   </p>
 </p>
 
@@ -139,6 +140,17 @@ Then, run `yarn example -- <example-name>`
 ```sh
 yarn example -- fractals
 ```
+
+## Online One-click setup for contributing and running examples online
+
+You can use Gitpod(An Online Open-source VS-Code like IDE which is free for Open-source) for contributing to this project or running the examples online. With a single click it will start a workspace and automatically:
+
+- clone the `react-pdf` repo.
+- install all the dependencies.
+- run `yarn watch`.
+- build the `fractals` example and open it.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ## Contributors
 

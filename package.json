@@ -1,10 +1,8 @@
 {
-  "name": "@react-pdf/renderer",
+  "name": "@kiltyj/react-pdf-renderer",
   "version": "1.6.11",
   "license": "MIT",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git",
+  "repository": "git@github.com:kiltyj/react-pdf.git",
   "main": "dist/react-pdf.cjs.js",
   "module": "dist/react-pdf.es.js",
   "browser": {
@@ -104,10 +102,5 @@
       "path": "./dist/react-pdf.browser.cjs.min.js",
       "maxSize": "17kB"
     }
-  ],
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/react-pdf",
-    "logo": "https://opencollective.com/opencollective/logo.txt"
-  }
+  ]
 }

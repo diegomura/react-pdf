@@ -1,6 +1,6 @@
 {
-  "name": "@kiltyj/react-pdf-renderer",
-  "version": "1.6.11",
+  "name": "@launchtray/react-pdf-renderer",
+  "version": "1.6.12",
   "license": "MIT",
   "repository": "git@github.com:kiltyj/react-pdf.git",
   "main": "dist/react-pdf.cjs.js",

@@ -35,8 +35,8 @@ const pdf = input => {
     PDFRenderer.updateContainer(doc, mountNode, null);
   }
 
-  async function toBlob() {
-    await container.render();
+  async function toBlob(options) {
+    await container.render(options);
 
     const stream = container.instance.pipe(BlobStream());
 
@@ -57,25 +57,25 @@ const pdf = input => {
     });
   }
 
-  async function toBuffer() {
-    await container.render();
+  async function toBuffer(options) {
+    await container.render(options);
 
     callOnRender();
 
     return container.instance;
   }
 
-  function toString() {
+  function toString(options) {
     let result = '';
-    container.render();
+    container.render(options);
 
     return new Promise((resolve, reject) => {
       try {
-        container.instance.on('data', function (buffer) {
+        container.instance.on('data', function(buffer) {
           result += buffer;
         });
 
-        container.instance.on('end', function () {
+        container.instance.on('end', function() {
           callOnRender({ string: result });
           resolve(result);
         });

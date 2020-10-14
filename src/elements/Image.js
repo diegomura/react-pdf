@@ -162,9 +162,7 @@ class Image extends Base {
       } else {
         warning(
           false,
-          `Image with src '${
-            this.props.src
-          }' skipped due to invalid dimensions`,
+          `Image with src '${this.props.src}' skipped due to invalid dimensions`,
         );
       }
     }
@@ -182,6 +180,10 @@ class Image extends Base {
 
     if (this.props.debug) {
       this.debug();
+    }
+
+    if (this.props.testID) {
+      this.registerTestId(this.props.testID);
     }
 
     this.root.instance.restore();

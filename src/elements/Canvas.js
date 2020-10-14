@@ -48,6 +48,10 @@ class Canvas extends Base {
     if (this.props.debug) {
       this.debug();
     }
+
+    if (this.props.testID) {
+      this.registerTestId(this.props.testID);
+    }
   }
 }
 

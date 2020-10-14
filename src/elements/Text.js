@@ -240,8 +240,7 @@ class Text extends Base {
     // Perform actual text rendering on document
     PDFRenderer.render(this.root.instance, [this.lines]);
     setLink(this);
-    setDestination(this)
-
+    setDestination(this);
 
     this.root.instance.restore();
   }
@@ -264,6 +263,10 @@ class Text extends Base {
 
     if (this.props.debug) {
       this.debug();
+    }
+
+    if (this.props.testID) {
+      this.registerTestId(this.props.testID);
     }
 
     this.root.instance.restore();

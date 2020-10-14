@@ -19,6 +19,7 @@ class View extends Base {
     this.drawBorders();
     setDestination(this);
     if (this.props.debug) this.debug();
+    if (this.props.testID) this.registerTestId(this.props.testID);
     this.root.instance.restore();
   }
 }

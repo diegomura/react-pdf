@@ -6,6 +6,7 @@ module.exports = {
         loose: true,
         targets: {
           node: '8.11.3',
+          ie: '11',
         },
       },
     ],
@@ -14,6 +15,6 @@ module.exports = {
   plugins: [
     '@babel/plugin-transform-runtime',
     '@babel/plugin-proposal-class-properties',
-    '@babel/plugin-proposal-optional-chaining'
+    '@babel/plugin-proposal-optional-chaining',
   ],
 };

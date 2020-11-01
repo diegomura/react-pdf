@@ -13,10 +13,9 @@ const getSource = R.compose(
 const setLink = (ctx, node) => {
   const { top, left, width, height } = node.box;
   const src = getSource(node);
-  const instanceMethod = isSrcId(src) ? 'goTo' : 'link';
-  const value = src ? src.slice(1) : null;
 
-  if (value) {
+  if (src) {
+    const [instanceMethod, value] = isSrcId(src) ? ['goTo', src.slice(1)] : ['link', src];
     ctx[instanceMethod](left, top, width, height, value);
   }
 

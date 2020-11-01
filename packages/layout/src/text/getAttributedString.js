@@ -17,6 +17,7 @@ const isTextInstance = isType(P.TextInstance);
 /**
  * Get textkit framgents of given node object
  *
+ * @param {Object} font store
  * @param {Object} instance node
  * @returns {Array} text fragments
  */
@@ -55,10 +56,10 @@ const getFragments = (fontStore, instance) => {
     backgroundColor,
     align: textAlign,
     indent: textIndent,
-    link: instance.src,
     characterSpacing: letterSpacing,
     underlineStyle: textDecorationStyle,
     underline: textDecoration === 'underline',
+    link: instance.src || instance.props?.href,
     underlineColor: textDecorationColor || color,
     strike: textDecoration === 'line-through',
     strikeStyle: textDecorationStyle,

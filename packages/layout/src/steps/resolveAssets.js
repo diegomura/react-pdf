@@ -14,7 +14,7 @@ const isImage = R.propEq('type', P.Image);
  */
 const fetchAssets = (fontStore, node) => {
   const promises = [];
-  const listToExplore = node.children.slice(0);
+  const listToExplore = node.children?.slice(0) || [];
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
   while (listToExplore.length > 0) {

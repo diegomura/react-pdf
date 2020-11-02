@@ -91,4 +91,4 @@ const StyleSheet = {
   create: s => s,
 };
 
-export { version, Font, StyleSheet, pdf };
+export { version, Font, StyleSheet, pdf, createRenderer };

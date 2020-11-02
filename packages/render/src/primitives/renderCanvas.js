@@ -29,6 +29,7 @@ const availableMethods = [
   'strokeColor',
   'fillOpacity',
   'roundedRect',
+  'fillAndStroke',
   'strokeOpacity',
   'bezierCurveTo',
   'quadraticCurveTo',

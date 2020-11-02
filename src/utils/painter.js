@@ -28,10 +28,9 @@ export const availableMethods = [
   'fillOpacity',
   'roundedRect',
   'strokeOpacity',
+  'fillAndStroke',
   'bezierCurveTo',
   'quadraticCurveTo',
-  'linearGradient',
-  'radialGradient',
 ];
 
 const painter = function(instance) {
@@ -45,6 +44,10 @@ const painter = function(instance) {
     }),
     {},
   );
+
+  p.linearGradient = (...args) => instance.linearGradient(...args);
+
+  p.radialGradient = (...args) => instance.linearGradient(...args);
 
   return p;
 };

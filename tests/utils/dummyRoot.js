@@ -13,6 +13,7 @@ export default {
     instance.fillColor = jest.fn().mockReturnValue(instance);
     instance.fillOpacity = jest.fn().mockReturnValue(instance);
     instance.roundedRect = jest.fn().mockReturnValue(instance);
+    instance.radialGradient = jest.fn().mockReturnValue(instance);
     instance.registerFont = jest.fn().mockReturnValue(instance);
     instance.lineWidth = jest.fn().mockReturnValue(instance);
     instance.moveTo = jest.fn().mockReturnValue(instance);

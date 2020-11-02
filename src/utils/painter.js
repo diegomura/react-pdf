@@ -30,8 +30,6 @@ export const availableMethods = [
   'strokeOpacity',
   'fillAndStroke',
   'bezierCurveTo',
-  'linearGradient',
-  'radialGradient',
   'quadraticCurveTo',
 ];
 

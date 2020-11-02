@@ -11,9 +11,6 @@
     <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
     </a>
-    <a href="https://spectrum.chat/react-pdf">
-      <img src="https://withspectrum.github.io/badge/badge.svg" />
-    </a>
     <a href="https://github.com/prettier/prettier">
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
     </a>
@@ -124,7 +121,7 @@ For each example, try opening `output.pdf` to see the result.
         <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/pageWrap/thumb.png">
         <br>
         <a href="https://github.com/diegomura/react-pdf/tree/master/examples/pageWrap/">Page wrap</a>
-      </td>  
+      </td>
 		</tr>
 	</tbody>
 </table>
@@ -163,5 +160,5 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_large)
 
---- 
+---
 ![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)

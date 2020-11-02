@@ -49,6 +49,7 @@ const PAGE_SIZES = {
   LEGAL: [612.0, 1008.0],
   LETTER: [612.0, 792.0],
   TABLOID: [792.0, 1224.0],
+  ID1: [153, 243],
 };
 
 // Return page size in an object { width, height } given the passed size and orientation

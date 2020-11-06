@@ -4,6 +4,8 @@ declare module '@react-pdf/renderer' {
   import * as React from 'react';
 
   namespace ReactPDF {
+    import PDFVector = PDFKit.Mixins.PDFVector;
+
     export interface Style {
       //Flexbox
 
@@ -298,7 +300,7 @@ declare module '@react-pdf/renderer' {
     interface CanvasProps extends NodeProps {
       debug?: boolean;
       paint: (
-        painter: any,
+        painter: PDFVector,
         availableWidth: number,
         availableHeight: number
       ) => null;

@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-declare module '@react-pdf/renderer' {
+declare module '@launchtray/react-pdf-renderer' {
   import * as React from 'react';
 
   namespace ReactPDF {
@@ -139,6 +139,10 @@ declare module '@react-pdf/renderer' {
       onRender?: () => any;
     }
 
+    interface RenderOptions {
+      testIdOutputData?: { [key: string]: any };
+    }
+
     /**
      * This component represent the PDF document itself. It must be the root
      * of your tree element structure, and under no circumstances should it be
@@ -174,6 +178,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
+      testID?: string;
       size?: string | [number, number] | { width: number; height: number };
       orientation?: Orientation;
       ruler?: boolean;
@@ -199,6 +204,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
+      testID?: string;
       render?: (props: { pageNumber: number }) => React.ReactNode;
       children?: React.ReactNode;
     }
@@ -218,6 +224,7 @@ declare module '@react-pdf/renderer' {
 
     interface BaseImageProps extends NodeProps {
       debug?: boolean;
+      testID?: string;
       cache?: boolean;
       safePath?: string;
       allowDangerousPaths?: boolean;
@@ -247,6 +254,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
+      testID?: string;
       render?: (props: {
         pageNumber: number;
         totalPages: number;
@@ -281,6 +289,7 @@ declare module '@react-pdf/renderer' {
        */
       wrap?: boolean;
       debug?: boolean;
+      testID?: string;
       src: string;
       children?: React.ReactNode;
     }
@@ -299,6 +308,7 @@ declare module '@react-pdf/renderer' {
 
     interface CanvasProps extends NodeProps {
       debug?: boolean;
+      testID?: string;
       paint: (
         painter: PDFVector,
         availableWidth: number,
@@ -489,12 +499,20 @@ declare module '@react-pdf/renderer' {
 
     const renderToStream: (
       document: React.ReactElement<DocumentProps>,
+      options?: RenderOptions,
     ) => Promise<NodeJS.ReadableStream>;
 
     const renderToFile: (
       document: React.ReactElement<DocumentProps>,
       filePath: string,
       callback?: (output: NodeJS.ReadableStream, filePath: string) => any,
+    ) => Promise<NodeJS.ReadableStream>;
+
+    const renderToFileWithOptions: (
+      document: React.ReactElement<DocumentProps>,
+      filePath: string,
+      options?: RenderOptions,
+      callback?: (output: NodeJS.ReadableStream, filePath: string, options?: RenderOptions) => any,
     ) => Promise<NodeJS.ReadableStream>;
 
     const render: typeof renderToFile;

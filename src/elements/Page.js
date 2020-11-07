@@ -141,6 +141,7 @@ class Page extends Base {
   }
 
   async renderDynamicNodes(props, cb) {
+    this.pageNumber = props.pageNumber;
     const listToExplore = this.children.slice(0);
 
     while (listToExplore.length > 0) {
@@ -211,6 +212,10 @@ class Page extends Base {
 
     if (this.props.debug) {
       this.debug();
+    }
+
+    if (this.props.testID) {
+      this.registerTestId(this.props.testID);
     }
 
     this.renderRuler();

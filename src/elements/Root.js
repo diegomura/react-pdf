@@ -32,7 +32,8 @@ class Root {
     this.document.finish();
   }
 
-  async render() {
+  async render(options) {
+    this.renderOptions = options;
     this.instance = new PDFDocument({ autoFirstPage: false });
     await this.document.render();
     this.cleanup();

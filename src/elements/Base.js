@@ -6,6 +6,7 @@ import Debug from '../mixins/debug';
 import Borders from '../mixins/borders';
 import Clipping from '../mixins/clipping';
 import Transform from '../mixins/transform';
+import TestId from '../mixins/testId';
 import warning from '../utils/warning';
 import deepMerge from '../utils/deepMerge';
 import upperFirst from '../utils/upperFirst';
@@ -244,5 +245,6 @@ Object.assign(Base.prototype, Debug);
 Object.assign(Base.prototype, Borders);
 Object.assign(Base.prototype, Clipping);
 Object.assign(Base.prototype, Transform);
+Object.assign(Base.prototype, TestId);
 
 export default Base;

@@ -16,22 +16,31 @@ import {
   createInstance,
 } from './index';
 
-export const renderToStream = async function (element) {
+export const renderToStream = async function(element, options) {
   const instance = pdf(element);
-  const buffer = await instance.toBuffer();
+  const buffer = await instance.toBuffer(options);
   instance.container.finish();
   return buffer;
 };
 
-export const renderToFile = async function (element, filePath, callback) {
-  const output = await renderToStream(element);
+export const renderToFile = async function(element, filePath, callback) {
+  return renderToFileWithOptions(element, filePath, null, callback);
+};
+
+export const renderToFileWithOptions = async function(
+  element,
+  filePath,
+  options,
+  callback,
+) {
+  const output = await renderToStream(element, options);
   const stream = fs.createWriteStream(filePath);
 
   output.pipe(stream);
 
   return new Promise((resolve, reject) => {
     stream.on('finish', () => {
-      if (callback) callback(output, filePath);
+      if (callback) callback(output, filePath, options);
       resolve(output);
     });
     stream.on('error', reject);
@@ -95,5 +104,6 @@ export default {
   createInstance,
   renderToStream,
   renderToFile,
+  renderToFileWithOptions,
   render,
 };

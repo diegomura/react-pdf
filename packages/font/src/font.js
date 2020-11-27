@@ -67,7 +67,7 @@ class Font {
 
   register({ src, fontWeight, fontStyle, ...options }) {
     this.sources.push(
-      new FontSource(src, this.fontFamily, fontStyle, fontWeight, options),
+      new FontSource(src, this.family, fontStyle, fontWeight, options),
     );
   }
 

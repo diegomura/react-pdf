@@ -15,7 +15,8 @@
     "bootstrap": "lerna bootstrap",
     "prepublish": "lerna run build",
     "lint": "eslint packages",
-    "test": "jest"
+    "test": "jest",
+    "examples": "lerna run start --scope @react-pdf/examples"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

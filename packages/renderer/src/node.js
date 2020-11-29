@@ -34,6 +34,10 @@ const throwEnvironmentError = name => {
   );
 };
 
+export const usePDF = () => {
+  throwEnvironmentError('usePDF');
+};
+
 export const PDFViewer = () => {
   throwEnvironmentError('PDFViewer');
 };

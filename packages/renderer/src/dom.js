@@ -1,130 +1,146 @@
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React from 'react';
 import * as primitives from '@react-pdf/primitives';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { pdf, version, Font, StyleSheet } from './index';
 
 const queue = require('queue');
 
-class InternalBlobProvider extends React.PureComponent {
-  renderQueue = queue({ autostart: true, concurrency: 1 });
+export const usePDF = ({ document }) => {
+  const pdfInstance = useRef(null);
 
-  state = { blob: null, url: null, loading: true, error: null };
+  const previousUrl = useRef(null);
 
-  componentDidMount() {
-    this.instance = pdf({ onChange: this.queueDocumentRender });
-    this.instance.updateContainer(this.props.document);
+  const [state, setState] = useState({
+    url: null,
+    blob: null,
+    error: null,
+    loading: false,
+  });
 
-    this.renderQueue.on('error', this.onRenderFailed);
-    this.renderQueue.on('success', this.onRenderSuccessful);
-  }
+  // Setup rendering queue
+  useEffect(() => {
+    const renderQueue = queue({ autostart: true, concurrency: 1 });
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.document !== this.props.document) {
-      this.instance.updateContainer(this.props.document);
-    }
-  }
+    const queueDocumentRender = () => {
+      setState(prev => ({ ...prev, loading: true }));
 
-  componentWillUnmount() {
-    this.renderQueue.end();
-    if (this.state.url) {
-      URL.revokeObjectURL(this.state.url);
-    }
-  }
+      renderQueue.splice(0, renderQueue.length, () =>
+        state.error ? Promise.resolve() : pdfInstance.current.toBlob(),
+      );
+    };
 
-  queueDocumentRender = () => {
-    this.setState({ loading: true });
-    this.renderQueue.splice(0, this.renderQueue.length, () =>
-      this.state.error ? Promise.resolve() : this.instance.toBlob(),
-    );
+    const onRenderFailed = error => {
+      console.error(error);
+      setState(prev => ({ ...prev, error }));
+    };
+
+    const onRenderSuccessful = blob => {
+      previousUrl.current = state.url;
+
+      setState({
+        blob,
+        error: null,
+        loading: false,
+        url: URL.createObjectURL(blob),
+      });
+    };
+
+    pdfInstance.current = pdf({ onChange: queueDocumentRender });
+    pdfInstance.current.updateContainer(document);
+
+    renderQueue.on('error', onRenderFailed);
+    renderQueue.on('success', onRenderSuccessful);
+
+    return () => {
+      renderQueue.end();
+    };
+  }, []);
+
+  // Revoke old unused url instances
+  useEffect(() => {
+    if (previousUrl.current) URL.revokeObjectURL(previousUrl.current);
+  }, [state.blob]);
+
+  const update = () => {
+    pdfInstance.current.updateContainer(document);
   };
 
-  onRenderFailed = error => {
-    this.setState({ error });
-    console.error(error);
-  };
-
-  onRenderSuccessful = blob => {
-    const oldBlobUrl = this.state.url;
-
-    this.setState(
-      { blob, url: URL.createObjectURL(blob), loading: false, error: null },
-      () => URL.revokeObjectURL(oldBlobUrl),
-    );
-  };
-
-  render() {
-    return this.props.children(this.state);
-  }
-}
+  return [state, update];
+};
 
 export const BlobProvider = ({ document: doc, children }) => {
+  const [instance, updateInstance] = usePDF({ document });
+
+  useEffect(updateInstance, [doc]);
+
   if (!doc) {
     console.warn('You should pass a valid document to BlobProvider');
     return null;
   }
 
-  return <InternalBlobProvider document={doc}>{children}</InternalBlobProvider>;
+  return children(instance);
 };
 
 export const PDFViewer = ({
-  className,
-  style,
   title,
+  style,
+  className,
   children,
   innerRef,
   ...props
 }) => {
+  const [instance, updateInstance] = usePDF({ document: children });
+
+  useEffect(updateInstance, [children]);
+
   return (
-    <InternalBlobProvider document={children}>
-      {({ url }) => (
-        <iframe
-          src={url}
-          title={title}
-          ref={innerRef}
-          style={style}
-          className={className}
-          {...props}
-        />
-      )}
-    </InternalBlobProvider>
+    <iframe
+      title={title}
+      ref={innerRef}
+      style={style}
+      src={instance.url}
+      className={className}
+      {...props}
+    />
   );
 };
 
 export const PDFDownloadLink = ({
-  document: doc,
-  className,
   style,
   children,
+  className,
+  document: doc,
   fileName = 'document.pdf',
 }) => {
+  const [instance, updateInstance] = usePDF({ document: doc });
+
+  useEffect(updateInstance, [children]);
+
   if (!doc) {
     console.warn('You should pass a valid document to PDFDownloadLink');
     return null;
   }
 
-  const downloadOnIE = blob => () => {
+  const handleDownloadIE = () => {
     if (window.navigator.msSaveBlob) {
-      window.navigator.msSaveBlob(blob, fileName);
+      // IE
+      window.navigator.msSaveBlob(instance.blob, fileName);
     }
   };
 
   return (
-    <InternalBlobProvider document={doc}>
-      {params => (
-        <a
-          style={style}
-          href={params.url}
-          download={fileName}
-          className={className}
-          onClick={downloadOnIE(params.blob)}
-        >
-          {typeof children === 'function' ? children(params) : children}
-        </a>
-      )}
-    </InternalBlobProvider>
+    <a
+      style={style}
+      href={instance.url}
+      download={fileName}
+      className={className}
+      onClick={handleDownloadIE}
+    >
+      {typeof children === 'function' ? children(instance) : children}
+    </a>
   );
 };
 
@@ -156,6 +172,7 @@ export * from '@react-pdf/primitives';
 
 export default {
   pdf,
+  usePDF,
   Font,
   version,
   StyleSheet,

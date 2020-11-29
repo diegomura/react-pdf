@@ -9,13 +9,18 @@
   "main": "lib",
   "scripts": {
     "test": "jest",
-    "build": "rimraf ./lib && babel src --out-dir lib",
-    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+    "start": "parcel ./src/index.html -p 3000"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^2.0.0-beta.11"
+    "@react-pdf/renderer": "^2.0.0-beta.11",
+    "camelcase": "^6.2.0",
+    "ramda": "^0.27.1"
   },
   "peerDependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
   }
 }

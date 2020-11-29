@@ -92,18 +92,27 @@ const createRenderer = ({ onChange = () => {} }) => {
     },
 
     insertBefore(parentInstance, child, beforeChild) {
-      const index = parentInstance.children.indexOf(beforeChild);
+      const index = parentInstance.children?.indexOf(beforeChild);
+
+      if (index === undefined) return;
+
       if (index !== -1 && child)
         parentInstance.children.splice(index, 0, child);
     },
 
     removeChild(parentInstance, child) {
-      const index = parentInstance.children.indexOf(child);
+      const index = parentInstance.children?.indexOf(child);
+
+      if (index === undefined) return;
+
       if (index !== -1) parentInstance.children.splice(index, 1);
     },
 
     removeChildFromContainer(parentInstance, child) {
-      const index = parentInstance.children.indexOf(child);
+      const index = parentInstance.children?.indexOf(child);
+
+      if (index === undefined) return;
+
       if (index !== -1) parentInstance.children.splice(index, 1);
     },
 

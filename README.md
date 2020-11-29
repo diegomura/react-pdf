@@ -11,9 +11,6 @@
     <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
     </a>
-    <a href="https://spectrum.chat/react-pdf">
-      <img src="https://withspectrum.github.io/badge/badge.svg" />
-    </a>
     <a href="https://github.com/prettier/prettier">
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
     </a>

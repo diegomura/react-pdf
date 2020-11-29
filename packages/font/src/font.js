@@ -27,7 +27,7 @@ class FontSource {
     this.src = src;
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
-    this.fontWeight = 400;
+    this.fontWeight = fontWeight || 400;
 
     this.data = null;
     this.loading = false;
@@ -67,7 +67,7 @@ class Font {
 
   register({ src, fontWeight, fontStyle, ...options }) {
     this.sources.push(
-      new FontSource(src, this.fontFamily, fontStyle, fontWeight, options),
+      new FontSource(src, this.family, fontStyle, fontWeight, options),
     );
   }
 

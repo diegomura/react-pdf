@@ -27,7 +27,7 @@ class FontSource {
     this.src = src;
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
-    this.fontWeight = 400;
+    this.fontWeight = fontWeight || 400;
 
     this.data = null;
     this.loading = false;

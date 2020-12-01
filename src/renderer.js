@@ -41,8 +41,8 @@ const createRenderer = () => {
       };
     },
 
-    clearContainer(container) {
-      // Noop
+    clearContainer(parentInstance) {
+      parentInstance.children = [];
     },
 
     beforeRemoveInstance() {
@@ -117,6 +117,20 @@ const createRenderer = () => {
       const index = parentInstance.children.indexOf(beforeChild);
       if (index !== -1 && child)
         parentInstance.children.splice(index, 0, child);
+    },
+
+    insertInContainerBefore(parentInstance, child, beforeChild) {
+      if (parentInstance.type === ROOT) {
+        if (child.type === SUSPENDED) {
+          parentInstance.suspended = true;
+        } else {
+          parentInstance.document = child;
+        }
+      } else {
+        const index = parentInstance.children.indexOf(beforeChild);
+        if (index !== -1 && child)
+          parentInstance.children.splice(index, 0, child);
+      }
     },
 
     removeChild(parentInstance, child) {

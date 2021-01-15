@@ -284,7 +284,7 @@ declare module '@react-pdf/renderer' {
     }
 
     /**
-     * A React component for displaying an hyperlink. Link’s can be nested
+     * A React component for displaying a hyperlink. Link’s can be nested
      * inside a Text component, or being inside any other valid primitive.
      */
     class Link extends React.Component<LinkProps> {}

@@ -199,6 +199,26 @@ describe('Font', () => {
     expect(font.data).toBeTruthy();
   });
 
+  test.each(['NotoSans', 'NotoSansUI'])(
+    'should be able to load %s in truetype collection font source',
+    async postscriptName => {
+      Font.register({
+        family: 'Noto Sans',
+        src: `${__dirname}/assets/font.ttc`,
+        postscriptName,
+      });
+
+      const descriptor = { fontFamily: 'Noto Sans' };
+
+      await Font.load(descriptor, dummyRoot.instance);
+
+      const font = Font.getFont(descriptor);
+
+      expect(font.loading).toBeFalsy();
+      expect(font.data).toBeTruthy();
+    },
+  );
+
   test('should fetch remote font only once', async () => {
     // Delay fetch response
     fetch.mockResponse(

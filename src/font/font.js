@@ -35,16 +35,20 @@ class FontSource {
 
   async load() {
     this.loading = true;
+    const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
-      this.data = fontkit.create(Buffer.from(this.src.split(',')[1], 'base64'));
+      this.data = fontkit.create(
+        Buffer.from(this.src.split(',')[1], 'base64'),
+        postscriptName,
+      );
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
-      this.data = fontkit.create(data);
+      this.data = fontkit.create(data, postscriptName);
     } else {
       this.data = await new Promise((resolve, reject) =>
-        fontkit.open(this.src, (err, data) =>
+        fontkit.open(this.src, postscriptName, (err, data) =>
           err ? reject(err) : resolve(data),
         ),
       );

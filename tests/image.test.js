@@ -208,9 +208,11 @@ describe('Image', () => {
     await image.fetch();
     await image.render();
 
+    const validWarnings = warning.mock.calls.filter(c => !c[0]);
+
     expect(image.image.data).toBeFalsy();
     expect(dummyRoot.instance.image.mock.calls).toHaveLength(0);
-    expect(warning.mock.calls).toHaveLength(1);
+    expect(validWarnings).toHaveLength(1);
     expect(global.console.warn).toHaveBeenCalledWith(
       'Cannot fetch dangerous local path: ../tests/assets/test.jpg',
     );

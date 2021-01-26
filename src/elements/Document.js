@@ -156,9 +156,15 @@ class Document {
 
         pageCount += subpages.length;
 
-        pages.push(...subpages);
+        subpages.forEach((sub, index) =>
+          pages.push({
+            page: sub,
+            number: index + 1,
+            count: subpages.length,
+          }),
+        );
       } else {
-        pages.push(page);
+        pages.push({ page, number: 1, count: 1 });
       }
     }
 
@@ -166,14 +172,19 @@ class Document {
   }
 
   async renderPages() {
-    this.subpages = await this.wrapPages();
+    const subpages = await this.wrapPages();
+    const normalized = subpages.map(p => p.page);
+
+    this.subpages = normalized;
 
     for (let j = 0; j < this.subpages.length; j++) {
       // Update dynamic text nodes with total pages info
       this.subpages[j].renderDynamicNodes(
         {
           pageNumber: j + 1,
-          totalPages: this.subpages.length,
+          totalPages: subpages.length,
+          subPageNumber: subpages[j].number,
+          subPageTotalPages: subpages[j].count,
         },
         node => node.name === 'Text',
       );

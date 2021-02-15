@@ -205,7 +205,7 @@ class Text extends Base {
 
     clone.marginTop = 0;
     clone.paddingTop = 0;
-    clone.start = slicedLineIndex;
+    clone.start = slicedLineIndex + this.start;
     clone.attributedString = this.attributedString;
 
     this.height = wrapHeight;
@@ -240,8 +240,7 @@ class Text extends Base {
     // Perform actual text rendering on document
     PDFRenderer.render(this.root.instance, [this.lines]);
     setLink(this);
-    setDestination(this)
-
+    setDestination(this);
 
     this.root.instance.restore();
   }

@@ -1,5 +1,3 @@
-/// <reference types="node" />
-
 declare module '@react-pdf/renderer' {
   import * as React from 'react';
 

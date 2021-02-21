@@ -17,7 +17,7 @@
     "@react-pdf/pdfkit": "^1.4.2",
     "@react-pdf/primitives": "^2.0.0-beta.16",
     "@react-pdf/stylesheet": "^2.0.0-beta.16",
-    "@react-pdf/textkit": "^0.4.0",
+    "@react-pdf/textkit": "^0.3.7",
     "@react-pdf/types": "^2.0.0-beta.16",
     "cross-fetch": "^3.0.4",
     "emoji-regex": "^8.0.0",

@@ -26,13 +26,13 @@ const shouldFallbackToFont = (codePoint, font) =>
 
 const fontSubstitution = () => ({ string, runs }) => {
   let lastFont = null;
+  let lastFontSize = null;
   let lastIndex = 0;
   let index = 0;
 
   const res = [];
 
   for (const run of runs) {
-    const fontSize = getFontSize(run);
     const defaultFont =
       typeof run.attributes.font === 'string'
         ? getOrCreateFont(run.attributes.font)
@@ -46,22 +46,25 @@ const fontSubstitution = () => ({ string, runs }) => {
     for (const char of string.slice(run.start, run.end)) {
       const codePoint = char.codePointAt();
       const shouldFallback = shouldFallbackToFont(codePoint, defaultFont);
-      const font = shouldFallback ? getFallbackFont() : defaultFont;
-
       // If the default font does not have a glyph and the fallback font does, we use it
-      if (font !== lastFont) {
+      const font = shouldFallback ? getFallbackFont() : defaultFont;
+      const fontSize = getFontSize(run);
+
+      // If anything that would impact res has changed, update it
+      if (font !== lastFont || fontSize !== lastFontSize || font.unitsPerEm !== lastFont.unitsPerEm) {
         if (lastFont) {
           res.push({
             start: lastIndex,
             end: index,
             attributes: {
               font: lastFont,
-              scale: lastFont ? fontSize / lastFont.unitsPerEm : 0,
+              scale: lastFontSize / lastFont.unitsPerEm,
             },
           });
         }
 
         lastFont = font;
+        lastFontSize = fontSize;
         lastIndex = index;
       }
 
@@ -77,7 +80,7 @@ const fontSubstitution = () => ({ string, runs }) => {
       end: string.length,
       attributes: {
         font: lastFont,
-        scale: lastFont ? fontSize / lastFont.unitsPerEm : 0,
+        scale: fontSize / lastFont.unitsPerEm,
       },
     });
   }

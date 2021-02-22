@@ -157,15 +157,6 @@ const shouldResolveDynamicNodes = node =>
     R.compose(R.any(shouldResolveDynamicNodes), R.propOr([], 'children')),
   )(node);
 
-const resolveDynamicPage = (props, page, fontStore) => {
-  const relayout = node => relayoutPage(node, fontStore);
-
-  return R.when(
-    shouldResolveDynamicNodes,
-    R.compose(relayout, resolveDynamicNodes(props)),
-  )(page);
-};
-
 const resolveDynamicNodes = props => node => {
   const isNodeDynamic = R.always(isDynamic(node));
 
@@ -185,6 +176,15 @@ const resolveDynamicNodes = props => node => {
     },
     node,
   );
+};
+
+const resolveDynamicPage = (props, page, fontStore) => {
+  const relayout = node => relayoutPage(node, fontStore);
+
+  return R.when(
+    shouldResolveDynamicNodes,
+    R.compose(relayout, resolveDynamicNodes(props)),
+  )(page);
 };
 
 const paginate = (page, pageNumber, fontStore) => {
@@ -207,11 +207,32 @@ const paginate = (page, pageNumber, fontStore) => {
 
 const resolvePageIndices = fontStore => (page, pageNumber, pages) => {
   const totalPages = pages.length;
+
   return resolveDynamicPage(
-    { pageNumber: pageNumber + 1, totalPages },
+    {
+      totalPages,
+      pageNumber: pageNumber + 1,
+      subPageNumber: page.subPageNumber + 1,
+      subPageTotalPages: page.subPageTotalPages,
+    },
     page,
     fontStore,
   );
+};
+
+const assocSubPageData = subpages => {
+  return subpages.map((page, i) => ({
+    ...page,
+    subPageNumber: i,
+    subPageTotalPages: subpages.length,
+  }));
+};
+
+const dissocSubPageData = page => {
+  return R.compose(
+    R.dissoc('subPageNumber'),
+    R.dissoc('subPageTotalPages'),
+  )(page);
 };
 
 const resolvePagination = (doc, fontStore) => {
@@ -220,13 +241,16 @@ const resolvePagination = (doc, fontStore) => {
 
   for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
-    const subpages = paginate(page, pageNumber, fontStore);
+    let subpages = paginate(page, pageNumber, fontStore);
 
+    subpages = assocSubPageData(subpages);
     pageNumber += subpages.length;
     pages = pages.concat(subpages);
   }
 
-  pages = pages.map(resolvePageIndices(fontStore));
+  pages = pages.map(
+    R.compose(dissocSubPageData, resolvePageIndices(fontStore)),
+  );
 
   return assingChildren(pages, doc);
 };

@@ -299,9 +299,10 @@ declare module '@react-pdf/renderer' {
       }) => React.ReactNode;
       children?: React.ReactNode;
       /**
-       * How much hyphenated breaks should be avoided.
+       * Override the default hyphenation-callback
+       * @see https://react-pdf.org/fonts#registerhyphenationcallback
        */
-      hyphenationCallback?: number;
+      hyphenationCallback?: HyphenationCallback;
       /**
        * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection

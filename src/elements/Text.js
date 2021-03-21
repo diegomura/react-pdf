@@ -26,7 +26,8 @@ class Text extends Base {
     this.attributedString = null;
     this.layoutOptions = {
       hyphenationPenalty: props.hyphenationPenalty,
-      hyphenationCallback: Font.getHyphenationCallback(),
+      hyphenationCallback:
+        props.hyphenationCallback || Font.getHyphenationCallback(),
       shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
     };
 
@@ -240,8 +241,7 @@ class Text extends Base {
     // Perform actual text rendering on document
     PDFRenderer.render(this.root.instance, [this.lines]);
     setLink(this);
-    setDestination(this)
-
+    setDestination(this);
 
     this.root.instance.restore();
   }

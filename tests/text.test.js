@@ -6,7 +6,7 @@ import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
 import * as urlUtils from '../src/utils/url';
 
-jest.mock('@react-pdf/textkit/renderers/pdf', () => ({ render: () => { } }));
+jest.mock('@react-pdf/textkit/renderers/pdf', () => ({ render: () => {} }));
 
 let dummyRoot;
 
@@ -194,5 +194,27 @@ describe('Text', () => {
     await text.render();
 
     expect(setDestinationSpy).toHaveBeenCalledWith(text);
+  });
+
+  test('should allow hyphenation-callback to be overriden', async () => {
+    const page = new Page(dummyRoot, {});
+    const hyphenationCallbackSpy = jest
+      .fn()
+      .mockReturnValue(['really', 'long', 'text']);
+    const text = new Text(dummyRoot, {
+      hyphenationCallback: hyphenationCallbackSpy,
+    });
+
+    page.appendChild(text);
+    text.appendChild(new TextInstance(dummyRoot, 'reallylongtext'));
+    text.layoutText(50, 200); // Force to wrap in many lines
+    text.applyProps();
+
+    await text.render();
+
+    expect(text.lines[0].string).toEqual('really');
+    expect(text.lines[1].string).toEqual('long');
+    expect(text.lines[2].string).toEqual('text');
+    expect(hyphenationCallbackSpy).toHaveBeenCalledWith('reallylongtext');
   });
 });

@@ -206,7 +206,7 @@ class Text extends Base {
 
     clone.marginTop = 0;
     clone.paddingTop = 0;
-    clone.start = slicedLineIndex;
+    clone.start = slicedLineIndex + this.start;
     clone.attributedString = this.attributedString;
 
     this.height = wrapHeight;

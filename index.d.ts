@@ -49,6 +49,7 @@ declare module '@react-pdf/renderer' {
       position?: 'absolute' | 'relative';
       right?: number | string;
       top?: number | string;
+      overflow?: 'hidden';
 
       // Dimension?:never,
 
@@ -94,7 +95,7 @@ declare module '@react-pdf/renderer' {
       textDecorationColor?: string;
       textDecorationStyle?: 'dashed' | 'dotted' | 'solid' | string; //?
       textIndent?: any; //?
-      textOverflow?: any; //?
+      textOverflow?: 'ellipsis';
       textTransform?: 'capitalize' | 'lowercase' | 'uppercase';
 
       // Sizing/positioning?:never,

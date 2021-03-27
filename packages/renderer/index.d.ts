@@ -6,6 +6,7 @@ declare module '@react-pdf/renderer' {
     FontStore,
     Orientation,
     SourceObject,
+    SVGPresentationAttributes,
   } from '@react-pdf/types';
 
   namespace ReactPDF {
@@ -147,11 +148,22 @@ declare module '@react-pdf/renderer' {
       widows?: number;
     }
 
+    interface SVGTextProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      x: string | number;
+      y: string | number;
+      /**
+       * Override the default hyphenation-callback
+       * @see https://react-pdf.org/fonts#registerhyphenationcallback
+       */
+      hyphenationCallback?: HyphenationCallback;
+    }
+
     /**
      * A React component for displaying text. Text supports nesting of other
      * Text or Link components to create inline styling.
      */
-    class Text extends React.Component<TextProps> {}
+    class Text extends React.Component<TextProps | SVGTextProps> {}
 
     interface LinkProps extends NodeProps {
       /**
@@ -186,6 +198,166 @@ declare module '@react-pdf/renderer' {
     }
 
     class Canvas extends React.Component<CanvasProps> {}
+
+    interface SVGProps extends NodeProps {
+      debug?: boolean;
+      width?: string | number;
+      height?: string | number;
+      viewBox?: string;
+      preserveAspectRatio?: string;
+    }
+
+    /**
+     * The <SVG /> element is a container that defines a new coordinate system and viewport. It is used as the outermost element of SVG documents.
+     */
+    class SVG extends React.Component<SVGProps> {}
+
+    interface LineProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      x1: string | number;
+      x2: string | number;
+      y1: string | number;
+      y2: string | number;
+    }
+
+    /**
+     * The <Line /> element is used to create a line.
+     */
+     class Line extends React.Component<LineProps> {}
+
+    interface PolylineProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      points: string;
+    }
+
+    /**
+     * The <Polyline /> element is used to create any shape that consists of only straight lines (that is connected at several points).
+     */
+    class Polyline extends React.Component<PolylineProps> {}
+
+    interface PolygonProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      points: string;
+    }
+
+    /**
+     * The <Polygon /> element is used to create a graphic that contains at least three sides.
+     * Polygons are made of straight lines, and the shape is "closed" (all the lines connect up).
+     */
+    class Polygon extends React.Component<PolygonProps> {}
+
+    interface PathProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      d: string;
+    }
+
+    /**
+     * The <Path /> element is the most powerful element in the SVG library of basic shapes. It can be used to create lines, curves, arcs, and more.
+     */
+    class Path extends React.Component<PathProps> {}
+
+    interface RectProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      x: string | number;
+      y: string | number;
+      width: string | number;
+      height: string | number;
+      rx?: string | number;
+      ry?: string | number;
+    }
+
+    /**
+     * The <Rect /> element is used to create a rectangle and variations of a rectangle shape.
+     */
+    class Rect extends React.Component<RectProps> {}
+
+    interface CircleProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      cx: string | number;
+      cy: string | number;
+      r: string | number;
+    }
+
+    /**
+     * The <Circle /> element is used to create a circle.
+     */
+    class Circle extends React.Component<CircleProps> {}
+
+    interface EllipseProps extends SVGPresentationAttributes {
+      style?: SVGPresentationAttributes;
+      cx: string | number;
+      cy: string | number;
+      rx: string | number;
+      ry: string | number;
+    }
+
+    /**
+     * The <Ellipse /> element is used to create an ellipse.
+     * An ellipse is closely related to a circle. The difference is that an ellipse has an x and a y radius that differs from each other, while a circle has equal x and y radius.
+     */
+    class Ellipse extends React.Component<EllipseProps> {}
+
+    interface GProps extends SVGPresentationAttributes {
+    }
+
+    /**
+     * The <G /> SVG element is a container used to group other SVG elements.
+     * Transformations applied to the <G /> element are performed on its child elements, and its attributes are inherited by its children.
+     */
+    class G extends React.Component<GProps> {}
+
+    interface StopProps  {
+      offset: string | number;
+      stopColor: string;
+      stopOpacity?: string | number;
+    }
+
+    /**
+     * The SVG <Stop /> element defines a color and its position to use on a gradient. This element is always a child of a <LinearGradient /> or <RadialGradient /> element
+     */
+    class Stop extends React.Component<StopProps> {}
+
+    interface DefsProps  {}
+
+    /**
+     * The <Defs /> element is used to store graphical objects that will be used at a later time. Objects created inside a <Defs /> element are not rendered directly. To display them you have to reference them
+     */
+    class Defs extends React.Component<DefsProps> {}
+
+    interface ClipPathProps  {
+      id?: string;
+    }
+
+    /**
+     * The <ClipPath /> SVG element defines a clipping path, to be used by the clipPath property.
+     * A clipping path restricts the region to which paint can be applied. Conceptually, parts of the drawing that lie outside of the region bounded by the clipping path are not drawn.
+     */
+    class ClipPath extends React.Component<ClipPathProps> {}
+
+    interface LinearGradientProps  {
+      x1: string | number;
+      x2: string | number;
+      y1: string | number;
+      y2: string | number;
+    }
+
+    /**
+     * The <LinearGradient /> element lets authors define linear gradients that can be applied to fill or stroke of graphical elements.
+     */
+    class LinearGradient extends React.Component<LinearGradientProps> {}
+
+    interface RadialGradientProps  {
+      cx: string | number;
+      cy: string | number;
+      fr: string | number;
+      fx: string | number;
+      fy: string | number;
+    }
+
+    /**
+     * The <RadialGradient /> element lets authors define radial gradients that can be applied to fill or stroke of graphical elements.
+     */
+    class RadialGradient extends React.Component<RadialGradientProps> {}
 
     interface BlobProviderParams {
       blob: Blob | null;
@@ -309,6 +481,20 @@ declare module '@react-pdf/renderer' {
   const Canvas: typeof ReactPDF.Canvas;
   const Link: typeof ReactPDF.Link;
   const Note: typeof ReactPDF.Note;
+  const SVG: typeof ReactPDF.SVG;
+  const Line: typeof ReactPDF.Line;
+  const Polyline: typeof ReactPDF.Polyline;
+  const Polygon: typeof ReactPDF.Polygon;
+  const Path: typeof ReactPDF.Path;
+  const Rect: typeof ReactPDF.Rect;
+  const Circle: typeof ReactPDF.Circle;
+  const Ellipse: typeof ReactPDF.Ellipse;
+  const G: typeof ReactPDF.G;
+  const Stop: typeof ReactPDF.Stop;
+  const Defs: typeof ReactPDF.Defs;
+  const ClipPath: typeof ReactPDF.ClipPath;
+  const LinearGradient: typeof ReactPDF.LinearGradient;
+  const RadialGradient: typeof ReactPDF.RadialGradient;
   const Font: typeof ReactPDF.Font;
   const StyleSheet: typeof ReactPDF.StyleSheet;
   const createInstance: typeof ReactPDF.createInstance;
@@ -330,6 +516,20 @@ declare module '@react-pdf/renderer' {
     Canvas,
     Link,
     Note,
+    SVG,
+    Line,
+    Polyline,
+    Polygon,
+    Path,
+    Rect,
+    Circle,
+    Ellipse,
+    G,
+    Stop,
+    Defs,
+    ClipPath,
+    LinearGradient,
+    RadialGradient,
     Font,
     StyleSheet,
     createInstance,

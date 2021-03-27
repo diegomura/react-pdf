@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "1.6.14",
+  "version": "1.6.15",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -40,7 +40,7 @@
     "yoga-layout-prebuilt": "^1.9.3"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^17.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

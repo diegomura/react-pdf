@@ -55,7 +55,10 @@ const getContainer = (width, height) => node => {
 const getLayoutOptions = fontStore => node => ({
   hyphenationPenalty: node.props.hyphenationPenalty,
   shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
-  hyphenationCallback: fontStore ? fontStore.getHyphenationCallback() : null,
+  hyphenationCallback:
+    node.props.hyphenationCallback ||
+    fontStore?.getHyphenationCallback() ||
+    null,
 });
 
 /**

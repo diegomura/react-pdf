@@ -131,9 +131,10 @@ declare module '@react-pdf/renderer' {
       }) => React.ReactNode;
       children?: React.ReactNode;
       /**
-       * How much hyphenated breaks should be avoided.
+       * Override the default hyphenation-callback
+       * @see https://react-pdf.org/fonts#registerhyphenationcallback
        */
-      hyphenationCallback?: number;
+      hyphenationCallback?: HyphenationCallback;
       /**
        * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
        * @see https://react-pdf.org/advanced#orphan-&-widow-protection
@@ -227,7 +228,7 @@ declare module '@react-pdf/renderer' {
       className?: string;
       children?:
         | React.ReactNode
-        | ((params: BlobProviderParams) => React.ReactNode);
+        | (params: BlobProviderParams) => React.ReactNode;
     }
 
     /**
@@ -250,7 +251,7 @@ declare module '@react-pdf/renderer' {
           orientation: Orientation;
         },
       ) => Style;
-      flatten: (...style: (Style[] | Style | undefined)[]) => Style;
+      flatten: (...style: Style[] | Style | undefined[]) => Style;
       absoluteFillObject: {
         position: 'absolute';
         left: 0;

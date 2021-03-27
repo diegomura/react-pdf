@@ -91,9 +91,10 @@ const layoutTspan = fontStore => node => {
 
   const container = { x, y, width: AlmostInfinity, height: AlmostInfinity };
 
-  const hyphenationCallback = fontStore
-    ? fontStore.getHyphenationCallback()
-    : null;
+  const hyphenationCallback =
+    node.props.hyphenationCallback ||
+    fontStore?.getHyphenationCallback() ||
+    null;
 
   const layoutOptions = { hyphenationCallback, shrinkWhitespaceFactor };
 

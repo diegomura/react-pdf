@@ -163,6 +163,13 @@ const resolveSvgRoot = fontStore => node => {
   )(node);
 };
 
+/**
+ * Pre-process SVG nodes so they can be rendered in the next steps
+ *
+ * @param {Object} root node
+ * @param {Object} fontStore font store
+ * @returns {Object} root node
+ */
 const resolveSvg = (node, fontStore) => {
   const mapChild = child => resolveSvg(child, fontStore);
 

@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-expressions */
+
 import * as R from 'ramda';
+import Yoga from 'yoga-layout-prebuilt';
 
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';
@@ -31,20 +34,22 @@ const setYogaValue = (attr, edge) => value =>
 
       if (percent) {
         if (hasEdge) {
-          yogaNode[percentMethod](edge, percent.value);
+          yogaNode[percentMethod]?.(edge, percent.value);
         } else {
-          yogaNode[percentMethod](percent.value);
+          yogaNode[percentMethod]?.(percent.value);
         }
       } else if (value === 'auto') {
         if (hasEdge) {
-          yogaNode[autoMethod](edge);
+          yogaNode[autoMethod]?.(edge);
+        } else if (attr === 'flexBasis') { // YogaNode.setFlexBasisAuto is missing (#766)
+          yogaNode.setFlexBasis(Yoga.UNIT_AUTO)
         } else {
-          yogaNode[autoMethod]();
+          yogaNode[autoMethod]?.();
         }
       } else if (hasEdge) {
-        yogaNode[fixedMethod](edge, value);
+        yogaNode[fixedMethod]?.(edge, value);
       } else {
-        yogaNode[fixedMethod](value);
+        yogaNode[fixedMethod]?.(value);
       }
     }
   });

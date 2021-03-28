@@ -13,7 +13,6 @@
 // instance.radialGradient = jest.fn().mockReturnValue(instance);
 // instance.linearGradient = jest.fn().mockReturnValue(instance);
 // instance.fontSize = jest.fn().mockReturnValue(instance);
-// instance.opacity = jest.fn().mockReturnValue(instance);
 // instance.text = jest.fn().mockReturnValue(instance);
 // instance.font = jest.fn().mockReturnValue(instance);
 
@@ -53,6 +52,7 @@ export interface Context {
   stroke(color?: ColorValue): this;
   moveTo(x: number, y: number): this;
   lineTo(x: number, y: number): this;
+  opacity(opacity: number): this;
   fillOpacity(opacity: number): this;
   addPage(options?: PageOption): this;
   polygon(...points: number[][]): this;

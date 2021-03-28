@@ -48,7 +48,7 @@ export const usePDF = ({ document }) => {
       });
     };
 
-    pdfInstance.current = pdf({ onChange: queueDocumentRender });
+    pdfInstance.current = pdf(null, queueDocumentRender);
     pdfInstance.current.updateContainer(document);
 
     renderQueue.on('error', onRenderFailed);

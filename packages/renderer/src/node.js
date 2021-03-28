@@ -3,13 +3,13 @@ import * as primitives from '@react-pdf/primitives';
 import { pdf, version, Font, StyleSheet } from './index';
 
 export const renderToStream = async element => {
-  const instance = pdf({ initialValue: element });
+  const instance = pdf(element);
   const buffer = await instance.toBuffer();
   return buffer;
 };
 
 export const renderToString = element => {
-  const instance = pdf({ initialValue: element });
+  const instance = pdf(element);
   return instance.toString();
 };
 

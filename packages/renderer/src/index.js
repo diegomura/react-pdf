@@ -9,13 +9,13 @@ import { version } from '../package.json';
 
 const fontStore = new FontStore();
 
-const pdf = ({ initialValue, onChange }) => {
+const pdf = (initialValue, onChange) => {
   const container = { type: 'ROOT', document: null };
-  const PDFRenderer = createRenderer({ onChange });
-  const mountNode = PDFRenderer.createContainer(container);
+  const renderer = createRenderer({ onChange });
+  const mountNode = renderer.createContainer(container);
 
   const updateContainer = doc => {
-    PDFRenderer.updateContainer(doc, mountNode, null);
+    renderer.updateContainer(doc, mountNode, null);
   };
 
   if (initialValue) updateContainer(initialValue);
@@ -23,7 +23,6 @@ const pdf = ({ initialValue, onChange }) => {
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
     const layout = await layoutDocument(container.document, fontStore);
-
     return renderPDF(ctx, layout);
   };
 
@@ -68,6 +67,7 @@ const pdf = ({ initialValue, onChange }) => {
         });
 
         instance.on('end', () => {
+          callOnRender();
           resolve(result);
         });
       } catch (error) {

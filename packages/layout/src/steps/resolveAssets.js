@@ -50,8 +50,8 @@ const fetchAssets = (fontStore, node) => {
  * Fetch image, font and emoji assets in parallel.
  * Layout process will not be resumed until promise resolves.
  *
- * @param {Object} fontStore font store
  * @param {Object} root node
+ * @param {Object} fontStore font store
  * @returns {Object} root node
  */
 const resolveAssets = (node, fontStore) =>

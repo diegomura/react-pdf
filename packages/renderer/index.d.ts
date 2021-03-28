@@ -446,7 +446,8 @@ declare module '@react-pdf/renderer' {
     ) => any;
 
     const pdf: (
-      document: React.ReactElement<DocumentProps>,
+      initialValue?: React.ReactElement<DocumentProps>,
+      onChange?: () => {},
     ) => {
       container: any;
       isDirty: () => boolean;

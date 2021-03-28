@@ -43,7 +43,7 @@ const resolvePageStyles = page => {
 };
 
 /**
- * Resolves root styles
+ * Resolves document styles
  *
  * @param {Object} document root
  * @returns {Object} document root with resolved styles

@@ -235,6 +235,14 @@ const dissocSubPageData = page => {
   )(page);
 };
 
+/**
+ * Performs pagination. This is the step responsible of breaking the whole document
+ * into pages following pagiation rules, such as `fixed`, `break` and dynamic nodes.
+ *
+ * @param {Object} node
+ * @param {Object} fontStore font store
+ * @returns {Object} layout node
+ */
 const resolvePagination = (doc, fontStore) => {
   let pages = [];
   let pageNumber = 1;

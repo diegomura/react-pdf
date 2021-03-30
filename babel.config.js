@@ -5,8 +5,8 @@ module.exports = {
       {
         loose: true,
         targets: {
-          node: '8.11.3',
-          ie: '11',
+          node: '12',
+          browsers: 'last 2 versions',
         },
       },
     ],

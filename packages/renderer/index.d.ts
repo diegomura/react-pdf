@@ -63,6 +63,10 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/components#page-wrapping
        */
       wrap?: boolean;
+       /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       size?: PageSize;
       orientation?: Orientation;
@@ -82,6 +86,10 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/components#page-wrapping
        */
       wrap?: boolean;
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       render?: (props: {
         pageNumber: number;
@@ -97,6 +105,10 @@ declare module '@react-pdf/renderer' {
     class View extends React.Component<ViewProps> {}
 
     interface BaseImageProps extends NodeProps {
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       cache?: boolean;
     }
@@ -123,6 +135,10 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/components#page-wrapping
        */
       wrap?: boolean;
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       render?: (props: {
         pageNumber: number;
@@ -171,6 +187,10 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/components#page-wrapping
        */
       wrap?: boolean;
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       src: string;
       children?: React.ReactNode;
@@ -189,6 +209,10 @@ declare module '@react-pdf/renderer' {
     class Note extends React.Component<NoteProps> {}
 
     interface CanvasProps extends NodeProps {
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       paint: (
         painter: any,
@@ -200,6 +224,10 @@ declare module '@react-pdf/renderer' {
     class Canvas extends React.Component<CanvasProps> {}
 
     interface SVGProps extends NodeProps {
+      /**
+       * Enables debug mode on page bounding box.
+       * @see https://react-pdf.org/advanced#debugging
+       */
       debug?: boolean;
       width?: string | number;
       height?: string | number;
@@ -410,6 +438,21 @@ declare module '@react-pdf/renderer' {
      */
     class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
+    interface UsePDFInstance {
+      loading: boolean,
+      blob: Blob | null,
+      url: string | null,
+      error: string | null,
+    }
+
+    /**
+     * React hook for creating and updating a PDF document instance
+     * @platform web
+     */
+    function usePDF(options: {
+      document: React.ReactElement<DocumentProps> ;
+    }): [UsePDFInstance, () => void];
+
     const Font: FontStore;
 
     const StyleSheet: {
@@ -496,6 +539,7 @@ declare module '@react-pdf/renderer' {
   const renderToFile: typeof ReactPDF.renderToFile;
   const renderToString: typeof ReactPDF.renderToString;
   const renderToStream: typeof ReactPDF.renderToStream;
+  const usePDF: typeof ReactPDF.usePDF;
   const PDFViewer: typeof ReactPDF.PDFViewer;
   const BlobProvider: typeof ReactPDF.BlobProvider;
   const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
@@ -533,6 +577,7 @@ declare module '@react-pdf/renderer' {
     renderToFile,
     renderToStream,
     renderToString,
+    usePDF,
     PDFViewer,
     BlobProvider,
     PDFDownloadLink,

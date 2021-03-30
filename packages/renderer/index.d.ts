@@ -437,14 +437,6 @@ declare module '@react-pdf/renderer' {
 
     const PDFRenderer: any;
 
-    const createInstance: (
-      element: {
-        type: string;
-        props: { [key: string]: any };
-      },
-      root?: any,
-    ) => any;
-
     const pdf: (
       initialValue?: React.ReactElement<DocumentProps>,
       onChange?: () => {},
@@ -474,6 +466,7 @@ declare module '@react-pdf/renderer' {
     const render: typeof renderToFile;
   }
 
+  const pdf: typeof ReactPDF.pdf;
   const Document: typeof ReactPDF.Document;
   const Page: typeof ReactPDF.Page;
   const View: typeof ReactPDF.View;
@@ -498,10 +491,11 @@ declare module '@react-pdf/renderer' {
   const RadialGradient: typeof ReactPDF.RadialGradient;
   const Font: typeof ReactPDF.Font;
   const StyleSheet: typeof ReactPDF.StyleSheet;
-  const createInstance: typeof ReactPDF.createInstance;
   const PDFRenderer: typeof ReactPDF.PDFRenderer;
   const version: typeof ReactPDF.version;
-  const pdf: typeof ReactPDF.pdf;
+  const renderToFile: typeof ReactPDF.renderToFile;
+  const renderToString: typeof ReactPDF.renderToString;
+  const renderToStream: typeof ReactPDF.renderToStream;
   const PDFViewer: typeof ReactPDF.PDFViewer;
   const BlobProvider: typeof ReactPDF.BlobProvider;
   const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
@@ -509,6 +503,7 @@ declare module '@react-pdf/renderer' {
   export default ReactPDF;
 
   export {
+    pdf,
     Document,
     Page,
     View,
@@ -533,10 +528,11 @@ declare module '@react-pdf/renderer' {
     RadialGradient,
     Font,
     StyleSheet,
-    createInstance,
     PDFRenderer,
     version,
-    pdf,
+    renderToFile,
+    renderToStream,
+    renderToString,
     PDFViewer,
     BlobProvider,
     PDFDownloadLink,

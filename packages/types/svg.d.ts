@@ -3,7 +3,7 @@ export interface SVGPresentationAttributes {
   color?: string;
   stroke?: string;
   transform?: string;
-  strokeDashArray?: string;
+  strokeDasharray?: string;
   opacity?: string | number;
   strokeWidth?: string | number;
   fillOpacity?: string | number;

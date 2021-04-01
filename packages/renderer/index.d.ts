@@ -466,7 +466,7 @@ declare module '@react-pdf/renderer' {
           orientation: Orientation;
         },
       ) => Style;
-      flatten: (...style: Style[] | Style | undefined[]) => Style;
+      flatten: (...styles: (Style[] | Style | undefined)[]) => Style;
       absoluteFillObject: {
         position: 'absolute';
         left: 0;

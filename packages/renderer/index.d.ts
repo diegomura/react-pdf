@@ -517,7 +517,7 @@ declare module '@react-pdf/renderer' {
   const Canvas: typeof ReactPDF.Canvas;
   const Link: typeof ReactPDF.Link;
   const Note: typeof ReactPDF.Note;
-  const SVG: typeof ReactPDF.SVG;
+  const Svg: typeof ReactPDF.Svg;
   const Line: typeof ReactPDF.Line;
   const Polyline: typeof ReactPDF.Polyline;
   const Polygon: typeof ReactPDF.Polygon;

@@ -10,10 +10,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build",
+    "build": "lerna run build --ignore @react-pdf/yoga",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build",
+    "prepublish": "lerna run build --ignore @react-pdf/yoga",
     "lint": "eslint packages",
     "test": "jest",
     "examples": "lerna run start --scope @react-pdf/examples"
@@ -76,5 +76,6 @@
     "hooks": {
       "pre-commit": "git add . && lint-staged"
     }
-  }
+  },
+  "dependencies": {}
 }

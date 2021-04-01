@@ -1,6 +1,7 @@
 module.exports = {
   setupFiles: ['<rootDir>setupTests.js'],
   projects: [
+    '<rootDir>packages/yoga',
     '<rootDir>packages/font',
     '<rootDir>packages/image',
     '<rootDir>packages/render',

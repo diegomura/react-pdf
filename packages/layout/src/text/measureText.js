@@ -19,11 +19,8 @@ import linesHeight from './linesHeight';
  * @returns {Object} text width and height
  */
 const measureText = (page, node, fontStore, width, widthMode, height) => {
-  // console.log(node, width, height);
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
     if (!node.lines) node.lines = layoutText(node, width, height, fontStore);
-
-    // console.log(linesHeight(node), node.lines);
 
     return { height: linesHeight(node) };
   }

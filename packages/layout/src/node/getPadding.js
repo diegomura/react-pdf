@@ -12,36 +12,38 @@ const getComputedPadding = (node, edge) => {
  * @return {Object} paddings
  */
 const getPadding = node => {
+  const { style, box } = node;
+
   const paddingTop =
     getComputedPadding(node, Yoga.EDGE_TOP) ||
-    node.box?.paddingTop ||
-    node.style?.paddingTop ||
-    node.style?.paddingVertical ||
-    node.style?.padding ||
+    box?.paddingTop ||
+    style?.paddingTop ||
+    style?.paddingVertical ||
+    style?.padding ||
     0;
 
   const paddingRight =
     getComputedPadding(node, Yoga.EDGE_RIGHT) ||
-    node.box?.paddingRight ||
-    node.style?.paddingRight ||
-    node.style?.paddingHorizontal ||
-    node.style?.padding ||
+    box?.paddingRight ||
+    style?.paddingRight ||
+    style?.paddingHorizontal ||
+    style?.padding ||
     0;
 
   const paddingBottom =
     getComputedPadding(node, Yoga.EDGE_BOTTOM) ||
-    node.box?.paddingBottom ||
-    node.style?.paddingBottom ||
-    node.style?.paddingVertical ||
-    node.style?.padding ||
+    box?.paddingBottom ||
+    style?.paddingBottom ||
+    style?.paddingVertical ||
+    style?.padding ||
     0;
 
   const paddingLeft =
     getComputedPadding(node, Yoga.EDGE_LEFT) ||
-    node.box?.paddingLeft ||
-    node.style?.paddingLeft ||
-    node.style?.paddingHorizontal ||
-    node.style?.padding ||
+    box?.paddingLeft ||
+    style?.paddingLeft ||
+    style?.paddingHorizontal ||
+    style?.padding ||
     0;
 
   return { paddingTop, paddingRight, paddingBottom, paddingLeft };

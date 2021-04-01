@@ -63,7 +63,7 @@ declare module '@react-pdf/renderer' {
        * @see https://react-pdf.org/components#page-wrapping
        */
       wrap?: boolean;
-       /**
+      /**
        * Enables debug mode on page bounding box.
        * @see https://react-pdf.org/advanced#debugging
        */
@@ -251,7 +251,7 @@ declare module '@react-pdf/renderer' {
     /**
      * The <Line /> element is used to create a line.
      */
-     class Line extends React.Component<LineProps> {}
+    class Line extends React.Component<LineProps> {}
 
     interface PolylineProps extends SVGPresentationAttributes {
       style?: SVGPresentationAttributes;
@@ -325,8 +325,7 @@ declare module '@react-pdf/renderer' {
      */
     class Ellipse extends React.Component<EllipseProps> {}
 
-    interface GProps extends SVGPresentationAttributes {
-    }
+    interface GProps extends SVGPresentationAttributes {}
 
     /**
      * The <G /> SVG element is a container used to group other SVG elements.
@@ -334,7 +333,7 @@ declare module '@react-pdf/renderer' {
      */
     class G extends React.Component<GProps> {}
 
-    interface StopProps  {
+    interface StopProps {
       offset: string | number;
       stopColor: string;
       stopOpacity?: string | number;
@@ -345,14 +344,14 @@ declare module '@react-pdf/renderer' {
      */
     class Stop extends React.Component<StopProps> {}
 
-    interface DefsProps  {}
+    interface DefsProps {}
 
     /**
      * The <Defs /> element is used to store graphical objects that will be used at a later time. Objects created inside a <Defs /> element are not rendered directly. To display them you have to reference them
      */
     class Defs extends React.Component<DefsProps> {}
 
-    interface ClipPathProps  {
+    interface ClipPathProps {
       id?: string;
     }
 
@@ -362,7 +361,7 @@ declare module '@react-pdf/renderer' {
      */
     class ClipPath extends React.Component<ClipPathProps> {}
 
-    interface LinearGradientProps  {
+    interface LinearGradientProps {
       x1: string | number;
       x2: string | number;
       y1: string | number;
@@ -374,7 +373,7 @@ declare module '@react-pdf/renderer' {
      */
     class LinearGradient extends React.Component<LinearGradientProps> {}
 
-    interface RadialGradientProps  {
+    interface RadialGradientProps {
       cx: string | number;
       cy: string | number;
       fr: string | number;
@@ -428,7 +427,7 @@ declare module '@react-pdf/renderer' {
       className?: string;
       children?:
         | React.ReactNode
-        | (params: BlobProviderParams) => React.ReactNode;
+        | ((params: BlobProviderParams) => React.ReactNode);
     }
 
     /**
@@ -439,10 +438,10 @@ declare module '@react-pdf/renderer' {
     class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
     interface UsePDFInstance {
-      loading: boolean,
-      blob: Blob | null,
-      url: string | null,
-      error: string | null,
+      loading: boolean;
+      blob: Blob | null;
+      url: string | null;
+      error: string | null;
     }
 
     /**
@@ -450,7 +449,7 @@ declare module '@react-pdf/renderer' {
      * @platform web
      */
     function usePDF(options: {
-      document: React.ReactElement<DocumentProps> ;
+      document: React.ReactElement<DocumentProps>;
     }): [UsePDFInstance, () => void];
 
     const Font: FontStore;

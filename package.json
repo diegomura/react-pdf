@@ -71,5 +71,10 @@
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git add . && lint-staged"
+    }
   }
 }

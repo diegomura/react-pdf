@@ -555,7 +555,7 @@ declare module '@react-pdf/renderer' {
     Canvas,
     Link,
     Note,
-    SVG,
+    Svg,
     Line,
     Polyline,
     Polygon,

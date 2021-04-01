@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from '@react-pdf/yoga';
 import * as P from '@react-pdf/primitives';
 
 import getMargin from '../node/getMargin';

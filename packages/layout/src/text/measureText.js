@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import * as R from 'ramda';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from '@react-pdf/yoga';
 
 import layoutText from './layoutText';
 import linesWidth from './linesWidth';

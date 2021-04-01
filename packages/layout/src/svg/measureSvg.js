@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from '@react-pdf/yoga';
 
 const getAspectRatio = viewbox => {
   if (!viewbox) return null;

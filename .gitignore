@@ -4,7 +4,4 @@ dist
 coverage
 .jshintrc
 .idea
-dist
 .DS_Store
-packages/test-web
-packages/test-node

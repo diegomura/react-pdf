@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from '@react-pdf/yoga';
 
 /**
  * Set justify content attribute to node's Yoga instance

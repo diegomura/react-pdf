@@ -4,6 +4,7 @@ declare module '@react-pdf/renderer' {
     Style,
     PageSize,
     FontStore,
+    HyphenationCallback
     Orientation,
     SourceObject,
     SVGPresentationAttributes,

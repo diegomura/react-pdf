@@ -7,13 +7,14 @@ import * as R from 'ramda';
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setAspectRatio = value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setAspectRatio = value => node => {
+  const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
-      yogaNode.setAspectRatio(value);
-    }
-  });
+  if (!R.isNil(value) && yogaNode) {
+    yogaNode.setAspectRatio(value);
+  }
+
+  return node;
+};
 
 export default setAspectRatio;

@@ -70,8 +70,8 @@ const getLayoutOptions = fontStore => node => ({
  * @param {Number} fontStore font store
  * @returns {Array} layout lines
  */
-const layoutText = (node, width, height, fontStore) =>
-  R.compose(
+const layoutText = (node, width, height, fontStore) => {
+  return R.compose(
     R.reduce(R.concat, []),
     R.converge(engine, [
       getAttributedString(fontStore),
@@ -79,5 +79,6 @@ const layoutText = (node, width, height, fontStore) =>
       getLayoutOptions(fontStore),
     ]),
   )(node);
+};
 
 export default R.curryN(4, layoutText);

@@ -1,10 +1,11 @@
-import * as R from 'ramda';
-
 import getOrientation from './getOrientation';
 
-const isLandscape = R.compose(
-  R.equals('landscape'),
-  getOrientation,
-);
+/**
+ * Return true if page is landscape
+ *
+ * @param {Object} page instance
+ * @returns {Boolean} is page landscape
+ */
+const isLandscape = page => getOrientation(page) === 'landscape';
 
 export default isLandscape;

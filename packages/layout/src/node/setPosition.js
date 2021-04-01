@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import setYogaValue from './setYogaValue';
@@ -46,12 +45,13 @@ export const setPositionLeft = setYogaValue('position', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setPosition = position =>
-  R.tap(node => {
-    setPositionTop(position)(node);
-    setPositionRight(position)(node);
-    setPositionBottom(position)(node);
-    setPositionLeft(position)(node);
-  });
+export const setPosition = position => node => {
+  setPositionTop(position)(node);
+  setPositionRight(position)(node);
+  setPositionBottom(position)(node);
+  setPositionLeft(position)(node);
+
+  return node;
+};
 
 export default setPosition;

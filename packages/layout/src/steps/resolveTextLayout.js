@@ -11,10 +11,7 @@ const isText = isType(P.Text);
 
 const isNotSvg = R.complement(isSvg);
 
-const hasLines = node =>
-  node.props.fixed ? !R.isEmpty(node.lines) : !!node.lines;
-
-const shouldLayoutText = node => isText(node) && !hasLines(node);
+const shouldLayoutText = node => isText(node) && !node.lines;
 
 /**
  * Performs text layout on text node if wasn't calculated before.

@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import setYogaValue from './setYogaValue';
@@ -46,12 +45,13 @@ export const setBorderLeft = setYogaValue('border', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setBorder = width =>
-  R.tap(node => {
-    setBorderTop(width)(node);
-    setBorderRight(width)(node);
-    setBorderBottom(width)(node);
-    setBorderLeft(width)(node);
-  });
+export const setBorder = width => node => {
+  setBorderTop(width)(node);
+  setBorderRight(width)(node);
+  setBorderBottom(width)(node);
+  setBorderLeft(width)(node);
+
+  return node;
+};
 
 export default setBorder;

@@ -197,7 +197,10 @@ const createYogaNodes = (page, fontStore) => node => {
  * @param {Object} node
  * @returns {Object} node
  */
-const calculateLayout = R.tap(page => page[YOGA_NODE].calculateLayout());
+const calculateLayout = page => {
+  page[YOGA_NODE].calculateLayout();
+  return page;
+};
 
 /**
  * Saves Yoga layout result into 'box' attribute of node
@@ -239,7 +242,10 @@ const destroyYogaNodes = node => {
  * @param {Object} node
  * @returns {Object} node without yoga node
  */
-const freeYogaNodes = R.tap(n => n[YOGA_NODE] && n[YOGA_NODE].freeRecursive());
+const freeYogaNodes = node => {
+  if (node[YOGA_NODE]) node[YOGA_NODE].freeRecursive();
+  return node;
+};
 
 /**
  * Calculates page object layout using Yoga.

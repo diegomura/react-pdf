@@ -1,7 +1,6 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-const getComputedBorder = edge => yogaNode =>
+const getComputedBorder = (yogaNode, edge) =>
   yogaNode ? yogaNode.getComputedBorder(edge) : 0;
 
 /**
@@ -13,12 +12,12 @@ const getComputedBorder = edge => yogaNode =>
 const getBorderWidth = node => {
   const yogaNode = node._yogaNode;
 
-  return R.applySpec({
-    borderTopWidth: getComputedBorder(Yoga.EDGE_TOP),
-    borderRightWidth: getComputedBorder(Yoga.EDGE_RIGHT),
-    borderBottomWidth: getComputedBorder(Yoga.EDGE_BOTTOM),
-    borderLeftWidth: getComputedBorder(Yoga.EDGE_LEFT),
-  })(yogaNode);
+  return {
+    borderTopWidth: getComputedBorder(yogaNode, Yoga.EDGE_TOP),
+    borderRightWidth: getComputedBorder(yogaNode, Yoga.EDGE_RIGHT),
+    borderBottomWidth: getComputedBorder(yogaNode, Yoga.EDGE_BOTTOM),
+    borderLeftWidth: getComputedBorder(yogaNode, Yoga.EDGE_LEFT),
+  };
 };
 
 export default getBorderWidth;

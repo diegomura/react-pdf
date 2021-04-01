@@ -62,10 +62,7 @@ const PAGE_SIZES = {
  * @param {Array} array
  * @returns {Object} size object with width and height
  */
-const toSizeObject = R.applySpec({
-  width: R.prop(0),
-  height: R.prop(1),
-});
+const toSizeObject = v => ({ width: v[0], height: v[1] });
 
 /**
  * Flip size object
@@ -73,10 +70,7 @@ const toSizeObject = R.applySpec({
  * @param {Object} size object
  * @returns {Object} flipped size object
  */
-const flipSizeObject = R.applySpec({
-  width: R.prop('height'),
-  height: R.prop('width'),
-});
+const flipSizeObject = v => ({ width: v.height, height: v.width });
 
 /**
  * Returns size object from a given string
@@ -84,11 +78,9 @@ const flipSizeObject = R.applySpec({
  * @param {String} page size string
  * @returns {Object} size object with width and height
  */
-const getStringSize = R.compose(
-  toSizeObject,
-  R.prop(R.__, PAGE_SIZES),
-  R.toUpper,
-);
+const getStringSize = v => {
+  return toSizeObject(PAGE_SIZES[v.toUpperCase()]);
+};
 
 /**
  * Returns size object from a single number
@@ -96,7 +88,7 @@ const getStringSize = R.compose(
  * @param {Number} page size number
  * @returns {Object} size object with width and height
  */
-const getNumberSize = R.compose(toSizeObject, v => [v]);
+const getNumberSize = n => toSizeObject([n]);
 
 /**
  * Throws invalid size error
@@ -114,16 +106,15 @@ const throwInvalidError = size => {
  * @returns {Object} size object with width and height
  */
 const getSize = page => {
-  const size = R.compose(
-    R.cond([
-      [R.is(String), getStringSize],
-      [R.is(Array), toSizeObject],
-      [R.is(Number), getNumberSize],
-      [R.is(Object), R.identity],
-      [R.T, throwInvalidError],
-    ]),
-    R.pathOr('A4', ['props', 'size']),
-  )(page);
+  const value = page.props?.size || 'A4';
+
+  const size = R.cond([
+    [R.is(String), getStringSize],
+    [R.is(Array), toSizeObject],
+    [R.is(Number), getNumberSize],
+    [R.is(Object), R.identity],
+    [R.T, throwInvalidError],
+  ])(value);
 
   return isLandscape(page) ? flipSizeObject(size) : size;
 };

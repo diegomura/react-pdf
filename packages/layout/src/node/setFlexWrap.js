@@ -8,19 +8,20 @@ import Yoga from '@react-pdf/yoga';
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setFlexWrap = value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setFlexWrap = value => node => {
+  const yogaNode = node._yogaNode;
 
-    if (yogaNode) {
-      const yogaValue = R.cond([
-        [R.equals('wrap'), R.always(Yoga.WRAP_WRAP)],
-        [R.equals('wrap-reverse'), R.always(Yoga.WRAP_WRAP_REVERSE)],
-        [R.T, R.always(Yoga.WRAP_NO_WRAP)],
-      ])(value);
+  if (yogaNode) {
+    const yogaValue = R.cond([
+      [R.equals('wrap'), R.always(Yoga.WRAP_WRAP)],
+      [R.equals('wrap-reverse'), R.always(Yoga.WRAP_WRAP_REVERSE)],
+      [R.T, R.always(Yoga.WRAP_NO_WRAP)],
+    ])(value);
 
-      yogaNode.setFlexWrap(yogaValue);
-    }
-  });
+    yogaNode.setFlexWrap(yogaValue);
+  }
+
+  return node;
+};
 
 export default setFlexWrap;

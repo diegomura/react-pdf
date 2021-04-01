@@ -1,10 +1,11 @@
-import * as R from 'ramda';
-
 import getOrientation from './getOrientation';
 
-const isPortrait = R.compose(
-  R.equals('portrait'),
-  getOrientation,
-);
+/**
+ * Return true if page is portrait
+ *
+ * @param {Object} page instance
+ * @returns {Boolean} is page portrait
+ */
+const isPortrait = page => getOrientation(page) === 'portrait';
 
 export default isPortrait;

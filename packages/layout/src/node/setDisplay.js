@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 /**
@@ -8,15 +7,16 @@ import Yoga from '@react-pdf/yoga';
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setDisplay = value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setDisplay = value => node => {
+  const yogaNode = node._yogaNode;
 
-    if (yogaNode) {
-      yogaNode.setDisplay(
-        value === 'none' ? Yoga.DISPLAY_NONE : Yoga.DISPLAY_FLEX,
-      );
-    }
-  });
+  if (yogaNode) {
+    yogaNode.setDisplay(
+      value === 'none' ? Yoga.DISPLAY_NONE : Yoga.DISPLAY_FLEX,
+    );
+  }
+
+  return node;
+};
 
 export default setDisplay;

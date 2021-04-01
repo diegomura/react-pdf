@@ -17,41 +17,43 @@ const isNotNil = R.complement(R.isNil);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setYogaValue = (attr, edge) => value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setYogaValue = (attr, edge) => value => node => {
+  const yogaNode = node._yogaNode;
 
-    if (!R.isNil(value) && yogaNode) {
-      const hasEdge = isNotNil(edge);
-      const fixedMethod = `set${upperFirst(attr)}`;
-      const autoMethod = `${fixedMethod}Auto`;
-      const percentMethod = `${fixedMethod}Percent`;
-      const percent = matchPercent(value);
+  if (!R.isNil(value) && yogaNode) {
+    const hasEdge = isNotNil(edge);
+    const fixedMethod = `set${upperFirst(attr)}`;
+    const autoMethod = `${fixedMethod}Auto`;
+    const percentMethod = `${fixedMethod}Percent`;
+    const percent = matchPercent(value);
 
-      if (percent && !yogaNode[percentMethod]) {
-        throw new Error(`You can't pass percentage values to ${attr} property`);
-      }
-
-      if (percent) {
-        if (hasEdge) {
-          yogaNode[percentMethod]?.(edge, percent.value);
-        } else {
-          yogaNode[percentMethod]?.(percent.value);
-        }
-      } else if (value === 'auto') {
-        if (hasEdge) {
-          yogaNode[autoMethod]?.(edge);
-        } else if (attr === 'flexBasis') { // YogaNode.setFlexBasisAuto is missing (#766)
-          yogaNode.setFlexBasis(Yoga.UNIT_AUTO)
-        } else {
-          yogaNode[autoMethod]?.();
-        }
-      } else if (hasEdge) {
-        yogaNode[fixedMethod]?.(edge, value);
-      } else {
-        yogaNode[fixedMethod]?.(value);
-      }
+    if (percent && !yogaNode[percentMethod]) {
+      throw new Error(`You can't pass percentage values to ${attr} property`);
     }
-  });
+
+    if (percent) {
+      if (hasEdge) {
+        yogaNode[percentMethod]?.(edge, percent.value);
+      } else {
+        yogaNode[percentMethod]?.(percent.value);
+      }
+    } else if (value === 'auto') {
+      if (hasEdge) {
+        yogaNode[autoMethod]?.(edge);
+      } else if (attr === 'flexBasis') {
+        // YogaNode.setFlexBasisAuto is missing (#766)
+        yogaNode.setFlexBasis(Yoga.UNIT_AUTO);
+      } else {
+        yogaNode[autoMethod]?.();
+      }
+    } else if (hasEdge) {
+      yogaNode[fixedMethod]?.(edge, value);
+    } else {
+      yogaNode[fixedMethod]?.(value);
+    }
+  }
+
+  return node;
+};
 
 export default setYogaValue;

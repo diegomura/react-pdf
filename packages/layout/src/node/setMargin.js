@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import setYogaValue from './setYogaValue';
@@ -46,12 +45,13 @@ export const setMarginLeft = setYogaValue('margin', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setMargin = margin =>
-  R.tap(node => {
-    setMarginTop(margin)(node);
-    setMarginRight(margin)(node);
-    setMarginBottom(margin)(node);
-    setMarginLeft(margin)(node);
-  });
+export const setMargin = margin => node => {
+  setMarginTop(margin)(node);
+  setMarginRight(margin)(node);
+  setMarginBottom(margin)(node);
+  setMarginLeft(margin)(node);
+
+  return node;
+};
 
 export default setMargin;

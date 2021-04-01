@@ -1,9 +1,6 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-import firstPass from '../utils/firstPass';
-
-const getComputedMargin = edge => node => {
+const getComputedMargin = (node, edge) => {
   const yogaNode = node._yogaNode;
   return yogaNode ? yogaNode.getComputedMargin(edge) : null;
 };
@@ -14,39 +11,40 @@ const getComputedMargin = edge => node => {
  * @param {Object} node
  * @return {Object} margins
  */
-const getMargin = R.applySpec({
-  marginTop: firstPass(
-    getComputedMargin(Yoga.EDGE_TOP),
-    R.path(['box', 'marginTop']),
-    R.path(['style', 'marginTop']),
-    R.path(['style', 'marginVertical']),
-    R.path(['style', 'margin']),
-    R.always(0),
-  ),
-  marginRight: firstPass(
-    getComputedMargin(Yoga.EDGE_RIGHT),
-    R.path(['box', 'marginRight']),
-    R.path(['style', 'marginRight']),
-    R.path(['style', 'marginHorizontal']),
-    R.path(['style', 'margin']),
-    R.always(0),
-  ),
-  marginBottom: firstPass(
-    getComputedMargin(Yoga.EDGE_BOTTOM),
-    R.path(['box', 'marginBottom']),
-    R.path(['style', 'marginBottom']),
-    R.path(['style', 'marginVertical']),
-    R.path(['style', 'margin']),
-    R.always(0),
-  ),
-  marginLeft: firstPass(
-    getComputedMargin(Yoga.EDGE_LEFT),
-    R.path(['box', 'marginLeft']),
-    R.path(['style', 'marginLeft']),
-    R.path(['style', 'marginHorizontal']),
-    R.path(['style', 'margin']),
-    R.always(0),
-  ),
-});
+const getMargin = node => {
+  const marginTop =
+    getComputedMargin(node, Yoga.EDGE_TOP) ||
+    node.box?.marginTop ||
+    node.style?.marginTop ||
+    node.style?.marginVertical ||
+    node.style?.margin ||
+    0;
+
+  const marginRight =
+    getComputedMargin(node, Yoga.EDGE_RIGHT) ||
+    node.box?.marginRight ||
+    node.style?.marginRight ||
+    node.style?.marginHorizontal ||
+    node.style?.margin ||
+    0;
+
+  const marginBottom =
+    getComputedMargin(node, Yoga.EDGE_BOTTOM) ||
+    node.box?.marginBottom ||
+    node.style?.marginBottom ||
+    node.style?.marginVertical ||
+    node.style?.margin ||
+    0;
+
+  const marginLeft =
+    getComputedMargin(node, Yoga.EDGE_LEFT) ||
+    node.box?.marginLeft ||
+    node.style?.marginLeft ||
+    node.style?.marginHorizontal ||
+    node.style?.margin ||
+    0;
+
+  return { marginTop, marginRight, marginBottom, marginLeft };
+};
 
 export default getMargin;

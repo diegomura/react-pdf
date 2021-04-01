@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 const VALID_ORIENTATIONS = ['portrait', 'landscape'];
 
 /**
@@ -8,13 +6,9 @@ const VALID_ORIENTATIONS = ['portrait', 'landscape'];
  * @param { Object } page object
  * @returns { String } page orientation
  */
-const getOrientation = R.compose(
-  R.ifElse(
-    R.includes(R.__, VALID_ORIENTATIONS),
-    R.identity,
-    R.always('portrait'),
-  ),
-  R.pathOr('portrait', ['props', 'orientation']),
-);
+const getOrientation = page => {
+  const value = page.props?.orientation || 'portrait';
+  return VALID_ORIENTATIONS.includes(value) ? value : 'portrait';
+};
 
 export default getOrientation;

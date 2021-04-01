@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import setYogaValue from './setYogaValue';
@@ -46,12 +45,13 @@ export const setPaddingLeft = setYogaValue('padding', Yoga.EDGE_LEFT);
  * @param {Object} node instance
  * @return {Object} node instance
  */
-export const setPadding = padding =>
-  R.tap(node => {
-    setPaddingTop(padding)(node);
-    setPaddingRight(padding)(node);
-    setPaddingBottom(padding)(node);
-    setPaddingLeft(padding)(node);
-  });
+export const setPadding = padding => node => {
+  setPaddingTop(padding)(node);
+  setPaddingRight(padding)(node);
+  setPaddingBottom(padding)(node);
+  setPaddingLeft(padding)(node);
+
+  return node;
+};
 
 export default setPadding;

@@ -103,12 +103,13 @@ const getFragments = (fontStore, instance) => {
 /**
  * Get textkit attributed string from text node
  *
+ * @param {Object} font store
  * @param {Object} instance node
  * @returns {Object} attributed string
  */
-const getAttributedString = R.compose(
-  AttributedString.fromFragments,
-  getFragments,
-);
+const getAttributedString = (fontStore, instance) => {
+  const fragments = getFragments(fontStore, instance);
+  return AttributedString.fromFragments(fragments);
+};
 
 export default R.curryN(2, getAttributedString);

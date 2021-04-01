@@ -1,9 +1,6 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-import firstPass from '../utils/firstPass';
-
-const getComputedPadding = edge => node => {
+const getComputedPadding = (node, edge) => {
   const yogaNode = node._yogaNode;
   return yogaNode ? yogaNode.getComputedPadding(edge) : null;
 };
@@ -14,39 +11,40 @@ const getComputedPadding = edge => node => {
  * @param {Object} node
  * @return {Object} paddings
  */
-const getPadding = R.applySpec({
-  paddingTop: firstPass(
-    getComputedPadding(Yoga.EDGE_TOP),
-    R.path(['box', 'paddingTop']),
-    R.path(['style', 'paddingTop']),
-    R.path(['style', 'paddingVertical']),
-    R.path(['style', 'padding']),
-    R.always(0),
-  ),
-  paddingRight: firstPass(
-    getComputedPadding(Yoga.EDGE_RIGHT),
-    R.path(['box', 'paddingRight']),
-    R.path(['style', 'paddingRight']),
-    R.path(['style', 'paddingHorizontal']),
-    R.path(['style', 'padding']),
-    R.always(0),
-  ),
-  paddingBottom: firstPass(
-    getComputedPadding(Yoga.EDGE_BOTTOM),
-    R.path(['box', 'paddingBottom']),
-    R.path(['style', 'paddingBottom']),
-    R.path(['style', 'paddingVertical']),
-    R.path(['style', 'padding']),
-    R.always(0),
-  ),
-  paddingLeft: firstPass(
-    getComputedPadding(Yoga.EDGE_LEFT),
-    R.path(['box', 'paddingLeft']),
-    R.path(['style', 'paddingLeft']),
-    R.path(['style', 'paddingHorizontal']),
-    R.path(['style', 'padding']),
-    R.always(0),
-  ),
-});
+const getPadding = node => {
+  const paddingTop =
+    getComputedPadding(node, Yoga.EDGE_TOP) ||
+    node.box?.paddingTop ||
+    node.style?.paddingTop ||
+    node.style?.paddingVertical ||
+    node.style?.padding ||
+    0;
+
+  const paddingRight =
+    getComputedPadding(node, Yoga.EDGE_RIGHT) ||
+    node.box?.paddingRight ||
+    node.style?.paddingRight ||
+    node.style?.paddingHorizontal ||
+    node.style?.padding ||
+    0;
+
+  const paddingBottom =
+    getComputedPadding(node, Yoga.EDGE_BOTTOM) ||
+    node.box?.paddingBottom ||
+    node.style?.paddingBottom ||
+    node.style?.paddingVertical ||
+    node.style?.padding ||
+    0;
+
+  const paddingLeft =
+    getComputedPadding(node, Yoga.EDGE_LEFT) ||
+    node.box?.paddingLeft ||
+    node.style?.paddingLeft ||
+    node.style?.paddingHorizontal ||
+    node.style?.padding ||
+    0;
+
+  return { paddingTop, paddingRight, paddingBottom, paddingLeft };
+};
 
 export default getPadding;

@@ -1,10 +1,3 @@
-import * as R from 'ramda';
-
-const getTop = yogaNode => (yogaNode ? yogaNode.getComputedTop() : 0);
-const getRight = yogaNode => (yogaNode ? yogaNode.getComputedRight() : 0);
-const getBottom = yogaNode => (yogaNode ? yogaNode.getComputedBottom() : 0);
-const getLeft = yogaNode => (yogaNode ? yogaNode.getComputedLeft() : 0);
-
 /**
  * Get Yoga computed position. Zero otherwise
  *
@@ -14,12 +7,12 @@ const getLeft = yogaNode => (yogaNode ? yogaNode.getComputedLeft() : 0);
 const getPosition = node => {
   const yogaNode = node._yogaNode;
 
-  return R.applySpec({
-    top: getTop,
-    right: getRight,
-    bottom: getBottom,
-    left: getLeft,
-  })(yogaNode);
+  return {
+    top: yogaNode?.getComputedTop() || 0,
+    right: yogaNode?.getComputedRight() || 0,
+    bottom: yogaNode?.getComputedBottom() || 0,
+    left: yogaNode?.getComputedLeft() || 0,
+  };
 };
 
 export default getPosition;

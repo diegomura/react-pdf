@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@react-pdf/primitives": "^2.0.0-beta.16",
-    "@react-pdf/textkit": "^0.3.7",
+    "@react-pdf/textkit": "^0.4.2",
     "@react-pdf/types": "^2.0.0-beta.17",
     "abs-svg-path": "^0.1.1",
     "normalize-svg-path": "^1.1.0",

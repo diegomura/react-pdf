@@ -12,7 +12,7 @@ import pkg from './package.json';
 import chalk from 'chalk';
 
 const moduleAliases = {
-  'yoga-layout': 'yoga-layout-prebuilt',
+  'yoga-layout': '@react-pdf/yoga',
 };
 
 const globals = { react: 'React' };

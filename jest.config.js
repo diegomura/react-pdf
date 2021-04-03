@@ -3,6 +3,6 @@ module.exports = {
   setupFiles: ['<rootDir>tests/utils/setupTests.js'],
   moduleNameMapper: {
     'cross-fetch': 'jest-fetch-mock',
-    'yoga-layout': 'yoga-layout-prebuilt',
+    'yoga-layout': '@react-pdf/yoga',
   },
 };

@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from '@react-pdf/yoga';
 import { StyleSheet } from '../src';
 
 describe('flexbox attributes', () => {

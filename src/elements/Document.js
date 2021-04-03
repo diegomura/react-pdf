@@ -1,6 +1,5 @@
-import wrapPages from 'page-wrapping';
-
 import Font from '../font';
+import wrapPages from '../page/wrap';
 import { fetchEmojis } from '../utils/emoji';
 
 class Document {

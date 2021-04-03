@@ -1,6 +1,6 @@
-import wrapPages from 'page-wrapping';
 import Font from '../src/font';
 import Page from '../src/elements/Page';
+import wrapPages from '../src/page/wrap';
 import Image from '../src/elements/Image';
 import Document from '../src/elements/Document';
 import root from './utils/dummyRoot';
@@ -8,8 +8,8 @@ import Text from '../src/elements/Text';
 import TextInstance from '../src/elements/TextInstance';
 import * as emojiUtils from '../src/utils/emoji';
 
-jest.mock('page-wrapping');
 jest.mock('../src/font');
+jest.mock('../src/page/wrap');
 
 let dummyRoot;
 

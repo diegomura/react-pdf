@@ -52,7 +52,10 @@ type StandardPageSize =
   | 'LETTER'
   | 'TABLOID';
 
+type StaticSize = number | string;
+
 export type PageSize =
   | StandardPageSize
-  | [number, number]
-  | { width: number; height: number };
+  | [StaticSize]
+  | [StaticSize, StaticSize]
+  | { width: StaticSize; height?: StaticSize };

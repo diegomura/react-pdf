@@ -186,6 +186,25 @@ describe('stylesheet resolve', () => {
     });
   });
 
+  test('should transform border wit decimal units style correctly', () => {
+    const styles = resolve({}, { border: '1.5in solid rgb(255, 0, 255)' });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopColor: '#FF00FF',
+      borderLeftColor: '#FF00FF',
+      borderRightColor: '#FF00FF',
+      borderBottomColor: '#FF00FF',
+      borderTopWidth: 108,
+      borderLeftWidth: 108,
+      borderRightWidth: 108,
+      borderBottomWidth: 108,
+    });
+  });
+
   test('should transform specific border style correctly', () => {
     const styles = resolve({}, { borderTop: '3px dashed hsl(0, 100%, 50%)' });
 
@@ -265,6 +284,50 @@ describe('stylesheet resolve', () => {
     });
   });
 
+  test('should transform margin units correctly', () => {
+    const styles = resolve(
+      {},
+      {
+        marginTop: '10cm',
+        marginRight: '20in',
+        marginBottom: '30mm',
+        marginLeft: '40pt',
+      },
+    );
+
+    expect(styles).toEqual({
+      marginLeft: 40,
+      marginRight: 1440,
+      marginTop: 283.46456692913387,
+      marginBottom: 85.03937007874015,
+    });
+  });
+
+  test('should transform margin shortcut units correctly', () => {
+    const styles = resolve({}, { margin: '10cm 20in 30mm 40pt' });
+
+    expect(styles).toEqual({
+      marginLeft: 40,
+      marginRight: 1440,
+      marginTop: 283.46456692913387,
+      marginBottom: 85.03937007874015,
+    });
+  });
+
+  test('should transform margin shortcut units with decimals correctly', () => {
+    const styles = resolve(
+      {},
+      { margin: '10.5cm 20.005in 30.10mm 40.0000005pt' },
+    );
+
+    expect(styles).toEqual({
+      marginRight: 1440.36,
+      marginLeft: 40.0000005,
+      marginTop: 297.6377952755905,
+      marginBottom: 85.32283464566929,
+    });
+  });
+
   test('should transform padding style correctly', () => {
     const styles = resolve({}, { padding: 4 });
 
@@ -295,6 +358,50 @@ describe('stylesheet resolve', () => {
       paddingLeft: 40,
       paddingRight: 20,
       paddingBottom: 30,
+    });
+  });
+
+  test('should transform padding units correctly', () => {
+    const styles = resolve(
+      {},
+      {
+        paddingTop: '10cm',
+        paddingRight: '20in',
+        paddingBottom: '30mm',
+        paddingLeft: '40pt',
+      },
+    );
+
+    expect(styles).toEqual({
+      paddingLeft: 40,
+      paddingRight: 1440,
+      paddingTop: 283.46456692913387,
+      paddingBottom: 85.03937007874015,
+    });
+  });
+
+  test('should transform padding shortcut units correctly', () => {
+    const styles = resolve({}, { padding: '10cm 20in 30mm 40pt' });
+
+    expect(styles).toEqual({
+      paddingLeft: 40,
+      paddingRight: 1440,
+      paddingTop: 283.46456692913387,
+      paddingBottom: 85.03937007874015,
+    });
+  });
+
+  test('should transform padding shortcut units with decimals correctly', () => {
+    const styles = resolve(
+      {},
+      { padding: '10.5cm 20.005in 30.10mm 40.0000005pt' },
+    );
+
+    expect(styles).toEqual({
+      paddingRight: 1440.36,
+      paddingLeft: 40.0000005,
+      paddingTop: 297.6377952755905,
+      paddingBottom: 85.32283464566929,
     });
   });
 

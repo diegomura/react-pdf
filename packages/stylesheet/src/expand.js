@@ -2,9 +2,9 @@ import * as R from 'ramda';
 
 import shorthands from './shorthands';
 
-const BOX_MODEL_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
-const OBJECT_POSITION_REGEX = /\d+(px|in|mm|cm|pt|%|vw|vh|px)?/g;
-const BORDER_SHORTHAND_REGEX = /(\d+(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(.+)/;
+const BOX_MODEL_REGEX = /\d+(\.\d+)?(px|in|mm|cm|pt|%|vw|vh|px)?/g;
+const OBJECT_POSITION_REGEX = /\d+(\.\d+)?(px|in|mm|cm|pt|%|vw|vh|px)?/g;
+const BORDER_SHORTHAND_REGEX = /(\d+(\.\d+)?(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(.+)/;
 const TRANSFORM_ORIGIN_REGEX = /(-?\d+(px|in|mm|cm|pt|%|vw|vh|px)?)|top|right|bottom|left|center/g;
 
 const FONT_WEIGHTS = {
@@ -64,11 +64,11 @@ const processBorders = (key, value) => {
 
   if (match) {
     if (key.match(/Color$/)) {
-      return match[4] || value;
+      return match[5] || value;
     }
 
     if (key.match(/Style$/)) {
-      return match[3] || value;
+      return match[4] || value;
     }
 
     if (key.match(/Width$/)) {

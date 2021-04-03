@@ -30,7 +30,7 @@ describe('primitive renderBackground', () => {
 
     renderBackground(ctx, node);
 
-    expect(ctx.fillColor.mock.calls).toEqual([['red']]);
+    expect(ctx.fillColor.mock.calls).toEqual([['#FF0000']]);
     expect(ctx.rect.mock.calls).toEqual([[40, 20, 140, 200]]);
     expect(ctx.fill.mock.calls).toEqual([[]]);
   });

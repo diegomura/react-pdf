@@ -16,6 +16,8 @@ const isNotString = R.complement(isString);
  * @returns {Object} parsed react element
  */
 const createInstance = element => {
+  if (!element) return null;
+
   if (isString(element) || isNumber(element))
     return { type: TextInstance, value: `${element}` };
 
@@ -27,10 +29,7 @@ const createInstance = element => {
     props: { style = {}, children = [], ...props },
   } = element;
 
-  const nextChildren = R.compose(
-    R.map(createInstance),
-    castArray,
-  )(children);
+  const nextChildren = R.compose(R.map(createInstance), castArray)(children);
 
   return {
     type,

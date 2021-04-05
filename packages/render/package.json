@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/render",
-  "version": "2.0.0-beta.18",
+  "version": "2.0.0-beta.19",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@react-pdf/primitives": "^2.0.0-beta.16",
     "@react-pdf/textkit": "^0.4.2",
-    "@react-pdf/types": "^2.0.0-beta.17",
+    "@react-pdf/types": "^2.0.0-beta.18",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.5.3",
     "normalize-svg-path": "^1.1.0",

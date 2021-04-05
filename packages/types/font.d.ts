@@ -54,6 +54,8 @@ interface EmojiSource {
 interface SingleLoad {
   family: string;
   src: string;
+  fontStyle?: string;
+  fontWeight?: string | number;
   [key: string]: any;
 }
 

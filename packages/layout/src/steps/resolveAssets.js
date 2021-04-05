@@ -24,7 +24,7 @@ const fetchAssets = (fontStore, node) => {
       promises.push(fetchImage(n));
     }
 
-    if (fontStore && n.style && n.style.fontFamily) {
+    if (fontStore && n.style?.fontFamily) {
       promises.push(fontStore.load(n.style));
     }
 

@@ -30,10 +30,13 @@ class FontSource {
     this.fontWeight = fontWeight || 400;
 
     this.data = null;
+    this.loading = false;
     this.options = options;
   }
 
   async load() {
+    this.loading = true;
+
     const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
@@ -52,6 +55,8 @@ class FontSource {
         ),
       );
     }
+
+    this.loading = false;
   }
 }
 

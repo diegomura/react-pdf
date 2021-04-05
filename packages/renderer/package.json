@@ -16,7 +16,6 @@
     "build": "rimraf ./dist && rollup -c",
     "watch": "rimraf ./dist && rollup -c -w",
     "precommit": "git add . && lint-staged",
-    "prepublish": "npm run build",
     "lint": "eslint src",
     "test": "jest"
   },

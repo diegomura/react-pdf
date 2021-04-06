@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`layout resolveStyles should leave link with text children as it is 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "TEXT",
+            },
+          ],
+          "props": Object {
+            "src": "url",
+          },
+          "type": "LINK",
+        },
+      ],
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles should replace link with only many text instances as children 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+          ],
+          "props": Object {
+            "src": "url",
+          },
+          "type": "TEXT",
+        },
+      ],
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles should replace link with only one text instance as children 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "TEXT_INSTANCE",
+            },
+          ],
+          "props": Object {
+            "src": "url",
+          },
+          "type": "TEXT",
+        },
+      ],
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles should replace link with render prop 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "props": Object {
+            "render": [Function],
+          },
+          "type": "TEXT",
+        },
+      ],
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;

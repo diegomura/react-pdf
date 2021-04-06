@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
- - '10'
+  - '10'
 
 os:
   - linux
@@ -14,7 +14,7 @@ addons:
 cache:
   yarn: true
   directories:
-  - node_modules
+    - node_modules
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.9 ; fi
@@ -22,6 +22,11 @@ before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 
-install: yarn
+before_script:
+  - yarn run bootstrap
 
-script: yarn test
+install:
+  - yarn
+
+script:
+  - yarn test

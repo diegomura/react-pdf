@@ -1,8 +1,13 @@
 module.exports = {
-  testRegex: 'tests/.*?(test)\\.js$',
-  setupFiles: ['<rootDir>tests/utils/setupTests.js'],
-  moduleNameMapper: {
-    'cross-fetch': 'jest-fetch-mock',
-    'yoga-layout': '@react-pdf/yoga',
-  },
+  setupFiles: ['<rootDir>setupTests.js'],
+  projects: [
+    '<rootDir>packages/yoga',
+    '<rootDir>packages/font',
+    '<rootDir>packages/image',
+    '<rootDir>packages/render',
+    '<rootDir>packages/layout',
+    '<rootDir>packages/renderer',
+    '<rootDir>packages/stylesheet',
+    '<rootDir>packages/primitives',
+  ],
 };

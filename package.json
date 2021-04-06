@@ -1,79 +1,56 @@
 {
-  "name": "@react-pdf/renderer",
-  "version": "1.6.16",
+  "private": true,
+  "name": "@react-pdf/root",
+  "version": "2.0.0",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
-  "main": "dist/react-pdf.cjs.js",
-  "module": "dist/react-pdf.es.js",
-  "browser": {
-    "./dist/react-pdf.es.js": "./dist/react-pdf.browser.es.js",
-    "./dist/react-pdf.cjs.js": "./dist/react-pdf.browser.cjs.js"
-  },
-  "typings": "index.d.ts",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "rimraf ./dist && rollup -c",
-    "watch": "rimraf ./dist && rollup -c -w",
-    "example": "babel-node ./examples/index.js",
-    "precommit": "git add . && lint-staged",
-    "prepublish": "npm run build",
-    "lint": "eslint src",
+    "build": "lerna run build --ignore @react-pdf/yoga",
+    "watch": "lerna run watch --parallel",
+    "bootstrap": "lerna bootstrap",
+    "prepublish": "lerna run build --ignore @react-pdf/yoga",
+    "lint": "eslint packages",
     "test": "jest",
-    "test:size": "bundlesize"
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.6.2",
-    "@react-pdf/fontkit": "^1.15.0",
-    "@react-pdf/pdfkit": "^1.6.0",
-    "@react-pdf/png-js": "^1.0.0",
-    "@react-pdf/textkit": "^0.4.2",
-    "@react-pdf/yoga": "^2.0.0-beta.0",
-    "blob-stream": "^0.1.3",
-    "cross-fetch": "^3.0.4",
-    "emoji-regex": "^8.0.0",
-    "is-url": "^1.2.4",
-    "media-engine": "^1.0.3",
-    "ramda": "^0.26.1",
-    "react-reconciler": "^0.24.0",
-    "scheduler": "^0.18.0"
-  },
-  "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0"
+    "examples": "lerna run start --scope @react-pdf/examples"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.3",
+    "@babel/core": "^7.9.6",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "bundlesize": "^0.17.1",
     "chalk": "^2.4.2",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.9.1",
-    "eslint": "^5.14.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^22.3.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
     "husky": "^1.3.1",
     "jest": "^24.5.0",
-    "jest-fetch-mock": "^2.1.1",
+    "lerna": "^3.21.0",
     "lint-staged": "^8.1.4",
-    "lodash.times": "^4.3.2",
     "mock-fs": "^4.8.0",
     "mockdate": "^2.0.2",
     "prettier": "^1.16.4",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
-    "rollup": "^1.2.3",
-    "rollup-plugin-alias": "^1.5.1",
+    "rollup": "^2.3.4",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-bundle-size": "^1.0.3",
     "rollup-plugin-ignore": "^1.0.5",
@@ -85,28 +62,20 @@
   },
   "lint-staged": {
     "*.js": [
-      "yarn run lint",
+      "eslint",
       "prettier --write",
       "git add"
     ]
   },
-  "files": [
-    "dist",
-    "index.d.ts"
-  ],
-  "bundlesize": [
-    {
-      "path": "./dist/react-pdf.cjs.min.js",
-      "maxSize": "17kB"
-    },
-    {
-      "path": "./dist/react-pdf.browser.cjs.min.js",
-      "maxSize": "17kB"
-    }
-  ],
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git add . && lint-staged"
+    }
+  },
+  "dependencies": {}
 }

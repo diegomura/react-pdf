@@ -82,6 +82,7 @@ declare module '@react-pdf/renderer' {
     class Page extends React.Component<PageProps> {}
 
     interface ViewProps extends NodeProps {
+      id?: string;
       /**
        * Enable/disable page wrapping for element.
        * @see https://react-pdf.org/components#page-wrapping
@@ -131,6 +132,7 @@ declare module '@react-pdf/renderer' {
     class Image extends React.Component<ImageProps> {}
 
     interface TextProps extends NodeProps {
+      id?: string;
       /**
        * Enable/disable page wrapping for element.
        * @see https://react-pdf.org/components#page-wrapping

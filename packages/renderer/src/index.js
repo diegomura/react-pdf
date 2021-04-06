@@ -20,10 +20,14 @@ const pdf = (initialValue, onChange) => {
 
   if (initialValue) updateContainer(initialValue);
 
+  const layout = async () => {
+    return layoutDocument(container.document, fontStore);
+  }
+
   const render = async () => {
     const ctx = new PDFDocument({ autoFirstPage: false });
-    const layout = await layoutDocument(container.document, fontStore);
-    return renderPDF(ctx, layout);
+    const layoutData = await layout();
+    return renderPDF(ctx, layoutData);
   };
 
   const callOnRender = (params = {}) => {
@@ -78,6 +82,7 @@ const pdf = (initialValue, onChange) => {
 
   return {
     container,
+    layout,
     toBlob,
     toBuffer,
     toString,

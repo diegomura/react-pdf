@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "2.0.0-beta.21",
+  "version": "2.0.0-beta.22",
   "license": "MIT",
   "typings": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

@@ -53,6 +53,10 @@ const createRenderer = ({ onChange = () => {} }) => {
       // Noop
     },
 
+    clearContainer() {
+      // Noop
+    },
+
     prepareUpdate(element, type, oldProps, newProps) {
       return !propsEqual(oldProps, newProps);
     },

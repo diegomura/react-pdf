@@ -17,8 +17,8 @@
     "ramda": "^0.27.1"
   },
   "peerDependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": ">16.8.6",
+    "react-dom": ">16.8.6"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"

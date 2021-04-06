@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactPDF, {
   Document,
   Page,
   Font,
-  PDFViewer,
   StyleSheet,
 } from '@react-pdf/renderer';
+
 import Svg0 from './svg';
 import Svg1 from './Svg1';
 import Svg2 from './Svg2';
-import Svg3 from './Svg3';
 import Svg4 from './Svg4';
-import Svg5 from './Svg5';
-import Svg6 from './Svg6';
 import Heart from './Heart';
 
 console.log(`React version: ${React.version}`);
@@ -59,27 +56,16 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
-  const [counter] = useState(0);
-
   return (
-    <div>
-      {counter}
-
-      <PDFViewer style={{ width: '100%', height: '100vh' }}>
-        <Document title="Hey!" subject="Test">
-          <Page size="A4" style={styles.page}>
-            <Svg0 />
-            <Svg1 />
-            <Svg2 />
-            <Svg3 />
-            <Svg4 />
-            <Svg5 />
-            <Svg6 />
-            <Heart />
-          </Page>
-        </Document>
-      </PDFViewer>
-    </div>
+    <Document title="Hey!" subject="Test">
+      <Page size="A4" style={styles.page}>
+        <Svg0 />
+        <Svg1 />
+        <Svg2 />
+        <Svg4 />
+        <Heart />
+      </Page>
+    </Document>
   );
 };
 

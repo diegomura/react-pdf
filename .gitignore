@@ -5,3 +5,4 @@ coverage
 .jshintrc
 .idea
 .DS_Store
+.cache

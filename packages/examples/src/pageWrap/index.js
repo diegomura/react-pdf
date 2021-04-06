@@ -238,7 +238,7 @@ export default () => (
         anochecía.
       </Text>
       <Text
-        style={styles.footer}
+        style={styles.pageNumber}
         render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
         fixed
       />

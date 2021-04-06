@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { PDFViewer } from '@react-pdf/renderer';
 
+import Svg from './svg';
 import GoTo from './goTo';
 import Text from './text';
 import Knobs from './knobs';
@@ -14,6 +15,7 @@ import PageWrap from './pageWrap';
 const MOUNT_ELEMENT = document.getElementById('root');
 
 const EXAMPLES = {
+  svg: Svg,
   goTo: GoTo,
   text: Text,
   knobs: Knobs,
@@ -24,6 +26,8 @@ const EXAMPLES = {
 
 const Viewer = () => {
   const [example, setExample] = useState('pageWrap');
+
+  console.log(example);
 
   const handleExampleChange = e => {
     setExample(e.target.dataset.name);

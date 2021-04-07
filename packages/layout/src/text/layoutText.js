@@ -32,7 +32,7 @@ const getTextOverflow = R.path(['style', 'textOverflow']);
  * @param {Object} node
  * @returns {Object} layout container
  */
-const getContainer = (width, height) => node => {
+const getContainer = (width, height, node) => {
   const maxLines = getMaxLines(node);
   const textOverflow = getTextOverflow(node);
 
@@ -52,7 +52,7 @@ const getContainer = (width, height) => node => {
  * @param {Object} node instance
  * @returns {Object} layout options
  */
-const getLayoutOptions = fontStore => node => ({
+const getLayoutOptions = (fontStore, node) => ({
   hyphenationPenalty: node.props.hyphenationPenalty,
   shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
   hyphenationCallback:
@@ -71,14 +71,12 @@ const getLayoutOptions = fontStore => node => ({
  * @returns {Array} layout lines
  */
 const layoutText = (node, width, height, fontStore) => {
-  return R.compose(
-    R.reduce(R.concat, []),
-    R.converge(engine, [
-      getAttributedString(fontStore),
-      getContainer(width, height),
-      getLayoutOptions(fontStore),
-    ]),
-  )(node);
+  const attributedString = getAttributedString(fontStore, node);
+  const container = getContainer(width, height, node);
+  const options = getLayoutOptions(fontStore, node);
+  const lines = engine(attributedString, container, options);
+
+  return R.reduce(R.concat, [], lines);
 };
 
 export default R.curryN(4, layoutText);

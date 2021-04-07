@@ -56,7 +56,7 @@ const fetchAssets = (fontStore, node) => {
  */
 const resolveAssets = (node, fontStore) =>
   R.compose(
-    R.then(R.always(node)),
+    R.andThen(R.always(node)),
     p => Promise.all(p),
     fetchAssets,
   )(fontStore, node);

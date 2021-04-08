@@ -20,8 +20,8 @@ function replace(buffer, target, dst) {
   return buffer;
 }
 
-// Increase memory heap from 128 MB to 1 GB
-nbindBuffer = replace(nbindBuffer, '134217728', '1073741824');
+// Increase memory heap from 128 MB to 256 MB
+nbindBuffer = replace(nbindBuffer, '134217728', '268435456');
 
 // // Fixes yoga nbind issue
 // // https://github.com/vadimdemedes/yoga-layout-prebuilt/issues/2

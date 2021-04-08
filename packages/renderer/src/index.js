@@ -9,9 +9,21 @@ import { version } from '../package.json';
 
 const fontStore = new FontStore();
 
-const pdf = (initialValue, onChange) => {
+// We must keep a single renderer instance, otherwise React will complain
+let renderer;
+
+// The pdf instance acts as an event emmiter for DOM usage.
+// We only want to trigger an update then PDF content changes
+const events = {};
+
+const pdf = initialValue => {
+  const onChange = () => {
+    const listeners = events.change?.slice() || [];
+    for (let i = 0; i < listeners.length; i += 1) listeners[i]();
+  };
+
   const container = { type: 'ROOT', document: null };
-  const renderer = createRenderer({ onChange });
+  renderer = renderer || createRenderer({ onChange });
   const mountNode = renderer.createContainer(container);
 
   const updateContainer = doc => {
@@ -76,11 +88,24 @@ const pdf = (initialValue, onChange) => {
     });
   };
 
+  const on = (event, listener) => {
+    if (!events[event]) events[event] = [];
+    events[event].push(listener);
+  };
+
+  const removeListener = (event, listener) => {
+    if (!events[event]) return;
+    const idx = events[event].indexOf(listener);
+    if (idx > -1) events[event].splice(idx, 1);
+  };
+
   return {
+    on,
     container,
     toBlob,
     toBuffer,
     toString,
+    removeListener,
     updateContainer,
   };
 };

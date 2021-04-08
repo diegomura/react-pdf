@@ -486,14 +486,15 @@ declare module '@react-pdf/renderer' {
 
     const pdf: (
       initialValue?: React.ReactElement<DocumentProps>,
-      onChange?: () => {},
     ) => {
       container: any;
       isDirty: () => boolean;
-      updateContainer: (document: React.ReactElement<any>) => void;
-      toBuffer: () => Promise<NodeJS.ReadableStream>;
-      toBlob: () => Promise<Blob>;
       toString: () => string;
+      toBlob: () => Promise<Blob>;
+      toBuffer: () => Promise<NodeJS.ReadableStream>;
+      on: (event: 'change', callback: () => void): void;
+      updateContainer: (document: React.ReactElement<any>) => void;
+      removeListener: (event: 'change', callback: () => void): void;
     };
 
     const renderToStream: (

@@ -98,7 +98,6 @@ declare module '@react-pdf/renderer' {
         subPageNumber: number;
       }) => React.ReactNode;
       children?: React.ReactNode;
-      id?: string;
     }
 
     /**
@@ -151,7 +150,6 @@ declare module '@react-pdf/renderer' {
         subPageTotalPages: number;
       }) => React.ReactNode;
       children?: React.ReactNode;
-      id?: string;
       /**
        * Override the default hyphenation-callback
        * @see https://react-pdf.org/fonts#registerhyphenationcallback

@@ -54,11 +54,10 @@ const fetchAssets = (fontStore, node) => {
  * @param {Object} fontStore font store
  * @returns {Object} root node
  */
-const resolveAssets = (node, fontStore) =>
-  R.compose(
-    R.then(R.always(node)),
-    p => Promise.all(p),
-    fetchAssets,
-  )(fontStore, node);
+const resolveAssets = async (node, fontStore) => {
+  const promises = fetchAssets(fontStore, node);
+  await Promise.all(promises);
+  return node;
+};
 
 export default resolveAssets;

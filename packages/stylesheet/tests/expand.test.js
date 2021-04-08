@@ -223,6 +223,18 @@ describe('stylesheet transform', () => {
     expect(left.marginLeft).toBe(4);
   });
 
+  test('should keep auto margins', () => {
+    const top = expandStyles({ marginTop: 'auto' });
+    const right = expandStyles({ marginRight: 'auto' });
+    const bottom = expandStyles({ marginBottom: 'auto' });
+    const left = expandStyles({ marginLeft: 'auto' });
+
+    expect(top.marginTop).toBe('auto');
+    expect(right.marginRight).toBe('auto');
+    expect(bottom.marginBottom).toBe('auto');
+    expect(left.marginLeft).toBe('auto');
+  });
+
   test('should process padding shorthand', () => {
     const top = expandStyles({ paddingTop: '1 2 3 4' });
     const right = expandStyles({ paddingRight: '1 2 3 4' });
@@ -269,6 +281,18 @@ describe('stylesheet transform', () => {
     expect(right.paddingRight).toBe(2);
     expect(bottom.paddingBottom).toBe(3);
     expect(left.paddingLeft).toBe(4);
+  });
+
+  test('should keep auto paddings', () => {
+    const top = expandStyles({ paddingTop: 'auto' });
+    const right = expandStyles({ paddingRight: 'auto' });
+    const bottom = expandStyles({ paddingBottom: 'auto' });
+    const left = expandStyles({ paddingLeft: 'auto' });
+
+    expect(top.paddingTop).toBe('auto');
+    expect(right.paddingRight).toBe('auto');
+    expect(bottom.paddingBottom).toBe('auto');
+    expect(left.paddingLeft).toBe('auto');
   });
 
   test('should process borderWidth shorthand', () => {

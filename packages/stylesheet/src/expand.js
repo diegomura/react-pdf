@@ -82,6 +82,8 @@ const processBorders = (key, value) => {
 };
 
 const processBoxModel = (key, value) => {
+  if (value === 'auto') return value;
+
   const match = matchBoxModel(value);
 
   if (match) {

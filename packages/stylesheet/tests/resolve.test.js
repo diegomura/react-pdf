@@ -328,6 +328,17 @@ describe('stylesheet resolve', () => {
     });
   });
 
+  test('should transform margin auto shortcut correctly', () => {
+    const styles = resolve({}, { margin: 'auto' });
+
+    expect(styles).toEqual({
+      marginRight: 'auto',
+      marginLeft: 'auto',
+      marginTop: 'auto',
+      marginBottom: 'auto',
+    });
+  });
+
   test('should transform padding style correctly', () => {
     const styles = resolve({}, { padding: 4 });
 
@@ -402,6 +413,17 @@ describe('stylesheet resolve', () => {
       paddingLeft: 40.0000005,
       paddingTop: 297.6377952755905,
       paddingBottom: 85.32283464566929,
+    });
+  });
+
+  test('should transform padding auto shortcut correctly', () => {
+    const styles = resolve({}, { padding: 'auto' });
+
+    expect(styles).toEqual({
+      paddingRight: 'auto',
+      paddingLeft: 'auto',
+      paddingTop: 'auto',
+      paddingBottom: 'auto',
     });
   });
 

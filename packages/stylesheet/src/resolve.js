@@ -25,7 +25,6 @@ const resolveStyles = (container, style) =>
   R.compose(
     transformUnits(container),
     transformColors,
-    // R.tap(console.log),
     expandStyles,
     resolveMediaQueries(container),
     filterNoneValues,

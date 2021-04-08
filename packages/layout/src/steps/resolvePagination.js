@@ -82,7 +82,10 @@ const splitNodes = (height, nodes) => {
     if (shouldBreak) {
       const next = R.evolve({
         box: { top: R.subtract(R.__, height) },
-        props: R.evolve({ break: R.always(false) }),
+        props: R.evolve({
+          wrap: R.always(true),
+          break: R.always(false),
+        }),
       })(child);
 
       currentChildren.push(...futureFixedNodes);

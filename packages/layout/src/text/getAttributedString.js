@@ -57,13 +57,13 @@ const getFragments = (fontStore, instance) => {
     align: textAlign,
     indent: textIndent,
     characterSpacing: letterSpacing,
+    strikeStyle: textDecorationStyle,
     underlineStyle: textDecorationStyle,
     underline: textDecoration === 'underline',
-    link: instance.src || instance.props?.href,
-    underlineColor: textDecorationColor || color,
     strike: textDecoration === 'line-through',
-    strikeStyle: textDecorationStyle,
     strikeColor: textDecorationColor || color,
+    underlineColor: textDecorationColor || color,
+    link: instance.props?.src || instance.props?.href,
     lineHeight: lineHeight ? lineHeight * fontSize : null,
   };
 

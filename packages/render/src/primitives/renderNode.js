@@ -34,10 +34,7 @@ const renderChildren = ctx => node => {
     ctx.translate(node.box.left, node.box.top);
   }
 
-  R.compose(
-    R.forEach(renderNode(ctx)),
-    R.pathOr([], ['children']),
-  )(node);
+  R.compose(R.forEach(renderNode(ctx)), R.pathOr([], ['children']))(node);
 
   restore(ctx, node);
 
@@ -50,7 +47,7 @@ const renderNode = ctx => node =>
     renderDebug(ctx),
     setDestination(ctx),
     R.when(shouldRenderChildren, renderChildren(ctx)),
-    R.when(R.either(isText, isLink), setLink(ctx)),
+    R.when(isLink, setLink(ctx)),
     R.cond([
       [isText, renderText(ctx)],
       [isNote, renderNote(ctx)],

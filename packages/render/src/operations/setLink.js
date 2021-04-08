@@ -16,10 +16,11 @@ const setLink = (ctx, node) => {
   const src = getSource(node);
 
   if (src) {
-    const [instanceMethod, value] = isSrcId(src)
-      ? ['goTo', src.slice(1)]
-      : ['link', src];
-    ctx[instanceMethod](left, top, width, height, value);
+    const isId = isSrcId(src);
+    const method = isId ? 'goTo' : 'link';
+    const value = isId ? src.slice(1) : src;
+
+    ctx[method](left, top, width, height, value);
   }
 
   return node;

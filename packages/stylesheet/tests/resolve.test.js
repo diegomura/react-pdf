@@ -314,6 +314,17 @@ describe('stylesheet resolve', () => {
     });
   });
 
+  test('should transform margin shortcut negative values', () => {
+    const styles = resolve({}, { margin: '-10 -20in -30mm -40%' });
+
+    expect(styles).toEqual({
+      marginTop: -10,
+      marginLeft: '-40%',
+      marginRight: -1440,
+      marginBottom: -85.03937007874015,
+    });
+  });
+
   test('should transform margin shortcut units with decimals correctly', () => {
     const styles = resolve(
       {},
@@ -399,6 +410,17 @@ describe('stylesheet resolve', () => {
       paddingRight: 1440,
       paddingTop: 283.46456692913387,
       paddingBottom: 85.03937007874015,
+    });
+  });
+
+  test('should transform padding shortcut negative values', () => {
+    const styles = resolve({}, { padding: '-10 -20in -30mm -40%' });
+
+    expect(styles).toEqual({
+      paddingTop: -10,
+      paddingLeft: '-40%',
+      paddingRight: -1440,
+      paddingBottom: -85.03937007874015,
     });
   });
 

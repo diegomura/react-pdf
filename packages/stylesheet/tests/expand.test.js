@@ -199,6 +199,18 @@ describe('stylesheet transform', () => {
     expect(left.marginLeft).toBe('4%');
   });
 
+  test('should process margin shorthand with negative values', () => {
+    const top = expandStyles({ marginTop: '-1% -2 -3in -4cm' });
+    const right = expandStyles({ marginRight: '-1% -2 -3in -4cm' });
+    const bottom = expandStyles({ marginBottom: '-1% -2 -3in -4cm' });
+    const left = expandStyles({ marginLeft: '-1% -2 -3in -4cm' });
+
+    expect(top.marginTop).toBe('-1%');
+    expect(right.marginRight).toBe(-2);
+    expect(bottom.marginBottom).toBe('-3in');
+    expect(left.marginLeft).toBe('-4cm');
+  });
+
   test('should process margin axis shorthand', () => {
     const top = expandStyles({ marginTop: '1 2' });
     const right = expandStyles({ marginRight: '1 2' });
@@ -257,6 +269,18 @@ describe('stylesheet transform', () => {
     expect(right.paddingRight).toBe('2%');
     expect(bottom.paddingBottom).toBe('3%');
     expect(left.paddingLeft).toBe('4%');
+  });
+
+  test('should process padding shorthand with negative values', () => {
+    const top = expandStyles({ paddingTop: '-1% -2 -3in -4cm' });
+    const right = expandStyles({ paddingRight: '-1% -2 -3in -4cm' });
+    const bottom = expandStyles({ paddingBottom: '-1% -2 -3in -4cm' });
+    const left = expandStyles({ paddingLeft: '-1% -2 -3in -4cm' });
+
+    expect(top.paddingTop).toBe('-1%');
+    expect(right.paddingRight).toBe(-2);
+    expect(bottom.paddingBottom).toBe('-3in');
+    expect(left.paddingLeft).toBe('-4cm');
   });
 
   test('should process padding axis shorthand', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "license": "MIT",
   "typings": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@babel/runtime": "^7.6.2",
     "@react-pdf/font": "^2.0.0",
-    "@react-pdf/layout": "^2.0.1",
+    "@react-pdf/layout": "^2.0.2",
     "@react-pdf/pdfkit": "^1.6.0",
     "@react-pdf/primitives": "^2.0.0",
     "@react-pdf/render": "^2.0.1",

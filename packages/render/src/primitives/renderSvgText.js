@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
-import runWidth from '@react-pdf/textkit/run/advanceWidth';
-import lineWidth from '@react-pdf/textkit/attributedString/advanceWidth';
+import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
+import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
 
 const renderRun = (ctx, run) => {
   const runAdvanceWidth = runWidth(run);

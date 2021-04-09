@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import PDFRenderer from '@react-pdf/textkit/renderers/pdf';
+import PDFRenderer from '@react-pdf/textkit/lib/renderers/pdf';
 
 const renderText = (ctx, node) => {
   const { top, left } = node.box;

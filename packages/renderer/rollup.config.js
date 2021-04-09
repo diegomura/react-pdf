@@ -48,12 +48,7 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [
-  json(),
-  sourceMaps(),
-  nodeResolve(),
-  bundleSize(),
-];
+const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
 
 const configBase = {
   external: [
@@ -64,16 +59,16 @@ const configBase = {
     '@babel/runtime/helpers/objectWithoutPropertiesLoose',
     '@babel/runtime/helpers/inheritsLoose',
     '@babel/runtime/helpers/assertThisInitialized',
-    '@react-pdf/textkit/layout',
-    '@react-pdf/textkit/renderers/pdf',
-    '@react-pdf/textkit/attributedString',
-    '@react-pdf/textkit/engines/linebreaker',
-    '@react-pdf/textkit/engines/justification',
-    '@react-pdf/textkit/engines/textDecoration',
-    '@react-pdf/textkit/engines/scriptItemizer',
-    '@react-pdf/textkit/engines/wordHyphenation',
-    '@react-pdf/textkit/run/advanceWidth',
-    '@react-pdf/textkit/attributedString/advanceWidth',
+    '@react-pdf/textkit/lib/layout',
+    '@react-pdf/textkit/lib/renderers/pdf',
+    '@react-pdf/textkit/lib/attributedString',
+    '@react-pdf/textkit/lib/engines/linebreaker',
+    '@react-pdf/textkit/lib/engines/justification',
+    '@react-pdf/textkit/lib/engines/textDecoration',
+    '@react-pdf/textkit/lib/engines/scriptItemizer',
+    '@react-pdf/textkit/lib/engines/wordHyphenation',
+    '@react-pdf/textkit/lib/run/advanceWidth',
+    '@react-pdf/textkit/lib/attributedString/advanceWidth',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
 };

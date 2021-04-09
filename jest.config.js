@@ -6,6 +6,7 @@ module.exports = {
     '<rootDir>packages/image',
     '<rootDir>packages/render',
     '<rootDir>packages/layout',
+    '<rootDir>packages/textkit',
     '<rootDir>packages/renderer',
     '<rootDir>packages/stylesheet',
     '<rootDir>packages/primitives',

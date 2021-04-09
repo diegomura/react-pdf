@@ -33,13 +33,13 @@ const resolvePageVerticalPadding = container => value => {
  * @returns {Object} page with fixed paddings
  */
 const resolvePagePaddings = page => {
-  const container = R.pathOr({}, ['props', 'size'], page);
+  const container = page.style;
 
   return R.evolve({
     style: R.evolve({
+      paddingTop: resolvePageVerticalPadding(container),
       paddingLeft: resolvePageHorizontalPadding(container),
       paddingRight: resolvePageHorizontalPadding(container),
-      paddingTop: resolvePageVerticalPadding(container),
       paddingBottom: resolvePageVerticalPadding(container),
     }),
   })(page);

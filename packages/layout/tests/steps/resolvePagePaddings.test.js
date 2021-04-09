@@ -57,8 +57,7 @@ describe('layout resolvePagePaddings', () => {
       children: [
         {
           type: 'PAGE',
-          style: { paddingTop: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingTop: '10%', width: 100, height: 200 },
         },
       ],
     };
@@ -73,8 +72,7 @@ describe('layout resolvePagePaddings', () => {
       children: [
         {
           type: 'PAGE',
-          style: { paddingRight: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingRight: '10%', width: 100, height: 200 },
         },
       ],
     };
@@ -89,8 +87,7 @@ describe('layout resolvePagePaddings', () => {
       children: [
         {
           type: 'PAGE',
-          style: { paddingBottom: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingBottom: '10%', width: 100, height: 200 },
         },
       ],
     };
@@ -105,8 +102,7 @@ describe('layout resolvePagePaddings', () => {
       children: [
         {
           type: 'PAGE',
-          style: { paddingLeft: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingLeft: '10%', width: 100, height: 200 },
         },
       ],
     };
@@ -121,18 +117,20 @@ describe('layout resolvePagePaddings', () => {
       children: [
         {
           type: 'PAGE',
-          style: { paddingTop: 10 },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingTop: 10, width: 100, height: 200 },
         },
         {
           type: 'PAGE',
-          style: { paddingBottom: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: { paddingBottom: '10%', width: 100, height: 200 },
         },
         {
           type: 'PAGE',
-          style: { paddingRight: 10, paddingLeft: '10%' },
-          props: { size: { width: 100, height: 200 } },
+          style: {
+            paddingRight: 10,
+            paddingLeft: '10%',
+            width: 100,
+            height: 200,
+          },
         },
       ],
     };

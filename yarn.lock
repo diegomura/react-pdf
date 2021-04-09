@@ -2091,16 +2091,6 @@
   resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
   integrity sha1-APy5adykzoKgp2c0E63gOeR7Nh4=
 
-"@react-pdf/textkit@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/textkit/-/textkit-0.5.0.tgz#2c86faa238898faa13374310c00e36491b262342"
-  integrity sha512-2vbAYhO2M2Hz3uqdiNKv1mVN7uYjHx0emHe2+ZC2At6AqE6B1p9DIggV+37olV3CBQT2KGZFZHmqK2L1D39Ggg==
-  dependencies:
-    "@babel/runtime" "^7.4.3"
-    "@react-pdf/unicode-properties" "2.3.0"
-    hyphen "^1.6.4"
-    ramda "^0.26.1"
-
 "@react-pdf/unicode-properties@2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@react-pdf/unicode-properties/-/unicode-properties-2.3.0.tgz#822a7fda81b88a054fafd782170898c898b180ec"

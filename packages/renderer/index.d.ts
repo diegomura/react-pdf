@@ -196,6 +196,7 @@ declare module '@react-pdf/renderer' {
        */
       debug?: boolean;
       src: string;
+      href: string;
       children?: React.ReactNode;
     }
 

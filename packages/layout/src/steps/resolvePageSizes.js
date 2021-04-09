@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 
 import getPageSize from '../page/getSize';
-import assocIfNil from '../utils/assocIfNil';
 
 /**
  * Resolves page size
@@ -11,7 +10,8 @@ import assocIfNil from '../utils/assocIfNil';
  */
 export const resolvePageSize = page => {
   const size = getPageSize(page);
-  return R.evolve({ style: R.merge(R.__, size) })(page);
+  const style = page.style || {};
+  return { ...page, style: { ...style, ...size } };
 };
 
 /**
@@ -21,12 +21,7 @@ export const resolvePageSize = page => {
  * @returns {Object} document root with resolved page sizes
  */
 const resolvePageSizes = R.evolve({
-  children: R.map(
-    R.compose(
-      resolvePageSize,
-      assocIfNil('style', {}),
-    ),
-  ),
+  children: R.map(resolvePageSize),
 });
 
 export default resolvePageSizes;

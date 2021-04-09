@@ -74,14 +74,10 @@ exports[`layout resolvePagePaddings Should resolve percent paddingBottom 1`] = `
 Object {
   "children": Array [
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingBottom": 20,
+        "width": 100,
       },
       "type": "PAGE",
     },
@@ -94,14 +90,10 @@ exports[`layout resolvePagePaddings Should resolve percent paddingLeft 1`] = `
 Object {
   "children": Array [
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingLeft": 10,
+        "width": 100,
       },
       "type": "PAGE",
     },
@@ -114,14 +106,10 @@ exports[`layout resolvePagePaddings Should resolve percent paddingRight 1`] = `
 Object {
   "children": Array [
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingRight": 10,
+        "width": 100,
       },
       "type": "PAGE",
     },
@@ -134,14 +122,10 @@ exports[`layout resolvePagePaddings Should resolve percent paddingTop 1`] = `
 Object {
   "children": Array [
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingTop": 20,
+        "width": 100,
       },
       "type": "PAGE",
     },
@@ -154,39 +138,27 @@ exports[`layout resolvePagePaddings Should resolve several pages 1`] = `
 Object {
   "children": Array [
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingTop": 10,
+        "width": 100,
       },
       "type": "PAGE",
     },
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingBottom": 20,
+        "width": 100,
       },
       "type": "PAGE",
     },
     Object {
-      "props": Object {
-        "size": Object {
-          "height": 200,
-          "width": 100,
-        },
-      },
       "style": Object {
+        "height": 200,
         "paddingLeft": 10,
         "paddingRight": 10,
+        "width": 100,
       },
       "type": "PAGE",
     },

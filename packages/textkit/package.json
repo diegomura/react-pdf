@@ -10,10 +10,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "prepublish": "npm run build",
-    "build": "babel ./src --out-dir lib",
-    "watch": "babel ./src --out-dir lib --watch",
-    "prebuild": "rimraf attributedString layout engines glyph indices rect renderers run utils block index.js"
+    "build": "rimraf ./lib && babel src --out-dir lib",
+    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "files": [
     "lib"

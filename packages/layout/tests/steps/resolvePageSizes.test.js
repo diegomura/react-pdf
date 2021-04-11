@@ -145,4 +145,22 @@ describe('layout resolvePageSizes', () => {
     expect(result.children[2].style).toHaveProperty('width', 100);
     expect(result.children[2].style).toHaveProperty('height', 200);
   });
+
+  test('Should flatten page styles', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          props: { size: 'A4' },
+          style: [{ backgroundColor: 'red' }],
+        },
+      ],
+    };
+    const result = resolvePageSizes(root);
+
+    expect(result.children[0].style).toHaveProperty('width', 595.28);
+    expect(result.children[0].style).toHaveProperty('height', 841.89);
+    expect(result.children[0].style).toHaveProperty('backgroundColor', 'red');
+  });
 });

@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import flatten from '@react-pdf/stylesheet/lib/flatten';
 
 import getPageSize from '../page/getSize';
 
@@ -10,7 +11,7 @@ import getPageSize from '../page/getSize';
  */
 export const resolvePageSize = page => {
   const size = getPageSize(page);
-  const style = page.style || {};
+  const style = flatten(page.style || {});
   return { ...page, style: { ...style, ...size } };
 };
 

@@ -34,12 +34,14 @@ const pdf = initialValue => {
 
   const render = async (compress = true) => {
     const { pdfVersion } = container.document.props || {};
+
     const ctx = new PDFDocument({
       compress,
       autoFirstPage: false,
       displayTitle: true,
-      pdfVersion
+      pdfVersion,
     });
+
     const layout = await layoutDocument(container.document, fontStore);
 
     return renderPDF(ctx, layout);
@@ -113,14 +115,14 @@ const pdf = initialValue => {
     toBuffer,
     toString,
     removeListener,
-    updateContainer
+    updateContainer,
   };
 };
 
 const Font = fontStore;
 
 const StyleSheet = {
-  create: s => s
+  create: s => s,
 };
 
 export { version, Font, StyleSheet, pdf, createRenderer };

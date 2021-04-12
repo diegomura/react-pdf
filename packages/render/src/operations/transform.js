@@ -3,11 +3,11 @@ import * as R from 'ramda';
 // TODO: Implement using only matrices to support skew and even more operations than css.
 
 const getRotation = transform => {
-  const match = /rotate\((-?\d+.?\d+)(.+)\)/g.exec(transform);
+  const match = /rotate\((-?\d+(.\d+)?)(.+)\)/g.exec(transform);
 
-  if (match && match[1] && match[2]) {
+  if (match && match[1] && match[3]) {
     const value = match[1];
-    return match[2] === 'rad' ? (value * 180) / Math.PI : value;
+    return match[3] === 'rad' ? (value * 180) / Math.PI : value;
   }
 
   return 0;

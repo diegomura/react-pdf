@@ -3,6 +3,11 @@ export default {
     options.Type = 'Annot';
     options.Rect = this._convertRect(x, y, w, h);
     options.Border = [0, 0, 0];
+
+    if (options.Subtype === 'Link' && typeof options.F === 'undefined') {
+      options.F = 1 << 2; // Print Annotation Flag
+    }
+
     if (options.Subtype !== 'Link') {
       if (options.C == null) {
         options.C = this._normalizeColor(options.color || [0, 0, 0]);
@@ -26,10 +31,7 @@ export default {
     return this;
   },
 
-  note(x, y, w, h, contents, options) {
-    if (options == null) {
-      options = {};
-    }
+  note(x, y, w, h, contents, options = {}) {
     options.Subtype = 'Text';
     options.Contents = new String(contents);
     options.Name = 'Comment';
@@ -39,10 +41,7 @@ export default {
     return this.annotate(x, y, w, h, options);
   },
 
-  goTo(x, y, w, h, name, options) {
-    if (options == null) {
-      options = {};
-    }
+  goTo(x, y, w, h, name, options = {}) {
     options.Subtype = 'Link';
     options.A = this.ref({
       S: 'GoTo',
@@ -52,10 +51,7 @@ export default {
     return this.annotate(x, y, w, h, options);
   },
 
-  link(x, y, w, h, url, options) {
-    if (options == null) {
-      options = {};
-    }
+  link(x, y, w, h, url, options = {}) {
     options.Subtype = 'Link';
 
     if (typeof url === 'number') {
@@ -82,20 +78,14 @@ export default {
     return this.annotate(x, y, w, h, options);
   },
 
-  _markup(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
-    const [x1, y1, x2, y2] = Array.from(this._convertRect(x, y, w, h));
+  _markup(x, y, w, h, options = {}) {
+    const [x1, y1, x2, y2] = this._convertRect(x, y, w, h);
     options.QuadPoints = [x1, y2, x2, y2, x1, y1, x2, y1];
     options.Contents = new String();
     return this.annotate(x, y, w, h, options);
   },
 
-  highlight(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
+  highlight(x, y, w, h, options = {}) {
     options.Subtype = 'Highlight';
     if (options.color == null) {
       options.color = [241, 238, 148];
@@ -103,57 +93,56 @@ export default {
     return this._markup(x, y, w, h, options);
   },
 
-  underline(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
+  underline(x, y, w, h, options = {}) {
     options.Subtype = 'Underline';
     return this._markup(x, y, w, h, options);
   },
 
-  strike(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
+  strike(x, y, w, h, options = {}) {
     options.Subtype = 'StrikeOut';
     return this._markup(x, y, w, h, options);
   },
 
-  lineAnnotation(x1, y1, x2, y2, options) {
-    if (options == null) {
-      options = {};
-    }
+  lineAnnotation(x1, y1, x2, y2, options = {}) {
     options.Subtype = 'Line';
     options.Contents = new String();
     options.L = [x1, this.page.height - y1, x2, this.page.height - y2];
     return this.annotate(x1, y1, x2, y2, options);
   },
 
-  rectAnnotation(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
+  rectAnnotation(x, y, w, h, options = {}) {
     options.Subtype = 'Square';
     options.Contents = new String();
     return this.annotate(x, y, w, h, options);
   },
 
-  ellipseAnnotation(x, y, w, h, options) {
-    if (options == null) {
-      options = {};
-    }
+  ellipseAnnotation(x, y, w, h, options = {}) {
     options.Subtype = 'Circle';
     options.Contents = new String();
     return this.annotate(x, y, w, h, options);
   },
 
-  textAnnotation(x, y, w, h, text, options) {
-    if (options == null) {
-      options = {};
-    }
+  textAnnotation(x, y, w, h, text, options = {}) {
     options.Subtype = 'FreeText';
     options.Contents = new String(text);
     options.DA = new String();
+    return this.annotate(x, y, w, h, options);
+  },
+
+  fileAnnotation(x, y, w, h, file = {}, options = {}) {
+    // create hidden file
+    const filespec = this.file(file.src, Object.assign({ hidden: true }, file));
+
+    options.Subtype = 'FileAttachment';
+    options.FS = filespec;
+
+    // add description from filespec unless description (Contents) has already been set
+    if (options.Contents) {
+      options.Contents = new String(options.Contents);
+    } else if (filespec.data.Desc) {
+      options.Contents = filespec.data.Desc;
+    }
+
     return this.annotate(x, y, w, h, options);
   },
 
@@ -166,7 +155,7 @@ export default {
     let x2 = x1 + w;
 
     // apply current transformation matrix to points
-    const [m0, m1, m2, m3, m4, m5] = Array.from(this._ctm);
+    const [m0, m1, m2, m3, m4, m5] = this._ctm;
     x1 = m0 * x1 + m2 * y1 + m4;
     y1 = m1 * x1 + m3 * y1 + m5;
     x2 = m0 * x2 + m2 * y2 + m4;

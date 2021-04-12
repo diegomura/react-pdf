@@ -1,10 +1,11 @@
 import SVGPath from '../path';
 import PDFObject from '../object';
 
+const { number } = PDFObject;
+
 // This constant is used to approximate a symmetrical arc using a cubic
 // Bezier curve.
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
-
 export default {
   initVector() {
     this._ctm = [1, 0, 0, 1, 0, 0]; // current transformation matrix
@@ -27,7 +28,7 @@ export default {
   },
 
   lineWidth(w) {
-    return this.addContent(`${PDFObject.number(w)} w`);
+    return this.addContent(`${number(w)} w`);
   },
 
   _CAP_STYLES: {
@@ -57,7 +58,7 @@ export default {
   },
 
   miterLimit(m) {
-    return this.addContent(`${PDFObject.number(m)} M`);
+    return this.addContent(`${number(m)} M`);
   },
 
   dash(length, options) {
@@ -90,36 +91,30 @@ export default {
   },
 
   moveTo(x, y) {
-    return this.addContent(`${PDFObject.number(x)} ${PDFObject.number(y)} m`);
+    return this.addContent(`${number(x)} ${number(y)} m`);
   },
 
   lineTo(x, y) {
-    return this.addContent(`${PDFObject.number(x)} ${PDFObject.number(y)} l`);
+    return this.addContent(`${number(x)} ${number(y)} l`);
   },
 
   bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) {
     return this.addContent(
-      `${PDFObject.number(cp1x)} ${PDFObject.number(cp1y)} ${PDFObject.number(
-        cp2x,
-      )} ${PDFObject.number(cp2y)} ${PDFObject.number(x)} ${PDFObject.number(
-        y,
-      )} c`,
+      `${number(cp1x)} ${number(cp1y)} ${number(cp2x)} ${number(cp2y)} ${number(
+        x,
+      )} ${number(y)} c`,
     );
   },
 
   quadraticCurveTo(cpx, cpy, x, y) {
     return this.addContent(
-      `${PDFObject.number(cpx)} ${PDFObject.number(cpy)} ${PDFObject.number(
-        x,
-      )} ${PDFObject.number(y)} v`,
+      `${number(cpx)} ${number(cpy)} ${number(x)} ${number(y)} v`,
     );
   },
 
   rect(x, y, w, h) {
     return this.addContent(
-      `${PDFObject.number(x)} ${PDFObject.number(y)} ${PDFObject.number(
-        w,
-      )} ${PDFObject.number(h)} re`,
+      `${number(x)} ${number(y)} ${number(w)} ${number(h)} re`,
     );
   },
 
@@ -323,11 +318,8 @@ export default {
     return this.transform(1, 0, 0, 1, x, y);
   },
 
-  rotate(angle, options) {
+  rotate(angle, options = {}) {
     let y;
-    if (options == null) {
-      options = {};
-    }
     const rad = (angle * Math.PI) / 180;
     const cos = Math.cos(rad);
     const sin = Math.sin(rad);
@@ -344,13 +336,10 @@ export default {
     return this.transform(cos, sin, -sin, cos, x, y);
   },
 
-  scale(xFactor, yFactor, options) {
+  scale(xFactor, yFactor, options = {}) {
     let y;
     if (yFactor == null) {
       yFactor = xFactor;
-    }
-    if (options == null) {
-      options = {};
     }
     if (typeof yFactor === 'object') {
       options = yFactor;

@@ -9,14 +9,37 @@ import Fonts from './mixins/fonts';
 import Text from './mixins/text';
 import Images from './mixins/images';
 import Annotations from './mixins/annotations';
+import AcroFormMixin from './mixins/acroform';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
     super();
-
     this.options = options;
-    this.version = 1.3;
-    this.compress = true;
+
+    // PDF version
+    switch (options.pdfVersion) {
+      case '1.4':
+        this.version = 1.4;
+        break;
+      case '1.5':
+        this.version = 1.5;
+        break;
+      case '1.6':
+        this.version = 1.6;
+        break;
+      case '1.7':
+      case '1.7ext3':
+        this.version = 1.7;
+        break;
+      default:
+        this.version = 1.3;
+        break;
+    }
+
+    // Whether streams should be compressed
+    this.compress =
+      this.options.compress != null ? this.options.compress : true;
+
     this._pageBuffer = [];
     this._pageBufferStart = 0;
 
@@ -26,19 +49,25 @@ class PDFDocument extends stream.Readable {
     this._ended = false;
     this._offset = 0;
 
+    const Pages = this.ref({
+      Type: 'Pages',
+      Count: 0,
+      Kids: [],
+    });
+
     const Names = this.ref({
       Dests: new PDFNameTree(),
     });
 
     this._root = this.ref({
       Type: 'Catalog',
-      Pages: this.ref({
-        Type: 'Pages',
-        Count: 0,
-        Kids: [],
-      }),
+      Pages,
       Names,
     });
+
+    if (this.options.lang) {
+      this._root.data.Lang = new String(this.options.lang);
+    }
 
     // The current page
     this.page = null;
@@ -62,6 +91,12 @@ class PDFDocument extends stream.Readable {
         const val = this.options.info[key];
         this.info[key] = val;
       }
+    }
+
+    if (this.options.displayTitle) {
+      this._root.data.ViewerPreferences = this.ref({
+        DisplayDocTitle: true,
+      });
     }
 
     // Write the header PDF version
@@ -167,7 +202,10 @@ class PDFDocument extends stream.Readable {
         val = new String(val);
       }
 
-      this._info.data[key] = val;
+      let entry = this.ref(val);
+      entry.end();
+
+      this._info.data[key] = entry;
     }
 
     this._info.end();
@@ -180,6 +218,11 @@ class PDFDocument extends stream.Readable {
     this._root.end();
     this._root.data.Pages.end();
     this._root.data.Names.end();
+    this.endAcroForm();
+
+    if (this._root.data.ViewerPreferences) {
+      this._root.data.ViewerPreferences.end();
+    }
 
     if (this._waiting === 0) {
       return this._finalize();
@@ -241,5 +284,6 @@ mixin(Fonts);
 mixin(Text);
 mixin(Images);
 mixin(Annotations);
+mixin(AcroFormMixin);
 
 export default PDFDocument;

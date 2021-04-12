@@ -4,6 +4,7 @@ declare module '@react-pdf/renderer' {
     Style,
     PageSize,
     FontStore,
+    PDFVersion,
     Orientation,
     SourceObject,
     HyphenationCallback,
@@ -26,6 +27,7 @@ declare module '@react-pdf/renderer' {
       keywords?: string;
       creator?: string;
       producer?: string;
+      pdfVersion?: PDFVersion;
       onRender?: (props: OnRenderProps) => any;
     }
 

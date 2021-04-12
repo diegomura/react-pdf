@@ -1,3 +1,4 @@
+export * from './pdf';
 export * from './svg';
 export * from './node';
 export * from './page';

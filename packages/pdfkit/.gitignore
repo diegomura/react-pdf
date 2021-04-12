@@ -1,0 +1,3 @@
+*.b64.afm
+lib
+node_modules

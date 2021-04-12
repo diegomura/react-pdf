@@ -37,7 +37,9 @@ const babelConfig = ({ browser }) => ({
       {
         loose: true,
         modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+        ...(browser
+          ? { targets: { browsers: 'last 2 versions' } }
+          : { targets: { node: '12' } }),
       },
     ],
     '@babel/preset-react',

@@ -33,11 +33,16 @@ const pdf = initialValue => {
   if (initialValue) updateContainer(initialValue);
 
   const render = async (compress = true) => {
-    const ctx = new PDFDocument({ autoFirstPage: false });
-    const layout = await layoutDocument(container.document, fontStore);
+    const { pdfVersion } = container.document.props || {};
 
-    // For some reason, when rendering to string if compress=true the document is blank
-    ctx.compress = compress;
+    const ctx = new PDFDocument({
+      compress,
+      autoFirstPage: false,
+      displayTitle: true,
+      pdfVersion,
+    });
+
+    const layout = await layoutDocument(container.document, fontStore);
 
     return renderPDF(ctx, layout);
   };
@@ -74,7 +79,7 @@ const pdf = initialValue => {
 
   const toString = async () => {
     let result = '';
-    const instance = await render(false);
+    const instance = await render(false); // For some reason, when rendering to string if compress=true the document is blank
 
     return new Promise((resolve, reject) => {
       try {

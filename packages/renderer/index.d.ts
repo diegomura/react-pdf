@@ -336,7 +336,7 @@ declare module '@react-pdf/renderer' {
     }
 
     /**
-     * The <Tspan /> defines a subtext within a <Text /> element or another <Tspan /> element
+     * The <Tspan /> element defines a subtext within a <Text /> element or another <Tspan /> element.
      * It allows for adjustment of the style and/or position of that subtext as needed.
      */
     class Tspan extends React.Component<TspanProps> {}

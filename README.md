@@ -18,7 +18,7 @@
   </p>
 </p>
 
-> New react-pdf 2.0 was relesed. [Read about the announcement](http://react-pdf.org/blog/announcing-react-pdf-v2)
+> New react-pdf 2.0 was released. [Read about the announcement](http://react-pdf.org/blog/announcing-react-pdf-v2)
 
 ## Lost?
 

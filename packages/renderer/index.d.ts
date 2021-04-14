@@ -330,6 +330,17 @@ declare module '@react-pdf/renderer' {
      */
     class Ellipse extends React.Component<EllipseProps> {}
 
+    interface TspanProps {
+      x?: string | number;
+      y?: string | number;
+    }
+
+    /**
+     * The <Tspan /> defines a subtext within a <Text /> element or another <Tspan /> element
+     * It allows for adjustment of the style and/or position of that subtext as needed.
+     */
+    class Tspan extends React.Component<TspanProps> {}
+
     interface GProps extends SVGPresentationAttributes {}
 
     /**
@@ -531,6 +542,7 @@ declare module '@react-pdf/renderer' {
   const Rect: typeof ReactPDF.Rect;
   const Circle: typeof ReactPDF.Circle;
   const Ellipse: typeof ReactPDF.Ellipse;
+  const Tspan: typeof ReactPDF.Tspan;
   const G: typeof ReactPDF.G;
   const Stop: typeof ReactPDF.Stop;
   const Defs: typeof ReactPDF.Defs;
@@ -569,6 +581,7 @@ declare module '@react-pdf/renderer' {
     Rect,
     Circle,
     Ellipse,
+    Tspan,
     G,
     Stop,
     Defs,

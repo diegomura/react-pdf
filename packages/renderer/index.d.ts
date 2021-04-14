@@ -330,7 +330,7 @@ declare module '@react-pdf/renderer' {
      */
     class Ellipse extends React.Component<EllipseProps> {}
 
-    interface TspanProps {
+    interface TspanProps extends SVGPresentationAttributes {
       x?: string | number;
       y?: string | number;
     }

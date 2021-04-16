@@ -14,7 +14,7 @@
     <a href="https://github.com/prettier/prettier">
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
     </a>
-    <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=shield"/></a>
+    <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf.svg?type=shield"/></a>
   </p>
 </p>
 
@@ -107,7 +107,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/reac
 
 MIT © [Diego Muracciole](http://github.com/diegomura)
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf?ref=badge_large)
 
 ---
 ![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)

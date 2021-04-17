@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
+import * as R from 'ramda';
 import isUrl from 'is-url';
 import fetch from 'cross-fetch';
 import fontkit from '@react-pdf/fontkit';
@@ -20,6 +21,39 @@ const isDataUrl = dataUrl => {
   const hasBase64Prefix = header.split(';')[1] === 'base64';
 
   return hasDataPrefix && hasBase64Prefix;
+};
+
+const getNumericFontWeight = fontWeight => {
+  if (R.isNil(fontWeight)) {
+    return undefined;
+  }
+
+  if (R.is(Number, fontWeight)) {
+    return fontWeight;
+  }
+
+  switch (fontWeight) {
+    case 'thin':
+      return 100;
+    case 'ultralight':
+      return 200;
+    case 'light':
+      return 300;
+    case 'normal':
+      return 400;
+    case 'medium':
+      return 500;
+    case 'semibold':
+      return 600;
+    case 'bold':
+      return 700;
+    case 'ultrabold':
+      return 800;
+    case 'heavy':
+      return 900;
+    default:
+      throw new Error(`'${fontWeight}' is not a recognized font weight name`);
+  }
 };
 
 class FontSource {
@@ -78,10 +112,13 @@ class Font {
 
   resolve(descriptor) {
     const { fontWeight = 400, fontStyle = 'normal' } = descriptor;
+    const numericFontWeight = getNumericFontWeight(fontWeight);
     const styleSources = this.sources.filter(s => s.fontStyle === fontStyle);
 
     // Weight resolution. https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights
-    const exactFit = styleSources.find(s => s.fontWeight === fontWeight);
+    const exactFit = styleSources.find(
+      s => numericFontWeight === getNumericFontWeight(s.fontWeight),
+    );
 
     if (exactFit) return exactFit;
 

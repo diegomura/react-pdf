@@ -22,7 +22,7 @@ interface FontSource {
   src: string;
   fontFamily: string;
   fontStyle: FontStyle;
-  fontWeight: number;
+  fontWeight: FontWeight;
   data: any;
   loading: boolean;
   options: any;

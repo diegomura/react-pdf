@@ -2,6 +2,7 @@ import { Style } from './style';
 import { Primitive } from './primitive';
 import { HyphenationCallback } from './font';
 import { PageSize, Orientation } from './page';
+import type PDFDocument from '@react-pdf/pdfkit';
 
 interface BaseProps {
   id?: string;
@@ -35,6 +36,10 @@ interface PageProps extends BaseProps {
   orientation?: Orientation;
 }
 
+interface PDFDocumentCallback {
+  (ctx: InstanceType<PDFDocument>): void;
+}
+
 interface DocumentProps {
   title?: string;
   author?: string;
@@ -42,6 +47,7 @@ interface DocumentProps {
   keywords?: string;
   creator?: string;
   producer?: string;
+  onPdfInitialized?: PDFDocumentCallback;
 }
 
 interface TextInstanceNode {

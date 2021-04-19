@@ -42,6 +42,12 @@ const pdf = initialValue => {
       pdfVersion,
     });
 
+    const { onPdfInitialized } = container.document.props || {};
+
+    if (typeof onPdfInitialized === "function") {
+      onPdfInitialized(ctx);
+    }
+
     const layout = await layoutDocument(container.document, fontStore);
 
     return renderPDF(ctx, layout);

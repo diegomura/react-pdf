@@ -1,0 +1,44 @@
+consonant_modifiers = CMAbv* CMBlw* ((H B | SUB) VS? CMAbv? CMBlw*)*;
+medial_consonants = MPre? MAbv? MBlw? MPst?;
+dependent_vowels = VPre* VAbv* VBlw* VPst*;
+vowel_modifiers = VMPre* VMAbv* VMBlw* VMPst*;
+final_consonants = FAbv* FBlw* FPst* FM?;
+
+virama_terminated_cluster =
+  R? (B | GB) VS?
+  consonant_modifiers
+  H
+;
+
+standard_cluster =
+  R? (B | GB) VS?
+  consonant_modifiers
+  medial_consonants
+  dependent_vowels
+  vowel_modifiers
+  final_consonants
+;
+
+broken_cluster =
+  R?
+  consonant_modifiers
+  medial_consonants
+  dependent_vowels
+  vowel_modifiers
+  final_consonants
+;
+
+number_joiner_terminated_cluster = N VS? (HN N VS?)* HN;
+numeral_cluster = N VS? (HN N VS?)*;
+symbol_cluster = S VS? SMAbv* SMBlw*;
+independent_cluster = (IND | O | WJ) VS?;
+
+main =
+    independent_cluster:independent_cluster
+  | virama_terminated_cluster:virama_terminated_cluster
+  | standard_cluster:standard_cluster
+  | number_joiner_terminated_cluster:number_joiner_terminated_cluster
+  | numeral_cluster:numeral_cluster
+  | symbol_cluster:symbol_cluster
+  | broken_cluster:broken_cluster
+;

@@ -73,7 +73,7 @@ export const usePDF = ({ document }) => {
 };
 
 export const BlobProvider = ({ document: doc, children }) => {
-  const [instance, updateInstance] = usePDF({ document });
+  const [instance, updateInstance] = usePDF({ document: doc });
 
   useEffect(updateInstance, [doc]);
 

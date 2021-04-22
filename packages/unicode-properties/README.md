@@ -4,13 +4,12 @@
 
 # @react-pdf/unicode-properties
 
+Provides fast access to unicode character properties. Uses [unicode-trie](https://github.com/devongovett/unicode-trie) to compress the
+properties for all code points into just 12KB.
+
 ## Acknowledges
 
 This project is a fork of [unicode-properties](https://github.com/foliojs/unicode-properties) by @devongovett and continued under the scope of this project since it has react-pdf specific features. Any recongnition should go to him and the original project mantainers.
-
-
-Provides fast access to unicode character properties. Uses [unicode-trie](https://github.com/devongovett/unicode-trie) to compress the
-properties for all code points into just 12KB.
 
 ## Fork changes
 
@@ -21,7 +20,7 @@ properties for all code points into just 12KB.
 
 ## Usage
 
-```
+```sh
 npm install unicode-properties
 ```
 

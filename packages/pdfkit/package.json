@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@react-pdf/fontkit": "^2.0.1",
-    "@react-pdf/png-js": "^1.0.0",
+    "@react-pdf/png-js": "^2.0.0",
     "lz-string": "^1.4.4"
   },
   "devDependencies": {

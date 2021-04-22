@@ -9,6 +9,7 @@ module.exports = {
     'vars-on-top': 0,
     'no-loop-func': 0,
     'default-case': 0,
+    'prefer-spread': 0,
     'no-cond-assign': 0,
     'no-multi-assign': 0,
     'no-nested-ternary': 0,

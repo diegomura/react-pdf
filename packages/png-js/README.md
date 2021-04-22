@@ -10,6 +10,12 @@ A PNG decoder in JS for the canvas element or Node.js.
 
 This project is a fork of [png.js](https://github.com/foliojs/png.js) by @devongovett and continued under the scope of this project since it has react-pdf specific features. Any recongnition should go to him and the original project mantainers.
 
+## About this fork
+
+> Updated to 977b857a11676c1e720e79ed8d9178a005a9abd6
+
+- Build node and browser specific bundles
+- Uses rollup for build
 ## Browser Usage
 
 Simply include png.js and zlib.js on your HTML page, create a canvas element, and call PNG.load to load an image.

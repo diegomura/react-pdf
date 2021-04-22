@@ -1,6 +1,5 @@
 import fs from 'fs';
 import zlib from 'zlib';
-import range from './range';
 
 class PNG {
   static decode(path, fn) {
@@ -34,15 +33,11 @@ class PNG {
     this.text = {};
 
     while (true) {
-      var end;
       const chunkSize = this.readUInt32();
-      const section = (() => {
-        const result = [];
-        for (i = 0; i < 4; i++) {
-          result.push(String.fromCharCode(this.data[this.pos++]));
-        }
-        return result;
-      })().join('');
+      let section = '';
+      for (i = 0; i < 4; i++) {
+        section += String.fromCharCode(this.data[this.pos++]);
+      }
 
       switch (section) {
         case 'IHDR':
@@ -61,7 +56,7 @@ class PNG {
           break;
 
         case 'IDAT':
-          for (i = 0, end = chunkSize; i < end; i++) {
+          for (i = 0; i < chunkSize; i++) {
             this.imgData.push(this.data[this.pos++]);
           }
           break;
@@ -79,13 +74,7 @@ class PNG {
               this.transparency.indexed = this.read(chunkSize);
               var short = 255 - this.transparency.indexed.length;
               if (short > 0) {
-                var asc;
-                var end1;
-                for (
-                  i = 0, end1 = short, asc = 0 <= end1;
-                  asc ? i < end1 : i > end1;
-                  asc ? i++ : i--
-                ) {
+                for (i = 0; i < short; i++) {
                   this.transparency.indexed.push(255);
                 }
               }
@@ -105,40 +94,39 @@ class PNG {
         case 'tEXt':
           var text = this.read(chunkSize);
           var index = text.indexOf(0);
-          var key = String.fromCharCode(
-            ...Array.from(text.slice(0, index) || []),
-          );
-          this.text[key] = String.fromCharCode(
-            ...Array.from(text.slice(index + 1) || []),
+          var key = String.fromCharCode.apply(String, text.slice(0, index));
+          this.text[key] = String.fromCharCode.apply(
+            String,
+            text.slice(index + 1),
           );
           break;
 
         case 'IEND':
           // we've got everything we need!
-          this.colors = (() => {
-            switch (this.colorType) {
-              case 0:
-              case 3:
-              case 4:
-                return 1;
-              case 2:
-              case 6:
-                return 3;
-            }
-          })();
+          switch (this.colorType) {
+            case 0:
+            case 3:
+            case 4:
+              this.colors = 1;
+              break;
+            case 2:
+            case 6:
+              this.colors = 3;
+              break;
+          }
 
           this.hasAlphaChannel = [4, 6].includes(this.colorType);
           var colors = this.colors + (this.hasAlphaChannel ? 1 : 0);
           this.pixelBitlength = this.bits * colors;
 
-          this.colorSpace = (() => {
-            switch (this.colors) {
-              case 1:
-                return 'DeviceGray';
-              case 3:
-                return 'DeviceRGB';
-            }
-          })();
+          switch (this.colors) {
+            case 1:
+              this.colorSpace = 'DeviceGray';
+              break;
+            case 3:
+              this.colorSpace = 'DeviceRGB';
+              break;
+          }
 
           this.imgData = new Buffer(this.imgData);
           return;
@@ -157,7 +145,11 @@ class PNG {
   }
 
   read(bytes) {
-    return range(0, bytes, false).map(() => this.data[this.pos++]);
+    const result = new Array(bytes);
+    for (let i = 0; i < bytes; i++) {
+      result[i] = this.data[this.pos++];
+    }
+    return result;
   }
 
   readUInt32() {
@@ -180,120 +172,153 @@ class PNG {
         throw err;
       }
 
+      const { width, height } = this;
       const pixelBytes = this.pixelBitlength / 8;
-      const scanlineLength = pixelBytes * this.width;
 
-      const pixels = new Buffer(scanlineLength * this.height);
+      const pixels = new Buffer(width * height * pixelBytes);
       const { length } = data;
-      let row = 0;
       let pos = 0;
-      let c = 0;
 
-      while (pos < length) {
-        var byte;
-        var col;
-        var i;
-        var left;
-        var upper;
-        var end;
-        var end1;
-        var end2;
-        var end3;
-        var end4;
-        switch (data[pos++]) {
-          case 0: // None
-            for (i = 0, end = scanlineLength; i < end; i++) {
-              pixels[c++] = data[pos++];
-            }
-            break;
+      function pass(x0, y0, dx, dy, singlePass = false) {
+        const w = Math.ceil((width - x0) / dx);
+        const h = Math.ceil((height - y0) / dy);
+        const scanlineLength = pixelBytes * w;
+        const buffer = singlePass ? pixels : new Buffer(scanlineLength * h);
+        let row = 0;
+        let c = 0;
+        while (row < h && pos < length) {
+          var byte;
+          var col;
+          var i;
+          var left;
+          var upper;
+          switch (data[pos++]) {
+            case 0: // None
+              for (i = 0; i < scanlineLength; i++) {
+                buffer[c++] = data[pos++];
+              }
+              break;
 
-          case 1: // Sub
-            for (i = 0, end1 = scanlineLength; i < end1; i++) {
-              byte = data[pos++];
-              left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-              pixels[c++] = (byte + left) % 256;
-            }
-            break;
+            case 1: // Sub
+              for (i = 0; i < scanlineLength; i++) {
+                byte = data[pos++];
+                left = i < pixelBytes ? 0 : buffer[c - pixelBytes];
+                buffer[c++] = (byte + left) % 256;
+              }
+              break;
 
-          case 2: // Up
-            for (i = 0, end2 = scanlineLength; i < end2; i++) {
-              byte = data[pos++];
-              col = (i - (i % pixelBytes)) / pixelBytes;
-              upper =
-                row &&
-                pixels[
-                  (row - 1) * scanlineLength +
-                    col * pixelBytes +
-                    (i % pixelBytes)
-                ];
-              pixels[c++] = (upper + byte) % 256;
-            }
-            break;
-
-          case 3: // Average
-            for (i = 0, end3 = scanlineLength; i < end3; i++) {
-              byte = data[pos++];
-              col = (i - (i % pixelBytes)) / pixelBytes;
-              left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-              upper =
-                row &&
-                pixels[
-                  (row - 1) * scanlineLength +
-                    col * pixelBytes +
-                    (i % pixelBytes)
-                ];
-              pixels[c++] = (byte + Math.floor((left + upper) / 2)) % 256;
-            }
-            break;
-
-          case 4: // Paeth
-            for (i = 0, end4 = scanlineLength; i < end4; i++) {
-              var paeth;
-              var upperLeft;
-              byte = data[pos++];
-              col = (i - (i % pixelBytes)) / pixelBytes;
-              left = i < pixelBytes ? 0 : pixels[c - pixelBytes];
-
-              if (row === 0) {
-                upper = upperLeft = 0;
-              } else {
+            case 2: // Up
+              for (i = 0; i < scanlineLength; i++) {
+                byte = data[pos++];
+                col = (i - (i % pixelBytes)) / pixelBytes;
                 upper =
-                  pixels[
+                  row &&
+                  buffer[
                     (row - 1) * scanlineLength +
                       col * pixelBytes +
                       (i % pixelBytes)
                   ];
-                upperLeft =
-                  col &&
-                  pixels[
+                buffer[c++] = (upper + byte) % 256;
+              }
+              break;
+
+            case 3: // Average
+              for (i = 0; i < scanlineLength; i++) {
+                byte = data[pos++];
+                col = (i - (i % pixelBytes)) / pixelBytes;
+                left = i < pixelBytes ? 0 : buffer[c - pixelBytes];
+                upper =
+                  row &&
+                  buffer[
                     (row - 1) * scanlineLength +
-                      (col - 1) * pixelBytes +
+                      col * pixelBytes +
                       (i % pixelBytes)
                   ];
+                buffer[c++] = (byte + Math.floor((left + upper) / 2)) % 256;
               }
+              break;
 
-              const p = left + upper - upperLeft;
-              const pa = Math.abs(p - left);
-              const pb = Math.abs(p - upper);
-              const pc = Math.abs(p - upperLeft);
+            case 4: // Paeth
+              for (i = 0; i < scanlineLength; i++) {
+                var paeth;
+                var upperLeft;
+                byte = data[pos++];
+                col = (i - (i % pixelBytes)) / pixelBytes;
+                left = i < pixelBytes ? 0 : buffer[c - pixelBytes];
 
-              if (pa <= pb && pa <= pc) {
-                paeth = left;
-              } else if (pb <= pc) {
-                paeth = upper;
-              } else {
-                paeth = upperLeft;
+                if (row === 0) {
+                  upper = upperLeft = 0;
+                } else {
+                  upper =
+                    buffer[
+                      (row - 1) * scanlineLength +
+                        col * pixelBytes +
+                        (i % pixelBytes)
+                    ];
+                  upperLeft =
+                    col &&
+                    buffer[
+                      (row - 1) * scanlineLength +
+                        (col - 1) * pixelBytes +
+                        (i % pixelBytes)
+                    ];
+                }
+
+                const p = left + upper - upperLeft;
+                const pa = Math.abs(p - left);
+                const pb = Math.abs(p - upper);
+                const pc = Math.abs(p - upperLeft);
+
+                if (pa <= pb && pa <= pc) {
+                  paeth = left;
+                } else if (pb <= pc) {
+                  paeth = upper;
+                } else {
+                  paeth = upperLeft;
+                }
+
+                buffer[c++] = (byte + paeth) % 256;
               }
+              break;
 
-              pixels[c++] = (byte + paeth) % 256;
+            default:
+              throw new Error(`Invalid filter algorithm: ${data[pos - 1]}`);
+          }
+
+          if (!singlePass) {
+            let pixelsPos = ((y0 + row * dy) * width + x0) * pixelBytes;
+            let bufferPos = row * scanlineLength;
+            for (i = 0; i < w; i++) {
+              for (let j = 0; j < pixelBytes; j++)
+                pixels[pixelsPos++] = buffer[bufferPos++];
+              pixelsPos += (dx - 1) * pixelBytes;
             }
-            break;
+          }
 
-          default:
-            throw new Error(`Invalid filter algorithm: ${data[pos - 1]}`);
+          row++;
         }
+      }
 
-        row++;
+      if (this.interlaceMethod === 1) {
+        /*
+          1 6 4 6 2 6 4 6
+          7 7 7 7 7 7 7 7
+          5 6 5 6 5 6 5 6
+          7 7 7 7 7 7 7 7
+          3 6 4 6 3 6 4 6
+          7 7 7 7 7 7 7 7
+          5 6 5 6 5 6 5 6
+          7 7 7 7 7 7 7 7
+        */
+        pass(0, 0, 8, 8); // 1
+        pass(4, 0, 8, 8); // 2
+        pass(0, 4, 4, 8); // 3
+        pass(2, 0, 4, 4); // 4
+        pass(0, 2, 2, 4); // 5
+        pass(1, 0, 2, 2); // 6
+        pass(0, 1, 1, 2); // 7
+      } else {
+        pass(0, 0, 1, 1, true);
       }
 
       return fn(pixels);
@@ -302,12 +327,13 @@ class PNG {
 
   decodePalette() {
     const { palette } = this;
+    const { length } = palette;
     const transparency = this.transparency.indexed || [];
-    const ret = new Buffer(transparency.length + palette.length);
+    const ret = new Buffer(transparency.length + length);
     let pos = 0;
     let c = 0;
 
-    for (let i = 0, end = palette.length; i < end; i += 3) {
+    for (let i = 0; i < length; i += 3) {
       var left;
       ret[pos++] = palette[i];
       ret[pos++] = palette[i + 1];
@@ -320,21 +346,19 @@ class PNG {
 
   copyToImageData(imageData, pixels) {
     let j;
-    let k;
+    var k;
     let { colors } = this;
     let palette = null;
     let alpha = this.hasAlphaChannel;
 
     if (this.palette.length) {
       palette =
-        this._decodedPalette != null
-          ? this._decodedPalette
-          : (this._decodedPalette = this.decodePalette());
+        this._decodedPalette || (this._decodedPalette = this.decodePalette());
       colors = 4;
       alpha = true;
     }
 
-    const data = (imageData != null ? imageData.data : undefined) || imageData;
+    const data = imageData.data || imageData;
     const { length } = data;
     const input = palette || pixels;
     let i = (j = 0);

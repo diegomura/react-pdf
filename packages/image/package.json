@@ -15,7 +15,7 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/png-js": "^1.0.0",
+    "@react-pdf/png-js": "^2.0.0",
     "cross-fetch": "^3.0.4"
   },
   "devDependencies": {

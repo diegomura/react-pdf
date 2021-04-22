@@ -2079,11 +2079,6 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
-"@react-pdf/png-js@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
-  integrity sha1-APy5adykzoKgp2c0E63gOeR7Nh4=
-
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"

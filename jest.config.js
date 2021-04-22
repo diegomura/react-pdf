@@ -10,5 +10,6 @@ module.exports = {
     '<rootDir>packages/renderer',
     '<rootDir>packages/stylesheet',
     '<rootDir>packages/primitives',
+    '<rootDir>packages/unicode-properties',
   ],
 };

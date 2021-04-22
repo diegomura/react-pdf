@@ -378,6 +378,7 @@ declare module '@react-pdf/renderer' {
     class ClipPath extends React.Component<ClipPathProps> {}
 
     interface LinearGradientProps {
+      id: string;
       x1: string | number;
       x2: string | number;
       y1: string | number;
@@ -390,6 +391,7 @@ declare module '@react-pdf/renderer' {
     class LinearGradient extends React.Component<LinearGradientProps> {}
 
     interface RadialGradientProps {
+      id: string;
       cx: string | number;
       cy: string | number;
       fr: string | number;

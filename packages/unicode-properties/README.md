@@ -14,13 +14,16 @@ properties for all code points into just 12KB.
 
 ## Fork changes
 
+> Updated at a7df933c4fe5ddca2cb9829a5634e6fe9f1ac529
+
 - Trie data parsed as JSON in order to run it both on node and browser easily
 - Written in ES6
-- Build with rollup
 
 ## Usage
 
-    npm install unicode-properties
+```
+npm install unicode-properties
+```
 
 ```javascript
 var unicode = require('unicode-properties');

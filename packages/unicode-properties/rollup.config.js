@@ -2,6 +2,8 @@ import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
+import pkg from './package.json';
+
 const cjs = {
   exports: 'named',
   format: 'cjs',
@@ -16,6 +18,7 @@ const getESM = override => Object.assign({}, esm, override);
 
 const configBase = {
   input: 'index.js',
+  external: Object.keys(pkg.dependencies),
   plugins: [
     json(),
     babel({

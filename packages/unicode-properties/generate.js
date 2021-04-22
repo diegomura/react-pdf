@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 
-let eaw;
-const codePoints = require('codepoints');
 const fs = require('fs');
+const codePoints = require('codepoints');
 const UnicodeTrieBuilder = require('unicode-trie/builder');
 
 const log2 = Math.log2 || (n => Math.log(n) / Math.LN2);
@@ -37,9 +35,7 @@ for (var codePoint of Array.from(codePoints)) {
 }
 
 const numberBits = 10;
-const categoryBits = bits(categoryCount - 1);
 const combiningClassBits = bits(combiningClassCount - 1);
-const bidiMirrorBits = 1;
 const scriptBits = bits(scriptCount - 1);
 const eawBits = bits(eawCount - 1);
 
@@ -84,6 +80,8 @@ const numericValue = function(numeric) {
     return 0;
   }
 };
+
+let eaw;
 
 const trie = new UnicodeTrieBuilder();
 for (codePoint of Array.from(codePoints)) {

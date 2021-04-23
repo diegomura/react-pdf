@@ -15,6 +15,8 @@ declare module '@react-pdf/renderer' {
     interface Styles {
       [key: string]: Style;
     }
+    
+    type Style = Style;
 
     interface OnRenderProps {
       blob?: Blob;

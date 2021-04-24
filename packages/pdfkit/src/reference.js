@@ -56,14 +56,14 @@ class PDFReference extends stream.Writable {
     return callback();
   }
 
-  end(chunk) {
+  end() {
     super.end(...arguments);
 
     if (this.deflate) {
       return this.deflate.end();
-    } else {
-      return this.finalize();
     }
+
+    return this.finalize();
   }
 
   finalize() {

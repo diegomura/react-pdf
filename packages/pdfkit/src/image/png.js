@@ -160,11 +160,9 @@ class PNGImage {
       for (let j = 0, end = pixels.length; j < end; j++) {
         alphaChannel[i++] = transparency[pixels[j]];
       }
-      // console.log(alphaChannel.for);
 
       this.alphaChannel = zlib.deflateSync(alphaChannel);
-      // const imgData2 = decompressSync(alphaChannel);
-      // console.log(this.alphaChannel, imgData2);
+
       return this.finalize();
     });
   }

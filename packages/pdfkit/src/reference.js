@@ -1,5 +1,5 @@
-import zlib from 'zlib';
 import stream from 'stream';
+import zlib from '@react-pdf/zlib';
 import PDFObject from './object';
 
 class PDFReference extends stream.Writable {

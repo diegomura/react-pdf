@@ -1,0 +1,20 @@
+{
+  "name": "@react-pdf/zlib",
+  "version": "2.0.0",
+  "license": "MIT",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf ./lib && babel src --out-dir lib",
+    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+  },
+  "dependencies": {
+    "pako": "~1.0.5"
+  },
+  "files": [
+    "lib"
+  ]
+}

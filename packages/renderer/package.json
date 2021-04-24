@@ -13,8 +13,8 @@
     "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js"
   },
   "scripts": {
-    "build": "rimraf ./dist && rollup -c",
-    "watch": "rimraf ./dist && rollup -c -w",
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
     "precommit": "git add . && lint-staged",
     "lint": "eslint src",
     "test": "jest"

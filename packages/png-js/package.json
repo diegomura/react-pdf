@@ -19,5 +19,8 @@
   },
   "files": [
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "fflate": "^0.6.9"
+  }
 }

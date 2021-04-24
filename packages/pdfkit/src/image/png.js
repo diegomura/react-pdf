@@ -12,26 +12,31 @@ class PNGImage {
   }
 
   embed(document) {
+    let dataDecoded = false;
+
     this.document = document;
     if (this.obj) {
       return;
     }
 
+    const { hasAlphaChannel } = this.image;
+    const isInterlaced = this.image.interlaceMethod === 1;
+
     this.obj = this.document.ref({
       Type: 'XObject',
       Subtype: 'Image',
-      BitsPerComponent: this.image.bits,
+      BitsPerComponent: hasAlphaChannel ? 8 : this.image.bits,
       Width: this.width,
       Height: this.height,
-      Filter: 'FlateDecode',
+      Filter: 'FlateDecode'
     });
 
-    if (!this.image.hasAlphaChannel) {
+    if (!hasAlphaChannel) {
       const params = this.document.ref({
-        Predictor: 15,
+        Predictor: isInterlaced ? 1 : 15,
         Colors: this.image.colors,
         BitsPerComponent: this.image.bits,
-        Columns: this.width,
+        Columns: this.width
       });
 
       this.obj.data['DecodeParms'] = params;
@@ -43,46 +48,52 @@ class PNGImage {
     } else {
       // embed the color palette in the PDF as an object stream
       const palette = this.document.ref();
-      palette.end(new Buffer(this.image.palette));
+      palette.end(Buffer.from(this.image.palette));
 
       // build the color space array for the image
       this.obj.data['ColorSpace'] = [
         'Indexed',
         'DeviceRGB',
         this.image.palette.length / 3 - 1,
-        palette,
+        palette
       ];
     }
 
     // For PNG color types 0, 2 and 3, the transparency data is stored in
     // a dedicated PNG chunk.
-    if (this.image.transparency.grayscale) {
+    if (this.image.transparency.grayscale != null) {
       // Use Color Key Masking (spec section 4.8.5)
       // An array with N elements, where N is two times the number of color components.
-      const val = this.image.transparency.greyscale;
-      return (this.obj.data['Mask'] = [val, val]);
+      const val = this.image.transparency.grayscale;
+      this.obj.data['Mask'] = [val, val];
     } else if (this.image.transparency.rgb) {
       // Use Color Key Masking (spec section 4.8.5)
       // An array with N elements, where N is two times the number of color components.
       const { rgb } = this.image.transparency;
       const mask = [];
-      for (let x of Array.from(rgb)) {
+      for (let x of rgb) {
         mask.push(x, x);
       }
 
-      return (this.obj.data['Mask'] = mask);
+      this.obj.data['Mask'] = mask;
     } else if (this.image.transparency.indexed) {
       // Create a transparency SMask for the image based on the data
       // in the PLTE and tRNS sections. See below for details on SMasks.
+      dataDecoded = true;
       return this.loadIndexedAlphaChannel();
-    } else if (this.image.hasAlphaChannel) {
+    } else if (hasAlphaChannel) {
       // For PNG color types 4 and 6, the transparency data is stored as a alpha
       // channel mixed in with the main image data. Separate this data out into an
       // SMask object and store it separately in the PDF.
+      dataDecoded = true;
       return this.splitAlphaChannel();
-    } else {
-      return this.finalize();
     }
+
+    if (isInterlaced && !dataDecoded) {
+      return this.decodeData();
+    }
+
+    this.finalize();
   }
 
   finalize() {
@@ -95,7 +106,7 @@ class PNGImage {
         BitsPerComponent: 8,
         Filter: 'FlateDecode',
         ColorSpace: 'DeviceGray',
-        Decode: [0, 1],
+        Decode: [0, 1]
       });
 
       sMask.end(this.alphaChannel);
@@ -112,61 +123,56 @@ class PNGImage {
 
   splitAlphaChannel() {
     return this.image.decodePixels(pixels => {
-      let a, p;
-      const colorByteSize = (this.image.colors * this.image.bits) / 8;
+      let a;
+      let p;
+
+      const colorCount = this.image.colors;
       const pixelCount = this.width * this.height;
-      const imgData = new Buffer(pixelCount * colorByteSize);
-      const alphaChannel = new Buffer(pixelCount);
+      const imgData = Buffer.alloc(pixelCount * colorCount);
+      const alphaChannel = Buffer.alloc(pixelCount);
 
       let i = (p = a = 0);
       const len = pixels.length;
+      // For 16bit images copy only most significant byte (MSB) - PNG data is always stored in network byte order (MSB first)
+      const skipByteCount = this.image.bits === 16 ? 1 : 0;
       while (i < len) {
-        imgData[p++] = pixels[i++];
-        imgData[p++] = pixels[i++];
-        imgData[p++] = pixels[i++];
+        for (let colorIndex = 0; colorIndex < colorCount; colorIndex++) {
+          imgData[p++] = pixels[i++];
+          i += skipByteCount;
+        }
         alphaChannel[a++] = pixels[i++];
+        i += skipByteCount;
       }
 
-      let done = 0;
-      zlib.deflate(imgData, (err, imgData1) => {
-        this.imgData = imgData1;
-        if (err) {
-          throw err;
-        }
-        if (++done === 2) {
-          return this.finalize();
-        }
-      });
+      this.imgData = zlib.deflateSync(imgData);
 
-      return zlib.deflate(alphaChannel, (err, alphaChannel1) => {
-        this.alphaChannel = alphaChannel1;
-        if (err) {
-          throw err;
-        }
-        if (++done === 2) {
-          return this.finalize();
-        }
-      });
+      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      return this.finalize();
     });
   }
 
-  loadIndexedAlphaChannel(fn) {
+  loadIndexedAlphaChannel() {
     const transparency = this.image.transparency.indexed;
     return this.image.decodePixels(pixels => {
-      const alphaChannel = new Buffer(this.width * this.height);
+      const alphaChannel = Buffer.alloc(this.width * this.height);
 
       let i = 0;
       for (let j = 0, end = pixels.length; j < end; j++) {
         alphaChannel[i++] = transparency[pixels[j]];
       }
+      // console.log(alphaChannel.for);
 
-      return zlib.deflate(alphaChannel, (err, alphaChannel1) => {
-        this.alphaChannel = alphaChannel1;
-        if (err) {
-          throw err;
-        }
-        return this.finalize();
-      });
+      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      // const imgData2 = decompressSync(alphaChannel);
+      // console.log(this.alphaChannel, imgData2);
+      return this.finalize();
+    });
+  }
+
+  decodeData() {
+    this.image.decodePixels(pixels => {
+      this.imgData = zlib.deflateSync(pixels);
+      this.finalize();
     });
   }
 }

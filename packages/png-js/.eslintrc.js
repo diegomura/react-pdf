@@ -12,6 +12,7 @@ module.exports = {
     'prefer-spread': 0,
     'no-cond-assign': 0,
     'no-multi-assign': 0,
+    'no-param-reassign': 0,
     'no-nested-ternary': 0,
     'consistent-return': 0,
     'prefer-destructuring': 0,

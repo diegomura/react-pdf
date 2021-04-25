@@ -1,5 +1,5 @@
-import zlib from 'zlib';
 import stream from 'stream';
+import zlib from '@react-pdf/zlib';
 import PDFObject from './object';
 
 class PDFReference extends stream.Writable {
@@ -35,7 +35,7 @@ class PDFReference extends stream.Writable {
 
   _write(chunk, encoding, callback) {
     if (!Buffer.isBuffer(chunk)) {
-      chunk = new Buffer(chunk + '\n', 'binary');
+      chunk = Buffer.from(chunk + '\n', 'binary');
     }
 
     this.uncompressedLength += chunk.length;

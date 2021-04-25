@@ -9,11 +9,11 @@ class PDFImage {
     if (Buffer.isBuffer(src)) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = new Buffer(new Uint8Array(src));
+      data = Buffer.from(new Uint8Array(src));
     } else {
       let match = /^data:.+;base64,(.*)$/.exec(src);
       if (match) {
-        data = new Buffer(match[1], 'base64');
+        data = Buffer.from(match[1], 'base64');
       } else if (!BROWSER) {
         data = fs.readFileSync(src);
         if (!data) return;

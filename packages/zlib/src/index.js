@@ -15,7 +15,6 @@ const Z_DEFAULT_CHUNK = 16 * 1024;
 function _close(engine, callback) {
   if (callback) process.nextTick(callback);
 
-  // Caller may invoke .close after a zlib error (which will null _handle).
   if (!engine._handle) return;
 
   engine._handle.close();
@@ -77,56 +76,13 @@ class Zlib extends Transform {
   _processChunk(chunk, flushFlag, cb) {
     let availInBefore = chunk && chunk.length;
     let availOutBefore = this._chunkSize - this._offset;
-    let inOff = 0;
 
     const self = this;
-
+    const buffers = [];
     const async = typeof cb === 'function';
 
-    if (!async) {
-      var buffers = [];
-      var nread = 0;
-
-      let res = this._handle.writeSync(
-        flushFlag,
-        chunk,
-        inOff,
-        availInBefore,
-        this._buffer,
-        this._offset,
-        availOutBefore,
-      );
-
-      while (callback(res[0], res[1])) {
-        res = this._handle.writeSync(
-          flushFlag,
-          chunk,
-          inOff,
-          availInBefore,
-          this._buffer,
-          this._offset,
-          availOutBefore,
-        );
-      }
-
-      const buf = Buffer.concat(buffers, nread);
-      _close(this);
-
-      return buf;
-    }
-
-    const req = this._handle.write(
-      flushFlag,
-      chunk,
-      inOff,
-      availInBefore,
-      this._buffer,
-      this._offset,
-      availOutBefore,
-    );
-
-    req.buffer = chunk;
-    req.callback = callback;
+    let inOff = 0;
+    let nread = 0;
 
     function callback(availInAfter, availOutAfter) {
       if (this) {
@@ -138,8 +94,9 @@ class Zlib extends Transform {
 
       if (have > 0) {
         const out = self._buffer.slice(self._offset, self._offset + have);
+
         self._offset += have;
-        // serve some output to the consumer.
+
         if (async) {
           self.push(out);
         } else {
@@ -148,7 +105,6 @@ class Zlib extends Transform {
         }
       }
 
-      // exhausted the output buffer, or used all the input create a new one.
       if (availOutAfter === 0 || self._offset >= self._chunkSize) {
         availOutBefore = self._chunkSize;
         self._offset = 0;
@@ -179,6 +135,47 @@ class Zlib extends Transform {
 
       cb();
     }
+
+    if (!async) {
+      let res = this._handle.writeSync(
+        flushFlag,
+        chunk,
+        inOff,
+        availInBefore,
+        this._buffer,
+        this._offset,
+        availOutBefore,
+      );
+
+      while (callback(res[0], res[1])) {
+        res = this._handle.writeSync(
+          flushFlag,
+          chunk,
+          inOff,
+          availInBefore,
+          this._buffer,
+          this._offset,
+          availOutBefore,
+        );
+      }
+
+      _close(this);
+
+      return Buffer.concat(buffers, nread);
+    }
+
+    const req = this._handle.write(
+      flushFlag,
+      chunk,
+      inOff,
+      availInBefore,
+      this._buffer,
+      this._offset,
+      availOutBefore,
+    );
+
+    req.buffer = chunk;
+    req.callback = callback;
   }
 }
 

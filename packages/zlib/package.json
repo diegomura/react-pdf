@@ -12,7 +12,7 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "pako": "~1.0.5"
+    "pako": "^2.0.3"
   },
   "files": [
     "lib"

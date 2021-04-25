@@ -1,9 +1,6 @@
 const Zstream = require('pako/lib/zlib/zstream');
-const zlibDeflate = require('pako/lib/zlib/deflate.js');
+const zlibDeflate = require('pako/lib/zlib/deflate');
 
-/**
- * Emulate Node's zlib C++ layer for use by the JS layer in index.js
- */
 class Zlib {
   constructor() {
     this.flush = 0;

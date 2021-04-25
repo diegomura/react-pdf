@@ -52,17 +52,17 @@ class PDFDocument extends stream.Readable {
     const Pages = this.ref({
       Type: 'Pages',
       Count: 0,
-      Kids: [],
+      Kids: []
     });
 
     const Names = this.ref({
-      Dests: new PDFNameTree(),
+      Dests: new PDFNameTree()
     });
 
     this._root = this.ref({
       Type: 'Catalog',
       Pages,
-      Names,
+      Names
     });
 
     if (this.options.lang) {
@@ -83,7 +83,7 @@ class PDFDocument extends stream.Readable {
     this.info = {
       Producer: 'PDFKit',
       Creator: 'PDFKit',
-      CreationDate: new Date(),
+      CreationDate: new Date()
     };
 
     if (this.options.info) {
@@ -95,7 +95,7 @@ class PDFDocument extends stream.Readable {
 
     if (this.options.displayTitle) {
       this._root.data.ViewerPreferences = this.ref({
-        DisplayDocTitle: true,
+        DisplayDocTitle: true
       });
     }
 
@@ -173,7 +173,7 @@ class PDFDocument extends stream.Readable {
 
   _write(data) {
     if (!Buffer.isBuffer(data)) {
-      data = new Buffer(data + '\n', 'binary');
+      data = Buffer.from(data + '\n', 'binary');
     }
 
     this.push(data);
@@ -249,8 +249,8 @@ class PDFDocument extends stream.Readable {
       PDFObject.convert({
         Size: this._offsets.length + 1,
         Root: this._root,
-        Info: this._info,
-      }),
+        Info: this._info
+      })
     );
 
     this._write('startxref');

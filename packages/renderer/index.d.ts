@@ -15,7 +15,7 @@ declare module '@react-pdf/renderer' {
     interface Styles {
       [key: string]: Style;
     }
-    
+
     type Style = Style;
 
     interface OnRenderProps {
@@ -26,9 +26,10 @@ declare module '@react-pdf/renderer' {
       title?: string;
       author?: string;
       subject?: string;
-      keywords?: string;
       creator?: string;
+      keywords?: string;
       producer?: string;
+      language?: string;
       pdfVersion?: PDFVersion;
       onRender?: (props: OnRenderProps) => any;
     }

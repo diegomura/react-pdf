@@ -33,13 +33,15 @@ const pdf = initialValue => {
   if (initialValue) updateContainer(initialValue);
 
   const render = async (compress = true) => {
-    const { pdfVersion } = container.document.props || {};
+    const props = container.document.props || {};
+    const { pdfVersion, language } = props;
 
     const ctx = new PDFDocument({
       compress,
-      autoFirstPage: false,
-      displayTitle: true,
       pdfVersion,
+      lang: language,
+      displayTitle: true,
+      autoFirstPage: false,
     });
 
     const layout = await layoutDocument(container.document, fontStore);

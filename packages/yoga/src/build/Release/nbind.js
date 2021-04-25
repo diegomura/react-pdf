@@ -1569,7 +1569,7 @@
         var src = HEAPU8.subarray(data, data + length);if (buf instanceof NodeBuffer) {
           var srcBuf = void 0;if (typeof Buffer.from == "function" && Buffer.from.length >= 3) {
             srcBuf = Buffer.from(src);
-          } else srcBuf = new Buffer(src);srcBuf.copy(buf);
+          } else srcBuf = Buffer.from(src);srcBuf.copy(buf);
         } else getBuffer(buf).set(src);
       }
     }_nbind.commitBuffer = commitBuffer;var dirtyList = [];var gcTimer = 0;function sweep() {

@@ -8,19 +8,15 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib",
   "scripts": {
-    "test": "jest",
-    "start": "parcel ./src/index.html -p 3000"
+    "test": "jest"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^2.0.0-beta.25",
+    "@react-pdf/renderer": "^2.0.6",
     "camelcase": "^6.2.0",
     "ramda": "^0.27.1"
   },
   "peerDependencies": {
     "react": "^16.8.6 || ^17.0.0",
     "react-dom": "^16.8.6 || ^17.0.0"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4"
   }
 }

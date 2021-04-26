@@ -21,7 +21,7 @@ const getFallbackFont = () => getOrCreateFont('Helvetica');
 
 const shouldFallbackToFont = (codePoint, font) =>
   !IGNORED_CODE_POINTS.includes(codePoint) &&
-  !font.hasGlyphForCodePoint(codePoint) &&
+  (font && !font.hasGlyphForCodePoint(codePoint)) &&
   getFallbackFont().hasGlyphForCodePoint(codePoint);
 
 const fontSubstitution = () => ({ string, runs }) => {

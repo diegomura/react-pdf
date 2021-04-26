@@ -13,9 +13,6 @@
     "email": "devongovett@gmail.com",
     "url": "http://badassjs.com/"
   },
-  "dependencies": {
-    "@react-pdf/zlib": "^2.0.0"
-  },
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"

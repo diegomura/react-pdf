@@ -1,4 +1,4 @@
-import zlib from '@react-pdf/zlib';
+import zlib from 'zlib';
 import PNG from '@react-pdf/png-js';
 
 class PNGImage {

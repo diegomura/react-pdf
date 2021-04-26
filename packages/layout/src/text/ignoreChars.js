@@ -5,7 +5,7 @@ const IGNORABLE_CODEPOINTS = [
 
 const buildSubsetForFont = font =>
   IGNORABLE_CODEPOINTS.reduce((acc, codePoint) => {
-    if (font.hasGlyphForCodePoint && font.hasGlyphForCodePoint(codePoint)) {
+    if (font && font.hasGlyphForCodePoint && font.hasGlyphForCodePoint(codePoint)) {
       return acc;
     }
     return [...acc, String.fromCharCode(codePoint)];

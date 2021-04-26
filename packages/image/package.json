@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/image",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -15,7 +15,7 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/png-js": "^2.0.1",
+    "@react-pdf/png-js": "^2.0.2",
     "cross-fetch": "^3.0.4"
   },
   "devDependencies": {

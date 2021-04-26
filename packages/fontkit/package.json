@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/fontkit",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "An advanced font engine for Node and the browser",
   "scripts": {
     "watch": "rimraf ./lib && rollup -c -w",
@@ -21,7 +21,7 @@
   "author": "Devon Govett <devongovett@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/unicode-properties": "^2.4.0",
+    "@react-pdf/unicode-properties": "^2.4.1",
     "brotli": "^1.2.0",
     "clone": "^1.0.1",
     "deep-equal": "^1.0.0",

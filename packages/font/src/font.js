@@ -4,6 +4,23 @@ import isUrl from 'is-url';
 import fetch from 'cross-fetch';
 import fontkit from '@react-pdf/fontkit';
 
+const FONT_WEIGHTS = {
+  thin: 100,
+  hairline: 100,
+  ultralight: 200,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  demibold: 600,
+  bold: 700,
+  ultrabold: 800,
+  extrabold: 800,
+  heavy: 900,
+  black: 900,
+};
+
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
 
@@ -21,6 +38,12 @@ const isDataUrl = dataUrl => {
 
   return hasDataPrefix && hasBase64Prefix;
 };
+
+const resolveFontWeight = value => {
+  return typeof value === 'string' ? FONT_WEIGHTS[value] : value;
+};
+
+const sortByFontWeight = (a, b) => a.fontWeight - b.fontWeight;
 
 class FontSource {
   constructor(src, fontFamily, fontStyle, fontWeight, options) {
@@ -71,8 +94,10 @@ class Font {
   }
 
   register({ src, fontWeight, fontStyle, ...options }) {
+    const numericFontWeight = resolveFontWeight(fontWeight);
+
     this.sources.push(
-      new FontSource(src, this.family, fontStyle, fontWeight, options),
+      new FontSource(src, this.family, fontStyle, numericFontWeight, options),
     );
   }
 
@@ -97,8 +122,12 @@ class Font {
       res = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
     }
 
-    const lt = styleSources.filter(s => s.fontWeight < fontWeight);
-    const gt = styleSources.filter(s => s.fontWeight > fontWeight);
+    const lt = styleSources
+      .filter(s => s.fontWeight < fontWeight)
+      .sort(sortByFontWeight);
+    const gt = styleSources
+      .filter(s => s.fontWeight > fontWeight)
+      .sort(sortByFontWeight);
 
     if (fontWeight < 400) {
       res = lt[lt.length - 1] || gt[0];

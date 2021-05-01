@@ -37,7 +37,7 @@ export default {
           refBody.Subtype = match[1].replace('/', '#2F');
         }
         data = Buffer.from(match[2], 'base64');
-      } else {
+      } else if (!BROWSER) {
         data = fs.readFileSync(src);
         if (!data) {
           throw new Error(`Could not read contents of file at filepath ${src}`);
@@ -47,6 +47,8 @@ export default {
         const { birthtime, ctime } = fs.statSync(src);
         refBody.Params.CreationDate = birthtime;
         refBody.Params.ModDate = ctime;
+      } else {
+        throw new Error(`Could not find file ${src}`);
       }
     }
 

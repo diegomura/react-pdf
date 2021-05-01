@@ -455,6 +455,24 @@ describe('stylesheet resolve', () => {
     expect(styles).toEqual({ fontWeight: 800 });
   });
 
+  test('should keep flex basis percent value', () => {
+    const styles = resolve({}, { flexBasis: '40%' });
+
+    expect(styles).toEqual({ flexBasis: '40%' });
+  });
+
+  test('should keep flex shrink percent value', () => {
+    const styles = resolve({}, { flexShrink: '40%' });
+
+    expect(styles).toEqual({ flexShrink: '40%' });
+  });
+
+  test('should keep flex grow percent value', () => {
+    const styles = resolve({}, { flexGrow: '40%' });
+
+    expect(styles).toEqual({ flexGrow: '40%' });
+  });
+
   test('should resolve max-height media queries on narrow container', () => {
     const styles = resolve(
       { height: 300 },

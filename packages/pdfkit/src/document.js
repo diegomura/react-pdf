@@ -10,6 +10,7 @@ import Text from './mixins/text';
 import Images from './mixins/images';
 import Annotations from './mixins/annotations';
 import AcroFormMixin from './mixins/acroform';
+import Attachments from './mixins/attachments';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -160,6 +161,29 @@ class PDFDocument extends stream.Readable {
     this._root.data.Names.data.Dests.add(name, args);
   }
 
+  addNamedEmbeddedFile(name, ref) {
+    if (!this._root.data.Names.data.EmbeddedFiles) {
+      // disabling /Limits for this tree fixes attachments not showing in Adobe Reader
+      this._root.data.Names.data.EmbeddedFiles = new PDFNameTree({
+        limits: false
+      });
+    }
+
+    // add filespec to EmbeddedFiles
+    this._root.data.Names.data.EmbeddedFiles.add(name, ref);
+  }
+
+  addNamedJavaScript(name, js) {
+    if (!this._root.data.Names.data.JavaScript) {
+      this._root.data.Names.data.JavaScript = new PDFNameTree();
+    }
+    let data = {
+      JS: new String(js),
+      S: 'JavaScript'
+    };
+    this._root.data.Names.data.JavaScript.add(name, data);
+  }
+
   ref(data) {
     const ref = new PDFReference(this, this._offsets.length + 1, data);
     this._offsets.push(null); // placeholder for this object's offset once it is finalized
@@ -285,5 +309,6 @@ mixin(Text);
 mixin(Images);
 mixin(Annotations);
 mixin(AcroFormMixin);
+mixin(Attachments);
 
 export default PDFDocument;

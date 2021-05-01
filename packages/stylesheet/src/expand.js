@@ -172,19 +172,19 @@ const processTransformOrigin = (key, value) => {
 const processFlexGrow = (key, value) => {
   if (isNumber(value)) return value;
   const matches = value.split(' ');
-  return matches[0];
+  return matches[0] || value;
 };
 
 const processFlexShrink = (key, value) => {
   if (isNumber(value)) return value;
   const matches = value.split(' ');
-  return matches[1];
+  return matches[1] || value;
 };
 
 const processFlexBasis = (key, value) => {
   if (isNumber(value)) return value;
   const matches = value.split(' ');
-  return matches[2];
+  return matches[2] || value;
 };
 
 const keepSame = (key, value) => value;

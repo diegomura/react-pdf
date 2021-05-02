@@ -1,4 +1,4 @@
-// TO-UPDATE
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
 
 import AATStateMachine from './AATStateMachine';
 import AATLookupTable from './AATLookupTable';
@@ -50,7 +50,7 @@ export default class AATMorxProcessor {
   }
 
   // Processes an array of glyphs and applies the specified features
-  // Features should be in the form of {featureType:{featureSetting:true}}
+  // Features should be in the form of {featureType:{featureSetting:boolean}}
   process(glyphs, features = {}) {
     for (let chain of this.morx.chains) {
       let flags = chain.defaultFlags;
@@ -58,9 +58,14 @@ export default class AATMorxProcessor {
       // enable/disable the requested features
       for (let feature of chain.features) {
         let f;
-        if ((f = features[feature.featureType]) && f[feature.featureSetting]) {
-          flags &= feature.disableFlags;
-          flags |= feature.enableFlags;
+        if ((f = features[feature.featureType])) {
+          if (f[feature.featureSetting]) {
+            flags &= feature.disableFlags;
+            flags |= feature.enableFlags;
+          } else if (f[feature.featureSetting] === false) {
+            flags |= ~feature.disableFlags;
+            flags &= ~feature.enableFlags;
+          }
         }
       }
 
@@ -238,7 +243,6 @@ export default class AATMorxProcessor {
   }
 
   _insertGlyphs(glyphIndex, insertionActionIndex, count, isBefore) {
-    let stringIndex = this.glyphs[glyphIndex].stringIndex;
     let insertions = [];
     while (count--) {
       let gid = this.subtable.table.insertionActions.getItem(

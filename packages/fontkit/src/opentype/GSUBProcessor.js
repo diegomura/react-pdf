@@ -1,4 +1,5 @@
-// TO-UPDATE
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+// ERASED STRINGINDEX
 
 import OTProcessor from './OTProcessor';
 import GlyphInfo from './GlyphInfo';
@@ -32,6 +33,14 @@ export default class GSUBProcessor extends OTProcessor {
         let index = this.coverageIndex(table.coverage);
         if (index !== -1) {
           let sequence = table.sequences.get(index);
+
+          if (sequence.length === 0) {
+            // If the sequence length is zero, delete the glyph.
+            // The OpenType spec disallows this, but seems like Harfbuzz and Uniscribe allow it.
+            this.glyphs.splice(this.glyphIterator.index, 1);
+            return true;
+          }
+
           this.glyphIterator.cur.id = sequence[0];
           this.glyphIterator.cur.ligatureComponent = 0;
 
@@ -93,7 +102,6 @@ export default class GSUBProcessor extends OTProcessor {
             ligature.glyph,
             characters,
             curGlyph.features,
-            curGlyph.stringIndex,
           );
           ligatureGlyph.shaperInfo = curGlyph.shaperInfo;
           ligatureGlyph.isLigated = true;

@@ -1,6 +1,5 @@
-// TO-UPDATE
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
 
-import fs from 'fs';
 import unicode from '@react-pdf/unicode-properties';
 import UnicodeTrie from 'unicode-trie';
 import DefaultShaper from './DefaultShaper';

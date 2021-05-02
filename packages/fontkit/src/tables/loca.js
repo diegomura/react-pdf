@@ -1,5 +1,4 @@
-
-// TO-UPDATE
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
 
 import r from 'restructure';
 
@@ -21,11 +20,6 @@ loca.process = function() {
 };
 
 loca.preEncode = function() {
-  if (this.version != null) return;
-
-  // assume this.offsets is a sorted array
-  this.version = this.offsets[this.offsets.length - 1] > 0xffff ? 1 : 0;
-
   if (this.version === 0) {
     for (let i = 0; i < this.offsets.length; i++) {
       this.offsets[i] >>>= 1;

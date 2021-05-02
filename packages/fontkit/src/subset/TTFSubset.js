@@ -1,9 +1,6 @@
-// TO-UPDATE
-
 import cloneDeep from 'clone';
 import Subset from './Subset';
 import Directory from '../tables/directory';
-import Tables from '../tables';
 import TTFGlyphEncoder from '../glyph/TTFGlyphEncoder';
 
 export default class TTFSubset extends Subset {
@@ -60,6 +57,7 @@ export default class TTFSubset extends Subset {
     this.offset = 0;
     this.loca = {
       offsets: [],
+      version: this.font.loca.version,
     };
 
     this.hmtx = {
@@ -79,7 +77,6 @@ export default class TTFSubset extends Subset {
     maxp.numGlyphs = this.glyf.length;
 
     this.loca.offsets.push(this.offset);
-    Tables.loca.preEncode.call(this.loca);
 
     let head = cloneDeep(this.font.head);
     head.indexToLocFormat = this.loca.version;

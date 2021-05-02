@@ -23,9 +23,9 @@
   "dependencies": {
     "@react-pdf/unicode-properties": "^2.4.1",
     "brotli": "^1.2.0",
-    "clone": "^1.0.1",
+    "clone": "^1.0.4",
     "deep-equal": "^1.0.0",
-    "dfa": "^1.0.0",
+    "dfa": "^1.2.0",
     "restructure": "^0.5.3",
     "tiny-inflate": "^1.0.2",
     "unicode-trie": "^0.3.0"

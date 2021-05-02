@@ -1,20 +1,22 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 import Tables from './';
 
-let TableEntry = new r.Struct({
-  tag:        new r.String(4),
-  checkSum:   r.uint32,
-  offset:     new r.Pointer(r.uint32, 'void', { type: 'global' }),
-  length:     r.uint32
+const TableEntry = new r.Struct({
+  tag: new r.String(4),
+  checkSum: r.uint32,
+  offset: new r.Pointer(r.uint32, 'void', { type: 'global' }),
+  length: r.uint32,
 });
 
-let Directory = new r.Struct({
-  tag:            new r.String(4),
-  numTables:      r.uint16,
-  searchRange:    r.uint16,
-  entrySelector:  r.uint16,
-  rangeShift:     r.uint16,
-  tables:         new r.Array(TableEntry, 'numTables')
+const Directory = new r.Struct({
+  tag: new r.String(4),
+  numTables: r.uint16,
+  searchRange: r.uint16,
+  entrySelector: r.uint16,
+  rangeShift: r.uint16,
+  tables: new r.Array(TableEntry, 'numTables'),
 });
 
 Directory.process = function() {

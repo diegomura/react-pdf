@@ -1,6 +1,8 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 
-let ImageTable = new r.Struct({
+const ImageTable = new r.Struct({
   ppem: r.uint16,
   resolution: r.uint16,
   imageOffsets: new r.Array(new r.Pointer(r.uint32, 'void'), t => t.parent.parent.maxp.numGlyphs + 1)

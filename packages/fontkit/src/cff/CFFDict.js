@@ -1,5 +1,6 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import isEqual from 'deep-equal';
-import r from 'restructure';
 import CFFOperand from './CFFOperand';
 import { PropertyDescriptor } from 'restructure/src/utils';
 
@@ -8,14 +9,18 @@ export default class CFFDict {
     this.ops = ops;
     this.fields = {};
     for (let field of ops) {
-      let key = Array.isArray(field[0]) ? field[0][0] << 8 | field[0][1] : field[0];
+      let key = Array.isArray(field[0])
+        ? (field[0][0] << 8) | field[0][1]
+        : field[0];
       this.fields[key] = field;
     }
   }
 
   decodeOperands(type, stream, ret, operands) {
     if (Array.isArray(type)) {
-      return operands.map((op, i) => this.decodeOperands(type[i], stream, ret, [op]));
+      return operands.map((op, i) =>
+        this.decodeOperands(type[i], stream, ret, [op]),
+      );
     } else if (type.decode != null) {
       return type.decode(stream, ret, operands);
     } else {
@@ -34,7 +39,9 @@ export default class CFFDict {
 
   encodeOperands(type, stream, ctx, operands) {
     if (Array.isArray(type)) {
-      return operands.map((op, i) => this.encodeOperands(type[i], stream, ctx, op)[0]);
+      return operands.map(
+        (op, i) => this.encodeOperands(type[i], stream, ctx, op)[0],
+      );
     } else if (type.encode != null) {
       return type.encode(stream, operands, ctx);
     } else if (typeof operands === 'number') {
@@ -55,8 +62,8 @@ export default class CFFDict {
 
     // define hidden properties
     Object.defineProperties(ret, {
-      parent:         { value: parent },
-      _startOffset:   { value: stream.pos }
+      parent: { value: parent },
+      _startOffset: { value: stream.pos },
     });
 
     // fill in defaults
@@ -100,7 +107,7 @@ export default class CFFDict {
       parent,
       val: dict,
       pointerSize: 0,
-      startOffset: parent.startOffset || 0
+      startOffset: parent.startOffset || 0,
     };
 
     let len = 0;
@@ -134,7 +141,7 @@ export default class CFFDict {
       startOffset: stream.pos,
       parent,
       val: dict,
-      pointerSize: 0
+      pointerSize: 0,
     };
 
     ctx.pointerOffset = stream.pos + this.size(dict, ctx, false);

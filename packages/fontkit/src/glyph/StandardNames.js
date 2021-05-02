@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 export default [
   '.notdef', '.null', 'nonmarkingreturn', 'space', 'exclam', 'quotedbl', 'numbersign', 'dollar', 'percent',
   'ampersand', 'quotesingle', 'parenleft', 'parenright', 'asterisk', 'plus', 'comma', 'hyphen', 'period', 'slash',

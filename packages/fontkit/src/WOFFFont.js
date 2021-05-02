@@ -1,8 +1,9 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
+import r from 'restructure';
+import inflate from 'tiny-inflate';
 import TTFFont from './TTFFont';
 import WOFFDirectory from './tables/WOFFDirectory';
-import tables from './tables';
-import inflate from 'tiny-inflate';
-import r from 'restructure';
 
 export default class WOFFFont extends TTFFont {
   static probe(buffer) {
@@ -14,18 +15,21 @@ export default class WOFFFont extends TTFFont {
   }
 
   _getTableStream(tag) {
-    let table = this.directory.tables[tag];
+    const table = this.directory.tables[tag];
     if (table) {
       this.stream.pos = table.offset;
 
       if (table.compLength < table.length) {
         this.stream.pos += 2; // skip deflate header
-        let outBuffer = Buffer.alloc(table.length);
-        let buf = inflate(this.stream.readBuffer(table.compLength - 2), outBuffer);
+        const outBuffer = Buffer.alloc(table.length);
+        const buf = inflate(
+          this.stream.readBuffer(table.compLength - 2),
+          outBuffer,
+        );
         return new r.DecodeStream(buf);
-      } else {
-        return this.stream;
       }
+
+      return this.stream;
     }
 
     return null;

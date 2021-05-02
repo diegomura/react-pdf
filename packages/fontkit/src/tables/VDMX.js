@@ -1,22 +1,24 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 
 // VDMX tables contain ascender/descender overrides for certain (usually small)
 // sizes. This is needed in order to match font metrics on Windows.
 
-let Ratio = new r.Struct({
+const Ratio = new r.Struct({
   bCharSet:       r.uint8,                             // Character set
   xRatio:         r.uint8,                             // Value to use for x-Ratio
   yStartRatio:    r.uint8,                             // Starting y-Ratio value
   yEndRatio:      r.uint8                              // Ending y-Ratio value
 });
 
-let vTable = new r.Struct({
+const vTable = new r.Struct({
   yPelHeight:     r.uint16,                            // yPelHeight to which values apply
   yMax:           r.int16,                             // Maximum value (in pels) for this yPelHeight
   yMin:           r.int16                              // Minimum value (in pels) for this yPelHeight
 });
 
-let VdmxGroup = new r.Struct({
+const VdmxGroup = new r.Struct({
   recs:           r.uint16,                            // Number of height records in this group
   startsz:        r.uint8,                             // Starting yPelHeight
   endsz:          r.uint8,                             // Ending yPelHeight

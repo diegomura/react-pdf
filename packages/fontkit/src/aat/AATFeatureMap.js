@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 // see https://developer.apple.com/fonts/TrueType-Reference-Manual/RM09/AppendixF.html
 // and /System/Library/Frameworks/CoreText.framework/Versions/A/Headers/SFNTLayoutTypes.h on a Mac
 const features = {

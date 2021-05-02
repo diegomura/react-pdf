@@ -1,9 +1,11 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 export function binarySearch(arr, cmp) {
   let min = 0;
   let max = arr.length - 1;
   while (min <= max) {
-    let mid = (min + max) >> 1;
-    let res = cmp(arr[mid]);
+    const mid = (min + max) >> 1;
+    const res = cmp(arr[mid]);
 
     if (res < 0) {
       max = mid - 1;
@@ -18,9 +20,9 @@ export function binarySearch(arr, cmp) {
 }
 
 export function range(index, end) {
-  let range = [];
+  const result = [];
   while (index < end) {
-    range.push(index++);
+    result.push(index++);
   }
-  return range;
+  return result;
 }

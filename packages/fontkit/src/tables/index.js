@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 let tables = {};
 export default tables;
 
@@ -20,7 +22,6 @@ tables.name = name;
 tables['OS/2'] = OS2;
 tables.post = post;
 
-
 // TrueType Outlines
 import cvt from './cvt';
 import fpgm from './fpgm';
@@ -34,7 +35,6 @@ tables.prep = prep;
 tables['cvt '] = cvt;
 tables.glyf = glyf;
 
-
 // PostScript Outlines
 import CFFFont from '../cff/CFFFont';
 import VORG from './VORG';
@@ -42,7 +42,6 @@ import VORG from './VORG';
 tables['CFF '] = CFFFont;
 tables['CFF2'] = CFFFont;
 tables.VORG = VORG;
-
 
 // Bitmap Glyphs
 import EBLC from './EBLC';
@@ -55,7 +54,6 @@ tables.CBLC = tables.EBLC;
 tables.sbix = sbix;
 tables.COLR = COLR;
 tables.CPAL = CPAL;
-
 
 // Advanced OpenType Tables
 import BASE from './BASE';
@@ -95,7 +93,6 @@ tables.PCLT = PCLT;
 tables.VDMX = VDMX;
 tables.vhea = vhea;
 tables.vmtx = vmtx;
-
 
 // Apple Advanced Typography Tables
 import avar from './avar';

@@ -1,13 +1,11 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 import TTFFont from './TTFFont';
 
-let DFontName = new r.String(r.uint8);
-let DFontData = new r.Struct({
-  len: r.uint32,
-  buf: new r.Buffer('len')
-});
+const DFontName = new r.String(r.uint8);
 
-let Ref = new r.Struct({
+const Ref = new r.Struct({
   id: r.uint16,
   nameOffset: r.int16,
   attr: r.uint8,
@@ -15,24 +13,24 @@ let Ref = new r.Struct({
   handle: r.uint32
 });
 
-let Type = new r.Struct({
+const Type = new r.Struct({
   name: new r.String(4),
   maxTypeIndex: r.uint16,
   refList: new r.Pointer(r.uint16, new r.Array(Ref, t => t.maxTypeIndex + 1), { type: 'parent' })
 });
 
-let TypeList = new r.Struct({
+const TypeList = new r.Struct({
   length: r.uint16,
   types: new r.Array(Type, t => t.length + 1)
 });
 
-let DFontMap = new r.Struct({
+const DFontMap = new r.Struct({
   reserved: new r.Reserved(r.uint8, 24),
   typeList: new r.Pointer(r.uint16, TypeList),
   nameListOffset: new r.Pointer(r.uint16, 'void')
 });
 
-let DFontHeader = new r.Struct({
+const DFontHeader = new r.Struct({
   dataOffset: r.uint32,
   map: new r.Pointer(r.uint32, DFontMap),
   dataLength: r.uint32,
@@ -41,7 +39,7 @@ let DFontHeader = new r.Struct({
 
 export default class DFont {
   static probe(buffer) {
-    let stream = new r.DecodeStream(buffer);
+    const stream = new r.DecodeStream(buffer);
 
     try {
       var header = DFontHeader.decode(stream);

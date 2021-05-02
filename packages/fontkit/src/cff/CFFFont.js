@@ -1,7 +1,6 @@
-import r from 'restructure';
-import CFFIndex from './CFFIndex';
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import CFFTop from './CFFTop';
-import CFFPrivateDict from './CFFPrivateDict';
 import standardStrings from './CFFStandardStrings';
 
 class CFFFont {
@@ -24,7 +23,7 @@ class CFFFont {
 
     if (this.version < 2) {
       if (this.topDictIndex.length !== 1) {
-        throw new Error("Only a single font is allowed in CFF");
+        throw new Error('Only a single font is allowed in CFF');
       }
 
       this.topDict = this.topDictIndex[0];
@@ -127,14 +126,16 @@ class CFFFont {
 
           if (gid < ranges[mid].first) {
             high = mid - 1;
-          } else if (mid < high && gid > ranges[mid + 1].first) {
+          } else if (mid < high && gid >= ranges[mid + 1].first) {
             low = mid + 1;
           } else {
             return ranges[mid].fd;
           }
         }
       default:
-        throw new Error(`Unknown FDSelect version: ${this.topDict.FDSelect.version}`);
+        throw new Error(
+          `Unknown FDSelect version: ${this.topDict.FDSelect.version}`,
+        );
     }
   }
 

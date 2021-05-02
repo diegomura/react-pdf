@@ -1,7 +1,9 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 import { LookupTable } from './aat';
 
-let BslnSubtable = new r.VersionedStruct('format', {
+const BslnSubtable = new r.VersionedStruct('format', {
   0: { // Distance-based, no mapping
     deltas: new r.Array(r.int16, 32)
   },

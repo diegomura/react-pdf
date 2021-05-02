@@ -1,4 +1,8 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
+
+const resolved = Promise.resolve();
 
 export default class Subset {
   constructor(font) {
@@ -26,7 +30,7 @@ export default class Subset {
   encodeStream() {
     let s = new r.EncodeStream();
 
-    process.nextTick(() => {
+    resolved.then(() => {
       this.encode(s);
       return s.end();
     });

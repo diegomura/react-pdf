@@ -1,6 +1,8 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 
-let DeviceRecord = new r.Struct({
+const DeviceRecord = new r.Struct({
   pixelSize:      r.uint8,
   maximumWidth:   r.uint8,
   widths:         new r.Array(r.uint8, t => t.parent.parent.maxp.numGlyphs)

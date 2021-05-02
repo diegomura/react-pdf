@@ -1,6 +1,8 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 
-let VerticalOrigin = new r.Struct({
+const VerticalOrigin = new r.Struct({
   glyphIndex:   r.uint16,
   vertOriginY:  r.int16
 });

@@ -1,3 +1,5 @@
+// TO-UPDATE
+
 import cloneDeep from 'clone';
 import Subset from './Subset';
 import Directory from '../tables/directory';
@@ -7,9 +9,9 @@ import TTFGlyphEncoder from '../glyph/TTFGlyphEncoder';
 export default class TTFSubset extends Subset {
   constructor(font) {
     super(font);
-    this.glyphEncoder = new TTFGlyphEncoder;
+    this.glyphEncoder = new TTFGlyphEncoder();
   }
-  
+
   _addGlyph(gid) {
     let glyph = this.font.getGlyph(gid);
     let glyf = glyph._decode();
@@ -37,10 +39,10 @@ export default class TTFSubset extends Subset {
 
     this.glyf.push(buffer);
     this.loca.offsets.push(this.offset);
-    
+
     this.hmtx.metrics.push({
       advance: glyph.advanceWidth,
-      bearing: glyph._getMetrics().leftBearing
+      bearing: glyph._getMetrics().leftBearing,
     });
 
     this.offset += buffer.length;
@@ -57,12 +59,12 @@ export default class TTFSubset extends Subset {
     this.glyf = [];
     this.offset = 0;
     this.loca = {
-      offsets: []
+      offsets: [],
     };
 
     this.hmtx = {
       metrics: [],
-      bearings: []
+      bearings: [],
     };
 
     // include all the glyphs
@@ -118,13 +120,13 @@ export default class TTFSubset extends Subset {
         prep: this.font.prep,
         glyf: this.glyf,
         hmtx: this.hmtx,
-        fpgm: this.font.fpgm
+        fpgm: this.font.fpgm,
 
         // name: clone @font.name
         // 'OS/2': clone @font['OS/2']
         // post: clone @font.post
         // cmap: cmap
-      }
+      },
     });
   }
 }

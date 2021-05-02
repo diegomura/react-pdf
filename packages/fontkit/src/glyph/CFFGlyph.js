@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import Glyph from './Glyph';
 import Path from './Path';
 
@@ -24,10 +26,8 @@ export default class CFFGlyph extends Glyph {
   }
 
   _getPath() {
-    let { stream } = this._font;
-    let { pos } = stream;
-
     let cff = this._font.CFF2 || this._font['CFF '];
+    let { stream } = cff;
     let str = cff.topDict.CharStrings[this.id];
     let end = str.offset + str.length;
     stream.pos = str.offset;
@@ -49,7 +49,7 @@ export default class CFFGlyph extends Glyph {
     let gsubrs = cff.globalSubrIndex || [];
     let gsubrsBias = this.bias(gsubrs);
 
-    let privateDict = cff.privateDictForGlyph(this.id);
+    let privateDict = cff.privateDictForGlyph(this.id) || {};
     let subrs = privateDict.Subrs || [];
     let subrsBias = this.bias(subrs);
 

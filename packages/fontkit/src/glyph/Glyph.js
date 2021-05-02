@@ -1,7 +1,9 @@
-import unicode from '@react-pdf/unicode-properties'
-import { cache } from '../decorators'
-import Path from './Path'
-import StandardNames from './StandardNames'
+// TO-UPDATE
+
+import unicode from '@react-pdf/unicode-properties';
+import { cache } from '../decorators';
+import Path from './Path';
+import StandardNames from './StandardNames';
 
 /**
  * Glyph objects represent a glyph in the font. They have various properties for accessing metrics and
@@ -17,7 +19,7 @@ export default class Glyph {
      * The glyph id in the font
      * @type {number}
      */
-    this.id = id
+    this.id = id;
 
     /**
      * An array of unicode code points that are represented by this glyph.
@@ -25,71 +27,85 @@ export default class Glyph {
      * that represent multiple visual characters.
      * @type {number[]}
      */
-    this.codePoints = codePoints
-    this._font = font
+    this.codePoints = codePoints;
+    this._font = font;
 
     // TODO: get this info from GDEF if available
-    this.isMark = this.codePoints.length > 0 && this.codePoints.every(unicode.isMark)
-    this.isLigature = this.codePoints.length > 1
+    this.isMark =
+      this.codePoints.length > 0 && this.codePoints.every(unicode.isMark);
+    this.isLigature = this.codePoints.length > 1;
   }
 
   _getPath() {
-    return new Path()
+    return new Path();
   }
 
   _getCBox() {
-    return this.path.cbox
+    return this.path.cbox;
   }
 
   _getBBox() {
-    return this.path.bbox
+    return this.path.bbox;
   }
 
   _getTableMetrics(table) {
     if (this.id < table.metrics.length) {
-      return table.metrics.get(this.id)
+      return table.metrics.get(this.id);
     }
 
-    let metric = table.metrics.get(table.metrics.length - 1)
+    let metric = table.metrics.get(table.metrics.length - 1);
     let res = {
       advance: metric ? metric.advance : 0,
-      bearing: table.bearings.get(this.id - table.metrics.length) || 0
-    }
+      bearing: table.bearings.get(this.id - table.metrics.length) || 0,
+    };
 
-    return res
+    return res;
   }
 
   _getMetrics(cbox) {
     if (this._metrics) {
-      return this._metrics
+      return this._metrics;
     }
 
-    let { advance: advanceWidth, bearing: leftBearing } = this._getTableMetrics(this._font.hmtx)
+    let { advance: advanceWidth, bearing: leftBearing } = this._getTableMetrics(
+      this._font.hmtx,
+    );
 
     // For vertical metrics, use vmtx if available, or fall back to global data from OS/2 or hhea
     if (this._font.vmtx) {
-      var { advance: advanceHeight, bearing: topBearing } = this._getTableMetrics(this._font.vmtx)
+      var {
+        advance: advanceHeight,
+        bearing: topBearing,
+      } = this._getTableMetrics(this._font.vmtx);
     } else {
-      let os2
+      let os2;
       if (typeof cbox === 'undefined' || cbox === null) {
-        ;({ cbox } = this)
+        ({ cbox } = this);
       }
 
       if ((os2 = this._font['OS/2']) && os2.version > 0) {
-        var advanceHeight = Math.abs(os2.typoAscender - os2.typoDescender)
-        var topBearing = os2.typoAscender - cbox.maxY
+        var advanceHeight = Math.abs(os2.typoAscender - os2.typoDescender);
+        var topBearing = os2.typoAscender - cbox.maxY;
       } else {
-        let { hhea } = this._font
-        var advanceHeight = Math.abs(hhea.ascent - hhea.descent)
-        var topBearing = hhea.ascent - cbox.maxY
+        let { hhea } = this._font;
+        var advanceHeight = Math.abs(hhea.ascent - hhea.descent);
+        var topBearing = hhea.ascent - cbox.maxY;
       }
     }
 
     if (this._font._variationProcessor && this._font.HVAR) {
-      advanceWidth += this._font._variationProcessor.getAdvanceAdjustment(this.id, this._font.HVAR)
+      advanceWidth += this._font._variationProcessor.getAdvanceAdjustment(
+        this.id,
+        this._font.HVAR,
+      );
     }
 
-    return (this._metrics = { advanceWidth, advanceHeight, leftBearing, topBearing })
+    return (this._metrics = {
+      advanceWidth,
+      advanceHeight,
+      leftBearing,
+      topBearing,
+    });
   }
 
   /**
@@ -105,7 +121,7 @@ export default class Glyph {
    */
   @cache
   get cbox() {
-    return this._getCBox()
+    return this._getCBox();
   }
 
   /**
@@ -115,7 +131,7 @@ export default class Glyph {
    */
   @cache
   get bbox() {
-    return this._getBBox()
+    return this._getBBox();
   }
 
   /**
@@ -126,7 +142,7 @@ export default class Glyph {
   get path() {
     // Cache the path so we only decode it once
     // Decoding is actually performed by subclasses
-    return this._getPath()
+    return this._getPath();
   }
 
   /**
@@ -135,8 +151,8 @@ export default class Glyph {
    * @return {Path}
    */
   getScaledPath(size) {
-    let scale = (1 / this._font.unitsPerEm) * size
-    return this.path.scale(scale)
+    let scale = (1 / this._font.unitsPerEm) * size;
+    return this.path.scale(scale);
   }
 
   /**
@@ -145,7 +161,7 @@ export default class Glyph {
    */
   @cache
   get advanceWidth() {
-    return this._getMetrics().advanceWidth
+    return this._getMetrics().advanceWidth;
   }
 
   /**
@@ -154,34 +170,34 @@ export default class Glyph {
    */
   @cache
   get advanceHeight() {
-    return this._getMetrics().advanceHeight
+    return this._getMetrics().advanceHeight;
   }
 
   get ligatureCaretPositions() {}
 
   _getName() {
-    let { post } = this._font
+    let { post } = this._font;
     if (!post) {
-      return null
+      return null;
     }
 
     switch (post.version) {
       case 1:
-        return StandardNames[this.id]
+        return StandardNames[this.id];
 
       case 2:
-        let id = post.glyphNameIndex[this.id]
+        let id = post.glyphNameIndex[this.id];
         if (id < StandardNames.length) {
-          return StandardNames[id]
+          return StandardNames[id];
         }
 
-        return post.names[id - StandardNames.length]
+        return post.names[id - StandardNames.length];
 
       case 2.5:
-        return StandardNames[this.id + post.offsets[this.id]]
+        return StandardNames[this.id + post.offsets[this.id]];
 
       case 4:
-        return String.fromCharCode(post.map[this.id])
+        return String.fromCharCode(post.map[this.id]);
     }
   }
 
@@ -191,7 +207,7 @@ export default class Glyph {
    */
   @cache
   get name() {
-    return this._getName()
+    return this._getName();
   }
 
   /**
@@ -200,15 +216,15 @@ export default class Glyph {
    * @param {number} size
    */
   render(ctx, size) {
-    ctx.save()
+    ctx.save();
 
-    let scale = (1 / this._font.head.unitsPerEm) * size
-    ctx.scale(scale, scale)
+    let scale = (1 / this._font.head.unitsPerEm) * size;
+    ctx.scale(scale, scale);
 
-    let fn = this.path.toFunction()
-    fn(ctx)
-    ctx.fill()
+    let fn = this.path.toFunction();
+    fn(ctx);
+    ctx.fill();
 
-    ctx.restore()
+    ctx.restore();
   }
 }

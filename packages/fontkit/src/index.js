@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import fontkit from './base';
 import TTFFont from './TTFFont';
 import WOFFFont from './WOFFFont';

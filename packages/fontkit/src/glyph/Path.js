@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import BBox from './BBox';
 
 const SVG_COMMANDS = {
@@ -27,8 +29,11 @@ export default class Path {
    * @return {string}
    */
   toFunction() {
-    let cmds = this.commands.map(c => `  ctx.${c.command}(${c.args.join(', ')});`);
-    return new Function('ctx', cmds.join('\n'));
+    return ctx => {
+      this.commands.forEach(c => {
+        return ctx[c.command].apply(ctx, c.args)
+      })
+    };
   }
 
   /**

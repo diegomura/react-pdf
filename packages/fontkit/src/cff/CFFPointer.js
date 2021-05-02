@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 import r from 'restructure';
 
 export default class CFFPointer extends r.Pointer {
@@ -11,7 +13,7 @@ export default class CFFPointer extends r.Pointer {
 
   decode(stream, parent, operands) {
     this.offsetType = {
-      decode: () => operands[0]
+      decode: () => operands[0],
     };
 
     return super.decode(stream, parent, operands);
@@ -21,7 +23,7 @@ export default class CFFPointer extends r.Pointer {
     if (!stream) {
       // compute the size (so ctx.pointerSize is correct)
       this.offsetType = {
-        size: () => 0
+        size: () => 0,
       };
 
       this.size(value, ctx);
@@ -30,7 +32,7 @@ export default class CFFPointer extends r.Pointer {
 
     let ptr = null;
     this.offsetType = {
-      encode: (stream, val) => ptr = val
+      encode: (stream, val) => (ptr = val),
     };
 
     super.encode(stream, value, ctx);

@@ -9,7 +9,7 @@ export default class TTFSubset extends Subset {
     super(font);
     this.glyphEncoder = new TTFGlyphEncoder;
   }
-  
+
   _addGlyph(gid) {
     let glyph = this.font.getGlyph(gid);
     let glyf = glyph._decode();
@@ -25,7 +25,7 @@ export default class TTFSubset extends Subset {
 
     // if it is a compound glyph, include its components
     if (glyf && glyf.numberOfContours < 0) {
-      buffer = new Buffer(buffer);
+      buffer = Buffer.from(buffer);
       for (let component of glyf.components) {
         gid = this.includeGlyph(component.glyphID);
         buffer.writeUInt16BE(gid, component.pos);
@@ -37,7 +37,7 @@ export default class TTFSubset extends Subset {
 
     this.glyf.push(buffer);
     this.loca.offsets.push(this.offset);
-    
+
     this.hmtx.metrics.push({
       advance: glyph.advanceWidth,
       bearing: glyph._getMetrics().leftBearing

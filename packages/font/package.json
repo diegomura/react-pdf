@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/font",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -15,7 +15,7 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/fontkit": "^2.0.3",
+    "@react-pdf/fontkit": "^2.0.4",
     "@react-pdf/types": "^2.0.1",
     "cross-fetch": "^3.0.4",
     "is-url": "^1.2.4"

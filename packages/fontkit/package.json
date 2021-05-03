@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/fontkit",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "An advanced font engine for Node and the browser",
   "scripts": {
     "watch": "rimraf ./lib && rollup -c -w",

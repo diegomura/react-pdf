@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 // Cateories used in the OpenType spec:
 // https://www.microsoft.com/typography/otfntdev/devanot/shaping.aspx
 export const CATEGORIES = {

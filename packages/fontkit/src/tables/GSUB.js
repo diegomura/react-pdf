@@ -53,7 +53,7 @@ let GSUBLookup = new r.VersionedStruct('lookupType', {
   7: { // Extension Substitution
     substFormat:   r.uint16,
     lookupType:    r.uint16,   // cannot also be 7
-    extension:     new r.Pointer(r.uint32, undefined)
+    extension:     new r.Pointer(r.uint32, GSUBLookup)
   },
 
   8: { // Reverse Chaining Contextual Single Substitution

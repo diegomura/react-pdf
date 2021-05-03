@@ -1,3 +1,5 @@
+// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 //
 // This script generates a UnicodeTrie containing shaping data derived
 // from Unicode properties (currently just for the Arabic shaper).

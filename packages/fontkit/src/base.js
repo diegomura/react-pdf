@@ -1,5 +1,5 @@
 import r from 'restructure';
-import fs from 'fs';
+const fs = require('fs');
 
 var fontkit = {};
 export default fontkit;
@@ -58,4 +58,9 @@ fontkit.create = function(buffer, postscriptName) {
   }
 
   throw new Error('Unknown font format');
+};
+
+fontkit.defaultLanguage = 'en';
+fontkit.setDefaultLanguage = function(lang = 'en') {
+  fontkit.defaultLanguage = lang;
 };

@@ -13,9 +13,10 @@ This project is a fork of [fontkit](https://github.com/foliojs/fontkit) by @devo
 
 ## Fork changes
 
+> Updated to 417af0c79c5664271a07a783574ec7fac7ebad0c
+
 - Ship parsed tries for browser compatibility
 - Ship node and browser separate builds (ignoring node dependencies)
-- Add stringIndices to GlyphRun
 - `openSync` and `open` not available for browser (throws error)
 - Remove WOFF2 from browser build (due to `broli` dependency)
 

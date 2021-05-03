@@ -44,8 +44,11 @@ Directory.preEncode = function(stream) {
   this.numTables = tables.length;
   this.tables = tables;
 
-  this.searchRange = Math.floor(Math.log(this.numTables) / Math.LN2) * 16;
-  this.entrySelector = Math.floor(this.searchRange / Math.LN2);
+  let maxExponentFor2 = Math.floor((Math.log(this.numTables) / Math.LN2));
+  let maxPowerOf2 = Math.pow(2, maxExponentFor2);
+
+  this.searchRange =  maxPowerOf2 * 16;
+  this.entrySelector = Math.log(maxPowerOf2) / Math.LN2;
   this.rangeShift = this.numTables * 16 - this.searchRange;
 };
 

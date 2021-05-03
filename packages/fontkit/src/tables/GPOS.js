@@ -185,7 +185,7 @@ let GPOSLookup = new r.VersionedStruct('lookupType', {
   9: { // Extension Positioning
     posFormat:   r.uint16,
     lookupType:  r.uint16,   // cannot also be 9
-    extension:   new r.Pointer(r.uint32, undefined)
+    extension:   new r.Pointer(r.uint32, GPOSLookup)
   }
 });
 

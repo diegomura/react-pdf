@@ -127,7 +127,7 @@ class CFFFont {
 
           if (gid < ranges[mid].first) {
             high = mid - 1;
-          } else if (mid < high && gid > ranges[mid + 1].first) {
+          } else if (mid < high && gid >= ranges[mid + 1].first) {
             low = mid + 1;
           } else {
             return ranges[mid].fd;

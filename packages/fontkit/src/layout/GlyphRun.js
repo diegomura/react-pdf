@@ -20,12 +20,6 @@ export default class GlyphRun {
     this.positions = null;
 
     /**
-     * An array of indices to indices in the input string for each glyph
-     * @type {number[]}
-     */
-    this.stringIndices = null;
-
-    /**
      * The script that was requested for shaping. This was either passed in or detected automatically.
      * @type {string}
      */

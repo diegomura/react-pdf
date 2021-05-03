@@ -1,5 +1,7 @@
 import r from 'restructure';
 
+const resolved = Promise.resolve();
+
 export default class Subset {
   constructor(font) {
     this.font = font;
@@ -26,7 +28,7 @@ export default class Subset {
   encodeStream() {
     let s = new r.EncodeStream();
 
-    process.nextTick(() => {
+    resolved.then(() => {
       this.encode(s);
       return s.end();
     });

@@ -1,8 +1,6 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const Axis = new r.Struct({
+let Axis = new r.Struct({
   axisTag: new r.String(4),
   minValue: r.fixed32,
   defaultValue: r.fixed32,
@@ -12,7 +10,7 @@ const Axis = new r.Struct({
   name: t => t.parent.parent.name.records.fontFeatures[t.nameID]
 });
 
-const Instance = new r.Struct({
+let Instance = new r.Struct({
   nameID: r.uint16,
   name: t => t.parent.parent.name.records.fontFeatures[t.nameID],
   flags: r.uint16,

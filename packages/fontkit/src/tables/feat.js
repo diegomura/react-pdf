@@ -1,14 +1,12 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const Setting = new r.Struct({
+let Setting = new r.Struct({
   setting: r.uint16,
   nameIndex: r.int16,
   name: t => t.parent.parent.parent.name.records.fontFeatures[t.nameIndex]
 });
 
-const FeatureName = new r.Struct({
+let FeatureName = new r.Struct({
   feature: r.uint16,
   nSettings: r.uint16,
   settingTable: new r.Pointer(r.uint32, new r.Array(Setting, 'nSettings'), { type: 'parent' }),

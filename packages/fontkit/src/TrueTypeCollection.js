@@ -1,20 +1,20 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 import TTFFont from './TTFFont';
+import Directory from './tables/directory';
+import tables from './tables';
 
-const TTCHeader = new r.VersionedStruct(r.uint32, {
+let TTCHeader = new r.VersionedStruct(r.uint32, {
   0x00010000: {
-    numFonts: r.uint32,
-    offsets: new r.Array(r.uint32, 'numFonts'),
+    numFonts:   r.uint32,
+    offsets:    new r.Array(r.uint32, 'numFonts')
   },
   0x00020000: {
-    numFonts: r.uint32,
-    offsets: new r.Array(r.uint32, 'numFonts'),
-    dsigTag: r.uint32,
+    numFonts:   r.uint32,
+    offsets:    new r.Array(r.uint32, 'numFonts'),
+    dsigTag:    r.uint32,
     dsigLength: r.uint32,
-    dsigOffset: r.uint32,
-  },
+    dsigOffset: r.uint32
+  }
 });
 
 export default class TrueTypeCollection {
@@ -45,7 +45,7 @@ export default class TrueTypeCollection {
   }
 
   get fonts() {
-    const fonts = [];
+    let fonts = [];
     for (let offset of this.header.offsets) {
       let stream = new r.DecodeStream(this.stream.buffer);
       stream.pos = offset;

@@ -1,14 +1,12 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const Signature = new r.Struct({
+let Signature = new r.Struct({
   format: r.uint32,
   length: r.uint32,
   offset: r.uint32
 });
 
-const SignatureBlock = new r.Struct({
+let SignatureBlock = new r.Struct({
   reserved:       new r.Reserved(r.uint16, 2),
   cbSignature:    r.uint32,  // Length (in bytes) of the PKCS#7 packet in pbSignature
   signature:      new r.Buffer('cbSignature')

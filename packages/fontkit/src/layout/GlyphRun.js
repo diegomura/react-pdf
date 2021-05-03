@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import BBox from '../glyph/BBox';
 import * as Script from '../layout/Script';
 
@@ -20,12 +18,6 @@ export default class GlyphRun {
      * @type {GlyphPosition[]}
      */
     this.positions = null;
-
-    /**
-     * An array of indices to indices in the input string for each glyph
-     * @type {number[]}
-     */
-    this.stringIndices = null;
 
     /**
      * The script that was requested for shaping. This was either passed in or detected automatically.

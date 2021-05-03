@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
 export default class CFFIndex {
@@ -17,7 +15,9 @@ export default class CFFIndex {
 
   decode(stream, parent) {
     let version = this.getCFFVersion(parent);
-    let count = version >= 2 ? stream.readUInt32BE() : stream.readUInt16BE();
+    let count = version >= 2
+      ? stream.readUInt32BE()
+      : stream.readUInt16BE();
 
     if (count === 0) {
       return [];
@@ -38,7 +38,7 @@ export default class CFFIndex {
     }
 
     let ret = [];
-    let startPos = stream.pos + (count + 1) * offSize - 1;
+    let startPos = stream.pos + ((count + 1) * offSize) - 1;
 
     let start = offsetType.decode(stream);
     for (let i = 0; i < count; i++) {
@@ -54,7 +54,7 @@ export default class CFFIndex {
       } else {
         ret.push({
           offset: startPos + start,
-          length: end - start,
+          length: end - start
         });
       }
 
@@ -71,7 +71,7 @@ export default class CFFIndex {
       return size;
     }
 
-    let type = this.type || new r.Buffer();
+    let type = this.type || new r.Buffer;
 
     // find maximum offset to detminine offset type
     let offset = 1;
@@ -90,7 +90,7 @@ export default class CFFIndex {
     } else if (offset <= 0xffffffff) {
       offsetType = r.uint32;
     } else {
-      throw new Error('Bad offset in CFFIndex');
+      throw new Error("Bad offset in CFFIndex");
     }
 
     size += 1 + offsetType.size() * (arr.length + 1);
@@ -105,7 +105,7 @@ export default class CFFIndex {
       return;
     }
 
-    let type = this.type || new r.Buffer();
+    let type = this.type || new r.Buffer;
 
     // find maximum offset to detminine offset type
     let sizes = [];
@@ -126,7 +126,7 @@ export default class CFFIndex {
     } else if (offset <= 0xffffffff) {
       offsetType = r.uint32;
     } else {
-      throw new Error('Bad offset in CFFIndex');
+      throw new Error("Bad offset in CFFIndex");
     }
 
     // write offset size

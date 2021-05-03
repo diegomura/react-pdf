@@ -1,15 +1,8 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 /**
  * Represents a glyph bounding box
  */
 export default class BBox {
-  constructor(
-    minX = Infinity,
-    minY = Infinity,
-    maxX = -Infinity,
-    maxY = -Infinity,
-  ) {
+  constructor(minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity) {
     /**
      * The minimum X position in the bounding box
      * @type {number}

@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
 // Flags for simple glyphs
@@ -14,7 +12,7 @@ class Point {
   static size(val) {
     return val >= 0 && val <= 255 ? 1 : 2;
   }
-
+  
   static encode(stream, value) {
     if (value >= 0 && value <= 255) {
       stream.writeUInt8(value);
@@ -49,15 +47,15 @@ export default class TTFGlyphEncoder {
     let same = 0;
     let lastX = 0, lastY = 0, lastFlag = 0;
     let pointCount = 0;
-
+    
     for (let i = 0; i < path.commands.length; i++) {
       let c = path.commands[i];
-
+      
       for (let j = 0; j < c.args.length; j += 2) {
         let x = c.args[j];
         let y = c.args[j + 1];
         let flag = 0;
-
+        
         // If the ending point of a quadratic curve is the midpoint
         // between the control point and the control point of the next
         // quadratic curve, we can omit the ending point.
@@ -66,21 +64,21 @@ export default class TTFGlyphEncoder {
           if (next && next.command === 'quadraticCurveTo') {
             let midX = (lastX + next.args[0]) / 2;
             let midY = (lastY + next.args[1]) / 2;
-
+            
             if (x === midX && y === midY) {
               continue;
             }
           }
         }
-
+        
         // All points except control points are on curve.
         if (!(c.command === 'quadraticCurveTo' && j === 0)) {
           flag |= ON_CURVE;
         }
-
+        
         flag = this._encodePoint(x, lastX, xPoints, flag, X_SHORT_VECTOR, SAME_X);
         flag = this._encodePoint(y, lastY, yPoints, flag, Y_SHORT_VECTOR, SAME_Y);
-
+        
         if (flag === lastFlag && same < 255) {
           flags[flags.length - 1] |= REPEAT;
           same++;
@@ -89,16 +87,16 @@ export default class TTFGlyphEncoder {
             flags.push(same);
             same = 0;
           }
-
+      
           flags.push(flag);
           lastFlag = flag;
         }
-
+        
         lastX = x;
         lastY = y;
         pointCount++;
       }
-
+  
       if (c.command === 'closePath') {
         endPtsOfContours.push(pointCount - 1);
       }
@@ -108,7 +106,7 @@ export default class TTFGlyphEncoder {
     if (path.commands.length > 1 && path.commands[path.commands.length - 1].command !== 'closePath') {
       endPtsOfContours.push(pointCount - 1);
     }
-
+    
     let bbox = path.bbox;
     let glyf = {
       numberOfContours: endPtsOfContours.length,
@@ -122,24 +120,24 @@ export default class TTFGlyphEncoder {
       xPoints: xPoints,
       yPoints: yPoints
     };
-
+    
     let size = Glyf.size(glyf);
     let tail = 4 - (size % 4);
-
+    
     let stream = new r.EncodeStream(size + tail);
     Glyf.encode(stream, glyf);
-
+    
     // Align to 4-byte length
     if (tail !== 0) {
       stream.fill(0, tail);
     }
-
+    
     return stream.buffer;
   }
-
+  
   _encodePoint(value, last, points, flag, shortFlag, sameFlag) {
     let diff = value - last;
-
+    
     if (value === last) {
       flag |= sameFlag;
     } else {
@@ -151,10 +149,10 @@ export default class TTFGlyphEncoder {
           flag |= sameFlag;
         }
       }
-
+      
       points.push(diff);
     }
-
+    
     return flag;
   }
 }

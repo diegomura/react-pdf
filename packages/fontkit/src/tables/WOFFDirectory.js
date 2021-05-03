@@ -1,8 +1,7 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
+import tables from './';
 
-const WOFFDirectoryEntry = new r.Struct({
+let WOFFDirectoryEntry = new r.Struct({
   tag:          new r.String(4),
   offset:       new r.Pointer(r.uint32, 'void', {type: 'global'}),
   compLength:   r.uint32,
@@ -10,7 +9,7 @@ const WOFFDirectoryEntry = new r.Struct({
   origChecksum: r.uint32
 });
 
-const WOFFDirectory = new r.Struct({
+let WOFFDirectory = new r.Struct({
   tag:            new r.String(4), // should be 'wOFF'
   flavor:         r.uint32,
   length:         r.uint32,

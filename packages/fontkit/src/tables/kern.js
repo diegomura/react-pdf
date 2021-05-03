@@ -1,27 +1,25 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const KernPair = new r.Struct({
+let KernPair = new r.Struct({
   left:   r.uint16,
   right:  r.uint16,
   value:  r.int16
 });
 
-const ClassTable = new r.Struct({
+let ClassTable = new r.Struct({
   firstGlyph: r.uint16,
   nGlyphs: r.uint16,
   offsets: new r.Array(r.uint16, 'nGlyphs'),
   max: t => t.offsets.length && Math.max.apply(Math, t.offsets)
 });
 
-const Kern2Array = new r.Struct({
+let Kern2Array = new r.Struct({
   off: t => t._startOffset - t.parent.parent._startOffset,
   len: t => (((t.parent.leftTable.max - t.off) / t.parent.rowWidth) + 1) * (t.parent.rowWidth / 2),
   values: new r.LazyArray(r.int16, 'len')
 });
 
-const KernSubtable = new r.VersionedStruct('format', {
+let KernSubtable = new r.VersionedStruct('format', {
   0: {
     nPairs:         r.uint16,
     searchRange:    r.uint16,
@@ -50,7 +48,7 @@ const KernSubtable = new r.VersionedStruct('format', {
   }
 });
 
-const KernTable = new r.VersionedStruct('version', {
+let KernTable = new r.VersionedStruct('version', {
   0: { // Microsoft uses this format
     subVersion: r.uint16,  // Microsoft has an extra sub-table version number
     length:     r.uint16,  // Length of the subtable, in bytes

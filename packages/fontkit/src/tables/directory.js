@@ -1,22 +1,20 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 import Tables from './';
 
-const TableEntry = new r.Struct({
-  tag: new r.String(4),
-  checkSum: r.uint32,
-  offset: new r.Pointer(r.uint32, 'void', { type: 'global' }),
-  length: r.uint32,
+let TableEntry = new r.Struct({
+  tag:        new r.String(4),
+  checkSum:   r.uint32,
+  offset:     new r.Pointer(r.uint32, 'void', { type: 'global' }),
+  length:     r.uint32
 });
 
-const Directory = new r.Struct({
-  tag: new r.String(4),
-  numTables: r.uint16,
-  searchRange: r.uint16,
-  entrySelector: r.uint16,
-  rangeShift: r.uint16,
-  tables: new r.Array(TableEntry, 'numTables'),
+let Directory = new r.Struct({
+  tag:            new r.String(4),
+  numTables:      r.uint16,
+  searchRange:    r.uint16,
+  entrySelector:  r.uint16,
+  rangeShift:     r.uint16,
+  tables:         new r.Array(TableEntry, 'numTables')
 });
 
 Directory.process = function() {
@@ -46,8 +44,11 @@ Directory.preEncode = function(stream) {
   this.numTables = tables.length;
   this.tables = tables;
 
-  this.searchRange = Math.floor(Math.log(this.numTables) / Math.LN2) * 16;
-  this.entrySelector = Math.floor(this.searchRange / Math.LN2);
+  let maxExponentFor2 = Math.floor((Math.log(this.numTables) / Math.LN2));
+  let maxPowerOf2 = Math.pow(2, maxExponentFor2);
+
+  this.searchRange =  maxPowerOf2 * 16;
+  this.entrySelector = Math.log(maxPowerOf2) / Math.LN2;
   this.rangeShift = this.numTables * 16 - this.searchRange;
 };
 

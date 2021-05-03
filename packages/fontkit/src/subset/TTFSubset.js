@@ -1,14 +1,15 @@
 import cloneDeep from 'clone';
 import Subset from './Subset';
 import Directory from '../tables/directory';
+import Tables from '../tables';
 import TTFGlyphEncoder from '../glyph/TTFGlyphEncoder';
 
 export default class TTFSubset extends Subset {
   constructor(font) {
     super(font);
-    this.glyphEncoder = new TTFGlyphEncoder();
+    this.glyphEncoder = new TTFGlyphEncoder;
   }
-
+  
   _addGlyph(gid) {
     let glyph = this.font.getGlyph(gid);
     let glyf = glyph._decode();
@@ -24,7 +25,7 @@ export default class TTFSubset extends Subset {
 
     // if it is a compound glyph, include its components
     if (glyf && glyf.numberOfContours < 0) {
-      buffer = Buffer.from(buffer);
+      buffer = new Buffer(buffer);
       for (let component of glyf.components) {
         gid = this.includeGlyph(component.glyphID);
         buffer.writeUInt16BE(gid, component.pos);
@@ -36,10 +37,10 @@ export default class TTFSubset extends Subset {
 
     this.glyf.push(buffer);
     this.loca.offsets.push(this.offset);
-
+    
     this.hmtx.metrics.push({
       advance: glyph.advanceWidth,
-      bearing: glyph._getMetrics().leftBearing,
+      bearing: glyph._getMetrics().leftBearing
     });
 
     this.offset += buffer.length;
@@ -57,12 +58,12 @@ export default class TTFSubset extends Subset {
     this.offset = 0;
     this.loca = {
       offsets: [],
-      version: this.font.loca.version,
+      version: this.font.loca.version
     };
 
     this.hmtx = {
       metrics: [],
-      bearings: [],
+      bearings: []
     };
 
     // include all the glyphs
@@ -117,13 +118,13 @@ export default class TTFSubset extends Subset {
         prep: this.font.prep,
         glyf: this.glyf,
         hmtx: this.hmtx,
-        fpgm: this.font.fpgm,
+        fpgm: this.font.fpgm
 
         // name: clone @font.name
         // 'OS/2': clone @font['OS/2']
         // post: clone @font.post
         // cmap: cmap
-      },
+      }
     });
   }
 }

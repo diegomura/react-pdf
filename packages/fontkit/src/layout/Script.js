@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import unicode from '@react-pdf/unicode-properties';
 
 // This maps the Unicode Script property to an OpenType script tag

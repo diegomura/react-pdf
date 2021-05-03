@@ -1,20 +1,18 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const shortFrac = new r.Fixed(16, 'BE', 14);
+let shortFrac = new r.Fixed(16, 'BE', 14);
 class Offset {
   static decode(stream, parent) {
     // In short format, offsets are multiplied by 2.
     // This doesn't seem to be documented by Apple, but it
     // is implemented this way in Freetype.
-    return parent.flags
+    return parent.flags 
       ? stream.readUInt32BE()
       : stream.readUInt16BE() * 2;
   }
 }
 
-const gvar = new r.Struct({
+let gvar = new r.Struct({
   version: r.uint16,
   reserved: new r.Reserved(r.uint16),
   axisCount: r.uint16,

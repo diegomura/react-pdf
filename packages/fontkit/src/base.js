@@ -1,14 +1,12 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
-import fs from 'fs';
+const fs = require('fs');
 
-const fontkit = {};
+var fontkit = {};
 export default fontkit;
 
 fontkit.logErrors = false;
 
-const formats = [];
+let formats = [];
 fontkit.registerFormat = function(format) {
   formats.push(format);
 };
@@ -17,7 +15,7 @@ fontkit.openSync = function(filename, postscriptName) {
   if (BROWSER) {
     throw new Error('fontkit.openSync unavailable for browser build');
   }
-  const buffer = fs.readFileSync(filename);
+  let buffer = fs.readFileSync(filename);
   return fontkit.create(buffer, postscriptName);
 };
 
@@ -32,14 +30,10 @@ fontkit.open = function(filename, postscriptName, callback) {
   }
 
   fs.readFile(filename, function(err, buffer) {
-    if (err) {
-      return callback(err);
-    }
-
-    let font;
+    if (err) { return callback(err); }
 
     try {
-      font = fontkit.create(buffer, postscriptName);
+      var font = fontkit.create(buffer, postscriptName);
     } catch (e) {
       return callback(e);
     }
@@ -52,9 +46,9 @@ fontkit.open = function(filename, postscriptName, callback) {
 
 fontkit.create = function(buffer, postscriptName) {
   for (let i = 0; i < formats.length; i++) {
-    const format = formats[i];
+    let format = formats[i];
     if (format.probe(buffer)) {
-      const font = new format(new r.DecodeStream(buffer));
+      let font = new format(new r.DecodeStream(buffer));
       if (postscriptName) {
         return font.getFont(postscriptName);
       }

@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 import {resolveLength} from 'restructure/src/utils';
 import {ItemVariationStore} from './variations';
@@ -24,13 +22,13 @@ class VariableSizeNumber {
   }
 }
 
-const MapDataEntry = new r.Struct({
+let MapDataEntry = new r.Struct({
   entry: new VariableSizeNumber(t => ((t.parent.entryFormat & 0x0030) >> 4) + 1),
   outerIndex: t => t.entry >> ((t.parent.entryFormat & 0x000F) + 1),
   innerIndex: t => t.entry & ((1 << ((t.parent.entryFormat & 0x000F) + 1)) - 1)
 });
 
-const DeltaSetIndexMap = new r.Struct({
+let DeltaSetIndexMap = new r.Struct({
   entryFormat: r.uint16,
   mapCount: r.uint16,
   mapData: new r.Array(MapDataEntry, 'mapCount')

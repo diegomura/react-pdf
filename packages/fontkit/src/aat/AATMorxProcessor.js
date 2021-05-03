@@ -1,48 +1,42 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import AATStateMachine from './AATStateMachine';
 import AATLookupTable from './AATLookupTable';
-import { cache } from '../decorators';
+import {cache} from '../decorators';
 
 // indic replacement flags
 const MARK_FIRST = 0x8000;
-const MARK_LAST = 0x2000;
-const VERB = 0x000f;
+const MARK_LAST  = 0x2000;
+const VERB       = 0x000F;
 
 // contextual substitution and glyph insertion flag
 const SET_MARK = 0x8000;
 
 // ligature entry flags
-const SET_COMPONENT = 0x8000;
+const SET_COMPONENT  = 0x8000;
 const PERFORM_ACTION = 0x2000;
 
 // ligature action masks
-const LAST_MASK = 0x80000000;
-const STORE_MASK = 0x40000000;
-const OFFSET_MASK = 0x3fffffff;
+const LAST_MASK   = 0x80000000;
+const STORE_MASK  = 0x40000000;
+const OFFSET_MASK = 0x3FFFFFFF;
 
-const VERTICAL_ONLY = 0x800000;
-const REVERSE_DIRECTION = 0x400000;
+const VERTICAL_ONLY           = 0x800000;
+const REVERSE_DIRECTION       = 0x400000;
 const HORIZONTAL_AND_VERTICAL = 0x200000;
 
 // glyph insertion flags
 const CURRENT_IS_KASHIDA_LIKE = 0x2000;
-const MARKED_IS_KASHIDA_LIKE = 0x1000;
-const CURRENT_INSERT_BEFORE = 0x0800;
-const MARKED_INSERT_BEFORE = 0x0400;
-const CURRENT_INSERT_COUNT = 0x03e0;
-const MARKED_INSERT_COUNT = 0x001f;
+const MARKED_IS_KASHIDA_LIKE  = 0x1000;
+const CURRENT_INSERT_BEFORE   = 0x0800;
+const MARKED_INSERT_BEFORE    = 0x0400;
+const CURRENT_INSERT_COUNT    = 0x03E0;
+const MARKED_INSERT_COUNT     = 0x001F;
 
 export default class AATMorxProcessor {
   constructor(font) {
     this.processIndicRearragement = this.processIndicRearragement.bind(this);
-    this.processContextualSubstitution = this.processContextualSubstitution.bind(
-      this,
-    );
+    this.processContextualSubstitution = this.processContextualSubstitution.bind(this);
     this.processLigature = this.processLigature.bind(this);
-    this.processNoncontextualSubstitutions = this.processNoncontextualSubstitutions.bind(
-      this,
-    );
+    this.processNoncontextualSubstitutions = this.processNoncontextualSubstitutions.bind(this);
     this.processGlyphInsertion = this.processGlyphInsertion.bind(this);
     this.font = font;
     this.morx = font.morx;
@@ -58,7 +52,7 @@ export default class AATMorxProcessor {
       // enable/disable the requested features
       for (let feature of chain.features) {
         let f;
-        if ((f = features[feature.featureType])) {
+        if (f = features[feature.featureType]) {
           if (f[feature.featureSetting]) {
             flags &= feature.disableFlags;
             flags |= feature.enableFlags;
@@ -141,12 +135,7 @@ export default class AATMorxProcessor {
       this.lastGlyph = index;
     }
 
-    reorderGlyphs(
-      this.glyphs,
-      entry.flags & VERB,
-      this.firstGlyph,
-      this.lastGlyph,
-    );
+    reorderGlyphs(this.glyphs, entry.flags & VERB, this.firstGlyph, this.lastGlyph);
   }
 
   processContextualSubstitution(glyph, entry, index) {
@@ -157,10 +146,7 @@ export default class AATMorxProcessor {
       glyph = this.glyphs[this.markedGlyph];
       var gid = lookupTable.lookup(glyph.id);
       if (gid) {
-        this.glyphs[this.markedGlyph] = this.font.getGlyph(
-          gid,
-          glyph.codePoints,
-        );
+        this.glyphs[this.markedGlyph] = this.font.getGlyph(gid, glyph.codePoints);
       }
     }
 
@@ -202,7 +188,7 @@ export default class AATMorxProcessor {
         let action = actions.getItem(actionIndex++);
         last = !!(action & LAST_MASK);
         let store = !!(action & STORE_MASK);
-        let offset = ((action & OFFSET_MASK) << 2) >> 2; // sign extend 30 to 32 bits
+        let offset = (action & OFFSET_MASK) << 2 >> 2; // sign extend 30 to 32 bits
         offset += this.glyphs[componentGlyph].id;
 
         let component = components.getItem(offset);
@@ -210,10 +196,7 @@ export default class AATMorxProcessor {
 
         if (last || store) {
           let ligatureEntry = ligatureList.getItem(ligatureIndex);
-          this.glyphs[componentGlyph] = this.font.getGlyph(
-            ligatureEntry,
-            codePoints,
-          );
+          this.glyphs[componentGlyph] = this.font.getGlyph(ligatureEntry, codePoints);
           ligatureGlyphs.push(componentGlyph);
           ligatureIndex = 0;
           codePoints = [];
@@ -234,8 +217,7 @@ export default class AATMorxProcessor {
       let glyph = glyphs[index];
       if (glyph.id !== 0xffff) {
         let gid = lookupTable.lookup(glyph.id);
-        if (gid) {
-          // 0 means do nothing
+        if (gid) { // 0 means do nothing
           glyphs[index] = this.font.getGlyph(gid, glyph.codePoints);
         }
       }
@@ -245,9 +227,7 @@ export default class AATMorxProcessor {
   _insertGlyphs(glyphIndex, insertionActionIndex, count, isBefore) {
     let insertions = [];
     while (count--) {
-      let gid = this.subtable.table.insertionActions.getItem(
-        insertionActionIndex++,
-      );
+      let gid = this.subtable.table.insertionActions.getItem(insertionActionIndex++);
       insertions.push(this.font.getGlyph(gid));
     }
 
@@ -266,12 +246,7 @@ export default class AATMorxProcessor {
     if (entry.markedInsertIndex !== 0xffff) {
       let count = (entry.flags & MARKED_INSERT_COUNT) >>> 5;
       let isBefore = !!(entry.flags & MARKED_INSERT_BEFORE);
-      this._insertGlyphs(
-        this.markedIndex,
-        entry.markedInsertIndex,
-        count,
-        isBefore,
-      );
+      this._insertGlyphs(this.markedIndex, entry.markedInsertIndex, count, isBefore);
     }
 
     if (entry.currentInsertIndex !== 0xffff) {
@@ -340,7 +315,7 @@ export default class AATMorxProcessor {
         let glyphs = this.glyphs;
         stack.push({
           glyphs: glyphs.slice(),
-          ligatureStack: this.ligatureStack.slice(),
+          ligatureStack: this.ligatureStack.slice()
         });
 
         // Add glyph to input and glyphs to process.
@@ -373,12 +348,9 @@ export default class AATMorxProcessor {
       },
 
       exit: () => {
-        ({
-          glyphs: this.glyphs,
-          ligatureStack: this.ligatureStack,
-        } = stack.pop());
+        ({glyphs: this.glyphs, ligatureStack: this.ligatureStack} = stack.pop());
         input.pop();
-      },
+      }
     });
   }
 }

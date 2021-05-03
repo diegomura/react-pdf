@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 import brotli from 'brotli/decompress';
 import TTFFont from './TTFFont';
@@ -31,8 +29,7 @@ export default class WOFF2Font extends TTFFont {
       for (let tag in this.directory.tables) {
         let entry = this.directory.tables[tag];
         entry.offset = decompressedSize;
-        decompressedSize +=
-          entry.transformLength != null ? entry.transformLength : entry.length;
+        decompressedSize += (entry.transformLength != null) ? entry.transformLength : entry.length;
       }
 
       let decompressed = brotli(buffer, decompressedSize);
@@ -54,14 +51,10 @@ export default class WOFF2Font extends TTFFont {
   // custom subclass if there is a glyf table.
   _getBaseGlyph(glyph, characters = []) {
     if (!this._glyphs[glyph]) {
-      if (
-        this.directory.tables.glyf &&
-        this.directory.tables.glyf.transformed
-      ) {
-        if (!this._transformedGlyphs) {
-          this._transformGlyfTable();
-        }
-        return (this._glyphs[glyph] = new WOFF2Glyph(glyph, characters, this));
+      if (this.directory.tables.glyf && this.directory.tables.glyf.transformed) {
+        if (!this._transformedGlyphs) { this._transformGlyfTable(); }
+        return this._glyphs[glyph] = new WOFF2Glyph(glyph, characters, this);
+
       } else {
         return super._getBaseGlyph(glyph, characters);
       }
@@ -79,8 +72,7 @@ export default class WOFF2Font extends TTFFont {
       let nContours = table.nContours.readInt16BE();
       glyph.numberOfContours = nContours;
 
-      if (nContours > 0) {
-        // simple glyph
+      if (nContours > 0) { // simple glyph
         let nPoints = [];
         let totalPoints = 0;
 
@@ -96,13 +88,9 @@ export default class WOFF2Font extends TTFFont {
         }
 
         var instructionSize = read255UInt16(table.glyphs);
-      } else if (nContours < 0) {
-        // composite glyph
-        let haveInstructions = TTFGlyph.prototype._decodeComposite.call(
-          { _font: this },
-          glyph,
-          table.composites,
-        );
+
+      } else if (nContours < 0) { // composite glyph
+        let haveInstructions = TTFGlyph.prototype._decodeComposite.call({ _font: this }, glyph, table.composites);
         if (haveInstructions) {
           var instructionSize = read255UInt16(table.glyphs);
         }
@@ -145,7 +133,7 @@ let GlyfTable = new r.Struct({
   glyphs: new Substream('glyphStreamSize'),
   composites: new Substream('compositeStreamSize'),
   bboxes: new Substream('bboxStreamSize'),
-  instructions: new Substream('instructionStreamSize'),
+  instructions: new Substream('instructionStreamSize')
 });
 
 const WORD_CODE = 253;
@@ -177,12 +165,11 @@ function withSign(flag, baseval) {
 
 function decodeTriplet(flags, glyphs, nPoints) {
   let y;
-  let x = (y = 0);
+  let x = y = 0;
   let res = [];
 
   for (let i = 0; i < nPoints; i++) {
-    let dx = 0,
-      dy = 0;
+    let dx = 0, dy = 0;
     let flag = flags.readUInt8();
     let onCurve = !(flag >> 7);
     flag &= 0x7f;
@@ -190,23 +177,28 @@ function decodeTriplet(flags, glyphs, nPoints) {
     if (flag < 10) {
       dx = 0;
       dy = withSign(flag, ((flag & 14) << 7) + glyphs.readUInt8());
+
     } else if (flag < 20) {
       dx = withSign(flag, (((flag - 10) & 14) << 7) + glyphs.readUInt8());
       dy = 0;
+
     } else if (flag < 84) {
       var b0 = flag - 20;
       var b1 = glyphs.readUInt8();
       dx = withSign(flag, 1 + (b0 & 0x30) + (b1 >> 4));
       dy = withSign(flag >> 1, 1 + ((b0 & 0x0c) << 2) + (b1 & 0x0f));
+
     } else if (flag < 120) {
       var b0 = flag - 84;
       dx = withSign(flag, 1 + ((b0 / 12) << 8) + glyphs.readUInt8());
-      dy = withSign(flag >> 1, 1 + ((b0 % 12 >> 2) << 8) + glyphs.readUInt8());
+      dy = withSign(flag >> 1, 1 + (((b0 % 12) >> 2) << 8) + glyphs.readUInt8());
+
     } else if (flag < 124) {
       var b1 = glyphs.readUInt8();
       let b2 = glyphs.readUInt8();
       dx = withSign(flag, (b1 << 4) + (b2 >> 4));
       dy = withSign(flag >> 1, ((b2 & 0x0f) << 8) + glyphs.readUInt8());
+
     } else {
       dx = withSign(flag, glyphs.readUInt16BE());
       dy = withSign(flag >> 1, glyphs.readUInt16BE());

@@ -1,8 +1,6 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 import r from 'restructure';
 
-const GaspRange = new r.Struct({
+let GaspRange = new r.Struct({
   rangeMaxPPEM:       r.uint16,                  // Upper limit of range, in ppem
   rangeGaspBehavior:  new r.Bitfield(r.uint16, [ // Flags describing desired rasterizer behavior
     'grayscale', 'gridfit',

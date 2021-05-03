@@ -1,14 +1,10 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-// ERASED STRINGINDEX
-
 import OTProcessor from './OTProcessor';
 import GlyphInfo from './GlyphInfo';
 
 export default class GSUBProcessor extends OTProcessor {
   applyLookup(lookupType, table) {
     switch (lookupType) {
-      case 1: {
-        // Single Substitution
+      case 1: { // Single Substitution
         let index = this.coverageIndex(table.coverage);
         if (index === -1) {
           return false;
@@ -28,8 +24,7 @@ export default class GSUBProcessor extends OTProcessor {
         return true;
       }
 
-      case 2: {
-        // Multiple Substitution
+      case 2: { // Multiple Substitution
         let index = this.coverageIndex(table.coverage);
         if (index !== -1) {
           let sequence = table.sequences.get(index);
@@ -63,8 +58,7 @@ export default class GSUBProcessor extends OTProcessor {
         return false;
       }
 
-      case 3: {
-        // Alternate Substitution
+      case 3: { // Alternate Substitution
         let index = this.coverageIndex(table.coverage);
         if (index !== -1) {
           let USER_INDEX = 0; // TODO
@@ -75,8 +69,7 @@ export default class GSUBProcessor extends OTProcessor {
         return false;
       }
 
-      case 4: {
-        // Ligature Substitution
+      case 4: { // Ligature Substitution
         let index = this.coverageIndex(table.coverage);
         if (index === -1) {
           return false;
@@ -97,12 +90,7 @@ export default class GSUBProcessor extends OTProcessor {
           }
 
           // Create the replacement ligature glyph
-          let ligatureGlyph = new GlyphInfo(
-            this.font,
-            ligature.glyph,
-            characters,
-            curGlyph.features,
-          );
+          let ligatureGlyph = new GlyphInfo(this.font, ligature.glyph, characters, curGlyph.features);
           ligatureGlyph.shaperInfo = curGlyph.shaperInfo;
           ligatureGlyph.isLigated = true;
           ligatureGlyph.substituted = true;
@@ -151,13 +139,7 @@ export default class GSUBProcessor extends OTProcessor {
               idx = matchIndex;
             } else {
               while (idx < matchIndex) {
-                var ligatureComponent =
-                  curComps -
-                  lastNumComps +
-                  Math.min(
-                    this.glyphs[idx].ligatureComponent || 1,
-                    lastNumComps,
-                  );
+                var ligatureComponent = curComps - lastNumComps + Math.min(this.glyphs[idx].ligatureComponent || 1, lastNumComps);
                 this.glyphs[idx].ligatureID = ligatureGlyph.ligatureID;
                 this.glyphs[idx].ligatureComponent = ligatureComponent;
                 idx++;
@@ -174,10 +156,7 @@ export default class GSUBProcessor extends OTProcessor {
           if (lastLigID && !isMarkLigature) {
             for (let i = idx; i < this.glyphs.length; i++) {
               if (this.glyphs[i].ligatureID === lastLigID) {
-                var ligatureComponent =
-                  curComps -
-                  lastNumComps +
-                  Math.min(this.glyphs[i].ligatureComponent || 1, lastNumComps);
+                var ligatureComponent = curComps - lastNumComps + Math.min(this.glyphs[i].ligatureComponent || 1, lastNumComps);
                 this.glyphs[i].ligatureComponent = ligatureComponent;
               } else {
                 break;

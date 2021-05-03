@@ -1,5 +1,3 @@
-// Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
-
 /**
  * This decorator caches the results of a getter or method such that
  * the results are lazily computed once, and then cached.
@@ -18,7 +16,7 @@ export function cache(target, key, descriptor) {
 
     return {
       get() {
-        let cache = new Map();
+        let cache = new Map;
         function memoized(...args) {
           let key = args.length > 0 ? args[0] : 'value';
           if (cache.has(key)) {
@@ -28,11 +26,11 @@ export function cache(target, key, descriptor) {
           let result = fn.apply(this, args);
           cache.set(key, result);
           return result;
-        }
+        };
 
-        Object.defineProperty(this, key, { value: memoized });
+        Object.defineProperty(this, key, {value: memoized});
         return memoized;
-      },
+      }
     };
   }
 }

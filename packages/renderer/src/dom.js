@@ -3,10 +3,9 @@
 
 import * as primitives from '@react-pdf/primitives';
 import React, { useEffect, useRef, useState } from 'react';
-
+import queue from 'queue';
 import { pdf, version, Font, StyleSheet } from './index';
 
-const queue = require('queue');
 
 export const usePDF = ({ document }) => {
   const pdfInstance = useRef(null);

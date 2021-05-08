@@ -13,7 +13,7 @@ export type FontWeight =
   | 'heavy';
 
 export interface FontDescriptor {
-  family: string;
+  fontFamily: string;
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
 }

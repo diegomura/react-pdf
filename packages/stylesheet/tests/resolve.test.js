@@ -449,7 +449,7 @@ describe('stylesheet resolve', () => {
     });
   });
 
-  test('should transform font weight correctly', () => {
+  test.only('should transform font weight correctly', () => {
     const styles = resolve({}, { fontWeight: 'ultrabold' });
 
     expect(styles).toEqual({ fontWeight: 800 });

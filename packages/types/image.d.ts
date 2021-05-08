@@ -1,6 +1,23 @@
 type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-export type SourceObject =
-  | string
-  | { data: Buffer; format: 'png' | 'jpg' }
-  | { uri: string; method: HTTPMethod; body: any; headers: any };
+type SourceURL = string
+
+type SourceBuffer = Buffer
+
+type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' }
+
+type SourceURLObject =  { uri: string; method: HTTPMethod; body: any; headers: any }
+
+type Source =
+  | SourceURL
+  | SourceBuffer
+  | SourceDataBuffer
+  | SourceURLObject
+
+type SourceFactory = () => Source
+
+type SourceAsync = Promise<Source>
+
+type SourceAsyncFactory = () => Promise<Source>
+
+export type SourceObject = Source | SourceFactory | SourceAsync | SourceAsyncFactory

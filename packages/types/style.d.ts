@@ -17,7 +17,7 @@ export interface Style {
   // Layout
 
   bottom?: number | string;
-  display?: 'flex' | 'none';
+  display?: 'flex' | 'none' | 'table';
   left?: number | string;
   position?: 'absolute' | 'relative';
   right?: number | string;

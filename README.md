@@ -86,6 +86,9 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
+### More APIs
+[Basic APIs](https://react-pdf.org/node) and [Advanced APIs](https://react-pdf.org/advanced)
+
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).

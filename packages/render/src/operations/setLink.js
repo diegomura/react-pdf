@@ -1,7 +1,5 @@
 import * as R from 'ramda';
 
-// import { getURL } from '../utils/url';
-
 const DEST_REGEXP = /^#.+/;
 
 const isSrcId = R.test(DEST_REGEXP);

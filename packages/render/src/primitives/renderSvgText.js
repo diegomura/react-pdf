@@ -1,7 +1,8 @@
 import * as R from 'ramda';
-
 import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
 import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
+
+import renderGlyphs from './renderGlyphs';
 
 const renderRun = (ctx, run) => {
   const runAdvanceWidth = runWidth(run);
@@ -32,7 +33,7 @@ const renderRun = (ctx, run) => {
     ctx.font(typeof font.name === 'string' ? font.name : font, fontSize);
 
     try {
-      ctx._addGlyphs(run.glyphs, run.positions, 0, 0);
+      renderGlyphs(ctx, run.glyphs, run.positions, 0, 0);
     } catch (error) {
       console.log(error);
     }

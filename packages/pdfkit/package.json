@@ -24,7 +24,6 @@
     "@react-pdf/fontkit": "^2.0.6",
     "@react-pdf/png-js": "^2.0.2",
     "crypto-js": "^4.0.0",
-    "linebreak": "^1.0.2",
     "lz-string": "^1.4.4"
   },
   "devDependencies": {

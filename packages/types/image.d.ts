@@ -13,6 +13,7 @@ type Source =
   | SourceBuffer
   | SourceDataBuffer
   | SourceURLObject
+  | undefined
 
 type SourceFactory = () => Source
 

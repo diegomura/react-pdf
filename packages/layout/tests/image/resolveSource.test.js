@@ -74,6 +74,10 @@ describe('image resolveSource', () => {
         SOURCE_DATA_BUFFER,
       );
     });
+
+    it('resolves undefined', () => {
+      expect(resolveSource(() => undefined)).resolves.toBe(undefined);
+    });
   });
 
   describe('async factory', () => {
@@ -99,6 +103,10 @@ describe('image resolveSource', () => {
       expect(resolveSource(async () => SOURCE_DATA_BUFFER)).resolves.toBe(
         SOURCE_DATA_BUFFER,
       );
+    });
+
+    it('resolves undefined', () => {
+      expect(resolveSource(async () => undefined)).resolves.toBe(undefined);
     });
   });
 });

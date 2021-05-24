@@ -11,7 +11,7 @@ module.exports = {
     'no-plusplus': 0,
     'vars-on-top': 0,
     'prefer-const': 0,
-    'default-case': 1,
+    'default-case': 0,
     'dot-notation': 1,
     'guard-for-in': 0,
     'no-undef-init': 1,
@@ -36,6 +36,6 @@ module.exports = {
     'no-buffer-constructor': 1,
     'class-methods-use-this': 0,
     'import/no-mutable-exports': 0,
-    'lines-between-class-members': 0,
-  },
+    'lines-between-class-members': 0
+  }
 };

@@ -473,24 +473,7 @@ declare module '@react-pdf/renderer' {
     const Font: FontStore;
 
     const StyleSheet: {
-      hairlineWidth: number;
       create: <T extends Styles>(styles: T) => T;
-      resolve: (
-        style: Style,
-        container: {
-          width: number;
-          height: number;
-          orientation: Orientation;
-        },
-      ) => Style;
-      flatten: (...styles: (Style[] | Style | undefined)[]) => Style;
-      absoluteFillObject: {
-        position: 'absolute';
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-      };
     };
 
     const version: any;

@@ -10,4 +10,34 @@ describe('stylesheet flex transform', () => {
       flexBasis: 'auto',
     });
   });
+
+  test('should process flex shorthand with one digit', () => {
+    const styles = processFlex('flex', 1);
+
+    expect(styles).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+    });
+  });
+
+  test("should process flex '1'", () => {
+    const styles = processFlex('flex', '1');
+
+    expect(styles).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+    });
+  });
+
+  test('should process flex shorthand with two digits', () => {
+    const styles = processFlex('flex', '1 0');
+
+    expect(styles).toEqual({
+      flexGrow: 1,
+      flexShrink: 0,
+      flexBasis: 0,
+    });
+  });
 });

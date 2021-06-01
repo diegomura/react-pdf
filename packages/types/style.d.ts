@@ -1,5 +1,5 @@
 export interface Style {
-  //Flexbox
+  // Flexbox
 
   alignContent?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'space-between' | 'space-around';
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
@@ -47,12 +47,12 @@ export interface Style {
   fontWeight?: number | 'thin' | 'hairline' | 'ultralight' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'demibold' | 'bold' | 'ultrabold' | 'extrabold' | 'heavy' | 'black';
   letterSpacing?: number | string;
   lineHeight?: number | string;
-  maxLines?: number; //?
-  textAlign?: 'left' | 'right' | 'center' | 'justify'; //?
+  maxLines?: number; // ?
+  textAlign?: 'left' | 'right' | 'center' | 'justify'; // ?
   textDecoration?: 'line-through' | 'underline' | 'none';
   textDecorationColor?: string;
-  textDecorationStyle?: "dashed" | "dotted" | "solid" | string; //?
-  textIndent?: any; //?
+  textDecorationStyle?: "dashed" | "dotted" | "solid" | string; // ?
+  textIndent?: any; // ?
   textOverflow?: 'ellipsis';
   textTransform?: 'capitalize' | 'lowercase' | 'uppercase';
 
@@ -99,15 +99,15 @@ export interface Style {
   borderTopWidth?: number | string;
   borderRight?: number | string;
   borderRightColor?: string;
-  borderRightStyle?: "dashed" | "dotted" | "solid"; //?
+  borderRightStyle?: "dashed" | "dotted" | "solid"; // ?
   borderRightWidth?: number | string;
   borderBottom?: number | string;
   borderBottomColor?: string;
-  borderBottomStyle?: "dashed" | "dotted" | "solid"; //?
+  borderBottomStyle?: "dashed" | "dotted" | "solid"; // ?
   borderBottomWidth?: number | string;
   borderLeft?: number | string;
   borderLeftColor?: string;
-  borderLeftStyle?: "dashed" | "dotted" | "solid"; //?
+  borderLeftStyle?: "dashed" | "dotted" | "solid"; // ?
   borderLeftWidth?: number | string;
   borderTopLeftRadius?: number | string;
   borderTopRightRadius?: number | string;

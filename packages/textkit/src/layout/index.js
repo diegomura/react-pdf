@@ -18,7 +18,7 @@ import applyDefaultStyles from './applyDefaultStyles';
  * layout behavior.
  *
  * @param  {Object}  engines
- * @param  {Object}  attributted string
+ * @param  {Object}  attributed string
  * @param  {Object}  container rect
  * @param  {Object}  layout options
  * @return {Array} paragraph blocks

@@ -43,10 +43,9 @@ Other versions should work although I can't guarantee it
 
 ### 3. Install dependencies and boostrap monorepo
 
-We need to download this project dependencies in order to make it work. Because this is a monorepo, we also have to bind all the internal packages together so they are aware of each other
+We need to download this project dependencies in order to make it work. Because this is a monorepo, we also have to bind all the internal packages together so they are aware of each other. Both things can be done by running:
 
 ```sh
-yarn install
 yarn bootstrap
 ```
 

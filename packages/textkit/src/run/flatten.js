@@ -8,13 +8,15 @@ const sortPoints = (a, b) => a[1] - b[1] || a[3] - b[3];
 const mergeAttributes = (key, left, right) =>
   key === 'attributes' ? R.merge(left, right) : right;
 
-const generatePoints = R.o(
-  R.sort(sortPoints),
-  R.addIndex(R.chain)((run, i) => [
-    ['start', run.start, run.attributes, i],
-    ['end', run.end, run.attributes, i],
-  ]),
-);
+const generatePoints = runs => {
+  const points = runs.reduce((acc, run, i) => {
+    const end = ['end', run.end, run.attributes, i]
+    const start = ['start', run.start, run.attributes, i]
+    return [...acc, start, end];
+  }, []);
+
+  return points.sort(sortPoints);
+};
 
 const flattenEmptyRuns = R.compose(
   R.map(R.reduce(R.mergeDeepWithKey(mergeAttributes), {})),
@@ -64,11 +66,11 @@ const flattenRegularRuns = runs => {
  * @param  {Array}  runs
  * @return {Array} flatten runs
  */
-const flatten = (runs = []) =>
-  R.compose(
-    sort,
-    R.apply(R.useWith(R.concat, [flattenEmptyRuns, flattenRegularRuns])),
-    R.partition(isEmpty),
-  )(runs);
+const flatten = (runs = []) => {
+  const [emptyRuns, regularRuns] = R.partition(isEmpty, runs);
+  const flattenEmpty = flattenEmptyRuns(emptyRuns);
+  const flattenRegular = flattenRegularRuns(regularRuns);
+  return sort([...flattenEmpty, ...flattenRegular]);
+};
 
 export default flatten;

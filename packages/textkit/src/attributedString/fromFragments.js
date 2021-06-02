@@ -11,6 +11,7 @@ const fromFragments = fragments => {
 
   const getRuns = R.map(fragment => {
     const run = {
+      ...fragment,
       start: offset,
       end: offset + fragment.string.length,
       attributes: fragment.attributes || {},

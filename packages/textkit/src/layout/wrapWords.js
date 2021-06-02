@@ -44,7 +44,7 @@ const wrapWords = (engines = {}, options = {}, attributedString) => {
       string += parts.join('');
     }
 
-    fragments.push({ string, attributes: run.attributes });
+    fragments.push({ ...run, string });
   }
 
   return { ...fromFragments(fragments), syllables };

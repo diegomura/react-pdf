@@ -1,5 +1,4 @@
 import * as AATFeatureMap from './AATFeatureMap';
-import * as Script from '../layout/Script';
 import AATMorxProcessor from './AATMorxProcessor';
 
 export default class AATLayoutEngine {
@@ -10,11 +9,12 @@ export default class AATLayoutEngine {
   }
 
   substitute(glyphRun) {
+    // DISABLED: Textkit bidi engine takes care of this
     // AAT expects the glyphs to be in visual order prior to morx processing,
     // so reverse the glyphs if the script is right-to-left.
-    if (glyphRun.direction === 'rtl') {
-      glyphRun.glyphs.reverse();
-    }
+    // if (glyphRun.direction === 'rtl') {
+    //   glyphRun.glyphs.reverse();
+    // }
 
     this.morxProcessor.process(glyphRun.glyphs, AATFeatureMap.mapOTToAAT(glyphRun.features));
   }

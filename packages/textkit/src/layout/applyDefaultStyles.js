@@ -8,15 +8,15 @@ import * as R from 'ramda';
  */
 const applyRunStyles = R.evolve({
   attributes: a => ({
-    align: a.align || 'left',
+    align: a.align || a.direction === 'rtl' ? 'right' : 'left',
     alignLastLine:
       a.alignLastLine || (a.align === 'justify' ? 'left' : a.align || 'left'),
     attachment: a.attachment || null,
     backgroundColor: a.backgroundColor || null,
-    bidiLevel: a.bidiLevel || null,
     bullet: a.bullet || null,
     characterSpacing: a.characterSpacing || 0,
     color: a.color || 'black',
+    direction: a.direction || 'ltr',
     features: a.features || [],
     fill: a.fill !== false,
     font: a.font || null,

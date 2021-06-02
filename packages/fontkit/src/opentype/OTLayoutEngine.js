@@ -71,11 +71,12 @@ export default class OTLayoutEngine {
       this.zeroMarkAdvances(glyphRun.positions);
     }
 
+    // DISABLED: Textkit bidi engine takes care of this
     // Reverse the glyphs and positions if the script is right-to-left
-    if (glyphRun.direction === 'rtl') {
-      glyphRun.glyphs.reverse();
-      glyphRun.positions.reverse();
-    }
+    // if (glyphRun.direction === 'rtl') {
+    //   glyphRun.glyphs.reverse();
+    //   glyphRun.positions.reverse();
+    // }
 
     return this.GPOSProcessor && this.GPOSProcessor.features;
   }

@@ -25,6 +25,7 @@ const preprocessRuns = (engines, options) =>
         R.flatten,
         R.pluck('runs'),
         R.juxt([
+          engines.bidi(options), // bidi processing
           engines.fontSubstitution(options), // font substitution
           engines.scriptItemizer(options), // script itemization
           omitFont,

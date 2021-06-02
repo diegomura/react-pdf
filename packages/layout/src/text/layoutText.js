@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import layoutEngine from '@react-pdf/textkit/lib/layout';
+import bidi from '@react-pdf/textkit/lib/engines/bidi';
 import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
 import justification from '@react-pdf/textkit/lib/engines/justification';
 import textDecoration from '@react-pdf/textkit/lib/engines/textDecoration';
@@ -10,6 +11,7 @@ import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';
 
 const engines = {
+  bidi,
   linebreaker,
   justification,
   textDecoration,

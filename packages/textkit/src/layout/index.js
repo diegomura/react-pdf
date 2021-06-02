@@ -2,6 +2,7 @@ import * as R from 'ramda';
 
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';
+import bidiReordering from './bidiReordering';
 import generateGlyphs from './generateGlyphs';
 import resolveYOffset from './resolveYOffset';
 import preprocessRuns from './preprocessRuns';
@@ -27,16 +28,17 @@ const layoutEngine = (engines, attributedString, container, options = {}) => {
   const processParagraphs = R.compose(
     resolveYOffset(engines, options),
     resolveAttachments(engines, options),
-    generateGlyphs(engines, options),
     wrapWords(engines, options),
+    generateGlyphs(engines, options),
+    preprocessRuns(engines, options),
   );
 
   return R.compose(
     finalizeFragments(engines, options),
+    bidiReordering(engines, options),
     typesetter(engines, options, container),
     R.map(processParagraphs),
     splitParagraphs(engines, options),
-    preprocessRuns(engines, options),
     applyDefaultStyles(engines, options),
   )(attributedString);
 };

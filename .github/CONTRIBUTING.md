@@ -80,6 +80,26 @@ yarn link @react-pdf/renderer
 
 If everything went well, now your testing project should be running your local react-pdf build and any change in the codebase should be immediately accesible from your project.
 
+<details>
+ <summary>A comment about react and react-dom</summary>
+  I observed that it's sometimes needed to apply the same linking process to both react and react-dom. This is becuase otherwise your local react-pdf build and your testing project will be using each a different react and react-dom instance, making react complain. All you have to do is
+
+<pre>
+# on your react-pdf project
+
+cd react-pdf/node_modules/react
+yarn link
+cd ../react-dom
+yarn link
+
+# on your testing project
+
+yarn link react
+yarn link react-dom
+</pre>
+</details>
+
+
 ## Submitting code
 
 Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it. The pull request should also contain tests.

@@ -15,6 +15,72 @@ We welcome any type of contribution, not only code. You can help with
 
 Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
 
+## Set up your development environment
+
+react-pdf is a monorepo. That means the whole solution is broken into small pieces, or packages, each of which solves a specific problem. No need to worry much about it, since [Lerna](https://lerna.js.org/) does most of the work for us. If you are not familiarized with it it's always helpful to have an overall idea of how it works.
+
+Here I present a quick guide about how to setup your development environment exactly as I have it when working on react-pdf. Please bare in mind small differences can be present depending on which environment you are running this library (on the web, node, electron, etc).
+
+### 1. Clone react-pdf project
+
+This goes without saying but first you need to download the code
+
+```sh
+git clone https://github.com/diegomura/react-pdf.git
+cd react-pdf
+```
+
+### 2. Install Node 12
+
+If you have `nvm` installed all you have to do is 
+
+```sh
+nvm install 12
+nvm use
+```
+
+Other versions should work although I can't guarantee it
+
+### 3. Install dependencies and boostrap monorepo
+
+We need to download this project dependencies in order to make it work. Because this is a monorepo, we also have to bind all the internal packages together so they are aware of each other
+
+```sh
+yarn install
+yarn bootstrap
+```
+
+### 4. Build & watch codebase
+
+In order to to quickly iterate in your development process, react-pdf has a watch script that builds all the required modules and waits for changes to happen to re-compile the affected packages. This is handy because enables you to have this process running on the background and just focus on coding what you want. All you have to do is:
+
+```sh
+yarn watch
+```
+
+### 5. Setup testing project
+
+Now that we have react-pdf built and running, we need to setup a testing project to use as a development target. This might not be the more straighforward way to set up your dev environment but enables to use the lib as an "external" agent, just as final users will do. It's also extensible for testing in different environmens, whether it is a web or node project, or electron or native app. I usually have a web project (just a plain [create react app](https://reactjs.org/docs/create-a-new-react-app.html) project, and a Node one.
+
+### 6. Link your react-pdf build to your testing project
+
+Now all we have to do is make our testing project point to our react-pdf watch instance so we can apply changes to it and see them working. For that I use `yarn link`.
+
+On another terminal
+
+```sh
+cd react-pdf/packages/renderer # navigate to react-pdf renderer package
+yarn link
+```
+
+In our testing project:
+
+```sh
+yarn link @react-pdf/renderer
+```
+
+If everything went well, now your testing project should be running your local react-pdf build and any change in the codebase should be immediately accesible from your project.
+
 ## Submitting code
 
 Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it. The pull request should also contain tests.

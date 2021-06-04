@@ -4,6 +4,7 @@ import processBorders from './borders';
 import processPadding from './paddings';
 import processFontWeight from './fontWeight';
 import processObjectPosition from './objectPosition';
+import processTransform from './transform';
 import processTransformOrigin from './transformOrigin';
 import { castFloat } from './utils';
 
@@ -25,6 +26,7 @@ const shorthands = {
   borderStyle: processBorders,
   borderWidth: processBorders,
   objectPosition: processObjectPosition,
+  transform: processTransform,
   transformOrigin: processTransformOrigin,
   fontWeight: processFontWeight,
 };

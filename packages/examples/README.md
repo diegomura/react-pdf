@@ -9,25 +9,26 @@
 <table>
 	<tbody>
 		<tr>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/text/thumb.png">
-        <br>
-        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/text/">Text</a>
-      </td>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/images/thumb.png">
-        <br>
-        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/images/">Images</a>
-      </td>
 			<td align="center" valign="top">
-				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/resume/thumb.png">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">
+					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/thumb.png?raw=true">
+				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/resume/">Resume</a>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">Text</a>
 			</td>
 			<td align="center" valign="top">
-				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/fractals/thumb.png">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">
+					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/thumb.png?raw=true">
+				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/fractals/">Fractals</a>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">Resume</a>
+			</td>
+			<td align="center" valign="top">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">
+					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/fractals/thumb.png?raw=true">
+				</a>
+				<br>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">Fractals</a>
 			</td>
 		</tr>
 	</tbody>
@@ -36,15 +37,19 @@
 	<tbody>
 		<tr>
 			<td align="center" valign="top">
-				<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/knobs/thumb.png">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">
+					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/knobs/thumb.png?raw=true">
+				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/examples/knobs/">Knobs</a>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">Knobs</a>
 			</td>
-      <td align="center" valign="top">
-        <img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/examples/pageWrap/thumb.png">
-        <br>
-        <a href="https://github.com/diegomura/react-pdf/tree/master/examples/pageWrap/">Page wrap</a>
-      </td>
+			<td align="center" valign="top">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">
+					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/pageWrap/thumb.png?raw=true">
+				</a>
+				<br>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">Page wrap</a>
+			</td>
 		</tr>
 	</tbody>
 </table>

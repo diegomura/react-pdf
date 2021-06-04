@@ -90,21 +90,21 @@ For each example, try opening `output.pdf` to see the result.
 	<tbody>
 		<tr>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">
 					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/">Text</a>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">Text</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">
 					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/">Resume</a>
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">Resume</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/fractals/">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">
 					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/fractals/thumb.png?raw=true">
 				</a>
 				<br>
@@ -117,14 +117,14 @@ For each example, try opening `output.pdf` to see the result.
 	<tbody>
 		<tr>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/knobs/">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">
 					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/knobs/thumb.png?raw=true">
 				</a>
 				<br>
 				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">Knobs</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/pageWrap/">
+				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">
 					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/pageWrap/thumb.png?raw=true">
 				</a>
 				<br>

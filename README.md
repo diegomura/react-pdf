@@ -21,7 +21,7 @@
 > New react-pdf 2.0 was released. [Read about the announcement](http://react-pdf.org/blog/announcing-react-pdf-v2)
 
 ## What can you create with react-pdf?
-  <b>React-pdf</b> is a tool that allows you to render PDF documents through the use of <b>React Components</b>. Developers can create web pages that can be rendered as a downloadable document as well as display through the client’s web browser. A wide variety of use cases can be supported with this project; enabling dynamic web pages to be saved statically in a widely accepted document format. 
+  <b>React-pdf</b> is a package that allows you to create and render PDF documents through the use of <b>React Components</b>. Pages that can be rendered as a downloadable document. A wide variety of use cases can be supported with this project; enabling dynamic web pages to be saved statically in a widely accepted document format. 
   <u>Simply add the tool as a dependency in your React project and display away!</u>
 
 ## How to install

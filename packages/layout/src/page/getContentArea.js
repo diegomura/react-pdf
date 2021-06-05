@@ -1,9 +1,10 @@
 import getPadding from '../node/getPadding';
 
 const getContentArea = page => {
-  const { paddingBottom } = getPadding(page);
   const height = page.style?.height;
-  return height - paddingBottom;
+  const { paddingTop, paddingBottom } = getPadding(page);
+
+  return height - paddingBottom - paddingTop;
 };
 
 export default getContentArea;

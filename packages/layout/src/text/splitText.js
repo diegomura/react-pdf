@@ -41,6 +41,7 @@ const getLineBreak = (node, height) => {
   return slicedLine;
 };
 
+// Also receives contentArea in case it's needed
 const splitText = (node, height) => {
   const slicedLineIndex = getLineBreak(node, height);
   const currentHeight = heightAtLineIndex(node, slicedLineIndex);

@@ -12,11 +12,6 @@ export default {
     return (this._lineGap = 0);
   },
 
-  lineGap(_lineGap) {
-    this._lineGap = _lineGap;
-    return this;
-  },
-
   _text(text, x, y, options, lineCallback) {
     options = this._initOptions(x, y, options);
 

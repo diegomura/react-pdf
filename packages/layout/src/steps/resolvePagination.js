@@ -4,11 +4,14 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
+import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
+import canNodeWrap from '../node/getWrap';
+import getWrapArea from '../page/getWrapArea';
+import getContentArea from '../page/getContentArea';
 import createInstance from '../node/createInstance';
 import shouldNodeBreak from '../node/shouldBreak';
-import getContentArea from '../page/getContentArea';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
@@ -27,8 +30,6 @@ const getHeight = R.path(['box', 'height']);
 const getChildren = R.propOr([], 'children');
 
 const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
-
-const isFixed = R.pathEq(['props', 'fixed'], true);
 
 const allFixed = R.all(isFixed);
 
@@ -52,7 +53,13 @@ const relayoutPage = compose(
   resolvePageDimensions,
 );
 
-const splitNodes = (height, nodes) => {
+const warnUnavailableSpace = node => {
+  console.warn(
+    `Node of type ${node.type} can't wrap between pages and it's bigger than available page height`,
+  );
+};
+
+const splitNodes = (height, contentArea, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
 
@@ -66,6 +73,8 @@ const splitNodes = (height, nodes) => {
     const isOutside = isElementOutside(height, child);
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
     const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
+    const canWrap = canNodeWrap(child);
+    const fitsInsidePage = nodeHeight <= contentArea;
 
     if (isFixed(child)) {
       nextChildren.push(child);
@@ -77,6 +86,13 @@ const splitNodes = (height, nodes) => {
       const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(child);
       nextChildren.push(next);
       continue;
+    }
+
+    if (!fitsInsidePage && !canWrap) {
+      currentChildren.push(child);
+      nextChildren.push(...futureNodes);
+      warnUnavailableSpace(child);
+      break;
     }
 
     if (shouldBreak) {
@@ -94,7 +110,7 @@ const splitNodes = (height, nodes) => {
     }
 
     if (shouldSplit) {
-      const [currentChild, nextChild] = split(child, height);
+      const [currentChild, nextChild] = split(child, height, contentArea);
 
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
@@ -108,15 +124,19 @@ const splitNodes = (height, nodes) => {
   return [currentChildren, nextChildren];
 };
 
-const splitChildren = (height, node) => {
+const splitChildren = (height, contentArea, node) => {
   const children = getChildren(node);
   const availableHeight = height - getTop(node);
-  return splitNodes(availableHeight, children);
+  return splitNodes(availableHeight, contentArea, children);
 };
 
-const splitView = (node, height) => {
+const splitView = (node, height, contentArea) => {
   const [currentNode, nextNode] = splitNode(node, height);
-  const [currentChilds, nextChildren] = splitChildren(height, node);
+  const [currentChilds, nextChildren] = splitChildren(
+    height,
+    contentArea,
+    node,
+  );
 
   return [
     assingChildren(currentChilds)(currentNode),
@@ -169,11 +189,13 @@ const resolveDynamicPage = (props, page, fontStore) => {
 };
 
 const splitPage = (page, pageNumber, fontStore) => {
+  const wrapArea = getWrapArea(page);
   const contentArea = getContentArea(page);
   const height = R.path(['style', 'height'], page);
   const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore);
 
   const [currentChilds, nextChilds] = splitNodes(
+    wrapArea,
     contentArea,
     dynamicPage.children,
   );

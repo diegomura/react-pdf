@@ -30,7 +30,7 @@ const applyRunStyles = R.evolve({
     link: a.link || null,
     marginLeft: a.marginLeft || a.margin || 0,
     marginRight: a.marginRight || a.margin || 0,
-    opacity: R.isNil(a.opacity) ? 1 : a.opacity,
+    opacity: a.opacity,
     paddingTop: a.paddingTop || a.padding || 0,
     paragraphSpacing: a.paragraphSpacing || 0,
     underline: a.underline || false,

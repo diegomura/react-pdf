@@ -21,14 +21,13 @@ const isTextInstance = isType(P.TextInstance);
  * @param {Object} instance node
  * @returns {Array} text fragments
  */
-const getFragments = (fontStore, instance) => {
+const getFragments = (fontStore, instance, level = 0) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
 
   const {
     color = 'black',
-    backgroundColor,
     fontFamily = 'Helvetica',
     fontWeight,
     fontStyle,
@@ -47,6 +46,9 @@ const getFragments = (fontStore, instance) => {
   const opts = { fontFamily, fontWeight, fontStyle };
   const obj = fontStore ? fontStore.getFont(opts) : null;
   const font = obj ? obj.data : fontFamily;
+
+  // Don't pass main background color to textkit. Will be rendered by the render packace instead
+  const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
 
   const attributes = {
     font,
@@ -88,7 +90,7 @@ const getFragments = (fontStore, instance) => {
         attributes,
       });
     } else if (child) {
-      fragments.push(...getFragments(fontStore, child));
+      fragments.push(...getFragments(fontStore, child, level + 1));
     }
   }
 

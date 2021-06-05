@@ -1,17 +1,9 @@
 import * as R from 'ramda';
-import colorString from 'color-string';
 
 import save from '../operations/save';
 import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
-
-const parseColor = hex => {
-  const parsed = colorString.get(hex);
-  const value = colorString.to.hex(parsed.value.slice(0, 3));
-  const opacity = parsed.value[3];
-
-  return { value, opacity };
-};
+import parseColor from '../utils/parseColor';
 
 const drawBackground = (ctx, node) => {
   if (node.box && node.style.backgroundColor) {

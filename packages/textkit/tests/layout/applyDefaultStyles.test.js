@@ -23,7 +23,6 @@ const DEFAULTS = {
   link: null,
   marginLeft: 0,
   marginRight: 0,
-  opacity: 1,
   paddingTop: 0,
   paragraphSpacing: 0,
   underline: false,

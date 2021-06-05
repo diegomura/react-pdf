@@ -7,6 +7,7 @@ import advanceWidth from '@react-pdf/textkit/lib/run/advanceWidth';
 import ascent from '@react-pdf/textkit/lib/attributedString/ascent';
 
 import renderGlyphs from './renderGlyphs';
+import parseColor from '../utils/parseColor';
 
 const DEST_REGEXP = /^#.+/;
 
@@ -50,7 +51,9 @@ const renderAttachments = (ctx, run) => {
 };
 
 const renderRun = (ctx, run, options) => {
-  const { font, fontSize, color, link, opacity } = run.attributes;
+  const { font, fontSize, link } = run.attributes;
+  const color = parseColor(run.attributes.color);
+  const opacity = R.defaultTo(color.opacity, run.attributes.opacity);
 
   const height = runHeight(run);
   const descent = runDescent(run);
@@ -60,7 +63,7 @@ const renderRun = (ctx, run, options) => {
     ctx.rect(0, -height, runAdvanceWidth, height).stroke();
   }
 
-  ctx.fillColor(color);
+  ctx.fillColor(color.value);
   ctx.fillOpacity(opacity);
 
   if (link) {
@@ -105,8 +108,13 @@ const renderRun = (ctx, run, options) => {
 };
 
 const renderBackground = (ctx, rect, backgroundColor) => {
+  const color = parseColor(backgroundColor);
+
+  ctx.save();
+  ctx.fillOpacity(color.opacity);
   ctx.rect(rect.x, rect.y, rect.width, rect.height);
-  ctx.fill(backgroundColor);
+  ctx.fill(color.value);
+  ctx.restore();
 };
 
 const renderDecorationLine = (ctx, line) => {

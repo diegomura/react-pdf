@@ -20,9 +20,9 @@
 
 > New react-pdf 2.0 was released. [Read about the announcement](http://react-pdf.org/blog/announcing-react-pdf-v2)
 
-## Lost?
-
-This package is used to _create_ PDFs using React. If you wish to _display_ existing PDFs, you may be looking for [react-pdf](https://github.com/wojtekmaj/react-pdf).
+## What can you create with react-pdf?
+  <b>React-pdf</b> is a tool that allows you to render PDF documents through the use of <b>React Components</b>. Developers can create web pages that can be rendered as a downloadable document as well as display through the client’s web browser. A wide variety of use cases can be supported with this project; enabling dynamic web pages to be saved statically in a widely accepted document format. 
+  <u>Simply add the tool as a dependency in your React project and display away!</u>
 
 ## How to install
 ```sh
@@ -86,11 +86,49 @@ import ReactPDF from '@react-pdf/renderer';
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
+## Examples
+
+<div align="center">
+  <h3>Render Abstract Images with Components</h3>
+  <a href="./packages/templates/readme_images/fractal.png"><img src="./packages/templates/readme_images/fractal.png" style="width:500px;height:350px;"/></a>
+  <br>
+  Sample Link
+  <a href =  "./packages/templates/readme_images/fractal.pdf">PDF Path</a>
+</div>
+
+<div align="center">
+<h3>Create Your Professional Resume</h3>
+<a href="./packages/templates/readme_images/resume.png"><img src="./packages/templates/readme_images/resume.png" style="width:500px;height:350px;"/></a>
+<br>
+Sample Link
+<a href =  "./packages/templates/readme_images/resume.pdf">PDF Path</a>
+</div>
+
+<div align="center">
+<h3>Create Static Documents</h3>
+<a href="./packages/templates/readme_images/document.png"><img src="./packages/templates/readme_images/document.png" style="width:500px;height:350px;"/></a>
+<br>
+Sample Link
+<a href =  "./packages/templates/readme_images/document.pdf">PDF Path</a>
+</div>
+
+<br>
+
+## To check the source code and run the examples locally:
+(Done via your OS terminal)
+<br><b>1.</b> Clone this repository with your terminal: <b>git clone https://github.com/diegomura/react-pdf</b>
+<br><b>2.</b> Navigate to sub-directory <b>"/react-pdf/templates/"</b>
+<br><b>3.</b> Navigate to folder: <b>Fractal, Resume or Document.</b>
+<br><b>4.</b> In the folder of the template to view, enter command in the terminal: <b>npm install --legacy-peer-deps</b>
+<br><b>5.</b> After all dependencies are installed, type in terminal to run: <b>npm start</b>
+<br><b>6.</b> Sample pages will be viewable through the browser @ <b>http://localhost:3000/</b>
+<br>
+
+
 ## Contributors
 
-This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
-
-<a href="https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+<a href="https://github.com/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 ## Sponsors
 

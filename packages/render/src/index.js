@@ -9,6 +9,8 @@ const renderDocument = ctx =>
 const render = (ctx, doc) => {
   addMetadata(ctx)(doc);
   renderDocument(ctx)(doc);
+  // ctx.addPage()
+  // ctx.fontSize(60).text('demo', 0, 0)
 
   ctx.end();
 

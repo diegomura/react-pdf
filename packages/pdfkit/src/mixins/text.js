@@ -4,10 +4,17 @@ const { number } = PDFObject;
 
 export default {
   initText() {
+    this._line = this._line.bind(this);
+
     // Current coordinates
     this.x = 0;
     this.y = 0;
     return (this._lineGap = 0);
+  },
+
+  lineGap(_lineGap) {
+    this._lineGap = _lineGap;
+    return this;
   },
 
   _text(text, x, y, options, lineCallback) {
@@ -110,7 +117,9 @@ export default {
 
     const [encoded, positions] = this._font.encode(text, options.features);
 
-    this._glyphs(encoded, positions, x, y, options);
+    const dy = (this._font.ascender / 1000) * this._fontSize;
+
+    this._glyphs(encoded, positions, x, y + dy, options);
   },
 
   _glyphs(encoded, positions, x, y, options) {

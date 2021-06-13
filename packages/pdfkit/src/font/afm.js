@@ -203,5 +203,4 @@ class AFMFont {
   }
 }
 
-export { parse };
 export default AFMFont;

@@ -129,11 +129,9 @@ class AFMFont {
     }
 
     this.charWidths = range(0, 255, true).map(
-      (i) => this.glyphWidths[characters[i]]
+      i => this.glyphWidths[characters[i]]
     );
-    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(
-      (e) => +e
-    );
+    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(e => +e);
     this.ascender = +(this.attributes.Ascender || 0);
     this.descender = +(this.attributes.Descender || 0);
     this.xHeight = +(this.attributes.XHeight || 0);

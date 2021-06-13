@@ -21,7 +21,7 @@ const STANDARD_FONTS = {
   'Times-Italic': TimesItalic
 };
 
-const createStandardFont = (PDFFont) =>
+const createStandardFont = PDFFont =>
   class StandardFont extends PDFFont {
     constructor(document, name, id) {
       super();

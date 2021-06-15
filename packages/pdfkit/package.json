@@ -15,7 +15,7 @@
   },
   "scripts": {
     "clear": "rimraf ./lib ./src/font/data/*.json",
-    "parse:afm": "node ./src/font/data/compressData.mjs",
+    "parse:afm": "babel-node ./src/font/data/compressData.js",
     "build": "npm run clear && npm run parse:afm && rollup -c ",
     "watch": "npm run clear && npm run parse:afm && rollup -c -w"
   },

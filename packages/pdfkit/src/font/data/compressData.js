@@ -1,9 +1,6 @@
 import fs from 'fs';
-import { dirname, basename, extname } from 'path';
-import { fileURLToPath } from 'url';
-import parse from '../parse.mjs';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { basename, extname } from 'path';
+import { parse } from '../afm';
 
 fs.readdir(__dirname, (err, files) => {
   files.forEach(file => {

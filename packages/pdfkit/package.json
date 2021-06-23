@@ -14,8 +14,10 @@
     "url": "http://badassjs.com/"
   },
   "scripts": {
-    "build": "rimraf ./lib && rimraf ./src/font/data/*.b64.afm && node ./src/font/data/compressData.js && rollup -c ",
-    "watch": "rimraf ./lib && rimraf ./src/font/data/*.b64.afm && node ./src/font/data/compressData.js && rollup -c -w"
+    "clear": "rimraf ./lib ./src/font/data/*.json",
+    "parse:afm": "babel-node ./src/font/data/compressData.js",
+    "build": "npm run clear && npm run parse:afm && rollup -c ",
+    "watch": "npm run clear && npm run parse:afm && rollup -c -w"
   },
   "files": [
     "lib"
@@ -23,8 +25,7 @@
   "dependencies": {
     "@react-pdf/fontkit": "^2.0.6",
     "@react-pdf/png-js": "^2.0.2",
-    "crypto-js": "^4.0.0",
-    "lz-string": "^1.4.4"
+    "crypto-js": "^4.0.0"
   },
   "devDependencies": {
     "blob-stream": "^0.1.2",

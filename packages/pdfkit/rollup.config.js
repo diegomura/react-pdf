@@ -2,7 +2,6 @@ import babel from 'rollup-plugin-babel';
 import json from 'rollup-plugin-json';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import string from 'rollup-plugin-string';
 import replace from 'rollup-plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 
@@ -40,7 +39,7 @@ const babelConfig = ({ browser }) => ({
 
 const configBase = {
   input: 'src/index.js',
-  plugins: [nodeResolve(), json(), string({ include: '**/*.afm' })],
+  plugins: [nodeResolve(), json()],
   external: Object.keys(pkg.dependencies),
   onwarn: (warning, rollupWarn) => {
     if (warning.code !== 'CIRCULAR_DEPENDENCY') {

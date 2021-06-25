@@ -61,6 +61,7 @@ export const usePDF = ({ document }) => {
 
   // Revoke old unused url instances
   useEffect(() => {
+    console.log('Our project')
     if (previousUrl.current) URL.revokeObjectURL(previousUrl.current);
   }, [state.blob]);
 

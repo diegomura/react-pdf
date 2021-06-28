@@ -51,6 +51,7 @@ export const usePDF = ({ document }) => {
 
     return () => {
       renderQueue.end();
+      pdfInstance.current.removeListener('change', queueDocumentRender);
     };
   }, []);
 

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/layout",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/runtime": "^7.6.2",
     "@react-pdf/image": "^2.0.3",
-    "@react-pdf/pdfkit": "^2.0.10",
+    "@react-pdf/pdfkit": "^2.0.11",
     "@react-pdf/primitives": "^2.0.0",
     "@react-pdf/stylesheet": "^2.0.8",
     "@react-pdf/textkit": "^2.0.5",

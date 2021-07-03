@@ -6,11 +6,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import queue from 'queue';
 import { pdf, version, Font, StyleSheet } from './index';
 
-
 export const usePDF = ({ document }) => {
   const pdfInstance = useRef(null);
-
-  const previousUrl = useRef(null);
 
   const [state, setState] = useState({
     url: null,
@@ -37,8 +34,6 @@ export const usePDF = ({ document }) => {
     };
 
     const onRenderSuccessful = blob => {
-      previousUrl.current = state.url;
-
       setState({
         blob,
         error: null,
@@ -56,13 +51,18 @@ export const usePDF = ({ document }) => {
 
     return () => {
       renderQueue.end();
+      pdfInstance.current.removeListener('change', queueDocumentRender);
     };
   }, []);
 
   // Revoke old unused url instances
   useEffect(() => {
-    if (previousUrl.current) URL.revokeObjectURL(previousUrl.current);
-  }, [state.blob]);
+    return () => {
+      if (state.url) {
+        URL.revokeObjectURL(state.url);
+      }
+    };
+  }, [state.url]);
 
   const update = () => {
     pdfInstance.current.updateContainer(document);

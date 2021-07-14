@@ -62,11 +62,13 @@ const getFragments = (fontStore, instance, level = 0) => {
     strikeStyle: textDecorationStyle,
     underlineStyle: textDecorationStyle,
     underline:
-      typeof textDecoration === 'string' &&
-      textDecoration.includes('underline'),
+      textDecoration === 'underline' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
     strike:
-      typeof textDecoration === 'string' &&
-      textDecoration.includes('line-through'),
+      textDecoration === 'line-through' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
     strikeColor: textDecorationColor || color,
     underlineColor: textDecorationColor || color,
     link: instance.props?.src || instance.props?.href,

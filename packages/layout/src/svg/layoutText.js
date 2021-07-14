@@ -54,12 +54,14 @@ const getFragments = (fontStore, instance) => {
     color: fill,
     underlineStyle: textDecorationStyle,
     underline:
-      typeof textDecoration === 'string' &&
-      textDecoration.includes('underline'),
+      textDecoration === 'underline' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
     underlineColor: textDecorationColor || fill,
     strike:
-      typeof textDecoration === 'string' &&
-      textDecoration.includes('line-through'),
+      textDecoration === 'line-through' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
     strikeStyle: textDecorationStyle,
     strikeColor: textDecorationColor || fill,
   };

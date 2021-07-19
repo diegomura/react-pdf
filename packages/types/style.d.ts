@@ -48,7 +48,7 @@ export interface Style {
   lineHeight?: number | string;
   maxLines?: number; // ?
   textAlign?: 'left' | 'right' | 'center' | 'justify'; // ?
-  textDecoration?: 'line-through' | 'underline' | 'none';
+  textDecoration?: 'line-through' | 'underline' | 'none' | 'line-through underline' | 'underline line-through';
   textDecorationColor?: string;
   textDecorationStyle?: "dashed" | "dotted" | "solid" | string; // ?
   textIndent?: any; // ?

@@ -78,6 +78,31 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
+### `Web.` Render in DOM. Attempt to hide toolbar
+
+Note: This property applies the "PDF Open Parameter" `toolbar` to instruct the browser to not render the toolbar. It only works if the browser implements it. 
+
+As of writing:
+* Chrome and Chromium Edge support this parameter. Other Chromium browsers should as well. 
+* Safari supports the parameter.
+* Firefox and other Firefox or Gecko based browsers do not support the parameter and will always render a toolbar.
+
+This parameter is true by default.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { PDFViewer } from '@react-pdf/renderer';
+
+const App = () => (
+  <PDFViewer showToolbar={false}>
+    <MyDocument />
+  </PDFViewer>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
 ### `Node.` Save in a file
 ```jsx
 import React from 'react';

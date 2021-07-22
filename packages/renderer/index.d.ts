@@ -430,6 +430,7 @@ declare module '@react-pdf/renderer' {
       className?: string;
       children?: React.ReactElement<DocumentProps>;
       innerRef?: React.Ref<HTMLIFrameElement>;
+      showToolbar?: boolean;
     }
 
     /**

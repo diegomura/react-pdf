@@ -79,5 +79,6 @@
     "hooks": {
       "pre-commit": "git add . && lint-staged"
     }
-  }
+  },
+  "dependencies": {}
 }

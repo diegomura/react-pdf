@@ -78,6 +78,26 @@ const App = () => (
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
+### `Web.` usePDF
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { usePdf, PDFViewer} from '@react-pdf/renderer';
+
+import MyDocument from ...;
+
+const App = () => (
+  const [instance, update, print] = usePDF({document: <MyDocument />})
+
+  return (
+      <button type="button" onClick={() => print()}>Print</button>
+  )
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
+
 ### `Node.` Save in a file
 ```jsx
 import React from 'react';

@@ -68,7 +68,35 @@ export const usePDF = ({ document }) => {
     pdfInstance.current.updateContainer(document);
   };
 
-  return [state, update];
+  const print = () =>
+    new Promise((resolve, reject) => {
+      try {
+        // Create a hidden iframe
+        const iframe = window.document.createElement(`iframe`);
+        iframe.style.display = `none`;
+
+        // Assign url to iframe
+        iframe.src = state.url;
+
+        iframe.addEventListener(`load`, () => {
+          // Remove the iframe once focus returns to the main window
+          window.addEventListener(`focus`, () => {
+            iframe.remove();
+          });
+
+          iframe.focus();
+          iframe.contentWindow.print();
+        });
+
+        window.document.body.appendChild(iframe);
+
+        resolve(true);
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+  return [state, update, print];
 };
 
 export const BlobProvider = ({ document: doc, children }) => {

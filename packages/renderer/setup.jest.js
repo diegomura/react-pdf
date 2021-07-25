@@ -3,8 +3,8 @@ const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
 
 // setup image matcher
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
-  customSnapshotsDir: './snapshots',
-  customDiffDir: './diffs',
+  customSnapshotsDir: `${__dirname}/tests/snapshots`,
+  customDiffDir: `${__dirname}/tests/diffs`,
 });
 
 expect.extend({ toMatchImageSnapshot });

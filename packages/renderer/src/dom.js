@@ -90,6 +90,7 @@ export const PDFViewer = ({
   className,
   children,
   innerRef,
+  showToolbar = true,
   ...props
 }) => {
   const [instance, updateInstance] = usePDF({ document: children });
@@ -101,7 +102,7 @@ export const PDFViewer = ({
       title={title}
       ref={innerRef}
       style={style}
-      src={instance.url}
+      src={`${instance.url}#toolbar=${showToolbar ? 1 : 0}`}
       className={className}
       {...props}
     />

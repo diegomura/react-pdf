@@ -8,8 +8,12 @@ class StandardFont {
     this.src = PDFFont.open(null, src);
   }
 
+  encode(str) {
+    return this.src.encode(str);
+  }
+
   layout(str) {
-    const [encoded, positions] = this.src.encode(str);
+    const [encoded, positions] = this.encode(str);
 
     return {
       positions,

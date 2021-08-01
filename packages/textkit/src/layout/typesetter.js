@@ -21,6 +21,7 @@ import sliceBlockAtHeight from '../block/sliceAtHeight';
 const typesetter = (engines, options, container, attributedStrings) => {
   const blocks = [];
   const paragraphs = [...attributedStrings];
+  const layoutBlock = layoutParagraph(engines, options);
   const maxLines = R.propOr(Infinity, 'maxLines', container);
   const truncateEllipsis = container.truncateMode === 'ellipsis';
 
@@ -29,12 +30,10 @@ const typesetter = (engines, options, container, attributedStrings) => {
   let nextParagraph = paragraphs.shift();
 
   while (linesCount > 0 && nextParagraph) {
-    const block = layoutParagraph(engines, options)(
-      paragraphRect,
-      nextParagraph,
-    );
+    const block = layoutBlock(paragraphRect, nextParagraph);
     const slicedBlock = sliceBlock(linesCount, block);
     const linesHeight = blockHeight(slicedBlock);
+
     const shouldTruncate =
       truncateEllipsis && block.length !== slicedBlock.length;
 

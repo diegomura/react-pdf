@@ -12,11 +12,11 @@ const fontStore = new FontStore();
 // We must keep a single renderer instance, otherwise React will complain
 let renderer;
 
-const pdf = initialValue => {
-  // The pdf instance acts as an event emitter for DOM usage.
-  // We only want to trigger an update when PDF content changes
-  const events = {};
+// The pdf instance acts as an event emitter for DOM usage.
+// We only want to trigger an update when PDF content changes
+const events = {};
 
+const pdf = initialValue => {
   const onChange = () => {
     const listeners = events.change?.slice() || [];
     for (let i = 0; i < listeners.length; i += 1) listeners[i]();

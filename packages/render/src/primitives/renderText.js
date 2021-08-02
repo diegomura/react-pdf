@@ -221,9 +221,10 @@ const renderText = (ctx, node) => {
   const paddingTop = R.pathOr(0, ['box', 'paddingTop'], node);
   const paddingLeft = R.pathOr(0, ['box', 'paddingLeft'], node);
   const initialY = node.lines[0] ? node.lines[0].box.y : 0;
+  const offsetX = node.alignOffset || 0;
 
   ctx.save();
-  ctx.translate(left + paddingLeft, top + paddingTop - initialY);
+  ctx.translate(left + paddingLeft - offsetX, top + paddingTop - initialY);
 
   blocks.forEach(block => {
     renderBlock(ctx, block, {});

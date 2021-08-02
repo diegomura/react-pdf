@@ -34,7 +34,10 @@ const renderChildren = ctx => node => {
     ctx.translate(node.box.left, node.box.top);
   }
 
-  R.compose(R.forEach(renderNode(ctx)), R.pathOr([], ['children']))(node);
+  const children = node.children || [];
+  const renderChild = renderNode(ctx);
+
+  children.forEach(renderChild);
 
   restore(ctx, node);
 

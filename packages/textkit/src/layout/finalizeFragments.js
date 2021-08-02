@@ -5,12 +5,7 @@ import leadingOffset from '../attributedString/leadingOffset';
 import trailingOffset from '../attributedString/trailingOffset';
 import dropLast from '../attributedString/dropLast';
 
-const ALIGNMENT_FACTORS = {
-  left: 0,
-  center: 0.5,
-  right: 1,
-  justify: 0,
-};
+const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
 
 /**
  * Remove new line char at the end of line if present
@@ -64,15 +59,15 @@ const adjustOverflow = line => {
  * @return {Object} line
  */
 const justifyLine = (engines, options, align) => line => {
-  const lineAdvanceWidth = advanceWidth(line);
-  const remainingWidth = Math.max(0, line.box.width - lineAdvanceWidth);
-  const shouldJustify =
-    align === 'justify' || lineAdvanceWidth > line.box.width;
+  const lineWidth = advanceWidth(line);
+  const alignFactor = ALIGNMENT_FACTORS[align] || 0;
+  const remainingWidth = Math.max(0, line.box.width - lineWidth);
+  const shouldJustify = align === 'justify' || lineWidth > line.box.width;
 
   return R.compose(
     R.when(R.always(shouldJustify), engines.justification(options)),
     R.evolve({
-      box: R.evolve({ x: R.add(remainingWidth * ALIGNMENT_FACTORS[align]) }),
+      box: R.evolve({ x: R.add(remainingWidth * alignFactor) }),
     }),
   )(line);
 };
@@ -110,7 +105,9 @@ const finalizeBlock = (engines = {}, options) => (line, i, lines) => {
  * @param  {Array}  line blocks
  * @return {Array} line blocks
  */
-const finalizeFragments = (engines, options, blocks) =>
-  R.map(R.addIndex(R.map)(finalizeBlock(engines, options)), blocks);
+const finalizeFragments = (engines, options, blocks) => {
+  const blockFinalizer = finalizeBlock(engines, options);
+  return blocks.map(block => block.map(blockFinalizer));
+};
 
 export default R.curryN(3, finalizeFragments);

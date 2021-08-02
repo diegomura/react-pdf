@@ -26,15 +26,6 @@ const drawImage = ctx => node => {
     objectPositionY,
   );
 
-  console.log(
-    width,
-    height,
-    xOffset,
-    yOffset,
-    objectPositionX,
-    objectPositionY,
-  );
-
   if (node.image.data) {
     if (width !== 0 && height !== 0) {
       ctx

@@ -2,11 +2,8 @@ import processFlex from './flex';
 import processMargin from './margins';
 import processBorders from './borders';
 import processPadding from './paddings';
-import processFontWeight from './fontWeight';
 import processObjectPosition from './objectPosition';
-import processTransform from './transform';
 import processTransformOrigin from './transformOrigin';
-import { castFloat } from './utils';
 
 const shorthands = {
   flex: processFlex,
@@ -26,9 +23,7 @@ const shorthands = {
   borderStyle: processBorders,
   borderWidth: processBorders,
   objectPosition: processObjectPosition,
-  transform: processTransform,
   transformOrigin: processTransformOrigin,
-  fontWeight: processFontWeight,
 };
 
 /**
@@ -39,9 +34,7 @@ const shorthands = {
  * @returns {String | Number} transformed style values
  */
 const expandStyle = (key, value) => {
-  return shorthands[key]
-    ? shorthands[key](key, value)
-    : { [key]: castFloat(value) };
+  return shorthands[key] ? shorthands[key](key, value) : { [key]: value };
 };
 
 /**

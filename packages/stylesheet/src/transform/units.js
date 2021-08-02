@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 const DPI = 72; // 72pt per inch.
 
 const MM_FACTOR = (1 / 25.4) * DPI;
@@ -27,7 +25,7 @@ const parseValue = value => {
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const transformUnit = R.curryN(2, (container, value) => {
+const transformUnit = (container, value) => {
   const scalar = parseValue(value);
 
   switch (scalar.unit) {
@@ -44,17 +42,6 @@ const transformUnit = R.curryN(2, (container, value) => {
     default:
       return scalar.value;
   }
-});
+};
 
-/**
- * Transform units on given styles object.
- * Container is given to calculate vh and vw
- *
- * @param {Object} container
- * @param {Object} styles object
- * @returns {Object} transformed styles
- */
-const transformUnits = (container, styles) =>
-  R.map(transformUnit(container), styles);
-
-export default R.curryN(2, transformUnits);
+export default transformUnit;

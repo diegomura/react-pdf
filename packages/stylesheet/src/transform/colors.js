@@ -34,7 +34,7 @@ const parseHsl = R.compose(
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-export const transformColor = value =>
+const transformColor = value =>
   R.cond([
     [isRgba, parseRgb],
     [isRgb, parseRgb],
@@ -43,12 +43,4 @@ export const transformColor = value =>
     [R.T, R.always(value)],
   ])(value);
 
-/**
- * Transform rbg and cmyk colors to hexa
- *
- * @param {Object} styles object
- * @returns {Object} transformed styles
- */
-const transformColors = styles => R.map(transformColor, styles);
-
-export default transformColors;
+export default transformColor;

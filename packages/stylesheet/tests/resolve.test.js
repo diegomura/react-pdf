@@ -1,4 +1,4 @@
-import resolve from '../src/resolve';
+import resolve from '../src/index';
 
 describe('stylesheet resolve', () => {
   test('should return empty object for undefined', () => {
@@ -449,7 +449,7 @@ describe('stylesheet resolve', () => {
     });
   });
 
-  test.only('should transform font weight correctly', () => {
+  test('should transform font weight correctly', () => {
     const styles = resolve({}, { fontWeight: 'ultrabold' });
 
     expect(styles).toEqual({ fontWeight: 800 });

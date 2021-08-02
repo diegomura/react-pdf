@@ -1,5 +1,3 @@
-import { castFloat } from './utils';
-
 const FONT_WEIGHTS = {
   thin: 100,
   hairline: 100,
@@ -17,15 +15,15 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const processFontWeight = (key, value) => {
-  if (!value) return { fontWeight: FONT_WEIGHTS.normal };
-  if (typeof value === 'number') return { fontWeight: value };
+const processFontWeight = value => {
+  if (!value) return FONT_WEIGHTS.normal;
+  if (typeof value === 'number') return value;
 
   const lv = value.toLowerCase();
 
-  if (FONT_WEIGHTS[lv]) return { fontWeight: FONT_WEIGHTS[lv] };
+  if (FONT_WEIGHTS[lv]) return FONT_WEIGHTS[lv];
 
-  return { fontWeight: castFloat(value) };
+  return value;
 };
 
 export default processFontWeight;

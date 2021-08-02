@@ -72,17 +72,9 @@ const normalizeTransformOperation = ({ operation, value }) => {
 };
 
 const normalize = operations => {
-  const normalized = [];
-  operations.forEach(operation => {
-    normalized.push(normalizeTransformOperation(operation));
-  });
-
-  return normalized;
+  return operations.map(operation => normalizeTransformOperation(operation));
 };
 
-const processTransform = (key, value) => {
-  return { transform: normalize(parse(value)) };
-};
+const processTransform = value => normalize(parse(value));
 
-export { parse as parseTransform, normalizeTransformOperation };
 export default processTransform;

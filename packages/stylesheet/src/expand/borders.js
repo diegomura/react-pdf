@@ -1,18 +1,16 @@
 import * as R from 'ramda';
 
-import { castFloat } from './utils';
-
 const BORDER_SHORTHAND_REGEX = /(-?\d+(\.\d+)?(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(.+)/;
 
 const matchBorderShorthand = R.match(BORDER_SHORTHAND_REGEX);
 
-const processBorders = (key, value) => {
+const expandBorders = (key, value) => {
   const match = matchBorderShorthand(`${value}`);
 
   if (match) {
     const color = match[5] || value;
     const style = match[4] || value;
-    const width = castFloat(match[1] || value);
+    const width = match[1] || value;
 
     if (key.match(/(Top|Right|Bottom|Left)$/)) {
       return {
@@ -77,4 +75,4 @@ const processBorders = (key, value) => {
   return value;
 };
 
-export default processBorders;
+export default expandBorders;

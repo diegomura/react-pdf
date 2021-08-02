@@ -1,12 +1,10 @@
 import * as R from 'ramda';
 
-import { castFloat } from './utils';
-
 const BOX_MODEL_REGEX = /-?\d+(\.\d+)?(px|in|mm|cm|pt|%|vw|vh|px)?/g;
 
 const matchBoxModelValue = R.match(BOX_MODEL_REGEX);
 
-const processBoxModel = model => (key, value) => {
+const expandBoxModel = model => (key, value) => {
   if (value === 'auto')
     return {
       [`${model}Top`]: 'auto',
@@ -18,10 +16,10 @@ const processBoxModel = model => (key, value) => {
   const match = matchBoxModelValue(`${value}`);
 
   if (match) {
-    const top = castFloat(match[0]);
-    const right = castFloat(match[1] || match[0]);
-    const bottom = castFloat(match[2] || match[0]);
-    const left = castFloat(match[3] || match[1] || match[0]);
+    const top = match[0];
+    const right = match[1] || match[0];
+    const bottom = match[2] || match[0];
+    const left = match[3] || match[1] || match[0];
 
     if (key.match(/Horizontal$/)) {
       return {
@@ -48,4 +46,4 @@ const processBoxModel = model => (key, value) => {
   return value;
 };
 
-export default processBoxModel;
+export default expandBoxModel;

@@ -11,7 +11,7 @@ const drawImage = ctx => node => {
   const objectFit = node.style?.objectFit;
   const objectPositionX = node.style?.objectPositionX;
   const objectPositionY = node.style?.objectPositionY;
-  const paddingTop = node.box.paddingLeft || 0;
+  const paddingTop = node.box.paddingTop || 0;
   const paddingRight = node.box.paddingRight || 0;
   const paddingBottom = node.box.paddingBottom || 0;
   const paddingLeft = node.box.paddingLeft || 0;

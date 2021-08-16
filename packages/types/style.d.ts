@@ -89,7 +89,7 @@ export interface Style {
   // Borders
 
   border?: number | string;
-  borderWidth?: number;
+  borderWidth?: number | string;
   borderColor?: string;
   borderStyle?: "dashed" | "dotted" | "solid";
   borderTop?: number | string;

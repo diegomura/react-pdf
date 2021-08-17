@@ -603,6 +603,21 @@ const shouldRenderBorders = node =>
     node.box.borderBottomWidth ||
     node.box.borderLeftWidth);
 
+const INC_SIZE = 0.8;
+const incXDimensions = ({ top, left, width, height }) => ({
+  top,
+  left: left - INC_SIZE / 2,
+  width: width + INC_SIZE,
+  height,
+});
+
+const incYDimensions = ({ top, left, width, height }) => ({
+  top: top - INC_SIZE / 2,
+  left,
+  width,
+  height: height + INC_SIZE,
+});
+
 const renderBorders = (ctx, node) => {
   if (!shouldRenderBorders(node)) return node;
 
@@ -658,31 +673,35 @@ const renderBorders = (ctx, node) => {
   ctx.save();
   ctx.strokeOpacity(opacity);
 
+  const layoutX = incXDimensions(node.box);
+  const layoutY = incYDimensions(node.box);
+
   if (borderTopWidth) {
     ctx.save();
-    clipBorderTop(ctx, node.box, style, rtr, rtl);
-    fillBorderTop(ctx, node.box, style, rtr, rtl);
+
+    clipBorderTop(ctx, layoutX, style, rtr, rtl);
+    fillBorderTop(ctx, layoutX, style, rtr, rtl);
     ctx.restore();
   }
 
   if (borderRightWidth) {
     ctx.save();
-    clipBorderRight(ctx, node.box, style, rtr, rbr);
-    fillBorderRight(ctx, node.box, style, rtr, rbr);
+    clipBorderRight(ctx, layoutY, style, rtr, rbr);
+    fillBorderRight(ctx, layoutY, style, rtr, rbr);
     ctx.restore();
   }
 
   if (borderBottomWidth) {
     ctx.save();
-    clipBorderBottom(ctx, node.box, style, rbl, rbr);
-    fillBorderBottom(ctx, node.box, style, rbl, rbr);
+    clipBorderBottom(ctx, layoutX, style, rbl, rbr);
+    fillBorderBottom(ctx, layoutX, style, rbl, rbr);
     ctx.restore();
   }
 
   if (borderLeftWidth) {
     ctx.save();
-    clipBorderLeft(ctx, node.box, style, rbl, rtl);
-    fillBorderLeft(ctx, node.box, style, rbl, rtl);
+    clipBorderLeft(ctx, layoutY, style, rbl, rtl);
+    fillBorderLeft(ctx, layoutY, style, rbl, rtl);
     ctx.restore();
   }
 

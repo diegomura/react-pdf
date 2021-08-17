@@ -11,6 +11,10 @@ const isText = isType(P.Text);
 
 const isNotSvg = R.complement(isSvg);
 
+const isNotText = R.complement(isText);
+
+const shouldIterate = node => isNotSvg(node) && isNotText(node);
+
 const shouldLayoutText = node => isText(node) && !node.lines;
 
 /**
@@ -26,7 +30,7 @@ const resolveTextLayout = (node, fontStore) => {
 
   return R.compose(
     R.evolve({
-      children: R.map(R.when(isNotSvg, mapChild)),
+      children: R.map(R.when(shouldIterate, mapChild)),
     }),
     R.when(
       shouldLayoutText,

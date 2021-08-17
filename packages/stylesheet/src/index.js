@@ -6,14 +6,6 @@ import transformStyles from './transform';
 import resolveMediaQueries from './mediaQueries';
 
 /**
- * Filter styles with `none` value
- *
- * @param {Object} style object
- * @returns {Object} style without none values
- */
-const filterNoneValues = R.reject(R.equals('none'));
-
-/**
  * Resolves styles
  *
  * @param {Object} container
@@ -25,7 +17,6 @@ const resolveStyles = (container, style) =>
     transformStyles(container),
     expandStyles,
     resolveMediaQueries(container),
-    filterNoneValues,
     flattenStyles,
   )(style);
 

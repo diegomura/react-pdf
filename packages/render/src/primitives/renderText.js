@@ -184,14 +184,18 @@ const renderLine = (ctx, line, options) => {
 
   for (let i = 0; i < line.runs.length; i += 1) {
     const run = line.runs[i];
+    const isLastRun = i === line.runs.length - 1;
 
     if (run.attributes.backgroundColor) {
+      const overflowRight = isLastRun ? line.overflowRight : 0;
+
       const backgroundRect = {
         x: 0,
         y: -lineAscent,
         height: line.box.height,
-        width: advanceWidth(run) - line.overflowRight,
+        width: advanceWidth(run) - overflowRight,
       };
+
       renderBackground(ctx, backgroundRect, run.attributes.backgroundColor);
     }
     renderRun(ctx, run, options);

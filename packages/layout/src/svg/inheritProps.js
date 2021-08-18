@@ -30,10 +30,10 @@ const SVG_INHERITED_PROPS = [
   'wordSpacing',
 ];
 
-const getInheritProps = R.compose(
-  R.pick(SVG_INHERITED_PROPS),
-  R.propOr({}, 'props'),
-);
+const getInheritProps = node => {
+  const props = node.props || {};
+  return R.pick(SVG_INHERITED_PROPS, props);
+};
 
 const inheritProps = node => {
   const props = getInheritProps(node);

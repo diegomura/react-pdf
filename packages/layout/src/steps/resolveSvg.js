@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
-import transformColor from '@react-pdf/stylesheet/lib/transform/colors';
+import { transformColor, processTransform } from '@react-pdf/stylesheet';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
@@ -84,6 +84,7 @@ const parseProps = container =>
           stroke: transformColor,
           stopOpacity: parsePercent,
           stopColor: transformColor,
+          transform: processTransform,
         }),
         transformPercent(container),
       ),
@@ -91,7 +92,7 @@ const parseProps = container =>
   );
 
 const mergeStyles = node => {
-  const style = R.propOr({}, 'style', node);
+  const style = node.style || {};
   return R.evolve({ props: R.merge(style) }, node);
 };
 
@@ -100,7 +101,8 @@ const removeNoneValues = R.evolve({
 });
 
 const pickStyleProps = node => {
-  const styleProps = R.o(R.pick(STYLE_PROPS), R.propOr({}, 'props'))(node);
+  const props = node.props || {};
+  const styleProps = R.pick(STYLE_PROPS, props);
   return R.evolve({ style: R.merge(styleProps) }, node);
 };
 

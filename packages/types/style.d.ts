@@ -22,6 +22,7 @@ export interface Style {
   right?: number | string;
   top?: number | string;
   overflow?: 'hidden';
+  zIndex?: number | string;
 
   // Dimension
 

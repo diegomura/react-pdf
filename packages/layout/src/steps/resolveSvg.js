@@ -116,7 +116,7 @@ const parseSvgProps = R.evolve({
 });
 
 const wrapBetweenTspan = node => ({
-  type: 'TSPAN',
+  type: P.Tspan,
   props: {},
   children: [node],
 });

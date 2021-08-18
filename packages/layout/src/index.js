@@ -1,4 +1,4 @@
-// import * as R from 'ramda';
+import * as R from 'ramda';
 
 import asyncCompose from './utils/asyncCompose';
 import resolveSvg from './steps/resolveSvg';
@@ -32,6 +32,7 @@ const layout = asyncCompose(
   resolvePercentHeight,
   resolvePagePaddings,
   resolveStyles,
+  R.tap(console.log),
   resolveLinkSubstitution,
   resolvePageSizes,
 );

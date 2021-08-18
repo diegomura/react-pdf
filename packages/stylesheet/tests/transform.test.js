@@ -702,6 +702,12 @@ describe('stylesheet transform', () => {
       expect(style.transform).toEqual([{ operation: 'scale', value: [3, 2] }]);
     });
 
+    test('should transform multiple value scale operation without comma separator', () => {
+      const style = transformStyles({ transform: 'scale(3 2)' });
+
+      expect(style.transform).toEqual([{ operation: 'scale', value: [3, 2] }]);
+    });
+
     test('should transform multiple value scale operation with negative and floats', () => {
       const style = transformStyles({ transform: 'scale(0.1, -10)' });
 
@@ -726,6 +732,14 @@ describe('stylesheet transform', () => {
 
     test('should transform translate operation', () => {
       const style = transformStyles({ transform: 'translate(10px, 20px)' });
+
+      expect(style.transform).toEqual([
+        { operation: 'translate', value: [10, 20] },
+      ]);
+    });
+
+    test('should transform translate operation without comma separator', () => {
+      const style = transformStyles({ transform: 'translate(10px 20px)' });
 
       expect(style.transform).toEqual([
         { operation: 'translate', value: [10, 20] },

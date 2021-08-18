@@ -97,12 +97,16 @@ export const PDFViewer = ({
 
   useEffect(updateInstance, [children]);
 
+  const src = instance.url
+    ? `${instance.url}#toolbar=${showToolbar ? 1 : 0}`
+    : null;
+
   return (
     <iframe
+      src={src}
       title={title}
       ref={innerRef}
       style={style}
-      src={`${instance.url}#toolbar=${showToolbar ? 1 : 0}`}
       className={className}
       {...props}
     />

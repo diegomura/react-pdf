@@ -2,7 +2,7 @@
   "name": "@react-pdf/renderer",
   "version": "2.0.19",
   "license": "MIT",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

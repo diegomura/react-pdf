@@ -33,7 +33,7 @@ interface FontInstance {
   sources: FontSource[];
 }
 
-type HyphenationCallback = (
+export type HyphenationCallback = (
   words: string,
   glyphString: { [key: string]: any },
 ) => string[];

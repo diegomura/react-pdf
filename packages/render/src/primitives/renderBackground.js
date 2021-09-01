@@ -9,7 +9,7 @@ const drawBackground = (ctx, node) => {
   if (node.box && node.style.backgroundColor) {
     const { top, left, width, height } = node.box;
     const color = parseColor(node.style.backgroundColor);
-    const opacity = R.defaultTo(color.opacity, node.style?.opacity);
+    const opacity = !R.isNil(color.opacity) ? color.opacity : node.style?.opacity;
 
     ctx
       .fillOpacity(opacity)

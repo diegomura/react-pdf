@@ -9,7 +9,7 @@ const drawBackground = (ctx, node) => {
   if (node.box && node.style.backgroundColor) {
     const { top, left, width, height } = node.box;
     const color = parseColor(node.style.backgroundColor);
-    const nodeOpacity = !R.isNil(node.style?.opacity) ? node.style.opacity : 1
+    const nodeOpacity = R.isNil(node.style?.opacity) ? 1 : node.style.opacity;
     const opacity = Math.min(color.opacity, nodeOpacity);
 
     ctx

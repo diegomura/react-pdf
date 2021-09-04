@@ -89,4 +89,5 @@ describe('primitive renderBackground', () => {
     renderBackground(ctx, node);
 
     expect(ctx.fillOpacity.mock.calls).toEqual([[0]]);
+  });
 });

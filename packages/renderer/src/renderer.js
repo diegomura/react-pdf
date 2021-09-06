@@ -7,7 +7,7 @@ import {
   unstable_cancelCallback as cancelPassiveEffects,
 } from 'scheduler';
 
-import propsEqual from './propsEqual';
+import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 

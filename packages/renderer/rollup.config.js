@@ -85,7 +85,7 @@ const getPlugins = ({ browser }) => [
 
 const serverConfig = {
   ...configBase,
-  input: './src/node.js',
+  input: './src/node/index.js',
   output: [
     getESM({ file: 'lib/react-pdf.es.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.js' }),
@@ -105,7 +105,7 @@ const serverProdConfig = {
 
 const browserConfig = {
   ...configBase,
-  input: './src/dom.js',
+  input: './src/dom/index.js',
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),

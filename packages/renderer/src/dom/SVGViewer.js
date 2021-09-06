@@ -20,7 +20,7 @@ export const SVGViewer = ({ children }) => {
 
   if (layout.loading || !layout.value) return <div>Loading...</div>;
 
-  return layout.value.map(value => <SVGPage value={value} />);
+  return layout.value.map(value => <SVGPage key={value} value={value} />);
 };
 
 export default SVGViewer;

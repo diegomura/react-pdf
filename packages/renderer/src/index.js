@@ -1,9 +1,9 @@
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
+import SVGDocument from '@react-pdf/svgkit';
 import layoutDocument from '@react-pdf/layout';
 
-import SVGDocument from './svgkit';
 import createRenderer from './renderer';
 import { version } from '../package.json';
 

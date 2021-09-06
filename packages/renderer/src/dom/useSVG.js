@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react';
 
-import useQueue from './useQueue'
+import useQueue from './useQueue';
 import { pdf } from '../index';
 
-export const usePDF = ({ document }) => {
-  const queue = useQueue()
+export const useSVG = ({ document }) => {
+  const queue = useQueue();
 
   const pdfInstance = useRef(null);
 
@@ -22,13 +22,17 @@ export const usePDF = ({ document }) => {
 
   const update = () => {
     pdfInstance.current.updateContainer(document);
-  }
+  };
 
-  const { value, error, loading } = queue
+  const { value, error, loading } = queue;
 
-  const state = useMemo(() => ({ value, error, loading }))
+  const state = useMemo(() => ({ value, error, loading }), [
+    value,
+    error,
+    loading,
+  ]);
 
   return [state, update];
 };
 
-export default usePDF
+export default useSVG;

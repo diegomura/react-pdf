@@ -29,6 +29,7 @@
     "@react-pdf/font": "^2.2.1",
     "@react-pdf/layout": "^3.1.2",
     "@react-pdf/pdfkit": "^2.4.0",
+    "@react-pdf/svgkit": "^2.0.0",
     "@react-pdf/primitives": "^3.0.0",
     "@react-pdf/render": "^3.2.0",
     "@react-pdf/types": "^2.1.0",

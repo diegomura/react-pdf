@@ -1,0 +1,22 @@
+{
+  "name": "@react-pdf/svgkit",
+  "license": "MIT",
+  "version": "2.0.0",
+  "description": "A SVG generation library for Node.js and browser",
+  "main": "./lib/index.js",
+  "contributors": [
+    "Diego Muracciole <diegomuracciole@gmail.com>"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf ./lib && babel src --out-dir lib",
+    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@babel/runtime": "^7.4.3",
+    "@react-pdf/pdfkit": "^2.0.11"
+  }
+}

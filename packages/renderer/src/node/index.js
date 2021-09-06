@@ -1,32 +1,9 @@
-import fs from 'fs';
 import * as primitives from '@react-pdf/primitives';
-import { pdf, version, Font, StyleSheet } from './index';
 
-export const renderToStream = async element => {
-  const instance = pdf(element);
-  const buffer = await instance.toBuffer();
-  return buffer;
-};
-
-export const renderToString = element => {
-  const instance = pdf(element);
-  return instance.toString();
-};
-
-export const renderToFile = async (element, filePath, callback) => {
-  const output = await renderToStream(element);
-  const stream = fs.createWriteStream(filePath);
-
-  output.pipe(stream);
-
-  return new Promise((resolve, reject) => {
-    stream.on('finish', () => {
-      if (callback) callback(output, filePath);
-      resolve(output);
-    });
-    stream.on('error', reject);
-  });
-};
+import renderToFile from './renderToFile';
+import renderToStream from './renderToStream';
+import renderToString from './renderToString';
+import { pdf, version, Font, StyleSheet } from '../index';
 
 const throwEnvironmentError = name => {
   throw new Error(
@@ -52,7 +29,13 @@ export const BlobProvider = () => {
 
 export const render = renderToFile;
 
-export * from './index';
+export * from '../index';
+
+export * from './renderToFile';
+
+export * from './renderToStream';
+
+export * from './renderToString';
 
 export * from '@react-pdf/primitives';
 
@@ -61,6 +44,7 @@ export default {
   Font,
   version,
   StyleSheet,
+  usePDF,
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,

@@ -80,6 +80,37 @@ describe('layout resolveInheritance', () => {
     expect(subview.style).toHaveProperty('color', 'green');
   });
 
+  test('Should inherit multiple textDecoration properly', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: {},
+          children: [
+            {
+              type: 'TEXT',
+              style: { textDecoration: 'line-through' },
+              children: [
+                { type: 'TEXT', style: { textDecoration: 'underline' } },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const result = resolveInheritance(root);
+    const text1 = result.children[0].children[0];
+    const text2 = text1.children[0];
+
+    expect(text1.style).toHaveProperty('textDecoration', 'line-through');
+    expect(text2.style).toHaveProperty(
+      'textDecoration',
+      'line-through underline',
+    );
+  });
+
   test('Should inherit color value', shouldInherit('color'));
   test('Should inherit fontFamily value', shouldInherit('fontFamily'));
   test('Should inherit fontSize value', shouldInherit('fontSize'));

@@ -30,6 +30,33 @@ const getInheritStyles = R.compose(
   R.propOr({}, 'style'),
 );
 
+// Merge style values
+const mergeValues = (styleName, value, inheritedValue) => {
+  switch (styleName) {
+    case 'textDecoration': {
+      // merge not none and not false textDecoration values to one rule
+      return [inheritedValue, value].filter(v => v && v !== 'none').join(' ');
+    }
+    default:
+      return value;
+  }
+};
+
+// Merge inherited and node styles
+const merge = (inheritedStyles, style) => {
+  const mergedStyles = { ...inheritedStyles };
+
+  Object.entries(style).forEach(([styleName, value]) => {
+    mergedStyles[styleName] = mergeValues(
+      styleName,
+      value,
+      inheritedStyles[styleName],
+    );
+  });
+
+  return mergedStyles;
+};
+
 /**
  * Merges styles with node
  *
@@ -37,9 +64,9 @@ const getInheritStyles = R.compose(
  * @param {Object} node
  * @returns {Object} node with styles merged
  */
-const mergeStyles = styles =>
+const mergeStyles = inheritedStyles =>
   R.evolve({
-    style: R.merge(styles),
+    style: style => merge(inheritedStyles, style),
   });
 
 /**

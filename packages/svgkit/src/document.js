@@ -241,13 +241,18 @@ class SVGDocument {
     return new RadialGradient(x1, y1, r1, x2, y2, r2);
   }
 
-  // image(data, x, y, opts = {}) {
-  //   const { width, height } = opts;
+  image(data, x, y, opts = {}) {
+    const { width, height } = opts;
 
-  //   const href = `data:image;base64,${Buffer.from(data).toString('base64')}`;
+    if (!width || !height)
+      throw new Error(
+        'svgkit only supports image rendering with explicit width and height',
+      );
 
-  //   return this.currentPage.image(href, x, y, width, height);
-  // }
+    const href = `data:image;base64,${Buffer.from(data).toString('base64')}`;
+
+    return this.currentPage.image(href, x, y, width, height);
+  }
 
   // _glyphs(glyphs, positions, x, y, options) {
   //   this.currentPage.text(glyphs, positions, x, y, options);

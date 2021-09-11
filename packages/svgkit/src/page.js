@@ -5,87 +5,52 @@
 
 import { randomString } from './utils';
 import { createElement } from './element';
+import { Gradient } from './gradient';
+import getSize from './getPageSize';
+
+// const DEFAULT_MARGINS = {
+//   top: 0,
+//   left: 0,
+//   bottom: 0,
+//   right: 0,
+// };
 
 const STYLES = {
-  strokeStyle: {
-    svgAttr: 'stroke',
-    canvas: '#000000',
-    svg: 'none',
-    apply: 'stroke',
-  },
-  fillStyle: {
-    svgAttr: 'fill',
-    canvas: '#000000',
-    svg: null,
-    apply: 'fill',
-  },
-  lineCap: {
-    svgAttr: 'stroke-linecap',
-    canvas: 'butt',
-    svg: 'butt',
-    apply: 'stroke',
-  },
-  lineJoin: {
-    svgAttr: 'stroke-linejoin',
-    canvas: 'miter',
-    svg: 'miter',
-    apply: 'stroke',
-  },
-  miterLimit: {
-    svgAttr: 'stroke-miterlimit',
-    canvas: 10,
-    svg: 4,
-    apply: 'stroke',
-  },
-  lineWidth: {
-    svgAttr: 'stroke-width',
-    canvas: 1,
-    svg: 1,
-    apply: 'stroke',
-  },
-  globalAlpha: {
-    svgAttr: 'opacity',
-    canvas: 1,
-    svg: 1,
-    apply: 'fill stroke',
-  },
-  font: {
-    canvas: '10px sans-serif',
-  },
-  shadowColor: {
-    canvas: '#000000',
-  },
-  shadowOffsetX: {
-    canvas: 0,
-  },
-  shadowOffsetY: {
-    canvas: 0,
-  },
-  shadowBlur: {
-    canvas: 0,
-  },
-  textAlign: {
-    canvas: 'start',
-  },
-  textBaseline: {
-    canvas: 'alphabetic',
-  },
-  lineDash: {
-    svgAttr: 'stroke-dasharray',
-    canvas: [],
-    svg: null,
-    apply: 'stroke',
-  },
+  strokeColorStyle: '#000000',
+  fillColorStyle: '#000000',
+  lineWidthStyle: 1,
+  fillRuleStyle: 'nonzero',
+  lineCapStyle: 'butt',
+  lineJoinStyle: 'miter',
+  lineDashStyle: '0 0',
+  fillOpacityStyle: 1,
+  strokeOpacityStyle: 1,
+  opacityStyle: 1,
+  // font: {
+  //   default: '10px sans-serif',
+  // },
+  // textAlign: {
+  //   default: 'start',
+  // },
+  // textBaseline: {
+  //   default: 'alphabetic',
+  // },
 };
 
 class SVGPage {
-  constructor(width, height) {
+  // TODO: consider margins
+  constructor({
+    size = 'letter',
+    orientation = 'portrait',
+    // margins = DEFAULT_MARGINS,
+  } = {}) {
+    const { width, height } = getSize(size, orientation);
+
     this.width = width;
     this.height = height;
 
     this.setDefaultStyles();
 
-    this.ids = {};
     this.groupStack = [];
     this.stack = [this.getStyleState()];
 
@@ -106,7 +71,7 @@ class SVGPage {
 
     for (let i = 0; i < keys.length; i += 1) {
       const key = keys[i];
-      this[key] = STYLES[key].canvas;
+      this[key] = STYLES[key];
     }
   };
 
@@ -164,7 +129,7 @@ class SVGPage {
   }
 
   beginPath() {
-    this.currentDefaultPath = '';
+    this.currentPath = '';
     this.currentPosition = {};
 
     const path = createElement('path');
@@ -174,25 +139,33 @@ class SVGPage {
   }
 
   addPathCommand(command) {
-    this.currentDefaultPath += ' ';
-    this.currentDefaultPath += command;
+    if (!this.currentPath) this.beginPath();
+
+    this.currentPath += ' ';
+    this.currentPath += command;
   }
 
   closePath() {
-    if (this.currentDefaultPath) {
+    if (this.currentPath) {
       this.addPathCommand('Z');
     }
   }
 
   moveTo(x, y) {
+    if (!this.currentPath) this.beginPath();
+
     if (this.currentElement.nodeName !== 'path') this.beginPath();
     this.currentPosition = { x, y };
+
     this.addPathCommand(`M ${x} ${y}`);
   }
 
   lineTo(x, y) {
+    if (!this.currentPath) this.beginPath();
+
     this.currentPosition = { x, y };
-    if (this.currentDefaultPath.indexOf('M') > -1) {
+
+    if (this.currentPath.indexOf('M') > -1) {
       this.addPathCommand(`L ${x} ${y}`);
     } else {
       this.addPathCommand(`M ${x} ${y}`);
@@ -200,8 +173,19 @@ class SVGPage {
   }
 
   bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) {
+    if (!this.currentPath) this.beginPath();
+
     this.currentPosition = { x, y };
+
     this.addPathCommand(`C ${cp1x} ${cp1y} ${cp2x} ${cp2y} ${x} ${y}`);
+  }
+
+  quadraticCurveTo(cpx, cpy, x, y) {
+    if (!this.currentPath) this.beginPath();
+
+    this.currentPosition = { x, y };
+
+    this.addPathCommand(`Q ${cpx} ${cpy} ${x} ${y}`);
   }
 
   rect(x, y, width, height) {
@@ -229,13 +213,87 @@ class SVGPage {
     this.closePath();
   }
 
+  opacity(opacity) {
+    this.opacityStyle = opacity;
+  }
+
+  fillRule(rule) {
+    this.fillRuleStyle = rule.replaceAll('-', '');
+  }
+
+  fillColor(color) {
+    this.fillColorStyle = color;
+  }
+
+  fillOpacity(opacity) {
+    this.fillOpacityStyle = opacity;
+  }
+
+  strokeColor(color) {
+    this.strokeColorStyle = color;
+  }
+
+  strokeOpacity(opacity) {
+    this.strokeOpacityStyle = opacity;
+  }
+
+  lineCap(value) {
+    this.lineCapStyle = value;
+  }
+
+  lineJoin(value) {
+    this.lineJoinStyle = value;
+  }
+
+  lineWidth(width) {
+    this.lineWidthStyle = width;
+  }
+
+  lineDash(length, space) {
+    this.lineDashStyle = `${length} ${space || ''}`.trim();
+  }
+
+  gradient(gradient) {
+    if (gradient.added) return;
+
+    const element = createElement(gradient.type, gradient.attributes);
+
+    gradient.stops.forEach(stop => {
+      const stopChild = createElement('stop');
+
+      stopChild.setAttribute('offset', stop.offset);
+      stopChild.setAttribute('stop-color', stop.color);
+      stopChild.setAttribute('stop-opacity', stop.opacity);
+
+      element.appendChild(stopChild);
+    });
+
+    this.defs.appendChild(element);
+
+    gradient.added = true;
+  }
+
   fill() {
+    let fillColorStyle = this.fillColorStyle;
+
     if (this.currentElement.nodeName === 'path') {
       this.currentElement.setAttribute('paint-order', 'stroke fill markers');
     }
 
-    this.applyCurrentDefaultPath();
-    this.applyStyleToCurrentElement('fill');
+    this.applyCurrentPath();
+
+    if (this.fillColorStyle instanceof Gradient) {
+      this.gradient(fillColorStyle);
+      fillColorStyle = `url('#${fillColorStyle.id}')`;
+    }
+
+    this.currentElement.setAttribute('stroke', 'none');
+    this.currentElement.setAttribute('fill', fillColorStyle);
+    this.currentElement.setAttribute('opacity', this.opacityStyle);
+    this.currentElement.setAttribute('fill-rule', this.fillRuleStyle);
+    this.currentElement.setAttribute('fill-opacity', this.fillOpacityStyle);
+
+    this.currentPath = '';
   }
 
   stroke() {
@@ -243,17 +301,48 @@ class SVGPage {
       this.currentElement.setAttribute('paint-order', 'fill stroke markers');
     }
 
-    this.applyCurrentDefaultPath();
-    this.applyStyleToCurrentElement('stroke');
+    this.applyCurrentPath();
+
+    this.currentElement.setAttribute('fill', 'none');
+    this.currentElement.setAttribute('opacity', this.opacityStyle);
+    this.currentElement.setAttribute('stroke', this.strokeColorStyle);
+    this.currentElement.setAttribute('stroke-width', this.lineWidthStyle);
+    this.currentElement.setAttribute('stroke-linecap', this.lineCapStyle);
+    this.currentElement.setAttribute('stroke-linejoin', this.lineJoinStyle);
+    this.currentElement.setAttribute('stroke-dasharray', this.lineDashStyle);
+    this.currentElement.setAttribute('stroke-opacity', this.strokeOpacityStyle);
+
+    this.currentPath = '';
+  }
+
+  fillAndStroke() {
+    if (this.currentElement.nodeName === 'path') {
+      this.currentElement.setAttribute('paint-order', 'fill stroke markers');
+    }
+
+    this.applyCurrentPath();
+
+    this.currentElement.setAttribute('fill', this.fillColorStyle);
+    this.currentElement.setAttribute('fill-rule', this.fillRuleStyle);
+    this.currentElement.setAttribute('fill-opacity', this.fillOpacityStyle);
+    this.currentElement.setAttribute('opacity', this.opacityStyle);
+    this.currentElement.setAttribute('stroke', this.strokeColorStyle);
+    this.currentElement.setAttribute('stroke-width', this.lineWidthStyle);
+    this.currentElement.setAttribute('stroke-linecap', this.lineCapStyle);
+    this.currentElement.setAttribute('stroke-linejoin', this.lineJoinStyle);
+    this.currentElement.setAttribute('stroke-dasharray', this.lineDashStyle);
+    this.currentElement.setAttribute('stroke-opacity', this.strokeOpacityStyle);
+
+    this.currentPath = '';
   }
 
   clip() {
     const group = this.closestGroupOrSvg();
     const clipPath = createElement('clipPath');
-    const id = randomString(this.ids);
+    const id = randomString();
     const newGroup = createElement('g');
 
-    this.applyCurrentDefaultPath();
+    this.applyCurrentPath();
 
     group.removeChild(this.currentElement);
     clipPath.setAttribute('id', id);
@@ -325,46 +414,13 @@ class SVGPage {
     textElement.appendChild(tspanElement);
     tspanElement.appendChild(String.fromCodePoint(...codePoints));
     this.currentElement = tspanElement;
-    this.applyStyleToCurrentElement('fill');
+
     parent.appendChild(textElement);
   }
 
-  applyCurrentDefaultPath() {
+  applyCurrentPath() {
     if (this.currentElement.nodeName === 'path') {
-      this.currentElement.setAttribute('d', this.currentDefaultPath);
-    }
-  }
-
-  applyStyleToCurrentElement(type) {
-    let currentElement = this.currentElement;
-    const currentStyleGroup = this.currentElementsToStyle;
-
-    if (currentStyleGroup) {
-      currentElement.setAttribute(type, '');
-      currentElement = currentStyleGroup.element;
-      currentStyleGroup.children.forEach(node => node.setAttribute(type, ''));
-    }
-
-    const keys = Object.keys(STYLES);
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const style = STYLES[keys[i]];
-      const value = this[keys[i]];
-
-      if (
-        style.apply &&
-        style.apply.indexOf(type) !== -1 &&
-        style.svg !== value
-      ) {
-        let attr = style.svgAttr;
-        if (keys[i] === 'globalAlpha') {
-          attr = `${type}-${style.svgAttr}`;
-
-          if (currentElement.getAttribute(attr)) continue;
-        }
-
-        currentElement.setAttribute(attr, value);
-      }
+      this.currentElement.setAttribute('d', this.currentPath);
     }
   }
 
@@ -372,15 +428,6 @@ class SVGPage {
     const parent = this.closestGroupOrSvg();
 
     if (parent.childNodes.length > 0) {
-      if (this.currentElement.nodeName === 'path') {
-        this.currentElementsToStyle = this.currentElementsToStyle || {
-          element: parent,
-          children: [],
-        };
-        this.currentElementsToStyle.children.push(this.currentElement);
-        this.applyCurrentDefaultPath();
-      }
-
       const group = createElement('g');
       parent.appendChild(group);
       this.currentElement = group;
@@ -398,6 +445,10 @@ class SVGPage {
 
   translate(x, y) {
     this.addTransform(`translate(${x},${y})`);
+  }
+
+  rotate(angle, origin = [0, 0]) {
+    this.addTransform(`rotate(${angle},${origin[0]},${origin[1]})`);
   }
 
   scale(x, y) {

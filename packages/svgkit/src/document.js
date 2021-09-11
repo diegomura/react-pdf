@@ -1,22 +1,24 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 
-import { PDFFont } from '@react-pdf/pdfkit';
+// import { PDFFont } from '@react-pdf/pdfkit';
 
 import SVGPage from './page';
 import serializeXML from './serializeXML';
+import { LinearGradient, RadialGradient } from './gradient';
 
-const encodeGlyphs = glyphs => {
-  const res = [];
+// const encodeGlyphs = glyphs => {
+//   const res = [];
 
-  for (const glyph of Array.from(glyphs)) {
-    for (const codePoint of glyph.codePoints) {
-      res.push(`00${codePoint.toString(16)}`.slice(-2));
-    }
-  }
+//   for (const glyph of Array.from(glyphs)) {
+//     for (const codePoint of glyph.codePoints) {
+//       res.push(`00${codePoint.toString(16)}`.slice(-2));
+//     }
+//   }
 
-  return res;
-};
+//   return res;
+// };
 
 class SVGDocument {
   constructor() {
@@ -27,10 +29,13 @@ class SVGDocument {
     this._fontSize = 12;
   }
 
-  addPage({ size }) {
-    const page = new SVGPage(size[0], size[1]);
+  // TODO: consider margins
+  // TODO: consider orientation
+  addPage(options = {}) {
+    const page = new SVGPage(options);
     this.pages.push(page);
     this.currentPage = page;
+    return this;
   }
 
   save() {
@@ -53,38 +58,49 @@ class SVGDocument {
     return this;
   }
 
+  rotate(angle, options = {}) {
+    const { origin } = options;
+    this.currentPage.rotate(angle, origin);
+    return this;
+  }
+
   fillColor(color) {
-    this.currentPage.fillStyle = color;
+    this.currentPage.fillColor(color);
     return this;
   }
 
   fillOpacity(opacity) {
-    this.currentPage.globalAlpha = opacity;
+    this.currentPage.fillOpacity(opacity);
     return this;
   }
 
   strokeColor(color) {
-    this.currentPage.strokeStyle = color;
+    this.currentPage.strokeColor(color);
     return this;
   }
 
   strokeOpacity(opacity) {
-    this.currentPage.globalAlpha = opacity;
+    this.currentPage.strokeOpacity(opacity);
     return this;
   }
 
   opacity(opacity) {
-    this.currentPage.globalAlpha = opacity;
+    this.currentPage.opacity(opacity);
     return this;
   }
 
   lineWidth(width) {
-    this.currentPage.lineWidth = width;
+    this.currentPage.lineWidth(width);
+    return this;
+  }
+
+  lineCap(value) {
+    this.currentPage.lineCap(value);
     return this;
   }
 
   lineJoin(value) {
-    this.currentPage.lineJoin = value;
+    this.currentPage.lineJoin(value);
     return this;
   }
 
@@ -103,6 +119,11 @@ class SVGDocument {
     return this;
   }
 
+  quadraticCurveTo(cpx, cpy, x, y) {
+    this.currentPage.quadraticCurveTo(cpx, cpy, x, y);
+    return this;
+  }
+
   rect(x, y, width, height) {
     this.currentPage.rect(x, y, width, height);
     return this;
@@ -113,15 +134,31 @@ class SVGDocument {
     return this;
   }
 
-  path(path) {
-    this.currentPage.beginPath();
-    this.currentPage.addPathCommand(path);
-    this.currentPage.closePath();
+  polygon(...points) {
+    this.currentPage.moveTo(...Array.from(points.shift() || []));
+
+    for (const point of Array.from(points)) {
+      this.currentPage.lineTo(...Array.from(point || []));
+    }
+    return this.currentPage.closePath();
   }
 
-  fill(color) {
+  path(path) {
+    this.currentPage.addPathCommand(path);
+    return this;
+  }
+
+  fill(color, rule) {
+    if (/(even-?odd)|(non-?zero)/.test(color)) {
+      rule = color;
+      color = null;
+    }
+
     if (color) this.fillColor(color);
+    if (rule) this.currentPage.fillRule(rule);
+
     this.currentPage.fill();
+
     return this;
   }
 
@@ -131,9 +168,12 @@ class SVGDocument {
     return this;
   }
 
-  fillAndStroke() {
-    this.currentPage.fill();
-    this.currentPage.stroke();
+  fillAndStroke(fillColor, strokeColor, fillRule) {
+    if (fillColor) this.fillColor(fillColor);
+    if (strokeColor) this.strokeColor(strokeColor);
+    if (fillRule) this.currentPage.fillRule(fillRule);
+
+    this.currentPage.fillAndStroke();
   }
 
   clip() {
@@ -146,62 +186,76 @@ class SVGDocument {
     return this;
   }
 
-  font(font, size) {
-    const name = typeof font === 'string' ? font : font.fullName;
+  // font(font, size) {
+  //   const name = typeof font === 'string' ? font : font.fullName;
 
-    this.currentPage.font = `${size}px ${name}`;
+  //   this.currentPage.font = `${size}px ${name}`;
 
-    if (size) {
-      this.fontSize(size);
+  //   if (size) {
+  //     this.fontSize(size);
+  //   }
+
+  //   this._font = { ...PDFFont.open(null, font), encodeGlyphs };
+
+  //   return this;
+  // }
+
+  dash(length, options) {
+    let space;
+
+    if (options == null) options = {};
+
+    if (length == null) return this;
+
+    if (Array.isArray(length)) {
+      length = Array.from(length).join(' ');
+    } else {
+      space = options.space != null ? options.space : length;
     }
 
-    this._font = { ...PDFFont.open(null, font), encodeGlyphs };
+    this.currentPage.lineDash(length, space);
 
-    return this;
-  }
-
-  dash() {
-    // noop
     return this;
   }
 
   undash() {
-    // noop
+    this.currentPage.lineDash(0, 0);
     return this;
   }
 
-  fontSize(size) {
-    this._fontSize = size;
-    return this;
+  // fontSize(size) {
+  //   this._fontSize = size;
+  //   return this;
+  // }
+
+  // text() {
+  //   // noop
+  //   return this;
+  // }
+
+  linearGradient(x1, y1, x2, y2) {
+    return new LinearGradient(x1, y1, x2, y2);
   }
 
-  text() {
-    // noop
-    return this;
+  radialGradient(x1, y1, r1, x2, y2, r2) {
+    return new RadialGradient(x1, y1, r1, x2, y2, r2);
   }
 
-  linearGradient() {
-    // noop
-    return {
-      stop: () => {},
-    };
-  }
+  // image(data, x, y, opts = {}) {
+  //   const { width, height } = opts;
 
-  image(data, x, y, opts = {}) {
-    const { width, height } = opts;
+  //   const href = `data:image;base64,${Buffer.from(data).toString('base64')}`;
 
-    const href = `data:image;base64,${Buffer.from(data).toString('base64')}`;
+  //   return this.currentPage.image(href, x, y, width, height);
+  // }
 
-    return this.currentPage.image(href, x, y, width, height);
-  }
-
-  _glyphs(glyphs, positions, x, y, options) {
-    this.currentPage.text(glyphs, positions, x, y, options);
-    return this;
-  }
+  // _glyphs(glyphs, positions, x, y, options) {
+  //   this.currentPage.text(glyphs, positions, x, y, options);
+  //   return this;
+  // }
 
   end() {
-    this.serialized = this.pages.map(page => serializeXML(page.root));
+    this.serialized = this.pages.map(page => serializeXML(page.root)).join('');
   }
 }
 

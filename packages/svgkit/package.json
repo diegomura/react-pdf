@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@react-pdf/pdfkit": "^2.0.11"
+    "@react-pdf/pdfkit": "^2.0.11",
+    "ramda": "^0.26.1"
   }
 }

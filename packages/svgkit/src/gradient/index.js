@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable max-classes-per-file */
 
-import { randomString } from './utils';
+import uuid from '../utils/uuid';
 
 export class Gradient {
   constructor(x1, y1, x2, y2) {
-    this.id = randomString();
+    this.id = uuid();
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;

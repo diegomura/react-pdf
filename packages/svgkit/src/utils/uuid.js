@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const randomString = () => {
+const uuid = () => {
   let randomstring;
 
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
@@ -12,3 +12,5 @@ export const randomString = () => {
 
   return randomstring;
 };
+
+export default uuid;

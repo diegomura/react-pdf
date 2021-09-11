@@ -4,9 +4,9 @@
 
 // import { PDFFont } from '@react-pdf/pdfkit';
 
-import SVGPage from './page';
-import serializeXML from './serializeXML';
-import { LinearGradient, RadialGradient } from './gradient';
+import SVGPage from '../page';
+import serialize from './serialize';
+import { LinearGradient, RadialGradient } from '../gradient';
 
 // const encodeGlyphs = glyphs => {
 //   const res = [];
@@ -29,8 +29,6 @@ class SVGDocument {
     this._fontSize = 12;
   }
 
-  // TODO: consider margins
-  // TODO: consider orientation
   addPage(options = {}) {
     const page = new SVGPage(options);
     this.pages.push(page);
@@ -186,20 +184,6 @@ class SVGDocument {
     return this;
   }
 
-  // font(font, size) {
-  //   const name = typeof font === 'string' ? font : font.fullName;
-
-  //   this.currentPage.font = `${size}px ${name}`;
-
-  //   if (size) {
-  //     this.fontSize(size);
-  //   }
-
-  //   this._font = { ...PDFFont.open(null, font), encodeGlyphs };
-
-  //   return this;
-  // }
-
   dash(length, options) {
     let space;
 
@@ -223,16 +207,6 @@ class SVGDocument {
     return this;
   }
 
-  // fontSize(size) {
-  //   this._fontSize = size;
-  //   return this;
-  // }
-
-  // text() {
-  //   // noop
-  //   return this;
-  // }
-
   linearGradient(x1, y1, x2, y2) {
     return new LinearGradient(x1, y1, x2, y2);
   }
@@ -254,13 +228,37 @@ class SVGDocument {
     return this.currentPage.image(href, x, y, width, height);
   }
 
+  // font(font, size) {
+  //   const name = typeof font === 'string' ? font : font.fullName;
+
+  //   this.currentPage.font = `${size}px ${name}`;
+
+  //   if (size) {
+  //     this.fontSize(size);
+  //   }
+
+  //   this._font = { ...PDFFont.open(null, font), encodeGlyphs };
+
+  //   return this;
+  // }
+
+  // fontSize(size) {
+  //   this._fontSize = size;
+  //   return this;
+  // }
+
+  // text() {
+  //   // noop
+  //   return this;
+  // }
+
   // _glyphs(glyphs, positions, x, y, options) {
   //   this.currentPage.text(glyphs, positions, x, y, options);
   //   return this;
   // }
 
   end() {
-    this.serialized = this.pages.map(page => serializeXML(page.root)).join('');
+    this.serialized = this.pages.map(page => serialize(page.root)).join('');
   }
 }
 

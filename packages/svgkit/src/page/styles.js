@@ -9,15 +9,8 @@ const STYLES = {
   fillOpacityStyle: 1,
   strokeOpacityStyle: 1,
   opacityStyle: 1,
-  // font: {
-  //   default: '10px sans-serif',
-  // },
-  // textAlign: {
-  //   default: 'start',
-  // },
-  // textBaseline: {
-  //   default: 'alphabetic',
-  // },
+  fontSizeStyle: 12,
+  fontFamilyStyle: 'Helvetica',
 };
 
 export default {
@@ -89,5 +82,13 @@ export default {
 
   lineDash(length, space) {
     this.lineDashStyle = `${length} ${space || ''}`.trim();
+  },
+
+  fontSize(size) {
+    this.fontSizeStyle = size;
+  },
+
+  fontFamily(fontFamily) {
+    this.fontFamilyStyle = fontFamily;
   },
 };

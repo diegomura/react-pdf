@@ -15,13 +15,13 @@ const isImage = isType(P.Image);
 const isTextInstance = isType(P.TextInstance);
 
 /**
- * Get textkit framgents of given node object
+ * Get textkit fragments of given node object
  *
  * @param {Object} font store
  * @param {Object} instance node
  * @returns {Array} text fragments
  */
-const getFragments = (fontStore, instance, level = 0) => {
+const getFragments = (fontStore, instance, parentLink, level = 0) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
@@ -47,7 +47,7 @@ const getFragments = (fontStore, instance, level = 0) => {
   const obj = fontStore ? fontStore.getFont(opts) : null;
   const font = obj ? obj.data : fontFamily;
 
-  // Don't pass main background color to textkit. Will be rendered by the render packace instead
+  // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
 
   const attributes = {
@@ -71,7 +71,7 @@ const getFragments = (fontStore, instance, level = 0) => {
       textDecoration === 'line-through underline',
     strikeColor: textDecorationColor || color,
     underlineColor: textDecorationColor || color,
-    link: instance.props?.src || instance.props?.href,
+    link: parentLink || instance.props?.src || instance.props?.href,
     lineHeight: lineHeight ? lineHeight * fontSize : null,
   };
 
@@ -96,7 +96,9 @@ const getFragments = (fontStore, instance, level = 0) => {
         attributes,
       });
     } else if (child) {
-      fragments.push(...getFragments(fontStore, child, level + 1));
+      fragments.push(
+        ...getFragments(fontStore, child, attributes.link, level + 1),
+      );
     }
   }
 

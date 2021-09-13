@@ -8,31 +8,23 @@ import SVGPage from '../page';
 import serialize from './serialize';
 import { LinearGradient, RadialGradient } from '../gradient';
 
-// const encodeGlyphs = glyphs => {
-//   const res = [];
-
-//   for (const glyph of Array.from(glyphs)) {
-//     for (const codePoint of glyph.codePoints) {
-//       res.push(`00${codePoint.toString(16)}`.slice(-2));
-//     }
-//   }
-
-//   return res;
-// };
-
 class SVGDocument {
-  constructor() {
+  constructor({ font } = {}) {
     this.info = {};
     this.pages = [];
     this.currentPage = null;
-
-    this._fontSize = 12;
+    this.defaultFont = font;
   }
 
   addPage(options = {}) {
     const page = new SVGPage(options);
     this.pages.push(page);
     this.currentPage = page;
+
+    if (this.defaultFont) {
+      this.font(this.defaultFont);
+    }
+
     return this;
   }
 
@@ -228,29 +220,42 @@ class SVGDocument {
     return this.currentPage.image(href, x, y, width, height);
   }
 
-  // font(font, size) {
-  //   const name = typeof font === 'string' ? font : font.fullName;
+  font(src, family, size) {
+    if (size) {
+      this.fontSize(size);
+    }
 
-  //   this.currentPage.font = `${size}px ${name}`;
+    if (typeof src === 'string') {
+      this.currentPage.fontFamily(src);
+      return this;
+    }
 
-  //   if (size) {
-  //     this.fontSize(size);
-  //   }
+    // const encodeGlyphs = glyphs => {
+    //   const res = [];
 
-  //   this._font = { ...PDFFont.open(null, font), encodeGlyphs };
+    //   for (const glyph of Array.from(glyphs)) {
+    //     for (const codePoint of glyph.codePoints) {
+    //       res.push(`00${codePoint.toString(16)}`.slice(-2));
+    //     }
+    //   }
 
-  //   return this;
-  // }
+    //   return res;
+    // };
 
-  // fontSize(size) {
-  //   this._fontSize = size;
-  //   return this;
-  // }
+    // this._font = { ...PDFFont.open(null, font), encodeGlyphs };
 
-  // text() {
-  //   // noop
-  //   return this;
-  // }
+    return this;
+  }
+
+  fontSize(size) {
+    this.currentPage.fontSize(size);
+    return this;
+  }
+
+  text(text, x, y) {
+    this.currentPage.text(text, x, y);
+    return this;
+  }
 
   // _glyphs(glyphs, positions, x, y, options) {
   //   this.currentPage.text(glyphs, positions, x, y, options);

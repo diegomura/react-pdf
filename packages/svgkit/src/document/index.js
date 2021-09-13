@@ -262,6 +262,11 @@ class SVGDocument {
   //   return this;
   // }
 
+  note() {
+    console.warn('note is not yet supported on svgkit');
+    return this;
+  }
+
   end() {
     this.serialized = this.pages.map(page => serialize(page.root)).join('');
   }

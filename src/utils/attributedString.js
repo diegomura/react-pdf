@@ -29,7 +29,7 @@ const transformText = (text, transformation) => {
   }
 };
 
-export const getFragments = instance => {
+export const getFragments = (instance, parentLink) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
@@ -61,7 +61,7 @@ export const getFragments = instance => {
     backgroundColor,
     align: textAlign,
     indent: textIndent,
-    link: instance.src,
+    link: parentLink || instance.src,
     characterSpacing: letterSpacing,
     underlineStyle: textDecorationStyle,
     underline: textDecoration === 'underline',
@@ -92,7 +92,7 @@ export const getFragments = instance => {
       });
     } else {
       if (child) {
-        fragments.push(...getFragments(child));
+        fragments.push(...getFragments(child, attributes.link));
       }
     }
   });

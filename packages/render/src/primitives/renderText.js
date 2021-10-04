@@ -224,7 +224,7 @@ const renderText = (ctx, node) => {
   const blocks = [node.lines];
   const paddingTop = R.pathOr(0, ['box', 'paddingTop'], node);
   const paddingLeft = R.pathOr(0, ['box', 'paddingLeft'], node);
-  const initialY = node.lines[0] ? node.lines[0].box.y : 0;
+  const initialY = node.lines?.[0]?.box.y ?? 0;
   const offsetX = node.alignOffset || 0;
 
   ctx.save();

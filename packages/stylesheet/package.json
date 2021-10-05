@@ -22,6 +22,7 @@
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",
+    "postcss-value-parser": "^4.1.0",
     "ramda": "^0.26.1"
   },
   "files": [

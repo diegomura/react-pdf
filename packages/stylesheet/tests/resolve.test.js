@@ -438,17 +438,6 @@ describe('stylesheet resolve', () => {
     });
   });
 
-  test('should transform padding auto shortcut correctly', () => {
-    const styles = resolve({}, { padding: 'auto' });
-
-    expect(styles).toEqual({
-      paddingRight: 'auto',
-      paddingLeft: 'auto',
-      paddingTop: 'auto',
-      paddingBottom: 'auto',
-    });
-  });
-
   test('should transform font weight correctly', () => {
     const styles = resolve({}, { fontWeight: 'ultrabold' });
 

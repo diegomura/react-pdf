@@ -49,6 +49,11 @@ const pdf = initialValue => {
     return renderPDF(ctx, layout);
   };
 
+  const toLayout = async () => {
+    const layout = await layoutDocument(container.document, fontStore);
+    return layout;
+  };
+
   const callOnRender = (params = {}) => {
     if (container.document.props.onRender) {
       container.document.props.onRender(params);
@@ -113,6 +118,7 @@ const pdf = initialValue => {
   return {
     on,
     container,
+    toLayout,
     toBlob,
     toBuffer,
     toString,

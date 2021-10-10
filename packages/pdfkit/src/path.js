@@ -1,113 +1,241 @@
+/* eslint-disable no-lonely-if */
 let cx, cy, px, py, sx, sy;
 
 cx = cy = px = py = sx = sy = 0;
 
-const parameters = {
-  A: 7,
-  a: 7,
-  C: 6,
-  c: 6,
-  H: 1,
-  h: 1,
-  L: 2,
-  l: 2,
+// parseDataPath copy pasted from svgo
+// https://github.com/svg/svgo/blob/e4918ccdd1a2b5831defe0f00c1286744b479448/lib/path.js
+
+const argsCountPerCommand = {
   M: 2,
   m: 2,
-  Q: 4,
-  q: 4,
-  S: 4,
-  s: 4,
-  T: 2,
-  t: 2,
+  Z: 0,
+  z: 0,
+  L: 2,
+  l: 2,
+  H: 1,
+  h: 1,
   V: 1,
   v: 1,
-  Z: 0,
-  z: 0
+  C: 6,
+  c: 6,
+  S: 4,
+  s: 4,
+  Q: 4,
+  q: 4,
+  T: 2,
+  t: 2,
+  A: 7,
+  a: 7
 };
 
-const parse = function(path) {
-  let cmd;
-  const ret = [];
-  let args = [];
-  let curArg = '';
-  let foundDecimal = false;
-  let params = 0;
+/**
+ * @type {(c: string) => c is PathDataCommand}
+ */
+const isCommand = c => {
+  return c in argsCountPerCommand;
+};
 
-  for (let c of path) {
-    if (parameters[c] != null) {
-      params = parameters[c];
-      if (cmd) {
-        // save existing command
-        if (curArg.length > 0) {
-          args[args.length] = +curArg;
-        }
-        ret[ret.length] = { cmd, args };
+/**
+ * @type {(c: string) => boolean}
+ */
+const isWsp = c => {
+  const codePoint = c.codePointAt(0);
+  return (
+    (codePoint === 0x20 ||
+    codePoint === 0x9 ||
+    codePoint === 0xd ||
+    codePoint === 0xa)
+  );
+};
 
-        args = [];
-        curArg = '';
-        foundDecimal = false;
-      }
+/**
+ * @type {(c: string) => boolean}
+ */
+const isDigit = c => {
+  const codePoint = c.codePointAt(0);
+  if (codePoint == null) {
+    return false;
+  }
+  return 48 <= codePoint && codePoint <= 57;
+};
 
-      cmd = c;
-    } else if (
-      [' ', ','].includes(c) ||
-      (c === '-' && curArg.length > 0 && curArg[curArg.length - 1] !== 'e') ||
-      (c === '.' && foundDecimal)
-    ) {
-      if (curArg.length === 0) {
+/**
+ * @typedef {'none' | 'sign' | 'whole' | 'decimal_point' | 'decimal' | 'e' | 'exponent_sign' | 'exponent'} ReadNumberState
+ */
+
+/**
+ * @type {(string: string, cursor: number) => [number, number | null]}
+ */
+const readNumber = (string, cursor) => {
+  let i = cursor;
+  let value = '';
+  let state = /** @type {ReadNumberState} */ ('none');
+  for (; i < string.length; i += 1) {
+    const c = string[i];
+    if (c === '+' || c === '-') {
+      if (state === 'none') {
+        state = 'sign';
+        value += c;
         continue;
       }
+      if (state === 'e') {
+        state = 'exponent_sign';
+        value += c;
+        continue;
+      }
+    }
+    if (isDigit(c)) {
+      if (state === 'none' || state === 'sign' || state === 'whole') {
+        state = 'whole';
+        value += c;
+        continue;
+      }
+      if (state === 'decimal_point' || state === 'decimal') {
+        state = 'decimal';
+        value += c;
+        continue;
+      }
+      if (state === 'e' || state === 'exponent_sign' || state === 'exponent') {
+        state = 'exponent';
+        value += c;
+        continue;
+      }
+    }
+    if (c === '.') {
+      if (state === 'none' || state === 'sign' || state === 'whole') {
+        state = 'decimal_point';
+        value += c;
+        continue;
+      }
+    }
+    if (c === 'E' || c === 'e') {
+      if (
+        state === 'whole' ||
+        state === 'decimal_point' ||
+        state === 'decimal'
+      ) {
+        state = 'e';
+        value += c;
+        continue;
+      }
+    }
+    break;
+  }
+  const number = Number.parseFloat(value);
+  if (Number.isNaN(number)) {
+    return [cursor, null];
+  } else {
+    // step back to delegate iteration to parent loop
+    return [i - 1, number];
+  }
+};
 
-      if (args.length === params) {
-        // handle reused commands
-        ret[ret.length] = { cmd, args };
-        args = [+curArg];
-
-        // handle assumed commands
-        if (cmd === 'M') {
-          cmd = 'L';
-        }
-        if (cmd === 'm') {
-          cmd = 'l';
+/**
+ * @type {(string: string) => Array<PathDataItem>}
+ */
+const parsePathData = string => {
+  /**
+   * @type {Array<PathDataItem>}
+   */
+  const pathData = [];
+  /**
+   * @type {null | PathDataCommand}
+   */
+  let command = null;
+  let args = /** @type {number[]} */ ([]);
+  let argsCount = 0;
+  let canHaveComma = false;
+  let hadComma = false;
+  for (let i = 0; i < string.length; i += 1) {
+    const c = string.charAt(i);
+    if (isWsp(c)) {
+      continue;
+    }
+    // allow comma only between arguments
+    if (canHaveComma && c === ',') {
+      if (hadComma) {
+        break;
+      }
+      hadComma = true;
+      continue;
+    }
+    if (isCommand(c)) {
+      if (hadComma) {
+        return pathData;
+      }
+      if (command == null) {
+        // moveto should be leading command
+        if (c !== 'M' && c !== 'm') {
+          return pathData;
         }
       } else {
-        args[args.length] = +curArg;
+        // stop if previous command arguments are not flushed
+        if (args.length !== 0) {
+          return pathData;
+        }
       }
-
-      foundDecimal = c === '.';
-
-      // fix for negative numbers or repeated decimals with no delimiter between commands
-      curArg = ['-', '.'].includes(c) ? c : '';
+      command = c;
+      args = [];
+      argsCount = argsCountPerCommand[command];
+      canHaveComma = false;
+      // flush command without arguments
+      if (argsCount === 0) {
+        pathData.push({ command, args });
+      }
+      continue;
+    }
+    // avoid parsing arguments if no command detected
+    if (command == null) {
+      return pathData;
+    }
+    // read next argument
+    let newCursor = i;
+    let number = null;
+    if (command === 'A' || command === 'a') {
+      const position = args.length;
+      if (position === 0 || position === 1) {
+        // allow only positive number without sign as first two arguments
+        if (c !== '+' && c !== '-') {
+          [newCursor, number] = readNumber(string, i);
+        }
+      }
+      if (position === 2 || position === 5 || position === 6) {
+        [newCursor, number] = readNumber(string, i);
+      }
+      if (position === 3 || position === 4) {
+        // read flags
+        if (c === '0') {
+          number = 0;
+        }
+        if (c === '1') {
+          number = 1;
+        }
+      }
     } else {
-      curArg += c;
-      if (c === '.') {
-        foundDecimal = true;
+      [newCursor, number] = readNumber(string, i);
+    }
+    if (number == null) {
+      return pathData;
+    }
+    args.push(number);
+    canHaveComma = true;
+    hadComma = false;
+    i = newCursor;
+    // flush arguments when necessary count is reached
+    if (args.length === argsCount) {
+      pathData.push({ command, args });
+      // subsequent moveto coordinates are threated as implicit lineto commands
+      if (command === 'M') {
+        command = 'L';
       }
+      if (command === 'm') {
+        command = 'l';
+      }
+      args = [];
     }
   }
-
-  // add the last command
-  if (curArg.length > 0) {
-    if (args.length === params) {
-      // handle reused commands
-      ret[ret.length] = { cmd, args };
-      args = [+curArg];
-
-      // handle assumed commands
-      if (cmd === 'M') {
-        cmd = 'L';
-      }
-      if (cmd === 'm') {
-        cmd = 'l';
-      }
-    } else {
-      args[args.length] = +curArg;
-    }
-  }
-
-  ret[ret.length] = { cmd, args };
-
-  return ret;
+  return pathData;
 };
 
 const apply = function(commands, doc) {
@@ -116,9 +244,9 @@ const apply = function(commands, doc) {
 
   // run the commands
   for (let i = 0; i < commands.length; i++) {
-    const c = commands[i];
-    if (typeof runners[c.cmd] === 'function') {
-      runners[c.cmd](doc, c.args);
+    const { command, args } = commands[i];
+    if (typeof runners[command] === 'function') {
+      runners[command](doc, args);
     }
   }
 };
@@ -408,7 +536,7 @@ const segmentToBezier = function(cx, cy, th0, th1, rx, ry, sin_th, cos_th) {
 
 class SVGPath {
   static apply(doc, path) {
-    const commands = parse(path);
+    const commands = parsePathData(path);
     apply(commands, doc);
   }
 }

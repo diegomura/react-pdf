@@ -72,12 +72,10 @@ const isImage = isType(P.Image);
 const isCanvas = isType(P.Canvas);
 const isTextInstance = isType(P.TextInstance);
 
-const setNodeHeight = node =>
-  R.ifElse(
-    isPage,
-    setHeight(node.box.height),
-    setHeight(node.box.height || node.style.height),
-  );
+const setNodeHeight = node => {
+  const value = isPage(node) ? node.box.height : node.style.height;
+  return setHeight(value);
+};
 
 /**
  * Set styles valeus into yoga node before layout calculation

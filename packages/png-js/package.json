@@ -8,6 +8,11 @@
     "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
     "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory":"packages/png-js"
+  },
   "author": {
     "name": "Devon Govett",
     "email": "devongovett@gmail.com",

@@ -2,6 +2,11 @@
   "name": "@react-pdf/fontkit",
   "version": "2.0.6",
   "description": "An advanced font engine for Node and the browser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory":"packages/fontkit"
+  },
   "scripts": {
     "watch": "rimraf ./lib && rollup -c -w",
     "build": "npm run trie:data && npm run trie:use && npm run trie:indic && rollup -c",

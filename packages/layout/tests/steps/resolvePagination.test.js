@@ -1,9 +1,10 @@
-import resolvePagination from '../src/steps/resolvePagination';
-import resolveDimensions from '../src/steps/resolveDimensions';
+import resolvePagination from '../../src/steps/resolvePagination';
+import resolveDimensions from '../../src/steps/resolveDimensions';
 
+// dimensions is required by pagination step and them are calculated here
 const calcLayout = node => resolvePagination(resolveDimensions(node));
 
-describe('layout', () => {
+describe('pagination step', () => {
   const root = {
     type: 'DOCUMENT',
     children: [

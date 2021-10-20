@@ -1,75 +1,80 @@
+/* eslint-disable no-plusplus */
 import parse from 'postcss-value-parser/lib/parse';
 import parseUnit from 'postcss-value-parser/lib/unit';
 
 const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
+const logError = (style, value) => {
+  console.error(`
+    @react-pdf/stylesheet parsing error:
+
+    ${style}: ${value},
+    ${' '.repeat(style.length + 2)}^
+    Unsupported ${style} value format
+  `);
+};
+
 const expandBoxModel = ({
   expandsTo,
   maxValues = 1,
   autoSupported = false,
-} = {}) => (key, value) => {
+} = {}) => (model, value) => {
   const nodes = parse(`${value}`);
 
-  if (nodes.some(node => node.type === 'function')) {
+  const parts = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+
     // value contains `calc`, `url` or other css function
+    // `,`, `/` or strings that unsupported by margin and padding
+    if (
+      node.type === 'function' ||
+      node.type === 'string' ||
+      node.type === 'div'
+    ) {
+      logError(model, value);
 
-    console.error('x');
+      return {};
+    }
 
-    return {};
+    if (node.type === 'word') {
+      if (node.value === 'auto' && autoSupported) {
+        parts.push(node.value);
+      } else {
+        const result = parseUnit(node.value);
+
+        // when unit isn't specified this condition is true
+        if (result && BOX_MODEL_UNITS.includes(result.unit)) {
+          parts.push(node.value);
+        } else {
+          logError(model, value);
+
+          return {};
+        }
+      }
+    }
   }
 
-  if (nodes.some(node => node.type === 'string' || node.type === 'div')) {
-    // value contains `,`, `/` or strings
-    console.error('x');
-
-    return {};
-  }
-
-  const parts = nodes
-    .filter(node => node.type === 'word')
-    .map(word => ({
-      raw: word.value,
-      parsed: parseUnit(word.value),
-    }));
-
+  // checks that we have enough parsed values
   if (parts.length > maxValues) {
-    console.error('x');
+    logError(model, value);
 
     return {};
   }
 
-  const allPartsValid = parts.every(part => {
-    if (!part.parsed && part.raw === 'auto' && autoSupported) {
-      return true;
-    }
-
-    if (part.parsed && BOX_MODEL_UNITS.includes(part.parsed.unit)) {
-      return true;
-    }
-
-    return false;
-  });
-
-  if (!allPartsValid) {
-    console.error('x');
-
-    return {};
-  }
-
-  const match = parts.map(part => part.raw);
-
-  const first = match[0];
+  const first = parts[0];
 
   if (expandsTo) {
-    const second = match[1] || match[0];
-    const third = match[2] || match[0];
-    const fourth = match[3] || match[1] || match[0];
-  
+    const second = parts[1] || parts[0];
+    const third = parts[2] || parts[0];
+    const fourth = parts[3] || parts[1] || parts[0];
+
     return expandsTo({ first, second, third, fourth });
   }
 
   return {
-    [key]: first,
+    [model]: first,
   };
 };
 

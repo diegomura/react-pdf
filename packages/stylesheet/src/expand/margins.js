@@ -30,7 +30,6 @@ const processMarginHorizontal = processBoxModel({
 });
 
 const processMarginSingle = processBoxModel({
-  maxValues: 1,
   autoSupported: true,
 });
 

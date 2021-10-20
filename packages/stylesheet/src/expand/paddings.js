@@ -26,8 +26,11 @@ const processPaddingHorizontal = processBoxModel({
   maxValues: 2,
 });
 
-const processPaddingSingle = processBoxModel({
-  maxValues: 1,
-});
+const processPaddingSingle = processBoxModel();
 
-export { processPadding, processPaddingVertical, processPaddingHorizontal, processPaddingSingle };
+export {
+  processPadding,
+  processPaddingVertical,
+  processPaddingHorizontal,
+  processPaddingSingle,
+};

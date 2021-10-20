@@ -49,4 +49,11 @@ describe('text layout step', () => {
 
     expect(getText(textLayout).lines).toBeDefined();
   });
+
+  test('should calculate lines for empty text', () => {
+    const root = getRoot('');
+    const dimensions = resolveDimensions(root);
+
+    expect(getText(dimensions).lines).toBeDefined();
+  });
 });

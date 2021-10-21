@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
@@ -26,27 +27,23 @@ const shouldLayoutText = node => isText(node) && !node.lines;
  * @returns {Object} layout node
  */
 const resolveTextLayout = (node, fontStore) => {
-  const mapChild = child => resolveTextLayout(child, fontStore);
+  if (shouldLayoutText(node)) {
+    const width =
+      node.box.width - (node.box.paddingRight + node.box.paddingLeft);
+    const height =
+      node.box.height - (node.box.paddingTop + node.box.paddingBottom);
 
-  return R.compose(
-    R.evolve({
-      children: R.map(R.when(shouldIterate, mapChild)),
-    }),
-    R.when(
-      shouldLayoutText,
-      R.compose(
-        R.converge(R.assoc('lines'), [
-          R.converge(layoutText, [
-            R.identity,
-            R.path(['box', 'width']),
-            R.path(['box', 'height']),
-            R.always(fontStore),
-          ]),
-          R.identity,
-        ]),
-      ),
-    ),
-  )(node);
+    node.lines = layoutText(node, width, height, fontStore);
+  }
+
+  if (shouldIterate(node)) {
+    const mapChild = child => resolveTextLayout(child, fontStore);
+    return R.evolve({
+      children: R.map(mapChild),
+    })(node);
+  }
+
+  return node;
 };
 
 export default resolveTextLayout;

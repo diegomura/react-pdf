@@ -36,7 +36,7 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
     }
 
     if (sum.width - sum.shrink > lineLength) {
-      if (i > 0) {
+      if (i >= 1) {
         position = i - 1;
       } else {
         position = i;

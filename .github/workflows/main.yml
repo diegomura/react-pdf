@@ -23,7 +23,5 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install
-      - name: Run linter
-        run: yarn lint
       - name: Run tests
         run: yarn test

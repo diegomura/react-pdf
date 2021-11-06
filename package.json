@@ -20,7 +20,7 @@
     "examples": "lerna run start --scope @react-pdf/examples",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "yarn build && changeset publish"
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

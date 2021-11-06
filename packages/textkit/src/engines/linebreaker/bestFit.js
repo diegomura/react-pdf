@@ -36,11 +36,22 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
     }
 
     if (sum.width - sum.shrink > lineLength) {
-      if (i >= 2) {
-        position = i - 1;
+      let j;
+      if (i === 0) {
+        // the first block is always "box" type
+        j = i + 1;
       } else {
-        position = i;
+        j = i;
       }
+
+      while (
+        j < subnodes.length &&
+        (subnodes[j].type === 'glue' || subnodes[j].type === 'penalty')
+      ) {
+        j++;
+      }
+
+      position = j - 1;
       break;
     }
 

@@ -1,8 +1,8 @@
 import zlib from 'zlib';
-import stream from 'stream';
+import { Writable } from '@react-pdf/streams';
 import PDFObject from './object';
 
-class PDFReference extends stream.Writable {
+class PDFReference extends Writable {
   constructor(document, id, data) {
     super({ decodeStrings: false });
 

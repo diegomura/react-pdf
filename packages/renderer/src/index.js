@@ -1,4 +1,4 @@
-import BlobStream from 'blob-stream';
+import { BlobStream } from '@react-pdf/streams';
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
@@ -57,7 +57,7 @@ const pdf = initialValue => {
 
   const toBlob = async () => {
     const instance = await render();
-    const stream = instance.pipe(BlobStream());
+    const stream = instance.pipe(new BlobStream());
 
     return new Promise((resolve, reject) => {
       stream.on('finish', () => {

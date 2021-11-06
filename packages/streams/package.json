@@ -1,0 +1,29 @@
+{
+  "name": "@react-pdf/streams",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "repository": "git@github.com:diegomura/react-pdf.git",
+  "main": "lib/index.cjs.js",
+  "browser": {
+    "./lib/index.cjs.js": "./lib/index.browser.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w"
+  },
+  "dependencies": {
+    "blob": "^0.1.0",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "process": "^0.11.10"
+  },
+  "devDependencies": {
+    "readable-stream": "3.6.0"
+  },
+  "files": [
+    "lib"
+  ]
+}

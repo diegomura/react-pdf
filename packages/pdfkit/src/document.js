@@ -1,4 +1,4 @@
-import stream from 'stream';
+import { Readable } from '@react-pdf/streams';
 import PDFObject from './object';
 import PDFReference from './reference';
 import PDFNameTree from './name_tree';
@@ -12,7 +12,7 @@ import Annotations from './mixins/annotations';
 import AcroFormMixin from './mixins/acroform';
 import Attachments from './mixins/attachments';
 
-class PDFDocument extends stream.Readable {
+class PDFDocument extends Readable {
   constructor(options = {}) {
     super();
     this.options = options;

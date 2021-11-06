@@ -1,0 +1,29 @@
+name: CI
+
+env:
+  FORCE_COLOR: 2
+  NODE: 14
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE }}
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Run linter
+        run: yarn lint
+      - name: Run tests
+        run: yarn test

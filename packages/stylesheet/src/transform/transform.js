@@ -77,6 +77,10 @@ const normalize = operations => {
   return operations.map(operation => normalizeTransformOperation(operation));
 };
 
-const processTransform = value => normalize(parse(value));
+const processTransform = value => {
+  if (typeof value !== 'string') return value;
+
+  return normalize(parse(value));
+};
 
 export default processTransform;

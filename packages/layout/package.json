@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/layout",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -8,7 +8,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
-    "directory":"packages/layout"
+    "directory": "packages/layout"
   },
   "scripts": {
     "test": "jest",
@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
-    "@react-pdf/image": "^2.0.3",
-    "@react-pdf/pdfkit": "^2.0.11",
-    "@react-pdf/primitives": "^2.0.0",
-    "@react-pdf/stylesheet": "^2.0.12",
-    "@react-pdf/textkit": "^2.0.6",
-    "@react-pdf/types": "^2.0.6",
-    "@react-pdf/yoga": "^2.0.2",
+    "@react-pdf/image": "^2.0.4",
+    "@react-pdf/pdfkit": "^2.0.12",
+    "@react-pdf/primitives": "^2.0.1",
+    "@react-pdf/stylesheet": "^2.0.13",
+    "@react-pdf/textkit": "^2.0.7",
+    "@react-pdf/types": "^2.0.7",
+    "@react-pdf/yoga": "^2.0.3",
     "cross-fetch": "^3.0.4",
     "emoji-regex": "^8.0.0",
     "queue": "^6.0.1",

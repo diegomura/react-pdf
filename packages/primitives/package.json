@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/primitives",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
@@ -8,7 +8,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
-    "directory":"packages/primitives"
+    "directory": "packages/primitives"
   },
   "scripts": {
     "test": "jest"

@@ -25,8 +25,11 @@ jobs:
         with:
           node-version: ${{ env.NODE }}
 
-      - name: Install Dependencies
-        run: yarn
+      - name: Install dependencies and build
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
 
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@master

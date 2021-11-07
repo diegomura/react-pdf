@@ -4,6 +4,11 @@
   "version": "2.0.1",
   "description": "A SVG generation library for Node.js and browser",
   "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory":"packages/svgkit"
+  },
   "contributors": [
     "Diego Muracciole <diegomuracciole@gmail.com>"
   ],

@@ -4,6 +4,11 @@
   "version": "2.0.6",
   "description": "An advanced text layout framework",
   "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory":"packages/textkit"
+  },
   "contributors": [
     "Devon Govett <devongovett@gmail.com>",
     "Diego Muracciole <diegomuracciole@gmail.com>"

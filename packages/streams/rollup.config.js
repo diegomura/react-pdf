@@ -5,7 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import inject from '@rollup/plugin-inject';
 import path from 'path';
 
-const external = [
+const babelExternals = [
   '@babel/runtime/regenerator',
   '@babel/runtime/helpers/extends',
   '@babel/runtime/helpers/asyncToGenerator',
@@ -22,7 +22,7 @@ const babelConfig = ({ browser }) => ({
       {
         loose: true,
         modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+        ...(browser ? {} : { targets: { node: '12' } }),
       },
     ],
     '@babel/preset-react',
@@ -33,16 +33,16 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const serverConfig = {
+const serverConfig = ({ file, format }) => ({
   input: './src/index.js',
   output: {
-    format: 'cjs',
-    file: 'lib/index.cjs.js',
+    format,
+    file,
     exports: 'named',
   },
-  external: ['stream', 'blob'],
+  external: ['stream', 'blob', ...babelExternals],
   plugins: [
-    // babel(babelConfig({ browser: false })),
+    babel(babelConfig({ browser: false })),
     alias({
       entries: [
         {
@@ -52,16 +52,16 @@ const serverConfig = {
       ],
     }),
   ],
-};
+});
 
-const browserConfig = {
+const browserConfig = ({ file, format }) => ({
   input: './src/index.js',
   output: {
-    format: 'esm',
-    file: 'lib/index.browser.js',
+    format,
+    file,
     exports: 'named',
   },
-  external: ['buffer/', 'process/browser', 'events', 'blob'],
+  external: ['buffer/', 'process/browser', 'events', 'blob', ...babelExternals],
   plugins: [
     alias({
       entries: [
@@ -75,13 +75,18 @@ const browserConfig = {
         },
       ],
     }),
-    // babel(babelConfig({ browser: true })),
+    babel(babelConfig({ browser: true })),
     resolve({ browser: true }),
     commonjs(),
     inject({
       process: 'process/browser',
     }),
   ],
-};
+});
 
-export default [serverConfig, browserConfig];
+export default [
+  serverConfig({ file: 'lib/index.cjs.js', format: 'cjs' }),
+  serverConfig({ file: 'lib/index.esm.js', format: 'esm' }),
+  browserConfig({ file: 'lib/index.browser.cjs.js', format: 'cjs' }),
+  browserConfig({ file: 'lib/index.browser.esm.js', format: 'esm' }),
+];

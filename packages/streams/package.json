@@ -6,8 +6,10 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
   "browser": {
-    "./lib/index.cjs.js": "./lib/index.browser.js"
+    "./lib/index.cjs.js": "./lib/index.browser.cjs.js",
+    "./lib/index.esm.js": "./lib/index.browser.esm.js"
   },
   "scripts": {
     "test": "jest",

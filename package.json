@@ -70,6 +70,7 @@
   },
   "lint-staged": {
     "*.js": [
+      "eslint",
       "prettier --write",
       "git add"
     ]

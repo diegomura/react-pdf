@@ -1,4 +1,5 @@
 // Extracted from https://github.com/devongovett/pdfkit/blob/master/lib/image/jpeg.coffee
+import { Buffer } from 'buffer';
 
 const MARKERS = [
   0xffc0,

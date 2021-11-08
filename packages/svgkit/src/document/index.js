@@ -4,6 +4,7 @@
 
 // import { PDFFont } from '@react-pdf/pdfkit';
 
+import { Buffer } from 'buffer';
 import SVGPage from '../page';
 import serialize from './serialize';
 import { LinearGradient, RadialGradient } from '../gradient';

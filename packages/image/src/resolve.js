@@ -1,6 +1,7 @@
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
+import { Buffer } from 'buffer';
 import fetch from 'cross-fetch';
 
 import PNG from './png';

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import zlib from 'zlib';
+import { Buffer } from 'buffer';
 
 class PNG {
   static decode(path, fn) {

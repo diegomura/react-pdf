@@ -13,7 +13,9 @@
   "module": "lib/fontkit.es.js",
   "browser": {
     "./lib/fontkit.es.js": "./lib/fontkit.browser.es.js",
-    "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js"
+    "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js",
+    "buffer": "buffer/",
+    "stream": "@react-pdf/streams"
   },
   "files": [
     "lib"
@@ -21,8 +23,10 @@
   "author": "Devon Govett <devongovett@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@react-pdf/streams": "*",
     "@react-pdf/unicode-properties": "^2.4.1",
     "brotli": "^1.2.0",
+    "buffer": "^6.0.3",
     "clone": "^1.0.4",
     "deep-equal": "^1.0.0",
     "dfa": "1.1.0",

@@ -1,4 +1,5 @@
 import { Readable } from '@react-pdf/streams';
+import { Buffer } from 'buffer';
 import PDFObject from './object';
 import PDFReference from './reference';
 import PDFNameTree from './name_tree';

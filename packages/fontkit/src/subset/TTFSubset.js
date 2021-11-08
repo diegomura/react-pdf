@@ -1,4 +1,5 @@
 import cloneDeep from 'clone';
+import { Buffer } from 'buffer';
 import Subset from './Subset';
 import Directory from '../tables/directory';
 import Tables from '../tables';
@@ -7,7 +8,7 @@ import TTFGlyphEncoder from '../glyph/TTFGlyphEncoder';
 export default class TTFSubset extends Subset {
   constructor(font) {
     super(font);
-    this.glyphEncoder = new TTFGlyphEncoder;
+    this.glyphEncoder = new TTFGlyphEncoder();
   }
 
   _addGlyph(gid) {
@@ -40,7 +41,7 @@ export default class TTFSubset extends Subset {
 
     this.hmtx.metrics.push({
       advance: glyph.advanceWidth,
-      bearing: glyph._getMetrics().leftBearing
+      bearing: glyph._getMetrics().leftBearing,
     });
 
     this.offset += buffer.length;
@@ -58,12 +59,12 @@ export default class TTFSubset extends Subset {
     this.offset = 0;
     this.loca = {
       offsets: [],
-      version: this.font.loca.version
+      version: this.font.loca.version,
     };
 
     this.hmtx = {
       metrics: [],
-      bearings: []
+      bearings: [],
     };
 
     // include all the glyphs
@@ -118,13 +119,13 @@ export default class TTFSubset extends Subset {
         prep: this.font.prep,
         glyf: this.glyf,
         hmtx: this.hmtx,
-        fpgm: this.font.fpgm
+        fpgm: this.font.fpgm,
 
         // name: clone @font.name
         // 'OS/2': clone @font['OS/2']
         // post: clone @font.post
         // cmap: cmap
-      }
+      },
     });
   }
 }

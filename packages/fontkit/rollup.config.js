@@ -4,6 +4,9 @@ import ignore from 'rollup-plugin-ignore';
 import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import localResolve from 'rollup-plugin-local-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from 'rollup-plugin-node-resolve';
+import inject from '@rollup/plugin-inject';
 import pkg from './package.json';
 
 const cjs = {
@@ -14,6 +17,13 @@ const cjs = {
 const es = {
   format: 'es',
 };
+
+const babelExternals = [
+  '@babel/runtime/helpers/createClass',
+  '@babel/runtime/helpers/applyDecoratedDescriptor',
+  '@babel/runtime/helpers/inheritsLoose',
+  '@babel/runtime/helpers/defineProperty',
+];
 
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, es, override);
@@ -39,7 +49,9 @@ const babelConfig = ({ browser }) => ({
 const configBase = {
   input: 'src/index.js',
   plugins: [localResolve(), json()],
-  external: ['restructure/src/utils'].concat(Object.keys(pkg.dependencies)),
+  external: ['restructure/src/utils']
+    .concat(Object.keys(pkg.dependencies))
+    .concat(babelExternals),
 };
 
 const serverConfig = Object.assign({}, configBase, {
@@ -69,12 +81,20 @@ const browserConfig = Object.assign({}, configBase, {
     getESM({ file: 'lib/fontkit.browser.es.js' }),
     getCJS({ file: 'lib/fontkit.browser.cjs.js' }),
   ],
+  external: configBase.external
+    .filter(dep => !dep.startsWith('restructure'))
+    .concat(['iconv-lite', 'stream']),
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: true })),
     replace({
       BROWSER: JSON.stringify(true),
     }),
-    ignore(['fs', 'brotli', 'brotli/decompress', './WOFF2Font']),
+    ignore(['fs', 'brotli', 'brotli/decompress', './WOFF2Font', 'util']),
+    resolve({ browser: true }),
+    commonjs(),
+    inject({
+      Buffer: ['buffer', 'Buffer'],
+    }),
   ),
 });
 

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Buffer } from 'buffer';
 import CryptoJS from 'crypto-js';
 
 export default {

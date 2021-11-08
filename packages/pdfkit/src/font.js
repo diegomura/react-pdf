@@ -1,4 +1,5 @@
 import fontkit from '@react-pdf/fontkit';
+import { Buffer } from 'buffer';
 import createStandardFont from './font/standard';
 import createEmbeddedFont from './font/embedded';
 

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { Buffer } from 'buffer';
 import Data from './data';
 import JPEG from './image/jpeg';
 import PNG from './image/png';

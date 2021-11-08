@@ -7,7 +7,8 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib/index.js",
   "browser": {
-    "./lib/index.js": "./lib/index.browser.js"
+    "./lib/index.js": "./lib/index.browser.js",
+    "buffer": "buffer/"
   },
   "scripts": {
     "test": "jest",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@react-pdf/fontkit": "^2.0.6",
     "@react-pdf/types": "^2.0.6",
+    "buffer": "^6.0.3",
     "cross-fetch": "^3.0.4",
     "is-url": "^1.2.4"
   },

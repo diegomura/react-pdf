@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import PDFReference from './reference';
 import PDFNameTree from './name_tree';
 

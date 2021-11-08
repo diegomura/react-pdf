@@ -6,7 +6,8 @@
   "module": "lib/png-js.es.js",
   "browser": {
     "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
-    "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"
+    "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js",
+    "zlib": "browserify-zlib"
   },
   "author": {
     "name": "Devon Govett",
@@ -19,5 +20,8 @@
   },
   "files": [
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "browserify-zlib": "^0.2.0"
+  }
 }

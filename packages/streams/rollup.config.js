@@ -5,13 +5,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import inject from '@rollup/plugin-inject';
 import path from 'path';
 
-const babelExternals = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-];
-
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
@@ -40,19 +33,28 @@ const serverConfig = ({ file, format }) => ({
     file,
     exports: 'named',
   },
-  external: ['stream', 'blob', ...babelExternals],
+  external: ['stream', 'blob'],
   plugins: [
-    babel(babelConfig({ browser: false })),
     alias({
       entries: [
         {
+          // replace stream shim with native stream module for nodejs
           find: './stream-browser',
           replacement: 'stream',
         },
       ],
     }),
+    babel(babelConfig({ browser: false })),
   ],
 });
+
+/*
+ * rollup config for browser compatible stream
+ *
+ * https://github.com/nodejs/readable-stream use process and buffer node dependencies, so it
+ * can't be used in browser with default webpack or vite config, so this config includes
+ * `readable-stream` and solves various problems with configuration
+ */
 
 const browserConfig = ({ file, format }) => ({
   input: './src/index.js',
@@ -61,15 +63,26 @@ const browserConfig = ({ file, format }) => ({
     file,
     exports: 'named',
   },
-  external: ['buffer/', 'process/browser', 'events', 'blob', ...babelExternals],
+  // browser external packages and polyfills
+  external: ['buffer/', 'process/browser', 'events', 'blob'],
   plugins: [
     alias({
       entries: [
         {
+          /*
+           * `stream_duplex` creates a circular dependency and breaks rollup build
+           * https://github.com/nodejs/readable-stream/issues/348
+           *
+           * `@react-pdf` don't use `stream_duplex`, so it replaced with empty function
+           */
           find: './_stream_duplex',
           replacement: path.join(__dirname, './src/nope-duplex'),
         },
         {
+          /*
+           * `readable-stream` uses `buffer` and this is browser compatible replacement
+           * https://github.com/feross/buffer#usage
+           */
           find: 'buffer',
           replacement: 'buffer/',
         },
@@ -78,6 +91,9 @@ const browserConfig = ({ file, format }) => ({
     babel(babelConfig({ browser: true })),
     resolve({ browser: true }),
     commonjs(),
+    /*
+     * `readable-stream` uses node global `process` this plugin injects process shim for browser
+     */
     inject({
       process: 'process/browser',
     }),

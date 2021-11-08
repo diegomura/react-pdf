@@ -13,6 +13,7 @@
 '@react-pdf/textkit': patch
 '@react-pdf/types': patch
 '@react-pdf/unicode-properties': patch
+'@react-pdf/yoga': patch
 ---
 
 add changelog with changesets

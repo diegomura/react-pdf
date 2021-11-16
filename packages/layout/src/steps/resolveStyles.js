@@ -17,7 +17,7 @@ const LINK_STYLES = {
  * @returns {Object} node (and subnodes) with resolved styles
  */
 const resolveNodeStyles = container => node =>
-  R.compose(
+  R.o(
     R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
     R.evolve({
       style: stylesheet(container),

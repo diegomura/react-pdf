@@ -15,19 +15,24 @@ const splitNode = (node, height) => {
   const nodeTop = getTop(node);
 
   // TODO: We should keep style untouched
-  const current = R.evolve({
-    style: R.evolve({
-      marginBottom: zero,
-      paddingBottom: zero,
-      borderBottomWidth: zero,
-      borderBottomLeftRadius: zero,
-      borderBottomRightRadius: zero,
+  const current = R.compose(
+    R.evolve({
+      style: R.mergeLeft(node.props?.wrapStyle)
     }),
-    box: {
-      height: R.always(height - nodeTop),
-      borderBottomWidth: zero,
-    },
-  })(node);
+    R.evolve({
+      style: R.evolve({
+        marginBottom: zero,
+        paddingBottom: zero,
+        borderBottomWidth: zero,
+        borderBottomLeftRadius: zero,
+        borderBottomRightRadius: zero,
+      }),
+      box: {
+        height: R.always(height - nodeTop),
+        borderBottomWidth: zero,
+      },
+    }),
+  )(node);
 
   const nextHeight = R.ifElse(
     hasFixedHeight,
@@ -36,21 +41,26 @@ const splitNode = (node, height) => {
   )(node);
 
   // TODO: We should keep style untouched
-  const next = R.evolve({
-    style: R.evolve({
-      marginTop: zero,
-      paddingTop: zero,
-      borderTopWidth: zero,
-      borderTopLeftRadius: zero,
-      borderTopRightRadius: zero,
-    }),
-    box: {
-      top: zero,
-      height: R.always(nextHeight),
-      borderTopWidth: zero,
-    },
-  })(node);
-
+  const next =
+    R.compose(
+      R.evolve({
+        style: R.mergeLeft(node.props?.wrapStyle),
+      }),
+      R.evolve({
+        style: R.evolve({
+          marginTop: zero,
+          paddingTop: zero,
+          borderTopWidth: zero,
+          borderTopLeftRadius: zero,
+          borderTopRightRadius: zero,
+        }),
+        box: {
+          top: zero,
+          height: R.always(nextHeight),
+          borderTopWidth: zero,
+        },
+      }),
+    )(node);
   return [current, next];
 };
 

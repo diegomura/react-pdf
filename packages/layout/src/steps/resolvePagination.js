@@ -23,6 +23,7 @@ const SAFTY_THRESHOLD = 0.001;
 
 const assingChildren = R.assoc('children');
 
+
 const getTop = R.pathOr(0, ['box', 'top']);
 
 const getHeight = R.path(['box', 'height']);
@@ -114,7 +115,7 @@ const splitNodes = (height, contentArea, nodes) => {
 
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
-
+      console.log(currentChild, nextChild);
       continue;
     }
 
@@ -132,15 +133,15 @@ const splitChildren = (height, contentArea, node) => {
 
 const splitView = (node, height, contentArea) => {
   const [currentNode, nextNode] = splitNode(node, height);
-  const [currentChilds, nextChildren] = splitChildren(
+  const [currentChilds, nextChildrens] = splitChildren(
     height,
     contentArea,
     node,
   );
 
   return [
-    assingChildren(currentChilds)(currentNode),
-    assingChildren(nextChildren)(nextNode),
+    R.ifElse(() => !R.isEmpty(currentChilds), () => assingChildren(currentChilds)(currentNode), R.always(null))(),
+    R.ifElse(() => !R.isEmpty(nextChildrens), () => assingChildren(nextChildrens)(nextNode), R.always(null))(),
   ];
 };
 

@@ -12,7 +12,13 @@ const resolveRadius = container => value => {
   const match = matchPercent(value);
   return match
     ? match.percent * Math.min(container.width, container.height)
-    : value;
+    : Math.max(
+        container.borderTopWidth,
+        container.borderBottomWidth,
+        container.borderLeftWidth,
+        container.borderRightWidth,
+        value,
+      );
 };
 
 /**

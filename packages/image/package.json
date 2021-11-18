@@ -7,8 +7,7 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib/index.js",
   "browser": {
-    "./lib/index.js": "./lib/index.browser.js",
-    "buffer": "buffer/"
+    "./lib/index.js": "./lib/index.browser.js"
   },
   "scripts": {
     "test": "jest",

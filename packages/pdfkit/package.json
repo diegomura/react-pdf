@@ -7,8 +7,7 @@
   "browser": {
     "./lib/pdfkit.es.js": "./lib/pdfkit.browser.es.js",
     "./lib/pdfkit.cjs.js": "./lib/pdfkit.browser.cjs.js",
-    "zlib": "browserify-zlib",
-    "buffer": "buffer/"
+    "w": "browserify-zlib"
   },
   "author": {
     "name": "Devon Govett",

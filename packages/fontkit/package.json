@@ -14,7 +14,6 @@
   "browser": {
     "./lib/fontkit.es.js": "./lib/fontkit.browser.es.js",
     "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js",
-    "buffer": "buffer/",
     "stream": "@react-pdf/streams"
   },
   "files": [

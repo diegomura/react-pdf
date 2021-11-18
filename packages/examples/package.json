@@ -8,7 +8,8 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "webpack -c ./webpack/webpack.config.js"
   },
   "dependencies": {
     "@react-pdf/renderer": "^2.0.6",
@@ -18,5 +19,12 @@
   "peerDependencies": {
     "react": "^16.8.6 || ^17.0.0",
     "react-dom": "^16.8.6 || ^17.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1"
   }
 }

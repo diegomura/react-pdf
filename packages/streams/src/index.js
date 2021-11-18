@@ -35,3 +35,4 @@ class BlobStream extends Writable {
 }
 
 export { Writable, Readable, BlobStream };
+export default { Writable, Readable, BlobStream };

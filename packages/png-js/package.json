@@ -1,12 +1,17 @@
 {
   "name": "@react-pdf/png-js",
   "description": "A PNG decoder in JS",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "lib/png-js.cjs.js",
   "module": "lib/png-js.es.js",
   "browser": {
     "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
     "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/png-js"
   },
   "author": {
     "name": "Devon Govett",

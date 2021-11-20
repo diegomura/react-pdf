@@ -24,6 +24,19 @@ const createRenderer = ({ onChange = () => {} }) => {
     warnsIfNotActing: false,
 
     appendInitialChild(parentInstance, child) {
+      if (
+        child.type === 'TEXT_INSTANCE' &&
+        parentInstance.type !== 'TEXT' &&
+        (child.value === '' || child.value === '0')
+      )
+        return;
+
+      if (child.type === 'TEXT_INSTANCE' && parentInstance.type !== 'TEXT') {
+        throw new Error(
+          'Error: Cannot create text instance without Text component',
+        );
+      }
+
       parentInstance.children.push(child);
     },
 

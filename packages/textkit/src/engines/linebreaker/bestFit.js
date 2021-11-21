@@ -72,8 +72,6 @@ const applyBestFit = (nodes, widths) => {
   let subnodes = nodes;
   const breakpoints = [{ position: 0 }];
 
-  // console.log('nodes', nodes);
-
   while (subnodes.length > 0) {
     const breakpoint = getNextBreakpoint(subnodes, widths, lineNumber);
 

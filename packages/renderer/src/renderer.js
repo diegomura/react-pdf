@@ -24,17 +24,42 @@ const createRenderer = ({ onChange = () => {} }) => {
     warnsIfNotActing: false,
 
     appendInitialChild(parentInstance, child) {
-      if (
-        child.type === 'TEXT_INSTANCE' &&
-        parentInstance.type !== 'TEXT' &&
-        (child.value === '' || child.value === '0')
-      )
-        return;
-
       if (child.type === 'TEXT_INSTANCE' && parentInstance.type !== 'TEXT') {
-        throw new Error(
-          'Error: Cannot create text instance without Text component',
-        );
+        let message =
+          'Error: Cannot create text instance without Text component';
+
+        if (process.env.NODE_ENV !== 'production') {
+          message += `
+
+common reason for this error:
+
+1) using text without Text component, to fix wrap text with Text component
+
+---
+<${parentInstance.type}>
+  ${child.value}
+</${parentInstance.type}>
+˅˅˅
+<${parentInstance.type}>
+  <Text>${child.value}</Text>
+</${parentInstance.type}>
+---
+
+2) jsx conditions with non boolean types, to fix convert value to boolean
+
+---
+<View>
+  {variable && <Text>{variable}</Text>}
+</View>
+˅˅˅
+<View>
+  {!!variable && <Text>{variable}</Text>}
+</View>
+---
+`;
+        }
+
+        throw new Error(message);
       }
 
       parentInstance.children.push(child);

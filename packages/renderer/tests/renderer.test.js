@@ -1,31 +1,50 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 import React from 'react';
-import { Text, Document } from '@react-pdf/primitives';
+import { Text, Document, Page } from '@react-pdf/primitives';
 import createRenderer from '../src/renderer';
 
 const renderer = createRenderer({});
 
-const Component = ({ name }) => {
-  return <>{name && <Text>{name}</Text>}</>;
+const mount = children => {
+  const container = { type: 'ROOT', document: null };
+  const mountNode = renderer.createContainer(container);
+
+  renderer.updateContainer(
+    <Document>
+      <Page>{children}</Page>
+    </Document>,
+
+    mountNode,
+    null,
+  );
+
+  return container.document.children[0].children;
 };
 
 const emptyString = '';
 
 describe('renderer', () => {
   test('empty string', () => {
-    const container = { type: 'ROOT', document: null };
-    const mountNode = renderer.createContainer(container);
-    renderer.updateContainer(
-      <Document>
-        <Component name={0} />
-        <Component name={null} />
-        <Component name={undefined} />
-        <Component name={emptyString} />
-        <Text>{emptyString}</Text>
-      </Document>,
-      mountNode,
-      null,
-    );
+    expect(() =>
+      mount(<>{emptyString && <Text>{emptyString}</Text>}</>),
+    ).toThrow();
+  });
 
-    expect(container.document.children.length).toBe(1);
+  test('string', () => {
+    expect(() => mount(<>{'text' || <Text>text</Text>}</>)).toThrow();
+  });
+
+  test('boolean', () => {
+    const result = mount(<>{true || <Text>text</Text>}</>);
+
+    expect(result).toEqual([]);
+  });
+
+  test('zero', () => {
+    expect(() => mount(<>{0 && <Text>text</Text>}</>)).toThrow();
+  });
+
+  test('numbers', () => {
+    expect(() => mount(<>{10 || <Text>text</Text>}</>)).toThrow();
   });
 });

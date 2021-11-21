@@ -5,15 +5,9 @@ const node1 = [
   {
     type: 'box',
     width: 84.81599999999999,
-    value: {
-      start: 0,
-      end: 12,
-    },
-    hyphenated: true,
   },
   {
     type: 'glue',
-    value: null,
     width: 0,
     stretch: 10000,
     shrink: 0,
@@ -22,7 +16,6 @@ const node1 = [
     type: 'penalty',
     width: 0,
     penalty: -10000,
-    flagged: 1,
   },
 ];
 
@@ -31,18 +24,9 @@ const node2 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 0,
-      end: 3,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 3,
-      end: 4,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -50,15 +34,9 @@ const node2 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 4,
-      end: 17,
-    },
-    hyphenated: true,
   },
   {
     type: 'glue',
-    value: null,
     width: 0,
     stretch: 10000,
     shrink: 0,
@@ -67,7 +45,6 @@ const node2 = [
     type: 'penalty',
     width: 0,
     penalty: -10000,
-    flagged: 1,
   },
 ];
 
@@ -76,18 +53,9 @@ const node3 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 0,
-      end: 3,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 3,
-      end: 4,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -95,18 +63,9 @@ const node3 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 4,
-      end: 17,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 17,
-      end: 18,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -114,15 +73,9 @@ const node3 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 18,
-      end: 21,
-    },
-    hyphenated: true,
   },
   {
     type: 'glue',
-    value: null,
     width: 0,
     stretch: 10000,
     shrink: 0,
@@ -131,7 +84,6 @@ const node3 = [
     type: 'penalty',
     width: 0,
     penalty: -10000,
-    flagged: 1,
   },
 ];
 
@@ -140,18 +92,9 @@ const node4 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 0,
-      end: 3,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 3,
-      end: 4,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -159,18 +102,9 @@ const node4 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 4,
-      end: 17,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 17,
-      end: 18,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -178,18 +112,9 @@ const node4 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 18,
-      end: 21,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 21,
-      end: 22,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -197,15 +122,9 @@ const node4 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 22,
-      end: 35,
-    },
-    hyphenated: true,
   },
   {
     type: 'glue',
-    value: null,
     width: 0,
     stretch: 10000,
     shrink: 0,
@@ -214,7 +133,6 @@ const node4 = [
     type: 'penalty',
     width: 0,
     penalty: -10000,
-    flagged: 1,
   },
 ];
 
@@ -223,18 +141,9 @@ const node5 = [
   {
     type: 'box',
     width: 21.204,
-    value: {
-      start: 0,
-      end: 3,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 3,
-      end: 4,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -242,18 +151,9 @@ const node5 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 4,
-      end: 17,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 17,
-      end: 18,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -261,18 +161,9 @@ const node5 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 18,
-      end: 31,
-    },
-    hyphenated: false,
   },
   {
     type: 'glue',
-    value: {
-      start: 31,
-      end: 32,
-    },
     width: 2.724,
     stretch: 1.362,
     shrink: 0.908,
@@ -280,15 +171,9 @@ const node5 = [
   {
     type: 'box',
     width: 91.88399999999999,
-    value: {
-      start: 32,
-      end: 45,
-    },
-    hyphenated: true,
   },
   {
     type: 'glue',
-    value: null,
     width: 0,
     stretch: 10000,
     shrink: 0,
@@ -297,7 +182,6 @@ const node5 = [
     type: 'penalty',
     width: 0,
     penalty: -10000,
-    flagged: 1,
   },
 ];
 

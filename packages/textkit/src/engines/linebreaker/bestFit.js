@@ -36,22 +36,18 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
     }
 
     if (sum.width - sum.shrink > lineLength) {
-      let j;
-      if (i === 0) {
-        // the first block is always "box" type
-        j = i + 1;
-      } else {
-        j = i;
-      }
+      if (position === null) {
+        let j = i === 0 ? i + 1 : i;
 
-      while (
-        j < subnodes.length &&
-        (subnodes[j].type === 'glue' || subnodes[j].type === 'penalty')
-      ) {
-        j++;
-      }
+        while (
+          j < subnodes.length &&
+          (subnodes[j].type === 'glue' || subnodes[j].type === 'penalty')
+        ) {
+          j++;
+        }
 
-      position = j - 1;
+        position = j - 1;
+      }
       break;
     }
 
@@ -75,6 +71,8 @@ const applyBestFit = (nodes, widths) => {
   let lineNumber = 0;
   let subnodes = nodes;
   const breakpoints = [{ position: 0 }];
+
+  // console.log('nodes', nodes);
 
   while (subnodes.length > 0) {
     const breakpoint = getNextBreakpoint(subnodes, widths, lineNumber);

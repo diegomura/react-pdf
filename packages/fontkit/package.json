@@ -26,11 +26,12 @@
   "author": "Devon Govett <devongovett@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.6.2",
     "@react-pdf/unicode-properties": "^2.4.2",
     "brotli": "^1.2.0",
     "clone": "^1.0.4",
     "deep-equal": "^1.0.0",
-    "dfa": "1.1.0",
+    "dfa": "^1.2.0",
     "restructure": "^0.5.3",
     "tiny-inflate": "^1.0.2",
     "unicode-trie": "^0.3.0"

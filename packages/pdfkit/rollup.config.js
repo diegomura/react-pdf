@@ -9,11 +9,11 @@ import pkg from './package.json';
 
 const cjs = {
   exports: 'named',
-  format: 'cjs',
+  format: 'cjs'
 };
 
 const esm = {
-  format: 'es',
+  format: 'es'
 };
 
 const getCJS = override => Object.assign({}, cjs, override);
@@ -31,70 +31,72 @@ const babelConfig = ({ browser }) => ({
         modules: false,
         ...(browser
           ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-  ],
+          : { targets: { node: '12' } })
+      }
+    ]
+  ]
 });
 
 const configBase = {
   input: 'src/index.js',
   plugins: [nodeResolve(), json()],
-  external: Object.keys(pkg.dependencies),
+  external: Object.keys(pkg.dependencies).map(dep =>
+    dep === 'crypto-js' ? 'crypto-js/md5' : dep
+  ),
   onwarn: (warning, rollupWarn) => {
     if (warning.code !== 'CIRCULAR_DEPENDENCY') {
       rollupWarn(warning);
     }
-  },
+  }
 };
 
 const serverConfig = Object.assign({}, configBase, {
   output: [
     getESM({ file: 'lib/pdfkit.es.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.js' }),
+    getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: false })),
     replace({
-      BROWSER: JSON.stringify(false),
-    }),
+      BROWSER: JSON.stringify(false)
+    })
   ),
-  external: configBase.external.concat(['fs']),
+  external: configBase.external.concat(['fs'])
 });
 
 const serverProdConfig = Object.assign({}, serverConfig, {
   output: [
     getESM({ file: 'lib/pdfkit.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.min.js' }),
+    getCJS({ file: 'lib/pdfkit.cjs.min.js' })
   ],
-  plugins: serverConfig.plugins.concat(terser()),
+  plugins: serverConfig.plugins.concat(terser())
 });
 
 const browserConfig = Object.assign({}, configBase, {
   output: [
     getESM({ file: 'lib/pdfkit.browser.es.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: true })),
     replace({
-      BROWSER: JSON.stringify(true),
+      BROWSER: JSON.stringify(true)
     }),
-    ignore(['fs']),
-  ),
+    ignore(['fs'])
+  )
 });
 
 const browserProdConfig = Object.assign({}, browserConfig, {
   output: [
     getESM({ file: 'lib/pdfkit.browser.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' })
   ],
-  plugins: browserConfig.plugins.concat(terser()),
+  plugins: browserConfig.plugins.concat(terser())
 });
 
 export default [
   serverConfig,
   serverProdConfig,
   browserConfig,
-  browserProdConfig,
+  browserProdConfig
 ];

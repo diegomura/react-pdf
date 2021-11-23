@@ -1,7 +1,7 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import localResolve from 'rollup-plugin-local-resolve';
 import pkg from './package.json';
@@ -21,7 +21,7 @@ const getESM = override => Object.assign({}, es, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
@@ -34,6 +34,7 @@ const babelConfig = ({ browser }) => ({
       },
     ],
   ],
+  plugins: ['@babel/plugin-transform-runtime'],
 });
 
 const configBase = {

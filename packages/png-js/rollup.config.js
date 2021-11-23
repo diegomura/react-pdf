@@ -1,6 +1,6 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
 const cjs = {
@@ -20,7 +20,7 @@ const configBase = {
   plugins: [
     babel({
       babelrc: false,
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       exclude: 'node_modules/**',
       presets: [
         [
@@ -32,6 +32,7 @@ const configBase = {
           },
         ],
       ],
+      plugins: ['@babel/plugin-transform-runtime'],
     }),
   ],
 };

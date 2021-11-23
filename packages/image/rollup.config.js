@@ -1,6 +1,6 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 
 import pkg from './package.json';
@@ -16,14 +16,16 @@ const external = [
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
       {
         loose: true,
         modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+        ...(browser
+          ? { targets: { browsers: 'last 2 versions' } }
+          : { targets: { node: '12' } }),
       },
     ],
     '@babel/preset-react',

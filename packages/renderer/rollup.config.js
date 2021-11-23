@@ -1,11 +1,10 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import bundleSize from 'rollup-plugin-bundle-size';
-import nodeResolve from 'rollup-plugin-node-resolve';
 
 import pkg from './package.json';
 
@@ -30,7 +29,7 @@ const getESM = override => Object.assign({}, esm, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
@@ -46,31 +45,21 @@ const babelConfig = ({ browser }) => ({
   ],
   plugins: [
     '@babel/plugin-transform-runtime',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    '@babel/plugin-proposal-class-properties',
   ],
 });
 
-const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
+const commonPlugins = [json(), nodeResolve(), sourceMaps()];
 
 const configBase = {
   external: [
+    '@babel/runtime/helpers/defineProperty',
+    '@babel/runtime/helpers/slicedToArray',
     '@babel/runtime/helpers/extends',
+    '@babel/runtime/helpers/objectWithoutProperties',
     '@babel/runtime/helpers/asyncToGenerator',
     '@babel/runtime/regenerator',
-    '@babel/runtime/helpers/createClass',
-    '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-    '@babel/runtime/helpers/inheritsLoose',
-    '@babel/runtime/helpers/assertThisInitialized',
-    '@react-pdf/textkit/lib/layout',
-    '@react-pdf/textkit/lib/renderers/pdf',
-    '@react-pdf/textkit/lib/attributedString',
-    '@react-pdf/textkit/lib/engines/linebreaker',
-    '@react-pdf/textkit/lib/engines/justification',
-    '@react-pdf/textkit/lib/engines/textDecoration',
-    '@react-pdf/textkit/lib/engines/scriptItemizer',
-    '@react-pdf/textkit/lib/engines/wordHyphenation',
-    '@react-pdf/textkit/lib/run/advanceWidth',
-    '@react-pdf/textkit/lib/attributedString/advanceWidth',
+    '@babel/runtime/helpers/typeof',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
 };

@@ -17,6 +17,7 @@ const getESM = override => Object.assign({}, esm, override);
 
 const configBase = {
   input: 'src/index.js',
+  external: ['zlib'],
   plugins: [
     babel({
       babelrc: false,
@@ -32,7 +33,7 @@ const configBase = {
           },
         ],
       ],
-      plugins: ['@babel/plugin-transform-runtime'],
+      plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
     }),
   ],
 };

@@ -34,13 +34,20 @@ const babelConfig = ({ browser }) => ({
       },
     ],
   ],
-  plugins: ['@babel/plugin-transform-runtime'],
+  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
 });
 
 const configBase = {
   input: 'src/index.js',
   plugins: [localResolve(), json()],
-  external: ['restructure/src/utils'].concat(Object.keys(pkg.dependencies)),
+  external: Object.keys(pkg.dependencies).concat(
+    'restructure/src/utils',
+    '@babel/runtime/helpers/createForOfIteratorHelperLoose',
+    '@babel/runtime/helpers/createClass',
+    '@babel/runtime/helpers/applyDecoratedDescriptor',
+    '@babel/runtime/helpers/inheritsLoose',
+    '@babel/runtime/helpers/defineProperty',
+  ),
 };
 
 const serverConfig = Object.assign({}, configBase, {

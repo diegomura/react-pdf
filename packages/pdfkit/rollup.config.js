@@ -1,7 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
-import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import ignore from 'rollup-plugin-ignore';
@@ -36,19 +35,18 @@ const babelConfig = ({ browser }) => ({
       }
     ]
   ],
-  plugins: ['@babel/plugin-transform-runtime']
+  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]]
 });
 
-// createForOfIteratorHelperLoose
-// nodeResolve()
 const configBase = {
   input: 'src/index.js',
-  plugins: [json()],
+  plugins: [json(), nodeResolve()],
   external: Object.keys(pkg.dependencies)
     .map(dep => (dep === 'crypto-js' ? 'crypto-js/md5' : dep))
     .concat(
       '@babel/runtime/helpers/inheritsLoose',
       '@babel/runtime/helpers/assertThisInitialized',
+      '@babel/runtime/helpers/createForOfIteratorHelperLoose',
       '@babel/runtime/helpers/extends',
       'stream',
       'zlib'

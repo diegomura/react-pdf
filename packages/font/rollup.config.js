@@ -27,10 +27,9 @@ const babelConfig = ({ browser }) => ({
           : { targets: { node: '12' } }),
       },
     ],
-    '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });

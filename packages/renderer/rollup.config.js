@@ -44,8 +44,8 @@ const babelConfig = ({ browser }) => ({
     '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-transform-runtime',
-    '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });
 
@@ -53,13 +53,10 @@ const commonPlugins = [json(), nodeResolve(), sourceMaps()];
 
 const configBase = {
   external: [
-    '@babel/runtime/helpers/defineProperty',
-    '@babel/runtime/helpers/slicedToArray',
     '@babel/runtime/helpers/extends',
-    '@babel/runtime/helpers/objectWithoutProperties',
+    '@babel/runtime/helpers/objectWithoutPropertiesLoose',
     '@babel/runtime/helpers/asyncToGenerator',
     '@babel/runtime/regenerator',
-    '@babel/runtime/helpers/typeof',
   ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
   plugins: commonPlugins,
 };

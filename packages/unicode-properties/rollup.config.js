@@ -35,7 +35,7 @@ const configBase = {
           },
         ],
       ],
-      plugins: ['@babel/plugin-transform-runtime'],
+      plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
     }),
   ],
 };

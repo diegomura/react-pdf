@@ -6,10 +6,8 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import pkg from './package.json';
 
 const external = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
   '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+  '@babel/runtime/regenerator',
   ...Object.keys(pkg.dependencies),
 ];
 
@@ -28,10 +26,9 @@ const babelConfig = ({ browser }) => ({
           : { targets: { node: '12' } }),
       },
     ],
-    '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });

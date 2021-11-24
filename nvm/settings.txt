@@ -1,0 +1,2 @@
+root: D:\react-pdf\nvm
+path: C:\Program Files\nodejs

@@ -3158,7 +3158,7 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codepoints@^1.2.0:
+codepoints@^1.2.0, codepoints@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/codepoints/-/codepoints-1.3.0.tgz#88ba402a0c867763729d1412c044eeef068453ed"
   integrity sha512-FEA99BKuETXnyRYKNTFDA+CddaYq4u64kgK5Qqc+CDI4FHu55Mza2OvU1ripSaaZah3GH7A5iCQCRQ+QiBy/WA==
@@ -9836,6 +9836,11 @@ yargs@^14.2.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^15.0.1"
+
+yarn@^1.22.17:
+  version "1.22.17"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.17.tgz#bf910747d22497b573131f7341c0e1d15c74036c"
+  integrity sha512-H0p241BXaH0UN9IeH//RT82tl5PfNraVpSpEoW+ET7lmopNC61eZ+A+IDvU8FM6Go5vx162SncDL8J1ZjRBriQ==
 
 yup@^0.27.0:
   version "0.27.0"

@@ -89,7 +89,6 @@ const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
     ctx.lineTo(left, top);
     ctx.lineTo(left, top + height);
     ctx.closePath();
-    ctx.clip();
   }
 
   if (borderLeftWidth) {
@@ -99,7 +98,6 @@ const clipBorderTop = (ctx, layout, style, rtr, rtl) => {
     ctx.lineTo(left + width, top);
     ctx.lineTo(left + width, top + height);
     ctx.closePath();
-    ctx.clip();
   }
 };
 
@@ -238,7 +236,6 @@ const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
     ctx.lineTo(left + width, top + height);
     ctx.lineTo(left, top + height);
     ctx.closePath();
-    ctx.clip();
   }
 
   if (borderBottomWidth) {
@@ -248,7 +245,6 @@ const clipBorderRight = (ctx, layout, style, rtr, rbr) => {
     ctx.lineTo(left + width, top);
     ctx.lineTo(left, top);
     ctx.closePath();
-    ctx.clip();
   }
 };
 
@@ -393,7 +389,6 @@ const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
     ctx.lineTo(left, top + height);
     ctx.lineTo(left, top);
     ctx.closePath();
-    ctx.clip();
   }
 
   if (borderLeftWidth) {
@@ -403,7 +398,6 @@ const clipBorderBottom = (ctx, layout, style, rbl, rbr) => {
     ctx.lineTo(left + width, top + height);
     ctx.lineTo(left + width, top);
     ctx.closePath();
-    ctx.clip();
   }
 };
 
@@ -542,7 +536,6 @@ const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
     ctx.lineTo(left, top);
     ctx.lineTo(left + width, top);
     ctx.closePath();
-    ctx.clip();
   }
 
   if (borderBottomWidth) {
@@ -552,7 +545,6 @@ const clipBorderLeft = (ctx, layout, style, rbl, rtl) => {
     ctx.lineTo(left, top + height);
     ctx.lineTo(left + width, top + height);
     ctx.closePath();
-    ctx.clip();
   }
 };
 

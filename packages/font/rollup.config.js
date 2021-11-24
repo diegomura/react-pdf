@@ -38,7 +38,10 @@ const getPlugins = ({ browser }) => [
   sourceMaps(),
   babel(babelConfig({ browser })),
   replace({
-    BROWSER: JSON.stringify(browser),
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser),
+    },
   }),
 ];
 

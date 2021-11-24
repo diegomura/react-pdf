@@ -65,7 +65,10 @@ const serverConfig = Object.assign({}, configBase, {
   ],
   plugins: configBase.plugins.concat(
     replace({
-      BROWSER: JSON.stringify(false)
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(false)
+      }
     }),
     babel(babelConfig({ browser: false }))
   ),
@@ -88,7 +91,10 @@ const browserConfig = Object.assign({}, configBase, {
   plugins: configBase.plugins.concat(
     ignore(['fs']),
     replace({
-      BROWSER: JSON.stringify(true)
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(true)
+      }
     }),
     babel(babelConfig({ browser: true }))
   )

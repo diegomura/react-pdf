@@ -58,7 +58,10 @@ const serverConfig = Object.assign({}, configBase, {
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: false })),
     replace({
-      BROWSER: JSON.stringify(false),
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(false),
+      },
     }),
   ),
   external: configBase.external.concat(['fs', 'brotli/decompress']),
@@ -80,7 +83,10 @@ const browserConfig = Object.assign({}, configBase, {
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: true })),
     replace({
-      BROWSER: JSON.stringify(true),
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(true),
+      },
     }),
     ignore(['fs', 'brotli', 'brotli/decompress', './WOFF2Font']),
   ),

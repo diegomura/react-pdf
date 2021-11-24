@@ -45,7 +45,10 @@ const serverConfig = {
   plugins: [
     sourceMaps(),
     babel(babelConfig({ browser: false })),
-    replace({ BROWSER: JSON.stringify(false) }),
+    replace({
+      preventAssignment: true,
+      values: { BROWSER: JSON.stringify(false) },
+    }),
   ],
 };
 
@@ -61,8 +64,10 @@ const browserConfig = {
   plugins: [
     sourceMaps(),
     babel(babelConfig({ browser: true })),
-    replace({ BROWSER: JSON.stringify(true) }),
-    ,
+    replace({
+      preventAssignment: true,
+      values: { BROWSER: JSON.stringify(true) },
+    }),
     ignore(['fs', 'path', 'url']),
   ],
 };

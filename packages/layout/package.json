@@ -2,6 +2,7 @@
   "name": "@react-pdf/layout",
   "version": "2.0.20",
   "license": "MIT",
+  "description": "Resolve overall document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",

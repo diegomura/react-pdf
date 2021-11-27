@@ -34,7 +34,6 @@
     "babel-plugin-add-module-exports": "^1.0.0",
     "canvas": "^2.8.0",
     "chalk": "^2.4.2",
-    "pdfjs-dist": "2.8.335",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -51,6 +50,7 @@
     "lint-staged": "^8.1.4",
     "mock-fs": "^4.8.0",
     "mockdate": "^2.0.2",
+    "pdfjs-dist": "2.8.335",
     "prettier": "^1.16.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -83,5 +83,7 @@
       "pre-commit": "git add . && lint-staged"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "yarn": "^1.22.17"
+  }
 }

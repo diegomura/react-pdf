@@ -1,12 +1,16 @@
 {
   "name": "@react-pdf/image",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "MIT",
   "description": "Change the image url to png or jpeg format",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/image"
+  },
   "browser": {
     "./lib/index.js": "./lib/index.browser.js"
   },
@@ -16,7 +20,7 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/png-js": "^2.0.2",
+    "@react-pdf/png-js": "^2.0.3",
     "cross-fetch": "^3.0.4"
   },
   "devDependencies": {

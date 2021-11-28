@@ -832,5 +832,16 @@ describe('stylesheet transform', () => {
         { operation: 'matrix', value: [-1, -0.1, 0, 0.1, 1, 10] },
       ]);
     });
+
+    // This can happen when transform get's parsed as prop and then again on an SVG node
+    test('should leave parsed tranform value as is', () => {
+      const style = transformStyles({
+        transform: [{ operation: 'rotate', value: [-180.0004209182994] }],
+      });
+
+      expect(style.transform).toEqual([
+        { operation: 'rotate', value: [-180.0004209182994] },
+      ]);
+    });
   });
 });

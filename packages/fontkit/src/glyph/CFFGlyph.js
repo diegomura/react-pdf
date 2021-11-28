@@ -320,8 +320,8 @@ export default class CFFGlyph extends Glyph {
               break;
 
             case 30: // vhcurveto
-            case 31: // hvcurveto
-              phase = op === 31;
+            case 31: { // hvcurveto
+              let phase = op === 31;
               while (stack.length >= 4) {
                 if (phase) {
                   c1x = x + stack.shift();
@@ -343,6 +343,7 @@ export default class CFFGlyph extends Glyph {
                 phase = !phase;
               }
               break;
+            }
 
             case 12:
               op = stream.readUInt8();

@@ -82,8 +82,5 @@
     "hooks": {
       "pre-commit": "git add . && lint-staged"
     }
-  },
-  "dependencies": {
-    "yarn": "^1.22.17"
   }
 }

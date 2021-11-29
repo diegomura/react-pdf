@@ -2,7 +2,7 @@
   "name": "@react-pdf/image",
   "version": "2.0.4",
   "license": "MIT",
-  "description": "Change the image url to png or jpeg format",
+  "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "lib/index.js",

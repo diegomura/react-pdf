@@ -2,6 +2,7 @@
   "name": "@react-pdf/renderer",
   "version": "2.0.21",
   "license": "MIT",
+  "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",

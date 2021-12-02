@@ -2,6 +2,7 @@
   "name": "@react-pdf/render",
   "version": "2.0.15",
   "license": "MIT",
+  "description": "A render engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "lib/index.js",

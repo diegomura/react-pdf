@@ -2,6 +2,7 @@
   "name": "@react-pdf/primitives",
   "version": "2.0.1",
   "license": "MIT",
+  "description": "Define uninitialized elements",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "./src/index.js",

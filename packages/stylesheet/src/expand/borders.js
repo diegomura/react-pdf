@@ -11,7 +11,6 @@ const expandBorders = (key, value) => {
     const color = match[5] || value;
     const style = match[4] || value;
     const width = match[1] || value;
-
     if (key.match(/(Top|Right|Bottom|Left)$/)) {
       return {
         [`${key}Color`]: color,

@@ -10,6 +10,7 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky install",
     "build": "lerna run build --ignore @react-pdf/yoga",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",

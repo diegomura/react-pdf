@@ -22,6 +22,7 @@
     "watch": "rimraf ./lib && rollup -c -w",
     "size": "size-limit",
     "lint": "eslint src",
+    "benchmark": "babel-node ./bench/index.jsx",
     "test": "jest"
   },
   "dependencies": {

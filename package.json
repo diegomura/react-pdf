@@ -43,6 +43,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
+    "benny": "^3.7.1",
     "canvas": "^2.8.0",
     "chalk": "^2.4.2",
     "eslint": "^6.8.0",

@@ -101,17 +101,28 @@ const debugPadding = ctx => node => {
   return node;
 };
 
+const getMargin = box => {
+  const marginLeft = box.marginLeft === 'auto' ? 0 : box.marginLeft;
+  const marginTop = box.marginTop === 'auto' ? 0 : box.marginTop;
+  const marginRight = box.marginRight === 'auto' ? 0 : box.marginRight;
+  const marginBottom = box.marginBottom === 'auto' ? 0 : box.marginBottom;
+
+  return {
+    marginLeft,
+    marginTop,
+    marginRight,
+    marginBottom,
+  };
+};
+
 const debugMargin = ctx => node => {
+  const { left, top, width, height } = node.box;
   const {
-    left,
-    top,
-    width,
-    height,
     marginLeft = 0,
     marginTop = 0,
     marginRight = 0,
     marginBottom = 0,
-  } = node.box;
+  } = getMargin(node.box);
   ctx.fillColor(MARGIN_COLOR).opacity(0.5);
 
   // Margin top
@@ -144,16 +155,13 @@ const debugMargin = ctx => node => {
 };
 
 const debugText = ctx => node => {
+  const { left, top, width, height } = node.box;
   const {
-    left,
-    top,
-    width,
-    height,
     marginLeft = 0,
     marginTop = 0,
     marginRight = 0,
     marginBottom = 0,
-  } = node.box;
+  } = getMargin(node.box);
 
   const roundedWidth = Math.round(width + marginLeft + marginRight);
   const roundedHeight = Math.round(height + marginTop + marginBottom);

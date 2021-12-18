@@ -1,5 +1,5 @@
 import fs from 'fs';
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js/md5';
 
 export default {
   /**

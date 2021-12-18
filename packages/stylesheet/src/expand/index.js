@@ -1,18 +1,36 @@
 import processFlex from './flex';
-import processMargin from './margins';
+import {
+  processMargin,
+  processMarginVertical,
+  processMarginHorizontal,
+  processMarginSingle,
+} from './margins';
 import processBorders from './borders';
-import processPadding from './paddings';
+import {
+  processPadding,
+  processPaddingVertical,
+  processPaddingHorizontal,
+  processPaddingSingle,
+} from './paddings';
 import processObjectPosition from './objectPosition';
 import processTransformOrigin from './transformOrigin';
 
 const shorthands = {
   flex: processFlex,
   margin: processMargin,
-  marginHorizontal: processMargin,
-  marginVertical: processMargin,
+  marginHorizontal: processMarginHorizontal,
+  marginVertical: processMarginVertical,
+  marginTop: processMarginSingle,
+  marginRight: processMarginSingle,
+  marginBottom: processMarginSingle,
+  marginLeft: processMarginSingle,
   padding: processPadding,
-  paddingHorizontal: processPadding,
-  paddingVertical: processPadding,
+  paddingHorizontal: processPaddingHorizontal,
+  paddingVertical: processPaddingVertical,
+  paddingTop: processPaddingSingle,
+  paddingRight: processPaddingSingle,
+  paddingBottom: processPaddingSingle,
+  paddingLeft: processPaddingSingle,
   border: processBorders,
   borderTop: processBorders,
   borderRight: processBorders,

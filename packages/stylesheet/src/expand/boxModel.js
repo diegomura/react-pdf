@@ -1,49 +1,81 @@
-import * as R from 'ramda';
+/* eslint-disable no-plusplus */
+import parse from 'postcss-value-parser/lib/parse';
+import parseUnit from 'postcss-value-parser/lib/unit';
 
-const BOX_MODEL_REGEX = /-?\d+(\.\d+)?(px|in|mm|cm|pt|%|vw|vh|px)?/g;
+const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
-const matchBoxModelValue = R.match(BOX_MODEL_REGEX);
+const logError = (style, value) => {
+  console.error(`
+    @react-pdf/stylesheet parsing error:
 
-const expandBoxModel = model => (key, value) => {
-  if (value === 'auto')
-    return {
-      [`${model}Top`]: 'auto',
-      [`${model}Right`]: 'auto',
-      [`${model}Bottom`]: 'auto',
-      [`${model}Left`]: 'auto',
-    };
+    ${style}: ${value},
+    ${' '.repeat(style.length + 2)}^
+    Unsupported ${style} value format
+  `);
+};
 
-  const match = matchBoxModelValue(`${value}`);
+const expandBoxModel = ({
+  expandsTo,
+  maxValues = 1,
+  autoSupported = false,
+} = {}) => (model, value) => {
+  const nodes = parse(`${value}`);
 
-  if (match) {
-    const top = match[0];
-    const right = match[1] || match[0];
-    const bottom = match[2] || match[0];
-    const left = match[3] || match[1] || match[0];
+  const parts = [];
 
-    if (key.match(/Horizontal$/)) {
-      return {
-        [`${model}Right`]: right,
-        [`${model}Left`]: left,
-      };
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+
+    // value contains `calc`, `url` or other css function
+    // `,`, `/` or strings that unsupported by margin and padding
+    if (
+      node.type === 'function' ||
+      node.type === 'string' ||
+      node.type === 'div'
+    ) {
+      logError(model, value);
+
+      return {};
     }
 
-    if (key.match(/Vertical$/)) {
-      return {
-        [`${model}Top`]: top,
-        [`${model}Bottom`]: bottom,
-      };
-    }
+    if (node.type === 'word') {
+      if (node.value === 'auto' && autoSupported) {
+        parts.push(node.value);
+      } else {
+        const result = parseUnit(node.value);
 
-    return {
-      [`${model}Top`]: top,
-      [`${model}Right`]: right,
-      [`${model}Bottom`]: bottom,
-      [`${model}Left`]: left,
-    };
+        // when unit isn't specified this condition is true
+        if (result && BOX_MODEL_UNITS.includes(result.unit)) {
+          parts.push(node.value);
+        } else {
+          logError(model, value);
+
+          return {};
+        }
+      }
+    }
   }
 
-  return value;
+  // checks that we have enough parsed values
+  if (parts.length > maxValues) {
+    logError(model, value);
+
+    return {};
+  }
+
+  const first = parts[0];
+
+  if (expandsTo) {
+    const second = parts[1] || parts[0];
+    const third = parts[2] || parts[0];
+    const fourth = parts[3] || parts[1] || parts[0];
+
+    return expandsTo({ first, second, third, fourth });
+  }
+
+  return {
+    [model]: first,
+  };
 };
 
 export default expandBoxModel;

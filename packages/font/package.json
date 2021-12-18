@@ -20,6 +20,7 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/fontkit": "^2.0.7",
     "@react-pdf/types": "^2.0.7",
     "cross-fetch": "^3.0.4",

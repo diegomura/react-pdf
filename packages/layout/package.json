@@ -17,7 +17,7 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/image": "^2.0.4",
     "@react-pdf/pdfkit": "^2.0.12",
     "@react-pdf/primitives": "^2.0.1",

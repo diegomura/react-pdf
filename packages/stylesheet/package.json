@@ -17,6 +17,7 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/types": "^2.0.7",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",

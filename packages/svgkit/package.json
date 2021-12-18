@@ -21,7 +21,7 @@
     "lib"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/pdfkit": "^2.0.12",
     "ramda": "^0.26.1"
   }

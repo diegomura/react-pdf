@@ -1,7 +1,7 @@
 {
   "name": "@react-pdf/svgkit",
   "license": "MIT",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A SVG generation library for Node.js and browser",
   "main": "./lib/index.js",
   "repository": {
@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@react-pdf/pdfkit": "^2.0.12",
+    "@react-pdf/pdfkit": "^2.0.13",
     "ramda": "^0.26.1"
   }
 }

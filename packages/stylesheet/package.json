@@ -1,8 +1,8 @@
 {
   "name": "@react-pdf/stylesheet",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "license": "MIT",
-  "description" : "A styles engine for Node and the browser",
+  "description": "A styles engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "lib/index.js",
@@ -17,7 +17,7 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "@react-pdf/types": "^2.0.7",
+    "@react-pdf/types": "^2.0.8",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",

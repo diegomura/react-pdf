@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/fontkit",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "An advanced font engine for Node and the browser",
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   "author": "Devon Govett <devongovett@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@react-pdf/unicode-properties": "^2.4.2",
+    "@react-pdf/unicode-properties": "^2.4.3",
     "brotli": "^1.2.0",
     "clone": "^1.0.4",
     "deep-equal": "^1.0.0",

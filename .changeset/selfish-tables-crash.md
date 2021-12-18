@@ -16,4 +16,4 @@
 '@react-pdf/yoga': patch
 ---
 
-add changelog with changesets
+added changelog with changesets

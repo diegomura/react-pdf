@@ -1,5 +1,5 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
 import pkg from './package.json';
@@ -23,7 +23,7 @@ const configBase = {
     json(),
     babel({
       babelrc: false,
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       exclude: 'node_modules/**',
       presets: [
         [
@@ -35,6 +35,7 @@ const configBase = {
           },
         ],
       ],
+      plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
     }),
   ],
 };

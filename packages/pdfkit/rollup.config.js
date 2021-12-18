@@ -1,8 +1,8 @@
-import babel from 'rollup-plugin-babel';
-import json from 'rollup-plugin-json';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
+import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import replace from 'rollup-plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 
 import pkg from './package.json';
@@ -22,7 +22,7 @@ const getESM = override => Object.assign({}, esm, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
@@ -34,15 +34,23 @@ const babelConfig = ({ browser }) => ({
           : { targets: { node: '12' } })
       }
     ]
-  ]
+  ],
+  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]]
 });
 
 const configBase = {
   input: 'src/index.js',
-  plugins: [nodeResolve(), json()],
-  external: Object.keys(pkg.dependencies).map(dep =>
-    dep === 'crypto-js' ? 'crypto-js/md5' : dep
-  ),
+  plugins: [json(), nodeResolve()],
+  external: Object.keys(pkg.dependencies)
+    .map(dep => (dep === 'crypto-js' ? 'crypto-js/md5' : dep))
+    .concat(
+      '@babel/runtime/helpers/inheritsLoose',
+      '@babel/runtime/helpers/assertThisInitialized',
+      '@babel/runtime/helpers/createForOfIteratorHelperLoose',
+      '@babel/runtime/helpers/extends',
+      'stream',
+      'zlib'
+    ),
   onwarn: (warning, rollupWarn) => {
     if (warning.code !== 'CIRCULAR_DEPENDENCY') {
       rollupWarn(warning);
@@ -56,10 +64,13 @@ const serverConfig = Object.assign({}, configBase, {
     getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
   plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: false })),
     replace({
-      BROWSER: JSON.stringify(false)
-    })
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(false)
+      }
+    }),
+    babel(babelConfig({ browser: false }))
   ),
   external: configBase.external.concat(['fs'])
 });
@@ -78,11 +89,14 @@ const browserConfig = Object.assign({}, configBase, {
     getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
   plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: true })),
+    ignore(['fs']),
     replace({
-      BROWSER: JSON.stringify(true)
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(true)
+      }
     }),
-    ignore(['fs'])
+    babel(babelConfig({ browser: true }))
   )
 });
 

@@ -25,7 +25,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/font": "^2.0.14",
     "@react-pdf/layout": "^2.0.21",
     "@react-pdf/pdfkit": "^2.0.12",

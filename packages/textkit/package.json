@@ -22,7 +22,7 @@
     "lib"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.16.4",
     "@react-pdf/unicode-properties": "^2.4.2",
     "hyphen": "^1.6.4",
     "ramda": "^0.26.1"

@@ -2,4 +2,4 @@
 '@react-pdf/renderer': patch
 ---
 
-removed duplicate `scheduler` package
+removed duplicate of `scheduler` package

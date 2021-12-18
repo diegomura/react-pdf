@@ -35,7 +35,21 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
       sum.shrink += node.shrink;
     }
 
-    if (sum.width - sum.shrink > lineLength) break;
+    if (sum.width - sum.shrink > lineLength) {
+      if (position === null) {
+        let j = i === 0 ? i + 1 : i;
+
+        while (
+          j < subnodes.length &&
+          (subnodes[j].type === 'glue' || subnodes[j].type === 'penalty')
+        ) {
+          j++;
+        }
+
+        position = j - 1;
+      }
+      break;
+    }
 
     if (node.type === 'penalty' || node.type === 'glue') {
       const ratio = calculateRatio(node);
@@ -61,7 +75,7 @@ const applyBestFit = (nodes, widths) => {
   while (subnodes.length > 0) {
     const breakpoint = getNextBreakpoint(subnodes, widths, lineNumber);
 
-    if (breakpoint) {
+    if (breakpoint !== null) {
       count += breakpoint;
       breakpoints.push({ position: count });
       subnodes = subnodes.slice(breakpoint + 1, subnodes.length);

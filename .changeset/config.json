@@ -6,7 +6,7 @@
   ],
   "commit": false,
   "access": "public",
-  "baseBranch": "master",
+  "baseBranch": "test-changeset",
   "updateInternalDependencies": "patch",
   "ignore": []
 }

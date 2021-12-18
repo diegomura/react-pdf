@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@1.6.1/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "diegomura/react-pdf" }
+  ],
+  "commit": false,
+  "access": "public",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

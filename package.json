@@ -17,7 +17,10 @@
     "prepublish": "lerna run build --ignore @react-pdf/yoga",
     "lint": "eslint packages",
     "test": "jest",
-    "examples": "lerna run start --scope @react-pdf/examples"
+    "examples": "lerna run start --scope @react-pdf/examples",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -29,6 +32,8 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.0.0",
+    "@changesets/changelog-github": "^0.4.1",
+    "@changesets/cli": "^2.17.0",
     "@rollup/plugin-commonjs": "^18.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",

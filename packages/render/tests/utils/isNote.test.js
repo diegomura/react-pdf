@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isNote from '../../src/utils/isNote';
 
 const ASSERTED_TYPE = P.Note;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is note util', () => {
   PRIMITIVES.forEach(type => {

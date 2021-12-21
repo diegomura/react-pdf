@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isTspan from '../../src/utils/isTspan';
 
 const ASSERTED_TYPE = P.Tspan;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is tspan instance util', () => {
   PRIMITIVES.forEach(type => {

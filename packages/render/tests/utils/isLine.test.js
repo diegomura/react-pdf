@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isLine from '../../src/utils/isLine';
 
 const ASSERTED_TYPE = P.Line;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is line util', () => {
   PRIMITIVES.forEach(type => {

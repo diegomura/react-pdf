@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isGroup from '../../src/utils/isGroup';
 
 const ASSERTED_TYPE = P.G;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is group util', () => {
   PRIMITIVES.forEach(type => {

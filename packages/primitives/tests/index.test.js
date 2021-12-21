@@ -1,4 +1,4 @@
-const primitives = require('../src/index');
+const primitives = require('../src');
 
 describe('primitives', () => {
   test('should export group', () => {

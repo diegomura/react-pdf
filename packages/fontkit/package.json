@@ -9,7 +9,7 @@
   },
   "scripts": {
     "watch": "rimraf ./lib && rollup -c -w",
-    "build": "npm run trie:data && npm run trie:use && npm run trie:indic && rollup -c",
+    "build": "yarn run trie:data && yarn run trie:use && yarn run trie:indic && rollup -c",
     "trie:use": "babel-node src/opentype/shapers/gen-use.js",
     "trie:indic": "babel-node src/opentype/shapers/gen-indic.js",
     "trie:data": "babel-node src/opentype/shapers/generate-data.js"

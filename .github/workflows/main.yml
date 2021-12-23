@@ -19,8 +19,8 @@ jobs:
           node-version: ${{ env.NODE }}
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install
+        run: yarn --immutable
       - name: Build workspaces
-        run: yarn build
+        run: yarn workspaces foreach -p -j 2 --exclude @react-pdf/yoga run build
       - name: Run tests
         run: yarn test

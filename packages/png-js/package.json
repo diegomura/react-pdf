@@ -5,8 +5,8 @@
   "main": "lib/png-js.cjs.js",
   "module": "lib/png-js.es.js",
   "browser": {
-    "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
-    "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"
+    "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js",
+    "./lib/png-js.es.js": "./lib/png-js.browser.es.js"
   },
   "repository": {
     "type": "git",

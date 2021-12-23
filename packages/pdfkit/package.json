@@ -10,8 +10,8 @@
     "directory": "packages/pdfkit"
   },
   "browser": {
-    "./lib/pdfkit.es.js": "./lib/pdfkit.browser.es.js",
-    "./lib/pdfkit.cjs.js": "./lib/pdfkit.browser.cjs.js"
+    "./lib/pdfkit.cjs.js": "./lib/pdfkit.browser.cjs.js",
+    "./lib/pdfkit.es.js": "./lib/pdfkit.browser.es.js"
   },
   "author": {
     "name": "Devon Govett",

@@ -14,13 +14,12 @@
     "directory": "packages/renderer"
   },
   "browser": {
-    "./lib/react-pdf.es.js": "./lib/react-pdf.browser.es.js",
-    "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js"
+    "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js",
+    "./lib/react-pdf.es.js": "./lib/react-pdf.browser.es.js"
   },
   "scripts": {
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w",
-    "precommit": "git add . && lint-staged",
     "lint": "eslint src",
     "test": "jest"
   },
@@ -41,13 +40,6 @@
   "peerDependencies": {
     "react": "^16.8.6 || ^17.0.0"
   },
-  "lint-staged": {
-    "*.js": [
-      "yarn run lint",
-      "prettier --write",
-      "git add"
-    ]
-  },
   "files": [
     "lib",
     "index.d.ts"
@@ -56,10 +48,5 @@
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "git add . && lint-staged"
-    }
   }
 }

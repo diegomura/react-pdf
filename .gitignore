@@ -6,3 +6,12 @@ coverage
 .idea
 .DS_Store
 .cache
+
+# yarn 3 related folders
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

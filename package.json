@@ -11,13 +11,11 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "build": "lerna run build --ignore @react-pdf/yoga",
-    "watch": "lerna run watch --parallel",
-    "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build --ignore @react-pdf/yoga",
+    "build": "yarn workspaces foreach -p --exclude @react-pdf/yoga run build",
+    "watch": "yarn workspaces foreach -ip -j unlimited run watch",
     "lint": "eslint packages",
     "test": "jest",
-    "examples": "lerna run start --scope @react-pdf/examples",
+    "examples": "yarn workspace @react-pdf/examples run start",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"
@@ -44,7 +42,6 @@
     "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
     "canvas": "^2.8.0",
-    "chalk": "^2.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -57,10 +54,7 @@
     "husky": "^7.0.4",
     "jest": "^24.5.0",
     "jest-image-snapshot": "^4.5.0",
-    "lerna": "^3.21.0",
     "lint-staged": "^10.5.4",
-    "mock-fs": "^4.8.0",
-    "mockdate": "^2.0.2",
     "pdfjs-dist": "2.8.335",
     "prettier": "^1.16.4",
     "react": "^16.8.6",
@@ -82,5 +76,6 @@
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }

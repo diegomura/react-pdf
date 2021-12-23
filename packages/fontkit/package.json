@@ -17,8 +17,8 @@
   "main": "lib/fontkit.cjs.js",
   "module": "lib/fontkit.es.js",
   "browser": {
-    "./lib/fontkit.es.js": "./lib/fontkit.browser.es.js",
-    "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js"
+    "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js",
+    "./lib/fontkit.es.js": "./lib/fontkit.browser.es.js"
   },
   "files": [
     "lib"

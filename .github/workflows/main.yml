@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE }}
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn install
       - name: Build workspaces

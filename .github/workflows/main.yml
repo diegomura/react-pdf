@@ -21,6 +21,6 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - name: Build workspaces
-        run: yarn workspaces foreach -p -j 2 --exclude @react-pdf/yoga run build
+        run: yarn run build
       - name: Run tests
         run: yarn test

@@ -10,9 +10,9 @@
   "scripts": {
     "watch": "rimraf ./lib && rollup -c -w",
     "build": "yarn run trie:data && yarn run trie:use && yarn run trie:indic && rollup -c",
-    "trie:use": "babel-node src/opentype/shapers/gen-use.js",
-    "trie:indic": "babel-node src/opentype/shapers/gen-indic.js",
-    "trie:data": "babel-node src/opentype/shapers/generate-data.js"
+    "trie:use": "../../node_modules/.bin/babel-node src/opentype/shapers/gen-use.js",
+    "trie:indic": "../../node_modules/.bin/babel-node src/opentype/shapers/gen-indic.js",
+    "trie:data": "../../node_modules/.bin/babel-node src/opentype/shapers/generate-data.js"
   },
   "main": "lib/fontkit.cjs.js",
   "module": "lib/fontkit.es.js",

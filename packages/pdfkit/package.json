@@ -19,8 +19,8 @@
     "url": "http://badassjs.com/"
   },
   "scripts": {
-    "clear": "../../node_modules/.bin/rimraf ./lib ./src/font/data/*.json",
-    "parse:afm": "../../node_modules/.bin/babel-node ./src/font/data/compressData.js",
+    "clear": "rimraf ./lib",
+    "parse:afm": "babel-node ./src/font/data/compressData.js",
     "build": "yarn run clear && yarn run parse:afm && rollup -c ",
     "watch": "yarn run clear && yarn run parse:afm && rollup -c -w"
   },

@@ -10,7 +10,7 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "postinstall": "husky install",
     "build": "yarn workspaces foreach -p --exclude @react-pdf/yoga run build",
     "watch": "yarn workspaces foreach -ip -j unlimited run watch",
     "lint": "eslint packages",

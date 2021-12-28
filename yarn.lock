@@ -1403,16 +1403,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/apply-release-plan@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "@changesets/apply-release-plan@npm:5.0.1"
+"@changesets/apply-release-plan@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@changesets/apply-release-plan@npm:5.0.3"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/config": ^1.6.1
+    "@changesets/config": ^1.6.3
     "@changesets/get-version-range-type": ^0.3.2
-    "@changesets/git": ^1.1.2
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/git": ^1.2.1
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     detect-indent: ^6.0.0
     fs-extra: ^7.0.1
     lodash.startcase: ^4.4.0
@@ -1420,53 +1420,54 @@ __metadata:
     prettier: ^1.19.1
     resolve-from: ^5.0.0
     semver: ^5.4.1
-  checksum: 787f36d43b7ccd4557add247710e76d86edb55e8aa230ff4596179a8b3fb40758cc6800b8bb4b7f9a35bd3ff352d3a75bc84f381b5de6419cd4063d60a96501b
+  checksum: c4fada7e62ce358c0ecb0bf60c1f4101ed37535018b2686a216075f46f0edcac38b8bc99870c6b6e2d75ffaf79f0d21ba8eae585e02d47b56eca8b4901d4ae39
   languageName: node
   linkType: hard
 
-"@changesets/assemble-release-plan@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "@changesets/assemble-release-plan@npm:5.0.1"
+"@changesets/assemble-release-plan@npm:^5.0.4":
+  version: 5.0.4
+  resolution: "@changesets/assemble-release-plan@npm:5.0.4"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.2.2
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/get-dependents-graph": ^1.2.4
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     semver: ^5.4.1
-  checksum: 65dfdf319361251217e27faf4bda85f3ea10f85e38aaf7867dd81d71468031a3f23277994ec43f74fad59dfe54991582c6a5ff42ee6a87156abdeda713c11d79
+  checksum: 74ab7b770f904bdae2cecb762c620ceaa76d170e418b0a5e5937a6a8b9f771f4925e169888ff661be57ccb1bb9e54734043392a6dcbea0e37a68700b2d9d8477
   languageName: node
   linkType: hard
 
 "@changesets/changelog-github@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@changesets/changelog-github@npm:0.4.1"
+  version: 0.4.2
+  resolution: "@changesets/changelog-github@npm:0.4.2"
   dependencies:
     "@changesets/get-github-info": ^0.5.0
-    "@changesets/types": ^4.0.1
+    "@changesets/types": ^4.0.2
     dotenv: ^8.1.0
-  checksum: eae7151d7044038506ab4d012e092d0bee286f8096167729718c9a23f5f64c58dc2f7ef585004b11f86a3b5e628440172f20d34d2f01d0749f6265beb5b5ee9d
+  checksum: df46ec2c5de368da448f8ada4e832baa008f1b397da61e86e5563c7116b7575a1ddf14cd3bddad34b4f616a3b352be94797f0950024d55e91846f07d82802bf5
   languageName: node
   linkType: hard
 
 "@changesets/cli@npm:^2.17.0":
-  version: 2.17.0
-  resolution: "@changesets/cli@npm:2.17.0"
+  version: 2.19.0
+  resolution: "@changesets/cli@npm:2.19.0"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/apply-release-plan": ^5.0.1
-    "@changesets/assemble-release-plan": ^5.0.1
-    "@changesets/config": ^1.6.1
+    "@changesets/apply-release-plan": ^5.0.3
+    "@changesets/assemble-release-plan": ^5.0.4
+    "@changesets/config": ^1.6.3
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.2.2
-    "@changesets/get-release-plan": ^3.0.1
-    "@changesets/git": ^1.1.2
+    "@changesets/get-dependents-graph": ^1.2.4
+    "@changesets/get-release-plan": ^3.0.4
+    "@changesets/git": ^1.2.1
     "@changesets/logger": ^0.0.5
-    "@changesets/pre": ^1.0.7
-    "@changesets/read": ^0.5.0
-    "@changesets/types": ^4.0.1
-    "@changesets/write": ^0.1.5
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/pre": ^1.0.9
+    "@changesets/read": ^0.5.2
+    "@changesets/types": ^4.0.2
+    "@changesets/write": ^0.1.6
+    "@manypkg/get-packages": ^1.1.3
+    "@types/is-ci": ^3.0.0
     "@types/semver": ^6.0.0
     boxen: ^1.3.0
     chalk: ^2.1.0
@@ -1474,7 +1475,7 @@ __metadata:
     external-editor: ^3.1.0
     fs-extra: ^7.0.1
     human-id: ^1.0.2
-    is-ci: ^2.0.0
+    is-ci: ^3.0.1
     meow: ^6.0.0
     outdent: ^0.5.0
     p-limit: ^2.2.0
@@ -1485,22 +1486,22 @@ __metadata:
     tty-table: ^2.8.10
   bin:
     changeset: bin.js
-  checksum: 214a0752ccb0df059212986cf1415e10b2ae2a3416309a5990db737515ed0c914a06e078bfbc762e09009e9bb64021529778cf0a77e3509b319281586501fbcd
+  checksum: a711ad144fec04b2b7bb186b55080890802f59829a53b81af6f67830ef4fd4d0e2dd91422f1f102214cca0c76aead64c2a86741c0f83bca3448356345e6d19d3
   languageName: node
   linkType: hard
 
-"@changesets/config@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "@changesets/config@npm:1.6.1"
+"@changesets/config@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "@changesets/config@npm:1.6.3"
   dependencies:
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.2.2
+    "@changesets/get-dependents-graph": ^1.2.4
     "@changesets/logger": ^0.0.5
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     fs-extra: ^7.0.1
     micromatch: ^4.0.2
-  checksum: 55f0e0e0394f6a484074df8d0e12947eb4d878d439f84fa412d0e2e1ff87c07d4b7d9a8f07da2dadc43953fef1c8b162822dfb383d93ba3a9c0b899a9def6a8c
+  checksum: 7923efa0ee530e888d1634a3fd17ffe2716f21a09080fe04f8c703608af4d18735fcb488b4d3a9f577b0c6dc366124387a8f27371497768ab98f83131302cd7b
   languageName: node
   linkType: hard
 
@@ -1513,16 +1514,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/get-dependents-graph@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@changesets/get-dependents-graph@npm:1.2.2"
+"@changesets/get-dependents-graph@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "@changesets/get-dependents-graph@npm:1.2.4"
   dependencies:
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     chalk: ^2.1.0
     fs-extra: ^7.0.1
     semver: ^5.4.1
-  checksum: cfe762e92ac1c5f0b1f2cbd1f95c5c63736002f81976e434d86c0da74e26a3f821b3978ac94e99ed498652be979cebb409b832e50d7c28bf1578a34a7e94dfc2
+  checksum: 000adee0b3052cdcdb0b1c1f5d8c1e3cf4f6ba6ed8c1a6202c77ad052a6fc4801c01d945f0917dd6eb578d977022d7ed7ccfc2714cc1b601f9100e2128694649
   languageName: node
   linkType: hard
 
@@ -1536,18 +1537,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/get-release-plan@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@changesets/get-release-plan@npm:3.0.1"
+"@changesets/get-release-plan@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@changesets/get-release-plan@npm:3.0.4"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/assemble-release-plan": ^5.0.1
-    "@changesets/config": ^1.6.1
-    "@changesets/pre": ^1.0.7
-    "@changesets/read": ^0.5.0
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
-  checksum: 816c05a91950af12d3c8e551205f7b6926571a41f7ab22fb1d5f21eec6fadd0e742760311e4c5e630a892036beaf3329c2b4b45a3ea3b048bf00ad111ef524ec
+    "@changesets/assemble-release-plan": ^5.0.4
+    "@changesets/config": ^1.6.3
+    "@changesets/pre": ^1.0.9
+    "@changesets/read": ^0.5.2
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
+  checksum: 7f1a111f07973e608baafc6310d8d8736f866ecbc5f8c325b88300c0225901de70f7d0a1b32d84b298348f4538c188529458247db38d332f277a9b6d68fb9651
   languageName: node
   linkType: hard
 
@@ -1558,17 +1559,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/git@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "@changesets/git@npm:1.1.2"
+"@changesets/git@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@changesets/git@npm:1.2.1"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     is-subdir: ^1.1.1
     spawndamnit: ^2.0.0
-  checksum: 5677cfb7f057c7f4d0fb634e734a24ec16b12311507c3f9fec061cff9bf032778f0424e266a43afe5a514486a1e6edda50ada40a0f80c8c3b709278204efdd52
+  checksum: fd817106fb42bf0d4a38a7358ed5f604faeb0960e2239dece066e8f3ff64bfe2736aaed7556f6f274917625b2279eec1162c1b2b703e7cb6dd7dd96adac76213
   languageName: node
   linkType: hard
 
@@ -1581,62 +1582,62 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/parse@npm:^0.3.9":
-  version: 0.3.9
-  resolution: "@changesets/parse@npm:0.3.9"
+"@changesets/parse@npm:^0.3.10":
+  version: 0.3.10
+  resolution: "@changesets/parse@npm:0.3.10"
   dependencies:
-    "@changesets/types": ^4.0.1
+    "@changesets/types": ^4.0.2
     js-yaml: ^3.13.1
-  checksum: 6e6caff29bf00dd93f74e214d98fb903df304c9fcfedab61e843512cec58c8be906f2ba9c51c75a3d23b9bc7e53da8670358076fbd8bea7e0fa3e74d87299032
+  checksum: 6cc8a8baba028b2c7aef152d2080380ff98239be2daa1705657c25207a49dd471a2b11865e684537c8445d983a31c0fd89a565e2445c160b782b2f7a7207823e
   languageName: node
   linkType: hard
 
-"@changesets/pre@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@changesets/pre@npm:1.0.7"
+"@changesets/pre@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "@changesets/pre@npm:1.0.9"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/types": ^4.0.1
-    "@manypkg/get-packages": ^1.0.1
+    "@changesets/types": ^4.0.2
+    "@manypkg/get-packages": ^1.1.3
     fs-extra: ^7.0.1
-  checksum: 159a3c7ecb30749c6e3a9b9b0fa3493c573327655320014aafeae428d5ebe5bd30d4d3a59252102cb20ee7bbb1c516de0e0d2f665519e62ffa2686cf4b3b9a47
+  checksum: 3f80fcbbdc9be8167f0e0c19a9e227c062234b93d63f739a00ae532aa2054965602f5357ed3ce5755560b6774a65a564ed659a193a7021f4bbc7488a15e73b22
   languageName: node
   linkType: hard
 
-"@changesets/read@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@changesets/read@npm:0.5.0"
+"@changesets/read@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@changesets/read@npm:0.5.2"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/git": ^1.1.2
+    "@changesets/git": ^1.2.1
     "@changesets/logger": ^0.0.5
-    "@changesets/parse": ^0.3.9
-    "@changesets/types": ^4.0.1
+    "@changesets/parse": ^0.3.10
+    "@changesets/types": ^4.0.2
     chalk: ^2.1.0
     fs-extra: ^7.0.1
     p-filter: ^2.1.0
-  checksum: 1ed41827530af51d5284e94b170c361a2fa501246531bacababb6814e141250e67891f1d01bba90da8af1ce91fde48fc15c24348f869d43e82172ddd52ffe0d8
+  checksum: 9039ef8eeb29ce6f26d5ff64409bb4c304972d3fdb2c358f6b1e17f84c169c543d50ecce095db679c4eb4e3d618882e616a593b27affcbb53976d4e5a4d1ccf3
   languageName: node
   linkType: hard
 
-"@changesets/types@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@changesets/types@npm:4.0.1"
-  checksum: 6e41afd51a672710f4858eb523cee7e4da43318db05792d7d2785ebe7fad24d019c48166893ce48f2df2750cd5586e055d8466fa19b66b56ec3cb8f89ccdfdf4
+"@changesets/types@npm:^4.0.1, @changesets/types@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@changesets/types@npm:4.0.2"
+  checksum: 098ed02b44ac70dbe341ca3560acdd0ae46c54edb8a1134f743d5fa56bf983b5f4ea085b8c5187314c23ac51e51e1ca6c735aaaa3ee17d79f0395b23baf042a0
   languageName: node
   linkType: hard
 
-"@changesets/write@npm:^0.1.5":
-  version: 0.1.5
-  resolution: "@changesets/write@npm:0.1.5"
+"@changesets/write@npm:^0.1.6":
+  version: 0.1.6
+  resolution: "@changesets/write@npm:0.1.6"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/types": ^4.0.1
+    "@changesets/types": ^4.0.2
     fs-extra: ^7.0.1
     human-id: ^1.0.2
     prettier: ^1.19.1
-  checksum: 6b009453fddb2071d70afc79e84db0a4c34679124b78c4f9c3cf1e240021a8b30b210d7cdf353883173e198074eec93599db43d39d5517cd409ace8f1bd130bb
+  checksum: cd9c8e5a5d00157c95cacc3b0fafb546f553c6149dbff9351abce547bf17f5c45250e5a5ade06eaf7ff48e439117486e8ec1ec2ce65ff6ce7344e1460e68aad6
   languageName: node
   linkType: hard
 
@@ -1839,9 +1840,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@manypkg/get-packages@npm:^1.0.1":
-  version: 1.1.2
-  resolution: "@manypkg/get-packages@npm:1.1.2"
+"@manypkg/get-packages@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@manypkg/get-packages@npm:1.1.3"
   dependencies:
     "@babel/runtime": ^7.5.5
     "@changesets/types": ^4.0.1
@@ -1849,7 +1850,7 @@ __metadata:
     fs-extra: ^8.1.0
     globby: ^11.0.0
     read-yaml-file: ^1.1.0
-  checksum: 08377c7046adeab53468daf969ff55631121ab9ff625467dfd567ab5f705e30cc09a50ebb7d71200746d4e04654327ed51a3d4f1d251202e9a019d256c817a99
+  checksum: f5a756e5a659e0e1c33f48852d56826d170d5b10a3cdea89ce4fcaa77678d8799aa4004b30e1985c87b73dbc390b95bb6411b78336dd1e0db87c08c74b5c0e74
   languageName: node
   linkType: hard
 
@@ -2329,6 +2330,15 @@ __metadata:
   version: 0.0.39
   resolution: "@types/estree@npm:0.0.39"
   checksum: 412fb5b9868f2c418126451821833414189b75cc6bf84361156feed733e3d92ec220b9d74a89e52722e03d5e241b2932732711b7497374a404fad49087adc248
+  languageName: node
+  linkType: hard
+
+"@types/is-ci@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@types/is-ci@npm:3.0.0"
+  dependencies:
+    ci-info: ^3.1.0
+  checksum: 7c1f1f16c1fa2134de7400d82766c83fa76057261ba890628af77a09382ebb92d945bb077b98cfcf3d40ab1469c9ffbd2278112867edbe57aa655f53547eb139
   languageName: node
   linkType: hard
 
@@ -3495,6 +3505,13 @@ __metadata:
   version: 2.0.0
   resolution: "ci-info@npm:2.0.0"
   checksum: 3b374666a85ea3ca43fa49aa3a048d21c9b475c96eb13c133505d2324e7ae5efd6a454f41efe46a152269e9b6a00c9edbe63ec7fa1921957165aae16625acd67
+  languageName: node
+  linkType: hard
+
+"ci-info@npm:^3.1.0, ci-info@npm:^3.2.0":
+  version: 3.3.0
+  resolution: "ci-info@npm:3.3.0"
+  checksum: c3d86fe374938ecda5093b1ba39acb535d8309185ba3f23587747c6a057e63f45419b406d880304dbc0e1d72392c9a33e42fe9a1e299209bc0ded5efaa232b66
   languageName: node
   linkType: hard
 
@@ -5884,6 +5901,17 @@ __metadata:
   bin:
     is-ci: bin.js
   checksum: 77b869057510f3efa439bbb36e9be429d53b3f51abd4776eeea79ab3b221337fe1753d1e50058a9e2c650d38246108beffb15ccfd443929d77748d8c0cc90144
+  languageName: node
+  linkType: hard
+
+"is-ci@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "is-ci@npm:3.0.1"
+  dependencies:
+    ci-info: ^3.2.0
+  bin:
+    is-ci: bin.js
+  checksum: 192c66dc7826d58f803ecae624860dccf1899fc1f3ac5505284c0a5cf5f889046ffeb958fa651e5725d5705c5bcb14f055b79150ea5fcad7456a9569de60260e
   languageName: node
   linkType: hard
 

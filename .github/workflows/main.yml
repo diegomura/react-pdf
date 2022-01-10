@@ -20,6 +20,6 @@ jobs:
       - name: Install dependencies and build
         run: yarn install
       - name: Check size
-        run: yarn size
+        run: yarn --cwd packages/renderer run size
       - name: Run tests
         run: yarn test

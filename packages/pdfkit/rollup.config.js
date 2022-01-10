@@ -40,7 +40,6 @@ const babelConfig = ({ browser }) => ({
 
 const configBase = {
   input: 'src/index.js',
-  plugins: [json(), nodeResolve()],
   external: Object.keys(pkg.dependencies)
     .map(dep => (dep === 'crypto-js' ? 'crypto-js/md5' : dep))
     .concat(
@@ -63,7 +62,9 @@ const serverConfig = Object.assign({}, configBase, {
     getESM({ file: 'lib/pdfkit.es.js' }),
     getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
-  plugins: configBase.plugins.concat(
+  plugins: [
+    json(),
+    nodeResolve(),
     replace({
       preventAssignment: true,
       values: {
@@ -71,7 +72,7 @@ const serverConfig = Object.assign({}, configBase, {
       }
     }),
     babel(babelConfig({ browser: false }))
-  ),
+  ],
   external: configBase.external.concat(['fs'])
 });
 
@@ -88,8 +89,12 @@ const browserConfig = Object.assign({}, configBase, {
     getESM({ file: 'lib/pdfkit.browser.es.js' }),
     getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
-  plugins: configBase.plugins.concat(
+  plugins: [
     ignore(['fs']),
+
+    json(),
+    nodeResolve(),
+
     replace({
       preventAssignment: true,
       values: {
@@ -97,7 +102,7 @@ const browserConfig = Object.assign({}, configBase, {
       }
     }),
     babel(babelConfig({ browser: true }))
-  )
+  ]
 });
 
 const browserProdConfig = Object.assign({}, browserConfig, {

@@ -55,7 +55,7 @@ describe('pagination step', () => {
     expect(view.box.height).toBe(100);
   });
 
-  test('', () => {
+  test('should force new height for split nodes', () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -102,7 +102,7 @@ describe('pagination step', () => {
     expect(view2.box.height).not.toBe(60);
   });
 
-  test('', () => {
+  test('should force new height for split nodes with fixed height', () => {
     const root = {
       type: 'DOCUMENT',
       children: [

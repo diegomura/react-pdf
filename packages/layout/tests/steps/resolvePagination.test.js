@@ -4,8 +4,6 @@ import resolveDimensions from '../../src/steps/resolveDimensions';
 // dimensions is required by pagination step and them are calculated here
 const calcLayout = node => resolvePagination(resolveDimensions(node));
 
-console.log('RUN');
-
 describe('pagination step', () => {
   test('should stretch absolute block to full page size', () => {
     const root = {

@@ -1,7 +1,7 @@
 {
   "name": "@react-pdf/textkit",
   "license": "MIT",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "An advanced text layout framework",
   "main": "./lib/index.js",
   "repository": {
@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.16.4",
-    "@react-pdf/unicode-properties": "^2.4.2",
+    "@react-pdf/unicode-properties": "^2.5.0",
     "hyphen": "^1.6.4",
     "ramda": "^0.26.1"
   }

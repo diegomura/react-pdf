@@ -19,5 +19,7 @@ jobs:
           node-version: ${{ env.NODE }}
       - name: Install dependencies and build
         run: yarn install
+      - name: Check size
+        run: yarn --cwd packages/renderer run size
       - name: Run tests
         run: yarn test

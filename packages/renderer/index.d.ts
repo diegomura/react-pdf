@@ -497,7 +497,7 @@ declare namespace ReactPDF {
     document: React.ReactElement<DocumentProps>,
   ) => Promise<NodeJS.ReadableStream>;
 
-  const renderToString: (document: React.ReactElement<DocumentProps>) => string;
+  const renderToString: (document: React.ReactElement<DocumentProps>) => Promise<string>;
 
   const renderToFile: (
     document: React.ReactElement<DocumentProps>,

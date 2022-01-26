@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/font",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "license": "MIT",
   "description": "Register font and emoji source for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

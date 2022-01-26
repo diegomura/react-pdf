@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.4",
-    "@react-pdf/font": "^2.1.0",
-    "@react-pdf/layout": "^2.1.0",
+    "@react-pdf/font": "^2.1.1",
+    "@react-pdf/layout": "^2.1.1",
     "@react-pdf/pdfkit": "^2.1.0",
     "@react-pdf/primitives": "^2.0.2",
     "@react-pdf/render": "^2.1.0",

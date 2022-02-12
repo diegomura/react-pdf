@@ -93,7 +93,7 @@ const parseProps = container =>
 
 const mergeStyles = node => {
   const style = node.style || {};
-  return R.evolve({ props: R.merge(style) }, node);
+  return R.evolve({ props: R.mergeRight(style) }, node);
 };
 
 const removeNoneValues = R.evolve({
@@ -103,7 +103,7 @@ const removeNoneValues = R.evolve({
 const pickStyleProps = node => {
   const props = node.props || {};
   const styleProps = R.pick(STYLE_PROPS, props);
-  return R.evolve({ style: R.merge(styleProps) }, node);
+  return R.evolve({ style: R.mergeRight(styleProps) }, node);
 };
 
 const parseSvgProps = R.evolve({

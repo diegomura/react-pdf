@@ -38,8 +38,8 @@ const getCharFactor = (direction, options) => {
   const shrinkCharFactor = R.propOr({}, 'shrinkCharFactor', options);
 
   return direction === 'GROW'
-    ? R.merge(EXPAND_CHAR_FACTOR, expandCharFactor)
-    : R.merge(SHRINK_CHAR_FACTOR, shrinkCharFactor);
+    ? R.mergeRight(EXPAND_CHAR_FACTOR, expandCharFactor)
+    : R.mergeRight(SHRINK_CHAR_FACTOR, shrinkCharFactor);
 };
 
 const getWhitespaceFactor = (direction, options) => {
@@ -55,8 +55,8 @@ const getWhitespaceFactor = (direction, options) => {
   );
 
   return direction === 'GROW'
-    ? R.merge(EXPAND_WHITESPACE_FACTOR, expandWhitespaceFactor)
-    : R.merge(SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
+    ? R.mergeRight(EXPAND_WHITESPACE_FACTOR, expandWhitespaceFactor)
+    : R.mergeRight(SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
 };
 
 const factor = (direction, options) => glyphs => {

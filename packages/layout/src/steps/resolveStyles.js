@@ -18,7 +18,7 @@ const LINK_STYLES = {
  */
 const resolveNodeStyles = container => node =>
   R.o(
-    R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
+    R.when(isLink, R.evolve({ style: R.mergeRight(LINK_STYLES) })),
     R.evolve({
       style: stylesheet(container),
       children: R.map(resolveNodeStyles(container)),

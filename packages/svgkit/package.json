@@ -23,6 +23,6 @@
   "dependencies": {
     "@babel/runtime": "^7.16.4",
     "@react-pdf/pdfkit": "^2.1.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.28.0"
   }
 }

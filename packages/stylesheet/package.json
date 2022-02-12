@@ -23,7 +23,7 @@
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",
     "postcss-value-parser": "^4.1.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.28.0"
   },
   "files": [
     "lib"

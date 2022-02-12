@@ -13,7 +13,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^2.0.6",
     "camelcase": "^6.2.0",
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "peerDependencies": {
     "react": "^16.8.6 || ^17.0.0",

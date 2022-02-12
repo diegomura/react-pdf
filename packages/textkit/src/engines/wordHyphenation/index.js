@@ -9,7 +9,7 @@ const splitHyphen = R.split(SOFT_HYPHEN);
 const cache = {};
 
 const getParts = R.ifElse(
-  R.contains(SOFT_HYPHEN),
+  R.includes(SOFT_HYPHEN),
   splitHyphen,
   R.o(splitHyphen, hyphenator),
 );

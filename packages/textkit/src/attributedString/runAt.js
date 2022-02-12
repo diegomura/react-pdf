@@ -10,7 +10,7 @@ import runIndexAt from './runIndexAt';
  * @return {Object} run
  */
 const runAt = (n, attributedString) => {
-  const runIndex = runIndexAt(n)(attributedString);
+  const runIndex = R.max(runIndexAt(n)(attributedString))(null);
   return R.path(['runs', runIndex])(attributedString);
 };
 

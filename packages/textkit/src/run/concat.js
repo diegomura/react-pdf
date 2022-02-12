@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import length from './length';
 import normalizeIndices from '../indices/normalize';
 
-const reverseMerge = R.flip(R.merge);
+const reverseMerge = R.flip(R.mergeRight);
 const reverseConcat = R.flip(R.concat);
 
 /**

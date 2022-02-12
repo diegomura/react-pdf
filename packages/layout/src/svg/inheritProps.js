@@ -43,7 +43,7 @@ const inheritProps = node => {
       R.compose(
         inheritProps,
         R.evolve({
-          props: R.merge(props),
+          props: R.mergeRight(props),
         }),
       ),
     ),

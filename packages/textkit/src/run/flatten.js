@@ -6,7 +6,7 @@ import isEmpty from './isEmpty';
 const sortPoints = (a, b) => a[1] - b[1] || a[3] - b[3];
 
 const mergeAttributes = (key, left, right) =>
-  key === 'attributes' ? R.merge(left, right) : right;
+  key === 'attributes' ? R.mergeRight(left, right) : right;
 
 const generatePoints = R.o(
   R.sort(sortPoints),
@@ -38,7 +38,7 @@ const flattenRegularRuns = runs => {
 
     if (type === 'start') {
       stack.push(attributes);
-      attrs = R.merge(attrs, attributes);
+      attrs = R.mergeRight(attrs, attributes);
     } else {
       attrs = {};
 
@@ -47,7 +47,7 @@ const flattenRegularRuns = runs => {
           // eslint-disable-next-line no-plusplus
           stack.splice(j--, 1);
         } else {
-          attrs = R.merge(attrs, stack[j]);
+          attrs = R.mergeRight(attrs, stack[j]);
         }
       }
     }

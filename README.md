@@ -35,6 +35,7 @@ Webpack 5 doesn't include node shims automatically anymore and we must opt-in to
 
 ```sh
 yarn add process browserify-zlib stream-browserify util buffer assert
+yarn add -D imports-loader
 ```
 
 after the modules are installed, we need to adjust our `webpack.config` file:
@@ -55,11 +56,19 @@ module.exports = {
       asset: require.resolve("assert"),
     }
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      Buffer: ["buffer", "Buffer"],
-      process: "process/browser",
-    }),
+  rules: [
+    {
+      test: /restructure\/src\/[^w].js/,
+      use: [
+        {
+          loader: "imports-loader",
+          options: {
+            type: "commonjs",
+            imports: "multiple ../../buffer/ Buffer Buffer",
+          },
+        },
+      ],
+    }
   ]
 
   /* ... */

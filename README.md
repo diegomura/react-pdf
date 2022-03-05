@@ -58,7 +58,7 @@ module.exports = {
   },
   rules: [
     {
-      test: /restructure\/src\/[^w].js/,
+      test: /restructure(\/|\\)src(\/|\\)[\w]+.js/,
       use: [
         {
           loader: "imports-loader",

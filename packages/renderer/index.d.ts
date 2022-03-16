@@ -27,6 +27,9 @@ declare namespace ReactPDF {
     producer?: string;
     language?: string;
     pdfVersion?: PDFVersion;
+    metadata?: {
+      [key: string]: string;
+    };
     onRender?: (props: OnRenderProps) => any;
   }
 

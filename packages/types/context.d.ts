@@ -24,6 +24,7 @@ interface DocumentInfo {
   Author?: string;
   Keywords?: string;
   ModDate?: Date;
+  [key: string]: string | Date;
 }
 
 interface PageOption {

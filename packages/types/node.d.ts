@@ -42,6 +42,7 @@ interface DocumentProps {
   keywords?: string;
   creator?: string;
   producer?: string;
+  [key: string]: string;
 }
 
 interface TextInstanceNode {

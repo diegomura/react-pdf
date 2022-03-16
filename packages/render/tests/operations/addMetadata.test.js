@@ -112,6 +112,24 @@ describe('operations addMetadata', () => {
     expect(ctx.info.Producer).toBe('test');
   });
 
+  test('should add custom metadata if provided', () => {
+    const ctx = createCTX();
+    const doc = { type: P.Document, props: { metadata: { CustomParam: 'myCustomValue' } } };
+
+    addMetadata(ctx, doc);
+
+    expect(ctx.info.CustomParam).toBe('myCustomValue');
+  });
+
+  test('should not replace original metadata if custom metadata was provided', () => {
+    const ctx = createCTX();
+    const doc = { type: P.Document, props: { producer: 'original', metadata: { Producer: 'replaced' } } };
+
+    addMetadata(ctx, doc);
+
+    expect(ctx.info.Producer).toBe('original');
+  });
+
   test('should return passed node', () => {
     const ctx = createCTX();
     const doc = { type: P.Document };

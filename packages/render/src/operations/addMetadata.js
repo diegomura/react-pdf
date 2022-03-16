@@ -26,6 +26,12 @@ const addMetadata = (ctx, doc) => {
   const creator = getProp('react-pdf', 'creator');
   const producer = getProp('react-pdf', 'producer');
 
+  if (doc.props && doc.props.metadata) {
+    Object.keys(doc.props.metadata).forEach((metakey) => {
+      setProp(metakey, doc.props.metadata[metakey]);
+    });
+  }
+
   setProp('Title', title);
   setProp('Author', author);
   setProp('Subject', subject);

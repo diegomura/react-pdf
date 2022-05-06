@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isEllipse from '../../src/utils/isEllipse';
 
 const ASSERTED_TYPE = P.Ellipse;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is ellipse util', () => {
   PRIMITIVES.forEach(type => {

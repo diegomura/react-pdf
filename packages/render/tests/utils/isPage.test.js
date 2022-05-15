@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isPage from '../../src/utils/isPage';
 
 const ASSERTED_TYPE = P.Page;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is page util', () => {
   PRIMITIVES.forEach(type => {

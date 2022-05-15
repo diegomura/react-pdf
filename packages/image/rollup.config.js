@@ -1,35 +1,34 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 
 import pkg from './package.json';
 
 const external = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
   '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+  '@babel/runtime/regenerator',
   ...Object.keys(pkg.dependencies),
 ];
 
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
       {
         loose: true,
         modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+        ...(browser
+          ? { targets: { browsers: 'last 2 versions' } }
+          : { targets: { node: '12' } }),
       },
     ],
-    '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });
@@ -46,7 +45,10 @@ const serverConfig = {
   plugins: [
     sourceMaps(),
     babel(babelConfig({ browser: false })),
-    replace({ BROWSER: JSON.stringify(false) }),
+    replace({
+      preventAssignment: true,
+      values: { BROWSER: JSON.stringify(false) },
+    }),
   ],
 };
 
@@ -62,8 +64,10 @@ const browserConfig = {
   plugins: [
     sourceMaps(),
     babel(babelConfig({ browser: true })),
-    replace({ BROWSER: JSON.stringify(true) }),
-    ,
+    replace({
+      preventAssignment: true,
+      values: { BROWSER: JSON.stringify(true) },
+    }),
     ignore(['fs', 'path', 'url']),
   ],
 };

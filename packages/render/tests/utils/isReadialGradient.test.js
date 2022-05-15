@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isRadialGradient from '../../src/utils/isRadialGradient';
 
 const ASSERTED_TYPE = P.RadialGradient;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is radial gradient util', () => {
   PRIMITIVES.forEach(type => {

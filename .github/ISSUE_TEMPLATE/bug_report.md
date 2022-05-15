@@ -17,7 +17,7 @@ Steps to reproduce the behavior including code snippet (if applies):
 3. Scroll down to '....'
 4. See error
 
-_You can make use of [react-pdf REPL](https://react-pdf/repl) to share the snippet_
+_You can make use of [react-pdf REPL](https://react-pdf.org/repl) to share the snippet_
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

@@ -1,9 +1,11 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import localResolve from 'rollup-plugin-local-resolve';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import pkg from './package.json';
 
 const cjs = {
@@ -21,7 +23,7 @@ const getESM = override => Object.assign({}, es, override);
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
@@ -34,12 +36,20 @@ const babelConfig = ({ browser }) => ({
       },
     ],
   ],
+  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
 });
 
 const configBase = {
   input: 'src/index.js',
   plugins: [localResolve(), json()],
-  external: ['restructure/src/utils'].concat(Object.keys(pkg.dependencies)),
+  external: Object.keys(pkg.dependencies).concat(
+    'restructure/src/utils',
+    '@babel/runtime/helpers/createForOfIteratorHelperLoose',
+    '@babel/runtime/helpers/createClass',
+    '@babel/runtime/helpers/applyDecoratedDescriptor',
+    '@babel/runtime/helpers/inheritsLoose',
+    '@babel/runtime/helpers/defineProperty',
+  ),
 };
 
 const serverConfig = Object.assign({}, configBase, {
@@ -50,7 +60,10 @@ const serverConfig = Object.assign({}, configBase, {
   plugins: configBase.plugins.concat(
     babel(babelConfig({ browser: false })),
     replace({
-      BROWSER: JSON.stringify(false),
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(false),
+      },
     }),
   ),
   external: configBase.external.concat(['fs', 'brotli/decompress']),
@@ -69,13 +82,31 @@ const browserConfig = Object.assign({}, configBase, {
     getESM({ file: 'lib/fontkit.browser.es.js' }),
     getCJS({ file: 'lib/fontkit.browser.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: true })),
-    replace({
-      BROWSER: JSON.stringify(true),
-    }),
+  external: configBase.external
+    .filter(dep => dep !== 'dfa')
+    .concat(
+      '@babel/runtime/regenerator',
+      '@babel/runtime/helpers/createClass',
+      '@babel/runtime/helpers/applyDecoratedDescriptor',
+      '@babel/runtime/helpers/defineProperty',
+      '@babel/runtime/helpers/inheritsLoose',
+    ),
+  plugins: [
     ignore(['fs', 'brotli', 'brotli/decompress', './WOFF2Font']),
-  ),
+    replace({
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(true),
+      },
+    }),
+
+    json(),
+
+    resolve({ browser: true }),
+    commonjs({ include: /node_modules/ }),
+
+    babel(babelConfig({ browser: true })),
+  ],
 });
 
 const browserProdConfig = Object.assign({}, browserConfig, {

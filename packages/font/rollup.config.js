@@ -1,5 +1,5 @@
-import babel from 'rollup-plugin-babel';
-import replace from 'rollup-plugin-replace';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 
 import pkg from './package.json';
@@ -15,20 +15,21 @@ const external = [
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
+  babelHelpers: 'runtime',
   presets: [
     [
       '@babel/preset-env',
       {
         loose: true,
         modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
+        ...(browser
+          ? { targets: { browsers: 'last 2 versions' } }
+          : { targets: { node: '12' } }),
       },
     ],
-    '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });
@@ -37,7 +38,10 @@ const getPlugins = ({ browser }) => [
   sourceMaps(),
   babel(babelConfig({ browser })),
   replace({
-    BROWSER: JSON.stringify(browser),
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser),
+    },
   }),
 ];
 

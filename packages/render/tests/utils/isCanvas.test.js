@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 import isCanvas from '../../src/utils/isCanvas';
 
 const ASSERTED_TYPE = P.Canvas;
-const PRIMITIVES = Object.keys(P.default);
+const PRIMITIVES = Object.keys(P);
 
 describe('is canvas util', () => {
   PRIMITIVES.forEach(type => {

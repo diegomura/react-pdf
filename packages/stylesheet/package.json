@@ -1,21 +1,28 @@
 {
   "name": "@react-pdf/stylesheet",
-  "version": "2.0.11",
+  "version": "2.1.0",
   "license": "MIT",
+  "description": "A styles engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/stylesheet"
+  },
   "scripts": {
     "test": "jest",
     "build": "rimraf ./lib && babel src --out-dir lib",
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "@react-pdf/types": "^2.0.5",
+    "@babel/runtime": "^7.16.4",
+    "@react-pdf/types": "^2.0.8",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",
+    "postcss-value-parser": "^4.1.0",
     "ramda": "^0.26.1"
   },
   "files": [

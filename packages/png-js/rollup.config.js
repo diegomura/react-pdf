@@ -1,6 +1,6 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
 const cjs = {
@@ -17,10 +17,11 @@ const getESM = override => Object.assign({}, esm, override);
 
 const configBase = {
   input: 'src/index.js',
+  external: ['zlib'],
   plugins: [
     babel({
       babelrc: false,
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       exclude: 'node_modules/**',
       presets: [
         [
@@ -32,6 +33,7 @@ const configBase = {
           },
         ],
       ],
+      plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
     }),
   ],
 };
@@ -43,7 +45,10 @@ const serverConfig = Object.assign({}, configBase, {
   ],
   plugins: configBase.plugins.concat(
     replace({
-      BROWSER: JSON.stringify(false),
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(false),
+      },
     }),
   ),
   external: ['fs'],
@@ -64,8 +69,11 @@ const browserConfig = Object.assign({}, configBase, {
   ],
   plugins: configBase.plugins.concat(
     replace({
-      BROWSER: JSON.stringify(true),
-      'png-js': 'png-js/png.js',
+      preventAssignment: true,
+      values: {
+        BROWSER: JSON.stringify(true),
+        'png-js': 'png-js/png.js',
+      },
     }),
     ignore(['fs']),
   ),

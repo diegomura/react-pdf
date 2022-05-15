@@ -24,10 +24,12 @@ const splitNode = (node, height) => {
       borderBottomRightRadius: zero,
     }),
     box: {
-      height: R.always(height - nodeTop),
       borderBottomWidth: zero,
     },
   })(node);
+
+  // TODO: force height without style mutation
+  current.style.height = height - nodeTop;
 
   const nextHeight = R.ifElse(
     hasFixedHeight,
@@ -46,10 +48,14 @@ const splitNode = (node, height) => {
     }),
     box: {
       top: zero,
-      height: R.always(nextHeight),
       borderTopWidth: zero,
     },
   })(node);
+
+  // TODO: force height without style mutation
+  if (nextHeight) {
+    next.style.height = nextHeight;
+  }
 
   return [current, next];
 };

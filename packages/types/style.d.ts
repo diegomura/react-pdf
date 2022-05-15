@@ -12,6 +12,7 @@ export interface Style {
   flexShrink?: number;
   flexBasis?: number | string;
   justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between' | 'space-evenly';
+  order?: number;
 
   // Layout
 
@@ -22,6 +23,7 @@ export interface Style {
   right?: number | string;
   top?: number | string;
   overflow?: 'hidden';
+  zIndex?: number | string;
 
   // Dimension
 

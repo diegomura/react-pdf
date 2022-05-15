@@ -335,9 +335,12 @@ export default class OTProcessor {
   }
 
   applyContext(table) {
+
+    let index;
+
     switch (table.version) {
       case 1:
-        let index = this.coverageIndex(table.coverage);
+        index = this.coverageIndex(table.coverage);
         if (index === -1) {
           return false;
         }
@@ -382,9 +385,11 @@ export default class OTProcessor {
   }
 
   applyChainingContext(table) {
+    let index;
+
     switch (table.version) {
       case 1:
-        let index = this.coverageIndex(table.coverage);
+        index = this.coverageIndex(table.coverage);
         if (index === -1) {
           return false;
         }

@@ -1,13 +1,10 @@
-import * as R from 'ramda';
 import { TextInstance } from '@react-pdf/primitives';
 
-import castArray from '../utils/castArray';
+import castArray from '../../../fns/castArray';
 
-const isString = R.is(String);
+const isString = value => typeof value === 'string';
 
-const isNumber = R.is(Number);
-
-const isNotString = R.complement(isString);
+const isNumber = value => typeof value === 'number';
 
 /**
  * Transforms a react element instance to internal element format
@@ -21,7 +18,7 @@ const createInstance = element => {
   if (isString(element) || isNumber(element))
     return { type: TextInstance, value: `${element}` };
 
-  if (isNotString(element.type))
+  if (!isString(element.type))
     return createInstance(element.type(element.props));
 
   const {
@@ -29,7 +26,7 @@ const createInstance = element => {
     props: { style = {}, children = [], ...props },
   } = element;
 
-  const nextChildren = R.compose(R.map(createInstance), castArray)(children);
+  const nextChildren = castArray(children).map(createInstance);
 
   return {
     type,

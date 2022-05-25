@@ -1,7 +1,16 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-import upperFirst from '../utils/upperFirst';
+import upperFirst from '../../../fns/upperFirst';
+
+const ALIGN = {
+  'flex-start': Yoga.ALIGN_FLEX_START,
+  center: Yoga.ALIGN_CENTER,
+  'flex-end': Yoga.ALIGN_FLEX_END,
+  stretch: Yoga.ALIGN_STRETCH,
+  baseline: Yoga.ALIGN_BASELINE,
+  'space-between': Yoga.ALIGN_SPACE_BETWEEN,
+  'space-around': Yoga.ALIGN_SPACE_AROUND,
+};
 
 /**
  * Set generic align attribute to node's Yoga instance
@@ -11,27 +20,17 @@ import upperFirst from '../utils/upperFirst';
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setAlign = attr => value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setAlign = attr => value => node => {
+  const yogaNode = node._yogaNode;
+  const defaultValue = attr === 'items' ? Yoga.ALIGN_STRETCH : Yoga.ALIGN_AUTO;
 
-    if (yogaNode) {
-      const yogaValue = R.cond([
-        [R.equals('flex-start'), R.always(Yoga.ALIGN_FLEX_START)],
-        [R.equals('center'), R.always(Yoga.ALIGN_CENTER)],
-        [R.equals('flex-end'), R.always(Yoga.ALIGN_FLEX_END)],
-        [R.equals('stretch'), R.always(Yoga.ALIGN_STRETCH)],
-        [R.equals('baseline'), R.always(Yoga.ALIGN_BASELINE)],
-        [R.equals('space-between'), R.always(Yoga.ALIGN_SPACE_BETWEEN)],
-        [R.equals('space-around'), R.always(Yoga.ALIGN_SPACE_AROUND)],
-        [
-          R.T,
-          R.always(attr === 'items' ? Yoga.ALIGN_STRETCH : Yoga.ALIGN_AUTO),
-        ],
-      ])(value);
+  if (yogaNode) {
+    const align = ALIGN[value] || defaultValue;
 
-      yogaNode[`setAlign${upperFirst(attr)}`](yogaValue);
-    }
-  });
+    yogaNode[`setAlign${upperFirst(attr)}`](align);
+  }
+
+  return node;
+};
 
 export default setAlign;

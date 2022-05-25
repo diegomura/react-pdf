@@ -1,12 +1,9 @@
 /* eslint-disable no-unused-expressions */
-
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-import upperFirst from '../utils/upperFirst';
-import matchPercent from '../utils/matchPercent';
-
-const isNotNil = R.complement(R.isNil);
+import isNil from '../../../fns/isNil';
+import upperFirst from '../../../fns/upperFirst';
+import matchPercent from '../../../fns/matchPercent';
 
 /**
  * Set generic yoga attribute to node's Yoga instance, handing `auto`, edges and percentage cases
@@ -20,8 +17,8 @@ const isNotNil = R.complement(R.isNil);
 const setYogaValue = (attr, edge) => value => node => {
   const yogaNode = node._yogaNode;
 
-  if (!R.isNil(value) && yogaNode) {
-    const hasEdge = isNotNil(edge);
+  if (!isNil(value) && yogaNode) {
+    const hasEdge = !isNil(edge);
     const fixedMethod = `set${upperFirst(attr)}`;
     const autoMethod = `${fixedMethod}Auto`;
     const percentMethod = `${fixedMethod}Percent`;

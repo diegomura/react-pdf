@@ -1,7 +1,8 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
-const isType = R.propEq('type');
+import compose from '../../../fns/compose';
+
+const isType = type => node => node.type === type;
 
 const isLink = isType(P.Link);
 
@@ -15,7 +16,7 @@ const isTextInstance = isType(P.TextInstance);
  * @param {Object} node
  * @returns {Boolean} has render prop?
  */
-const hasRenderProp = R.hasPath(['props', 'render']);
+const hasRenderProp = node => !!node.props?.render;
 
 /**
  * Checks if node is text type (Text or TextInstance)
@@ -23,7 +24,7 @@ const hasRenderProp = R.hasPath(['props', 'render']);
  * @param {Object} node
  * @returns {Boolean} are all children text instances?
  */
-const isTextType = R.either(isText, isTextInstance);
+const isTextType = node => isText(node) || isTextInstance(node);
 
 /**
  * Checks if is tet link that needs to be wrapped in Text
@@ -58,7 +59,7 @@ const wrapText = node => {
     children: node.children,
   };
 
-  return R.assoc('children', [textElement], node);
+  return Object.assign({}, node, { children: [textElement] });
 };
 
 const transformLink = node => {
@@ -66,7 +67,7 @@ const transformLink = node => {
 
   // If has render prop substitute the instance by a Text, that will
   // ultimately render the inline Link via the textkit PDF renderer.
-  if (hasRenderProp(node)) return R.assoc('type', P.Text, node);
+  if (hasRenderProp(node)) return Object.assign({}, node, { type: P.Text });
 
   // If is a text link (either contains Text or TextInstalce), wrap it
   // inside a Text element so styles are applied correctly
@@ -83,9 +84,13 @@ const transformLink = node => {
  * @returns {Object} node with link substitution
  */
 const resolveLinkSubstitution = node => {
-  const resolveChild = R.compose(transformLink, resolveLinkSubstitution);
+  if (!node.children) return node;
 
-  return R.evolve({ children: R.map(resolveChild) })(node);
+  const resolveChild = compose(transformLink, resolveLinkSubstitution);
+
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
 };
 
 export default resolveLinkSubstitution;

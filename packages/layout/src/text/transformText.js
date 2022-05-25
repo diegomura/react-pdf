@@ -1,5 +1,5 @@
-import capitalize from '../utils/capitalize';
-import upperFirst from '../utils/upperFirst';
+import capitalize from '../../../fns/capitalize';
+import upperFirst from '../../../fns/upperFirst';
 
 /**
  * Apply transformation to text string

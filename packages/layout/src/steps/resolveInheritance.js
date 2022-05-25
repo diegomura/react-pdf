@@ -1,5 +1,7 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
+
+import pick from '../../../fns/pick';
+import compose from '../../../fns/compose';
 
 const INHERITED_PROPERTIES = [
   'color',
@@ -17,18 +19,7 @@ const INHERITED_PROPERTIES = [
   'wordSpacing',
 ];
 
-const isSvg = R.propEq('type', P.Svg);
-
-/**
- * Get styles sub group of inherited properties
- *
- * @param {Object} style object
- * @returns {Object} style object only with inherited properties
- */
-const getInheritStyles = R.compose(
-  R.pick(INHERITED_PROPERTIES),
-  R.propOr({}, 'style'),
-);
+const isSvg = node => node.type === P.Svg;
 
 // Merge style values
 const mergeValues = (styleName, value, inheritedValue) => {
@@ -64,10 +55,10 @@ const merge = (inheritedStyles, style) => {
  * @param {Object} node
  * @returns {Object} node with styles merged
  */
-const mergeStyles = inheritedStyles =>
-  R.evolve({
-    style: style => merge(inheritedStyles, style),
-  });
+const mergeStyles = inheritedStyles => node => {
+  const style = merge(inheritedStyles, node.style || {});
+  return Object.assign({}, node, { style });
+};
 
 /**
  * Inherit style values from the root to the leafs
@@ -78,14 +69,15 @@ const mergeStyles = inheritedStyles =>
  */
 const resolveInheritance = node => {
   if (isSvg(node)) return node;
+  if (!node.children) return node;
 
-  const inheritStyles = getInheritStyles(node);
-  const resolveChild = R.compose(
-    resolveInheritance,
-    mergeStyles(inheritStyles),
-  );
+  const inheritStyles = pick(INHERITED_PROPERTIES, node.style || {});
 
-  return R.evolve({ children: R.map(resolveChild) })(node);
+  const resolveChild = compose(resolveInheritance, mergeStyles(inheritStyles));
+
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
 };
 
 export default resolveInheritance;

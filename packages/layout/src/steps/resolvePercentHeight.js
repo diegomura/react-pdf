@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
-import matchPercent from '../utils/matchPercent';
+import isNil from '../../../fns/isNil';
+import matchPercent from '../../../fns/matchPercent';
 
 /**
  * Transform percent height into fixed
@@ -8,7 +7,7 @@ import matchPercent from '../utils/matchPercent';
  * @param {String | number} height
  * @return {number} height
  */
-const transformHeight = pageArea => height => {
+const transformHeight = (pageArea, height) => {
   const match = matchPercent(height);
   return match ? match.percent * pageArea : height;
 };
@@ -20,19 +19,12 @@ const transformHeight = pageArea => height => {
  * @return {number} page area
  */
 const getPageArea = page => {
-  const pageHeight = R.path(['style', 'height'], page);
-  const pagePaddingTop = R.pathOr(0, ['style', 'paddingTop'], page);
-  const pagePaddingBottom = R.pathOr(0, ['style', 'paddingBottom'], page);
+  const pageHeight = page.style.height;
+  const pagePaddingTop = page.style?.paddingTop || 0;
+  const pagePaddingBottom = page.style?.paddingBottom || 0;
+
   return pageHeight - pagePaddingTop - pagePaddingBottom;
 };
-
-/**
- * Checks if page has height
- *
- * @param {Object} page
- * @return {boolean} page has height
- */
-const hasHeight = R.hasPath(['style', 'height']);
 
 /**
  * Transform node percent height to fixed
@@ -41,13 +33,15 @@ const hasHeight = R.hasPath(['style', 'height']);
  * @param {Object} node
  * @return {Object} transformed node
  */
-const resolveNodePercentHeight = page => node => {
-  if (hasHeight(page)) {
-    const pageArea = getPageArea(page);
-    return R.evolve({ style: { height: transformHeight(pageArea) } })(node);
-  }
+const resolveNodePercentHeight = (page, node) => {
+  if (isNil(page.style?.height)) return node;
+  if (isNil(node.style?.height)) return node;
 
-  return node;
+  const pageArea = getPageArea(page);
+  const height = transformHeight(pageArea, node.style.height);
+  const style = Object.assign({}, node.style, { height });
+
+  return Object.assign({}, node, { style });
 };
 
 /**
@@ -56,10 +50,14 @@ const resolveNodePercentHeight = page => node => {
  * @param {Object} page
  * @return {Object} transformed page
  */
-const resolvePagePercentHeight = page =>
-  R.evolve({
-    children: R.map(resolveNodePercentHeight(page)),
-  })(page);
+const resolvePagePercentHeight = page => {
+  if (!page.children) return page;
+
+  const resolveChild = child => resolveNodePercentHeight(page, child);
+  const children = page.children.map(resolveChild);
+
+  return Object.assign({}, page, { children });
+};
 
 /**
  * Transform all page immediate children with percent height to fixed.
@@ -68,8 +66,12 @@ const resolvePagePercentHeight = page =>
  * @param {Object} document root
  * @return {Object} transformed document root
  */
-const resolvePercentHeight = R.evolve({
-  children: R.map(resolvePagePercentHeight),
-});
+const resolvePercentHeight = root => {
+  if (!root.children) return root;
+
+  const children = root.children.map(resolvePagePercentHeight);
+
+  return Object.assign({}, root, { children });
+};
 
 export default resolvePercentHeight;

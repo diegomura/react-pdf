@@ -1,7 +1,13 @@
-const omit = (key, object) => {
+import castArray from './castArray';
+
+const omit = (keys, object) => {
+  const _keys = castArray(keys);
+
   const copy = Object.assign({}, object);
 
-  delete copy[key];
+  _keys.forEach(key => {
+    delete copy[key];
+  });
 
   return copy;
 };

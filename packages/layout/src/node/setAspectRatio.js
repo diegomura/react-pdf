@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import isNil from '../../../fns/isNil';
 
 /**
  * Set aspect ratio attribute to node's Yoga instance
@@ -10,7 +10,7 @@ import * as R from 'ramda';
 const setAspectRatio = value => node => {
   const yogaNode = node._yogaNode;
 
-  if (!R.isNil(value) && yogaNode) {
+  if (!isNil(value) && yogaNode) {
     yogaNode.setAspectRatio(value);
   }
 

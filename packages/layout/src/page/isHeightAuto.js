@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import isNil from '../../../fns/isNil';
 
 /**
  * Checks if page has auto height
@@ -6,6 +6,6 @@ import * as R from 'ramda';
  * @param {Object} page
  * @returns {Boolean} is page height auto
  */
-const isHeightAuto = R.pathSatisfies(R.isNil, ['box', 'height']);
+const isHeightAuto = page => isNil(page.box?.height);
 
 export default isHeightAuto;

@@ -1,8 +1,8 @@
-import * as R from 'ramda';
+import isNil from '../../../fns/isNil';
+import matchPercent from '../../../fns/matchPercent';
 
-import matchPercent from '../utils/matchPercent';
-
-const getTransformStyle = s => R.pathOr('50%', ['style', s]);
+const getTransformStyle = s => node =>
+  isNil(node.style?.[s]) ? '50%' : node.style?.[s];
 
 /**
  * Get node origin

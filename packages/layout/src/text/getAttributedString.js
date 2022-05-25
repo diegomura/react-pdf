@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 import fromFragments from '@react-pdf/textkit/lib/attributedString/fromFragments';
 
@@ -8,11 +7,9 @@ import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const isType = R.propEq('type');
+const isImage = node => node.type === P.Image;
 
-const isImage = isType(P.Image);
-
-const isTextInstance = isType(P.TextInstance);
+const isTextInstance = node => node.type === P.TextInstance;
 
 /**
  * Get textkit fragments of given node object
@@ -122,4 +119,4 @@ const getAttributedString = (fontStore, instance) => {
   return fromFragments(fragments);
 };
 
-export default R.curryN(2, getAttributedString);
+export default getAttributedString;

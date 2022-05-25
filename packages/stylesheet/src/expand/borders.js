@@ -1,8 +1,6 @@
-import * as R from 'ramda';
-
 const BORDER_SHORTHAND_REGEX = /(-?\d+(\.\d+)?(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(.+)/;
 
-const matchBorderShorthand = R.match(BORDER_SHORTHAND_REGEX);
+const matchBorderShorthand = value => value.match(BORDER_SHORTHAND_REGEX) || [];
 
 const expandBorders = (key, value) => {
   const match = matchBorderShorthand(`${value}`);

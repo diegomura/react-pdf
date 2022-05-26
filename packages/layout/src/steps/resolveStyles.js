@@ -20,7 +20,7 @@ const resolveNodeStyles = container => node =>
   R.o(
     R.when(isLink, R.evolve({ style: R.merge(LINK_STYLES) })),
     R.evolve({
-      style: stylesheet(container),
+      style: value => stylesheet(container, value),
       children: R.map(resolveNodeStyles(container)),
     }),
   )(node);
@@ -37,7 +37,7 @@ const resolvePageStyles = page => {
   const container = R.isEmpty(box) ? style : box;
 
   return R.evolve({
-    style: stylesheet(container),
+    style: value => stylesheet(container, value),
     children: R.map(resolveNodeStyles(container)),
   })(page);
 };

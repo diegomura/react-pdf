@@ -21,7 +21,7 @@ const appendGlyph = (glyph, run) => {
   return R.evolve({
     end: R.add(glyphLength),
     glyphs: R.append(glyph),
-    glyphIndices: appendIndices(glyphLength),
+    glyphIndices: indices => appendIndices(glyphLength, indices),
     positions: R.append({ xAdvance: glyph.advanceWidth * runScale }),
   })(run);
 };

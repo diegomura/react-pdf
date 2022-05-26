@@ -20,7 +20,7 @@ const prependGlyph = (glyph, run) => {
 
   return R.evolve({
     end: R.add(glyphLength),
-    glyphIndices: prependIndices(glyphLength),
+    glyphIndices: value => prependIndices(glyphLength, value),
     glyphs: R.prepend(glyph),
     positions: R.prepend({ xAdvance: glyph.advanceWidth * runScale }),
   })(run);

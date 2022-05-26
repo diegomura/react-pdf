@@ -2,7 +2,6 @@ import * as R from 'ramda';
 
 import copyRect from '../rect/copy';
 import cropRect from '../rect/crop';
-import sliceBlock from '../block/slice';
 import blockHeight from '../block/height';
 import truncateBlock from '../block/truncate';
 import layoutParagraph from './layoutParagraph';
@@ -31,7 +30,7 @@ const typesetter = (engines, options, container, attributedStrings) => {
 
   while (linesCount > 0 && nextParagraph) {
     const block = layoutBlock(paragraphRect, nextParagraph);
-    const slicedBlock = sliceBlock(linesCount, block);
+    const slicedBlock = block.slice(0, linesCount);
     const linesHeight = blockHeight(slicedBlock);
 
     const shouldTruncate =

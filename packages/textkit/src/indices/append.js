@@ -1,4 +1,5 @@
-import * as R from 'ramda';
+import last from '../../../fns/last';
+import isNil from '../../../fns/isNil';
 
 /**
  * Append glyph indices with given length
@@ -9,16 +10,12 @@ import * as R from 'ramda';
  * @param  {Array}  glyph indices
  * @return {Array}  extended glyph indices
  */
-const appendIndices = (length, indices) =>
-  R.converge(R.concat, [
-    R.identity,
-    R.converge(R.repeat, [
-      R.either(
-        R.o(R.inc, R.last), // Value should be last plus 1
-        R.always(0), // Or zero if inserting at beggining
-      ),
-      R.always(length),
-    ]),
-  ])(indices);
+const appendIndices = (length, indices) => {
+  const lastIndex = last(indices);
+  const value = isNil(lastIndex) ? 0 : lastIndex + 1;
+  const newIndices = Array(length).fill(value);
 
-export default R.curryN(2, appendIndices);
+  return indices.concat(newIndices);
+};
+
+export default appendIndices;

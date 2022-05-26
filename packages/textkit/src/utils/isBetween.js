@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Checks if number is between two values (upper non-inclusive)
  *
@@ -8,6 +6,8 @@ import * as R from 'ramda';
  * @param  {number}  predicate value
  * @return {Function} is between invoker
  */
-const isBetween = (a, b, c) => R.both(R.o(R.gte(c), a), R.o(R.lt(c), b));
+const isBetween = (a, b, c) => (...args) => {
+  return a(...args) <= c && c < b(...args);
+};
 
-export default R.curryN(3, isBetween);
+export default isBetween;

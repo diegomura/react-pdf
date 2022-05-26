@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
-import AttributedString from '@react-pdf/textkit/lib/attributedString';
+import fromFragments from '@react-pdf/textkit/lib/attributedString/fromFragments';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
@@ -119,7 +119,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
  */
 const getAttributedString = (fontStore, instance) => {
   const fragments = getFragments(fontStore, instance);
-  return AttributedString.fromFragments(fragments);
+  return fromFragments(fragments);
 };
 
 export default R.curryN(2, getAttributedString);

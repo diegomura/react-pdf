@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import runIndexAt from './runIndexAt';
 
 /**
@@ -12,9 +10,9 @@ import runIndexAt from './runIndexAt';
  */
 const filter = (start, end, runs) => {
   const startIndex = runIndexAt(start, runs);
-  const endIndex = R.max(runIndexAt(end - 1, runs), startIndex);
+  const endIndex = Math.max(runIndexAt(end - 1, runs), startIndex);
 
-  return R.slice(startIndex, endIndex + 1, runs);
+  return runs.slice(startIndex, endIndex + 1);
 };
 
-export default R.curryN(3, filter);
+export default filter;

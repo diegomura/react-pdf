@@ -20,7 +20,7 @@ const append = (glyph, string) => {
       R.init,
       R.compose(
         R.unapply(R.identity),
-        appendToRun(glyph),
+        v => appendToRun(glyph, v),
         R.either(R.last, emptyRun),
       ),
     ]),

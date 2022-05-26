@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import copy from './copy';
 import scale from './scale';
 import getFont from './getFont';
@@ -15,15 +13,19 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  * @return {Object} run with glyph
  */
 const appendGlyph = (glyph, run) => {
-  const runScale = scale(run);
-  const glyphLength = R.length(glyph.codePoints);
+  const glyphLength = glyph.codePoints?.length || 0;
+  const end = run.end + glyphLength;
+  const glyphs = run.glyphs.concat(glyph);
+  const glyphIndices = appendIndices(glyphLength, run.glyphIndices);
 
-  return R.evolve({
-    end: R.add(glyphLength),
-    glyphs: R.append(glyph),
-    glyphIndices: indices => appendIndices(glyphLength, indices),
-    positions: R.append({ xAdvance: glyph.advanceWidth * runScale }),
-  })(run);
+  if (!run.positions)
+    return Object.assign({}, run, { end, glyphs, glyphIndices });
+
+  const positions = run.positions.concat({
+    xAdvance: glyph.advanceWidth * scale(run),
+  });
+
+  return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
 };
 
 /**
@@ -42,4 +44,4 @@ const append = (value, run) => {
   return appendGlyph(glyph, run);
 };
 
-export default R.curryN(2, append);
+export default append;

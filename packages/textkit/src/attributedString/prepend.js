@@ -23,7 +23,10 @@ const prepend = (glyph, attributedString) => {
       prependToRun(glyph),
       R.either(R.head, emptyRun),
     ),
-    R.compose(R.map(addToRun(codePoints.length)), R.tail),
+    R.compose(
+      R.map(v => addToRun(codePoints.length, v)),
+      R.tail,
+    ),
   ])(attributedString.runs);
 
   return Object.assign({}, attributedString, { runs, string });

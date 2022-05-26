@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import positionsAdvanceWidth from '../positions/advanceWidth';
 
 /**
  * Return run advance width
@@ -6,9 +6,8 @@ import * as R from 'ramda';
  * @param  {Object}  run
  * @return {number} advance width
  */
-const advanceWidth = R.compose(
-  R.reduce(R.useWith(R.add, [R.identity, R.propOr(0, 'xAdvance')]), 0),
-  R.propOr([], 'positions'),
-);
+const advanceWidth = run => {
+  return positionsAdvanceWidth(run.positions || []);
+};
 
 export default advanceWidth;

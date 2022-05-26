@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import last from '../../../fns/last';
 import runTrailingOffset from '../run/trailingOffset';
 
 /**
@@ -8,10 +7,10 @@ import runTrailingOffset from '../run/trailingOffset';
  * @param  {Object}  attributed string
  * @return {number} trailing white space offset
  */
-const trailingOffset = R.compose(
-  runTrailingOffset,
-  R.last,
-  R.propOr([], 'runs'),
-);
+const trailingOffset = attributedString => {
+  const runs = attributedString.runs || [];
+
+  return runTrailingOffset(last(runs));
+};
 
 export default trailingOffset;

@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import * as R from 'ramda';
 
+import last from '../../../../fns/last';
 import empty from '../../attributedString/empty';
 
 const getFontSize = R.pathOr(12, ['attributes', 'fontSize']);
@@ -56,7 +57,7 @@ const fontSubstitution = (options, attributedString) => {
   }
 
   if (lastIndex < string.length) {
-    const fontSize = getFontSize(R.last(runs));
+    const fontSize = getFontSize(last(runs));
 
     res.push({
       start: lastIndex,
@@ -71,4 +72,4 @@ const fontSubstitution = (options, attributedString) => {
   return { string, runs: res };
 };
 
-export default R.curryN(2, fontSubstitution);
+export default fontSubstitution;

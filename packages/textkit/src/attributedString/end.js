@@ -1,15 +1,14 @@
-import * as R from 'ramda';
+import last from '../../../fns/last';
 
 /**
  * Get attributed string end value
  *
- * @param  {Object}  glyph string
+ * @param  {Object}  attributed string
  * @return {number} end
  */
-const end = R.ifElse(
-  R.pathEq(['runs', 'length'], 0),
-  R.always(0),
-  R.compose(R.prop('end'), R.last, R.prop('runs')),
-);
+const end = attributedString => {
+  const { runs } = attributedString;
+  return runs.length === 0 ? 0 : last(runs).end;
+};
 
 export default end;

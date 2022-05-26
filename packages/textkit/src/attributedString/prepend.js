@@ -12,20 +12,21 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {Object} attributed string
  * @return {Object} attributed string with new glyph
  */
-const prepend = (glyph, string) => {
-  const codePoints = R.propOr([], 'codePoints')(glyph);
+const prepend = (glyph, attributedString) => {
+  const codePoints = glyph?.codePoints || [];
 
-  return R.evolve({
-    string: R.concat(stringFromCodePoints(codePoints)),
-    runs: R.converge(R.concat, [
-      R.compose(
-        R.unapply(R.identity),
-        prependToRun(glyph),
-        R.either(R.head, emptyRun),
-      ),
-      R.compose(R.map(addToRun(codePoints.length)), R.tail),
-    ]),
-  })(string);
+  const string = stringFromCodePoints(codePoints) + attributedString.string;
+
+  const runs = R.converge(R.concat, [
+    R.compose(
+      R.unapply(R.identity),
+      prependToRun(glyph),
+      R.either(R.head, emptyRun),
+    ),
+    R.compose(R.map(addToRun(codePoints.length)), R.tail),
+  ])(attributedString.runs);
+
+  return Object.assign({}, attributedString, { runs, string });
 };
 
 export default R.curryN(2, prepend);

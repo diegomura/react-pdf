@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import reduce from './reduce';
 import runAscent from '../run/ascent';
 
 /**
@@ -9,6 +6,9 @@ import runAscent from '../run/ascent';
  * @param {Object} attributed string
  * @return {number} ascent
  */
-const ascent = reduce(R.max, runAscent);
+const ascent = attributeString => {
+  const reducer = (acc, run) => Math.max(acc, runAscent(run));
+  return attributeString.runs.reduce(reducer, 0);
+};
 
 export default ascent;

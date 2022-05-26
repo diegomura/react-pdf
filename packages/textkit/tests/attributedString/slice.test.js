@@ -13,7 +13,7 @@ describe('attributeString slice operator', () => {
   test('should slice with one run', () => {
     const runs = [{ start: 0, end: 11, attributes: { attr: 1 } }];
     const string = { string: testString, runs };
-    const sliced = slice(2, 8)(string);
+    const sliced = slice(2, 8, string);
 
     expect(sliced.string).toBe('rem ip');
     expect(sliced.runs[0]).toHaveProperty('start', 0);
@@ -23,7 +23,7 @@ describe('attributeString slice operator', () => {
 
   test('should slice with two runs', () => {
     const string = { string: testString, runs: testRuns };
-    const splittedString = slice(2, 8)(string);
+    const splittedString = slice(2, 8, string);
 
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
@@ -41,7 +41,7 @@ describe('attributeString slice operator', () => {
       { start: 6, end: 11, attributes: { attr: 3 } },
     ];
     const string = { string: testString, runs };
-    const splittedString = slice(2, 8)(string);
+    const splittedString = slice(2, 8, string);
 
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
@@ -57,7 +57,7 @@ describe('attributeString slice operator', () => {
 
   test('should ignore unnecesary leading runs when slice', () => {
     const string = { string: testString, runs: testRuns };
-    const splittedString = slice(6, 11)(string);
+    const splittedString = slice(6, 11, string);
 
     expect(splittedString.runs.length).toBe(1);
     expect(splittedString.string).toBe('ipsum');
@@ -68,7 +68,7 @@ describe('attributeString slice operator', () => {
 
   test('should ignore unnecesary trailing runs when slice', () => {
     const string = { string: testString, runs: testRuns };
-    const splittedString = slice(1, 6)(string);
+    const splittedString = slice(1, 6, string);
 
     expect(splittedString.runs.length).toBe(1);
     expect(splittedString.string).toBe('orem ');
@@ -101,7 +101,7 @@ describe('attributeString slice operator', () => {
     ];
 
     const string = { string: 'Lorem', runs, sylables: [] };
-    const sliced = slice(1, 4)(string);
+    const sliced = slice(1, 4, string);
 
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1, 2]);
     expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114, 101]);
@@ -133,7 +133,7 @@ describe('attributeString slice operator', () => {
       },
     ];
     const string = { string: 'Lorem', runs };
-    const sliced = slice(1, 4)(string);
+    const sliced = slice(1, 4, string);
 
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
     expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114]);
@@ -167,7 +167,7 @@ describe('attributeString slice operator', () => {
     ];
 
     const string = { string: 'Lofim', runs, sylables: [] };
-    const sliced = slice(1, 3)(string);
+    const sliced = slice(1, 3, string);
 
     expect(sliced).toHaveProperty('string', 'of');
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
@@ -198,7 +198,7 @@ describe('attributeString slice operator', () => {
     ];
 
     const string = { string: 'Lofim', runs, sylables: [] };
-    const sliced = slice(3, 5)(string);
+    const sliced = slice(3, 5, string);
 
     expect(sliced).toHaveProperty('string', 'im');
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);

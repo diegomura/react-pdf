@@ -15,7 +15,6 @@ import insertGlyph from './insertGlyph';
 import leadingOffset from './leadingOffset';
 import length from './length';
 import prepend from './prepend';
-import reduce from './reduce';
 import runAt from './runAt';
 import runIndexAt from './runIndexAt';
 import slice from './slice';
@@ -42,7 +41,6 @@ export default {
   leadingOffset,
   length,
   prepend,
-  reduce,
   runAt,
   runIndexAt,
   slice,

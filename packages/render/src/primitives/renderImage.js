@@ -1,11 +1,7 @@
-import * as R from 'ramda';
-
-import save from '../operations/save';
-import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
-const drawImage = ctx => node => {
+const drawImage = (ctx, node) => {
   const { left, top } = node.box;
   const opacity = node.style?.opacity;
   const objectFit = node.style?.objectFit;
@@ -45,14 +41,15 @@ const drawImage = ctx => node => {
       );
     }
   }
-
-  return node;
 };
 
 const renderImage = (ctx, node) => {
-  R.compose(restore(ctx), drawImage(ctx), clipNode(ctx), save(ctx))(node);
+  ctx.save();
 
-  return node;
+  clipNode(ctx, node);
+  drawImage(ctx, node);
+
+  ctx.restore();
 };
 
-export default R.curryN(2, renderImage);
+export default renderImage;

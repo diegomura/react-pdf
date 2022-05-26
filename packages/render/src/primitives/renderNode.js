@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import * as P from '@react-pdf/primitives';
 import renderSvg from './renderSvg';
 import renderText from './renderText';
 import renderPage from './renderPage';
@@ -9,62 +8,61 @@ import renderDebug from './renderDebug';
 import renderCanvas from './renderCanvas';
 import renderBorders from './renderBorders';
 import renderBackground from './renderBackground';
-import isSvg from '../utils/isSvg';
-import isLink from '../utils/isLink';
-import isPage from '../utils/isPage';
-import isNote from '../utils/isNote';
-import isText from '../utils/isText';
-import isImage from '../utils/isImage';
-import isCanvas from '../utils/isCanvas';
-import save from '../operations/save';
 import setLink from '../operations/setLink';
-import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 
-const shouldRenderChildren = v => !isText(v) && !isSvg(v);
+const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg;
 
-const isOverflowHidden = R.pathEq(['style', 'overflow'], 'hidden');
-
-const renderChildren = ctx => node => {
-  save(ctx, node);
+const renderChildren = (ctx, node) => {
+  ctx.save();
 
   if (node.box) {
     ctx.translate(node.box.left, node.box.top);
   }
 
   const children = node.children || [];
-  const renderChild = renderNode(ctx);
+  const renderChild = child => renderNode(ctx, child);
 
   children.forEach(renderChild);
 
-  restore(ctx, node);
-
-  return node;
+  ctx.restore();
 };
 
-const renderNode = ctx => node =>
-  R.compose(
-    restore(ctx),
-    renderDebug(ctx),
-    setDestination(ctx),
-    R.when(shouldRenderChildren, renderChildren(ctx)),
-    R.when(isLink, setLink(ctx)),
-    R.cond([
-      [isText, renderText(ctx)],
-      [isNote, renderNote(ctx)],
-      [isImage, renderImage(ctx)],
-      [isCanvas, renderCanvas(ctx)],
-      [isSvg, renderSvg(ctx)],
-      [R.T, R.identity],
-    ]),
-    renderBorders(ctx),
-    renderBackground(ctx),
-    transform(ctx),
-    R.when(isOverflowHidden, clipNode(ctx)),
-    save(ctx),
-    R.when(isPage, renderPage(ctx)),
-  )(node);
+const renderFns = {
+  [P.Text]: renderText,
+  [P.Note]: renderNote,
+  [P.Image]: renderImage,
+  [P.Canvas]: renderCanvas,
+  [P.Svg]: renderSvg,
+  [P.Link]: setLink,
+};
+
+const renderNode = (ctx, node) => {
+  const overflowHidden = node.style?.overflow === 'hidden';
+  const shouldRenderChildren = isRecursiveNode(node);
+
+  if (node.type === P.Page) renderPage(ctx, node);
+
+  ctx.save();
+
+  if (overflowHidden) clipNode(ctx, node);
+
+  transform(ctx, node);
+  renderBackground(ctx, node);
+  renderBorders(ctx, node);
+
+  const renderFn = renderFns[node.type];
+
+  if (renderFn) renderFn(ctx, node);
+
+  if (shouldRenderChildren) renderChildren(ctx, node);
+
+  setDestination(ctx, node);
+  renderDebug(ctx, node);
+
+  ctx.restore();
+};
 
 export default renderNode;

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-import * as R from 'ramda';
 import runHeight from '@react-pdf/textkit/lib/run/height';
 import runDescent from '@react-pdf/textkit/lib/run/descent';
 import advanceWidth from '@react-pdf/textkit/lib/run/advanceWidth';
@@ -8,6 +7,7 @@ import ascent from '@react-pdf/textkit/lib/attributedString/ascent';
 
 import renderGlyphs from './renderGlyphs';
 import parseColor from '../utils/parseColor';
+import isNil from '../../../fns/isNil';
 
 const DEST_REGEXP = /^#.+/;
 
@@ -53,7 +53,9 @@ const renderAttachments = (ctx, run) => {
 const renderRun = (ctx, run, options) => {
   const { font, fontSize, link } = run.attributes;
   const color = parseColor(run.attributes.color);
-  const opacity = R.defaultTo(color.opacity, run.attributes.opacity);
+  const opacity = isNil(run.attributes.opacity)
+    ? color.opacity
+    : run.attributes.opacity;
 
   const height = runHeight(run);
   const descent = runDescent(run);
@@ -222,8 +224,8 @@ const renderBlock = (ctx, block, options) => {
 const renderText = (ctx, node) => {
   const { top, left } = node.box;
   const blocks = [node.lines];
-  const paddingTop = R.pathOr(0, ['box', 'paddingTop'], node);
-  const paddingLeft = R.pathOr(0, ['box', 'paddingLeft'], node);
+  const paddingTop = node.box?.paddingTop || 0;
+  const paddingLeft = node.box?.paddingLeft || 0;
   const initialY = node.lines[0] ? node.lines[0].box.y : 0;
   const offsetX = node.alignOffset || 0;
 
@@ -235,8 +237,6 @@ const renderText = (ctx, node) => {
   });
 
   ctx.restore();
-
-  return node;
 };
 
-export default R.curryN(2, renderText);
+export default renderText;

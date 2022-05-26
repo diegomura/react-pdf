@@ -1,18 +1,14 @@
-import * as R from 'ramda';
-
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
-const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
+const renderRect = (ctx, node) => {
+  const x = node.props?.x || 0;
+  const y = node.props?.y || 0;
+  const rx = node.props?.rx || 0;
+  const ry = node.props?.ry || 0;
+  const width = node.props?.width || 0;
+  const height = node.props?.height || 0;
 
-const renderRect = ctx => node => {
-  const x = getProp(0, 'x', node);
-  const y = getProp(0, 'y', node);
-  const rx = getProp(0, 'rx', node);
-  const ry = getProp(0, 'ry', node);
-  const width = getProp(0, 'width', node);
-  const height = getProp(0, 'height', node);
-
-  if (!width || !height) return node;
+  if (!width || !height) return;
 
   if (rx && ry) {
     const krx = rx * KAPPA;
@@ -56,8 +52,6 @@ const renderRect = ctx => node => {
   }
 
   ctx.closePath();
-
-  return node;
 };
 
 export default renderRect;

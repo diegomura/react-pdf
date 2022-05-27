@@ -25,7 +25,7 @@ const wrapWords = (engines = {}, options = {}, attributedString) => {
 
   const hyphenateWord =
     options.hyphenationCallback ||
-    (engines.wordHyphenation && engines.wordHyphenation(options)) ||
+    engines.wordHyphenation?.(options) ||
     defaultHyphenationEngine;
 
   for (let i = 0; i < attributedString.runs.length; i += 1) {

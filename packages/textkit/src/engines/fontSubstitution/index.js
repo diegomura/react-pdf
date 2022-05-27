@@ -1,10 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-import * as R from 'ramda';
 
 import last from '../../../../fns/last';
 import empty from '../../attributedString/empty';
 
-const getFontSize = R.pathOr(12, ['attributes', 'fontSize']);
+const getFontSize = value => value.attributes.fontSize || 12;
 
 /**
  * Resolve font runs in an AttributedString, grouping equal
@@ -14,7 +13,7 @@ const getFontSize = R.pathOr(12, ['attributes', 'fontSize']);
  * @param  {Object}  attributed string
  * @return {Object} attributed string
  */
-const fontSubstitution = (options, attributedString) => {
+const fontSubstitution = () => attributedString => {
   const { string, runs } = attributedString;
 
   let lastFont = null;

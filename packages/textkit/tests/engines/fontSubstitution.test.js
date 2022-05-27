@@ -1,9 +1,11 @@
 import empty from '../../src/attributedString/empty';
 import fontSubstitution from '../../src/engines/fontSubstitution';
 
+const instance = fontSubstitution({});
+
 describe('FontSubstitution', () => {
   test('should return empty array if no runs passed', () => {
-    const string = fontSubstitution({}, empty());
+    const string = instance(empty());
 
     expect(string).toHaveProperty('runs', []);
     expect(string).toHaveProperty('string', '');
@@ -11,7 +13,7 @@ describe('FontSubstitution', () => {
 
   test('should return empty array for empty string', () => {
     const run = { start: 0, end: 0, attributes: {} };
-    const string = fontSubstitution({}, { string: '', runs: [run] });
+    const string = instance({ string: '', runs: [run] });
 
     expect(string).toHaveProperty('runs', []);
     expect(string).toHaveProperty('string', '');
@@ -20,10 +22,7 @@ describe('FontSubstitution', () => {
   test('should merge consecutive runs with same font', () => {
     const run1 = { start: 0, end: 3, attributes: { font: 'Helvetica' } };
     const run2 = { start: 3, end: 5, attributes: { font: 'Helvetica' } };
-    const string = fontSubstitution(
-      {},
-      { string: 'Lorem', runs: [run1, run2] },
-    );
+    const string = instance({ string: 'Lorem', runs: [run1, run2] });
 
     expect(string).toHaveProperty('string', 'Lorem');
     expect(string.runs).toHaveLength(1);
@@ -34,10 +33,7 @@ describe('FontSubstitution', () => {
   test('should substitute many runs', () => {
     const run1 = { start: 0, end: 3, attributes: { font: 'Courier' } };
     const run2 = { start: 3, end: 5, attributes: { font: 'Helvetica' } };
-    const string = fontSubstitution(
-      {},
-      { string: 'Lorem', runs: [run1, run2] },
-    );
+    const string = instance({ string: 'Lorem', runs: [run1, run2] });
 
     expect(string).toHaveProperty('string', 'Lorem');
     expect(string.runs).toHaveLength(2);

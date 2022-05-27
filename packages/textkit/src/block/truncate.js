@@ -1,7 +1,6 @@
-import * as R from 'ramda';
-
-import append from '../attributedString/append';
+import last from '../../../fns/last';
 import trim from '../attributedString/trim';
+import append from '../attributedString/append';
 
 const ELLIPSIS_UNICODE = 8230;
 const ELLIPSIS_STRING = String.fromCharCode(ELLIPSIS_UNICODE);
@@ -28,14 +27,16 @@ const getEllipsisCodePoint = font => {
  * @return {Object} sliced paragraph block
  */
 const truncate = block => {
-  const runs = R.propOr([], 'runs', R.last(block));
-  const font = R.path(['attributes', 'font'], R.last(runs));
+  const runs = last(block)?.runs || [];
+  const font = last(runs)?.attributes?.font;
 
   if (font) {
+    const index = block.length - 1;
     const codePoint = getEllipsisCodePoint(font);
     const glyph = font.glyphForCodePoint(codePoint);
+    const lastBlock = append(glyph, trim(block[index]));
 
-    return R.adjust(-1, R.compose(append(glyph), trim))(block);
+    return Object.assign([], block, { [index]: lastBlock });
   }
 
   return block;

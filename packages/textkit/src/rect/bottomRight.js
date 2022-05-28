@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import maxX from './maxX';
 import maxY from './maxY';
 
@@ -9,9 +7,6 @@ import maxY from './maxY';
  * @param  {Object}  rect
  * @return {number} bottom right point
  */
-const bottomRight = R.applySpec({
-  x: maxX,
-  y: maxY,
-});
+const bottomRight = rect => ({ x: maxX(rect), y: maxY(rect) });
 
 export default bottomRight;

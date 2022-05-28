@@ -7,27 +7,27 @@ const runs = [
 
 describe('run runIndexAt operator', () => {
   test('should get index at start of first run', () => {
-    const result = runIndexAt(0)(runs);
+    const result = runIndexAt(0, runs);
     expect(result).toBe(0);
   });
 
   test('should get index at end of first run', () => {
-    const result = runIndexAt(5)(runs);
+    const result = runIndexAt(5, runs);
     expect(result).toBe(0);
   });
 
   test('should get index at start of last run', () => {
-    const result = runIndexAt(6)(runs);
+    const result = runIndexAt(6, runs);
     expect(result).toBe(1);
   });
 
   test('should get index at end of last run', () => {
-    const result = runIndexAt(11)(runs);
+    const result = runIndexAt(11, runs);
     expect(result).toBe(1);
   });
 
   test('should get -1 at invalid index', () => {
-    const result = runIndexAt(12)(runs);
+    const result = runIndexAt(12, runs);
     expect(result).toBe(-1);
   });
 });

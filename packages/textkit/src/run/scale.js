@@ -1,21 +1,16 @@
-import * as R from 'ramda';
-
-const unitsPerEm = ['font', 'unitsPerEm'];
-
 /**
  * Calculate run scale
  *
  * @param  {Object}  run
  * @return {number} scale
  */
-const calculateScale = R.compose(
-  R.ifElse(
-    R.compose(R.not, R.isNil, R.path(unitsPerEm)),
-    R.converge(R.divide, [R.propOr(12, 'fontSize'), R.path(unitsPerEm)]),
-    R.always(0),
-  ),
-  R.propOr({}, 'attributes'),
-);
+const calculateScale = run => {
+  const attributes = run.attributes || {};
+  const fontSize = attributes.fontSize || 12;
+  const unitsPerEm = attributes.font?.unitsPerEm;
+
+  return unitsPerEm ? fontSize / unitsPerEm : 0;
+};
 
 /**
  * Get run scale
@@ -23,6 +18,8 @@ const calculateScale = R.compose(
  * @param  {Object}  run
  * @return {number} scale
  */
-const scale = R.either(R.path(['attributes', 'scale']), calculateScale);
+const scale = run => {
+  return run.attributes?.scale || calculateScale(run);
+};
 
 export default scale;

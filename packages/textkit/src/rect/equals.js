@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Check if two rect are equal
  *
@@ -8,6 +6,10 @@ import * as R from 'ramda';
  * @return {Boolean} rects are equal
  *
  */
-const { equals } = R;
+const equals = (a, b) => {
+  return (
+    a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
+  );
+};
 
 export default equals;

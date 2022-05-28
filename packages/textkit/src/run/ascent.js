@@ -1,12 +1,4 @@
-import * as R from 'ramda';
-
 import scale from './scale';
-
-const getFontAscent = R.ifElse(
-  R.has('attributes'),
-  R.pathOr(0, ['attributes', 'font', 'ascent']),
-  R.always(0),
-);
 
 /**
  * Get run ascent
@@ -14,9 +6,11 @@ const getFontAscent = R.ifElse(
  * @param  {Object}  run
  * @return {boolean} ascent
  */
-const ascent = R.converge(R.max, [
-  R.pathOr(0, ['attributes', 'attachment', 'height']),
-  R.converge(R.multiply, [scale, getFontAscent]),
-]);
+const ascent = run => {
+  const attachmentHeight = run.attributes?.attachment?.height || 0;
+  const fontAscent = run.attributes?.font?.ascent || 0;
+
+  return Math.max(attachmentHeight, fontAscent * scale(run));
+};
 
 export default ascent;

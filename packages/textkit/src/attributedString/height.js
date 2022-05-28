@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import reduce from './reduce';
 import runHeight from '../run/height';
 
 /**
@@ -9,6 +6,9 @@ import runHeight from '../run/height';
  * @param {Object} attributed string
  * @return {number} height
  */
-const height = reduce(R.max, runHeight);
+const height = attributeString => {
+  const reducer = (acc, run) => Math.max(acc, runHeight(run));
+  return attributeString.runs.reduce(reducer, 0);
+};
 
 export default height;

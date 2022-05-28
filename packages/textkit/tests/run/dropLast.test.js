@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import pluck from '../internal/pluck';
 import dropLast from '../../src/run/dropLast';
 
 describe('run dropLast operator', () => {
@@ -27,7 +26,7 @@ describe('run dropLast operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 4);
-    expect(R.pluck('id', result.glyphs)).toEqual([76, 111, 82, 74]);
+    expect(pluck('id', result.glyphs)).toEqual([76, 111, 82, 74]);
   });
 
   test('should correctly drop last position', () => {
@@ -46,7 +45,7 @@ describe('run dropLast operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 4);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([6, 7, 8, 9]);
+    expect(pluck('xAdvance', result.positions)).toEqual([6, 7, 8, 9]);
   });
 
   test('should correctly drop last glyph index', () => {

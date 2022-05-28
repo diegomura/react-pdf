@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 /**
  * Clone rect
  *
  * @param  {Object}  rect
  * @return {Object} cloned rect
  */
-const copy = R.clone;
+const copy = rect => Object.assign({}, rect);
 
 export default copy;

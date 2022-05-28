@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import copyRun from '../run/copy';
 
 /**
@@ -8,10 +6,9 @@ import copyRun from '../run/copy';
  * @param  {Object}  attributed string
  * @return {Object} cloned attributed string
  */
-const copy = R.evolve({
-  string: R.identity,
-  syllables: R.identity,
-  runs: R.map(copyRun),
-});
+const copy = attributeString => {
+  const runs = attributeString.runs.map(copyRun);
+  return Object.assign({}, attributeString, { runs });
+};
 
 export default copy;

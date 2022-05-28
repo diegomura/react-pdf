@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import isWhiteSpace from '../../glyph/isWhiteSpace';
 
 const WHITESPACE_PRIORITY = 1;
@@ -34,29 +32,21 @@ const SHRINK_CHAR_FACTOR = {
 };
 
 const getCharFactor = (direction, options) => {
-  const expandCharFactor = R.propOr({}, 'expandCharFactor', options);
-  const shrinkCharFactor = R.propOr({}, 'shrinkCharFactor', options);
+  const expandCharFactor = options.expandCharFactor || {};
+  const shrinkCharFactor = options.shrinkCharFactor || {};
 
   return direction === 'GROW'
-    ? R.merge(EXPAND_CHAR_FACTOR, expandCharFactor)
-    : R.merge(SHRINK_CHAR_FACTOR, shrinkCharFactor);
+    ? Object.assign({}, EXPAND_CHAR_FACTOR, expandCharFactor)
+    : Object.assign({}, SHRINK_CHAR_FACTOR, shrinkCharFactor);
 };
 
 const getWhitespaceFactor = (direction, options) => {
-  const expandWhitespaceFactor = R.propOr(
-    {},
-    'expandWhitespaceFactor',
-    options,
-  );
-  const shrinkWhitespaceFactor = R.propOr(
-    {},
-    'shrinkWhitespaceFactor',
-    options,
-  );
+  const expandWhitespaceFactor = options.expandWhitespaceFactor || {};
+  const shrinkWhitespaceFactor = options.shrinkWhitespaceFactor || {};
 
   return direction === 'GROW'
-    ? R.merge(EXPAND_WHITESPACE_FACTOR, expandWhitespaceFactor)
-    : R.merge(SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
+    ? Object.assign({}, EXPAND_WHITESPACE_FACTOR, expandWhitespaceFactor)
+    : Object.assign({}, SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
 };
 
 const factor = (direction, options) => glyphs => {
@@ -69,7 +59,7 @@ const factor = (direction, options) => glyphs => {
     const glyph = glyphs[index];
 
     if (isWhiteSpace(glyph)) {
-      f = R.clone(whitespaceFactor);
+      f = Object.assign({}, whitespaceFactor);
 
       if (index === glyphs.length - 1) {
         f.before = 0;
@@ -79,11 +69,11 @@ const factor = (direction, options) => glyphs => {
         }
       }
     } else if (glyph.isMark && index > 0) {
-      f = R.clone(factors[index - 1]);
+      f = Object.assign({}, factors[index - 1]);
       f.before = 0;
       factors[index - 1].after = 0;
     } else {
-      f = R.clone(charFactor);
+      f = Object.assign({}, charFactor);
     }
 
     factors.push(f);
@@ -96,17 +86,14 @@ const getFactors = (gap, line, options) => {
   const direction = gap > 0 ? 'GROW' : 'SHRINK';
   const getFactor = factor(direction, options);
 
-  const concatFactors = R.useWith(R.concat, [
-    R.identity,
-    R.compose(getFactor, R.prop('glyphs')),
-  ]);
+  const factors = line.runs.reduce((acc, run) => {
+    return acc.concat(getFactor(run.glyphs));
+  }, []);
 
-  return R.compose(
-    R.adjust(-1, R.assoc('after', 0)),
-    R.adjust(0, R.assoc('before', 0)),
-    R.reduce(concatFactors, []),
-    R.prop('runs'),
-  )(line);
+  factors[0].before = 0;
+  factors[factors.length - 1].after = 0;
+
+  return factors;
 };
 
 export default getFactors;

@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import runLeadingOffset from '../run/leadingOffset';
 
 /**
@@ -8,6 +6,10 @@ import runLeadingOffset from '../run/leadingOffset';
  * @param  {Object}  attributed string
  * @return {number} leading white space offset
  */
-const leadingOffset = R.compose(runLeadingOffset, R.head, R.propOr([], 'runs'));
+const leadingOffset = attributedString => {
+  const runs = attributedString.runs || [];
+
+  return runLeadingOffset(runs[0]);
+};
 
 export default leadingOffset;

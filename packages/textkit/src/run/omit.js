@@ -1,14 +1,15 @@
-import * as R from 'ramda';
-
 /**
  * Omit attribute from run
  *
  * @param  {Object}  run
  * @return {Object} run without ommited attribute
  */
-const omit = (value, run) =>
-  R.evolve({
-    attributes: R.dissoc(value),
-  })(run);
+const omit = (value, run) => {
+  const attributes = Object.assign({}, run.attributes);
 
-export default R.curryN(2, omit);
+  delete attributes[value];
+
+  return Object.assign({}, run, { attributes });
+};
+
+export default omit;

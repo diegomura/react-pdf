@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import bestFit from './bestFit';
 import linebreak from './linebreak';
 import slice from '../../attributedString/slice';
@@ -107,7 +105,8 @@ const getNodes = (attributedString, { align }, options) => {
   return result;
 };
 
-const getStyles = R.pathOr({}, ['attributedString', 'runs', 0, 'attributes']);
+const getStyles = attributedString =>
+  attributedString.runs?.[0]?.attributes || {};
 
 /**
  * Performs Knuth & Plass line breaking algorithm
@@ -118,7 +117,7 @@ const getStyles = R.pathOr({}, ['attributedString', 'runs', 0, 'attributes']);
  * @param {Object} attributed string
  * @return {Array} attributed strings
  */
-const lineBreaker = (options, attributedString, availableWidths) => {
+const linebreaker = options => (attributedString, availableWidths) => {
   let tolerance = options.tolerance || 4;
 
   const style = getStyles(attributedString);
@@ -142,4 +141,4 @@ const lineBreaker = (options, attributedString, availableWidths) => {
   return breakLines(attributedString, nodes, breaks.slice(1));
 };
 
-export default R.curryN(3, lineBreaker);
+export default linebreaker;

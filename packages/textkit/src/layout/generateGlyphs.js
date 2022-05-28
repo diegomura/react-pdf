@@ -1,9 +1,7 @@
-import * as R from 'ramda';
-
 import scale from '../run/scale';
 import resolveGlyphIndices from '../indices/resolve';
 
-const getCharacterSpacing = R.pathOr(0, ['attributes', 'characterSpacing']);
+const getCharacterSpacing = run => run.attributes?.characterSpacing || 0;
 
 /**
  * Scale run positions
@@ -13,24 +11,20 @@ const getCharacterSpacing = R.pathOr(0, ['attributes', 'characterSpacing']);
  * @return {Array} scaled positions
  */
 const scalePositions = (run, positions) => {
-  const multScale = R.multiply(scale(run));
+  const runScale = scale(run);
   const characterSpacing = getCharacterSpacing(run);
 
-  const scalePosition = R.evolve({
-    xAdvance: R.o(R.add(characterSpacing), multScale),
-    yAdvance: multScale,
-    xOffset: multScale,
-    yOffset: multScale,
-  });
+  return positions.map((position, i) => {
+    const isLast = i === positions.length;
+    const xSpacing = isLast ? 0 : characterSpacing;
 
-  const subCharacterSpacing = R.evolve({
-    xAdvance: R.subtract(R.__, characterSpacing),
+    return Object.assign({}, position, {
+      xAdvance: position.xAdvance * runScale + xSpacing,
+      yAdvance: position.yAdvance * runScale,
+      xOffset: position.xOffset * runScale,
+      yOffset: position.yOffset * runScale,
+    });
   });
-
-  return R.compose(
-    R.adjust(-1, subCharacterSpacing),
-    R.map(scalePosition),
-  )(positions);
 };
 
 /**
@@ -67,9 +61,9 @@ const layoutRun = string => run => {
  * @param  {Array}  attributed strings
  * @return {Array} attributed string with glyphs
  */
-const generateGlyphs = () => attributedString =>
-  R.evolve({
-    runs: R.map(layoutRun(attributedString.string)),
-  })(attributedString);
+const generateGlyphs = () => attributedString => {
+  const runs = attributedString.runs.map(layoutRun(attributedString.string));
+  return Object.assign({}, attributedString, { runs });
+};
 
 export default generateGlyphs;

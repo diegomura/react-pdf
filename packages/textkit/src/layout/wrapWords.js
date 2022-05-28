@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import fromFragments from '../attributedString/fromFragments';
 
 /**
@@ -19,7 +17,7 @@ const defaultHyphenationEngine = word => [word];
  * @param  {Object}  attributed string
  * @return {Object} attributed string including syllables
  */
-const wrapWords = (engines = {}, options = {}, attributedString) => {
+const wrapWords = (engines = {}, options = {}) => attributedString => {
   const syllables = [];
   const fragments = [];
 
@@ -50,4 +48,4 @@ const wrapWords = (engines = {}, options = {}, attributedString) => {
   return { ...fromFragments(fragments), syllables };
 };
 
-export default R.curryN(3, wrapWords);
+export default wrapWords;

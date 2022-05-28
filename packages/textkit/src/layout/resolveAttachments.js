@@ -1,14 +1,6 @@
-import * as R from 'ramda';
-
 const ATTACHMENT_CODE = 0xfffc; // 65532
 
-const mapIndexed = R.addIndex(R.map);
-const getGlyphs = R.propOr([], 'glyphs');
-const getAttachment = R.pathOr({}, ['attributes', 'attachment']);
-const isReplaceGlyph = R.o(
-  R.includes(ATTACHMENT_CODE),
-  R.propOr([], 'codePoints'),
-);
+const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
 
 /**
  * Resolve attachments of run
@@ -17,21 +9,22 @@ const isReplaceGlyph = R.o(
  * @return {Object} run
  */
 const resolveRunAttachments = run => {
-  const glyphs = getGlyphs(run);
-  const attachment = getAttachment(run);
-  const attachmentWidth = R.always(attachment.width);
+  if (!run.positions) return run;
 
-  return R.evolve({
-    positions: mapIndexed((position, i) => {
-      const glyph = glyphs[i];
+  const glyphs = run.glyphs || [];
+  const attachment = run.attributes?.attachment || {};
 
-      if (attachment && attachment.width && isReplaceGlyph(glyph)) {
-        return R.evolve({ xAdvance: attachmentWidth }, position);
-      }
+  const positions = run.positions.map((position, i) => {
+    const glyph = glyphs[i];
 
-      return R.clone(position);
-    }),
-  })(run);
+    if (attachment && attachment.width && isReplaceGlyph(glyph)) {
+      return Object.assign({}, position, { xAdvance: attachment.width });
+    }
+
+    return Object.assign({}, position);
+  });
+
+  return Object.assign({}, run, { positions });
 };
 
 /**
@@ -42,9 +35,9 @@ const resolveRunAttachments = run => {
  * @param  {Array}  attributed strings (paragraphs)
  * @return {Array} attributed strings (paragraphs)
  */
-const resolveAttachments = () =>
-  R.evolve({
-    runs: R.map(resolveRunAttachments),
-  });
+const resolveAttachments = () => attributedString => {
+  const runs = attributedString.runs.map(resolveRunAttachments);
+  return Object.assign({}, attributedString, { runs });
+};
 
 export default resolveAttachments;

@@ -1,8 +1,3 @@
-import * as R from 'ramda';
-
-const getYOffset = R.pathOr(0, ['attributes', 'yOffset']);
-const getUnitsPerEm = R.pathOr(0, ['attributes', 'font', 'unitsPerEm']);
-
 /**
  * Resolves yOffset for run
  *
@@ -10,13 +5,13 @@ const getUnitsPerEm = R.pathOr(0, ['attributes', 'font', 'unitsPerEm']);
  * @return {Object} run
  */
 const resolveRunYOffset = run => {
-  const unitsPerEm = getUnitsPerEm(run);
-  const yOffset = getYOffset(run);
-  const mult = yOffset * unitsPerEm;
+  if (!run.positions) return run;
 
-  return R.evolve({
-    positions: R.map(R.assoc('yOffset', mult)),
-  })(run);
+  const unitsPerEm = run.attributes?.font?.unitsPerEm || 0;
+  const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
+  const positions = run.positions.map(p => Object.assign({}, p, { yOffset }));
+
+  return Object.assign({}, run, { positions });
 };
 
 /**
@@ -27,9 +22,9 @@ const resolveRunYOffset = run => {
  * @param  {Array}  attributed strings (paragraphs)
  * @return {Array} attributed strings (paragraphs)
  */
-const resolveYOffset = () =>
-  R.evolve({
-    runs: R.map(resolveRunYOffset),
-  });
+const resolveYOffset = () => attributedString => {
+  const runs = attributedString.runs.map(resolveRunYOffset);
+  return Object.assign({}, attributedString, { runs });
+};
 
 export default resolveYOffset;

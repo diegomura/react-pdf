@@ -1,10 +1,6 @@
-import * as R from 'ramda';
-
 import length from './length';
 import normalizeIndices from '../indices/normalize';
-
-const reverseMerge = R.flip(R.merge);
-const reverseConcat = R.flip(R.concat);
+import last from '../../../fns/last';
 
 /**
  * Concats two runs into one
@@ -13,24 +9,25 @@ const reverseConcat = R.flip(R.concat);
  * @param  {Object}  second run
  * @return {Object}  concatenated run
  */
-const concat = (runA, runB) =>
-  R.evolve({
-    end: R.add(length(runB)),
-    glyphs: reverseConcat(R.prop('glyphs', runB)),
-    positions: reverseConcat(R.prop('positions', runB)),
-    attributes: reverseMerge(R.prop('attributes', runB)),
-    glyphIndices: R.compose(
-      normalizeIndices,
-      reverseConcat(
-        R.map(
-          R.compose(
-            R.inc,
-            R.add(R.last(R.propOr([], 'glyphIndices', runA)) || 0),
-          ),
-          R.propOr([], 'glyphIndices', runB),
-        ),
-      ),
-    ),
-  })(runA);
+const concat = (runA, runB) => {
+  const end = runA.end + length(runB);
 
-export default R.curryN(2, concat);
+  const glyphs = (runA.glyphs || []).concat(runB.glyphs || []);
+  const positions = (runA.positions || []).concat(runB.positions || []);
+  const attributes = Object.assign({}, runA.attributes, runB.attributes);
+
+  const runAIndices = runA.glyphIndices || [];
+  const runALastIndex = last(runAIndices) || 0;
+  const runBIndices = (runB.glyphIndices || []).map(i => i + runALastIndex + 1);
+  const glyphIndices = normalizeIndices(runAIndices.concat(runBIndices));
+
+  return Object.assign({}, runA, {
+    end,
+    glyphs,
+    positions,
+    attributes,
+    glyphIndices,
+  });
+};
+
+export default concat;

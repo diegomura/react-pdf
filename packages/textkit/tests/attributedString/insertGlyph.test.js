@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import pluck from '../internal/pluck';
 import insertGlyph from '../../src/attributedString/insertGlyph';
 
 describe('attributeString insertGlyph operator', () => {
@@ -28,7 +27,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       105,
       76,
       111,
@@ -63,7 +62,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -98,7 +97,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -133,7 +132,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       64257,
       76,
       111,
@@ -168,7 +167,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -203,7 +202,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -238,7 +237,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       105,
       76,
       111,
@@ -273,7 +272,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       64257,
@@ -308,7 +307,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       64257,
@@ -351,11 +350,11 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([105, 76, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([105, 76, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
   });
 
   test('should insert glyph on first run of two run string', () => {
@@ -391,11 +390,11 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 105, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 105, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
   });
 
   test('should insert glyph at beggining of second run of two run string', () => {
@@ -431,11 +430,11 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([105, 76, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([105, 76, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
   });
 
   test('should insert glyph on second run of two run string', () => {
@@ -471,11 +470,11 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 2);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 2);
     expect(result.runs[1]).toHaveProperty('end', 6);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([105, 114, 101, 109]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([105, 114, 101, 109]);
   });
 
   test('should insert ligature glyph on first run of two run string', () => {
@@ -511,11 +510,11 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 5);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 64259, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 64259, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 5);
     expect(result.runs[1]).toHaveProperty('end', 8);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 109]);
   });
 
   test('should insert ligature glyph on second run of two run string', () => {
@@ -551,15 +550,10 @@ describe('attributeString insertGlyph operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 2);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111]);
 
     expect(result.runs[1]).toHaveProperty('start', 2);
     expect(result.runs[1]).toHaveProperty('end', 8);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([
-      114,
-      101,
-      64259,
-      109,
-    ]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([114, 101, 64259, 109]);
   });
 });

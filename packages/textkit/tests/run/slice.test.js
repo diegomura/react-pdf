@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import slice from '../../src/run/slice';
 
 describe('run slice operator', () => {
@@ -8,7 +7,7 @@ describe('run slice operator', () => {
     test('should slice containing range', () => {
       const attributes = { something: 'blah' };
       const run = { start: 0, end: 10, attributes };
-      const sliced = slice(2, 5)(run);
+      const sliced = slice(2, 5, run);
 
       expect(sliced).toHaveProperty('start', 2);
       expect(sliced).toHaveProperty('end', 5);
@@ -18,7 +17,7 @@ describe('run slice operator', () => {
     test('should slice exact range', () => {
       const attributes = { something: 'blah' };
       const run = { start: 0, end: 10, attributes };
-      const sliced = slice(0, 10)(run);
+      const sliced = slice(0, 10, run);
 
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 10);
@@ -28,7 +27,7 @@ describe('run slice operator', () => {
     test('should slice exceeding range', () => {
       const attributes = { something: 'blah' };
       const run = { start: 0, end: 10, attributes };
-      const sliced = slice(2, 20)(run);
+      const sliced = slice(2, 20, run);
 
       expect(sliced).toHaveProperty('start', 2);
       expect(sliced).toHaveProperty('end', 10);
@@ -38,7 +37,7 @@ describe('run slice operator', () => {
     test('should slice containing range when start not zero', () => {
       const attributes = { something: 'blah' };
       const run = { start: 5, end: 15, attributes };
-      const sliced = slice(2, 5)(run);
+      const sliced = slice(2, 5, run);
 
       expect(sliced).toHaveProperty('start', 7);
       expect(sliced).toHaveProperty('end', 10);
@@ -48,7 +47,7 @@ describe('run slice operator', () => {
     test('should slice exact range when start not zero', () => {
       const attributes = { something: 'blah' };
       const run = { start: 5, end: 15, attributes };
-      const sliced = slice(0, 10)(run);
+      const sliced = slice(0, 10, run);
 
       expect(sliced).toHaveProperty('start', 5);
       expect(sliced).toHaveProperty('end', 15);
@@ -58,7 +57,7 @@ describe('run slice operator', () => {
     test('should slice exceeding range when start not zero', () => {
       const attributes = { something: 'blah' };
       const run = { start: 5, end: 15, attributes };
-      const sliced = slice(8, 13)(run);
+      const sliced = slice(8, 13, run);
 
       expect(sliced).toHaveProperty('start', 13);
       expect(sliced).toHaveProperty('end', 15);
@@ -83,7 +82,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([76, 111, 114, 101, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([76, 111, 114, 101, 109]);
     });
 
     test('should exact slice with ligature return same glyphs', () => {
@@ -102,7 +101,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(4);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([76, 111, 64257, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([76, 111, 64257, 109]);
     });
 
     test('should correctly slice glyphs', () => {
@@ -119,7 +118,7 @@ describe('run slice operator', () => {
       };
       const sliced = slice(2, 4, run);
 
-      expect(R.pluck('id', sliced.glyphs)).toEqual([114, 101]);
+      expect(pluck('id', sliced.glyphs)).toEqual([114, 101]);
     });
 
     test('should correctly slice glyphs containing ligature', () => {
@@ -139,7 +138,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(3);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([111, 64257, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([111, 64257, 109]);
     });
 
     test('should correctly slice glyphs containing ligature at start', () => {
@@ -160,7 +159,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(4);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([105, 76, 111, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([105, 76, 111, 109]);
     });
 
     test('should correctly slice glyphs starting in ligature', () => {
@@ -180,7 +179,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 2);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([64257, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([64257, 109]);
     });
 
     test('should correctly slice glyphs ending in ligature', () => {
@@ -200,7 +199,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 4);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([111, 64257]);
+      expect(pluck('id', sliced.glyphs)).toEqual([111, 64257]);
     });
 
     test('should correctly slice glyphs breaking ligature at start', () => {
@@ -221,7 +220,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 3);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([105, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([105, 109]);
     });
 
     test('should correctly slice glyphs breaking ligature at end', () => {
@@ -242,7 +241,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 3);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([111, 102]);
+      expect(pluck('id', sliced.glyphs)).toEqual([111, 102]);
     });
 
     test('should correctly slice glyphs starting in long ligature', () => {
@@ -262,7 +261,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([64259, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([64259, 109]);
     });
 
     test('should correctly slice glyphs ending in long ligature', () => {
@@ -282,7 +281,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 4);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([76, 64259]);
+      expect(pluck('id', sliced.glyphs)).toEqual([76, 64259]);
     });
 
     test('should correctly slice glyphs breaking long ligature at 1st char at start', () => {
@@ -302,7 +301,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 2);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([64257, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([64257, 109]);
     });
 
     test('should correctly slice glyphs breaking long ligature at 2nd char at start', () => {
@@ -322,7 +321,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 3);
       expect(sliced).toHaveProperty('end', 5);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([105, 109]);
+      expect(pluck('id', sliced.glyphs)).toEqual([105, 109]);
     });
 
     test('should correctly slice glyphs breaking long ligature at 1st char at end', () => {
@@ -342,7 +341,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 2);
       expect(sliced.glyphs).toHaveLength(2);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([76, 102]);
+      expect(pluck('id', sliced.glyphs)).toEqual([76, 102]);
     });
 
     test('should correctly slice glyphs breaking long ligature at 2nd char at end', () => {
@@ -362,7 +361,7 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 3);
       expect(sliced.glyphs).toHaveLength(3);
-      expect(R.pluck('id', sliced.glyphs)).toEqual([76, 102, 102]);
+      expect(pluck('id', sliced.glyphs)).toEqual([76, 102, 102]);
     });
   });
 
@@ -383,7 +382,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([8, 7, 6, 5, 4]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([8, 7, 6, 5, 4]);
     });
 
     test('should exact slice with ligature return same positions', () => {
@@ -401,7 +400,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([8, 7, 10, 4]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([8, 7, 10, 4]);
     });
 
     test('should correctly slice positions', () => {
@@ -418,7 +417,7 @@ describe('run slice operator', () => {
       };
       const sliced = slice(2, 4, run);
 
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([6, 5]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([6, 5]);
     });
 
     test('should correctly slice positions containing ligature', () => {
@@ -436,7 +435,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([7, 10, 4]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([7, 10, 4]);
     });
 
     test('should correctly slice positions starting in ligature', () => {
@@ -455,7 +454,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 2);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([10, 4]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([10, 4]);
     });
 
     test('should correctly slice positions ending in ligature', () => {
@@ -474,7 +473,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 4);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([7, 10]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([7, 10]);
     });
 
     test('should correctly slice positions breaking ligature at start', () => {
@@ -500,7 +499,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 3);
       expect(sliced).toHaveProperty('end', 5);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([8, 4]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([8, 4]);
     });
 
     test('should correctly slice positions breaking ligature at end', () => {
@@ -526,7 +525,7 @@ describe('run slice operator', () => {
 
       expect(sliced).toHaveProperty('start', 1);
       expect(sliced).toHaveProperty('end', 3);
-      expect(R.pluck('xAdvance', sliced.positions)).toEqual([7, 8]);
+      expect(pluck('xAdvance', sliced.positions)).toEqual([7, 8]);
     });
   });
 

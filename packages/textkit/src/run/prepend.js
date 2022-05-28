@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import copy from './copy';
 import scale from './scale';
 import getFont from './getFont';
 import isNumber from '../utils/isNumber';
@@ -16,14 +13,16 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  */
 const prependGlyph = (glyph, run) => {
   const runScale = scale(run);
-  const glyphLength = R.length(glyph.codePoints);
+  const glyphLength = glyph.codePoints.length;
 
-  return R.evolve({
-    end: R.add(glyphLength),
-    glyphIndices: prependIndices(glyphLength),
-    glyphs: R.prepend(glyph),
-    positions: R.prepend({ xAdvance: glyph.advanceWidth * runScale }),
-  })(run);
+  const end = run.end + glyphLength;
+  const glyphIndices = prependIndices(glyphLength, run.glyphIndices);
+  const glyphs = [glyph].concat(run.glyphs);
+  const positions = [{ xAdvance: glyph.advanceWidth * runScale }].concat(
+    run.positions,
+  );
+
+  return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
 };
 
 /**
@@ -34,7 +33,7 @@ const prependGlyph = (glyph, run) => {
  * @return {Object} run with glyph
  */
 const prepend = (value, run) => {
-  if (!value) return copy(run);
+  if (!value) return run;
 
   const font = getFont(run);
   const glyph = isNumber(value) ? glyphFromCodePoint(value, font) : value;
@@ -42,4 +41,4 @@ const prepend = (value, run) => {
   return prependGlyph(glyph, run);
 };
 
-export default R.curryN(2, prepend);
+export default prepend;

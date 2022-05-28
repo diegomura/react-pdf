@@ -1,9 +1,6 @@
-import * as R from 'ramda';
-
 import sliceRun from '../run/slice';
 import filterRuns from '../run/filter';
 import subtractRun from '../run/subtract';
-import mapIndexed from '../utils/mapIndexed';
 
 /**
  * Slice array of runs
@@ -13,18 +10,21 @@ import mapIndexed from '../utils/mapIndexed';
  * @param  {Array}  runs
  * @return {Array} sliced runs
  */
-const sliceRuns = (start, end) => runs => {
-  const firstRun = a => sliceRun(start - a.start, end - a.start, a);
-  const lastRun = a => sliceRun(0, end - a.start, a);
-  const intermediateRun = R.identity;
+const sliceRuns = (start, end, runs) => {
+  const sliceFirstRun = a => sliceRun(start - a.start, end - a.start, a);
+  const sliceLastRun = a => sliceRun(0, end - a.start, a);
 
-  const res = mapIndexed([
-    R.o(subtractRun(start), firstRun), // Slice first run
-    R.o(subtractRun(start), intermediateRun), // Slice intermediate runs
-    R.o(subtractRun(start), lastRun), // Slice last run
-  ])(runs);
+  return runs.map((run, i) => {
+    let result = run;
 
-  return res;
+    const isFirst = i === 0;
+    const isLast = !isFirst && i === runs.length - 1;
+
+    if (isFirst) result = sliceFirstRun(run);
+    if (isLast) result = sliceLastRun(run);
+
+    return subtractRun(start, result);
+  });
 };
 
 /**
@@ -35,14 +35,14 @@ const sliceRuns = (start, end) => runs => {
  * @param  {Object}  attributedString
  * @return {Object} attributedString
  */
-const slice = (start, end, string) =>
-  R.ifElse(
-    R.pathEq(['string', 'length'], 0),
-    R.identity,
-    R.evolve({
-      string: R.slice(start, end),
-      runs: R.compose(sliceRuns(start, end), filterRuns(start, end)),
-    }),
-  )(string);
+const slice = (start, end, attributedString) => {
+  if (attributedString.string.length === 0) return attributedString;
 
-export default R.curryN(3, slice);
+  const string = attributedString.string.slice(start, end);
+  const filteredRuns = filterRuns(start, end, attributedString.runs);
+  const slicedRuns = sliceRuns(start, end, filteredRuns);
+
+  return Object.assign({}, attributedString, { string, runs: slicedRuns });
+};
+
+export default slice;

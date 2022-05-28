@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import runLength from '../run/length';
 import runAdvanceWidth from '../run/advanceWidth';
 import runIndexAtOffset from '../run/indexAtOffset';
@@ -15,7 +13,7 @@ const indexAtOffset = (offset, string) => {
   let index = 0;
   let counter = 0;
 
-  const runs = R.propOr([], 'runs', string);
+  const runs = string.runs || [];
 
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i];
@@ -32,4 +30,4 @@ const indexAtOffset = (offset, string) => {
   return index;
 };
 
-export default R.curryN(2, indexAtOffset);
+export default indexAtOffset;

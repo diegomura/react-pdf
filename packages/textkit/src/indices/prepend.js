@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Prepend glyph indices with given length
  *
@@ -12,10 +10,10 @@ import * as R from 'ramda';
 const prepend = (length, indices) => {
   if (length === 0) return indices;
 
-  return R.converge(R.concat, [
-    R.converge(R.repeat, [R.always(0), R.always(length)]),
-    R.map(R.inc),
-  ])(indices);
+  const newIndices = Array(length).fill(0);
+  const lastIndices = indices.map(value => value + 1);
+
+  return newIndices.concat(lastIndices);
 };
 
-export default R.curryN(2, prepend);
+export default prepend;

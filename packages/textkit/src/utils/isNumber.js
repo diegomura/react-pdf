@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
-const isNumber = R.is(Number);
+const isNumber = value => typeof value === 'number';
 
 export default isNumber;

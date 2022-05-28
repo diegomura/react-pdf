@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Add scalar to run
  *
@@ -7,10 +5,11 @@ import * as R from 'ramda';
  * @param  {Object}  run
  * @return {Object} added run
  */
-const add = (n, run) =>
-  R.evolve({
-    start: R.add(n),
-    end: R.add(n),
-  })(run);
+const add = (n, run) => {
+  const start = run.start + n;
+  const end = run.end + n;
 
-export default R.curryN(2, add);
+  return Object.assign({}, run, { start, end });
+};
+
+export default add;

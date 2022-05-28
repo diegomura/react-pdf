@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import glyphIndexAt from './glyphIndexAt';
+import positionsAdvanceWidth from '../positions/advanceWidth';
 
 /**
  * Advance width between two string indices
@@ -11,15 +10,12 @@ import glyphIndexAt from './glyphIndexAt';
  * @return {Object} advanced width run
  */
 const advanceWidthBetween = (start, end, run) => {
-  const runStart = R.propOr(0, 'start', run);
+  const runStart = run.start || 0;
   const glyphStartIndex = Math.max(0, glyphIndexAt(start - runStart, run));
   const glyphEndIndex = Math.max(0, glyphIndexAt(end - runStart, run));
+  const positions = (run.positions || []).slice(glyphStartIndex, glyphEndIndex);
 
-  return R.compose(
-    R.reduce(R.useWith(R.add, [R.identity, R.propOr(0, 'xAdvance')]), 0),
-    R.slice(glyphStartIndex, glyphEndIndex),
-    R.propOr([], 'positions'),
-  )(run);
+  return positionsAdvanceWidth(positions);
 };
 
-export default R.curryN(3, advanceWidthBetween);
+export default advanceWidthBetween;

@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import isNil from '../../../fns/isNil';
 
 /**
  * Return glyph index at string index, if glyph indices present.
@@ -8,7 +8,9 @@ import * as R from 'ramda';
  * @param  {Object}  run
  * @return {number}  glyph index
  */
-const glyphIndexAt = (index, run) =>
-  R.pathOr(index, ['glyphIndices', index])(run);
+const glyphIndexAt = (index, run) => {
+  const result = run?.glyphIndices?.[index];
+  return isNil(result) ? index : result;
+};
 
-export default R.curryN(2, glyphIndexAt);
+export default glyphIndexAt;

@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Subtract scalar to run
  *
@@ -7,10 +5,11 @@ import * as R from 'ramda';
  * @param  {Object}  run
  * @return {Object} subtracted run
  */
-const subtract = (n, run) =>
-  R.evolve({
-    start: R.subtract(R.__, n),
-    end: R.subtract(R.__, n),
-  })(run);
+const subtract = (n, run) => {
+  const start = run.start - n;
+  const end = run.end - n;
 
-export default R.curryN(2, subtract);
+  return Object.assign({}, run, { start, end });
+};
+
+export default subtract;

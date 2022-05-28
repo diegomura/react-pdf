@@ -16,7 +16,7 @@ const purgeAttachments = attributedString => {
 
   const runs = attributedString.runs.map(run => omit('attachment', run));
 
-  return Object.assign({}, attributedString, runs);
+  return Object.assign({}, attributedString, { runs });
 };
 
 /**
@@ -34,9 +34,9 @@ const layoutLines = (rect, lines, indent) => {
     const style = line.runs?.[0]?.attributes || {};
     const height = Math.max(stringHeight(line), style.lineHeight);
 
-    currentY += height;
+    const newLine = Object.assign({}, line);
 
-    const newLine = omit('syllables', line);
+    delete newLine.syllables;
 
     newLine.box = {
       x: rect.x + lineIndent,
@@ -44,6 +44,8 @@ const layoutLines = (rect, lines, indent) => {
       width: rect.width - lineIndent,
       height,
     };
+
+    currentY += height;
 
     return purgeAttachments(newLine);
   });

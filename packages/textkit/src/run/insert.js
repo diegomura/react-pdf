@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import copy from './copy';
 import slice from './slice';
 import concat from './concat';
 import append from './append';
@@ -17,7 +14,7 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  * @return {Object}  run with glyph
  */
 const insertGlyph = (index, glyph, run) => {
-  if (!glyph) return copy(run);
+  if (!glyph) return run;
 
   // Split resolves ligature splitting in case new glyph breaks some
   const leadingRun = slice(0, index, run);
@@ -40,4 +37,4 @@ const insert = (index, value, run) => {
   return insertGlyph(index, glyph, run);
 };
 
-export default R.curryN(3, insert);
+export default insert;

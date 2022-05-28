@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import empty from '../../src/attributedString/empty';
 import prepend from '../../src/attributedString/prepend';
 
@@ -45,7 +44,7 @@ describe('attributeString prepend operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 1);
     expect(result.runs[0].glyphIndices).toEqual([0]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76]);
   });
 
   test('should prepend glyph on single run string', () => {
@@ -81,7 +80,7 @@ describe('attributeString prepend operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       76,
       111,
@@ -89,7 +88,7 @@ describe('attributeString prepend operator', () => {
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       10,
       5,
       6,
@@ -141,16 +140,11 @@ describe('attributeString prepend operator', () => {
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3]);
     expect(result.runs[1].glyphIndices).toEqual([0, 1]);
 
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 76, 111, 114]);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([101, 109]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 76, 111, 114]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([101, 109]);
 
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
-      10,
-      5,
-      6,
-      7,
-    ]);
-    expect(R.pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([10, 5, 6, 7]);
+    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9]);
   });
 
   test('should prepend ligature glyph on single run string', () => {
@@ -186,7 +180,7 @@ describe('attributeString prepend operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(result.runs[0].glyphIndices).toEqual([0, 0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       64257,
       76,
       111,
@@ -194,7 +188,7 @@ describe('attributeString prepend operator', () => {
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       10,
       5,
       6,
@@ -246,15 +240,10 @@ describe('attributeString prepend operator', () => {
     expect(result.runs[0].glyphIndices).toEqual([0, 0, 1, 2, 3]);
     expect(result.runs[1].glyphIndices).toEqual([0, 1]);
 
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([64257, 76, 111, 114]);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([101, 109]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([64257, 76, 111, 114]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([101, 109]);
 
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
-      10,
-      5,
-      6,
-      7,
-    ]);
-    expect(R.pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([10, 5, 6, 7]);
+    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9]);
   });
 });

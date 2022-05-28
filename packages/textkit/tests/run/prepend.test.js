@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import prepend from '../../src/run/prepend';
 
 describe('run prepend glyph operator', () => {
@@ -29,8 +28,8 @@ describe('run prepend glyph operator', () => {
     const result = prepend(null, run);
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
   });
 
   test('should prepend glyph at run', () => {
@@ -59,8 +58,8 @@ describe('run prepend glyph operator', () => {
     const result = prepend(glyph, run);
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.glyphs)).toEqual([105, 76, 111, 114, 101, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([105, 76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
   });
 
   test('should prepend ligature glyph at run', () => {
@@ -89,15 +88,8 @@ describe('run prepend glyph operator', () => {
     const result = prepend(glyph, run); // filorem
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.glyphs)).toEqual([
-      64257,
-      76,
-      111,
-      114,
-      101,
-      109,
-    ]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([64257, 76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
   });
 
   test('should prepend glyph at run with ligature', () => {
@@ -124,8 +116,8 @@ describe('run prepend glyph operator', () => {
     const result = prepend(glyph, run); // ilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([105, 76, 111, 64257, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
+    expect(pluck('id', result.glyphs)).toEqual([105, 76, 111, 64257, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
   });
 
   test('should prepend ligature glyph before run ligature', () => {
@@ -152,8 +144,8 @@ describe('run prepend glyph operator', () => {
     const result = prepend(glyph, run); //  ffilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 0, 1, 2, 3, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([64259, 76, 111, 64257, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
+    expect(pluck('id', result.glyphs)).toEqual([64259, 76, 111, 64257, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
   });
 });
 
@@ -183,8 +175,8 @@ describe('run prepend code point operator', () => {
     const result = prepend(null, run);
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
   });
 
   test('should prepend code point at run', () => {
@@ -212,8 +204,8 @@ describe('run prepend code point operator', () => {
     const result = prepend(105, run);
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.glyphs)).toEqual([105, 76, 111, 114, 101, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([8, 5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([105, 76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([8, 5, 6, 7, 8, 9]);
   });
 
   test('should prepend ligature code point at run', () => {
@@ -241,15 +233,8 @@ describe('run prepend code point operator', () => {
     const result = prepend(64257, run); // filorem
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.glyphs)).toEqual([
-      64257,
-      76,
-      111,
-      114,
-      101,
-      109,
-    ]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
+    expect(pluck('id', result.glyphs)).toEqual([64257, 76, 111, 114, 101, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8, 9]);
   });
 
   test('should prepend code point at run with ligature', () => {
@@ -275,8 +260,8 @@ describe('run prepend code point operator', () => {
     const result = prepend(105, run); // ilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([105, 76, 111, 64257, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([8, 5, 6, 7, 8]);
+    expect(pluck('id', result.glyphs)).toEqual([105, 76, 111, 64257, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([8, 5, 6, 7, 8]);
   });
 
   test('should prepend ligature code point before run ligature', () => {
@@ -302,7 +287,7 @@ describe('run prepend code point operator', () => {
     const result = prepend(64259, run); //  ffilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 0, 1, 2, 3, 3, 4]);
-    expect(R.pluck('id', result.glyphs)).toEqual([64259, 76, 111, 64257, 109]);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
+    expect(pluck('id', result.glyphs)).toEqual([64259, 76, 111, 64257, 109]);
+    expect(pluck('xAdvance', result.positions)).toEqual([10, 5, 6, 7, 8]);
   });
 });

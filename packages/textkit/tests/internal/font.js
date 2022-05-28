@@ -1,47 +1,40 @@
-import * as R from 'ramda';
-
 const shortLigature = { id: 64257, codePoints: [102, 105], advanceWidth: 10 };
+
 const longLigature = {
   id: 64259,
   codePoints: [102, 102, 105],
   advanceWidth: 10,
 };
 
-const glyphForCodePoint = R.cond([
-  [R.equals(64257), R.always(shortLigature)],
-  [R.equals(64259), R.always(longLigature)],
-  [
-    R.T,
-    R.applySpec({
-      id: R.identity,
-      codePoints: R.of,
-      advanceWidth: R.always(8),
-    }),
-  ],
-]);
+const glyphForCodePoint = v => {
+  if (v === 64257) return shortLigature;
+  if (v === 64259) return longLigature;
 
-const glyphFromChar = R.compose(glyphForCodePoint, s => s.codePointAt(0));
+  return { id: v, codePoints: [v], advanceWidth: 8 };
+};
 
-const layoutGlyphs = R.compose(
-  R.flatten,
-  R.map(
-    R.cond([
-      [R.equals('fi'), R.always([shortLigature])],
-      [R.equals('ffi'), R.always([longLigature])],
-      [R.T, R.map(glyphFromChar)],
-    ]),
-  ),
-  R.split(/(ffi|fi|.)/g),
-);
+const glyphFromChar = v => glyphForCodePoint(v.codePointAt(0));
 
-const layoutPositions = R.map(
-  R.applySpec({
-    xAdvance: R.propOr(0, 'advanceWidth'),
-    yAdvance: R.always(0),
-    xOffset: R.always(0),
-    yOffset: R.always(0),
-  }),
-);
+const layoutGlyphs = v => {
+  const splits = v.split(/(ffi|fi|.)/g);
+  const result = splits.map(s => {
+    if (s === 'fi') return [shortLigature];
+    if (s === 'ffi') return [longLigature];
+
+    return s.split('').map(glyphFromChar);
+  });
+
+  return result.flat();
+};
+
+const layoutPositions = positions => {
+  return positions.map(pos => ({
+    xAdvance: pos.advanceWidth || 0,
+    yAdvance: 0,
+    xOffset: 0,
+    yOffset: 0,
+  }));
+};
 
 const layoutStringIndices = glyphs => {
   let counter = 0;

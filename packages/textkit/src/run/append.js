@@ -1,4 +1,3 @@
-import copy from './copy';
 import scale from './scale';
 import getFont from './getFont';
 import isNumber from '../utils/isNumber';
@@ -36,7 +35,7 @@ const appendGlyph = (glyph, run) => {
  * @return {Object} run with glyph
  */
 const append = (value, run) => {
-  if (!value) return copy(run);
+  if (!value) return run;
 
   const font = getFont(run);
   const glyph = isNumber(value) ? glyphFromCodePoint(value, font) : value;

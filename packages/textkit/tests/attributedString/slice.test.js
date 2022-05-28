@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import slice from '../../src/attributedString/slice';
 
 const testString = 'Lorem ipsum';
@@ -104,8 +103,8 @@ describe('attributeString slice operator', () => {
     const sliced = slice(1, 4, string);
 
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114, 101]);
-    expect(R.pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8, 9]);
+    expect(pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114, 101]);
+    expect(pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8, 9]);
   });
 
   test('should slice glyphs with several runs', () => {
@@ -136,12 +135,12 @@ describe('attributeString slice operator', () => {
     const sliced = slice(1, 4, string);
 
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
-    expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114]);
-    expect(R.pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8]);
+    expect(pluck('id', sliced.runs[0].glyphs)).toEqual([111, 114]);
+    expect(pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8]);
 
     expect(sliced.runs[1].glyphIndices).toEqual([0]);
-    expect(R.pluck('id', sliced.runs[1].glyphs)).toEqual([101]);
-    expect(R.pluck('xAdvance', sliced.runs[1].positions)).toEqual([9]);
+    expect(pluck('id', sliced.runs[1].glyphs)).toEqual([101]);
+    expect(pluck('xAdvance', sliced.runs[1].positions)).toEqual([9]);
   });
 
   test('should slice glyphs ending on ligature', () => {
@@ -171,8 +170,8 @@ describe('attributeString slice operator', () => {
 
     expect(sliced).toHaveProperty('string', 'of');
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
-    expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([111, 102]);
-    expect(R.pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8]);
+    expect(pluck('id', sliced.runs[0].glyphs)).toEqual([111, 102]);
+    expect(pluck('xAdvance', sliced.runs[0].positions)).toEqual([7, 8]);
   });
 
   test('should slice glyphs starting on ligature', () => {
@@ -202,7 +201,7 @@ describe('attributeString slice operator', () => {
 
     expect(sliced).toHaveProperty('string', 'im');
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
-    expect(R.pluck('id', sliced.runs[0].glyphs)).toEqual([105, 109]);
-    expect(R.pluck('xAdvance', sliced.runs[0].positions)).toEqual([8, 9]);
+    expect(pluck('id', sliced.runs[0].glyphs)).toEqual([105, 109]);
+    expect(pluck('xAdvance', sliced.runs[0].positions)).toEqual([8, 9]);
   });
 });

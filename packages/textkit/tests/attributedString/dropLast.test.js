@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import pluck from '../internal/pluck';
 import dropLast from '../../src/attributedString/dropLast';
 
 describe('attributeString dropLast operator', () => {
@@ -84,8 +83,8 @@ describe('attributeString dropLast operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 4);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114, 101]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8, 9]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114, 101]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8, 9]);
   });
 
   test('should dropLast glyphs with several runs', () => {
@@ -120,13 +119,13 @@ describe('attributeString dropLast operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 4);
     expect(result.runs[1].glyphIndices).toEqual([0]);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([101]);
-    expect(R.pluck('xAdvance', result.runs[1].positions)).toEqual([9]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([101]);
+    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([9]);
   });
 });

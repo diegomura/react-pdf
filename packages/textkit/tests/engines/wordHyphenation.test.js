@@ -1,16 +1,15 @@
-import * as R from 'ramda';
 import hyphen from 'hyphen';
 
 jest.mock('hyphen');
 
-const hyphenator = jest.fn(
-  R.cond([
-    [R.equals(''), R.always('')],
-    [R.equals('something'), R.always('some\u00adthing')],
-    [R.equals('neumonia'), R.always('neu\u00admo\u00adnia')],
-    [R.equals('programming'), R.always('pro\u00adgram\u00adming')],
-  ]),
-);
+const hyphenator = jest.fn(v => {
+  if (v === '') return '';
+  if (v === 'something') return 'some\u00adthing';
+  if (v === 'neumonia') return 'neu\u00admo\u00adnia';
+  if (v === 'programming') return 'pro\u00adgram\u00adming';
+
+  return v;
+});
 
 hyphen.mockReturnValue(hyphenator);
 

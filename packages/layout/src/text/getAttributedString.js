@@ -14,6 +14,28 @@ const isImage = isType(P.Image);
 
 const isTextInstance = isType(P.TextInstance);
 
+const toFontNameStack = (...fontFamilyObjects) =>
+  fontFamilyObjects
+    .map(fontFamilies =>
+      typeof fontFamilies === 'string'
+        ? fontFamilies.split(',').map(f => f.trim())
+        : Array.from(fontFamilies || []),
+    )
+    .flat()
+    .reduce(
+      (fonts, font) => (fonts.includes(font) ? fonts : [...fonts, font]),
+      [],
+    );
+
+const getFontStack = (fontStore, { fontFamily, fontStyle, fontWeight }) =>
+  toFontNameStack(fontFamily).map(fontFamilyName => {
+    if (typeof fontFamilyName !== 'string') return fontFamilyName;
+
+    const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
+    const obj = fontStore ? fontStore.getFont(opts) : null;
+    return obj ? obj.data : fontFamilyName;
+  });
+
 /**
  * Get textkit fragments of given node object
  *
@@ -43,15 +65,17 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     opacity,
   } = instance.style;
 
-  const opts = { fontFamily, fontWeight, fontStyle };
-  const obj = fontStore ? fontStore.getFont(opts) : null;
-  const font = obj ? obj.data : fontFamily;
+  const fontStack = getFontStack(fontStore, {
+    fontFamily,
+    fontStyle,
+    fontWeight,
+  });
 
   // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
 
   const attributes = {
-    font,
+    fontStack,
     color,
     opacity,
     fontSize,

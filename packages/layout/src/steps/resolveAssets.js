@@ -14,31 +14,33 @@ const isImage = R.propEq('type', P.Image);
  */
 const fetchAssets = (fontStore, node) => {
   const promises = [];
-  const listToExplore = node.children?.slice(0) || [];
+  const listToExplore = node.children ? node.children.map(n => [n, {}]) : [];
+
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
   while (listToExplore.length > 0) {
-    const n = listToExplore.shift();
+    const [n, { parentStyle = {} }] = listToExplore.shift();
 
     if (isImage(n)) {
       promises.push(fetchImage(n));
     }
 
-    if (fontStore && n.style?.fontFamily) {
-      promises.push(fontStore.load(n.style));
-    }
-
     if (typeof n === 'string') {
       promises.push(...fetchEmojis(n, emojiSource));
+      promises.push(fontStore.load(parentStyle, n));
     }
 
     if (typeof n.value === 'string') {
       promises.push(...fetchEmojis(n.value, emojiSource));
+      promises.push(fontStore.load(n.style || parentStyle, n.value));
     }
 
     if (n.children) {
       n.children.forEach(childNode => {
-        listToExplore.push(childNode);
+        listToExplore.push([
+          childNode,
+          { parentStyle: { ...parentStyle, ...n.style } },
+        ]);
       });
     }
   }

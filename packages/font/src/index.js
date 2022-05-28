@@ -14,11 +14,13 @@ function FontStore() {
     if (!fonts[family]) {
       fonts[family] = font.create(family);
     }
-
     // Bulk loading
     if (data.fonts) {
       for (let i = 0; i < data.fonts.length; i += 1) {
-        fonts[family].register({ family, ...data.fonts[i] });
+        const defaultValues = { ...data };
+        delete defaultValues.fonts;
+
+        fonts[family].register({ ...defaultValues, ...data.fonts[i] });
       }
     } else {
       fonts[family].register(data);
@@ -48,18 +50,41 @@ function FontStore() {
     return fonts[fontFamily].resolve(descriptor);
   };
 
-  this.load = async descriptor => {
+  this.load = async (descriptor, text = '') => {
     const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
+    const fontFamilies =
+      typeof fontFamily === 'string'
+        ? fontFamily.split(',').map(family => family.trim())
+        : [...(fontFamily || [])];
 
-    if (isStandard) return;
+    const promises = [];
 
-    const f = this.getFont(descriptor);
+    let remainingChars = text;
 
-    // We cache the font to avoid fetching it many times
-    if (!f.data && !f.loading) {
-      await f.load();
+    for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
+      const family = fontFamilies[i];
+
+      const isStandard = standard.includes(family);
+      if (isStandard) return;
+
+      const f = this.getFont({ ...descriptor, fontFamily: family });
+
+      const lengthBeforeReplace = remainingChars.length;
+      remainingChars = remainingChars.replace(f.unicodeRange, '');
+
+      const didReplace = lengthBeforeReplace !== remainingChars.length;
+
+      if (didReplace) {
+        if (!f.data && !f.loading) {
+          promises.push(f.load());
+        }
+      }
+      if (!remainingChars.length) {
+        break;
+      }
     }
+
+    await Promise.all(promises);
   };
 
   this.reset = () => {

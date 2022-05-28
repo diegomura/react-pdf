@@ -21,6 +21,8 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
+const ALL_CHARS_REGEX = /./u;
+
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
 
@@ -46,11 +48,15 @@ const resolveFontWeight = value => {
 const sortByFontWeight = (a, b) => a.fontWeight - b.fontWeight;
 
 class FontSource {
-  constructor(src, fontFamily, fontStyle, fontWeight, options) {
+  constructor(src, fontFamily, fontStyle, fontWeight, unicodeRange, options) {
     this.src = src;
     this.fontFamily = fontFamily;
     this.fontStyle = fontStyle || 'normal';
     this.fontWeight = fontWeight || 400;
+    this.unicodeRange = new RegExp(
+      unicodeRange instanceof RegExp ? unicodeRange : ALL_CHARS_REGEX,
+      'gu',
+    );
 
     this.data = null;
     this.loading = false;
@@ -93,11 +99,18 @@ class Font {
     this.sources = [];
   }
 
-  register({ src, fontWeight, fontStyle, ...options }) {
+  register({ src, fontWeight, fontStyle, unicodeRange, ...options }) {
     const numericFontWeight = resolveFontWeight(fontWeight);
 
     this.sources.push(
-      new FontSource(src, this.family, fontStyle, numericFontWeight, options),
+      new FontSource(
+        src,
+        this.family,
+        fontStyle,
+        numericFontWeight,
+        unicodeRange,
+        options,
+      ),
     );
   }
 

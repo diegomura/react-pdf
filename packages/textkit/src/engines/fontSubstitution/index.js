@@ -25,7 +25,7 @@ const fontSubstitution = (options, attributedString) => {
 
   for (const run of runs) {
     const fontSize = getFontSize(run);
-    const defaultFont = run.attributes.font;
+    const defaultFont = run.attributes.fontStack?.[0];
 
     if (string.length === 0) {
       res.push({ start: 0, end: 0, attributes: { font: defaultFont } });

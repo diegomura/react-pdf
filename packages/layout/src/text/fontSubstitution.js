@@ -19,8 +19,11 @@ const getOrCreateFont = name => {
 
 const getFallbackFont = () => getOrCreateFont('Helvetica');
 
-const pickFontFromFontStack = (codePoint, fontStack) => {
+const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
   const fontStackWithFallback = [...fontStack, getFallbackFont()];
+  if (lastFont) {
+    fontStackWithFallback.unshift(lastFont);
+  }
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
     if (
@@ -61,7 +64,11 @@ const fontSubstitution = () => ({ string, runs }) => {
       const char = chars[j];
       const codePoint = char.codePointAt();
       // If the default font does not have a glyph and the fallback font does, we use it
-      const font = pickFontFromFontStack(codePoint, run.attributes.fontStack);
+      const font = pickFontFromFontStack(
+        codePoint,
+        run.attributes.fontStack,
+        lastFont,
+      );
       const fontSize = getFontSize(run);
 
       // If anything that would impact res has changed, update it

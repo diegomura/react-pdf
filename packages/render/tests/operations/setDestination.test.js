@@ -25,11 +25,4 @@ describe('operations setDestination', () => {
 
     expect(ctx.addNamedDestination.mock.calls).toHaveLength(0);
   });
-
-  test('should return passed node', () => {
-    const ctx = createCTX();
-    const doc = { type: P.View };
-
-    expect(setDestination(ctx, doc)).toBe(doc);
-  });
 });

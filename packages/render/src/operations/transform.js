@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 // TODO: Implement using only matrices to support skew and even more operations than css.
 
 const applySingleTransformation = (ctx, transform, origin) => {
@@ -36,7 +34,7 @@ const applySingleTransformation = (ctx, transform, origin) => {
 };
 
 const applyTransformations = (ctx, node) => {
-  if (!node.origin) return node;
+  if (!node.origin) return;
 
   const origin = [node.origin.left, node.origin.top];
   const operations = node.style?.transform || node.props?.transform || [];
@@ -44,8 +42,6 @@ const applyTransformations = (ctx, node) => {
   operations.forEach(operation => {
     applySingleTransformation(ctx, operation, origin);
   });
-
-  return node;
 };
 
-export default R.curryN(2, applyTransformations);
+export default applyTransformations;

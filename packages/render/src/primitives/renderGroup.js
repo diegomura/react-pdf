@@ -1,5 +1,5 @@
-import * as R from 'ramda';
-
-const renderGroup = () => R.identity;
+const renderGroup = () => {
+  // noop
+};
 
 export default renderGroup;

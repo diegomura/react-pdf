@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 // Ref: https://www.w3.org/TR/css-backgrounds-3/#borders
 
 // This constant is used to approximate a symmetrical arc using a cubic Bezier curve.
@@ -604,7 +602,7 @@ const shouldRenderBorders = node =>
     node.box.borderLeftWidth);
 
 const renderBorders = (ctx, node) => {
-  if (!shouldRenderBorders(node)) return node;
+  if (!shouldRenderBorders(node)) return;
 
   const {
     width,
@@ -687,8 +685,6 @@ const renderBorders = (ctx, node) => {
   }
 
   ctx.restore();
-
-  return node;
 };
 
-export default R.curryN(2, renderBorders);
+export default renderBorders;

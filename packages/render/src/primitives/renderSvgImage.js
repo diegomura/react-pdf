@@ -1,40 +1,28 @@
-import * as R from 'ramda';
+const renderImage = (ctx, node) => {
+  if (!node.image.data) return;
 
-import save from '../operations/save';
-import restore from '../operations/restore';
-
-const drawImage = ctx => node => {
   const { x, y } = node.props;
   const { width, height, opacity } = node.style;
   const paddingTop = node.box.paddingLeft || 0;
   const paddingLeft = node.box.paddingLeft || 0;
 
-  if (node.image.data) {
-    if (width !== 0 && height !== 0) {
-      ctx
-        .fillOpacity(opacity || 1)
-        .image(node.image.data, x + paddingLeft, y + paddingTop, {
-          width,
-          height,
-        });
-    } else {
-      console.warn(
-        `Image with src '${node.props.href}' skipped due to invalid dimensions`,
-      );
-    }
+  if (width === 0 || height === 0) {
+    console.warn(
+      `Image with src '${node.props.href}' skipped due to invalid dimensions`,
+    );
+    return;
   }
 
-  return node;
+  ctx.save();
+
+  ctx
+    .fillOpacity(opacity || 1)
+    .image(node.image.data, x + paddingLeft, y + paddingTop, {
+      width,
+      height,
+    });
+
+  ctx.restore();
 };
 
-const renderImage = (ctx, node) => {
-  R.compose(
-    restore(ctx),
-    drawImage(ctx),
-    save(ctx),
-  )(node);
-
-  return node;
-};
-
-export default R.curryN(2, renderImage);
+export default renderImage;

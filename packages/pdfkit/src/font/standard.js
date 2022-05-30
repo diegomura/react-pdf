@@ -1,25 +1,28 @@
 import AFMFont from './afm';
-import Courier from './data/Courier.json';
-import CourierBold from './data/Courier-Bold.json';
-import CourierOblique from './data/Courier-Oblique.json';
-import Helvetica from './data/Helvetica.json';
-import HelveticaBold from './data/Helvetica-Bold.json';
-import HelveticaOblique from './data/Helvetica-Oblique.json';
-import TimesRoman from './data/Times-Roman.json';
-import TimesBold from './data/Times-Bold.json';
-import TimesItalic from './data/Times-Italic.json';
+import FontData from './data/index.json';
+// import Courier from './data/Courier.json';
+// import CourierBold from './data/Courier-Bold.json';
+// import CourierOblique from './data/Courier-Oblique.json';
+// import Helvetica from './data/Helvetica.json';
+// import HelveticaBold from './data/Helvetica-Bold.json';
+// import HelveticaOblique from './data/Helvetica-Oblique.json';
+// import TimesRoman from './data/Times-Roman.json';
+// import TimesBold from './data/Times-Bold.json';
+// import TimesItalic from './data/Times-Italic.json';
 
-const STANDARD_FONTS = {
-  Courier,
-  'Courier-Bold': CourierBold,
-  'Courier-Oblique': CourierOblique,
-  Helvetica,
-  'Helvetica-Bold': HelveticaBold,
-  'Helvetica-Oblique': HelveticaOblique,
-  'Times-Roman': TimesRoman,
-  'Times-Bold': TimesBold,
-  'Times-Italic': TimesItalic
-};
+const STANDARD_FONTS = FontData;
+
+// const STANDARD_FONTS = {
+// Courier,
+// 'Courier-Bold': CourierBold,
+// 'Courier-Oblique': CourierOblique,
+// Helvetica,
+// 'Helvetica-Bold': HelveticaBold,
+// 'Helvetica-Oblique': HelveticaOblique,
+// 'Times-Roman': TimesRoman,
+// 'Times-Bold': TimesBold,
+// 'Times-Italic': TimesItalic
+// };
 
 const createStandardFont = PDFFont =>
   class StandardFont extends PDFFont {

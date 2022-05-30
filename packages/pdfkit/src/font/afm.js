@@ -151,7 +151,7 @@ function parse(contents) {
       case 'KernPairs':
         match = line.match(/^KPX\s+(\.?\w+)\s+(\.?\w+)\s+(-?\d+)/);
         if (match) {
-          obj.kernPairs[match[1] + '\0' + match[2]] = parseInt(match[3]);
+          obj.kernPairs[match[1] + match[2]] = parseInt(match[3]);
         }
         break;
     }
@@ -241,7 +241,7 @@ class AFMFont {
   }
 
   getKernPair(left, right) {
-    return this.kernPairs[left + '\0' + right] || 0;
+    return this.kernPairs[left + right] || 0;
   }
 
   advancesForGlyphs(glyphs) {

@@ -1,6 +1,7 @@
+import { isNil } from '@react-pdf/fns';
+
 import clipNode from '../operations/clipNode';
 import parseColor from '../utils/parseColor';
-import isNil from '../../../fns/isNil';
 
 const drawBackground = (ctx, node) => {
   const { top, left, width, height } = node.box;

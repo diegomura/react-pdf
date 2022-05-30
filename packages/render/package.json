@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.4",
+    "@react-pdf/fns": "0.0.0",
     "@react-pdf/primitives": "^2.0.2",
     "@react-pdf/textkit": "^2.1.0",
     "@react-pdf/types": "^2.0.8",

@@ -1,4 +1,4 @@
-import get from './get';
+import get from '../src/get';
 
 describe('get', () => {
   const deepObject = {

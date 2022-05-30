@@ -1,4 +1,4 @@
-import matchPercent from './matchPercent';
+import matchPercent from '../src/matchPercent';
 
 describe('match percent', () => {
   test('should return null for null input', () => {

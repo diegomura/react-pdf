@@ -1,4 +1,4 @@
-import adjust from './adjust';
+import adjust from '../src/adjust';
 
 const add = v => v + 1;
 

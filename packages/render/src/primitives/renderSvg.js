@@ -1,4 +1,5 @@
 import * as P from '@react-pdf/primitives';
+import { isNil } from '@react-pdf/fns';
 
 import renderPath from './renderPath';
 import renderRect from './renderRect';
@@ -13,7 +14,6 @@ import renderSvgImage from './renderSvgImage';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
-import isNil from '../../../fns/isNil';
 
 const setStrokeWidth = (ctx, node) => {
   const lineWidth = node.props?.strokeWidth || 0;

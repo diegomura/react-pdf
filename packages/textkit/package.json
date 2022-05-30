@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.16.4",
+    "@react-pdf/fns": "0.0.0",
     "@react-pdf/unicode-properties": "^2.5.0",
     "hyphen": "^1.6.4"
   }

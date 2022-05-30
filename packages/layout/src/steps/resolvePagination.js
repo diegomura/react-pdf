@@ -2,10 +2,7 @@
 /* eslint-disable prefer-destructuring */
 
 import * as P from '@react-pdf/primitives';
-
-import omit from '../../../fns/omit';
-import isNil from '../../../fns/isNil';
-import compose from '../../../fns/compose';
+import { isNil, omit, compose } from '@react-pdf/fns';
 
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';

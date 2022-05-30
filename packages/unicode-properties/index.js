@@ -5,7 +5,7 @@ import trieBuffer from './trie.json';
 
 // Trie is serialized as a Buffer in node, but here
 // we may be running in a browser so we make an Uint8Array
-const trieData = new Uint8Array(trieBuffer.data);
+const trieData = new Uint8Array(Buffer.from(trieBuffer.data, 'base64'));
 const trie = new UnicodeTrie(trieData);
 
 const log2 = Math.log2 || (n => Math.log(n) / Math.LN2);

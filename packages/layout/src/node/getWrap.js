@@ -1,20 +1,13 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
-const isType = R.propEq('type');
+import isNil from '../../../fns/isNil';
 
-const isSvg = isType(P.Svg);
+const NON_WRAP_TYPES = [P.Svg, P.Note, P.Image, P.Canvas];
 
-const isNote = isType(P.Note);
+const getWrap = node => {
+  if (NON_WRAP_TYPES.includes(node.type)) return false;
 
-const isImage = isType(P.Image);
-
-const isCanvas = isType(P.Canvas);
-
-const getWrap = R.ifElse(
-  R.anyPass([isSvg, isNote, isImage, isCanvas]),
-  R.always(false),
-  R.pathOr(true, ['props', 'wrap']),
-);
+  return isNil(node.props?.wrap) ? true : node.props.wrap;
+};
 
 export default getWrap;

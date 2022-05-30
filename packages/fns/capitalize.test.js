@@ -1,4 +1,4 @@
-import capitalize from '../../src/utils/capitalize';
+import capitalize from './capitalize';
 
 describe('capitalize', () => {
   test('should return undefined for undefined', () => {

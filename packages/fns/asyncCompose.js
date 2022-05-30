@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 
-import * as R from 'ramda';
+import reverse from './reverse';
 
 /**
  * Performs right-to-left function composition with async functions support
@@ -9,7 +9,7 @@ import * as R from 'ramda';
  */
 const asyncCompose = (...fns) => async (value, ...args) => {
   let result = value;
-  const reversedFns = R.reverse(fns);
+  const reversedFns = reverse(fns);
 
   for (let i = 0; i < reversedFns.length; i += 1) {
     const fn = reversedFns[i];

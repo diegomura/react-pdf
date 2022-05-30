@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import isLandscape from './isLandscape';
 
 const PAGE_SIZES = {
@@ -91,15 +89,6 @@ const getStringSize = v => {
 const getNumberSize = n => toSizeObject([n]);
 
 /**
- * Throws invalid size error
- *
- * @param {String} invalid page size input
- */
-const throwInvalidError = size => {
-  throw new Error(`Invalid Page size: ${JSON.stringify(size)}`);
-};
-
-/**
  * Return page size in an object { width, height }
  *
  * @param {Object} page instance
@@ -108,13 +97,17 @@ const throwInvalidError = size => {
 const getSize = page => {
   const value = page.props?.size || 'A4';
 
-  const size = R.cond([
-    [R.is(String), getStringSize],
-    [R.is(Array), toSizeObject],
-    [R.is(Number), getNumberSize],
-    [R.is(Object), R.identity],
-    [R.T, throwInvalidError],
-  ])(value);
+  const type = typeof value;
+
+  let size = value;
+
+  if (type === 'string') {
+    size = getStringSize(value);
+  } else if (Array.isArray(value)) {
+    size = toSizeObject(value);
+  } else if (type === 'number') {
+    size = getNumberSize(value);
+  }
 
   return isLandscape(page) ? flipSizeObject(size) : size;
 };

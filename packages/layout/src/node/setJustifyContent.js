@@ -1,5 +1,14 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
+
+import isNil from '../../../fns/isNil';
+
+const JUSTIFY_CONTENT = {
+  center: Yoga.JUSTIFY_CENTER,
+  'flex-end': Yoga.JUSTIFY_FLEX_END,
+  'space-between': Yoga.JUSTIFY_SPACE_BETWEEN,
+  'space-around': Yoga.JUSTIFY_SPACE_AROUND,
+  'space-evenly': Yoga.JUSTIFY_SPACE_EVENLY,
+};
 
 /**
  * Set justify content attribute to node's Yoga instance
@@ -11,17 +20,9 @@ import Yoga from '@react-pdf/yoga';
 const setJustifyContent = value => node => {
   const yogaNode = node._yogaNode;
 
-  if (!R.isNil(value) && yogaNode) {
-    const yogaValue = R.cond([
-      [R.equals('center'), R.always(Yoga.JUSTIFY_CENTER)],
-      [R.equals('flex-end'), R.always(Yoga.JUSTIFY_FLEX_END)],
-      [R.equals('space-between'), R.always(Yoga.JUSTIFY_SPACE_BETWEEN)],
-      [R.equals('space-around'), R.always(Yoga.JUSTIFY_SPACE_AROUND)],
-      [R.equals('space-evenly'), R.always(Yoga.JUSTIFY_SPACE_EVENLY)],
-      [R.T, R.always(Yoga.JUSTIFY_FLEX_START)],
-    ])(value);
-
-    yogaNode.setJustifyContent(yogaValue);
+  if (!isNil(value) && yogaNode) {
+    const justifyContent = JUSTIFY_CONTENT[value] || Yoga.JUSTIFY_FLEX_START;
+    yogaNode.setJustifyContent(justifyContent);
   }
 
   return node;

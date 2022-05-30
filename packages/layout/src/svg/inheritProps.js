@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import pick from '../../../fns/pick';
 
 const SVG_INHERITED_PROPS = [
   'x',
@@ -32,22 +32,21 @@ const SVG_INHERITED_PROPS = [
 
 const getInheritProps = node => {
   const props = node.props || {};
-  return R.pick(SVG_INHERITED_PROPS, props);
+  return pick(SVG_INHERITED_PROPS, props);
 };
 
 const inheritProps = node => {
-  const props = getInheritProps(node);
+  if (!node.children) return node;
 
-  return R.evolve({
-    children: R.map(
-      R.compose(
-        inheritProps,
-        R.evolve({
-          props: R.merge(props),
-        }),
-      ),
-    ),
-  })(node);
+  const inheritedProps = getInheritProps(node);
+
+  const children = node.children.map(child => {
+    const props = Object.assign({}, inheritedProps, child.props || {});
+    const newChild = Object.assign({}, child, { props });
+    return inheritProps(newChild);
+  });
+
+  return Object.assign({}, node, { children });
 };
 
 export default inheritProps;

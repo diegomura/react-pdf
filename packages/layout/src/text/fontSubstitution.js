@@ -1,12 +1,11 @@
-import * as R from 'ramda';
-
+import last from '../../../fns/last';
 import StandardFont from './standardFont';
 
 const fontCache = {};
 
 const IGNORED_CODE_POINTS = [173];
 
-const getFontSize = R.pathOr(12, ['attributes', 'fontSize']);
+const getFontSize = node => node.attributes.fontSize || 12;
 
 const getOrCreateFont = name => {
   if (fontCache[name]) return fontCache[name];
@@ -83,7 +82,7 @@ const fontSubstitution = () => ({ string, runs }) => {
   }
 
   if (lastIndex < string.length) {
-    const fontSize = getFontSize(R.last(runs));
+    const fontSize = getFontSize(last(runs));
 
     res.push({
       start: lastIndex,

@@ -1,19 +1,17 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
-const isDefs = R.propEq('type', P.Defs);
+const isDefs = node => node.type === P.Defs;
 
-const getChildren = R.propOr([], 'children');
+const getDefs = node => {
+  const children = node.children || [];
+  const defs = children.find(isDefs) || {};
+  const values = defs.children || [];
 
-const getId = R.path(['props', 'id']);
-
-const getDefs = R.compose(
-  R.map(R.prop(0)),
-  R.groupBy(getId),
-  getChildren,
-  R.defaultTo({}),
-  R.find(isDefs),
-  getChildren,
-);
+  return values.reduce((acc, value) => {
+    const id = value.props?.id;
+    if (id) acc[id] = value;
+    return acc;
+  }, {});
+};
 
 export default getDefs;

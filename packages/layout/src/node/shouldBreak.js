@@ -1,13 +1,11 @@
 /* eslint-disable no-continue */
 
-import * as R from 'ramda';
-
 import getWrap from './getWrap';
 import getNodesHeight from './getNodesHeight';
 
-const getBreak = R.pathOr(false, ['props', 'break']);
+const getBreak = node => node.props?.break || false;
 
-const getMinPresenceAhead = R.path(['props', 'minPresenceAhead']);
+const getMinPresenceAhead = node => node.props?.minPresenceAhead;
 
 const defaultPresenceAhead = element => height =>
   Math.min(element.box.height, height);

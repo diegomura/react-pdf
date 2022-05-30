@@ -1,4 +1,4 @@
-import matchPercent from './matchPercent';
+import matchPercent from '../../../fns/matchPercent';
 
 const isNumeric = n => {
   return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);

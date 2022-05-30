@@ -1,9 +1,7 @@
-import * as R from 'ramda';
-
 import getDimension from '../../src/node/getDimension';
 
-const getComputedWidth = R.always(10);
-const getComputedHeight = R.always(20);
+const getComputedWidth = () => 10;
+const getComputedHeight = () => 20;
 
 describe('node getDimension', () => {
   test('Should return 0 by default if no yoga node available', () => {

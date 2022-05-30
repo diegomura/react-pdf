@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 import getPosition from '../../src/node/getPosition';
 
-const getComputedTop = R.always(10);
-const getComputedRight = R.always(20);
-const getComputedBottom = R.always(30);
-const getComputedLeft = R.always(40);
+const getComputedTop = () => 10;
+const getComputedRight = () => 20;
+const getComputedBottom = () => 30;
+const getComputedLeft = () => 40;
 
 describe('node getPosition', () => {
   test('Should return 0 by default if no yoga node available', () => {

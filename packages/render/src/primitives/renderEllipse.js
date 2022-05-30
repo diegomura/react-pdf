@@ -1,8 +1,4 @@
-import * as R from 'ramda';
-
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
-
-const getProp = (p, v) => R.path(['props', p], v);
 
 export const drawEllipse = (ctx, cx, cy, rx, ry) => {
   const x = cx - rx;
@@ -23,14 +19,9 @@ export const drawEllipse = (ctx, cx, cy, rx, ry) => {
 };
 
 const renderEllipse = (ctx, node) => {
-  const cx = getProp('cx', node);
-  const cy = getProp('cy', node);
-  const rx = getProp('rx', node);
-  const ry = getProp('ry', node);
+  const { cx, cy, rx, ry } = node.props || {};
 
   drawEllipse(ctx, cx, cy, rx, ry);
-
-  return node;
 };
 
-export default R.curryN(2, renderEllipse);
+export default renderEllipse;

@@ -1,14 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import * as R from 'ramda';
-
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import isHeightAuto from '../page/isHeightAuto';
 
 const SAFETY_HEIGHT = 10;
 
-const getMax = R.reduce(R.max, -Infinity);
+const getMax = values => Math.max(-Infinity, ...values);
 
 /**
  * Helper object to predict canvas size
@@ -21,7 +19,10 @@ const measureCtx = () => {
   const nil = () => ctx;
   const addPoint = (x, y) => points.push([x, y]);
 
-  const moveTo = R.compose(nil, addPoint);
+  const moveTo = (...args) => {
+    addPoint(...args);
+    return ctx;
+  };
 
   const rect = (x, y, w, h) => {
     addPoint(x, y);
@@ -44,7 +45,7 @@ const measureCtx = () => {
 
   const polygon = (...pts) => {
     points.push(...pts);
-    return nil();
+    return ctx;
   };
 
   // Change dimensions
@@ -87,9 +88,8 @@ const measureCtx = () => {
   ctx.linearGradient = nil;
   ctx.radialGradient = nil;
 
-  ctx.getWidth = () => R.compose(getMax, R.pluck(0))(points);
-
-  ctx.getHeight = () => R.compose(getMax, R.pluck(1))(points);
+  ctx.getWidth = () => getMax(points.map(p => p[0]));
+  ctx.getHeight = () => getMax(points.map(p => p[1]));
 
   return ctx;
 };
@@ -105,7 +105,7 @@ const measureCtx = () => {
  * @param {Number} heightMode
  * @returns {Object} canvas width and height
  */
-const measureCanvas = (page, node) => {
+const measureCanvas = (page, node) => () => {
   const imageMargin = getMargin(node);
   const pagePadding = getPadding(page);
   const pageArea = isHeightAuto(page)
@@ -127,4 +127,4 @@ const measureCanvas = (page, node) => {
   return { height, width };
 };
 
-export default R.curryN(6, measureCanvas);
+export default measureCanvas;

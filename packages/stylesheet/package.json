@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.4",
+    "@react-pdf/fns": "0.0.0",
     "@react-pdf/types": "^2.0.8",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",

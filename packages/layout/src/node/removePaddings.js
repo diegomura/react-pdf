@@ -1,6 +1,16 @@
-import * as R from 'ramda';
+import { omit } from '@react-pdf/fns';
 
 import setPadding from './setPadding';
+
+const PADDING_PROPS = [
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'paddingHorizontal',
+  'paddingVertical',
+];
 
 /**
  * Removes padding on node
@@ -8,15 +18,13 @@ import setPadding from './setPadding';
  * @param {Object} node
  * @returns {Object} node without padding
  */
-const removePaddings = R.compose(
-  setPadding(0),
-  R.dissocPath(['style', 'padding']),
-  R.dissocPath(['style', 'paddingTop']),
-  R.dissocPath(['style', 'paddingRight']),
-  R.dissocPath(['style', 'paddingBottom']),
-  R.dissocPath(['style', 'paddingLeft']),
-  R.dissocPath(['style', 'paddingHorizontal']),
-  R.dissocPath(['style', 'paddingVertical']),
-);
+const removePaddings = node => {
+  const style = omit(PADDING_PROPS, node.style || {});
+  const newNode = Object.assign({}, node, { style });
+
+  setPadding(0)(newNode);
+
+  return newNode;
+};
 
 export default removePaddings;

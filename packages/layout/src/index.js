@@ -1,6 +1,5 @@
-// import * as R from 'ramda';
+import { asyncCompose } from '@react-pdf/fns';
 
-import asyncCompose from './utils/asyncCompose';
 import resolveSvg from './steps/resolveSvg';
 import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';
@@ -15,9 +14,6 @@ import resolvePagePaddings from './steps/resolvePagePaddings';
 import resolvePercentRadius from './steps/resolvePercentRadius';
 import resolvePercentHeight from './steps/resolvePercentHeight';
 import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
-
-// const startTimer = name => R.tap(() => console.time(name));
-// const endTimer = name => R.tap(() => console.timeEnd(name));
 
 const layout = asyncCompose(
   resolveZIndex,

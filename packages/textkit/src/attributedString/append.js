@@ -1,4 +1,5 @@
-import last from '../../../fns/last';
+import { last } from '@react-pdf/fns';
+
 import emptyRun from '../run/empty';
 import appendToRun from '../run/append';
 import stringFromCodePoints from '../utils/stringFromCodePoints';

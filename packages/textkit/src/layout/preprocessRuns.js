@@ -1,7 +1,8 @@
+import { isNil } from '@react-pdf/fns';
+
 import omit from '../run/omit';
 import flatten from '../run/flatten';
 import empty from '../attributedString/empty';
-import isNil from '../../../fns/isNil';
 
 const omitFont = attributedString => {
   const runs = attributedString.runs.map(run => omit('font', run));

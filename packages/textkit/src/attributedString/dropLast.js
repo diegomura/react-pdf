@@ -1,6 +1,6 @@
+import { adjust, dropLast as arrayDropLast } from '@react-pdf/fns';
+
 import runDropLast from '../run/dropLast';
-import adjust from '../../../fns/adjust';
-import arrayDropLast from '../../../fns/dropLast';
 
 /**
  * Drop last glyph

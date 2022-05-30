@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
 import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
 
@@ -45,10 +44,10 @@ const renderRun = (ctx, run) => {
 const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   ctx.save();
 
-  const x = R.pathOr(0, ['box', 'x'], line);
-  const y = R.pathOr(0, ['box', 'y'], line);
-  const font = R.pathOr(1, ['runs', 0, 'attributes', 'font'], line);
-  const scale = R.pathOr(1, ['runs', 0, 'attributes', 'scale'], line);
+  const x = line.box?.x || 0;
+  const y = line.box?.y || 0;
+  const font = line.runs[0]?.attributes.font;
+  const scale = line.runs[0]?.attributes?.scale || 1;
   const width = lineWidth(line);
 
   const ascent = font.ascent * scale;
@@ -100,7 +99,7 @@ const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   ctx.restore();
 };
 
-const renderSvgText = ctx => node => {
+const renderSvgText = (ctx, node) => {
   node.children.forEach(span =>
     renderSpan(
       ctx,
@@ -109,8 +108,6 @@ const renderSvgText = ctx => node => {
       span.props.dominantBaseline,
     ),
   );
-
-  return node;
 };
 
 export default renderSvgText;

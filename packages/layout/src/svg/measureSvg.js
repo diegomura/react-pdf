@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 const getAspectRatio = viewbox => {
@@ -17,7 +16,12 @@ const getAspectRatio = viewbox => {
  * @param {Number} heightMode
  * @returns {Object} canvas width and height
  */
-const measureCanvas = (page, node, width, widthMode, height, heightMode) => {
+const measureCanvas = (page, node) => (
+  width,
+  widthMode,
+  height,
+  heightMode,
+) => {
   const aspectRatio = getAspectRatio(node.props.viewBox) || 1;
 
   if (
@@ -34,4 +38,4 @@ const measureCanvas = (page, node, width, widthMode, height, heightMode) => {
   return {};
 };
 
-export default R.curryN(6, measureCanvas);
+export default measureCanvas;

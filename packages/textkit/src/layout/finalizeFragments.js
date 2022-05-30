@@ -1,9 +1,9 @@
+import { last, compose } from '@react-pdf/fns';
+
 import advanceWidth from '../attributedString/advanceWidth';
 import leadingOffset from '../attributedString/leadingOffset';
 import trailingOffset from '../attributedString/trailingOffset';
 import dropLast from '../attributedString/dropLast';
-import last from '../../../fns/last';
-import compose from '../../../fns/compose';
 
 const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
 

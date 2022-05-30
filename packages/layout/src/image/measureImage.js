@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import getRatio from './getRatio';
@@ -19,7 +18,7 @@ const SAFETY_HEIGHT = 10;
  * @param {Number} heightMode
  * @returns {Object} image width and height
  */
-const measureImage = (page, node, width, widthMode, height, heightMode) => {
+const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
   const imageRatio = getRatio(node);
   const imageMargin = getMargin(node);
   const pagePadding = getPadding(page);
@@ -79,4 +78,4 @@ const measureImage = (page, node, width, widthMode, height, heightMode) => {
   return { height, width };
 };
 
-export default R.curryN(6, measureImage);
+export default measureImage;

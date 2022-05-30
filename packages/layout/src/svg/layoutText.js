@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 import layoutEngine from '@react-pdf/textkit/lib/layout';
 import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
@@ -11,7 +10,7 @@ import fromFragments from '@react-pdf/textkit/lib/attributedString/fromFragments
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';
 
-const isTextInstance = R.propEq('type', P.TextInstance);
+const isTextInstance = node => node.type === P.TextInstance;
 
 const engines = {
   linebreaker,
@@ -115,8 +114,8 @@ const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 const layoutTspan = fontStore => node => {
   const attributedString = getAttributedString(fontStore, node);
 
-  const x = R.pathOr(0, ['props', 'x'], node);
-  const y = R.pathOr(0, ['props', 'y'], node);
+  const x = node.props?.x || 0;
+  const y = node.props?.y || 0;
 
   const container = { x, y, width: AlmostInfinity, height: AlmostInfinity };
 
@@ -126,19 +125,17 @@ const layoutTspan = fontStore => node => {
     null;
 
   const layoutOptions = { hyphenationCallback, shrinkWhitespaceFactor };
+  const lines = engine(attributedString, container, layoutOptions).flat();
 
-  const lines = R.compose(R.reduce(R.concat, []), engine)(
-    attributedString,
-    container,
-    layoutOptions,
-  );
-
-  return R.assoc('lines', lines, node);
+  return Object.assign({}, node, { lines });
 };
 
-const layoutText = (fontStore, node) =>
-  R.evolve({
-    children: R.map(layoutTspan(fontStore)),
-  })(node);
+const layoutText = (fontStore, node) => {
+  if (!node.children) return node;
 
-export default R.curryN(2, layoutText);
+  const children = node.children.map(layoutTspan(fontStore));
+
+  return Object.assign({}, node, { children });
+};
+
+export default layoutText;

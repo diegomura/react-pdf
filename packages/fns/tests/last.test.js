@@ -1,4 +1,4 @@
-import last from './last';
+import last from '../src/last';
 
 describe('last', () => {
   test('returns the last element of an ordered collection', () => {

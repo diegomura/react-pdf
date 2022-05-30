@@ -1,5 +1,4 @@
-import isNil from '../../../fns/isNil';
-import matchPercent from '../../../fns/matchPercent';
+import { isNil, matchPercent } from '@react-pdf/fns';
 
 const getTransformStyle = s => node =>
   isNil(node.style?.[s]) ? '50%' : node.style?.[s];

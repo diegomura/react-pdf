@@ -1,4 +1,5 @@
-import last from '../../../fns/last';
+import { last } from '@react-pdf/fns';
+
 import runTrailingOffset from '../run/trailingOffset';
 
 /**

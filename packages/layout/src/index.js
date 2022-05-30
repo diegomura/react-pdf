@@ -1,4 +1,5 @@
-import asyncCompose from '../../fns/asyncCompose';
+import { asyncCompose } from '@react-pdf/fns';
+
 import resolveSvg from './steps/resolveSvg';
 import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';

@@ -1,6 +1,6 @@
 /* eslint-disable no-void */
 
-import isNil from './isNil';
+import isNil from '../src/isNil';
 
 describe('isNil', () => {
   test('tests a value for `null` or `undefined`', () => {

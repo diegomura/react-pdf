@@ -1,10 +1,11 @@
+import { isNil } from '@react-pdf/fns';
+
 import copyRect from '../rect/copy';
 import cropRect from '../rect/crop';
 import blockHeight from '../block/height';
 import truncateBlock from '../block/truncate';
 import layoutParagraph from './layoutParagraph';
 import sliceBlockAtHeight from '../block/sliceAtHeight';
-import isNil from '../../../fns/isNil';
 
 /**
  * Layout paragraphs inside container until it does not

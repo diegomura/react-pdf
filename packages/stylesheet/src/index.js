@@ -1,8 +1,9 @@
+import { compose } from '@react-pdf/fns';
+
 import expandStyles from './expand';
 import flattenStyles from './flatten';
 import transformStyles from './transform';
 import resolveMediaQueries from './mediaQueries';
-import compose from '../../fns/compose';
 
 /**
  * Resolves styles

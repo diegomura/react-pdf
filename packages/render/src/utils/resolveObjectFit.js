@@ -1,4 +1,4 @@
-import matchPercent from '../../../fns/matchPercent';
+import { matchPercent } from '@react-pdf/fns';
 
 const isNumeric = n => {
   return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);

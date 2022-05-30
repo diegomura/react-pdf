@@ -1,4 +1,4 @@
-import upperFirst from './upperFirst';
+import upperFirst from '../src/upperFirst';
 
 describe('upperFirst', () => {
   test('should return undefined for undefined', () => {

@@ -1,5 +1,4 @@
-import evolve from '../../../fns/evolve';
-import matchPercent from '../../../fns/matchPercent';
+import { evolve, matchPercent } from '@react-pdf/fns';
 
 /**
  *

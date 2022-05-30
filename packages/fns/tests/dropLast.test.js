@@ -1,4 +1,4 @@
-import dropLast from './dropLast';
+import dropLast from '../src/dropLast';
 
 describe('dropLast', () => {
   test('skips the last element from a list, returning the remainder', () => {

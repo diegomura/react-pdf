@@ -1,5 +1,6 @@
+import { omit } from '@react-pdf/fns';
+
 import setPadding from './setPadding';
-import omit from '../../../fns/omit';
 
 const PADDING_PROPS = [
   'padding',

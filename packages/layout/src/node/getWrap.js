@@ -1,6 +1,5 @@
 import * as P from '@react-pdf/primitives';
-
-import isNil from '../../../fns/isNil';
+import { isNil } from '@react-pdf/fns';
 
 const NON_WRAP_TYPES = [P.Svg, P.Note, P.Image, P.Canvas];
 

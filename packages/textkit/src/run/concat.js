@@ -1,6 +1,7 @@
+import { last } from '@react-pdf/fns';
+
 import length from './length';
 import normalizeIndices from '../indices/normalize';
-import last from '../../../fns/last';
 
 /**
  * Concats two runs into one

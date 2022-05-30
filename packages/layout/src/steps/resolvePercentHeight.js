@@ -1,5 +1,4 @@
-import isNil from '../../../fns/isNil';
-import matchPercent from '../../../fns/matchPercent';
+import { isNil, matchPercent } from '@react-pdf/fns';
 
 /**
  * Transform percent height into fixed

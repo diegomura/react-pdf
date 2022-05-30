@@ -1,4 +1,4 @@
-import pick from '../../../fns/pick';
+import { pick } from '@react-pdf/fns';
 
 const SVG_INHERITED_PROPS = [
   'x',

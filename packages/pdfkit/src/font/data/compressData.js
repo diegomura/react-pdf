@@ -18,6 +18,31 @@ const generateJsonFiles = () => {
   });
 };
 
+// Order is designed to produce the smaller size possible
+const COMPRESS_ORDER = ['Helvetica', 'Times', 'Courier'];
+
+const readJson = file => {
+  const data = fs.readFileSync(__dirname + '/' + file, 'utf8');
+  return JSON.parse(data);
+};
+
+const sortFiles = (a, b) => {
+  const indexA = COMPRESS_ORDER.indexOf(a.attributes.FamilyName);
+  const indexB = COMPRESS_ORDER.indexOf(b.attributes.FamilyName);
+
+  return indexA - indexB;
+};
+
+const fillWithZeros = array => {
+  const res = [];
+
+  for (let i = 0; i < array.length; i++) {
+    res[i] = array[i] || 0;
+  }
+
+  return res;
+};
+
 const compressJsonFiles = () => {
   const attributes = [];
   const glyphWidths = {};
@@ -25,11 +50,10 @@ const compressJsonFiles = () => {
 
   const files = fs.readdirSync(__dirname);
   const jsonFiles = files.filter(file => file.match(/.json$/));
+  const filesContent = jsonFiles.map(readJson);
+  const sortedFiles = filesContent.sort(sortFiles);
 
-  jsonFiles.forEach((file, index) => {
-    const data = fs.readFileSync(__dirname + '/' + file, 'utf8');
-    const content = JSON.parse(data);
-
+  sortedFiles.forEach((content, index) => {
     attributes.push(content.attributes);
 
     Object.keys(content.glyphWidths).forEach(key => {
@@ -43,13 +67,13 @@ const compressJsonFiles = () => {
     });
   });
 
-  // TODO: Sort fonts to prevent null pointers at the end
+  // Cheaper to store nulls as 0s
   Object.keys(glyphWidths).forEach(key => {
-    glyphWidths[key] = glyphWidths[key].filter(Boolean);
+    glyphWidths[key] = fillWithZeros(glyphWidths[key]);
   });
 
   Object.keys(kernPairs).forEach(key => {
-    kernPairs[key] = kernPairs[key].filter(Boolean);
+    kernPairs[key] = fillWithZeros(kernPairs[key]);
   });
 
   const parsed = { attributes, glyphWidths, kernPairs };

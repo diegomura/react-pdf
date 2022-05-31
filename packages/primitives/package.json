@@ -17,6 +17,7 @@
     "test": "jest"
   },
   "files": [
+    "lib",
     "src"
   ]
 }

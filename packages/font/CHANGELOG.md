@@ -1,5 +1,16 @@
 # @react-pdf/font
 
+## 2.2.0
+
+### Minor Changes
+
+- [#1841](https://github.com/diegomura/react-pdf/pull/1841) [`25a80eb`](https://github.com/diegomura/react-pdf/commit/25a80ebd5f96ade7101883624010bad51474967c) Thanks [@diegomura](https://github.com/diegomura)! - feat: support bold-italic standard fonts
+
+### Patch Changes
+
+- Updated dependencies [[`fe0f214`](https://github.com/diegomura/react-pdf/commit/fe0f214dbbf2f632b852ebfe65f886ecc4dd6953)]:
+  - @react-pdf/types@2.0.9
+
 ## 2.1.1
 
 ### Patch Changes

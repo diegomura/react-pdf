@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 2.1.2
+
+### Patch Changes
+
+- [#1836](https://github.com/diegomura/react-pdf/pull/1836) [`6c799ec`](https://github.com/diegomura/react-pdf/commit/6c799ec1bbe17106df6db109df4a62c70e39bd24) Thanks [@diegomura](https://github.com/diegomura)! - refactor: remove unused ramda dependency
+
+- Updated dependencies [[`e938df0`](https://github.com/diegomura/react-pdf/commit/e938df0857642707b10b7f65f17ed22dc394ac1b), [`7c1d373`](https://github.com/diegomura/react-pdf/commit/7c1d373a06b04369e762069be4b96d4e40371ecc), [`5458a00`](https://github.com/diegomura/react-pdf/commit/5458a00979d883341c6df094243cae859344d2b9), [`9bdb5c9`](https://github.com/diegomura/react-pdf/commit/9bdb5c934a822340754cd4c892d399f91f6218de), [`fe0f214`](https://github.com/diegomura/react-pdf/commit/fe0f214dbbf2f632b852ebfe65f886ecc4dd6953), [`7e97bb5`](https://github.com/diegomura/react-pdf/commit/7e97bb579aaa847e5a2de650b5b327ac90a465c7), [`9a2b935`](https://github.com/diegomura/react-pdf/commit/9a2b935cfe173f80425ed87d9f474da271c050d2), [`25a80eb`](https://github.com/diegomura/react-pdf/commit/25a80ebd5f96ade7101883624010bad51474967c)]:
+  - @react-pdf/primitives@3.0.0
+  - @react-pdf/layout@3.0.0
+  - @react-pdf/render@3.0.0
+  - @react-pdf/types@2.0.9
+  - @react-pdf/font@2.2.0
+  - @react-pdf/pdfkit@2.2.0
+
 ## 2.1.1
 
 ### Patch Changes

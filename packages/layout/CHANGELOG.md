@@ -1,5 +1,31 @@
 # @react-pdf/layout
 
+## 3.0.0
+
+### Major Changes
+
+- [#1827](https://github.com/diegomura/react-pdf/pull/1827) [`7c1d373`](https://github.com/diegomura/react-pdf/commit/7c1d373a06b04369e762069be4b96d4e40371ecc) Thanks [@diegomura](https://github.com/diegomura)! - refactor: remove ramda from layout package
+
+### Minor Changes
+
+- [#1841](https://github.com/diegomura/react-pdf/pull/1841) [`25a80eb`](https://github.com/diegomura/react-pdf/commit/25a80ebd5f96ade7101883624010bad51474967c) Thanks [@diegomura](https://github.com/diegomura)! - feat: support bold-italic standard fonts
+
+### Patch Changes
+
+- [#1829](https://github.com/diegomura/react-pdf/pull/1829) [`5458a00`](https://github.com/diegomura/react-pdf/commit/5458a00979d883341c6df094243cae859344d2b9) Thanks [@diegomura](https://github.com/diegomura)! - refactor: remove ramda from stylesheet package
+
+* [#1838](https://github.com/diegomura/react-pdf/pull/1838) [`9bdb5c9`](https://github.com/diegomura/react-pdf/commit/9bdb5c934a822340754cd4c892d399f91f6218de) Thanks [@diegomura](https://github.com/diegomura)! - feat: create fns package
+
+- [#1830](https://github.com/diegomura/react-pdf/pull/1830) [`9a2b935`](https://github.com/diegomura/react-pdf/commit/9a2b935cfe173f80425ed87d9f474da271c050d2) Thanks [@diegomura](https://github.com/diegomura)! - refactor: remove ramda from textkit package
+
+- Updated dependencies [[`e938df0`](https://github.com/diegomura/react-pdf/commit/e938df0857642707b10b7f65f17ed22dc394ac1b), [`5458a00`](https://github.com/diegomura/react-pdf/commit/5458a00979d883341c6df094243cae859344d2b9), [`9bdb5c9`](https://github.com/diegomura/react-pdf/commit/9bdb5c934a822340754cd4c892d399f91f6218de), [`fe0f214`](https://github.com/diegomura/react-pdf/commit/fe0f214dbbf2f632b852ebfe65f886ecc4dd6953), [`9a2b935`](https://github.com/diegomura/react-pdf/commit/9a2b935cfe173f80425ed87d9f474da271c050d2), [`25a80eb`](https://github.com/diegomura/react-pdf/commit/25a80ebd5f96ade7101883624010bad51474967c)]:
+  - @react-pdf/primitives@3.0.0
+  - @react-pdf/stylesheet@3.0.0
+  - @react-pdf/fns@1.0.0
+  - @react-pdf/textkit@3.0.0
+  - @react-pdf/types@2.0.9
+  - @react-pdf/pdfkit@2.2.0
+
 ## 2.1.1
 
 ### Patch Changes

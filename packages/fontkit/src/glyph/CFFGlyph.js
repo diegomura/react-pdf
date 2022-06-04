@@ -136,8 +136,8 @@ export default class CFFGlyph extends Glyph {
               break;
 
             case 10: // callsubr
-              let index = stack.pop() + subrsBias;
-              let subr = subrs[index];
+              var index = stack.pop() + subrsBias;
+              var subr = subrs[index];
               if (subr) {
                 usedSubrs[index] = true;
                 var p = stream.pos;

@@ -37,7 +37,9 @@ const drawImage = (ctx, node) => {
         );
     } else {
       console.warn(
-        `Image with src '${node.props.src}' skipped due to invalid dimensions`,
+        `Image with src '${JSON.stringify(
+          node.props.src,
+        )}' skipped due to invalid dimensions`,
       );
     }
   }

@@ -7,8 +7,8 @@ import advanceWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
  * @returns {Number} lines width
  */
 const linesWidth = node => {
-  if (!node.lines) return -1;
-  return Math.max(...node.lines.map(line => advanceWidth(line)));
+  if (!node.lines) return 0;
+  return Math.max(0, ...node.lines.map(line => advanceWidth(line)));
 };
 
 export default linesWidth;

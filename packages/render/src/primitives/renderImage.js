@@ -1,3 +1,5 @@
+import { isNil } from '@react-pdf/fns';
+
 import clipNode from '../operations/clipNode';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
@@ -33,8 +35,10 @@ const drawImage = (ctx, node) => {
 
       if (cacheKey) IMAGE_CACHE.set(cacheKey, image);
 
+      const imageOpacity = isNil(opacity) ? 1 : opacity;
+
       ctx
-        .fillOpacity(opacity || 1)
+        .fillOpacity(imageOpacity)
         .image(
           image,
           left + paddingLeft + xOffset,

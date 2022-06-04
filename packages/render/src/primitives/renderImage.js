@@ -1,6 +1,8 @@
 import clipNode from '../operations/clipNode';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
+const IMAGE_CACHE = new Map();
+
 const drawImage = (ctx, node) => {
   const { left, top } = node.box;
   const opacity = node.style?.opacity;
@@ -24,10 +26,17 @@ const drawImage = (ctx, node) => {
 
   if (node.image.data) {
     if (width !== 0 && height !== 0) {
+      const cacheKey = node.image.key;
+
+      const image =
+        IMAGE_CACHE.get(cacheKey) || ctx.embedImage(node.image.data);
+
+      if (cacheKey) IMAGE_CACHE.set(cacheKey, image);
+
       ctx
         .fillOpacity(opacity || 1)
         .image(
-          node.image.data,
+          image,
           left + paddingLeft + xOffset,
           top + paddingTop + yOffset,
           {

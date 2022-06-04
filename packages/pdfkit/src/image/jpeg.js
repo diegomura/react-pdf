@@ -13,7 +13,7 @@ let MARKERS = [
   0xffcc,
   0xffcd,
   0xffce,
-  0xffcf,
+  0xffcf
 ];
 
 class JPEG {
@@ -75,7 +75,7 @@ class JPEG {
       Width: this.width,
       Height: this.height,
       ColorSpace: this.colorSpace,
-      Filter: 'DCTDecode',
+      Filter: 'DCTDecode'
     });
 
     // add extra decode params for CMYK images. By swapping the
@@ -88,7 +88,7 @@ class JPEG {
     this.obj.end(this.data);
 
     // free memory
-    return (this.data = null);
+    this.data = null;
   }
 }
 

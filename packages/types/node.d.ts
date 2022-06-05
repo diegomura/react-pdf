@@ -2,12 +2,14 @@ import { Style } from './style';
 import { Primitive } from './primitive';
 import { HyphenationCallback } from './font';
 import { PageSize, Orientation } from './page';
+import { Bookmark } from './bookmark';
 
 interface BaseProps {
   id?: string;
   fixed?: boolean;
   break?: boolean;
   debug?: boolean;
+  bookmark?: Bookmark;
   minPresenceAhead?: number;
 }
 

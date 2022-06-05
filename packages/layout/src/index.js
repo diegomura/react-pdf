@@ -5,6 +5,7 @@ import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';
 import resolveStyles from './steps/resolveStyles';
 import resolveOrigins from './steps/resolveOrigins';
+import resolveBookmarks from './steps/resolveBookmarks';
 import resolvePageSizes from './steps/resolvePageSizes';
 import resolvePagination from './steps/resolvePagination';
 import resolveDimensions from './steps/resolveDimensions';
@@ -29,6 +30,7 @@ const layout = asyncCompose(
   resolvePagePaddings,
   resolveStyles,
   resolveLinkSubstitution,
+  resolveBookmarks,
   resolvePageSizes,
 );
 

@@ -15,7 +15,7 @@ import setDestination from '../operations/setDestination';
 
 const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg;
 
-const renderChildren = (ctx, node) => {
+const renderChildren = (ctx, node, options) => {
   ctx.save();
 
   if (node.box) {
@@ -23,7 +23,7 @@ const renderChildren = (ctx, node) => {
   }
 
   const children = node.children || [];
-  const renderChild = child => renderNode(ctx, child);
+  const renderChild = child => renderNode(ctx, child, options);
 
   children.forEach(renderChild);
 
@@ -39,7 +39,7 @@ const renderFns = {
   [P.Link]: setLink,
 };
 
-const renderNode = (ctx, node) => {
+const renderNode = (ctx, node, options) => {
   const overflowHidden = node.style?.overflow === 'hidden';
   const shouldRenderChildren = isRecursiveNode(node);
 
@@ -55,9 +55,9 @@ const renderNode = (ctx, node) => {
 
   const renderFn = renderFns[node.type];
 
-  if (renderFn) renderFn(ctx, node);
+  if (renderFn) renderFn(ctx, node, options);
 
-  if (shouldRenderChildren) renderChildren(ctx, node);
+  if (shouldRenderChildren) renderChildren(ctx, node, options);
 
   setDestination(ctx, node);
   renderDebug(ctx, node);

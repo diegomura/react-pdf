@@ -3,9 +3,7 @@ import { isNil } from '@react-pdf/fns';
 import clipNode from '../operations/clipNode';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
-const IMAGE_CACHE = new Map();
-
-const drawImage = (ctx, node) => {
+const drawImage = (ctx, node, options = {}) => {
   const { left, top } = node.box;
   const opacity = node.style?.opacity;
   const objectFit = node.style?.objectFit;
@@ -15,6 +13,7 @@ const drawImage = (ctx, node) => {
   const paddingRight = node.box.paddingRight || 0;
   const paddingBottom = node.box.paddingBottom || 0;
   const paddingLeft = node.box.paddingLeft || 0;
+  const imageCache = options.imageCache || new Map();
 
   const { width, height, xOffset, yOffset } = resolveObjectFit(
     objectFit,
@@ -30,10 +29,9 @@ const drawImage = (ctx, node) => {
     if (width !== 0 && height !== 0) {
       const cacheKey = node.image.key;
 
-      const image =
-        IMAGE_CACHE.get(cacheKey) || ctx.embedImage(node.image.data);
+      const image = imageCache.get(cacheKey) || ctx.embedImage(node.image.data);
 
-      if (cacheKey) IMAGE_CACHE.set(cacheKey, image);
+      if (cacheKey) imageCache.set(cacheKey, image);
 
       const imageOpacity = isNil(opacity) ? 1 : opacity;
 
@@ -58,11 +56,11 @@ const drawImage = (ctx, node) => {
   }
 };
 
-const renderImage = (ctx, node) => {
+const renderImage = (ctx, node, options) => {
   ctx.save();
 
   clipNode(ctx, node);
-  drawImage(ctx, node);
+  drawImage(ctx, node, options);
 
   ctx.restore();
 };

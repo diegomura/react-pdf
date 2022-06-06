@@ -49,7 +49,10 @@ const resolveNodeStyles = container => node => {
  * @returns {Object} document page with resolved styles
  */
 const resolvePageStyles = page => {
-  const container = page.box || page.style;
+  const dpi = page.props?.dpi || 72;
+  const box = page.box || page.style;
+  const container = { ...box, dpi };
+
   return resolveNodeStyles(container)(page);
 };
 

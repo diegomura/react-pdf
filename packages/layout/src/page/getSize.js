@@ -71,6 +71,18 @@ const toSizeObject = v => ({ width: v[0], height: v[1] });
 const flipSizeObject = v => ({ width: v.height, height: v.width });
 
 /**
+ * Adjust page size to passed DPI
+ *
+ * @param {Object} size object
+ * @param {number} dpi
+ * @returns {Object} adjusted size object
+ */
+const adjustDpi = (v, dpi) => ({
+  width: v.width ? v.width * dpi : v.width,
+  height: v.height ? v.height * dpi : v.height,
+});
+
+/**
  * Returns size object from a given string
  *
  * @param {String} page size string
@@ -96,6 +108,7 @@ const getNumberSize = n => toSizeObject([n]);
  */
 const getSize = page => {
   const value = page.props?.size || 'A4';
+  const dpi = parseFloat(page.props?.dpi || 72);
 
   const type = typeof value;
 
@@ -108,6 +121,8 @@ const getSize = page => {
   } else if (type === 'number') {
     size = getNumberSize(value);
   }
+
+  size = adjustDpi(size, dpi / 72);
 
   return isLandscape(page) ? flipSizeObject(size) : size;
 };

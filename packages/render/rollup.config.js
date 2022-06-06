@@ -1,6 +1,5 @@
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
 
 import pkg from './package.json';
 
@@ -18,7 +17,10 @@ const getESM = override => Object.assign({}, esm, override);
 
 const configBase = {
   input: 'src/index.js',
-  external: Object.keys(pkg.dependencies),
+  external: Object.keys(pkg.dependencies).concat(
+    /@babel\/runtime/,
+    /@react-pdf\/textkit/,
+  ),
   plugins: [
     json(),
     babel({
@@ -36,12 +38,4 @@ const config = Object.assign({}, configBase, {
   ],
 });
 
-const prodConfig = Object.assign({}, configBase, {
-  output: [
-    getESM({ file: 'lib/index.es.min.js' }),
-    getCJS({ file: 'lib/index.cjs.min.js' }),
-  ],
-  plugins: configBase.plugins.concat(terser()),
-});
-
-export default [config, prodConfig];
+export default config;

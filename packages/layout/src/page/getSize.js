@@ -78,8 +78,8 @@ const flipSizeObject = v => ({ width: v.height, height: v.width });
  * @returns {Object} adjusted size object
  */
 const adjustDpi = (v, dpi) => ({
-  width: v.width * dpi,
-  height: v.height * dpi,
+  width: v.width ? v.width * dpi : v.width,
+  height: v.height ? v.height * dpi : v.height,
 });
 
 /**

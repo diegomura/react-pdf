@@ -37,6 +37,8 @@ interface PageProps extends BaseProps {
   orientation?: Orientation;
 }
 
+type PageLayout = 'singlePage' | 'oneColumn' | 'twoColumnLeft' | 'twoColumnRight' | 'twoPageLeft' | 'twoPageRight'
+
 interface DocumentProps {
   title?: string;
   author?: string;
@@ -44,6 +46,7 @@ interface DocumentProps {
   keywords?: string;
   creator?: string;
   producer?: string;
+  pageLayout?: PageLayout
 }
 
 interface TextInstanceNode {

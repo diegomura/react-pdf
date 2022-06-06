@@ -1,5 +1,5 @@
 ---
-'@react-pdf/layout': major
+'@react-pdf/layout': minor
 ---
 
 added esm bundle

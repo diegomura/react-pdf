@@ -5,7 +5,7 @@
   "description": "Resolve overall document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/index.js",
+  "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "repository": {
     "type": "git",

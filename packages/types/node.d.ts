@@ -35,6 +35,7 @@ interface PageProps extends BaseProps {
   wrap?: boolean;
   size?: PageSize;
   orientation?: Orientation;
+  dpi?: number;
 }
 
 type PageLayout =

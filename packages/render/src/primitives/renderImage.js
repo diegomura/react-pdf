@@ -1,11 +1,9 @@
-import * as R from 'ramda';
+import { isNil } from '@react-pdf/fns';
 
-import save from '../operations/save';
-import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
-const drawImage = ctx => node => {
+const drawImage = (ctx, node, options = {}) => {
   const { left, top } = node.box;
   const opacity = node.style?.opacity;
   const objectFit = node.style?.objectFit;
@@ -15,6 +13,7 @@ const drawImage = ctx => node => {
   const paddingRight = node.box.paddingRight || 0;
   const paddingBottom = node.box.paddingBottom || 0;
   const paddingLeft = node.box.paddingLeft || 0;
+  const imageCache = options.imageCache || new Map();
 
   const { width, height, xOffset, yOffset } = resolveObjectFit(
     objectFit,
@@ -28,10 +27,18 @@ const drawImage = ctx => node => {
 
   if (node.image.data) {
     if (width !== 0 && height !== 0) {
+      const cacheKey = node.image.key;
+
+      const image = imageCache.get(cacheKey) || ctx.embedImage(node.image.data);
+
+      if (cacheKey) imageCache.set(cacheKey, image);
+
+      const imageOpacity = isNil(opacity) ? 1 : opacity;
+
       ctx
-        .fillOpacity(opacity || 1)
+        .fillOpacity(imageOpacity)
         .image(
-          node.image.data,
+          image,
           left + paddingLeft + xOffset,
           top + paddingTop + yOffset,
           {
@@ -41,18 +48,21 @@ const drawImage = ctx => node => {
         );
     } else {
       console.warn(
-        `Image with src '${node.props.src}' skipped due to invalid dimensions`,
+        `Image with src '${JSON.stringify(
+          node.props.src,
+        )}' skipped due to invalid dimensions`,
       );
     }
   }
-
-  return node;
 };
 
-const renderImage = (ctx, node) => {
-  R.compose(restore(ctx), drawImage(ctx), clipNode(ctx), save(ctx))(node);
+const renderImage = (ctx, node, options) => {
+  ctx.save();
 
-  return node;
+  clipNode(ctx, node);
+  drawImage(ctx, node, options);
+
+  ctx.restore();
 };
 
-export default R.curryN(2, renderImage);
+export default renderImage;

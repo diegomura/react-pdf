@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Test script itemizer based on the string 'Lorem'
  * Returns empty if no runs present, or arbitrary script itemization otherwise
@@ -10,18 +8,17 @@ import * as R from 'ramda';
  * @param  {Object}  attributed string
  * @return {Object} attributed string
  */
-export const scriptItemizerImpl = jest.fn(
-  R.evolve({
-    runs: R.ifElse(
-      R.isEmpty,
-      R.always([]),
-      R.always([
-        { start: 0, end: 3, attributes: { script: 'Latin' } },
-        { start: 3, end: 5, attributes: { script: 'Non-latin' } },
-      ]),
-    ),
-  }),
-);
+export const scriptItemizerImpl = jest.fn(string => {
+  const runs =
+    string.runs.length === 0
+      ? []
+      : [
+          { start: 0, end: 3, attributes: { script: 'Latin' } },
+          { start: 3, end: 5, attributes: { script: 'Non-latin' } },
+        ];
+
+  return Object.assign({}, string, { runs });
+});
 
 const scriptItemizer = jest.fn(() => scriptItemizerImpl);
 

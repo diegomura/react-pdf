@@ -1,15 +1,14 @@
-import * as R from 'ramda';
-
 /**
  * Crop upper section of rect
  *
  * @param  {Object}  rect
  * @return {Object} cropped rect
  */
-const crop = (height, rect) =>
-  R.evolve({
-    y: R.add(height),
-    height: R.subtract(R.__, height),
-  })(rect);
+const crop = (height, rect) => {
+  const y = rect.y + height;
+  const h = rect.height - height;
 
-export default R.curryN(2, crop);
+  return Object.assign({}, rect, { y, height: h });
+};
+
+export default crop;

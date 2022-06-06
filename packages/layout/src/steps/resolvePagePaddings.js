@@ -1,6 +1,4 @@
-import * as R from 'ramda';
-
-import matchPercent from '../utils/matchPercent';
+import { evolve, matchPercent } from '@react-pdf/fns';
 
 /*
  * Translates page percentage horizontal paddings in fixed ones
@@ -35,14 +33,17 @@ const resolvePageVerticalPadding = container => value => {
 const resolvePagePaddings = page => {
   const container = page.style;
 
-  return R.evolve({
-    style: R.evolve({
+  const style = evolve(
+    {
       paddingTop: resolvePageVerticalPadding(container),
       paddingLeft: resolvePageHorizontalPadding(container),
       paddingRight: resolvePageHorizontalPadding(container),
       paddingBottom: resolvePageVerticalPadding(container),
-    }),
-  })(page);
+    },
+    page.style,
+  );
+
+  return Object.assign({}, page, { style });
 };
 
 /**
@@ -53,6 +54,12 @@ const resolvePagePaddings = page => {
  * @param {Object} document root
  * @returns {Object} document root with translated page paddings
  */
-export default R.evolve({
-  children: R.map(resolvePagePaddings),
-});
+const resolvePagesPaddings = root => {
+  if (!root.children) return root;
+
+  const children = root.children.map(resolvePagePaddings);
+
+  return Object.assign({}, root, { children });
+};
+
+export default resolvePagesPaddings;

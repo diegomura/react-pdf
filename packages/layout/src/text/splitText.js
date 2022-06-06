@@ -1,20 +1,12 @@
-import * as R from 'ramda';
+import { get } from '@react-pdf/fns';
 
 import lineIndexAtHeight from './lineIndexAtHeight';
 import heightAtLineIndex from './heightAtLineIndex';
 
-const zero = R.always(0);
-
-const getTop = R.pathOr(0, ['box', 'top']);
-
-const getWidows = R.pathOr(2, ['props', 'widows']);
-
-const getOrphans = R.pathOr(2, ['props', 'orphans']);
-
 const getLineBreak = (node, height) => {
-  const top = getTop(node);
-  const widows = getWidows(node);
-  const orphans = getOrphans(node);
+  const top = get(node, ['box', 'top'], 0);
+  const widows = get(node, ['props', 'widows'], 2);
+  const orphans = get(node, ['props', 'orphans'], 2);
   const linesQuantity = node.lines.length;
   const slicedLine = lineIndexAtHeight(node, height - top);
 
@@ -47,42 +39,40 @@ const splitText = (node, height) => {
   const currentHeight = heightAtLineIndex(node, slicedLineIndex);
   const nextHeight = node.box.height - currentHeight;
 
-  const current = R.evolve(
-    {
-      lines: R.slice(0, slicedLineIndex),
-      style: R.evolve({
-        marginBottom: zero,
-        paddingBottom: zero,
-        borderBottomWidth: zero,
-        borderBottomLeftRadius: zero,
-        borderBottomRightRadius: zero,
-      }),
-      box: {
-        height: R.always(currentHeight),
-        borderBottomWidth: zero,
-      },
+  const current = Object.assign({}, node, {
+    box: {
+      ...node.box,
+      height: currentHeight,
+      borderBottomWidth: 0,
     },
-    node,
-  );
+    style: {
+      ...node.style,
+      marginBottom: 0,
+      paddingBottom: 0,
+      borderBottomWidth: 0,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+    lines: node.lines.slice(0, slicedLineIndex),
+  });
 
-  const next = R.evolve(
-    {
-      lines: R.slice(slicedLineIndex, Infinity),
-      style: R.evolve({
-        marginTop: zero,
-        paddingTop: zero,
-        borderTopWidth: zero,
-        borderTopLeftRadius: zero,
-        borderTopRightRadius: zero,
-      }),
-      box: {
-        top: zero,
-        height: R.always(nextHeight),
-        borderTopWidth: zero,
-      },
+  const next = Object.assign({}, node, {
+    box: {
+      ...node.box,
+      top: 0,
+      height: nextHeight,
+      borderTopWidth: 0,
     },
-    node,
-  );
+    style: {
+      ...node.style,
+      marginTop: 0,
+      paddingTop: 0,
+      borderTopWidth: 0,
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+    },
+    lines: node.lines.slice(slicedLineIndex),
+  });
 
   return [current, next];
 };

@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import pluck from '../internal/pluck';
 import concat from '../../src/run/concat';
 
 describe('run concat operator', () => {
@@ -55,7 +54,7 @@ describe('run concat operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
-    expect(R.pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
+    expect(pluck('id', result.glyphs)).toEqual([76, 111, 114, 101, 109]);
   });
 
   test('should concat runs positions', () => {
@@ -74,7 +73,7 @@ describe('run concat operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
-    expect(R.pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
+    expect(pluck('xAdvance', result.positions)).toEqual([5, 6, 7, 8, 9]);
   });
 
   test('should concat runs glyph indices', () => {

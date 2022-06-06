@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import resolveYOffset from '../../src/layout/resolveYOffset';
 
 const instance = resolveYOffset();
@@ -156,14 +155,14 @@ describe('resolveYOffset', () => {
     instance(string);
 
     expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
-    expect(R.pluck('id', string.runs[0].glyphs)).toEqual([
+    expect(pluck('id', string.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', string.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', string.runs[0].positions)).toEqual([
       8,
       7,
       6,
@@ -201,21 +200,21 @@ describe('resolveYOffset', () => {
     const result = instance(string);
 
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       8,
       7,
       6,
       5,
       4,
     ]);
-    expect(R.pluck('yOffset', result.runs[0].positions)).toEqual([
+    expect(pluck('yOffset', result.runs[0].positions)).toEqual([
       40,
       40,
       40,

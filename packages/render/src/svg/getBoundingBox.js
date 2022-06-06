@@ -1,25 +1,13 @@
-import * as R from 'ramda';
+import * as P from '@react-pdf/primitives';
 import absPath from 'abs-svg-path';
 import parsePath from 'parse-svg-path';
 import normalizePath from 'normalize-svg-path';
 
-import isRect from '../utils/isRect';
-import isLine from '../utils/isLine';
-import isPath from '../utils/isPath';
-import isCircle from '../utils/isCircle';
-import isPolygon from '../utils/isPolygon';
-import isEllipse from '../utils/isEllipse';
-import isPolyline from '../utils/isPolyline';
 import parsePoints from './parsePoints';
 
 // From https://github.com/dy/svg-path-bounds/blob/master/index.js
 const getPathBoundingBox = node => {
-  const path = R.compose(
-    normalizePath,
-    absPath,
-    parsePath,
-    R.pathOr('', ['props', 'd']),
-  )(node);
+  const path = normalizePath(absPath(parsePath(node.props?.d || '')));
 
   if (!path.length) return [0, 0, 0, 0];
 
@@ -40,64 +28,70 @@ const getPathBoundingBox = node => {
 };
 
 const getCircleBoundingBox = node => {
-  const r = R.pathOr(0, ['props', 'r'], node);
-  const cx = R.pathOr(0, ['props', 'cx'], node);
-  const cy = R.pathOr(0, ['props', 'cy'], node);
+  const r = node.props?.r || 0;
+  const cx = node.props?.cx || 0;
+  const cy = node.props?.cy || 0;
 
   return [cx - r, cy - r, cx + r, cy + r];
 };
 
 const getEllipseBoundingBox = node => {
-  const cx = R.pathOr(0, ['props', 'cx'], node);
-  const cy = R.pathOr(0, ['props', 'cy'], node);
-  const rx = R.pathOr(0, ['props', 'rx'], node);
-  const ry = R.pathOr(0, ['props', 'ry'], node);
+  const cx = node.props?.cx || 0;
+  const cy = node.props?.cy || 0;
+  const rx = node.props?.rx || 0;
+  const ry = node.props?.ry || 0;
 
   return [cx - rx, cy - ry, cx + rx, cy + ry];
 };
 
 const getLineBoundingBox = node => {
-  const x1 = R.pathOr(0, ['props', 'x1'], node);
-  const y1 = R.pathOr(0, ['props', 'y1'], node);
-  const x2 = R.pathOr(0, ['props', 'x2'], node);
-  const y2 = R.pathOr(0, ['props', 'y2'], node);
+  const x1 = node.props?.x1 || 0;
+  const y1 = node.props?.y1 || 0;
+  const x2 = node.props?.x2 || 0;
+  const y2 = node.props?.y2 || 0;
 
-  return [R.min(x1, x2), R.min(y1, y2), R.max(x1, x2), R.max(y1, y2)];
+  return [
+    Math.min(x1, x2),
+    Math.min(y1, y2),
+    Math.max(x1, x2),
+    Math.max(y1, y2),
+  ];
 };
 
 const getRectBoundingBox = node => {
-  const x = R.pathOr(0, ['props', 'x'], node);
-  const y = R.pathOr(0, ['props', 'y'], node);
-  const width = R.pathOr(0, ['props', 'width'], node);
-  const height = R.pathOr(0, ['props', 'height'], node);
+  const x = node.props?.x || 0;
+  const y = node.props?.y || 0;
+  const width = node.props?.width || 0;
+  const height = node.props?.height || 0;
 
   return [x, y, x + width, y + height];
 };
 
-const max = R.reduce(R.max, -Infinity);
-const min = R.reduce(R.min, Infinity);
+const max = values => Math.max(-Infinity, ...values);
+const min = values => Math.min(Infinity, ...values);
 
 const getPolylineBoundingBox = node => {
-  const points = R.compose(
-    parsePoints,
-    R.pathOr([], ['props', 'points']),
-  )(node);
+  const points = parsePoints(node.props?.points || []);
 
-  const xValues = R.pluck(0, points);
-  const yValues = R.pluck(1, points);
+  const xValues = points.map(p => p[0]);
+  const yValues = points.map(p => p[1]);
 
   return [min(xValues), min(yValues), max(xValues), max(yValues)];
 };
 
-const getBoundingBox = R.cond([
-  [isRect, getRectBoundingBox],
-  [isLine, getLineBoundingBox],
-  [isPath, getPathBoundingBox],
-  [isCircle, getCircleBoundingBox],
-  [isEllipse, getEllipseBoundingBox],
-  [isPolygon, getPolylineBoundingBox],
-  [isPolyline, getPolylineBoundingBox],
-  [R.T, R.always([0, 0, 0, 0])],
-]);
+const boundingBoxFns = {
+  [P.Rect]: getRectBoundingBox,
+  [P.Line]: getLineBoundingBox,
+  [P.Path]: getPathBoundingBox,
+  [P.Circle]: getCircleBoundingBox,
+  [P.Ellipse]: getEllipseBoundingBox,
+  [P.Polygon]: getPolylineBoundingBox,
+  [P.Polyline]: getPolylineBoundingBox,
+};
+
+const getBoundingBox = node => {
+  const boundingBoxFn = boundingBoxFns[node.type];
+  return boundingBoxFn ? boundingBoxFn(node) : [0, 0, 0, 0];
+};
 
 export default getBoundingBox;

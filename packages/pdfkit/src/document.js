@@ -9,8 +9,10 @@ import Fonts from './mixins/fonts';
 import Text from './mixins/text';
 import Images from './mixins/images';
 import Annotations from './mixins/annotations';
+import OutlineMixin from './mixins/outline';
 import AcroFormMixin from './mixins/acroform';
 import Attachments from './mixins/attachments';
+import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -70,6 +72,14 @@ class PDFDocument extends stream.Readable {
       this._root.data.Lang = new String(this.options.lang);
     }
 
+    if (this.options.pageLayout) {
+      this._root.data.PageLayout = capitalize(this.options.pageLayout);
+    }
+
+    if (this.options.pageMode) {
+      this._root.data.PageMode = capitalize(this.options.pageMode);
+    }
+
     // The current page
     this.page = null;
 
@@ -79,6 +89,7 @@ class PDFDocument extends stream.Readable {
     this.initFonts();
     this.initText();
     this.initImages();
+    this.initOutline();
 
     // Initialize the metadata
     this.info = {
@@ -239,6 +250,8 @@ class PDFDocument extends stream.Readable {
       font.finalize();
     }
 
+    this.endOutline();
+
     this._root.end();
     this._root.data.Pages.end();
     this._root.data.Names.end();
@@ -250,9 +263,9 @@ class PDFDocument extends stream.Readable {
 
     if (this._waiting === 0) {
       return this._finalize();
-    } else {
-      return (this._ended = true);
     }
+
+    this._ended = true;
   }
 
   _finalize(fn) {
@@ -308,6 +321,7 @@ mixin(Fonts);
 mixin(Text);
 mixin(Images);
 mixin(Annotations);
+mixin(OutlineMixin);
 mixin(AcroFormMixin);
 mixin(Attachments);
 

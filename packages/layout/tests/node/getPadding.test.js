@@ -1,14 +1,13 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
 import getPadding from '../../src/node/getPadding';
 
-const getComputedPadding = R.cond([
-  [R.equals(Yoga.EDGE_TOP), R.always(1)],
-  [R.equals(Yoga.EDGE_RIGHT), R.always(2)],
-  [R.equals(Yoga.EDGE_BOTTOM), R.always(3)],
-  [R.equals(Yoga.EDGE_LEFT), R.always(4)],
-]);
+const getComputedPadding = value => {
+  if (value === Yoga.EDGE_TOP) return 1;
+  if (value === Yoga.EDGE_RIGHT) return 2;
+  if (value === Yoga.EDGE_BOTTOM) return 3;
+  return 4;
+};
 
 describe('node getPadding', () => {
   test('Should return 0 by default if no yoga node available', () => {

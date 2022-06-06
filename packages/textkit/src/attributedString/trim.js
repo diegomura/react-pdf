@@ -1,12 +1,11 @@
-import * as R from 'ramda';
-
 import slice from './slice';
 
-const testChar = R.test(/\S/g);
+const findCharIndex = string => string.search(/\S/g);
 
-const findCharIndex = R.findIndex(testChar);
-
-const findLastCharIndex = R.o(R.inc, R.findLastIndex(testChar));
+const findLastCharIndex = string => {
+  const match = string.match(/\S/g);
+  return match ? string.lastIndexOf(match[match.length - 1]) : -1;
+};
 
 /**
  * Removes (strips) whitespace from both ends of the attributted string.
@@ -14,9 +13,12 @@ const findLastCharIndex = R.o(R.inc, R.findLastIndex(testChar));
  * @param  {Object}  attributedString
  * @return {Object} attributedString
  */
-const trim = R.chain(
-  R.apply(slice),
-  R.compose(R.juxt([findCharIndex, findLastCharIndex]), R.prop('string')),
-);
+const trim = attributedString => {
+  const start = findCharIndex(attributedString.string);
+
+  const end = findLastCharIndex(attributedString.string);
+
+  return slice(start, end + 1, attributedString);
+};
 
 export default trim;

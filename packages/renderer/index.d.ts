@@ -28,6 +28,7 @@ declare namespace ReactPDF {
     language?: string;
     pdfVersion?: PDFVersion;
     onRender?: (props: OnRenderProps) => any;
+    children?: React.ReactNode;
   }
 
   /**
@@ -72,6 +73,7 @@ declare namespace ReactPDF {
     debug?: boolean;
     size?: PageSize;
     orientation?: Orientation;
+    children?: React.ReactNode;
   }
 
   /**
@@ -497,7 +499,7 @@ declare namespace ReactPDF {
     document: React.ReactElement<DocumentProps>,
   ) => Promise<NodeJS.ReadableStream>;
 
-  const renderToString: (document: React.ReactElement<DocumentProps>) => string;
+  const renderToString: (document: React.ReactElement<DocumentProps>) => Promise<string>;
 
   const renderToFile: (
     document: React.ReactElement<DocumentProps>,

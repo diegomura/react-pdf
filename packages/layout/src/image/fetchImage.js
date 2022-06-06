@@ -28,8 +28,9 @@ const fetchImage = async node => {
     }
 
     node.image = await resolveImage(source, { cache });
+    node.image.key = source.data ? source.data.toString() : source.uri;
   } catch (e) {
-    node.image = { width: 0, height: 0 };
+    node.image = { width: 0, height: 0, key: null };
     console.warn(e.message);
   }
 };

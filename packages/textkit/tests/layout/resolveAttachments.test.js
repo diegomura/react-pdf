@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-
+import pluck from '../internal/pluck';
 import resolveAttachments from '../../src/layout/resolveAttachments';
 
 const instance = resolveAttachments();
@@ -161,14 +160,14 @@ describe('resolveAttachments', () => {
     instance(string);
 
     expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
-    expect(R.pluck('id', string.runs[0].glyphs)).toEqual([
+    expect(pluck('id', string.runs[0].glyphs)).toEqual([
       76,
       111,
       65532,
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', string.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', string.runs[0].positions)).toEqual([
       8,
       7,
       6,
@@ -206,14 +205,14 @@ describe('resolveAttachments', () => {
     const result = instance(string);
 
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       65532,
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       8,
       7,
       20,
@@ -249,18 +248,13 @@ describe('resolveAttachments', () => {
     const result = instance(string);
 
     expect(result.runs[0].glyphIndices).toEqual([0, 0, 1, 2, 3]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       64257,
       65532,
       101,
       109,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
-      10,
-      20,
-      5,
-      4,
-    ]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([10, 20, 5, 4]);
   });
 
   test('should change attachment glyph position appropiately when ligature is present after', () => {
@@ -290,17 +284,7 @@ describe('resolveAttachments', () => {
     const result = instance(string);
 
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 2, 3]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      65532,
-      64257,
-      109,
-    ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
-      7,
-      20,
-      10,
-      4,
-    ]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 65532, 64257, 109]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([7, 20, 10, 4]);
   });
 });

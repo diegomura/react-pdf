@@ -1,20 +1,14 @@
-/* eslint-disable no-param-reassign */
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
 import layoutText from '../text/layoutText';
 
-const isType = R.propEq('type');
+const isType = type => node => node.type === type;
 
 const isSvg = isType(P.Svg);
 
 const isText = isType(P.Text);
 
-const isNotSvg = R.complement(isSvg);
-
-const isNotText = R.complement(isText);
-
-const shouldIterate = node => isNotSvg(node) && isNotText(node);
+const shouldIterate = node => !isSvg(node) && !isText(node);
 
 const shouldLayoutText = node => isText(node) && !node.lines;
 
@@ -33,14 +27,18 @@ const resolveTextLayout = (node, fontStore) => {
     const height =
       node.box.height - (node.box.paddingTop + node.box.paddingBottom);
 
+    // eslint-disable-next-line no-param-reassign
     node.lines = layoutText(node, width, height, fontStore);
   }
 
   if (shouldIterate(node)) {
+    if (!node.children) return node;
+
     const mapChild = child => resolveTextLayout(child, fontStore);
-    return R.evolve({
-      children: R.map(mapChild),
-    })(node);
+
+    const children = node.children.map(mapChild);
+
+    return Object.assign({}, node, { children });
   }
 
   return node;

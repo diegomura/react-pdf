@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import { last } from '@react-pdf/fns';
 
 import emptyRun from '../run/empty';
 import appendToRun from '../run/append';
@@ -11,20 +11,16 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {Object} attributed string
  * @return {Object} attributed string with new glyph
  */
-const append = (glyph, string) => {
-  const codePoints = R.propOr([], 'codePoints')(glyph);
+const append = (glyph, attributedString) => {
+  const codePoints = glyph?.codePoints || [];
+  const codePointsString = stringFromCodePoints(codePoints);
+  const string = attributedString.string + codePointsString;
 
-  return R.evolve({
-    string: R.concat(R.__, stringFromCodePoints(codePoints)),
-    runs: R.converge(R.concat, [
-      R.init,
-      R.compose(
-        R.unapply(R.identity),
-        appendToRun(glyph),
-        R.either(R.last, emptyRun),
-      ),
-    ]),
-  })(string);
+  const firstRuns = attributedString.runs.slice(0, -1);
+  const lastRun = last(attributedString.runs) || emptyRun();
+  const runs = firstRuns.concat(appendToRun(glyph, lastRun));
+
+  return Object.assign({}, attributedString, { string, runs });
 };
 
-export default R.curryN(2, append);
+export default append;

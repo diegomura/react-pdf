@@ -1,9 +1,7 @@
-import * as R from 'ramda';
-
 import lineIndexAtHeight from '../../src/text/lineIndexAtHeight';
 
 const TEST_LINE = { box: { height: 25 } };
-const TEST_LINES = R.times(R.always(TEST_LINE), 10);
+const TEST_LINES = Array(10).fill(TEST_LINE);
 
 describe('text lineIndexAtHeight', () => {
   test('Should return 0 if no lines present', () => {

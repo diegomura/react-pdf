@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import isWhiteSpace from '../glyph/isWhiteSpace';
 
 /**
@@ -8,10 +6,13 @@ import isWhiteSpace from '../glyph/isWhiteSpace';
  * @param  {Object}  run
  * @return {Array} white space leading positions
  */
-const leadingPositions = R.converge(R.slice(0), [
-  R.compose(R.length, R.takeWhile(isWhiteSpace), R.propOr([], 'glyphs')),
-  R.propOr([], 'positions'),
-]);
+const leadingPositions = run => {
+  const glyphs = run.glyphs || [];
+  const positions = run.positions || [];
+  const leadingWhitespaces = glyphs.findIndex(g => !isWhiteSpace(g));
+
+  return positions.slice(0, leadingWhitespaces);
+};
 
 /**
  * Get run leading white space offset
@@ -19,13 +20,10 @@ const leadingPositions = R.converge(R.slice(0), [
  * @param  {Object}  run
  * @return {number} leading white space offset
  */
-const leadingOffset = R.compose(
-  R.ifElse(
-    R.isEmpty,
-    R.always(0),
-    R.compose(R.sum, R.map(R.propOr(0, 'xAdvance'))),
-  ),
-  leadingPositions,
-);
+const leadingOffset = run => {
+  const positions = leadingPositions(run);
+
+  return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);
+};
 
 export default leadingOffset;

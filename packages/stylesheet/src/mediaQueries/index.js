@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import matchMedia from 'media-engine';
 
 /**
@@ -20,4 +19,4 @@ const resolveMediaQueries = (container, styles) => {
   }, {});
 };
 
-export default R.curryN(2, resolveMediaQueries);
+export default resolveMediaQueries;

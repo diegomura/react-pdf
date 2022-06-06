@@ -104,7 +104,11 @@ for (codePoint of Array.from(codePoints)) {
 
 // Trie is serialized suboptimally as JSON so it can be loaded via require,
 // allowing unicode-properties to work in the browser
-fs.writeFileSync('./trie.json', JSON.stringify(trie.toBuffer()));
+fs.writeFileSync(
+  './trie.json',
+  JSON.stringify({ data: trie.toBuffer().toString('base64') }),
+);
+
 fs.writeFileSync(
   './data.json',
   JSON.stringify({

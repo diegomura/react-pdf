@@ -66,6 +66,7 @@ class PDFPage {
     }
     this.size = options.size || 'letter';
     this.layout = options.layout || 'portrait';
+    this.userUnit = options.userUnit || 1.0;
     this.margins = DEFAULT_MARGINS;
 
     // calculate page dimensions
@@ -122,7 +123,8 @@ class PDFPage {
       Parent: this.document._root.data.Pages,
       MediaBox: [0, 0, this.width, this.height],
       Contents: this.content,
-      Resources: this.resources
+      Resources: this.resources,
+      UserUnit: this.userUnit
     });
   }
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-continue */
 /* eslint-disable prefer-destructuring */
 
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
+import { isNil, omit, compose } from '@react-pdf/fns';
 
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';
@@ -16,36 +16,19 @@ import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
 
-const isText = R.propEq('type', P.Text);
+const isText = node => node.type === P.Text;
 
 // Prevent splitting elements by low decimal numbers
 const SAFTY_THRESHOLD = 0.001;
 
-const assingChildren = R.assoc('children');
+const assingChildren = (children, node) =>
+  Object.assign({}, node, { children });
 
-const getTop = R.pathOr(0, ['box', 'top']);
+const getTop = node => node.box?.top || 0;
 
-const getHeight = R.path(['box', 'height']);
+const allFixed = nodes => nodes.every(isFixed);
 
-const getChildren = R.propOr([], 'children');
-
-const isElementOutside = R.useWith(R.lte, [R.identity, getTop]);
-
-const allFixed = R.all(isFixed);
-
-const isDynamic = R.hasPath(['props', 'render']);
-
-const compose = (...fns) => (value, ...args) => {
-  let result = value;
-  const reversedFns = R.reverse(fns);
-
-  for (let i = 0; i < reversedFns.length; i += 1) {
-    const fn = reversedFns[i];
-    result = fn(result, ...args);
-  }
-
-  return result;
-};
+const isDynamic = node => !isNil(node.props?.render);
 
 const relayoutPage = compose(
   resolveTextLayout,
@@ -66,11 +49,11 @@ const splitNodes = (height, contentArea, nodes) => {
   for (let i = 0; i < nodes.length; i += 1) {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
-    const futureFixedNodes = R.filter(isFixed, futureNodes);
+    const futureFixedNodes = futureNodes.filter(isFixed);
 
     const nodeTop = getTop(child);
-    const nodeHeight = getHeight(child);
-    const isOutside = isElementOutside(height, child);
+    const nodeHeight = child.box.height;
+    const isOutside = height <= nodeTop;
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
     const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
@@ -83,7 +66,8 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (isOutside) {
-      const next = R.evolve({ box: { top: R.subtract(R.__, height) } })(child);
+      const box = Object.assign({}, child.box, { top: child.box.top - height });
+      const next = Object.assign({}, child, { box });
       nextChildren.push(next);
       continue;
     }
@@ -96,13 +80,12 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (shouldBreak) {
-      const next = R.evolve({
-        box: { top: R.subtract(R.__, height) },
-        props: R.evolve({
-          wrap: R.always(true),
-          break: R.always(false),
-        }),
-      })(child);
+      const box = Object.assign({}, child.box, { top: child.box.top - height });
+      const props = Object.assign({}, child.props, {
+        wrap: true,
+        break: false,
+      });
+      const next = Object.assign({}, child, { box, props });
 
       currentChildren.push(...futureFixedNodes);
       nextChildren.push(next, ...futureNodes);
@@ -125,7 +108,7 @@ const splitNodes = (height, contentArea, nodes) => {
 };
 
 const splitChildren = (height, contentArea, node) => {
-  const children = getChildren(node);
+  const children = node.children || [];
   const availableHeight = height - getTop(node);
   return splitNodes(availableHeight, contentArea, children);
 };
@@ -139,12 +122,13 @@ const splitView = (node, height, contentArea) => {
   );
 
   return [
-    assingChildren(currentChilds)(currentNode),
-    assingChildren(nextChildren)(nextNode),
+    assingChildren(currentChilds, currentNode),
+    assingChildren(nextChildren, nextNode),
   ];
 };
 
-const split = R.ifElse(isText, splitText, splitView);
+const split = (node, height, contentArea) =>
+  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
 
 const shouldResolveDynamicNodes = node => {
   const children = node.children || [];
@@ -165,18 +149,13 @@ const resolveDynamicNodes = (props, node) => {
   };
 
   // We reset dynamic text box so it can be computed again later on
-  const resolveBox = box => {
-    return isNodeDynamic && isText(node) ? { ...box, height: 0 } : box;
-  };
+  const resetHeight = isNodeDynamic && isText(node);
+  const box = resetHeight ? { ...node.box, height: 0 } : node.box;
 
-  return R.evolve(
-    {
-      box: resolveBox,
-      children: resolveChildren,
-      lines: prev => (isNodeDynamic ? null : prev),
-    },
-    node,
-  );
+  const children = resolveChildren(node.children);
+  const lines = isNodeDynamic ? null : node.lines;
+
+  return Object.assign({}, node, { box, lines, children });
 };
 
 const resolveDynamicPage = (props, page, fontStore) => {
@@ -191,8 +170,8 @@ const resolveDynamicPage = (props, page, fontStore) => {
 const splitPage = (page, pageNumber, fontStore) => {
   const wrapArea = getWrapArea(page);
   const contentArea = getContentArea(page);
-  const height = R.path(['style', 'height'], page);
   const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore);
+  const height = page.style.height;
 
   const [currentChilds, nextChilds] = splitNodes(
     wrapArea,
@@ -202,24 +181,29 @@ const splitPage = (page, pageNumber, fontStore) => {
 
   const relayout = node => relayoutPage(node, fontStore);
 
-  const currentPage = R.compose(
-    relayout,
-    assingChildren(currentChilds),
-    R.assocPath(['box', 'height'], height),
-  )(page);
+  const currentBox = { ...page.box, height };
+  const currentPage = relayout(
+    Object.assign({}, page, { box: currentBox, children: currentChilds }),
+  );
 
-  if (R.isEmpty(nextChilds) || allFixed(nextChilds)) return [currentPage, null];
+  if (nextChilds.length === 0 || allFixed(nextChilds))
+    return [currentPage, null];
 
-  const nextPage = R.compose(
-    relayout,
-    assingChildren(nextChilds),
-    R.dissocPath(['box', 'height']),
-  )(page);
+  const nextBox = omit('height', page.box);
+  const nextProps = omit('bookmark', page.props);
+
+  const nextPage = relayout(
+    Object.assign({}, page, {
+      props: nextProps,
+      box: nextBox,
+      children: nextChilds,
+    }),
+  );
 
   return [currentPage, nextPage];
 };
 
-const resolvePageIndices = fontStore => (page, pageNumber, pages) => {
+const resolvePageIndices = (fontStore, page, pageNumber, pages) => {
   const totalPages = pages.length;
 
   const props = {
@@ -241,10 +225,7 @@ const assocSubPageData = subpages => {
 };
 
 const dissocSubPageData = page => {
-  return R.compose(
-    R.dissoc('subPageNumber'),
-    R.dissoc('subPageTotalPages'),
-  )(page);
+  return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
 const paginate = (page, pageNumber, fontStore) => {
@@ -286,8 +267,8 @@ const resolvePagination = (doc, fontStore) => {
     pages = pages.concat(subpages);
   }
 
-  pages = pages.map(
-    R.compose(dissocSubPageData, resolvePageIndices(fontStore)),
+  pages = pages.map((...args) =>
+    dissocSubPageData(resolvePageIndices(fontStore, ...args)),
   );
 
   return assingChildren(pages, doc);

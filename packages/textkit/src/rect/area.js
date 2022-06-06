@@ -1,14 +1,11 @@
-import * as R from 'ramda';
-
 /**
  * Returns rect area
  *
  * @param  {Object}  rect
  * @return {number} rect area
  */
-const area = R.converge(R.multiply, [
-  R.propOr(0, 'height'),
-  R.propOr(0, 'width'),
-]);
+const area = rect => {
+  return rect ? rect.height * rect.width : 0;
+};
 
 export default area;

@@ -1,8 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-
-import * as R from 'ramda';
-
-const matchNumber = R.when(R.is(String), R.test(/^-?\d*\.?\d*$/));
+const matchNumber = value =>
+  typeof value === 'string' && /^-?\d*\.?\d*$/.test(value);
 
 const castFloat = value => {
   if (typeof value !== 'string') return value;

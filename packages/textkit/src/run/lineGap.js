@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import scale from './scale';
 
 /**
@@ -8,9 +6,8 @@ import scale from './scale';
  * @param  {Object}  run
  * @return {number} lineGap
  */
-const lineGap = R.converge(R.multiply, [
-  scale,
-  R.pathOr(0, ['attributes', 'font', 'lineGap']),
-]);
+const lineGap = run => {
+  return (run.attributes?.font?.lineGap || 0) * scale(run);
+};
 
 export default lineGap;

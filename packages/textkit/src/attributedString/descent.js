@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import reduce from './reduce';
 import runDescent from '../run/descent';
 
 /**
@@ -9,6 +6,9 @@ import runDescent from '../run/descent';
  * @param {Object} attributed string
  * @return {number} descent
  */
-const descent = reduce(R.min, runDescent);
+const descent = attributeString => {
+  const reducer = (acc, run) => Math.min(acc, runDescent(run));
+  return attributeString.runs.reduce(reducer, 0);
+};
 
 export default descent;

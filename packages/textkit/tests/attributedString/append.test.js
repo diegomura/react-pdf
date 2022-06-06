@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-
 import font from '../internal/font';
+import pluck from '../internal/pluck';
 import empty from '../../src/attributedString/empty';
 import append from '../../src/attributedString/append';
 
@@ -46,7 +45,7 @@ describe('attributeString append operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 1);
     expect(result.runs[0].glyphIndices).toEqual([0]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76]);
   });
 
   test('should append glyph on single run string', () => {
@@ -82,7 +81,7 @@ describe('attributeString append operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -90,7 +89,7 @@ describe('attributeString append operator', () => {
       109,
       76,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       5,
       6,
       7,
@@ -142,11 +141,11 @@ describe('attributeString append operator', () => {
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
     expect(result.runs[1].glyphIndices).toEqual([0, 1, 2]);
 
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([101, 109, 76]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([101, 109, 76]);
 
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([5, 6, 7]);
-    expect(R.pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9, 10]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([5, 6, 7]);
+    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9, 10]);
   });
 
   test('should append ligature glyph on single run string', () => {
@@ -182,7 +181,7 @@ describe('attributeString append operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5, 5]);
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([
       76,
       111,
       114,
@@ -190,7 +189,7 @@ describe('attributeString append operator', () => {
       109,
       64257,
     ]);
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
       5,
       6,
       7,
@@ -242,10 +241,10 @@ describe('attributeString append operator', () => {
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
     expect(result.runs[1].glyphIndices).toEqual([0, 1, 2, 2]);
 
-    expect(R.pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
-    expect(R.pluck('id', result.runs[1].glyphs)).toEqual([101, 109, 64257]);
+    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
+    expect(pluck('id', result.runs[1].glyphs)).toEqual([101, 109, 64257]);
 
-    expect(R.pluck('xAdvance', result.runs[0].positions)).toEqual([5, 6, 7]);
-    expect(R.pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9, 10]);
+    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([5, 6, 7]);
+    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([8, 9, 10]);
   });
 });

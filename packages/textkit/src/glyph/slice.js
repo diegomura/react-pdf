@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Slice glyph between codePoints range
  * Util for breaking ligatures
@@ -15,9 +13,9 @@ const slice = (start, end, font, glyph) => {
   if (start === end) return [];
   if (start === 0 && end === glyph.codePoints.length) return [glyph];
 
-  const codePoints = R.slice(start, end, glyph.codePoints);
+  const codePoints = glyph.codePoints.slice(start, end);
   const string = String.fromCodePoint(...codePoints);
   return font ? font.layout(string).glyphs : [glyph];
 };
 
-export default R.curryN(4, slice);
+export default slice;

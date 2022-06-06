@@ -1,8 +1,12 @@
-import * as R from 'ramda';
+const pairs = values => {
+  const result = [];
 
-const isOdd = x => x % 2 !== 0;
+  for (let i = 0; i < values.length; i += 2) {
+    result.push([values[i], values[i + 1]]);
+  }
 
-const lengthIsOdd = R.o(isOdd, R.prop('length'));
+  return result;
+};
 
 /**
  * Parse svg-like points into number arrays
@@ -10,15 +14,20 @@ const lengthIsOdd = R.o(isOdd, R.prop('length'));
  * @param {String} points string ex. "20,30 50,60"
  * @return {Array} points array ex. [[20, 30], [50, 60]]
  */
-const parsePoints = R.compose(
-  R.splitEvery(2),
-  R.map(parseFloat),
-  R.when(lengthIsOdd, R.slice(0, -1)),
-  R.split(/\s+/),
-  R.replace(/(\d)-(\d)/g, '$1 -$2'),
-  R.replace(/,/g, ' '),
-  R.trim,
-  R.defaultTo(''),
-);
+const parsePoints = points => {
+  let values = (points || '')
+    .trim()
+    .replace(/,/g, ' ')
+    .replace(/(\d)-(\d)/g, '$1 -$2')
+    .split(/\s+/);
+
+  if (values.length % 2 !== 0) {
+    values = values.slice(0, -1);
+  }
+
+  values = values.map(parseFloat);
+
+  return pairs(values);
+};
 
 export default parsePoints;

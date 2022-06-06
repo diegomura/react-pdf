@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 /**
  * Returns empty rect
  *
  * @return {Object} empty rect
  */
-const empty = R.always({
+const empty = () => ({
   x: 0,
   y: 0,
   width: 0,

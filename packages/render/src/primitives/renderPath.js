@@ -1,9 +1,7 @@
-import * as R from 'ramda';
+const renderPath = (ctx, node) => {
+  const d = node.props?.d;
 
-const renderPath = ctx =>
-  R.tap(node => {
-    const d = R.path(['props', 'd'], node);
-    if (d) ctx.path(node.props.d);
-  });
+  if (d) ctx.path(node.props.d);
+};
 
 export default renderPath;

@@ -1,10 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-import * as R from 'ramda';
-
-const getDocumentProp = target => (or, prop) =>
-  R.pathOr(or, ['props', prop], target);
-
 const setPDFMetadata = target => (key, value) => {
   if (value) target.info[key] = value;
 };
@@ -16,15 +11,15 @@ const setPDFMetadata = target => (key, value) => {
  * @param {Object} doc document root
  */
 const addMetadata = (ctx, doc) => {
-  const getProp = getDocumentProp(doc);
   const setProp = setPDFMetadata(ctx);
 
-  const title = getProp(null, 'title');
-  const author = getProp(null, 'author');
-  const subject = getProp(null, 'subject');
-  const keywords = getProp(null, 'keywords');
-  const creator = getProp('react-pdf', 'creator');
-  const producer = getProp('react-pdf', 'producer');
+  const props = doc.props || {};
+  const title = props.title || null;
+  const author = props.author || null;
+  const subject = props.subject || null;
+  const keywords = props.keywords || null;
+  const creator = props.creator || 'react-pdf';
+  const producer = props.producer || 'react-pdf';
 
   setProp('Title', title);
   setProp('Author', author);
@@ -32,8 +27,6 @@ const addMetadata = (ctx, doc) => {
   setProp('Keywords', keywords);
   setProp('Creator', creator);
   setProp('Producer', producer);
-
-  return doc;
 };
 
-export default R.curryN(2, addMetadata);
+export default addMetadata;

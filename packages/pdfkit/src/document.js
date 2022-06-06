@@ -12,6 +12,7 @@ import Annotations from './mixins/annotations';
 import OutlineMixin from './mixins/outline';
 import AcroFormMixin from './mixins/acroform';
 import Attachments from './mixins/attachments';
+import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -69,6 +70,10 @@ class PDFDocument extends stream.Readable {
 
     if (this.options.lang) {
       this._root.data.Lang = new String(this.options.lang);
+    }
+
+    if (this.options.pageLayout) {
+      this._root.data.PageLayout = capitalize(this.options.pageLayout);
     }
 
     // The current page

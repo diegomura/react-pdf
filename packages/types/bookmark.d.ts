@@ -7,6 +7,4 @@ interface ExpandedBookmark {
   expanded?: true | false;
 }
 
-export type Bookmark =
-  | string
-  | ExpandedBookmark
+export type Bookmark = string | ExpandedBookmark;

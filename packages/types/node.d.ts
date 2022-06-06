@@ -37,7 +37,21 @@ interface PageProps extends BaseProps {
   orientation?: Orientation;
 }
 
-type PageLayout = 'singlePage' | 'oneColumn' | 'twoColumnLeft' | 'twoColumnRight' | 'twoPageLeft' | 'twoPageRight'
+type PageLayout =
+  | 'singlePage'
+  | 'oneColumn'
+  | 'twoColumnLeft'
+  | 'twoColumnRight'
+  | 'twoPageLeft'
+  | 'twoPageRight';
+
+type PageMode =
+  | 'useNone'
+  | 'useOutlines'
+  | 'useThumbs'
+  | 'fullScreen'
+  | 'useOC'
+  | 'useAttachments';
 
 interface DocumentProps {
   title?: string;
@@ -46,7 +60,8 @@ interface DocumentProps {
   keywords?: string;
   creator?: string;
   producer?: string;
-  pageLayout?: PageLayout
+  pageLayout?: PageLayout;
+  pageMode?: PageMode;
 }
 
 interface TextInstanceNode {

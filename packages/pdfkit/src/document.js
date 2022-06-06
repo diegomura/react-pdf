@@ -76,6 +76,10 @@ class PDFDocument extends stream.Readable {
       this._root.data.PageLayout = capitalize(this.options.pageLayout);
     }
 
+    if (this.options.pageMode) {
+      this._root.data.PageMode = capitalize(this.options.pageMode);
+    }
+
     // The current page
     this.page = null;
 

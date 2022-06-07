@@ -3,7 +3,7 @@ import stylesheet from '@react-pdf/stylesheet';
 
 const isLink = node => node.type === P.Link;
 
-const LINK_STYLES = {
+const DEFAULT_LINK_STYLES = {
   color: 'blue',
   textDecoration: 'underline',
 };
@@ -16,11 +16,13 @@ const LINK_STYLES = {
  * @returns {Object} computed styles
  */
 const computeStyle = (container, node) => {
-  const overrideStyle = isLink(node) ? LINK_STYLES : {};
+  let baseStyle = node.style;
 
-  const baseStyle = Array.isArray(node.style)
-    ? [...node.style, overrideStyle]
-    : Object.assign({}, overrideStyle, node.style);
+  if (isLink(node)) {
+    baseStyle = Array.isArray(node.style)
+      ? [DEFAULT_LINK_STYLES, ...node.style]
+      : [DEFAULT_LINK_STYLES, node.style];
+  }
 
   return stylesheet(container, baseStyle);
 };

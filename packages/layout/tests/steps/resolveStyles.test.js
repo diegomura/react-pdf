@@ -183,4 +183,46 @@ describe('layout resolveStyles', () => {
 
     expect(result).toMatchSnapshot();
   });
+
+  test('Should overide default link styles', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'LINK',
+              style: { color: 'wheat', textDecoration: 'none' },
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('Should overide default link styles with array', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'LINK',
+              style: [{ color: 'wheat', textDecoration: 'none' }],
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
 });

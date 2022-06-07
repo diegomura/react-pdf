@@ -1,5 +1,16 @@
 # @react-pdf/stylesheet
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1869](https://github.com/diegomura/react-pdf/pull/1869) [`5d2c308`](https://github.com/diegomura/react-pdf/commit/5d2c3088cf438a8abf1038b14a21117fecf59d57) Thanks [@diegomura](https://github.com/diegomura)! - feat: variable dpi
+
+### Patch Changes
+
+- Updated dependencies [[`1411d16`](https://github.com/diegomura/react-pdf/commit/1411d162e04ca237bad93729695c363fdf4bdbeb), [`4fadb48`](https://github.com/diegomura/react-pdf/commit/4fadb48983d7269452f89f80c7e341ece859aaee), [`ce8762f`](https://github.com/diegomura/react-pdf/commit/ce8762f6de5c796e69ec5a225c7f3ff9c619a960), [`5d2c308`](https://github.com/diegomura/react-pdf/commit/5d2c3088cf438a8abf1038b14a21117fecf59d57)]:
+  - @react-pdf/types@2.1.0
+
 ## 3.0.0
 
 ### Major Changes

@@ -1,5 +1,26 @@
 # @react-pdf/layout
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1862](https://github.com/diegomura/react-pdf/pull/1862) [`1411d16`](https://github.com/diegomura/react-pdf/commit/1411d162e04ca237bad93729695c363fdf4bdbeb) Thanks [@diegomura](https://github.com/diegomura)! - feat: bookmarks support
+
+* [#1871](https://github.com/diegomura/react-pdf/pull/1871) [`22fb0f0`](https://github.com/diegomura/react-pdf/commit/22fb0f008ac2a2e251657e9cbd97ccedb4ff67db) Thanks [@jeetiss](https://github.com/jeetiss)! - added esm bundle
+
+- [#1869](https://github.com/diegomura/react-pdf/pull/1869) [`5d2c308`](https://github.com/diegomura/react-pdf/commit/5d2c3088cf438a8abf1038b14a21117fecf59d57) Thanks [@diegomura](https://github.com/diegomura)! - feat: variable dpi
+
+### Patch Changes
+
+- [#1858](https://github.com/diegomura/react-pdf/pull/1858) [`70c3c9f`](https://github.com/diegomura/react-pdf/commit/70c3c9f52517dc2820765e657dd2bff6b47d1ef2) Thanks [@diegomura](https://github.com/diegomura)! - fix: line width computation
+
+* [#1857](https://github.com/diegomura/react-pdf/pull/1857) [`d958b0a`](https://github.com/diegomura/react-pdf/commit/d958b0ae06a61c157b2581488a9121a0464222f4) Thanks [@diegomura](https://github.com/diegomura)! - feat: embed same image once in final document
+
+* Updated dependencies [[`1411d16`](https://github.com/diegomura/react-pdf/commit/1411d162e04ca237bad93729695c363fdf4bdbeb), [`4fadb48`](https://github.com/diegomura/react-pdf/commit/4fadb48983d7269452f89f80c7e341ece859aaee), [`d958b0a`](https://github.com/diegomura/react-pdf/commit/d958b0ae06a61c157b2581488a9121a0464222f4), [`24f5c77`](https://github.com/diegomura/react-pdf/commit/24f5c77706e12dbab45053cb704a2fe7cf60eb53), [`ce8762f`](https://github.com/diegomura/react-pdf/commit/ce8762f6de5c796e69ec5a225c7f3ff9c619a960), [`5d2c308`](https://github.com/diegomura/react-pdf/commit/5d2c3088cf438a8abf1038b14a21117fecf59d57)]:
+  - @react-pdf/pdfkit@2.3.0
+  - @react-pdf/types@2.1.0
+  - @react-pdf/stylesheet@3.1.0
+
 ## 3.0.0
 
 ### Major Changes

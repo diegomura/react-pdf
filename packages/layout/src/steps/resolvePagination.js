@@ -190,8 +190,14 @@ const splitPage = (page, pageNumber, fontStore) => {
     return [currentPage, null];
 
   const nextBox = omit('height', page.box);
+  const nextProps = omit('bookmark', page.props);
+
   const nextPage = relayout(
-    Object.assign({}, page, { box: nextBox, children: nextChilds }),
+    Object.assign({}, page, {
+      props: nextProps,
+      box: nextBox,
+      children: nextChilds,
+    }),
   );
 
   return [currentPage, nextPage];

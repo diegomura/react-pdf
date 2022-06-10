@@ -15,9 +15,8 @@ class PNGImage {
     let dataDecoded = false;
 
     this.document = document;
-    if (this.obj) {
-      return;
-    }
+
+    if (this.obj) return;
 
     const { hasAlphaChannel } = this.image;
     const isInterlaced = this.image.interlaceMethod === 1;
@@ -118,7 +117,7 @@ class PNGImage {
 
     // free memory
     this.image = null;
-    return (this.imgData = null);
+    this.imgData = null;
   }
 
   splitAlphaChannel() {

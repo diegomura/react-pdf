@@ -1,9 +1,3 @@
-const DPI = 72; // 72pt per inch.
-
-const MM_FACTOR = (1 / 25.4) * DPI;
-
-const CM_FACTOR = (1 / 2.54) * DPI;
-
 /**
  * Parses scalar value in value and unit pairs
  *
@@ -28,13 +22,17 @@ const parseValue = value => {
 const transformUnit = (container, value) => {
   const scalar = parseValue(value);
 
+  const dpi = container.dpi || 72;
+  const mmFactor = (1 / 25.4) * dpi;
+  const cmFactor = (1 / 2.54) * dpi;
+
   switch (scalar.unit) {
     case 'in':
-      return scalar.value * DPI;
+      return scalar.value * dpi;
     case 'mm':
-      return scalar.value * MM_FACTOR;
+      return scalar.value * mmFactor;
     case 'cm':
-      return scalar.value * CM_FACTOR;
+      return scalar.value * cmFactor;
     case 'vh':
       return scalar.value * (container.height / 100);
     case 'vw':

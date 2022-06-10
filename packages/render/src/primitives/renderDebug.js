@@ -176,7 +176,7 @@ const debugOrigin = (ctx, node) => {
 };
 
 const renderDebug = (ctx, node) => {
-  if (!node.props.debug) return;
+  if (!node.props?.debug) return;
 
   ctx.save();
 

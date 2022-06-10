@@ -59,13 +59,11 @@ class FontSource {
     );
 
     this.data = null;
-    this.loading = false;
+    this.loadingPromise = null;
     this.options = options;
   }
 
-  async load() {
-    this.loading = true;
-
+  async loadFont() {
     const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
@@ -84,8 +82,17 @@ class FontSource {
         ),
       );
     }
+  }
 
-    this.loading = false;
+  async load() {
+    if (this.data) return;
+    if (this.loadingPromise) {
+      await this.loadingPromise;
+      return;
+    }
+    this.loadingPromise = this.loadFont();
+    await this.loadingPromise;
+    this.loadingPromise = null;
   }
 }
 

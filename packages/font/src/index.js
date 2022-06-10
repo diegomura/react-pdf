@@ -1,4 +1,4 @@
-import font from './font';
+import Font from './font';
 import standard from './standard';
 
 function FontStore() {
@@ -12,7 +12,7 @@ function FontStore() {
     const { family } = data;
 
     if (!fonts[family]) {
-      fonts[family] = font.create(family);
+      fonts[family] = Font.create(family);
     }
     // Bulk loading
     if (data.fonts) {
@@ -67,17 +67,15 @@ function FontStore() {
       const isStandard = standard.includes(family);
       if (isStandard) return;
 
-      const f = this.getFont({ ...descriptor, fontFamily: family });
+      const font = this.getFont({ ...descriptor, fontFamily: family });
 
       const lengthBeforeReplace = remainingChars.length;
-      remainingChars = remainingChars.replace(f.unicodeRange, '');
+      remainingChars = remainingChars.replace(font.unicodeRange, '');
 
       const didReplace = lengthBeforeReplace !== remainingChars.length;
 
       if (didReplace) {
-        if (!f.data && !f.loading) {
-          promises.push(f.load());
-        }
+        promises.push(font.load());
       }
       if (!remainingChars.length) {
         break;

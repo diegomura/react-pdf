@@ -211,56 +211,6 @@ describe('font store', () => {
     expect(fontStore.getFont.mock.results[2].value.load).toBeCalledTimes(0);
   });
 
-  test('should not load loading font', async () => {
-    const fontStore = new FontStore();
-
-    fontStore.getFont = jest.fn(() => ({
-      unicodeRange: /\u0048/gu, // H
-      data: null,
-      loading: true,
-      load: jest.fn(),
-    }));
-
-    await fontStore.load(
-      {
-        fontFamily: 'MyFont1',
-      },
-      'H',
-    );
-
-    expect(fontStore.getFont).toBeCalledTimes(1);
-    expect(fontStore.getFont).toBeCalledWith({
-      fontFamily: 'MyFont1',
-    });
-
-    expect(fontStore.getFont.mock.results[0].value.load).toBeCalledTimes(0);
-  });
-
-  test('should not load loaded font', async () => {
-    const fontStore = new FontStore();
-
-    fontStore.getFont = jest.fn(() => ({
-      unicodeRange: /\u0048/gu, // H
-      data: true,
-      loading: false,
-      load: jest.fn(),
-    }));
-
-    await fontStore.load(
-      {
-        fontFamily: 'MyFont1',
-      },
-      'H',
-    );
-
-    expect(fontStore.getFont).toBeCalledTimes(1);
-    expect(fontStore.getFont).toBeCalledWith({
-      fontFamily: 'MyFont1',
-    });
-
-    expect(fontStore.getFont.mock.results[0].value.load).toBeCalledTimes(0);
-  });
-
   test('should load only one font', async () => {
     const fontStore = new FontStore();
     fontStore.getFont = jest

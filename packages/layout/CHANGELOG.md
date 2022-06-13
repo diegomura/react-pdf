@@ -1,5 +1,13 @@
 # @react-pdf/layout
 
+## 3.1.1
+
+### Patch Changes
+
+- [#1874](https://github.com/diegomura/react-pdf/pull/1874) [`84d94a8`](https://github.com/diegomura/react-pdf/commit/84d94a885e5140c38e31fc843340b8f09682c923) Thanks [@jeetiss](https://github.com/jeetiss)! - fixed path to es module bundle
+
+* [#1875](https://github.com/diegomura/react-pdf/pull/1875) [`03d80a7`](https://github.com/diegomura/react-pdf/commit/03d80a71b487007a49694e1f6cf3c1136b50a688) Thanks [@jeetiss](https://github.com/jeetiss)! - fixed overwriting for default link style
+
 ## 3.1.0
 
 ### Minor Changes

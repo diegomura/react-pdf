@@ -34,7 +34,6 @@
     "crypto-js": "^4.0.0"
   },
   "devDependencies": {
-    "blob-stream": "^0.1.2",
     "iconv-lite": "^0.4.13"
   }
 }

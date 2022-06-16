@@ -1,5 +1,5 @@
 import r from 'restructure';
-import brotli from 'brotli/decompress';
+import { decompress as brotli } from 'brotli';
 import TTFFont from './TTFFont';
 import TTFGlyph, { Point } from './glyph/TTFGlyph';
 import WOFF2Glyph from './glyph/WOFF2Glyph';

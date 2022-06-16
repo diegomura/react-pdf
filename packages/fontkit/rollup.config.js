@@ -3,9 +3,9 @@ import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import { terser } from 'rollup-plugin-terser';
-import localResolve from 'rollup-plugin-local-resolve';
-import resolve from '@rollup/plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 import pkg from './package.json';
 
 const cjs = {
@@ -19,6 +19,8 @@ const es = {
 
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, es, override);
+
+const input = 'src/index.js';
 
 const babelConfig = ({ browser }) => ({
   babelrc: false,
@@ -39,82 +41,78 @@ const babelConfig = ({ browser }) => ({
   plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
 });
 
-const configBase = {
-  input: 'src/index.js',
-  plugins: [localResolve(), json()],
-  external: Object.keys(pkg.dependencies).concat(
-    '@babel/runtime/helpers/createForOfIteratorHelperLoose',
-    '@babel/runtime/helpers/createClass',
-    '@babel/runtime/helpers/applyDecoratedDescriptor',
-    '@babel/runtime/helpers/inheritsLoose',
-    '@babel/runtime/helpers/defineProperty',
+const getExternal = ({ browser }) => [
+  ...(Object.keys(pkg.dependencies)
+    // For browsers, bundle the commonjs dependencies dfa and restructure with react-pdf
+    .filter(dep => !browser || !['dfa', 'restructure'].includes(dep))
   ),
-};
+  '@babel/runtime/helpers/createForOfIteratorHelperLoose',
+  '@babel/runtime/helpers/createClass',
+  '@babel/runtime/helpers/applyDecoratedDescriptor',
+  '@babel/runtime/helpers/defineProperty',
+  '@babel/runtime/helpers/inheritsLoose',
+  ...(browser ? ['@babel/runtime/regenerator'] : ['fs', 'brotli'])
+];
 
-const serverConfig = Object.assign({}, configBase, {
+const getPlugins = ({ browser, minify = false }) => [
+  ...(browser ? [ignore(['fs', 'brotli', './WOFF2Font'])] : []),
+  replace({
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser),
+    },
+  }),
+  json(),
+  nodeResolve({ browser, preferBuiltins: !browser }),
+  commonjs({ include: [ /node_modules\// ] }),
+  // babel must come after commonjs, otherwise the following error happens: 'default' is not exported by ../../node_modules/dfa/index.js
+  babel(babelConfig({ browser })),
+  // nodePolyfills must come after commonjs, otherwise commonjs treats all files with injected imports as es6 modules
+  nodePolyfills({
+    include: [ /node_modules\/.+\.js/ ]
+  }),
+  ...(minify ? [terser()] : []),
+];
+
+const serverConfig = {
+  input,
   output: [
     getESM({ file: 'lib/fontkit.es.js' }),
     getCJS({ file: 'lib/fontkit.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: false })),
-    replace({
-      preventAssignment: true,
-      values: {
-        BROWSER: JSON.stringify(false),
-      },
-    }),
-  ),
-  external: configBase.external.concat(['fs', 'brotli/decompress']),
-});
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false }),
+};
 
-const serverProdConfig = Object.assign({}, serverConfig, {
+const serverProdConfig = {
+  input,
   output: [
     getESM({ file: 'lib/fontkit.es.min.js' }),
     getCJS({ file: 'lib/fontkit.cjs.min.js' }),
   ],
-  plugins: serverConfig.plugins.concat(terser()),
-});
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false, minify: true }),
+};
 
-const browserConfig = Object.assign({}, configBase, {
+const browserConfig = {
+  input,
   output: [
     getESM({ file: 'lib/fontkit.browser.es.js' }),
     getCJS({ file: 'lib/fontkit.browser.cjs.js' }),
   ],
-  external: configBase.external
-    .filter(dep => dep !== 'dfa')
-    .concat(
-      '@babel/runtime/regenerator',
-      '@babel/runtime/helpers/createClass',
-      '@babel/runtime/helpers/applyDecoratedDescriptor',
-      '@babel/runtime/helpers/defineProperty',
-      '@babel/runtime/helpers/inheritsLoose',
-    ),
-  plugins: [
-    ignore(['fs', 'brotli', 'brotli/decompress', './WOFF2Font']),
-    replace({
-      preventAssignment: true,
-      values: {
-        BROWSER: JSON.stringify(true),
-      },
-    }),
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true }),
+};
 
-    json(),
-
-    resolve({ browser: true }),
-    commonjs({ include: /node_modules/ }),
-
-    babel(babelConfig({ browser: true })),
-  ],
-});
-
-const browserProdConfig = Object.assign({}, browserConfig, {
+const browserProdConfig = {
+  input,
   output: [
     getESM({ file: 'lib/fontkit.browser.es.min.js' }),
     getCJS({ file: 'lib/fontkit.browser.cjs.min.js' }),
   ],
-  plugins: browserConfig.plugins.concat(terser()),
-});
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true, minify: true }),
+};
 
 export default [
   serverConfig,

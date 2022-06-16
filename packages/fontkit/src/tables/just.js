@@ -70,7 +70,7 @@ let JustificationTable = new r.Struct({
   classTable: new r.Pointer(r.uint16, ClassTable, { type: 'parent' }),
   wdcOffset: r.uint16,
   postCompensationTable: new r.Pointer(r.uint16, PostCompensationTable, { type: 'parent' }),
-  widthDeltaClusters: new LookupTable(new r.Pointer(r.uint16, WidthDeltaCluster, { type: 'parent', relativeTo: 'wdcOffset' }))
+  widthDeltaClusters: new LookupTable(new r.Pointer(r.uint16, WidthDeltaCluster, { type: 'parent', relativeTo: ctx => ctx.wdcOffset }))
 });
 
 export default new r.Struct({

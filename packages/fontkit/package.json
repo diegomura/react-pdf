@@ -31,7 +31,7 @@
     "clone": "^1.0.4",
     "deep-equal": "^1.0.0",
     "dfa": "^1.2.0",
-    "restructure": "^0.5.3",
+    "restructure": "^2.0.1",
     "tiny-inflate": "^1.0.2",
     "unicode-properties": "^1.4.1",
     "unicode-trie": "^0.3.0"

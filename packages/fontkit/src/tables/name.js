@@ -9,13 +9,13 @@ let NameRecord = new r.Struct({
   length:     r.uint16,
   string:     new r.Pointer(r.uint16,
     new r.String('length', t => getEncoding(t.platformID, t.encodingID, t.languageID)),
-    { type: 'parent', relativeTo: 'parent.stringOffset', allowNull: false }
+    { type: 'parent', relativeTo: ctx => ctx.parent.stringOffset, allowNull: false }
   )
 });
 
 let LangTagRecord = new r.Struct({
   length:  r.uint16,
-  tag:     new r.Pointer(r.uint16, new r.String('length', 'utf16be'), {type: 'parent', relativeTo: 'stringOffset'})
+  tag:     new r.Pointer(r.uint16, new r.String('length', 'utf16be'), {type: 'parent', relativeTo: ctx => ctx.stringOffset})
 });
 
 var NameTable = new r.VersionedStruct(r.uint16, {

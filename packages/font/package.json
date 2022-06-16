@@ -10,9 +10,11 @@
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/font"
   },
-  "main": "lib/index.js",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.es.js",
   "browser": {
-    "./lib/index.js": "./lib/index.browser.js"
+    "./lib/index.cjs.js": "./lib/index.browser.cjs.js",
+    "./lib/index.es.js": "./lib/index.browser.es.js"
   },
   "scripts": {
     "test": "jest",

@@ -1,5 +1,4 @@
 import * as P from '@react-pdf/primitives';
-
 import layoutText from '../../src/text/layoutText';
 
 const TEXT =

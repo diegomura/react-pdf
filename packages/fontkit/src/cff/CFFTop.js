@@ -1,5 +1,4 @@
-import r from 'restructure';
-import { resolveLength } from 'restructure/src/utils';
+import r, { resolveLength } from 'restructure';
 import CFFDict from './CFFDict';
 import CFFIndex from './CFFIndex';
 import CFFPointer from './CFFPointer';

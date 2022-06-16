@@ -1,5 +1,4 @@
-import r from 'restructure';
-import {resolveLength} from 'restructure/src/utils';
+import r, { resolveLength } from 'restructure';
 import {ItemVariationStore} from './variations';
 
 // TODO: add this to restructure

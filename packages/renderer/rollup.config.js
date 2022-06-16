@@ -5,7 +5,8 @@ import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-
+import commonjs from '@rollup/plugin-commonjs';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 import pkg from './package.json';
 
 const globals = { react: 'React' };
@@ -49,66 +50,74 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
-const commonPlugins = [json(), nodeResolve(), sourceMaps()];
+const input = './src/node/index.js';
 
-const configBase = {
-  external: [
-    '@babel/runtime/helpers/extends',
-    '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-    '@babel/runtime/helpers/asyncToGenerator',
-    '@babel/runtime/regenerator',
-  ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
-  plugins: commonPlugins,
-};
+const getExternal = ({ browser }) => [
+  '@babel/runtime/helpers/extends',
+  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+  '@babel/runtime/helpers/asyncToGenerator',
+  '@babel/runtime/regenerator',
+  ...(browser ? [] : ['fs', 'path', 'url']),
+  // For browsers, bundle the commonjs dependency blob-stream with react-pdf
+  ...(Object.keys(pkg.dependencies).filter(dep => !browser || dep !== 'blob-stream')),
+  ...(Object.keys(pkg.peerDependencies)),
+];
 
-const getPlugins = ({ browser }) => [
-  ...configBase.plugins,
+const getPlugins = ({ browser, minify = false }) => [
+  json(),
+  sourceMaps(),
+  ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   babel(babelConfig({ browser })),
+  commonjs(),
+  nodeResolve({ browser, preferBuiltins: !browser }),
+  ...(browser ? [nodePolyfills()] : []),
   replace({
     preventAssignment: true,
     values: {
       BROWSER: JSON.stringify(browser),
     },
   }),
+  ...(minify ? [terser()] : []),
 ];
 
 const serverConfig = {
-  ...configBase,
-  input: './src/node/index.js',
+  input,
   output: [
     getESM({ file: 'lib/react-pdf.es.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.js' }),
   ],
+  external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
-  external: configBase.external.concat(['fs', 'path', 'url']),
 };
 
 const serverProdConfig = {
-  ...serverConfig,
+  input,
   output: [
     getESM({ file: 'lib/react-pdf.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
   ],
-  plugins: serverConfig.plugins.concat(terser()),
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false, minify: true }),
 };
 
 const browserConfig = {
-  ...configBase,
-  input: './src/dom/index.js',
+  input,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),
   ],
-  plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true }),
 };
 
 const browserProdConfig = {
-  ...browserConfig,
+  input,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),
   ],
-  plugins: browserConfig.plugins.concat(terser()),
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true, minify: true }),
 };
 
 export default [

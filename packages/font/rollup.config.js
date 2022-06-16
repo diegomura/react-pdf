@@ -1,12 +1,10 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
-import sourceMaps from 'rollup-plugin-sourcemaps';
-
 import pkg from './package.json';
 
 const cjs = {
-  exports: 'named',
   format: 'cjs',
+  exports: 'named',
 };
 
 const esm = {
@@ -16,13 +14,7 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const external = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-  ...Object.keys(pkg.dependencies),
-];
+
 
 const babelConfig = ({ browser }) => ({
   babelrc: false,
@@ -46,8 +38,16 @@ const babelConfig = ({ browser }) => ({
   ],
 });
 
+const external = [
+  '@babel/runtime/regenerator',
+  '@babel/runtime/helpers/extends',
+  '@babel/runtime/helpers/asyncToGenerator',
+  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+  ...Object.keys(pkg.dependencies),
+];
+
+
 const getPlugins = ({ browser }) => [
-  sourceMaps(),
   babel(babelConfig({ browser })),
   replace({
     preventAssignment: true,

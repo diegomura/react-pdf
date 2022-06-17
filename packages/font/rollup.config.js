@@ -1,6 +1,7 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 const cjs = {
   format: 'cjs',
@@ -54,6 +55,9 @@ const getPlugins = ({ browser }) => [
       BROWSER: JSON.stringify(browser),
     },
   }),
+  ...(browser ? [
+    nodePolyfills({ include: [ /\/font\/src\/.*\.js/, /polyfill/ ] }),
+  ] : []),
 ];
 
 const serverConfig = {

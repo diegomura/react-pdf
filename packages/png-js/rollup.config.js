@@ -53,8 +53,7 @@ const getPlugins = ({ browser }) => [
     }),
     commonjs(),
     nodeResolve({ browser, preferBuiltins: !browser }),
-    nodePolyfills({ include: [ /node_modules\/.+\.js/ ] }),
-  ] : []),
+    nodePolyfills({ include: [ /node_modules\/.+\.js/, /\/png-js\/src\/.*\.js/ ] }),  ] : []),
   babel(babelConfig({ browser })),
   replace({
     preventAssignment: true,

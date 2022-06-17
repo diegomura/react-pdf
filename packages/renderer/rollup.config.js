@@ -27,6 +27,9 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
+const nodeInput = './src/node/index.js';
+const domInput = './src/dom/index.js';
+
 const babelConfig = ({ browser }) => ({
   babelrc: false,
   exclude: 'node_modules/**',
@@ -49,8 +52,6 @@ const babelConfig = ({ browser }) => ({
     ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 });
-
-const input = './src/node/index.js';
 
 const getExternal = ({ browser }) => [
   '@babel/runtime/helpers/extends',
@@ -81,7 +82,7 @@ const getPlugins = ({ browser, minify = false }) => [
 ];
 
 const serverConfig = {
-  input,
+  input: nodeInput,
   output: [
     getESM({ file: 'lib/react-pdf.es.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.js' }),
@@ -91,7 +92,7 @@ const serverConfig = {
 };
 
 const serverProdConfig = {
-  input,
+  input: nodeInput,
   output: [
     getESM({ file: 'lib/react-pdf.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
@@ -101,7 +102,7 @@ const serverProdConfig = {
 };
 
 const browserConfig = {
-  input,
+  input: domInput,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),
@@ -111,7 +112,7 @@ const browserConfig = {
 };
 
 const browserProdConfig = {
-  input,
+  input: domInput,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),

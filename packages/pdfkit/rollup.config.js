@@ -45,14 +45,13 @@ const babelConfig = ({ browser }) => ({
 const getExternal = ({ browser }) => [
   ...(Object.keys(pkg.dependencies)
       .filter(dep => 'crypto-js' !== dep)
-      .filter(dep => !browser || 'vite-compatible-readable-stream' !== dep)
+      .filter(dep => !browser || !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep))
   ),
   'crypto-js/md5',
   '@babel/runtime/helpers/inheritsLoose',
   '@babel/runtime/helpers/assertThisInitialized',
   '@babel/runtime/helpers/createForOfIteratorHelperLoose',
   '@babel/runtime/helpers/extends',
-  'zlib',
   ...(browser ? [] : ['fs']),
 ];
 

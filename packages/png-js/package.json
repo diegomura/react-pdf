@@ -19,10 +19,13 @@
     "url": "http://badassjs.com/"
   },
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w"
   },
   "files": [
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "browserify-zlib": "^0.2.0"
+  }
 }

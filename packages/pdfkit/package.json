@@ -31,6 +31,7 @@
     "@babel/runtime": "^7.16.4",
     "@react-pdf/fontkit": "^2.1.1",
     "@react-pdf/png-js": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.0.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },

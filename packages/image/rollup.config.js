@@ -2,6 +2,7 @@ import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import pkg from './package.json';
+import nodePolyfills from 'rollup-plugin-polyfill-node'
 
 const cjs = {
   format: 'cjs',
@@ -52,7 +53,10 @@ const getPlugins = ({ browser }) => [
     preventAssignment: true,
     values: { BROWSER: JSON.stringify(browser) },
   }),
-  ...(browser ? [ ignore(['fs', 'path', 'url']) ] : []),
+  ...(browser ? [
+    ignore(['fs', 'path', 'url']),
+    nodePolyfills({ include: [ /node_modules\/.+\.js/, /\/image\/src\/.*\.js/ ] }),
+  ] : []),
 ];
 
 const serverConfig = {

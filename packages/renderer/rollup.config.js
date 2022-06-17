@@ -71,7 +71,7 @@ const getPlugins = ({ browser, minify = false }) => [
   babel(babelConfig({ browser })),
   commonjs(),
   nodeResolve({ browser, preferBuiltins: !browser }),
-  ...(browser ? [nodePolyfills()] : []),
+  ...(browser ? [nodePolyfills({ include: [ /node_modules\/.+\.js/ ] })] : []),
   replace({
     preventAssignment: true,
     values: {

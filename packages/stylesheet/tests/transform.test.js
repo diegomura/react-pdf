@@ -810,6 +810,74 @@ describe('stylesheet transform', () => {
       ]);
     });
 
+    test('should transform numeric skew operation', () => {
+      const style = transformStyles({ transform: 'skew(120, 80)' });
+
+      expect(style.transform).toEqual([
+        { operation: 'skew', value: [120, 80] },
+      ]);
+    });
+
+    test('should transform float skew operation', () => {
+      const style = transformStyles({ transform: 'skew(30.5, 40.5)' });
+
+      expect(style.transform).toEqual([
+        { operation: 'skew', value: [30.5, 40.5] },
+      ]);
+    });
+
+    test('should transform deg skew operation', () => {
+      const style = transformStyles({ transform: 'skew(2deg, 20deg)' });
+
+      expect(style.transform).toEqual([{ operation: 'skew', value: [2, 20] }]);
+    });
+
+    test('should transform negative deg skew operation', () => {
+      const style = transformStyles({ transform: 'skew(-2deg, -5deg)' });
+
+      expect(style.transform).toEqual([{ operation: 'skew', value: [-2, -5] }]);
+    });
+
+    test('should transform rad skew operation', () => {
+      const style = transformStyles({
+        transform: 'skew(3.1416rad, 3.1416rad)',
+      });
+
+      expect(style.transform).toEqual([
+        { operation: 'skew', value: [180.0004209182994, 180.0004209182994] },
+      ]);
+    });
+
+    test('should transform negative rad skew operation', () => {
+      const style = transformStyles({
+        transform: 'skew(-3.1416rad, -3.1416rad)',
+      });
+
+      expect(style.transform).toEqual([
+        { operation: 'skew', value: [-180.0004209182994, -180.0004209182994] },
+      ]);
+    });
+
+    test('should transform mixed units skew operation', () => {
+      const style = transformStyles({ transform: 'skew(-3.1416rad, 10deg)' });
+
+      expect(style.transform).toEqual([
+        { operation: 'skew', value: [-180.0004209182994, 10] },
+      ]);
+    });
+
+    test('should transform skewX operation', () => {
+      const style = transformStyles({ transform: 'skewX(-10)' });
+
+      expect(style.transform).toEqual([{ operation: 'skew', value: [-10, 0] }]);
+    });
+
+    test('should transform skewY operation', () => {
+      const style = transformStyles({ transform: 'skewY(-10)' });
+
+      expect(style.transform).toEqual([{ operation: 'skew', value: [0, -10] }]);
+    });
+
     test('should transform matrix operation', () => {
       const style = transformStyles({
         transform: 'matrix(-1, -0.1, 0, 0.1, 1, 10)',

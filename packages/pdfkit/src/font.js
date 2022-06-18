@@ -28,11 +28,11 @@ export class PDFFont {
     return new EmbeddedFont(document, font, id);
   }
 
-  encode(text) {
+  encode() {
     throw new Error('Must be implemented by subclasses');
   }
 
-  widthOfString(text) {
+  widthOfString() {
     throw new Error('Must be implemented by subclasses');
   }
 

@@ -1,17 +1,18 @@
 import stream from 'stream';
 import PDFObject from './object';
 import PDFReference from './reference';
-import PDFNameTree from './name_tree';
 import PDFPage from './page';
-import Color from './mixins/color';
-import Vector from './mixins/vector';
-import Fonts from './mixins/fonts';
-import Text from './mixins/text';
-import Images from './mixins/images';
-import Annotations from './mixins/annotations';
+import PDFNameTree from './name_tree';
+import PDFSecurity from './security';
+import ColorMixin from './mixins/color';
+import VectorMixin from './mixins/vector';
+import FontsMixin from './mixins/fonts';
+import TextMixin from './mixins/text';
+import ImagesMixin from './mixins/images';
+import AnnotationsMixin from './mixins/annotations';
 import OutlineMixin from './mixins/outline';
 import AcroFormMixin from './mixins/acroform';
-import Attachments from './mixins/attachments';
+import AttachmentsMixin from './mixins/attachments';
 import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
@@ -90,6 +91,7 @@ class PDFDocument extends stream.Readable {
     this.initText();
     this.initImages();
     this.initOutline();
+    // this.initMarkings(options)
 
     // Initialize the metadata
     this.info = {
@@ -111,6 +113,12 @@ class PDFDocument extends stream.Readable {
       });
     }
 
+    // Generate file ID
+    this._id = PDFSecurity.generateFileID(this.info);
+
+    // Initialize security settings
+    // this._security = PDFSecurity.create(this, options);
+
     // Write the header PDF version
     this._write(`%PDF-${this.version}`);
 
@@ -129,6 +137,7 @@ class PDFDocument extends stream.Readable {
       ({ options } = this);
     }
 
+    // end the current page if needed
     if (!this.options.bufferPages) {
       this.flushPages();
     }
@@ -147,6 +156,8 @@ class PDFDocument extends stream.Readable {
     this._ctm = [1, 0, 0, 1, 0, 0];
     this.transform(1, 0, 0, -1, 0, this.page.height);
 
+    // this.emit('pageAdded');
+
     return this;
   }
 
@@ -157,6 +168,7 @@ class PDFDocument extends stream.Readable {
     this._pageBuffer = [];
     this._pageBufferStart += pages.length;
     for (let page of Array.from(pages)) {
+      // this.endPageMarkings(page);
       page.end();
     }
   }
@@ -251,6 +263,7 @@ class PDFDocument extends stream.Readable {
     }
 
     this.endOutline();
+    // this.endMarkings();
 
     this._root.end();
     this._root.data.Pages.end();
@@ -261,6 +274,10 @@ class PDFDocument extends stream.Readable {
       this._root.data.ViewerPreferences.end();
     }
 
+    // if (this._security) {
+    //   this._security.end();
+    // }
+
     if (this._waiting === 0) {
       return this._finalize();
     }
@@ -268,7 +285,7 @@ class PDFDocument extends stream.Readable {
     this._ended = true;
   }
 
-  _finalize(fn) {
+  _finalize() {
     // generate xref
     const xRefOffset = this._offset;
     this._write('xref');
@@ -281,14 +298,19 @@ class PDFDocument extends stream.Readable {
     }
 
     // trailer
+    const trailer = {
+      Size: this._offsets.length + 1,
+      Root: this._root,
+      Info: this._info,
+      ID: [this._id, this._id]
+    };
+
+    // if (this._security) {
+    //   trailer.Encrypt = this._security.dictionary;
+    // }
+
     this._write('trailer');
-    this._write(
-      PDFObject.convert({
-        Size: this._offsets.length + 1,
-        Root: this._root,
-        Info: this._info
-      })
-    );
+    this._write(PDFObject.convert(trailer));
 
     this._write('startxref');
     this._write(`${xRefOffset}`);
@@ -304,25 +326,19 @@ class PDFDocument extends stream.Readable {
 }
 
 const mixin = methods => {
-  return (() => {
-    const result = [];
-    for (let name in methods) {
-      const method = methods[name];
-      result.push((PDFDocument.prototype[name] = method));
-    }
-    return result;
-  })();
+  Object.assign(PDFDocument.prototype, methods);
 };
 
 // Load mixins
-mixin(Color);
-mixin(Vector);
-mixin(Fonts);
-mixin(Text);
-mixin(Images);
-mixin(Annotations);
+mixin(ColorMixin);
+mixin(VectorMixin);
+mixin(FontsMixin);
+mixin(TextMixin);
+mixin(ImagesMixin);
+mixin(AnnotationsMixin);
 mixin(OutlineMixin);
+// mixin(MarkingsMixin);
 mixin(AcroFormMixin);
-mixin(Attachments);
+mixin(AttachmentsMixin);
 
 export default PDFDocument;

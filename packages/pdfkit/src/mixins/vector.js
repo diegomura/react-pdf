@@ -34,7 +34,7 @@ export default {
   _CAP_STYLES: {
     BUTT: 0,
     ROUND: 1,
-    SQUARE: 2,
+    SQUARE: 2
   },
 
   lineCap(c) {
@@ -47,7 +47,7 @@ export default {
   _JOIN_STYLES: {
     MITER: 0,
     ROUND: 1,
-    BEVEL: 2,
+    BEVEL: 2
   },
 
   lineJoin(j) {
@@ -63,27 +63,33 @@ export default {
 
   dash(length, options) {
     let phase;
+
     if (options == null) {
       options = {};
     }
+
     if (length == null) {
       return this;
     }
+
     if (Array.isArray(length)) {
       length = Array.from(length)
         .map(v => PDFObject.number(v))
         .join(' ');
+
       phase = options.phase || 0;
+
       return this.addContent(`[${length}] ${PDFObject.number(phase)} d`);
-    } else {
-      const space = options.space != null ? options.space : length;
-      phase = options.phase || 0;
-      return this.addContent(
-        `[${PDFObject.number(length)} ${PDFObject.number(
-          space,
-        )}] ${PDFObject.number(phase)} d`,
-      );
     }
+
+    const space = options.space != null ? options.space : length;
+    phase = options.phase || 0;
+
+    return this.addContent(
+      `[${PDFObject.number(length)} ${PDFObject.number(
+        space
+      )}] ${PDFObject.number(phase)} d`
+    );
   },
 
   undash() {
@@ -101,20 +107,20 @@ export default {
   bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) {
     return this.addContent(
       `${number(cp1x)} ${number(cp1y)} ${number(cp2x)} ${number(cp2y)} ${number(
-        x,
-      )} ${number(y)} c`,
+        x
+      )} ${number(y)} c`
     );
   },
 
   quadraticCurveTo(cpx, cpy, x, y) {
     return this.addContent(
-      `${number(cpx)} ${number(cpy)} ${number(x)} ${number(y)} v`,
+      `${number(cpx)} ${number(cpy)} ${number(x)} ${number(y)} v`
     );
   },
 
   rect(x, y, w, h) {
     return this.addContent(
-      `${number(x)} ${number(y)} ${number(w)} ${number(h)} re`,
+      `${number(x)} ${number(y)} ${number(w)} ${number(h)} re`
     );
   },
 
@@ -319,11 +325,12 @@ export default {
   },
 
   rotate(angle, options = {}) {
-    let y;
     const rad = (angle * Math.PI) / 180;
     const cos = Math.cos(rad);
     const sin = Math.sin(rad);
-    let x = (y = 0);
+
+    let x = 0;
+    let y = 0;
 
     if (options.origin != null) {
       [x, y] = Array.from(options.origin);
@@ -337,7 +344,6 @@ export default {
   },
 
   scale(xFactor, yFactor, options = {}) {
-    let y;
     if (yFactor == null) {
       yFactor = xFactor;
     }
@@ -346,7 +352,9 @@ export default {
       yFactor = xFactor;
     }
 
-    let x = (y = 0);
+    let x = 0;
+    let y = 0;
+
     if (options.origin != null) {
       [x, y] = Array.from(options.origin);
       x -= xFactor * x;
@@ -355,4 +363,24 @@ export default {
 
     return this.transform(xFactor, 0, 0, yFactor, x, y);
   },
+
+  skew(xAngle = 0, yAngle = 0, options) {
+    const radx = (xAngle * Math.PI) / 180;
+    const rady = (yAngle * Math.PI) / 180;
+    const tanx = Math.tan(radx);
+    const tany = Math.tan(rady);
+
+    let x = 0;
+    let y = 0;
+
+    if (options.origin != null) {
+      [x, y] = Array.from(options.origin);
+      const x1 = x + tanx * y;
+      const y1 = y + tany * x;
+      x -= x1;
+      y -= y1;
+    }
+
+    return this.transform(1, tany, tanx, 1, x, y);
+  }
 };

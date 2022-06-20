@@ -1,13 +1,5 @@
+import intersects from '../rect/intersects';
 import partition from '../rect/partition';
-
-const intersects = (a, b) => {
-  const x = Math.max(a.x, b.x);
-  const num1 = Math.min(a.x + a.width, b.x + b.width);
-  const y = Math.max(a.y, b.y);
-  const num2 = Math.min(a.y + a.height, b.y + b.height);
-
-  return num1 >= x && num2 >= y;
-};
 
 const getLineFragment = (lineRect, excludeRect) => {
   if (!intersects(excludeRect, lineRect)) return [lineRect];

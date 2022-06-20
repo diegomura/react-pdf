@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import Yoga from '../yoga/index';
 
 /**
  * Set display attribute to node's Yoga instance

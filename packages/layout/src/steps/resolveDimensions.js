@@ -1,7 +1,8 @@
-import Yoga from '@react-pdf/yoga';
 import * as P from '@react-pdf/primitives';
 import { isNil, compose } from '@react-pdf/fns';
 
+import Yoga from '../yoga/index';
+import setFloat from '../node/setFloat';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import getPosition from '../node/getPosition';
@@ -58,9 +59,6 @@ import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
 
 const YOGA_NODE = '_yogaNode';
-const YOGA_CONFIG = Yoga.Config.create();
-
-YOGA_CONFIG.setPointScaleFactor(0);
 
 const isType = type => node => node.type === type;
 
@@ -167,7 +165,7 @@ const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
  * @returns {Object} node with appended yoga node
  */
 const createYogaNodes = (page, fontStore) => node => {
-  const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
+  const yogaNode = Yoga.createNode();
 
   const result = Object.assign({}, node);
 
@@ -185,6 +183,7 @@ const createYogaNodes = (page, fontStore) => node => {
   }
 
   setMeasureFunc(result, page, fontStore);
+  setFloat(node.style.float)(result);
 
   return result;
 };

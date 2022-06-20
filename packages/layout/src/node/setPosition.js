@@ -1,5 +1,4 @@
-import Yoga from '@react-pdf/yoga';
-
+import Yoga from '../yoga/index';
 import setYogaValue from './setYogaValue';
 
 /**

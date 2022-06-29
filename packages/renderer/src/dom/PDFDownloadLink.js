@@ -10,6 +10,7 @@ export const PDFDownloadLink = ({
   className,
   document: doc,
   fileName = 'document.pdf',
+  onClick,
 }) => {
   const [instance, updateInstance] = usePDF({ document: doc });
 
@@ -27,13 +28,18 @@ export const PDFDownloadLink = ({
     }
   };
 
+  const handleClick = event => {
+    handleDownloadIE();
+    if (onClick && typeof onClick === 'function') onClick(event, instance);
+  };
+
   return (
     <a
       style={style}
       href={instance.url}
       download={fileName}
       className={className}
-      onClick={handleDownloadIE}
+      onClick={handleClick}
     >
       {typeof children === 'function' ? children(instance) : children}
     </a>

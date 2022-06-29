@@ -2,8 +2,8 @@
   "name": "@react-pdf/png-js",
   "description": "A PNG decoder in JS",
   "version": "2.1.0",
-  "main": "lib/png-js.cjs.js",
-  "module": "lib/png-js.es.js",
+  "main": "./lib/png-js.cjs.js",
+  "module": "./lib/png-js.es.js",
   "browser": {
     "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
     "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"

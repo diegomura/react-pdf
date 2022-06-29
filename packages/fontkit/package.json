@@ -14,8 +14,8 @@
     "trie:indic": "babel-node src/opentype/shapers/gen-indic.js",
     "trie:data": "babel-node src/opentype/shapers/generate-data.js"
   },
-  "main": "lib/fontkit.cjs.js",
-  "module": "lib/fontkit.es.js",
+  "main": "./lib/fontkit.cjs.js",
+  "module": "./lib/fontkit.es.js",
   "browser": {
     "./lib/fontkit.es.js": "./lib/fontkit.browser.es.js",
     "./lib/fontkit.cjs.js": "./lib/fontkit.browser.cjs.js"

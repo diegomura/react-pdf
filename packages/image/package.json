@@ -5,11 +5,11 @@
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
+  "main": "./lib/index.cjs.js",
+  "module": "./lib/index.es.js",
   "browser": {
-    "lib/index.cjs.js": "lib/index.browser.cjs.js",
-    "lib/index.es.js": "lib/index.browser.es.js"
+    "./lib/index.cjs.js": "./lib/index.browser.cjs.js",
+    "./lib/index.es.js": "./lib/index.browser.es.js"
   },
   "repository": {
     "type": "git",

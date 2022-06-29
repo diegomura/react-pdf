@@ -3,7 +3,7 @@ const webpack = require('webpack');
 module.exports = [
   {
     path: 'lib/react-pdf.browser.es.js',
-    limit: '450 kB',
+    limit: '500 kB',
 
     modifyWebpackConfig: config => {
       config.resolve = {

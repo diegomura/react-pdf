@@ -6,8 +6,8 @@
   "types": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/react-pdf.cjs.js",
-  "module": "lib/react-pdf.es.js",
+  "main": "./lib/react-pdf.cjs.js",
+  "module": "./lib/react-pdf.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

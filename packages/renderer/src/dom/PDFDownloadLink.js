@@ -30,7 +30,7 @@ export const PDFDownloadLink = ({
 
   const handleClick = event => {
     handleDownloadIE();
-    if (onClick && typeof onClick === 'function') onClick(event, instance);
+    if (typeof onClick === 'function') onClick(event, instance);
   };
 
   return (

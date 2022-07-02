@@ -1,9 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { isNil } from '@react-pdf/fns';
-import runHeight from '@react-pdf/textkit/lib/run/height';
-import runDescent from '@react-pdf/textkit/lib/run/descent';
-import advanceWidth from '@react-pdf/textkit/lib/run/advanceWidth';
-import ascent from '@react-pdf/textkit/lib/attributedString/ascent';
 
 import renderGlyphs from './renderGlyphs';
 import parseColor from '../utils/parseColor';
@@ -56,12 +52,10 @@ const renderRun = (ctx, run, options) => {
     ? color.opacity
     : run.attributes.opacity;
 
-  const height = runHeight(run);
-  const descent = runDescent(run);
-  const runAdvanceWidth = advanceWidth(run);
+  const { height, descent, xAdvance } = run;
 
   if (options.outlineRuns) {
-    ctx.rect(0, -height, runAdvanceWidth, height).stroke();
+    ctx.rect(0, -height, xAdvance, height).stroke();
   }
 
   ctx.fillColor(color.value);
@@ -69,9 +63,9 @@ const renderRun = (ctx, run, options) => {
 
   if (link) {
     if (isSrcId(link)) {
-      ctx.goTo(0, -height - descent, runAdvanceWidth, height, link.slice(1));
+      ctx.goTo(0, -height - descent, xAdvance, height, link.slice(1));
     } else {
-      ctx.link(0, -height - descent, runAdvanceWidth, height, link);
+      ctx.link(0, -height - descent, xAdvance, height, link);
     }
   }
 
@@ -105,7 +99,7 @@ const renderRun = (ctx, run, options) => {
     }
   }
 
-  ctx.translate(runAdvanceWidth, 0);
+  ctx.translate(xAdvance, 0);
 };
 
 const renderBackground = (ctx, rect, backgroundColor) => {
@@ -174,7 +168,7 @@ const renderDecorationLine = (ctx, line) => {
 };
 
 const renderLine = (ctx, line, options) => {
-  const lineAscent = ascent(line);
+  const lineAscent = line.ascent;
 
   if (options.outlineLines) {
     ctx.rect(line.box.x, line.box.y, line.box.width, line.box.height).stroke();
@@ -194,7 +188,7 @@ const renderLine = (ctx, line, options) => {
         x: 0,
         y: -lineAscent,
         height: line.box.height,
-        width: advanceWidth(run) - overflowRight,
+        width: run.xAdvance - overflowRight,
       };
 
       renderBackground(ctx, backgroundRect, run.attributes.backgroundColor);

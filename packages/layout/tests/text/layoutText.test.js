@@ -1,5 +1,4 @@
 import * as P from '@react-pdf/primitives';
-import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
 
 import layoutText from '../../src/text/layoutText';
 
@@ -38,7 +37,7 @@ describe('text layoutText', () => {
   test('Should render aligned right text', async () => {
     const node = createTextNode(TEXT, { textAlign: 'right' });
     const lines = layoutText(node, 1500, 30, null);
-    const textWidth = runWidth(lines[0].runs[0]);
+    const textWidth = lines[0].runs[0].xAdvance;
 
     expect(lines[0].box.x).toBe(1500 - textWidth);
   });
@@ -46,7 +45,7 @@ describe('text layoutText', () => {
   test('Should render aligned center text', async () => {
     const node = createTextNode(TEXT, { textAlign: 'center' });
     const lines = layoutText(node, 1500, 30, null);
-    const textWidth = runWidth(lines[0].runs[0]);
+    const textWidth = lines[0].runs[0].xAdvance;
 
     expect(lines[0].box.x).toBe((1500 - textWidth) / 2);
   });

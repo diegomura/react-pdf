@@ -1,9 +1,10 @@
-import layoutEngine from '@react-pdf/textkit/lib/layout';
-import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
-import justification from '@react-pdf/textkit/lib/engines/justification';
-import textDecoration from '@react-pdf/textkit/lib/engines/textDecoration';
-import scriptItemizer from '@react-pdf/textkit/lib/engines/scriptItemizer';
-import wordHyphenation from '@react-pdf/textkit/lib/engines/wordHyphenation';
+import layoutEngine, {
+  linebreaker,
+  justification,
+  scriptItemizer,
+  wordHyphenation,
+  textDecoration,
+} from '@react-pdf/textkit';
 
 import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';

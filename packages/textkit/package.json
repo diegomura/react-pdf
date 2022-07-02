@@ -25,7 +25,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.4",
     "@react-pdf/fns": "1.0.0",
-    "@react-pdf/unicode-properties": "^2.6.0",
-    "hyphen": "^1.6.4"
+    "hyphen": "^1.6.4",
+    "unicode-properties": "^1.4.1"
   }
 }

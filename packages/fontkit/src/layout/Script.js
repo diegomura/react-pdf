@@ -1,4 +1,4 @@
-import unicode from '@react-pdf/unicode-properties';
+import unicode from 'unicode-properties';
 
 // This maps the Unicode Script property to an OpenType script tag
 // Data from http://www.microsoft.com/typography/otspec/scripttags.htm

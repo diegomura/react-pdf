@@ -1,6 +1,6 @@
 import { cache } from '../decorators';
 import Path from './Path';
-import unicode from '@react-pdf/unicode-properties';
+import unicode from 'unicode-properties';
 import StandardNames from './StandardNames';
 
 /**

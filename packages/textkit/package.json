@@ -3,7 +3,8 @@
   "license": "MIT",
   "version": "3.0.0",
   "description": "An advanced text layout framework",
-  "main": "./lib/index.js",
+  "main": "./lib/textkit.cjs.js",
+  "module": "./lib/textkit.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -15,8 +16,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "rimraf ./lib && babel src --out-dir lib",
-    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w"
   },
   "files": [
     "lib"

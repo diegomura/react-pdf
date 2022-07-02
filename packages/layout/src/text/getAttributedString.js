@@ -1,8 +1,8 @@
 import * as P from '@react-pdf/primitives';
-import fromFragments from '@react-pdf/textkit/lib/attributedString/fromFragments';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
+import fromFragments from './fromFragments';
 import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];

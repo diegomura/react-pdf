@@ -1,10 +1,7 @@
-import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
-import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
-
 import renderGlyphs from './renderGlyphs';
 
 const renderRun = (ctx, run) => {
-  const runAdvanceWidth = runWidth(run);
+  const runAdvanceWidth = run.xAdvance;
   const { font, fontSize, color, opacity } = run.attributes;
 
   ctx.fillColor(color);
@@ -48,7 +45,7 @@ const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   const y = line.box?.y || 0;
   const font = line.runs[0]?.attributes.font;
   const scale = line.runs[0]?.attributes?.scale || 1;
-  const width = lineWidth(line);
+  const width = line.xAdvance;
 
   const ascent = font.ascent * scale;
   const xHeight = font.xHeight * scale;

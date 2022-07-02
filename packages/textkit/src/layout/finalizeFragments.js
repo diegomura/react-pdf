@@ -1,5 +1,9 @@
 import { last, compose } from '@react-pdf/fns';
 
+import runHeight from '../run/height';
+import runAscent from '../run/ascent';
+import runDescent from '../run/descent';
+import runAdvanceWidth from '../run/advanceWidth';
 import advanceWidth from '../attributedString/advanceWidth';
 import leadingOffset from '../attributedString/leadingOffset';
 import trailingOffset from '../attributedString/trailingOffset';
@@ -64,6 +68,35 @@ const justifyLine = (engines, options, align) => line => {
   return shouldJustify ? engines.justification(options)(newLine) : newLine;
 };
 
+const finalizeLine = line => {
+  let lineAscent = 0;
+  let lineDescent = 0;
+  let lineHeight = 0;
+  let lineXAdvance = 0;
+
+  const runs = line.runs.map(run => {
+    const height = runHeight(run);
+    const ascent = runAscent(run);
+    const descent = runDescent(run);
+    const xAdvance = runAdvanceWidth(run);
+
+    lineHeight = Math.max(lineHeight, height);
+    lineAscent = Math.max(lineAscent, ascent);
+    lineDescent = Math.max(lineDescent, descent);
+    lineXAdvance += xAdvance;
+
+    return Object.assign({}, run, { height, ascent, descent, xAdvance });
+  });
+
+  return Object.assign({}, line, {
+    runs,
+    height: lineHeight,
+    ascent: lineAscent,
+    descent: lineDescent,
+    xAdvance: lineXAdvance,
+  });
+};
+
 /**
  * Finalize line by performing line justification
  * and text decoration (using appropiate engines)
@@ -81,6 +114,7 @@ const finalizeBlock = (engines = {}, options) => (line, i, lines) => {
   const align = isLastFragment ? style.alignLastLine : style.align;
 
   return compose(
+    finalizeLine,
     engines.textDecoration(options),
     justifyLine(engines, options, align),
     adjustOverflow,

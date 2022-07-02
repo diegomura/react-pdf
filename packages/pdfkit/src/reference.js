@@ -34,7 +34,7 @@ class PDFReference extends stream.Writable {
   }
 
   _write(chunk, encoding, callback) {
-    if (!Buffer.isBuffer(chunk)) {
+    if (!(chunk instanceof Uint8Array)) {
       chunk = Buffer.from(chunk + '\n', 'binary');
     }
 

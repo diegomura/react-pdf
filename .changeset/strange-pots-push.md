@@ -4,4 +4,4 @@
 '@react-pdf/render': patch
 ---
 
-refactor: build textkit with rollup & define public api
+feat: build textkit with rollup & define public api

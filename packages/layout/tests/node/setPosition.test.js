@@ -12,7 +12,7 @@ describe('node setPosition', () => {
   const mockPercent = jest.fn();
 
   const node = {
-    _yogaNode: { setPosition: mock, setPositionPercent: mockPercent },
+    yogaNode: { setPosition: mock, setPositionPercent: mockPercent },
   };
 
   beforeEach(() => {

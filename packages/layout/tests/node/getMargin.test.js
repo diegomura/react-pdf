@@ -20,8 +20,8 @@ describe('node getMargin', () => {
   });
 
   test('Should return yoga values if node available', () => {
-    const _yogaNode = { getComputedMargin };
-    const result = getMargin({ _yogaNode });
+    const yogaNode = { getComputedMargin };
+    const result = getMargin({ yogaNode });
 
     expect(result).toHaveProperty('marginTop', 1);
     expect(result).toHaveProperty('marginRight', 2);

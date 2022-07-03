@@ -10,7 +10,7 @@ const getComputedBorder = (yogaNode, edge) =>
  * @return {Object} border widths
  */
 const getBorderWidth = node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   return {
     borderTopWidth: getComputedBorder(yogaNode, Yoga.EDGE_TOP),

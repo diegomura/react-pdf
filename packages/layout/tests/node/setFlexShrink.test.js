@@ -2,7 +2,7 @@ import setFlexShrink from '../../src/node/setFlexShrink';
 
 describe('node setFlexShrink', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setFlexShrink: mock } };
+  const node = { yogaNode: { setFlexShrink: mock } };
 
   beforeEach(() => {
     mock.mockReset();

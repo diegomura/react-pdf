@@ -20,8 +20,8 @@ describe('node getPadding', () => {
   });
 
   test('Should return yoga values if node available', () => {
-    const _yogaNode = { getComputedPadding };
-    const result = getPadding({ _yogaNode });
+    const yogaNode = { getComputedPadding };
+    const result = getPadding({ yogaNode });
 
     expect(result).toHaveProperty('paddingTop', 1);
     expect(result).toHaveProperty('paddingRight', 2);

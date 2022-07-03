@@ -4,7 +4,7 @@ import setJustifyContent from '../../src/node/setJustifyContent';
 
 describe('node setJustifyContent', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setJustifyContent: mock } };
+  const node = { yogaNode: { setJustifyContent: mock } };
 
   beforeEach(() => {
     mock.mockReset();

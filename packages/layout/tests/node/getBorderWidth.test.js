@@ -20,8 +20,8 @@ describe('node getBorderWidth', () => {
   });
 
   test('Should return yoga values if node available', () => {
-    const _yogaNode = { getComputedBorder };
-    const result = getBorderWidth({ _yogaNode });
+    const yogaNode = { getComputedBorder };
+    const result = getBorderWidth({ yogaNode });
 
     expect(result).toHaveProperty('borderTopWidth', 1);
     expect(result).toHaveProperty('borderRightWidth', 2);

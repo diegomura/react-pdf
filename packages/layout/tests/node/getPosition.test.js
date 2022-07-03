@@ -16,13 +16,13 @@ describe('node getPosition', () => {
   });
 
   test('Should return yoga values if node available', () => {
-    const _yogaNode = {
+    const yogaNode = {
       getComputedTop,
       getComputedRight,
       getComputedBottom,
       getComputedLeft,
     };
-    const result = getPosition({ _yogaNode });
+    const result = getPosition({ yogaNode });
 
     expect(result).toHaveProperty('top', 10);
     expect(result).toHaveProperty('right', 20);

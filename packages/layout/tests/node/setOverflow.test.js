@@ -4,7 +4,7 @@ import setOverflow from '../../src/node/setOverflow';
 
 describe('node setOverflow', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setOverflow: mock } };
+  const node = { yogaNode: { setOverflow: mock } };
 
   beforeEach(() => {
     mock.mockReset();

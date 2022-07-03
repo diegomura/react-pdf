@@ -4,7 +4,7 @@ import setPositionType from '../../src/node/setPositionType';
 
 describe('node setPositionType', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setPositionType: mock } };
+  const node = { yogaNode: { setPositionType: mock } };
 
   beforeEach(() => {
     mock.mockReset();

@@ -20,7 +20,7 @@ const ALIGN = {
  * @return {Object} node instance
  */
 const setAlign = attr => value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
   const defaultValue = attr === 'items' ? Yoga.ALIGN_STRETCH : Yoga.ALIGN_AUTO;
 
   if (yogaNode) {

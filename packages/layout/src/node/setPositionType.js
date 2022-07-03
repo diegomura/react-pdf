@@ -9,7 +9,7 @@ import { isNil } from '@react-pdf/fns';
  * @return {Object} node instance
  */
 const setPositionType = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {
     yogaNode.setPositionType(

@@ -12,8 +12,8 @@ describe('node getDimension', () => {
   });
 
   test('Should return yoga values if node available', () => {
-    const _yogaNode = { getComputedWidth, getComputedHeight };
-    const result = getDimension({ _yogaNode });
+    const yogaNode = { getComputedWidth, getComputedHeight };
+    const result = getDimension({ yogaNode });
 
     expect(result).toHaveProperty('width', 10);
     expect(result).toHaveProperty('height', 20);

@@ -52,8 +52,10 @@ const resolveNodeStyles = container => node => {
  */
 const resolvePageStyles = page => {
   const dpi = page.props?.dpi || 72;
-  const box = page.box || page.style;
-  const container = { ...box, dpi };
+  const width = page.box?.width || page.style.width;
+  const height = page.box?.height || page.style.height;
+  const orientation = page.props?.orientation || 'portrait';
+  const container = { width, height, orientation, dpi };
 
   return resolveNodeStyles(container)(page);
 };

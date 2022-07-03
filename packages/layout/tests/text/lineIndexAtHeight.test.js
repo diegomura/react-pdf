@@ -1,7 +1,9 @@
 import lineIndexAtHeight from '../../src/text/lineIndexAtHeight';
 
 const TEST_LINE = { box: { height: 25 } };
-const TEST_LINES = Array(10).fill(TEST_LINE);
+const TEST_LINES = Array(10)
+  .fill(TEST_LINE)
+  .map((line, i) => ({ ...line, box: { ...line.box, y: i * 25 } }));
 
 describe('text lineIndexAtHeight', () => {
   test('Should return 0 if no lines present', () => {
@@ -51,5 +53,20 @@ describe('text lineIndexAtHeight', () => {
     const result = lineIndexAtHeight(node, 300);
 
     expect(result).toBe(10);
+  });
+
+  test('Should return correct line index for line chunks at same y', () => {
+    const lines = [
+      { box: { y: 0, height: 25 } },
+      { box: { y: 0, height: 25 } },
+      { box: { y: 25, height: 25 } },
+      { box: { y: 50, height: 25 } },
+      { box: { y: 75, height: 25 } },
+    ];
+
+    const node = { type: 'TEXT', lines };
+    const result = lineIndexAtHeight(node, 60);
+
+    expect(result).toBe(3);
   });
 });

@@ -10,6 +10,7 @@ import resolvePageSizes from './steps/resolvePageSizes';
 import resolvePagination from './steps/resolvePagination';
 import resolveDimensions from './steps/resolveDimensions';
 import resolveTextLayout from './steps/resolveTextLayout';
+import resolveFloatLayout from './steps/resolveFloatLayout';
 import resolveInheritance from './steps/resolveInheritance';
 import resolvePagePaddings from './steps/resolvePagePaddings';
 import resolvePercentRadius from './steps/resolvePercentRadius';
@@ -23,6 +24,7 @@ const layout = asyncCompose(
   resolveTextLayout,
   resolvePercentRadius,
   resolveDimensions,
+  resolveFloatLayout,
   resolveSvg,
   resolveAssets,
   resolveInheritance,

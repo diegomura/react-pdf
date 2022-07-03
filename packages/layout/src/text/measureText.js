@@ -1,12 +1,19 @@
 /* eslint-disable no-param-reassign */
 
-import Yoga from '@react-pdf/yoga';
-
+import Yoga from '../yoga/index';
 import layoutText from './layoutText';
 import linesWidth from './linesWidth';
 import linesHeight from './linesHeight';
 
 const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
+
+const getExcludeRect = (yogaNode, parentWidth) => {
+  const rect = yogaNode.getExcludeRect();
+  const floatLeft = yogaNode.getFloat() === Yoga.FLOAT_LEFT;
+  const x = floatLeft ? rect.left : parentWidth - rect.width - rect.right;
+
+  return { x, y: rect.top, width: rect.width, height: rect.height };
+};
 
 /**
  * Yoga text measure function
@@ -20,8 +27,12 @@ const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
  * @returns {Object} text width and height
  */
 const measureText = (page, node, fontStore) => (width, widthMode, height) => {
+  const siblings = node._yogaNode.getSiblings().filter(c => c.isFloat());
+  const excludeRects = siblings.map(s => getExcludeRect(s, width));
+
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {
-    if (!node.lines) node.lines = layoutText(node, width, height, fontStore);
+    if (!node.lines)
+      node.lines = layoutText(node, width, height, fontStore, excludeRects);
 
     return { height: linesHeight(node) };
   }
@@ -30,7 +41,7 @@ const measureText = (page, node, fontStore) => (width, widthMode, height) => {
     const alignFactor = ALIGNMENT_FACTORS[node.style?.textAlign] || 0;
 
     if (!node.lines) {
-      node.lines = layoutText(node, width, height, fontStore);
+      node.lines = layoutText(node, width, height, fontStore, excludeRects);
       node.alignOffset = (width - linesWidth(node)) * alignFactor; // Compensate align in variable width containers
     }
 

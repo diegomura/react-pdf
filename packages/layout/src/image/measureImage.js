@@ -1,5 +1,4 @@
-import Yoga from '@react-pdf/yoga';
-
+import Yoga from '../yoga/index';
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';

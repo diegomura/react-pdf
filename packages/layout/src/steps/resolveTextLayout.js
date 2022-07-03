@@ -1,6 +1,7 @@
 import * as P from '@react-pdf/primitives';
 
 import layoutText from '../text/layoutText';
+import getBoundingBox from '../node/getBoundingBox';
 
 const isType = type => node => node.type === type;
 
@@ -12,6 +13,10 @@ const shouldIterate = node => !isSvg(node) && !isText(node);
 
 const shouldLayoutText = node => isText(node) && !node.lines;
 
+const getExcludeRects = nodes => {
+  return nodes.filter(c => !!c.style.float).map(getBoundingBox);
+};
+
 /**
  * Performs text layout on text node if wasn't calculated before.
  * Text layout is usually performed on Yoga's layout process (via setMeasureFunc),
@@ -20,7 +25,7 @@ const shouldLayoutText = node => isText(node) && !node.lines;
  * @param {Object} node
  * @returns {Object} layout node
  */
-const resolveTextLayout = (node, fontStore) => {
+const resolveTextLayout = (node, fontStore, excludeRects) => {
   if (shouldLayoutText(node)) {
     const width =
       node.box.width - (node.box.paddingRight + node.box.paddingLeft);
@@ -28,13 +33,14 @@ const resolveTextLayout = (node, fontStore) => {
       node.box.height - (node.box.paddingTop + node.box.paddingBottom);
 
     // eslint-disable-next-line no-param-reassign
-    node.lines = layoutText(node, width, height, fontStore);
+    node.lines = layoutText(node, width, height, fontStore, excludeRects);
   }
 
   if (shouldIterate(node)) {
     if (!node.children) return node;
 
-    const mapChild = child => resolveTextLayout(child, fontStore);
+    const exclude = getExcludeRects(node.children);
+    const mapChild = child => resolveTextLayout(child, fontStore, exclude);
 
     const children = node.children.map(mapChild);
 

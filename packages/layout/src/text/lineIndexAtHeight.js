@@ -5,14 +5,11 @@
  * @param {Number} height
  */
 const lineIndexAtHeight = (node, height) => {
-  let y = 0;
-
   if (!node.lines) return 0;
 
   for (let i = 0; i < node.lines.length; i += 1) {
     const line = node.lines[i];
-    if (y + line.box.height > height) return i;
-    y += line.box.height;
+    if (line.box.y + line.box.height > height) return i;
   }
 
   return node.lines.length;

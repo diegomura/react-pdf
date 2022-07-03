@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 2.3.0
+
+### Minor Changes
+
+- [#1902](https://github.com/diegomura/react-pdf/pull/1902) [`d011983`](https://github.com/diegomura/react-pdf/commit/d011983204cf45876594fa361f24b47e86c612c9) Thanks [@adamduncan](https://github.com/adamduncan)! - feat: add onClick event to PDFDownloadLink
+
+### Patch Changes
+
+- Updated dependencies [[`3acf53b`](https://github.com/diegomura/react-pdf/commit/3acf53b45200fa1415315f7dc22cc4b84a6b54c6), [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367), [`9527fe4`](https://github.com/diegomura/react-pdf/commit/9527fe4c9087818421eca4753172b06e3c0cb934), [`e94e50a`](https://github.com/diegomura/react-pdf/commit/e94e50a931df7347a8febc717ca76843502826c8), [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b)]:
+  - @react-pdf/font@2.2.1
+  - @react-pdf/pdfkit@2.4.0
+  - @react-pdf/render@3.2.0
+  - @react-pdf/layout@3.1.2
+
 ## 2.2.0
 
 ### Minor Changes

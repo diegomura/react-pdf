@@ -1,5 +1,14 @@
 # @react-pdf/font
 
+## 2.2.1
+
+### Patch Changes
+
+- [#1909](https://github.com/diegomura/react-pdf/pull/1909) [`3acf53b`](https://github.com/diegomura/react-pdf/commit/3acf53b45200fa1415315f7dc22cc4b84a6b54c6) Thanks [@diegomura](https://github.com/diegomura)! - fix: font store load method skip loading
+
+- Updated dependencies [[`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb)]:
+  - @react-pdf/fontkit@2.1.2
+
 ## 2.2.0
 
 ### Minor Changes

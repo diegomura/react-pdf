@@ -1,5 +1,11 @@
 # @react-pdf/fontkit
 
+## 2.1.2
+
+### Patch Changes
+
+- [#1907](https://github.com/diegomura/react-pdf/pull/1907) [`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb) Thanks [@diegomura](https://github.com/diegomura)! - chore: use unicode-properties mainline repo
+
 ## 2.1.1
 
 ### Patch Changes

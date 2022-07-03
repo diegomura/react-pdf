@@ -1,5 +1,11 @@
 # @react-pdf/stylesheet
 
+## 3.2.0
+
+### Minor Changes
+
+- [#1892](https://github.com/diegomura/react-pdf/pull/1892) [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367) Thanks [@diegomura](https://github.com/diegomura)! - feat: add skew transformation support
+
 ## 3.1.0
 
 ### Minor Changes

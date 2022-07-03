@@ -1,5 +1,18 @@
 # @react-pdf/pdfkit
 
+## 2.4.0
+
+### Minor Changes
+
+- [#1892](https://github.com/diegomura/react-pdf/pull/1892) [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367) Thanks [@diegomura](https://github.com/diegomura)! - feat: add skew transformation support
+
+### Patch Changes
+
+- [#1894](https://github.com/diegomura/react-pdf/pull/1894) [`9527fe4`](https://github.com/diegomura/react-pdf/commit/9527fe4c9087818421eca4753172b06e3c0cb934) Thanks [@diegomura](https://github.com/diegomura)! - feat: generate document ID
+
+- Updated dependencies [[`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb)]:
+  - @react-pdf/fontkit@2.1.2
+
 ## 2.3.0
 
 ### Minor Changes

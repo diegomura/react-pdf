@@ -11,6 +11,18 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
+const appendChild = (parentInstance, child) => {
+  const isParentText = parentInstance.type === 'TEXT'
+  const isChildTextInstance = child.type === 'TEXT_INSTANCE'
+  const isOrphanTextInstance = isChildTextInstance  && !isParentText
+
+  // Ignore orphan text instances.
+  // Caused by cases such as <>{name && <Text>{name}</Text>}</>
+  if (isOrphanTextInstance) return
+
+  parentInstance.children.push(child);
+}
+
 const createRenderer = ({ onChange = () => {} }) => {
   return ReactFiberReconciler({
     schedulePassiveEffects,
@@ -23,47 +35,7 @@ const createRenderer = ({ onChange = () => {} }) => {
 
     warnsIfNotActing: false,
 
-    appendInitialChild(parentInstance, child) {
-      if (child.type === 'TEXT_INSTANCE' && parentInstance.type !== 'TEXT') {
-        let message =
-          'Error: Cannot create text instance without Text component';
-
-        if (process.env.NODE_ENV !== 'production') {
-          message += `
-
-common reason for this error:
-
-1) using text without Text component, to fix wrap text with Text component
-
----
-<${parentInstance.type}>
-  ${child.value}
-</${parentInstance.type}>
-˅˅˅
-<${parentInstance.type}>
-  <Text>${child.value}</Text>
-</${parentInstance.type}>
----
-
-2) jsx conditions with non boolean types, to fix convert value to boolean
-
----
-<View>
-  {variable && <Text>{variable}</Text>}
-</View>
-˅˅˅
-<View>
-  {!!variable && <Text>{variable}</Text>}
-</View>
----
-`;
-        }
-
-        throw new Error(message);
-      }
-
-      parentInstance.children.push(child);
-    },
+    appendInitialChild: appendChild,
 
     createInstance(type, { style, children, ...props }) {
       return {
@@ -121,15 +93,13 @@ common reason for this error:
 
     useSyncScheduling: true,
 
-    appendChild(parentInstance, child) {
-      parentInstance.children.push(child);
-    },
+    appendChild,
 
     appendChildToContainer(parentInstance, child) {
       if (parentInstance.type === 'ROOT') {
         parentInstance.document = child;
       } else {
-        parentInstance.children.push(child);
+        appendChild(parentInstance, child)
       }
     },
 

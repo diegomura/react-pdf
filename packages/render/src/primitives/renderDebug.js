@@ -176,6 +176,20 @@ const debugOrigin = (ctx, node) => {
 };
 
 const renderDebug = (ctx, node) => {
+  if (node.props?.dimensionCallback) {
+    const { width, height } = node.box;
+    const {
+      marginLeft = 0,
+      marginTop = 0,
+      marginRight = 0,
+      marginBottom = 0,
+    } = getMargin(node.box);
+
+    const roundedWidth = Math.round(width + marginLeft + marginRight);
+    const roundedHeight = Math.round(height + marginTop + marginBottom);
+    node.props.dimensionCallback(roundedHeight, roundedWidth);
+  }
+
   if (!node.props?.debug) return;
 
   ctx.save();

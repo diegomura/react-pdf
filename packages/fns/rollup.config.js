@@ -15,13 +15,9 @@ const getESM = override => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
-const getExternal = ({ browser }) => [
-  ...(Object.keys(pkg?.dependencies || {})),
-  /@babel\/runtime/,
-  /@react-pdf/,
-];
+const getExternal = () => [/@babel\/runtime/];
 
-const getPlugins = ({ browser }) => [
+const getPlugins = () => [
   babel({
     babelrc: true,
     babelHelpers: 'runtime',
@@ -35,8 +31,8 @@ const config = {
     getESM({ file: 'lib/index.es.js' }),
     getCJS({ file: 'lib/index.cjs.js' }),
   ],
-  external: getExternal({}),
-  plugins: getPlugins({}),
+  external: getExternal(),
+  plugins: getPlugins(),
 };
 
 export default config;

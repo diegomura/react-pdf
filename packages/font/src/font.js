@@ -2,7 +2,8 @@
 
 import isUrl from 'is-url';
 import fetch from 'cross-fetch';
-import fontkit from '@react-pdf/fontkit';
+import * as fontkit from 'fontkit';
+import toUint8Array from 'base64-to-uint8array';
 
 const FONT_WEIGHTS = {
   thin: 100,
@@ -61,20 +62,14 @@ class FontSource {
     const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
-      this.data = fontkit.create(
-        Buffer.from(this.src.split(',')[1], 'base64'),
-        postscriptName,
-      );
+      const raw = this.src.split(',')[1];
+      this.data = fontkit.create(toUint8Array(raw), postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data, postscriptName);
-    } else {
-      this.data = await new Promise((resolve, reject) =>
-        fontkit.open(this.src, postscriptName, (err, data) =>
-          err ? reject(err) : resolve(data),
-        ),
-      );
+    } else if (!BROWSER) {
+      this.data = await fontkit.open(this.src, postscriptName);
     }
   }
 

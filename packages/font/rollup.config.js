@@ -4,6 +4,18 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 
 import pkg from './package.json';
 
+const cjs = {
+  exports: 'named',
+  format: 'cjs',
+};
+
+const esm = {
+  format: 'es',
+};
+
+const getCJS = override => Object.assign({}, cjs, override);
+const getESM = override => Object.assign({}, esm, override);
+
 const external = [
   '@babel/runtime/regenerator',
   '@babel/runtime/helpers/extends',
@@ -47,24 +59,20 @@ const getPlugins = ({ browser }) => [
 
 const serverConfig = {
   input: './src/index.js',
-  output: {
-    format: 'cjs',
-    file: 'lib/index.js',
-    exports: 'named',
-    sourcemap: true,
-  },
+  output: [
+    getESM({ file: 'lib/index.es.js' }),
+    getCJS({ file: 'lib/index.cjs.js' }),
+  ],
   external,
   plugins: getPlugins({ browser: false }),
 };
 
 const browserConfig = {
   input: './src/index.js',
-  output: {
-    format: 'cjs',
-    file: 'lib/index.browser.js',
-    exports: 'named',
-    sourcemap: true,
-  },
+  output: [
+    getESM({ file: 'lib/index.browser.es.js' }),
+    getCJS({ file: 'lib/index.browser.cjs.js' }),
+  ],
   external,
   plugins: getPlugins({ browser: true }),
 };

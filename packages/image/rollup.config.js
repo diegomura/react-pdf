@@ -2,7 +2,7 @@ import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import pkg from './package.json';
-import nodePolyfills from 'rollup-plugin-polyfill-node'
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 const cjs = {
   format: 'cjs',
@@ -18,26 +18,10 @@ const getESM = override => Object.assign({}, esm, override);
 
 const input = './src/index.js';
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-  ],
-  plugins: [
-    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-  ],
 });
 
 const getExternal = ({ browser }) => [
@@ -48,15 +32,19 @@ const getExternal = ({ browser }) => [
 ];
 
 const getPlugins = ({ browser }) => [
-  babel(babelConfig({ browser })),
+  babel(babelConfig()),
   replace({
     preventAssignment: true,
     values: { BROWSER: JSON.stringify(browser) },
   }),
-  ...(browser ? [
-    ignore(['fs', 'path', 'url']),
-    nodePolyfills({ include: [ /node_modules\/.+\.js/, /\/image\/src\/.*\.js/ ] }),
-  ] : []),
+  ...(browser
+    ? [
+        ignore(['fs', 'path', 'url']),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /\/image\/src\/.*\.js/],
+        }),
+      ]
+    : []),
 ];
 
 const serverConfig = {

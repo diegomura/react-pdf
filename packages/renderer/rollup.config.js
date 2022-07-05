@@ -30,27 +30,11 @@ const getESM = override => Object.assign({}, esm, override);
 const nodeInput = './src/node/index.js';
 const domInput = './src/dom/index.js';
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-    '@babel/preset-react',
-  ],
-  plugins: [
-    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-  ],
+  presets: ['@babel/preset-react'],
 });
 
 const getExternal = ({ browser }) => [
@@ -60,18 +44,20 @@ const getExternal = ({ browser }) => [
   '@babel/runtime/regenerator',
   ...(browser ? [] : ['fs', 'path', 'url']),
   // For browsers, bundle the commonjs dependency blob-stream with react-pdf
-  ...(Object.keys(pkg.dependencies).filter(dep => !browser || dep !== 'blob-stream')),
-  ...(Object.keys(pkg.peerDependencies)),
+  ...Object.keys(pkg.dependencies).filter(
+    dep => !browser || dep !== 'blob-stream',
+  ),
+  ...Object.keys(pkg.peerDependencies),
 ];
 
 const getPlugins = ({ browser, minify = false }) => [
   json(),
   sourceMaps(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
-  babel(babelConfig({ browser })),
+  babel(babelConfig()),
   commonjs(),
   nodeResolve({ browser, preferBuiltins: !browser }),
-  ...(browser ? [nodePolyfills({ include: [ /node_modules\/.+\.js/ ] })] : []),
+  ...(browser ? [nodePolyfills({ include: [/node_modules\/.+\.js/] })] : []),
   replace({
     preventAssignment: true,
     values: {

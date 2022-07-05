@@ -1,5 +1,5 @@
 import babel from '@rollup/plugin-babel';
-import localResolve from 'rollup-plugin-local-resolve'
+import localResolve from 'rollup-plugin-local-resolve';
 import pkg from './package.json';
 
 const cjs = {
@@ -14,37 +14,17 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-  ],
-  plugins: [
-    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
-  ],
 });
 
 const input = './src/index.js';
 
-const getExternal = ({ browser }) => [
-  ...(Object.keys(pkg.dependencies)),
-];
+const getExternal = ({ browser }) => [...Object.keys(pkg.dependencies)];
 
-const getPlugins = ({ browser }) => [
-  localResolve(),
-  babel(babelConfig({ browser })),
-];
+const getPlugins = ({ browser }) => [localResolve(), babel(babelConfig())];
 
 const serverConfig = {
   input,
@@ -66,7 +46,4 @@ const browserConfig = {
   plugins: getPlugins({ browser: true }),
 };
 
-export default [
-  serverConfig,
-  browserConfig,
-];
+export default [serverConfig, browserConfig];

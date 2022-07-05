@@ -43,34 +43,40 @@ const babelConfig = ({ browser }) => ({
 });
 
 const getExternal = ({ browser }) => [
-  ...(Object.keys(pkg.dependencies)
-      .filter(dep => 'crypto-js' !== dep)
-      .filter(dep => !browser || !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep))
-  ),
+  ...Object.keys(pkg.dependencies)
+    .filter(dep => 'crypto-js' !== dep)
+    .filter(
+      dep =>
+        !browser ||
+        !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
+    ),
+  /\/node_modules\/pako\//,
   'crypto-js/md5',
   '@babel/runtime/helpers/inheritsLoose',
   '@babel/runtime/helpers/assertThisInitialized',
   '@babel/runtime/helpers/createForOfIteratorHelperLoose',
   '@babel/runtime/helpers/extends',
-  ...(browser ? [] : ['fs']),
+  ...(browser ? [] : ['fs'])
 ];
 
 const getPlugins = ({ browser, minify = false }) => [
   json(),
-  ...(browser ? [
-    ignore(['fs']),
-    alias({
-      entries: [
-        { find: 'stream', replacement: 'vite-compatible-readable-stream' },
-        { find: 'zlib', replacement: 'browserify-zlib' },
+  ...(browser
+    ? [
+        ignore(['fs']),
+        alias({
+          entries: [
+            { find: 'stream', replacement: 'vite-compatible-readable-stream' },
+            { find: 'zlib', replacement: 'browserify-zlib' }
+          ]
+        }),
+        commonjs(),
+        nodeResolve({ browser, preferBuiltins: !browser }),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /pdfkit\/src\/.*\.js/]
+        })
       ]
-    }),
-    commonjs(),
-    nodeResolve({ browser, preferBuiltins: !browser }),
-    nodePolyfills({ include: [ /node_modules\/.+\.js/, /pdfkit\/src\/.*\.js/ ] }),
-  ] : [
-    nodeResolve({ browser, preferBuiltins: !browser }),
-  ]),
+    : [nodeResolve({ browser, preferBuiltins: !browser })]),
   replace({
     preventAssignment: true,
     values: {
@@ -78,7 +84,7 @@ const getPlugins = ({ browser, minify = false }) => [
     }
   }),
   babel(babelConfig({ browser })),
-  ...(minify ? [terser()] : []),
+  ...(minify ? [terser()] : [])
 ];
 
 const serverConfig = {
@@ -88,7 +94,7 @@ const serverConfig = {
     getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
   external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false }),
+  plugins: getPlugins({ browser: false })
 };
 
 const serverProdConfig = {
@@ -98,7 +104,7 @@ const serverProdConfig = {
     getCJS({ file: 'lib/pdfkit.cjs.min.js' })
   ],
   external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false, minify: true }),
+  plugins: getPlugins({ browser: false, minify: true })
 };
 
 const browserConfig = {
@@ -108,7 +114,7 @@ const browserConfig = {
     getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
   external: getExternal({ browser: true }),
-  plugins: getPlugins({ browser: true }),
+  plugins: getPlugins({ browser: true })
 };
 
 const browserProdConfig = Object.assign({}, browserConfig, {
@@ -118,7 +124,7 @@ const browserProdConfig = Object.assign({}, browserConfig, {
     getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' })
   ],
   external: getExternal({ browser: true }),
-  plugins: getPlugins({ browser: true, minify: true }),
+  plugins: getPlugins({ browser: true, minify: true })
 });
 
 export default [

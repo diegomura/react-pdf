@@ -5,7 +5,7 @@ import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import pkg from './package.json';
-import commonjs from '@rollup/plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs';
 
 const cjs = {
   exports: 'named',
@@ -21,40 +21,34 @@ const getESM = override => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const babelConfig = () => ({
+  babelrc: true,
   babelHelpers: 'runtime',
   exclude: 'node_modules/**',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        targets: { node: '12', browsers: 'last 2 versions' },
-      },
-    ],
-  ],
-  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
 });
 
 const getExternal = ({ browser }) => [
   ...(browser ? [] : ['fs']),
-  ...(Object.keys(pkg.dependencies).filter(dep => !browser || 'browserify-zlib' !== dep)),
+  ...Object.keys(pkg.dependencies).filter(
+    dep => !browser || 'browserify-zlib' !== dep,
+  ),
 ];
 
 const getPlugins = ({ browser }) => [
-  ...(browser ? [
-    ignore(['fs']),
-    alias({
-      entries: [
-        { find: 'zlib', replacement: 'browserify-zlib' },
+  ...(browser
+    ? [
+        ignore(['fs']),
+        alias({
+          entries: [{ find: 'zlib', replacement: 'browserify-zlib' }],
+        }),
+        commonjs(),
+        nodeResolve({ browser, preferBuiltins: !browser }),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /\/png-js\/src\/.*\.js/],
+        }),
       ]
-    }),
-    commonjs(),
-    nodeResolve({ browser, preferBuiltins: !browser }),
-    nodePolyfills({ include: [ /node_modules\/.+\.js/, /\/png-js\/src\/.*\.js/ ] }),  ] : []),
-  babel(babelConfig({ browser })),
+    : []),
+  babel(babelConfig()),
   replace({
     preventAssignment: true,
     values: {
@@ -83,7 +77,4 @@ const browserConfig = {
   plugins: getPlugins({ browser: true }),
 };
 
-export default [
-  serverConfig,
-  browserConfig,
-];
+export default [serverConfig, browserConfig];

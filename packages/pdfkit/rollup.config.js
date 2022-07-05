@@ -23,23 +23,10 @@ const getESM = override => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
-  babelHelpers: 'runtime',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } })
-      }
-    ]
-  ],
-  plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]]
+  babelHelpers: 'runtime'
 });
 
 const getExternal = ({ browser }) => [
@@ -83,7 +70,7 @@ const getPlugins = ({ browser, minify = false }) => [
       BROWSER: JSON.stringify(browser)
     }
   }),
-  babel(babelConfig({ browser })),
+  babel(babelConfig()),
   ...(minify ? [terser()] : [])
 ];
 

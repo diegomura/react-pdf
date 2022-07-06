@@ -1,4 +1,4 @@
-import * as primitives from '@react-pdf/primitives';
+import primitives from '@react-pdf/primitives';
 
 import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';

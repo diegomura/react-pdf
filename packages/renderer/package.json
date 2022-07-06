@@ -68,7 +68,6 @@
     "buffer": "^6.0.3",
     "process": "^0.11.10",
     "size-limit": "^7.0.5",
-    "stream-browserify": "^3.0.0",
     "util": "^0.12.4"
   }
 }

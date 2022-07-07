@@ -1,5 +1,4 @@
 import { compose } from '@react-pdf/fns';
-
 import expandStyles from './expand';
 import flattenStyles from './flatten';
 import transformStyles from './transform';
@@ -27,5 +26,7 @@ const resolveStyles = (container, style) => {
 export { default as transformColor } from './transform/colors';
 
 export { default as processTransform } from './transform/transform';
+
+export { default as flatten } from './flatten';
 
 export default resolveStyles;

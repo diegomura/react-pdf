@@ -448,7 +448,7 @@ declare namespace ReactPDF {
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
-    onClick?: function;
+    onClick?: Function;
   }
 
   /**
@@ -456,7 +456,7 @@ declare namespace ReactPDF {
    * @see https://react-pdf.org/advanced#on-the-fly-rendering
    * @platform web
    */
-  class PDFDownloadLink extends React.Component<React.PropsWithChildren<PDFDownloadLinkProps>> {}
+  class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
   interface UsePDFInstance {
     loading: boolean;

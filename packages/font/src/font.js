@@ -24,12 +24,9 @@ const FONT_WEIGHTS = {
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
+  const data = await response.arrayBuffer();
 
-  const buffer = await (response.buffer
-    ? response.buffer()
-    : response.arrayBuffer());
-
-  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
+  return new Uint8Array(data);
 };
 
 const isDataUrl = dataUrl => {
@@ -64,7 +61,7 @@ class FontSource {
     if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
       this.data = fontkit.create(toUint8Array(raw), postscriptName);
-    } else if (BROWSER || isUrl(this.src)) {
+    } else if (isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data, postscriptName);

@@ -6,7 +6,7 @@ import ignore from 'rollup-plugin-ignore';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import commonjs from '@rollup/plugin-commonjs';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
+
 import pkg from './package.json';
 
 const globals = { react: 'React' };
@@ -57,7 +57,6 @@ const getPlugins = ({ browser, minify = false }) => [
   babel(babelConfig()),
   commonjs(),
   nodeResolve({ browser, preferBuiltins: !browser }),
-  ...(browser ? [nodePolyfills({ include: [/node_modules\/.+\.js/] })] : []),
   replace({
     preventAssignment: true,
     values: {

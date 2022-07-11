@@ -448,7 +448,7 @@ declare namespace ReactPDF {
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
-    onClick?: function;
+    onClick?: Function;
   }
 
   /**

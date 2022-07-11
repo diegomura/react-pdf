@@ -36,7 +36,7 @@ const layoutLines = (rects, lines, indent) => {
     const style = line.runs?.[0]?.attributes || {};
     const height = Math.max(stringHeight(line), style.lineHeight);
 
-    if (currentY + height > rect.y + rect.height) {
+    if (currentY + height > rect.y + rect.height && rects.length > 0) {
       rect = rects.shift();
       currentY = rect.y;
     }

@@ -43,10 +43,7 @@ const getExternal = ({ browser }) => [
   '@babel/runtime/helpers/asyncToGenerator',
   '@babel/runtime/regenerator',
   ...(browser ? [] : ['fs', 'path', 'url']),
-  // For browsers, bundle the commonjs dependency blob-stream with react-pdf
-  ...Object.keys(pkg.dependencies).filter(
-    dep => !browser || dep !== 'blob-stream',
-  ),
+  ...Object.keys(pkg.dependencies),
   ...Object.keys(pkg.peerDependencies),
 ];
 

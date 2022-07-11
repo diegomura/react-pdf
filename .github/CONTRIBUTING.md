@@ -4,7 +4,7 @@
 
 First, thank you for considering contributing to react-pdf!
 
-We welcome any type of contribution, not only code. You can help with 
+We welcome any type of contribution, not only code. You can help with
 - **QA**: file bug reports, the more details you can give the better (e.g. screenshots with the console open)
 - **Marketing**: writing blog posts, howto's, printing stickers, ...
 - **Community**: presenting the project at meetups, organizing a dedicated meetup for the local community, ...
@@ -30,12 +30,12 @@ git clone https://github.com/diegomura/react-pdf.git
 cd react-pdf
 ```
 
-### 2. Install Node 12
+### 2. Install Node 14
 
-If you have `nvm` installed all you have to do is 
+If you have `nvm` installed all you have to do is
 
 ```sh
-nvm install 12
+nvm install 14
 nvm use
 ```
 
@@ -46,7 +46,7 @@ Other versions should work although I can't guarantee it
 We need to download this project dependencies in order to make it work. Because this is a monorepo, we also have to bind all the internal packages together so they are aware of each other. Both things can be done by running:
 
 ```sh
-yarn install 
+yarn install
 yarn bootstrap
 ```
 

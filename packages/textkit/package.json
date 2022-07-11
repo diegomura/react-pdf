@@ -5,10 +5,6 @@
   "description": "An advanced text layout framework",
   "main": "./lib/textkit.cjs.js",
   "module": "./lib/textkit.es.js",
-  "browser": {
-    "./lib/textkit.es.js": "./lib/textkit.browser.es.js",
-    "./lib/textkit.cjs.js": "./lib/textkit.browser.cjs.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

@@ -1,5 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import localResolve from 'rollup-plugin-local-resolve';
+
 import pkg from './package.json';
 
 const cjs = {
@@ -22,28 +23,18 @@ const babelConfig = () => ({
 
 const input = './src/index.js';
 
-const getExternal = ({ browser }) => [...Object.keys(pkg.dependencies)];
+const getExternal = () => [...Object.keys(pkg.dependencies)];
 
-const getPlugins = ({ browser }) => [localResolve(), babel(babelConfig())];
+const getPlugins = () => [localResolve(), babel(babelConfig())];
 
-const serverConfig = {
+const config = {
   input,
   output: [
     getESM({ file: 'lib/textkit.es.js' }),
     getCJS({ file: 'lib/textkit.cjs.js' }),
   ],
-  external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false }),
+  external: getExternal(),
+  plugins: getPlugins(),
 };
 
-const browserConfig = {
-  input,
-  output: [
-    getESM({ file: 'lib/textkit.browser.es.js' }),
-    getCJS({ file: 'lib/textkit.browser.cjs.js' }),
-  ],
-  external: getExternal({ browser: true }),
-  plugins: getPlugins({ browser: true }),
-};
-
-export default [serverConfig, browserConfig];
+export default [config];

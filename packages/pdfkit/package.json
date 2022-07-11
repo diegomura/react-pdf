@@ -2,8 +2,8 @@
   "name": "@react-pdf/pdfkit",
   "version": "2.4.0",
   "description": "A PDF generation library for Node.js",
-  "main": "lib/pdfkit.cjs.js",
-  "module": "lib/pdfkit.es.js",
+  "main": "./lib/pdfkit.cjs.js",
+  "module": "./lib/pdfkit.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -30,8 +30,10 @@
   "dependencies": {
     "@babel/runtime": "^7.16.4",
     "@react-pdf/png-js": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.0.0",
-    "fontkit": "^2.0.2"
+    "fontkit": "^2.0.2",
+    "vite-compatible-readable-stream": "^3.6.1"
   },
   "devDependencies": {
     "iconv-lite": "^0.4.13"

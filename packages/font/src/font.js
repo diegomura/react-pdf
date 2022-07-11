@@ -61,7 +61,7 @@ class FontSource {
     if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
       this.data = fontkit.create(toUint8Array(raw), postscriptName);
-    } else if (isUrl(this.src)) {
+    } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data, postscriptName);

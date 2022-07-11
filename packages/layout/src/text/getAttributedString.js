@@ -1,6 +1,6 @@
 import * as P from '@react-pdf/primitives';
-import { embedEmojis } from './emoji';
 
+import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
 import fromFragments from './fromFragments';
 import transformText from './transformText';

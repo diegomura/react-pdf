@@ -2,6 +2,7 @@ import * as primitives from '@react-pdf/primitives';
 
 import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';
+import SVGViewer from './SVGViewer';
 import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
 import { pdf, version, Font, StyleSheet } from '../index';
@@ -34,6 +35,8 @@ export * from './usePDF';
 
 export * from './PDFViewer';
 
+export * from './SVGViewer';
+
 export * from './BlobProvider';
 
 export * from './PDFDownloadLink';
@@ -47,6 +50,7 @@ export default {
   version,
   StyleSheet,
   PDFViewer,
+  SVGViewer,
   BlobProvider,
   PDFDownloadLink,
   renderToStream,

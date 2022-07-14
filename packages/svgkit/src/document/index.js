@@ -207,6 +207,10 @@ class SVGDocument {
     return new RadialGradient(x1, y1, r1, x2, y2, r2);
   }
 
+  embedImage(data) {
+    return data;
+  }
+
   image(data, x, y, opts = {}) {
     const { width, height } = opts;
 
@@ -215,7 +219,13 @@ class SVGDocument {
         'svgkit only supports image rendering with explicit width and height',
       );
 
-    const href = `data:image;base64,${Buffer.from(data).toString('base64')}`;
+    const output = [];
+
+    for (let i = 0; i < data.length; i += 1) {
+      output.push(String.fromCharCode(data[i]));
+    }
+
+    const href = `data:image;base64,${btoa(output.join(''))}`;
 
     return this.currentPage.image(href, x, y, width, height);
   }
@@ -268,7 +278,7 @@ class SVGDocument {
   }
 
   end() {
-    this.serialized = this.pages.map(page => serialize(page.root)).join('');
+    this.serialized = this.pages.map(page => serialize(page.root));
   }
 }
 

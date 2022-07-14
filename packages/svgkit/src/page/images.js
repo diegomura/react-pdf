@@ -1,6 +1,9 @@
 import { createElement } from './element';
 
 export default {
+  embedImage(href) {
+    return href;
+  },
   image(href, x, y, width, height) {
     const image = createElement('image');
     const parent = this.closestGroupOrSvg();

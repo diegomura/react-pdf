@@ -1,6 +1,7 @@
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
+import SVGDocument from '@react-pdf/svgkit';
 import layoutDocument from '@react-pdf/layout';
 
 import createRenderer from './renderer';
@@ -54,6 +55,17 @@ const pdf = initialValue => {
     if (container.document.props.onRender) {
       container.document.props.onRender(params);
     }
+  };
+
+  const toSVG = async () => {
+    const ctx = new SVGDocument();
+    const layout = await layoutDocument(container.document, fontStore);
+
+    callOnRender();
+
+    renderPDF(ctx, layout);
+
+    return ctx.serialized;
   };
 
   const toBlob = async () => {
@@ -118,6 +130,7 @@ const pdf = initialValue => {
   return {
     on,
     container,
+    toSVG,
     toBlob,
     toBuffer,
     toString,

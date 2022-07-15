@@ -157,17 +157,15 @@ const resolveImageFromUrl = async src => {
 };
 
 const resolveImage = (src, { cache = true } = {}) => {
+  let image;
   const cacheKey = src.data ? src.data.toString() : src.uri;
 
-  if (cache && IMAGE_CACHE.get(cacheKey)) {
-    return IMAGE_CACHE.get(cacheKey);
-  }
-
-  let image;
-  if (isCompatibleBase64(src)) {
-    image = resolveBase64Image(src);
-  } else if (Buffer.isBuffer(src)) {
+  if (Buffer.isBuffer(src)) {
     image = resolveBufferImage(src);
+  } else if (cache && IMAGE_CACHE.get(cacheKey)) {
+    return IMAGE_CACHE.get(cacheKey);
+  } else if (isCompatibleBase64(src)) {
+    image = resolveBase64Image(src);
   } else if (typeof src === 'object' && src.data) {
     image = resolveImageFromData(src);
   } else {

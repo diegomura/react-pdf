@@ -1,5 +1,4 @@
 import fs from 'fs';
-import Data from './data';
 import JPEG from './image/jpeg';
 import PNG from './image/png';
 
@@ -9,11 +8,11 @@ class PDFImage {
     if (Buffer.isBuffer(src)) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = new Buffer(new Uint8Array(src));
+      data = Buffer.from(new Uint8Array(src));
     } else {
       let match = /^data:.+;base64,(.*)$/.exec(src);
       if (match) {
-        data = new Buffer(match[1], 'base64');
+        data = Buffer.from(match[1], 'base64');
       } else if (!BROWSER) {
         data = fs.readFileSync(src);
         if (!data) return;
@@ -22,11 +21,13 @@ class PDFImage {
 
     if (data[0] === 0xff && data[1] === 0xd8) {
       return new JPEG(data, label);
-    } else if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
-      return new PNG(data, label);
-    } else {
-      throw new Error('Unknown image format.');
     }
+
+    if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
+      return new PNG(data, label);
+    }
+
+    throw new Error('Unknown image format.');
   }
 }
 

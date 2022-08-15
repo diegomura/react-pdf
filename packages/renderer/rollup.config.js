@@ -1,11 +1,11 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import bundleSize from 'rollup-plugin-bundle-size';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json';
 
@@ -27,99 +27,80 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const nodeInput = './src/node/index.js';
+const domInput = './src/dom/index.js';
+
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-    '@babel/preset-react',
-  ],
-  plugins: [
-    '@babel/plugin-transform-runtime',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-  ],
+  babelHelpers: 'runtime',
+  presets: ['@babel/preset-react'],
 });
 
-const commonPlugins = [json(), sourceMaps(), nodeResolve(), bundleSize()];
+const getExternal = ({ browser }) => [
+  '@babel/runtime/helpers/extends',
+  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
+  '@babel/runtime/helpers/asyncToGenerator',
+  '@babel/runtime/regenerator',
+  ...(browser ? [] : ['fs', 'path', 'url']),
+  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.peerDependencies),
+];
 
-const configBase = {
-  external: [
-    '@babel/runtime/helpers/extends',
-    '@babel/runtime/helpers/asyncToGenerator',
-    '@babel/runtime/regenerator',
-    '@babel/runtime/helpers/createClass',
-    '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-    '@babel/runtime/helpers/inheritsLoose',
-    '@babel/runtime/helpers/assertThisInitialized',
-    '@react-pdf/textkit/lib/layout',
-    '@react-pdf/textkit/lib/renderers/pdf',
-    '@react-pdf/textkit/lib/attributedString',
-    '@react-pdf/textkit/lib/engines/linebreaker',
-    '@react-pdf/textkit/lib/engines/justification',
-    '@react-pdf/textkit/lib/engines/textDecoration',
-    '@react-pdf/textkit/lib/engines/scriptItemizer',
-    '@react-pdf/textkit/lib/engines/wordHyphenation',
-    '@react-pdf/textkit/lib/run/advanceWidth',
-    '@react-pdf/textkit/lib/attributedString/advanceWidth',
-  ].concat(Object.keys(pkg.dependencies), Object.keys(pkg.peerDependencies)),
-  plugins: commonPlugins,
-};
-
-const getPlugins = ({ browser }) => [
-  ...configBase.plugins,
-  babel(babelConfig({ browser })),
+const getPlugins = ({ browser, minify = false }) => [
+  json(),
+  sourceMaps(),
+  ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
+  babel(babelConfig()),
+  commonjs(),
+  nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
-    BROWSER: JSON.stringify(browser),
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser),
+    },
   }),
+  ...(minify ? [terser()] : []),
 ];
 
 const serverConfig = {
-  ...configBase,
-  input: './src/node.js',
+  input: nodeInput,
   output: [
     getESM({ file: 'lib/react-pdf.es.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.js' }),
   ],
+  external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
-  external: configBase.external.concat(['fs', 'path', 'url']),
 };
 
 const serverProdConfig = {
-  ...serverConfig,
+  input: nodeInput,
   output: [
     getESM({ file: 'lib/react-pdf.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
   ],
-  plugins: serverConfig.plugins.concat(terser()),
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false, minify: true }),
 };
 
 const browserConfig = {
-  ...configBase,
-  input: './src/dom.js',
+  input: domInput,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),
   ],
-  plugins: [...getPlugins({ browser: true }), ignore(['fs', 'path', 'url'])],
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true }),
 };
 
 const browserProdConfig = {
-  ...browserConfig,
+  input: domInput,
   output: [
     getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),
   ],
-  plugins: browserConfig.plugins.concat(terser()),
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true, minify: true }),
 };
 
 export default [

@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-import unicode from '@react-pdf/unicode-properties';
+import unicode from 'unicode-properties';
 
 import empty from '../../attributedString/empty';
 
@@ -12,7 +11,7 @@ const ignoredScripts = ['Common', 'Inherited', 'Unknown'];
  * @param  {Object}  attributed string
  * @return {Object} attributed string
  */
-const scriptItemizer = (options, attributedString) => {
+const scriptItemizer = () => attributedString => {
   const { string } = attributedString;
 
   let lastScript = 'Unknown';
@@ -55,4 +54,4 @@ const scriptItemizer = (options, attributedString) => {
   return { string, runs: res };
 };
 
-export default R.curryN(2, scriptItemizer);
+export default scriptItemizer;

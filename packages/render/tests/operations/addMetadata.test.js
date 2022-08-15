@@ -111,11 +111,4 @@ describe('operations addMetadata', () => {
 
     expect(ctx.info.Producer).toBe('test');
   });
-
-  test('should return passed node', () => {
-    const ctx = createCTX();
-    const doc = { type: P.Document };
-
-    expect(addMetadata(ctx, doc)).toBe(doc);
-  });
 });

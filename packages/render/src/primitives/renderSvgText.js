@@ -1,10 +1,7 @@
-import * as R from 'ramda';
-
-import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
-import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
+import renderGlyphs from './renderGlyphs';
 
 const renderRun = (ctx, run) => {
-  const runAdvanceWidth = runWidth(run);
+  const runAdvanceWidth = run.xAdvance;
   const { font, fontSize, color, opacity } = run.attributes;
 
   ctx.fillColor(color);
@@ -32,7 +29,7 @@ const renderRun = (ctx, run) => {
     ctx.font(typeof font.name === 'string' ? font.name : font, fontSize);
 
     try {
-      ctx._addGlyphs(run.glyphs, run.positions, 0, 0);
+      renderGlyphs(ctx, run.glyphs, run.positions, 0, 0);
     } catch (error) {
       console.log(error);
     }
@@ -44,11 +41,11 @@ const renderRun = (ctx, run) => {
 const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   ctx.save();
 
-  const x = R.pathOr(0, ['box', 'x'], line);
-  const y = R.pathOr(0, ['box', 'y'], line);
-  const font = R.pathOr(1, ['runs', 0, 'attributes', 'font'], line);
-  const scale = R.pathOr(1, ['runs', 0, 'attributes', 'scale'], line);
-  const width = lineWidth(line);
+  const x = line.box?.x || 0;
+  const y = line.box?.y || 0;
+  const font = line.runs[0]?.attributes.font;
+  const scale = line.runs[0]?.attributes?.scale || 1;
+  const width = line.xAdvance;
 
   const ascent = font.ascent * scale;
   const xHeight = font.xHeight * scale;
@@ -99,7 +96,7 @@ const renderSpan = (ctx, line, textAnchor, dominantBaseline) => {
   ctx.restore();
 };
 
-const renderSvgText = ctx => node => {
+const renderSvgText = (ctx, node) => {
   node.children.forEach(span =>
     renderSpan(
       ctx,
@@ -108,8 +105,6 @@ const renderSvgText = ctx => node => {
       span.props.dominantBaseline,
     ),
   );
-
-  return node;
 };
 
 export default renderSvgText;

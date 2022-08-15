@@ -2,16 +2,31 @@
 
 import isUrl from 'is-url';
 import fetch from 'cross-fetch';
-import fontkit from '@react-pdf/fontkit';
+import * as fontkit from 'fontkit';
+import toUint8Array from 'base64-to-uint8array';
+
+const FONT_WEIGHTS = {
+  thin: 100,
+  hairline: 100,
+  ultralight: 200,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  demibold: 600,
+  bold: 700,
+  ultrabold: 800,
+  extrabold: 800,
+  heavy: 900,
+  black: 900,
+};
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
+  const data = await response.arrayBuffer();
 
-  const buffer = await (response.buffer
-    ? response.buffer()
-    : response.arrayBuffer());
-
-  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
+  return new Uint8Array(data);
 };
 
 const isDataUrl = dataUrl => {
@@ -22,6 +37,12 @@ const isDataUrl = dataUrl => {
   return hasDataPrefix && hasBase64Prefix;
 };
 
+const resolveFontWeight = value => {
+  return typeof value === 'string' ? FONT_WEIGHTS[value] : value;
+};
+
+const sortByFontWeight = (a, b) => a.fontWeight - b.fontWeight;
+
 class FontSource {
   constructor(src, fontFamily, fontStyle, fontWeight, options) {
     this.src = src;
@@ -30,33 +51,30 @@ class FontSource {
     this.fontWeight = fontWeight || 400;
 
     this.data = null;
-    this.loading = false;
     this.options = options;
+    this.loadResultPromise = null;
   }
 
-  async load() {
-    this.loading = true;
-
+  async _load() {
     const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
-      this.data = fontkit.create(
-        Buffer.from(this.src.split(',')[1], 'base64'),
-        postscriptName,
-      );
+      const raw = this.src.split(',')[1];
+      this.data = fontkit.create(toUint8Array(raw), postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data, postscriptName);
-    } else {
-      this.data = await new Promise((resolve, reject) =>
-        fontkit.open(this.src, postscriptName, (err, data) =>
-          err ? reject(err) : resolve(data),
-        ),
-      );
+    } else if (!BROWSER) {
+      this.data = await fontkit.open(this.src, postscriptName);
     }
+  }
 
-    this.loading = false;
+  async load() {
+    if (this.loadResultPromise === null) {
+      this.loadResultPromise = this._load();
+    }
+    return this.loadResultPromise;
   }
 }
 
@@ -71,8 +89,10 @@ class Font {
   }
 
   register({ src, fontWeight, fontStyle, ...options }) {
+    const numericFontWeight = resolveFontWeight(fontWeight);
+
     this.sources.push(
-      new FontSource(src, this.family, fontStyle, fontWeight, options),
+      new FontSource(src, this.family, fontStyle, numericFontWeight, options),
     );
   }
 
@@ -97,8 +117,12 @@ class Font {
       res = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
     }
 
-    const lt = styleSources.filter(s => s.fontWeight < fontWeight);
-    const gt = styleSources.filter(s => s.fontWeight > fontWeight);
+    const lt = styleSources
+      .filter(s => s.fontWeight < fontWeight)
+      .sort(sortByFontWeight);
+    const gt = styleSources
+      .filter(s => s.fontWeight > fontWeight)
+      .sort(sortByFontWeight);
 
     if (fontWeight < 400) {
       res = lt[lt.length - 1] || gt[0];

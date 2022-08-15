@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import { compose } from '@react-pdf/fns';
 
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';
@@ -18,27 +18,29 @@ import applyDefaultStyles from './applyDefaultStyles';
  * layout behavior.
  *
  * @param  {Object}  engines
- * @param  {Object}  attributted string
+ * @param  {Object}  attributed string
  * @param  {Object}  container rect
  * @param  {Object}  layout options
  * @return {Array} paragraph blocks
  */
-const layoutEngine = (engines, attributedString, container, options = {}) => {
-  const processParagraphs = R.compose(
+const layoutEngine = engines => (attributedString, container, options = {}) => {
+  const processParagraph = compose(
     resolveYOffset(engines, options),
     resolveAttachments(engines, options),
     generateGlyphs(engines, options),
     wrapWords(engines, options),
   );
 
-  return R.compose(
+  const processParagraphs = paragraphs => paragraphs.map(processParagraph);
+
+  return compose(
     finalizeFragments(engines, options),
     typesetter(engines, options, container),
-    R.map(processParagraphs),
+    processParagraphs,
     splitParagraphs(engines, options),
     preprocessRuns(engines, options),
     applyDefaultStyles(engines, options),
   )(attributedString);
 };
 
-export default R.curryN(3, layoutEngine);
+export default layoutEngine;

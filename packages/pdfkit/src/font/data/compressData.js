@@ -1,29 +1,85 @@
-const fs = require('fs');
-const LZString = require('lz-string');
+import fs from 'fs';
+import { basename, extname } from 'path';
+import { parse } from '../afm';
 
-var decimalToHex = function(d) {
-  var hex = Number(d).toString(16);
-  var padding = 2;
+const generateJsonFiles = () => {
+  const files = fs.readdirSync(__dirname);
+  const afmFiles = files.filter(file => file.match(/.afm$/));
 
-  while (hex.length < padding) {
-    hex = `0` + hex;
+  afmFiles.forEach(file => {
+    const fontName = basename(file).replace(extname(file), '');
+    const data = fs.readFileSync(__dirname + '/' + file, 'utf8');
+    const parsed = parse(data);
+
+    fs.writeFileSync(
+      __dirname + '/' + fontName + '.json',
+      JSON.stringify(parsed)
+    );
+  });
+};
+
+// Order is designed to produce the smaller size possible
+const COMPRESS_ORDER = ['Helvetica', 'Times', 'Courier'];
+
+const readJson = file => {
+  const data = fs.readFileSync(__dirname + '/' + file, 'utf8');
+  return JSON.parse(data);
+};
+
+const sortFiles = (a, b) => {
+  const indexA = COMPRESS_ORDER.indexOf(a.attributes.FamilyName);
+  const indexB = COMPRESS_ORDER.indexOf(b.attributes.FamilyName);
+
+  return indexA - indexB;
+};
+
+const fillWithZeros = array => {
+  const res = [];
+
+  for (let i = 0; i < array.length; i++) {
+    res[i] = array[i] || 0;
   }
 
-  return hex;
+  return res;
 };
 
-var arrayToString = function(acc, value) {
-  return acc + decimalToHex(value);
-};
+const compressJsonFiles = () => {
+  const attributes = [];
+  const glyphWidths = {};
+  const kernPairs = {};
 
-fs.readdir(__dirname, function(err, files) {
-  files.forEach(function(file) {
-    if (file.match(/.afm$/)) {
-      const fontName = file.substring(0, file.length - 4);
-      const data = fs.readFileSync(__dirname + '/' + file, 'utf8');
-      const compressed = LZString.compressToBase64(data);
+  const files = fs.readdirSync(__dirname);
+  const jsonFiles = files.filter(file => file.match(/.json$/));
+  const filesContent = jsonFiles.map(readJson);
+  const sortedFiles = filesContent.sort(sortFiles);
 
-      fs.writeFileSync(__dirname + '/' + fontName + '.b64.afm', compressed);
-    }
+  sortedFiles.forEach((content, index) => {
+    attributes.push(content.attributes);
+
+    Object.keys(content.glyphWidths).forEach(key => {
+      if (!glyphWidths[key]) glyphWidths[key] = [];
+      glyphWidths[key][index] = content.glyphWidths[key];
+    });
+
+    Object.keys(content.kernPairs).forEach(key => {
+      if (!kernPairs[key]) kernPairs[key] = [];
+      kernPairs[key][index] = content.kernPairs[key];
+    });
   });
-});
+
+  // Cheaper to store nulls as 0s
+  Object.keys(glyphWidths).forEach(key => {
+    glyphWidths[key] = fillWithZeros(glyphWidths[key]);
+  });
+
+  Object.keys(kernPairs).forEach(key => {
+    kernPairs[key] = fillWithZeros(kernPairs[key]);
+  });
+
+  const parsed = { attributes, glyphWidths, kernPairs };
+
+  fs.writeFileSync(__dirname + '/index.json', JSON.stringify(parsed));
+};
+
+generateJsonFiles();
+compressJsonFiles();

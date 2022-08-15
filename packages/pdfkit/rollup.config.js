@@ -1,101 +1,122 @@
-import babel from 'rollup-plugin-babel';
-import json from 'rollup-plugin-json';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
+import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import string from 'rollup-plugin-string';
-import replace from 'rollup-plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-
+import alias from '@rollup/plugin-alias';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
+import commonjs from '@rollup/plugin-commonjs';
 import pkg from './package.json';
 
 const cjs = {
   exports: 'named',
-  format: 'cjs',
+  format: 'cjs'
 };
 
 const esm = {
-  format: 'es',
+  format: 'es'
 };
 
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const input = 'src/index.js';
+
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser
-          ? { targets: { browsers: 'last 2 versions' } }
-          : { targets: { node: '12' } }),
-      },
-    ],
-  ],
+  babelHelpers: 'runtime'
 });
 
-const configBase = {
-  input: 'src/index.js',
-  plugins: [nodeResolve(), json(), string({ include: '**/*.afm' })],
-  external: Object.keys(pkg.dependencies),
-  onwarn: (warning, rollupWarn) => {
-    if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-      rollupWarn(warning);
-    }
-  },
-};
+const getExternal = ({ browser }) => [
+  ...Object.keys(pkg.dependencies)
+    .filter(dep => 'crypto-js' !== dep)
+    .filter(
+      dep =>
+        !browser ||
+        !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
+    ),
+  /\/node_modules\/pako\//,
+  'crypto-js/md5',
+  '@babel/runtime/helpers/inheritsLoose',
+  '@babel/runtime/helpers/assertThisInitialized',
+  '@babel/runtime/helpers/createForOfIteratorHelperLoose',
+  '@babel/runtime/helpers/extends',
+  ...(browser ? [] : ['fs'])
+];
 
-const serverConfig = Object.assign({}, configBase, {
+const getPlugins = ({ browser, minify = false }) => [
+  json(),
+  ...(browser
+    ? [
+        ignore(['fs']),
+        alias({
+          entries: [
+            { find: 'stream', replacement: 'vite-compatible-readable-stream' },
+            { find: 'zlib', replacement: 'browserify-zlib' }
+          ]
+        }),
+        commonjs(),
+        nodeResolve({ browser, preferBuiltins: !browser }),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /pdfkit\/src\/.*\.js/]
+        })
+      ]
+    : [nodeResolve({ browser, preferBuiltins: !browser })]),
+  replace({
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser)
+    }
+  }),
+  babel(babelConfig()),
+  ...(minify ? [terser()] : [])
+];
+
+const serverConfig = {
+  input,
   output: [
     getESM({ file: 'lib/pdfkit.es.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.js' }),
+    getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: false })),
-    replace({
-      BROWSER: JSON.stringify(false),
-    }),
-  ),
-  external: configBase.external.concat(['fs']),
-});
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false })
+};
 
-const serverProdConfig = Object.assign({}, serverConfig, {
+const serverProdConfig = {
+  input,
   output: [
     getESM({ file: 'lib/pdfkit.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.min.js' }),
+    getCJS({ file: 'lib/pdfkit.cjs.min.js' })
   ],
-  plugins: serverConfig.plugins.concat(terser()),
-});
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false, minify: true })
+};
 
-const browserConfig = Object.assign({}, configBase, {
+const browserConfig = {
+  input,
   output: [
     getESM({ file: 'lib/pdfkit.browser.es.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
-  plugins: configBase.plugins.concat(
-    babel(babelConfig({ browser: true })),
-    replace({
-      BROWSER: JSON.stringify(true),
-    }),
-    ignore(['fs']),
-  ),
-});
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true })
+};
 
 const browserProdConfig = Object.assign({}, browserConfig, {
+  input,
   output: [
     getESM({ file: 'lib/pdfkit.browser.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' })
   ],
-  plugins: browserConfig.plugins.concat(terser()),
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true, minify: true })
 });
 
 export default [
   serverConfig,
   serverProdConfig,
   browserConfig,
-  browserProdConfig,
+  browserProdConfig
 ];

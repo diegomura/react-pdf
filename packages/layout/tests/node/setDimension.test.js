@@ -18,7 +18,7 @@ describe('node setDimension', () => {
   const mockSetMaxHeight = jest.fn();
 
   const node = {
-    _yogaNode: {
+    yogaNode: {
       setWidth: mockSetWidth,
       setWidthPercent: mockSetWidthPercent,
       setMinWidth: mockSetMinWidth,

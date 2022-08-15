@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import getOrigin from '../node/getOrigin';
 
 /**
@@ -8,11 +6,17 @@ import getOrigin from '../node/getOrigin';
  * @param {Object} node
  * @returns {Object} node with origin attribute
  */
-const resolveNodeOrigin = node =>
-  R.compose(
-    R.evolve({ children: R.map(resolveNodeOrigin) }),
-    R.converge(R.assoc('origin'), [getOrigin, R.identity]),
-  )(node);
+const resolveNodeOrigin = node => {
+  const origin = getOrigin(node);
+
+  const newNode = Object.assign({}, node, { origin });
+
+  if (!node.children) return newNode;
+
+  const children = node.children.map(resolveNodeOrigin);
+
+  return Object.assign({}, newNode, { children });
+};
 
 /**
  * Resolve document origins
@@ -20,8 +24,13 @@ const resolveNodeOrigin = node =>
  * @param {Object} document root
  * @returns {Object} documrnt root
  */
-const resolveOrigin = R.evolve({
-  children: R.map(resolveNodeOrigin),
-});
+
+const resolveOrigin = root => {
+  if (!root.children) return root;
+
+  const children = root.children.map(resolveNodeOrigin);
+
+  return Object.assign({}, root, { children });
+};
 
 export default resolveOrigin;

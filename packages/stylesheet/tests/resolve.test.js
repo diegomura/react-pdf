@@ -1,4 +1,4 @@
-import resolve from '../src/resolve';
+import resolve from '../src/index';
 
 describe('stylesheet resolve', () => {
   test('should return empty object for undefined', () => {
@@ -438,21 +438,28 @@ describe('stylesheet resolve', () => {
     });
   });
 
-  test('should transform padding auto shortcut correctly', () => {
-    const styles = resolve({}, { padding: 'auto' });
-
-    expect(styles).toEqual({
-      paddingRight: 'auto',
-      paddingLeft: 'auto',
-      paddingTop: 'auto',
-      paddingBottom: 'auto',
-    });
-  });
-
   test('should transform font weight correctly', () => {
     const styles = resolve({}, { fontWeight: 'ultrabold' });
 
     expect(styles).toEqual({ fontWeight: 800 });
+  });
+
+  test('should keep flex basis percent value', () => {
+    const styles = resolve({}, { flexBasis: '40%' });
+
+    expect(styles).toEqual({ flexBasis: '40%' });
+  });
+
+  test('should keep flex shrink percent value', () => {
+    const styles = resolve({}, { flexShrink: '40%' });
+
+    expect(styles).toEqual({ flexShrink: '40%' });
+  });
+
+  test('should keep flex grow percent value', () => {
+    const styles = resolve({}, { flexGrow: '40%' });
+
+    expect(styles).toEqual({ flexGrow: '40%' });
   });
 
   test('should resolve max-height media queries on narrow container', () => {

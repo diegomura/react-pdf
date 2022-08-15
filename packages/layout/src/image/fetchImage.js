@@ -3,15 +3,7 @@
 import resolveImage from '@react-pdf/image';
 
 import getSource from './getSource';
-
-/**
- * Resolves async src if passed
- *
- * @param {string | Function} src
- * @returns {object} resolved src
- */
-const resolveSrc = async src =>
-  typeof src === 'function' ? { uri: await src() } : src;
+import resolveSource from './resolveSource';
 
 /**
  * Fetches image and append data to node
@@ -29,10 +21,16 @@ const fetchImage = async node => {
   }
 
   try {
-    const source = await resolveSrc(src);
+    const source = await resolveSource(src);
+
+    if (!source) {
+      throw new Error(`Image's "src" or "source" prop returned ${source}`);
+    }
+
     node.image = await resolveImage(source, { cache });
+    node.image.key = source.data ? source.data.toString() : source.uri;
   } catch (e) {
-    node.image = { width: 0, height: 0 };
+    node.image = { width: 0, height: 0, key: null };
     console.warn(e.message);
   }
 };

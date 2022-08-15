@@ -1,3 +1,10 @@
+const DEFAULT_MARGINS = {
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0
+};
+
 const SIZES = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],
@@ -48,17 +55,16 @@ const SIZES = {
   FOLIO: [612.0, 936.0],
   LEGAL: [612.0, 1008.0],
   LETTER: [612.0, 792.0],
-  TABLOID: [792.0, 1224.0],
+  TABLOID: [792.0, 1224.0]
 };
 
 class PDFPage {
-  constructor(document, options) {
+  constructor(document, options = {}) {
     this.document = document;
-    if (options == null) {
-      options = {};
-    }
     this.size = options.size || 'letter';
     this.layout = options.layout || 'portrait';
+    this.userUnit = options.userUnit || 1.0;
+    this.margins = DEFAULT_MARGINS;
 
     // calculate page dimensions
     const dimensions = Array.isArray(this.size)
@@ -71,41 +77,7 @@ class PDFPage {
 
     // Initialize the Font, XObject, and ExtGState dictionaries
     this.resources = this.document.ref({
-      ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'],
-    });
-
-    // Lazily create these dictionaries
-    Object.defineProperties(this, {
-      fonts: {
-        get: () =>
-          this.resources.data.Font != null
-            ? this.resources.data.Font
-            : (this.resources.data.Font = {}),
-      },
-      xobjects: {
-        get: () =>
-          this.resources.data.XObject != null
-            ? this.resources.data.XObject
-            : (this.resources.data.XObject = {}),
-      },
-      ext_gstates: {
-        get: () =>
-          this.resources.data.ExtGState != null
-            ? this.resources.data.ExtGState
-            : (this.resources.data.ExtGState = {}),
-      },
-      patterns: {
-        get: () =>
-          this.resources.data.Pattern != null
-            ? this.resources.data.Pattern
-            : (this.resources.data.Pattern = {}),
-      },
-      annotations: {
-        get: () =>
-          this.dictionary.data.Annots != null
-            ? this.dictionary.data.Annots
-            : (this.dictionary.data.Annots = []),
-      },
+      ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI']
     });
 
     // The page dictionary
@@ -115,7 +87,46 @@ class PDFPage {
       MediaBox: [0, 0, this.width, this.height],
       Contents: this.content,
       Resources: this.resources,
+      UserUnit: this.userUnit
     });
+  }
+
+  // Lazily create these objects
+  get fonts() {
+    const data = this.resources.data;
+    return data.Font != null ? data.Font : (data.Font = {});
+  }
+
+  get xobjects() {
+    const data = this.resources.data;
+    return data.XObject != null ? data.XObject : (data.XObject = {});
+  }
+
+  get ext_gstates() {
+    const data = this.resources.data;
+    return data.ExtGState != null ? data.ExtGState : (data.ExtGState = {});
+  }
+
+  get patterns() {
+    const data = this.resources.data;
+    return data.Pattern != null ? data.Pattern : (data.Pattern = {});
+  }
+
+  get colorSpaces() {
+    const data = this.resources.data;
+    return data.ColorSpace || (data.ColorSpace = {});
+  }
+
+  get annotations() {
+    const data = this.dictionary.data;
+    return data.Annots != null ? data.Annots : (data.Annots = []);
+  }
+
+  get structParentTreeKey() {
+    const data = this.dictionary.data;
+    return data.StructParents != null
+      ? data.StructParents
+      : (data.StructParents = this.document.createStructParentTreeNextKey());
   }
 
   maxY() {

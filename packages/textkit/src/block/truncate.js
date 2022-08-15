@@ -1,7 +1,24 @@
-import * as R from 'ramda';
+import { last } from '@react-pdf/fns';
 
-import append from '../attributedString/append';
 import trim from '../attributedString/trim';
+import append from '../attributedString/append';
+
+const ELLIPSIS_UNICODE = 8230;
+const ELLIPSIS_STRING = String.fromCharCode(ELLIPSIS_UNICODE);
+
+/**
+ * Get ellipsis codepoint. This may be different in standard and embedded fonts
+ *
+ * @param  {number}  font
+ * @return {Object} ellipsis codepoint
+ */
+const getEllipsisCodePoint = font => {
+  if (!font.encode) return ELLIPSIS_UNICODE;
+
+  const [codePoints] = font.encode(ELLIPSIS_STRING);
+
+  return parseInt(codePoints[0], 16);
+};
 
 /**
  * Trucante block with ellipsis
@@ -11,14 +28,16 @@ import trim from '../attributedString/trim';
  * @return {Object} sliced paragraph block
  */
 const truncate = block => {
-  const runs = R.propOr([], 'runs', R.last(block));
-  const font = R.path(['attributes', 'font'], R.last(runs));
+  const runs = last(block)?.runs || [];
+  const font = last(runs)?.attributes?.font;
 
   if (font) {
-    return R.adjust(
-      -1,
-      R.compose(append(font.glyphForCodePoint(8230)), trim),
-    )(block);
+    const index = block.length - 1;
+    const codePoint = getEllipsisCodePoint(font);
+    const glyph = font.glyphForCodePoint(codePoint);
+    const lastBlock = append(glyph, trim(block[index]));
+
+    return Object.assign([], block, { [index]: lastBlock });
   }
 
   return block;

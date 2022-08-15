@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import { isNil } from '@react-pdf/fns';
 
 /**
  * Set aspect ratio attribute to node's Yoga instance
@@ -8,9 +8,9 @@ import * as R from 'ramda';
  * @return {Object} node instance
  */
 const setAspectRatio = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
-  if (!R.isNil(value) && yogaNode) {
+  if (!isNil(value) && yogaNode) {
     yogaNode.setAspectRatio(value);
   }
 

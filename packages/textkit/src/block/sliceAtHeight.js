@@ -5,7 +5,7 @@
  * @param  {Object}  paragraph block
  * @return {number} sliced paragraph block
  */
-const sliceAtHeight = height => block => {
+const sliceAtHeight = (height, block) => {
   const newBlock = [];
 
   let counter = 0;

@@ -1,14 +1,16 @@
-import * as R from 'ramda';
-
 import renderNode from './primitives/renderNode';
 import addMetadata from './operations/addMetadata';
-
-const renderDocument = ctx =>
-  R.compose(R.forEach(renderNode(ctx)), R.pathOr([], ['children']));
+import addBookmarks from './operations/addBookmarks';
 
 const render = (ctx, doc) => {
-  addMetadata(ctx)(doc);
-  renderDocument(ctx)(doc);
+  const pages = doc.children || [];
+  const options = { imageCache: new Map() };
+
+  addMetadata(ctx, doc);
+
+  pages.forEach(page => renderNode(ctx, page, options));
+
+  addBookmarks(ctx, doc);
 
   ctx.end();
 

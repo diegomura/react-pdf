@@ -1,4 +1,3 @@
-import BlobStream from 'blob-stream';
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
@@ -12,8 +11,8 @@ const fontStore = new FontStore();
 // We must keep a single renderer instance, otherwise React will complain
 let renderer;
 
-// The pdf instance acts as an event emmiter for DOM usage.
-// We only want to trigger an update then PDF content changes
+// The pdf instance acts as an event emitter for DOM usage.
+// We only want to trigger an update when PDF content changes
 const events = {};
 
 const pdf = initialValue => {
@@ -33,13 +32,17 @@ const pdf = initialValue => {
   if (initialValue) updateContainer(initialValue);
 
   const render = async (compress = true) => {
-    const { pdfVersion } = container.document.props || {};
+    const props = container.document.props || {};
+    const { pdfVersion, language, pageLayout, pageMode } = props;
 
     const ctx = new PDFDocument({
       compress,
-      autoFirstPage: false,
-      displayTitle: true,
       pdfVersion,
+      lang: language,
+      displayTitle: true,
+      autoFirstPage: false,
+      pageLayout,
+      pageMode,
     });
 
     const { onPdfInitialized } = container.document.props || {};
@@ -60,21 +63,25 @@ const pdf = initialValue => {
   };
 
   const toBlob = async () => {
+    const chunks = [];
     const instance = await render();
-    const stream = instance.pipe(BlobStream());
 
     return new Promise((resolve, reject) => {
-      stream.on('finish', () => {
+      instance.on('data', chunk => {
+        chunks.push(
+          chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk),
+        );
+      });
+
+      instance.on('end', () => {
         try {
-          const blob = stream.toBlob('application/pdf');
+          const blob = new Blob(chunks, { type: 'application/pdf' });
           callOnRender({ blob });
           resolve(blob);
         } catch (error) {
           reject(error);
         }
       });
-
-      stream.on('error', reject);
     });
   };
 

@@ -2,8 +2,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 
-import * as R from 'ramda';
-
 import getFactors from './getFactors';
 import getDistances from './getDistances';
 import advanceWidth from '../../attributedString/advanceWidth';
@@ -37,7 +35,7 @@ const justifyLine = (distances, line) => {
  * @param {Object} line
  * @returns {Object} line
  */
-const justification = (options, line) => {
+const justification = options => line => {
   const gap = line.box.width - advanceWidth(line);
 
   if (gap === 0) return; // Exact fit
@@ -48,4 +46,4 @@ const justification = (options, line) => {
   return justifyLine(distances, line);
 };
 
-export default R.curryN(2, justification);
+export default justification;

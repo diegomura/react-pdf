@@ -1,19 +1,9 @@
-import * as R from 'ramda';
-
-// import { getURL } from '../utils/url';
-
-const DEST_REGEXP = /^#.+/;
-
-const isSrcId = R.test(DEST_REGEXP);
-
-const getSource = node => {
-  const props = node.props || {};
-  return props.src || props.href;
-};
+const isSrcId = value => /^#.+/.test(value);
 
 const setLink = (ctx, node) => {
+  const props = node.props || {};
   const { top, left, width, height } = node.box;
-  const src = getSource(node);
+  const src = props.src || props.href;
 
   if (src) {
     const isId = isSrcId(src);
@@ -22,8 +12,6 @@ const setLink = (ctx, node) => {
 
     ctx[method](left, top, width, height, value);
   }
-
-  return node;
 };
 
-export default R.curryN(2, setLink);
+export default setLink;

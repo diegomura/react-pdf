@@ -32,22 +32,30 @@ Object {
         Object {
           "children": Array [
             Object {
-              "type": "TEXT_INSTANCE",
-            },
-            Object {
-              "type": "TEXT_INSTANCE",
-            },
-            Object {
-              "type": "TEXT_INSTANCE",
-            },
-            Object {
-              "type": "TEXT_INSTANCE",
+              "box": Object {},
+              "children": Array [
+                Object {
+                  "type": "TEXT_INSTANCE",
+                },
+                Object {
+                  "type": "TEXT_INSTANCE",
+                },
+                Object {
+                  "type": "TEXT_INSTANCE",
+                },
+                Object {
+                  "type": "TEXT_INSTANCE",
+                },
+              ],
+              "props": Object {},
+              "style": Object {},
+              "type": "TEXT",
             },
           ],
           "props": Object {
             "src": "url",
           },
-          "type": "TEXT",
+          "type": "LINK",
         },
       ],
       "type": "PAGE",
@@ -65,13 +73,21 @@ Object {
         Object {
           "children": Array [
             Object {
-              "type": "TEXT_INSTANCE",
+              "box": Object {},
+              "children": Array [
+                Object {
+                  "type": "TEXT_INSTANCE",
+                },
+              ],
+              "props": Object {},
+              "style": Object {},
+              "type": "TEXT",
             },
           ],
           "props": Object {
             "src": "url",
           },
-          "type": "TEXT",
+          "type": "LINK",
         },
       ],
       "type": "PAGE",

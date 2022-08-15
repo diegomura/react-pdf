@@ -1,71 +1,70 @@
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import replace from 'rollup-plugin-replace';
-import sourceMaps from 'rollup-plugin-sourcemaps';
-
 import pkg from './package.json';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
-const external = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-  ...Object.keys(pkg.dependencies),
-];
+const cjs = {
+  format: 'cjs',
+  exports: 'named',
+};
 
-const babelConfig = ({ browser }) => ({
-  babelrc: false,
+const esm = {
+  format: 'es',
+};
+
+const getCJS = override => Object.assign({}, cjs, override);
+const getESM = override => Object.assign({}, esm, override);
+
+const input = './src/index.js';
+
+const babelConfig = () => ({
+  babelrc: true,
   exclude: 'node_modules/**',
-  runtimeHelpers: true,
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        loose: true,
-        modules: false,
-        ...(browser ? {} : { targets: { node: '8.11.3' } }),
-      },
-    ],
-    '@babel/preset-react',
-  ],
-  plugins: [
-    '@babel/plugin-transform-runtime',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-  ],
+  babelHelpers: 'runtime',
 });
 
+const getExternal = ({ browser }) => [
+  '@babel/runtime/helpers/asyncToGenerator',
+  '@babel/runtime/regenerator',
+  ...Object.keys(pkg.dependencies),
+  ...(browser ? [] : ['fs', 'path', 'url']),
+];
+
+const getPlugins = ({ browser }) => [
+  babel(babelConfig()),
+  replace({
+    preventAssignment: true,
+    values: { BROWSER: JSON.stringify(browser) },
+  }),
+  ...(browser
+    ? [
+        ignore(['fs', 'path', 'url']),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /\/image\/src\/.*\.js/],
+        }),
+      ]
+    : []),
+];
+
 const serverConfig = {
-  input: './src/index.js',
-  output: {
-    format: 'cjs',
-    file: 'lib/index.js',
-    exports: 'named',
-    sourcemap: true,
-  },
-  external: external.concat(['fs', 'path', 'url']),
-  plugins: [
-    sourceMaps(),
-    babel(babelConfig({ browser: false })),
-    replace({ BROWSER: JSON.stringify(false) }),
+  input,
+  output: [
+    getESM({ file: 'lib/index.es.js' }),
+    getCJS({ file: 'lib/index.cjs.js' }),
   ],
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false }),
 };
 
 const browserConfig = {
-  input: './src/index.js',
-  output: {
-    format: 'cjs',
-    file: 'lib/index.browser.js',
-    exports: 'named',
-    sourcemap: true,
-  },
-  external,
-  plugins: [
-    sourceMaps(),
-    babel(babelConfig({ browser: true })),
-    replace({ BROWSER: JSON.stringify(true) }),
-    ,
-    ignore(['fs', 'path', 'url']),
+  input,
+  output: [
+    getESM({ file: 'lib/index.browser.es.js' }),
+    getCJS({ file: 'lib/index.browser.cjs.js' }),
   ],
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true }),
 };
 
 export default [serverConfig, browserConfig];

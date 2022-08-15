@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 const renderPage = (ctx, node) => {
   const { width, height } = node.box;
+  const dpi = node.props?.dpi || 72;
+  const userUnit = dpi / 72;
 
-  ctx.addPage({ size: [width, height], margin: 0 });
-
-  return node;
+  ctx.addPage({ size: [width, height], margin: 0, userUnit });
 };
 
-export default R.curryN(2, renderPage);
+export default renderPage;

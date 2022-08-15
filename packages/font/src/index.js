@@ -57,9 +57,7 @@ function FontStore() {
     const f = this.getFont(descriptor);
 
     // We cache the font to avoid fetching it many times
-    if (!f.data && !f.loading) {
-      await f.load();
-    }
+    await f.load();
   };
 
   this.reset = () => {

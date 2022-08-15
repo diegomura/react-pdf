@@ -79,4 +79,15 @@ describe('primitive renderBackground', () => {
 
     expect(ctx.fillOpacity.mock.calls).toEqual([[0]]);
   });
+
+  test('should render background color opacity 0', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 };
+    const style = { backgroundColor: 'rgba(0, 0, 0, 0)', opacity: 1 };
+    const node = { type: P.View, style, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillOpacity.mock.calls).toEqual([[0]]);
+  });
 });

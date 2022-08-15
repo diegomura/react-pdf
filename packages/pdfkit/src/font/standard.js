@@ -1,26 +1,8 @@
-import LZString from 'lz-string';
 import AFMFont from './afm';
-import Courier from './data/Courier.b64.afm';
-import CourierBold from './data/Courier-Bold.b64.afm';
-import CourierOblique from './data/Courier-Oblique.b64.afm';
-import Helvetica from './data/Helvetica.b64.afm';
-import HelveticaBold from './data/Helvetica-Bold.b64.afm';
-import HelveticaOblique from './data/Helvetica-Oblique.b64.afm';
-import TimesRoman from './data/Times-Roman.b64.afm';
-import TimesBold from './data/Times-Bold.b64.afm';
-import TimesItalic from './data/Times-Italic.b64.afm';
+import data from './data/index.json';
+import expandData from './data/expandData';
 
-const STANDARD_FONTS = {
-  Courier: LZString.decompressFromBase64(Courier),
-  'Courier-Bold': LZString.decompressFromBase64(CourierBold),
-  'Courier-Oblique': LZString.decompressFromBase64(CourierOblique),
-  Helvetica: LZString.decompressFromBase64(Helvetica),
-  'Helvetica-Bold': LZString.decompressFromBase64(HelveticaBold),
-  'Helvetica-Oblique': LZString.decompressFromBase64(HelveticaOblique),
-  'Times-Roman': LZString.decompressFromBase64(TimesRoman),
-  'Times-Bold': LZString.decompressFromBase64(TimesBold),
-  'Times-Italic': LZString.decompressFromBase64(TimesItalic),
-};
+const STANDARD_FONTS = expandData(data);
 
 const createStandardFont = PDFFont =>
   class StandardFont extends PDFFont {
@@ -30,7 +12,7 @@ const createStandardFont = PDFFont =>
       this.document = document;
       this.name = name;
       this.id = id;
-      this.font = new AFMFont(STANDARD_FONTS[this.name]);
+      this.font = AFMFont.fromJson(STANDARD_FONTS[this.name]);
       this.ascender = this.font.ascender;
       this.descender = this.font.descender;
       this.bbox = this.font.bbox;
@@ -42,7 +24,7 @@ const createStandardFont = PDFFont =>
         Type: 'Font',
         BaseFont: this.name,
         Subtype: 'Type1',
-        Encoding: 'WinAnsiEncoding',
+        Encoding: 'WinAnsiEncoding'
       };
 
       return this.dictionary.end();
@@ -61,7 +43,7 @@ const createStandardFont = PDFFont =>
           yAdvance: 0,
           xOffset: 0,
           yOffset: 0,
-          advanceWidth: this.font.widthOfGlyph(glyph),
+          advanceWidth: this.font.widthOfGlyph(glyph)
         });
       }
 

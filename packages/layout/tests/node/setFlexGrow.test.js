@@ -2,7 +2,7 @@ import setFlexGrow from '../../src/node/setFlexGrow';
 
 describe('node setFlexGrow', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setFlexGrow: mock } };
+  const node = { yogaNode: { setFlexGrow: mock } };
 
   beforeEach(() => {
     mock.mockReset();

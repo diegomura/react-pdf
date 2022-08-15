@@ -1,6 +1,4 @@
-import * as R from 'ramda';
-
-const WHITE_SPACES_CODES = [32];
+const WHITE_SPACES_CODE = 32;
 
 /**
  * Check if glyph is white space
@@ -8,11 +6,9 @@ const WHITE_SPACES_CODES = [32];
  * @param  {Object}  glyph
  * @return {Boolean}  is white space
  * */
-const isWhiteSpace = R.compose(
-  R.not,
-  R.isEmpty,
-  R.intersection(WHITE_SPACES_CODES),
-  R.propOr([], 'codePoints'),
-);
+const isWhiteSpace = glyph => {
+  const codePoints = glyph?.codePoints || [];
+  return codePoints.includes(WHITE_SPACES_CODE);
+};
 
 export default isWhiteSpace;

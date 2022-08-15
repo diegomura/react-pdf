@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`layout resolveOrigins should not resolve for node without box 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "origin": Object {},
+          "style": Object {},
+          "type": "VIEW",
+        },
+      ],
+      "origin": Object {},
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins should resolve centered origin by default 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 400,
+        "left": 100,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": Object {
+        "left": 250,
+        "top": 250,
+      },
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins should resolve origin adjusted by fixed values 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 400,
+        "left": 100,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": Object {
+        "left": 200,
+        "top": 100,
+      },
+      "style": Object {
+        "transformOriginX": 100,
+        "transformOriginY": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins should resolve origin adjusted by percent values 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 400,
+        "left": 100,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": Object {
+        "left": 160,
+        "top": 330,
+      },
+      "style": Object {
+        "transformOriginX": "20%",
+        "transformOriginY": "70%",
+      },
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins should resolve origins for nested elements 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 400,
+        "left": 100,
+        "top": 50,
+        "width": 300,
+      },
+      "children": Array [
+        Object {
+          "box": Object {
+            "height": 80,
+            "left": 10,
+            "top": 0,
+            "width": 50,
+          },
+          "origin": Object {
+            "left": 35,
+            "top": 40,
+          },
+          "style": Object {},
+          "type": "VIEW",
+        },
+      ],
+      "origin": Object {
+        "left": 250,
+        "top": 250,
+      },
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;

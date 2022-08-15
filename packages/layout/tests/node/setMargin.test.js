@@ -13,7 +13,7 @@ describe('node setMargin', () => {
   const mockPercent = jest.fn();
 
   const node = {
-    _yogaNode: {
+    yogaNode: {
       setMargin: mock,
       setMarginAuto: mockAuto,
       setMarginPercent: mockPercent,

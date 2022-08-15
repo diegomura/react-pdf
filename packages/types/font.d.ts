@@ -13,7 +13,7 @@ export type FontWeight =
   | 'heavy';
 
 export interface FontDescriptor {
-  family: string;
+  fontFamily: string;
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
 }
@@ -33,7 +33,7 @@ interface FontInstance {
   sources: FontSource[];
 }
 
-type HyphenationCallback = (
+export type HyphenationCallback = (
   words: string,
   glyphString: { [key: string]: any },
 ) => string[];

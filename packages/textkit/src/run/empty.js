@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 /**
  * Returns empty run
  *
  * @return {Object} empty run
  */
-const empty = R.always({
+const empty = () => ({
   start: 0,
   end: 0,
   glyphIndices: [],

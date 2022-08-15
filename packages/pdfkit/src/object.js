@@ -10,7 +10,7 @@ const escapable = {
   '\f': '\\f',
   '\\': '\\\\',
   '(': '\\(',
-  ')': '\\)',
+  ')': '\\)'
 };
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
@@ -36,9 +36,10 @@ class PDFObject {
     // String literals are converted to the PDF name type
     if (typeof object === 'string') {
       return `/${object}`;
+    }
 
-      // String objects are converted to PDF strings (UTF-16)
-    } else if (object instanceof String) {
+    // String objects are converted to PDF strings (UTF-16)
+    if (object instanceof String) {
       let string = object;
       // Detect if this is a unicode string
       let isUnicode = false;
@@ -51,8 +52,8 @@ class PDFObject {
 
       // If so, encode it as big endian UTF-16
       if (isUnicode) {
-        string = swapBytes(new Buffer(`\ufeff${string}`, 'utf16le')).toString(
-          'binary',
+        string = swapBytes(Buffer.from(`\ufeff${string}`, 'utf16le')).toString(
+          'binary'
         );
       }
 
@@ -62,14 +63,17 @@ class PDFObject {
       return `(${string})`;
 
       // Buffers are converted to PDF hex strings
-    } else if (Buffer.isBuffer(object)) {
+    }
+
+    if (Buffer.isBuffer(object)) {
       return `<${object.toString('hex')}>`;
-    } else if (
-      object instanceof PDFReference ||
-      object instanceof PDFNameTree
-    ) {
+    }
+
+    if (object instanceof PDFReference || object instanceof PDFNameTree) {
       return object.toString();
-    } else if (object instanceof Date) {
+    }
+
+    if (object instanceof Date) {
       return (
         `(D:${pad(object.getUTCFullYear(), 4)}` +
         pad(object.getUTCMonth() + 1, 2) +
@@ -79,12 +83,16 @@ class PDFObject {
         pad(object.getUTCSeconds(), 2) +
         'Z)'
       );
-    } else if (Array.isArray(object)) {
+    }
+
+    if (Array.isArray(object)) {
       const items = Array.from(object)
         .map(e => PDFObject.convert(e))
         .join(' ');
       return `[${items}]`;
-    } else if ({}.toString.call(object) === '[object Object]') {
+    }
+
+    if ({}.toString.call(object) === '[object Object]') {
       const out = ['<<'];
       for (let key in object) {
         const val = object[key];
@@ -93,11 +101,13 @@ class PDFObject {
 
       out.push('>>');
       return out.join('\n');
-    } else if (typeof object === 'number') {
-      return PDFObject.number(object);
-    } else {
-      return `${object}`;
     }
+
+    if (typeof object === 'number') {
+      return PDFObject.number(object);
+    }
+
+    return `${object}`;
   }
 
   static number(n) {

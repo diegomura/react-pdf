@@ -1,16 +1,21 @@
 {
   "name": "@react-pdf/yoga",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "description": "Prebuilt yoga-layout package",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "repository": "git@github.com:diegomura/react-pdf.git",
-  "main": "src/dist/entry-browser",
+  "main": "./src/dist/entry-browser.js",
+  "module": "./src/dist/entry-browser.es.js",
   "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/yoga"
+  },
   "scripts": {
     "test": "jest",
-    "build": "./build.sh",
+    "build": "./build.sh && rollup -c",
     "postbuild": "node ./postbuild.js"
   },
   "files": [

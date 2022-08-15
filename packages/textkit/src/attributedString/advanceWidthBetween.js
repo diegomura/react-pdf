@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import filterRuns from '../run/filter';
 import runAdvanceWidthBetween from '../run/advanceWidthBetween';
 
@@ -13,12 +11,12 @@ import runAdvanceWidthBetween from '../run/advanceWidthBetween';
  * @param  {Object}  attributedString
  * @return {number} advance width
  */
-const advanceWidthBetween = (start, end, string) =>
-  R.compose(
-    R.sum,
-    R.map(runAdvanceWidthBetween(start, end)),
-    filterRuns(start, end),
-    R.propOr([], 'runs'),
-  )(string);
+const advanceWidthBetween = (start, end, attributedString) => {
+  const runs = filterRuns(start, end, attributedString.runs);
+  return runs.reduce(
+    (acc, run) => acc + runAdvanceWidthBetween(start, end, run),
+    0,
+  );
+};
 
-export default R.curryN(3, advanceWidthBetween);
+export default advanceWidthBetween;

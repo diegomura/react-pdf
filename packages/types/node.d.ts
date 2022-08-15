@@ -3,12 +3,15 @@ import { Primitive } from './primitive';
 import { HyphenationCallback } from './font';
 import { PageSize, Orientation } from './page';
 import type PDFDocument from '@react-pdf/pdfkit';
+import { Bookmark } from './bookmark';
+
 
 interface BaseProps {
   id?: string;
   fixed?: boolean;
   break?: boolean;
   debug?: boolean;
+  bookmark?: Bookmark;
   minPresenceAhead?: number;
 }
 
@@ -34,11 +37,29 @@ interface PageProps extends BaseProps {
   wrap?: boolean;
   size?: PageSize;
   orientation?: Orientation;
+  dpi?: number;
 }
+
 
 interface PDFDocumentCallback {
   (ctx: InstanceType<PDFDocument>): void;
 }
+
+type PageLayout =
+  | 'singlePage'
+  | 'oneColumn'
+  | 'twoColumnLeft'
+  | 'twoColumnRight'
+  | 'twoPageLeft'
+  | 'twoPageRight';
+
+type PageMode =
+  | 'useNone'
+  | 'useOutlines'
+  | 'useThumbs'
+  | 'fullScreen'
+  | 'useOC'
+  | 'useAttachments';
 
 interface DocumentProps {
   title?: string;
@@ -48,6 +69,8 @@ interface DocumentProps {
   creator?: string;
   producer?: string;
   onPdfInitialized?: PDFDocumentCallback;
+  pageLayout?: PageLayout;
+  pageMode?: PageMode;
 }
 
 interface TextInstanceNode {

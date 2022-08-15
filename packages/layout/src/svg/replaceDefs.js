@@ -1,50 +1,51 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 
 import getDefs from './getDefs';
 
-const isDefs = R.propEq('type', P.Defs);
+const isNotDefs = node => node.type !== P.Defs;
 
-const isNotDefs = R.complement(isDefs);
+const detachDefs = node => {
+  if (!node.children) return node;
 
-const detachDefs = R.evolve({
-  children: R.filter(isNotDefs),
-});
+  const children = node.children.filter(isNotDefs);
+
+  return Object.assign({}, node, { children });
+};
 
 const URL_REGEX = /url\(['"]?#([^'"]+)['"]?\)/;
 
-const replaceDef = defs =>
-  R.compose(
-    R.when(
-      R.test(URL_REGEX),
-      R.compose(
-        R.prop(R.__, defs),
-        R.prop(1),
-        R.match(URL_REGEX),
-      ),
-    ),
-    R.defaultTo(''),
-  );
+const replaceDef = (defs, value) => {
+  if (!value) return undefined;
 
-const parseNodeDefs = defs => node =>
-  R.compose(
-    R.evolve({
-      props: R.evolve({
-        fill: replaceDef(defs),
-        clipPath: replaceDef(defs),
-      }),
-    }),
-    R.evolve({ children: R.map(parseNodeDefs(defs)) }),
-  )(node);
+  if (!URL_REGEX.test(value)) return value;
 
-const parseDefs = root => {
-  const defs = getDefs(root);
-  return R.evolve({ children: R.map(parseNodeDefs(defs)) }, root);
+  const match = value.match(URL_REGEX);
+
+  return defs[match[1]];
 };
 
-const replaceDefs = R.compose(
-  detachDefs,
-  parseDefs,
-);
+const parseNodeDefs = defs => node => {
+  const fill = replaceDef(defs, node.props?.fill);
+  const clipPath = replaceDef(defs, node.props?.clipPath);
+  const props = Object.assign({}, node.props, { fill, clipPath });
+  const children = node.children
+    ? node.children.map(parseNodeDefs(defs))
+    : undefined;
+
+  return Object.assign({}, node, { props, children });
+};
+
+const parseDefs = root => {
+  if (!root.children) return root;
+
+  const defs = getDefs(root);
+  const children = root.children.map(parseNodeDefs(defs));
+
+  return Object.assign({}, root, { children });
+};
+
+const replaceDefs = node => {
+  return detachDefs(parseDefs(node));
+};
 
 export default replaceDefs;

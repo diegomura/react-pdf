@@ -14,11 +14,11 @@ describe('run offset operator', () => {
       ],
     };
 
-    expect(offset(0)(run)).toBe(0);
-    expect(offset(1)(run)).toBe(0);
-    expect(offset(2)(run)).toBe(0);
-    expect(offset(3)(run)).toBe(0);
-    expect(offset(4)(run)).toBe(0);
+    expect(offset(0, run)).toBe(0);
+    expect(offset(1, run)).toBe(0);
+    expect(offset(2, run)).toBe(0);
+    expect(offset(3, run)).toBe(0);
+    expect(offset(4, run)).toBe(0);
   });
 
   test('should return always 0 for run without ligatures', () => {
@@ -35,11 +35,11 @@ describe('run offset operator', () => {
       glyphIndices: [0, 1, 2, 3, 4],
     };
 
-    expect(offset(0)(run)).toBe(0);
-    expect(offset(1)(run)).toBe(0);
-    expect(offset(2)(run)).toBe(0);
-    expect(offset(3)(run)).toBe(0);
-    expect(offset(4)(run)).toBe(0);
+    expect(offset(0, run)).toBe(0);
+    expect(offset(1, run)).toBe(0);
+    expect(offset(2, run)).toBe(0);
+    expect(offset(3, run)).toBe(0);
+    expect(offset(4, run)).toBe(0);
   });
 
   test('should correctly return offset for run with ligature', () => {
@@ -55,11 +55,11 @@ describe('run offset operator', () => {
       glyphIndices: [0, 1, 2, 2, 3],
     };
 
-    expect(offset(0)(run)).toBe(0);
-    expect(offset(1)(run)).toBe(0);
-    expect(offset(2)(run)).toBe(0);
-    expect(offset(3)(run)).toBe(1);
-    expect(offset(4)(run)).toBe(0);
+    expect(offset(0, run)).toBe(0);
+    expect(offset(1, run)).toBe(0);
+    expect(offset(2, run)).toBe(0);
+    expect(offset(3, run)).toBe(1);
+    expect(offset(4, run)).toBe(0);
   });
 
   test('should correctly return offset for run with long ligature', () => {
@@ -74,10 +74,10 @@ describe('run offset operator', () => {
       glyphIndices: [0, 1, 1, 1, 2],
     };
 
-    expect(offset(0)(run)).toBe(0);
-    expect(offset(1)(run)).toBe(0);
-    expect(offset(2)(run)).toBe(1);
-    expect(offset(3)(run)).toBe(2);
-    expect(offset(4)(run)).toBe(0);
+    expect(offset(0, run)).toBe(0);
+    expect(offset(1, run)).toBe(0);
+    expect(offset(2, run)).toBe(1);
+    expect(offset(3, run)).toBe(2);
+    expect(offset(4, run)).toBe(0);
   });
 });

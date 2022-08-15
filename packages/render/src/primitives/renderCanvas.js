@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 const availableMethods = [
   'dash',
   'clip',
@@ -52,15 +50,13 @@ const painter = ctx => {
   return p;
 };
 
-const defaultsZero = R.propOr(0);
-
 const renderCanvas = (ctx, node) => {
   const { top, left, width, height } = node.box;
 
-  const paddingTop = defaultsZero('paddingTop', node.box);
-  const paddingLeft = defaultsZero('paddingLeft', node.box);
-  const paddingRight = defaultsZero('paddingRight', node.box);
-  const paddingBottom = defaultsZero('paddingBottom', node.box);
+  const paddingTop = node.box.paddingTop || 0;
+  const paddingLeft = node.box.paddingLeft || 0;
+  const paddingRight = node.box.paddingRight || 0;
+  const paddingBottom = node.box.paddingBottom || 0;
 
   const availableWidth = width - paddingLeft - paddingRight;
   const availableHeight = height - paddingTop - paddingBottom;
@@ -78,8 +74,6 @@ const renderCanvas = (ctx, node) => {
   }
 
   ctx.restore();
-
-  return node;
 };
 
-export default R.curryN(2, renderCanvas);
+export default renderCanvas;

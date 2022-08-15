@@ -34,8 +34,8 @@ class PDFReference extends stream.Writable {
   }
 
   _write(chunk, encoding, callback) {
-    if (!Buffer.isBuffer(chunk)) {
-      chunk = new Buffer(chunk + '\n', 'binary');
+    if (!(chunk instanceof Uint8Array)) {
+      chunk = Buffer.from(chunk + '\n', 'binary');
     }
 
     this.uncompressedLength += chunk.length;
@@ -56,14 +56,14 @@ class PDFReference extends stream.Writable {
     return callback();
   }
 
-  end(chunk) {
+  end() {
     super.end(...arguments);
 
     if (this.deflate) {
       return this.deflate.end();
-    } else {
-      return this.finalize();
     }
+
+    return this.finalize();
   }
 
   finalize() {

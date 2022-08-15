@@ -1,34 +1,30 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
-import AttributedString from '@react-pdf/textkit/lib/attributedString';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
+import fromFragments from './fromFragments';
 import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const isType = R.propEq('type');
+const isImage = node => node.type === P.Image;
 
-const isImage = isType(P.Image);
-
-const isTextInstance = isType(P.TextInstance);
+const isTextInstance = node => node.type === P.TextInstance;
 
 /**
- * Get textkit framgents of given node object
+ * Get textkit fragments of given node object
  *
  * @param {Object} font store
  * @param {Object} instance node
  * @returns {Array} text fragments
  */
-const getFragments = (fontStore, instance) => {
+const getFragments = (fontStore, instance, parentLink, level = 0) => {
   if (!instance) return [{ string: '' }];
 
   let fragments = [];
 
   const {
     color = 'black',
-    backgroundColor,
     fontFamily = 'Helvetica',
     fontWeight,
     fontStyle,
@@ -48,6 +44,9 @@ const getFragments = (fontStore, instance) => {
   const obj = fontStore ? fontStore.getFont(opts) : null;
   const font = obj ? obj.data : fontFamily;
 
+  // Don't pass main background color to textkit. Will be rendered by the render package instead
+  const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
+
   const attributes = {
     font,
     color,
@@ -59,11 +58,17 @@ const getFragments = (fontStore, instance) => {
     characterSpacing: letterSpacing,
     strikeStyle: textDecorationStyle,
     underlineStyle: textDecorationStyle,
-    underline: textDecoration === 'underline',
-    strike: textDecoration === 'line-through',
+    underline:
+      textDecoration === 'underline' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
+    strike:
+      textDecoration === 'line-through' ||
+      textDecoration === 'underline line-through' ||
+      textDecoration === 'line-through underline',
     strikeColor: textDecorationColor || color,
     underlineColor: textDecorationColor || color,
-    link: instance.props?.src || instance.props?.href,
+    link: parentLink || instance.props?.src || instance.props?.href,
     lineHeight: lineHeight ? lineHeight * fontSize : null,
   };
 
@@ -88,7 +93,9 @@ const getFragments = (fontStore, instance) => {
         attributes,
       });
     } else if (child) {
-      fragments.push(...getFragments(fontStore, child));
+      fragments.push(
+        ...getFragments(fontStore, child, attributes.link, level + 1),
+      );
     }
   }
 
@@ -109,7 +116,7 @@ const getFragments = (fontStore, instance) => {
  */
 const getAttributedString = (fontStore, instance) => {
   const fragments = getFragments(fontStore, instance);
-  return AttributedString.fromFragments(fragments);
+  return fromFragments(fragments);
 };
 
-export default R.curryN(2, getAttributedString);
+export default getAttributedString;

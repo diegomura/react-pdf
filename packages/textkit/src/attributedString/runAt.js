@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import runIndexAt from './runIndexAt';
 
 /**
@@ -10,8 +8,8 @@ import runIndexAt from './runIndexAt';
  * @return {Object} run
  */
 const runAt = (n, attributedString) => {
-  const runIndex = runIndexAt(n)(attributedString);
-  return R.path(['runs', runIndex])(attributedString);
+  const runIndex = runIndexAt(n, attributedString);
+  return attributedString.runs[runIndex];
 };
 
-export default R.curryN(2, runAt);
+export default runAt;

@@ -28,7 +28,7 @@ const WIN_ANSI_MAP = {
   353: 154,
   376: 159,
   381: 142,
-  382: 158,
+  382: 158
 };
 
 const characters = `\
@@ -105,6 +105,61 @@ oslash        ugrave         uacute         ucircumflex
 udieresis     yacute         thorn          ydieresis\
 `.split(/\s+/);
 
+function parse(contents) {
+  const obj = {
+    attributes: {},
+    glyphWidths: {},
+    kernPairs: {}
+  };
+
+  let section = '';
+  for (let line of contents.split('\n')) {
+    var match;
+    var a;
+    if ((match = line.match(/^Start(\w+)/))) {
+      section = match[1];
+      continue;
+    } else if ((match = line.match(/^End(\w+)/))) {
+      section = '';
+      continue;
+    }
+
+    switch (section) {
+      case 'FontMetrics':
+        match = line.match(/(^\w+)\s+(.*)/);
+        var key = match[1];
+        var value = match[2];
+
+        if ((a = obj.attributes[key])) {
+          if (!Array.isArray(a)) {
+            a = obj.attributes[key] = [a];
+          }
+          a.push(value);
+        } else {
+          obj.attributes[key] = value;
+        }
+        break;
+
+      case 'CharMetrics':
+        if (!/^CH?\s/.test(line)) {
+          continue;
+        }
+        var name = line.match(/\bN\s+(\.?\w+)\s*;/)[1];
+        obj.glyphWidths[name] = +line.match(/\bWX\s+(\d+)\s*;/)[1];
+        break;
+
+      case 'KernPairs':
+        match = line.match(/^KPX\s+(\.?\w+)\s+(\.?\w+)\s+(-?\d+)/);
+        if (match) {
+          obj.kernPairs[match[1] + match[2]] = parseInt(match[3]);
+        }
+        break;
+    }
+  }
+
+  return obj;
+}
+
 class AFMFont {
   static open(filename) {
     if (BROWSER) {
@@ -113,73 +168,38 @@ class AFMFont {
     return new AFMFont(fs.readFileSync(filename, 'utf8'));
   }
 
-  constructor(contents) {
-    this.contents = contents;
-    this.attributes = {};
-    this.glyphWidths = {};
-    this.boundingBoxes = {};
-    this.kernPairs = {};
+  static fromJson(json) {
+    return new AFMFont(json);
+  }
 
-    this.parse();
+  constructor(contents) {
+    if (typeof contents === 'string') {
+      this.contents = contents;
+      this.parse();
+    } else {
+      this.attributes = contents.attributes;
+      this.glyphWidths = contents.glyphWidths;
+      this.kernPairs = contents.kernPairs;
+    }
+
     this.charWidths = range(0, 255, true).map(
-      i => this.glyphWidths[characters[i]],
+      i => this.glyphWidths[characters[i]]
     );
-    this.bbox = Array.from(this.attributes['FontBBox'].split(/\s+/)).map(
-      e => +e,
-    );
-    this.ascender = +(this.attributes['Ascender'] || 0);
-    this.descender = +(this.attributes['Descender'] || 0);
-    this.xHeight = +(this.attributes['XHeight'] || 0);
-    this.capHeight = +(this.attributes['CapHeight'] || 0);
+    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(e => +e);
+    this.ascender = +(this.attributes.Ascender || 0);
+    this.descender = +(this.attributes.Descender || 0);
+    this.xHeight = +(this.attributes.XHeight || 0);
+    this.capHeight = +(this.attributes.CapHeight || 0);
     this.lineGap =
       this.bbox[3] - this.bbox[1] - (this.ascender - this.descender);
   }
 
   parse() {
-    let section = '';
-    for (let line of Array.from(this.contents.split('\n'))) {
-      var match;
-      var a;
-      if ((match = line.match(/^Start(\w+)/))) {
-        section = match[1];
-        continue;
-      } else if ((match = line.match(/^End(\w+)/))) {
-        section = '';
-        continue;
-      }
+    const parsed = parse(this.contents);
 
-      switch (section) {
-        case 'FontMetrics':
-          match = line.match(/(^\w+)\s+(.*)/);
-          var key = match[1];
-          var value = match[2];
-
-          if ((a = this.attributes[key])) {
-            if (!Array.isArray(a)) {
-              a = this.attributes[key] = [a];
-            }
-            a.push(value);
-          } else {
-            this.attributes[key] = value;
-          }
-          break;
-
-        case 'CharMetrics':
-          if (!/^CH?\s/.test(line)) {
-            continue;
-          }
-          var name = line.match(/\bN\s+(\.?\w+)\s*;/)[1];
-          this.glyphWidths[name] = +line.match(/\bWX\s+(\d+)\s*;/)[1];
-          break;
-
-        case 'KernPairs':
-          match = line.match(/^KPX\s+(\.?\w+)\s+(\.?\w+)\s+(-?\d+)/);
-          if (match) {
-            this.kernPairs[match[1] + '\0' + match[2]] = parseInt(match[3]);
-          }
-          break;
-      }
-    }
+    this.attributes = parsed.attributes;
+    this.glyphWidths = parsed.glyphWidths;
+    this.kernPairs = parsed.kernPairs;
   }
 
   encodeText(text) {
@@ -221,7 +241,7 @@ class AFMFont {
   }
 
   getKernPair(left, right) {
-    return this.kernPairs[left + '\0' + right] || 0;
+    return this.kernPairs[left + right] || 0;
   }
 
   advancesForGlyphs(glyphs) {
@@ -237,4 +257,5 @@ class AFMFont {
   }
 }
 
+export { parse };
 export default AFMFont;

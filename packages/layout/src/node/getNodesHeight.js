@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Get many nodes height
  *
@@ -10,7 +8,7 @@ const getNodesHeight = nodes => {
   let max = 0;
   let min = Infinity;
 
-  if (R.isEmpty(nodes)) return 0;
+  if (!nodes || nodes.length === 0) return 0;
 
   for (let i = 0; i < nodes.length; i += 1) {
     const node = nodes[i];

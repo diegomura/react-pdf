@@ -8,8 +8,12 @@ class StandardFont {
     this.src = PDFFont.open(null, src);
   }
 
+  encode(str) {
+    return this.src.encode(str);
+  }
+
   layout(str) {
-    const [encoded, positions] = this.src.encode(str);
+    const [encoded, positions] = this.encode(str);
 
     return {
       positions,
@@ -53,10 +57,12 @@ class StandardFont {
       case 'Times-Roman':
       case 'Times-Bold':
       case 'Times-Italic':
+      case 'Times-BoldItalic':
         return 650;
       case 'Courier':
       case 'Courier-Bold':
       case 'Courier-Oblique':
+      case 'Courier-BoldOblique':
         return 550;
       default:
         return 690;
@@ -69,10 +75,12 @@ class StandardFont {
       case 'Times-Roman':
       case 'Times-Bold':
       case 'Times-Italic':
+      case 'Times-BoldItalic':
         return 440;
       case 'Courier':
       case 'Courier-Bold':
       case 'Courier-Oblique':
+      case 'Courier-BoldOblique':
         return 390;
       default:
         return 490;
@@ -85,10 +93,12 @@ class StandardFont {
       case 'Times-Roman':
       case 'Times-Bold':
       case 'Times-Italic':
+      case 'Times-BoldItalic':
         return -220;
       case 'Courier':
       case 'Courier-Bold':
       case 'Courier-Oblique':
+      case 'Courier-BoldOblique':
         return -230;
       default:
         return -200;

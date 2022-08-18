@@ -239,6 +239,7 @@ declare namespace ReactPDF {
     height?: string | number;
     viewBox?: string;
     preserveAspectRatio?: string;
+    children?: React.ReactNode;
   }
 
   /**
@@ -342,7 +343,9 @@ declare namespace ReactPDF {
    */
   class Tspan extends React.Component<TspanProps> {}
 
-  interface GProps extends SVGPresentationAttributes {}
+  interface GProps extends SVGPresentationAttributes {
+    children?: React.ReactNode;
+  }
 
   /**
    * The <G /> SVG element is a container used to group other SVG elements.

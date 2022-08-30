@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/image",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.4",
-    "@react-pdf/png-js": "^2.1.0",
+    "@react-pdf/png-js": "^2.2.0",
     "cross-fetch": "^3.1.5"
   },
   "devDependencies": {

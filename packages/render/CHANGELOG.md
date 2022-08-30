@@ -1,5 +1,13 @@
 # @react-pdf/render
 
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6)]:
+  - @react-pdf/fns@2.0.0
+  - @react-pdf/textkit@4.1.0
+
 ## 3.2.0
 
 ### Minor Changes

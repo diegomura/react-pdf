@@ -1,5 +1,19 @@
 # @react-pdf/font
 
+## 2.3.0
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1908](https://github.com/diegomura/react-pdf/pull/1908) [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d) Thanks [@diegomura](https://github.com/diegomura)! - chore: use fontkit mainline repo + drop node 12
+
+* [#1927](https://github.com/diegomura/react-pdf/pull/1927) [`27403f9`](https://github.com/diegomura/react-pdf/commit/27403f9a6ac1bbcfb144afc201c4a3e5aca25cbd) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove Buffer dependency from font package
+
+- [#1934](https://github.com/diegomura/react-pdf/pull/1934) [`1a89506`](https://github.com/diegomura/react-pdf/commit/1a89506b4d325822d1a60a8f964434a6f6eb2d3f) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - fix: ability to load fonts by relative URL in browsers
+
 ## 2.2.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @react-pdf/textkit
 
+## 4.1.0
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1917](https://github.com/diegomura/react-pdf/pull/1917) [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - fix: console error when text overflows the last available rect
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81)]:
+  - @react-pdf/fns@2.0.0
+
 ## 4.0.0
 
 ### Major Changes

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/yoga",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "description": "Prebuilt yoga-layout package",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

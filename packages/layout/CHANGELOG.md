@@ -1,5 +1,23 @@
 # @react-pdf/layout
 
+## 3.2.0
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1911](https://github.com/diegomura/react-pdf/pull/1911) [`5fe9754`](https://github.com/diegomura/react-pdf/commit/5fe9754f21f103e17d1b70498ee7961cde779b22) Thanks [@diegomura](https://github.com/diegomura)! - refactor: yoga node prop name
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6), [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5), [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d), [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993)]:
+  - @react-pdf/fns@2.0.0
+  - @react-pdf/pdfkit@3.0.0
+  - @react-pdf/stylesheet@4.0.0
+  - @react-pdf/yoga@3.0.0
+  - @react-pdf/image@2.2.0
+  - @react-pdf/textkit@4.1.0
+
 ## 3.1.2
 
 ### Patch Changes

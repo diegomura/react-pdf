@@ -22,10 +22,10 @@ const parseCommonFormOptions = node => {
     }
 }
 
-const parseTextFieldOptions = node => {
+const parseTextFieldOptions = (node, formField) => {
     return clean({
         ...parseCommonFormOptions(node),
-        parent        : node.formField                || undefined,
+        parent        : formField                     || undefined,
         align         : node.props?.align             || 'left',
         multiline     : node.props?.multiline         || undefined,
         password      : node.props?.password          || false ,

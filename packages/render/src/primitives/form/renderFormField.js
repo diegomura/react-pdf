@@ -6,7 +6,7 @@ const renderFormField = (ctx, node, options) => {
     const formField = ctx.formField(name);
 
     const children = node.children || [];
-    children.forEach((child) => renderNode(ctx, {...child, formField}, options))
+    children.forEach((child) => renderNode(ctx, child, {...options, formField}))
 };
 
 export default renderFormField;

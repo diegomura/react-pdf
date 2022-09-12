@@ -1,7 +1,7 @@
 import {parseComboAndListFieldOptions} from '../../utils/parseFormOptions';
 
 const renderFormCombo = (ctx, node) => {
-    const { top, left, width, height } = node.box;
+    const { top, left, width, height } = node.box || {};
 
     // Element's name
     const name = node.props?.name || '';

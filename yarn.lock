@@ -3268,11 +3268,6 @@ base64-js@^1.1.2, base64-js@^1.3.0, base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-base64-to-uint8array@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/base64-to-uint8array/-/base64-to-uint8array-1.0.0.tgz#725f9e9886331b43785cadd807e76803d5494e05"
-  integrity sha512-drjWQcees55+XQSVHYxiUF05Fj6ko3XJUoxykZEXbm0BMmNz2ieWiZGJ+6TFWnjN2saucG6pI13LS92O4kaiAg==
-
 base@^0.11.1:
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/base/-/base-0.11.2.tgz#7bde5ced145b6d551a90db87f83c558b4eb48a8f"

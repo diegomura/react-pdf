@@ -21,7 +21,7 @@ export const PDFViewer = ({
   const src = instance.url
     ? `${instance.url}#toolbar=${showToolbar ? 1 : 0}`
     : null;
-
+  if (!instance.url) return 'Loading...';
   return (
     <iframe
       src={src}

@@ -260,6 +260,11 @@ const resolvePagination = (doc, fontStore) => {
 
   for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
+    if (!page.props?.wrap) {
+      pages.push(page);
+      continue;
+    }
+
     let subpages = paginate(page, pageNumber, fontStore);
 
     subpages = assocSubPageData(subpages);

@@ -9,32 +9,30 @@ const isFragment = value =>
   value && value.type === Symbol.for('react.fragment');
 
 /**
- * Transforms a react element instance to internal element format
+ * Transforms a react element instance to internal element format.
+ *
+ * Can return multiple instances in the case of arrays or fragments.
  *
  * @param {Object} React element
- * @returns {Object} parsed react element
+ * @returns {Array} parsed react elements
  */
-const createInstance = element => {
+const createInstances = element => {
   if (!element) return [];
 
   if (isString(element) || isNumber(element)) {
     return [{ type: TextInstance, value: `${element}` }];
   }
 
-  if (Array.isArray(element)) {
-    return element.reduce((acc, el) => acc.concat(createInstance(el)), []);
+  if (isFragment(element)) {
+    return createInstances(element.props.children);
   }
 
-  if (isFragment(element)) {
-    const children = element.children || [];
-    return children.reduce(
-      (acc, child) => acc.concat(createInstance(child)),
-      [],
-    );
+  if (Array.isArray(element)) {
+    return element.reduce((acc, el) => acc.concat(createInstances(el)), []);
   }
 
   if (!isString(element.type)) {
-    return createInstance(element.type(element.props));
+    return createInstances(element.type(element.props));
   }
 
   const {
@@ -43,7 +41,7 @@ const createInstance = element => {
   } = element;
 
   const nextChildren = castArray(children).reduce(
-    (acc, child) => acc.concat(createInstance(child)),
+    (acc, child) => acc.concat(createInstances(child)),
     [],
   );
 
@@ -58,4 +56,4 @@ const createInstance = element => {
   ];
 };
 
-export default createInstance;
+export default createInstances;

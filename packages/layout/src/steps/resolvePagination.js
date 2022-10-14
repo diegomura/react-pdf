@@ -142,7 +142,9 @@ const resolveDynamicNodes = (props, node) => {
   const resolveChildren = (children = []) => {
     if (isNodeDynamic) {
       const res = node.props.render(props);
-      return [createInstance(res)].filter(Boolean);
+      return createInstance(res)
+        .filter(Boolean)
+        .map(n => resolveDynamicNodes(props, n));
     }
 
     return children.map(c => resolveDynamicNodes(props, c));

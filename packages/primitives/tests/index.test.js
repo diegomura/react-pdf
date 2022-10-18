@@ -92,4 +92,8 @@ describe('primitives', () => {
   test('should export text radial gradient', () => {
     expect(primitives.RadialGradient).toBeTruthy();
   });
+
+  test('should export document provider', () => {
+    expect(primitives.DocProvider).toBeTruthy();
+  });
 });

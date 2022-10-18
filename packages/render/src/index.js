@@ -18,3 +18,4 @@ const render = (ctx, doc) => {
 };
 
 export default render;
+export { renderNode };

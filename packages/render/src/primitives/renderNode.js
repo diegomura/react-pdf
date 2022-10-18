@@ -3,6 +3,7 @@ import renderSvg from './renderSvg';
 import renderText from './renderText';
 import renderPage from './renderPage';
 import renderNote from './renderNote';
+import renderDocProvider from './renderDocProvider';
 import renderImage from './renderImage';
 import renderDebug from './renderDebug';
 import renderCanvas from './renderCanvas';
@@ -13,7 +14,7 @@ import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 
-const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg;
+const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg && node.type !== P.DocProvider;
 
 const renderChildren = (ctx, node, options) => {
   ctx.save();
@@ -36,6 +37,7 @@ const renderFns = {
   [P.Image]: renderImage,
   [P.Canvas]: renderCanvas,
   [P.Svg]: renderSvg,
+  [P.DocProvider]: renderDocProvider,
   [P.Link]: setLink,
 };
 

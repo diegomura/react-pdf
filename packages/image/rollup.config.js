@@ -50,7 +50,7 @@ const getPlugins = ({ browser }) => [
 const serverConfig = {
   input,
   output: [
-    getESM({ file: 'lib/index.es.js' }),
+    getESM({ file: 'lib/index.mjs' }),
     getCJS({ file: 'lib/index.cjs.js' }),
   ],
   external: getExternal({ browser: false }),
@@ -60,7 +60,7 @@ const serverConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/index.browser.es.js' }),
+    getESM({ file: 'lib/index.browser.mjs' }),
     getCJS({ file: 'lib/index.browser.cjs.js' }),
   ],
   external: getExternal({ browser: true }),

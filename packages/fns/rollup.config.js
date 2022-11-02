@@ -28,7 +28,7 @@ const getPlugins = () => [
 const config = {
   input,
   output: [
-    getESM({ file: 'lib/index.es.js' }),
+    getESM({ file: 'lib/index.mjs' }),
     getCJS({ file: 'lib/index.cjs.js' }),
   ],
   external: getExternal(),

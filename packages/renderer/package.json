@@ -7,15 +7,21 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "./lib/react-pdf.cjs.js",
-  "module": "./lib/react-pdf.es.js",
+  "module": "./lib/react-pdf.mjs",
+  "exports": {
+    ".": {
+      "require": "./lib/react-pdf.cjs.js",
+      "import": "./lib/react-pdf.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/renderer"
   },
   "browser": {
-    "./lib/react-pdf.es.js": "./lib/react-pdf.browser.es.js",
-    "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js"
+    "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js",
+    "./lib/react-pdf.mjs": "./lib/react-pdf.browser.mjs"
   },
   "scripts": {
     "build": "rimraf ./lib && rollup -c",

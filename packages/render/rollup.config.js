@@ -33,7 +33,7 @@ const configBase = {
 
 const config = Object.assign({}, configBase, {
   output: [
-    getESM({ file: 'lib/index.es.js' }),
+    getESM({ file: 'lib/index.mjs' }),
     getCJS({ file: 'lib/index.cjs.js' }),
   ],
 });

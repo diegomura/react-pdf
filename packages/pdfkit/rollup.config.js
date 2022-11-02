@@ -77,7 +77,7 @@ const getPlugins = ({ browser, minify = false }) => [
 const serverConfig = {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.es.js' }),
+    getESM({ file: 'lib/pdfkit.mjs' }),
     getCJS({ file: 'lib/pdfkit.cjs.js' })
   ],
   external: getExternal({ browser: false }),
@@ -97,7 +97,7 @@ const serverProdConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.browser.es.js' }),
+    getESM({ file: 'lib/pdfkit.browser.mjs' }),
     getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
   ],
   external: getExternal({ browser: true }),

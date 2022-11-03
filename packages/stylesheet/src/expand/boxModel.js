@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
-import parse from 'postcss-value-parser/lib/parse';
-import parseUnit from 'postcss-value-parser/lib/unit';
+import ValueParser from 'postcss-value-parser';
 
 const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
@@ -19,7 +18,7 @@ const expandBoxModel = ({
   maxValues = 1,
   autoSupported = false,
 } = {}) => (model, value) => {
-  const nodes = parse(`${value}`);
+  const { nodes } = ValueParser(`${value}`);
 
   const parts = [];
 
@@ -42,7 +41,7 @@ const expandBoxModel = ({
       if (node.value === 'auto' && autoSupported) {
         parts.push(node.value);
       } else {
-        const result = parseUnit(node.value);
+        const result = ValueParser.parseUnit(node.value);
 
         // when unit isn't specified this condition is true
         if (result && BOX_MODEL_UNITS.includes(result.unit)) {

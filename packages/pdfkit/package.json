@@ -38,8 +38,8 @@
     "@babel/runtime": "^7.16.4",
     "@react-pdf/png-js": "^2.2.0",
     "browserify-zlib": "^0.2.0",
-    "crypto-js": "^4.0.0",
     "fontkit": "^2.0.2",
+    "md5": "^2.3.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },
   "devDependencies": {

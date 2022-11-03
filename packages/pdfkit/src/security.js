@@ -5,19 +5,7 @@
    By Yang Liu <hi@zesik.com>
  */
 
-import MD5 from 'crypto-js/md5';
-
-const wordArrayToBuffer = wordArray => {
-  const byteArray = [];
-
-  for (let i = 0; i < wordArray.sigBytes; i++) {
-    byteArray.push(
-      (wordArray.words[Math.floor(i / 4)] >> (8 * (3 - (i % 4)))) & 0xff
-    );
-  }
-
-  return Buffer.from(byteArray);
-};
+import MD5 from 'md5';
 
 class PDFSecurity {
   static generateFileID(info = {}) {
@@ -28,7 +16,7 @@ class PDFSecurity {
       infoStr += `${key}: ${info[key].valueOf()}\n`;
     }
 
-    return wordArrayToBuffer(MD5(infoStr));
+    return Buffer.from(MD5(infoStr));
   }
 }
 

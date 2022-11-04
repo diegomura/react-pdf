@@ -5,18 +5,17 @@ import React, { useEffect } from 'react';
 import usePDF from './usePDF';
 
 export const PDFDownloadLink = ({
-  style,
-  children,
-  className,
-  document: doc,
   fileName = 'document.pdf',
+  document,
+  children,
   onClick,
+  href: _filteredOutHref,
+  ...rest
 }) => {
-  const [instance, updateInstance] = usePDF({ document: doc });
-
+  const [instance, updateInstance] = usePDF({ document });
   useEffect(updateInstance, [children]);
 
-  if (!doc) {
+  if (!document) {
     console.warn('You should pass a valid document to PDFDownloadLink');
     return null;
   }
@@ -35,11 +34,10 @@ export const PDFDownloadLink = ({
 
   return (
     <a
-      style={style}
       href={instance.url}
       download={fileName}
-      className={className}
       onClick={handleClick}
+      {...rest}
     >
       {typeof children === 'function' ? children(instance) : children}
     </a>

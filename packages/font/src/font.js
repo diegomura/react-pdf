@@ -3,7 +3,6 @@
 import isUrl from 'is-url';
 import fetch from 'cross-fetch';
 import * as fontkit from 'fontkit';
-import toUint8Array from 'base64-to-uint8array';
 
 const FONT_WEIGHTS = {
   thin: 100,
@@ -60,7 +59,12 @@ class FontSource {
 
     if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
-      this.data = fontkit.create(toUint8Array(raw), postscriptName);
+      const uint8Array = new Uint8Array(
+        atob(raw)
+          .split('')
+          .map(c => c.charCodeAt(0)),
+      );
+      this.data = fontkit.create(uint8Array, postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });

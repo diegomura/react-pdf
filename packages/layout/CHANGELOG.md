@@ -1,5 +1,13 @@
 # @react-pdf/layout
 
+## 3.2.1
+
+### Patch Changes
+
+- [#2056](https://github.com/diegomura/react-pdf/pull/2056) [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39) Thanks [@jasnross](https://github.com/jasnross)! - fix: TypeError when returning fragments or arrays from render prop
+
+* [#2034](https://github.com/diegomura/react-pdf/pull/2034) [`992b91b`](https://github.com/diegomura/react-pdf/commit/992b91b3866e8e24efa014eef4d3eeec6a40f9a5) Thanks [@imatwork](https://github.com/imatwork)! - fix: page wrap=false not preventing page from breaking
+
 ## 3.2.0
 
 ### Minor Changes

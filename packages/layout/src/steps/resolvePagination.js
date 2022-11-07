@@ -233,6 +233,8 @@ const dissocSubPageData = page => {
 const paginate = (page, pageNumber, fontStore) => {
   if (!page) return [];
 
+  if (page.props?.wrap === false) return [page];
+
   let splittedPage = splitPage(page, pageNumber, fontStore);
 
   const pages = [splittedPage[0]];

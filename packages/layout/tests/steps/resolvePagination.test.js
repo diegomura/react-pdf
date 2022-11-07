@@ -137,4 +137,36 @@ describe('pagination step', () => {
     expect(view2.box.height).toBe(60);
     expect(view3.box.height).toBe(10);
   });
+
+  test('should not wrap page with false wrap prop', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: {},
+          style: {
+            width: 5,
+            height: 60,
+          },
+          props: {
+            wrap: false,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              box: {},
+              style: { height: 130 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    };
+
+    const layout = calcLayout(root);
+
+    expect(layout.children.length).toBe(1);
+  });
 });

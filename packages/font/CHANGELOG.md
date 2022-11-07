@@ -1,5 +1,11 @@
 # @react-pdf/font
 
+## 2.3.1
+
+### Patch Changes
+
+- [#2023](https://github.com/diegomura/react-pdf/pull/2023) [`ce1c43c`](https://github.com/diegomura/react-pdf/commit/ce1c43c1b450b3737a23a356c5143626ac2a43ad) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Fix warning about 'buffer' dependency in CRA 5 and webpack 5
+
 ## 2.3.0
 
 ### Minor Changes

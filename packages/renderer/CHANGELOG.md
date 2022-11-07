@@ -1,5 +1,15 @@
 # @react-pdf/renderer
 
+## 3.0.1
+
+### Patch Changes
+
+- [#2056](https://github.com/diegomura/react-pdf/pull/2056) [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39) Thanks [@jasnross](https://github.com/jasnross)! - fix: TypeError when returning fragments or arrays from render prop
+
+- Updated dependencies [[`ce1c43c`](https://github.com/diegomura/react-pdf/commit/ce1c43c1b450b3737a23a356c5143626ac2a43ad), [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39), [`992b91b`](https://github.com/diegomura/react-pdf/commit/992b91b3866e8e24efa014eef4d3eeec6a40f9a5)]:
+  - @react-pdf/font@2.3.1
+  - @react-pdf/layout@3.2.1
+
 ## 3.0.0
 
 ### Major Changes

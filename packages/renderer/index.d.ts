@@ -239,6 +239,7 @@ declare namespace ReactPDF {
     height?: string | number;
     viewBox?: string;
     preserveAspectRatio?: string;
+    children?: React.ReactNode;
   }
 
   /**

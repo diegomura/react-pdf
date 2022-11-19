@@ -6,7 +6,7 @@ type SourceBuffer = Buffer
 
 type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' }
 
-type SourceURLObject =  { uri: string; method: HTTPMethod; body: any; headers: any }
+type SourceURLObject =  { uri: string; method: HTTPMethod; body: any; headers: any; credentials: string }
 
 type Source =
   | SourceURL

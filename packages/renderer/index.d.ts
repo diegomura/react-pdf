@@ -244,7 +244,7 @@ declare namespace ReactPDF {
   /**
    * The <SVG /> element is a container that defines a new coordinate system and viewport. It is used as the outermost element of SVG documents.
    */
-  class Svg extends React.Component<SVGProps> {}
+  class Svg extends React.Component<PropsWithChildren<SVGProps>> {}
 
   interface LineProps extends SVGPresentationAttributes {
     style?: SVGPresentationAttributes;
@@ -348,7 +348,7 @@ declare namespace ReactPDF {
    * The <G /> SVG element is a container used to group other SVG elements.
    * Transformations applied to the <G /> element are performed on its child elements, and its attributes are inherited by its children.
    */
-  class G extends React.Component<GProps> {}
+  class G extends React.Component<PropsWithChildren<GProps>> {}
 
   interface StopProps {
     offset: string | number;

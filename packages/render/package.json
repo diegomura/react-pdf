@@ -22,7 +22,7 @@
     "@react-pdf/fns": "2.0.0",
     "@react-pdf/primitives": "^3.0.0",
     "@react-pdf/textkit": "^4.1.0",
-    "@react-pdf/types": "^2.1.0",
+    "@react-pdf/types": "stonesthatwhisper/react-pdf#react-pdf-types-v2.1.0-gitpkg",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.5.3",
     "normalize-svg-path": "^1.1.0",

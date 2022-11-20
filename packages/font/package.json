@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.16.4",
-    "@react-pdf/types": "^2.0.9",
+    "@react-pdf/types": "stonesthatwhisper/react-pdf#react-pdf-types-v2.1.0-gitpkg",
     "cross-fetch": "^3.1.5",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"

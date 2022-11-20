@@ -2309,6 +2309,10 @@
   dependencies:
     "@octokit/openapi-types" "^6.0.0"
 
+"@react-pdf/types@stonesthatwhisper/react-pdf#react-pdf-types-v2.1.0-gitpkg":
+  version "2.1.0"
+  resolved "https://codeload.github.com/stonesthatwhisper/react-pdf/tar.gz/077a77ad455e70a418b34ccebe3b7995a814691b"
+
 "@rollup/plugin-alias@^3.1.8":
   version "3.1.8"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.1.8.tgz#645fd84659e08d3d1b059408fcdf69c1dd435a6b"

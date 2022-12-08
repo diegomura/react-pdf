@@ -22,6 +22,14 @@ const parse = transformString => {
   return parsed;
 };
 
+const parseAngle = value => {
+  const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
+  const [, angle, unit] = unitsRegexp.exec(value);
+  const number = Number.parseFloat(angle);
+
+  return unit === 'rad' ? (number * 180) / Math.PI : number;
+};
+
 const normalizeTransformOperation = ({ operation, value }) => {
   switch (operation) {
     case 'scale': {
@@ -39,14 +47,7 @@ const normalizeTransformOperation = ({ operation, value }) => {
     }
 
     case 'rotate': {
-      const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
-      const [, angle, unit] = unitsRegexp.exec(value);
-      const number = Number.parseFloat(angle);
-
-      return {
-        operation: 'rotate',
-        value: [unit === 'rad' ? (number * 180) / Math.PI : number],
-      };
+      return { operation: 'rotate', value: [parseAngle(value)] };
     }
 
     case 'translate': {
@@ -65,6 +66,18 @@ const normalizeTransformOperation = ({ operation, value }) => {
 
     case 'translateY': {
       return { operation: 'translate', value: [0, Number.parseFloat(value)] };
+    }
+
+    case 'skew': {
+      return { operation: 'skew', value: value.map(parseAngle) };
+    }
+
+    case 'skewX': {
+      return { operation: 'skew', value: [parseAngle(value), 0] };
+    }
+
+    case 'skewY': {
+      return { operation: 'skew', value: [0, parseAngle(value)] };
     }
 
     default: {

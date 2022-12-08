@@ -9,7 +9,7 @@ import setBorder, {
 
 describe('node setBorderWidth', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setBorder: mock } };
+  const node = { yogaNode: { setBorder: mock } };
 
   beforeEach(() => {
     mock.mockReset();

@@ -14,7 +14,7 @@ const OVERFLOW = {
  * @return {Object} node instance
  */
 const setOverflow = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {
     const overflow = OVERFLOW[value] || Yoga.OVERFLOW_VISIBLE;

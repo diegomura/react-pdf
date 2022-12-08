@@ -57,7 +57,6 @@ import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
 
-const YOGA_NODE = '_yogaNode';
 const YOGA_CONFIG = Yoga.Config.create();
 
 YOGA_CONFIG.setPointScaleFactor(0);
@@ -131,12 +130,12 @@ const setYogaValues = node => {
  * @param {Object} node
  */
 const insertYogaNodes = parent => child => {
-  parent.insertChild(child[YOGA_NODE], parent.getChildCount());
+  parent.insertChild(child.yogaNode, parent.getChildCount());
   return child;
 };
 
 const setMeasureFunc = (node, page, fontStore) => {
-  const yogaNode = node[YOGA_NODE];
+  const { yogaNode } = node;
 
   if (isText(node)) {
     yogaNode.setMeasureFunc(measureText(page, node, fontStore));
@@ -169,9 +168,7 @@ const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
 const createYogaNodes = (page, fontStore) => node => {
   const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
 
-  const result = Object.assign({}, node);
-
-  result[YOGA_NODE] = yogaNode;
+  const result = Object.assign({}, node, { yogaNode });
 
   setYogaValues(result);
 
@@ -196,7 +193,7 @@ const createYogaNodes = (page, fontStore) => node => {
  * @returns {Object} node
  */
 const calculateLayout = page => {
-  page[YOGA_NODE].calculateLayout();
+  page.yogaNode.calculateLayout();
   return page;
 };
 
@@ -235,7 +232,7 @@ const persistDimensions = node => {
 const destroyYogaNodes = node => {
   const newNode = Object.assign({}, node);
 
-  delete newNode[YOGA_NODE];
+  delete newNode.yogaNode;
 
   if (!node.children) return newNode;
 
@@ -251,7 +248,7 @@ const destroyYogaNodes = node => {
  * @returns {Object} node without yoga node
  */
 const freeYogaNodes = node => {
-  if (node[YOGA_NODE]) node[YOGA_NODE].freeRecursive();
+  if (node.yogaNode) node.yogaNode.freeRecursive();
   return node;
 };
 

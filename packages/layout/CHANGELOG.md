@@ -1,5 +1,52 @@
 # @react-pdf/layout
 
+## 3.2.1
+
+### Patch Changes
+
+- [#2056](https://github.com/diegomura/react-pdf/pull/2056) [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39) Thanks [@jasnross](https://github.com/jasnross)! - fix: TypeError when returning fragments or arrays from render prop
+
+* [#2034](https://github.com/diegomura/react-pdf/pull/2034) [`992b91b`](https://github.com/diegomura/react-pdf/commit/992b91b3866e8e24efa014eef4d3eeec6a40f9a5) Thanks [@imatwork](https://github.com/imatwork)! - fix: page wrap=false not preventing page from breaking
+
+## 3.2.0
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1911](https://github.com/diegomura/react-pdf/pull/1911) [`5fe9754`](https://github.com/diegomura/react-pdf/commit/5fe9754f21f103e17d1b70498ee7961cde779b22) Thanks [@diegomura](https://github.com/diegomura)! - refactor: yoga node prop name
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6), [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5), [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d), [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993)]:
+  - @react-pdf/fns@2.0.0
+  - @react-pdf/pdfkit@3.0.0
+  - @react-pdf/stylesheet@4.0.0
+  - @react-pdf/yoga@3.0.0
+  - @react-pdf/image@2.2.0
+  - @react-pdf/textkit@4.1.0
+
+## 3.1.2
+
+### Patch Changes
+
+- [#1910](https://github.com/diegomura/react-pdf/pull/1910) [`e94e50a`](https://github.com/diegomura/react-pdf/commit/e94e50a931df7347a8febc717ca76843502826c8) Thanks [@diegomura](https://github.com/diegomura)! - fix: media queries computing
+
+* [#1906](https://github.com/diegomura/react-pdf/pull/1906) [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b) Thanks [@diegomura](https://github.com/diegomura)! - feat: build textkit with rollup & define public api
+
+* Updated dependencies [[`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367), [`9527fe4`](https://github.com/diegomura/react-pdf/commit/9527fe4c9087818421eca4753172b06e3c0cb934), [`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb), [`37a9a74`](https://github.com/diegomura/react-pdf/commit/37a9a747f7677fa05e3ddf5669c0379aa65c1e39), [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b)]:
+  - @react-pdf/pdfkit@2.4.0
+  - @react-pdf/stylesheet@3.2.0
+  - @react-pdf/textkit@4.0.0
+
+## 3.1.1
+
+### Patch Changes
+
+- [#1874](https://github.com/diegomura/react-pdf/pull/1874) [`84d94a8`](https://github.com/diegomura/react-pdf/commit/84d94a885e5140c38e31fc843340b8f09682c923) Thanks [@jeetiss](https://github.com/jeetiss)! - fixed path to es module bundle
+
+* [#1875](https://github.com/diegomura/react-pdf/pull/1875) [`03d80a7`](https://github.com/diegomura/react-pdf/commit/03d80a71b487007a49694e1f6cf3c1136b50a688) Thanks [@jeetiss](https://github.com/jeetiss)! - fixed overwriting for default link style
+
 ## 3.1.0
 
 ### Minor Changes

@@ -1,5 +1,26 @@
 # @react-pdf/render
 
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6)]:
+  - @react-pdf/fns@2.0.0
+  - @react-pdf/textkit@4.1.0
+
+## 3.2.0
+
+### Minor Changes
+
+- [#1892](https://github.com/diegomura/react-pdf/pull/1892) [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367) Thanks [@diegomura](https://github.com/diegomura)! - feat: add skew transformation support
+
+### Patch Changes
+
+- [#1906](https://github.com/diegomura/react-pdf/pull/1906) [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b) Thanks [@diegomura](https://github.com/diegomura)! - feat: build textkit with rollup & define public api
+
+- Updated dependencies [[`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb), [`37a9a74`](https://github.com/diegomura/react-pdf/commit/37a9a747f7677fa05e3ddf5669c0379aa65c1e39), [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b)]:
+  - @react-pdf/textkit@4.0.0
+
 ## 3.1.0
 
 ### Minor Changes

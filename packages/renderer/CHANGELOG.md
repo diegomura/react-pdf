@@ -1,5 +1,53 @@
 # @react-pdf/renderer
 
+## 3.0.1
+
+### Patch Changes
+
+- [#2056](https://github.com/diegomura/react-pdf/pull/2056) [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39) Thanks [@jasnross](https://github.com/jasnross)! - fix: TypeError when returning fragments or arrays from render prop
+
+- Updated dependencies [[`ce1c43c`](https://github.com/diegomura/react-pdf/commit/ce1c43c1b450b3737a23a356c5143626ac2a43ad), [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39), [`992b91b`](https://github.com/diegomura/react-pdf/commit/992b91b3866e8e24efa014eef4d3eeec6a40f9a5)]:
+  - @react-pdf/font@2.3.1
+  - @react-pdf/layout@3.2.1
+
+## 3.0.0
+
+### Major Changes
+
+- [#1908](https://github.com/diegomura/react-pdf/pull/1908) [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d) Thanks [@diegomura](https://github.com/diegomura)! - chore: use fontkit mainline repo + drop node 12
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1604](https://github.com/diegomura/react-pdf/pull/1604) [`7eefc33`](https://github.com/diegomura/react-pdf/commit/7eefc3323390c59bf6d4f923749526831572ef1a) Thanks [@jeetiss](https://github.com/jeetiss)! - fix: skip empty text instance creation in jsx conditions
+
+* [#1924](https://github.com/diegomura/react-pdf/pull/1924) [`3b054b7`](https://github.com/diegomura/react-pdf/commit/3b054b711f5dc0b1c4fd29feaf85b430baad2663) Thanks [@adamduncan](https://github.com/adamduncan)! - fix: bad type on onClick
+
+- [#1929](https://github.com/diegomura/react-pdf/pull/1929) [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove blob stream dependency
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5), [`5fe9754`](https://github.com/diegomura/react-pdf/commit/5fe9754f21f103e17d1b70498ee7961cde779b22), [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d), [`27403f9`](https://github.com/diegomura/react-pdf/commit/27403f9a6ac1bbcfb144afc201c4a3e5aca25cbd), [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993), [`1a89506`](https://github.com/diegomura/react-pdf/commit/1a89506b4d325822d1a60a8f964434a6f6eb2d3f)]:
+  - @react-pdf/pdfkit@3.0.0
+  - @react-pdf/font@2.3.0
+  - @react-pdf/layout@3.2.0
+  - @react-pdf/render@3.2.1
+
+## 2.3.0
+
+### Minor Changes
+
+- [#1902](https://github.com/diegomura/react-pdf/pull/1902) [`d011983`](https://github.com/diegomura/react-pdf/commit/d011983204cf45876594fa361f24b47e86c612c9) Thanks [@adamduncan](https://github.com/adamduncan)! - feat: add onClick event to PDFDownloadLink
+
+### Patch Changes
+
+- Updated dependencies [[`3acf53b`](https://github.com/diegomura/react-pdf/commit/3acf53b45200fa1415315f7dc22cc4b84a6b54c6), [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367), [`9527fe4`](https://github.com/diegomura/react-pdf/commit/9527fe4c9087818421eca4753172b06e3c0cb934), [`e94e50a`](https://github.com/diegomura/react-pdf/commit/e94e50a931df7347a8febc717ca76843502826c8), [`884695b`](https://github.com/diegomura/react-pdf/commit/884695b44feb974f155c83e0714e8e939b4f641b)]:
+  - @react-pdf/font@2.2.1
+  - @react-pdf/pdfkit@2.4.0
+  - @react-pdf/render@3.2.0
+  - @react-pdf/layout@3.1.2
+
 ## 2.2.0
 
 ### Minor Changes

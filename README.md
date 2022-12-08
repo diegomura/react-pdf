@@ -18,8 +18,6 @@
   </p>
 </p>
 
-> New react-pdf 2.0 was released. [Read about the announcement](http://react-pdf.org/blog/announcing-react-pdf-v2)
-
 ## Lost?
 
 This package is used to _create_ PDFs using React. If you wish to _display_ existing PDFs, you may be looking for [react-pdf](https://github.com/wojtekmaj/react-pdf).
@@ -27,43 +25,6 @@ This package is used to _create_ PDFs using React. If you wish to _display_ exis
 ## How to install
 ```sh
 yarn add @react-pdf/renderer
-```
-
-### Webpack 5 
-
-Webpack 5 doesn't include node shims automatically anymore and we must opt-in to all shims we want. To do this we have to add a few dependencies to our project:
-
-```sh
-yarn add process browserify-zlib stream-browserify util buffer assert
-```
-
-after the modules are installed, we need to adjust our `webpack.config` file:
-
-```js
-const webpack = require("webpack");
-
-module.exports = {
-  /* ... */
-
-  resolve: {
-    fallback: {
-      process: require.resolve("process/browser"),
-      zlib: require.resolve("browserify-zlib"),
-      stream: require.resolve("stream-browserify"),
-      util: require.resolve("util"),
-      buffer: require.resolve("buffer"),
-      assert: require.resolve("assert"),
-    }
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      Buffer: ["buffer", "Buffer"],
-      process: "process/browser",
-    }),
-  ]
-
-  /* ... */
-}
 ```
 
 ## How it works

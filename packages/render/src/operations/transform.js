@@ -1,5 +1,3 @@
-// TODO: Implement using only matrices to support skew and even more operations than css.
-
 const applySingleTransformation = (ctx, transform, origin) => {
   const { operation, value } = transform;
 
@@ -19,6 +17,12 @@ const applySingleTransformation = (ctx, transform, origin) => {
     case 'translate': {
       const [x, y] = value;
       ctx.translate(x, y, { origin });
+      break;
+    }
+
+    case 'skew': {
+      const [xAngle, yAngle] = value;
+      ctx.skew(xAngle, yAngle, { origin });
       break;
     }
 

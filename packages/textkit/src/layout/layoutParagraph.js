@@ -1,5 +1,6 @@
 import omit from '../run/omit';
 import stringHeight from '../attributedString/height';
+import generateLineRects from './generateLineRects';
 
 const ATTACHMENT_CODE = '\ufffc'; // 65532
 
@@ -26,13 +27,19 @@ const purgeAttachments = attributedString => {
  * @param  {Array} attributed strings
  * @return {Object} layout blocks
  */
-const layoutLines = (rect, lines, indent) => {
+const layoutLines = (rects, lines, indent) => {
+  let rect = rects.shift();
   let currentY = rect.y;
 
   return lines.map((line, i) => {
     const lineIndent = i === 0 ? indent : 0;
     const style = line.runs?.[0]?.attributes || {};
     const height = Math.max(stringHeight(line), style.lineHeight);
+
+    if (currentY + height > rect.y + rect.height && rects.length > 0) {
+      rect = rects.shift();
+      currentY = rect.y;
+    }
 
     const newLine = Object.assign({}, line);
 
@@ -60,12 +67,17 @@ const layoutLines = (rect, lines, indent) => {
  * @param  {Object} attributed string
  * @return {Object} layout block
  */
-const layoutParagraph = (engines, options) => (rect, paragraph) => {
+const layoutParagraph = (engines, options) => (container, paragraph) => {
+  const height = stringHeight(paragraph);
   const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
-  const availableWidths = [rect.width - indent, rect.width];
+  const rects = generateLineRects(container, height);
+
+  const availableWidths = rects.map(r => r.width);
+  availableWidths[0] -= indent;
+
   const lines = engines.linebreaker(options)(paragraph, availableWidths);
 
-  return layoutLines(rect, lines, indent);
+  return layoutLines(rects, lines, indent);
 };
 
 export default layoutParagraph;

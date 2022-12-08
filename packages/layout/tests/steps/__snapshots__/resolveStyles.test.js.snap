@@ -185,6 +185,35 @@ Object {
 }
 `;
 
+exports[`layout resolveStyles Should resolve nested node styles media queries with page style 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "style": Object {
+            "backgroundColor": "green",
+          },
+          "type": "VIEW",
+        },
+        Object {
+          "style": Object {
+            "backgroundColor": "red",
+          },
+          "type": "VIEW",
+        },
+      ],
+      "style": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
 exports[`layout resolveStyles Should resolve page styles 1`] = `
 Object {
   "children": Array [

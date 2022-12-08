@@ -2,7 +2,7 @@
 
 import isUrl from 'is-url';
 import fetch from 'cross-fetch';
-import fontkit from '@react-pdf/fontkit';
+import * as fontkit from 'fontkit';
 
 const FONT_WEIGHTS = {
   thin: 100,
@@ -25,12 +25,9 @@ const ALL_CHARS_REGEX = /./u;
 
 const fetchFont = async (src, options) => {
   const response = await fetch(src, options);
+  const data = await response.arrayBuffer();
 
-  const buffer = await (response.buffer
-    ? response.buffer()
-    : response.arrayBuffer());
-
-  return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
+  return new Uint8Array(data);
 };
 
 const isDataUrl = dataUrl => {
@@ -59,40 +56,35 @@ class FontSource {
     );
 
     this.data = null;
-    this.loadingPromise = null;
     this.options = options;
+    this.loadResultPromise = null;
   }
 
-  async loadFont() {
+  async _load() {
     const { postscriptName } = this.options;
 
     if (isDataUrl(this.src)) {
-      this.data = fontkit.create(
-        Buffer.from(this.src.split(',')[1], 'base64'),
-        postscriptName,
+      const raw = this.src.split(',')[1];
+      const uint8Array = new Uint8Array(
+        atob(raw)
+          .split('')
+          .map(c => c.charCodeAt(0)),
       );
+      this.data = fontkit.create(uint8Array, postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
       const data = await fetchFont(this.src, { method, body, headers });
       this.data = fontkit.create(data, postscriptName);
-    } else {
-      this.data = await new Promise((resolve, reject) =>
-        fontkit.open(this.src, postscriptName, (err, data) =>
-          err ? reject(err) : resolve(data),
-        ),
-      );
+    } else if (!BROWSER) {
+      this.data = await fontkit.open(this.src, postscriptName);
     }
   }
 
   async load() {
-    if (this.data) return;
-    if (this.loadingPromise) {
-      await this.loadingPromise;
-      return;
+    if (this.loadResultPromise === null) {
+      this.loadResultPromise = this._load();
     }
-    this.loadingPromise = this.loadFont();
-    await this.loadingPromise;
-    this.loadingPromise = null;
+    return this.loadResultPromise;
   }
 }
 

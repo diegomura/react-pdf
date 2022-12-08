@@ -1,12 +1,13 @@
 import * as P from '@react-pdf/primitives';
-import layoutEngine from '@react-pdf/textkit/lib/layout';
-import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
-import justification from '@react-pdf/textkit/lib/engines/justification';
-import scriptItemizer from '@react-pdf/textkit/lib/engines/scriptItemizer';
-import wordHyphenation from '@react-pdf/textkit/lib/engines/wordHyphenation';
-import decorationEngine from '@react-pdf/textkit/lib/engines/textDecoration';
-import fromFragments from '@react-pdf/textkit/lib/attributedString/fromFragments';
+import layoutEngine, {
+  linebreaker,
+  justification,
+  scriptItemizer,
+  wordHyphenation,
+  textDecoration,
+} from '@react-pdf/textkit';
 
+import fromFragments from '../text/fromFragments';
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';
 
@@ -15,10 +16,10 @@ const isTextInstance = node => node.type === P.TextInstance;
 const engines = {
   linebreaker,
   justification,
+  textDecoration,
   scriptItemizer,
   wordHyphenation,
   fontSubstitution,
-  textDecoration: decorationEngine,
 };
 
 const toFontNameStack = (...fontFamilyObjects) =>
@@ -56,12 +57,13 @@ const getFragments = (fontStore, instance) => {
     fontWeight,
     fontStyle,
     fontSize = 18,
-    textDecoration,
     textDecorationColor,
     textDecorationStyle,
     textTransform,
     opacity,
   } = instance.props;
+
+  const _textDecoration = instance.props.textDecoration;
 
   const fontStack = getFontStack(fontStore, {
     fontFamily,
@@ -76,14 +78,14 @@ const getFragments = (fontStore, instance) => {
     color: fill,
     underlineStyle: textDecorationStyle,
     underline:
-      textDecoration === 'underline' ||
-      textDecoration === 'underline line-through' ||
-      textDecoration === 'line-through underline',
+      _textDecoration === 'underline' ||
+      _textDecoration === 'underline line-through' ||
+      _textDecoration === 'line-through underline',
     underlineColor: textDecorationColor || fill,
     strike:
-      textDecoration === 'line-through' ||
-      textDecoration === 'underline line-through' ||
-      textDecoration === 'line-through underline',
+      _textDecoration === 'line-through' ||
+      _textDecoration === 'underline line-through' ||
+      _textDecoration === 'line-through underline',
     strikeStyle: textDecorationStyle,
     strikeColor: textDecorationColor || fill,
   };

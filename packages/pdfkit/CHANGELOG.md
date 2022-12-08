@@ -1,5 +1,35 @@
 # @react-pdf/pdfkit
 
+## 3.0.0
+
+### Major Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1941](https://github.com/diegomura/react-pdf/pull/1941) [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5) Thanks [@PhilippMeissner](https://github.com/PhilippMeissner)! - chore: adds missing licenses to package.json
+
+* [#1908](https://github.com/diegomura/react-pdf/pull/1908) [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d) Thanks [@diegomura](https://github.com/diegomura)! - chore: use fontkit mainline repo + drop node 12
+
+- [#1929](https://github.com/diegomura/react-pdf/pull/1929) [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove blob stream dependency
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5)]:
+  - @react-pdf/png-js@2.2.0
+
+## 2.4.0
+
+### Minor Changes
+
+- [#1892](https://github.com/diegomura/react-pdf/pull/1892) [`035d3f8`](https://github.com/diegomura/react-pdf/commit/035d3f8d24fa4f4af9f350950d81b51547858367) Thanks [@diegomura](https://github.com/diegomura)! - feat: add skew transformation support
+
+### Patch Changes
+
+- [#1894](https://github.com/diegomura/react-pdf/pull/1894) [`9527fe4`](https://github.com/diegomura/react-pdf/commit/9527fe4c9087818421eca4753172b06e3c0cb934) Thanks [@diegomura](https://github.com/diegomura)! - feat: generate document ID
+
+- Updated dependencies [[`0fcc594`](https://github.com/diegomura/react-pdf/commit/0fcc594310d5af30ca1e752b3efc7a047e813dcb)]:
+  - @react-pdf/fontkit@2.1.2
+
 ## 2.3.0
 
 ### Minor Changes

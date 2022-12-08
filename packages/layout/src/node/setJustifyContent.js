@@ -17,7 +17,7 @@ const JUSTIFY_CONTENT = {
  * @return {Object} node instance
  */
 const setJustifyContent = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {
     const justifyContent = JUSTIFY_CONTENT[value] || Yoga.JUSTIFY_FLEX_START;

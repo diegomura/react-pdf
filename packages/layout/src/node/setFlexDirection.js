@@ -14,7 +14,7 @@ const FLEX_DIRECTIONS = {
  * @return {Object} node instance
  */
 const setFlexDirection = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (yogaNode) {
     const flexDirection = FLEX_DIRECTIONS[value] || Yoga.FLEX_DIRECTION_COLUMN;

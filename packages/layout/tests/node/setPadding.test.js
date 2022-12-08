@@ -12,7 +12,7 @@ describe('node setPadding', () => {
   const mockPercent = jest.fn();
 
   const node = {
-    _yogaNode: { setPadding: mock, setPaddingPercent: mockPercent },
+    yogaNode: { setPadding: mock, setPaddingPercent: mockPercent },
   };
 
   beforeEach(() => {

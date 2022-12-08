@@ -13,7 +13,7 @@ const FLEX_WRAP = {
  * @return {Object} node instance
  */
 const setFlexWrap = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (yogaNode) {
     const flexWrap = FLEX_WRAP[value] || Yoga.WRAP_NO_WRAP;

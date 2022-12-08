@@ -1,11 +1,12 @@
 {
   "name": "@react-pdf/fns",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "description": "React-pdf helper functions",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/index.js",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -13,8 +14,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "rimraf ./lib && babel src --out-dir lib",
-    "watch": "rimraf ./lib && babel src --out-dir lib --watch"
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w"
   },
   "files": [
     "lib"

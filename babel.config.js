@@ -5,7 +5,7 @@ module.exports = {
       {
         loose: true,
         targets: {
-          node: '12',
+          node: '14',
           browsers: 'last 2 versions',
         },
       },

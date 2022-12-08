@@ -1,3 +1,5 @@
+import partition from './partition';
+
 /**
  * Crop upper section of rect
  *
@@ -5,10 +7,8 @@
  * @return {Object} cropped rect
  */
 const crop = (height, rect) => {
-  const y = rect.y + height;
-  const h = rect.height - height;
-
-  return Object.assign({}, rect, { y, height: h });
+  const [, result] = partition(rect, height);
+  return result;
 };
 
 export default crop;

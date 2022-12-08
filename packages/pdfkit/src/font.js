@@ -1,4 +1,4 @@
-import fontkit from '@react-pdf/fontkit';
+import * as fontkit from 'fontkit';
 import createStandardFont from './font/standard';
 import createEmbeddedFont from './font/embedded';
 
@@ -10,13 +10,16 @@ export class PDFFont {
       if (StandardFont.isStandardFont(src)) {
         return new StandardFont(document, src, id);
       }
-      font = fontkit.openSync(src, family);
-    } else if (Buffer.isBuffer(src)) {
-      font = fontkit.create(src, family);
+
+      if (!BROWSER) {
+        font = fontkit.openSync(src, family);
+      } else {
+        throw new Error(`Can't open ${src} in browser build`);
+      }
     } else if (src instanceof Uint8Array) {
-      font = fontkit.create(Buffer.from(src), family);
+      font = fontkit.create(src, family);
     } else if (src instanceof ArrayBuffer) {
-      font = fontkit.create(Buffer.from(new Uint8Array(src)), family);
+      font = fontkit.create(new Uint8Array(src), family);
     } else if (typeof src === 'object') {
       font = src;
     }
@@ -28,11 +31,11 @@ export class PDFFont {
     return new EmbeddedFont(document, font, id);
   }
 
-  encode(text) {
+  encode() {
     throw new Error('Must be implemented by subclasses');
   }
 
-  widthOfString(text) {
+  widthOfString() {
     throw new Error('Must be implemented by subclasses');
   }
 

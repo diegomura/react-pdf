@@ -24,5 +24,8 @@
   "dependencies": {
     "@types/yoga-layout": "^1.9.3",
     "yet-another-yoga-layout-fork": "jeetiss/yet-another-yoga-layout-fork"
+  },
+  "devDependencies": {
+    "yet-another-yoga-layout-fork": "jeetiss/yet-another-yoga-layout-fork"
   }
 }

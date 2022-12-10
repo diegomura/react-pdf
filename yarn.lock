@@ -11158,7 +11158,7 @@ yauzl@^2.10.0:
 
 yet-another-yoga-layout-fork@jeetiss/yet-another-yoga-layout-fork:
   version "0.0.1"
-  resolved "https://codeload.github.com/jeetiss/yet-another-yoga-layout-fork/tar.gz/3531ebd1997e3bb09221a373be8cf33cad73c0a4"
+  resolved "https://codeload.github.com/jeetiss/yet-another-yoga-layout-fork/tar.gz/34c3b08661b59308217223fcb4ba7cd54d662de1"
 
 yocto-queue@^0.1.0:
   version "0.1.0"

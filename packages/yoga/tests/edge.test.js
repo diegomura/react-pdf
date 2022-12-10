@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Edge', () => {
   test('start_overrides', () => {

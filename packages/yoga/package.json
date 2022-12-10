@@ -5,8 +5,8 @@
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "./src/dist/entry-browser.js",
-  "module": "./src/dist/entry-browser.es.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
@@ -15,14 +15,14 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "./build.sh && rollup -c",
-    "postbuild": "node ./postbuild.js"
+    "build": "rollup -c"
   },
   "files": [
-    "src",
+    "dist",
     "index.d.ts"
   ],
   "dependencies": {
-    "@types/yoga-layout": "^1.9.3"
+    "@types/yoga-layout": "^1.9.3",
+    "yet-another-yoga-layout-fork": "jeetiss/yet-another-yoga-layout-fork"
   }
 }

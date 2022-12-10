@@ -1,16 +1,18 @@
-import commonjs from '@rollup/plugin-commonjs'
-
-const input = './src/dist/entry-browser.js';
-
-const getPlugins = () => [
-  commonjs(),
-];
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
 
 export default {
-  input,
-  output: {
-    file: 'src/dist/entry-browser.es.js',
-    format: 'es',
-  },
-  plugins: getPlugins(),
-}
+  input: 'index.js',
+  output: [
+    {
+      file: 'dist/index.js',
+      exports: 'auto',
+      format: 'cjs',
+    },
+    {
+      file: 'dist/index.esm.js',
+      format: 'esm',
+    },
+  ],
+  plugins: [commonjs(), nodeResolve()],
+};

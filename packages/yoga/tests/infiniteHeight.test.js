@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Infinite height', () => {
   test('percent_absolute_position_infinite_height', () => {

@@ -1,10 +1,10 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Default values', () => {
   test('assert default values', () => {
     const root = Yoga.Node.create();
 
-    expect(root.getChildCount(root)).toBe(0);
+    expect(root.getChildCount()).toBe(0);
     expect(root.getChild(1)).toBe(null);
 
     expect(root.getFlexDirection()).toBe(Yoga.FLEX_DIRECTION_COLUMN);
@@ -12,7 +12,7 @@ describe('Default values', () => {
     expect(root.getAlignContent()).toBe(Yoga.ALIGN_FLEX_START);
     expect(root.getAlignItems()).toBe(Yoga.ALIGN_STRETCH);
     expect(root.getAlignSelf()).toBe(Yoga.ALIGN_AUTO);
-    expect(root.getPositionType()).toBe(Yoga.POSITION_TYPE_RELATIVE);
+    expect(root.getPositionType()).toBe(Yoga.POSITION_TYPE_STATIC);
     expect(root.getFlexWrap()).toBe(Yoga.WRAP_NO_WRAP);
     expect(root.getOverflow()).toBe(Yoga.OVERFLOW_VISIBLE);
     expect(root.getFlexGrow()).toBe(0);

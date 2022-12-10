@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Zero out layout recursivly', () => {
   test('zero_out_layout', () => {

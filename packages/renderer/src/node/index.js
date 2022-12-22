@@ -1,8 +1,6 @@
 import * as primitives from '@react-pdf/primitives';
 
-import renderToFile from './renderToFile';
-import renderToStream from './renderToStream';
-import { renderToString } from './renderToString';
+import { renderToFile, renderToStream, renderToString } from './renderTo';
 import { pdf, version, Font, StyleSheet } from '../index';
 
 const throwEnvironmentError = name => {
@@ -31,14 +29,11 @@ export const render = renderToFile;
 
 export * from '../index';
 
-export * from './renderToFile';
-
-export * from './renderToStream';
-
-export * from './renderToString';
+export * from './renderTo';
 
 export * from '@react-pdf/primitives';
 
+// TODO: remove this default export in next major release because it breaks tree-shacking
 export default {
   pdf,
   Font,

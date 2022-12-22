@@ -1,8 +1,16 @@
-import { pdf } from '../index';
+import { Buffer } from 'buffer';
+import { renderToStream } from './renderToStream';
 
-export const renderToString = element => {
-  const instance = pdf(element);
-  return instance.toString();
-};
+export const renderToBuffer = element =>
+  renderToStream(element).then(
+    stream =>
+      new Promise((resolve, reject) => {
+        const chunks = [];
+        stream.on('data', chunk => chunks.push(chunk));
+        stream.on('end', () => resolve(Buffer.concat(chunks)));
+        stream.on('error', error => reject(error));
+      }),
+  );
 
-export default renderToString;
+export const renderToString = element =>
+  renderToBuffer(element).then(buffer => buffer.toString());

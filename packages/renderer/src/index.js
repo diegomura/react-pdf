@@ -84,6 +84,12 @@ const pdf = initialValue => {
     return render();
   };
 
+  /*
+   * TODO: remove this method in next major release. it is buggy
+   * see
+   * - https://github.com/diegomura/react-pdf/issues/2112
+   * - https://github.com/diegomura/react-pdf/issues/2095
+   */
   const toString = async () => {
     let result = '';
     const instance = await render(false); // For some reason, when rendering to string if compress=true the document is blank

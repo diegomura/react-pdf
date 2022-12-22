@@ -2,7 +2,7 @@ import * as primitives from '@react-pdf/primitives';
 
 import renderToFile from './renderToFile';
 import renderToStream from './renderToStream';
-import renderToString from './renderToString';
+import { renderToString } from './renderToString';
 import { pdf, version, Font, StyleSheet } from '../index';
 
 const throwEnvironmentError = name => {

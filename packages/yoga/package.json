@@ -6,7 +6,13 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "./src/dist/entry-browser.js",
-  "module": "./src/dist/entry-browser.es.js",
+  "module": "./src/dist/entry-browser.mjs",
+  "exports": {
+    ".": {
+      "require": "./src/dist/entry-browser.js",
+      "import": "./src/dist/entry-browser.mjs"
+    }
+  },
   "types": "index.d.ts",
   "repository": {
     "type": "git",

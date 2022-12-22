@@ -30,7 +30,7 @@ const getPlugins = () => [localResolve(), babel(babelConfig())];
 const config = {
   input,
   output: [
-    getESM({ file: 'lib/textkit.es.js' }),
+    getESM({ file: 'lib/textkit.mjs' }),
     getCJS({ file: 'lib/textkit.cjs.js' }),
   ],
   external: getExternal(),

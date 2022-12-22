@@ -4,7 +4,13 @@
   "version": "4.1.0",
   "description": "An advanced text layout framework",
   "main": "./lib/textkit.cjs.js",
-  "module": "./lib/textkit.es.js",
+  "module": "./lib/textkit.mjs",
+  "exports": {
+    ".": {
+      "require": "./lib/textkit.cjs.js",
+      "import": "./lib/textkit.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

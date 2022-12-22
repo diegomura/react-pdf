@@ -1,5 +1,5 @@
 import fs from 'fs';
-import CryptoJS from 'crypto-js/md5';
+import MD5 from 'md5';
 
 export default {
   /**
@@ -65,10 +65,7 @@ export default {
     }
 
     // add checksum and size information
-    const checksum = CryptoJS.MD5(
-      CryptoJS.lib.WordArray.create(new Uint8Array(data))
-    );
-    refBody.Params.CheckSum = new String(checksum);
+    refBody.Params.CheckSum = MD5(data);
     refBody.Params.Size = data.byteLength;
 
     // save some space when embedding the same file again

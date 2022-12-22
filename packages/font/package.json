@@ -11,9 +11,15 @@
     "directory": "packages/font"
   },
   "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
+  "module": "./lib/index.mjs",
+  "exports": {
+    ".": {
+      "require": "./lib/index.cjs.js",
+      "import": "./lib/index.mjs"
+    }
+  },
   "browser": {
-    "./lib/index.es.js": "./lib/index.browser.es.js",
+    "./lib/index.mjs": "./lib/index.browser.mjs",
     "./lib/index.cjs.js": "./lib/index.browser.cjs.js"
   },
   "scripts": {

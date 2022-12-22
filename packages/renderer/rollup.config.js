@@ -66,7 +66,7 @@ const getPlugins = ({ browser, minify = false }) => [
 const serverConfig = {
   input: nodeInput,
   output: [
-    getESM({ file: 'lib/react-pdf.es.js' }),
+    getESM({ file: 'lib/react-pdf.mjs' }),
     getCJS({ file: 'lib/react-pdf.cjs.js' }),
   ],
   external: getExternal({ browser: false }),
@@ -86,7 +86,7 @@ const serverProdConfig = {
 const browserConfig = {
   input: domInput,
   output: [
-    getESM({ file: 'lib/react-pdf.browser.es.js' }),
+    getESM({ file: 'lib/react-pdf.browser.mjs' }),
     getCJS({ file: 'lib/react-pdf.browser.cjs.js' }),
   ],
   external: getExternal({ browser: true }),

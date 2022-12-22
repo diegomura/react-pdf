@@ -79,6 +79,7 @@ const pdf = initialValue => {
     });
   };
 
+  // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
   const toBuffer = async () => {
     callOnRender();
     return render();

@@ -40,6 +40,7 @@ export * from './PDFDownloadLink';
 
 export * from '@react-pdf/primitives';
 
+// TODO: remove this default export in next major release because it breaks tree-shacking
 export default {
   pdf,
   usePDF,

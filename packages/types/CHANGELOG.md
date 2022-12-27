@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.1.1
+
+### Patch Changes
+
+- [#2106](https://github.com/diegomura/react-pdf/pull/2106) [`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581) Thanks [@RDO34](https://github.com/RDO34)! - Add `dpi` and `bookmark` page prop types
+
 ## 2.1.0
 
 ### Minor Changes

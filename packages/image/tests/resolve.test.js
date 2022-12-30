@@ -50,6 +50,23 @@ describe('image resolveImage', () => {
     expect(fetch.mock.calls[0][1].body).toEqual(body);
   });
 
+  test('Should fetch remote image using passed credentials', async () => {
+    fetch.once(localJPGImage);
+
+    const credentials = 'include';
+    await resolveImage({ uri: jpgImageUrl, credentials });
+
+    expect(fetch.mock.calls[0][1].credentials).toBe(credentials);
+  });
+
+  test('Should fetch remote image without credentials if not exist', async () => {
+    fetch.once(localJPGImage);
+
+    await resolveImage({ uri: jpgImageUrl });
+
+    expect(fetch.mock.calls[0][1].credentials).toBeUndefined();
+  });
+
   test('Should render a jpeg image over http', async () => {
     fetch.once(localJPGImage);
 

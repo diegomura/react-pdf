@@ -59,7 +59,7 @@ describe('image resolveImage', () => {
     expect(fetch.mock.calls[0][1].credentials).toBe(credentials);
   });
 
-  test('Should fetch remote image without credentials if not exist', async () => {
+  test('Should not include credentials if not exist', async () => {
     fetch.once(localJPGImage);
 
     await resolveImage({ uri: jpgImageUrl });

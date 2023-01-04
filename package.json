@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@react-pdf/root",
+  "name": "@govind-react-pdf/root",
   "version": "2.0.0",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

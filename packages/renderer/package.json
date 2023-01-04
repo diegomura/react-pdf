@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/renderer",
+  "name": "@govind-react-pdf/renderer",
   "version": "2.0.19",
   "license": "MIT",
   "typings": "index.d.ts",

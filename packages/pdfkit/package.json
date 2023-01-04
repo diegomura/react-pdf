@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/pdfkit",
+  "name": "@govind-react-pdf/pdfkit",
   "version": "2.0.11",
   "description": "A PDF generation library for Node.js",
   "main": "lib/pdfkit.cjs.js",

@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/png-js",
+  "name": "@govind-react-pdf/png-js",
   "description": "A PNG decoder in JS",
   "version": "2.0.2",
   "main": "lib/png-js.cjs.js",

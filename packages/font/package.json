@@ -15,8 +15,8 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/fontkit": "^2.0.6",
-    "@react-pdf/types": "^2.0.5",
+    "@govind-react-pdf/fontkit": "^2.0.6",
+    "@govind-react-pdf/types": "^2.0.5",
     "cross-fetch": "^3.0.4",
     "is-url": "^1.2.4"
   },

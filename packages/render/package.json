@@ -12,9 +12,9 @@
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },
   "dependencies": {
-    "@react-pdf/primitives": "^2.0.0",
-    "@react-pdf/textkit": "^2.0.6",
-    "@react-pdf/types": "^2.0.5",
+    "@govind-react-pdf/primitives": "^2.0.0",
+    "@govind-react-pdf/textkit": "^2.0.6",
+    "@govind-react-pdf/types": "^2.0.5",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.5.3",
     "normalize-svg-path": "^1.1.0",

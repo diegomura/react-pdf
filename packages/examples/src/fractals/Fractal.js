@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet } from '@govind-react-pdf/renderer';
 
 const palette = [
   '#781c81',

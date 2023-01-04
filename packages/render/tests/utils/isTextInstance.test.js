@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isTextInstance from '../../src/utils/isTextInstance';
 
 const ASSERTED_TYPE = P.TextInstance;

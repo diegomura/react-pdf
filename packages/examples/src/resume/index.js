@@ -7,7 +7,7 @@ import {
   Image,
   Document,
   StyleSheet,
-} from '@react-pdf/renderer';
+} from '@govind-react-pdf/renderer';
 
 import Header from './Header';
 import Skills from './Skills';

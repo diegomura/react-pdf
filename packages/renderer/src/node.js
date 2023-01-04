@@ -1,5 +1,5 @@
 import fs from 'fs';
-import * as primitives from '@react-pdf/primitives';
+import * as primitives from '@govind-react-pdf/primitives';
 import { pdf, version, Font, StyleSheet } from './index';
 
 export const renderToStream = async element => {
@@ -54,7 +54,7 @@ export const render = renderToFile;
 
 export * from './index';
 
-export * from '@react-pdf/primitives';
+export * from '@govind-react-pdf/primitives';
 
 export default {
   pdf,

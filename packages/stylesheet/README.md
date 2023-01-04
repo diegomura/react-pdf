@@ -2,20 +2,20 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
 </p>
 
-# @react-pdf/stylesheet
+# @govind-react-pdf/stylesheet
 
 > React-pdf styles engine
 
 ## How to install
 
 ```sh
-yarn add @react-pdf/stylesheet
+yarn add @govind-react-pdf/stylesheet
 ```
 
 ## How it works
 
 ```js
-const stylesheet = require('@react-pdf/stylesheet');
+const stylesheet = require('@govind-react-pdf/stylesheet');
 
 const container = {
   width: 400,

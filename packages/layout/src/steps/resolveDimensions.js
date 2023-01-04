@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import Yoga from '@react-pdf/yoga';
-import * as P from '@react-pdf/primitives';
+import Yoga from '@govind-react-pdf/yoga';
+import * as P from '@govind-react-pdf/primitives';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';

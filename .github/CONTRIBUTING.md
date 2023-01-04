@@ -75,7 +75,7 @@ yarn link
 In our testing project:
 
 ```sh
-yarn link @react-pdf/renderer
+yarn link @govind-react-pdf/renderer
 ```
 
 If everything went well, now your testing project should be running your local react-pdf build and any change in the codebase should be immediately accesible from your project.
@@ -117,7 +117,7 @@ Anyone can file an expense. If the expense makes sense for the development of th
 ## Questions
 
 If you have any questions, create an [issue](https://github.com/diegomura/react-pdf/issues) (protip: do a quick search first to see if someone else didn't ask the same question before!).
-You can also reach us at hello@react-pdf.opencollective.com.
+You can also reach us at hello@govind-react-pdf.opencollective.com.
 
 ## Credits
 

@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import runWidth from '@react-pdf/textkit/lib/run/advanceWidth';
-import lineWidth from '@react-pdf/textkit/lib/attributedString/advanceWidth';
+import runWidth from '@govind-react-pdf/textkit/lib/run/advanceWidth';
+import lineWidth from '@govind-react-pdf/textkit/lib/attributedString/advanceWidth';
 
 import renderGlyphs from './renderGlyphs';
 

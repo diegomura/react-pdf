@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-import * as P from '@react-pdf/primitives';
-import { transformColor, processTransform } from '@react-pdf/stylesheet';
+import * as P from '@govind-react-pdf/primitives';
+import { transformColor, processTransform } from '@govind-react-pdf/stylesheet';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';

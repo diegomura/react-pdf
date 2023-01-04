@@ -1,13 +1,13 @@
 import * as R from 'ramda';
-import * as P from '@react-pdf/primitives';
-import layoutEngine from '@react-pdf/textkit/lib/layout';
-import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
-import AttributedString from '@react-pdf/textkit/lib/attributedString';
-import bidi from '@react-pdf/textkit/lib/engines/bidi';
-import justification from '@react-pdf/textkit/lib/engines/justification';
-import scriptItemizer from '@react-pdf/textkit/lib/engines/scriptItemizer';
-import wordHyphenation from '@react-pdf/textkit/lib/engines/wordHyphenation';
-import decorationEngine from '@react-pdf/textkit/lib/engines/textDecoration';
+import * as P from '@govind-react-pdf/primitives';
+import layoutEngine from '@govind-react-pdf/textkit/lib/layout';
+import linebreaker from '@govind-react-pdf/textkit/lib/engines/linebreaker';
+import AttributedString from '@govind-react-pdf/textkit/lib/attributedString';
+import bidi from '@govind-react-pdf/textkit/lib/engines/bidi';
+import justification from '@govind-react-pdf/textkit/lib/engines/justification';
+import scriptItemizer from '@govind-react-pdf/textkit/lib/engines/scriptItemizer';
+import wordHyphenation from '@govind-react-pdf/textkit/lib/engines/wordHyphenation';
+import decorationEngine from '@govind-react-pdf/textkit/lib/engines/textDecoration';
 
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';

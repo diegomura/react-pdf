@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import Yoga from '@govind-react-pdf/yoga';
 
 import setDisplay from '../../src/node/setDisplay';
 

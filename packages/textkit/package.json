@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@react-pdf/unicode-properties": "^2.4.1",
+    "@govind-react-pdf/unicode-properties": "^2.4.1",
     "bidi-js": "^1.0.2",
     "hyphen": "^1.6.4",
     "ramda": "^0.26.1"

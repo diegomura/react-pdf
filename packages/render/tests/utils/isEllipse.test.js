@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isEllipse from '../../src/utils/isEllipse';
 
 const ASSERTED_TYPE = P.Ellipse;

@@ -1,4 +1,4 @@
-import unicode from '@react-pdf/unicode-properties';
+import unicode from '@govind-react-pdf/unicode-properties';
 import OTProcessor from './OTProcessor';
 
 export default class GlyphInfo {

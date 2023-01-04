@@ -2,20 +2,20 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
 </p>
 
-# @react-pdf/render
+# @govind-react-pdf/render
 
 > React-pdf render engine
 
 ## How to install
 ```sh
-yarn add @react-pdf/render
+yarn add @govind-react-pdf/render
 ```
 
 ## How it works
 
 ```js
-const render = require('@react-pdf/render');
-const primitives = require('@react-pdf/primitives');
+const render = require('@govind-react-pdf/render');
+const primitives = require('@govind-react-pdf/primitives');
 
 const view = {
   type: primitives.View,
@@ -74,7 +74,7 @@ Bare in mind this package does not handle any type of node positioning, inherita
 
 ### node.type
 
-Mandatory field specifiying the type of the particular node. The full list of types can be found and imported from `@react-pdf/primitives`
+Mandatory field specifiying the type of the particular node. The full list of types can be found and imported from `@govind-react-pdf/primitives`
 
 ### node.box
 
@@ -123,8 +123,8 @@ Specific node params needed to render correctly ot behave like certain way. Spec
 
 ```js
 const fs = require('fs');
-const render = require('@react-pdf/render');
-const pdfkit = require('@react-pdf/pdfkit');
+const render = require('@govind-react-pdf/render');
+const pdfkit = require('@govind-react-pdf/pdfkit');
 
 const PDFDocument = pdfkit.default;
 

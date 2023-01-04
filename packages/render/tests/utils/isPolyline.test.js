@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isPolyline from '../../src/utils/isPolyline';
 
 const ASSERTED_TYPE = P.Polyline;

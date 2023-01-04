@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isLine from '../../src/utils/isLine';
 
 const ASSERTED_TYPE = P.Line;

@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 
 import createCTX from '../ctx';
 import renderEllipse from '../../src/primitives/renderEllipse';

@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isTspan from '../../src/utils/isTspan';
 
 const ASSERTED_TYPE = P.Tspan;

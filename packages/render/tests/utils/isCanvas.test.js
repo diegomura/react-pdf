@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isCanvas from '../../src/utils/isCanvas';
 
 const ASSERTED_TYPE = P.Canvas;

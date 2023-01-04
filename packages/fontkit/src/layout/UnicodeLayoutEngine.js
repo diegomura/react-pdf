@@ -1,4 +1,4 @@
-import unicode from '@react-pdf/unicode-properties';
+import unicode from '@govind-react-pdf/unicode-properties';
 
 /**
  * This class is used when GPOS does not define 'mark' or 'mkmk' features

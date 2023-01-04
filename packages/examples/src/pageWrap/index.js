@@ -6,7 +6,7 @@ import {
   Text,
   Image,
   StyleSheet,
-} from '@react-pdf/renderer';
+} from '@govind-react-pdf/renderer';
 
 const styles = StyleSheet.create({
   body: {

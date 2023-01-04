@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import Yoga from '@react-pdf/yoga';
+import Yoga from '@govind-react-pdf/yoga';
 
 import getPadding from '../../src/node/getPadding';
 

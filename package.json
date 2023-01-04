@@ -10,13 +10,13 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build --ignore @react-pdf/yoga",
+    "build": "lerna run build --ignore @govind-react-pdf/yoga",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build --ignore @react-pdf/yoga",
+    "prepublish": "lerna run build --ignore @govind-react-pdf/yoga",
     "lint": "eslint packages",
     "test": "jest",
-    "examples": "lerna run start --scope @react-pdf/examples"
+    "examples": "lerna run start --scope @govind-react-pdf/examples"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

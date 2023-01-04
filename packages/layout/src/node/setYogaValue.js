@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 import * as R from 'ramda';
-import Yoga from '@react-pdf/yoga';
+import Yoga from '@govind-react-pdf/yoga';
 
 import upperFirst from '../utils/upperFirst';
 import matchPercent from '../utils/matchPercent';

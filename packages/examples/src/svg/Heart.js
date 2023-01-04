@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Svg, G, Path } from '@react-pdf/renderer';
+import { Svg, G, Path } from '@govind-react-pdf/renderer';
 
 const Heart = () => (
   <Svg viewBox="-40 0 150 100" xmlns="http://www.w3.org/2000/svg">

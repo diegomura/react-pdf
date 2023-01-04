@@ -1,6 +1,6 @@
 // Updated: 417af0c79c5664271a07a783574ec7fac7ebad0c
 
-import unicode from '@react-pdf/unicode-properties';
+import unicode from '@govind-react-pdf/unicode-properties';
 import UnicodeTrie from 'unicode-trie';
 import DefaultShaper from './DefaultShaper';
 import StateMachine from 'dfa';

@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^2.0.6",
+    "@govind-react-pdf/renderer": "^2.0.6",
     "camelcase": "^6.2.0",
     "ramda": "^0.27.1"
   },

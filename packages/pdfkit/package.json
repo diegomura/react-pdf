@@ -23,8 +23,8 @@
     "lib"
   ],
   "dependencies": {
-    "@react-pdf/fontkit": "^2.0.6",
-    "@react-pdf/png-js": "^2.0.2",
+    "@govind-react-pdf/fontkit": "^2.0.6",
+    "@govind-react-pdf/png-js": "^2.0.2",
     "crypto-js": "^4.0.0"
   },
   "devDependencies": {

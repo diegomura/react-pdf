@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Link, Text, View, StyleSheet } from '@govind-react-pdf/renderer';
 
 const styles = StyleSheet.create({
   container: {

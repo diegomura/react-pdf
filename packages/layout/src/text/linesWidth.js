@@ -1,4 +1,4 @@
-import AttributedString from '@react-pdf/textkit/lib/attributedString';
+import AttributedString from '@govind-react-pdf/textkit/lib/attributedString';
 
 /**
  * Get lines width (if any)

@@ -84,7 +84,7 @@ const composeCanvases = (canvases) => {
 const range = (length) => Array.from({ length }, (_, index) => index)
 
 /**
- * Renders `@react-pdf/renderer` element to buffer
+ * Renders `@govind-react-pdf/renderer` element to buffer
  * @param {import('react').ReactElement} element — react element
  * @returns {Buffer} raw pdf buffer
  */

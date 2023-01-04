@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 
 import createCTX from '../ctx';
 import addMetadata from '../../src/operations/addMetadata';

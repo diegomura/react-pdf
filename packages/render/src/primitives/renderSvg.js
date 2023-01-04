@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 
 import renderPath from './renderPath';
 import renderRect from './renderRect';

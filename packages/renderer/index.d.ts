@@ -1,4 +1,4 @@
-declare module '@react-pdf/renderer' {
+declare module '@govind-react-pdf/renderer' {
   import * as React from 'react';
   import {
     Style,
@@ -9,7 +9,7 @@ declare module '@react-pdf/renderer' {
     SourceObject,
     HyphenationCallback,
     SVGPresentationAttributes,
-  } from '@react-pdf/types';
+  } from '@govind-react-pdf/types';
 
   namespace ReactPDF {
     interface Styles {

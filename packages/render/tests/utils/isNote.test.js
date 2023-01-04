@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@govind-react-pdf/primitives';
 import isNote from '../../src/utils/isNote';
 
 const ASSERTED_TYPE = P.Note;

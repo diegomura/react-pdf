@@ -38,12 +38,9 @@ const babelConfig = () => ({
 });
 
 const getExternal = ({ browser }) => [
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/regenerator',
+  /@babel\/runtime/,
   ...(browser ? [] : ['fs', 'path', 'url']),
-  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.dependencies).filter(name => name !== 'react-reconciler'),
   ...Object.keys(pkg.peerDependencies),
 ];
 
@@ -58,6 +55,7 @@ const getPlugins = ({ browser, minify = false }) => [
     preventAssignment: true,
     values: {
       BROWSER: JSON.stringify(browser),
+      'process.env.NODE_ENV': JSON.stringify('production'),
     },
   }),
   ...(minify ? [terser()] : []),

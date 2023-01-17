@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 3.2.2
+
+### Patch Changes
+
+- [#2141](https://github.com/diegomura/react-pdf/pull/2141) [`0000d34`](https://github.com/diegomura/react-pdf/commit/0000d347d5b2fec33ee213da4ba637f06be78fae) Thanks [@jeetiss](https://github.com/jeetiss)! - fix rendering freeze when `<Text>` is empty
+
 ## 3.2.1
 
 ### Patch Changes

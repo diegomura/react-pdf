@@ -8,7 +8,7 @@ const emptyString = '';
 const mount = async children => {
   const image = await renderToImage(
     <Document>
-      <Page>{children}</Page>
+      <Page size={[100, 100]}>{children}</Page>
     </Document>,
   );
 
@@ -28,7 +28,7 @@ describe('renderer', () => {
     expect(image).toMatchImageSnapshot();
   });
 
-  test('boolean', async  () => {
+  test('boolean', async () => {
     const image = await mount(<>{true || <Text>text</Text>}</>);
 
     expect(image).toMatchImageSnapshot();
@@ -42,6 +42,12 @@ describe('renderer', () => {
 
   test('numbers', async () => {
     const image = await mount(<>{10 || <Text>text</Text>}</>);
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('empty text element', async () => {
+    const image = await mount(<Text />);
 
     expect(image).toMatchImageSnapshot();
   });

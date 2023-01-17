@@ -16,7 +16,7 @@ const getDimension = node => {
 
   return {
     width: yogaNode.getComputedWidth(),
-    height: yogaNode.getComputedHeight() || 600,
+    height: yogaNode.getComputedHeight(),
   };
 };
 

@@ -12,9 +12,11 @@ import propsEqual from './utils/propsEqual';
 const emptyObject = {};
 
 const appendChild = (parentInstance, child) => {
+  const isParentLink = parentInstance.type === 'LINK';
   const isParentText = parentInstance.type === 'TEXT';
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
-  const isOrphanTextInstance = isChildTextInstance && !isParentText;
+  const isOrphanTextInstance =
+    isChildTextInstance && !isParentText && !isParentLink;
 
   // Ignore orphan text instances.
   // Caused by cases such as <>{name && <Text>{name}</Text>}</>

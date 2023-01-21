@@ -1,5 +1,11 @@
 # @react-pdf/renderer
 
+## 3.0.3
+
+### Patch Changes
+
+- [#2146](https://github.com/diegomura/react-pdf/pull/2146) [`2b05ef7`](https://github.com/diegomura/react-pdf/commit/2b05ef784b4ccf08dd06a91c4a6f054bddfaf5db) Thanks [@jeetiss](https://github.com/jeetiss)! - render text inside links
+
 ## 3.0.2
 
 ### Patch Changes

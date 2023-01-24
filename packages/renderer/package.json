@@ -37,7 +37,7 @@
     "scheduler": "^0.17.0"
   },
   "peerDependencies": {
-    "react": "^16.8.6 || ^17.0.0"
+    "react": "^16.8.6 || ^17.0.0 || ^18.2.0"
   },
   "lint-staged": {
     "*.js": [

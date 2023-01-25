@@ -52,6 +52,7 @@ import {
   setMinHeight,
   setMaxHeight,
 } from '../node/setDimension';
+import { setRowGap, setColumnGap } from '../node/setGap';
 import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
@@ -119,6 +120,8 @@ const setYogaValues = node => {
     setFlexBasis(node.style.flexBasis),
     setFlexGrow(node.style.flexGrow),
     setFlexShrink(node.style.flexShrink),
+    setRowGap(node.style.rowGap),
+    setColumnGap(node.style.columnGap),
   )(node);
 };
 

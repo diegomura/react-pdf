@@ -14,9 +14,11 @@ import {
 } from './paddings';
 import processObjectPosition from './objectPosition';
 import processTransformOrigin from './transformOrigin';
+import processGap from './gap';
 
 const shorthands = {
   flex: processFlex,
+  gap: processGap,
   margin: processMargin,
   marginHorizontal: processMarginHorizontal,
   marginVertical: processMarginVertical,

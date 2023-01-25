@@ -21,10 +21,8 @@
     "dist",
     "index.d.ts"
   ],
-  "dependencies": {
-    "@types/yoga-layout": "^1.9.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "yet-another-yoga-layout-fork": "jeetiss/yet-another-yoga-layout-fork"
+    "yoga-wasm-web": "~0.3.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
@@ -28,10 +28,10 @@
     "@babel/runtime": "^7.16.4",
     "@react-pdf/font": "^2.3.1",
     "@react-pdf/layout": "^3.2.1",
-    "@react-pdf/pdfkit": "^3.0.0",
+    "@react-pdf/pdfkit": "^3.0.1",
     "@react-pdf/primitives": "^3.0.0",
     "@react-pdf/render": "^3.2.1",
-    "@react-pdf/types": "^2.1.0",
+    "@react-pdf/types": "^2.1.1",
     "queue": "^6.0.1",
     "react-reconciler": "^0.23.0",
     "scheduler": "^0.17.0"

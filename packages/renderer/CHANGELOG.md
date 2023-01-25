@@ -1,5 +1,23 @@
 # @react-pdf/renderer
 
+## 3.0.3
+
+### Patch Changes
+
+- [#2146](https://github.com/diegomura/react-pdf/pull/2146) [`2b05ef7`](https://github.com/diegomura/react-pdf/commit/2b05ef784b4ccf08dd06a91c4a6f054bddfaf5db) Thanks [@jeetiss](https://github.com/jeetiss)! - render text inside links
+
+## 3.0.2
+
+### Patch Changes
+
+- [#2115](https://github.com/diegomura/react-pdf/pull/2115) [`a3f62c9`](https://github.com/diegomura/react-pdf/commit/a3f62c910c0128e0b4312480414dbf8b26dbca1c) Thanks [@jeetiss](https://github.com/jeetiss)! - fix `renderToString` method in node js
+
+* [#2106](https://github.com/diegomura/react-pdf/pull/2106) [`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581) Thanks [@RDO34](https://github.com/RDO34)! - Add `dpi` and `bookmark` page prop types
+
+* Updated dependencies [[`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581), [`8536f10`](https://github.com/diegomura/react-pdf/commit/8536f103830a9ed00211fc4c821b221377885a07)]:
+  - @react-pdf/types@2.1.1
+  - @react-pdf/pdfkit@3.0.1
+
 ## 3.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/layout",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "license": "MIT",
   "description": "Resolve overall document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

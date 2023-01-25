@@ -8,6 +8,7 @@ import {
   SourceObject,
   HyphenationCallback,
   SVGPresentationAttributes,
+  Bookmark,
 } from '@react-pdf/types';
 
 declare namespace ReactPDF {
@@ -73,6 +74,8 @@ declare namespace ReactPDF {
     debug?: boolean;
     size?: PageSize;
     orientation?: Orientation;
+    dpi?: number;
+    bookmark?: Bookmark;
     children?: React.ReactNode;
   }
 

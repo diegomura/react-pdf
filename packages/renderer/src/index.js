@@ -79,11 +79,18 @@ const pdf = initialValue => {
     });
   };
 
+  // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
   const toBuffer = async () => {
     callOnRender();
     return render();
   };
 
+  /*
+   * TODO: remove this method in next major release. it is buggy
+   * see
+   * - https://github.com/diegomura/react-pdf/issues/2112
+   * - https://github.com/diegomura/react-pdf/issues/2095
+   */
   const toString = async () => {
     let result = '';
     const instance = await render(false); // For some reason, when rendering to string if compress=true the document is blank

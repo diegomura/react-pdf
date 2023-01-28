@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/types",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "MIT",
   "description": "React-pdf TypeScript definitions",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

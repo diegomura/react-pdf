@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.2.0
+
+### Minor Changes
+
+- [#2160](https://github.com/diegomura/react-pdf/pull/2160) [`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284) Thanks [@jeetiss](https://github.com/jeetiss)! - implement flex gap
+
 ## 2.1.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @react-pdf/yoga
 
+## 4.0.0
+
+### Major Changes
+
+- [#2105](https://github.com/diegomura/react-pdf/pull/2105) [`a14ca9e`](https://github.com/diegomura/react-pdf/commit/a14ca9e62c9edc37f239558f8dbae29212b0da4d) Thanks [@jeetiss](https://github.com/jeetiss)! - migrate from yoga-layout-prebuilt to yoga-wasm-web
+
 ## 3.0.0
 
 ### Major Changes

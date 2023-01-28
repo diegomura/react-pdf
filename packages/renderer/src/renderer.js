@@ -3,10 +3,7 @@
 /* eslint-disable no-param-reassign */
 
 import ReactFiberReconciler from 'react-reconciler';
-import {
-  unstable_scheduleCallback as schedulePassiveEffects,
-  unstable_cancelCallback as cancelPassiveEffects,
-} from 'scheduler';
+import * as scheduler from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
 
@@ -34,9 +31,8 @@ const appendChild = (parentInstance, child) => {
 
 const createRenderer = ({ onChange = () => {} }) => {
   return ReactFiberReconciler({
-    schedulePassiveEffects,
-
-    cancelPassiveEffects,
+    schedulePassiveEffects: scheduler.unstable_scheduleCallback,
+    cancelPassiveEffects: scheduler.unstable_cancelCallback,
 
     supportsMutation: true,
 

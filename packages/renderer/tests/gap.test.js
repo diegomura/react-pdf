@@ -63,8 +63,8 @@ describe('flex', () => {
           display: 'flex',
           flexWrap: 'wrap',
           backgroundColor: '#e2e2e2',
-          rowGap: 60,
-          columnGap: 80,
+          rowGap: '60px',
+          columnGap: '80px',
         }}
       >
         {items.slice(0, 4).map((color, index) => (
@@ -81,5 +81,11 @@ describe('flex', () => {
     );
 
     expect(image).toMatchImageSnapshot();
+  });
+
+  test('should throw when value is percent', async () => {
+    expect(mount(<View style={{ gap: '10%' }} />)).rejects.toThrow(
+      "You can't pass percentage values to columnGap property",
+    );
   });
 });

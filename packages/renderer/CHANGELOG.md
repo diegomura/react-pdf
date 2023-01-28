@@ -1,5 +1,11 @@
 # @react-pdf/renderer
 
+## 3.1.1
+
+### Patch Changes
+
+- [#2161](https://github.com/diegomura/react-pdf/pull/2161) [`f648581`](https://github.com/diegomura/react-pdf/commit/f6485813c987f09a3aabca505fd0f6239ca5e58d) Thanks [@jeetiss](https://github.com/jeetiss)! - fix esm reexports
+
 ## 3.1.0
 
 ### Minor Changes

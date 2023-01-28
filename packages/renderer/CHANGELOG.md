@@ -1,5 +1,25 @@
 # @react-pdf/renderer
 
+## 3.1.0
+
+### Minor Changes
+
+- [#2140](https://github.com/diegomura/react-pdf/pull/2140) [`327f071`](https://github.com/diegomura/react-pdf/commit/327f071ea72a7abb22423009666ddf06838a0654) Thanks [@jeetiss](https://github.com/jeetiss)! - fix react peer dependency problem
+
+* [#2160](https://github.com/diegomura/react-pdf/pull/2160) [`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284) Thanks [@jeetiss](https://github.com/jeetiss)! - implement flex gap
+
+### Patch Changes
+
+- [#2158](https://github.com/diegomura/react-pdf/pull/2158) [`2343a99`](https://github.com/diegomura/react-pdf/commit/2343a9982c647b0c6684df911d001120ed55596b) Thanks [@jeetiss](https://github.com/jeetiss)! - add type definition for renderToBuffer method
+
+* [#2149](https://github.com/diegomura/react-pdf/pull/2149) [`54e9625`](https://github.com/diegomura/react-pdf/commit/54e962505a9917b20b2a3ffe8508a36a6bbc4f30) Thanks [@jeetiss](https://github.com/jeetiss)! - Fix "Invalid" error when a text label is a child of a Tspan element
+
+- [#1798](https://github.com/diegomura/react-pdf/pull/1798) [`17a8006`](https://github.com/diegomura/react-pdf/commit/17a80066453454dce6141f7da2033d348b4d53c8) Thanks [@karlhorky](https://github.com/karlhorky)! - fix types for @types/react@18
+
+- Updated dependencies [[`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284)]:
+  - @react-pdf/layout@3.3.0
+  - @react-pdf/types@2.2.0
+
 ## 3.0.3
 
 ### Patch Changes

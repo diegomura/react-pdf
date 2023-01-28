@@ -1,5 +1,18 @@
 # @react-pdf/layout
 
+## 3.3.0
+
+### Minor Changes
+
+- [#2160](https://github.com/diegomura/react-pdf/pull/2160) [`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284) Thanks [@jeetiss](https://github.com/jeetiss)! - implement flex gap
+
+### Patch Changes
+
+- Updated dependencies [[`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284), [`a14ca9e`](https://github.com/diegomura/react-pdf/commit/a14ca9e62c9edc37f239558f8dbae29212b0da4d)]:
+  - @react-pdf/stylesheet@4.1.0
+  - @react-pdf/types@2.2.0
+  - @react-pdf/yoga@4.0.0
+
 ## 3.2.2
 
 ### Patch Changes

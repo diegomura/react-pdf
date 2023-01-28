@@ -11,10 +11,10 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "build": "lerna run build --ignore @react-pdf/yoga",
+    "build": "lerna run build",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build --ignore @react-pdf/yoga",
+    "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "jest",
     "examples": "lerna run start --scope @react-pdf/examples",

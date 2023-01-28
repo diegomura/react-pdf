@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Flex direction', () => {
   test('flex_direction_column_no_height', () => {

@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Size overflow', () => {
   test('nested_overflowing_child', () => {

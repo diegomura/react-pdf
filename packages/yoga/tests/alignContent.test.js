@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Align content', () => {
   test('align content flex start', () => {
@@ -327,38 +327,6 @@ describe('Align content', () => {
     expect(root.getComputedLayout().width).toBe(100);
     expect(root.getComputedLayout().height).toBe(100);
 
-    expect(child0.getComputedLayout().left).toBe(0);
-    expect(child0.getComputedLayout().top).toBe(0);
-    expect(child0.getComputedLayout().width).toBe(50);
-    expect(child0.getComputedLayout().height).toBe(10);
-
-    expect(child1.getComputedLayout().left).toBe(0);
-    expect(child1.getComputedLayout().top).toBe(10);
-    expect(child1.getComputedLayout().width).toBe(50);
-    expect(child1.getComputedLayout().height).toBe(10);
-
-    expect(child2.getComputedLayout().left).toBe(0);
-    expect(child2.getComputedLayout().top).toBe(20);
-    expect(child2.getComputedLayout().width).toBe(50);
-    expect(child2.getComputedLayout().height).toBe(10);
-
-    expect(child3.getComputedLayout().left).toBe(0);
-    expect(child3.getComputedLayout().top).toBe(30);
-    expect(child3.getComputedLayout().width).toBe(50);
-    expect(child3.getComputedLayout().height).toBe(10);
-
-    expect(child4.getComputedLayout().left).toBe(0);
-    expect(child4.getComputedLayout().top).toBe(40);
-    expect(child4.getComputedLayout().width).toBe(50);
-    expect(child4.getComputedLayout().height).toBe(10);
-
-    root.calculateLayout(undefined, undefined, Yoga.DIRECTION_RTL);
-
-    expect(root.getComputedLayout().left).toBe(0);
-    expect(root.getComputedLayout().top).toBe(0);
-    expect(root.getComputedLayout().width).toBe(100);
-    expect(root.getComputedLayout().height).toBe(100);
-
     expect(child0.getComputedLayout().left).toBe(50);
     expect(child0.getComputedLayout().top).toBe(0);
     expect(child0.getComputedLayout().width).toBe(50);
@@ -380,6 +348,38 @@ describe('Align content', () => {
     expect(child3.getComputedLayout().height).toBe(10);
 
     expect(child4.getComputedLayout().left).toBe(50);
+    expect(child4.getComputedLayout().top).toBe(40);
+    expect(child4.getComputedLayout().width).toBe(50);
+    expect(child4.getComputedLayout().height).toBe(10);
+
+    root.calculateLayout(undefined, undefined, Yoga.DIRECTION_RTL);
+
+    expect(root.getComputedLayout().left).toBe(0);
+    expect(root.getComputedLayout().top).toBe(0);
+    expect(root.getComputedLayout().width).toBe(100);
+    expect(root.getComputedLayout().height).toBe(100);
+
+    expect(child0.getComputedLayout().left).toBe(0);
+    expect(child0.getComputedLayout().top).toBe(0);
+    expect(child0.getComputedLayout().width).toBe(50);
+    expect(child0.getComputedLayout().height).toBe(10);
+
+    expect(child1.getComputedLayout().left).toBe(0);
+    expect(child1.getComputedLayout().top).toBe(10);
+    expect(child1.getComputedLayout().width).toBe(50);
+    expect(child1.getComputedLayout().height).toBe(10);
+
+    expect(child2.getComputedLayout().left).toBe(0);
+    expect(child2.getComputedLayout().top).toBe(20);
+    expect(child2.getComputedLayout().width).toBe(50);
+    expect(child2.getComputedLayout().height).toBe(10);
+
+    expect(child3.getComputedLayout().left).toBe(0);
+    expect(child3.getComputedLayout().top).toBe(30);
+    expect(child3.getComputedLayout().width).toBe(50);
+    expect(child3.getComputedLayout().height).toBe(10);
+
+    expect(child4.getComputedLayout().left).toBe(0);
     expect(child4.getComputedLayout().top).toBe(40);
     expect(child4.getComputedLayout().width).toBe(50);
     expect(child4.getComputedLayout().height).toBe(10);

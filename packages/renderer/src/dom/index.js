@@ -16,6 +16,10 @@ export const renderToStream = () => {
   throwEnvironmentError('renderToStream');
 };
 
+export const renderToBuffer = () => {
+  throwEnvironmentError('renderToBuffer');
+};
+
 export const renderToString = () => {
   throwEnvironmentError('renderToString');
 };

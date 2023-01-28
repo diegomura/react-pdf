@@ -33,11 +33,13 @@
     "@react-pdf/render": "^3.2.1",
     "@react-pdf/types": "^2.1.1",
     "queue": "^6.0.1",
-    "react-reconciler": "^0.23.0",
+    "loose-envify": "^1.1.0",
+    "object-assign": "^4.1.1",
+    "prop-types": "^15.6.2",
     "scheduler": "^0.17.0"
   },
   "peerDependencies": {
-    "react": "^16.8.6 || ^17.0.0"
+    "react": "^16.8.6 || ^17.0.0 || ^18.0.0"
   },
   "lint-staged": {
     "*.js": [
@@ -66,6 +68,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
+    "react-reconciler": "0.23.0",
     "size-limit": "^7.0.5",
     "util": "^0.12.4"
   }

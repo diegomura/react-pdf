@@ -49,7 +49,7 @@ const getPlugins = ({ browser, minify = false }) => [
   sourceMaps(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   babel(babelConfig()),
-  commonjs(),
+  commonjs({ esmExternals: true, requireReturnsDefault: 'namespace' }),
   nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
     preventAssignment: true,

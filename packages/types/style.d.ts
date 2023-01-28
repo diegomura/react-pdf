@@ -12,6 +12,9 @@ export interface Style {
   flexShrink?: number;
   flexBasis?: number | string;
   justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between' | 'space-evenly';
+  gap?: number | string;
+  rowGap?: number;
+  columnGap?: number;
 
   // Layout
 

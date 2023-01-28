@@ -1,8 +1,7 @@
-import * as R from 'ramda';
+import { isNil } from '@react-pdf/fns';
 
 import copyRect from '../rect/copy';
 import cropRect from '../rect/crop';
-import sliceBlock from '../block/slice';
 import blockHeight from '../block/height';
 import truncateBlock from '../block/truncate';
 import layoutParagraph from './layoutParagraph';
@@ -18,11 +17,11 @@ import sliceBlockAtHeight from '../block/sliceAtHeight';
  * @param  {Object}  attributed strings (paragraphs)
  * @return {Array} paragraph blocks
  */
-const typesetter = (engines, options, container, attributedStrings) => {
+const typesetter = (engines, options, container) => attributedStrings => {
   const blocks = [];
   const paragraphs = [...attributedStrings];
   const layoutBlock = layoutParagraph(engines, options);
-  const maxLines = R.propOr(Infinity, 'maxLines', container);
+  const maxLines = isNil(container.maxLines) ? Infinity : container.maxLines;
   const truncateEllipsis = container.truncateMode === 'ellipsis';
 
   let linesCount = maxLines;
@@ -31,7 +30,7 @@ const typesetter = (engines, options, container, attributedStrings) => {
 
   while (linesCount > 0 && nextParagraph) {
     const block = layoutBlock(paragraphRect, nextParagraph);
-    const slicedBlock = sliceBlock(linesCount, block);
+    const slicedBlock = block.slice(0, linesCount);
     const linesHeight = blockHeight(slicedBlock);
 
     const shouldTruncate =
@@ -40,15 +39,12 @@ const typesetter = (engines, options, container, attributedStrings) => {
     linesCount -= slicedBlock.length;
 
     if (paragraphRect.height >= linesHeight) {
-      blocks.push(R.when(R.always(shouldTruncate), truncateBlock)(slicedBlock));
+      blocks.push(shouldTruncate ? truncateBlock(slicedBlock) : slicedBlock);
       paragraphRect = cropRect(linesHeight, paragraphRect);
       nextParagraph = paragraphs.shift();
     } else {
       blocks.push(
-        R.compose(
-          truncateBlock,
-          sliceBlockAtHeight(paragraphRect.height),
-        )(slicedBlock),
+        truncateBlock(sliceBlockAtHeight(paragraphRect.height, slicedBlock)),
       );
       break;
     }
@@ -57,4 +53,4 @@ const typesetter = (engines, options, container, attributedStrings) => {
   return blocks;
 };
 
-export default R.curryN(4, typesetter);
+export default typesetter;

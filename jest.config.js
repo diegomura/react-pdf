@@ -1,6 +1,7 @@
 module.exports = {
   setupFiles: ['<rootDir>setupTests.js'],
   projects: [
+    '<rootDir>packages/fns',
     '<rootDir>packages/yoga',
     '<rootDir>packages/font',
     '<rootDir>packages/image',
@@ -11,6 +12,5 @@ module.exports = {
     '<rootDir>packages/renderer',
     '<rootDir>packages/stylesheet',
     '<rootDir>packages/primitives',
-    '<rootDir>packages/unicode-properties',
   ],
 };

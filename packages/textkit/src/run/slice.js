@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import scale from './scale';
 import offset from './offset';
 import getFont from './getFont';
@@ -20,12 +18,12 @@ const slice = (start, end, run) => {
   const font = getFont(run);
 
   // Get glyph start and end indices
-  const glyphStartIndex = glyphIndexAt(start, run);
-  const glyphEndIndex = glyphIndexAt(end, run);
+  const startIndex = glyphIndexAt(start, run);
+  const endIndex = glyphIndexAt(end, run);
 
   // Get start and end glyph
-  const startGlyph = R.path(['glyphs', glyphStartIndex], run);
-  const endGlyph = R.path(['glyphs', glyphEndIndex], run);
+  const startGlyph = run.glyphs?.[startIndex];
+  const endGlyph = run.glyphs?.[endIndex];
 
   // Get start ligature chunks (if any)
   const startOffset = offset(start, run);
@@ -36,32 +34,23 @@ const slice = (start, end, run) => {
   const endOffset = offset(end, run);
   const endGlyphs = sliceGlyph(0, endOffset, font, endGlyph);
 
-  const sliceOffset = Math.min(1, startOffset);
+  // Compute new glyphs
+  const sliceStart = startIndex + Math.min(1, startOffset);
+  const glyphs = (run.glyphs || []).slice(sliceStart, endIndex);
 
-  return R.evolve({
-    start: R.add(start),
-    end: R.compose(
-      R.apply(R.min),
-      R.juxt([
-        R.identity, // string.end
-        R.o(R.add(end), R.always(run.start)), // end + string.start
-      ]),
-    ),
-    glyphs: glyphs =>
-      R.flatten([
-        startGlyphs,
-        glyphs.slice(glyphStartIndex + sliceOffset, glyphEndIndex),
-        endGlyphs,
-      ]),
-    positions: positions =>
-      R.flatten([
-        startGlyphs.map(g => ({ xAdvance: g.advanceWidth * runScale })),
-        positions.slice(glyphStartIndex + sliceOffset, glyphEndIndex),
-        endGlyphs.map(g => ({ xAdvance: g.advanceWidth * runScale })),
-      ]),
-    glyphIndices: R.o(normalizeIndices, R.slice(start, end)),
-    attributes: R.identity,
-  })(run);
+  // Compute new positions
+  const glyphPosition = g => ({ xAdvance: g.advanceWidth * runScale });
+  const startPositions = startGlyphs.map(glyphPosition);
+  const positions = (run.positions || []).slice(sliceStart, endIndex);
+  const endPositions = endGlyphs.map(glyphPosition);
+
+  return Object.assign({}, run, {
+    start: run.start + start,
+    end: Math.min(run.end, run.start + end),
+    glyphIndices: normalizeIndices((run.glyphIndices || []).slice(start, end)),
+    glyphs: [startGlyphs, glyphs, endGlyphs].flat(),
+    positions: [startPositions, positions, endPositions].flat(),
+  });
 };
 
-export default R.curryN(3, slice);
+export default slice;

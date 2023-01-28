@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Rounding', () => {
   test('rounding_flex_basis_flex_grow_row_width_of_100', () => {

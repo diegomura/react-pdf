@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Get ligature offset by index
  *
@@ -14,14 +12,12 @@ import * as R from 'ramda';
  * @return {number} ligature offset
  */
 const offset = (index, run) => {
-  const value = R.pathOr(null, ['glyphIndices', index], run);
+  if (!run) return 0;
 
-  return R.compose(
-    R.length,
-    R.dropWhile(R.gt(value)),
-    R.slice(0, index),
-    R.propOr([], 'glyphIndices'),
-  )(run);
+  const glyphIndices = run.glyphIndices || [];
+  const value = glyphIndices[index];
+
+  return glyphIndices.slice(0, index).filter(i => i === value).length;
 };
 
-export default R.curryN(2, offset);
+export default offset;

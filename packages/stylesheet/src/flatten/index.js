@@ -1,8 +1,4 @@
-import * as R from 'ramda';
-
-const isNotArray = R.complement(R.is(Array));
-
-const castArray = R.when(isNotArray, v => [v]);
+import { compose, castArray } from '@react-pdf/fns';
 
 /**
  * Remove nil values from array
@@ -10,15 +6,7 @@ const castArray = R.when(isNotArray, v => [v]);
  * @param {Array} array
  * @returns {Array} array without nils
  */
-const compact = R.filter(Boolean);
-
-/**
- * Checks if value is array
- *
- * @param {any} value
- * @returns {Boolean} is value an array
- */
-const isArray = R.is(Array);
+const compact = array => array.filter(Boolean);
 
 /**
  * Merges style objects array
@@ -28,7 +16,7 @@ const isArray = R.is(Array);
  */
 const mergeStyles = styles =>
   styles.reduce((acc, style) => {
-    const s = isArray(style) ? flatten(style) : style;
+    const s = Array.isArray(style) ? flatten(style) : style;
 
     Object.keys(s).forEach(key => {
       if (s[key] !== null && s[key] !== undefined) {
@@ -45,6 +33,6 @@ const mergeStyles = styles =>
  * @param {Array} style objects array
  * @returns {Object} flatted style object
  */
-const flatten = R.compose(mergeStyles, compact, castArray);
+const flatten = compose(mergeStyles, compact, castArray);
 
 export default flatten;

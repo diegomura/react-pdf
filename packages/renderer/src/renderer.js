@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 
@@ -11,6 +12,26 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
+const appendChild = (parentInstance, child) => {
+  const isParentText =
+    parentInstance.type === 'TEXT' ||
+    parentInstance.type === 'LINK' ||
+    parentInstance.type === 'TSPAN';
+  const isChildTextInstance = child.type === 'TEXT_INSTANCE';
+  const isOrphanTextInstance = isChildTextInstance && !isParentText;
+
+  // Ignore orphan text instances.
+  // Caused by cases such as <>{name && <Text>{name}</Text>}</>
+  if (isOrphanTextInstance) {
+    console.warn(
+      `Invalid '${child.value}' string child outside <Text> component`,
+    );
+    return;
+  }
+
+  parentInstance.children.push(child);
+};
+
 const createRenderer = ({ onChange = () => {} }) => {
   return ReactFiberReconciler({
     schedulePassiveEffects,
@@ -23,9 +44,7 @@ const createRenderer = ({ onChange = () => {} }) => {
 
     warnsIfNotActing: false,
 
-    appendInitialChild(parentInstance, child) {
-      parentInstance.children.push(child);
-    },
+    appendInitialChild: appendChild,
 
     createInstance(type, { style, children, ...props }) {
       return {
@@ -83,15 +102,13 @@ const createRenderer = ({ onChange = () => {} }) => {
 
     useSyncScheduling: true,
 
-    appendChild(parentInstance, child) {
-      parentInstance.children.push(child);
-    },
+    appendChild,
 
     appendChildToContainer(parentInstance, child) {
       if (parentInstance.type === 'ROOT') {
         parentInstance.document = child;
       } else {
-        parentInstance.children.push(child);
+        appendChild(parentInstance, child);
       }
     },
 

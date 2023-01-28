@@ -1,5 +1,3 @@
-import range from './utils/range';
-
 class Data {
   constructor(data = []) {
     this.pos = 0;
@@ -87,11 +85,7 @@ class Data {
 
   readString(length) {
     const ret = [];
-    for (
-      let i = 0, end = length, asc = 0 <= end;
-      asc ? i < end : i > end;
-      asc ? i++ : i--
-    ) {
+    for (let i = 0; i < length; i++) {
       ret[i] = String.fromCharCode(this.readByte());
     }
 
@@ -99,9 +93,12 @@ class Data {
   }
 
   writeString(val) {
-    return range(0, val.length, false).map(i =>
-      this.writeByte(val.charCodeAt(i)),
-    );
+    // todo: remove returning data. Seems not used
+    const result = [];
+    for (let i = 0; i <= val.length; i++) {
+      result.push(this.writeByte(val.charCodeAt(i)));
+    }
+    return result;
   }
 
   stringAt(pos, length) {
@@ -182,11 +179,7 @@ class Data {
 
   read(bytes) {
     const buf = [];
-    for (
-      let i = 0, end = bytes, asc = 0 <= end;
-      asc ? i < end : i > end;
-      asc ? i++ : i--
-    ) {
+    for (let i = 0; i < bytes; i++) {
       buf.push(this.readByte());
     }
 
@@ -194,7 +187,7 @@ class Data {
   }
 
   write(bytes) {
-    return Array.from(bytes).map(byte => this.writeByte(byte));
+    return bytes.map(byte => this.writeByte(byte));
   }
 }
 

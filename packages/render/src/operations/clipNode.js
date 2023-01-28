@@ -1,11 +1,9 @@
-import * as R from 'ramda';
-
 // This constant is used to approximate a symmetrical arc using a cubic
 // Bezier curve.
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
 const clipNode = (ctx, node) => {
-  if (!node.style) return node;
+  if (!node.style) return;
 
   const { top, left, width, height } = node.box;
 
@@ -67,8 +65,6 @@ const clipNode = (ctx, node) => {
   ctx.bezierCurveTo(left, top + ctl, left + ctl, top, left + rtl, top);
   ctx.closePath();
   ctx.clip();
-
-  return node;
 };
 
-export default R.curryN(2, clipNode);
+export default clipNode;

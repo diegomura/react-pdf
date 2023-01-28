@@ -1,13 +1,12 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
 import { transformColor, processTransform } from '@react-pdf/stylesheet';
+import { pick, evolve, compose, mapValues, matchPercent } from '@react-pdf/fns';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
 import getContainer from '../svg/getContainer';
 import parseViewbox from '../svg/parseViewbox';
 import inheritProps from '../svg/inheritProps';
-import matchPercent from '../utils/matchPercent';
 import parseAspectRatio from '../svg/parseAspectRatio';
 
 const STYLE_PROPS = [
@@ -32,7 +31,7 @@ const STYLE_PROPS = [
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
 const HORIZONTAL_PROPS = ['x', 'x1', 'x2', 'width', 'cx', 'rx'];
 
-const isType = R.propEq('type');
+const isType = type => node => node.type === type;
 
 const isSvg = isType(P.Svg);
 
@@ -40,8 +39,8 @@ const isText = isType(P.Text);
 
 const isTextInstance = isType(P.TextInstance);
 
-const transformPercent = container =>
-  R.mapObjIndexed((value, key) => {
+const transformPercent = container => props =>
+  mapValues(props, (value, key) => {
     const match = matchPercent(value);
 
     if (match && VERTICAL_PROPS.includes(key)) {
@@ -60,60 +59,73 @@ const parsePercent = value => {
   return match ? match.percent : parseFloat(value);
 };
 
-const parseProps = container =>
-  R.compose(
-    R.evolve({
-      props: R.o(
-        R.evolve({
-          x: parseFloat,
-          x1: parseFloat,
-          x2: parseFloat,
-          y: parseFloat,
-          y1: parseFloat,
-          y2: parseFloat,
-          r: parseFloat,
-          rx: parseFloat,
-          ry: parseFloat,
-          cx: parseFloat,
-          cy: parseFloat,
-          width: parseFloat,
-          height: parseFloat,
-          offset: parsePercent,
-          fill: transformColor,
-          opacity: parsePercent,
-          stroke: transformColor,
-          stopOpacity: parsePercent,
-          stopColor: transformColor,
-          transform: processTransform,
-        }),
-        transformPercent(container),
-      ),
-    }),
+const parseProps = container => node => {
+  let props = transformPercent(container)(node.props);
+
+  props = evolve(
+    {
+      x: parseFloat,
+      x1: parseFloat,
+      x2: parseFloat,
+      y: parseFloat,
+      y1: parseFloat,
+      y2: parseFloat,
+      r: parseFloat,
+      rx: parseFloat,
+      ry: parseFloat,
+      cx: parseFloat,
+      cy: parseFloat,
+      width: parseFloat,
+      height: parseFloat,
+      offset: parsePercent,
+      fill: transformColor,
+      opacity: parsePercent,
+      stroke: transformColor,
+      stopOpacity: parsePercent,
+      stopColor: transformColor,
+      transform: processTransform,
+    },
+    props,
   );
+
+  return Object.assign({}, node, { props });
+};
 
 const mergeStyles = node => {
   const style = node.style || {};
-  return R.evolve({ props: R.merge(style) }, node);
+  const props = Object.assign({}, style, node.props);
+
+  return Object.assign({}, node, { props });
 };
 
-const removeNoneValues = R.evolve({
-  props: R.map(R.when(R.equals('none'), R.always(null))),
-});
+const removeNoneValues = node => {
+  const removeNone = value => (value === 'none' ? null : value);
+  const props = mapValues(node.props, removeNone);
+
+  return Object.assign({}, node, { props });
+};
 
 const pickStyleProps = node => {
   const props = node.props || {};
-  const styleProps = R.pick(STYLE_PROPS, props);
-  return R.evolve({ style: R.merge(styleProps) }, node);
+  const styleProps = pick(STYLE_PROPS, props);
+  const style = Object.assign({}, styleProps, node.style || {});
+
+  return Object.assign({}, node, { style });
 };
 
-const parseSvgProps = R.evolve({
-  props: R.evolve({
-    width: parseFloat,
-    height: parseFloat,
-    viewBox: parseViewbox,
-    preserveAspectRatio: parseAspectRatio,
-  }),
-});
+const parseSvgProps = node => {
+  const props = evolve(
+    {
+      width: parseFloat,
+      height: parseFloat,
+      viewBox: parseViewbox,
+      preserveAspectRatio: parseAspectRatio,
+    },
+    node.props,
+  );
+
+  return Object.assign({}, node, { props });
+};
 
 const wrapBetweenTspan = node => ({
   type: P.Tspan,
@@ -121,41 +133,53 @@ const wrapBetweenTspan = node => ({
   children: [node],
 });
 
-const addMissingTspan = R.when(
-  isText,
-  R.evolve({
-    children: R.map(R.when(isTextInstance, wrapBetweenTspan)),
-  }),
-);
+const addMissingTspan = node => {
+  if (!isText(node)) return node;
+  if (!node.children) return node;
+
+  const resolveChild = child =>
+    isTextInstance(child) ? wrapBetweenTspan(child) : child;
+
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
+};
+
+const parseText = fontStore => node => {
+  if (isText(node)) return layoutText(fontStore, node);
+
+  if (!node.children) return node;
+
+  const children = node.children.map(parseText(fontStore));
+
+  return Object.assign({}, node, { children });
+};
 
 const resolveSvgNode = container =>
-  R.compose(
+  compose(
     parseProps(container),
     addMissingTspan,
     removeNoneValues,
     mergeStyles,
   );
 
-const resolveChildren = container => node =>
-  R.evolve({
-    children: R.map(
-      R.compose(resolveChildren(container), resolveSvgNode(container)),
-    ),
-  })(node);
+const resolveChildren = container => node => {
+  if (!node.children) return node;
 
-const parseText = fontStore => node =>
-  R.ifElse(
-    isText,
-    layoutText(fontStore),
-    R.evolve({
-      children: R.map(parseText(fontStore)),
-    }),
-  )(node);
+  const resolveChild = compose(
+    resolveChildren(container),
+    resolveSvgNode(container),
+  );
 
-const resolveSvgRoot = fontStore => node => {
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
+};
+
+const resolveSvgRoot = (node, fontStore) => {
   const container = getContainer(node);
 
-  return R.compose(
+  return compose(
     replaceDefs,
     parseText(fontStore),
     parseSvgProps,
@@ -173,12 +197,14 @@ const resolveSvgRoot = fontStore => node => {
  * @returns {Object} root node
  */
 const resolveSvg = (node, fontStore) => {
-  const mapChild = child => resolveSvg(child, fontStore);
+  if (!node.children) return node;
 
-  return R.compose(
-    R.evolve({ children: R.map(mapChild) }),
-    R.when(isSvg, resolveSvgRoot(fontStore)),
-  )(node);
+  const resolveChild = child => resolveSvg(child, fontStore);
+  const root = isSvg(node) ? resolveSvgRoot(node, fontStore) : node;
+
+  const children = root.children.map(resolveChild);
+
+  return Object.assign({}, root, { children });
 };
 
 export default resolveSvg;

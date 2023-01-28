@@ -1,7 +1,6 @@
-import * as R from 'ramda';
-
 import omit from '../run/omit';
 import stringHeight from '../attributedString/height';
+import generateLineRects from './generateLineRects';
 
 const ATTACHMENT_CODE = '\ufffc'; // 65532
 
@@ -11,12 +10,15 @@ const ATTACHMENT_CODE = '\ufffc'; // 65532
  * @param  {Object} attributed string
  * @return {Object} attributed string
  */
-const purgeAttachments = R.when(
-  R.compose(R.not, R.includes(ATTACHMENT_CODE), R.prop('string')),
-  R.evolve({
-    runs: R.map(omit('attachment')),
-  }),
-);
+const purgeAttachments = attributedString => {
+  const shouldPurge = !attributedString.string.includes(ATTACHMENT_CODE);
+
+  if (!shouldPurge) return attributedString;
+
+  const runs = attributedString.runs.map(run => omit('attachment', run));
+
+  return Object.assign({}, attributedString, { runs });
+};
 
 /**
  * Layout paragraphs inside rectangle
@@ -25,26 +27,35 @@ const purgeAttachments = R.when(
  * @param  {Array} attributed strings
  * @return {Object} layout blocks
  */
-const layoutLines = (rect, lines, indent) => {
+const layoutLines = (rects, lines, indent) => {
+  let rect = rects.shift();
   let currentY = rect.y;
 
-  return R.addIndex(R.map)(
-    R.compose(purgeAttachments, (line, i) => {
-      const lineIndent = i === 0 ? indent : 0;
-      const style = R.pathOr({}, ['runs', 0, 'attributes'], line);
-      const height = Math.max(stringHeight(line), style.lineHeight);
-      const box = {
-        x: rect.x + lineIndent,
-        y: currentY,
-        width: rect.width - lineIndent,
-        height,
-      };
+  return lines.map((line, i) => {
+    const lineIndent = i === 0 ? indent : 0;
+    const style = line.runs?.[0]?.attributes || {};
+    const height = Math.max(stringHeight(line), style.lineHeight);
 
-      currentY += height;
+    if (currentY + height > rect.y + rect.height && rects.length > 0) {
+      rect = rects.shift();
+      currentY = rect.y;
+    }
 
-      return R.compose(R.assoc('box', box), R.omit(['syllables']))(line);
-    }),
-  )(lines);
+    const newLine = Object.assign({}, line);
+
+    delete newLine.syllables;
+
+    newLine.box = {
+      x: rect.x + lineIndent,
+      y: currentY,
+      width: rect.width - lineIndent,
+      height,
+    };
+
+    currentY += height;
+
+    return purgeAttachments(newLine);
+  });
 };
 
 /**
@@ -56,14 +67,17 @@ const layoutLines = (rect, lines, indent) => {
  * @param  {Object} attributed string
  * @return {Object} layout block
  */
-const layoutParagraph = (engines, options) => (rect, paragraph) => {
-  const indent = R.pathOr(0, ['runs', 0, 'attributes', 'indent'], paragraph);
-  const lines = engines.linebreaker(options)(paragraph, [
-    rect.width - indent,
-    rect.width,
-  ]);
-  const lineFragments = layoutLines(rect, lines, indent);
-  return lineFragments;
+const layoutParagraph = (engines, options) => (container, paragraph) => {
+  const height = stringHeight(paragraph);
+  const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
+  const rects = generateLineRects(container, height);
+
+  const availableWidths = rects.map(r => r.width);
+  availableWidths[0] -= indent;
+
+  const lines = engines.linebreaker(options)(paragraph, availableWidths);
+
+  return layoutLines(rects, lines, indent);
 };
 
 export default layoutParagraph;

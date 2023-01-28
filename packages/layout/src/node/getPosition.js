@@ -5,7 +5,7 @@
  * @return {Object} position
  */
 const getPosition = node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   return {
     top: yogaNode?.getComputedTop() || 0,

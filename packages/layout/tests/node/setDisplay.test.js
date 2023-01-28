@@ -4,7 +4,7 @@ import setDisplay from '../../src/node/setDisplay';
 
 describe('node setDisplay', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setDisplay: mock } };
+  const node = { yogaNode: { setDisplay: mock } };
 
   beforeEach(() => {
     mock.mockReset();

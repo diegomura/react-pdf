@@ -8,6 +8,7 @@ import {
   SourceObject,
   HyphenationCallback,
   SVGPresentationAttributes,
+  Bookmark,
 } from '@react-pdf/types';
 
 declare namespace ReactPDF {
@@ -28,6 +29,7 @@ declare namespace ReactPDF {
     language?: string;
     pdfVersion?: PDFVersion;
     onRender?: (props: OnRenderProps) => any;
+    children?: React.ReactNode;
   }
 
   /**
@@ -72,6 +74,9 @@ declare namespace ReactPDF {
     debug?: boolean;
     size?: PageSize;
     orientation?: Orientation;
+    dpi?: number;
+    bookmark?: Bookmark;
+    children?: React.ReactNode;
   }
 
   /**
@@ -446,6 +451,7 @@ declare namespace ReactPDF {
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
+    onClick?: Function;
   }
 
   /**
@@ -497,6 +503,7 @@ declare namespace ReactPDF {
     document: React.ReactElement<DocumentProps>,
   ) => Promise<NodeJS.ReadableStream>;
 
+  const renderToBuffer: (document: React.ReactElement<DocumentProps>) => Promise<Buffer>;
   const renderToString: (document: React.ReactElement<DocumentProps>) => Promise<string>;
 
   const renderToFile: (

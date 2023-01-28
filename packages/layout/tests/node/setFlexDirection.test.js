@@ -4,7 +4,7 @@ import setFlexDirection from '../../src/node/setFlexDirection';
 
 describe('node setFlexDirection', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setFlexDirection: mock } };
+  const node = { yogaNode: { setFlexDirection: mock } };
 
   beforeEach(() => {
     mock.mockReset();

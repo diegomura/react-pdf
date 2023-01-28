@@ -1,10 +1,10 @@
-import * as R from 'ramda';
-import layoutEngine from '@react-pdf/textkit/lib/layout';
-import linebreaker from '@react-pdf/textkit/lib/engines/linebreaker';
-import justification from '@react-pdf/textkit/lib/engines/justification';
-import textDecoration from '@react-pdf/textkit/lib/engines/textDecoration';
-import scriptItemizer from '@react-pdf/textkit/lib/engines/scriptItemizer';
-import wordHyphenation from '@react-pdf/textkit/lib/engines/wordHyphenation';
+import layoutEngine, {
+  linebreaker,
+  justification,
+  scriptItemizer,
+  wordHyphenation,
+  textDecoration,
+} from '@react-pdf/textkit';
 
 import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';
@@ -20,9 +20,9 @@ const engines = {
 
 const engine = layoutEngine(engines);
 
-const getMaxLines = R.path(['style', 'maxLines']);
+const getMaxLines = node => node.style?.maxLines;
 
-const getTextOverflow = R.path(['style', 'textOverflow']);
+const getTextOverflow = node => node.style?.textOverflow;
 
 /**
  * Get layout container for specific text node
@@ -76,7 +76,7 @@ const layoutText = (node, width, height, fontStore) => {
   const options = getLayoutOptions(fontStore, node);
   const lines = engine(attributedString, container, options);
 
-  return R.reduce(R.concat, [], lines);
+  return lines.reduce((acc, line) => [...acc, ...line], []);
 };
 
-export default R.curryN(4, layoutText);
+export default layoutText;

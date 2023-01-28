@@ -1,6 +1,4 @@
-import * as R from 'ramda';
-
-import addToRun from '../run/add';
+import add from '../run/add';
 import emptyRun from '../run/empty';
 import prependToRun from '../run/prepend';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
@@ -12,20 +10,16 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {Object} attributed string
  * @return {Object} attributed string with new glyph
  */
-const prepend = (glyph, string) => {
-  const codePoints = R.propOr([], 'codePoints')(glyph);
+const prepend = (glyph, attributedString) => {
+  const codePoints = glyph?.codePoints || [];
+  const string = stringFromCodePoints(codePoints) + attributedString.string;
 
-  return R.evolve({
-    string: R.concat(stringFromCodePoints(codePoints)),
-    runs: R.converge(R.concat, [
-      R.compose(
-        R.unapply(R.identity),
-        prependToRun(glyph),
-        R.either(R.head, emptyRun),
-      ),
-      R.compose(R.map(addToRun(codePoints.length)), R.tail),
-    ]),
-  })(string);
+  const offset = codePoints.length;
+  const firstRun = attributedString.runs[0] || emptyRun();
+  const lastRuns = attributedString.runs.slice(1).map(run => add(offset, run));
+  const runs = [prependToRun(glyph, firstRun)].concat(lastRuns);
+
+  return Object.assign({}, attributedString, { runs, string });
 };
 
-export default R.curryN(2, prepend);
+export default prepend;

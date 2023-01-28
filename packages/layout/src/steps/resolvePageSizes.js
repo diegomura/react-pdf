@@ -1,6 +1,4 @@
-import * as R from 'ramda';
-import flatten from '@react-pdf/stylesheet/lib/flatten';
-
+import { flatten } from '@react-pdf/stylesheet';
 import getPageSize from '../page/getSize';
 
 /**
@@ -12,6 +10,7 @@ import getPageSize from '../page/getSize';
 export const resolvePageSize = page => {
   const size = getPageSize(page);
   const style = flatten(page.style || {});
+
   return { ...page, style: { ...style, ...size } };
 };
 
@@ -21,8 +20,12 @@ export const resolvePageSize = page => {
  * @param {Object} document root
  * @returns {Object} document root with resolved page sizes
  */
-const resolvePageSizes = R.evolve({
-  children: R.map(resolvePageSize),
-});
+const resolvePageSizes = root => {
+  if (!root.children) return root;
+
+  const children = root.children.map(resolvePageSize);
+
+  return Object.assign({}, root, { children });
+};
 
 export default resolvePageSizes;

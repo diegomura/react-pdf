@@ -1,9 +1,10 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 
-const isRow = R.equals('row');
-const isRowReverse = R.equals('row-reverse');
-const isColumnReverse = R.equals('column-reverse');
+const FLEX_DIRECTIONS = {
+  row: Yoga.FLEX_DIRECTION_ROW,
+  'row-reverse': Yoga.FLEX_DIRECTION_ROW_REVERSE,
+  'column-reverse': Yoga.FLEX_DIRECTION_COLUMN_REVERSE,
+};
 
 /**
  * Set flex direction attribute to node's Yoga instance
@@ -12,20 +13,15 @@ const isColumnReverse = R.equals('column-reverse');
  * @param {Object} node instance
  * @return {Object} node instance
  */
-const setFlexDirection = value =>
-  R.tap(node => {
-    const yogaNode = node._yogaNode;
+const setFlexDirection = value => node => {
+  const { yogaNode } = node;
 
-    if (yogaNode) {
-      const yogaValue = R.cond([
-        [isRow, R.always(Yoga.FLEX_DIRECTION_ROW)],
-        [isRowReverse, R.always(Yoga.FLEX_DIRECTION_ROW_REVERSE)],
-        [isColumnReverse, R.always(Yoga.FLEX_DIRECTION_COLUMN_REVERSE)],
-        [R.T, R.always(Yoga.FLEX_DIRECTION_COLUMN)],
-      ])(value);
+  if (yogaNode) {
+    const flexDirection = FLEX_DIRECTIONS[value] || Yoga.FLEX_DIRECTION_COLUMN;
+    yogaNode.setFlexDirection(flexDirection);
+  }
 
-      yogaNode.setFlexDirection(yogaValue);
-    }
-  });
+  return node;
+};
 
 export default setFlexDirection;

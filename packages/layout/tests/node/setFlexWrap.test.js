@@ -4,7 +4,7 @@ import setFlexWrap from '../../src/node/setFlexWrap';
 
 describe('node setFlexWrap', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setFlexWrap: mock } };
+  const node = { yogaNode: { setFlexWrap: mock } };
 
   beforeEach(() => {
     mock.mockReset();

@@ -1,11 +1,8 @@
-import * as R from 'ramda';
 import hlsToHex from 'hsl-to-hex';
 import colorString from 'color-string';
 
-const isRgb = R.test(/rgb/g);
-const isRgba = R.test(/rgba/g);
-const isHsl = R.test(/hsl/g);
-const isHsla = R.test(/hsla/g);
+const isRgb = value => /rgba?/g.test(value);
+const isHsl = value => /hsla?/g.test(value);
 
 /**
  * Transform rgb color to hexa
@@ -13,7 +10,10 @@ const isHsla = R.test(/hsla/g);
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const parseRgb = R.compose(colorString.to.hex, colorString.get.rgb);
+const parseRgb = value => {
+  const rgb = colorString.get.rgb(value);
+  return colorString.to.hex(rgb);
+};
 
 /**
  * Transform Hsl color to hexa
@@ -21,12 +21,12 @@ const parseRgb = R.compose(colorString.to.hex, colorString.get.rgb);
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const parseHsl = R.compose(
-  R.toUpper,
-  R.apply(hlsToHex),
-  R.map(Math.round),
-  colorString.get.hsl,
-);
+const parseHsl = value => {
+  const hsl = colorString.get.hsl(value).map(Math.round);
+  const hex = hlsToHex(...hsl);
+
+  return hex.toUpperCase();
+};
 
 /**
  * Transform given color to hexa
@@ -34,13 +34,11 @@ const parseHsl = R.compose(
  * @param {String} styles value
  * @returns {Object} transformed value
  */
-const transformColor = value =>
-  R.cond([
-    [isRgba, parseRgb],
-    [isRgb, parseRgb],
-    [isHsla, parseHsl],
-    [isHsl, parseHsl],
-    [R.T, R.always(value)],
-  ])(value);
+const transformColor = value => {
+  if (isRgb(value)) return parseRgb(value);
+  if (isHsl(value)) return parseHsl(value);
+
+  return value;
+};
 
 export default transformColor;

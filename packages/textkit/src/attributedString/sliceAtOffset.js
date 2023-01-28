@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import slice from './slice';
 import indexAtOffset from './indexAtOffset';
 
@@ -15,4 +13,4 @@ const sliceAtOffset = (offset, string) => {
   return slice(0, index, string);
 };
 
-export default R.curryN(2, sliceAtOffset);
+export default sliceAtOffset;

@@ -11,10 +11,10 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "build": "lerna run build --ignore @react-pdf/yoga",
+    "build": "lerna run build",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build --ignore @react-pdf/yoga",
+    "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "jest",
     "examples": "lerna run start --scope @react-pdf/examples",
@@ -43,7 +43,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "canvas": "^2.8.0",
+    "canvas": "^2.11.0",
     "chalk": "^2.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
@@ -61,7 +61,7 @@
     "lint-staged": "^10.5.4",
     "mock-fs": "^4.8.0",
     "mockdate": "^2.0.2",
-    "pdfjs-dist": "2.8.335",
+    "pdfjs-dist": "3.1.81",
     "prettier": "^1.16.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -69,6 +69,7 @@
     "rollup": "^2.60.1",
     "rollup-plugin-ignore": "^1.0.10",
     "rollup-plugin-local-resolve": "^1.0.7",
+    "rollup-plugin-polyfill-node": "^0.9.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^7.0.2"
   },
@@ -82,5 +83,6 @@
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  }
+  },
+  "dependencies": {}
 }

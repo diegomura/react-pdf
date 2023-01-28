@@ -1,7 +1,11 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import { terser } from 'rollup-plugin-terser';
+import alias from '@rollup/plugin-alias';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import pkg from './package.json';
+import commonjs from '@rollup/plugin-commonjs';
 
 const cjs = {
   exports: 'named',
@@ -15,81 +19,62 @@ const esm = {
 const getCJS = override => Object.assign({}, cjs, override);
 const getESM = override => Object.assign({}, esm, override);
 
-const configBase = {
-  input: 'src/index.js',
-  external: ['zlib'],
-  plugins: [
-    babel({
-      babelrc: false,
-      babelHelpers: 'runtime',
-      exclude: 'node_modules/**',
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            loose: true,
-            modules: false,
-            targets: { node: '12', browsers: 'last 2 versions' },
-          },
-        ],
-      ],
-      plugins: [['@babel/plugin-transform-runtime', { version: '^7.16.4' }]],
-    }),
-  ],
-};
+const input = 'src/index.js';
 
-const serverConfig = Object.assign({}, configBase, {
+const babelConfig = () => ({
+  babelrc: true,
+  babelHelpers: 'runtime',
+  exclude: 'node_modules/**',
+});
+
+const getExternal = ({ browser }) => [
+  ...(browser ? [] : ['fs']),
+  ...Object.keys(pkg.dependencies).filter(
+    dep => !browser || 'browserify-zlib' !== dep,
+  ),
+];
+
+const getPlugins = ({ browser }) => [
+  ...(browser
+    ? [
+        ignore(['fs']),
+        alias({
+          entries: [{ find: 'zlib', replacement: 'browserify-zlib' }],
+        }),
+        commonjs(),
+        nodeResolve({ browser, preferBuiltins: !browser }),
+        nodePolyfills({
+          include: [/node_modules\/.+\.js/, /\/png-js\/src\/.*\.js/],
+        }),
+      ]
+    : []),
+  babel(babelConfig()),
+  replace({
+    preventAssignment: true,
+    values: {
+      BROWSER: JSON.stringify(browser),
+    },
+  }),
+];
+
+const serverConfig = {
+  input,
   output: [
     getESM({ file: 'lib/png-js.es.js' }),
     getCJS({ file: 'lib/png-js.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    replace({
-      preventAssignment: true,
-      values: {
-        BROWSER: JSON.stringify(false),
-      },
-    }),
-  ),
-  external: ['fs'],
-});
+  external: getExternal({ browser: false }),
+  plugins: getPlugins({ browser: false }),
+};
 
-const serverProdConfig = Object.assign({}, serverConfig, {
-  output: [
-    getESM({ file: 'lib/png-js.es.min.js' }),
-    getCJS({ file: 'lib/png-js.cjs.min.js' }),
-  ],
-  plugins: serverConfig.plugins.concat(terser()),
-});
-
-const browserConfig = Object.assign({}, configBase, {
+const browserConfig = {
+  input,
   output: [
     getESM({ file: 'lib/png-js.browser.es.js' }),
     getCJS({ file: 'lib/png-js.browser.cjs.js' }),
   ],
-  plugins: configBase.plugins.concat(
-    replace({
-      preventAssignment: true,
-      values: {
-        BROWSER: JSON.stringify(true),
-        'png-js': 'png-js/png.js',
-      },
-    }),
-    ignore(['fs']),
-  ),
-});
+  external: getExternal({ browser: true }),
+  plugins: getPlugins({ browser: true }),
+};
 
-const browserProdConfig = Object.assign({}, browserConfig, {
-  output: [
-    getESM({ file: 'lib/png-js.browser.es.min.js' }),
-    getCJS({ file: 'lib/png-js.browser.cjs.min.js' }),
-  ],
-  plugins: browserConfig.plugins.concat(terser()),
-});
-
-export default [
-  serverConfig,
-  serverProdConfig,
-  browserConfig,
-  browserProdConfig,
-];
+export default [serverConfig, browserConfig];

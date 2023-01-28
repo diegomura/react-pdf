@@ -1,5 +1,5 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
+import { isNil } from '@react-pdf/fns';
 
 import renderPath from './renderPath';
 import renderRect from './renderRect';
@@ -11,175 +11,132 @@ import renderEllipse from './renderEllipse';
 import renderPolygon from './renderPolygon';
 import renderPolyline from './renderPolyline';
 import renderSvgImage from './renderSvgImage';
-import isPath from '../utils/isPath';
-import isText from '../utils/isText';
-import isRect from '../utils/isRect';
-import isLine from '../utils/isLine';
-import isTspan from '../utils/isTspan';
-import isImage from '../utils/isImage';
-import isGroup from '../utils/isGroup';
-import isCircle from '../utils/isCircle';
-import isEllipse from '../utils/isEllipse';
-import isPolygon from '../utils/isPolygon';
-import isPolyline from '../utils/isPolyline';
-import isTextInstance from '../utils/isTextInstance';
-import save from '../operations/save';
-import restore from '../operations/restore';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
 
-const warnUnsupportedNode = R.tap(node => {
-  console.warn(`SVG node of type ${node.type} is not currenty supported`);
-});
-
-const getProp = (d, p, v) => R.pathOr(d, ['props', p], v);
-
-const setStrokeWidth = ctx => node => {
-  const lineWidth = getProp(0, 'strokeWidth', node);
+const setStrokeWidth = (ctx, node) => {
+  const lineWidth = node.props?.strokeWidth || 0;
   if (lineWidth) ctx.lineWidth(lineWidth);
-  return node;
 };
 
-const setStrokeColor = ctx => node => {
-  const strokeColor = getProp(null, 'stroke', node);
+const setStrokeColor = (ctx, node) => {
+  const strokeColor = node.props?.stroke || null;
   if (strokeColor) ctx.strokeColor(strokeColor);
-  return node;
 };
 
-const setOpacity = ctx => node => {
-  const opacity = getProp(null, 'opacity', node);
-  if (!R.isNil(opacity)) ctx.opacity(opacity);
-  return node;
+const setOpacity = (ctx, node) => {
+  const opacity = node.props?.opacity || null;
+  if (!isNil(opacity)) ctx.opacity(opacity);
 };
 
-const setFillOpacity = ctx => node => {
-  const fillOpacity = getProp(null, 'fillOpacity', node);
-  if (!R.isNil(fillOpacity)) ctx.fillOpacity(fillOpacity);
-  return node;
+const setFillOpacity = (ctx, node) => {
+  const fillOpacity = node.props?.fillOpacity || null;
+  if (!isNil(fillOpacity)) ctx.fillOpacity(fillOpacity);
 };
 
-const setStrokeOpacity = ctx => node => {
-  const strokeOpacity = getProp(null, 'strokeOpacity', node);
-  if (!R.isNil(strokeOpacity)) ctx.strokeOpacity(strokeOpacity);
-  return node;
+const setStrokeOpacity = (ctx, node) => {
+  const strokeOpacity = node.props?.strokeOpacity || null;
+  if (!isNil(strokeOpacity)) ctx.strokeOpacity(strokeOpacity);
 };
 
-const setLineJoin = ctx => node => {
-  const lineJoin = getProp(null, 'strokeLinejoin', node);
+const setLineJoin = (ctx, node) => {
+  const lineJoin = node.props?.strokeLinejoin || null;
   if (lineJoin) ctx.lineJoin(lineJoin);
-  return node;
 };
 
-const setLineCap = ctx => node => {
-  const lineCap = getProp(null, 'strokeLinecap', node);
+const setLineCap = (ctx, node) => {
+  const lineCap = node.props?.strokeLinecap || null;
   if (lineCap) ctx.lineCap(lineCap);
-  return node;
 };
 
-const setLineDash = ctx => node => {
-  const value = getProp(null, 'strokeDasharray', node);
+const setLineDash = (ctx, node) => {
+  const value = node.props?.strokeDasharray || null;
 
-  if (value) ctx.dash(R.split(',', value));
-
-  return node;
+  if (value) ctx.dash(value.split(','));
 };
 
-const hasLinearGradientFill = R.pathEq(
-  ['props', 'fill', 'type'],
-  P.LinearGradient,
-);
+const hasLinearGradientFill = node =>
+  node.props?.fill?.type === P.LinearGradient;
 
-const hasRadialGradientFill = R.pathEq(
-  ['props', 'fill', 'type'],
-  P.RadialGradient,
-);
+const hasRadialGradientFill = node =>
+  node.props?.fill?.type === P.RadialGradient;
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
-const setLinearGradientFill = ctx =>
-  R.tap(node => {
-    const bbox = getBoundingBox(node);
-    const gradient = getProp(null, 'fill', node);
+const setLinearGradientFill = (ctx, node) => {
+  const bbox = getBoundingBox(node);
+  const gradient = node.props?.fill || null;
 
-    const x1 = R.pathOr(0, ['props', 'x1'], gradient);
-    const y1 = R.pathOr(0, ['props', 'y1'], gradient);
-    const x2 = R.pathOr(1, ['props', 'x2'], gradient);
-    const y2 = R.pathOr(0, ['props', 'y2'], gradient);
+  const x1 = gradient.props.x1 || 0;
+  const y1 = gradient.props.y1 || 0;
+  const x2 = gradient.props.x2 || 1;
+  const y2 = gradient.props.y2 || 0;
 
-    const m0 = bbox[2] - bbox[0];
-    const m3 = bbox[3] - bbox[1];
-    const m4 = bbox[0];
-    const m5 = bbox[1];
+  const m0 = bbox[2] - bbox[0];
+  const m3 = bbox[3] - bbox[1];
+  const m4 = bbox[0];
+  const m5 = bbox[1];
 
-    const gx1 = m0 * x1 + m4;
-    const gy1 = m3 * y1 + m5;
-    const gx2 = m0 * x2 + m4;
-    const gy2 = m3 * y2 + m5;
+  const gx1 = m0 * x1 + m4;
+  const gy1 = m3 * y1 + m5;
+  const gx2 = m0 * x2 + m4;
+  const gy2 = m3 * y2 + m5;
 
-    const grad = ctx.linearGradient(gx1, gy1, gx2, gy2);
+  const grad = ctx.linearGradient(gx1, gy1, gx2, gy2);
 
-    gradient.children.forEach(stop => {
-      grad.stop(
-        stop.props.offset,
-        stop.props.stopColor,
-        stop.props.stopOpacity,
-      );
-    });
-
-    ctx.fill(grad);
+  gradient.children.forEach(stop => {
+    grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
+
+  ctx.fill(grad);
+};
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L155
-const setRadialGradientFill = ctx =>
-  R.tap(node => {
-    const bbox = getBoundingBox(node);
-    const gradient = getProp(null, 'fill', node);
+const setRadialGradientFill = (ctx, node) => {
+  const bbox = getBoundingBox(node);
+  const gradient = node.props?.fill || null;
 
-    const cx = R.pathOr(0.5, ['props', 'cx'], gradient);
-    const cy = R.pathOr(0.5, ['props', 'cy'], gradient);
-    const fx = R.pathOr(cx, ['props', 'fx'], gradient);
-    const fy = R.pathOr(cy, ['props', 'fy'], gradient);
-    const r = R.pathOr(0.5, ['props', 'r'], gradient);
+  const cx = gradient.props.cx || 0.5;
+  const cy = gradient.props.cy || 0.5;
+  const fx = gradient.props.fx || cx;
+  const fy = gradient.props.fy || cy;
+  const r = gradient.props.r || 0.5;
 
-    const m0 = bbox[2] - bbox[0];
-    const m3 = bbox[3] - bbox[1];
-    const m4 = bbox[0];
-    const m5 = bbox[1];
+  const m0 = bbox[2] - bbox[0];
+  const m3 = bbox[3] - bbox[1];
+  const m4 = bbox[0];
+  const m5 = bbox[1];
 
-    const gr = r * m0;
-    const gcx = m0 * cx + m4;
-    const gcy = m3 * cy + m5;
-    const gfx = m0 * fx + m4;
-    const gfy = m3 * fy + m5;
+  const gr = r * m0;
+  const gcx = m0 * cx + m4;
+  const gcy = m3 * cy + m5;
+  const gfx = m0 * fx + m4;
+  const gfy = m3 * fy + m5;
 
-    const grad = ctx.radialGradient(gfx, gfy, 0, gcx, gcy, gr);
+  const grad = ctx.radialGradient(gfx, gfy, 0, gcx, gcy, gr);
 
-    gradient.children.forEach(stop => {
-      grad.stop(
-        stop.props.offset,
-        stop.props.stopColor,
-        stop.props.stopOpacity,
-      );
-    });
-
-    ctx.fill(grad);
+  gradient.children.forEach(stop => {
+    grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
-const setFillColor = ctx =>
-  R.tap(node => {
-    const fillColor = getProp(null, 'fill', node);
-    if (fillColor) ctx.fillColor(fillColor);
-  });
+  ctx.fill(grad);
+};
 
-const setFill = ctx =>
-  R.cond([
-    [hasLinearGradientFill, setLinearGradientFill(ctx)],
-    [hasRadialGradientFill, setRadialGradientFill(ctx)],
-    [R.T, setFillColor(ctx)],
-  ]);
+const setFillColor = (ctx, node) => {
+  const fillColor = node.props?.fill || null;
 
-const draw = ctx => node => {
-  const props = R.propOr({}, 'props', node);
+  if (fillColor) ctx.fillColor(fillColor);
+};
+
+const setFill = (ctx, node) => {
+  if (hasLinearGradientFill(node)) return setLinearGradientFill(ctx, node);
+  if (hasRadialGradientFill(node)) return setRadialGradientFill(ctx, node);
+
+  return setFillColor(ctx, node);
+};
+
+const draw = (ctx, node) => {
+  const props = node.props || {};
 
   if (props.fill && props.stroke) {
     ctx.fillAndStroke(props.fillRule);
@@ -193,79 +150,80 @@ const draw = ctx => node => {
     ctx.fill(null);
     ctx.restore();
   }
-
-  return node;
 };
 
-const renderNode = ctx =>
-  R.cond([
-    [isTspan, R.identity],
-    [isTextInstance, R.identity],
-    [isPath, renderPath(ctx)],
-    [isRect, renderRect(ctx)],
-    [isLine, renderLine(ctx)],
-    [isGroup, renderGroup(ctx)],
-    [isText, renderSvgText(ctx)],
-    [isCircle, renderCircle(ctx)],
-    [isImage, renderSvgImage(ctx)],
-    [isEllipse, renderEllipse(ctx)],
-    [isPolygon, renderPolygon(ctx)],
-    [isPolyline, renderPolyline(ctx)],
-    [R.T, warnUnsupportedNode],
-  ]);
+const noop = () => {};
 
-const drawNode = ctx =>
-  R.compose(
-    draw(ctx),
-    renderNode(ctx),
-    transform(ctx),
-    setOpacity(ctx),
-    setFillOpacity(ctx),
-    setStrokeOpacity(ctx),
-    setFill(ctx),
-    setStrokeColor(ctx),
-    setStrokeWidth(ctx),
-    setLineJoin(ctx),
-    setLineDash(ctx),
-    setLineCap(ctx),
-  );
+const renderFns = {
+  [P.Tspan]: noop,
+  [P.TextInstance]: noop,
+  [P.Path]: renderPath,
+  [P.Rect]: renderRect,
+  [P.Line]: renderLine,
+  [P.G]: renderGroup,
+  [P.Text]: renderSvgText,
+  [P.Circle]: renderCircle,
+  [P.Image]: renderSvgImage,
+  [P.Ellipse]: renderEllipse,
+  [P.Polygon]: renderPolygon,
+  [P.Polyline]: renderPolyline,
+};
 
-const clipPath = ctx => node => {
-  const value = R.path(['props', 'clipPath'], node);
+const renderNode = (ctx, node) => {
+  const renderFn = renderFns[node.type];
+
+  if (renderFns) {
+    renderFn(ctx, node);
+  } else {
+    console.warn(`SVG node of type ${node.type} is not currenty supported`);
+  }
+};
+
+const drawNode = (ctx, node) => {
+  setLineCap(ctx, node);
+  setLineDash(ctx, node);
+  setLineJoin(ctx, node);
+  setStrokeWidth(ctx, node);
+  setStrokeColor(ctx, node);
+  setFill(ctx, node);
+  setStrokeOpacity(ctx, node);
+  setFillOpacity(ctx, node);
+  setOpacity(ctx, node);
+  transform(ctx, node);
+  renderNode(ctx, node);
+  draw(ctx, node);
+};
+
+const clipPath = (ctx, node) => {
+  const value = node.props?.clipPath;
 
   if (value) {
-    R.compose(
-      () => ctx.clip(),
-      R.forEach(renderNode(ctx)),
-      R.propOr([], 'children'),
-    )(value);
+    const children = value.children || [];
+    children.forEach(child => renderNode(ctx, child));
+    ctx.clip();
   }
-
-  return node;
 };
 
-const drawChildren = ctx => node =>
-  R.compose(
-    R.map(
-      R.compose(
-        restore(ctx),
-        drawChildren(ctx),
-        drawNode(ctx),
-        clipPath(ctx),
-        save(ctx),
-      ),
-    ),
-    R.propOr([], 'children'),
-  )(node);
+const drawChildren = (ctx, node) => {
+  const children = node.children || [];
 
-const defaultsZero = R.pathOr(0);
+  children.forEach(child => {
+    ctx.save();
 
-const resolveAspectRatio = ctx => node => {
+    clipPath(ctx, child);
+    drawNode(ctx, child);
+    drawChildren(ctx, child);
+
+    ctx.restore();
+  });
+};
+
+const resolveAspectRatio = (ctx, node) => {
   const { width, height } = node.box;
   const { viewBox, preserveAspectRatio = {} } = node.props;
   const { meetOrSlice = 'meet', align = 'xMidYMid' } = preserveAspectRatio;
 
-  if (viewBox == null || width == null || height == null) return node;
+  if (viewBox == null || width == null || height == null) return;
 
   const x = viewBox?.minX || 0;
   const y = viewBox?.minY || 0;
@@ -280,7 +238,7 @@ const resolveAspectRatio = ctx => node => {
   if (align === 'none') {
     ctx.scale(scaleX, scaleY);
     ctx.translate(-x, -y);
-    return node;
+    return;
   }
 
   if (
@@ -337,32 +295,26 @@ const resolveAspectRatio = ctx => node => {
         );
     }
   }
-
-  return node;
 };
 
-const moveToOrigin = ctx => node => {
+const moveToOrigin = (ctx, node) => {
   const { top, left } = node.box;
 
-  const paddingLeft = defaultsZero('paddingLeft', node.box);
-  const paddingTop = defaultsZero('paddingTop', node.box);
+  const paddingLeft = node.box.paddingLeft || 0;
+  const paddingTop = node.box.paddingTop || 0;
 
   ctx.translate(left + paddingLeft, top + paddingTop);
-
-  return node;
 };
 
 const renderSvg = (ctx, node) => {
-  R.compose(
-    restore(ctx),
-    drawChildren(ctx),
-    resolveAspectRatio(ctx),
-    moveToOrigin(ctx),
-    clipNode(ctx),
-    save(ctx),
-  )(node);
+  ctx.save();
 
-  return node;
+  clipNode(ctx, node);
+  moveToOrigin(ctx, node);
+  resolveAspectRatio(ctx, node);
+  drawChildren(ctx, node);
+
+  ctx.restore();
 };
 
-export default R.curryN(2, renderSvg);
+export default renderSvg;

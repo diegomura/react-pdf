@@ -2,7 +2,7 @@ import setFlexBasis from '../../src/node/setFlexBasis';
 
 describe('node setFlexBasis', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setFlexBasis: mock } };
+  const node = { yogaNode: { setFlexBasis: mock } };
 
   beforeEach(() => {
     mock.mockReset();

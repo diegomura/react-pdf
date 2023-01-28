@@ -1,15 +1,12 @@
-import * as R from 'ramda';
-
 /**
  * Get attributed string start value
  *
- * @param  {Object}  glyph string
+ * @param  {Object}  attributed string
  * @return {number} start
  */
-const start = R.ifElse(
-  R.pathEq(['runs', 'length'], 0),
-  R.always(0),
-  R.path(['runs', 0, 'start']),
-);
+const start = attributedString => {
+  const { runs } = attributedString;
+  return runs.length === 0 ? 0 : runs[0].start;
+};
 
 export default start;

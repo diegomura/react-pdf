@@ -1,25 +1,38 @@
-import * as R from 'ramda';
-
 import sort from './sort';
 import isEmpty from './isEmpty';
 
 const sortPoints = (a, b) => a[1] - b[1] || a[3] - b[3];
 
-const mergeAttributes = (key, left, right) =>
-  key === 'attributes' ? R.merge(left, right) : right;
+const generatePoints = runs => {
+  const result = runs.reduce((acc, run, i) => {
+    return acc.concat([
+      ['start', run.start, run.attributes, i],
+      ['end', run.end, run.attributes, i],
+    ]);
+  }, []);
 
-const generatePoints = R.o(
-  R.sort(sortPoints),
-  R.addIndex(R.chain)((run, i) => [
-    ['start', run.start, run.attributes, i],
-    ['end', run.end, run.attributes, i],
-  ]),
-);
+  return result.sort(sortPoints);
+};
 
-const flattenEmptyRuns = R.compose(
-  R.map(R.reduce(R.mergeDeepWithKey(mergeAttributes), {})),
-  R.groupWith(R.eqProps('start')),
-);
+const mergeRuns = runs =>
+  runs.reduce((acc, run) => {
+    const attributes = Object.assign({}, acc.attributes, run.attributes);
+    return Object.assign({}, run, { attributes });
+  }, {});
+
+const groupEmptyRuns = runs => {
+  const groups = runs.reduce((acc, run) => {
+    if (!acc[run.start]) acc[run.start] = [];
+    acc[run.start].push(run);
+    return acc;
+  }, {});
+
+  return Object.values(groups);
+};
+
+const flattenEmptyRuns = runs => {
+  return groupEmptyRuns(runs).map(mergeRuns);
+};
 
 const flattenRegularRuns = runs => {
   const res = [];
@@ -38,7 +51,7 @@ const flattenRegularRuns = runs => {
 
     if (type === 'start') {
       stack.push(attributes);
-      attrs = R.merge(attrs, attributes);
+      attrs = Object.assign({}, attrs, attributes);
     } else {
       attrs = {};
 
@@ -47,7 +60,7 @@ const flattenRegularRuns = runs => {
           // eslint-disable-next-line no-plusplus
           stack.splice(j--, 1);
         } else {
-          attrs = R.merge(attrs, stack[j]);
+          attrs = Object.assign({}, attrs, stack[j]);
         }
       }
     }
@@ -64,11 +77,11 @@ const flattenRegularRuns = runs => {
  * @param  {Array}  runs
  * @return {Array} flatten runs
  */
-const flatten = (runs = []) =>
-  R.compose(
-    sort,
-    R.apply(R.useWith(R.concat, [flattenEmptyRuns, flattenRegularRuns])),
-    R.partition(isEmpty),
-  )(runs);
+const flatten = (runs = []) => {
+  const emptyRuns = flattenEmptyRuns(runs.filter(run => isEmpty(run)));
+  const regularRuns = flattenRegularRuns(runs.filter(run => !isEmpty(run)));
+
+  return sort(emptyRuns.concat(regularRuns));
+};
 
 export default flatten;

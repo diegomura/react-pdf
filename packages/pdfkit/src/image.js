@@ -1,5 +1,4 @@
 import fs from 'fs';
-import Data from './data';
 import JPEG from './image/jpeg';
 import PNG from './image/png';
 
@@ -22,11 +21,13 @@ class PDFImage {
 
     if (data[0] === 0xff && data[1] === 0xd8) {
       return new JPEG(data, label);
-    } else if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
-      return new PNG(data, label);
-    } else {
-      throw new Error('Unknown image format.');
     }
+
+    if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
+      return new PNG(data, label);
+    }
+
+    throw new Error('Unknown image format.');
   }
 }
 

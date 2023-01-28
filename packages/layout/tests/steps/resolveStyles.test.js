@@ -133,6 +133,41 @@ describe('layout resolveStyles', () => {
     expect(result).toMatchSnapshot();
   });
 
+  test('Should resolve nested node styles media queries with page style', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'VIEW',
+              style: {
+                backgroundColor: 'red',
+                '@media max-width: 500': {
+                  backgroundColor: 'green',
+                },
+              },
+            },
+            {
+              type: 'VIEW',
+              style: {
+                backgroundColor: 'red',
+                '@media min-width: 500': {
+                  backgroundColor: 'green',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
+
   test('Should resolve nested node styles array', () => {
     const root = {
       type: 'DOCUMENT',
@@ -174,6 +209,48 @@ describe('layout resolveStyles', () => {
             {
               type: 'LINK',
               style: {},
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('Should overide default link styles', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'LINK',
+              style: { color: 'wheat', textDecoration: 'none' },
+            },
+          ],
+        },
+      ],
+    };
+    const result = resolveStyles(root);
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('Should overide default link styles with array', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: { width: 100, height: 200 },
+          children: [
+            {
+              type: 'LINK',
+              style: [{ color: 'wheat', textDecoration: 'none' }],
             },
           ],
         },

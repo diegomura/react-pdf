@@ -2,7 +2,7 @@ import setAspectRatio from '../../src/node/setAspectRatio';
 
 describe('node setAspectRatio', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setAspectRatio: mock } };
+  const node = { yogaNode: { setAspectRatio: mock } };
 
   beforeEach(() => {
     mock.mockReset();

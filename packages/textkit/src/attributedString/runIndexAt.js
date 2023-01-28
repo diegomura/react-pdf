@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import runIndexAtInternal from '../run/runIndexAt';
 
 /**
@@ -9,7 +7,8 @@ import runIndexAtInternal from '../run/runIndexAt';
  * @param  {Object}  attributedString
  * @return {number} run index
  */
-const runIndexAt = (n, string) =>
-  R.compose(runIndexAtInternal(n), R.prop('runs'))(string);
+const runIndexAt = (n, string) => {
+  return runIndexAtInternal(n, string.runs);
+};
 
-export default R.curryN(2, runIndexAt);
+export default runIndexAt;

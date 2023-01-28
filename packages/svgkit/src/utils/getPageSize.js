@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 const PAGE_SIZES = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],
@@ -89,15 +87,6 @@ const getStringSize = v => {
 const getNumberSize = n => toSizeObject([n]);
 
 /**
- * Throws invalid size error
- *
- * @param {String} invalid page size input
- */
-const throwInvalidError = size => {
-  throw new Error(`Invalid Page size: ${JSON.stringify(size)}`);
-};
-
-/**
  * // TODO: Move this to separate pacjage to reuse with layout
  * Return page size in an object { width, height }
  *
@@ -105,13 +94,15 @@ const throwInvalidError = size => {
  * @returns {Object} size object with width and height
  */
 const getSize = (value, orientation) => {
-  const size = R.cond([
-    [R.is(String), getStringSize],
-    [R.is(Array), toSizeObject],
-    [R.is(Number), getNumberSize],
-    [R.is(Object), R.identity],
-    [R.T, throwInvalidError],
-  ])(value);
+  let size = value;
+
+  if (typeof size === 'string') {
+    size = getStringSize(value);
+  } else if (Array.isArray(value)) {
+    size = toSizeObject(value);
+  } else if (typeof size === 'number') {
+    size = getNumberSize(value);
+  }
 
   return orientation === 'landscape' ? flipSizeObject(size) : size;
 };

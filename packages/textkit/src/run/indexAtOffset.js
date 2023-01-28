@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 /**
  * Get string index at offset
  *
@@ -11,8 +9,8 @@ const indexAtOffset = (offset, run) => {
   let counter = 0;
   let index = 0;
 
-  const glyphs = R.propOr([], 'glyphs', run);
-  const positions = R.propOr([], 'positions', run);
+  const glyphs = run.glyphs || [];
+  const positions = run.positions || [];
 
   for (let i = 0; i < positions.length; i += 1) {
     const { xAdvance } = positions[i];
@@ -20,10 +18,10 @@ const indexAtOffset = (offset, run) => {
     if (counter + xAdvance > offset) return index;
 
     counter += xAdvance;
-    index += R.pathOr(0, [i, 'codePoints', 'length'], glyphs);
+    index += glyphs[i]?.codePoints?.length || 0;
   }
 
   return index;
 };
 
-export default R.curryN(2, indexAtOffset);
+export default indexAtOffset;

@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-
 import ascent from './ascent';
 import descent from './descent';
 import lineGap from './lineGap';
@@ -10,9 +8,9 @@ import lineGap from './lineGap';
  * @param  {Object}  run
  * @return {number} height
  */
-const height = R.either(
-  R.path(['attributes', 'lineHeight']),
-  R.compose(R.sum, R.juxt([ascent, R.o(R.negate, descent), lineGap])),
-);
+const height = run => {
+  const lineHeight = run.attributes?.lineHeight;
+  return lineHeight || lineGap(run) + ascent(run) - descent(run);
+};
 
 export default height;

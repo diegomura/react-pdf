@@ -1,6 +1,6 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
 import * as P from '@react-pdf/primitives';
+import { isNil, compose } from '@react-pdf/fns';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
@@ -57,12 +57,11 @@ import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
 
-const YOGA_NODE = '_yogaNode';
 const YOGA_CONFIG = Yoga.Config.create();
 
 YOGA_CONFIG.setPointScaleFactor(0);
 
-const isType = R.propEq('type');
+const isType = type => node => node.type === type;
 
 const isSvg = isType(P.Svg);
 const isText = isType(P.Text);
@@ -83,8 +82,8 @@ const setNodeHeight = node => {
  * @param {Object} node
  * @returns {Object} node
  */
-const setYogaValues = R.tap(node => {
-  R.compose(
+const setYogaValues = node => {
+  compose(
     setNodeHeight(node),
     setWidth(node.style.width),
     setMinWidth(node.style.minWidth),
@@ -121,7 +120,7 @@ const setYogaValues = R.tap(node => {
     setFlexGrow(node.style.flexGrow),
     setFlexShrink(node.style.flexShrink),
   )(node);
-});
+};
 
 /**
  * Inserts child into parent' yoga node
@@ -130,11 +129,13 @@ const setYogaValues = R.tap(node => {
  * @param {Object} node
  * @param {Object} node
  */
-const insertYogaNodes = parent =>
-  R.tap(child => parent.insertChild(child[YOGA_NODE], parent.getChildCount()));
+const insertYogaNodes = parent => child => {
+  parent.insertChild(child.yogaNode, parent.getChildCount());
+  return child;
+};
 
-const setMeasureFunc = (page, fontStore) => node => {
-  const yogaNode = node[YOGA_NODE];
+const setMeasureFunc = (node, page, fontStore) => {
+  const { yogaNode } = node;
 
   if (isText(node)) {
     yogaNode.setMeasureFunc(measureText(page, node, fontStore));
@@ -155,11 +156,7 @@ const setMeasureFunc = (page, fontStore) => node => {
   return node;
 };
 
-const isNotText = R.complement(isText);
-const isNotNote = R.complement(isNote);
-const isNotSvg = R.complement(isSvg);
-const isNotTextInstance = R.complement(isTextInstance);
-const isLayoutElement = R.allPass([isNotText, isNotNote, isNotSvg]);
+const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
 
 /**
  * Creates and add yoga node to document tree
@@ -171,22 +168,22 @@ const isLayoutElement = R.allPass([isNotText, isNotNote, isNotSvg]);
 const createYogaNodes = (page, fontStore) => node => {
   const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
 
-  return R.compose(
-    setMeasureFunc(page, fontStore),
-    R.when(
-      isLayoutElement,
-      R.evolve({
-        children: R.map(
-          R.compose(
-            insertYogaNodes(yogaNode),
-            createYogaNodes(page, fontStore),
-          ),
-        ),
-      }),
-    ),
-    setYogaValues,
-    R.assoc(YOGA_NODE, yogaNode),
-  )(node);
+  const result = Object.assign({}, node, { yogaNode });
+
+  setYogaValues(result);
+
+  if (isLayoutElement(node) && node.children) {
+    const resolveChild = compose(
+      insertYogaNodes(yogaNode),
+      createYogaNodes(page, fontStore),
+    );
+
+    result.children = node.children.map(resolveChild);
+  }
+
+  setMeasureFunc(result, page, fontStore);
+
+  return result;
 };
 
 /**
@@ -196,7 +193,7 @@ const createYogaNodes = (page, fontStore) => node => {
  * @returns {Object} node
  */
 const calculateLayout = page => {
-  page[YOGA_NODE].calculateLayout();
+  page.yogaNode.calculateLayout();
   return page;
 };
 
@@ -207,18 +204,23 @@ const calculateLayout = page => {
  * @returns {Object} node with box data
  */
 const persistDimensions = node => {
-  return R.evolve({
-    children: R.map(R.when(isNotTextInstance, persistDimensions)),
-    box: R.always(
-      R.mergeAll([
-        getPadding(node),
-        getMargin(node),
-        getBorderWidth(node),
-        getPosition(node),
-        getDimension(node),
-      ]),
-    ),
-  })(node);
+  if (isTextInstance(node)) return node;
+
+  const box = Object.assign(
+    getPadding(node),
+    getMargin(node),
+    getBorderWidth(node),
+    getPosition(node),
+    getDimension(node),
+  );
+
+  const newNode = Object.assign({}, node, { box });
+
+  if (!node.children) return newNode;
+
+  const children = node.children.map(persistDimensions);
+
+  return Object.assign({}, newNode, { children });
 };
 
 /**
@@ -228,10 +230,15 @@ const persistDimensions = node => {
  * @returns {Object} node without yoga node
  */
 const destroyYogaNodes = node => {
-  return R.compose(
-    R.dissoc(YOGA_NODE),
-    R.evolve({ children: R.map(destroyYogaNodes) }),
-  )(node);
+  const newNode = Object.assign({}, node);
+
+  delete newNode.yogaNode;
+
+  if (!node.children) return newNode;
+
+  const children = node.children.map(destroyYogaNodes);
+
+  return Object.assign({}, newNode, { children });
 };
 
 /**
@@ -241,7 +248,7 @@ const destroyYogaNodes = node => {
  * @returns {Object} node without yoga node
  */
 const freeYogaNodes = node => {
-  if (node[YOGA_NODE]) node[YOGA_NODE].freeRecursive();
+  if (node.yogaNode) node.yogaNode.freeRecursive();
   return node;
 };
 
@@ -253,18 +260,17 @@ const freeYogaNodes = node => {
  * @param {Object} page object
  * @returns {Object} page object with correct 'box' layout attributes
  */
-export const resolvePageDimensions = (page, fontStore) =>
-  R.ifElse(
-    R.isNil,
-    R.always(null),
-    R.compose(
-      destroyYogaNodes,
-      freeYogaNodes,
-      persistDimensions,
-      calculateLayout,
-      createYogaNodes(page, fontStore),
-    ),
+export const resolvePageDimensions = (page, fontStore) => {
+  if (isNil(page)) return null;
+
+  return compose(
+    destroyYogaNodes,
+    freeYogaNodes,
+    persistDimensions,
+    calculateLayout,
+    createYogaNodes(page, fontStore),
   )(page);
+};
 
 /**
  * Calculates root object layout using Yoga.
@@ -273,8 +279,12 @@ export const resolvePageDimensions = (page, fontStore) =>
  * @returns {Object} root object with correct 'box' layout attributes
  */
 const resolveDimensions = (node, fontStore) => {
-  const mapChild = child => resolvePageDimensions(child, fontStore);
-  return R.evolve({ children: R.map(mapChild) })(node);
+  if (!node.children) return node;
+
+  const resolveChild = child => resolvePageDimensions(child, fontStore);
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
 };
 
 export default resolveDimensions;

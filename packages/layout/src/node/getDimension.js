@@ -10,7 +10,7 @@ const DEFAULT_DIMENSION = {
  * @return {Object} dimensions
  */
 const getDimension = node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (!yogaNode) return DEFAULT_DIMENSION;
 

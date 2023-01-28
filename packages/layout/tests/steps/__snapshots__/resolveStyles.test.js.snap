@@ -1,5 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`layout resolveStyles Should overide default link styles 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "children": Array [
+        Object {
+          "style": Object {
+            "color": "wheat",
+            "textDecoration": "none",
+          },
+          "type": "LINK",
+        },
+      ],
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles Should overide default link styles with array 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "box": Object {
+        "height": 200,
+        "width": 100,
+      },
+      "children": Array [
+        Object {
+          "style": Object {
+            "color": "wheat",
+            "textDecoration": "none",
+          },
+          "type": "LINK",
+        },
+      ],
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
 exports[`layout resolveStyles Should resolve default link styles 1`] = `
 Object {
   "children": Array [
@@ -17,6 +67,7 @@ Object {
           "type": "LINK",
         },
       ],
+      "style": Object {},
       "type": "PAGE",
     },
   ],
@@ -56,6 +107,7 @@ Object {
           "type": "VIEW",
         },
       ],
+      "style": Object {},
       "type": "PAGE",
     },
   ],
@@ -95,6 +147,7 @@ Object {
           "type": "VIEW",
         },
       ],
+      "style": Object {},
       "type": "PAGE",
     },
   ],
@@ -124,6 +177,36 @@ Object {
           "type": "VIEW",
         },
       ],
+      "style": Object {},
+      "type": "PAGE",
+    },
+  ],
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles Should resolve nested node styles media queries with page style 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "style": Object {
+            "backgroundColor": "green",
+          },
+          "type": "VIEW",
+        },
+        Object {
+          "style": Object {
+            "backgroundColor": "red",
+          },
+          "type": "VIEW",
+        },
+      ],
+      "style": Object {
+        "height": 200,
+        "width": 100,
+      },
       "type": "PAGE",
     },
   ],

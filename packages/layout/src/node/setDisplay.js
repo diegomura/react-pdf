@@ -8,7 +8,7 @@ import Yoga from '@react-pdf/yoga';
  * @return {Object} node instance
  */
 const setDisplay = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (yogaNode) {
     yogaNode.setDisplay(

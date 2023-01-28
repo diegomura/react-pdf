@@ -1,6 +1,3 @@
-import * as R from 'ramda';
-
-import reduce from './reduce';
 import runAdvanceWidth from '../run/advanceWidth';
 
 /**
@@ -9,6 +6,9 @@ import runAdvanceWidth from '../run/advanceWidth';
  * @param {Object} attributed string
  * @return {number} advance width
  */
-const advanceWidth = reduce(R.add, runAdvanceWidth);
+const advanceWidth = attributeString => {
+  const reducer = (acc, run) => acc + runAdvanceWidth(run);
+  return attributeString.runs.reduce(reducer, 0);
+};
 
 export default advanceWidth;

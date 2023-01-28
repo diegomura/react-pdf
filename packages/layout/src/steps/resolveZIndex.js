@@ -1,11 +1,8 @@
-import * as R from 'ramda';
-import { Document, Svg } from '@react-pdf/primitives';
+import * as P from '@react-pdf/primitives';
 
-const getZIndex = R.path(['style', 'zIndex']);
+const getZIndex = node => node.style.zIndex;
 
-const isType = R.propEq('type');
-
-const shouldNotSort = R.anyPass([isType(Document), isType(Svg)]);
+const shouldSort = node => node.type !== P.Document && node.type !== P.Svg;
 
 const sortZIndex = (a, b) => {
   const za = getZIndex(a);
@@ -24,10 +21,16 @@ const sortZIndex = (a, b) => {
  * @param {Object} node
  * @returns {Object} node
  */
-const resolveZIndex = node =>
-  R.compose(
-    R.evolve({ children: R.map(resolveZIndex) }),
-    R.unless(shouldNotSort, R.evolve({ children: R.sort(sortZIndex) })),
-  )(node);
+const resolveZIndex = node => {
+  if (!node.children) return node;
+
+  const sortedChildren = shouldSort(node)
+    ? node.children.sort(sortZIndex)
+    : node.children;
+
+  const children = sortedChildren.map(resolveZIndex);
+
+  return Object.assign({}, node, { children });
+};
 
 export default resolveZIndex;

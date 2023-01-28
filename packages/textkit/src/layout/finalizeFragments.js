@@ -1,5 +1,9 @@
-import * as R from 'ramda';
+import { last, compose } from '@react-pdf/fns';
 
+import runHeight from '../run/height';
+import runAscent from '../run/ascent';
+import runDescent from '../run/descent';
+import runAdvanceWidth from '../run/advanceWidth';
 import advanceWidth from '../attributedString/advanceWidth';
 import leadingOffset from '../attributedString/leadingOffset';
 import trailingOffset from '../attributedString/trailingOffset';
@@ -13,19 +17,17 @@ const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
  * @param  {Object}  line
  * @return {Object} line
  */
-const removeNewLine = R.when(
-  R.compose(R.equals('\n'), R.last, R.prop('string')),
-  dropLast,
-);
+const removeNewLine = line => {
+  return last(line.string) === '\n' ? dropLast(line) : line;
+};
 
-const getOverflowLeft = R.converge(R.add, [
-  R.propOr(0, 'overflowLeft'),
-  leadingOffset,
-]);
-const getOverflowRight = R.converge(R.add, [
-  R.propOr(0, 'overflowRight'),
-  trailingOffset,
-]);
+const getOverflowLeft = line => {
+  return leadingOffset(line) + (line.overflowLeft || 0);
+};
+
+const getOverflowRight = line => {
+  return trailingOffset(line) + (line.overflowRight || 0);
+};
 
 /**
  * Ignore whitespace at the start and end of a line for alignment
@@ -37,16 +39,11 @@ const adjustOverflow = line => {
   const overflowLeft = getOverflowLeft(line);
   const overflowRight = getOverflowRight(line);
 
-  return R.compose(
-    R.assoc('overflowLeft', overflowLeft),
-    R.assoc('overflowRight', overflowRight),
-    R.evolve({
-      box: R.evolve({
-        x: R.subtract(R.__, overflowLeft),
-        width: R.add(overflowLeft + overflowRight),
-      }),
-    }),
-  )(line);
+  const x = line.box.x - overflowLeft;
+  const width = line.box.width + overflowLeft + overflowRight;
+  const box = Object.assign({}, line.box, { x, width });
+
+  return Object.assign({}, line, { box, overflowLeft, overflowRight });
 };
 
 /**
@@ -64,12 +61,40 @@ const justifyLine = (engines, options, align) => line => {
   const remainingWidth = Math.max(0, line.box.width - lineWidth);
   const shouldJustify = align === 'justify' || lineWidth > line.box.width;
 
-  return R.compose(
-    R.when(R.always(shouldJustify), engines.justification(options)),
-    R.evolve({
-      box: R.evolve({ x: R.add(remainingWidth * alignFactor) }),
-    }),
-  )(line);
+  const x = line.box.x + remainingWidth * alignFactor;
+  const box = Object.assign({}, line.box, { x });
+  const newLine = Object.assign({}, line, { box });
+
+  return shouldJustify ? engines.justification(options)(newLine) : newLine;
+};
+
+const finalizeLine = line => {
+  let lineAscent = 0;
+  let lineDescent = 0;
+  let lineHeight = 0;
+  let lineXAdvance = 0;
+
+  const runs = line.runs.map(run => {
+    const height = runHeight(run);
+    const ascent = runAscent(run);
+    const descent = runDescent(run);
+    const xAdvance = runAdvanceWidth(run);
+
+    lineHeight = Math.max(lineHeight, height);
+    lineAscent = Math.max(lineAscent, ascent);
+    lineDescent = Math.max(lineDescent, descent);
+    lineXAdvance += xAdvance;
+
+    return Object.assign({}, run, { height, ascent, descent, xAdvance });
+  });
+
+  return Object.assign({}, line, {
+    runs,
+    height: lineHeight,
+    ascent: lineAscent,
+    descent: lineDescent,
+    xAdvance: lineXAdvance,
+  });
 };
 
 /**
@@ -85,10 +110,11 @@ const justifyLine = (engines, options, align) => line => {
  */
 const finalizeBlock = (engines = {}, options) => (line, i, lines) => {
   const isLastFragment = i === lines.length - 1;
-  const style = R.pathOr({}, ['runs', 0, 'attributes'], line);
+  const style = line.runs?.[0]?.attributes || {};
   const align = isLastFragment ? style.alignLastLine : style.align;
 
-  return R.compose(
+  return compose(
+    finalizeLine,
     engines.textDecoration(options),
     justifyLine(engines, options, align),
     adjustOverflow,
@@ -105,9 +131,9 @@ const finalizeBlock = (engines = {}, options) => (line, i, lines) => {
  * @param  {Array}  line blocks
  * @return {Array} line blocks
  */
-const finalizeFragments = (engines, options, blocks) => {
+const finalizeFragments = (engines, options) => blocks => {
   const blockFinalizer = finalizeBlock(engines, options);
   return blocks.map(block => block.map(blockFinalizer));
 };
 
-export default R.curryN(3, finalizeFragments);
+export default finalizeFragments;

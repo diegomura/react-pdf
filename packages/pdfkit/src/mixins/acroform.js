@@ -11,12 +11,12 @@ const FIELD_FLAGS = {
   edit: 0x40000,
   sort: 0x80000,
   multiSelect: 0x200000,
-  noSpell: 0x400000,
+  noSpell: 0x400000
 };
 const FIELD_JUSTIFY = {
   left: 0,
   center: 1,
-  right: 2,
+  right: 2
 };
 const VALUE_MAP = { value: 'V', defaultValue: 'DV' };
 const FORMAT_SPECIAL = {
@@ -24,7 +24,7 @@ const FORMAT_SPECIAL = {
   zipPlus4: '1',
   zip4: '1',
   phone: '2',
-  ssn: '3',
+  ssn: '3'
 };
 const FORMAT_DEFAULT = {
   number: {
@@ -32,12 +32,12 @@ const FORMAT_DEFAULT = {
     sepComma: false,
     negStyle: 'MinusBlack',
     currency: '',
-    currencyPrepend: true,
+    currencyPrepend: true
   },
   percent: {
     nDec: 0,
-    sepComma: false,
-  },
+    sepComma: false
+  }
 };
 
 export default {
@@ -51,7 +51,7 @@ export default {
     }
     this._acroform = {
       fonts: {},
-      defaultFont: this._font.name,
+      defaultFont: this._font.name
     };
     this._acroform.fonts[this._font.id] = this._font.ref();
 
@@ -60,8 +60,8 @@ export default {
       NeedAppearances: true,
       DA: new String(`/${this._font.id} 0 Tf 0 g`),
       DR: {
-        Font: {},
-      },
+        Font: {}
+      }
     };
     data.DR.Font[this._font.id] = this._font.ref();
     const AcroForm = this.ref(data);
@@ -181,7 +181,7 @@ export default {
   _fieldDict(name, type, options = {}) {
     if (!this._acroform) {
       throw new Error(
-        'Call document.initForms() method before adding form elements to document',
+        'Call document.initForms() method before adding form elements to document'
       );
     }
     let opts = Object.assign({}, options);
@@ -253,8 +253,8 @@ export default {
               '"' + p.negStyle + '"',
               'null',
               '"' + p.currency + '"',
-              String(p.currencyPrepend),
-            ].join(','),
+              String(p.currencyPrepend)
+            ].join(',')
           );
         } else if (f.type === 'percent') {
           let p = Object.assign({}, FORMAT_DEFAULT.percent, f);
@@ -264,11 +264,11 @@ export default {
       opts.AA = opts.AA ? opts.AA : {};
       opts.AA.K = {
         S: 'JavaScript',
-        JS: new String(`${fnKeystroke}(${params});`),
+        JS: new String(`${fnKeystroke}(${params});`)
       };
       opts.AA.F = {
         S: 'JavaScript',
-        JS: new String(`${fnFormat}(${params});`),
+        JS: new String(`${fnFormat}(${params});`)
       };
     }
     delete opts.format;
@@ -333,8 +333,12 @@ export default {
     // add current font to field's resource dict (RD) if not the default acroform font
     if (this._acroform.defaultFont !== this._font.name) {
       options.DR = { Font: {} };
+
+      // Get the fontSize option. If not set use auto sizing
+      const fontSize = options.fontSize || 0;
+
       options.DR.Font[this._font.id] = this._font.ref();
-      options.DA = new String(`/${this._font.id} 0 Tf 0 g`);
+      options.DA = new String(`/${this._font.id} ${fontSize} Tf 0 g`);
     }
     return options;
   },
@@ -382,5 +386,5 @@ export default {
       delete options.label;
     }
     return options;
-  },
+  }
 };

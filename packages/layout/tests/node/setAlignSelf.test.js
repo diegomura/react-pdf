@@ -4,7 +4,7 @@ import setAlignSelf from '../../src/node/setAlignSelf';
 
 describe('node setAlignSelf', () => {
   const mock = jest.fn();
-  const node = { _yogaNode: { setAlignSelf: mock } };
+  const node = { yogaNode: { setAlignSelf: mock } };
 
   beforeEach(() => {
     mock.mockReset();

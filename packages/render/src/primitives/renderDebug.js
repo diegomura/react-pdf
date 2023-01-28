@@ -1,17 +1,10 @@
-import * as R from 'ramda';
-
-import save from '../operations/save';
-import restore from '../operations/restore';
-
 const CONTENT_COLOR = '#a1c6e7';
 const PADDING_COLOR = '#c4deb9';
 const MARGIN_COLOR = '#f8cca1';
 
-const shouldDebug = R.pathEq(['props', 'debug'], true);
-
 // TODO: Draw debug boxes using clipping to enhance quality
 
-const debugContent = ctx => node => {
+const debugContent = (ctx, node) => {
   const {
     left,
     top,
@@ -37,11 +30,9 @@ const debugContent = ctx => node => {
       height - paddingTop - paddingBottom - borderTopWidth - borderBottomWidth,
     )
     .fill();
-
-  return node;
 };
 
-const debugPadding = ctx => node => {
+const debugPadding = (ctx, node) => {
   const {
     left,
     top,
@@ -98,7 +89,6 @@ const debugPadding = ctx => node => {
       paddingBottom,
     )
     .fill();
-  return node;
 };
 
 const getMargin = box => {
@@ -115,7 +105,7 @@ const getMargin = box => {
   };
 };
 
-const debugMargin = ctx => node => {
+const debugMargin = (ctx, node) => {
   const { left, top, width, height } = node.box;
   const {
     marginLeft = 0,
@@ -150,11 +140,9 @@ const debugMargin = ctx => node => {
 
   // Margin bottom
   ctx.rect(left, top + height, width, marginBottom).fill();
-
-  return node;
 };
 
-const debugText = ctx => node => {
+const debugText = (ctx, node) => {
   const { left, top, width, height } = node.box;
   const {
     marginLeft = 0,
@@ -175,11 +163,9 @@ const debugText = ctx => node => {
       left - marginLeft,
       Math.max(top - marginTop - 4, 1),
     );
-
-  return node;
 };
 
-const debugOrigin = ctx => node => {
+const debugOrigin = (ctx, node) => {
   if (node.origin) {
     ctx
       .circle(node.origin.left, node.origin.top, 3)
@@ -187,24 +173,20 @@ const debugOrigin = ctx => node => {
       .circle(node.origin.left, node.origin.top, 5)
       .stroke('red');
   }
-
-  return node;
 };
 
-const renderDebug = ctx =>
-  R.tap(
-    R.when(
-      shouldDebug,
-      R.compose(
-        restore(ctx),
-        debugOrigin(ctx),
-        debugText(ctx),
-        debugMargin(ctx),
-        debugPadding(ctx),
-        debugContent(ctx),
-        save(ctx),
-      ),
-    ),
-  );
+const renderDebug = (ctx, node) => {
+  if (!node.props?.debug) return;
+
+  ctx.save();
+
+  debugContent(ctx, node);
+  debugPadding(ctx, node);
+  debugMargin(ctx, node);
+  debugText(ctx, node);
+  debugOrigin(ctx, node);
+
+  ctx.restore();
+};
 
 export default renderDebug;

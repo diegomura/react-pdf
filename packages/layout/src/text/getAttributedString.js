@@ -1,18 +1,15 @@
-import * as R from 'ramda';
 import * as P from '@react-pdf/primitives';
-import AttributedString from '@react-pdf/textkit/lib/attributedString';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
+import fromFragments from './fromFragments';
 import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const isType = R.propEq('type');
+const isImage = node => node.type === P.Image;
 
-const isImage = isType(P.Image);
-
-const isTextInstance = isType(P.TextInstance);
+const isTextInstance = node => node.type === P.TextInstance;
 
 /**
  * Get textkit fragments of given node object
@@ -119,7 +116,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
  */
 const getAttributedString = (fontStore, instance) => {
   const fragments = getFragments(fontStore, instance);
-  return AttributedString.fromFragments(fragments);
+  return fromFragments(fragments);
 };
 
-export default R.curryN(2, getAttributedString);
+export default getAttributedString;

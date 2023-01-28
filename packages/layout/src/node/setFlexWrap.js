@@ -1,5 +1,9 @@
-import * as R from 'ramda';
 import Yoga from '@react-pdf/yoga';
+
+const FLEX_WRAP = {
+  wrap: Yoga.WRAP_WRAP,
+  'wrap-reverse': Yoga.WRAP_WRAP_REVERSE,
+};
 
 /**
  * Set flex wrap attribute to node's Yoga instance
@@ -9,16 +13,11 @@ import Yoga from '@react-pdf/yoga';
  * @return {Object} node instance
  */
 const setFlexWrap = value => node => {
-  const yogaNode = node._yogaNode;
+  const { yogaNode } = node;
 
   if (yogaNode) {
-    const yogaValue = R.cond([
-      [R.equals('wrap'), R.always(Yoga.WRAP_WRAP)],
-      [R.equals('wrap-reverse'), R.always(Yoga.WRAP_WRAP_REVERSE)],
-      [R.T, R.always(Yoga.WRAP_NO_WRAP)],
-    ])(value);
-
-    yogaNode.setFlexWrap(yogaValue);
+    const flexWrap = FLEX_WRAP[value] || Yoga.WRAP_NO_WRAP;
+    yogaNode.setFlexWrap(flexWrap);
   }
 
   return node;

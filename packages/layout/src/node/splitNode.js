@@ -1,58 +1,51 @@
-import * as R from 'ramda';
+import { isNil } from '@react-pdf/fns';
 
-const zero = R.always(0);
+const getTop = node => node.box?.top || 0;
 
-const getTop = R.pathOr(0, ['box', 'top']);
-
-const hasFixedHeight = R.hasPath(['style', 'height']);
-
-const subtractHeight = value =>
-  R.o(R.subtract(R.__, value), R.path(['box', 'height']));
+const hasFixedHeight = node => !isNil(node.style?.height);
 
 const splitNode = (node, height) => {
   if (!node) return [null, null];
 
   const nodeTop = getTop(node);
 
-  // TODO: We should keep style untouched
-  const current = R.evolve({
-    style: R.evolve({
-      marginBottom: zero,
-      paddingBottom: zero,
-      borderBottomWidth: zero,
-      borderBottomLeftRadius: zero,
-      borderBottomRightRadius: zero,
-    }),
+  const current = Object.assign({}, node, {
     box: {
-      borderBottomWidth: zero,
+      ...node.box,
+      borderBottomWidth: 0,
     },
-  })(node);
+    style: {
+      ...node.style,
+      marginBottom: 0,
+      paddingBottom: 0,
+      borderBottomWidth: 0,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+  });
 
-  // TODO: force height without style mutation
   current.style.height = height - nodeTop;
 
-  const nextHeight = R.ifElse(
-    hasFixedHeight,
-    subtractHeight(height - nodeTop),
-    R.always(null),
-  )(node);
+  const nextHeight = hasFixedHeight(node)
+    ? node.box.height - (height - nodeTop)
+    : null;
 
-  // TODO: We should keep style untouched
-  const next = R.evolve({
-    style: R.evolve({
-      marginTop: zero,
-      paddingTop: zero,
-      borderTopWidth: zero,
-      borderTopLeftRadius: zero,
-      borderTopRightRadius: zero,
-    }),
+  const next = Object.assign({}, node, {
     box: {
-      top: zero,
-      borderTopWidth: zero,
+      ...node.box,
+      top: 0,
+      borderTopWidth: 0,
     },
-  })(node);
+    style: {
+      ...node.style,
+      marginTop: 0,
+      paddingTop: 0,
+      borderTopWidth: 0,
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+    },
+  });
 
-  // TODO: force height without style mutation
   if (nextHeight) {
     next.style.height = nextHeight;
   }

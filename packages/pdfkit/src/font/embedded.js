@@ -2,7 +2,7 @@ import PDFObject from '../object';
 
 const toHex = function(...codePoints) {
   const codes = Array.from(codePoints).map(code =>
-    `0000${code.toString(16)}`.slice(-4),
+    `0000${code.toString(16)}`.slice(-4)
   );
 
   return codes.join('');
@@ -112,7 +112,7 @@ const createEmbeddedFont = PDFFont =>
         }
         if (this.unicode[gid] == null) {
           this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id,
+            glyph.id
           );
         }
       }
@@ -132,7 +132,7 @@ const createEmbeddedFont = PDFFont =>
         }
         if (this.unicode[gid] == null) {
           this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id,
+            glyph.id
           );
         }
       }
@@ -154,7 +154,7 @@ const createEmbeddedFont = PDFFont =>
         fontFile.data.Subtype = 'CIDFontType0C';
       }
 
-      this.subset.encodeStream().pipe(fontFile);
+      fontFile.end(this.subset.encode());
 
       const familyClass =
         ((this.font['OS/2'] != null
@@ -190,14 +190,14 @@ const createEmbeddedFont = PDFFont =>
           bbox.minX * this.scale,
           bbox.minY * this.scale,
           bbox.maxX * this.scale,
-          bbox.maxY * this.scale,
+          bbox.maxY * this.scale
         ],
         ItalicAngle: this.font.italicAngle,
         Ascent: this.ascender,
         Descent: this.descender,
         CapHeight: (this.font.capHeight || this.font.ascent) * this.scale,
         XHeight: (this.font.xHeight || 0) * this.scale,
-        StemV: 0,
+        StemV: 0
       }); // not sure how to calculate this
 
       if (isCFF) {
@@ -215,10 +215,10 @@ const createEmbeddedFont = PDFFont =>
         CIDSystemInfo: {
           Registry: new String('Adobe'),
           Ordering: new String('Identity'),
-          Supplement: 0,
+          Supplement: 0
         },
         FontDescriptor: descriptor,
-        W: [0, this.widths],
+        W: [0, this.widths]
       });
 
       descendantFont.end();
@@ -229,7 +229,7 @@ const createEmbeddedFont = PDFFont =>
         BaseFont: name,
         Encoding: 'Identity-H',
         DescendantFonts: [descendantFont],
-        ToUnicode: this.toUnicodeCmap(),
+        ToUnicode: this.toUnicodeCmap()
       };
 
       return this.dictionary.end();

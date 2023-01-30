@@ -1,5 +1,11 @@
 # @react-pdf/yoga
 
+## 4.0.1
+
+### Patch Changes
+
+- [#2168](https://github.com/diegomura/react-pdf/pull/2168) [`a45355a`](https://github.com/diegomura/react-pdf/commit/a45355afa4568fc01020e520af56eaa1e48dd85b) Thanks [@jeetiss](https://github.com/jeetiss)! - transpile modern js
+
 ## 4.0.0
 
 ### Major Changes

@@ -11,6 +11,8 @@ on:
 
 jobs:
   release:
+    # prevents this action from running on forks
+    if: github.repository_owner == 'diegomura'
     name: Release
     runs-on: ubuntu-latest
     steps:

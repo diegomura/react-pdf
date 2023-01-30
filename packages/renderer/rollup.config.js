@@ -2,6 +2,7 @@ import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import alias from '@rollup/plugin-alias';
 import ignore from 'rollup-plugin-ignore';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
@@ -48,14 +49,21 @@ const getPlugins = ({ browser, minify = false }) => [
   json(),
   sourceMaps(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
+  alias({
+    entries: {
+      'react-reconciler':
+        'react-reconciler/cjs/react-reconciler.production.min.js',
+    },
+  }),
   babel(babelConfig()),
-  commonjs({ esmExternals: true, requireReturnsDefault: 'namespace' }),
+  commonjs({
+    esmExternals: ['scheduler'],
+  }),
   nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
     preventAssignment: true,
     values: {
       BROWSER: JSON.stringify(browser),
-      'process.env.NODE_ENV': JSON.stringify('production'),
     },
   }),
   ...(minify ? [terser()] : []),

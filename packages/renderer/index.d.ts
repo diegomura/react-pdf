@@ -498,7 +498,6 @@ declare namespace ReactPDF {
     document: React.ReactElement<DocumentProps>,
   ) => Promise<NodeJS.ReadableStream>;
 
-  const renderToBuffer: (document: React.ReactElement<DocumentProps>) => Promise<Buffer>;
   const renderToString: (document: React.ReactElement<DocumentProps>) => Promise<string>;
 
   const renderToFile: (
@@ -547,6 +546,12 @@ declare const BlobProvider: typeof ReactPDF.BlobProvider;
 declare const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
 
 export default ReactPDF;
+
+/**
+ * Render document into a nodejs buffer
+ * @platform node
+ */
+export const renderToBuffer: (document: React.ReactElement<ReactPDF.DocumentProps>) => Promise<Buffer>;
 
 export {
   pdf,

@@ -132,7 +132,7 @@ declare namespace ReactPDF {
    * A React component for displaying network or local (Node only) JPG or
    * PNG images, as well as base64 encoded image strings.
    */
-  class Image extends React.Component<React.PropsWithChildren<ImageProps>> {}
+  class Image extends React.Component<ImageProps> {}
 
   interface TextProps extends NodeProps {
     id?: string;
@@ -225,7 +225,7 @@ declare namespace ReactPDF {
     ) => null;
   }
 
-  class Canvas extends React.Component<React.PropsWithChildren<CanvasProps>> {}
+  class Canvas extends React.Component<CanvasProps> {}
 
   interface SVGProps extends NodeProps {
     /**

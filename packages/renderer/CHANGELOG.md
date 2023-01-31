@@ -1,5 +1,13 @@
 # @react-pdf/renderer
 
+## 3.1.3
+
+### Patch Changes
+
+- [#2173](https://github.com/diegomura/react-pdf/pull/2173) [`18cb161`](https://github.com/diegomura/react-pdf/commit/18cb161e3a40581e79b4d3ee0410cb2c3472e987) Thanks [@jeetiss](https://github.com/jeetiss)! - export renderToBuffer type
+
+* [#2172](https://github.com/diegomura/react-pdf/pull/2172) [`d0cc0bd`](https://github.com/diegomura/react-pdf/commit/d0cc0bd26f04731e1009fae15860892d04e5222f) Thanks [@rdennis](https://github.com/rdennis)! - Improved `children` prop types for react@18.
+
 ## 3.1.2
 
 ### Patch Changes

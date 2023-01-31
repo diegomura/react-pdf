@@ -29,7 +29,6 @@ declare namespace ReactPDF {
     language?: string;
     pdfVersion?: PDFVersion;
     onRender?: (props: OnRenderProps) => any;
-    children?: React.ReactNode;
   }
 
   /**
@@ -76,7 +75,6 @@ declare namespace ReactPDF {
     orientation?: Orientation;
     dpi?: number;
     bookmark?: Bookmark;
-    children?: React.ReactNode;
   }
 
   /**
@@ -103,7 +101,6 @@ declare namespace ReactPDF {
       pageNumber: number;
       subPageNumber: number;
     }) => React.ReactNode;
-    children?: React.ReactNode;
   }
 
   /**
@@ -155,7 +152,6 @@ declare namespace ReactPDF {
       subPageNumber: number;
       subPageTotalPages: number;
     }) => React.ReactNode;
-    children?: React.ReactNode;
     /**
      * Override the default hyphenation-callback
      * @see https://react-pdf.org/fonts#registerhyphenationcallback
@@ -202,7 +198,6 @@ declare namespace ReactPDF {
      */
     debug?: boolean;
     src: string;
-    children?: React.ReactNode;
   }
 
   /**
@@ -215,7 +210,7 @@ declare namespace ReactPDF {
     children: string;
   }
 
-  class Note extends React.Component<React.PropsWithChildren<NoteProps>> {}
+  class Note extends React.Component<NoteProps> {}
 
   interface CanvasProps extends NodeProps {
     /**
@@ -425,7 +420,7 @@ declare namespace ReactPDF {
    * @see https://react-pdf.org/advanced#on-the-fly-rendering
    * @platform web
    */
-  class BlobProvider extends React.Component<React.PropsWithChildren<BlobProviderProps>> {}
+  class BlobProvider extends React.Component<BlobProviderProps> {}
 
   interface PDFViewerProps {
     width?: number | string;
@@ -441,7 +436,7 @@ declare namespace ReactPDF {
    * Iframe PDF viewer for client-side generated documents.
    * @platform web
    */
-  class PDFViewer extends React.Component<React.PropsWithChildren<PDFViewerProps>> {}
+  class PDFViewer extends React.Component<PDFViewerProps> {}
 
   interface PDFDownloadLinkProps {
     document: React.ReactElement<DocumentProps>;
@@ -459,7 +454,7 @@ declare namespace ReactPDF {
    * @see https://react-pdf.org/advanced#on-the-fly-rendering
    * @platform web
    */
-  class PDFDownloadLink extends React.Component<React.PropsWithChildren<PDFDownloadLinkProps>> {}
+  class PDFDownloadLink extends React.Component<PDFDownloadLinkProps> {}
 
   interface UsePDFInstance {
     loading: boolean;

@@ -1,5 +1,11 @@
 # @react-pdf/stylesheet
 
+## 4.1.1
+
+### Patch Changes
+
+- [#2186](https://github.com/diegomura/react-pdf/pull/2186) [`72435bd`](https://github.com/diegomura/react-pdf/commit/72435bd81afdada5b811a1d82af0c873cfb62fa0) Thanks [@jeetiss](https://github.com/jeetiss)! - update yoga-layout to support flexBasis auto
+
 ## 4.1.0
 
 ### Minor Changes

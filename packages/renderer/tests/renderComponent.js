@@ -53,6 +53,7 @@ async function getCanvas(pagePromise) {
   return canvas;
 }
 
+const GAP = 10;
 const composeCanvases = canvases => {
   const [maxWidth, maxHeight] = canvases.reduce(
     ([width, height], canvas) => [
@@ -64,12 +65,21 @@ const composeCanvases = canvases => {
 
   const resultCanvas = Canvas.createCanvas(
     maxWidth,
-    maxHeight * canvases.length,
+    maxHeight * canvases.length + GAP * (canvases.length - 1),
   );
   const resultContext = resultCanvas.getContext('2d');
 
   canvases.forEach((canvas, index) => {
-    resultContext.drawImage(canvas, 0, maxHeight * index);
+    if (index) {
+      resultContext.fillStyle = '#e2e2e2';
+      resultContext.fillRect(
+        0,
+        maxHeight * index + GAP * (index - 1),
+        maxWidth,
+        GAP,
+      );
+    }
+    resultContext.drawImage(canvas, 0, maxHeight * index + GAP * index);
   });
 
   return resultCanvas;

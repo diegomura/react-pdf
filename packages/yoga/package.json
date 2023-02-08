@@ -25,6 +25,6 @@
     "@babel/runtime": "^7.16.4"
   },
   "devDependencies": {
-    "yoga-wasm-web": "~0.3.0"
+    "yoga-wasm-web": "~0.3.1"
   }
 }

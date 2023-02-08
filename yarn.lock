@@ -11170,7 +11170,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yoga-wasm-web@~0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/yoga-wasm-web/-/yoga-wasm-web-0.3.0.tgz#b14493f35dccda41701524de80ff089fcda0b4ae"
-  integrity sha512-rD3L4jyMlO1m+RWU60lNwZQK5zmzglCV5fI1gTRikmpv3YzmNIZQbjyfE6cMNb9Xaly/C1SwemYGbsiOekMvnQ==
+yoga-wasm-web@~0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/yoga-wasm-web/-/yoga-wasm-web-0.3.1.tgz#f588ad0f1bc255ce1f89efeaf6b24f3d656e8987"
+  integrity sha512-J74OxJtRb5GLW/GH+ibYpb0/0zixk9qp0EOIuKKkavk0w0cMHIQ76YPkca4cRBUW+d+r+GFSM9Q3a+HXQd4b8g==

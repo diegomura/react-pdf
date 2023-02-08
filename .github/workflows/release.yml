@@ -9,6 +9,8 @@ on:
     branches:
       - master
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
     # prevents this action from running on forks

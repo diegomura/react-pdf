@@ -1,5 +1,11 @@
 # @react-pdf/stylesheet
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2191](https://github.com/diegomura/react-pdf/pull/2191) [`37c3d74`](https://github.com/diegomura/react-pdf/commit/37c3d741fc9ad7eb91508b5caf6a5a554243f7ff) Thanks [@jeetiss](https://github.com/jeetiss)! - revert flex shorthand defaults
+
 ## 4.1.1
 
 ### Patch Changes

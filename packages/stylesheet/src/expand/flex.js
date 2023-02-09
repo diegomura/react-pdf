@@ -1,6 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/CSS/flex#values
 
-const flexDefaults = [0, 1, 'auto'];
+// TODO: change flex defaults to [0, 1, 'auto'] as in spec in next major release
+const flexDefaults = [1, 1, 0];
 const flexAuto = [1, 1, 'auto'];
 
 const expandFlex = (key, value) => {

@@ -79,7 +79,7 @@ const listStyles = StyleSheet.create({
     fontSize: 10,
   },
   itemContent: {
-    flex: '1 1 0',
+    flex: 1,
     fontSize: 10,
     fontFamily: 'Lato',
   },
@@ -161,7 +161,7 @@ const Education = () => (
 
 const expStyles = StyleSheet.create({
   container: {
-    flex: '1 1 0',
+    flex: 1,
     paddingTop: 30,
     paddingLeft: 15,
     '@media max-width: 400': {
@@ -303,7 +303,7 @@ const resumeStyles = StyleSheet.create({
     padding: 30,
   },
   container: {
-    flex: '1 1 0',
+    flex: 1,
     flexDirection: 'row',
     '@media max-width: 400': {
       flexDirection: 'column',

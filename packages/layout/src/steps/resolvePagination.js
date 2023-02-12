@@ -95,6 +95,18 @@ const splitNodes = (height, contentArea, nodes) => {
     if (shouldSplit) {
       const [currentChild, nextChild] = split(child, height, contentArea);
 
+      // All children are moved to the next page, it doesn't make sense to show the parent on the current page
+      if (child.children.length > 0 && currentChild.children.length === 0) {
+        const box = Object.assign({}, child.box, {
+          top: child.box.top - height,
+        });
+        const next = Object.assign({}, child, { box });
+
+        currentChildren.push(...futureFixedNodes);
+        nextChildren.push(next, ...futureNodes);
+        break;
+      }
+
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
 

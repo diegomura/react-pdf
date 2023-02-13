@@ -1,5 +1,12 @@
 # @react-pdf/renderer
 
+## 3.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`c981784`](https://github.com/diegomura/react-pdf/commit/c981784b172e9a7631edb7a1fe41ce77bc6ccdee)]:
+  - @react-pdf/layout@3.4.0
+
 ## 3.1.3
 
 ### Patch Changes

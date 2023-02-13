@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 3.4.0
+
+### Minor Changes
+
+- [#2198](https://github.com/diegomura/react-pdf/pull/2198) [`c981784`](https://github.com/diegomura/react-pdf/commit/c981784b172e9a7631edb7a1fe41ce77bc6ccdee) Thanks [@Solpatium](https://github.com/Solpatium)! - Break on containers whose children can not fit on a page
+
 ## 3.3.1
 
 ### Patch Changes

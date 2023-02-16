@@ -58,7 +58,10 @@ const pdf = initialValue => {
 
   const toBlob = async () => {
     const chunks = [];
-    const { layout: _INTERNAL__LAYOUT_, fileStream: instance } = await render();
+    const {
+      layout: _INTERNAL__LAYOUT__DATA_,
+      fileStream: instance,
+    } = await render();
 
     return new Promise((resolve, reject) => {
       instance.on('data', chunk => {
@@ -70,7 +73,7 @@ const pdf = initialValue => {
       instance.on('end', () => {
         try {
           const blob = new Blob(chunks, { type: 'application/pdf' });
-          callOnRender({ blob, _INTERNAL__LAYOUT_ });
+          callOnRender({ blob, _INTERNAL__LAYOUT__DATA_ });
           resolve(blob);
         } catch (error) {
           reject(error);

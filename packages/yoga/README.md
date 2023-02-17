@@ -4,13 +4,11 @@
 
 # @react-pdf/yoga
 
-> Prebuilt [yoga-layout](https://github.com/facebook/yoga) package with memory heap increase
+> Prebuilt [yoga-layout](https://github.com/facebook/yoga)
 
 ## Acknowledges
 
-This project is forked from the great [yoga-layout-prebuilt](https://github.com/vadimdemedes/yoga-layout-prebuilt) from @vadimdemedes.
-
-Also thanks to @Skywalker13 for providing the post-processing script for increasing build original memory heap.
+This package ship [yoga-wasm-web/asm](https://github.com/shuding/yoga-wasm-web) with commonjs entry
 
 ## Install
 

@@ -1,5 +1,15 @@
 # @react-pdf/renderer
 
+## 3.1.5
+
+### Patch Changes
+
+- [#2202](https://github.com/diegomura/react-pdf/pull/2202) [`f4d2b68`](https://github.com/diegomura/react-pdf/commit/f4d2b68765d146e4718140f65eeceb7e69e2cfee) Thanks [@jeetiss](https://github.com/jeetiss)! - add `events` as dependency to fix build in vite
+
+* [#2201](https://github.com/diegomura/react-pdf/pull/2201) [`75150ca`](https://github.com/diegomura/react-pdf/commit/75150ca137b709fcab6e7cefee9dfac6b48d5aaa) Thanks [@jeetiss](https://github.com/jeetiss)! - Reveal layout data in `onRender` callback
+
+  This is an experimental API, and it will change in the future. Use it at your own risk
+
 ## 3.1.4
 
 ### Patch Changes

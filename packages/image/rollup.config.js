@@ -25,8 +25,7 @@ const babelConfig = () => ({
 });
 
 const getExternal = ({ browser }) => [
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/regenerator',
+  /@babel\/runtime/,
   ...Object.keys(pkg.dependencies),
   ...(browser ? [] : ['fs', 'path', 'url']),
 ];

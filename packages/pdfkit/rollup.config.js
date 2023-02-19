@@ -37,10 +37,7 @@ const getExternal = ({ browser }) => [
   ),
   /\/node_modules\/pako\//,
   /crypto-js/,
-  '@babel/runtime/helpers/inheritsLoose',
-  '@babel/runtime/helpers/assertThisInitialized',
-  '@babel/runtime/helpers/createForOfIteratorHelperLoose',
-  '@babel/runtime/helpers/extends',
+  /@babel\/runtime/,
   ...(browser ? [] : ['fs'])
 ];
 

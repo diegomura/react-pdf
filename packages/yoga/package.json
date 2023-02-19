@@ -22,7 +22,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.16.4"
+    "@babel/runtime": "^7.20.13"
   },
   "devDependencies": {
     "yoga-wasm-web": "~0.3.1"

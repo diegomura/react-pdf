@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-curly-brace-presence */
-import React from 'react';
 import { Text, Document, Page } from '@react-pdf/primitives';
 import renderToImage from './renderComponent';
 

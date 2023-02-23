@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
 import { Document, Page, Svg, Font, Text, Tspan } from '..';
 import renderToImage from './renderComponent';
 import { Tiger, Chart, Chart2, Gradients } from './svgs';

@@ -31,11 +31,12 @@ const babelConfig = () => ({
   babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
-  presets: ['@babel/preset-react'],
+  presets: [['@babel/preset-react', { runtime: 'automatic' }]],
 });
 
 const getExternal = ({ browser }) => [
   /@babel\/runtime/,
+  'react/jsx-runtime',
   ...(browser ? [] : ['fs', 'path', 'url']),
   ...Object.keys(pkg.dependencies).filter(name => name !== 'react-reconciler'),
   ...Object.keys(pkg.peerDependencies),

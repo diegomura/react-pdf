@@ -1,5 +1,11 @@
 # @react-pdf/font
 
+## 2.3.2
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
 ## 2.3.1
 
 ### Patch Changes

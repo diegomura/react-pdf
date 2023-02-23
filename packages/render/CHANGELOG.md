@@ -1,5 +1,14 @@
 # @react-pdf/render
 
+## 3.2.2
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+- Updated dependencies [[`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905)]:
+  - @react-pdf/textkit@4.1.1
+
 ## 3.2.1
 
 ### Patch Changes

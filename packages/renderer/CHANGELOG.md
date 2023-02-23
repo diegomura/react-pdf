@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 3.1.6
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+* [#2211](https://github.com/diegomura/react-pdf/pull/2211) [`f6667e7`](https://github.com/diegomura/react-pdf/commit/f6667e75449c241d02f9f44fb717a71443c555c1) Thanks [@jeetiss](https://github.com/jeetiss)! - configure automatic runtime for react
+
+* Updated dependencies [[`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905)]:
+  - @react-pdf/layout@3.4.1
+  - @react-pdf/pdfkit@3.0.2
+  - @react-pdf/render@3.2.2
+  - @react-pdf/font@2.3.2
+
 ## 3.1.5
 
 ### Patch Changes

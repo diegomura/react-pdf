@@ -1,7 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import fs from 'fs';
-import React from 'react';
 import ReactPDF from '../src/node';
 
 const { Document, Page, View } = ReactPDF;

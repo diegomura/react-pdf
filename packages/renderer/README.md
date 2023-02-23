@@ -29,7 +29,6 @@ yarn add @react-pdf/renderer
 ## How it works
 
 ```jsx
-import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 // Create styles
@@ -62,7 +61,6 @@ const MyDocument = () => (
 
 ### `Web.` Render in DOM
 ```jsx
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { PDFViewer } from '@react-pdf/renderer';
 
@@ -77,7 +75,6 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ### `Node.` Save in a file
 ```jsx
-import React from 'react';
 import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);

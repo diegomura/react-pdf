@@ -8,9 +8,9 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
     'airbnb',
     'prettier',
+    'plugin:react/jsx-runtime',
   ],
   globals: {
     URL: false,

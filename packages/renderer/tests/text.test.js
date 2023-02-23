@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
 import renderToImage from './renderComponent';
 import { Document, Page, View, Text, Link, Font, StyleSheet } from '..';
 

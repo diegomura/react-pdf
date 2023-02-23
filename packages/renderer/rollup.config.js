@@ -10,17 +10,13 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json';
 
-const globals = { react: 'React' };
-
 const cjs = {
-  globals,
   format: 'cjs',
   exports: 'named',
   sourcemap: true,
 };
 
 const esm = {
-  globals,
   format: 'es',
   sourcemap: true,
 };
@@ -82,8 +78,8 @@ const serverConfig = {
 const serverProdConfig = {
   input: nodeInput,
   output: [
-    getESM({ file: 'lib/react-pdf.es.min.js' }),
-    getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.es.min.js', sourcemap: false }),
+    getCJS({ file: 'lib/react-pdf.cjs.min.js', sourcemap: false }),
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false, minify: true }),
@@ -102,8 +98,8 @@ const browserConfig = {
 const browserProdConfig = {
   input: domInput,
   output: [
-    getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
-    getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.browser.es.min.js', sourcemap: false }),
+    getCJS({ file: 'lib/react-pdf.browser.cjs.min.js', sourcemap: false }),
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true, minify: true }),

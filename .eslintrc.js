@@ -6,7 +6,12 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
-  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'airbnb',
+    'prettier',
+  ],
   globals: {
     URL: false,
     BROWSER: false,

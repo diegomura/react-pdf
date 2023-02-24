@@ -9,6 +9,7 @@ import splitParagraphs from './splitParagraphs';
 import finalizeFragments from './finalizeFragments';
 import resolveAttachments from './resolveAttachments';
 import applyDefaultStyles from './applyDefaultStyles';
+import verticalAlignment from './verticalAlign';
 
 /**
  * A LayoutEngine is the main object that performs text layout.
@@ -28,6 +29,7 @@ const layoutEngine = engines => (attributedString, container, options = {}) => {
     resolveYOffset(engines, options),
     resolveAttachments(engines, options),
     generateGlyphs(engines, options),
+    verticalAlignment(options),
     wrapWords(engines, options),
   );
 

@@ -32,6 +32,7 @@ const DEFAULTS = {
   strikeColor: 'black',
   strikeStyle: 'solid',
   stroke: false,
+  verticalAlign: null,
   wordSpacing: 0,
   yOffset: 0,
 };
@@ -67,6 +68,7 @@ const OVERRIDES = {
   strikeColor: 'red',
   strikeStyle: 'dashed',
   stroke: true,
+  verticalAlign: 'super',
   wordSpacing: 5,
   yOffset: 5,
 };

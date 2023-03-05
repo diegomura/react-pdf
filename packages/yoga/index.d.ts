@@ -1,3 +1,3 @@
-import { YogaStatic } from 'yoga-wasm-web';
+import { Yoga } from 'yoga-wasm-web';
 
-export default YogaStatic;
+export default Yoga;

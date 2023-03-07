@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-array-index-key */
 import renderToImage from './renderComponent';
 import { Document, Page, View, Text, Link, Font, StyleSheet } from '..';
@@ -98,6 +99,22 @@ const TextTest = () => (
 describe('text', () => {
   test('should match snapshot', async () => {
     const image = await renderToImage(<TextTest />);
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should support verticalAlign super and sub', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[90, 35]}>
+          <Text style={{ fontFamily: 'Oswald' }}>
+            Lorem
+            <Text style={{ verticalAlign: 'super', fontSize: 10 }}>ipsum</Text>
+            <Text style={{ verticalAlign: 'sub', fontSize: 10 }}>dolor</Text>
+          </Text>
+        </Page>
+      </Document>,
+    );
 
     expect(image).toMatchImageSnapshot();
   });

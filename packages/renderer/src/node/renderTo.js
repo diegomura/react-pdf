@@ -35,5 +35,12 @@ export const renderToBuffer = element =>
       }),
   );
 
-export const renderToString = element =>
-  renderToBuffer(element).then(buffer => buffer.toString());
+export const renderToString = element => {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(
+      '`renderToString` is deprecated and will be removed in next major release, use `renderToBuffer` instead',
+    );
+  }
+
+  return renderToBuffer(element).then(buffer => buffer.toString());
+};

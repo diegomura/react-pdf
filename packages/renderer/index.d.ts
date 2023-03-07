@@ -9,6 +9,8 @@ import {
   HyphenationCallback,
   SVGPresentationAttributes,
   Bookmark,
+  PageLayout,
+  PageMode,
 } from '@react-pdf/types';
 
 declare namespace ReactPDF {
@@ -28,6 +30,8 @@ declare namespace ReactPDF {
     producer?: string;
     language?: string;
     pdfVersion?: PDFVersion;
+    pageMode?: PageMode;
+    pageLayout ?: PageLayout;
     onRender?: (props: OnRenderProps) => any;
   }
 

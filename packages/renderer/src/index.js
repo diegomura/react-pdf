@@ -95,6 +95,12 @@ const pdf = initialValue => {
    * - https://github.com/diegomura/react-pdf/issues/2095
    */
   const toString = async () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        '`toString` is deprecated and will be removed in next major release',
+      );
+    }
+
     let result = '';
     const { fileStream: instance } = await render(false); // For some reason, when rendering to string if compress=true the document is blank
 

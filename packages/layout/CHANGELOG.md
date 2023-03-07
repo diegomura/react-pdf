@@ -1,5 +1,20 @@
 # @react-pdf/layout
 
+## 3.5.0
+
+### Minor Changes
+
+- [#2214](https://github.com/diegomura/react-pdf/pull/2214) [`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724) Thanks [@KODIKAS-NL](https://github.com/KODIKAS-NL)! - added base support for verticalAlign "super" and "sub"
+
+### Patch Changes
+
+- Updated dependencies [[`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724), [`eff1ff0`](https://github.com/diegomura/react-pdf/commit/eff1ff0fefcd710994e4654904ef55843af76a17), [`c5b21fc`](https://github.com/diegomura/react-pdf/commit/c5b21fc97b704b3616522b897847a9d3c9dc0052)]:
+  - @react-pdf/textkit@4.2.0
+  - @react-pdf/types@2.3.0
+  - @react-pdf/fns@2.0.1
+  - @react-pdf/yoga@4.1.2
+  - @react-pdf/stylesheet@4.1.4
+
 ## 3.4.1
 
 ### Patch Changes

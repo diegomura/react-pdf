@@ -1,5 +1,17 @@
 # @react-pdf/renderer
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2229](https://github.com/diegomura/react-pdf/pull/2229) [`b194b61`](https://github.com/diegomura/react-pdf/commit/b194b619b19a7683b64d47eaa2573635e6884e8d) Thanks [@jeetiss](https://github.com/jeetiss)! - deprecate `renderToString` use `renderToBuffer` instead
+
+- Updated dependencies [[`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724)]:
+  - @react-pdf/layout@3.5.0
+  - @react-pdf/types@2.3.0
+  - @react-pdf/render@3.2.3
+  - @react-pdf/font@2.3.3
+
 ## 3.1.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @react-pdf/fns
 
+## 2.0.1
+
+### Patch Changes
+
+- [#2215](https://github.com/diegomura/react-pdf/pull/2215) [`eff1ff0`](https://github.com/diegomura/react-pdf/commit/eff1ff0fefcd710994e4654904ef55843af76a17) Thanks [@jeetiss](https://github.com/jeetiss)! - add @babel/runtime as dependency
+
 ## 2.0.0
 
 ### Major Changes

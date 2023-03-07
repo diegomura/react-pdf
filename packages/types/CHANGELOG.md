@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.3.0
+
+### Minor Changes
+
+- [#2214](https://github.com/diegomura/react-pdf/pull/2214) [`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724) Thanks [@KODIKAS-NL](https://github.com/KODIKAS-NL)! - added base support for verticalAlign "super" and "sub"
+
 ## 2.2.0
 
 ### Minor Changes

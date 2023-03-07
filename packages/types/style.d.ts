@@ -58,6 +58,7 @@ export interface Style {
   textIndent?: any; // ?
   textOverflow?: 'ellipsis';
   textTransform?: 'capitalize' | 'lowercase' | 'uppercase';
+  verticalAlign?: 'sub' | 'super';
 
   // Sizing/positioning
 

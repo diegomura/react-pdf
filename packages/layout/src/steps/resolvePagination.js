@@ -2,7 +2,7 @@
 /* eslint-disable prefer-destructuring */
 
 import * as P from '@react-pdf/primitives';
-import { isNil, omit, compose } from '@react-pdf/fns';
+import { isNil, omit, asyncCompose } from '@react-pdf/fns';
 
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';
@@ -15,6 +15,7 @@ import shouldNodeBreak from '../node/shouldBreak';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
+import resolveAssets from './resolveAssets';
 
 const isText = node => node.type === P.Text;
 
@@ -30,7 +31,8 @@ const allFixed = nodes => nodes.every(isFixed);
 
 const isDynamic = node => !isNil(node.props?.render);
 
-const relayoutPage = compose(
+const relayoutPage = asyncCompose(
+  resolveAssets,
   resolveTextLayout,
   resolveInheritance,
   resolvePageDimensions,
@@ -172,19 +174,20 @@ const resolveDynamicNodes = (props, node) => {
   return Object.assign({}, node, { box, lines, children });
 };
 
-const resolveDynamicPage = (props, page, fontStore) => {
+const resolveDynamicPage = async (props, page, fontStore) => {
   if (shouldResolveDynamicNodes(page)) {
     const resolvedPage = resolveDynamicNodes(props, page);
-    return relayoutPage(resolvedPage, fontStore);
+    const relayoutedPage = await relayoutPage(resolvedPage, fontStore);
+    return relayoutedPage;
   }
 
   return page;
 };
 
-const splitPage = (page, pageNumber, fontStore) => {
+const splitPage = async (page, pageNumber, fontStore) => {
   const wrapArea = getWrapArea(page);
   const contentArea = getContentArea(page);
-  const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore);
+  const dynamicPage = await resolveDynamicPage({ pageNumber }, page, fontStore);
   const height = page.style.height;
 
   const [currentChilds, nextChilds] = splitNodes(
@@ -193,10 +196,10 @@ const splitPage = (page, pageNumber, fontStore) => {
     dynamicPage.children,
   );
 
-  const relayout = node => relayoutPage(node, fontStore);
+  const relayout = async node => relayoutPage(node, fontStore);
 
   const currentBox = { ...page.box, height };
-  const currentPage = relayout(
+  const currentPage = await relayout(
     Object.assign({}, page, { box: currentBox, children: currentChilds }),
   );
 
@@ -206,7 +209,7 @@ const splitPage = (page, pageNumber, fontStore) => {
   const nextBox = omit('height', page.box);
   const nextProps = omit('bookmark', page.props);
 
-  const nextPage = relayout(
+  const nextPage = await relayout(
     Object.assign({}, page, {
       props: nextProps,
       box: nextBox,
@@ -217,7 +220,7 @@ const splitPage = (page, pageNumber, fontStore) => {
   return [currentPage, nextPage];
 };
 
-const resolvePageIndices = (fontStore, page, pageNumber, pages) => {
+const resolvePageIndices = async (fontStore, page, pageNumber, pages) => {
   const totalPages = pages.length;
 
   const props = {
@@ -242,18 +245,23 @@ const dissocSubPageData = page => {
   return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
-const paginate = (page, pageNumber, fontStore) => {
+const paginate = async (page, pageNumber, fontStore) => {
   if (!page) return [];
 
   if (page.props?.wrap === false) return [page];
 
-  let splittedPage = splitPage(page, pageNumber, fontStore);
+  let splittedPage = await splitPage(page, pageNumber, fontStore);
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(nextPage, pageNumber + pages.length, fontStore);
+    // eslint-disable-next-line no-await-in-loop
+    splittedPage = await splitPage(
+      nextPage,
+      pageNumber + pages.length,
+      fontStore,
+    );
 
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
@@ -263,28 +271,31 @@ const paginate = (page, pageNumber, fontStore) => {
 };
 
 /**
- * Performs pagination. This is the step responsible of breaking the whole document
- * into pages following pagiation rules, such as `fixed`, `break` and dynamic nodes.
+ * Performs pagination. This is the step responsible for breaking the whole document
+ * into pages following pagination rules, such as `fixed`, `break` and dynamic nodes.
  *
  * @param {Object} node
  * @param {Object} fontStore font store
  * @returns {Object} layout node
  */
-const resolvePagination = (doc, fontStore) => {
+const resolvePagination = async (doc, fontStore) => {
   let pages = [];
   let pageNumber = 1;
 
-  for (let i = 0; i < doc.children.length; i += 1) {
-    const page = doc.children[i];
-    let subpages = paginate(page, pageNumber, fontStore);
+  await Promise.all(
+    doc.children.map(async page => {
+      let subpages = await paginate(page, pageNumber, fontStore);
 
-    subpages = assocSubPageData(subpages);
-    pageNumber += subpages.length;
-    pages = pages.concat(subpages);
-  }
+      subpages = assocSubPageData(subpages);
+      pageNumber += subpages.length;
+      pages.push(...subpages);
+    }),
+  );
 
-  pages = pages.map((...args) =>
-    dissocSubPageData(resolvePageIndices(fontStore, ...args)),
+  pages = await Promise.all(
+    pages.map(async (...args) =>
+      dissocSubPageData(await resolvePageIndices(fontStore, ...args)),
+    ),
   );
 
   return assingChildren(pages, doc);

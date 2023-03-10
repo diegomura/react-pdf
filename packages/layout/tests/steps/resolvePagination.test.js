@@ -5,7 +5,7 @@ import resolveDimensions from '../../src/steps/resolveDimensions';
 const calcLayout = node => resolvePagination(resolveDimensions(node));
 
 describe('pagination step', () => {
-  test('should stretch absolute block to full page size', () => {
+  test('should stretch absolute block to full page size', async () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -46,7 +46,7 @@ describe('pagination step', () => {
       ],
     };
 
-    const layout = calcLayout(root);
+    const layout = await calcLayout(root);
 
     const page = layout.children[0];
     const view = layout.children[0].children[0];
@@ -55,7 +55,7 @@ describe('pagination step', () => {
     expect(view.box.height).toBe(100);
   });
 
-  test('should force new height for split nodes', () => {
+  test('should force new height for split nodes', async () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -93,7 +93,7 @@ describe('pagination step', () => {
       ],
     };
 
-    const layout = calcLayout(root);
+    const layout = await calcLayout(root);
 
     const view1 = layout.children[0].children[0];
     const view2 = layout.children[1].children[0];
@@ -102,7 +102,7 @@ describe('pagination step', () => {
     expect(view2.box.height).not.toBe(60);
   });
 
-  test('should force new height for split nodes with fixed height', () => {
+  test('should force new height for split nodes with fixed height', async () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -127,7 +127,7 @@ describe('pagination step', () => {
       ],
     };
 
-    const layout = calcLayout(root);
+    const layout = await calcLayout(root);
 
     const view1 = layout.children[0].children[0];
     const view2 = layout.children[1].children[0];
@@ -138,7 +138,7 @@ describe('pagination step', () => {
     expect(view3.box.height).toBe(10);
   });
 
-  test('should not wrap page with false wrap prop', () => {
+  test('should not wrap page with false wrap prop', async () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -165,12 +165,12 @@ describe('pagination step', () => {
       ],
     };
 
-    const layout = calcLayout(root);
+    const layout = await calcLayout(root);
 
     expect(layout.children.length).toBe(1);
   });
 
-  test('should break on a container whose children can not fit on a page', () => {
+  test('should break on a container whose children can not fit on a page', async () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -219,8 +219,7 @@ describe('pagination step', () => {
       ],
     };
 
-    const layout = calcLayout(root);
-    console.log(layout.children[0].children);
+    const layout = await calcLayout(root);
 
     const page1 = layout.children[0];
     const page2 = layout.children[1];

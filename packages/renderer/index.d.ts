@@ -22,6 +22,7 @@ declare namespace ReactPDF {
   }
 
   interface DocumentProps {
+    style?: Style | Style[];
     title?: string;
     author?: string;
     subject?: string;

@@ -1,5 +1,14 @@
 # @react-pdf/font
 
+## 2.3.4
+
+### Patch Changes
+
+- [#2252](https://github.com/diegomura/react-pdf/pull/2252) [`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59) Thanks [@jeetiss](https://github.com/jeetiss)! - implement function as emoji source to build more complex urls
+
+- Updated dependencies [[`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59)]:
+  - @react-pdf/types@2.3.1
+
 ## 2.3.3
 
 ### Patch Changes

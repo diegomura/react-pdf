@@ -46,10 +46,16 @@ interface RegisteredFont {
   [key: string]: any;
 }
 
-interface EmojiSource {
+interface EmojiSourceUrl {
   url: string;
-  format: string;
+  format?: string;
 }
+
+interface EmojiSourceBuilder {
+  builder: (code: string) => string;
+}
+
+type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;
 
 interface SingleLoad {
   family: string;

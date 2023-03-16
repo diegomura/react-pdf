@@ -34,12 +34,16 @@ const getCodePoints = string =>
     .join('-');
 
 const buildEmojiUrl = (emoji, source) => {
-  const { url, format } = source;
+  const { url, format, builder } = source;
+  if (typeof builder === 'function') {
+    return builder(getCodePoints(emoji));
+  }
+
   return `${url}${getCodePoints(emoji)}.${format}`;
 };
 
 export const fetchEmojis = (string, source) => {
-  if (!source || !source.url) return [];
+  if (!source || (!source.url && !source.builder)) return [];
 
   const promises = [];
 

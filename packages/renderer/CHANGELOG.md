@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 3.1.8
+
+### Patch Changes
+
+- [#2232](https://github.com/diegomura/react-pdf/pull/2232) [`5832ff2`](https://github.com/diegomura/react-pdf/commit/5832ff20e1ce4a0e49cf5249dcdf4b304eab04c6) Thanks [@x-Wawa](https://github.com/x-Wawa)! - Add missing props types on `Document` component
+
+* [#2236](https://github.com/diegomura/react-pdf/pull/2236) [`37bfa1b`](https://github.com/diegomura/react-pdf/commit/37bfa1ba26386d1725f42ba5e108d8c72aa71e85) Thanks [@jeetiss](https://github.com/jeetiss)! - remove loose-envify dependency
+
+* Updated dependencies [[`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59)]:
+  - @react-pdf/layout@3.5.1
+  - @react-pdf/types@2.3.1
+  - @react-pdf/font@2.3.4
+  - @react-pdf/render@3.2.4
+
 ## 3.1.7
 
 ### Patch Changes

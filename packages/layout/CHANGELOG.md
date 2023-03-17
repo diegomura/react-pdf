@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 3.6.0
+
+### Minor Changes
+
+- [#2254](https://github.com/diegomura/react-pdf/pull/2254) [`d48039c`](https://github.com/diegomura/react-pdf/commit/d48039c9e224346fd22395f48eb03ceffa5e3dd6) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Enable more modern emoji (Unicode 13+)
+
 ## 3.5.1
 
 ### Patch Changes

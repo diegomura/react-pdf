@@ -23,6 +23,7 @@ interface FontSource {
   fontFamily: string;
   fontStyle: FontStyle;
   fontWeight: number;
+  unicodeRange?: RegExp;
   data: any;
   loading: boolean;
   options: any;
@@ -60,6 +61,7 @@ type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;
 interface SingleLoad {
   family: string;
   src: string;
+  unicodeRange: RegExp,
   fontStyle?: string;
   fontWeight?: string | number;
   [key: string]: any;
@@ -67,10 +69,12 @@ interface SingleLoad {
 
 interface BulkLoad {
   family: string;
+  unicodeRange?: RegExp,
   fonts: {
     src: string;
     fontStyle?: string;
     fontWeight?: string | number;
+    unicodeRange?: RegExp,
     [key: string]: any;
   }[];
 }

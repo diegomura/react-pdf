@@ -1,4 +1,4 @@
-import font from './font';
+import Font from './font';
 import standard from './standard';
 
 function FontStore() {
@@ -12,13 +12,15 @@ function FontStore() {
     const { family } = data;
 
     if (!fonts[family]) {
-      fonts[family] = font.create(family);
+      fonts[family] = Font.create(family);
     }
-
     // Bulk loading
     if (data.fonts) {
       for (let i = 0; i < data.fonts.length; i += 1) {
-        fonts[family].register({ family, ...data.fonts[i] });
+        const defaultValues = { ...data };
+        delete defaultValues.fonts;
+
+        fonts[family].register({ ...defaultValues, ...data.fonts[i] });
       }
     } else {
       fonts[family].register(data);
@@ -48,16 +50,31 @@ function FontStore() {
     return fonts[fontFamily].resolve(descriptor);
   };
 
-  this.load = async descriptor => {
+  this.load = async (descriptor, text = '') => {
     const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
+    const fontFamilies =
+      typeof fontFamily === 'string'
+        ? fontFamily.split(',').map(family => family.trim())
+        : [...(fontFamily || [])];
 
-    if (isStandard) return;
+    const promises = [];
 
-    const f = this.getFont(descriptor);
+    for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
+      const family = fontFamilies[i];
 
-    // We cache the font to avoid fetching it many times
-    await f.load();
+      const isStandard = standard.includes(family);
+      if (isStandard) return;
+
+      const font = this.getFont({ ...descriptor, fontFamily: family });
+
+      const didMatch = !font.unicodeRange || font.unicodeRange.test(text);
+
+      if (didMatch) {
+        promises.push(font.load());
+      }
+    }
+
+    await Promise.all(promises);
   };
 
   this.reset = () => {

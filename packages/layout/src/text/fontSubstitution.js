@@ -19,11 +19,24 @@ const getOrCreateFont = name => {
 
 const getFallbackFont = () => getOrCreateFont('Helvetica');
 
-const shouldFallbackToFont = (codePoint, font) =>
-  !font ||
-  (!IGNORED_CODE_POINTS.includes(codePoint) &&
-    !font.hasGlyphForCodePoint(codePoint) &&
-    getFallbackFont().hasGlyphForCodePoint(codePoint));
+const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
+  const fontStackWithFallback = [...fontStack, getFallbackFont()];
+  if (lastFont) {
+    fontStackWithFallback.unshift(lastFont);
+  }
+  for (let i = 0; i < fontStackWithFallback.length; i += 1) {
+    const font = fontStackWithFallback[i];
+    if (
+      !IGNORED_CODE_POINTS.includes(codePoint) &&
+      font &&
+      font.hasGlyphForCodePoint &&
+      font.hasGlyphForCodePoint(codePoint)
+    ) {
+      return font;
+    }
+  }
+  return getFallbackFont();
+};
 
 const fontSubstitution = () => ({ string, runs }) => {
   let lastFont = null;
@@ -37,9 +50,9 @@ const fontSubstitution = () => ({ string, runs }) => {
     const run = runs[i];
 
     const defaultFont =
-      typeof run.attributes.font === 'string'
-        ? getOrCreateFont(run.attributes.font)
-        : run.attributes.font;
+      run.attributes.fontStack?.[0] === 'string'
+        ? getOrCreateFont(run.attributes.fontStack[0])
+        : run.attributes.fontStack[0];
 
     if (string.length === 0) {
       res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
@@ -47,13 +60,15 @@ const fontSubstitution = () => ({ string, runs }) => {
     }
 
     const chars = string.slice(run.start, run.end);
-
     for (let j = 0; j < chars.length; j += 1) {
       const char = chars[j];
       const codePoint = char.codePointAt();
-      const shouldFallback = shouldFallbackToFont(codePoint, defaultFont);
       // If the default font does not have a glyph and the fallback font does, we use it
-      const font = shouldFallback ? getFallbackFont() : defaultFont;
+      const font = pickFontFromFontStack(
+        codePoint,
+        run.attributes.fontStack,
+        lastFont,
+      );
       const fontSize = getFontSize(run);
 
       // If anything that would impact res has changed, update it

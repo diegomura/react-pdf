@@ -10,7 +10,7 @@ const applyAttributes = a => ({
   color: a.color || 'black',
   features: a.features || [],
   fill: a.fill !== false,
-  font: a.font || null,
+  fontStack: a.fontStack || [],
   fontSize: a.fontSize || 12,
   hangingPunctuation: a.hangingPunctuation || false,
   hyphenationFactor: a.hyphenationFactor || 0,

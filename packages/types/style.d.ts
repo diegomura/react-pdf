@@ -18,6 +18,7 @@ export interface Style {
 
   // Layout
 
+  aspectRatio?: number | string;
   bottom?: number | string;
   display?: 'flex' | 'none';
   left?: number | string;

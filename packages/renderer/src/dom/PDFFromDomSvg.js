@@ -4,29 +4,30 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  Page,
-  Text,
-  View,
-  Image,
-  Document,
-  StyleSheet,
-  PDFDownloadLink,
-  Font,
-  usePDF,
-  PDFViewer,
-  Svg,
-  SvgText,
-  TextInstance,
-  Path,
-  Link,
-  Stop,
-  Rect,
-  Defs,
-  LinearGradient,
-  Line,
   G,
-  ClipPath,
+  Svg,
+  View,
+  Text,
+  Link,
+  Page,
+  Note,
+  Path,
+  Rect,
+  Line,
+  Stop,
+  Defs,
+  Image,
   Tspan,
+  Canvas,
+  Circle,
+  Ellipse,
+  Polygon,
+  Document,
+  Polyline,
+  ClipPath,
+  TextInstance,
+  LinearGradient,
+  RadialGradient,
 } from '@react-pdf/primitives';
 
 function getPropsFromAttrs(element) {
@@ -34,11 +35,46 @@ function getPropsFromAttrs(element) {
   if (element?.attributes?.length) {
     Array.from(element.attributes).forEach(attr => {
       const attrName = attr.name.replace(/-([a-z])/g, g => g[1].toUpperCase());
+      // TODO: fix strokeDadsharray later in package
+      if (attrName === 'strokeDasharray') {
+        return;
+      }
       props[attrName] = attr.value;
+      // props[attrName] = props[attrName];
+
+      // console.log(attrName);
+      // console.log(props[attrName]);
     });
   }
 
   return props || {};
+}
+
+// pattern for string like this: translate(1003.3333333333333,438.00000000000006)
+const translateRegexp = /translate\(([\d.]+),([\d.]+)\)/;
+// shirnk function for sting like this: translate(1003.3333333333333,438.00000000000006)
+function shirnkToTranslate(str) {
+  const match = str.match(translateRegexp);
+  if (match) {
+    return `translate(${shirnkToNumber(match[1])},${shirnkToNumber(match[2])})`;
+  }
+  return str;
+}
+
+// shirnk function for sting like this: 39.734375
+function shirnkToNumber(str) {
+  return Number(str).toFixed(2);
+}
+
+// regexp to recognize  133.55078124999997
+// const numberRegexp = /^-?\d+(?:\.\d+)?$/;
+// function to shirng number like this: 133.55078124999997
+function shirnk(str) {
+  const numberRegexp = /^-?\d+(?:\.\d+)?$/;
+  if (numberRegexp.test(str)) {
+    return shirnkToNumber(str);
+  }
+  return str;
 }
 
 function camelCaseToSnakeCase(str) {
@@ -52,6 +88,7 @@ function clearText(text) {
   return text.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
 }
 
+// TODO: fix svg inside svg
 function domTraversal(parentElement) {
   const result = Array.from(parentElement.childNodes)
     .filter(element => !element.data)
@@ -80,9 +117,8 @@ function domTraversal(parentElement) {
 
   return result;
 }
-
 export function PDFFromDomSvg(props) {
-  const { svgSelector } = props;
+  const { svgSelector, scale, height } = props;
   const [defs, setDefs] = React.useState(null);
   const [svgElement, setSvgElement] = React.useState(null);
   const [svgReady, setSvgReady] = React.useState(false);
@@ -92,6 +128,8 @@ export function PDFFromDomSvg(props) {
     if (svgSelector) {
       const element = document.querySelector(svgSelector);
       const clone = element.cloneNode(true);
+
+      clone.setAttribute('height', height);
       // const newDoc = document.implementation.createDocument(null, null, null);
       const title = clone?.querySelector('title')?.remove();
       const desk = clone?.querySelector('desc')?.remove();
@@ -102,6 +140,9 @@ export function PDFFromDomSvg(props) {
       setSvgElement(template);
       setDefs(Array.from(clone.querySelectorAll('defs'))[0]);
     }
+    return () => {
+      setSvgElement(null);
+    };
   }, []);
 
   React.useEffect(() => {

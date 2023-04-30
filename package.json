@@ -63,8 +63,6 @@
     "mockdate": "^2.0.2",
     "pdfjs-dist": "3.1.81",
     "prettier": "^1.16.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^2.60.1",
     "rollup-plugin-ignore": "^1.0.10",
@@ -84,5 +82,9 @@
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }

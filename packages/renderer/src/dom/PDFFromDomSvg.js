@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-unused-vars */
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   Page,
   Text,
@@ -25,20 +29,17 @@ import {
   Tspan,
 } from '@react-pdf/primitives';
 
-import { chartSvg } from './test';
-
-// console.log(<TextInstance />, "TextInstance");
-
-const getPropsFromAttrs = element => {
+function getPropsFromAttrs(element) {
   const props = {};
-  element?.attributes?.length &&
+  if (element?.attributes?.length) {
     Array.from(element.attributes).forEach(attr => {
       const attrName = attr.name.replace(/-([a-z])/g, g => g[1].toUpperCase());
       props[attrName] = attr.value;
     });
+  }
 
   return props || {};
-};
+}
 
 function camelCaseToSnakeCase(str) {
   return str
@@ -47,66 +48,83 @@ function camelCaseToSnakeCase(str) {
     ?.toUpperCase();
 }
 
-export function PDFFromDomSvg() {
-  // const [defs, setDefs] = React.useState(null);
+function clearText(text) {
+  return text.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
+}
 
-  let SvgComponent = chartSvg;
+function domTraversal(parentElement) {
+  const result = Array.from(parentElement.childNodes)
+    .filter(element => !element.data)
+    .map(element => {
+      const convertedProps = getPropsFromAttrs(element);
+      const component = {};
+      component.tagNameMutated = camelCaseToSnakeCase(element?.tagName);
 
-  SvgComponent = new DOMParser().parseFromString(SvgComponent, 'text/xml');
-  // console.log(React);
-  // React.useEffect(() => {
-  //   function manageDefsTag() {
-  //     Array.from(SvgComponent.querySelectorAll('defs')).forEach(el => {
-  //       if (defs) {
-  //         console.log(defs, 'wtf');
-  //         defs.innerHTML += el.innerHTML;
-  //         el.remove();
-  //       } else {
-  //         setDefs(el);
-  //       }
-  //     });
-  //   }
-  //   manageDefsTag();
-  //   console.log(SvgComponent, 'SvgComponent');
-  // }, []);
-
-  function domTraversal(parentElement) {
-    // console.log(parentElement.childNodes, "all the nodes of parent");
-    const result = Array.from(parentElement.childNodes)
-      .filter(element => !element.data)
-      .map(element => {
-        const props = getPropsFromAttrs(element);
-
-        element.tagNameMutated = camelCaseToSnakeCase(element?.tagName);
-        // console.log(element.tagNameMutated, "element.tagNameMutated");
-        if (element.tagNameMutated === 'TEXT') {
-          function clearText(text) {
-            return text.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim();
-          }
-          return (
-            <element.tagNameMutated {...props}>
-              {clearText(element.textContent)}
-            </element.tagNameMutated>
-          );
-        } else {
-          return (
-            <element.tagNameMutated {...props}>
-              {element.hasChildNodes() && domTraversal(element)}
-            </element.tagNameMutated>
-          );
-        }
-      })
-      .filter(el => el !== null && el.type !== undefined);
-    if (result.length === 1) {
-      return result[0];
-    } else {
-      return result;
-    }
+      if (component.tagNameMutated === 'TEXT') {
+        return (
+          <component.tagNameMutated key={uuidv4()} {...convertedProps}>
+            {clearText(element.textContent)}
+          </component.tagNameMutated>
+        );
+      }
+      return (
+        <component.tagNameMutated key={uuidv4()} {...convertedProps}>
+          {element.hasChildNodes() && domTraversal(element)}
+        </component.tagNameMutated>
+      );
+    })
+    .filter(el => el !== null && el.type !== undefined);
+  if (result.length === 1) {
+    return result[0];
   }
-  const checkDomTraversal = domTraversal(SvgComponent);
-  console.log(checkDomTraversal, 'checkDomTraversal result function');
 
-  return <>{checkDomTraversal}</>;
+  return result;
+}
+
+export function PDFFromDomSvg(props) {
+  const { svgSelector } = props;
+  const [defs, setDefs] = React.useState(null);
+  const [svgElement, setSvgElement] = React.useState(null);
+  const [svgReady, setSvgReady] = React.useState(false);
+  const [svg, setSvg] = React.useState(null);
+
+  React.useEffect(() => {
+    if (svgSelector) {
+      const element = document.querySelector(svgSelector);
+      const clone = element.cloneNode(true);
+      // const newDoc = document.implementation.createDocument(null, null, null);
+      const title = clone?.querySelector('title')?.remove();
+      const desk = clone?.querySelector('desc')?.remove();
+
+      const template = document.createElement('template');
+
+      template.appendChild(clone);
+      setSvgElement(template);
+      setDefs(Array.from(clone.querySelectorAll('defs'))[0]);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (defs) {
+      if (svgElement) {
+        Array.from(svgElement.querySelectorAll('defs'))
+          .slice(1)
+          .forEach(el => {
+            defs.innerHTML += el.innerHTML;
+            el.remove();
+          });
+        setSvgReady(true);
+      }
+    }
+  }, [defs]);
+
+  React.useEffect(() => {
+    if (svgElement) {
+      setSvg(domTraversal(svgElement));
+    }
+  }, [svgReady]);
+
+  return <>{svg && svg}</>;
 }
 
 export default PDFFromDomSvg;

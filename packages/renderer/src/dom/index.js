@@ -4,6 +4,8 @@ import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';
 import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
+import PDFFromDomSvg from './PDFFromDomSvg';
+
 import { pdf, version, Font, StyleSheet } from '../index';
 
 const throwEnvironmentError = name => {
@@ -44,7 +46,12 @@ export * from './PDFDownloadLink';
 
 export * from '@react-pdf/primitives';
 
+export * from './PDFFromDomSvg';
+
+export const test = 'test';
+
 // TODO: remove this default export in next major release because it breaks tree-shacking
+
 export default {
   pdf,
   usePDF,
@@ -54,6 +61,7 @@ export default {
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
+  PDFFromDomSvg,
   renderToStream,
   renderToString,
   renderToFile,

@@ -148,6 +148,10 @@ export function PDFFromDomSvg(props) {
   React.useEffect(() => {
     if (defs) {
       if (svgElement) {
+        // Remove nested svg while we have render issue
+        Array.from(svgElement.querySelectorAll('svg svg')).forEach(el =>
+          el.remove(),
+        );
         Array.from(svgElement.querySelectorAll('defs'))
           .slice(1)
           .forEach(el => {
@@ -161,6 +165,7 @@ export function PDFFromDomSvg(props) {
 
   React.useEffect(() => {
     if (svgElement) {
+      console.log(svgElement);
       setSvg(domTraversal(svgElement));
     }
   }, [svgReady]);

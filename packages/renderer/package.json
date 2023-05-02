@@ -1,6 +1,6 @@
 {
-  "name": "@helgicustom/pdf-renderer",
-  "version": "3.3.0",
+  "name": "@react-pdf/renderer",
+  "version": "3.2.0",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",

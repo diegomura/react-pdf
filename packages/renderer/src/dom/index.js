@@ -4,7 +4,7 @@ import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';
 import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
-import PDFFromDomSvg from './PDFFromDomSvg';
+
 import PDFFromDom from './PDFFromDom';
 
 import { pdf, version, Font, StyleSheet } from '../index';
@@ -46,8 +46,6 @@ export * from './BlobProvider';
 export * from './PDFDownloadLink';
 
 export * from '@react-pdf/primitives';
-
-export * from './PDFFromDomSvg';
 
 export * from './PDFFromDom';
 

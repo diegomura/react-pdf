@@ -30,6 +30,33 @@ import {
   RadialGradient,
 } from '@react-pdf/primitives';
 
+const PRIMITIVES = [
+  'G',
+  'Svg',
+  'View',
+  'Text',
+  'Link',
+  'Page',
+  'Note',
+  'Path',
+  'Rect',
+  'Line',
+  'Stop',
+  'Defs',
+  'Image',
+  'Tspan',
+  'Canvas',
+  'Circle',
+  'Ellipse',
+  'Polygon',
+  'Document',
+  'Polyline',
+  'ClipPath',
+  'TextInstance',
+  'LinearGradient',
+  'RadialGradient',
+];
+
 function getPropsFromAttrs(element) {
   const props = {};
   if (element?.attributes?.length) {
@@ -40,10 +67,6 @@ function getPropsFromAttrs(element) {
         return;
       }
       props[attrName] = attr.value;
-      // props[attrName] = props[attrName];
-
-      // console.log(attrName);
-      // console.log(props[attrName]);
     });
   }
 
@@ -89,24 +112,61 @@ function clearText(text) {
 }
 
 // TODO: fix svg inside svg
-function domTraversal(parentElement) {
+
+function domTraversal(parentElement, styleOverrides, params) {
   const result = Array.from(parentElement.childNodes)
     .filter(element => !element.data)
     .map(element => {
+      if (element.tagName === 'title') return null;
+      if (element.tagName === 'desc') return null;
+
       const convertedProps = getPropsFromAttrs(element);
       const component = {};
       component.tagNameMutated = camelCaseToSnakeCase(element?.tagName);
+      const primitive = PRIMITIVES.find(
+        el => camelCaseToSnakeCase(el) === component.tagNameMutated,
+      );
 
-      if (component.tagNameMutated === 'TEXT') {
+      if (element.lastChild?.nodeType === Node.TEXT_NODE) {
         return (
-          <component.tagNameMutated key={uuidv4()} {...convertedProps}>
+          <Text
+            key={uuidv4()}
+            {...convertedProps}
+            style={{
+              fontSize: params?.textSize
+                ? `${params?.textSize}px`
+                : convertedProps.fontSize,
+            }}
+          >
             {clearText(element.textContent)}
-          </component.tagNameMutated>
+          </Text>
         );
       }
+
+      if (!primitive) {
+        return (
+          <View key={uuidv4()} {...convertedProps} style={styleOverrides}>
+            {element.hasChildNodes() &&
+              domTraversal(element, styleOverrides, params)}
+          </View>
+        );
+      }
+
       return (
-        <component.tagNameMutated key={uuidv4()} {...convertedProps}>
-          {element.hasChildNodes() && domTraversal(element)}
+        <component.tagNameMutated
+          key={uuidv4()}
+          {...convertedProps}
+          height={
+            (component.tagNameMutated === 'SVG' && params?.svgHeight) ||
+            convertedProps.height
+          }
+          width={
+            (component.tagNameMutated === 'SVG' && params?.svgWidth) ||
+            convertedProps.width
+          }
+        >
+          {element.hasChildNodes() &&
+            domTraversal(element, styleOverrides, params)}
         </component.tagNameMutated>
       );
     })
@@ -117,8 +177,9 @@ function domTraversal(parentElement) {
 
   return result;
 }
-export function PDFFromDomSvg(props) {
-  const { svgSelector, scale, height } = props;
+
+export function PDFFromDom(props) {
+  const { svgSelector, scale, height, styleOverrides, params } = props;
   const [defs, setDefs] = React.useState(null);
   const [svgElement, setSvgElement] = React.useState(null);
   const [svgReady, setSvgReady] = React.useState(false);
@@ -126,12 +187,12 @@ export function PDFFromDomSvg(props) {
 
   React.useEffect(() => {
     if (svgSelector) {
-      const element = svgSelector.querySelector('svg');
+      const element = svgSelector.body.firstChild;
 
       element.setAttribute('height', height);
       // const newDoc = document.implementation.createDocument(null, null, null);
-      const title = element?.querySelector('title')?.remove();
-      const desk = element?.querySelector('desc')?.remove();
+      // const title = element?.querySelector('title')?.remove();
+      // const desk = element?.querySelector('desc')?.remove();
 
       const template = document.createElement('template');
 
@@ -159,16 +220,18 @@ export function PDFFromDomSvg(props) {
           });
         setSvgReady(true);
       }
+    } else {
+      setSvgReady(true);
     }
   }, [defs]);
 
   React.useEffect(() => {
     if (svgElement) {
-      setSvg(domTraversal(svgElement));
+      setSvg(domTraversal(svgElement, styleOverrides, params));
     }
   }, [svgReady]);
 
   return <>{svg && svg}</>;
 }
 
-export default PDFFromDomSvg;
+export default PDFFromDom;

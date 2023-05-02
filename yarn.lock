@@ -2398,6 +2398,24 @@
   dependencies:
     "@octokit/openapi-types" "^12.11.0"
 
+"@react-pdf/renderer@^3.1.9":
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/@react-pdf/renderer/-/renderer-3.1.9.tgz#886bfb0b6263d96303adcf8ea63ee776ff0ef4ad"
+  integrity sha512-kfEH7O+Jy7aihbUqrT9Ej1gx8/twRWvFMfHlACr29QsN+s+w0XzWpHCvbjkinVFABYcvsenluiirik6mf4qwRQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@react-pdf/font" "^2.3.4"
+    "@react-pdf/layout" "^3.6.0"
+    "@react-pdf/pdfkit" "^3.0.2"
+    "@react-pdf/primitives" "^3.0.0"
+    "@react-pdf/render" "^3.2.4"
+    "@react-pdf/types" "^2.3.1"
+    events "^3.3.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    queue "^6.0.1"
+    scheduler "^0.17.0"
+
 "@rollup/plugin-alias@^3.1.8":
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.1.9.tgz#a5d267548fe48441f34be8323fb64d1d4a1b3fdf"

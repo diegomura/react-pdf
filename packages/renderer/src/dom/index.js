@@ -5,6 +5,7 @@ import PDFViewer from './PDFViewer';
 import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
 import PDFFromDomSvg from './PDFFromDomSvg';
+import PDFFromDom from './PDFFromDom';
 
 import { pdf, version, Font, StyleSheet } from '../index';
 
@@ -48,6 +49,8 @@ export * from '@react-pdf/primitives';
 
 export * from './PDFFromDomSvg';
 
+export * from './PDFFromDom';
+
 export const test = 'test';
 
 // TODO: remove this default export in next major release because it breaks tree-shacking
@@ -62,6 +65,7 @@ export default {
   BlobProvider,
   PDFDownloadLink,
   PDFFromDomSvg,
+  PDFFromDom,
   renderToStream,
   renderToString,
   renderToFile,

@@ -126,19 +126,18 @@ export function PDFFromDomSvg(props) {
 
   React.useEffect(() => {
     if (svgSelector) {
-      const element = document.querySelector(svgSelector);
-      const clone = element.cloneNode(true);
+      const element = svgSelector.querySelector('svg');
 
-      clone.setAttribute('height', height);
+      element.setAttribute('height', height);
       // const newDoc = document.implementation.createDocument(null, null, null);
-      const title = clone?.querySelector('title')?.remove();
-      const desk = clone?.querySelector('desc')?.remove();
+      const title = element?.querySelector('title')?.remove();
+      const desk = element?.querySelector('desc')?.remove();
 
       const template = document.createElement('template');
 
-      template.appendChild(clone);
+      template.appendChild(element);
       setSvgElement(template);
-      setDefs(Array.from(clone.querySelectorAll('defs'))[0]);
+      setDefs(Array.from(element.querySelectorAll('defs'))[0]);
     }
     return () => {
       setSvgElement(null);
@@ -165,7 +164,6 @@ export function PDFFromDomSvg(props) {
 
   React.useEffect(() => {
     if (svgElement) {
-      console.log(svgElement);
       setSvg(domTraversal(svgElement));
     }
   }, [svgReady]);

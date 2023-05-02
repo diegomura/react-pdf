@@ -62,7 +62,6 @@ export default {
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
-  PDFFromDomSvg,
   PDFFromDom,
   renderToStream,
   renderToString,

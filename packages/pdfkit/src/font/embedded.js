@@ -12,7 +12,6 @@ const createEmbeddedFont = PDFFont =>
   class EmbeddedFont extends PDFFont {
     constructor(document, font, id) {
       super();
-
       this.document = document;
       this.font = font;
       this.id = id;
@@ -131,9 +130,7 @@ const createEmbeddedFont = PDFFont =>
           this.widths[gid] = glyph.advanceWidth * this.scale;
         }
         if (this.unicode[gid] == null) {
-          this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id
-          );
+          this.unicode[gid] = glyph.codePoints;
         }
       }
 

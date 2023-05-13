@@ -90,7 +90,11 @@ const renderRun = (ctx, run, options) => {
 
     ctx.restore();
   } else {
-    ctx.font(typeof font.name === 'string' ? font.name : font, fontSize);
+    ctx.font(
+      typeof font.name === 'string' ? font.name : font,
+      font.postscriptName,
+      fontSize,
+    );
 
     try {
       renderGlyphs(ctx, run.glyphs, run.positions, 0, 0);

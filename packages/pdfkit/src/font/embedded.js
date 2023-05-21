@@ -110,9 +110,7 @@ const createEmbeddedFont = PDFFont =>
           this.widths[gid] = glyph.advanceWidth * this.scale;
         }
         if (this.unicode[gid] == null) {
-          this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id
-          );
+          this.unicode[gid] = glyph.codePoints;
         }
       }
 

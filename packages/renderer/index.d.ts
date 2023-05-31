@@ -303,8 +303,8 @@ declare namespace ReactPDF {
 
   interface RectProps extends SVGPresentationAttributes {
     style?: SVGPresentationAttributes;
-    x: string | number;
-    y: string | number;
+    x?: string | number;
+    y?: string | number;
     width: string | number;
     height: string | number;
     rx?: string | number;

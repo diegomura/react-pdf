@@ -1,5 +1,16 @@
 # @react-pdf/render
 
+## 3.2.5
+
+### Patch Changes
+
+- [#2311](https://github.com/diegomura/react-pdf/pull/2311) [`2e724df`](https://github.com/diegomura/react-pdf/commit/2e724dfaff3c9b39e9862d24b0d0e037c8a9e8c2) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed crash on `transform="translate(1)"`
+
+* [#2314](https://github.com/diegomura/react-pdf/pull/2314) [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `cx` and `cy` optional in `Circle` and `Ellipse`
+
+* Updated dependencies [[`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2)]:
+  - @react-pdf/types@2.3.2
+
 ## 3.2.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.3.2
+
+### Patch Changes
+
+- [#2310](https://github.com/diegomura/react-pdf/pull/2310) [`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed all strings allowed in `fontWeight` in `Font.register`
+
 ## 2.3.1
 
 ### Patch Changes

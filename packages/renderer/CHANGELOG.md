@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2309](https://github.com/diegomura/react-pdf/pull/2309) [`113de53`](https://github.com/diegomura/react-pdf/commit/113de537b0fa9bae06a69e7c8daa988fe319fc6a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `x` and `y` optional in `Rect`
+
+* [#2314](https://github.com/diegomura/react-pdf/pull/2314) [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `cx` and `cy` optional in `Circle` and `Ellipse`
+
+* Updated dependencies [[`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2), [`2e724df`](https://github.com/diegomura/react-pdf/commit/2e724dfaff3c9b39e9862d24b0d0e037c8a9e8c2), [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f)]:
+  - @react-pdf/types@2.3.2
+  - @react-pdf/render@3.2.5
+  - @react-pdf/font@2.3.5
+  - @react-pdf/layout@3.6.1
+
 ## 3.1.9
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
-export const drawEllipse = (ctx, cx, cy, rx, ry) => {
+export const drawEllipse = (ctx, cx = 0, cy = 0, rx, ry) => {
   const x = cx - rx;
   const y = cy - ry;
   const ox = rx * KAPPA;

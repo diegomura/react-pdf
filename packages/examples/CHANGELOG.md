@@ -1,5 +1,12 @@
 # @react-pdf/examples
 
+## 2.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`113de53`](https://github.com/diegomura/react-pdf/commit/113de537b0fa9bae06a69e7c8daa988fe319fc6a), [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f)]:
+  - @react-pdf/renderer@3.1.10
+
 ## 2.0.8
 
 ### Patch Changes

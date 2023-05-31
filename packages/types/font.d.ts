@@ -61,7 +61,7 @@ interface SingleLoad {
   family: string;
   src: string;
   fontStyle?: string;
-  fontWeight?: string | number;
+  fontWeight?: FontWeight;
   [key: string]: any;
 }
 
@@ -70,7 +70,7 @@ interface BulkLoad {
   fonts: {
     src: string;
     fontStyle?: string;
-    fontWeight?: string | number;
+    fontWeight?: FontWeight;
     [key: string]: any;
   }[];
 }

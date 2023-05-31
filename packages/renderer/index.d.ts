@@ -32,7 +32,7 @@ declare namespace ReactPDF {
     language?: string;
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
-    pageLayout ?: PageLayout;
+    pageLayout?: PageLayout;
     onRender?: (props: OnRenderProps) => any;
   }
 
@@ -303,8 +303,8 @@ declare namespace ReactPDF {
 
   interface RectProps extends SVGPresentationAttributes {
     style?: SVGPresentationAttributes;
-    x: string | number;
-    y: string | number;
+    x?: string | number;
+    y?: string | number;
     width: string | number;
     height: string | number;
     rx?: string | number;
@@ -318,8 +318,8 @@ declare namespace ReactPDF {
 
   interface CircleProps extends SVGPresentationAttributes {
     style?: SVGPresentationAttributes;
-    cx: string | number;
-    cy: string | number;
+    cx?: string | number;
+    cy?: string | number;
     r: string | number;
   }
 
@@ -330,8 +330,8 @@ declare namespace ReactPDF {
 
   interface EllipseProps extends SVGPresentationAttributes {
     style?: SVGPresentationAttributes;
-    cx: string | number;
-    cy: string | number;
+    cx?: string | number;
+    cy?: string | number;
     rx: string | number;
     ry: string | number;
   }

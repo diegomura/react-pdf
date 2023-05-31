@@ -79,7 +79,7 @@ export interface FontStore {
   clear: () => void;
   reset: () => void;
   getEmojiSource: () => EmojiSource;
-  getRegisteredFonts: () => FontInstance[];
+  getRegisteredFonts: () => Record<string, FontInstance>;
   getRegisteredFontFamilies: () => string[];
   getHyphenationCallback: () => HyphenationCallback;
   register: (options: SingleLoad | BulkLoad) => void;

@@ -18,8 +18,8 @@ const addMetadata = (ctx, doc) => {
   const author = props.author || null;
   const subject = props.subject || null;
   const keywords = props.keywords || null;
-  const creator = props.creator || 'react-pdf';
-  const producer = props.producer || 'react-pdf';
+  const creator = props.creator ?? 'react-pdf';
+  const producer = props.producer ?? 'react-pdf';
 
   setProp('Title', title);
   setProp('Author', author);

@@ -1,5 +1,14 @@
 # @react-pdf/render
 
+## 3.2.6
+
+### Patch Changes
+
+- [#2320](https://github.com/diegomura/react-pdf/pull/2320) [`5385a43`](https://github.com/diegomura/react-pdf/commit/5385a438cb4876d1dc00d49d5fdd2e07c0d16167) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed empty strings replaced with defaults in `creator` and `producer` props
+
+- Updated dependencies [[`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59), [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb)]:
+  - @react-pdf/types@2.3.3
+
 ## 3.2.5
 
 ### Patch Changes

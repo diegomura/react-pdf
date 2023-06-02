@@ -1,5 +1,13 @@
 # @react-pdf/types
 
+## 2.3.3
+
+### Patch Changes
+
+- [#2276](https://github.com/diegomura/react-pdf/pull/2276) [`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59) Thanks [@renchap](https://github.com/renchap)! - add `aspectRatio` style property
+
+* [#2293](https://github.com/diegomura/react-pdf/pull/2293) [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb) Thanks [@BryanAbate](https://github.com/BryanAbate)! - fix type for `getRegisteredFonts` method
+
 ## 2.3.2
 
 ### Patch Changes

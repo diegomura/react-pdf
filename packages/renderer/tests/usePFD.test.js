@@ -4,10 +4,20 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import { renderHook } from '@testing-library/react';
-import { usePDF } from '..';
+import usePDF from '../src/dom/usePDF';
 
-it('creates a router object on demand', () => {
-  const { result } = renderHook(() => usePDF());
-  console.log(result);
-  expect(result.current).toBeInstanceOf(Object);
+it('returns value, updater tuple', () => {
+  const { result } = renderHook(() => usePDF({ document: undefined }));
+
+  expect(Array.isArray(result.current)).toBeTruthy();
+  expect(result.current[0]).toMatchObject(
+    expect.objectContaining({
+      url: null,
+      blob: null,
+      error: null,
+      loading: false,
+    }),
+  );
+
+  expect(typeof result.current[1]).toBe('function');
 });

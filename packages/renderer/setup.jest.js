@@ -8,3 +8,9 @@ const toMatchImageSnapshot = configureToMatchImageSnapshot({
 });
 
 expect.extend({ toMatchImageSnapshot });
+
+// JSDOM environment doesn't polyfill TextEncoder and TextDecoder
+const { TextEncoder, TextDecoder } = require('util');
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

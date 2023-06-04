@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @jest-environment ./tests/environment/jsdom.js
  */
 
 /* eslint-disable import/no-extraneous-dependencies */

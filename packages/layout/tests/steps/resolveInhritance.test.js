@@ -32,7 +32,7 @@ describe('layout resolveInheritance', () => {
     const result = resolveInheritance(root);
     const view = result.children[0].children[0];
 
-    expect(view.style).toHaveProperty('backgroundColor', undefined);
+    expect(view.style).not.toHaveProperty('backgroundColor');
   });
 
   test('Should not override descendents styles', () => {
@@ -75,7 +75,7 @@ describe('layout resolveInheritance', () => {
     const view2 = result.children[0].children[1];
     const subview = view2.children[0];
 
-    expect(view1.style).toHaveProperty('color', undefined);
+    expect(view1.style).not.toHaveProperty('color');
     expect(view2.style).toHaveProperty('color', 'green');
     expect(subview.style).toHaveProperty('color', 'green');
   });

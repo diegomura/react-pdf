@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout resolveOrigins should not resolve for node without box 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "origin": Object {},
-          "style": Object {},
+{
+  "children": [
+    {
+      "children": [
+        {
+          "origin": {},
+          "style": {},
           "type": "VIEW",
         },
       ],
-      "origin": Object {},
-      "style": Object {},
+      "origin": {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -21,20 +21,20 @@ Object {
 `;
 
 exports[`layout resolveOrigins should resolve centered origin by default 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 400,
         "left": 100,
         "top": 50,
         "width": 300,
       },
-      "origin": Object {
+      "origin": {
         "left": 250,
         "top": 250,
       },
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -43,20 +43,20 @@ Object {
 `;
 
 exports[`layout resolveOrigins should resolve origin adjusted by fixed values 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 400,
         "left": 100,
         "top": 50,
         "width": 300,
       },
-      "origin": Object {
+      "origin": {
         "left": 200,
         "top": 100,
       },
-      "style": Object {
+      "style": {
         "transformOriginX": 100,
         "transformOriginY": 50,
       },
@@ -68,20 +68,20 @@ Object {
 `;
 
 exports[`layout resolveOrigins should resolve origin adjusted by percent values 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 400,
         "left": 100,
         "top": 50,
         "width": 300,
       },
-      "origin": Object {
+      "origin": {
         "left": 160,
         "top": 330,
       },
-      "style": Object {
+      "style": {
         "transformOriginX": "20%",
         "transformOriginY": "70%",
       },
@@ -93,36 +93,36 @@ Object {
 `;
 
 exports[`layout resolveOrigins should resolve origins for nested elements 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 400,
         "left": 100,
         "top": 50,
         "width": 300,
       },
-      "children": Array [
-        Object {
-          "box": Object {
+      "children": [
+        {
+          "box": {
             "height": 80,
             "left": 10,
             "top": 0,
             "width": 50,
           },
-          "origin": Object {
+          "origin": {
             "left": 35,
             "top": 40,
           },
-          "style": Object {},
+          "style": {},
           "type": "VIEW",
         },
       ],
-      "origin": Object {
+      "origin": {
         "left": 250,
         "top": 250,
       },
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],

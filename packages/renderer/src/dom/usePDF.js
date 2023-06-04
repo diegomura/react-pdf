@@ -12,7 +12,7 @@ export const usePDF = ({ document }) => {
     url: null,
     blob: null,
     error: null,
-    loading: false,
+    loading: !!document,
   });
 
   // Setup rendering queue

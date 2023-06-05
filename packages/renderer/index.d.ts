@@ -489,8 +489,8 @@ declare namespace ReactPDF {
    * @platform web
    */
   function usePDF(options: {
-    document: React.ReactElement<DocumentProps>;
-  }): [UsePDFInstance, () => void];
+    document?: React.ReactElement<DocumentProps>;
+  }): [UsePDFInstance, (newDocument: React.ReactElement<DocumentProps>) => void];
 
   const Font: FontStore;
 

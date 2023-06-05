@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 
 import queue from 'queue';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { pdf } from '../index';
 
-export const usePDF = ({ document }) => {
+export const usePDF = ({ document } = {}) => {
   const pdfInstance = useRef(null);
 
   const [state, setState] = useState({
     url: null,
     blob: null,
     error: null,
-    loading: false,
+    loading: !!document,
   });
 
   // Setup rendering queue
@@ -29,7 +29,7 @@ export const usePDF = ({ document }) => {
 
     const onRenderFailed = error => {
       console.error(error);
-      setState(prev => ({ ...prev, error }));
+      setState(prev => ({ ...prev, loading: false, error }));
     };
 
     const onRenderSuccessful = blob => {
@@ -43,7 +43,9 @@ export const usePDF = ({ document }) => {
 
     pdfInstance.current = pdf();
     pdfInstance.current.on('change', queueDocumentRender);
-    pdfInstance.current.updateContainer(document);
+    if (document) {
+      pdfInstance.current.updateContainer(document);
+    }
 
     renderQueue.on('error', onRenderFailed);
     renderQueue.on('success', onRenderSuccessful);
@@ -63,9 +65,9 @@ export const usePDF = ({ document }) => {
     };
   }, [state.url]);
 
-  const update = () => {
-    pdfInstance.current.updateContainer(document);
-  };
+  const update = useCallback(newDoc => {
+    pdfInstance.current.updateContainer(newDoc);
+  }, []);
 
   return [state, update];
 };

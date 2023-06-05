@@ -12,9 +12,9 @@ export const PDFDownloadLink = ({
   fileName = 'document.pdf',
   onClick,
 }) => {
-  const [instance, updateInstance] = usePDF({ document: doc });
+  const [instance, updateInstance] = usePDF();
 
-  useEffect(updateInstance, [children]);
+  useEffect(() => updateInstance(doc), [doc]);
 
   if (!doc) {
     console.warn('You should pass a valid document to PDFDownloadLink');

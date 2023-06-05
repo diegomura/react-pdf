@@ -1,22 +1,22 @@
 ---
-"@react-pdf/renderer": patch
+'@react-pdf/renderer': patch
 ---
 
 ### updates for `usePDF` hook
 
 `update` function takes the new document and renders it:
 
-```js
+```jsx
 const PdfView = () => {
-  cosnt [pdf, update] = usePdf();
-  
+  const [pdf, update] = usePdf();
+
   useEffect(() => {
-    update(<PDFDocument />)
-  }, [])
-  
-  if (pdf.loading) return null
-  
+    update(<PDFDocument />);
+  }, []);
+
+  if (pdf.loading) return null;
+
   // use your PDF here
-  return <>{pdf.url}</>
-}
+  return <>{pdf.url}</>;
+};
 ```

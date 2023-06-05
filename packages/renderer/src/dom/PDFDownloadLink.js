@@ -12,7 +12,7 @@ export const PDFDownloadLink = ({
   fileName = 'document.pdf',
   onClick,
 }) => {
-  const [instance, updateInstance] = usePDF({ document: null });
+  const [instance, updateInstance] = usePDF();
 
   useEffect(() => updateInstance(doc), [doc]);
 

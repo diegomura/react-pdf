@@ -14,7 +14,7 @@ export const PDFViewer = ({
   showToolbar = true,
   ...props
 }) => {
-  const [instance, updateInstance] = usePDF({ document: null });
+  const [instance, updateInstance] = usePDF();
 
   useEffect(() => updateInstance(children), [children]);
 

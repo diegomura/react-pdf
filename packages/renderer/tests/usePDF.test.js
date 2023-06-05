@@ -30,6 +30,14 @@ it('returns value, updater tuple', () => {
   expect(typeof result.current[1]).toBe('function');
 });
 
+it('works with no args', () => {
+  const { result } = renderHook(() => usePDF());
+
+  expect(Array.isArray(result.current)).toBeTruthy();
+  expect(typeof result.current[0]).toBe('object');
+  expect(typeof result.current[1]).toBe('function');
+});
+
 it('renders document', async () => {
   const { result } = renderHook(() => usePDF({ document: <TestDocument /> }));
 

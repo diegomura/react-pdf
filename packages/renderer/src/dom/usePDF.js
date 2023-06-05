@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { pdf } from '../index';
 
-export const usePDF = ({ document }) => {
+export const usePDF = ({ document } = {}) => {
   const pdfInstance = useRef(null);
 
   const [state, setState] = useState({

@@ -16,7 +16,7 @@ import renderForm from './form/renderForm';
 import renderFormField from './form/renderFormField';
 import renderTextInput from './form/renderTextInput';
 import renderFormPushButton from './form/renderFormPushButton';
-import renderFormCombo from './form/renderFormCombo';
+import renderPicker from './form/renderPicker';
 import renderFormList from './form/renderFormList';
 
 const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg && node.type !== P.Form && node.type !== P.FormField;
@@ -44,7 +44,7 @@ const renderFns = {
   [P.FormField]: renderFormField,
   [P.TextInput]: renderTextInput,
   [P.FormPushButton]: renderFormPushButton,
-  [P.FormCombo]: renderFormCombo,
+  [P.Picker]: renderPicker,
   [P.FormList]: renderFormList,
   [P.Canvas]: renderCanvas,
   [P.Svg]: renderSvg,

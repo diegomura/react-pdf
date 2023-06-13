@@ -149,7 +149,7 @@ export default {
     return this.formAnnotation(name, 'pushButton', x, y, w, h, options);
   },
 
-  formCombo(name, x, y, w, h, options = {}) {
+  picker(name, x, y, w, h, options = {}) {
     return this.formAnnotation(name, 'combo', x, y, w, h, options);
   },
 

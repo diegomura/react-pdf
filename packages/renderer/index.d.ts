@@ -257,7 +257,7 @@ declare namespace ReactPDF {
 
   class TextInput extends React.Component<TextInputProps> {}
 
-  interface FormComboAndListProps extends FormCommonProps {
+  interface PickerAndListProps extends FormCommonProps {
     sort?: boolean;
     edit?: boolean;
     multiSelect?: boolean;
@@ -265,9 +265,9 @@ declare namespace ReactPDF {
     select?: string[];
   }
 
-  class FormCombo extends React.Component<FormComboAndListProps> {}
+  class Picker extends React.Component<PickerAndListProps> {}
 
-  class FormList extends React.Component<FormComboAndListProps> {}
+  class FormList extends React.Component<PickerAndListProps> {}
 
   // see http://pdfkit.org/docs/forms.html#button_field_options
   interface FormButtonProps extends FormCommonProps {
@@ -607,7 +607,7 @@ declare const Link: typeof ReactPDF.Link;
 declare const Form: typeof ReactPDF.Form;
 declare const FormField: typeof ReactPDF.FormField;
 declare const TextInput: typeof ReactPDF.TextInput;
-declare const FormCombo: typeof ReactPDF.FormCombo;
+declare const Picker: typeof ReactPDF.Picker;
 declare const FormList: typeof ReactPDF.FormList;
 declare const FormPushButton: typeof ReactPDF.FormPushButton;
 declare const Note: typeof ReactPDF.Note;

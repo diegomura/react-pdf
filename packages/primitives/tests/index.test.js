@@ -53,8 +53,8 @@ describe('primitives', () => {
     expect(primitives.FormList).toBeTruthy();
   });
 
-  test('should export form combo', () => {
-    expect(primitives.FormCombo).toBeTruthy();
+  test('should export picker', () => {
+    expect(primitives.Picker).toBeTruthy();
   });
 
   test('should export form push button', () => {

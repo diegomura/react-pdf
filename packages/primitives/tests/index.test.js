@@ -37,6 +37,30 @@ describe('primitives', () => {
     expect(primitives.Line).toBeTruthy();
   });
 
+  test('should export form', () => {
+    expect(primitives.Form).toBeTruthy();
+  });
+
+  test('should export form field', () => {
+    expect(primitives.FormField).toBeTruthy();
+  });
+
+  test('should export form text', () => {
+    expect(primitives.FormText).toBeTruthy();
+  });
+
+  test('should export form list', () => {
+    expect(primitives.FormList).toBeTruthy();
+  });
+
+  test('should export form combo', () => {
+    expect(primitives.FormCombo).toBeTruthy();
+  });
+
+  test('should export form push button', () => {
+    expect(primitives.FormPushButton).toBeTruthy();
+  });
+
   test('should export stop', () => {
     expect(primitives.Stop).toBeTruthy();
   });

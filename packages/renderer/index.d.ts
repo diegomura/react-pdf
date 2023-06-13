@@ -215,6 +215,67 @@ declare namespace ReactPDF {
    */
   class Link extends React.Component<React.PropsWithChildren<LinkProps>> {}
 
+  /**
+   * The fundamental component for building a Form.
+   */
+  class Form extends React.Component<NodeProps> {}
+
+  interface FormCommonProps extends NodeProps {
+    name?: string;
+    required?: boolean;
+    noExport?: boolean;
+    readOnly?: boolean;
+    value ?: number | string;
+    defaultValue?: number | string;
+  }
+
+  interface FormFieldProps extends NodeProps {
+    name: string;
+  }
+
+  class FormField extends React.Component<FormFieldProps> {}
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface TextFieldFormatting {
+    type: 'date' | 'time' | 'percent' | 'number' | 'zip' | 'zipPlus4' | 'phone' | 'ssn';
+    param?: string;
+    nDec?: number;
+    sepComma?: boolean;
+    negStyle?: 'MinusBlack' | 'Red' | 'ParensBlack' | 'ParensRed';
+    currency?: string;
+    currencyPrepend?: boolean;
+  }
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface FormTextProps extends FormCommonProps {
+    align?: string;
+    multiline?: boolean;
+    password?: boolean;
+    noSpell?: boolean;
+    format?: TextFieldFormatting
+  }
+
+  class FormText extends React.Component<FormTextProps> {}
+
+  interface FormComboAndListProps extends FormCommonProps {
+    sort?: boolean;
+    edit?: boolean;
+    multiSelect?: boolean;
+    noSpell?: boolean;
+    select?: string[];
+  }
+
+  class FormCombo extends React.Component<FormComboAndListProps> {}
+
+  class FormList extends React.Component<FormComboAndListProps> {}
+
+  // see http://pdfkit.org/docs/forms.html#button_field_options
+  interface FormButtonProps extends FormCommonProps {
+    label?: string;
+  }
+
+  class FormPushButton extends React.Component<FormButtonProps> {}
+
   interface NoteProps extends NodeProps {
     children: string;
   }
@@ -543,6 +604,12 @@ declare const Image: typeof ReactPDF.Image;
 declare const Text: typeof ReactPDF.Text;
 declare const Canvas: typeof ReactPDF.Canvas;
 declare const Link: typeof ReactPDF.Link;
+declare const Form: typeof ReactPDF.Form;
+declare const FormField: typeof ReactPDF.FormField;
+declare const FormText: typeof ReactPDF.FormText;
+declare const FormCombo: typeof ReactPDF.FormCombo;
+declare const FormList: typeof ReactPDF.FormList;
+declare const FormPushButton: typeof ReactPDF.FormPushButton;
 declare const Note: typeof ReactPDF.Note;
 declare const Svg: typeof ReactPDF.Svg;
 declare const Line: typeof ReactPDF.Line;

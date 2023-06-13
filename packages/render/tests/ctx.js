@@ -46,6 +46,8 @@ const createCTX = () => {
   instance.lineCap = jest.fn().mockReturnValue(instance);
   instance.text = jest.fn().mockReturnValue(instance);
   instance.font = jest.fn().mockReturnValue(instance);
+  instance.formField = jest.fn().mockReturnValue(instance);
+  instance.formText = jest.fn().mockReturnValue(instance);
 
   return instance;
 };

@@ -247,7 +247,7 @@ declare namespace ReactPDF {
   }
 
   // see http://pdfkit.org/docs/forms.html#text_field_formatting
-  interface FormTextProps extends FormCommonProps {
+  interface TextInputProps extends FormCommonProps {
     align?: string;
     multiline?: boolean;
     password?: boolean;
@@ -255,7 +255,7 @@ declare namespace ReactPDF {
     format?: TextFieldFormatting
   }
 
-  class FormText extends React.Component<FormTextProps> {}
+  class TextInput extends React.Component<TextInputProps> {}
 
   interface FormComboAndListProps extends FormCommonProps {
     sort?: boolean;
@@ -606,7 +606,7 @@ declare const Canvas: typeof ReactPDF.Canvas;
 declare const Link: typeof ReactPDF.Link;
 declare const Form: typeof ReactPDF.Form;
 declare const FormField: typeof ReactPDF.FormField;
-declare const FormText: typeof ReactPDF.FormText;
+declare const TextInput: typeof ReactPDF.TextInput;
 declare const FormCombo: typeof ReactPDF.FormCombo;
 declare const FormList: typeof ReactPDF.FormList;
 declare const FormPushButton: typeof ReactPDF.FormPushButton;

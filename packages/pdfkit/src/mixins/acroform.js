@@ -141,7 +141,7 @@ export default {
     return this._addToParent(annotRef);
   },
 
-  formText(name, x, y, w, h, options = {}) {
+  textInput(name, x, y, w, h, options = {}) {
     return this.formAnnotation(name, 'text', x, y, w, h, options);
   },
 

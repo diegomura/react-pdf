@@ -14,7 +14,7 @@ import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 import renderForm from './form/renderForm';
 import renderFormField from './form/renderFormField';
-import renderFormText from './form/renderFormText';
+import renderTextInput from './form/renderTextInput';
 import renderFormPushButton from './form/renderFormPushButton';
 import renderFormCombo from './form/renderFormCombo';
 import renderFormList from './form/renderFormList';
@@ -42,7 +42,7 @@ const renderFns = {
   [P.Image]: renderImage,
   [P.Form]: renderForm,
   [P.FormField]: renderFormField,
-  [P.FormText]: renderFormText,
+  [P.TextInput]: renderTextInput,
   [P.FormPushButton]: renderFormPushButton,
   [P.FormCombo]: renderFormCombo,
   [P.FormList]: renderFormList,

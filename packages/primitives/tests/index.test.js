@@ -45,8 +45,8 @@ describe('primitives', () => {
     expect(primitives.FormField).toBeTruthy();
   });
 
-  test('should export form text', () => {
-    expect(primitives.FormText).toBeTruthy();
+  test('should export text input', () => {
+    expect(primitives.TextInput).toBeTruthy();
   });
 
   test('should export form list', () => {

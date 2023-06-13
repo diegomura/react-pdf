@@ -17,33 +17,33 @@ describe('primitive renderFormField', () => {
     expect(ctx.formField.mock.calls[0][0]).toBe(args);
   });
 
-  test('FormField with one formText direct child', () => {
+  test('FormField with one textInput direct child', () => {
     const ctx = createCTX();
-    const node = { type: P.FormField, children: [{type: P.FormText}]};
+    const node = { type: P.FormField, children: [{ type: P.TextInput }] };
 
     renderFormField(ctx, node);
 
-    expect(ctx.formText.mock.calls).toHaveLength(1);
+    expect(ctx.textInput.mock.calls).toHaveLength(1);
   });
 
-  test('FormField with one formText indirect child', () => {
+  test('FormField with one textInput indirect child', () => {
     const ctx = createCTX();
     const node = {
-      type: P.FormField,
+      type: P.TextInput,
       children: [
-          {
-            type: P.View,
-            children: [
-              {
-                type: P.FormText
-              }
-            ]
-          }
+        {
+          type: P.View,
+          children: [
+            {
+              type: P.TextInput
+            }
+          ]
+        }
       ]
     };
 
     renderFormField(ctx, node);
 
-    expect(ctx.formText.mock.calls).toHaveLength(1);
+    expect(ctx.textInput.mock.calls).toHaveLength(1);
   });
 });

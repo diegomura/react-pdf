@@ -5,8 +5,19 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { pdf } from '../index';
 
+const useCommittedRef = value => {
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref;
+};
+
 export const usePDF = ({ document } = {}) => {
   const pdfInstance = useRef(null);
+  const committedDocument = useCommittedRef(document);
 
   const [state, setState] = useState({
     url: null,
@@ -65,8 +76,15 @@ export const usePDF = ({ document } = {}) => {
     };
   }, [state.url]);
 
-  const update = useCallback(newDoc => {
-    pdfInstance.current.updateContainer(newDoc);
+  // make update function stable
+  const update = useCallback((...args) => {
+    if (args.length === 0) {
+      // TODO: add warning that no args update would be removed in next versions
+      pdfInstance.current.updateContainer(committedDocument.current);
+    } else {
+      const [newDoc] = args;
+      pdfInstance.current.updateContainer(newDoc);
+    }
   }, []);
 
   return [state, update];

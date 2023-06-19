@@ -1,8 +1,67 @@
 import font from './font';
-import standard from './standard';
+
+const CourierFont = font.create('Courier');
+CourierFont.register({
+  src: { builtin: 'Courier' },
+});
+CourierFont.register({
+  fontStyle: 'oblique',
+  src: { builtin: 'Courier-Oblique' },
+});
+CourierFont.register({
+  fontWeight: 700,
+  src: { builtin: 'Courier-Bold' },
+});
+CourierFont.register({
+  fontWeight: 700,
+  fontStyle: 'oblique',
+  src: { builtin: 'Courier-BoldOblique' },
+});
+
+const HelveticaFont = font.create('Helvetica');
+HelveticaFont.register({
+  src: { builtin: 'Helvetica' },
+});
+HelveticaFont.register({
+  fontStyle: 'oblique',
+  src: { builtin: 'Helvetica-Oblique' },
+});
+HelveticaFont.register({
+  fontWeight: 700,
+  src: { builtin: 'Helvetica-Bold' },
+});
+HelveticaFont.register({
+  fontWeight: 700,
+  fontStyle: 'oblique',
+  src: { builtin: 'Helvetica-BoldOblique' },
+});
+
+const TimesRomanFont = font.create('Times-Roman');
+TimesRomanFont.register({
+  src: { builtin: 'Times-Roman' },
+});
+TimesRomanFont.register({
+  fontStyle: 'italic',
+  src: { builtin: 'Times-Italic' },
+});
+TimesRomanFont.register({
+  fontWeight: 700,
+  src: { builtin: 'Times-Bold' },
+});
+TimesRomanFont.register({
+  fontWeight: 700,
+  fontStyle: 'italic',
+  src: { builtin: 'Times-BoldItalic' },
+});
+
+export const builtinFonts = {
+  Courier: CourierFont,
+  Helvetica: HelveticaFont,
+  'Times-Roman': TimesRomanFont,
+};
 
 function FontStore() {
-  let fonts = {};
+  let fonts = { ...builtinFonts };
 
   let emojiSource = null;
 
@@ -35,9 +94,6 @@ function FontStore() {
 
   this.getFont = descriptor => {
     const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
-
-    if (isStandard) return null;
 
     if (!fonts[fontFamily]) {
       throw new Error(
@@ -49,11 +105,6 @@ function FontStore() {
   };
 
   this.load = async descriptor => {
-    const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
-
-    if (isStandard) return;
-
     const f = this.getFont(descriptor);
 
     // We cache the font to avoid fetching it many times
@@ -70,7 +121,7 @@ function FontStore() {
   };
 
   this.clear = () => {
-    fonts = {};
+    fonts = { ...builtinFonts };
   };
 
   this.getRegisteredFonts = () => fonts;

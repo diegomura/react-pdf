@@ -49,7 +49,7 @@ class FontSource {
     this.fontStyle = fontStyle || 'normal';
     this.fontWeight = fontWeight || 400;
 
-    this.data = null;
+    this.data = typeof src === 'object' && src.builtin ? src.builtin : null;
     this.options = options;
     this.loadResultPromise = null;
   }
@@ -75,6 +75,10 @@ class FontSource {
   }
 
   async load() {
+    if (typeof this.src === 'object' && this.src.builtin) {
+      return Promise.resolve();
+    }
+
     if (this.loadResultPromise === null) {
       this.loadResultPromise = this._load();
     }

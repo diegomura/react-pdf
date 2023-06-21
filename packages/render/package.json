@@ -1,15 +1,15 @@
 {
-  "name": "@react-pdf/render",
+  "name": "@nutshelllabs-pdf/render",
   "version": "3.2.6",
   "license": "MIT",
   "description": "A render engine for Node and the browser",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/render"
   },
   "scripts": {
@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.0.1",
-    "@react-pdf/primitives": "^3.0.0",
-    "@react-pdf/textkit": "^4.2.0",
-    "@react-pdf/types": "^2.3.3",
+    "@nutshelllabs-pdf/fns": "2.0.1",
+    "@nutshelllabs-pdf/primitives": "^3.0.0",
+    "@nutshelllabs-pdf/textkit": "^4.2.0",
+    "@nutshelllabs-pdf/types": "^2.3.3",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.5.3",
     "normalize-svg-path": "^1.1.0",

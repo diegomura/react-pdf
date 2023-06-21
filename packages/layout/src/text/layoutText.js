@@ -4,7 +4,7 @@ import layoutEngine, {
   scriptItemizer,
   wordHyphenation,
   textDecoration,
-} from '@react-pdf/textkit';
+} from '@nutshelllabs-pdf/textkit';
 
 import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';

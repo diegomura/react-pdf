@@ -2,14 +2,14 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
   <p align="center">React renderer for creating PDF files on the browser and server<p>
   <p align="center">
-    <a href="https://www.npmjs.com/package/@react-pdf/renderer">
-      <img src="https://img.shields.io/npm/v/@react-pdf/renderer.svg" />
+    <a href="https://www.npmjs.com/package/@nutshelllabs-pdf/renderer">
+      <img src="https://img.shields.io/npm/v/@nutshelllabs-pdf/renderer.svg" />
     </a>
-    <a href="https://travis-ci.org/diegomura/react-pdf">
-      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
+    <a href="https://travis-ci.org/nutshelllabs/react-pdf">
+      <img src="https://img.shields.io/travis/nutshelllabs/react-pdf.svg" />
     </a>
-    <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
+    <a href="https://github.com/nutshelllabs/react-pdf/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/nutshelllabs/react-pdf.svg" />
     </a>
     <a href="https://github.com/prettier/prettier">
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
@@ -20,18 +20,18 @@
 
 ## Lost?
 
-This package is used to _create_ PDFs using React. If you wish to _display_ existing PDFs, you may be looking for [react-pdf](https://github.com/wojtekmaj/react-pdf).
+This package is a fork of [react-pdf](https://github.com/diegomura/react-pdf).  We're trying to implement some specific performance improvements for multiple renders.  I'd recommend you don't use this package.
 
 ## How to install
 ```sh
-yarn add @react-pdf/renderer
+yarn add @nutshelllabs-pdf/renderer
 ```
 
 ## How it works
 
 ```jsx
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -65,7 +65,7 @@ const MyDocument = () => (
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer } from '@nutshelllabs-pdf/renderer';
 
 const App = () => (
   <PDFViewer>
@@ -79,16 +79,16 @@ ReactDOM.render(<App />, document.getElementById('root'));
 ### `Node.` Save in a file
 ```jsx
 import React from 'react';
-import ReactPDF from '@react-pdf/renderer';
+import ReactPDF from '@nutshelllabs-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
+This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/nutshelllabs/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
 
-<a href="https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+<a href="https://github.com/nutshelllabs/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 ## Sponsors
 
@@ -109,4 +109,4 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf?ref=badge_large)
 
 ---
-![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)
+![](https://img.shields.io/npm/dt/@nutshelllabs-pdf/renderer.svg?style=flat)

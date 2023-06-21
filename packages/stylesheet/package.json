@@ -1,15 +1,15 @@
 {
-  "name": "@react-pdf/stylesheet",
+  "name": "@nutshelllabs-pdf/stylesheet",
   "version": "4.1.7",
   "license": "MIT",
   "description": "A styles engine for Node and the browser",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/stylesheet"
   },
   "scripts": {
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.0.1",
-    "@react-pdf/types": "^2.3.3",
+    "@nutshelllabs-pdf/fns": "2.0.1",
+    "@nutshelllabs-pdf/types": "^2.3.3",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",

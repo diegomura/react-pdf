@@ -1,16 +1,16 @@
 {
-  "name": "@react-pdf/yoga",
+  "name": "@nutshelllabs-pdf/yoga",
   "version": "4.1.2",
   "description": "Prebuilt yoga-layout package",
   "license": "MIT",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/yoga"
   },
   "scripts": {

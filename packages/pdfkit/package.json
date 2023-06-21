@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/pdfkit",
+  "name": "@nutshelllabs-pdf/pdfkit",
   "version": "3.0.2",
   "license": "MIT",
   "description": "A PDF generation library for Node.js",
@@ -7,7 +7,7 @@
   "module": "./lib/pdfkit.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/pdfkit"
   },
   "browser": {
@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/png-js": "^2.2.0",
+    "@nutshelllabs-pdf/png-js": "^2.2.0",
     "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.0.0",
     "fontkit": "^2.0.2",

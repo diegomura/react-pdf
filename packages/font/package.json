@@ -1,13 +1,13 @@
 {
-  "name": "@react-pdf/font",
+  "name": "@nutshelllabs-pdf/font",
   "version": "2.3.6",
   "license": "MIT",
   "description": "Register font and emoji source for react-pdf document",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/font"
   },
   "main": "./lib/index.cjs.js",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/types": "^2.3.3",
+    "@nutshelllabs-pdf/types": "^2.3.3",
     "cross-fetch": "^3.1.5",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"

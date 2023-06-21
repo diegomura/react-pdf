@@ -1,5 +1,5 @@
-import Yoga from '@react-pdf/yoga';
-import { isNil, matchPercent } from '@react-pdf/fns';
+import Yoga from '@nutshelllabs-pdf/yoga';
+import { isNil, matchPercent } from '@nutshelllabs-pdf/fns';
 
 const checkPercents = (attr, value) => {
   const percent = matchPercent(value);

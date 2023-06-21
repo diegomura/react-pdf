@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/textkit",
+  "name": "@nutshelllabs-pdf/textkit",
   "license": "MIT",
   "version": "4.2.0",
   "description": "An advanced text layout framework",
@@ -7,12 +7,12 @@
   "module": "./lib/textkit.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/textkit"
   },
   "contributors": [
     "Devon Govett <devongovett@gmail.com>",
-    "Diego Muracciole <diegomuracciole@gmail.com>"
+    "Nutshell Labs <pwalker@nutshelllabs.io>"
   ],
   "scripts": {
     "test": "jest",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.0.1",
+    "@nutshelllabs-pdf/fns": "2.0.1",
     "hyphen": "^1.6.4",
     "unicode-properties": "^1.4.1"
   }

@@ -1,5 +1,5 @@
 {
-  "name": "@react-pdf/png-js",
+  "name": "@nutshelllabs-pdf/png-js",
   "description": "A PNG decoder in JS",
   "version": "2.2.0",
   "license": "MIT",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/png-js"
   },
   "author": {

@@ -1,4 +1,4 @@
-import * as primitives from '@react-pdf/primitives';
+import * as primitives from '@nutshelllabs-pdf/primitives';
 
 import { renderToFile, renderToStream, renderToString } from './renderTo';
 import { pdf, version, Font, StyleSheet } from '../index';
@@ -31,7 +31,7 @@ export * from '../index';
 
 export * from './renderTo';
 
-export * from '@react-pdf/primitives';
+export * from '@nutshelllabs-pdf/primitives';
 
 // TODO: remove this default export in next major release because it breaks tree-shacking
 export default {

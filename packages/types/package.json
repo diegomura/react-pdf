@@ -1,14 +1,14 @@
 {
-  "name": "@react-pdf/types",
+  "name": "@nutshelllabs-pdf/types",
   "version": "2.3.3",
   "license": "MIT",
   "description": "React-pdf TypeScript definitions",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/types"
   }
 }

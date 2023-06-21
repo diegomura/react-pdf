@@ -1,16 +1,16 @@
 {
-  "name": "@react-pdf/svgkit",
+  "name": "@nutshelllabs-pdf/svgkit",
   "license": "MIT",
   "version": "2.2.2",
   "description": "A SVG generation library for Node.js and browser",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/svgkit"
   },
   "contributors": [
-    "Diego Muracciole <diegomuracciole@gmail.com>"
+    "Nutshell Labs <pwalker@nutshelllabs.io>"
   ],
   "scripts": {
     "test": "jest",
@@ -22,6 +22,6 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/pdfkit": "^3.0.2"
+    "@nutshelllabs-pdf/pdfkit": "^3.0.2"
   }
 }

@@ -6,7 +6,7 @@ import {
   Text,
   Image,
   StyleSheet,
-} from '@react-pdf/renderer';
+} from '@nutshelllabs-pdf/renderer';
 
 const styles = StyleSheet.create({
   body: {

@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@nutshelllabs-pdf/primitives';
 
 import getDefs from './getDefs';
 

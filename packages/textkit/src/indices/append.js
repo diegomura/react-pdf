@@ -1,4 +1,4 @@
-import { isNil, last } from '@react-pdf/fns';
+import { isNil, last } from '@nutshelllabs-pdf/fns';
 
 /**
  * Append glyph indices with given length

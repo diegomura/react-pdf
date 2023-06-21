@@ -3,7 +3,7 @@
   "version": "2.2.1",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
   "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "./lib/index.cjs.js",
   "module": "./lib/index.es.js",

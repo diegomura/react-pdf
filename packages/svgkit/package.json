@@ -10,7 +10,7 @@
     "directory": "packages/svgkit"
   },
   "contributors": [
-    "Diego Muracciole <diegomuracciole@gmail.com>"
+    "Nutshell Labs <pwalker@nutshelllabs.io>"
   ],
   "scripts": {
     "test": "jest",

@@ -3,8 +3,8 @@ import { Buffer } from 'buffer';
 
 import { pdf } from '../index';
 
-export const renderToStream = async element => {
-  const instance = pdf(element);
+export const renderToStream = async (element, cache) => {
+  const instance = pdf(element, cache);
   const stream = await instance.toBuffer();
   return stream;
 };
@@ -24,8 +24,8 @@ export const renderToFile = async (element, filePath, callback) => {
   });
 };
 
-export const renderToBuffer = element =>
-  renderToStream(element).then(
+export const renderToBuffer = (element, cache) =>
+  renderToStream(element, cache).then(
     stream =>
       new Promise((resolve, reject) => {
         const chunks = [];

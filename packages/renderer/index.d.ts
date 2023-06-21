@@ -34,6 +34,7 @@ declare namespace ReactPDF {
     pageMode?: PageMode;
     pageLayout?: PageLayout;
     onRender?: (props: OnRenderProps) => any;
+    cacheId?: string;
   }
 
   /**
@@ -490,7 +491,10 @@ declare namespace ReactPDF {
    */
   function usePDF(options: {
     document?: React.ReactElement<DocumentProps>;
-  }): [UsePDFInstance, (newDocument: React.ReactElement<DocumentProps>) => void];
+  }): [
+    UsePDFInstance,
+    (newDocument: React.ReactElement<DocumentProps>) => void,
+  ];
 
   const Font: FontStore;
 
@@ -578,6 +582,7 @@ export default ReactPDF;
  */
 export const renderToBuffer: (
   document: React.ReactElement<ReactPDF.DocumentProps>,
+  cache: Record<string, any>,
 ) => Promise<Buffer>;
 
 /**

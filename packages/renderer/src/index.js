@@ -15,7 +15,12 @@ let renderer;
 // We only want to trigger an update when PDF content changes
 const events = {};
 
-const pdf = initialValue => {
+const pdf = (initialValue, cache) => {
+  if (!cache) {
+    // eslint-disable-line no-console
+    console.warn('react-pdf: no cache provided');
+  }
+
   const onChange = () => {
     const listeners = events.change?.slice() || [];
     for (let i = 0; i < listeners.length; i += 1) listeners[i]();
@@ -45,7 +50,7 @@ const pdf = initialValue => {
       pageMode,
     });
 
-    const layout = await layoutDocument(container.document, fontStore);
+    const layout = await layoutDocument(container.document, fontStore, cache);
     const fileStream = renderPDF(ctx, layout);
     return { layout, fileStream };
   };

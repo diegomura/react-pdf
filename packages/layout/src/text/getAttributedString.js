@@ -1,11 +1,11 @@
 import * as P from '@react-pdf/primitives';
 
-import { embedEmojis } from './emoji';
+// import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
 import fromFragments from './fromFragments';
 import transformText from './transformText';
 
-const PREPROCESSORS = [ignoreChars, embedEmojis];
+const PREPROCESSORS = [ignoreChars];
 
 const isImage = node => node.type === P.Image;
 

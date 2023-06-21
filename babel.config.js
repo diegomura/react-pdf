@@ -5,8 +5,8 @@ module.exports = {
       {
         loose: true,
         targets: {
-          node: '14',
-          browsers: 'last 2 versions',
+          node: '16.19.0',
+          // browsers: 'last 2 versions',
         },
       },
     ],

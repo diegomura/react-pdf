@@ -1,5 +1,5 @@
-import Yoga from '@react-pdf/yoga';
-import { isNil } from '@react-pdf/fns';
+import Yoga from '@nutshelllabs-pdf/yoga';
+import { isNil } from '@nutshelllabs-pdf/fns';
 
 const JUSTIFY_CONTENT = {
   center: Yoga.JUSTIFY_CENTER,

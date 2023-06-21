@@ -1,6 +1,12 @@
-import * as P from '@react-pdf/primitives';
-import { transformColor, processTransform } from '@react-pdf/stylesheet';
-import { pick, evolve, compose, mapValues, matchPercent } from '@react-pdf/fns';
+import * as P from '@nutshelllabs-pdf/primitives';
+import { transformColor, processTransform } from '@nutshelllabs-pdf/stylesheet';
+import {
+  pick,
+  evolve,
+  compose,
+  mapValues,
+  matchPercent,
+} from '@nutshelllabs-pdf/fns';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';

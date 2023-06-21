@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import Yoga from '@nutshelllabs-pdf/yoga';
 
 import setFlexWrap from '../../src/node/setFlexWrap';
 

@@ -1,4 +1,4 @@
-import * as P from '@react-pdf/primitives';
+import * as P from '@nutshelllabs-pdf/primitives';
 import absPath from 'abs-svg-path';
 import parsePath from 'parse-svg-path';
 import normalizePath from 'normalize-svg-path';

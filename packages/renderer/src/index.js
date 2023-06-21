@@ -1,7 +1,7 @@
-import FontStore from '@react-pdf/font';
-import renderPDF from '@react-pdf/render';
-import PDFDocument from '@react-pdf/pdfkit';
-import layoutDocument from '@react-pdf/layout';
+import FontStore from '@nutshelllabs-pdf/font';
+import renderPDF from '@nutshelllabs-pdf/render';
+import PDFDocument from '@nutshelllabs-pdf/pdfkit';
+import layoutDocument from '@nutshelllabs-pdf/layout';
 
 import createRenderer from './renderer';
 import { version } from '../package.json';

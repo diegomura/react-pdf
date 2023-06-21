@@ -2,8 +2,8 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
   <p align="center">React renderer for creating PDF files on the browser and server<p>
   <p align="center">
-    <a href="https://www.npmjs.com/package/@react-pdf/renderer">
-      <img src="https://img.shields.io/npm/v/@react-pdf/renderer.svg" />
+    <a href="https://www.npmjs.com/package/@nutshelllabs-pdf/renderer">
+      <img src="https://img.shields.io/npm/v/@nutshelllabs-pdf/renderer.svg" />
     </a>
     <a href="https://travis-ci.org/diegomura/react-pdf">
       <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
@@ -24,14 +24,14 @@ This package is used to _create_ PDFs using React. If you wish to _display_ exis
 
 ## How to install
 ```sh
-yarn add @react-pdf/renderer
+yarn add @nutshelllabs-pdf/renderer
 ```
 
 ## How it works
 
 ```jsx
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -65,7 +65,7 @@ const MyDocument = () => (
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer } from '@nutshelllabs-pdf/renderer';
 
 const App = () => (
   <PDFViewer>
@@ -79,7 +79,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 ### `Node.` Save in a file
 ```jsx
 import React from 'react';
-import ReactPDF from '@react-pdf/renderer';
+import ReactPDF from '@nutshelllabs-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
@@ -109,4 +109,4 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdiegomura%2Freact-pdf?ref=badge_large)
 
 ---
-![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)
+![](https://img.shields.io/npm/dt/@nutshelllabs-pdf/renderer.svg?style=flat)

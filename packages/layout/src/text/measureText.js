@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import Yoga from '@react-pdf/yoga';
+import Yoga from '@nutshelllabs-pdf/yoga';
 
 import layoutText from './layoutText';
 import linesWidth from './linesWidth';

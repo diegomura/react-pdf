@@ -6,7 +6,7 @@
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/svgkit"
   },
   "contributors": [

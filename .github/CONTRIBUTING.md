@@ -8,7 +8,7 @@ We welcome any type of contribution, not only code. You can help with
 - **QA**: file bug reports, the more details you can give the better (e.g. screenshots with the console open)
 - **Marketing**: writing blog posts, howto's, printing stickers, ...
 - **Community**: presenting the project at meetups, organizing a dedicated meetup for the local community, ...
-- **Code**: take a look at the [open issues](https://github.com/diegomura/react-pdf/issues). Even if you can't write code, commenting on them, showing that you care about a given issue matters. It helps us triage them.
+- **Code**: take a look at the [open issues](https://github.com/nutshelllabs/react-pdf/issues). Even if you can't write code, commenting on them, showing that you care about a given issue matters. It helps us triage them.
 - **Money**: we welcome financial contributions in full transparency on our [open collective](https://opencollective.com/react-pdf).
 
 ## Your First Contribution
@@ -26,7 +26,7 @@ Here I present a quick guide about how to setup your development environment exa
 This goes without saying but first you need to download the code
 
 ```sh
-git clone https://github.com/diegomura/react-pdf.git
+git clone https://github.com/nutshelllabs/react-pdf.git
 cd react-pdf
 ```
 
@@ -117,7 +117,7 @@ Anyone can file an expense. If the expense makes sense for the development of th
 
 ## Questions
 
-If you have any questions, create an [issue](https://github.com/diegomura/react-pdf/issues) (protip: do a quick search first to see if someone else didn't ask the same question before!).
+If you have any questions, create an [issue](https://github.com/nutshelllabs/react-pdf/issues) (protip: do a quick search first to see if someone else didn't ask the same question before!).
 You can also reach us at hello@nutshelllabs-pdf.opencollective.com.
 
 ## Credits
@@ -125,7 +125,7 @@ You can also reach us at hello@nutshelllabs-pdf.opencollective.com.
 ### Contributors
 
 Thank you to all the people who have already contributed to react-pdf!
-<a href="/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+<a href="/nutshelllabs/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 
 ### Backers

@@ -4,12 +4,12 @@
   "license": "MIT",
   "description": "React-pdf helper functions",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/fns"
   },
   "scripts": {

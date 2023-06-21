@@ -5,11 +5,11 @@
     <a href="https://www.npmjs.com/package/@nutshelllabs-pdf/renderer">
       <img src="https://img.shields.io/npm/v/@nutshelllabs-pdf/renderer.svg" />
     </a>
-    <a href="https://travis-ci.org/diegomura/react-pdf">
-      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
+    <a href="https://travis-ci.org/nutshelllabs/react-pdf">
+      <img src="https://img.shields.io/travis/nutshelllabs/react-pdf.svg" />
     </a>
-    <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
+    <a href="https://github.com/nutshelllabs/react-pdf/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/nutshelllabs/react-pdf.svg" />
     </a>
     <a href="https://spectrum.chat/react-pdf">
       <img src="https://withspectrum.github.io/badge/badge.svg" />
@@ -87,25 +87,25 @@ For each example, try opening `output.pdf` to see the result.
 	<tbody>
 		<tr>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/thumb.png?raw=true">
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/text/">
+					<img width="150" height="150" src="https://github.com/nutshelllabs/react-pdf/blob/master/packages/examples/src/text/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">Text</a>
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/text/">Text</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/thumb.png?raw=true">
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/resume/">
+					<img width="150" height="150" src="https://github.com/nutshelllabs/react-pdf/blob/master/packages/examples/src/resume/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">Resume</a>
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/resume/">Resume</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/fractals/thumb.png?raw=true">
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/fractals/">
+					<img width="150" height="150" src="https://github.com/nutshelllabs/react-pdf/blob/master/packages/examples/src/fractals/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">Fractals</a>
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/fractals/">Fractals</a>
 			</td>
 		</tr>
 	</tbody>
@@ -114,18 +114,18 @@ For each example, try opening `output.pdf` to see the result.
 	<tbody>
 		<tr>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/knobs/thumb.png?raw=true">
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/knobs/">
+					<img width="150" height="150" src="https://github.com/nutshelllabs/react-pdf/blob/master/packages/examples/src/knobs/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">Knobs</a>
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/knobs/">Knobs</a>
 			</td>
 			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/pageWrap/thumb.png?raw=true">
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/pageWrap/">
+					<img width="150" height="150" src="https://github.com/nutshelllabs/react-pdf/blob/master/packages/examples/src/pageWrap/thumb.png?raw=true">
 				</a>
 				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">Page wrap</a>
+				<a href="https://github.com/nutshelllabs/react-pdf/tree/master/packages/examples/src/pageWrap/">Page wrap</a>
 			</td>
 		</tr>
 	</tbody>
@@ -134,7 +134,7 @@ For each example, try opening `output.pdf` to see the result.
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
-<a href="https://github.com/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+<a href="https://github.com/nutshelllabs/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 ## Sponsors
 

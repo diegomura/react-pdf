@@ -96,8 +96,8 @@ const pdf = (initialValue, cache) => {
   /*
    * TODO: remove this method in next major release. it is buggy
    * see
-   * - https://github.com/diegomura/react-pdf/issues/2112
-   * - https://github.com/diegomura/react-pdf/issues/2095
+   * - https://github.com/nutshelllabs/react-pdf/issues/2112
+   * - https://github.com/nutshelllabs/react-pdf/issues/2095
    */
   const toString = async () => {
     if (process.env.NODE_ENV === 'development') {

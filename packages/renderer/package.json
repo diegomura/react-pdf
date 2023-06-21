@@ -5,12 +5,12 @@
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
-  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "./lib/react-pdf.cjs.js",
   "module": "./lib/react-pdf.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegomura/react-pdf.git",
+    "url": "https://github.com/nutshelllabs/react-pdf.git",
     "directory": "packages/renderer"
   },
   "browser": {

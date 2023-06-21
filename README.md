@@ -5,11 +5,11 @@
     <a href="https://www.npmjs.com/package/@nutshelllabs-pdf/renderer">
       <img src="https://img.shields.io/npm/v/@nutshelllabs-pdf/renderer.svg" />
     </a>
-    <a href="https://travis-ci.org/diegomura/react-pdf">
-      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
+    <a href="https://travis-ci.org/nutshelllabs/react-pdf">
+      <img src="https://img.shields.io/travis/nutshelllabs/react-pdf.svg" />
     </a>
-    <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
+    <a href="https://github.com/nutshelllabs/react-pdf/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/nutshelllabs/react-pdf.svg" />
     </a>
     <a href="https://github.com/prettier/prettier">
       <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
@@ -86,9 +86,9 @@ ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
+This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/nutshelllabs/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
 
-<a href="https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+<a href="https://github.com/nutshelllabs/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 ## Sponsors
 

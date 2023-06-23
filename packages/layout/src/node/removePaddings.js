@@ -1,4 +1,4 @@
-import { omit } from '@nutshelllabs-pdf/fns';
+import { omit } from '@nutshelllabs/fns';
 
 import setPadding from './setPadding';
 

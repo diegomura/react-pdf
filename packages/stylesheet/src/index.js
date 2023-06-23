@@ -1,4 +1,4 @@
-import { compose } from '@nutshelllabs-pdf/fns';
+import { compose } from '@nutshelllabs/fns';
 import expandStyles from './expand';
 import flattenStyles from './flatten';
 import transformStyles from './transform';

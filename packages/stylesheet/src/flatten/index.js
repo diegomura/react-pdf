@@ -1,4 +1,4 @@
-import { compose, castArray } from '@nutshelllabs-pdf/fns';
+import { compose, castArray } from '@nutshelllabs/fns';
 
 /**
  * Remove nil values from array

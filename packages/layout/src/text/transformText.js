@@ -1,4 +1,4 @@
-import { capitalize, upperFirst } from '@nutshelllabs-pdf/fns';
+import { capitalize, upperFirst } from '@nutshelllabs/fns';
 
 /**
  * Apply transformation to text string

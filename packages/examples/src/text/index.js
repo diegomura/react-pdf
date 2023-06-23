@@ -9,7 +9,7 @@ import {
   Link,
   Font,
   StyleSheet,
-} from '@nutshelllabs-pdf/renderer';
+} from '@nutshelllabs/renderer';
 
 const styles = StyleSheet.create({
   title: {

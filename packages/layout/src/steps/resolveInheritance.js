@@ -1,5 +1,5 @@
-import * as P from '@nutshelllabs-pdf/primitives';
-import { pick, compose } from '@nutshelllabs-pdf/fns';
+import * as P from '@nutshelllabs/primitives';
+import { pick, compose } from '@nutshelllabs/fns';
 
 const INHERITED_PROPERTIES = [
   'color',

@@ -1,4 +1,4 @@
-import { isNil, matchPercent } from '@nutshelllabs-pdf/fns';
+import { isNil, matchPercent } from '@nutshelllabs/fns';
 
 /**
  * Transform percent height into fixed

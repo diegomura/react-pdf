@@ -2,7 +2,7 @@ import './index.css';
 
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { PDFViewer } from '@nutshelllabs-pdf/renderer';
+import { PDFViewer } from '@nutshelllabs/renderer';
 
 import Svg from './svg';
 import GoTo from './goTo';

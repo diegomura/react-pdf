@@ -4,7 +4,7 @@ import layoutEngine, {
   scriptItemizer,
   wordHyphenation,
   textDecoration,
-} from '@nutshelllabs-pdf/textkit';
+} from '@nutshelllabs/textkit';
 
 import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';

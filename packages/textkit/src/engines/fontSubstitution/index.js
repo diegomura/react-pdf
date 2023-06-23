@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 
-import { last } from '@nutshelllabs-pdf/fns';
+import { last } from '@nutshelllabs/fns';
 
 import empty from '../../attributedString/empty';
 

@@ -1,4 +1,4 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
+import Yoga from '@nutshelllabs/yoga';
 
 const FLEX_DIRECTIONS = {
   row: Yoga.FLEX_DIRECTION_ROW,

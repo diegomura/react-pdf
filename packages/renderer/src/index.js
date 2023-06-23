@@ -1,7 +1,7 @@
-import FontStore from '@nutshelllabs-pdf/font';
-import renderPDF from '@nutshelllabs-pdf/render';
-import PDFDocument from '@nutshelllabs-pdf/pdfkit';
-import layoutDocument from '@nutshelllabs-pdf/layout';
+import FontStore from '@nutshelllabs/font';
+import renderPDF from '@nutshelllabs/render';
+import PDFDocument from '@nutshelllabs/pdfkit';
+import layoutDocument from '@nutshelllabs/layout';
 
 import createRenderer from './renderer';
 import { version } from '../package.json';

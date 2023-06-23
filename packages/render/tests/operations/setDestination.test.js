@@ -1,4 +1,4 @@
-import * as P from '@nutshelllabs-pdf/primitives';
+import * as P from '@nutshelllabs/primitives';
 
 import createCTX from '../ctx';
 import setDestination from '../../src/operations/setDestination';

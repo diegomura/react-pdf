@@ -1,4 +1,4 @@
-import * as P from '@nutshelllabs-pdf/primitives';
+import * as P from '@nutshelllabs/primitives';
 
 const isDefs = node => node.type === P.Defs;
 

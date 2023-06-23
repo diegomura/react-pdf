@@ -1,5 +1,5 @@
 import React from 'react';
-import { Svg, G, Polygon } from '@nutshelllabs-pdf/renderer';
+import { Svg, G, Polygon } from '@nutshelllabs/renderer';
 
 const Tiger = () => (
   <Svg style={{ width: 400, height: 400 }}>

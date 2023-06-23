@@ -1,4 +1,4 @@
-import { isNil } from '@nutshelllabs-pdf/fns';
+import { isNil } from '@nutshelllabs/fns';
 
 const getTop = node => node.box?.top || 0;
 

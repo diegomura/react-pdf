@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
 
-// import { PDFFont } from '@nutshelllabs-pdf/pdfkit';
+// import { PDFFont } from '@nutshelllabs/pdfkit';
 
 import SVGPage from '../page';
 import serialize from './serialize';

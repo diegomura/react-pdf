@@ -1,4 +1,4 @@
-import { last } from '@nutshelllabs-pdf/fns';
+import { last } from '@nutshelllabs/fns';
 
 import runTrailingOffset from '../run/trailingOffset';
 

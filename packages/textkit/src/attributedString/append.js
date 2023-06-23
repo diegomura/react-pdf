@@ -1,4 +1,4 @@
-import { last } from '@nutshelllabs-pdf/fns';
+import { last } from '@nutshelllabs/fns';
 
 import emptyRun from '../run/empty';
 import appendToRun from '../run/append';

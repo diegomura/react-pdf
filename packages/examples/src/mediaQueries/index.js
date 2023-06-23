@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
+import { Document, Page, View, StyleSheet } from '@nutshelllabs/renderer';
 
 const styles = StyleSheet.create({
   body: {

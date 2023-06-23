@@ -1,4 +1,4 @@
-import { asyncCompose } from '@nutshelllabs-pdf/fns';
+import { asyncCompose } from '@nutshelllabs/fns';
 
 import resolveSvg from './steps/resolveSvg';
 import resolveZIndex from './steps/resolveZIndex';

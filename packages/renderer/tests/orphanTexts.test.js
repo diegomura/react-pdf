@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-curly-brace-presence */
-import { Text, Document, Page } from '@nutshelllabs-pdf/primitives';
+import { Text, Document, Page } from '@nutshelllabs/primitives';
 import renderToImage from './renderComponent';
 
 const emptyString = '';

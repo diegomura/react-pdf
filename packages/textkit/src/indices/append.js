@@ -1,4 +1,4 @@
-import { isNil, last } from '@nutshelllabs-pdf/fns';
+import { isNil, last } from '@nutshelllabs/fns';
 
 /**
  * Append glyph indices with given length

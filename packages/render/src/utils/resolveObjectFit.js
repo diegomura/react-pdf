@@ -1,4 +1,4 @@
-import { matchPercent } from '@nutshelllabs-pdf/fns';
+import { matchPercent } from '@nutshelllabs/fns';
 
 const isNumeric = n => {
   return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);

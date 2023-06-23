@@ -1,5 +1,5 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
-import { upperFirst } from '@nutshelllabs-pdf/fns';
+import Yoga from '@nutshelllabs/yoga';
+import { upperFirst } from '@nutshelllabs/fns';
 
 const ALIGN = {
   'flex-start': Yoga.ALIGN_FLEX_START,

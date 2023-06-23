@@ -1,4 +1,4 @@
-import { adjust, dropLast as arrayDropLast } from '@nutshelllabs-pdf/fns';
+import { adjust, dropLast as arrayDropLast } from '@nutshelllabs/fns';
 
 import runDropLast from '../run/dropLast';
 

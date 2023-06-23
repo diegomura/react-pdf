@@ -1,4 +1,4 @@
-import { pick } from '@nutshelllabs-pdf/fns';
+import { pick } from '@nutshelllabs/fns';
 
 const SVG_INHERITED_PROPS = [
   'x',

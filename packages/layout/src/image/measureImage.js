@@ -1,4 +1,4 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
+import Yoga from '@nutshelllabs/yoga';
 
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';

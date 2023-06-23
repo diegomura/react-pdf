@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Page, Document, Link, View, Image } from '@nutshelllabs-pdf/renderer';
+import { Page, Document, Link, View, Image } from '@nutshelllabs/renderer';
 
 export default () => (
   <Document>

@@ -1,5 +1,5 @@
 import zlib from 'zlib';
-import PNG from '@nutshelllabs-pdf/png-js';
+import PNG from '@nutshelllabs/png-js';
 
 class PNGImage {
   constructor(data, label) {

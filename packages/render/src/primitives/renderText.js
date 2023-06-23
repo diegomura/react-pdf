@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { isNil } from '@nutshelllabs-pdf/fns';
+import { isNil } from '@nutshelllabs/fns';
 
 import renderGlyphs from './renderGlyphs';
 import parseColor from '../utils/parseColor';

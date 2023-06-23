@@ -1,6 +1,6 @@
 /* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
-import resolveImage from '@nutshelllabs-pdf/image';
+import resolveImage from '@nutshelllabs/image';
 
 // Caches emoji images data
 const emojis = {};

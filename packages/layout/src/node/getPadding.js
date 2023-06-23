@@ -1,4 +1,4 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
+import Yoga from '@nutshelllabs/yoga';
 
 const getComputedPadding = (node, edge) => {
   const { yogaNode } = node;

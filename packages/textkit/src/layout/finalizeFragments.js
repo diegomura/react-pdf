@@ -1,4 +1,4 @@
-import { last, compose } from '@nutshelllabs-pdf/fns';
+import { last, compose } from '@nutshelllabs/fns';
 
 import runHeight from '../run/height';
 import runAscent from '../run/ascent';

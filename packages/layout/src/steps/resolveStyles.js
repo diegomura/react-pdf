@@ -1,5 +1,5 @@
-import * as P from '@nutshelllabs-pdf/primitives';
-import stylesheet from '@nutshelllabs-pdf/stylesheet';
+import * as P from '@nutshelllabs/primitives';
+import stylesheet from '@nutshelllabs/stylesheet';
 
 const isLink = node => node.type === P.Link;
 

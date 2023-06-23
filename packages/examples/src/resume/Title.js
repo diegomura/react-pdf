@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from '@nutshelllabs-pdf/renderer';
+import { Text, StyleSheet } from '@nutshelllabs/renderer';
 
 const styles = StyleSheet.create({
   title: {

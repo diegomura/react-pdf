@@ -1,4 +1,4 @@
-import PNG from '@nutshelllabs-pdf/png-js';
+import PNG from '@nutshelllabs/png-js';
 
 PNG.isValid = function(data) {
   try {

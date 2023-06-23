@@ -7,7 +7,7 @@ import {
   Image,
   Document,
   StyleSheet,
-} from '@nutshelllabs-pdf/renderer';
+} from '@nutshelllabs/renderer';
 
 import Header from './Header';
 import Skills from './Skills';

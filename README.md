@@ -20,7 +20,7 @@
 
 ## Lost?
 
-This package is used to _create_ PDFs using React. If you wish to _display_ existing PDFs, you may be looking for [react-pdf](https://github.com/wojtekmaj/react-pdf).
+This package is a fork of [react-pdf](https://github.com/diegomura/react-pdf).  We're trying to implement some specific performance improvements for multiple renders.  I'd recommend you don't use this package.
 
 ## How to install
 ```sh

@@ -12,7 +12,7 @@
   },
   "contributors": [
     "Devon Govett <devongovett@gmail.com>",
-    "Diego Muracciole <diegomuracciole@gmail.com>"
+    "Nutshell Labs <pwalker@nutshelllabs.io>"
   ],
   "scripts": {
     "test": "jest",

@@ -3,7 +3,7 @@
   "version": "3.6.2",
   "license": "MIT",
   "description": "Resolve overall document component's layout",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
   "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",

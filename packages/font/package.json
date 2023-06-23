@@ -3,7 +3,7 @@
   "version": "2.3.6",
   "license": "MIT",
   "description": "Register font and emoji source for react-pdf document",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
   "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "repository": {
     "type": "git",

@@ -54,15 +54,17 @@ const fetchAssets = (fontStore, node) => {
  * @returns {Object} root node
  */
 const resolveAssets = async (node, fontStore, cache) => {
-  if (node.props.cacheId && node.props.cacheId in cache) {
+  if (cache && node.props.cacheId && node.props.cacheId in cache) {
     return node;
   }
 
   const promises = fetchAssets(fontStore, node);
   await Promise.all(promises);
 
-  // eslint-disable-next-line no-param-reassign
-  cache[node.props.cacheId] = true;
+  if (cache && node.props.cacheId) {
+    // eslint-disable-next-line no-param-reassign
+    cache[node.props.cacheId] = true;
+  }
 
   return node;
 };

@@ -3,7 +3,7 @@
   "version": "4.1.2",
   "description": "Prebuilt yoga-layout package",
   "license": "MIT",
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
   "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

@@ -3,7 +3,7 @@
   "version": "2.0.11",
   "license": "MIT",
   "private": true,
-  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
   "homepage": "https://github.com/nutshelllabs/react-pdf#readme",
   "repository": "git@github.com:nutshelllabs/react-pdf.git",
   "main": "lib",

@@ -16,7 +16,7 @@ concurrency:
 jobs:
   release:
     # prevents this action from running on forks
-    if: github.repository_owner == 'diegomura'
+    if: github.repository_owner == 'nutshelllabs'
     name: Release
     runs-on: ubuntu-latest
     steps:

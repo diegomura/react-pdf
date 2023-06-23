@@ -16,11 +16,6 @@ let renderer;
 const events = {};
 
 const pdf = (initialValue, cache) => {
-  if (!cache) {
-    // eslint-disable-line no-console
-    console.warn('react-pdf: no cache provided');
-  }
-
   const onChange = () => {
     const listeners = events.change?.slice() || [];
     for (let i = 0; i < listeners.length; i += 1) listeners[i]();

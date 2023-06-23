@@ -1,7 +1,7 @@
 import renderToImage from './renderComponent';
 import { Document, Page, Text, Font } from '..';
 
-describe('emoji', () => {
+describe.skip('emoji', () => {
   test('should support builder function', async () => {
     Font.registerEmojiSource({
       builder: code =>

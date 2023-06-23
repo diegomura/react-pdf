@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@nutshelllabs-pdf/root",
+  "name": "@nutshelllabs/root",
   "version": "2.0.0",
   "license": "MIT",
   "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
@@ -17,7 +17,7 @@
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "jest",
-    "examples": "lerna run start --scope @nutshelllabs-pdf/examples",
+    "examples": "lerna run start --scope @nutshelllabs/examples",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"

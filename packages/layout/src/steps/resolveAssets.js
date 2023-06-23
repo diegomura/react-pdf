@@ -1,4 +1,4 @@
-import * as P from '@nutshelllabs-pdf/primitives';
+import * as P from '@nutshelllabs/primitives';
 
 import fetchEmojis from '../text/emoji';
 import fetchImage from '../image/fetchImage';

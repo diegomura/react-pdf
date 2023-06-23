@@ -1,4 +1,4 @@
-import { isNil } from '@nutshelllabs-pdf/fns';
+import { isNil } from '@nutshelllabs/fns';
 
 import copyRect from '../rect/copy';
 import cropRect from '../rect/crop';

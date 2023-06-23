@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, Text, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
+import { Link, Text, View, StyleSheet } from '@nutshelllabs/renderer';
 
 const styles = StyleSheet.create({
   container: {

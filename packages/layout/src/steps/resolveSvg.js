@@ -1,12 +1,12 @@
-import * as P from '@nutshelllabs-pdf/primitives';
-import { transformColor, processTransform } from '@nutshelllabs-pdf/stylesheet';
+import * as P from '@nutshelllabs/primitives';
+import { transformColor, processTransform } from '@nutshelllabs/stylesheet';
 import {
   pick,
   evolve,
   compose,
   mapValues,
   matchPercent,
-} from '@nutshelllabs-pdf/fns';
+} from '@nutshelllabs/fns';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';

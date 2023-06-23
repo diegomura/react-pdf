@@ -2,20 +2,20 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
 </p>
 
-# @nutshelllabs-pdf/render
+# @nutshelllabs/render
 
 > React-pdf render engine
 
 ## How to install
 ```sh
-yarn add @nutshelllabs-pdf/render
+yarn add @nutshelllabs/render
 ```
 
 ## How it works
 
 ```js
-const render = require('@nutshelllabs-pdf/render');
-const primitives = require('@nutshelllabs-pdf/primitives');
+const render = require('@nutshelllabs/render');
+const primitives = require('@nutshelllabs/primitives');
 
 const view = {
   type: primitives.View,
@@ -74,7 +74,7 @@ Bare in mind this package does not handle any type of node positioning, inherita
 
 ### node.type
 
-Mandatory field specifiying the type of the particular node. The full list of types can be found and imported from `@nutshelllabs-pdf/primitives`
+Mandatory field specifiying the type of the particular node. The full list of types can be found and imported from `@nutshelllabs/primitives`
 
 ### node.box
 
@@ -123,8 +123,8 @@ Specific node params needed to render correctly ot behave like certain way. Spec
 
 ```js
 const fs = require('fs');
-const render = require('@nutshelllabs-pdf/render');
-const pdfkit = require('@nutshelllabs-pdf/pdfkit');
+const render = require('@nutshelllabs/render');
+const pdfkit = require('@nutshelllabs/pdfkit');
 
 const PDFDocument = pdfkit.default;
 

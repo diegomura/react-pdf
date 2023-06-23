@@ -1,8 +1,8 @@
 /* eslint-disable no-continue */
 /* eslint-disable prefer-destructuring */
 
-import * as P from '@nutshelllabs-pdf/primitives';
-import { isNil, omit, compose } from '@nutshelllabs-pdf/fns';
+import * as P from '@nutshelllabs/primitives';
+import { isNil, omit, compose } from '@nutshelllabs/fns';
 
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';

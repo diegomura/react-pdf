@@ -6,7 +6,7 @@ const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
 const logError = (style, value) => {
   console.error(`
-    @nutshelllabs-pdf/stylesheet parsing error:
+    @nutshelllabs/stylesheet parsing error:
 
     ${style}: ${value},
     ${' '.repeat(style.length + 2)}^

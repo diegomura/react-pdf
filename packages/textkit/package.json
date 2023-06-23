@@ -1,5 +1,5 @@
 {
-  "name": "@nutshelllabs-pdf/textkit",
+  "name": "@nutshelllabs/textkit",
   "license": "MIT",
   "version": "4.2.0",
   "description": "An advanced text layout framework",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@nutshelllabs-pdf/fns": "2.0.1",
+    "@nutshelllabs/fns": "2.0.1",
     "hyphen": "^1.6.4",
     "unicode-properties": "^1.4.1"
   }

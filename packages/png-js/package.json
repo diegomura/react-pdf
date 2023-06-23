@@ -1,5 +1,5 @@
 {
-  "name": "@nutshelllabs-pdf/png-js",
+  "name": "@nutshelllabs/png-js",
   "description": "A PNG decoder in JS",
   "version": "2.2.0",
   "license": "MIT",

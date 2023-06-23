@@ -10,7 +10,7 @@ import {
   Tspan,
   LinearGradient,
   Stop,
-} from '@nutshelllabs-pdf/renderer';
+} from '@nutshelllabs/renderer';
 
 const Svg2 = () => (
   <Svg width="400" viewBox="0 0 600 400">

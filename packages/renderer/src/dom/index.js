@@ -1,4 +1,4 @@
-import * as primitives from '@nutshelllabs-pdf/primitives';
+import * as primitives from '@nutshelllabs/primitives';
 
 import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';
@@ -42,7 +42,7 @@ export * from './BlobProvider';
 
 export * from './PDFDownloadLink';
 
-export * from '@nutshelllabs-pdf/primitives';
+export * from '@nutshelllabs/primitives';
 
 // TODO: remove this default export in next major release because it breaks tree-shacking
 export default {

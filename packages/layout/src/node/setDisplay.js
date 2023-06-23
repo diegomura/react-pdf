@@ -1,4 +1,4 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
+import Yoga from '@nutshelllabs/yoga';
 
 /**
  * Set display attribute to node's Yoga instance

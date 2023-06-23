@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import resolveImage from '@nutshelllabs-pdf/image';
+import resolveImage from '@nutshelllabs/image';
 
 import getSource from './getSource';
 import resolveSource from './resolveSource';

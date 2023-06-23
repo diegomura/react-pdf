@@ -1,5 +1,5 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
-import { isNil } from '@nutshelllabs-pdf/fns';
+import Yoga from '@nutshelllabs/yoga';
+import { isNil } from '@nutshelllabs/fns';
 
 const OVERFLOW = {
   hidden: Yoga.OVERFLOW_HIDDEN,

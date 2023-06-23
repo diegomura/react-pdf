@@ -4,7 +4,7 @@ import ReactPDF, {
   Page,
   Font,
   StyleSheet,
-} from '@nutshelllabs-pdf/renderer';
+} from '@nutshelllabs/renderer';
 
 import Svg0 from './svg';
 import Svg1 from './Svg1';

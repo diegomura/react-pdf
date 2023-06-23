@@ -1,5 +1,5 @@
-import * as P from '@nutshelllabs-pdf/primitives';
-import { isNil } from '@nutshelllabs-pdf/fns';
+import * as P from '@nutshelllabs/primitives';
+import { isNil } from '@nutshelllabs/fns';
 
 import renderPath from './renderPath';
 import renderRect from './renderRect';

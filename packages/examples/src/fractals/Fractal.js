@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
+import { Text, View, StyleSheet } from '@nutshelllabs/renderer';
 
 const palette = [
   '#781c81',

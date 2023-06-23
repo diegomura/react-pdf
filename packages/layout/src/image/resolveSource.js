@@ -1,5 +1,5 @@
 /**
- * Resolves `src` to `@nutshelllabs-pdf/image` interface.
+ * Resolves `src` to `@nutshelllabs/image` interface.
  *
  * Also it handles factories and async sources.
  *

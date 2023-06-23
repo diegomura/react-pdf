@@ -1,4 +1,4 @@
-import { evolve, matchPercent } from '@nutshelllabs-pdf/fns';
+import { evolve, matchPercent } from '@nutshelllabs/fns';
 
 /**
  *

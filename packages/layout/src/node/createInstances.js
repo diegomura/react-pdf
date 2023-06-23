@@ -1,5 +1,5 @@
-import { castArray } from '@nutshelllabs-pdf/fns';
-import { TextInstance } from '@nutshelllabs-pdf/primitives';
+import { castArray } from '@nutshelllabs/fns';
+import { TextInstance } from '@nutshelllabs/primitives';
 
 const isString = value => typeof value === 'string';
 

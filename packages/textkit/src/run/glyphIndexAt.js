@@ -1,4 +1,4 @@
-import { isNil } from '@nutshelllabs-pdf/fns';
+import { isNil } from '@nutshelllabs/fns';
 
 /**
  * Return glyph index at string index, if glyph indices present.

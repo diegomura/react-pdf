@@ -1,11 +1,11 @@
-import * as P from '@nutshelllabs-pdf/primitives';
+import * as P from '@nutshelllabs/primitives';
 import layoutEngine, {
   linebreaker,
   justification,
   scriptItemizer,
   wordHyphenation,
   textDecoration,
-} from '@nutshelllabs-pdf/textkit';
+} from '@nutshelllabs/textkit';
 
 import fromFragments from '../text/fromFragments';
 import transformText from '../text/transformText';

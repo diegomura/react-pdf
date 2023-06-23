@@ -1,4 +1,4 @@
-import { flatten } from '@nutshelllabs-pdf/stylesheet';
+import { flatten } from '@nutshelllabs/stylesheet';
 import getPageSize from '../page/getSize';
 
 /**

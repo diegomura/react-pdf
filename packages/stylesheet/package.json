@@ -1,5 +1,5 @@
 {
-  "name": "@nutshelllabs-pdf/stylesheet",
+  "name": "@nutshelllabs/stylesheet",
   "version": "4.1.7",
   "license": "MIT",
   "description": "A styles engine for Node and the browser",
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@nutshelllabs-pdf/fns": "2.0.1",
-    "@nutshelllabs-pdf/types": "^2.3.3",
+    "@nutshelllabs/fns": "2.0.1",
+    "@nutshelllabs/types": "^2.3.3",
     "color-string": "^1.5.3",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",

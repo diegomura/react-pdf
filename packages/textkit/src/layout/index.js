@@ -1,4 +1,4 @@
-import { compose } from '@nutshelllabs-pdf/fns';
+import { compose } from '@nutshelllabs/fns';
 
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';

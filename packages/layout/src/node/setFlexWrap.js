@@ -1,4 +1,4 @@
-import Yoga from '@nutshelllabs-pdf/yoga';
+import Yoga from '@nutshelllabs/yoga';
 
 const FLEX_WRAP = {
   wrap: Yoga.WRAP_WRAP,

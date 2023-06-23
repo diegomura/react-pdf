@@ -6,7 +6,7 @@ import {
   Text,
   Image,
   StyleSheet,
-} from '@nutshelllabs-pdf/renderer';
+} from '@nutshelllabs/renderer';
 
 const styles = StyleSheet.create({
   body: {

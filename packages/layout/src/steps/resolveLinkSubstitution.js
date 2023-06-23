@@ -1,5 +1,5 @@
-import * as P from '@nutshelllabs-pdf/primitives';
-import { compose } from '@nutshelllabs-pdf/fns';
+import * as P from '@nutshelllabs/primitives';
+import { compose } from '@nutshelllabs/fns';
 
 const isType = type => node => node.type === type;
 

@@ -2,8 +2,8 @@
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
   <p align="center">React renderer for creating PDF files on the browser and server<p>
   <p align="center">
-    <a href="https://www.npmjs.com/package/@nutshelllabs-pdf/renderer">
-      <img src="https://img.shields.io/npm/v/@nutshelllabs-pdf/renderer.svg" />
+    <a href="https://www.npmjs.com/package/@nutshelllabs/renderer">
+      <img src="https://img.shields.io/npm/v/@nutshelllabs/renderer.svg" />
     </a>
     <a href="https://travis-ci.org/nutshelllabs/react-pdf">
       <img src="https://img.shields.io/travis/nutshelllabs/react-pdf.svg" />
@@ -23,13 +23,13 @@
 
 ## How to install
 ```sh
-yarn add @nutshelllabs-pdf/renderer
+yarn add @nutshelllabs/renderer
 ```
 
 ## How it works
 
 ```jsx
-import { Document, Page, Text, View, StyleSheet } from '@nutshelllabs-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@nutshelllabs/renderer';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -62,7 +62,7 @@ const MyDocument = () => (
 ### `Web.` Render in DOM
 ```jsx
 import ReactDOM from 'react-dom';
-import { PDFViewer } from '@nutshelllabs-pdf/renderer';
+import { PDFViewer } from '@nutshelllabs/renderer';
 
 const App = () => (
   <PDFViewer>
@@ -75,7 +75,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 ### `Node.` Save in a file
 ```jsx
-import ReactPDF from '@nutshelllabs-pdf/renderer';
+import ReactPDF from '@nutshelllabs/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
@@ -155,4 +155,4 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_large)
 
 ---
-![](https://img.shields.io/npm/dt/@nutshelllabs-pdf/renderer.svg?style=flat)
+![](https://img.shields.io/npm/dt/@nutshelllabs/renderer.svg?style=flat)

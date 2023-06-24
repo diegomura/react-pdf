@@ -26,7 +26,6 @@ const groupEmptyRuns = runs => {
     acc[run.start].push(run);
     return acc;
   }, {});
-
   return Object.values(groups);
 };
 
@@ -40,32 +39,39 @@ const EMPTY_RES = [];
 const flattenRegularRuns = runs => {
   if (runs.length == 0) return EMPTY_RES;
   const res = [];
-  let place = runs[0].start; // how far we've flattened out to so far
+  // how far we've flattened so far
+  let place = runs[0].start;
 
   for (let i = 0; i < runs.length; ++i) {
     let currentRun = runs[i];
-    let start = currentRun.start;
-    let end = place;
     let attributes = currentRun.attributes;
 
-    if (start > place) {
+    if (currentRun.start > place) {
       // there is an empty gap between runs
-      res.push({"start": place, "end": start, "attributes": EMPTY_ATTRS});
-      place = start;
+      res.push({"start": place, "end": currentRun.start, "attributes": EMPTY_ATTRS});
+      place = currentRun.start;
     }
 
-    for (let j = i+1; end < currentRun.end && j < runs.length; ++j) {
+    for (let j = i+1; j < runs.length; ++j) {
+      // TODO: I don't know if this is right. What is this supposed to produce?
         // 0 10
         // 5 15
         // 9 20
       let next = runs[j];
-      if (currentRun.end > next.start) {
-        // we have overlap
-        throw new Error("TODO handle overlap");
+      if (currentRun.end <= next.start) {
+        break;
       }
+      // we have overlap
+      if (place != next.start) {
+        res.push({"start": place, "end": next.start, "attributes": attributes});
+      }
+      place = next.start;
+      attributes = Object.assign({}, attributes, next.attributes);
+    }
+    if (place != currentRun.end) {
+      res.push({"start": place, "end": currentRun.end, "attributes": attributes});
     }
     place = currentRun.end;
-    res.push({"start": start, "end": end, "attributes": attributes});
   }
   return res;
 };

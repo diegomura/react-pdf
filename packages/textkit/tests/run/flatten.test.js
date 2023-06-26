@@ -120,4 +120,33 @@ describe('run flatten operator', () => {
     expect(runs[1]).toHaveProperty('end', 15);
     expect(runs[1].attributes).toEqual({});
   });
+
+  test('multi overlap merges all props', () => {
+    const runs = flatten([
+      { start: 0, end: 10, attributes: { strike: true } },
+      { start: 5, end: 15, attributes: { style: 'bold' } },
+      { start: 9, end: 20, attributes: { color: 'red' } },
+    ]);
+
+    expect(runs).toHaveLength(5);
+    expect(runs[0]).toHaveProperty('start', 0);
+    expect(runs[0]).toHaveProperty('end', 5);
+    expect(runs[0].attributes).toEqual({ strike: true });
+    expect(runs[1]).toHaveProperty('start', 5);
+    expect(runs[1]).toHaveProperty('end', 9);
+    expect(runs[1].attributes).toEqual({ strike: true, style: 'bold' });
+    expect(runs[2]).toHaveProperty('start', 9);
+    expect(runs[2]).toHaveProperty('end', 10);
+    expect(runs[2].attributes).toEqual({
+      strike: true,
+      style: 'bold',
+      color: 'red',
+    });
+    expect(runs[3]).toHaveProperty('start', 10);
+    expect(runs[3]).toHaveProperty('end', 15);
+    expect(runs[3].attributes).toEqual({ style: 'bold', color: 'red' });
+    expect(runs[4]).toHaveProperty('start', 15);
+    expect(runs[4]).toHaveProperty('end', 20);
+    expect(runs[4].attributes).toEqual({ color: 'red' });
+  });
 });

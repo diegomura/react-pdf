@@ -22,6 +22,13 @@
 
 This package is a fork of [react-pdf](https://github.com/diegomura/react-pdf).  We're trying to implement some specific performance improvements for multiple renders.  I'd recommend you don't use this package.
 
+### What's different between this fork and the main repo?
+
+1. The top level `<Document />` component takes a `cacheId` prop.  If this prop is present, re-rendering subsequent documents with the same `cacheId` will _not_ re-run the `resolveAssets()` step.  This means if you conditionally render components with different fonts or something like that, on subsequent renders those fonts won't get picked up and your document might look weird.
+2. Got rid of emojis.  For the type of documents we do, emojis aren't apart of the text we're rendering so removing emoji-detection saved us some time.
+3. Optimized some object copy operations
+4. Target node 16, and no browsers at all.  For our use case, we're just running this in a node process.  Targeting our platforms version of node, and removing browser support from babel has saved us some time.
+
 ## How to install
 ```sh
 yarn add @nutshelllabs/renderer

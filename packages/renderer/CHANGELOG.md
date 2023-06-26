@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 3.2.1
+
+### Patch Changes
+
+- [#9](https://github.com/nutshelllabs/react-pdf/pull/9) [`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7) Thanks [@pwalker](https://github.com/pwalker)! - Minor bump to release all of our packages
+
+- Updated dependencies [[`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7)]:
+  - @nutshelllabs/font@2.3.7
+  - @nutshelllabs/layout@3.7.1
+  - @nutshelllabs/pdfkit@3.0.3
+  - @nutshelllabs/primitives@3.0.2
+  - @nutshelllabs/render@3.3.1
+  - @nutshelllabs/types@2.3.4
+
 ## 3.1.12
 
 ### Patch Changes

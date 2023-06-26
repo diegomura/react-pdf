@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/image",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@nutshelllabs/png-js": "^2.2.0",
+    "@nutshelllabs/png-js": "^2.2.1",
     "cross-fetch": "^3.1.5"
   },
   "devDependencies": {

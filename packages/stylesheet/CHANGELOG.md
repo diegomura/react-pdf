@@ -1,5 +1,15 @@
 # @react-pdf/stylesheet
 
+## 4.1.8
+
+### Patch Changes
+
+- [#9](https://github.com/nutshelllabs/react-pdf/pull/9) [`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7) Thanks [@pwalker](https://github.com/pwalker)! - Minor bump to release all of our packages
+
+- Updated dependencies [[`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7)]:
+  - @nutshelllabs/fns@2.0.2
+  - @nutshelllabs/types@2.3.4
+
 ## 4.1.7
 
 ### Patch Changes

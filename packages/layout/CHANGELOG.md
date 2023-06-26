@@ -1,5 +1,21 @@
 # @react-pdf/layout
 
+## 3.7.1
+
+### Patch Changes
+
+- [#9](https://github.com/nutshelllabs/react-pdf/pull/9) [`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7) Thanks [@pwalker](https://github.com/pwalker)! - Minor bump to release all of our packages
+
+- Updated dependencies [[`cadf722`](https://github.com/nutshelllabs/react-pdf/commit/cadf722b5275fd7981b49682b2eb353798772d6e), [`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7)]:
+  - @nutshelllabs/textkit@4.4.0
+  - @nutshelllabs/fns@2.0.2
+  - @nutshelllabs/image@2.2.2
+  - @nutshelllabs/pdfkit@3.0.3
+  - @nutshelllabs/primitives@3.0.2
+  - @nutshelllabs/stylesheet@4.1.8
+  - @nutshelllabs/types@2.3.4
+  - @nutshelllabs/yoga@4.1.3
+
 ## 3.6.2
 
 ### Patch Changes

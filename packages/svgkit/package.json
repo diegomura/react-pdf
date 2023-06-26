@@ -1,7 +1,7 @@
 {
   "name": "@nutshelllabs/svgkit",
   "license": "MIT",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "A SVG generation library for Node.js and browser",
   "main": "./lib/index.js",
   "repository": {
@@ -22,6 +22,6 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@nutshelllabs/pdfkit": "^3.0.2"
+    "@nutshelllabs/pdfkit": "^3.0.3"
   }
 }

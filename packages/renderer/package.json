@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/renderer",
-  "version": "3.1.12",
+  "version": "3.2.0",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
@@ -27,10 +27,10 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@nutshelllabs/font": "^2.3.6",
-    "@nutshelllabs/layout": "^3.6.2",
+    "@nutshelllabs/layout": "^3.7.0",
     "@nutshelllabs/pdfkit": "^3.0.2",
     "@nutshelllabs/primitives": "^3.0.0",
-    "@nutshelllabs/render": "^3.2.6",
+    "@nutshelllabs/render": "^3.3.0",
     "@nutshelllabs/types": "^2.3.3",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",

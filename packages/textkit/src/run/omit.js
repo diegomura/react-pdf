@@ -5,11 +5,9 @@
  * @return {Object} run without ommited attribute
  */
 const omit = (value, run) => {
-  const attributes = Object.assign({}, run.attributes);
-
-  delete attributes[value];
-
-  return Object.assign({}, run, { attributes });
+  const newAttributes = {...run.attributes};
+  delete newAttributes[value];
+  return {...run, attributes: newAttributes};
 };
 
 export default omit;

@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.3.4
+
+### Patch Changes
+
+- [#9](https://github.com/nutshelllabs/react-pdf/pull/9) [`995e6a5`](https://github.com/nutshelllabs/react-pdf/commit/995e6a5ea74e105448cd4683745ea272646402b7) Thanks [@pwalker](https://github.com/pwalker)! - Minor bump to release all of our packages
+
 ## 2.3.3
 
 ### Patch Changes

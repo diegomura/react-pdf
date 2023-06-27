@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/render",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "license": "MIT",
   "description": "A render engine for Node and the browser",
   "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@nutshelllabs/fns": "2.0.1",
-    "@nutshelllabs/primitives": "^3.0.0",
-    "@nutshelllabs/textkit": "^4.3.0",
-    "@nutshelllabs/types": "^2.3.3",
+    "@nutshelllabs/fns": "2.0.2",
+    "@nutshelllabs/primitives": "^3.0.2",
+    "@nutshelllabs/textkit": "^4.4.0",
+    "@nutshelllabs/types": "^2.3.4",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.5.3",
     "normalize-svg-path": "^1.1.0",

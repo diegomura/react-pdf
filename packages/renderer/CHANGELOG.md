@@ -1,5 +1,11 @@
 # @react-pdf/renderer
 
+## 3.3.0
+
+### Minor Changes
+
+- [#14](https://github.com/nutshelllabs/react-pdf/pull/14) [`0815620`](https://github.com/nutshelllabs/react-pdf/commit/08156208435ca308b7d0e5f7ce413aeab591efbc) Thanks [@pwalker](https://github.com/pwalker)! - Compression is defaulted to "off", should be much faster.
+
 ## 3.2.2
 
 ### Patch Changes

@@ -23,3 +23,7 @@ This project is a fork of [textkit](https://github.com/foliojs/textkit) by @devo
 11. ellipsize line if necessary
 12. bidi reordering
 13. justification
+
+# Performance
+
+This package was not originally optimized for speed in regards to batch rendering of PDFs. Changes are in the works to speed up this use-case.

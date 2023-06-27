@@ -31,7 +31,7 @@ const pdf = (initialValue, cache) => {
 
   if (initialValue) updateContainer(initialValue);
 
-  const render = async (compress = true) => {
+  const render = async (compress = false) => {
     const props = container.document.props || {};
     const { pdfVersion, language, pageLayout, pageMode } = props;
 
@@ -83,9 +83,9 @@ const pdf = (initialValue, cache) => {
   };
 
   // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
-  const toBuffer = async () => {
+  const toBuffer = async compress => {
     callOnRender();
-    return (await render()).fileStream;
+    return (await render(compress)).fileStream;
   };
 
   /*

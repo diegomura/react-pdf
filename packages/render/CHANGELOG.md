@@ -1,5 +1,12 @@
 # @react-pdf/render
 
+## 3.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`c1c70a9`](https://github.com/nutshelllabs/react-pdf/commit/c1c70a96cb5af64857bf00c0d317f54d9b422fa3)]:
+  - @nutshelllabs/textkit@4.5.0
+
 ## 3.3.1
 
 ### Patch Changes

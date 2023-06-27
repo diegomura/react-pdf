@@ -3,9 +3,15 @@ import { Buffer } from 'buffer';
 
 import { pdf } from '../index';
 
-export const renderToStream = async (element, cache) => {
+/**
+ * @param {*} element React element
+ * @param {*} cache an optional object to help caching fonts
+ * @param {*} compress a boolean to compress or not the pdf output, compression is slow
+ * @returns
+ */
+export const renderToStream = async (element, cache, compress) => {
   const instance = pdf(element, cache);
-  const stream = await instance.toBuffer();
+  const stream = await instance.toBuffer(compress);
   return stream;
 };
 

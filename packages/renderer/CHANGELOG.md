@@ -1,5 +1,13 @@
 # @react-pdf/renderer
 
+## 3.2.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @nutshelllabs/layout@3.7.2
+  - @nutshelllabs/render@3.3.2
+
 ## 3.2.1
 
 ### Patch Changes

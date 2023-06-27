@@ -1,5 +1,11 @@
 # @react-pdf/textkit
 
+## 4.5.0
+
+### Minor Changes
+
+- [#11](https://github.com/nutshelllabs/react-pdf/pull/11) [`c1c70a9`](https://github.com/nutshelllabs/react-pdf/commit/c1c70a96cb5af64857bf00c0d317f54d9b422fa3) Thanks [@realark](https://github.com/realark)! - Updated README
+
 ## 4.4.0
 
 ### Minor Changes

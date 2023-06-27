@@ -31,7 +31,7 @@ const pdf = (initialValue, cache) => {
 
   if (initialValue) updateContainer(initialValue);
 
-  const render = async (compress = true) => {
+  const render = async (compress = false) => {
     const props = container.document.props || {};
     const { pdfVersion, language, pageLayout, pageMode } = props;
 

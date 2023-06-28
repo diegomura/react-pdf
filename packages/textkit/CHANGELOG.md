@@ -1,5 +1,11 @@
 # @react-pdf/textkit
 
+## 4.6.0
+
+### Minor Changes
+
+- [#16](https://github.com/nutshelllabs/react-pdf/pull/16) [`397fa80`](https://github.com/nutshelllabs/react-pdf/commit/397fa809727725e366200e262fffcf7d53b2d553) Thanks [@realark](https://github.com/realark)! - Minor perf opt and compress=false default in renderToStream
+
 ## 4.5.0
 
 ### Minor Changes

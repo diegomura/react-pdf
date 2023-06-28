@@ -1,5 +1,17 @@
 # @react-pdf/renderer
 
+## 3.4.0
+
+### Minor Changes
+
+- [#16](https://github.com/nutshelllabs/react-pdf/pull/16) [`397fa80`](https://github.com/nutshelllabs/react-pdf/commit/397fa809727725e366200e262fffcf7d53b2d553) Thanks [@realark](https://github.com/realark)! - Minor perf opt and compress=false default in renderToStream
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @nutshelllabs/layout@3.7.3
+  - @nutshelllabs/render@3.3.3
+
 ## 3.3.0
 
 ### Minor Changes

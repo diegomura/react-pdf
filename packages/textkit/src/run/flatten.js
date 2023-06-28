@@ -6,7 +6,6 @@ const EMPTY_RES = [];
 
 /**
  * Flatten many runs
-  return emptyRuns.concat(regularRuns);
  *
  * @param  {Array}  runs
  * @return {Array} flatten runs

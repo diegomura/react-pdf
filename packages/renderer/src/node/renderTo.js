@@ -9,7 +9,7 @@ import { pdf } from '../index';
  * @param {*} compress a boolean to compress or not the pdf output, compression is slow
  * @returns
  */
-export const renderToStream = async (element, cache, compress) => {
+export const renderToStream = async (element, cache, compress = false) => {
   const instance = pdf(element, cache);
   const stream = await instance.toBuffer(compress);
   return stream;

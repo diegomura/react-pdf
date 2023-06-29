@@ -14,16 +14,14 @@ const scalePositions = (run, positions) => {
   const runScale = scale(run);
   const characterSpacing = getCharacterSpacing(run);
 
-  return positions.map((position, i) => {
+  positions.forEach((position, i) => {
     const isLast = i === positions.length;
     const xSpacing = isLast ? 0 : characterSpacing;
 
-    return Object.assign({}, position, {
-      xAdvance: position.xAdvance * runScale + xSpacing,
-      yAdvance: position.yAdvance * runScale,
-      xOffset: position.xOffset * runScale,
-      yOffset: position.yOffset * runScale,
-    });
+    position.xAdvance = position.xAdvance * runScale + xSpacing;
+    position.yAdvance *= runScale;
+    position.xOffset *= runScale;
+    position.yOffset *= runScale;
   });
 };
 
@@ -38,19 +36,21 @@ const layoutRun = string => run => {
   const { start, end, attributes = {} } = run;
   const { font } = attributes;
 
-  if (!font) return { ...run, glyphs: [], glyphIndices: [], positions: [] };
+  if (!font) {
+    run.positions = [];
+    run.glyphIndices = [];
+    run.glyphs = [];
+    return;
+  }
 
   const runString = string.slice(start, end);
   const glyphRun = font.layout(runString);
-  const positions = scalePositions(run, glyphRun.positions);
+  scalePositions(run, glyphRun.positions);
   const glyphIndices = resolveGlyphIndices(glyphRun.glyphs);
 
-  return {
-    ...run,
-    positions,
-    glyphIndices,
-    glyphs: glyphRun.glyphs,
-  };
+  run.positions = glyphRun.positions;
+  run.glyphIndices = glyphIndices;
+  run.glyphs = glyphRun.glyphs;
 };
 
 /**
@@ -62,8 +62,8 @@ const layoutRun = string => run => {
  * @return {Array} attributed string with glyphs
  */
 const generateGlyphs = () => attributedString => {
-  const runs = attributedString.runs.map(layoutRun(attributedString.string));
-  return Object.assign({}, attributedString, { runs });
+  attributedString.runs.forEach(layoutRun(attributedString.string));
+  return attributedString;
 };
 
 export default generateGlyphs;

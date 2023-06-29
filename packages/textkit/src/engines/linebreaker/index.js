@@ -48,8 +48,13 @@ const breakLines = (string, nodes, breaks) => {
     return [...acc, line];
   }, []);
 
-  // Last line
-  lines.push(slice(start, string.string.length, string));
+  if (end) {
+    // Last line
+    lines.push(slice(start, string.string.length, string));
+  } else {
+    // do not slice if no line breaks
+    lines.push(string);
+  }
 
   return lines;
 };

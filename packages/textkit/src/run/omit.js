@@ -5,9 +5,8 @@
  * @return {Object} run without ommited attribute
  */
 const omit = (value, run) => {
-  const newAttributes = {...run.attributes};
-  delete newAttributes[value];
-  return {...run, attributes: newAttributes};
+  delete run.attributes[value];
+  return run;
 };
 
 export default omit;

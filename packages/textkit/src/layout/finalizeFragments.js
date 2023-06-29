@@ -41,9 +41,12 @@ const adjustOverflow = line => {
 
   const x = line.box.x - overflowLeft;
   const width = line.box.width + overflowLeft + overflowRight;
-  const box = Object.assign({}, line.box, { x, width });
+  line.box.x = x;
+  line.box.width = width;
+  line.overflowLeft = overflowLeft;
+  line.overflowRight = overflowRight;
 
-  return Object.assign({}, line, { box, overflowLeft, overflowRight });
+  return line;
 };
 
 /**
@@ -62,10 +65,9 @@ const justifyLine = (engines, options, align) => line => {
   const shouldJustify = align === 'justify' || lineWidth > line.box.width;
 
   const x = line.box.x + remainingWidth * alignFactor;
-  const box = Object.assign({}, line.box, { x });
-  const newLine = Object.assign({}, line, { box });
+  line.box.x = x;
 
-  return shouldJustify ? engines.justification(options)(newLine) : newLine;
+  return shouldJustify ? engines.justification(options)(line) : line;
 };
 
 const finalizeLine = line => {
@@ -74,7 +76,7 @@ const finalizeLine = line => {
   let lineHeight = 0;
   let lineXAdvance = 0;
 
-  const runs = line.runs.map(run => {
+  line.runs.forEach(run => {
     const height = runHeight(run);
     const ascent = runAscent(run);
     const descent = runDescent(run);
@@ -85,16 +87,17 @@ const finalizeLine = line => {
     lineDescent = Math.max(lineDescent, descent);
     lineXAdvance += xAdvance;
 
-    return Object.assign({}, run, { height, ascent, descent, xAdvance });
+    run.height = height;
+    run.ascent = ascent;
+    run.descent = descent;
+    run.xAdvance = xAdvance;
   });
 
-  return Object.assign({}, line, {
-    runs,
-    height: lineHeight,
-    ascent: lineAscent,
-    descent: lineDescent,
-    xAdvance: lineXAdvance,
-  });
+  line.height = lineHeight;
+  line.ascent = lineAscent;
+  line.descent = lineDescent;
+  line.xAdvance = lineXAdvance;
+  return line;
 };
 
 /**

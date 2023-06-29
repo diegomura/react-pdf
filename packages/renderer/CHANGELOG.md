@@ -1,5 +1,11 @@
 # @react-pdf/renderer
 
+## 3.5.0
+
+### Minor Changes
+
+- [#20](https://github.com/nutshelllabs/react-pdf/pull/20) [`61c9318`](https://github.com/nutshelllabs/react-pdf/commit/61c931835cca63de4ba217d68d983807e415b75e) Thanks [@realark](https://github.com/realark)! - Update exported renderToStream signature
+
 ## 3.4.0
 
 ### Minor Changes

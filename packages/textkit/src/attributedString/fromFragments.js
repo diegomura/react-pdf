@@ -6,11 +6,11 @@
  */
 const fromFragments = fragments => {
   let offset = 0;
-  let string = '';
+  const strings = [];
   const runs = [];
 
   fragments.forEach(fragment => {
-    string += fragment.string;
+    strings.push(fragment.string);
 
     runs.push({
       start: offset,
@@ -21,7 +21,7 @@ const fromFragments = fragments => {
     offset += fragment.string.length;
   });
 
-  return { string, runs };
+  return { string: ''.concat(...strings), runs };
 };
 
 export default fromFragments;

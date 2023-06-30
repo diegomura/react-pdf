@@ -1,4 +1,3 @@
-import filterRuns from '../run/filter';
 import runAdvanceWidthBetween from '../run/advanceWidthBetween';
 
 /**
@@ -12,11 +11,12 @@ import runAdvanceWidthBetween from '../run/advanceWidthBetween';
  * @return {number} advance width
  */
 const advanceWidthBetween = (start, end, attributedString) => {
-  const runs = filterRuns(start, end, attributedString.runs);
-  return runs.reduce(
-    (acc, run) => acc + runAdvanceWidthBetween(start, end, run),
-    0,
-  );
+  return attributedString.runs.reduce((acc, run) => {
+    if (run.start < end && start <= run.end) {
+      return acc + runAdvanceWidthBetween(start, end, run);
+    }
+    return acc;
+  }, 0);
 };
 
 export default advanceWidthBetween;

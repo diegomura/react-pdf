@@ -1,11 +1,9 @@
 import * as P from '@nutshelllabs/primitives';
 
-// import { embedEmojis } from './emoji';
-import ignoreChars from './ignoreChars';
 import fromFragments from './fromFragments';
 import transformText from './transformText';
 
-const PREPROCESSORS = [ignoreChars];
+const PREPROCESSORS = [];
 
 const isImage = node => node.type === P.Image;
 

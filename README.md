@@ -20,7 +20,7 @@
 
 ## Lost?
 
-This package is a fork of [react-pdf](https://github.com/diegomura/react-pdf).  We're trying to implement some specific performance improvements for multiple renders.  I'd recommend you don't use this package.
+This package is a fork of [react-pdf](https://github.com/diegomura/react-pdf).  We're trying to implement some specific performance improvements for multiple renders. Some features were removed and some tests were disabled. I'd recommend you don't use this package.
 
 ### What's different between this fork and the main repo?
 

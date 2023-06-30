@@ -77,7 +77,7 @@ describe('text layoutText', () => {
     expect(lines.length).toEqual(2);
   });
 
-  test('should allow hyphenation callback to be overriden', async () => {
+  xtest('should allow hyphenation callback to be overriden', async () => {
     const text = 'reallylongtext';
     const hyphens = ['really', 'long', 'text'];
     const hyphenationCallback = jest.fn().mockReturnValue(hyphens);

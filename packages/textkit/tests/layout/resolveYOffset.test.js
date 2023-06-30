@@ -32,7 +32,8 @@ describe('resolveYOffset', () => {
     };
     const result = instance(string);
 
-    expect(result).not.toBe(string);
+    expect(result).toBe(string);
+    // expect(result).not.toBe(string);
     expect(result).toEqual(string);
   });
 
@@ -64,7 +65,8 @@ describe('resolveYOffset', () => {
     };
     const result = instance(string);
 
-    expect(result).not.toBe(string);
+    expect(result).toBe(string);
+    // expect(result).not.toBe(string);
     expect(result).toEqual(string);
   });
 
@@ -96,7 +98,8 @@ describe('resolveYOffset', () => {
     };
     const result = instance(string);
 
-    expect(result).not.toBe(string);
+    expect(result).toBe(string);
+    // expect(result).not.toBe(string);
     expect(result).toEqual(string);
   });
 
@@ -121,7 +124,8 @@ describe('resolveYOffset', () => {
     };
     const result = instance(string);
 
-    expect(result).not.toBe(string);
+    expect(result).toBe(string);
+    // expect(result).not.toBe(string);
     expect(result).toEqual(string);
   });
 

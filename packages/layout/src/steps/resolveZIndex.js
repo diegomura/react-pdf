@@ -28,9 +28,8 @@ const resolveZIndex = node => {
     ? node.children.sort(sortZIndex)
     : node.children;
 
-  const children = sortedChildren.map(resolveZIndex);
-
-  return Object.assign({}, node, { children });
+  node.children = sortedChildren.map(resolveZIndex);
+  return node;
 };
 
 export default resolveZIndex;

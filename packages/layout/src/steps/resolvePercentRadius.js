@@ -33,13 +33,13 @@ const resolvePercentRadius = node => {
     node.style || {},
   );
 
-  const newNode = Object.assign({}, node, { style });
+  node.style = style;
 
-  if (!node.children) return newNode;
+  if (node.children) {
+    node.children.forEach(resolvePercentRadius);
+  }
 
-  const children = node.children.map(resolvePercentRadius);
-
-  return Object.assign({}, newNode, { children });
+  return node;
 };
 
 export default resolvePercentRadius;

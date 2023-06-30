@@ -7,15 +7,11 @@ import getOrigin from '../node/getOrigin';
  * @returns {Object} node with origin attribute
  */
 const resolveNodeOrigin = node => {
-  const origin = getOrigin(node);
-
-  const newNode = Object.assign({}, node, { origin });
-
-  if (!node.children) return newNode;
-
-  const children = node.children.map(resolveNodeOrigin);
-
-  return Object.assign({}, newNode, { children });
+  node.origin = getOrigin(node);
+  if (node.children) {
+    node.children.forEach(resolveNodeOrigin);
+  }
+  return node;
 };
 
 /**
@@ -26,11 +22,10 @@ const resolveNodeOrigin = node => {
  */
 
 const resolveOrigin = root => {
-  if (!root.children) return root;
-
-  const children = root.children.map(resolveNodeOrigin);
-
-  return Object.assign({}, root, { children });
+  if (root.children) {
+    root.children.forEach(resolveNodeOrigin);
+  }
+  return root;
 };
 
 export default resolveOrigin;

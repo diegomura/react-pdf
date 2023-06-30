@@ -32,7 +32,6 @@ const resolvePageVerticalPadding = container => value => {
  */
 const resolvePagePaddings = page => {
   const container = page.style;
-
   const style = evolve(
     {
       paddingTop: resolvePageVerticalPadding(container),
@@ -42,8 +41,8 @@ const resolvePagePaddings = page => {
     },
     page.style,
   );
-
-  return Object.assign({}, page, { style });
+  page.style = style;
+  return page;
 };
 
 /**
@@ -55,11 +54,10 @@ const resolvePagePaddings = page => {
  * @returns {Object} document root with translated page paddings
  */
 const resolvePagesPaddings = root => {
-  if (!root.children) return root;
-
-  const children = root.children.map(resolvePagePaddings);
-
-  return Object.assign({}, root, { children });
+  if (root.children) {
+    root.children.forEach(resolvePagePaddings);
+  }
+  return root;
 };
 
 export default resolvePagesPaddings;

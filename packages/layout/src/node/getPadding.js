@@ -46,7 +46,13 @@ const getPadding = node => {
     style?.padding ||
     0;
 
-  return { paddingTop, paddingRight, paddingBottom, paddingLeft };
+  const obj = box || {};
+  obj.paddingTop = paddingTop;
+  obj.paddingRight = paddingRight;
+  obj.paddingBottom = paddingBottom;
+  obj.paddingLeft = paddingLeft;
+
+  return obj;
 };
 
 export default getPadding;

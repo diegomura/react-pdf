@@ -1,24 +1,5 @@
-import omit from '../run/omit';
 import stringHeight from '../attributedString/height';
 import generateLineRects from './generateLineRects';
-
-const ATTACHMENT_CODE = '\ufffc'; // 65532
-
-/**
- * Remove attachment attribute if no char present
- *
- * @param  {Object} attributed string
- * @return {Object} attributed string
- */
-const purgeAttachments = attributedString => {
-  const shouldPurge = !attributedString.string.includes(ATTACHMENT_CODE);
-
-  if (!shouldPurge) return attributedString;
-
-  const runs = attributedString.runs.map(run => omit('attachment', run));
-
-  return Object.assign({}, attributedString, { runs });
-};
 
 /**
  * Layout paragraphs inside rectangle
@@ -41,11 +22,8 @@ const layoutLines = (rects, lines, indent) => {
       currentY = rect.y;
     }
 
-    const newLine = Object.assign({}, line);
-
-    delete newLine.syllables;
-
-    newLine.box = {
+    delete line.syllables;
+    line.box = {
       x: rect.x + lineIndent,
       y: currentY,
       width: rect.width - lineIndent,
@@ -53,8 +31,7 @@ const layoutLines = (rects, lines, indent) => {
     };
 
     currentY += height;
-
-    return purgeAttachments(newLine);
+    return line;
   });
 };
 

@@ -10,8 +10,8 @@ import getPageSize from '../page/getSize';
 export const resolvePageSize = page => {
   const size = getPageSize(page);
   const style = flatten(page.style || {});
-
-  return { ...page, style: { ...style, ...size } };
+  page.style = { ...style, ...size };
+  return page;
 };
 
 /**
@@ -21,11 +21,10 @@ export const resolvePageSize = page => {
  * @returns {Object} document root with resolved page sizes
  */
 const resolvePageSizes = root => {
-  if (!root.children) return root;
-
-  const children = root.children.map(resolvePageSize);
-
-  return Object.assign({}, root, { children });
+  if (root.children) {
+    root.children.forEach(resolvePageSize);
+  }
+  return root;
 };
 
 export default resolvePageSizes;

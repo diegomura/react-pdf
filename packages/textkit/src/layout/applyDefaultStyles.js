@@ -45,8 +45,8 @@ const applyAttributes = a => ({
  * @return {Object} run with styles
  */
 const applyRunStyles = run => {
-  const attributes = applyAttributes(run.attributes);
-  return Object.assign({}, run, { attributes });
+  run.attributes = applyAttributes(run.attributes);
+  return run;
 };
 
 /**

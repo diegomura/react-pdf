@@ -171,9 +171,9 @@ const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
 const createYogaNodes = (page, fontStore) => node => {
   const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
 
-  const result = Object.assign({}, node, { yogaNode });
+  node.yogaNode = yogaNode;
 
-  setYogaValues(result);
+  setYogaValues(node);
 
   if (isLayoutElement(node) && node.children) {
     const resolveChild = compose(
@@ -181,12 +181,11 @@ const createYogaNodes = (page, fontStore) => node => {
       createYogaNodes(page, fontStore),
     );
 
-    result.children = node.children.map(resolveChild);
+    node.children = node.children.map(resolveChild);
   }
 
-  setMeasureFunc(result, page, fontStore);
-
-  return result;
+  setMeasureFunc(node, page, fontStore);
+  return node;
 };
 
 /**
@@ -209,21 +208,20 @@ const calculateLayout = page => {
 const persistDimensions = node => {
   if (isTextInstance(node)) return node;
 
-  const box = Object.assign(
-    getPadding(node),
-    getMargin(node),
-    getBorderWidth(node),
-    getPosition(node),
-    getDimension(node),
-  );
+  if (!node.box) {
+    node.box = {};
+  }
 
-  const newNode = Object.assign({}, node, { box });
+  getDimension(node);
+  getPosition(node);
+  getBorderWidth(node);
+  getMargin(node);
+  getPadding(node);
 
-  if (!node.children) return newNode;
+  if (!node.children) return node;
 
-  const children = node.children.map(persistDimensions);
-
-  return Object.assign({}, newNode, { children });
+  node.children.forEach(persistDimensions);
+  return node;
 };
 
 /**
@@ -233,15 +231,11 @@ const persistDimensions = node => {
  * @returns {Object} node without yoga node
  */
 const destroyYogaNodes = node => {
-  const newNode = Object.assign({}, node);
+  delete node.yogaNode;
+  if (!node.children) return node;
 
-  delete newNode.yogaNode;
-
-  if (!node.children) return newNode;
-
-  const children = node.children.map(destroyYogaNodes);
-
-  return Object.assign({}, newNode, { children });
+  node.children.forEach(destroyYogaNodes);
+  return node;
 };
 
 /**
@@ -285,9 +279,8 @@ const resolveDimensions = (node, fontStore) => {
   if (!node.children) return node;
 
   const resolveChild = child => resolvePageDimensions(child, fontStore);
-  const children = node.children.map(resolveChild);
-
-  return Object.assign({}, node, { children });
+  node.children.forEach(resolveChild);
+  return node;
 };
 
 export default resolveDimensions;

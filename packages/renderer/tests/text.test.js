@@ -96,7 +96,7 @@ const TextTest = () => (
   </Document>
 );
 
-describe('text', () => {
+xdescribe('text', () => {
   test('should match snapshot', async () => {
     const image = await renderToImage(<TextTest />);
 

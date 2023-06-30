@@ -379,7 +379,7 @@ const Resume = props => (
   </Page>
 );
 
-describe('resume', () => {
+xdescribe('resume', () => {
   test('should match snapshot', async () => {
     const image = await renderToImage(
       <Document

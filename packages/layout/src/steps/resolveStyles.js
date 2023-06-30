@@ -35,13 +35,13 @@ const computeStyle = (container, node) => {
  * @returns {Object} node (and subnodes) with resolved styles
  */
 const resolveNodeStyles = container => node => {
-  const style = computeStyle(container, node);
+  node.style = computeStyle(container, node);
 
-  if (!node.children) return Object.assign({}, node, { style });
+  if (node.children) {
+    node.children.forEach(resolveNodeStyles(container));
+  }
 
-  const children = node.children.map(resolveNodeStyles(container));
-
-  return Object.assign({}, node, { style, children });
+  return node;
 };
 
 /**
@@ -68,10 +68,8 @@ const resolvePageStyles = page => {
  */
 const resolveStyles = root => {
   if (!root.children) return root;
-
-  const children = root.children.map(resolvePageStyles);
-
-  return Object.assign({}, root, { children });
+  root.children.forEach(resolvePageStyles);
+  return root;
 };
 
 export default resolveStyles;

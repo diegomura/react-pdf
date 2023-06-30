@@ -54,8 +54,8 @@ const merge = (inheritedStyles, style) => {
  * @returns {Object} node with styles merged
  */
 const mergeStyles = inheritedStyles => node => {
-  const style = merge(inheritedStyles, node.style || {});
-  return Object.assign({}, node, { style });
+  node.style = merge(inheritedStyles, node.style || {});
+  return node;
 };
 
 /**
@@ -73,9 +73,8 @@ const resolveInheritance = node => {
 
   const resolveChild = compose(resolveInheritance, mergeStyles(inheritStyles));
 
-  const children = node.children.map(resolveChild);
-
-  return Object.assign({}, node, { children });
+  node.children.forEach(resolveChild);
+  return node;
 };
 
 export default resolveInheritance;

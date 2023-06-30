@@ -58,7 +58,8 @@ const wrapText = node => {
     children: node.children,
   };
 
-  return Object.assign({}, node, { children: [textElement] });
+  node.children = [textElement];
+  return node;
 };
 
 const transformLink = node => {
@@ -66,11 +67,13 @@ const transformLink = node => {
 
   // If has render prop substitute the instance by a Text, that will
   // ultimately render the inline Link via the textkit PDF renderer.
-  if (hasRenderProp(node)) return Object.assign({}, node, { type: P.Text });
+  if (hasRenderProp(node)) {
+    node.type = P.Text;
+    return node;
+  }
 
   // If is a text link (either contains Text or TextInstalce), wrap it
   // inside a Text element so styles are applied correctly
-
   if (isTextLink(node)) return wrapText(node);
 
   return node;
@@ -86,10 +89,9 @@ const resolveLinkSubstitution = node => {
   if (!node.children) return node;
 
   const resolveChild = compose(transformLink, resolveLinkSubstitution);
+  node.children.forEach(resolveChild);
 
-  const children = node.children.map(resolveChild);
-
-  return Object.assign({}, node, { children });
+  return node;
 };
 
 export default resolveLinkSubstitution;

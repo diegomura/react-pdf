@@ -46,7 +46,13 @@ const getMargin = node => {
     style?.margin ||
     0;
 
-  return { marginTop, marginRight, marginBottom, marginLeft };
+  const obj = box || {};
+  obj.marginTop = marginTop;
+  obj.marginRight = marginRight;
+  obj.marginBottom = marginBottom;
+  obj.marginLeft = marginLeft;
+
+  return obj;
 };
 
 export default getMargin;

@@ -9,22 +9,18 @@ const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
  * @return {Object} run
  */
 const resolveRunAttachments = run => {
-  if (!run.positions) return run;
+  if (!run.positions || !run.glyphs || !run.attributes?.attachment) return;
 
-  const glyphs = run.glyphs || [];
-  const attachment = run.attributes?.attachment || {};
+  const glyphs = run.glyphs;
+  const attachment = run.attributes?.attachment;
 
-  const positions = run.positions.map((position, i) => {
+  run.positions.forEach((position, i) => {
     const glyph = glyphs[i];
 
-    if (attachment && attachment.width && isReplaceGlyph(glyph)) {
-      return Object.assign({}, position, { xAdvance: attachment.width });
+    if (attachment.width && isReplaceGlyph(glyph)) {
+      position.xAdvance = attachment.width;
     }
-
-    return Object.assign({}, position);
   });
-
-  return Object.assign({}, run, { positions });
 };
 
 /**
@@ -36,8 +32,8 @@ const resolveRunAttachments = run => {
  * @return {Array} attributed strings (paragraphs)
  */
 const resolveAttachments = () => attributedString => {
-  const runs = attributedString.runs.map(resolveRunAttachments);
-  return Object.assign({}, attributedString, { runs });
+  attributedString.runs.forEach(resolveRunAttachments);
+  return attributedString;
 };
 
 export default resolveAttachments;

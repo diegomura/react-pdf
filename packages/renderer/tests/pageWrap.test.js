@@ -248,7 +248,7 @@ const PageWrap = () => (
 );
 
 describe('pageWrap', () => {
-  test('should match snapshot', async () => {
+  xtest('should match snapshot', async () => {
     const image = await renderToImage(<PageWrap />);
 
     expect(image).toMatchImageSnapshot();

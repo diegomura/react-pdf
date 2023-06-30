@@ -38,9 +38,9 @@ const resolveNodePercentHeight = (page, node) => {
 
   const pageArea = getPageArea(page);
   const height = transformHeight(pageArea, node.style.height);
-  const style = Object.assign({}, node.style, { height });
+  node.style.height = height;
 
-  return Object.assign({}, node, { style });
+  return node;
 };
 
 /**
@@ -53,9 +53,8 @@ const resolvePagePercentHeight = page => {
   if (!page.children) return page;
 
   const resolveChild = child => resolveNodePercentHeight(page, child);
-  const children = page.children.map(resolveChild);
-
-  return Object.assign({}, page, { children });
+  page.children.forEach(resolveChild);
+  return page;
 };
 
 /**
@@ -66,11 +65,10 @@ const resolvePagePercentHeight = page => {
  * @return {Object} transformed document root
  */
 const resolvePercentHeight = root => {
-  if (!root.children) return root;
-
-  const children = root.children.map(resolvePagePercentHeight);
-
-  return Object.assign({}, root, { children });
+  if (root.children) {
+    root.children.forEach(resolvePagePercentHeight);
+  }
+  return root;
 };
 
 export default resolvePercentHeight;

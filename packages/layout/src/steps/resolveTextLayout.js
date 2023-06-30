@@ -27,18 +27,11 @@ const resolveTextLayout = (node, fontStore) => {
     const height =
       node.box.height - (node.box.paddingTop + node.box.paddingBottom);
 
-    // eslint-disable-next-line no-param-reassign
     node.lines = layoutText(node, width, height, fontStore);
   }
 
-  if (shouldIterate(node)) {
-    if (!node.children) return node;
-
-    const mapChild = child => resolveTextLayout(child, fontStore);
-
-    const children = node.children.map(mapChild);
-
-    return Object.assign({}, node, { children });
+  if (shouldIterate(node) && node.children) {
+    node.children.forEach(child => resolveTextLayout(child, fontStore));
   }
 
   return node;

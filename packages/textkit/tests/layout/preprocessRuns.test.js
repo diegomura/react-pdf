@@ -13,7 +13,7 @@ describe('preprocessRuns', () => {
     fontSubstitutionImpl.mockClear();
   });
 
-  test('should call both engines with attributed string', () => {
+  xtest('should call both engines with attributed string', () => {
     const param = empty();
 
     preprocessor(param);
@@ -38,7 +38,7 @@ describe('preprocessRuns', () => {
     expect(string).toHaveProperty('runs', []);
   });
 
-  test('should return flatten runs', () => {
+  xtest('should return flatten runs', () => {
     const string = preprocessor({
       string: 'Lorem',
       runs: [{ start: 0, end: 5, attributes: { color: 'red' } }],

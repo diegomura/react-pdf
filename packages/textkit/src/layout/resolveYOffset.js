@@ -5,13 +5,13 @@
  * @return {Object} run
  */
 const resolveRunYOffset = run => {
-  if (!run.positions) return run;
+  if (!run.positions) return;
 
   const unitsPerEm = run.attributes?.font?.unitsPerEm || 0;
   const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
-  const positions = run.positions.map(p => Object.assign({}, p, { yOffset }));
-
-  return Object.assign({}, run, { positions });
+  run.positions.forEach(p => {
+    p.yOffset = yOffset;
+  });
 };
 
 /**
@@ -23,8 +23,8 @@ const resolveRunYOffset = run => {
  * @return {Array} attributed strings (paragraphs)
  */
 const resolveYOffset = () => attributedString => {
-  const runs = attributedString.runs.map(resolveRunYOffset);
-  return Object.assign({}, attributedString, { runs });
+  attributedString.runs.forEach(resolveRunYOffset);
+  return attributedString;
 };
 
 export default resolveYOffset;

@@ -1,5 +1,17 @@
 # @react-pdf/renderer
 
+## 3.6.0
+
+### Minor Changes
+
+- [#22](https://github.com/nutshelllabs/react-pdf/pull/22) [`21cc425`](https://github.com/nutshelllabs/react-pdf/commit/21cc4254761da9be5be2a08a828d3c51e7be20ea) Thanks [@kberezin-nshl](https://github.com/kberezin-nshl)! - In place object updates instead of copies optimizations
+
+### Patch Changes
+
+- Updated dependencies [[`21cc425`](https://github.com/nutshelllabs/react-pdf/commit/21cc4254761da9be5be2a08a828d3c51e7be20ea)]:
+  - @nutshelllabs/layout@3.8.0
+  - @nutshelllabs/render@3.4.0
+
 ## 3.5.0
 
 ### Minor Changes

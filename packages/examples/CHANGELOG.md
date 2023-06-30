@@ -1,5 +1,12 @@
 # @react-pdf/examples
 
+## 2.1.6
+
+### Patch Changes
+
+- Updated dependencies [[`21cc425`](https://github.com/nutshelllabs/react-pdf/commit/21cc4254761da9be5be2a08a828d3c51e7be20ea)]:
+  - @nutshelllabs/renderer@3.6.0
+
 ## 2.1.5
 
 ### Patch Changes

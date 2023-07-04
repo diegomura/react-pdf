@@ -30,8 +30,8 @@ export const renderToFile = async (element, filePath, callback) => {
   });
 };
 
-export const renderToBuffer = (element, cache) =>
-  renderToStream(element, cache).then(
+export const renderToBuffer = (element, cache, compress = false) =>
+  renderToStream(element, cache, compress).then(
     stream =>
       new Promise((resolve, reject) => {
         const chunks = [];

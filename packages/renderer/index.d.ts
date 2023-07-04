@@ -585,6 +585,7 @@ export default ReactPDF;
 export const renderToBuffer: (
   document: React.ReactElement<ReactPDF.DocumentProps>,
   cache: Record<string, any>,
+  compress: boolean,
 ) => Promise<Buffer>;
 
 /**

@@ -3,34 +3,17 @@ import stream from 'stream';
 import PDFObject from './object';
 
 class PDFReference extends stream.Writable {
-  constructor(document, id, data) {
+  constructor(document, id, data = {}) {
     super({ decodeStrings: false });
 
     this.finalize = this.finalize.bind(this);
     this.document = document;
     this.id = id;
-    if (data == null) {
-      data = {};
-    }
     this.data = data;
-
     this.gen = 0;
-    this.deflate = null;
     this.compress = this.document.compress && !this.data.Filter;
     this.uncompressedLength = 0;
-    this.chunks = [];
-  }
-
-  initDeflate() {
-    this.data.Filter = 'FlateDecode';
-
-    this.deflate = zlib.createDeflate();
-    this.deflate.on('data', chunk => {
-      this.chunks.push(chunk);
-      return (this.data.Length += chunk.length);
-    });
-
-    return this.deflate.on('end', this.finalize);
+    this.buffer = [];
   }
 
   _write(chunk, encoding, callback) {
@@ -42,43 +25,40 @@ class PDFReference extends stream.Writable {
     if (this.data.Length == null) {
       this.data.Length = 0;
     }
-
+    this.buffer.push(chunk);
+    this.data.Length += chunk.length;
     if (this.compress) {
-      if (!this.deflate) {
-        this.initDeflate();
-      }
-      this.deflate.write(chunk);
-    } else {
-      this.chunks.push(chunk);
-      this.data.Length += chunk.length;
+      this.data.Filter = 'FlateDecode';
     }
-
     return callback();
   }
 
-  end() {
-    super.end(...arguments);
-
-    if (this.deflate) {
-      return this.deflate.end();
+  end(chunk) {
+    if (chunk) {
+      this.write(chunk);
     }
-
     return this.finalize();
   }
 
   finalize() {
     this.offset = this.document._offset;
 
+    if (this.buffer.length) {
+      this.buffer = Buffer.concat(this.buffer);
+      if (this.compress) {
+        this.buffer = zlib.deflateSync(this.buffer);
+      }
+      this.data.Length = this.buffer.length;
+    }
+
     this.document._write(`${this.id} ${this.gen} obj`);
     this.document._write(PDFObject.convert(this.data));
 
-    if (this.chunks.length) {
+    if (this.buffer.length) {
       this.document._write('stream');
-      for (let chunk of Array.from(this.chunks)) {
-        this.document._write(chunk);
-      }
+      this.document._write(this.buffer);
 
-      this.chunks.length = 0; // free up memory
+      this.buffer = []; // free up memory
       this.document._write('\nendstream');
     }
 

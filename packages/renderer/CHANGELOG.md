@@ -10,7 +10,7 @@
 
   ```jsx
   const PdfView = () => {
-    const [pdf, update] = usePdf();
+    const [pdf, update] = usePDF({<PDFDocument />});
 
     useEffect(() => {
       update(<PDFDocument />);

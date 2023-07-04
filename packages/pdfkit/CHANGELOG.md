@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.0
+
+### Minor Changes
+
+- [#24](https://github.com/nutshelllabs/react-pdf/pull/24) [`b709959`](https://github.com/nutshelllabs/react-pdf/commit/b7099598245428021bd91d5d7a42c940d511e41e) Thanks [@kberezin-nshl](https://github.com/kberezin-nshl)! - Single-pass compression backported from original pdfkit repo
+
 ## 3.0.3
 
 ### Patch Changes

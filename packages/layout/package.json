@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/layout",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "license": "MIT",
   "description": "Resolve overall document component's layout",
   "author": "Nutshell Labs <pwalker@nutshelllabs.io>",
@@ -21,7 +21,7 @@
     "@babel/runtime": "^7.20.13",
     "@nutshelllabs/fns": "2.0.2",
     "@nutshelllabs/image": "^2.2.2",
-    "@nutshelllabs/pdfkit": "^3.0.3",
+    "@nutshelllabs/pdfkit": "^3.1.0",
     "@nutshelllabs/primitives": "^3.0.2",
     "@nutshelllabs/stylesheet": "^4.1.8",
     "@nutshelllabs/textkit": "^4.7.0",

@@ -1,5 +1,12 @@
 # @react-pdf/layout
 
+## 3.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`b709959`](https://github.com/nutshelllabs/react-pdf/commit/b7099598245428021bd91d5d7a42c940d511e41e)]:
+  - @nutshelllabs/pdfkit@3.1.0
+
 ## 3.8.0
 
 ### Minor Changes

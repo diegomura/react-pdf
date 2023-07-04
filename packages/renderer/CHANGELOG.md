@@ -1,5 +1,17 @@
 # @react-pdf/renderer
 
+## 3.7.0
+
+### Minor Changes
+
+- [#24](https://github.com/nutshelllabs/react-pdf/pull/24) [`b709959`](https://github.com/nutshelllabs/react-pdf/commit/b7099598245428021bd91d5d7a42c940d511e41e) Thanks [@kberezin-nshl](https://github.com/kberezin-nshl)! - Single-pass compression backported from original pdfkit repo
+
+### Patch Changes
+
+- Updated dependencies [[`b709959`](https://github.com/nutshelllabs/react-pdf/commit/b7099598245428021bd91d5d7a42c940d511e41e)]:
+  - @nutshelllabs/pdfkit@3.1.0
+  - @nutshelllabs/layout@3.8.1
+
 ## 3.6.0
 
 ### Minor Changes

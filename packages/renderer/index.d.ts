@@ -236,7 +236,7 @@ declare namespace ReactPDF {
 
   class Canvas extends React.Component<CanvasProps> {}
 
-  interface SVGProps extends NodeProps {
+  interface SVGProps extends NodeProps, SVGPresentationAttributes {
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging

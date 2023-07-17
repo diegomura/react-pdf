@@ -10,7 +10,8 @@ export interface SVGPresentationAttributes {
   fillRule?: 'nonzero' | 'evenodd';
   strokeOpacity?: string | number;
   textAnchor?: 'start' | 'middle' | 'end';
-  strokeLineCap?: 'butt' | 'round' | 'square';
+  strokeLinecap?: 'butt' | 'round' | 'square';
+  strokeLinejoin?: 'bevel' | 'miter' | 'round';
   visibility?: 'visible' | 'hidden' | 'collapse';
   dominantBaseline?:
     | 'auto'

@@ -124,6 +124,12 @@ declare namespace ReactPDF {
      */
     debug?: boolean;
     cache?: boolean;
+    /**
+     * Allows to specify a custom cache ID for the image.
+     * This is particularly useful because images are cached based on their src value
+     * which causes problems when you need to render the same image multiple times with different css properties such as a watermark.
+     */
+    cacheId?: string;
   }
 
   interface ImageWithSrcProp extends BaseImageProps {

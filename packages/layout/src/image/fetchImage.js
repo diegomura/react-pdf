@@ -27,7 +27,8 @@ const fetchImage = async node => {
       throw new Error(`Image's "src" or "source" prop returned ${source}`);
     }
 
-    node.image = await resolveImage(source, { cache });
+    const nodeCacheId = node.props.cacheId;
+    node.image = await resolveImage(source, { cache, cacheId: nodeCacheId });
     node.image.key = source.data ? source.data.toString() : source.uri;
   } catch (e) {
     node.image = { width: 0, height: 0, key: null };

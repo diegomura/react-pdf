@@ -20,7 +20,9 @@ const fetchAssets = (fontStore, node) => {
     const n = listToExplore.shift();
 
     if (isImage(n)) {
-      promises.push(fetchImage(n));
+      if (!n.image) {
+        promises.push(fetchImage(n));
+      }
     }
 
     if (fontStore && n.style?.fontFamily) {
@@ -45,6 +47,21 @@ const fetchAssets = (fontStore, node) => {
   return promises;
 };
 
+const traverseImageAssets = (node, cb) => {
+  const nodesToExplore = node.children?.slice(0) || [];
+  while (nodesToExplore.length > 0) {
+    const n = nodesToExplore.shift();
+    if (n.type === 'IMAGE') {
+      cb(n);
+    }
+    if (n.children) {
+      n.children.forEach(childNode => {
+        nodesToExplore.push(childNode);
+      });
+    }
+  }
+};
+
 /**
  * Fetch image, font and emoji assets in parallel.
  * Layout process will not be resumed until promise resolves.
@@ -54,6 +71,18 @@ const fetchAssets = (fontStore, node) => {
  * @returns {Object} root node
  */
 const resolveAssets = async (node, fontStore, cache) => {
+  // checks if there are any image nodes which need to be resolved with fetchImage
+  const imagesPromises = [];
+  traverseImageAssets(node, n => {
+    if (!n.image) {
+      imagesPromises.push(fetchImage(n));
+    }
+  });
+
+  if (imagesPromises.length > 0) {
+    await Promise.all(imagesPromises);
+  }
+
   if (cache && node.props.cacheId && node.props.cacheId in cache) {
     return node;
   }

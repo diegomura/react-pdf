@@ -35,6 +35,7 @@ declare namespace ReactPDF {
     pageLayout?: PageLayout;
     onRender?: (props: OnRenderProps) => any;
     cacheId?: string;
+    nodeId?: string; // used to help identify node
   }
 
   /**
@@ -93,12 +94,28 @@ declare namespace ReactPDF {
    */
   class Page extends React.Component<React.PropsWithChildren<PageProps>> {}
 
+  type Node = {
+    box: {
+      height: number;
+    };
+    props?: {
+      nodeId: string;
+    };
+    nodeId: string;
+    children: Node[];
+  };
+
   interface ViewProps extends NodeProps {
     id?: string;
     /**
      * Enable/disable page wrapping for element.
      * @see https://react-pdf.org/components#page-wrapping
      */
+    /**
+     * A nodeId is a unique identifier for a node in the document. This can be set so that
+     * you can find the node in the render hook for dynamic rendering.
+     */
+    nodeId?: string;
     wrap?: boolean;
     /**
      * Enables debug mode on page bounding box.
@@ -108,6 +125,7 @@ declare namespace ReactPDF {
     render?: (props: {
       pageNumber: number;
       subPageNumber: number;
+      pageNode: Node;
     }) => React.ReactNode;
   }
 
@@ -581,6 +599,7 @@ declare const usePDF: typeof ReactPDF.usePDF;
 declare const PDFViewer: typeof ReactPDF.PDFViewer;
 declare const BlobProvider: typeof ReactPDF.BlobProvider;
 declare const PDFDownloadLink: typeof ReactPDF.PDFDownloadLink;
+declare const Node: Node;
 
 export default ReactPDF;
 

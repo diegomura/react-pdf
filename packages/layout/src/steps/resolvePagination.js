@@ -225,8 +225,8 @@ const resolvePageIndices = (fontStore, page, pageNumber, pages) => {
     pageNumber: pageNumber + 1,
     subPageNumber: page.subPageNumber + 1,
     subPageTotalPages: page.subPageTotalPages,
+    pageNode: page, // root node for page
   };
-
   return resolveDynamicPage(props, page, fontStore);
 };
 

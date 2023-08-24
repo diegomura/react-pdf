@@ -20,7 +20,7 @@ export interface Style {
 
   aspectRatio?: number | string;
   bottom?: number | string;
-  display?: 'flex' | 'none';
+  display?: 'flex' | 'table' | 'none';
   left?: number | string;
   position?: 'absolute' | 'relative';
   right?: number | string;

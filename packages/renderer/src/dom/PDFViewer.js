@@ -12,6 +12,7 @@ export const PDFViewer = ({
   children,
   innerRef,
   showToolbar = true,
+  filename,
   ...props
 }) => {
   const [instance, updateInstance] = usePDF();
@@ -19,7 +20,7 @@ export const PDFViewer = ({
   useEffect(() => updateInstance(children), [children]);
 
   const src = instance.url
-    ? `${instance.url}#toolbar=${showToolbar ? 1 : 0}`
+    ? `${fileName}#toolbar=${showToolbar ? 1 : 0}`
     : null;
 
   return (

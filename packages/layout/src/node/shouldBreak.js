@@ -31,7 +31,7 @@ const shouldBreak = (child, futureElements, height) => {
   return (
     getBreak(child) ||
     (!shouldWrap && shouldSplit) ||
-    (afterPresence > height && breakingImprovesPresence)
+    (!shouldSplit && afterPresence > height && breakingImprovesPresence)
   );
 };
 

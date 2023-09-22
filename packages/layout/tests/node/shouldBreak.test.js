@@ -402,4 +402,32 @@ describe('node shouldBreak', () => {
 
     expect(result).toEqual(false);
   });
+
+  test('should not break when the child can wrap', () => {
+    const result = shouldBreak(
+      {
+        type: 'TEXT',
+        box: {
+          top: 425.23779296875,
+          height: 419.439453125,
+          marginTop: 12,
+          marginBottom: 12,
+        },
+      },
+      [
+        {
+          type: 'TEXT',
+          box: {
+            top: 868.67724609375,
+            height: 247.8505859375,
+            marginTop: 12,
+            marginBottom: 12,
+          },
+        },
+      ],
+      776.89,
+    );
+
+    expect(result).toEqual(false);
+  });
 });

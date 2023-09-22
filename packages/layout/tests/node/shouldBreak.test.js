@@ -158,6 +158,37 @@ describe('node shouldBreak', () => {
     expect(result).toEqual(false);
   });
 
+  test('should never break fixed child', () => {
+    const result = shouldBreak(
+      {
+        box: { top: 500, height: 400, marginTop: 0, marginBottom: 0 },
+        props: { minPresenceAhead: 400, fixed: true },
+      },
+      [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
+      1000,
+    );
+
+    expect(result).toEqual(false);
+  });
+
+  test('should ignore fixed elements after child', () => {
+    const result = shouldBreak(
+      {
+        box: { top: 500, height: 400, marginTop: 0, marginBottom: 0 },
+        props: { minPresenceAhead: 400, fixed: true },
+      },
+      [
+        {
+          box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 },
+          props: { fixed: true },
+        },
+      ],
+      1000,
+    );
+
+    expect(result).toEqual(false);
+  });
+
   test('should work with trivial minimal reproduction example', () => {
     const result = shouldBreak(
       {

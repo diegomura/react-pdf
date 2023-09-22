@@ -10,7 +10,7 @@ const shouldBreak = (child, futureElements, height) => {
   if (child.props?.fixed) return false;
 
   const shouldSplit = height < child.box.top + child.box.height;
-  const shouldWrap = getWrap(child);
+  const canWrap = getWrap(child);
   const minPresenceAhead = getMinPresenceAhead(child);
   const afterMinPresenceAhead =
     child.box.top +
@@ -30,7 +30,7 @@ const shouldBreak = (child, futureElements, height) => {
 
   return (
     getBreak(child) ||
-    (!shouldWrap && shouldSplit) ||
+    (shouldSplit && !canWrap) ||
     (!shouldSplit && afterPresence > height && breakingImprovesPresence)
   );
 };

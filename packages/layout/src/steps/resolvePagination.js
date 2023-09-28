@@ -7,7 +7,7 @@ import { isNil, omit, compose } from '@react-pdf/fns';
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
-import canNodeWrap from '../node/getWrap';
+import canNodeWrap, { NON_WRAP_TYPES } from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
 import createInstances from '../node/createInstances';
@@ -42,6 +42,102 @@ const warnUnavailableSpace = node => {
   );
 };
 
+const warnFallbackSpace = node => {
+  console.warn(
+    `Node of type ${node.type} can't wrap between pages and it's bigger than available page height, falling back to wrap`,
+  );
+};
+
+const breakableChild = (children, height, path = '') => {
+  for (let i = 0; i < children.length; i += 1) {
+    if (children[i].type === 'TEXT_INSTANCE') continue;
+
+    if (shouldNodeBreak(children[i], children.slice(i + 1, height))) {
+      return {
+        child: children[i],
+        path: `${path}/${i}`,
+      };
+    }
+
+    if (children[i].children && children[i].children.length > 0) {
+      const breakable = breakableChild(
+        children[i].children,
+        height,
+        `${path}/${i}`,
+      );
+      if (breakable) return breakable;
+    }
+  }
+};
+
+const splitByFirstChildBreak = (
+  firstBreakableChild,
+  currentNode,
+  currentPath,
+  height,
+) => {
+  const preBreakChildren = [];
+  const postBreakChildren = [];
+
+  const nextIndex = Number(currentPath.split('/').pop());
+
+  const [preBreakNode, postBreakNode] = splitNode(currentNode, height);
+
+  for (let i = 0; i < currentNode.children.length; i += 1) {
+    // force recompute of lines on relayout.
+    // as the structure has changed.
+    const subjectNode = Object.assign({}, currentNode.children[i], {
+      lines: null,
+    });
+
+    if (i < nextIndex) {
+      preBreakChildren.push(subjectNode);
+    } else if (i === nextIndex) {
+      if (currentPath === firstBreakableChild.path) {
+        const theBrokenChild = subjectNode;
+
+        const props = Object.assign({}, theBrokenChild.props, {
+          wrap: true,
+          break: false,
+        });
+
+        const next = Object.assign({}, theBrokenChild, {
+          props,
+        });
+
+        postBreakChildren.push(next);
+      } else {
+        const [
+          nestedPreBreakChild,
+          nestedPostBreakChild,
+        ] = splitByFirstChildBreak(
+          firstBreakableChild,
+          subjectNode,
+          currentPath +
+            firstBreakableChild.path
+              .replace(currentPath, '')
+              .split('/')
+              .slice(0, 2)
+              .join('/'),
+          height,
+        );
+
+        if (nestedPreBreakChild) preBreakChildren.push(nestedPreBreakChild);
+        if (nestedPostBreakChild) postBreakChildren.push(nestedPostBreakChild);
+      }
+    } else {
+      postBreakChildren.push(subjectNode);
+    }
+  }
+
+  return [
+    preBreakChildren.length === 0
+      ? null
+      : assingChildren(preBreakChildren, preBreakNode),
+    assingChildren(postBreakChildren, postBreakNode),
+  ];
+};
+
 const splitNodes = (height, contentArea, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
@@ -50,10 +146,10 @@ const splitNodes = (height, contentArea, nodes) => {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
     const futureFixedNodes = futureNodes.filter(isFixed);
-
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
+
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
     const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
@@ -66,21 +162,41 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (isOutside) {
-      const box = Object.assign({}, child.box, { top: child.box.top - height });
+      const box = Object.assign({}, child.box, {
+        top: child.box.top - height,
+      });
       const next = Object.assign({}, child, { box });
       nextChildren.push(next);
       continue;
     }
 
     if (!fitsInsidePage && !canWrap) {
-      currentChildren.push(child);
-      nextChildren.push(...futureNodes);
-      warnUnavailableSpace(child);
+      if (NON_WRAP_TYPES.includes(child.type)) {
+        // We don't want to break non wrapable nodes, so we just let them be.
+        // They will be cropped, user will need to fix their ~image usage?
+        currentChildren.push(child);
+        nextChildren.push(...futureNodes);
+        warnUnavailableSpace(child);
+      } else {
+        // This should fallback to allow minPresence ahead to dictate where we should break and such.
+        const props = Object.assign({}, child.props, {
+          wrap: true,
+          break: false,
+        });
+        const next = Object.assign({}, child, { props });
+
+        currentChildren.push(...futureFixedNodes);
+        nextChildren.push(next, ...futureNodes);
+        warnFallbackSpace(child);
+      }
+
       break;
     }
 
     if (shouldBreak) {
-      const box = Object.assign({}, child.box, { top: child.box.top - height });
+      const box = Object.assign({}, child.box, {
+        top: child.box.top - height,
+      });
       const props = Object.assign({}, child.props, {
         wrap: true,
         break: false,
@@ -89,6 +205,34 @@ const splitNodes = (height, contentArea, nodes) => {
 
       currentChildren.push(...futureFixedNodes);
       nextChildren.push(next, ...futureNodes);
+      break;
+    }
+
+    const firstBreakableChild =
+      child.children &&
+      child.children.length > 0 &&
+      breakableChild(child.children, height);
+
+    if (firstBreakableChild) {
+      const [currentPageNode, nextPageNode] = splitByFirstChildBreak(
+        firstBreakableChild,
+        child,
+        firstBreakableChild.path
+          .split('/')
+          .slice(0, 2)
+          .join('/'),
+        height,
+      );
+
+      const box = Object.assign({}, nextPageNode.box, {
+        top: nextPageNode.box.top - height,
+      });
+      const next = Object.assign({}, nextPageNode, { box });
+
+      if (currentPageNode) currentChildren.push(currentPageNode);
+
+      nextChildren.push(next, ...futureNodes);
+
       break;
     }
 

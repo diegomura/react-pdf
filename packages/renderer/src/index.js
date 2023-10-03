@@ -25,8 +25,8 @@ const pdf = initialValue => {
   renderer = renderer || createRenderer({ onChange });
   const mountNode = renderer.createContainer(container);
 
-  const updateContainer = doc => {
-    renderer.updateContainer(doc, mountNode, null);
+  const updateContainer = (doc, callback) => {
+    renderer.updateContainer(doc, mountNode, null, callback);
   };
 
   if (initialValue) updateContainer(initialValue);

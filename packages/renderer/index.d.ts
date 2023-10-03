@@ -511,7 +511,7 @@ declare namespace ReactPDF {
     toBlob: () => Promise<Blob>;
     toBuffer: () => Promise<NodeJS.ReadableStream>;
     on: (event: 'change', callback: () => void) => void;
-    updateContainer: (document: React.ReactElement<any>) => void;
+    updateContainer: (document: React.ReactElement<any>, callback?: () => void) => void;
     removeListener: (event: 'change', callback: () => void) => void;
   };
 

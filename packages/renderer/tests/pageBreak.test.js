@@ -76,6 +76,7 @@ const PageWrap = () => (
         ~ Created with react-pdf ~
       </Text>
       <Text style={styles.text}>New Page 1</Text>
+
       <Text style={styles.text}>
         <Text style={styles.text}>
           {'New Page 1 Content'.repeat(800)}

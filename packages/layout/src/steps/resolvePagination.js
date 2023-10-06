@@ -44,7 +44,7 @@ const warnUnavailableSpace = node => {
 
 const warnFallbackSpace = node => {
   console.warn(
-    `Node of type ${node.type} can't wrap between pages and it's bigger than available page height, falling back to wrap`,
+    `Node of type ${node.type} can't wrap between pages and it's bigger than available page height, falling back to wrap, and putting it on the next page`,
   );
 };
 const breakableViewChild = (children, height, path = '') => {
@@ -84,16 +84,12 @@ const splitNodes = (height, contentArea, nodes) => {
     const isOutside = height <= nodeTop;
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
 
-    const shouldWrap = child.props?.wrap;
-
     const firstBreakableViewChild =
       child.children &&
       child.children.length > 0 &&
-      breakableViewChild(child.children, height);
+      breakableViewChild(child.children, height, '');
 
-    const shouldSplit =
-      height + SAFTY_THRESHOLD < nodeTop + nodeHeight ||
-      firstBreakableViewChild;
+    const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
 
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;
@@ -118,23 +114,22 @@ const splitNodes = (height, contentArea, nodes) => {
         currentChildren.push(child);
         nextChildren.push(...futureNodes);
         warnUnavailableSpace(child);
+        break;
       } else {
-        // This should fallback to allow minPresence ahead to dictate where we should break and such.
+        // We don't want to break non wrapable nodes, so we just let them be.
+        warnFallbackSpace(child);
         const props = Object.assign({}, child.props, {
           wrap: true,
-          break: false,
         });
         const next = Object.assign({}, child, { props });
 
         currentChildren.push(...futureFixedNodes);
         nextChildren.push(next, ...futureNodes);
-        warnFallbackSpace(child);
+        break;
       }
-
-      break;
     }
 
-    if (shouldBreak || (!shouldWrap && shouldSplit)) {
+    if (shouldBreak) {
       const box = Object.assign({}, child.box, { top: child.box.top - height });
       const props = Object.assign({}, child.props, {
         wrap: true,
@@ -147,7 +142,7 @@ const splitNodes = (height, contentArea, nodes) => {
       break;
     }
 
-    if (shouldSplit) {
+    if (shouldSplit || firstBreakableViewChild) {
       const [currentChild, nextChild] = split(
         child,
         height,
@@ -157,11 +152,8 @@ const splitNodes = (height, contentArea, nodes) => {
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       // This was causing an infinite loop
-      // if (
-      //   child.children.length > 0 &&
-      //   currentChild.children.length === 0 &&
-      //   !currentChild.lines
-      // ) {
+      // if (child.children.length > 0 && currentChild.children.length === 0) {
+      //   console.log(child);
       //   const box = Object.assign({}, child.box, {
       //     top: child.box.top - height,
       //   });
@@ -186,21 +178,21 @@ const splitNodes = (height, contentArea, nodes) => {
 
 const splitChildren = (height, contentArea, node) => {
   const children = node.children || [];
+
   const availableHeight = height - getTop(node);
+
+  console.log(node, node.box);
 
   return splitNodes(availableHeight, contentArea, children);
 };
 
 const splitView = (node, height, contentArea, foundBreakableViewChild) => {
-  const [currentNode, nextNode] = splitNode(
-    node,
-    height,
-    foundBreakableViewChild,
-  );
+  const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
     node,
+    foundBreakableViewChild,
   );
 
   return [

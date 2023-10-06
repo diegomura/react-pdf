@@ -47,10 +47,9 @@ const warnFallbackSpace = node => {
     `Node of type ${node.type} can't wrap between pages and it's bigger than available page height, falling back to wrap`,
   );
 };
-
-const breakableChild = (children, height, path = '') => {
+const breakableViewChild = (children, height, path = '') => {
   for (let i = 0; i < children.length; i += 1) {
-    if (children[i].type === 'TEXT_INSTANCE') continue;
+    if (children[i].type !== 'VIEW') continue;
 
     if (shouldNodeBreak(children[i], children.slice(i + 1, height))) {
       return {
@@ -60,7 +59,7 @@ const breakableChild = (children, height, path = '') => {
     }
 
     if (children[i].children && children[i].children.length > 0) {
-      const breakable = breakableChild(
+      const breakable = breakableViewChild(
         children[i].children,
         height,
         `${path}/${i}`,
@@ -68,74 +67,7 @@ const breakableChild = (children, height, path = '') => {
       if (breakable) return breakable;
     }
   }
-};
-
-const splitByFirstChildBreak = (
-  firstBreakableChild,
-  currentNode,
-  currentPath,
-  height,
-) => {
-  const preBreakChildren = [];
-  const postBreakChildren = [];
-
-  const nextIndex = Number(currentPath.split('/').pop());
-
-  const [preBreakNode, postBreakNode] = splitNode(currentNode, height);
-
-  for (let i = 0; i < currentNode.children.length; i += 1) {
-    // force recompute of lines on relayout.
-    // as the structure has changed.
-    const subjectNode = Object.assign({}, currentNode.children[i], {
-      lines: null,
-    });
-
-    if (i < nextIndex) {
-      preBreakChildren.push(subjectNode);
-    } else if (i === nextIndex) {
-      if (currentPath === firstBreakableChild.path) {
-        const theBrokenChild = subjectNode;
-
-        const props = Object.assign({}, theBrokenChild.props, {
-          wrap: true,
-          break: false,
-        });
-
-        const next = Object.assign({}, theBrokenChild, {
-          props,
-        });
-
-        postBreakChildren.push(next);
-      } else {
-        const [
-          nestedPreBreakChild,
-          nestedPostBreakChild,
-        ] = splitByFirstChildBreak(
-          firstBreakableChild,
-          subjectNode,
-          currentPath +
-            firstBreakableChild.path
-              .replace(currentPath, '')
-              .split('/')
-              .slice(0, 2)
-              .join('/'),
-          height,
-        );
-
-        if (nestedPreBreakChild) preBreakChildren.push(nestedPreBreakChild);
-        if (nestedPostBreakChild) postBreakChildren.push(nestedPostBreakChild);
-      }
-    } else {
-      postBreakChildren.push(subjectNode);
-    }
-  }
-
-  return [
-    preBreakChildren.length === 0
-      ? null
-      : assingChildren(preBreakChildren, preBreakNode),
-    assingChildren(postBreakChildren, postBreakNode),
-  ];
+  return null;
 };
 
 const splitNodes = (height, contentArea, nodes) => {
@@ -146,12 +78,23 @@ const splitNodes = (height, contentArea, nodes) => {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
     const futureFixedNodes = futureNodes.filter(isFixed);
+
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
-
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
-    const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
+
+    const shouldWrap = child.props?.wrap;
+
+    const firstBreakableViewChild =
+      child.children &&
+      child.children.length > 0 &&
+      breakableViewChild(child.children, height);
+
+    const shouldSplit =
+      height + SAFTY_THRESHOLD < nodeTop + nodeHeight ||
+      firstBreakableViewChild;
+
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;
 
@@ -162,9 +105,7 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (isOutside) {
-      const box = Object.assign({}, child.box, {
-        top: child.box.top - height,
-      });
+      const box = Object.assign({}, child.box, { top: child.box.top - height });
       const next = Object.assign({}, child, { box });
       nextChildren.push(next);
       continue;
@@ -193,10 +134,8 @@ const splitNodes = (height, contentArea, nodes) => {
       break;
     }
 
-    if (shouldBreak) {
-      const box = Object.assign({}, child.box, {
-        top: child.box.top - height,
-      });
+    if (shouldBreak || (!shouldWrap && shouldSplit)) {
+      const box = Object.assign({}, child.box, { top: child.box.top - height });
       const props = Object.assign({}, child.props, {
         wrap: true,
         break: false,
@@ -208,48 +147,30 @@ const splitNodes = (height, contentArea, nodes) => {
       break;
     }
 
-    const firstBreakableChild =
-      child.children &&
-      child.children.length > 0 &&
-      breakableChild(child.children, height);
-
-    if (firstBreakableChild) {
-      const [currentPageNode, nextPageNode] = splitByFirstChildBreak(
-        firstBreakableChild,
+    if (shouldSplit) {
+      const [currentChild, nextChild] = split(
         child,
-        firstBreakableChild.path
-          .split('/')
-          .slice(0, 2)
-          .join('/'),
         height,
+        contentArea,
+        firstBreakableViewChild,
       );
 
-      const box = Object.assign({}, nextPageNode.box, {
-        top: nextPageNode.box.top - height,
-      });
-      const next = Object.assign({}, nextPageNode, { box });
-
-      if (currentPageNode) currentChildren.push(currentPageNode);
-
-      nextChildren.push(next, ...futureNodes);
-
-      break;
-    }
-
-    if (shouldSplit) {
-      const [currentChild, nextChild] = split(child, height, contentArea);
-
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
-      if (child.children.length > 0 && currentChild.children.length === 0) {
-        const box = Object.assign({}, child.box, {
-          top: child.box.top - height,
-        });
-        const next = Object.assign({}, child, { box });
+      // This was causing an infinite loop
+      // if (
+      //   child.children.length > 0 &&
+      //   currentChild.children.length === 0 &&
+      //   !currentChild.lines
+      // ) {
+      //   const box = Object.assign({}, child.box, {
+      //     top: child.box.top - height,
+      //   });
+      //   const next = Object.assign({}, child, { box });
 
-        currentChildren.push(...futureFixedNodes);
-        nextChildren.push(next, ...futureNodes);
-        break;
-      }
+      //   currentChildren.push(...futureFixedNodes);
+      //   nextChildren.push(next, ...futureNodes);
+      //   break;
+      // }
 
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
@@ -266,11 +187,16 @@ const splitNodes = (height, contentArea, nodes) => {
 const splitChildren = (height, contentArea, node) => {
   const children = node.children || [];
   const availableHeight = height - getTop(node);
+
   return splitNodes(availableHeight, contentArea, children);
 };
 
-const splitView = (node, height, contentArea) => {
-  const [currentNode, nextNode] = splitNode(node, height);
+const splitView = (node, height, contentArea, foundBreakableViewChild) => {
+  const [currentNode, nextNode] = splitNode(
+    node,
+    height,
+    foundBreakableViewChild,
+  );
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
@@ -283,8 +209,10 @@ const splitView = (node, height, contentArea) => {
   ];
 };
 
-const split = (node, height, contentArea) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (node, height, contentArea, foundBreakableViewChild) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, foundBreakableViewChild);
 
 const shouldResolveDynamicNodes = node => {
   const children = node.children || [];

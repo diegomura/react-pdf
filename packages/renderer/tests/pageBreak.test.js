@@ -40,6 +40,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
   },
+  footer: {
+    fontFamily: 'Open Sans',
+    fontSize: 12,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'grey',
+  },
   pageNumber: {
     fontFamily: 'Open Sans',
     position: 'absolute',
@@ -68,60 +75,94 @@ const PageWrap = () => (
       <Text style={styles.header} fixed>
         ~ Created with react-pdf ~
       </Text>
-      <Text style={styles.text}>Page 1</Text>
-      <Text style={styles.text}>Page 1 Content</Text>
-      <Text style={styles.text} break>
-        Page 2
+      <Text style={styles.text}>New Page 1</Text>
+      <Text style={styles.text}>
+        <Text style={styles.text}>
+          {'New Page 1 Content'.repeat(800)}
+          End of Page 1 content
+        </Text>
       </Text>
-      <Text style={styles.text}>Page 2 Content</Text>
-      <View>
-        <Text style={styles.text} break>
-          Page 3
-        </Text>
-        <Text style={styles.text}>Page 3 Content</Text>
-        <Text style={styles.text} break>
-          Page 4<Text style={styles.text}>Page 4 Content</Text>
+      <Text style={styles.text} break>
+        New Page 2
+      </Text>
+      <Text style={styles.text}>New Page 2 Content</Text>
+      <>
+        <View>
           <Text style={styles.text} break>
-            Page 5
+            New Page 3
           </Text>
-          <Text style={styles.text}>Page 5 Content</Text>
-        </Text>
+          <Text style={styles.text}>
+            {'New Page 3 Content'.repeat(1000)}
+            End of Page 3 content
+          </Text>
+          <>
+            <Text style={styles.text} break>
+              New Page 4
+              <Text style={styles.text}>
+                {'New Page 4 Content'.repeat(1000)}
+                End of Page 4 content
+              </Text>
+              <Text style={styles.text} break>
+                New Page 5
+              </Text>
+              <Text style={styles.text}>New Page 5 Content</Text>
+            </Text>
+          </>
+        </View>
+      </>
+      <View break>
+        <Text style={styles.text}>New Page 6</Text>
+        <Text style={styles.text}>New Page 6 Content</Text>
       </View>
       <View break>
-        <Text style={styles.text}>Page 6</Text>
-        <Text style={styles.text}>Page 6 Content</Text>
-      </View>
-      <View break>
-        <Text style={styles.text}>Page 7</Text>
-        <Text style={styles.text}>Page 7 Content</Text>
+        <Text style={styles.text}>New Page 7</Text>
+        <Text style={styles.text}>New Page 7 Content</Text>
         <Text break style={styles.text}>
-          Page 8
+          New Page 8
         </Text>
-        <Text style={styles.text}>Page 8 Content</Text>
+        <Text style={styles.text}>New Page 8 Content</Text>
         <View break>
           <Text style={styles.text}>
-            Page 9 <Text style={styles.text}>Page 9 Content</Text>
+            {`New Page ${9}`}
+            <Text style={styles.text}>New Page 9 Content</Text>
           </Text>
           <View>
+            <View break>
+              <Text style={styles.text}>
+                New Page 10
+                <Text style={styles.text}>New Page 10 Content</Text>
+              </Text>
+            </View>
             <Text style={styles.text} break>
-              Page 10
-              <Text style={styles.text}>Page 10 Content</Text>
+              New Page 11
+              <Text style={styles.text}>New Page 11 Content</Text>
             </Text>
             <Text style={styles.text} break>
-              Page 11
-              <Text style={styles.text}>Page 11 Content</Text>
+              New Page 12
+              <Text style={styles.text}>New Page 12 Content</Text>
               <Text style={styles.text} break>
-                Page 12
-                <Text style={styles.text}>Page 12 Content</Text>
+                New Page 13
+                <Text style={styles.text}>New Page 13 Content</Text>
                 <Text style={styles.text} break>
-                  Page 13
-                  <Text style={styles.text}>Page 13 Content</Text>
+                  New Page 14
+                  <Text style={styles.text}>New Page 14 Content</Text>
                 </Text>
               </Text>
             </Text>
+            <View break>
+              <Text style={styles.text}>
+                New Page 15
+                <Text style={styles.text}>New Page 15 Content</Text>
+              </Text>
+            </View>
           </View>
         </View>
       </View>
+      <Text
+        style={styles.pageNumber}
+        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+        fixed
+      />
     </Page>
   </Document>
 );

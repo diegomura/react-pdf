@@ -153,7 +153,6 @@ const splitNodes = (height, contentArea, nodes) => {
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       // This was causing an infinite loop
       // if (child.children.length > 0 && currentChild.children.length === 0) {
-      //   console.log(child);
       //   const box = Object.assign({}, child.box, {
       //     top: child.box.top - height,
       //   });
@@ -180,8 +179,6 @@ const splitChildren = (height, contentArea, node) => {
   const children = node.children || [];
 
   const availableHeight = height - getTop(node);
-
-  console.log(node, node.box);
 
   return splitNodes(availableHeight, contentArea, children);
 };

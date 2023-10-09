@@ -2,9 +2,9 @@
 /* eslint-disable no-param-reassign */
 
 import Canvas from 'canvas';
-import * as pdfjs from 'pdfjs-dist/legacy/build/pdf';
+import pdfjs from 'pdfjs-dist/legacy/build/pdf';
 
-import { renderToBuffer } from '..';
+import { renderToBuffer } from '@react-pdf/renderer';
 
 /**
  * copy-pasted code from

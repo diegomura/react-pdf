@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import Yoga from 'yoga-layout/sync';
 
 import setOverflow from '../../src/node/setOverflow';

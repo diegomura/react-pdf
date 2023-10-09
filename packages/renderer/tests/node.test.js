@@ -1,9 +1,14 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import fs from 'fs';
+import path from 'path';
+import url from 'url';
+import { jest } from '@jest/globals';
 import ReactPDF from '../src/node';
 
 const { Document, Page, View } = ReactPDF;
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const TestDocument = ({ onRender }) => {
   return (

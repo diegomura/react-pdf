@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir lib",
-    "test": "jest"
+    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\""
   },
   "files": [
     "lib",

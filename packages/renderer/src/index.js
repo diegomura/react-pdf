@@ -4,7 +4,9 @@ import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
 
 import createRenderer from './renderer';
-import { version } from '../package.json';
+import packageJson from '../package.json';
+
+const { version } = packageJson;
 
 const fontStore = new FontStore();
 

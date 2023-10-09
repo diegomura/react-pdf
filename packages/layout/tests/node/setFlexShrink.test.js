@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import setFlexShrink from '../../src/node/setFlexShrink';
 
 describe('node setFlexShrink', () => {

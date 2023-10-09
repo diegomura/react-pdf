@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+
 /**
  * Test font substitution based on the string 'Lorem'
  * Returns empry if no runs present, or arbitrary font substitution otherwise

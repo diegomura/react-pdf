@@ -1,5 +1,5 @@
 import renderToImage from './renderComponent';
-import { Document, Page, Text, Font } from '..';
+import { Document, Page, Text, Font } from '@react-pdf/renderer';
 
 describe('emoji', () => {
   test('should support builder function', async () => {

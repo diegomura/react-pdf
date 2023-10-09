@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   projects: [
     '<rootDir>packages/fns',
     '<rootDir>packages/font',

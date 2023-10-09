@@ -1,5 +1,4 @@
 /* eslint-disable import/no-named-as-default-member */
-
 import ReactPDF from '../src/dom';
 
 describe('dom', () => {

@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import Yoga from 'yoga-layout/sync';
 
 import setJustifyContent from '../../src/node/setJustifyContent';

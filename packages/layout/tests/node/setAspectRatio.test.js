@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import setAspectRatio from '../../src/node/setAspectRatio';
 
 describe('node setAspectRatio', () => {

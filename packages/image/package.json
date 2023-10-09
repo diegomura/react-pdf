@@ -25,7 +25,7 @@
     "directory": "packages/image"
   },
   "scripts": {
-    "test": "jest",
+    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\"",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },

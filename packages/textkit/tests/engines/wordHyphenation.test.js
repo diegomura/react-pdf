@@ -1,6 +1,4 @@
-import hyphen from 'hyphen';
-
-jest.mock('hyphen');
+import { jest } from '@jest/globals';
 
 const hyphenator = jest.fn(v => {
   if (v === '') return '';
@@ -11,9 +9,10 @@ const hyphenator = jest.fn(v => {
   return v;
 });
 
-hyphen.mockReturnValue(hyphenator);
+jest.unstable_mockModule('hyphen', () => ({ default: () => hyphenator }));
 
-const wordHyphenation = require('../../src/engines/wordHyphenation').default;
+const wordHyphenation = (await import('../../src/engines/wordHyphenation'))
+  .default;
 
 const instance = wordHyphenation({});
 

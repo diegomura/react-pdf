@@ -1,5 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
+import path from 'path';
+import url from 'url';
+import jestImageSnapshot from 'jest-image-snapshot';
+
+const { configureToMatchImageSnapshot } = jestImageSnapshot;
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 // setup image matcher
 const toMatchImageSnapshot = configureToMatchImageSnapshot({

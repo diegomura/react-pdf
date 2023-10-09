@@ -1,6 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 import renderToImage from './renderComponent';
-import { Link, Text, Font, Page, View, Image, Document, StyleSheet } from '..';
+import {
+  Link,
+  Text,
+  Font,
+  Page,
+  View,
+  Image,
+  Document,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
 const headerStyles = StyleSheet.create({
   container: {

@@ -2,7 +2,7 @@
  * @jest-environment ./tests/environment/jsdom.js
  */
 
-/* eslint-disable import/no-extraneous-dependencies */
+import { jest } from '@jest/globals';
 import { render, waitFor, screen } from '@testing-library/react';
 import {
   BlobProvider,

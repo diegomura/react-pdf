@@ -14,7 +14,7 @@
     "Diego Muracciole <diegomuracciole@gmail.com>"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\"",
     "build": "rimraf ./lib && babel src --out-dir lib",
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },

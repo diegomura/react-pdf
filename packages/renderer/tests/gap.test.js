@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { Document, Page, View } from '..';
+import { Document, Page, View } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
 const mount = async children => {

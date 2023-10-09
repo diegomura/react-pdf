@@ -1,4 +1,4 @@
-import { Document, Page, View } from '..';
+import { Document, Page, View } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
 const TestDocument = ({ transform, width = 20, height = 20 }) => {

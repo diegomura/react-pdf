@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   testRegex: 'tests/.*?(test)\\.js$',
   setupFilesAfterEnv: ['<rootDir>/setup.jest.js'],
   transformIgnorePatterns: [

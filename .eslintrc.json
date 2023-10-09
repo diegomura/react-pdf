@@ -3,8 +3,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true,
-    "jest/globals": true
+    "node": true
   },
   "extends": [
     "plugin:react/recommended",
@@ -41,5 +40,16 @@
     "react/jsx-props-no-spreading": 0,
     "react/destructuring-assignment": 0,
     "import/no-unresolved": ["error", { "ignore": ["^yoga-layout"] }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": 0
+      }
+    }
+  ]
 }

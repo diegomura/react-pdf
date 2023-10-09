@@ -5,8 +5,16 @@
   "description": "A styles engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
+  "type": "module",
+  "main": "./lib/index.cjs.js",
+  "module": "./lib/index.es.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.es.js",
+      "require": "./lib/index.cjs.js",
+      "default": "./lib/index.es.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

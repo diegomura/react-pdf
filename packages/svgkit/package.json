@@ -3,6 +3,7 @@
   "license": "MIT",
   "version": "2.2.4",
   "description": "A SVG generation library for Node.js and browser",
+  "type": "module",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",

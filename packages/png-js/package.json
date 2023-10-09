@@ -3,8 +3,16 @@
   "description": "A PNG decoder in JS",
   "version": "2.2.0",
   "license": "MIT",
+  "type": "module",
   "main": "./lib/png-js.cjs.js",
   "module": "./lib/png-js.es.js",
+  "exports": {
+    ".": {
+      "import": "./lib/png-js.es.js",
+      "require": "./lib/png-js.cjs.js",
+      "default": "./lib/png-js.es.js"
+    }
+  },
   "browser": {
     "./lib/png-js.es.js": "./lib/png-js.browser.es.js",
     "./lib/png-js.cjs.js": "./lib/png-js.browser.cjs.js"

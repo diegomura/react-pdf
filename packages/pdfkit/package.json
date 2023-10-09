@@ -3,8 +3,16 @@
   "version": "3.0.4",
   "license": "MIT",
   "description": "A PDF generation library for Node.js",
+  "type": "module",
   "main": "./lib/pdfkit.cjs.js",
   "module": "./lib/pdfkit.es.js",
+  "exports": {
+    ".": {
+      "import": "./lib/pdfkit.es.js",
+      "require": "./lib/pdfkit.cjs.js",
+      "default": "./lib/pdfkit.es.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

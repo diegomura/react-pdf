@@ -1,6 +1,10 @@
 import fs from 'fs';
-import * as CryptoJS from 'crypto-js/core';
-import MD5 from 'crypto-js/md5';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import * as CryptoJS from 'crypto-js/core.js';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import MD5 from 'crypto-js/md5.js';
 
 export default {
   /**

@@ -1,6 +1,11 @@
 import fs from 'fs';
+import url from 'url';
 import { basename, extname } from 'path';
-import { parse } from '../afm';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import { parse } from '../afm.js';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const generateJsonFiles = () => {
   const files = fs.readdirSync(__dirname);

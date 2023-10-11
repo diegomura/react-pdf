@@ -2,4 +2,5 @@
 '@react-pdf/layout': minor
 ---
 
-Nested page break support. Unwrappable content to wrap if capable when it doesn't fit within a page.
+- Nested page break support for views.
+- Fallback behavior for unwrappable content to wrap if it is a wrappable component (View / Text) when it doesn't fit within a page. Content will start on next page.

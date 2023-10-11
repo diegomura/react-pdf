@@ -118,10 +118,14 @@ const splitNodes = (height, contentArea, nodes) => {
       } else {
         // We don't want to break non wrapable nodes, so we just let them be.
         warnFallbackSpace(child);
+        const box = Object.assign({}, child.box, {
+          top: child.box.top - height,
+        });
         const props = Object.assign({}, child.props, {
           wrap: true,
+          break: false,
         });
-        const next = Object.assign({}, child, { props });
+        const next = Object.assign({}, child, { box, props });
 
         currentChildren.push(...futureFixedNodes);
         nextChildren.push(next, ...futureNodes);
@@ -143,25 +147,20 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (shouldSplit || firstBreakableViewChild) {
-      const [currentChild, nextChild] = split(
-        child,
-        height,
-        contentArea,
-        firstBreakableViewChild,
-      );
+      const [currentChild, nextChild] = split(child, height, contentArea);
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
-      // This was causing an infinite loop
-      // if (child.children.length > 0 && currentChild.children.length === 0) {
-      //   const box = Object.assign({}, child.box, {
-      //     top: child.box.top - height,
-      //   });
-      //   const next = Object.assign({}, child, { box });
+      // This was causing an infinite loop parent will now be discarded when it has no content
+      if (child.children.length > 0 && currentChild.children.length === 0) {
+        const box = Object.assign({}, nextChild.box, {
+          top: nextChild.box.top - height,
+        });
+        const next = Object.assign({}, nextChild, { box });
 
-      //   currentChildren.push(...futureFixedNodes);
-      //   nextChildren.push(next, ...futureNodes);
-      //   break;
-      // }
+        currentChildren.push(...futureFixedNodes);
+        nextChildren.push(next, ...futureNodes);
+        break;
+      }
 
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);

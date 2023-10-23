@@ -153,7 +153,7 @@ const resolveImageFromUrl = async src => {
           body,
           headers,
           method,
-          ...(credentials && { credentials }),
+          credentials,
         });
 
   const extension = getImageFormat(data);

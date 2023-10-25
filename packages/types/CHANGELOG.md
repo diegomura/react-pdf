@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.3.4
+
+### Patch Changes
+
+- [#2130](https://github.com/diegomura/react-pdf/pull/2130) [`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4) Thanks [@PoornakumarRasiraju](https://github.com/PoornakumarRasiraju)! - fix: allow credentials option in Image
+
 ## 2.3.3
 
 ### Patch Changes

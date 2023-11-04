@@ -242,7 +242,7 @@ const dissocSubPageData = page => {
   return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
-const paginate = (page, pageNumber, fontStore) => {
+const paginate = (page, pageNumber, fontStore, currentPageCallBack) => {
   if (!page) return [];
 
   if (page.props?.wrap === false) return [page];
@@ -251,12 +251,17 @@ const paginate = (page, pageNumber, fontStore) => {
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
-
+  let pageCount = 1;
   while (nextPage !== null) {
     splittedPage = splitPage(nextPage, pageNumber + pages.length, fontStore);
-
+    pageCount++;
+    
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
+    // Call the progressCallback to update progress
+    if (currentPageCallBack) {
+      currentPageCallBack(pageCount);
+    }
   }
 
   return pages;
@@ -268,15 +273,16 @@ const paginate = (page, pageNumber, fontStore) => {
  *
  * @param {Object} node
  * @param {Object} fontStore font store
+ * @param {Function} currentPageCallBack Callback to track progress
  * @returns {Object} layout node
  */
-const resolvePagination = (doc, fontStore) => {
+const resolvePagination = (doc, fontStore, currentPageCallBack) => {
   let pages = [];
   let pageNumber = 1;
 
   for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
-    let subpages = paginate(page, pageNumber, fontStore);
+    let subpages = paginate(page, pageNumber, fontStore, currentPageCallBack);
 
     subpages = assocSubPageData(subpages);
     pageNumber += subpages.length;

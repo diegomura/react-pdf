@@ -449,6 +449,7 @@ declare namespace ReactPDF {
     style?: Style | Style[];
     className?: string;
     children?: React.ReactElement<DocumentProps>;
+    currentPageCallBack? : ( value:Number ) => void;
     innerRef?: React.Ref<HTMLIFrameElement>;
     showToolbar?: boolean;
   }
@@ -489,6 +490,7 @@ declare namespace ReactPDF {
    * @platform web
    */
   function usePDF(options: {
+    currentPageCallBack? : ( value:Number ) => void;
     document?: React.ReactElement<DocumentProps>;
   }): [UsePDFInstance, (newDocument: React.ReactElement<DocumentProps>) => void];
 

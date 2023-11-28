@@ -12,6 +12,7 @@ export interface SVGPresentationAttributes {
   textAnchor?: 'start' | 'middle' | 'end';
   strokeLineCap?: 'butt' | 'round' | 'square';
   visibility?: 'visible' | 'hidden' | 'collapse';
+  clipPath?: string;
   dominantBaseline?:
     | 'auto'
     | 'middle'

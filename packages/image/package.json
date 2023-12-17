@@ -2,7 +2,7 @@
   "name": "@react-pdf/image",
   "version": "2.2.2",
   "license": "MIT",
-  "description": "Parses the images in png or jpeg format for react-pdf document",
+  "description": "Parses the images in png, webp or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "main": "./lib/index.cjs.js",

@@ -53,7 +53,7 @@ WEBP.isValid = function(data) {
   if (!data || !Buffer.isBuffer(data)) {
     return false;
   }
-  const webp = new WebP(data);
+  const webp = new WEBP(data);
   return webp.isValid();
 };
 

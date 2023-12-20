@@ -49,10 +49,12 @@ interface RegisteredFont {
 interface EmojiSourceUrl {
   url: string;
   format?: string;
+  withVariationSelectors?: boolean;
 }
 
 interface EmojiSourceBuilder {
   builder: (code: string) => string;
+  withVariationSelectors?: boolean;
 }
 
 type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;

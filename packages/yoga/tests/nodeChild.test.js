@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Node child', () => {
   test('reset_layout_when_child_removed', () => {

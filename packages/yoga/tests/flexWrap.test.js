@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Flex wrap', () => {
   test('wrap_column', () => {
@@ -475,12 +475,12 @@ describe('Flex wrap', () => {
     expect(child0.getComputedLayout().left).toBe(0);
     expect(child0.getComputedLayout().top).toBe(0);
     expect(child0.getComputedLayout().width).toBe(50);
-    expect(child0.getComputedLayout().height).toBe(100);
+    expect(child0.getComputedLayout().height).toBe(0);
 
     expect(child1.getComputedLayout().left).toBe(50);
     expect(child1.getComputedLayout().top).toBe(0);
     expect(child1.getComputedLayout().width).toBe(50);
-    expect(child1.getComputedLayout().height).toBe(100);
+    expect(child1.getComputedLayout().height).toBe(0);
 
     root.calculateLayout(undefined, undefined, Yoga.DIRECTION_RTL);
 
@@ -492,12 +492,12 @@ describe('Flex wrap', () => {
     expect(child0.getComputedLayout().left).toBe(100);
     expect(child0.getComputedLayout().top).toBe(0);
     expect(child0.getComputedLayout().width).toBe(50);
-    expect(child0.getComputedLayout().height).toBe(100);
+    expect(child0.getComputedLayout().height).toBe(0);
 
     expect(child1.getComputedLayout().left).toBe(50);
     expect(child1.getComputedLayout().top).toBe(0);
     expect(child1.getComputedLayout().width).toBe(50);
-    expect(child1.getComputedLayout().height).toBe(100);
+    expect(child1.getComputedLayout().height).toBe(0);
   });
 
   test('wrap_reverse_row_align_content_flex_start', () => {

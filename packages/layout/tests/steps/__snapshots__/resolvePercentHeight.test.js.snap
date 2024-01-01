@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout resolvePercentHeight Should keep empty document untouched 1`] = `
-Object {
-  "children": Array [],
+{
+  "children": [],
   "type": "DOCUMENT",
 }
 `;
 
 exports[`layout resolvePercentHeight Should keep empty page untouched 1`] = `
-Object {
-  "children": Array [
-    Object {
+{
+  "children": [
+    {
       "type": "PAGE",
     },
   ],
@@ -19,12 +19,12 @@ Object {
 `;
 
 exports[`layout resolvePercentHeight Should not resolve children if page dont have height 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "style": Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "style": {
             "height": "80%",
             "width": "60%",
           },
@@ -39,18 +39,18 @@ Object {
 `;
 
 exports[`layout resolvePercentHeight Should resolve children percent dimensions if page have height 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "style": Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "style": {
             "height": 800,
           },
           "type": "VIEW",
         },
       ],
-      "style": Object {
+      "style": {
         "height": 1000,
       },
       "type": "PAGE",

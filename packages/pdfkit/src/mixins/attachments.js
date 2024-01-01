@@ -1,5 +1,6 @@
 import fs from 'fs';
-import CryptoJS from 'crypto-js/md5';
+import * as CryptoJS from 'crypto-js/core';
+import MD5 from 'crypto-js/md5';
 
 export default {
   /**
@@ -65,9 +66,7 @@ export default {
     }
 
     // add checksum and size information
-    const checksum = CryptoJS.MD5(
-      CryptoJS.lib.WordArray.create(new Uint8Array(data))
-    );
+    const checksum = MD5(CryptoJS.lib.WordArray.create(new Uint8Array(data)));
     refBody.Params.CheckSum = new String(checksum);
     refBody.Params.Size = data.byteLength;
 
@@ -107,14 +106,11 @@ export default {
 
 /** check two embedded file metadata objects for equality */
 function isEqual(a, b) {
-  if (
-    a.Subtype !== b.Subtype ||
-    a.Params.CheckSum.toString() !== b.Params.CheckSum.toString() ||
-    a.Params.Size !== b.Params.Size ||
-    a.Params.CreationDate !== b.Params.CreationDate ||
-    a.Params.ModDate !== b.Params.ModDate
-  ) {
-    return false;
-  }
-  return true;
+  return (
+    a.Subtype === b.Subtype &&
+    a.Params.CheckSum.toString() === b.Params.CheckSum.toString() &&
+    a.Params.Size === b.Params.Size &&
+    a.Params.CreationDate === b.Params.CreationDate &&
+    a.Params.ModDate === b.Params.ModDate
+  );
 }

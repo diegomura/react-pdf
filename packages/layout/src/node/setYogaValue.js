@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-import Yoga from '@react-pdf/yoga';
 import { isNil, upperFirst, matchPercent } from '@react-pdf/fns';
 
 /**
@@ -34,9 +33,6 @@ const setYogaValue = (attr, edge) => value => node => {
     } else if (value === 'auto') {
       if (hasEdge) {
         yogaNode[autoMethod]?.(edge);
-      } else if (attr === 'flexBasis') {
-        // YogaNode.setFlexBasisAuto is missing (#766)
-        yogaNode.setFlexBasis(Yoga.UNIT_AUTO);
       } else {
         yogaNode[autoMethod]?.();
       }

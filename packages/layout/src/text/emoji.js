@@ -34,18 +34,20 @@ const getCodePoints = string =>
     .join('-');
 
 const buildEmojiUrl = (emoji, source) => {
-  const { url, format } = source;
+  const { url, format, builder } = source;
+  if (typeof builder === 'function') {
+    return builder(getCodePoints(emoji));
+  }
+
   return `${url}${getCodePoints(emoji)}.${format}`;
 };
 
 export const fetchEmojis = (string, source) => {
-  if (!source || !source.url) return [];
+  if (!source || (!source.url && !source.builder)) return [];
 
   const promises = [];
 
-  let match;
-
-  while ((match = regex.exec(string))) {
+  Array.from(string.matchAll(regex)).forEach(match => {
     const emoji = match[0];
 
     if (!emojis[emoji] || emojis[emoji].loading) {
@@ -60,7 +62,7 @@ export const fetchEmojis = (string, source) => {
         }),
       );
     }
-  }
+  });
 
   return promises;
 };
@@ -71,10 +73,9 @@ export const embedEmojis = fragments => {
   for (let i = 0; i < fragments.length; i += 1) {
     const fragment = fragments[i];
 
-    let match;
     let lastIndex = 0;
 
-    while ((match = regex.exec(fragment.string))) {
+    Array.from(fragment.string.matchAll(regex)).forEach(match => {
       const { index } = match;
       const emoji = match[0];
       const emojiSize = fragment.attributes.fontSize;
@@ -104,7 +105,7 @@ export const embedEmojis = fragments => {
       }
 
       lastIndex = index + emoji.length;
-    }
+    });
 
     if (lastIndex < fragment.string.length) {
       result.push({

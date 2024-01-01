@@ -2,6 +2,7 @@ import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import alias from '@rollup/plugin-alias';
 import ignore from 'rollup-plugin-ignore';
 import { terser } from 'rollup-plugin-terser';
 import sourceMaps from 'rollup-plugin-sourcemaps';
@@ -9,17 +10,13 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json';
 
-const globals = { react: 'React' };
-
 const cjs = {
-  globals,
   format: 'cjs',
   exports: 'named',
   sourcemap: true,
 };
 
 const esm = {
-  globals,
   format: 'es',
   sourcemap: true,
 };
@@ -34,16 +31,14 @@ const babelConfig = () => ({
   babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
-  presets: ['@babel/preset-react'],
+  presets: [['@babel/preset-react', { runtime: 'automatic' }]],
 });
 
 const getExternal = ({ browser }) => [
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/regenerator',
+  /@babel\/runtime/,
+  'react/jsx-runtime',
   ...(browser ? [] : ['fs', 'path', 'url']),
-  ...Object.keys(pkg.dependencies),
+  ...Object.keys(pkg.dependencies).filter(name => name !== 'react-reconciler'),
   ...Object.keys(pkg.peerDependencies),
 ];
 
@@ -51,8 +46,16 @@ const getPlugins = ({ browser, minify = false }) => [
   json(),
   sourceMaps(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
+  alias({
+    entries: {
+      'react-reconciler':
+        'react-reconciler/cjs/react-reconciler.production.min.js',
+    },
+  }),
   babel(babelConfig()),
-  commonjs(),
+  commonjs({
+    esmExternals: ['scheduler'],
+  }),
   nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
     preventAssignment: true,
@@ -76,8 +79,8 @@ const serverConfig = {
 const serverProdConfig = {
   input: nodeInput,
   output: [
-    getESM({ file: 'lib/react-pdf.es.min.js' }),
-    getCJS({ file: 'lib/react-pdf.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.es.min.js', sourcemap: false }),
+    getCJS({ file: 'lib/react-pdf.cjs.min.js', sourcemap: false }),
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false, minify: true }),
@@ -96,8 +99,8 @@ const browserConfig = {
 const browserProdConfig = {
   input: domInput,
   output: [
-    getESM({ file: 'lib/react-pdf.browser.es.min.js' }),
-    getCJS({ file: 'lib/react-pdf.browser.cjs.min.js' }),
+    getESM({ file: 'lib/react-pdf.browser.es.min.js', sourcemap: false }),
+    getCJS({ file: 'lib/react-pdf.browser.cjs.min.js', sourcemap: false }),
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true, minify: true }),

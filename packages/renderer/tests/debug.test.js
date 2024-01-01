@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document, Page, View, Text, Font } from '..';
 import renderToImage from './renderComponent';
 

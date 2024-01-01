@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout resolveStyles Should overide default link styles 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "color": "wheat",
             "textDecoration": "none",
           },
           "type": "LINK",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -26,23 +26,23 @@ Object {
 `;
 
 exports[`layout resolveStyles Should overide default link styles with array 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "color": "wheat",
             "textDecoration": "none",
           },
           "type": "LINK",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -51,23 +51,23 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve default link styles 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "color": "blue",
             "textDecoration": "underline",
           },
           "type": "LINK",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -76,16 +76,16 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve nested node styles 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "backgroundColor": "red",
             "borderBottomColor": "green",
             "borderBottomStyle": "dotted",
@@ -107,7 +107,7 @@ Object {
           "type": "VIEW",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -116,16 +116,16 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve nested node styles array 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "backgroundColor": "red",
             "borderBottomColor": "green",
             "borderBottomStyle": "dotted",
@@ -147,7 +147,7 @@ Object {
           "type": "VIEW",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -156,28 +156,28 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve nested node styles media queries 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "box": Object {
+{
+  "children": [
+    {
+      "box": {
         "height": 200,
         "width": 100,
       },
-      "children": Array [
-        Object {
-          "style": Object {
+      "children": [
+        {
+          "style": {
             "backgroundColor": "green",
           },
           "type": "VIEW",
         },
-        Object {
-          "style": Object {
+        {
+          "style": {
             "backgroundColor": "red",
           },
           "type": "VIEW",
         },
       ],
-      "style": Object {},
+      "style": {},
       "type": "PAGE",
     },
   ],
@@ -186,24 +186,24 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve nested node styles media queries with page style 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "style": Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "style": {
             "backgroundColor": "green",
           },
           "type": "VIEW",
         },
-        Object {
-          "style": Object {
+        {
+          "style": {
             "backgroundColor": "red",
           },
           "type": "VIEW",
         },
       ],
-      "style": Object {
+      "style": {
         "height": 200,
         "width": 100,
       },
@@ -215,10 +215,10 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve page styles 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "style": Object {
+{
+  "children": [
+    {
+      "style": {
         "backgroundColor": "red",
         "borderBottomColor": "green",
         "borderBottomStyle": "dotted",
@@ -245,10 +245,10 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve page styles array 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "style": Object {
+{
+  "children": [
+    {
+      "style": {
         "backgroundColor": "red",
         "borderBottomColor": "green",
         "borderBottomStyle": "dotted",
@@ -275,10 +275,10 @@ Object {
 `;
 
 exports[`layout resolveStyles Should resolve several pages styles 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "style": Object {
+{
+  "children": [
+    {
+      "style": {
         "borderTopColor": "#FF00000",
         "borderTopStyle": "solid",
         "borderTopWidth": 4,
@@ -289,8 +289,8 @@ Object {
       },
       "type": "PAGE",
     },
-    Object {
-      "style": Object {
+    {
+      "style": {
         "backgroundColor": "red",
         "borderBottomColor": "green",
         "borderBottomStyle": "dotted",

@@ -1,5 +1,224 @@
 # @react-pdf/renderer
 
+## 3.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4)]:
+  - @react-pdf/types@2.3.4
+  - @react-pdf/layout@3.6.3
+  - @react-pdf/font@2.3.7
+  - @react-pdf/render@3.2.7
+
+## 3.1.13
+
+### Patch Changes
+
+- [#2406](https://github.com/diegomura/react-pdf/pull/2406) [`3b5e1c7`](https://github.com/diegomura/react-pdf/commit/3b5e1c7c71a0f830ae2b70da8aac2b2bd5015ca3) Thanks [@JoachimKoenigslieb](https://github.com/JoachimKoenigslieb)! - Added an optional callback to the updateContainer method. This allows the user of the pdf instance to know when the update operation is finished in React. As this is an optional argument, no user code should be changed.
+
+## 3.1.12
+
+### Patch Changes
+
+- [#2247](https://github.com/diegomura/react-pdf/pull/2247) [`6d408c8`](https://github.com/diegomura/react-pdf/commit/6d408c838b1aa9bea0db63bf36b2a6932a20404c) Thanks [@jeetiss](https://github.com/jeetiss)! - ### updates for `usePDF` hook
+
+  `update` function takes the new document and renders it:
+
+  ```jsx
+  const PdfView = () => {
+    const [pdf, update] = usePdf();
+
+    useEffect(() => {
+      update(<PDFDocument />);
+    }, []);
+
+    if (pdf.loading) return null;
+
+    // use your PDF here
+    return <>{pdf.url}</>;
+  };
+  ```
+
+## 3.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`5385a43`](https://github.com/diegomura/react-pdf/commit/5385a438cb4876d1dc00d49d5fdd2e07c0d16167), [`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59), [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb)]:
+  - @react-pdf/render@3.2.6
+  - @react-pdf/types@2.3.3
+  - @react-pdf/font@2.3.6
+  - @react-pdf/layout@3.6.2
+
+## 3.1.10
+
+### Patch Changes
+
+- [#2309](https://github.com/diegomura/react-pdf/pull/2309) [`113de53`](https://github.com/diegomura/react-pdf/commit/113de537b0fa9bae06a69e7c8daa988fe319fc6a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `x` and `y` optional in `Rect`
+
+* [#2314](https://github.com/diegomura/react-pdf/pull/2314) [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `cx` and `cy` optional in `Circle` and `Ellipse`
+
+* Updated dependencies [[`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2), [`2e724df`](https://github.com/diegomura/react-pdf/commit/2e724dfaff3c9b39e9862d24b0d0e037c8a9e8c2), [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f)]:
+  - @react-pdf/types@2.3.2
+  - @react-pdf/render@3.2.5
+  - @react-pdf/font@2.3.5
+  - @react-pdf/layout@3.6.1
+
+## 3.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`d48039c`](https://github.com/diegomura/react-pdf/commit/d48039c9e224346fd22395f48eb03ceffa5e3dd6)]:
+  - @react-pdf/layout@3.6.0
+
+## 3.1.8
+
+### Patch Changes
+
+- [#2232](https://github.com/diegomura/react-pdf/pull/2232) [`5832ff2`](https://github.com/diegomura/react-pdf/commit/5832ff20e1ce4a0e49cf5249dcdf4b304eab04c6) Thanks [@x-Wawa](https://github.com/x-Wawa)! - Add missing props types on `Document` component
+
+* [#2236](https://github.com/diegomura/react-pdf/pull/2236) [`37bfa1b`](https://github.com/diegomura/react-pdf/commit/37bfa1ba26386d1725f42ba5e108d8c72aa71e85) Thanks [@jeetiss](https://github.com/jeetiss)! - remove loose-envify dependency
+
+* Updated dependencies [[`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59)]:
+  - @react-pdf/layout@3.5.1
+  - @react-pdf/types@2.3.1
+  - @react-pdf/font@2.3.4
+  - @react-pdf/render@3.2.4
+
+## 3.1.7
+
+### Patch Changes
+
+- [#2229](https://github.com/diegomura/react-pdf/pull/2229) [`b194b61`](https://github.com/diegomura/react-pdf/commit/b194b619b19a7683b64d47eaa2573635e6884e8d) Thanks [@jeetiss](https://github.com/jeetiss)! - deprecate `renderToString` use `renderToBuffer` instead
+
+- Updated dependencies [[`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724)]:
+  - @react-pdf/layout@3.5.0
+  - @react-pdf/types@2.3.0
+  - @react-pdf/render@3.2.3
+  - @react-pdf/font@2.3.3
+
+## 3.1.6
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+* [#2211](https://github.com/diegomura/react-pdf/pull/2211) [`f6667e7`](https://github.com/diegomura/react-pdf/commit/f6667e75449c241d02f9f44fb717a71443c555c1) Thanks [@jeetiss](https://github.com/jeetiss)! - configure automatic runtime for react
+
+* Updated dependencies [[`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905)]:
+  - @react-pdf/layout@3.4.1
+  - @react-pdf/pdfkit@3.0.2
+  - @react-pdf/render@3.2.2
+  - @react-pdf/font@2.3.2
+
+## 3.1.5
+
+### Patch Changes
+
+- [#2202](https://github.com/diegomura/react-pdf/pull/2202) [`f4d2b68`](https://github.com/diegomura/react-pdf/commit/f4d2b68765d146e4718140f65eeceb7e69e2cfee) Thanks [@jeetiss](https://github.com/jeetiss)! - add `events` as dependency to fix build in vite
+
+* [#2201](https://github.com/diegomura/react-pdf/pull/2201) [`75150ca`](https://github.com/diegomura/react-pdf/commit/75150ca137b709fcab6e7cefee9dfac6b48d5aaa) Thanks [@jeetiss](https://github.com/jeetiss)! - Reveal layout data in `onRender` callback
+
+  This is an experimental API, and it will change in the future. Use it at your own risk
+
+## 3.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`c981784`](https://github.com/diegomura/react-pdf/commit/c981784b172e9a7631edb7a1fe41ce77bc6ccdee)]:
+  - @react-pdf/layout@3.4.0
+
+## 3.1.3
+
+### Patch Changes
+
+- [#2173](https://github.com/diegomura/react-pdf/pull/2173) [`18cb161`](https://github.com/diegomura/react-pdf/commit/18cb161e3a40581e79b4d3ee0410cb2c3472e987) Thanks [@jeetiss](https://github.com/jeetiss)! - export renderToBuffer type
+
+* [#2172](https://github.com/diegomura/react-pdf/pull/2172) [`d0cc0bd`](https://github.com/diegomura/react-pdf/commit/d0cc0bd26f04731e1009fae15860892d04e5222f) Thanks [@rdennis](https://github.com/rdennis)! - Improved `children` prop types for react@18.
+
+## 3.1.2
+
+### Patch Changes
+
+- [#2170](https://github.com/diegomura/react-pdf/pull/2170) [`b06f8f4`](https://github.com/diegomura/react-pdf/commit/b06f8f4e2ac8490b75093e05bfdc9a7be5594936) Thanks [@jeetiss](https://github.com/jeetiss)! - fix both esm and commonjs entries
+
+## 3.1.1
+
+### Patch Changes
+
+- [#2161](https://github.com/diegomura/react-pdf/pull/2161) [`f648581`](https://github.com/diegomura/react-pdf/commit/f6485813c987f09a3aabca505fd0f6239ca5e58d) Thanks [@jeetiss](https://github.com/jeetiss)! - fix esm reexports
+
+## 3.1.0
+
+### Minor Changes
+
+- [#2140](https://github.com/diegomura/react-pdf/pull/2140) [`327f071`](https://github.com/diegomura/react-pdf/commit/327f071ea72a7abb22423009666ddf06838a0654) Thanks [@jeetiss](https://github.com/jeetiss)! - fix react peer dependency problem
+
+* [#2160](https://github.com/diegomura/react-pdf/pull/2160) [`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284) Thanks [@jeetiss](https://github.com/jeetiss)! - implement flex gap
+
+### Patch Changes
+
+- [#2158](https://github.com/diegomura/react-pdf/pull/2158) [`2343a99`](https://github.com/diegomura/react-pdf/commit/2343a9982c647b0c6684df911d001120ed55596b) Thanks [@jeetiss](https://github.com/jeetiss)! - add type definition for renderToBuffer method
+
+* [#2149](https://github.com/diegomura/react-pdf/pull/2149) [`54e9625`](https://github.com/diegomura/react-pdf/commit/54e962505a9917b20b2a3ffe8508a36a6bbc4f30) Thanks [@jeetiss](https://github.com/jeetiss)! - Fix "Invalid" error when a text label is a child of a Tspan element
+
+- [#1798](https://github.com/diegomura/react-pdf/pull/1798) [`17a8006`](https://github.com/diegomura/react-pdf/commit/17a80066453454dce6141f7da2033d348b4d53c8) Thanks [@karlhorky](https://github.com/karlhorky)! - fix types for @types/react@18
+
+- Updated dependencies [[`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284)]:
+  - @react-pdf/layout@3.3.0
+  - @react-pdf/types@2.2.0
+
+## 3.0.3
+
+### Patch Changes
+
+- [#2146](https://github.com/diegomura/react-pdf/pull/2146) [`2b05ef7`](https://github.com/diegomura/react-pdf/commit/2b05ef784b4ccf08dd06a91c4a6f054bddfaf5db) Thanks [@jeetiss](https://github.com/jeetiss)! - render text inside links
+
+## 3.0.2
+
+### Patch Changes
+
+- [#2115](https://github.com/diegomura/react-pdf/pull/2115) [`a3f62c9`](https://github.com/diegomura/react-pdf/commit/a3f62c910c0128e0b4312480414dbf8b26dbca1c) Thanks [@jeetiss](https://github.com/jeetiss)! - fix `renderToString` method in node js
+
+* [#2106](https://github.com/diegomura/react-pdf/pull/2106) [`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581) Thanks [@RDO34](https://github.com/RDO34)! - Add `dpi` and `bookmark` page prop types
+
+* Updated dependencies [[`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581), [`8536f10`](https://github.com/diegomura/react-pdf/commit/8536f103830a9ed00211fc4c821b221377885a07)]:
+  - @react-pdf/types@2.1.1
+  - @react-pdf/pdfkit@3.0.1
+
+## 3.0.1
+
+### Patch Changes
+
+- [#2056](https://github.com/diegomura/react-pdf/pull/2056) [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39) Thanks [@jasnross](https://github.com/jasnross)! - fix: TypeError when returning fragments or arrays from render prop
+
+- Updated dependencies [[`ce1c43c`](https://github.com/diegomura/react-pdf/commit/ce1c43c1b450b3737a23a356c5143626ac2a43ad), [`2ebba93`](https://github.com/diegomura/react-pdf/commit/2ebba93c43608a31655e99f226f1cf2d7006ac39), [`992b91b`](https://github.com/diegomura/react-pdf/commit/992b91b3866e8e24efa014eef4d3eeec6a40f9a5)]:
+  - @react-pdf/font@2.3.1
+  - @react-pdf/layout@3.2.1
+
+## 3.0.0
+
+### Major Changes
+
+- [#1908](https://github.com/diegomura/react-pdf/pull/1908) [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d) Thanks [@diegomura](https://github.com/diegomura)! - chore: use fontkit mainline repo + drop node 12
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1604](https://github.com/diegomura/react-pdf/pull/1604) [`7eefc33`](https://github.com/diegomura/react-pdf/commit/7eefc3323390c59bf6d4f923749526831572ef1a) Thanks [@jeetiss](https://github.com/jeetiss)! - fix: skip empty text instance creation in jsx conditions
+
+* [#1924](https://github.com/diegomura/react-pdf/pull/1924) [`3b054b7`](https://github.com/diegomura/react-pdf/commit/3b054b711f5dc0b1c4fd29feaf85b430baad2663) Thanks [@adamduncan](https://github.com/adamduncan)! - fix: bad type on onClick
+
+- [#1929](https://github.com/diegomura/react-pdf/pull/1929) [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove blob stream dependency
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81), [`001a208`](https://github.com/diegomura/react-pdf/commit/001a20812fa039d09931b22eb97a8869e3b31cc5), [`5fe9754`](https://github.com/diegomura/react-pdf/commit/5fe9754f21f103e17d1b70498ee7961cde779b22), [`d1f3d5b`](https://github.com/diegomura/react-pdf/commit/d1f3d5b9b4103705e95e2160347ee253d842ed5d), [`27403f9`](https://github.com/diegomura/react-pdf/commit/27403f9a6ac1bbcfb144afc201c4a3e5aca25cbd), [`9996158`](https://github.com/diegomura/react-pdf/commit/9996158636edf2118c4a6dcce08a00408b982993), [`1a89506`](https://github.com/diegomura/react-pdf/commit/1a89506b4d325822d1a60a8f964434a6f6eb2d3f)]:
+  - @react-pdf/pdfkit@3.0.0
+  - @react-pdf/font@2.3.0
+  - @react-pdf/layout@3.2.0
+  - @react-pdf/render@3.2.1
+
 ## 2.3.0
 
 ### Minor Changes

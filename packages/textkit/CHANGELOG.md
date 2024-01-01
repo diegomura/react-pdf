@@ -1,5 +1,35 @@
 # @react-pdf/textkit
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2214](https://github.com/diegomura/react-pdf/pull/2214) [`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724) Thanks [@KODIKAS-NL](https://github.com/KODIKAS-NL)! - added base support for verticalAlign "super" and "sub"
+
+### Patch Changes
+
+- Updated dependencies [[`eff1ff0`](https://github.com/diegomura/react-pdf/commit/eff1ff0fefcd710994e4654904ef55843af76a17)]:
+  - @react-pdf/fns@2.0.1
+
+## 4.1.1
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+## 4.1.0
+
+### Minor Changes
+
+- [#1891](https://github.com/diegomura/react-pdf/pull/1891) [`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - feat: compatibility with modern web bundlers and browsers
+
+### Patch Changes
+
+- [#1917](https://github.com/diegomura/react-pdf/pull/1917) [`4bb97c3`](https://github.com/diegomura/react-pdf/commit/4bb97c3b92e82d7d7be2698c770f42560c6fcab6) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - fix: console error when text overflows the last available rect
+
+- Updated dependencies [[`a5a933c`](https://github.com/diegomura/react-pdf/commit/a5a933c9733e4c77338ef76a2b3545b84a646a81)]:
+  - @react-pdf/fns@2.0.0
+
 ## 4.0.0
 
 ### Major Changes

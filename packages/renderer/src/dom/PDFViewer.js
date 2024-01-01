@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import usePDF from './usePDF';
 
@@ -14,9 +14,9 @@ export const PDFViewer = ({
   showToolbar = true,
   ...props
 }) => {
-  const [instance, updateInstance] = usePDF({ document: children });
+  const [instance, updateInstance] = usePDF();
 
-  useEffect(updateInstance, [children]);
+  useEffect(() => updateInstance(children), [children]);
 
   const src = instance.url
     ? `${instance.url}#toolbar=${showToolbar ? 1 : 0}`

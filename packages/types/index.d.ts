@@ -7,3 +7,4 @@ export * from './style';
 export * from './image';
 export * from './context';
 export * from './primitive';
+export * from './bookmark';

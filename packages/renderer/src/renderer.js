@@ -1,18 +1,19 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 
 import ReactFiberReconciler from 'react-reconciler';
-import {
-  unstable_scheduleCallback as schedulePassiveEffects,
-  unstable_cancelCallback as cancelPassiveEffects,
-} from 'scheduler';
+import * as scheduler from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
 const appendChild = (parentInstance, child) => {
-  const isParentText = parentInstance.type === 'TEXT';
+  const isParentText =
+    parentInstance.type === 'TEXT' ||
+    parentInstance.type === 'LINK' ||
+    parentInstance.type === 'TSPAN';
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 
@@ -30,9 +31,8 @@ const appendChild = (parentInstance, child) => {
 
 const createRenderer = ({ onChange = () => {} }) => {
   return ReactFiberReconciler({
-    schedulePassiveEffects,
-
-    cancelPassiveEffects,
+    schedulePassiveEffects: scheduler.unstable_scheduleCallback,
+    cancelPassiveEffects: scheduler.unstable_cancelCallback,
 
     supportsMutation: true,
 

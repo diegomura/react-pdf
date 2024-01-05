@@ -1,7 +1,6 @@
 module.exports = {
   projects: [
     '<rootDir>packages/fns',
-    '<rootDir>packages/yoga',
     '<rootDir>packages/font',
     '<rootDir>packages/image',
     '<rootDir>packages/render',

@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.0.3
+
+### Patch Changes
+
+- [#2450](https://github.com/diegomura/react-pdf/pull/2450) [`4cfb84d`](https://github.com/diegomura/react-pdf/commit/4cfb84d9f3d2301720b68b4c40a0257b9520c6e1) Thanks [@strazto](https://github.com/strazto)! - build: update crypto-js from 4.0.0 -> 4.2.0 (CVE-2023-46233)
+
 ## 3.0.2
 
 ### Patch Changes

@@ -13,6 +13,7 @@ export interface SVGPresentationAttributes {
   strokeLineCap?: 'butt' | 'round' | 'square';
   strokeLinejoin?: 'butt' | 'round' | 'square';
   visibility?: 'visible' | 'hidden' | 'collapse';
+  clipPath?: string;
   dominantBaseline?:
     | 'auto'
     | 'middle'

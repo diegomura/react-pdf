@@ -1,7 +1,3 @@
-/* eslint-disable no-cond-assign */
-// eslint-disable-next-line no-unused-vars
-import PDFObject from '../object';
-
 const toHex = function(...codePoints) {
   const codes = Array.from(codePoints).map(code =>
     `0000${code.toString(16)}`.slice(-4)
@@ -113,9 +109,7 @@ const createEmbeddedFont = PDFFont =>
           this.widths[gid] = glyph.advanceWidth * this.scale;
         }
         if (this.unicode[gid] == null) {
-          this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id
-          );
+          this.unicode[gid] = glyph.codePoints;
         }
       }
 
@@ -133,9 +127,7 @@ const createEmbeddedFont = PDFFont =>
           this.widths[gid] = glyph.advanceWidth * this.scale;
         }
         if (this.unicode[gid] == null) {
-          this.unicode[gid] = this.font._cmapProcessor.codePointsForGlyph(
-            glyph.id
-          );
+          this.unicode[gid] = glyph.codePoints;
         }
       }
 
@@ -210,9 +202,9 @@ const createEmbeddedFont = PDFFont =>
 
       descriptor.end();
 
-      const descendantFont = this.document.ref({
+      const descendantFontData = {
         Type: 'Font',
-        Subtype: isCFF ? 'CIDFontType0' : 'CIDFontType2',
+        Subtype: 'CIDFontType0',
         BaseFont: name,
         CIDSystemInfo: {
           Registry: new String('Adobe'),
@@ -221,7 +213,14 @@ const createEmbeddedFont = PDFFont =>
         },
         FontDescriptor: descriptor,
         W: [0, this.widths]
-      });
+      };
+
+      if (!isCFF) {
+        descendantFontData.Subtype = 'CIDFontType2';
+        descendantFontData.CIDToGIDMap = 'Identity';
+      }
+
+      const descendantFont = this.document.ref(descendantFontData);
 
       descendantFont.end();
 
@@ -242,45 +241,45 @@ const createEmbeddedFont = PDFFont =>
     // unicode characters represented by each glyph.
     toUnicodeCmap() {
       const cmap = this.document.ref();
+      let entries = [];
+      let unicodeMap =
+        '/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n/CIDSystemInfo <<\n  /Registry (Adobe)\n  /Ordering (UCS)\n  /Supplement 0\n>> def\n/CMapName /Adobe-Identity-UCS def\n/CMapType 2 def\n1 begincodespacerange\n<0000><ffff>\nendcodespacerange';
 
-      const entries = [];
-      for (let codePoints of Array.from(this.unicode)) {
+      for (let [index, codePoints] of this.unicode.entries()) {
         const encoded = [];
-        for (let value of Array.from(codePoints)) {
+        if (entries.length >= 100) {
+          unicodeMap +=
+            '\n' +
+            entries.length +
+            ' beginbfchar\n' +
+            entries.join('\n') +
+            '\nendbfchar';
+          entries = [];
+        }
+        // encode codePoints to utf16
+        for (let value of codePoints) {
           if (value > 0xffff) {
             value -= 0x10000;
             encoded.push(toHex(((value >>> 10) & 0x3ff) | 0xd800));
             value = 0xdc00 | (value & 0x3ff);
           }
-
           encoded.push(toHex(value));
-
-          entries.push(`<${encoded.join(' ')}>`);
         }
-      }
 
-      cmap.end(`\
-  /CIDInit /ProcSet findresource begin
-  12 dict begin
-  begincmap
-  /CIDSystemInfo <<
-  /Registry (Adobe)
-  /Ordering (UCS)
-  /Supplement 0
-  >> def
-  /CMapName /Adobe-Identity-UCS def
-  /CMapType 2 def
-  1 begincodespacerange
-  <0000><ffff>
-  endcodespacerange
-  1 beginbfrange
-  <0000> <${toHex(entries.length - 1)}> [${entries.join(' ')}]
-  endbfrange
-  endcmap
-  CMapName currentdict /CMap defineresource pop
-  end
-  end\
-  `);
+        // eslint-disable-next-line no-useless-concat
+        entries.push('<' + toHex(index) + '>' + '<' + encoded.join(' ') + '>');
+      }
+      if (entries.length) {
+        unicodeMap +=
+          '\n' +
+          entries.length +
+          ' beginbfchar\n' +
+          entries.join('\n') +
+          '\nendbfchar\n';
+      }
+      unicodeMap +=
+        'endcmap\nCMapName currentdict /CMap defineresource pop\nend\nend';
+      cmap.end(unicodeMap);
 
       return cmap;
     }

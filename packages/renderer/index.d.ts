@@ -459,15 +459,14 @@ declare namespace ReactPDF {
    */
   class PDFViewer extends React.Component<PDFViewerProps> {}
 
-  interface PDFDownloadLinkProps {
-    document: React.ReactElement<DocumentProps>;
+  interface PDFDownloadLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
+    /** PDF filename. Alias for anchor tag `download` attribute. */
     fileName?: string;
-    style?: Style | Style[];
-    className?: string;
+    document: React.ReactElement<DocumentProps>;
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
-    onClick?: Function;
+    onClick?(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, instance: UsePDFInstance): void;
   }
 
   /**
@@ -511,7 +510,7 @@ declare namespace ReactPDF {
     toBlob: () => Promise<Blob>;
     toBuffer: () => Promise<NodeJS.ReadableStream>;
     on: (event: 'change', callback: () => void) => void;
-    updateContainer: (document: React.ReactElement<any>) => void;
+    updateContainer: (document: React.ReactElement<any>, callback?: () => void) => void;
     removeListener: (event: 'change', callback: () => void) => void;
   };
 

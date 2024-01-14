@@ -2,7 +2,7 @@ name: CI
 
 env:
   FORCE_COLOR: 2
-  NODE: 14
+  NODE: 18
 
 on:
   pull_request:

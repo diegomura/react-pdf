@@ -1,5 +1,29 @@
 # @react-pdf/renderer
 
+## 3.1.15
+
+### Patch Changes
+
+- Updated dependencies [[`4cfb84d`](https://github.com/diegomura/react-pdf/commit/4cfb84d9f3d2301720b68b4c40a0257b9520c6e1)]:
+  - @react-pdf/pdfkit@3.0.3
+  - @react-pdf/layout@3.6.4
+
+## 3.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4)]:
+  - @react-pdf/types@2.3.4
+  - @react-pdf/layout@3.6.3
+  - @react-pdf/font@2.3.7
+  - @react-pdf/render@3.2.7
+
+## 3.1.13
+
+### Patch Changes
+
+- [#2406](https://github.com/diegomura/react-pdf/pull/2406) [`3b5e1c7`](https://github.com/diegomura/react-pdf/commit/3b5e1c7c71a0f830ae2b70da8aac2b2bd5015ca3) Thanks [@JoachimKoenigslieb](https://github.com/JoachimKoenigslieb)! - Added an optional callback to the updateContainer method. This allows the user of the pdf instance to know when the update operation is finished in React. As this is an optional argument, no user code should be changed.
+
 ## 3.1.12
 
 ### Patch Changes

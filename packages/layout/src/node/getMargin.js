@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import Yoga from 'yoga-layout/sync';
 
 const getComputedMargin = (node, edge) => {
   const { yogaNode } = node;

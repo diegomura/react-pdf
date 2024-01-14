@@ -13,7 +13,7 @@ We welcome any type of contribution, not only code. You can help with
 
 ## Your First Contribution
 
-Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
 
 ## Set up your development environment
 
@@ -30,12 +30,12 @@ git clone https://github.com/diegomura/react-pdf.git
 cd react-pdf
 ```
 
-### 2. Install Node 14
+### 2. Install Node 18
 
 If you have `nvm` installed all you have to do is
 
 ```sh
-nvm install 14
+nvm install 18
 nvm use
 ```
 

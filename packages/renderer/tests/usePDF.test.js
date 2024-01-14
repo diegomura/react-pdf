@@ -3,6 +3,7 @@
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
+import { useEffect, useState } from 'react';
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { usePDF, Document, Page, Text } from '../src/dom';
 
@@ -52,6 +53,30 @@ it('updates document', async () => {
   const pdfSize = result.current[0].blob.size;
 
   act(() => result.current[1](<TestDocument title="Long long long title" />));
+
+  await waitFor(() => expect(result.current[0].loading).toBeFalsy());
+
+  expect(result.current[0].blob.size).not.toEqual(pdfSize);
+});
+
+it('backward compatible with previous hook', async () => {
+  const { result } = renderHook(() => {
+    const [document, setDoc] = useState(() => <TestDocument />);
+    const [instance, update] = usePDF({ document });
+
+    useEffect(update, [document]);
+
+    return [
+      instance,
+      () => setDoc(<TestDocument title="Long long long title" />),
+    ];
+  });
+
+  await waitFor(() => expect(result.current[0].loading).toBeFalsy());
+
+  const pdfSize = result.current[0].blob.size;
+
+  act(() => result.current[1]());
 
   await waitFor(() => expect(result.current[0].loading).toBeFalsy());
 

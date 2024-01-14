@@ -1,4 +1,4 @@
-const Yoga = require('../src/dist/entry-browser');
+const Yoga = require('..');
 
 describe('Justify content', () => {
   test('justify_content_row_flex_start', () => {

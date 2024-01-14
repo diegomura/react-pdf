@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/examples",
-  "version": "2.0.2",
+  "version": "2.0.14",
   "license": "MIT",
   "private": true,
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^3.0.0",
+    "@react-pdf/renderer": "^3.1.15",
     "camelcase": "^6.2.0"
   },
   "peerDependencies": {

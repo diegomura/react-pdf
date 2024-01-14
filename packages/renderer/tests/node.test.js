@@ -1,7 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import fs from 'fs';
-import React from 'react';
 import ReactPDF from '../src/node';
 
 const { Document, Page, View } = ReactPDF;
@@ -53,7 +52,7 @@ describe('node', () => {
 
     expect(fs.existsSync(path)).toBeTruthy();
 
-    fs.unlinkSync(path)
+    fs.unlinkSync(path);
   });
 
   test('should export font store', () => {
@@ -82,5 +81,134 @@ describe('node', () => {
 
   test('should throw error when trying to use usePDF', () => {
     expect(() => ReactPDF.usePDF()).toThrow();
+  });
+
+  test('should render a fragment', async () => {
+    const mock = jest.fn();
+
+    const doc = (
+      <Document onRender={mock}>
+        <Page>
+          <View>
+            <>
+              <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+              <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+            </>
+          </View>
+        </Page>
+      </Document>
+    );
+
+    await ReactPDF.renderToString(doc);
+
+    expect(mock.mock.calls).toHaveLength(1);
+  });
+
+  test('should render a fragment in render', async () => {
+    const renderMock = jest.fn().mockReturnValue(
+      <>
+        <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+        <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+      </>,
+    );
+
+    const doc = (
+      <Document>
+        <Page>
+          <View render={renderMock} />
+        </Page>
+      </Document>
+    );
+
+    await ReactPDF.renderToString(doc);
+
+    expect(renderMock.mock.calls).toHaveLength(2);
+  });
+
+  test('should render a child array', async () => {
+    const mock = jest.fn();
+
+    const children = [
+      <View
+        key="child1"
+        style={{ width: 20, height: 20, backgroundColor: 'red' }}
+      />,
+      <View
+        key="child2"
+        style={{ width: 20, height: 20, backgroundColor: 'red' }}
+      />,
+    ];
+
+    const doc = (
+      <Document onRender={mock}>
+        <Page>
+          <View>{children}</View>
+        </Page>
+      </Document>
+    );
+
+    await ReactPDF.renderToString(doc);
+
+    expect(mock.mock.calls).toHaveLength(1);
+  });
+
+  test('should render a child array in render', async () => {
+    const children = [
+      <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />,
+      <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />,
+    ];
+
+    const renderMock = jest.fn().mockReturnValue(children);
+
+    const doc = (
+      <Document>
+        <Page>
+          <View render={renderMock} />
+        </Page>
+      </Document>
+    );
+
+    await ReactPDF.renderToString(doc);
+
+    expect(renderMock.mock.calls).toHaveLength(2);
+  });
+
+  test('should render nested dynamic views', async () => {
+    const renderNode = (
+      <View
+        key="child1"
+        style={{ width: 20, height: 20, backgroundColor: 'red' }}
+      />
+    );
+
+    const renderMock = jest.fn().mockReturnValue(renderNode);
+
+    const doc = (
+      <Document>
+        <Page>
+          <View render={renderMock} />
+          <View
+            render={() => {
+              return <View render={renderMock} />;
+            }}
+          />
+          <View
+            render={() => {
+              return (
+                <View
+                  render={() => {
+                    return <View render={renderMock} />;
+                  }}
+                />
+              );
+            }}
+          />
+        </Page>
+      </Document>
+    );
+
+    await ReactPDF.renderToString(doc);
+
+    expect(renderMock.mock.calls).toHaveLength(6);
   });
 });

@@ -1,12 +1,12 @@
 {
   "name": "@react-pdf/yoga",
-  "version": "3.0.0",
+  "version": "4.1.2",
   "description": "Prebuilt yoga-layout package",
   "license": "MIT",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "./src/dist/entry-browser.js",
-  "module": "./src/dist/entry-browser.es.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
@@ -15,14 +15,16 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "./build.sh && rollup -c",
-    "postbuild": "node ./postbuild.js"
+    "build": "rollup -c"
   },
   "files": [
-    "src",
+    "dist",
     "index.d.ts"
   ],
   "dependencies": {
-    "@types/yoga-layout": "^1.9.3"
+    "@babel/runtime": "^7.20.13"
+  },
+  "devDependencies": {
+    "yoga-wasm-web": "~0.3.2"
   }
 }

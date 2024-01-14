@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.0.0",
+  "version": "3.1.15",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "types": "index.d.ts",
@@ -25,19 +25,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/runtime": "^7.16.4",
-    "@react-pdf/font": "^2.3.0",
-    "@react-pdf/layout": "^3.2.0",
-    "@react-pdf/pdfkit": "^3.0.0",
+    "@babel/runtime": "^7.20.13",
+    "@react-pdf/font": "^2.3.7",
+    "@react-pdf/layout": "^3.6.4",
+    "@react-pdf/pdfkit": "^3.0.3",
     "@react-pdf/primitives": "^3.0.0",
-    "@react-pdf/render": "^3.2.1",
-    "@react-pdf/types": "^2.1.0",
+    "@react-pdf/render": "^3.2.7",
+    "@react-pdf/types": "^2.3.4",
+    "events": "^3.3.0",
+    "object-assign": "^4.1.1",
+    "prop-types": "^15.6.2",
     "queue": "^6.0.1",
-    "react-reconciler": "^0.23.0",
     "scheduler": "^0.17.0"
   },
   "peerDependencies": {
-    "react": "^16.8.6 || ^17.0.0"
+    "react": "^16.8.6 || ^17.0.0 || ^18.0.0"
   },
   "lint-staged": {
     "*.js": [
@@ -66,6 +68,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
+    "react-reconciler": "0.23.0",
     "size-limit": "^7.0.5",
     "util": "^0.12.4"
   }

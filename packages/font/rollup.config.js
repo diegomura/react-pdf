@@ -20,13 +20,7 @@ const babelConfig = () => ({
   babelHelpers: 'runtime',
 });
 
-const external = [
-  '@babel/runtime/regenerator',
-  '@babel/runtime/helpers/extends',
-  '@babel/runtime/helpers/asyncToGenerator',
-  '@babel/runtime/helpers/objectWithoutPropertiesLoose',
-  ...Object.keys(pkg.dependencies),
-];
+const external = [/@babel\/runtime/, ...Object.keys(pkg.dependencies)];
 
 const getPlugins = ({ browser }) => [
   babel(babelConfig()),

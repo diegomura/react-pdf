@@ -33,6 +33,7 @@ const applyAttributes = a => ({
   strikeColor: a.strikeColor || a.color || 'black',
   strikeStyle: a.strikeStyle || 'solid',
   stroke: a.stroke || false,
+  verticalAlign: a.verticalAlign || null,
   wordSpacing: a.wordSpacing || 0,
   yOffset: a.yOffset || 0,
 });

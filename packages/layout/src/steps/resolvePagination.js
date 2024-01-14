@@ -10,7 +10,7 @@ import splitNode from '../node/splitNode';
 import canNodeWrap from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
-import createInstance from '../node/createInstance';
+import createInstances from '../node/createInstances';
 import shouldNodeBreak from '../node/shouldBreak';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
@@ -95,6 +95,18 @@ const splitNodes = (height, contentArea, nodes) => {
     if (shouldSplit) {
       const [currentChild, nextChild] = split(child, height, contentArea);
 
+      // All children are moved to the next page, it doesn't make sense to show the parent on the current page
+      if (child.children.length > 0 && currentChild.children.length === 0) {
+        const box = Object.assign({}, child.box, {
+          top: child.box.top - height,
+        });
+        const next = Object.assign({}, child, { box });
+
+        currentChildren.push(...futureFixedNodes);
+        nextChildren.push(next, ...futureNodes);
+        break;
+      }
+
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
 
@@ -142,7 +154,9 @@ const resolveDynamicNodes = (props, node) => {
   const resolveChildren = (children = []) => {
     if (isNodeDynamic) {
       const res = node.props.render(props);
-      return [createInstance(res)].filter(Boolean);
+      return createInstances(res)
+        .filter(Boolean)
+        .map(n => resolveDynamicNodes(props, n));
     }
 
     return children.map(c => resolveDynamicNodes(props, c));
@@ -230,6 +244,8 @@ const dissocSubPageData = page => {
 
 const paginate = (page, pageNumber, fontStore) => {
   if (!page) return [];
+
+  if (page.props?.wrap === false) return [page];
 
   let splittedPage = splitPage(page, pageNumber, fontStore);
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document, Page, View } from '..';
 import renderToImage from './renderComponent';
 
@@ -12,13 +11,7 @@ const TestDocument = ({ transform, width = 20, height = 20 }) => {
   );
 };
 
-/*
- * This test fails in ci for some reason
- * https://github.com/diegomura/react-pdf/runs/4124934112?check_suite_focus=true#step:5:255
- * TODO: investigate why it fails and fix
- */
-
-xdescribe('transform', () => {
+describe('transform', () => {
   test('should scale with two args', async () => {
     const image = await renderToImage(
       <TestDocument transform="scale(0.5, 0.5)" />,

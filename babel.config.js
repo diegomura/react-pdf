@@ -10,10 +10,10 @@ module.exports = {
         },
       },
     ],
-    '@babel/preset-react',
+    ['@babel/preset-react', { runtime: 'automatic' }],
   ],
   plugins: [
-    ['@babel/plugin-transform-runtime', { version: '^7.16.4' }],
+    ['@babel/plugin-transform-runtime', { version: '^7.19.6' }],
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     '@babel/plugin-proposal-optional-chaining',

@@ -137,4 +137,98 @@ describe('pagination step', () => {
     expect(view2.box.height).toBe(60);
     expect(view3.box.height).toBe(10);
   });
+
+  test('should not wrap page with false wrap prop', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: {},
+          style: {
+            width: 5,
+            height: 60,
+          },
+          props: {
+            wrap: false,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              box: {},
+              style: { height: 130 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    };
+
+    const layout = calcLayout(root);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should break on a container whose children can not fit on a page', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          box: {},
+          style: {
+            width: 5,
+            height: 60,
+          },
+
+          children: [
+            {
+              type: 'VIEW',
+              box: {},
+              style: {
+                width: 5,
+                height: 40,
+              },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              box: {},
+              style: {
+                width: 5,
+              },
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  box: {},
+                  style: {
+                    height: 40,
+                  },
+                  props: {
+                    wrap: false,
+                  },
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const layout = calcLayout(root);
+    console.log(layout.children[0].children);
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    // Only the first view is displayed on the first page
+    expect(page1.children.length).toBe(1);
+    // The second page displays the second wrapper, with its full height
+    expect(page2.children.length).toBe(1);
+    expect(page2.children[0].box.height).toBe(40);
+  });
 });

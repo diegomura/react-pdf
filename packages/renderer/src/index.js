@@ -25,8 +25,8 @@ const pdf = initialValue => {
   renderer = renderer || createRenderer({ onChange });
   const mountNode = renderer.createContainer(container);
 
-  const updateContainer = doc => {
-    renderer.updateContainer(doc, mountNode, null);
+  const updateContainer = (doc, callback) => {
+    renderer.updateContainer(doc, mountNode, null, callback);
   };
 
   if (initialValue) updateContainer(initialValue);
@@ -46,8 +46,8 @@ const pdf = initialValue => {
     });
 
     const layout = await layoutDocument(container.document, fontStore);
-
-    return renderPDF(ctx, layout);
+    const fileStream = renderPDF(ctx, layout);
+    return { layout, fileStream };
   };
 
   const callOnRender = (params = {}) => {
@@ -58,7 +58,10 @@ const pdf = initialValue => {
 
   const toBlob = async () => {
     const chunks = [];
-    const instance = await render();
+    const {
+      layout: _INTERNAL__LAYOUT__DATA_,
+      fileStream: instance,
+    } = await render();
 
     return new Promise((resolve, reject) => {
       instance.on('data', chunk => {
@@ -70,7 +73,7 @@ const pdf = initialValue => {
       instance.on('end', () => {
         try {
           const blob = new Blob(chunks, { type: 'application/pdf' });
-          callOnRender({ blob });
+          callOnRender({ blob, _INTERNAL__LAYOUT__DATA_ });
           resolve(blob);
         } catch (error) {
           reject(error);
@@ -79,14 +82,27 @@ const pdf = initialValue => {
     });
   };
 
+  // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
   const toBuffer = async () => {
     callOnRender();
-    return render();
+    return (await render()).fileStream;
   };
 
+  /*
+   * TODO: remove this method in next major release. it is buggy
+   * see
+   * - https://github.com/diegomura/react-pdf/issues/2112
+   * - https://github.com/diegomura/react-pdf/issues/2095
+   */
   const toString = async () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        '`toString` is deprecated and will be removed in next major release',
+      );
+    }
+
     let result = '';
-    const instance = await render(false); // For some reason, when rendering to string if compress=true the document is blank
+    const { fileStream: instance } = await render(false); // For some reason, when rendering to string if compress=true the document is blank
 
     return new Promise((resolve, reject) => {
       try {

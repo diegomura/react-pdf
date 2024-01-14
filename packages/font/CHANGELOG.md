@@ -1,5 +1,54 @@
 # @react-pdf/font
 
+## 2.3.7
+
+### Patch Changes
+
+- Updated dependencies [[`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4)]:
+  - @react-pdf/types@2.3.4
+
+## 2.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59), [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb)]:
+  - @react-pdf/types@2.3.3
+
+## 2.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2)]:
+  - @react-pdf/types@2.3.2
+
+## 2.3.4
+
+### Patch Changes
+
+- [#2252](https://github.com/diegomura/react-pdf/pull/2252) [`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59) Thanks [@jeetiss](https://github.com/jeetiss)! - implement function as emoji source to build more complex urls
+
+- Updated dependencies [[`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59)]:
+  - @react-pdf/types@2.3.1
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724)]:
+  - @react-pdf/types@2.3.0
+
+## 2.3.2
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+## 2.3.1
+
+### Patch Changes
+
+- [#2023](https://github.com/diegomura/react-pdf/pull/2023) [`ce1c43c`](https://github.com/diegomura/react-pdf/commit/ce1c43c1b450b3737a23a356c5143626ac2a43ad) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Fix warning about 'buffer' dependency in CRA 5 and webpack 5
+
 ## 2.3.0
 
 ### Minor Changes

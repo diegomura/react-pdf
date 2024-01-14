@@ -46,16 +46,22 @@ interface RegisteredFont {
   [key: string]: any;
 }
 
-interface EmojiSource {
+interface EmojiSourceUrl {
   url: string;
-  format: string;
+  format?: string;
 }
+
+interface EmojiSourceBuilder {
+  builder: (code: string) => string;
+}
+
+type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;
 
 interface SingleLoad {
   family: string;
   src: string;
   fontStyle?: string;
-  fontWeight?: string | number;
+  fontWeight?: FontWeight;
   [key: string]: any;
 }
 
@@ -64,7 +70,7 @@ interface BulkLoad {
   fonts: {
     src: string;
     fontStyle?: string;
-    fontWeight?: string | number;
+    fontWeight?: FontWeight;
     [key: string]: any;
   }[];
 }
@@ -73,7 +79,7 @@ export interface FontStore {
   clear: () => void;
   reset: () => void;
   getEmojiSource: () => EmojiSource;
-  getRegisteredFonts: () => FontInstance[];
+  getRegisteredFonts: () => Record<string, FontInstance>;
   getRegisteredFontFamilies: () => string[];
   getHyphenationCallback: () => HyphenationCallback;
   register: (options: SingleLoad | BulkLoad) => void;

@@ -1,5 +1,49 @@
 # @react-pdf/types
 
+## 2.3.4
+
+### Patch Changes
+
+- [#2130](https://github.com/diegomura/react-pdf/pull/2130) [`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4) Thanks [@PoornakumarRasiraju](https://github.com/PoornakumarRasiraju)! - fix: allow credentials option in Image
+
+## 2.3.3
+
+### Patch Changes
+
+- [#2276](https://github.com/diegomura/react-pdf/pull/2276) [`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59) Thanks [@renchap](https://github.com/renchap)! - add `aspectRatio` style property
+
+* [#2293](https://github.com/diegomura/react-pdf/pull/2293) [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb) Thanks [@BryanAbate](https://github.com/BryanAbate)! - fix type for `getRegisteredFonts` method
+
+## 2.3.2
+
+### Patch Changes
+
+- [#2310](https://github.com/diegomura/react-pdf/pull/2310) [`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed all strings allowed in `fontWeight` in `Font.register`
+
+## 2.3.1
+
+### Patch Changes
+
+- [#2252](https://github.com/diegomura/react-pdf/pull/2252) [`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59) Thanks [@jeetiss](https://github.com/jeetiss)! - implement function as emoji source to build more complex urls
+
+## 2.3.0
+
+### Minor Changes
+
+- [#2214](https://github.com/diegomura/react-pdf/pull/2214) [`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724) Thanks [@KODIKAS-NL](https://github.com/KODIKAS-NL)! - added base support for verticalAlign "super" and "sub"
+
+## 2.2.0
+
+### Minor Changes
+
+- [#2160](https://github.com/diegomura/react-pdf/pull/2160) [`a743c90`](https://github.com/diegomura/react-pdf/commit/a743c905fb5d201d2382bc9175fa36b83cc47284) Thanks [@jeetiss](https://github.com/jeetiss)! - implement flex gap
+
+## 2.1.1
+
+### Patch Changes
+
+- [#2106](https://github.com/diegomura/react-pdf/pull/2106) [`24bb5de`](https://github.com/diegomura/react-pdf/commit/24bb5de969a854cc0226438985b34ef8ae2d7581) Thanks [@RDO34](https://github.com/RDO34)! - Add `dpi` and `bookmark` page prop types
+
 ## 2.1.0
 
 ### Minor Changes

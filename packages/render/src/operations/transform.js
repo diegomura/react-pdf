@@ -15,7 +15,7 @@ const applySingleTransformation = (ctx, transform, origin) => {
     }
 
     case 'translate': {
-      const [x, y] = value;
+      const [x, y = 0] = value;
       ctx.translate(x, y, { origin });
       break;
     }

@@ -1,3 +1,3 @@
-import * as yoga from 'yoga-layout';
+import { Yoga } from 'yoga-wasm-web';
 
-export = yoga;
+export default Yoga;

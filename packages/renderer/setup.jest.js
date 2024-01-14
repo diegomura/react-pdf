@@ -1,9 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const util = require('util');
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
-
-global.TextEncoder = util.TextEncoder;
-global.TextDecoder = util.TextDecoder;
 
 // setup image matcher
 const toMatchImageSnapshot = configureToMatchImageSnapshot({

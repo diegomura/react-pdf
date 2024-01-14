@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`layout resolveStyles should leave link with text children as it is 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
               "type": "TEXT",
             },
           ],
-          "props": Object {
+          "props": {
             "src": "url",
           },
           "type": "LINK",
@@ -25,34 +25,34 @@ Object {
 `;
 
 exports[`layout resolveStyles should replace link with only many text instances as children 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "box": Object {},
-              "children": Array [
-                Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "box": {},
+              "children": [
+                {
                   "type": "TEXT_INSTANCE",
                 },
-                Object {
+                {
                   "type": "TEXT_INSTANCE",
                 },
-                Object {
+                {
                   "type": "TEXT_INSTANCE",
                 },
-                Object {
+                {
                   "type": "TEXT_INSTANCE",
                 },
               ],
-              "props": Object {},
-              "style": Object {},
+              "props": {},
+              "style": {},
               "type": "TEXT",
             },
           ],
-          "props": Object {
+          "props": {
             "src": "url",
           },
           "type": "LINK",
@@ -66,25 +66,25 @@ Object {
 `;
 
 exports[`layout resolveStyles should replace link with only one text instance as children 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "box": Object {},
-              "children": Array [
-                Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "box": {},
+              "children": [
+                {
                   "type": "TEXT_INSTANCE",
                 },
               ],
-              "props": Object {},
-              "style": Object {},
+              "props": {},
+              "style": {},
               "type": "TEXT",
             },
           ],
-          "props": Object {
+          "props": {
             "src": "url",
           },
           "type": "LINK",
@@ -98,12 +98,12 @@ Object {
 `;
 
 exports[`layout resolveStyles should replace link with render prop 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "props": Object {
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {
             "render": [Function],
           },
           "type": "TEXT",

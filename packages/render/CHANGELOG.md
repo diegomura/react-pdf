@@ -1,5 +1,57 @@
 # @react-pdf/render
 
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`4a55c1b`](https://github.com/diegomura/react-pdf/commit/4a55c1b2ed19e460ccae6e749ed94c16729a23c4)]:
+  - @react-pdf/types@2.3.4
+
+## 3.2.6
+
+### Patch Changes
+
+- [#2320](https://github.com/diegomura/react-pdf/pull/2320) [`5385a43`](https://github.com/diegomura/react-pdf/commit/5385a438cb4876d1dc00d49d5fdd2e07c0d16167) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed empty strings replaced with defaults in `creator` and `producer` props
+
+- Updated dependencies [[`1e1fbdc`](https://github.com/diegomura/react-pdf/commit/1e1fbdc3c33ced46d8c7ebba7a196733cb789d59), [`8636812`](https://github.com/diegomura/react-pdf/commit/86368122ed87621d19ae3bc248080e17703d9fcb)]:
+  - @react-pdf/types@2.3.3
+
+## 3.2.5
+
+### Patch Changes
+
+- [#2311](https://github.com/diegomura/react-pdf/pull/2311) [`2e724df`](https://github.com/diegomura/react-pdf/commit/2e724dfaff3c9b39e9862d24b0d0e037c8a9e8c2) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed crash on `transform="translate(1)"`
+
+* [#2314](https://github.com/diegomura/react-pdf/pull/2314) [`d6018d5`](https://github.com/diegomura/react-pdf/commit/d6018d5a80492270ff5f5b4c00e694f7dc1cd93f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make `cx` and `cy` optional in `Circle` and `Ellipse`
+
+* Updated dependencies [[`a25dbcb`](https://github.com/diegomura/react-pdf/commit/a25dbcb32b65c300f5b088e8b210bb0c1abca5c2)]:
+  - @react-pdf/types@2.3.2
+
+## 3.2.4
+
+### Patch Changes
+
+- Updated dependencies [[`47e91cb`](https://github.com/diegomura/react-pdf/commit/47e91cbd8016046bb4e8389ba0d1c7ede9edce59)]:
+  - @react-pdf/types@2.3.1
+
+## 3.2.3
+
+### Patch Changes
+
+- Updated dependencies [[`2db67a3`](https://github.com/diegomura/react-pdf/commit/2db67a38b9be98b7816a2b5aa4733446b95e3724), [`eff1ff0`](https://github.com/diegomura/react-pdf/commit/eff1ff0fefcd710994e4654904ef55843af76a17)]:
+  - @react-pdf/textkit@4.2.0
+  - @react-pdf/types@2.3.0
+  - @react-pdf/fns@2.0.1
+
+## 3.2.2
+
+### Patch Changes
+
+- [#2205](https://github.com/diegomura/react-pdf/pull/2205) [`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905) Thanks [@jeetiss](https://github.com/jeetiss)! - update babel
+
+- Updated dependencies [[`9a5e0be`](https://github.com/diegomura/react-pdf/commit/9a5e0befb89756db07ce053192a136df9d4ba905)]:
+  - @react-pdf/textkit@4.1.1
+
 ## 3.2.1
 
 ### Patch Changes

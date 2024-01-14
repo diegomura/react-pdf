@@ -1,16 +1,25 @@
-import commonjs from '@rollup/plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
 
-const input = './src/dist/entry-browser.js';
-
-const getPlugins = () => [
-  commonjs(),
-];
+const babelConfig = () => ({
+  babelrc: true,
+  babelHelpers: 'runtime',
+});
 
 export default {
-  input,
-  output: {
-    file: 'src/dist/entry-browser.es.js',
-    format: 'es',
-  },
-  plugins: getPlugins(),
-}
+  input: 'index.js',
+  output: [
+    {
+      file: 'dist/index.js',
+      exports: 'auto',
+      format: 'cjs',
+    },
+    {
+      file: 'dist/index.esm.js',
+      format: 'esm',
+    },
+  ],
+  plugins: [commonjs(), nodeResolve(), babel(babelConfig())],
+  external: [/@babel\/runtime/],
+};

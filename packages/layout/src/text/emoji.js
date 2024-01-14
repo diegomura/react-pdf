@@ -16,7 +16,7 @@ const reflect = promise => (...args) =>
 const makeFetchEmojiImage = () => reflect(resolveImage);
 
 /**
- * When an emoji as no color, it might still have 2 parts,
+ * When an emoji as no variations, it might still have 2 parts,
  * the canonical emoji and an empty string.
  * ex.
  *   (no color) Array.from('❤️') => ["❤", "️"]
@@ -25,21 +25,21 @@ const makeFetchEmojiImage = () => reflect(resolveImage);
  * The empty string needs to be removed otherwise the generated
  * url will be incorect.
  */
-const _removeNoColor = x => x !== '️';
+const _removeVariationSelectors = x => x !== '️';
 
-const getCodePoints = string =>
+const getCodePoints = (string, withVariationSelectors) =>
   Array.from(string)
-    .filter(_removeNoColor)
+    .filter(withVariationSelectors ? () => true : _removeVariationSelectors)
     .map(char => char.codePointAt(0).toString(16))
     .join('-');
 
 const buildEmojiUrl = (emoji, source) => {
-  const { url, format, builder } = source;
+  const { url, format, builder, withVariationSelectors } = source;
   if (typeof builder === 'function') {
-    return builder(getCodePoints(emoji));
+    return builder(getCodePoints(emoji, withVariationSelectors));
   }
 
-  return `${url}${getCodePoints(emoji)}.${format}`;
+  return `${url}${getCodePoints(emoji, withVariationSelectors)}.${format}`;
 };
 
 export const fetchEmojis = (string, source) => {

@@ -25,8 +25,13 @@ function FontStore() {
     }
   };
 
-  this.registerEmojiSource = ({ url, format = 'png', builder }) => {
-    emojiSource = { url, format, builder };
+  this.registerEmojiSource = ({
+    url,
+    format = 'png',
+    builder,
+    withVariationSelectors = false,
+  }) => {
+    emojiSource = { url, format, builder, withVariationSelectors };
   };
 
   this.registerHyphenationCallback = callback => {

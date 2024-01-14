@@ -17,7 +17,7 @@
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "jest",
-    "examples": "lerna run start --scope @react-pdf/examples",
+    "dev": "lerna run dev --scope @react-pdf/examples",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"

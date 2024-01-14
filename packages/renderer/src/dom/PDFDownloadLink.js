@@ -13,6 +13,7 @@ export const PDFDownloadLink = ({
   ...rest
 }) => {
   const [instance, updateInstance] = usePDF({ document: doc });
+
   useEffect(updateInstance, [children]);
 
   if (!doc) {

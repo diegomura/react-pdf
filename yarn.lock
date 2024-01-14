@@ -10384,7 +10384,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yoga-wasm-web@~0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/yoga-wasm-web/-/yoga-wasm-web-0.3.2.tgz#8f3bb23ca959d92d86047d209853737eb99c7dda"
-  integrity sha512-X//8P6RHzkO4E1ba/wXwKOybeArNDQJI2vwzFLJxz5bfT9K8fB798ZVYvq+Z+hjRA0Wy2iUlOUch4n2+ddqbDQ==
+yoga-layout@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-2.0.1.tgz#4bc686abe2464f977866650ddccc1dbcf9f0d03c"
+  integrity sha512-tT/oChyDXelLo2A+UVnlW9GU7CsvFMaEnd9kVFsaiCQonFAXd3xrHhkLYu+suwwosrAEQ746xBU+HvYtm1Zs2Q==

@@ -40,5 +40,6 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'react/jsx-props-no-spreading': 0,
     'react/destructuring-assignment': 0,
+    'import/no-unresolved': ['error', { ignore: ['^yoga-layout'] }],
   },
 };

@@ -1,6 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-
-import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
@@ -23,8 +20,8 @@ const SkillEntry = ({ name, skills }) => (
   <View>
     <Text style={styles.title}>{name}</Text>
     <List>
-      {skills.map((skill, i) => (
-        <Item key={i}>{skill}</Item>
+      {skills.map(skill => (
+        <Item key={skill}>{skill}</Item>
       ))}
     </List>
   </View>

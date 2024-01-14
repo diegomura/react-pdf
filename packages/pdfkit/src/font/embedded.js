@@ -1,3 +1,5 @@
+/* eslint-disable no-cond-assign */
+// eslint-disable-next-line no-unused-vars
 import PDFObject from '../object';
 
 const toHex = function(...codePoints) {
@@ -77,7 +79,7 @@ const createEmbeddedFont = PDFFont =>
       let last = 0;
       let index = 0;
       while (index <= text.length) {
-        var needle;
+        let needle;
         if (
           (index === text.length && last < index) ||
           ((needle = text.charAt(index)), [' ', '\t'].includes(needle))
@@ -177,7 +179,7 @@ const createEmbeddedFont = PDFFont =>
 
       // generate a random tag (6 uppercase letters. 65 is the char code for 'A')
       const tag = [0, 1, 2, 3, 4, 5]
-        .map(i => String.fromCharCode(Math.random() * 26 + 65))
+        .map(() => String.fromCharCode(Math.random() * 26 + 65))
         .join('');
       const name = tag + '+' + this.font.postscriptName;
 

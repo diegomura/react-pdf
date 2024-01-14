@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: ['react', 'jest'],
   rules: {
+    'func-names': 0,
     'no-continue': 1,
     'no-cond-assign': 1,
     'react/prop-types': 0,
@@ -37,7 +38,7 @@ module.exports = {
     'import/no-named-as-default': 0,
     'react/state-in-constructor': 0,
     'react/jsx-filename-extension': 0,
-    'react/jsx-props-no-spreading': 1,
+    'react/jsx-props-no-spreading': 0,
     'react/destructuring-assignment': 0,
   },
 };

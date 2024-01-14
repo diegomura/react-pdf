@@ -1,6 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-
-import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import Title from './Title';
@@ -77,8 +74,8 @@ const ExperienceEntry = ({ company, details, position, date }) => {
         </View>
       </View>
       <List>
-        {details.map((detail, i) => (
-          <Item key={i} style={styles.detailContainer}>
+        {details.map(detail => (
+          <Item key={detail.company} style={styles.detailContainer}>
             {detail}
           </Item>
         ))}

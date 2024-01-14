@@ -1,4 +1,3 @@
-import React from 'react';
 import { Rect, Svg, G, Path, Text, Tspan } from '@react-pdf/renderer';
 
 const Svg1 = () => (

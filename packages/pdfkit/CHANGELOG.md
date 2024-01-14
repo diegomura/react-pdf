@@ -1,5 +1,13 @@
 # @react-pdf/pdfkit
 
+## 3.0.4
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
+* [#2488](https://github.com/diegomura/react-pdf/pull/2488) [`b457a0c`](https://github.com/diegomura/react-pdf/commit/b457a0cc1c1352325e6c633af3000a3c9241f7f7) Thanks [@diegomura](https://github.com/diegomura)! - fix: copy-paste for registered font
+
 ## 3.0.3
 
 ### Patch Changes

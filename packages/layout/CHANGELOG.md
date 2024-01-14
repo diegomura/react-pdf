@@ -1,5 +1,24 @@
 # @react-pdf/layout
 
+## 3.7.0
+
+### Minor Changes
+
+- [#2473](https://github.com/diegomura/react-pdf/pull/2473) [`b227e0e`](https://github.com/diegomura/react-pdf/commit/b227e0e303da8bca754910f55f5d27dd18f3a874) Thanks [@mskec](https://github.com/mskec)! - Upgraded yoga to v2 and dropped bundled yoga v1 package
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
+* [#2467](https://github.com/diegomura/react-pdf/pull/2467) [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2) Thanks [@JaeSeoKim](https://github.com/JaeSeoKim)! - feat: add withVariationSelectors option to registerEmojiSource [#2466](https://github.com/diegomura/react-pdf/issues/2466)
+
+* Updated dependencies [[`e5c8fde`](https://github.com/diegomura/react-pdf/commit/e5c8fde9379a9a85ecac7e3d6273953e39d65f8d), [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4), [`b457a0c`](https://github.com/diegomura/react-pdf/commit/b457a0cc1c1352325e6c633af3000a3c9241f7f7), [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2), [`4c40b14`](https://github.com/diegomura/react-pdf/commit/4c40b149cfed42f2513e1dd330a92ccc3363c04f)]:
+  - @react-pdf/types@2.3.5
+  - @react-pdf/textkit@4.2.1
+  - @react-pdf/pdfkit@3.0.4
+  - @react-pdf/image@2.2.3
+  - @react-pdf/stylesheet@4.1.9
+
 ## 3.6.4
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @react-pdf/renderer
 
+## 3.1.16
+
+### Patch Changes
+
+- [#2363](https://github.com/diegomura/react-pdf/pull/2363) [`8654d00`](https://github.com/diegomura/react-pdf/commit/8654d003023dd0899cddfc2ea2f5a552e01cf570) Thanks [@azmy60](https://github.com/azmy60)! - fix: SVGPresentationAttributes types
+
+- Updated dependencies [[`b227e0e`](https://github.com/diegomura/react-pdf/commit/b227e0e303da8bca754910f55f5d27dd18f3a874), [`e5c8fde`](https://github.com/diegomura/react-pdf/commit/e5c8fde9379a9a85ecac7e3d6273953e39d65f8d), [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4), [`8654d00`](https://github.com/diegomura/react-pdf/commit/8654d003023dd0899cddfc2ea2f5a552e01cf570), [`b457a0c`](https://github.com/diegomura/react-pdf/commit/b457a0cc1c1352325e6c633af3000a3c9241f7f7), [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2), [`4c40b14`](https://github.com/diegomura/react-pdf/commit/4c40b149cfed42f2513e1dd330a92ccc3363c04f)]:
+  - @react-pdf/layout@3.7.0
+  - @react-pdf/types@2.3.5
+  - @react-pdf/pdfkit@3.0.4
+  - @react-pdf/render@3.2.8
+  - @react-pdf/font@2.3.8
+
 ## 3.1.15
 
 ### Patch Changes

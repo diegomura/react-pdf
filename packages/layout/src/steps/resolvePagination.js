@@ -8,7 +8,7 @@ import { isNil, omit, compose } from '@react-pdf/fns';
 import isFixed from '../node/isFixed';
 import splitText from '../text/splitText';
 import splitNode from '../node/splitNode';
-import canNodeWrap from '../node/getWrap';
+import canNodeWrap, { NON_WRAP_TYPES } from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
 import createInstances from '../node/createInstances';
@@ -43,6 +43,34 @@ const warnUnavailableSpace = node => {
   );
 };
 
+const warnFallbackSpace = node => {
+  console.warn(
+    `Node of type ${node.type} can't wrap between pages and it's bigger than available page height, falling back to wrap, and putting it on the next page`,
+  );
+};
+const breakableViewChild = (children, height, path = '') => {
+  for (let i = 0; i < children.length; i += 1) {
+    if (children[i].type !== 'VIEW') continue;
+
+    if (shouldNodeBreak(children[i], children.slice(i + 1, height))) {
+      return {
+        child: children[i],
+        path: `${path}/${i}`,
+      };
+    }
+
+    if (children[i].children && children[i].children.length > 0) {
+      const breakable = breakableViewChild(
+        children[i].children,
+        height,
+        `${path}/${i}`,
+      );
+      if (breakable) return breakable;
+    }
+  }
+  return null;
+};
+
 const splitNodes = (height, contentArea, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
@@ -56,7 +84,14 @@ const splitNodes = (height, contentArea, nodes) => {
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
+
+    const firstBreakableViewChild =
+      child.children &&
+      child.children.length > 0 &&
+      breakableViewChild(child.children, height, '');
+
     const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
+
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;
 
@@ -74,10 +109,29 @@ const splitNodes = (height, contentArea, nodes) => {
     }
 
     if (!fitsInsidePage && !canWrap) {
-      currentChildren.push(child);
-      nextChildren.push(...futureNodes);
-      warnUnavailableSpace(child);
-      break;
+      if (NON_WRAP_TYPES.includes(child.type)) {
+        // We don't want to break non wrapable nodes, so we just let them be.
+        // They will be cropped, user will need to fix their ~image usage?
+        currentChildren.push(child);
+        nextChildren.push(...futureNodes);
+        warnUnavailableSpace(child);
+        break;
+      } else {
+        // We don't want to break non wrapable nodes, so we just let them be.
+        warnFallbackSpace(child);
+        const box = Object.assign({}, child.box, {
+          top: child.box.top - height,
+        });
+        const props = Object.assign({}, child.props, {
+          wrap: true,
+          break: false,
+        });
+        const next = Object.assign({}, child, { box, props });
+
+        currentChildren.push(...futureFixedNodes);
+        nextChildren.push(next, ...futureNodes);
+        break;
+      }
     }
 
     if (shouldBreak) {
@@ -93,15 +147,16 @@ const splitNodes = (height, contentArea, nodes) => {
       break;
     }
 
-    if (shouldSplit) {
+    if (shouldSplit || firstBreakableViewChild) {
       const [currentChild, nextChild] = split(child, height, contentArea);
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
+      // This was causing an infinite loop parent will now be discarded when it has no content
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        const box = Object.assign({}, child.box, {
-          top: child.box.top - height,
+        const box = Object.assign({}, nextChild.box, {
+          top: nextChild.box.top - height,
         });
-        const next = Object.assign({}, child, { box });
+        const next = Object.assign({}, nextChild, { box });
 
         currentChildren.push(...futureFixedNodes);
         nextChildren.push(next, ...futureNodes);
@@ -122,16 +177,19 @@ const splitNodes = (height, contentArea, nodes) => {
 
 const splitChildren = (height, contentArea, node) => {
   const children = node.children || [];
+
   const availableHeight = height - getTop(node);
+
   return splitNodes(availableHeight, contentArea, children);
 };
 
-const splitView = (node, height, contentArea) => {
+const splitView = (node, height, contentArea, foundBreakableViewChild) => {
   const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
     node,
+    foundBreakableViewChild,
   );
 
   return [
@@ -140,8 +198,10 @@ const splitView = (node, height, contentArea) => {
   ];
 };
 
-const split = (node, height, contentArea) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (node, height, contentArea, foundBreakableViewChild) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, foundBreakableViewChild);
 
 const shouldResolveDynamicNodes = node => {
   const children = node.children || [];

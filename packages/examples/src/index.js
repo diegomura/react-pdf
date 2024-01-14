@@ -25,8 +25,6 @@ const EXAMPLES = {
 const Viewer = () => {
   const [example, setExample] = useState('pageWrap');
 
-  console.log(example);
-
   const handleExampleChange = e => {
     setExample(e.target.dataset.name);
   };

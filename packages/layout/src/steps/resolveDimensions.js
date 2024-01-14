@@ -266,13 +266,15 @@ const freeYogaNodes = node => {
 export const resolvePageDimensions = (page, fontStore) => {
   if (isNil(page)) return null;
 
-  return compose(
+  const result = compose(
     destroyYogaNodes,
     freeYogaNodes,
     persistDimensions,
     calculateLayout,
     createYogaNodes(page, fontStore),
   )(page);
+
+  return result;
 };
 
 /**

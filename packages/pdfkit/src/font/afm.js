@@ -1,3 +1,6 @@
+/* eslint-disable no-var */
+/* eslint-disable no-cond-assign */
+
 import fs from 'fs';
 import range from '../utils/range';
 

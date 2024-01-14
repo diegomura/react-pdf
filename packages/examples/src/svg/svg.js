@@ -1,4 +1,3 @@
-import React from 'react';
 import { Svg, G, Polygon } from '@react-pdf/renderer';
 
 const Tiger = () => (

@@ -1,6 +1,6 @@
 import PNG from '@react-pdf/png-js';
 
-PNG.isValid = function(data) {
+PNG.isValid = function isValid(data) {
   try {
     return !!new PNG(data);
   } catch (e) {

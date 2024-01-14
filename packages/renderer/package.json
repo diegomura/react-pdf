@@ -63,13 +63,13 @@
     }
   },
   "devDependencies": {
-    "@size-limit/preset-big-lib": "^7.0.5",
+    "@size-limit/preset-big-lib": "^11.0.1",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
     "react-reconciler": "0.23.0",
-    "size-limit": "^7.0.5",
+    "size-limit": "^11.0.1",
     "util": "^0.12.4"
   }
 }

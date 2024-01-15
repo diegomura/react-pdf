@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import trim from '../../src/attributedString/trim';
 
 // const runs = [{ start: 0, end  }]

@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import indexAtOffset from '../../src/attributedString/indexAtOffset';
 
 describe('attributeString indexAtOffset operator', () => {

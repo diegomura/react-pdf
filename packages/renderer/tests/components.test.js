@@ -2,7 +2,7 @@
  * @jest-environment ./tests/environment/jsdom.js
  */
 
-import { jest } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import { render, waitFor, screen } from '@testing-library/react';
 import {
   BlobProvider,

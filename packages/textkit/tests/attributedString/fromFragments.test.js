@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import fromFragments from '../../src/attributedString/fromFragments';
 
 describe('attributeString fromFragments operator', () => {

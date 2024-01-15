@@ -1,4 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
+import { describe, expect, test } from '@jest/globals';
+
 import ReactPDF from '../src/dom';
 
 describe('dom', () => {

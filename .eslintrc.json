@@ -44,9 +44,6 @@
   "overrides": [
     {
       "files": ["**/*.test.js", "**/tests/**/*.js", "setup.jest.js"],
-      "env": {
-        "jest": true
-      },
       "rules": {
         "import/no-extraneous-dependencies": 0
       }

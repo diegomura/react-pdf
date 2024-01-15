@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import fromCodePoint from '../../src/glyph/fromCodePoint';
 
 const font = {

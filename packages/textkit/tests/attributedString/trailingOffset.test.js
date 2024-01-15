@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import trailingOffset from '../../src/attributedString/trailingOffset';
 
 describe('attributeString trailingOffset operator', () => {

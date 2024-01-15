@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import lineIndexAtHeight from '../../src/text/lineIndexAtHeight';
 
 const TEST_LINE = { box: { height: 25 } };

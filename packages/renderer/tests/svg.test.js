@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
+import { describe, expect, test } from '@jest/globals';
+
 import { Document, Page, Svg, Font, Text, Tspan } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 import { Tiger, Chart, Chart2, Gradients, Dasharrays } from './svgs';

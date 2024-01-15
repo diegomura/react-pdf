@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import propsEqual from '../src/utils/propsEqual';
 
 describe('propsEqual', () => {

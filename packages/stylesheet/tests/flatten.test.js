@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import flatten from '../src/flatten';
 
 describe('stylesheet flatten', () => {

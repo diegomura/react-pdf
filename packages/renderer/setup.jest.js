@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import path from 'path';
 import url from 'url';
 import jestImageSnapshot from 'jest-image-snapshot';

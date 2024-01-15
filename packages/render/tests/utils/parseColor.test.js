@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import parseColor from '../../src/utils/parseColor';
 
 describe('parse color util', () => {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import applyBestFit from '../../../src/engines/linebreaker/bestFit';
 
 const width = 50;

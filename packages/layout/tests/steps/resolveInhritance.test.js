@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import resolveInheritance from '../../src/steps/resolveInheritance';
 
 describe('layout resolveInheritance', () => {

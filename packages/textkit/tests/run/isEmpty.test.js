@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import isEmpty from '../../src/run/isEmpty';
 
 describe('run isEmpty operator', () => {

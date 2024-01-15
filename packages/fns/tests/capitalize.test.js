@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import capitalize from '../src/capitalize';
 
 describe('capitalize', () => {

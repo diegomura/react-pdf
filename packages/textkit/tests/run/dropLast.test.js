@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import pluck from '../internal/pluck';
 import dropLast from '../../src/run/dropLast';
 

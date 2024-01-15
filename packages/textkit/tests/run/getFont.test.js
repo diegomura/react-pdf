@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import font from '../internal/font';
 import getFont from '../../src/run/getFont';
 

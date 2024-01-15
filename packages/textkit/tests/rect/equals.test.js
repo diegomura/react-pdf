@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import equals from '../../src/rect/equals';
 
 describe('rect equals operator', () => {

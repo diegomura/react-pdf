@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import createCache from '../src/cache';
 
 describe('Background', () => {

@@ -1,4 +1,5 @@
-import { jest } from '@jest/globals';
+import { describe, expect, jest, test } from '@jest/globals';
+
 import * as P from '@react-pdf/primitives';
 
 import layoutText from '../../src/text/layoutText';

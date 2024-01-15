@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import glyphIndexAt from '../../src/run/glyphIndexAt';
 
 describe('run glyphIndexAt operator', () => {

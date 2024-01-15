@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import applyDefaultStyles from '../../src/layout/applyDefaultStyles';
 
 const applyDefaultStylesInstance = applyDefaultStyles();

@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import prepend from '../../src/run/prepend';

@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import getOrientation from '../../src/page/getOrientation';
 
 describe('page getOrientation', () => {

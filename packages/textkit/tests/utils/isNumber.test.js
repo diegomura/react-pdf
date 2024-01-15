@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import isNumber from '../../src/utils/isNumber';
 
 describe('utils isNumber operator', () => {

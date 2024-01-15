@@ -1,5 +1,16 @@
 # @react-pdf/examples
 
+## 3.1.0
+
+### Minor Changes
+
+- [#2491](https://github.com/diegomura/react-pdf/pull/2491) [`ed8524f`](https://github.com/diegomura/react-pdf/commit/ed8524f867f71fc8407faeb74edc4574e99a1137) Thanks [@diegomura](https://github.com/diegomura)! - feat: add minPresenceAhead example
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.1.17
+
 ## 3.0.0
 
 ### Major Changes

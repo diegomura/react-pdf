@@ -1,3 +1,4 @@
+import { describe, expect, test } from '@jest/globals';
 import stringFromCodePoints from '../../src/utils/stringFromCodePoints';
 
 describe('utils stringFromCodePoints operator', () => {

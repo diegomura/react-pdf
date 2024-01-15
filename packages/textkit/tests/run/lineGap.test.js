@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import lineGap from '../../src/run/lineGap';
 
 describe('run lineGap operator', () => {

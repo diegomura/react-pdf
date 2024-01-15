@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import advanceWidthBetween from '../../src/run/advanceWidthBetween';
 
 describe('run advanceWidthBetween operator', () => {

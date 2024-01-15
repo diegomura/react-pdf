@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import last from '../src/last';
 
 describe('last', () => {

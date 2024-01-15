@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import getSize from '../../src/page/getSize';
 
 describe('page getSize', () => {

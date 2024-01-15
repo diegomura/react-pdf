@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import * as P from '@react-pdf/primitives';
 import shouldBreak from '../../src/node/shouldBreak';
 

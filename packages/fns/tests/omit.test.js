@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import omit from '../src/omit';
 
 describe('omit', () => {

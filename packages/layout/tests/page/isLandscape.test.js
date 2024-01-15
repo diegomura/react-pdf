@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import isLandscape from '../../src/page/isLandscape';
 
 describe('page isLandscape', () => {

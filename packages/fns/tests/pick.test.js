@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import pick from '../src/pick';
 
 describe('pick', () => {

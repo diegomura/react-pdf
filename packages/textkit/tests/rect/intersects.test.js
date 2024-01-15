@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import intersects from '../../src/rect/intersects';
 
 describe('rect intersects operator', () => {

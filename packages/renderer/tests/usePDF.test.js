@@ -1,6 +1,7 @@
 /**
  * @jest-environment ./tests/environment/jsdom.js
  */
+import { expect, it } from '@jest/globals';
 
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { usePDF, Document, Page, Text } from '../src/dom';

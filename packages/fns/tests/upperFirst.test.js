@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import upperFirst from '../src/upperFirst';
 
 describe('upperFirst', () => {

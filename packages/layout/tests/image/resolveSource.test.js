@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import resolveSource from '../../src/image/resolveSource';
 
 const SOURCE_URL = 'gotcha';

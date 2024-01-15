@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import getDimension from '../../src/node/getDimension';
 
 const getComputedWidth = () => 10;

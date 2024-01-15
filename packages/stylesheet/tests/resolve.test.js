@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import resolve from '../src/index';
 
 describe('stylesheet resolve', () => {

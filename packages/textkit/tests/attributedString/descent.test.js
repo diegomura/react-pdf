@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import empty from '../../src/attributedString/empty';
 import descent from '../../src/attributedString/descent';
 

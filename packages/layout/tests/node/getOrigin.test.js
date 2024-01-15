@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import getOrigin from '../../src/node/getOrigin';
 
 describe('node getOrigin', () => {

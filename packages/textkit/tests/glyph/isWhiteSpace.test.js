@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import isWhiteSpace from '../../src/glyph/isWhiteSpace';
 
 describe('glyph isWhiteSpace operator', () => {

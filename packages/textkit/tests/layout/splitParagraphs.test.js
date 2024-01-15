@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import splitParagraphs from '../../src/layout/splitParagraphs';
 import fromFragments from '../../src/attributedString/fromFragments';
 

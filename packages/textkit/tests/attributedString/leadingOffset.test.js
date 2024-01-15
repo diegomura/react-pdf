@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import leadingOffset from '../../src/attributedString/leadingOffset';
 
 describe('attributeString leadingOffset operator', () => {

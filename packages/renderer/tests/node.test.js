@@ -1,9 +1,9 @@
 /* eslint-disable import/no-named-as-default-member */
+import { describe, expect, jest, test } from '@jest/globals';
 
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
-import { jest } from '@jest/globals';
 import ReactPDF from '../src/node';
 
 const { Document, Page, View } = ReactPDF;

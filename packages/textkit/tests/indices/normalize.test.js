@@ -1,3 +1,5 @@
+import { describe, expect, test } from '@jest/globals';
+
 import normalizeArray from '../../src/indices/normalize';
 
 describe('indices normalizeArray operator', () => {

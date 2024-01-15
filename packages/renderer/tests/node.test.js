@@ -52,12 +52,12 @@ describe('node', () => {
   });
 
   test('should render to file', async () => {
-    const path = `${__dirname}/test.pdf`;
-    await ReactPDF.renderToFile(<TestDocument />, path);
+    const pdfPath = `${__dirname}/test.pdf`;
+    await ReactPDF.renderToFile(<TestDocument />, pdfPath);
 
-    expect(fs.existsSync(path)).toBeTruthy();
+    expect(fs.existsSync(pdfPath)).toBeTruthy();
 
-    fs.unlinkSync(path);
+    fs.unlinkSync(pdfPath);
   });
 
   test('should export font store', () => {

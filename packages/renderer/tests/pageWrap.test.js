@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-import renderToImage from './renderComponent';
 import {
   Document,
   Font,
@@ -8,6 +7,7 @@ import {
   Image,
   StyleSheet,
 } from '@react-pdf/renderer';
+import renderToImage from './renderComponent';
 
 const styles = StyleSheet.create({
   body: {

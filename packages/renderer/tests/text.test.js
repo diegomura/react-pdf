@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-array-index-key */
-import renderToImage from './renderComponent';
 import {
   Document,
   Page,
@@ -10,6 +9,7 @@ import {
   Font,
   StyleSheet,
 } from '@react-pdf/renderer';
+import renderToImage from './renderComponent';
 
 const styles = StyleSheet.create({
   title: {

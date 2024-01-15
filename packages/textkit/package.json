@@ -4,13 +4,13 @@
   "version": "4.2.1",
   "description": "An advanced text layout framework",
   "type": "module",
-  "main": "./lib/textkit.cjs.js",
-  "module": "./lib/textkit.es.js",
+  "main": "./lib/textkit.cjs",
+  "module": "./lib/textkit.js",
   "exports": {
     ".": {
-      "import": "./lib/textkit.es.js",
-      "require": "./lib/textkit.cjs.js",
-      "default": "./lib/textkit.es.js"
+      "import": "./lib/textkit.js",
+      "require": "./lib/textkit.cjs",
+      "default": "./lib/textkit.js"
     }
   },
   "repository": {

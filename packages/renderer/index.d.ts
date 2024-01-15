@@ -13,6 +13,12 @@ import {
   PageMode,
 } from '@react-pdf/types';
 
+declare class ReactPDF {
+  static default: typeof ReactPDF;
+}
+
+export = ReactPDF;
+
 declare namespace ReactPDF {
   interface Styles {
     [key: string]: Style;
@@ -459,14 +465,18 @@ declare namespace ReactPDF {
    */
   class PDFViewer extends React.Component<PDFViewerProps> {}
 
-  interface PDFDownloadLinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
+  interface PDFDownloadLinkProps
+    extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
     /** PDF filename. Alias for anchor tag `download` attribute. */
     fileName?: string;
     document: React.ReactElement<DocumentProps>;
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
-    onClick?(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, instance: UsePDFInstance): void;
+    onClick?(
+      event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+      instance: UsePDFInstance,
+    ): void;
   }
 
   /**
@@ -489,7 +499,10 @@ declare namespace ReactPDF {
    */
   function usePDF(options: {
     document?: React.ReactElement<DocumentProps>;
-  }): [UsePDFInstance, (newDocument: React.ReactElement<DocumentProps>) => void];
+  }): [
+    UsePDFInstance,
+    (newDocument: React.ReactElement<DocumentProps>) => void,
+  ];
 
   const Font: FontStore;
 
@@ -510,7 +523,10 @@ declare namespace ReactPDF {
     toBlob: () => Promise<Blob>;
     toBuffer: () => Promise<NodeJS.ReadableStream>;
     on: (event: 'change', callback: () => void) => void;
-    updateContainer: (document: React.ReactElement<any>, callback?: () => void) => void;
+    updateContainer: (
+      document: React.ReactElement<any>,
+      callback?: () => void,
+    ) => void;
     removeListener: (event: 'change', callback: () => void) => void;
   };
 

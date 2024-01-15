@@ -11,18 +11,18 @@
     "directory": "packages/font"
   },
   "type": "module",
-  "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
+  "browser": {
+    "./lib/index.js": "./lib/index.browser.js",
+    "./lib/index.cjs": "./lib/index.browser.cjs"
+  },
   "exports": {
     ".": {
-      "import": "./lib/index.es.js",
-      "require": "./lib/index.cjs.js",
-      "default": "./lib/index.es.js"
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
     }
-  },
-  "browser": {
-    "./lib/index.es.js": "./lib/index.browser.es.js",
-    "./lib/index.cjs.js": "./lib/index.browser.cjs.js"
   },
   "scripts": {
     "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",

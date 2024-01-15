@@ -6,13 +6,13 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
   "exports": {
     ".": {
-      "import": "./lib/index.es.js",
-      "require": "./lib/index.cjs.js",
-      "default": "./lib/index.es.js"
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
     }
   },
   "repository": {

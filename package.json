@@ -69,6 +69,7 @@
     "react-dom": "^18.2.0",
     "rimraf": "^2.6.3",
     "rollup": "^2.60.1",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-ignore": "^1.0.10",
     "rollup-plugin-local-resolve": "^1.0.7",
     "rollup-plugin-polyfill-node": "^0.9.0",

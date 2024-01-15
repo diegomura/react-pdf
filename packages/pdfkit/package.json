@@ -4,23 +4,23 @@
   "license": "MIT",
   "description": "A PDF generation library for Node.js",
   "type": "module",
-  "main": "./lib/pdfkit.cjs.js",
-  "module": "./lib/pdfkit.es.js",
+  "main": "./lib/pdfkit.cjs",
+  "module": "./lib/pdfkit.js",
+  "browser": {
+    "./lib/pdfkit.js": "./lib/pdfkit.browser.js",
+    "./lib/pdfkit.cjs": "./lib/pdfkit.browser.cjs"
+  },
   "exports": {
     ".": {
-      "import": "./lib/pdfkit.es.js",
-      "require": "./lib/pdfkit.cjs.js",
-      "default": "./lib/pdfkit.es.js"
+      "import": "./lib/pdfkit.js",
+      "require": "./lib/pdfkit.cjs",
+      "default": "./lib/pdfkit.js"
     }
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/pdfkit"
-  },
-  "browser": {
-    "./lib/pdfkit.es.js": "./lib/pdfkit.browser.es.js",
-    "./lib/pdfkit.cjs.js": "./lib/pdfkit.browser.cjs.js"
   },
   "author": {
     "name": "Devon Govett",

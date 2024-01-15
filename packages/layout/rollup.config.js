@@ -29,10 +29,7 @@ const configBase = {
 };
 
 const config = Object.assign({}, configBase, {
-  output: [
-    getESM({ file: 'lib/index.es.js' }),
-    getCJS({ file: 'lib/index.cjs.js' }),
-  ],
+  output: [getESM({ file: 'lib/index.js' }), getCJS({ file: 'lib/index.cjs' })],
 });
 
 export default config;

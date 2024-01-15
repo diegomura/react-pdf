@@ -3,28 +3,26 @@
   "version": "3.1.17",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
-  "types": "index.d.ts",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/react-pdf.cjs.js",
-  "module": "./lib/react-pdf.es.js",
+  "main": "./lib/react-pdf.cjs",
+  "module": "./lib/react-pdf.js",
+  "browser": {
+    "./lib/react-pdf.js": "./lib/react-pdf.browser.js",
+    "./lib/react-pdf.cjs": "./lib/react-pdf.browser.cjs"
+  },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./lib/react-pdf.es.js",
-      "require": "./lib/react-pdf.cjs.js",
-      "default": "./lib/react-pdf.es.js"
+      "import": "./lib/react-pdf.js",
+      "require": "./lib/react-pdf.cjs",
+      "default": "./lib/react-pdf.js"
     }
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/renderer"
-  },
-  "browser": {
-    "./lib/react-pdf.es.js": "./lib/react-pdf.browser.es.js",
-    "./lib/react-pdf.cjs.js": "./lib/react-pdf.browser.cjs.js"
   },
   "scripts": {
     "build": "rimraf ./lib && rollup -c",

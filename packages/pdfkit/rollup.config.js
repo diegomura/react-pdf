@@ -48,6 +48,15 @@ const getPlugins = ({ browser, minify = false }) => [
         ignore(['fs']),
         alias({
           entries: [
+            // See https://github.com/browserify/browserify-zlib/pull/45
+            {
+              find: 'pako/lib/zlib/zstream',
+              replacement: 'pako/lib/zlib/zstream.js'
+            },
+            {
+              find: 'pako/lib/zlib/constants',
+              replacement: 'pako/lib/zlib/constants.js'
+            },
             { find: 'stream', replacement: 'vite-compatible-readable-stream' },
             { find: 'zlib', replacement: 'browserify-zlib' }
           ]

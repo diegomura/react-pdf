@@ -1,5 +1,15 @@
 # @react-pdf/types
 
+## 2.3.5
+
+### Patch Changes
+
+- [#2453](https://github.com/diegomura/react-pdf/pull/2453) [`e5c8fde`](https://github.com/diegomura/react-pdf/commit/e5c8fde9379a9a85ecac7e3d6273953e39d65f8d) Thanks [@chuckspencer-aiq](https://github.com/chuckspencer-aiq)! - fix: add clipPath to typing for SVGPresentationAttributes
+
+* [#2467](https://github.com/diegomura/react-pdf/pull/2467) [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2) Thanks [@JaeSeoKim](https://github.com/JaeSeoKim)! - feat: add withVariationSelectors option to registerEmojiSource [#2466](https://github.com/diegomura/react-pdf/issues/2466)
+
+- [#2416](https://github.com/diegomura/react-pdf/pull/2416) [`4c40b14`](https://github.com/diegomura/react-pdf/commit/4c40b149cfed42f2513e1dd330a92ccc3363c04f) Thanks [@TheMikeyRoss](https://github.com/TheMikeyRoss)! - Updated svg.d.ts to include strokeLinejoin
+
 ## 2.3.4
 
 ### Patch Changes

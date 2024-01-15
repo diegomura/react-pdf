@@ -1,5 +1,18 @@
 # @react-pdf/examples
 
+## 3.0.0
+
+### Major Changes
+
+- [#2487](https://github.com/diegomura/react-pdf/pull/2487) [`3f31046`](https://github.com/diegomura/react-pdf/commit/3f310460dcadb7bd65adeab0309812aa757cde29) Thanks [@diegomura](https://github.com/diegomura)! - add dev script
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
+- Updated dependencies [[`8654d00`](https://github.com/diegomura/react-pdf/commit/8654d003023dd0899cddfc2ea2f5a552e01cf570)]:
+  - @react-pdf/renderer@3.1.16
+
 ## 2.0.14
 
 ### Patch Changes

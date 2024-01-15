@@ -1,5 +1,11 @@
 # @react-pdf/textkit
 
+## 4.2.1
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
 ## 4.2.0
 
 ### Minor Changes

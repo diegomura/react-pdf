@@ -21,7 +21,7 @@
     "directory": "packages/fns"
   },
   "scripts": {
-    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\"",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },

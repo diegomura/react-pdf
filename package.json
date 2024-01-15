@@ -17,7 +17,7 @@
     "bootstrap": "lerna bootstrap",
     "prepublish": "lerna run build",
     "lint": "eslint packages",
-    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\"",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "dev": "lerna run dev --scope @react-pdf/examples",
     "changeset": "changeset",
     "version-packages": "changeset version",

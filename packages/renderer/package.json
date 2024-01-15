@@ -31,7 +31,7 @@
     "watch": "rimraf ./lib && rollup -c -w",
     "size": "size-limit",
     "lint": "eslint src",
-    "test": "yarn node --experimental-vm-modules \"$(yarn bin jest)\""
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",

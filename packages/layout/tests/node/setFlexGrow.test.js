@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import setFlexGrow from '../../src/node/setFlexGrow';
 
 describe('node setFlexGrow', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setFlexGrow: mock } };
 
   beforeEach(() => {

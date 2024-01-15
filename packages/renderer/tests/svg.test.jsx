@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { Document, Page, Svg, Font, Text, Tspan } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';

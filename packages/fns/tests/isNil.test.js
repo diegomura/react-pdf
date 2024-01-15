@@ -1,5 +1,5 @@
 /* eslint-disable no-void */
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import isNil from '../src/isNil';
 

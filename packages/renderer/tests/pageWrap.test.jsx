@@ -1,5 +1,4 @@
-/* eslint-disable react/no-array-index-key */
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import {
   Document,

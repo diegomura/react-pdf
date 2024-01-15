@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import font from '../internal/font';
 import getFont from '../../src/run/getFont';

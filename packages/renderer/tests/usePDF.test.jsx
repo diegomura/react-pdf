@@ -1,10 +1,8 @@
-/**
- * @jest-environment ./tests/environment/jsdom.js
- */
-import { expect, it } from '@jest/globals';
+// Note that this file is ran using a separate Vitest configuration
+import { expect, it } from 'vitest';
 
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { usePDF, Document, Page, Text } from '../src/dom';
+import { usePDF, Document, Page, Text } from '@react-pdf/renderer';
 
 const TestDocument = ({ title = 'Default' }) => (
   <Document title={title}>

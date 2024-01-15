@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import empty from '../../src/attributedString/empty';
 import start from '../../src/attributedString/start';

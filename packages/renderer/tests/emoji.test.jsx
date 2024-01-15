@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { Document, Page, Text, Font } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';

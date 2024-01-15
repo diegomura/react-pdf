@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-import { describe, expect, jest, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import fs from 'fs';
 import path from 'path';
@@ -32,7 +32,7 @@ describe('node', () => {
   });
 
   test('should render to string call render callback', async () => {
-    const mock = jest.fn();
+    const mock = vi.fn();
 
     await ReactPDF.renderToString(<TestDocument onRender={mock} />);
 
@@ -47,7 +47,7 @@ describe('node', () => {
   });
 
   test('should render to stream call render callback', async () => {
-    const mock = jest.fn();
+    const mock = vi.fn();
 
     await ReactPDF.renderToStream(<TestDocument onRender={mock} />);
 
@@ -92,7 +92,7 @@ describe('node', () => {
   });
 
   test('should render a fragment', async () => {
-    const mock = jest.fn();
+    const mock = vi.fn();
 
     const doc = (
       <Document onRender={mock}>
@@ -113,7 +113,7 @@ describe('node', () => {
   });
 
   test('should render a fragment in render', async () => {
-    const renderMock = jest.fn().mockReturnValue(
+    const renderMock = vi.fn().mockReturnValue(
       <>
         <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
         <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
@@ -134,7 +134,7 @@ describe('node', () => {
   });
 
   test('should render a child array', async () => {
-    const mock = jest.fn();
+    const mock = vi.fn();
 
     const children = [
       <View
@@ -166,7 +166,7 @@ describe('node', () => {
       <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />,
     ];
 
-    const renderMock = jest.fn().mockReturnValue(children);
+    const renderMock = vi.fn().mockReturnValue(children);
 
     const doc = (
       <Document>
@@ -189,7 +189,7 @@ describe('node', () => {
       />
     );
 
-    const renderMock = jest.fn().mockReturnValue(renderNode);
+    const renderMock = vi.fn().mockReturnValue(renderNode);
 
     const doc = (
       <Document>

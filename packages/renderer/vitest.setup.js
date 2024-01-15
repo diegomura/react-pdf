@@ -1,13 +1,10 @@
-import { expect } from '@jest/globals';
+import { expect } from 'vitest';
 import path from 'path';
 import url from 'url';
-import jestImageSnapshot from 'jest-image-snapshot';
-
-const { configureToMatchImageSnapshot } = jestImageSnapshot;
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-// setup image matcher
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
   customSnapshotsDir: `${__dirname}/tests/snapshots`,
   customDiffDir: `${__dirname}/tests/diffs`,

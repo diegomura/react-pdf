@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-const hyphenator = jest.fn(v => {
+const hyphenator = vi.fn(v => {
   if (v === '') return '';
   if (v === 'something') return 'some\u00adthing';
   if (v === 'neumonia') return 'neu\u00admo\u00adnia';
@@ -9,7 +9,7 @@ const hyphenator = jest.fn(v => {
   return v;
 });
 
-jest.unstable_mockModule('hyphen', () => ({ default: () => hyphenator }));
+vi.mock('hyphen', () => ({ default: () => hyphenator }));
 
 const wordHyphenation = (await import('../../src/engines/wordHyphenation'))
   .default;

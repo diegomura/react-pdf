@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test } from '@jest/globals';
+import { beforeEach, describe, expect, test } from 'vitest';
 import empty from '../../src/attributedString/empty';
 import preprocessRuns from '../../src/layout/preprocessRuns';
 import scriptItemizer, { scriptItemizerImpl } from '../internal/scriptItemizer';

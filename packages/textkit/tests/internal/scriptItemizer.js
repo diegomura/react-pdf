@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 
 /**
  * Test script itemizer based on the string 'Lorem'
@@ -10,7 +10,7 @@ import { jest } from '@jest/globals';
  * @param {Object}  attributed string
  * @returns {Object} attributed string
  */
-export const scriptItemizerImpl = jest.fn(string => {
+export const scriptItemizerImpl = vi.fn(string => {
   const runs =
     string.runs.length === 0
       ? []
@@ -22,6 +22,6 @@ export const scriptItemizerImpl = jest.fn(string => {
   return Object.assign({}, string, { runs });
 });
 
-const scriptItemizer = jest.fn(() => scriptItemizerImpl);
+const scriptItemizer = vi.fn(() => scriptItemizerImpl);
 
 export default scriptItemizer;

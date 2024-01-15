@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import * as Yoga from 'yoga-layout';
 
 import setPositionType from '../../src/node/setPositionType';
 
 describe('node setPositionType', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setPositionType: mock } };
 
   beforeEach(() => {

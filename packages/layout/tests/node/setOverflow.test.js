@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import * as Yoga from 'yoga-layout';
 
 import setOverflow from '../../src/node/setOverflow';
 
 describe('node setOverflow', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setOverflow: mock } };
 
   beforeEach(() => {

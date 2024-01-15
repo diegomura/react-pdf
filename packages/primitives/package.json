@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir lib && mv lib/index.js lib/index.cjs",
-    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest"
+    "test": "vitest"
   },
   "files": [
     "lib",

@@ -29,7 +29,7 @@
     "watch": "rimraf ./lib && rollup -c -w",
     "size": "size-limit",
     "lint": "eslint src",
-    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest"
+    "test": "vitest && vitest --config vitest.browser.config.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   setWidth,
   setMinWidth,
@@ -9,14 +9,14 @@ import {
 } from '../../src/node/setDimension';
 
 describe('node setDimension', () => {
-  const mockSetWidth = jest.fn();
-  const mockSetWidthPercent = jest.fn();
-  const mockSetMinWidth = jest.fn();
-  const mockSetMaxWidth = jest.fn();
-  const mockSetHeight = jest.fn();
-  const mockSetHeightPercent = jest.fn();
-  const mockSetMinHeight = jest.fn();
-  const mockSetMaxHeight = jest.fn();
+  const mockSetWidth = vi.fn();
+  const mockSetWidthPercent = vi.fn();
+  const mockSetMinWidth = vi.fn();
+  const mockSetMaxWidth = vi.fn();
+  const mockSetHeight = vi.fn();
+  const mockSetHeightPercent = vi.fn();
+  const mockSetMinHeight = vi.fn();
+  const mockSetMaxHeight = vi.fn();
 
   const node = {
     yogaNode: {

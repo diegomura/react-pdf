@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import empty from '../../src/rect/empty';
 import maxY from '../../src/rect/maxY';

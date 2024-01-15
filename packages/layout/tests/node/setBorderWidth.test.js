@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import * as Yoga from 'yoga-layout';
 
@@ -10,7 +10,7 @@ import setBorder, {
 } from '../../src/node/setBorderWidth';
 
 describe('node setBorderWidth', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setBorder: mock } };
 
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import * as P from '@react-pdf/primitives';
 
@@ -64,7 +64,7 @@ describe('text layoutText', () => {
     const node = createTextNode(TEXT, { textAlign: 'justify' });
     const lines = layoutText(node, containerWidth, 100, null);
 
-    const positions = lines[0].runs[0].positions;
+    const { positions } = lines[0].runs[0];
     const spaceWidth = positions[positions.length - 1].xAdvance;
 
     // First line justified. Last line aligned to the left
@@ -82,7 +82,7 @@ describe('text layoutText', () => {
   test('should allow hyphenation callback to be overriden', async () => {
     const text = 'reallylongtext';
     const hyphens = ['really', 'long', 'text'];
-    const hyphenationCallback = jest.fn().mockReturnValue(hyphens);
+    const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
 
     const node = createTextNode(text, {}, { hyphenationCallback });
     const lines = layoutText(node, 50, 100, null);

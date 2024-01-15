@@ -1,7 +1,6 @@
-/* eslint-disable import/no-named-as-default-member */
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
-import ReactPDF from '../src/dom';
+import ReactPDF from '@react-pdf/renderer';
 
 describe('dom', () => {
   test('should export font store', () => {

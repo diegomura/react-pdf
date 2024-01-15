@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import * as Yoga from 'yoga-layout';
 
@@ -10,9 +10,9 @@ import setMargin, {
 } from '../../src/node/setMargin';
 
 describe('node setMargin', () => {
-  const mock = jest.fn();
-  const mockAuto = jest.fn();
-  const mockPercent = jest.fn();
+  const mock = vi.fn();
+  const mockAuto = vi.fn();
+  const mockPercent = vi.fn();
 
   const node = {
     yogaNode: {

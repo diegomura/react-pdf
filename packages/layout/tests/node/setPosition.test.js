@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import Yoga from 'yoga-layout/sync';
+import yogaModule from 'yoga-layout/sync';
 
 import setPosition, {
   setPositionTop,
@@ -7,6 +7,10 @@ import setPosition, {
   setPositionBottom,
   setPositionLeft,
 } from '../../src/node/setPosition';
+
+// yoga-layout sets default export using non-standard __esModule property, so we need to
+// make an additional check in case it's used in a bundler that does not support it.
+const Yoga = 'default' in yogaModule ? yogaModule.default : yogaModule;
 
 describe('node setPosition', () => {
   const mock = jest.fn();

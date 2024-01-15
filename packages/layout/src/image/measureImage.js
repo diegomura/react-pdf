@@ -1,9 +1,13 @@
-import Yoga from 'yoga-layout/sync';
+import yogaModule from 'yoga-layout/sync';
 
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import isHeightAuto from '../page/isHeightAuto';
+
+// yoga-layout sets default export using non-standard __esModule property, so we need to
+// make an additional check in case it's used in a bundler that does not support it.
+const Yoga = 'default' in yogaModule ? yogaModule.default : yogaModule;
 
 const SAFETY_HEIGHT = 10;
 

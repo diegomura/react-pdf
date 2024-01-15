@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 3.8.0
+
+### Minor Changes
+
+- [#2400](https://github.com/diegomura/react-pdf/pull/2400) [`0538bd9`](https://github.com/diegomura/react-pdf/commit/0538bd900e5490a5ef81bcdbd1676fc9f9ae6acb) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Rework minPresenceAhead detection and add tests
+
 ## 3.7.0
 
 ### Minor Changes

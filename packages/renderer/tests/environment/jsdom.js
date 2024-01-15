@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { TestEnvironment } from 'jest-environment-jsdom';
 import { TextEncoder, TextDecoder } from 'util';
 

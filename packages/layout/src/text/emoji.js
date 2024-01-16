@@ -67,6 +67,8 @@ export const fetchEmojis = (string, source) => {
   return promises;
 };
 
+const specialCases = ['©️', '®']; // Do not treat these as emojis if emoji not present
+
 export const embedEmojis = fragments => {
   const result = [];
 
@@ -78,6 +80,8 @@ export const embedEmojis = fragments => {
     Array.from(fragment.string.matchAll(regex)).forEach(match => {
       const { index } = match;
       const emoji = match[0];
+      const isSpecialCase = specialCases.includes(emoji);
+
       const emojiSize = fragment.attributes.fontSize;
       const chunk = fragment.string.slice(lastIndex, index + match[0].length);
 
@@ -96,6 +100,8 @@ export const embedEmojis = fragments => {
             },
           },
         });
+      } else if (isSpecialCase) {
+        result.push({ string: emoji, attributes: fragment.attributes });
       } else {
         // If no emoji data, we just replace the emoji with a nodef char
         result.push({

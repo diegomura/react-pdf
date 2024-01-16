@@ -24,7 +24,7 @@
     "@react-pdf/textkit": "^4.2.1",
     "@react-pdf/types": "^2.3.5",
     "abs-svg-path": "^0.1.1",
-    "color-string": "^1.5.3",
+    "color-string": "^1.9.1",
     "normalize-svg-path": "^1.1.0",
     "parse-svg-path": "^0.1.2",
     "svg-arc-to-cubic-bezier": "^3.2.0"

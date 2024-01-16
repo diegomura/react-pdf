@@ -1,4 +1,5 @@
 ---
+'@react-pdf/stylesheet': patch
 '@react-pdf/render': patch
 ---
 

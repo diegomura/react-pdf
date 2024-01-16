@@ -21,7 +21,7 @@
     "@babel/runtime": "^7.20.13",
     "@react-pdf/fns": "2.0.1",
     "@react-pdf/types": "^2.3.5",
-    "color-string": "^1.5.3",
+    "color-string": "^1.9.1",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",
     "postcss-value-parser": "^4.1.0"

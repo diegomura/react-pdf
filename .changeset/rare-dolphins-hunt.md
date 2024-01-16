@@ -1,5 +1,5 @@
 ---
-'@react-pdf/examples': patch
+'@react-pdf/examples': minor
 '@react-pdf/layout': patch
 ---
 

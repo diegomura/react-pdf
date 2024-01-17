@@ -1,5 +1,5 @@
+import * as Yoga from 'yoga-layout';
 import { isNil } from '@react-pdf/fns';
-import Yoga from '../../yoga';
 
 /**
  * @typedef {Function} NodeInstanceWrapper
@@ -19,8 +19,8 @@ const setPositionType = value => node => {
   if (!isNil(value) && yogaNode) {
     yogaNode.setPositionType(
       value === 'absolute'
-        ? Yoga.POSITION_TYPE_ABSOLUTE
-        : Yoga.POSITION_TYPE_RELATIVE,
+        ? Yoga.PositionType.Absolute
+        : Yoga.PositionType.Relative,
     );
   }
 

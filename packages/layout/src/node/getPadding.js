@@ -1,4 +1,4 @@
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 const getComputedPadding = (node, edge) => {
   const { yogaNode } = node;
@@ -15,7 +15,7 @@ const getPadding = (node) => {
   const { style, box } = node;
 
   const paddingTop =
-    getComputedPadding(node, Yoga.EDGE_TOP) ||
+    getComputedPadding(node, Yoga.Edge.Top) ||
     box?.paddingTop ||
     style?.paddingTop ||
     style?.paddingVertical ||
@@ -23,7 +23,7 @@ const getPadding = (node) => {
     0;
 
   const paddingRight =
-    getComputedPadding(node, Yoga.EDGE_RIGHT) ||
+    getComputedPadding(node, Yoga.Edge.Right) ||
     box?.paddingRight ||
     style?.paddingRight ||
     style?.paddingHorizontal ||
@@ -31,7 +31,7 @@ const getPadding = (node) => {
     0;
 
   const paddingBottom =
-    getComputedPadding(node, Yoga.EDGE_BOTTOM) ||
+    getComputedPadding(node, Yoga.Edge.Bottom) ||
     box?.paddingBottom ||
     style?.paddingBottom ||
     style?.paddingVertical ||
@@ -39,7 +39,7 @@ const getPadding = (node) => {
     0;
 
   const paddingLeft =
-    getComputedPadding(node, Yoga.EDGE_LEFT) ||
+    getComputedPadding(node, Yoga.Edge.Left) ||
     box?.paddingLeft ||
     style?.paddingLeft ||
     style?.paddingHorizontal ||

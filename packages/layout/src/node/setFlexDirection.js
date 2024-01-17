@@ -1,9 +1,9 @@
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 const FLEX_DIRECTIONS = {
-  row: Yoga.FLEX_DIRECTION_ROW,
-  'row-reverse': Yoga.FLEX_DIRECTION_ROW_REVERSE,
-  'column-reverse': Yoga.FLEX_DIRECTION_COLUMN_REVERSE,
+  row: Yoga.FlexDirection.Row,
+  'row-reverse': Yoga.FlexDirection.RowReverse,
+  'column-reverse': Yoga.FlexDirection.ColumnReverse,
 };
 
 /**
@@ -22,7 +22,7 @@ const setFlexDirection = value => node => {
   const { yogaNode } = node;
 
   if (yogaNode) {
-    const flexDirection = FLEX_DIRECTIONS[value] || Yoga.FLEX_DIRECTION_COLUMN;
+    const flexDirection = FLEX_DIRECTIONS[value] || Yoga.FlexDirection.Column;
     yogaNode.setFlexDirection(flexDirection);
   }
 

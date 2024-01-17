@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 import setOverflow from '../../src/node/setOverflow';
 
@@ -22,7 +22,7 @@ describe('node setOverflow', () => {
     const result = setOverflow('visible')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.OVERFLOW_VISIBLE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Overflow.Visible);
     expect(result).toBe(node);
   });
 
@@ -30,7 +30,7 @@ describe('node setOverflow', () => {
     const result = setOverflow('scroll')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.OVERFLOW_SCROLL);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Overflow.Scroll);
     expect(result).toBe(node);
   });
 
@@ -38,7 +38,7 @@ describe('node setOverflow', () => {
     const result = setOverflow('hidden')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.OVERFLOW_HIDDEN);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Overflow.Hidden);
     expect(result).toBe(node);
   });
 });

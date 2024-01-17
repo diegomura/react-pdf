@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 import setBorder, {
   setBorderTop,
@@ -28,7 +28,7 @@ describe('node setBorderWidth', () => {
       const result = setBorderTop(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -50,7 +50,7 @@ describe('node setBorderWidth', () => {
       const result = setBorderRight(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -72,7 +72,7 @@ describe('node setBorderWidth', () => {
       const result = setBorderBottom(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -94,7 +94,7 @@ describe('node setBorderWidth', () => {
       const result = setBorderLeft(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -116,10 +116,10 @@ describe('node setBorderWidth', () => {
       const result = setBorder(50)(node);
 
       expect(mock.mock.calls).toHaveLength(4);
-      expect(mock.mock.calls[0]).toEqual([Yoga.EDGE_TOP, 50]);
-      expect(mock.mock.calls[1]).toEqual([Yoga.EDGE_RIGHT, 50]);
-      expect(mock.mock.calls[2]).toEqual([Yoga.EDGE_BOTTOM, 50]);
-      expect(mock.mock.calls[3]).toEqual([Yoga.EDGE_LEFT, 50]);
+      expect(mock.mock.calls[0]).toEqual([Yoga.Edge.Top, 50]);
+      expect(mock.mock.calls[1]).toEqual([Yoga.Edge.Right, 50]);
+      expect(mock.mock.calls[2]).toEqual([Yoga.Edge.Bottom, 50]);
+      expect(mock.mock.calls[3]).toEqual([Yoga.Edge.Left, 50]);
       expect(result).toBe(node);
     });
 

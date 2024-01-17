@@ -1,5 +1,5 @@
+import * as Yoga from 'yoga-layout';
 import { isNil, matchPercent } from '@react-pdf/fns';
-import Yoga from '../../yoga';
 
 /**
  * @typedef {Function} NodeInstanceWrapper
@@ -33,7 +33,7 @@ export const setRowGap = value => node => {
 
   if (!isNil(value) && yogaNode) {
     checkPercents('rowGap', value);
-    yogaNode.setGap(Yoga.GUTTER_ROW, value);
+    yogaNode.setGap(Yoga.Gutter.Row, value);
   }
 
   return node;
@@ -50,7 +50,7 @@ export const setColumnGap = value => node => {
 
   if (!isNil(value) && yogaNode) {
     checkPercents('columnGap', value);
-    yogaNode.setGap(Yoga.GUTTER_COLUMN, value);
+    yogaNode.setGap(Yoga.Gutter.Column, value);
   }
 
   return node;

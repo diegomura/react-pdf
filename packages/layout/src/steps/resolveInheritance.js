@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { pick, compose } from '@react-pdf/fns';
 
-const INHERITED_PROPERTIES = [
+const BASE_INHERITABLE_PROPERTIES = [
   'color',
   'fontFamily',
   'fontSize',
@@ -17,7 +17,14 @@ const INHERITED_PROPERTIES = [
   'wordSpacing',
 ];
 
+const TEXT_INHERITABLE_PROPERTIES = [
+  ...BASE_INHERITABLE_PROPERTIES,
+  'backgroundColor',
+];
+
 const isSvg = node => node.type === P.Svg;
+
+const isText = node => node.type === P.Text;
 
 // Merge style values
 const mergeValues = (styleName, value, inheritedValue) => {
@@ -67,9 +74,14 @@ const mergeStyles = inheritedStyles => node => {
  */
 const resolveInheritance = node => {
   if (isSvg(node)) return node;
+
   if (!node.children) return node;
 
-  const inheritStyles = pick(INHERITED_PROPERTIES, node.style || {});
+  const inheritableProperties = isText(node)
+    ? TEXT_INHERITABLE_PROPERTIES
+    : BASE_INHERITABLE_PROPERTIES;
+
+  const inheritStyles = pick(inheritableProperties, node.style || {});
 
   const resolveChild = compose(resolveInheritance, mergeStyles(inheritStyles));
 

@@ -111,6 +111,32 @@ describe('layout resolveInheritance', () => {
     );
   });
 
+  test('Should inherit background color for text childs', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: {},
+          children: [
+            {
+              type: 'TEXT',
+              style: { backgroundColor: 'red' },
+              children: [{ type: 'TEXT' }],
+            },
+          ],
+        },
+      ],
+    };
+
+    const result = resolveInheritance(root);
+    const text1 = result.children[0].children[0];
+    const text2 = text1.children[0];
+
+    expect(text1.style).toHaveProperty('backgroundColor', 'red');
+    expect(text2.style).toHaveProperty('backgroundColor', 'red');
+  });
+
   test('Should inherit color value', shouldInherit('color'));
   test('Should inherit fontFamily value', shouldInherit('fontFamily'));
   test('Should inherit fontSize value', shouldInherit('fontSize'));

@@ -1,5 +1,11 @@
 # @react-pdf/font
 
+## 2.4.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
 ## 2.3.8
 
 ### Patch Changes

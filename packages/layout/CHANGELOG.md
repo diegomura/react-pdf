@@ -1,5 +1,27 @@
 # @react-pdf/layout
 
+## 3.9.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- [#2504](https://github.com/diegomura/react-pdf/pull/2504) [`e705d98`](https://github.com/diegomura/react-pdf/commit/e705d9862e3364fde00cbe6cdaf06d492bf58526) Thanks [@diegomura](https://github.com/diegomura)! - feat: nested text inherit background color
+
+* [#2496](https://github.com/diegomura/react-pdf/pull/2496) [`c8fe2c8`](https://github.com/diegomura/react-pdf/commit/c8fe2c86639cb8e44f26f78e62fc67379a8e3ceb) Thanks [@diegomura](https://github.com/diegomura)! - fix: copyright and registered symbol rendering
+
+- [#2502](https://github.com/diegomura/react-pdf/pull/2502) [`96ea576`](https://github.com/diegomura/react-pdf/commit/96ea5764cbe4e6e3869cd0fe6620e5216f94ffc0) Thanks [@DominikMeca](https://github.com/DominikMeca)! - feat: include text preceeding special case emojis, include ™ symbol in excluded emojis
+
+- Updated dependencies [[`6bfe7e8`](https://github.com/diegomura/react-pdf/commit/6bfe7e8a30d96c04a1552800159992705f3605b1), [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/stylesheet@4.2.0
+  - @react-pdf/primitives@3.1.0
+  - @react-pdf/textkit@4.3.0
+  - @react-pdf/pdfkit@3.1.0
+  - @react-pdf/image@2.3.0
+  - @react-pdf/fns@2.1.0
+
 ## 3.8.0
 
 ### Minor Changes

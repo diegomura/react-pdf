@@ -6,12 +6,12 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/index.js",
+  "main": "./lib/index.cjs",
   "module": "./src/index.js",
   "exports": {
     ".": {
       "import": "./src/index.js",
-      "require": "./lib/index.js",
+      "require": "./lib/index.cjs",
       "default": "./src/index.js"
     }
   },
@@ -21,7 +21,7 @@
     "directory": "packages/primitives"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel src --out-dir lib && mv lib/index.js lib/index.cjs",
     "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest"
   },
   "files": [

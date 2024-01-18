@@ -1,6 +1,6 @@
-import yogaModule from 'yoga-layout/sync';
 import * as P from '@react-pdf/primitives';
 import { isNil, compose } from '@react-pdf/fns';
+import Yoga from '../../yoga';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
@@ -57,10 +57,6 @@ import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
-
-// yoga-layout sets default export using non-standard __esModule property, so we need to
-// make an additional check in case it's used in a bundler that does not support it.
-const Yoga = 'default' in yogaModule ? yogaModule.default : yogaModule;
 
 const YOGA_CONFIG = Yoga.Config.create();
 

@@ -1,5 +1,20 @@
 # @react-pdf/renderer
 
+## 3.2.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- Updated dependencies [[`e705d98`](https://github.com/diegomura/react-pdf/commit/e705d9862e3364fde00cbe6cdaf06d492bf58526), [`6bfe7e8`](https://github.com/diegomura/react-pdf/commit/6bfe7e8a30d96c04a1552800159992705f3605b1), [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37), [`c8fe2c8`](https://github.com/diegomura/react-pdf/commit/c8fe2c86639cb8e44f26f78e62fc67379a8e3ceb), [`96ea576`](https://github.com/diegomura/react-pdf/commit/96ea5764cbe4e6e3869cd0fe6620e5216f94ffc0)]:
+  - @react-pdf/layout@3.9.0
+  - @react-pdf/render@3.3.0
+  - @react-pdf/primitives@3.1.0
+  - @react-pdf/pdfkit@3.1.0
+  - @react-pdf/font@2.4.0
+
 ## 3.1.17
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @react-pdf/stylesheet
 
+## 4.2.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- [#2498](https://github.com/diegomura/react-pdf/pull/2498) [`6bfe7e8`](https://github.com/diegomura/react-pdf/commit/6bfe7e8a30d96c04a1552800159992705f3605b1) Thanks [@diegomura](https://github.com/diegomura)! - fix: color parse error
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/fns@2.1.0
+
 ## 4.1.9
 
 ### Patch Changes

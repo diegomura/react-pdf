@@ -1,5 +1,18 @@
 # @react-pdf/examples
 
+## 3.2.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+* [#2496](https://github.com/diegomura/react-pdf/pull/2496) [`c8fe2c8`](https://github.com/diegomura/react-pdf/commit/c8fe2c86639cb8e44f26f78e62fc67379a8e3ceb) Thanks [@diegomura](https://github.com/diegomura)! - fix: copyright and registered symbol rendering
+
+### Patch Changes
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/renderer@3.2.0
+
 ## 3.1.0
 
 ### Minor Changes

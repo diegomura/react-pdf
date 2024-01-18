@@ -19,12 +19,10 @@ const styles = StyleSheet.create({
     width: '200pt',
     height: '200pt',
     border: '1px solid red',
-    display: 'block',
     backgroundColor: 'tomato',
     marginBottom: '10',
   },
 });
-
 
 const Quixote = () => (
   <Document>
@@ -53,6 +51,5 @@ const Quixote = () => (
     </Page>
   </Document>
 );
-
 
 export default Quixote;

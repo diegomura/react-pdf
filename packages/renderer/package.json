@@ -45,9 +45,6 @@
     "queue": "^6.0.1",
     "scheduler": "^0.17.0"
   },
-  "peerDependencies": {
-    "react": "^16.8.6 || ^17.0.0 || ^18.0.0"
-  },
   "lint-staged": {
     "*.js": [
       "yarn run lint",
@@ -75,6 +72,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
+    "react": "^18.2.0",
     "react-reconciler": "0.23.0",
     "size-limit": "^11.0.1",
     "util": "^0.12.4"

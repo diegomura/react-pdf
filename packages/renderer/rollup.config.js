@@ -39,8 +39,9 @@ const getExternal = ({ browser }) => [
   /@babel\/runtime/,
   'react/jsx-runtime',
   ...(browser ? [] : ['fs', 'path', 'url']),
-  ...Object.keys(pkg.dependencies).filter(name => name !== 'react-reconciler'),
-  ...Object.keys(pkg.peerDependencies),
+  ...Object.keys(pkg.dependencies).filter(
+    name => name !== 'react' && name !== 'react-reconciler',
+  ),
 ];
 
 const getPlugins = ({ browser, declarationDests, minify = false }) => [

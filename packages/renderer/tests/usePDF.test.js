@@ -2,7 +2,6 @@
  * @jest-environment ./tests/environment/jsdom.js
  */
 
-/* eslint-disable import/no-extraneous-dependencies */
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { usePDF, Document, Page, Text } from '../src/dom';
 

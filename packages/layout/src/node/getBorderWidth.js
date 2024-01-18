@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 const getComputedBorder = (yogaNode, edge) =>
   yogaNode ? yogaNode.getComputedBorder(edge) : 0;

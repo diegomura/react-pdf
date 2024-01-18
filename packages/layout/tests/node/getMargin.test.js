@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 import getMargin from '../../src/node/getMargin';
 

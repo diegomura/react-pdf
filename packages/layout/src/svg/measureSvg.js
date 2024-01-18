@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 const getAspectRatio = viewbox => {
   if (!viewbox) return null;

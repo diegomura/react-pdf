@@ -1,4 +1,4 @@
-import { Document, Page, View, Text, Font } from '..';
+import { Document, Page, View, Text, Font } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
 // pdf.js does not render default fonts in node and I use Open Sans (:

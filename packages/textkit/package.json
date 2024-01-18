@@ -3,8 +3,16 @@
   "license": "MIT",
   "version": "4.2.1",
   "description": "An advanced text layout framework",
-  "main": "./lib/textkit.cjs.js",
-  "module": "./lib/textkit.es.js",
+  "type": "module",
+  "main": "./lib/textkit.cjs",
+  "module": "./lib/textkit.js",
+  "exports": {
+    ".": {
+      "import": "./lib/textkit.js",
+      "require": "./lib/textkit.cjs",
+      "default": "./lib/textkit.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -15,7 +23,7 @@
     "Diego Muracciole <diegomuracciole@gmail.com>"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },

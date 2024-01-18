@@ -1,7 +1,15 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-array-index-key */
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  Link,
+  Font,
+  StyleSheet,
+} from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
-import { Document, Page, View, Text, Link, Font, StyleSheet } from '..';
 
 const styles = StyleSheet.create({
   title: {

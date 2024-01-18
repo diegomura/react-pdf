@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 const FLEX_WRAP = {
   wrap: Yoga.WRAP_WRAP,

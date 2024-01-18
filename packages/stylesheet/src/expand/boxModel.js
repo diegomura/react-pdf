@@ -1,6 +1,10 @@
 /* eslint-disable no-plusplus */
-import parse from 'postcss-value-parser/lib/parse';
-import parseUnit from 'postcss-value-parser/lib/unit';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import parse from 'postcss-value-parser/lib/parse.js';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import parseUnit from 'postcss-value-parser/lib/unit.js';
 
 const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 

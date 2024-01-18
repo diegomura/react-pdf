@@ -3,6 +3,7 @@
   "license": "MIT",
   "version": "2.2.4",
   "description": "A SVG generation library for Node.js and browser",
+  "type": "module",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
@@ -13,7 +14,7 @@
     "Diego Muracciole <diegomuracciole@gmail.com>"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "build": "rimraf ./lib && babel src --out-dir lib",
     "watch": "rimraf ./lib && babel src --out-dir lib --watch"
   },

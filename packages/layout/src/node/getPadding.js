@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 const getComputedPadding = (node, edge) => {
   const { yogaNode } = node;

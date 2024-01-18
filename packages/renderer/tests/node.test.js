@@ -1,9 +1,14 @@
 /* eslint-disable import/no-named-as-default-member */
 
 import fs from 'fs';
+import path from 'path';
+import url from 'url';
+import { jest } from '@jest/globals';
 import ReactPDF from '../src/node';
 
 const { Document, Page, View } = ReactPDF;
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const TestDocument = ({ onRender }) => {
   return (
@@ -47,12 +52,12 @@ describe('node', () => {
   });
 
   test('should render to file', async () => {
-    const path = `${__dirname}/test.pdf`;
-    await ReactPDF.renderToFile(<TestDocument />, path);
+    const pdfPath = `${__dirname}/test.pdf`;
+    await ReactPDF.renderToFile(<TestDocument />, pdfPath);
 
-    expect(fs.existsSync(path)).toBeTruthy();
+    expect(fs.existsSync(pdfPath)).toBeTruthy();
 
-    fs.unlinkSync(path);
+    fs.unlinkSync(pdfPath);
   });
 
   test('should export font store', () => {

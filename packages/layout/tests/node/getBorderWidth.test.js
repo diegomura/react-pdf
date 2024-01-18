@@ -1,4 +1,4 @@
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 import getBorderWidth from '../../src/node/getBorderWidth';
 

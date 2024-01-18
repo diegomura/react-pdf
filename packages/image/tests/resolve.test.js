@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import url from 'url';
 
 import resolveImage, { IMAGE_CACHE } from '../src/resolve';
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const jpgImageUrl = 'https://react-pdf.org/static/images/quijote1.jpg';
 const pngImageUrl = 'https://react-pdf.org/static/images/quijote2.png';

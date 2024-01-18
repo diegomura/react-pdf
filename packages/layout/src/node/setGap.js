@@ -1,5 +1,5 @@
-import Yoga from 'yoga-layout/sync';
 import { isNil, matchPercent } from '@react-pdf/fns';
+import Yoga from '../../yoga';
 
 const checkPercents = (attr, value) => {
   const percent = matchPercent(value);

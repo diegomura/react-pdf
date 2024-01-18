@@ -1,6 +1,13 @@
 /* eslint-disable react/no-array-index-key */
+import {
+  Document,
+  Font,
+  Page,
+  Text,
+  Image,
+  StyleSheet,
+} from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
-import { Document, Font, Page, Text, Image, StyleSheet } from '..';
 
 const styles = StyleSheet.create({
   body: {

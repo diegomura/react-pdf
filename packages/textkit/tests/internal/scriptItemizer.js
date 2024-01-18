@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+
 /**
  * Test script itemizer based on the string 'Lorem'
  * Returns empty if no runs present, or arbitrary script itemization otherwise

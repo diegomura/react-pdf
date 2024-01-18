@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import wrapWords from '../../src/layout/wrapWords';
 
 const emptyInstance = wrapWords({}, {});

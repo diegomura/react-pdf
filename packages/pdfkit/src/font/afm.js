@@ -2,7 +2,9 @@
 /* eslint-disable no-cond-assign */
 
 import fs from 'fs';
-import range from '../utils/range';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import range from '../utils/range.js';
 
 const WIN_ANSI_MAP = {
   402: 131,

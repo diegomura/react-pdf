@@ -1,8 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const Environment = require('jest-environment-jsdom').default;
-const { TextEncoder, TextDecoder } = require('util');
+import { TestEnvironment } from 'jest-environment-jsdom';
+import { TextEncoder, TextDecoder } from 'util';
 
-class CustomEnvironment extends Environment {
+class CustomEnvironment extends TestEnvironment {
   async setup() {
     await super.setup();
 
@@ -25,4 +24,4 @@ class CustomEnvironment extends Environment {
   }
 }
 
-module.exports = CustomEnvironment;
+export default CustomEnvironment;

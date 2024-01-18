@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import setFlexBasis from '../../src/node/setFlexBasis';
 
 describe('node setFlexBasis', () => {

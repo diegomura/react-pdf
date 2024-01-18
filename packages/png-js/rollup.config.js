@@ -60,8 +60,8 @@ const getPlugins = ({ browser }) => [
 const serverConfig = {
   input,
   output: [
-    getESM({ file: 'lib/png-js.es.js' }),
-    getCJS({ file: 'lib/png-js.cjs.js' }),
+    getESM({ file: 'lib/png-js.js' }),
+    getCJS({ file: 'lib/png-js.cjs' }),
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
@@ -70,8 +70,8 @@ const serverConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/png-js.browser.es.js' }),
-    getCJS({ file: 'lib/png-js.browser.cjs.js' }),
+    getESM({ file: 'lib/png-js.browser.js' }),
+    getCJS({ file: 'lib/png-js.browser.cjs' }),
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true }),

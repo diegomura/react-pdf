@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import Yoga from 'yoga-layout/sync';
+import Yoga from '../../yoga';
 
 import layoutText from './layoutText';
 import linesWidth from './linesWidth';

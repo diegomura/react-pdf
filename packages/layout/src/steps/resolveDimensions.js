@@ -1,6 +1,6 @@
-import Yoga from 'yoga-layout/sync';
 import * as P from '@react-pdf/primitives';
 import { isNil, compose } from '@react-pdf/fns';
+import Yoga from '../../yoga';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';

@@ -1,5 +1,5 @@
-import Yoga from 'yoga-layout/sync';
 import { isNil } from '@react-pdf/fns';
+import Yoga from '../../yoga';
 
 const JUSTIFY_CONTENT = {
   center: Yoga.JUSTIFY_CENTER,

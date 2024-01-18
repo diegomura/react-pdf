@@ -10,14 +10,22 @@
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/font"
   },
-  "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
+  "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
   "browser": {
-    "./lib/index.es.js": "./lib/index.browser.es.js",
-    "./lib/index.cjs.js": "./lib/index.browser.cjs.js"
+    "./lib/index.js": "./lib/index.browser.js",
+    "./lib/index.cjs": "./lib/index.browser.cjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
+    }
   },
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },

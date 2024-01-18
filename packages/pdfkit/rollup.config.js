@@ -48,6 +48,15 @@ const getPlugins = ({ browser, minify = false }) => [
         ignore(['fs']),
         alias({
           entries: [
+            // See https://github.com/browserify/browserify-zlib/pull/45
+            {
+              find: 'pako/lib/zlib/zstream',
+              replacement: 'pako/lib/zlib/zstream.js'
+            },
+            {
+              find: 'pako/lib/zlib/constants',
+              replacement: 'pako/lib/zlib/constants.js'
+            },
             { find: 'stream', replacement: 'vite-compatible-readable-stream' },
             { find: 'zlib', replacement: 'browserify-zlib' }
           ]
@@ -72,8 +81,8 @@ const getPlugins = ({ browser, minify = false }) => [
 const serverConfig = {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.es.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.js' })
+    getESM({ file: 'lib/pdfkit.js' }),
+    getCJS({ file: 'lib/pdfkit.cjs' })
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false })
@@ -82,8 +91,8 @@ const serverConfig = {
 const serverProdConfig = {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs.min.js' })
+    getESM({ file: 'lib/pdfkit.min.js' }),
+    getCJS({ file: 'lib/pdfkit.min.cjs' })
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false, minify: true })
@@ -92,8 +101,8 @@ const serverProdConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.browser.es.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.js' })
+    getESM({ file: 'lib/pdfkit.browser.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.cjs' })
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true })
@@ -102,8 +111,8 @@ const browserConfig = {
 const browserProdConfig = Object.assign({}, browserConfig, {
   input,
   output: [
-    getESM({ file: 'lib/pdfkit.browser.es.min.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs.min.js' })
+    getESM({ file: 'lib/pdfkit.browser.min.js' }),
+    getCJS({ file: 'lib/pdfkit.browser.min.cjs' })
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true, minify: true })

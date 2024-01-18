@@ -361,7 +361,9 @@ declare namespace ReactPDF {
    */
   class Tspan extends React.Component<React.PropsWithChildren<TspanProps>> {}
 
-  interface GProps extends SVGPresentationAttributes {}
+  interface GProps extends SVGPresentationAttributes {
+    style?: Style;
+  }
 
   /**
    * The <G /> SVG element is a container used to group other SVG elements.
@@ -514,9 +516,7 @@ declare namespace ReactPDF {
 
   const PDFRenderer: any;
 
-  const pdf: (
-    initialValue?: React.ReactElement<DocumentProps>,
-  ) => {
+  const pdf: (initialValue?: React.ReactElement<DocumentProps>) => {
     container: any;
     isDirty: () => boolean;
     toString: () => string;

@@ -12,24 +12,29 @@ import applyDefaultStyles from './applyDefaultStyles';
 import verticalAlignment from './verticalAlign';
 
 /**
+ * @typedef {Function} LayoutEngine
+ * @param {Object} attributedString attributed string
+ * @param {Object} container container rect
+ * @param {Object} options layout options
+ * @returns {Object[]} paragraph blocks
+ */
+
+/**
  * A LayoutEngine is the main object that performs text layout.
  * It accepts an AttributedString and a Container object
  * to layout text into, and uses several helper objects to perform
  * various layout tasks. These objects can be overridden to customize
  * layout behavior.
  *
- * @param  {Object}  engines
- * @param  {Object}  attributed string
- * @param  {Object}  container rect
- * @param  {Object}  layout options
- * @return {Array} paragraph blocks
+ * @param {Object} engines engines
+ * @returns {LayoutEngine} layout engine
  */
 const layoutEngine = engines => (attributedString, container, options = {}) => {
   const processParagraph = compose(
-    resolveYOffset(engines, options),
-    resolveAttachments(engines, options),
-    generateGlyphs(engines, options),
-    verticalAlignment(options),
+    resolveYOffset(),
+    resolveAttachments(),
+    generateGlyphs(),
+    verticalAlignment(),
     wrapWords(engines, options),
   );
 
@@ -39,9 +44,9 @@ const layoutEngine = engines => (attributedString, container, options = {}) => {
     finalizeFragments(engines, options),
     typesetter(engines, options, container),
     processParagraphs,
-    splitParagraphs(engines, options),
+    splitParagraphs(),
     preprocessRuns(engines, options),
-    applyDefaultStyles(engines, options),
+    applyDefaultStyles(),
   )(attributedString);
 };
 

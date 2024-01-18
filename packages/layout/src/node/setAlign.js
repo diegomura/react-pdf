@@ -12,12 +12,22 @@ const ALIGN = {
 };
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
+ * @typedef {Function} AlignSetter
+ * @param {string} value align value
+ * @returns {NodeInstanceWrapper} node instance wrapper
+ */
+
+/**
  * Set generic align attribute to node's Yoga instance
  *
- * @param {String} specific align property
- * @param {String} align value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} attr specific align property
+ * @returns {AlignSetter} align setter
  */
 const setAlign = attr => value => node => {
   const { yogaNode } = node;

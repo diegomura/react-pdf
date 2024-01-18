@@ -2,12 +2,12 @@
  * Get lines width (if any)
  *
  * @param {Object} node
- * @returns {Number} lines width
+ * @returns {number} lines width
  */
-const linesWidth = node => {
+const linesWidth = (node) => {
   if (!node.lines) return 0;
 
-  return Math.max(0, ...node.lines.map(line => line.xAdvance));
+  return Math.max(0, ...node.lines.map((line) => line.xAdvance));
 };
 
 export default linesWidth;

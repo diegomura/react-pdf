@@ -131,12 +131,18 @@ const linebreak = (nodes, lines, settings) => {
     let next = null;
     let ratio = 0;
     let demerits = 0;
+    /**
+     * @type {Object[]}
+     */
     let candidates = [];
     let badness;
     let currentLine = 0;
     let tmpSum;
     let currentClass = 0;
     let fitnessClass;
+    /**
+     * @type {Object}
+     */
     let candidate;
     let newNode;
 

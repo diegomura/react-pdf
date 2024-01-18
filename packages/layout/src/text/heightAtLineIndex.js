@@ -2,7 +2,7 @@
  * Get height for given text line index
  *
  * @param {Object} node
- * @param {Number} index
+ * @param {number} index
  */
 const heightAtLineIndex = (node, index) => {
   let counter = 0;

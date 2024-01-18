@@ -5,8 +5,8 @@ const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
 /**
  * Resolve attachments of run
  *
- * @param  {Object}  run
- * @return {Object} run
+ * @param {Object}  run
+ * @returns {Object} run
  */
 const resolveRunAttachments = run => {
   if (!run.positions) return run;
@@ -28,12 +28,15 @@ const resolveRunAttachments = run => {
 };
 
 /**
+ * @typedef {Function} AttachmentResolver
+ * @param {string} attributedString attributed string
+ * @returns {string} attributed string
+ */
+
+/**
  * Resolve attachments for multiple paragraphs
  *
- * @param  {Object} layout engines
- * @param  {Object}  layout options
- * @param  {Array}  attributed strings (paragraphs)
- * @return {Array} attributed strings (paragraphs)
+ * @returns {AttachmentResolver} attachmentResolver
  */
 const resolveAttachments = () => attributedString => {
   const runs = attributedString.runs.map(resolveRunAttachments);

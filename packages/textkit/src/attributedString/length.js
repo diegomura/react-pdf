@@ -4,8 +4,8 @@ import end from './end';
 /**
  * Get attributed string length
  *
- * @param  {Object}  glyph string
- * @return {number} end
+ * @param {Object} attributedString glyph string
+ * @returns {number} end
  */
 const length = attributedString => {
   return end(attributedString) - start(attributedString);

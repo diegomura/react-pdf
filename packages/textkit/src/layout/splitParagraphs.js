@@ -2,14 +2,17 @@ import length from '../attributedString/length';
 import slice from '../attributedString/slice';
 
 /**
+ * @typedef {Function} SplitParagraphs
+ * @param {Object} attributedString attributed string
+ * @returns {Object[]} attributed string array
+ */
+
+/**
  * Breaks attributed string into paragraphs
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Array} attributed string array
+ * @returns {SplitParagraphs} split paragraphs
  */
-const splitParagraphs = () => attributedString => {
+const splitParagraphs = () => (attributedString) => {
   const res = [];
 
   let start = 0;

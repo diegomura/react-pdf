@@ -12,7 +12,7 @@ const DEFAULT_LINK_STYLES = {
  * Computes styles using stylesheet
  *
  * @param {Object} container
- * @param {Object} document node
+ * @param {Object} node document node
  * @returns {Object} computed styles
  */
 const computeStyle = (container, node) => {
@@ -28,11 +28,16 @@ const computeStyle = (container, node) => {
 };
 
 /**
+ * @typedef {Function} ResolveNodeStyles
+ * @param {Object} node document node
+ * @returns {Object} node (and subnodes) with resolved styles
+ */
+
+/**
  * Resolves node styles
  *
  * @param {Object} container
- * @param {Object} document node
- * @returns {Object} node (and subnodes) with resolved styles
+ * @returns {ResolveNodeStyles} resolve node styles
  */
 const resolveNodeStyles = container => node => {
   const style = computeStyle(container, node);
@@ -47,7 +52,7 @@ const resolveNodeStyles = container => node => {
 /**
  * Resolves page styles
  *
- * @param {Object} document page
+ * @param {Object} page document page
  * @returns {Object} document page with resolved styles
  */
 const resolvePageStyles = page => {
@@ -63,7 +68,7 @@ const resolvePageStyles = page => {
 /**
  * Resolves document styles
  *
- * @param {Object} document root
+ * @param {Object} root document root
  * @returns {Object} document root with resolved styles
  */
 const resolveStyles = root => {

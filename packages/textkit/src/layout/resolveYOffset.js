@@ -1,8 +1,8 @@
 /**
  * Resolves yOffset for run
  *
- * @param  {Object}  run
- * @return {Object} run
+ * @param {Object}  run
+ * @returns {Object} run
  */
 const resolveRunYOffset = run => {
   if (!run.positions) return run;
@@ -15,12 +15,15 @@ const resolveRunYOffset = run => {
 };
 
 /**
+ * @typedef {Function} YOffsetResolver
+ * @param {string} attributedString attributed string
+ * @returns {string} attributed string
+ */
+
+/**
  * Resolves yOffset for multiple paragraphs
  *
- * @param  {Object} layout engines
- * @param  {Object}  layout options
- * @param  {Array}  attributed strings (paragraphs)
- * @return {Array} attributed strings (paragraphs)
+ * @returns {YOffsetResolver} yOffsetResolver
  */
 const resolveYOffset = () => attributedString => {
   const runs = attributedString.runs.map(resolveRunYOffset);

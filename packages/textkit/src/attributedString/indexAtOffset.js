@@ -5,9 +5,9 @@ import runIndexAtOffset from '../run/indexAtOffset';
 /**
  * Get string index at offset
  *
- * @param  {Object}  attributed string
- * @param  {number}  offset
- * @return {number} string index at offset N
+ * @param {number} offset offset
+ * @param {Object} string attributed string
+ * @returns {number} string index at offset N
  */
 const indexAtOffset = (offset, string) => {
   let index = 0;

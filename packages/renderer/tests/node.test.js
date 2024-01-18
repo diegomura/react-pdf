@@ -10,6 +10,9 @@ const { Document, Page, View } = ReactPDF;
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
+/**
+ * @param {Object} props
+ */
 const TestDocument = ({ onRender }) => {
   return (
     <Document onRender={onRender}>

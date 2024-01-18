@@ -1,3 +1,7 @@
+/**
+ * @param {Object} a attributes
+ * @returns {Object} attributes with defaults
+ */
 const applyAttributes = a => ({
   align: a.align || 'left',
   alignLastLine:
@@ -41,8 +45,8 @@ const applyAttributes = a => ({
 /**
  * Apply default style to run
  *
- * @param  {Object}  run
- * @return {Object} run with styles
+ * @param {Object} run run
+ * @returns {Object} run with styles
  */
 const applyRunStyles = run => {
   const attributes = applyAttributes(run.attributes);
@@ -50,12 +54,15 @@ const applyRunStyles = run => {
 };
 
 /**
+ * @typedef {Function} ApplyDefaultStyles
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string
+ */
+
+/**
  * Apply default attributes for an attributed string
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @returns {ApplyDefaultStyles} applyDefaultStyles
  */
 const applyDefaultStyles = () => attributedString => {
   const string = attributedString.string || '';

@@ -21,8 +21,8 @@ const resolveNodeOrigin = node => {
 /**
  * Resolve document origins
  *
- * @param {Object} document root
- * @returns {Object} documrnt root
+ * @param {Object} root document root
+ * @returns {Object} document root
  */
 
 const resolveOrigin = root => {

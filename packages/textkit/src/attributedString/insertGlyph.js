@@ -9,8 +9,8 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  *
  * @param {number} index
  * @param {Object} glyph
- * @param {Object} attributed string
- * @return {Object} attributed string with new glyph
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string with new glyph
  */
 const insertGlyph = (index, glyph, attributedString) => {
   const runIndex = runIndexAt(index, attributedString);

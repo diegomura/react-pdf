@@ -1,7 +1,7 @@
 import empty from '../../src/attributedString/empty';
 import fontSubstitution from '../../src/engines/fontSubstitution';
 
-const instance = fontSubstitution({});
+const instance = fontSubstitution();
 
 describe('FontSubstitution', () => {
   test('should return empty array if no runs passed', () => {

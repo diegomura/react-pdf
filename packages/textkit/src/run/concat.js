@@ -6,9 +6,9 @@ import normalizeIndices from '../indices/normalize';
 /**
  * Concats two runs into one
  *
- * @param  {Object}  first run
- * @param  {Object}  second run
- * @return {Object}  concatenated run
+ * @param {Object} runA first run
+ * @param {Object} runB second run
+ * @returns {Object} concatenated run
  */
 const concat = (runA, runB) => {
   const end = runA.end + length(runB);

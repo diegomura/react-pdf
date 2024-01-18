@@ -7,7 +7,7 @@ const isHsl = value => /hsla?/g.test(value);
 /**
  * Transform rgb color to hexa
  *
- * @param {String} styles value
+ * @param {string} value styles value
  * @returns {Object} transformed value
  */
 const parseRgb = value => {
@@ -18,7 +18,7 @@ const parseRgb = value => {
 /**
  * Transform Hsl color to hexa
  *
- * @param {String} styles value
+ * @param {string} value styles value
  * @returns {Object} transformed value
  */
 const parseHsl = value => {
@@ -31,7 +31,7 @@ const parseHsl = value => {
 /**
  * Transform given color to hexa
  *
- * @param {String} styles value
+ * @param {string} value styles value
  * @returns {Object} transformed value
  */
 const transformColor = value => {

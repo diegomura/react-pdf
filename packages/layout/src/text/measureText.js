@@ -9,15 +9,20 @@ import linesHeight from './linesHeight';
 const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
 
 /**
+ * @typedef {Function} MeasureText
+ * @param {number} width
+ * @param {number} widthMode
+ * @param {number} height
+ * @returns {{ width: number, height: number }} text width and height
+ */
+
+/**
  * Yoga text measure function
  *
  * @param {Object} page
  * @param {Object} node
- * @param {Number} width
- * @param {Number} widthMode
- * @param {Number} height
- * @param {Number} heightMode
- * @returns {Object} text width and height
+ * @param {Object} fontStore
+ * @returns {MeasureText} measure text function
  */
 const measureText = (page, node, fontStore) => (width, widthMode, height) => {
   if (widthMode === Yoga.MEASURE_MODE_EXACTLY) {

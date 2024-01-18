@@ -8,10 +8,10 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
 /**
  * Insert glyph to run in the given index
  *
- * @param  {number}  string index
- * @param  {Object}  glyph
- * @param  {Object}  run
- * @return {Object}  run with glyph
+ * @param {number} index index
+ * @param {Object} glyph
+ * @param {Object} run
+ * @returns {Object} run with glyph
  */
 const insertGlyph = (index, glyph, run) => {
   if (!glyph) return run;
@@ -26,10 +26,10 @@ const insertGlyph = (index, glyph, run) => {
 /**
  * Insert either glyph or code point to run in the given index
  *
- * @param  {number}  string index
- * @param  {Object | number}  glyph | codePoint
- * @param  {Object}  run
- * @return {Object}  run with glyph
+ * @param {number} index index
+ * @param {Object | number} value glyph | codePoint
+ * @param {Object} run
+ * @returns {Object} run with glyph
  */
 const insert = (index, value, run) => {
   const font = getFont(run);

@@ -1,15 +1,15 @@
 import { isNil, matchPercent } from '@react-pdf/fns';
 
-const getTransformStyle = s => node =>
+const getTransformStyle = (s) => (node) =>
   isNil(node.style?.[s]) ? '50%' : node.style?.[s];
 
 /**
  * Get node origin
  *
  * @param {Object} node
- * @returns {Object} node origin
+ * @returns {{ left?: number, top?: number }} node origin
  */
-const getOrigin = node => {
+const getOrigin = (node) => {
   if (!node.box) return {};
 
   const { left, top, width, height } = node.box;

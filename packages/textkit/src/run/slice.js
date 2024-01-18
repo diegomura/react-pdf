@@ -8,10 +8,10 @@ import normalizeIndices from '../indices/normalize';
 /**
  * Slice run between glyph indices range
  *
- * @param  {number}  start glyph index
- * @param  {number}  end glyph index
- * @param  {Object}  run
- * @return {Object} sliced run
+ * @param {number} start glyph index
+ * @param {number} end glyph index
+ * @param {Object} run
+ * @returns {Object} sliced run
  */
 const slice = (start, end, run) => {
   const runScale = scale(run);

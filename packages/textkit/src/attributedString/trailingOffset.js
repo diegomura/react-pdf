@@ -5,8 +5,8 @@ import runTrailingOffset from '../run/trailingOffset';
 /**
  * Get attributed string trailing white space offset
  *
- * @param  {Object}  attributed string
- * @return {number} trailing white space offset
+ * @param {Object} attributedString attributed string
+ * @returns {number} trailing white space offset
  */
 const trailingOffset = attributedString => {
   const runs = attributedString.runs || [];

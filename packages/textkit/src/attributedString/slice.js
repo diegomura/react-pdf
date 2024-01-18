@@ -5,14 +5,14 @@ import subtractRun from '../run/subtract';
 /**
  * Slice array of runs
  *
- * @param  {number}  start offset
- * @param  {number}  end offset
- * @param  {Array}  runs
- * @return {Array} sliced runs
+ * @param {number} start offset
+ * @param {number} end offset
+ * @param {Object[]} runs
+ * @returns {Object[]} sliced runs
  */
 const sliceRuns = (start, end, runs) => {
-  const sliceFirstRun = a => sliceRun(start - a.start, end - a.start, a);
-  const sliceLastRun = a => sliceRun(0, end - a.start, a);
+  const sliceFirstRun = (a) => sliceRun(start - a.start, end - a.start, a);
+  const sliceLastRun = (a) => sliceRun(0, end - a.start, a);
 
   return runs.map((run, i) => {
     let result = run;
@@ -30,10 +30,10 @@ const sliceRuns = (start, end, runs) => {
 /**
  * Slice attributed string between two indices
  *
- * @param  {number}  start offset
- * @param  {number}  end offset
- * @param  {Object}  attributedString
- * @return {Object} attributedString
+ * @param {number} start offset
+ * @param {number} end offset
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributedString
  */
 const slice = (start, end, attributedString) => {
   if (attributedString.string.length === 0) return attributedString;

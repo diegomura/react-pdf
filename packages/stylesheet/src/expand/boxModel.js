@@ -18,6 +18,12 @@ const logError = (style, value) => {
   `);
 };
 
+/**
+ * @param {Object} options
+ * @param {Function} [options.expandsTo]
+ * @param {number} [options.maxValues]
+ * @param {boolean} [options.autoSupported]
+ */
 const expandBoxModel = ({
   expandsTo,
   maxValues = 1,

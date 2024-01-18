@@ -192,7 +192,7 @@ const resolveSvgRoot = (node, fontStore) => {
 /**
  * Pre-process SVG nodes so they can be rendered in the next steps
  *
- * @param {Object} root node
+ * @param {Object} node root node
  * @param {Object} fontStore font store
  * @returns {Object} root node
  */

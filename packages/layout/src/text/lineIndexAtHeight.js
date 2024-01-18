@@ -2,7 +2,7 @@
  * Get line index at given height
  *
  * @param {Object} node
- * @param {Number} height
+ * @param {number} height
  */
 const lineIndexAtHeight = (node, height) => {
   let y = 0;

@@ -3,10 +3,10 @@ import runIndexAt from './runIndexAt';
 /**
  * Filter runs contained between start and end
  *
- * @param  {number}  start
- * @param  {number}  end
- * @param  {Array}  runs
- * @return {boolean} filtered runs
+ * @param {number}  start
+ * @param {number}  end
+ * @param {Object[]}   runs
+ * @returns {Object} filtered runs
  */
 const filter = (start, end, runs) => {
   const startIndex = runIndexAt(start, runs);

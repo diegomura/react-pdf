@@ -1,3 +1,10 @@
+/**
+ * Create pairs from array
+ *
+ * @template T
+ * @param {T[]} values array
+ * @returns {T[][]} pairs
+ */
 const pairs = values => {
   const result = [];
 
@@ -11,8 +18,8 @@ const pairs = values => {
 /**
  * Parse svg-like points into number arrays
  *
- * @param {String} points string ex. "20,30 50,60"
- * @return {Array} points array ex. [[20, 30], [50, 60]]
+ * @param {string} points string ex. "20,30 50,60"
+ * @returns {number[][]} points array ex. [[20, 30], [50, 60]]
  */
 const parsePoints = points => {
   let values = (points || '')
@@ -25,9 +32,9 @@ const parsePoints = points => {
     values = values.slice(0, -1);
   }
 
-  values = values.map(parseFloat);
+  const mappedValues = values.map(parseFloat);
 
-  return pairs(values);
+  return pairs(mappedValues);
 };
 
 export default parsePoints;

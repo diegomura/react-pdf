@@ -1,9 +1,9 @@
 /**
  * Slice block at given height
  *
- * @param  {number}  height
- * @param  {Object}  paragraph block
- * @return {number} sliced paragraph block
+ * @param {number} height height
+ * @param {Object} block paragraph block
+ * @returns {number[]} sliced paragraph block
  */
 const sliceAtHeight = (height, block) => {
   const newBlock = [];

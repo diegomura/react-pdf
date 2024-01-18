@@ -323,9 +323,36 @@ class PDFDocument extends stream.Readable {
   toString() {
     return '[object PDFDocument]';
   }
+
+  initColor() {}
+
+  initVector() {}
+
+  initFonts() {}
+
+  initText() {}
+
+  initImages() {}
+
+  initOutline() {}
+
+  /**
+   * @param {number} m11
+   * @param {number} m12
+   * @param {number} m21
+   * @param {number} m22
+   * @param {number} dx
+   * @param {number} dy
+   */
+  // eslint-disable-next-line no-unused-vars
+  transform(m11, m12, m21, m22, dx, dy) {}
+
+  endOutline() {}
+
+  endAcroForm() {}
 }
 
-const mixin = methods => {
+const mixin = (methods) => {
   Object.assign(PDFDocument.prototype, methods);
 };
 

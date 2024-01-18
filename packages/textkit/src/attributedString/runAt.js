@@ -3,9 +3,9 @@ import runIndexAt from './runIndexAt';
 /**
  * Get run at char index
  *
- * @param  {number}  char index
- * @param  {Object}  attributedString
- * @return {Object} run
+ * @param {number} n char index
+ * @param {Object} attributedString attributed string
+ * @returns {Object} run
  */
 const runAt = (n, attributedString) => {
   const runIndex = runIndexAt(n, attributedString);

@@ -14,28 +14,28 @@ const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
 /**
  * Remove new line char at the end of line if present
  *
- * @param  {Object}  line
- * @return {Object} line
+ * @param {Object}  line
+ * @returns {Object} line
  */
-const removeNewLine = line => {
+const removeNewLine = (line) => {
   return last(line.string) === '\n' ? dropLast(line) : line;
 };
 
-const getOverflowLeft = line => {
+const getOverflowLeft = (line) => {
   return leadingOffset(line) + (line.overflowLeft || 0);
 };
 
-const getOverflowRight = line => {
+const getOverflowRight = (line) => {
   return trailingOffset(line) + (line.overflowRight || 0);
 };
 
 /**
  * Ignore whitespace at the start and end of a line for alignment
  *
- * @param  {Object}  line
- * @return {Object} line
+ * @param {Object}  line
+ * @returns {Object} line
  */
-const adjustOverflow = line => {
+const adjustOverflow = (line) => {
   const overflowLeft = getOverflowLeft(line);
   const overflowRight = getOverflowRight(line);
 
@@ -47,15 +47,20 @@ const adjustOverflow = line => {
 };
 
 /**
+ * @typedef {Function} JustifyLine
+ * @param {Object} line
+ * @returns {Object} line
+ */
+
+/**
  * Performs line justification by calling appropiate engine
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {string}  text align
- * @param  {Object}  line
- * @return {Object} line
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @param {string} align text align
+ * @returns {JustifyLine} justifyLine
  */
-const justifyLine = (engines, options, align) => line => {
+const justifyLine = (engines, options, align) => (line) => {
   const lineWidth = advanceWidth(line);
   const alignFactor = ALIGNMENT_FACTORS[align] || 0;
   const remainingWidth = Math.max(0, line.box.width - lineWidth);
@@ -68,13 +73,13 @@ const justifyLine = (engines, options, align) => line => {
   return shouldJustify ? engines.justification(options)(newLine) : newLine;
 };
 
-const finalizeLine = line => {
+const finalizeLine = (line) => {
   let lineAscent = 0;
   let lineDescent = 0;
   let lineHeight = 0;
   let lineXAdvance = 0;
 
-  const runs = line.runs.map(run => {
+  const runs = line.runs.map((run) => {
     const height = runHeight(run);
     const ascent = runAscent(run);
     const descent = runDescent(run);
@@ -98,42 +103,54 @@ const finalizeLine = line => {
 };
 
 /**
+ * @typedef {Function} FinalizeBlock
+ * @param {Object} line
+ * @param {number} i line index
+ * @param {Object[]} lines total lines
+ * @returns {Object} line
+ */
+
+/**
  * Finalize line by performing line justification
  * and text decoration (using appropiate engines)
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  line
- * @param  {number}  line index
- * @param  {Array}  total lines
- * @return {Object} line
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @returns {FinalizeBlock} finalize block
  */
-const finalizeBlock = (engines = {}, options) => (line, i, lines) => {
-  const isLastFragment = i === lines.length - 1;
-  const style = line.runs?.[0]?.attributes || {};
-  const align = isLastFragment ? style.alignLastLine : style.align;
+const finalizeBlock =
+  (engines = {}, options) =>
+  (line, i, lines) => {
+    const isLastFragment = i === lines.length - 1;
+    const style = line.runs?.[0]?.attributes || {};
+    const align = isLastFragment ? style.alignLastLine : style.align;
 
-  return compose(
-    finalizeLine,
-    engines.textDecoration(options),
-    justifyLine(engines, options, align),
-    adjustOverflow,
-    removeNewLine,
-  )(line);
-};
+    return compose(
+      finalizeLine,
+      engines.textDecoration(options),
+      justifyLine(engines, options, align),
+      adjustOverflow,
+      removeNewLine,
+    )(line);
+  };
+
+/**
+ * @typedef {Function} FinalizeFragments
+ * @param {Object[]} blocks line blocks
+ * @returns {Object[]} blocks
+ */
 
 /**
  * Finalize line block by performing line justification
  * and text decoration (using appropiate engines)
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Array}  line blocks
- * @return {Array} line blocks
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @returns {FinalizeFragments} finalizeFragments
  */
-const finalizeFragments = (engines, options) => blocks => {
+const finalizeFragments = (engines, options) => (blocks) => {
   const blockFinalizer = finalizeBlock(engines, options);
-  return blocks.map(block => block.map(blockFinalizer));
+  return blocks.map((block) => block.map(blockFinalizer));
 };
 
 export default finalizeFragments;

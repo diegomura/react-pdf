@@ -1,9 +1,9 @@
 /**
  * Add scalar to run
  *
- * @param  {number}  scalar
- * @param  {Object}  run
- * @return {Object} added run
+ * @param {number} n scalar
+ * @param {Object} run run
+ * @returns {Object} added run
  */
 const add = (n, run) => {
   const start = run.start + n;

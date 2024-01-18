@@ -1,9 +1,9 @@
 /**
  * Get glyph for a given code point
  *
- * @param  {number}  codePoint
- * @param  {Object}  font
- * @return {Object}  glyph
+ * @param {number} [value] codePoint
+ * @param {Object} [font] font
+ * @returns {Object} glyph
  * */
 const fromCodePoint = (value, font) =>
   font && value ? font.glyphForCodePoint(value) : null;

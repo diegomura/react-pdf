@@ -1,8 +1,8 @@
 /**
  * Calculate run scale
  *
- * @param  {Object}  run
- * @return {number} scale
+ * @param {Object}  run
+ * @returns {number} scale
  */
 const calculateScale = run => {
   const attributes = run.attributes || {};
@@ -15,8 +15,8 @@ const calculateScale = run => {
 /**
  * Get run scale
  *
- * @param  {Object}  run
- * @return {number} scale
+ * @param {Object}  run
+ * @returns {number} scale
  */
 const scale = run => {
   return run.attributes?.scale || calculateScale(run);

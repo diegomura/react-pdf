@@ -5,8 +5,8 @@ import lineGap from './lineGap';
 /**
  * Get run height
  *
- * @param  {Object}  run
- * @return {number} height
+ * @param {Object} run
+ * @returns {number} height
  */
 const height = run => {
   const lineHeight = run.attributes?.lineHeight;

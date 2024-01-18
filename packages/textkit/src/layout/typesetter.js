@@ -8,16 +8,21 @@ import layoutParagraph from './layoutParagraph';
 import sliceBlockAtHeight from '../block/sliceAtHeight';
 
 /**
+ * @typedef {Function} TypeSetter
+ * @param {Object} attributedStrings attributed strings (paragraphs)
+ * @returns {Object[]} paragraph blocks
+ */
+
+/**
  * Layout paragraphs inside container until it does not
  * fit anymore, performing line wrapping in the process.
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  container rect
- * @param  {Object}  attributed strings (paragraphs)
- * @return {Array} paragraph blocks
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @param {Object} container container rect
+ * @returns {TypeSetter} type setter
  */
-const typesetter = (engines, options, container) => attributedStrings => {
+const typesetter = (engines, options, container) => (attributedStrings) => {
   const blocks = [];
   const paragraphs = [...attributedStrings];
   const layoutBlock = layoutParagraph(engines, options);

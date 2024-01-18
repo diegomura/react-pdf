@@ -7,9 +7,9 @@
  *   glyphIndices:   0  1  2  2  2  3
  *   offset:         0  0  0  1  2  0
  *
- * @param  {number}  index
- * @param  {Object}  run
- * @return {number} ligature offset
+ * @param {number}  index
+ * @param {Object}  run
+ * @returns {number} ligature offset
  */
 const offset = (index, run) => {
   if (!run) return 0;

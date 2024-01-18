@@ -3,8 +3,8 @@ import { last } from '@react-pdf/fns';
 /**
  * Get attributed string end value
  *
- * @param  {Object}  attributed string
- * @return {number} end
+ * @param {Object} attributedString attributed string
+ * @returns {number} end
  */
 const end = attributedString => {
   const { runs } = attributedString;

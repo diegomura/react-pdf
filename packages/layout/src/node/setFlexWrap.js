@@ -6,11 +6,16 @@ const FLEX_WRAP = {
 };
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set flex wrap attribute to node's Yoga instance
  *
- * @param {String} flex wrap value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} value flex wrap value
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
 const setFlexWrap = value => node => {
   const { yogaNode } = node;

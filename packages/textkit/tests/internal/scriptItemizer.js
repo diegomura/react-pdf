@@ -7,8 +7,8 @@ import { jest } from '@jest/globals';
  *   L     o     r     e     m
  * |---- Latin ----|- Non-latin-|
  *
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @param {Object}  attributed string
+ * @returns {Object} attributed string
  */
 export const scriptItemizerImpl = jest.fn(string => {
   const runs =

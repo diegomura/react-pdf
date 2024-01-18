@@ -10,11 +10,16 @@ const JUSTIFY_CONTENT = {
 };
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set justify content attribute to node's Yoga instance
  *
- * @param {String} justify content value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} value justify content value
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
 const setJustifyContent = value => node => {
   const { yogaNode } = node;

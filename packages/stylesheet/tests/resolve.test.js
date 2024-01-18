@@ -19,7 +19,7 @@ describe('stylesheet resolve', () => {
     const style = {};
     const result = resolve({}, style);
 
-    expect(result).toEqual({}, {});
+    expect(result).toEqual({});
   });
 
   test('should return identity for single style object', () => {

@@ -1,11 +1,11 @@
 import { castArray } from '@react-pdf/fns';
 import { TextInstance } from '@react-pdf/primitives';
 
-const isString = value => typeof value === 'string';
+const isString = (value) => typeof value === 'string';
 
-const isNumber = value => typeof value === 'number';
+const isNumber = (value) => typeof value === 'number';
 
-const isFragment = value =>
+const isFragment = (value) =>
   value && value.type === Symbol.for('react.fragment');
 
 /**
@@ -13,10 +13,10 @@ const isFragment = value =>
  *
  * Can return multiple instances in the case of arrays or fragments.
  *
- * @param {Object} React element
- * @returns {Array} parsed react elements
+ * @param {Object} element React element
+ * @returns {Object[]} parsed React elements
  */
-const createInstances = element => {
+const createInstances = (element) => {
   if (!element) return [];
 
   if (isString(element) || isNumber(element)) {

@@ -3,15 +3,15 @@
  *
  * Ex. prepend(3, [0, 1, 2, 2]) => [0, 0, 0, 1, 2, 3, 3]
  *
- * @param  {number}  length
- * @param  {Array}  glyph indices
- * @return {Array}  extended glyph indices
+ * @param {number} length length
+ * @param {number[]} indices glyph indices
+ * @returns {number[]}  extended glyph indices
  */
 const prepend = (length, indices) => {
   if (length === 0) return indices;
 
   const newIndices = Array(length).fill(0);
-  const lastIndices = indices.map(value => value + 1);
+  const lastIndices = indices.map((value) => value + 1);
 
   return newIndices.concat(lastIndices);
 };

@@ -57,25 +57,25 @@ const PAGE_SIZES = {
 /**
  * Transforms array into size object
  *
- * @param {Array} array
- * @returns {Object} size object with width and height
+ * @param {number[]} v array
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const toSizeObject = v => ({ width: v[0], height: v[1] });
+const toSizeObject = (v) => ({ width: v[0], height: v[1] });
 
 /**
  * Flip size object
  *
- * @param {Object} size object
- * @returns {Object} flipped size object
+ * @param {{ width: number, height: number }} v size object
+ * @returns {{ width: number, height: number }} flipped size object
  */
-const flipSizeObject = v => ({ width: v.height, height: v.width });
+const flipSizeObject = (v) => ({ width: v.height, height: v.width });
 
 /**
  * Adjust page size to passed DPI
  *
- * @param {Object} size object
- * @param {number} dpi
- * @returns {Object} adjusted size object
+ * @param {{ width: number, height: number }} v size object
+ * @param {number} dpi DPI
+ * @returns {{ width: number, height: number }} adjusted size object
  */
 const adjustDpi = (v, dpi) => ({
   width: v.width ? v.width * dpi : v.width,
@@ -85,34 +85,37 @@ const adjustDpi = (v, dpi) => ({
 /**
  * Returns size object from a given string
  *
- * @param {String} page size string
- * @returns {Object} size object with width and height
+ * @param {string} v page size string
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const getStringSize = v => {
+const getStringSize = (v) => {
   return toSizeObject(PAGE_SIZES[v.toUpperCase()]);
 };
 
 /**
  * Returns size object from a single number
  *
- * @param {Number} page size number
- * @returns {Object} size object with width and height
+ * @param {number} n page size number
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const getNumberSize = n => toSizeObject([n]);
+const getNumberSize = (n) => toSizeObject([n]);
 
 /**
  * Return page size in an object { width, height }
  *
  * @param {Object} page instance
- * @returns {Object} size object with width and height
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const getSize = page => {
+const getSize = (page) => {
   const value = page.props?.size || 'A4';
   const dpi = parseFloat(page.props?.dpi || 72);
 
   const type = typeof value;
 
-  let size = value;
+  /**
+   * @type {{ width: number, height: number }}
+   */
+  let size;
 
   if (type === 'string') {
     size = getStringSize(value);
@@ -120,6 +123,8 @@ const getSize = page => {
     size = toSizeObject(value);
   } else if (type === 'number') {
     size = getNumberSize(value);
+  } else {
+    size = value;
   }
 
   size = adjustDpi(size, dpi / 72);

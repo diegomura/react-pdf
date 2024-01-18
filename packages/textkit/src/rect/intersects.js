@@ -1,9 +1,17 @@
 /**
+ * @typedef {Object} Rect
+ * @property {number} x
+ * @property {number} y
+ * @property {number} width
+ * @property {number} height
+ */
+
+/**
  * Checks if two rects intersect each other
  *
  * @param {Rect} a
  * @param {Rect} b
- * @returns {Boolean} rects intersects
+ * @returns {boolean} rects intersects
  */
 const intersects = (a, b) => {
   const x = Math.max(a.x, b.x);

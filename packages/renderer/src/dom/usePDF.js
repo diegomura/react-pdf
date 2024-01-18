@@ -5,6 +5,12 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { pdf } from '../index';
 
+/**
+ * PDF hook
+ *
+ * @param {Object} [options] hook options
+ * @returns {[Object, Function]} pdf state and update function
+ */
 export const usePDF = ({ document } = {}) => {
   const pdfInstance = useRef(null);
 

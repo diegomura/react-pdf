@@ -5,11 +5,15 @@ import empty from '../../attributedString/empty';
 const ignoredScripts = ['Common', 'Inherited', 'Unknown'];
 
 /**
+ * @typedef {Function} ScriptItemizer
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string
+ */
+
+/**
  * Resolves unicode script in runs, grouping equal runs together
  *
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @returns {ScriptItemizer} script itemizer
  */
 const scriptItemizer = () => attributedString => {
   const { string } = attributedString;

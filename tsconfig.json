@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "noUncheckedIndexedAccess": true,
@@ -14,5 +14,10 @@
     "strict": false,
     "target": "es2019"
   },
-  "include": ["packages/**/src/**/*"]
+  "include": [
+    "packages/**/src/**/*",
+    "packages/**/tests/**/*",
+    "custom.d.ts",
+    "global.d.ts"
+  ]
 }

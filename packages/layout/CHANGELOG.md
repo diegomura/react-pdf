@@ -1,5 +1,12 @@
 # @react-pdf/layout
 
+## 3.9.1
+
+### Patch Changes
+
+- Updated dependencies [[`42bbbda`](https://github.com/diegomura/react-pdf/commit/42bbbda48058acd2d36d7a92c812d133608c459e)]:
+  - @react-pdf/primitives@3.1.1
+
 ## 3.9.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @react-pdf/primitives
 
+## 3.1.1
+
+### Patch Changes
+
+- [#2510](https://github.com/diegomura/react-pdf/pull/2510) [`42bbbda`](https://github.com/diegomura/react-pdf/commit/42bbbda48058acd2d36d7a92c812d133608c459e) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix require @react-pdf/primitives from CJS
+
 ## 3.1.0
 
 ### Minor Changes

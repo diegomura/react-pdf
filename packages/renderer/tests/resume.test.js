@@ -184,9 +184,6 @@ const expStyles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Lato Italic',
   },
-  detailContainer: {
-    flexDirection: 'row',
-  },
   detailLeftColumn: {
     flexDirection: 'column',
     marginLeft: 10,
@@ -239,9 +236,7 @@ const ExperienceEntry = ({ company, details, position, date }) => {
       </View>
       <List>
         {details.map((detail, i) => (
-          <Item key={i} style={expStyles.detailContainer}>
-            {detail}
-          </Item>
+          <Item key={i}>{detail}</Item>
         ))}
       </List>
     </View>

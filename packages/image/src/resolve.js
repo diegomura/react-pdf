@@ -5,6 +5,7 @@ import fetch from 'cross-fetch';
 
 import PNG from './png';
 import JPEG from './jpeg';
+import WEBP from './webp';
 import createCache from './cache';
 
 export const IMAGE_CACHE = createCache({ limit: 30 });
@@ -56,7 +57,7 @@ const fetchRemoteFile = async (uri, options) => {
 
 const isValidFormat = format => {
   const lower = format.toLowerCase();
-  return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
+  return lower === 'jpg' || lower === 'jpeg' || lower === 'png' || lower === 'webp';
 };
 
 const guessFormat = buffer => {
@@ -66,6 +67,8 @@ const guessFormat = buffer => {
     format = 'jpg';
   } else if (PNG.isValid(buffer)) {
     format = 'png';
+  } else if (WEBP.isValid(buffer)){
+    format = 'webp';
   }
 
   return format;
@@ -81,6 +84,8 @@ function getImage(body, extension) {
       return new JPEG(body);
     case 'png':
       return new PNG(body);
+    case 'webp':
+      return new WEBP(body);
     default:
       return null;
   }
@@ -131,11 +136,23 @@ const getImageFormat = body => {
 
   const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
 
+  const isWebp =
+    body[0] === 82 &&
+    body[1] === 73 &&
+    body[2] === 70 &&
+    body[3] === 70 &&
+    body[8] === 87 &&
+    body[9] === 69 &&
+    body[10] === 66 &&
+    body[11] === 80;
+
   let extension = '';
   if (isPng) {
     extension = 'png';
   } else if (isJpg) {
     extension = 'jpg';
+  } else if (isWebp) {
+    extension = 'webp';
   } else {
     throw new Error('Not valid image extension');
   }

@@ -212,7 +212,8 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/advanced#debugging
      */
     debug?: boolean;
-    src: string;
+    href?: string;
+    src?: string;
   }
 
   /**
@@ -514,9 +515,7 @@ declare namespace ReactPDF {
 
   const PDFRenderer: any;
 
-  const pdf: (
-    initialValue?: React.ReactElement<DocumentProps>,
-  ) => {
+  const pdf: (initialValue?: React.ReactElement<DocumentProps>) => {
     container: any;
     isDirty: () => boolean;
     toString: () => string;

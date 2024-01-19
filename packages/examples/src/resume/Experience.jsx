@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Lato Italic',
   },
-  detailContainer: {
-    flexDirection: 'row',
-  },
   detailLeftColumn: {
     flexDirection: 'column',
     marginLeft: 10,
@@ -75,10 +72,8 @@ const ExperienceEntry = ({ company, details, position, date }) => {
         </View>
       </View>
       <List>
-        {details.map(detail => (
-          <Item key={detail.company} style={styles.detailContainer}>
-            {detail}
-          </Item>
+        {details.map((detail) => (
+          <Item key={detail.company}>{detail}</Item>
         ))}
       </List>
     </View>

@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.3.6
+
+### Patch Changes
+
+- [#2525](https://github.com/diegomura/react-pdf/pull/2525) [`9e5842b`](https://github.com/diegomura/react-pdf/commit/9e5842bbecca6e249af2c5fc50078bb7ddd5420f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix rowGap and columnGap style properties not accepting strings
+
 ## 2.3.5
 
 ### Patch Changes

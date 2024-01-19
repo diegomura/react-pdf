@@ -1,5 +1,17 @@
 # @react-pdf/layout
 
+## 3.10.0
+
+### Minor Changes
+
+- [#2505](https://github.com/diegomura/react-pdf/pull/2505) [`0f5c43f`](https://github.com/diegomura/react-pdf/commit/0f5c43fa6f3c0b53c067200cc1ac21e651504760) Thanks [@diegomura](https://github.com/diegomura)! - feat: wasm yoga
+
+### Patch Changes
+
+- Updated dependencies [[`9e5842b`](https://github.com/diegomura/react-pdf/commit/9e5842bbecca6e249af2c5fc50078bb7ddd5420f)]:
+  - @react-pdf/types@2.3.6
+  - @react-pdf/stylesheet@4.2.1
+
 ## 3.9.1
 
 ### Patch Changes

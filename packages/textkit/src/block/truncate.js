@@ -9,8 +9,8 @@ const ELLIPSIS_STRING = String.fromCharCode(ELLIPSIS_UNICODE);
 /**
  * Get ellipsis codepoint. This may be different in standard and embedded fonts
  *
- * @param  {number}  font
- * @return {Object} ellipsis codepoint
+ * @param {Object} font
+ * @returns {Object} ellipsis codepoint
  */
 const getEllipsisCodePoint = font => {
   if (!font.encode) return ELLIPSIS_UNICODE;
@@ -23,9 +23,8 @@ const getEllipsisCodePoint = font => {
 /**
  * Trucante block with ellipsis
  *
- * @param  {number}  lines quantity
- * @param  {Object}  paragraph block
- * @return {Object} sliced paragraph block
+ * @param {Object} block paragraph block
+ * @returns {Object} sliced paragraph block
  */
 const truncate = block => {
   const runs = last(block)?.runs || [];

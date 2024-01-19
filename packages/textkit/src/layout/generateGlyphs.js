@@ -1,14 +1,14 @@
 import scale from '../run/scale';
 import resolveGlyphIndices from '../indices/resolve';
 
-const getCharacterSpacing = run => run.attributes?.characterSpacing || 0;
+const getCharacterSpacing = (run) => run.attributes?.characterSpacing || 0;
 
 /**
  * Scale run positions
  *
- * @param  {Object}  run
- * @param  {Array}  positions
- * @return {Array} scaled positions
+ * @param {Object} run
+ * @param {Object[]} positions
+ * @returns {Object[]} scaled positions
  */
 const scalePositions = (run, positions) => {
   const runScale = scale(run);
@@ -28,13 +28,18 @@ const scalePositions = (run, positions) => {
 };
 
 /**
+ * @typedef {Function} LayoutRun
+ * @param {Object} run run
+ * @returns {Object} glyph run
+ */
+
+/**
  * Create glyph run
  *
- * @param  {String}  string
- * @param  {Object}  run
- * @return {Object}  glyph run
+ * @param {string} string string
+ * @returns {LayoutRun} layout run
  */
-const layoutRun = string => run => {
+const layoutRun = (string) => (run) => {
   const { start, end, attributes = {} } = run;
   const { font } = attributes;
 
@@ -54,14 +59,17 @@ const layoutRun = string => run => {
 };
 
 /**
+ * @typedef {Function} GenerateGlyphs
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string with glyphs
+ */
+
+/**
  * Generate glyphs for single attributed string
  *
- * @param  {Object}  layout engines
- * @param  {Object}  layout options
- * @param  {Array}  attributed strings
- * @return {Array} attributed string with glyphs
+ * @returns {GenerateGlyphs} generate glyphs
  */
-const generateGlyphs = () => attributedString => {
+const generateGlyphs = () => (attributedString) => {
   const runs = attributedString.runs.map(layoutRun(attributedString.string));
   return Object.assign({}, attributedString, { runs });
 };

@@ -7,12 +7,16 @@ import empty from '../../attributedString/empty';
 const getFontSize = value => value.attributes.fontSize || 12;
 
 /**
+ * @typedef {Function} FontSubstitution
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string
+ */
+
+/**
  * Resolve font runs in an AttributedString, grouping equal
  * runs and performing font substitution where necessary.
  *
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @returns {FontSubstitution} font substitution
  */
 const fontSubstitution = () => attributedString => {
   const { string, runs } = attributedString;

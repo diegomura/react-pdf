@@ -8,15 +8,20 @@ import isHeightAuto from '../page/isHeightAuto';
 const SAFETY_HEIGHT = 10;
 
 /**
+ * @typedef {Function} MeasureImage
+ * @param {number} width
+ * @param {number} widthMode
+ * @param {number} height
+ * @param {number} heightMode
+ * @returns {{ width: number, height: number }} image width and height
+ */
+
+/**
  * Yoga image measure function
  *
- * @param {Object} page
- * @param {Object} node
- * @param {Number} width
- * @param {Number} widthMode
- * @param {Number} height
- * @param {Number} heightMode
- * @returns {Object} image width and height
+ * @param {Object} page page
+ * @param {Object} node node
+ * @returns {MeasureImage} measure image
  */
 const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
   const imageRatio = getRatio(node);

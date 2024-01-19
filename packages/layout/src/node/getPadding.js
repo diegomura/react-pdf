@@ -9,9 +9,9 @@ const getComputedPadding = (node, edge) => {
  * Get Yoga computed paddings. Zero otherwise
  *
  * @param {Object} node
- * @return {Object} paddings
+ * @returns {{ paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number }} paddings
  */
-const getPadding = node => {
+const getPadding = (node) => {
   const { style, box } = node;
 
   const paddingTop =

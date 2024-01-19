@@ -7,16 +7,18 @@ import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const isImage = node => node.type === P.Image;
+const isImage = (node) => node.type === P.Image;
 
-const isTextInstance = node => node.type === P.TextInstance;
+const isTextInstance = (node) => node.type === P.TextInstance;
 
 /**
  * Get textkit fragments of given node object
  *
- * @param {Object} font store
+ * @param {Object} fontStore font store
  * @param {Object} instance node
- * @returns {Array} text fragments
+ * @param {string} [parentLink] parent link
+ * @param {number} [level] fragment level
+ * @returns {Object[]} text fragments
  */
 const getFragments = (fontStore, instance, parentLink, level = 0) => {
   if (!instance) return [{ string: '' }];
@@ -112,7 +114,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
 /**
  * Get textkit attributed string from text node
  *
- * @param {Object} font store
+ * @param {Object} fontStore font store
  * @param {Object} instance node
  * @returns {Object} attributed string
  */

@@ -7,11 +7,16 @@ const FLEX_DIRECTIONS = {
 };
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set flex direction attribute to node's Yoga instance
  *
- * @param {String} flex direction value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} value flex direction value
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
 const setFlexDirection = value => node => {
   const { yogaNode } = node;

@@ -17,10 +17,10 @@ const opts = {
 /**
  * Slice attributed string to many lines
  *
- * @param {Object} attributed string
- * @param  {Array}  nodes
- * @param  {Array}  breaks
- * @return {Array} attributed strings
+ * @param {Object} string attributed string
+ * @param {Object[]} nodes
+ * @param {Object[]} breaks
+ * @returns {Object[]} attributed strings
  */
 const breakLines = (string, nodes, breaks) => {
   let start = 0;
@@ -57,10 +57,10 @@ const breakLines = (string, nodes, breaks) => {
 /**
  * Return Knuth & Plass nodes based on line and previously calculated syllables
  *
- * @param {Object} attributed string
- * @param  {Object}  attributed string
- * @param  {Object}  layout options
- * @return {Array} attributed strings
+ * @param {Object} attributedString attributed string
+ * @param {Object} args attributed string args
+ * @param {Object} options layout options
+ * @returns {Object[]} attributed strings
  */
 const getNodes = (attributedString, { align }, options) => {
   let start = 0;
@@ -105,24 +105,30 @@ const getNodes = (attributedString, { align }, options) => {
   return result;
 };
 
-const getStyles = attributedString =>
+const getStyles = (attributedString) =>
   attributedString.runs?.[0]?.attributes || {};
+
+/**
+ * @typedef {Function} LineBreaker
+ * @param {Object} attributedString attributed string
+ * @param {Object} availableWidths available widths
+ * @returns {Object[]} attributed strings
+ */
 
 /**
  * Performs Knuth & Plass line breaking algorithm
  * Fallbacks to best fit algorithm if latter not successful
  *
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @param {Object} attributed string
- * @return {Array} attributed strings
+ * @param {Object} options layout options
+ * @returns {LineBreaker} line breaker
  */
-const linebreaker = options => (attributedString, availableWidths) => {
+const linebreaker = (options) => (attributedString, availableWidths) => {
   let tolerance = options.tolerance || 4;
 
   const style = getStyles(attributedString);
   const nodes = getNodes(attributedString, style, options);
 
+  /** @type {Object[]} */
   let breaks = linebreak(nodes, availableWidths, { tolerance });
 
   // Try again with a higher tolerance if the line breaking failed.

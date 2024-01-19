@@ -58,7 +58,10 @@ export default {
       x = null;
     }
 
-    // clone options object
+    // shallow clone options object
+    /**
+     * @type {Object}
+     */
     const result = Object.assign({}, options);
 
     // extend options with previous values for continued text
@@ -152,7 +155,7 @@ export default {
     }
 
     // Adds a segment of text to the TJ command buffer
-    const addSegment = cur => {
+    const addSegment = (cur) => {
       if (last < cur) {
         const hex = encoded.slice(last, cur).join('');
         const advance =
@@ -164,7 +167,7 @@ export default {
     };
 
     // Flushes the current TJ commands to the output stream
-    const flush = i => {
+    const flush = (i) => {
       addSegment(i);
 
       if (commands.length > 0) {

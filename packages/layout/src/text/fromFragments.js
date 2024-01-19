@@ -1,15 +1,15 @@
 /**
  * Create attributed string from text fragments
  *
- * @param  {Array}  fragments
- * @return {Object} attributed string
+ * @param {Object[]} fragments fragments
+ * @returns {Object} attributed string
  */
-const fromFragments = fragments => {
+const fromFragments = (fragments) => {
   let offset = 0;
   let string = '';
   const runs = [];
 
-  fragments.forEach(fragment => {
+  fragments.forEach((fragment) => {
     string += fragment.string;
 
     runs.push({

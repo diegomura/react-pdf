@@ -10,12 +10,17 @@ const omitFont = attributedString => {
 };
 
 /**
+ * @typedef {Function} PreprocessRuns
+ * @param {Object} attributedString attributed string
+ * @returns {Object} processed attributed string
+ */
+
+/**
  * Performs font substitution and script itemization on attributed string
  *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Object} processed attributed string
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @returns {PreprocessRuns} preprocess runs
  */
 const preprocessRuns = (engines, options) => attributedString => {
   if (isNil(attributedString)) return empty();

@@ -7,8 +7,8 @@ import { jest } from '@jest/globals';
  *   L     o     r     e     m
  * |- Courier -|-- Helvetica --|
  *
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @param {Object}  attributed string
+ * @returns {Object} attributed string
  */
 export const fontSubstitutionImpl = jest.fn(string => {
   const runs =

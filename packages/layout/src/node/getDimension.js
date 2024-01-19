@@ -7,9 +7,9 @@ const DEFAULT_DIMENSION = {
  * Get Yoga computed dimensions. Zero otherwise
  *
  * @param {Object} node
- * @return {Object} dimensions
+ * @returns {{ width: number, height: number }} dimensions
  */
-const getDimension = node => {
+const getDimension = (node) => {
   const { yogaNode } = node;
 
   if (!yogaNode) return DEFAULT_DIMENSION;

@@ -7,15 +7,15 @@ const ATTACHMENT_CODE = '\ufffc'; // 65532
 /**
  * Remove attachment attribute if no char present
  *
- * @param  {Object} attributed string
- * @return {Object} attributed string
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string
  */
-const purgeAttachments = attributedString => {
+const purgeAttachments = (attributedString) => {
   const shouldPurge = !attributedString.string.includes(ATTACHMENT_CODE);
 
   if (!shouldPurge) return attributedString;
 
-  const runs = attributedString.runs.map(run => omit('attachment', run));
+  const runs = attributedString.runs.map((run) => omit('attachment', run));
 
   return Object.assign({}, attributedString, { runs });
 };
@@ -23,9 +23,10 @@ const purgeAttachments = attributedString => {
 /**
  * Layout paragraphs inside rectangle
  *
- * @param  {Object} rect
- * @param  {Array} attributed strings
- * @return {Object} layout blocks
+ * @param {Object} rects rect
+ * @param {Object[]} lines attributed strings
+ * @param {number} indent
+ * @returns {Object} layout blocks
  */
 const layoutLines = (rects, lines, indent) => {
   let rect = rects.shift();
@@ -59,20 +60,25 @@ const layoutLines = (rects, lines, indent) => {
 };
 
 /**
+ * @typedef {Function} LayoutParagraph
+ * @param {Object} container rect
+ * @param {Object} paragraph attributed string
+ * @returns {Object} layout block
+ */
+
+/**
  * Performs line breaking and layout
  *
- * @param  {Object} engines
- * @param  {Object}  layout options
- * @param  {Object} rect
- * @param  {Object} attributed string
- * @return {Object} layout block
+ * @param {Object} engines engines
+ * @param {Object} options layout options
+ * @returns {LayoutParagraph} layout paragraph
  */
 const layoutParagraph = (engines, options) => (container, paragraph) => {
   const height = stringHeight(paragraph);
   const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
   const rects = generateLineRects(container, height);
 
-  const availableWidths = rects.map(r => r.width);
+  const availableWidths = rects.map((r) => r.width);
   availableWidths[0] -= indent;
 
   const lines = engines.linebreaker(options)(paragraph, availableWidths);

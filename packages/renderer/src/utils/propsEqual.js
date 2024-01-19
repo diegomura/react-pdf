@@ -3,9 +3,9 @@
 /**
  * Checks if two sets of props are equal (recursively)
  *
- * @param {Object} props A
- * @param {Object} props B
- * @returns {Boolean} props equals?
+ * @param {Object} a props A
+ * @param {Object} b props B
+ * @returns {boolean} props equals?
  *
  */
 const propsEqual = (a, b) => {

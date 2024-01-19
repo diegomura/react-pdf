@@ -3,8 +3,8 @@ import scale from './scale';
 /**
  * Get run ascent
  *
- * @param  {Object}  run
- * @return {boolean} ascent
+ * @param {Object} run
+ * @returns {number} ascent
  */
 const ascent = run => {
   const attachmentHeight = run.attributes?.attachment?.height || 0;

@@ -20,15 +20,15 @@ const engines = {
 
 const engine = layoutEngine(engines);
 
-const getMaxLines = node => node.style?.maxLines;
+const getMaxLines = (node) => node.style?.maxLines;
 
-const getTextOverflow = node => node.style?.textOverflow;
+const getTextOverflow = (node) => node.style?.textOverflow;
 
 /**
  * Get layout container for specific text node
  *
- * @param {Number} width
- * @param {Number} height
+ * @param {number} width
+ * @param {number} height
  * @param {Object} node
  * @returns {Object} layout container
  */
@@ -64,11 +64,11 @@ const getLayoutOptions = (fontStore, node) => ({
 /**
  * Get text lines for given node
  *
- * @param {Object} node
- * @param {Number} container width
- * @param {Number} container height
- * @param {Number} fontStore font store
- * @returns {Array} layout lines
+ * @param {Object} node node
+ * @param {number} width container width
+ * @param {number} height container height
+ * @param {number} fontStore font store
+ * @returns {Object[]} layout lines
  */
 const layoutText = (node, width, height, fontStore) => {
   const attributedString = getAttributedString(fontStore, node);

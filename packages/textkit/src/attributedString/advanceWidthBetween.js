@@ -6,10 +6,10 @@ import runAdvanceWidthBetween from '../run/advanceWidthBetween';
  * Does not consider ligature splitting for the moment.
  * Check performance impact on supporting this
  *
- * @param  {number}  start offset
- * @param  {number}  end offset
- * @param  {Object}  attributedString
- * @return {number} advance width
+ * @param {number} start offset
+ * @param {number} end offset
+ * @param {Object} attributedString
+ * @returns {number} advance width
  */
 const advanceWidthBetween = (start, end, attributedString) => {
   const runs = filterRuns(start, end, attributedString.runs);

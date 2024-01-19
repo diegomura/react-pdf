@@ -5,14 +5,14 @@ import runDropLast from '../run/dropLast';
 /**
  * Drop last glyph
  *
- * @param {Object} attributed string
- * @return {Object} attributed string with new glyph
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string with new glyph
  */
-const dropLast = attributeString => {
-  const string = arrayDropLast(attributeString.string);
-  const runs = adjust(-1, runDropLast, attributeString.runs);
+const dropLast = attributedString => {
+  const string = arrayDropLast(attributedString.string);
+  const runs = adjust(-1, runDropLast, attributedString.runs);
 
-  return Object.assign({}, attributeString, { string, runs });
+  return Object.assign({}, attributedString, { string, runs });
 };
 
 export default dropLast;

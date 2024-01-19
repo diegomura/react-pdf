@@ -126,11 +126,16 @@ const setYogaValues = node => {
 };
 
 /**
+ * @typedef {Function} InsertYogaNodes
+ * @param {Object} child child node
+ * @returns {Object} node
+ */
+
+/**
  * Inserts child into parent' yoga node
  *
- * @param {Object} parent
- * @param {Object} node
- * @param {Object} node
+ * @param {Object} parent parent
+ * @returns {InsertYogaNodes} insert yoga nodes
  */
 const insertYogaNodes = parent => child => {
   parent.insertChild(child.yogaNode, parent.getChildCount());
@@ -162,11 +167,16 @@ const setMeasureFunc = (node, page, fontStore) => {
 const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
 
 /**
+ * @typedef {Function} CreateYogaNodes
+ * @param {Object} node
+ * @returns {Object} node with appended yoga node
+ */
+
+/**
  * Creates and add yoga node to document tree
  * Handles measure function for text and image nodes
  *
- * @param {Object} node
- * @returns {Object} node with appended yoga node
+ * @returns {CreateYogaNodes} create yoga nodes
  */
 const createYogaNodes = (page, fontStore) => node => {
   const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
@@ -192,8 +202,8 @@ const createYogaNodes = (page, fontStore) => node => {
 /**
  * Performs yoga calculation
  *
- * @param {Object} node
- * @returns {Object} node
+ * @param {Object} page page node
+ * @returns {Object} page node
  */
 const calculateLayout = page => {
   page.yogaNode.calculateLayout();
@@ -278,7 +288,8 @@ export const resolvePageDimensions = (page, fontStore) => {
 /**
  * Calculates root object layout using Yoga.
  *
- * @param {Object} root object
+ * @param {Object} node root object
+ * @param {Object} fontStore font store
  * @returns {Object} root object with correct 'box' layout attributes
  */
 const resolveDimensions = (node, fontStore) => {

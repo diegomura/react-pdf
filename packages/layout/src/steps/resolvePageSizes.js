@@ -17,7 +17,7 @@ export const resolvePageSize = page => {
 /**
  * Resolves page sizes
  *
- * @param {Object} document root
+ * @param {Object} root document root
  * @returns {Object} document root with resolved page sizes
  */
 const resolvePageSizes = root => {

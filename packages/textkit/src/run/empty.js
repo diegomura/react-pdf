@@ -1,7 +1,7 @@
 /**
  * Returns empty run
  *
- * @return {Object} empty run
+ * @returns {Object} empty run
  */
 const empty = () => ({
   start: 0,

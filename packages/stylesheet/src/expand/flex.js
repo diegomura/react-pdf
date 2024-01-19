@@ -2,9 +2,15 @@
 
 // TODO: change flex defaults to [0, 1, 'auto'] as in spec in next major release
 const flexDefaults = [1, 1, 0];
+/**
+ * @type {(number | 'auto')[]}
+ */
 const flexAuto = [1, 1, 'auto'];
 
 const expandFlex = (key, value) => {
+  /**
+   * @type {(number | 'auto')[]}
+   */
   let defaults = flexDefaults;
   let matches = [];
   if (value === 'auto') {

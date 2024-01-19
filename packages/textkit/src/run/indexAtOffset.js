@@ -1,9 +1,9 @@
 /**
  * Get string index at offset
  *
- * @param  {Object}  run
- * @param  {number}  offset
- * @return {number} string index at offset N
+ * @param {number} offset
+ * @param {Object} run
+ * @returns {number} string index at offset N
  */
 const indexAtOffset = (offset, run) => {
   let counter = 0;

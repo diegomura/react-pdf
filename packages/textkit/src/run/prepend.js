@@ -7,9 +7,9 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
 /**
  * Prepend glyph to run
  *
- * @param  {Object}  glyph
- * @param  {Object}  run
- * @return {Object} run with glyph
+ * @param {Object} glyph
+ * @param {Object} run
+ * @returns {Object} run with glyph
  */
 const prependGlyph = (glyph, run) => {
   const runScale = scale(run);
@@ -28,9 +28,9 @@ const prependGlyph = (glyph, run) => {
 /**
  * Prepend glyph or code point on run
  *
- * @param  {Object | number}  glyph | codePoint
- * @param  {Object}  run
- * @return {Object} run with glyph
+ * @param {Object | number} value glyph or codePoint
+ * @param {Object} run
+ * @returns {Object} run with glyph
  */
 const prepend = (value, run) => {
   if (!value) return run;

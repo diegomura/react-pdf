@@ -1,11 +1,15 @@
 /* eslint-disable no-restricted-syntax */
 
 /**
+ * @typedef {Function} VerticalAlignment
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string
+ */
+
+/**
  * Apply scaling and yOffset for verticalAlign 'sub' and 'super'.
  *
- * @param  {Object} layout options
- * @param  {Object} attributed string
- * @return {Object} attributed string
+ * @returns {VerticalAlignment} verticalAlignment
  */
 const verticalAlignment = () => attributedString => {
   attributedString.runs.forEach(run => {

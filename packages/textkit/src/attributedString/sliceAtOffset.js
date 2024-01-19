@@ -4,9 +4,9 @@ import indexAtOffset from './indexAtOffset';
 /**
  * Slice attributed string at given offset
  *
- * @param  {number}  offset
- * @param  {Object}  attributedString
- * @return {Object} attributedString
+ * @param {number} offset offset
+ * @param {Object} string attributedString
+ * @returns {Object} attributedString
  */
 const sliceAtOffset = (offset, string) => {
   const index = indexAtOffset(offset, string);

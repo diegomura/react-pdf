@@ -1,7 +1,7 @@
 /**
  * Returns empty rect
  *
- * @return {Object} empty rect
+ * @returns {Object} empty rect
  */
 const empty = () => ({
   x: 0,

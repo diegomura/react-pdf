@@ -3,12 +3,21 @@ import { Buffer } from 'buffer';
 
 import { pdf } from '../index';
 
+/**
+ * @param {React.ReactElement} element
+ * @returns {Promise<NodeJS.ReadableStream>}
+ */
 export const renderToStream = async element => {
   const instance = pdf(element);
   const stream = await instance.toBuffer();
   return stream;
 };
 
+/**
+ * @param {React.ReactElement} element
+ * @param {string} filePath
+ * @param {Function} [callback]
+ */
 export const renderToFile = async (element, filePath, callback) => {
   const output = await renderToStream(element);
   const stream = fs.createWriteStream(filePath);
@@ -24,6 +33,10 @@ export const renderToFile = async (element, filePath, callback) => {
   });
 };
 
+/**
+ * @param {React.ReactElement} element
+ * @returns {Promise<Buffer>}
+ */
 export const renderToBuffer = element =>
   renderToStream(element).then(
     stream =>

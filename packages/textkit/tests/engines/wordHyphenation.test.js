@@ -14,7 +14,7 @@ jest.unstable_mockModule('hyphen', () => ({ default: () => hyphenator }));
 const wordHyphenation = (await import('../../src/engines/wordHyphenation'))
   .default;
 
-const instance = wordHyphenation({});
+const instance = wordHyphenation();
 
 describe('wordHyphenation', () => {
   beforeEach(() => {

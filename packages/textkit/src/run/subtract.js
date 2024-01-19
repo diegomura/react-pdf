@@ -1,9 +1,9 @@
 /**
  * Subtract scalar to run
  *
- * @param  {number}  scalar
- * @param  {Object}  run
- * @return {Object} subtracted run
+ * @param {number} n scalar
+ * @param {Object} run
+ * @returns {Object} subtracted run
  */
 const subtract = (n, run) => {
   const start = run.start - n;

@@ -9,9 +9,9 @@ const getComputedMargin = (node, edge) => {
  * Get Yoga computed magins. Zero otherwise
  *
  * @param {Object} node
- * @return {Object} margins
+ * @returns {{ marginTop: number, marginRight: number, marginBottom: number, marginLeft: number }} margins
  */
-const getMargin = node => {
+const getMargin = (node) => {
   const { style, box } = node;
 
   const marginTop =

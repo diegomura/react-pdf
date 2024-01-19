@@ -8,8 +8,8 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * Append glyph into last run of attributed string
  *
  * @param {Object} glyph
- * @param {Object} attributed string
- * @return {Object} attributed string with new glyph
+ * @param {Object} attributedString attributed string
+ * @returns {Object} attributed string with new glyph
  */
 const append = (glyph, attributedString) => {
   const codePoints = glyph?.codePoints || [];

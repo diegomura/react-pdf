@@ -1,8 +1,8 @@
 /**
  * Clone rect
  *
- * @param  {Object}  rect
- * @return {Object} cloned rect
+ * @param {Object}  rect
+ * @returns {Object} cloned rect
  */
 const copy = rect => Object.assign({}, rect);
 

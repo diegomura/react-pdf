@@ -10,8 +10,8 @@ const findLastCharIndex = string => {
 /**
  * Removes (strips) whitespace from both ends of the attributted string.
  *
- * @param  {Object}  attributedString
- * @return {Object} attributedString
+ * @param {Object}  attributedString
+ * @returns {Object} attributedString
  */
 const trim = attributedString => {
   const start = findCharIndex(attributedString.string);

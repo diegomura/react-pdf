@@ -1,8 +1,8 @@
 /**
  * Omit attribute from run
  *
- * @param  {Object}  run
- * @return {Object} run without ommited attribute
+ * @param {Object}  run
+ * @returns {Object} run without ommited attribute
  */
 const omit = (value, run) => {
   const attributes = Object.assign({}, run.attributes);

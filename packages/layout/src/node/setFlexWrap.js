@@ -1,8 +1,8 @@
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 const FLEX_WRAP = {
-  wrap: Yoga.WRAP_WRAP,
-  'wrap-reverse': Yoga.WRAP_WRAP_REVERSE,
+  wrap: Yoga.Wrap.Wrap,
+  'wrap-reverse': Yoga.Wrap.WrapReverse,
 };
 
 /**
@@ -21,7 +21,7 @@ const setFlexWrap = value => node => {
   const { yogaNode } = node;
 
   if (yogaNode) {
-    const flexWrap = FLEX_WRAP[value] || Yoga.WRAP_NO_WRAP;
+    const flexWrap = FLEX_WRAP[value] || Yoga.Wrap.NoWrap;
     yogaNode.setFlexWrap(flexWrap);
   }
 

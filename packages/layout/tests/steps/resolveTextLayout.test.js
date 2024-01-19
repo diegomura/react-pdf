@@ -1,8 +1,10 @@
+import { loadYoga } from '../../src/yoga';
 import resolveTextLayout from '../../src/steps/resolveTextLayout';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 
-const getRoot = (text = 'hello world', styles = {}) => ({
+const getRoot = async (text = 'hello world', styles = {}) => ({
   type: 'DOCUMENT',
+  yoga: await loadYoga(),
   children: [
     {
       type: 'PAGE',
@@ -32,15 +34,15 @@ const getRoot = (text = 'hello world', styles = {}) => ({
 describe('text layout step', () => {
   const getText = root => root.children[0].children[0];
 
-  test('should calculate lines for text while resolve dimensions', () => {
-    const root = getRoot('text text text');
+  test('should calculate lines for text while resolve dimensions', async () => {
+    const root = await getRoot('text text text');
     const dimensions = resolveDimensions(root);
 
     expect(getText(dimensions).lines).toBeDefined();
   });
 
-  test('should calculate lines for text width defined height', () => {
-    const root = getRoot('text text text', { height: 50 });
+  test('should calculate lines for text width defined height', async () => {
+    const root = await getRoot('text text text', { height: 50 });
     const dimensions = resolveDimensions(root);
 
     expect(getText(dimensions).lines).not.toBeDefined();
@@ -50,8 +52,8 @@ describe('text layout step', () => {
     expect(getText(textLayout).lines).toBeDefined();
   });
 
-  test('should calculate lines for empty text', () => {
-    const root = getRoot('');
+  test('should calculate lines for empty text', async () => {
+    const root = await getRoot('');
     const dimensions = resolveDimensions(root);
 
     expect(getText(dimensions).lines).toBeDefined();

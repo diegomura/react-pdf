@@ -1,4 +1,4 @@
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 /**
  * @typedef {Function} NodeInstanceWrapper
@@ -17,7 +17,7 @@ const setDisplay = value => node => {
 
   if (yogaNode) {
     yogaNode.setDisplay(
-      value === 'none' ? Yoga.DISPLAY_NONE : Yoga.DISPLAY_FLEX,
+      value === 'none' ? Yoga.Display.None : Yoga.Display.Flex,
     );
   }
 

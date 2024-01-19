@@ -1,6 +1,5 @@
 import * as P from '@react-pdf/primitives';
 import { isNil, compose } from '@react-pdf/fns';
-import Yoga from '../../yoga';
 
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
@@ -57,10 +56,6 @@ import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
-
-const YOGA_CONFIG = Yoga.Config.create();
-
-YOGA_CONFIG.setPointScaleFactor(0);
 
 const isType = type => node => node.type === type;
 
@@ -178,8 +173,8 @@ const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
  *
  * @returns {CreateYogaNodes} create yoga nodes
  */
-const createYogaNodes = (page, fontStore) => node => {
-  const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
+const createYogaNodes = (page, fontStore, yoga) => node => {
+  const yogaNode = yoga.node.create();
 
   const result = Object.assign({}, node, { yogaNode });
 
@@ -188,7 +183,7 @@ const createYogaNodes = (page, fontStore) => node => {
   if (isLayoutElement(node) && node.children) {
     const resolveChild = compose(
       insertYogaNodes(yogaNode),
-      createYogaNodes(page, fontStore),
+      createYogaNodes(page, fontStore, yoga),
     );
 
     result.children = node.children.map(resolveChild);
@@ -273,7 +268,7 @@ const freeYogaNodes = node => {
  * @param {Object} page object
  * @returns {Object} page object with correct 'box' layout attributes
  */
-export const resolvePageDimensions = (page, fontStore) => {
+export const resolvePageDimensions = (page, fontStore, yoga) => {
   if (isNil(page)) return null;
 
   return compose(
@@ -281,7 +276,7 @@ export const resolvePageDimensions = (page, fontStore) => {
     freeYogaNodes,
     persistDimensions,
     calculateLayout,
-    createYogaNodes(page, fontStore),
+    createYogaNodes(page, fontStore, yoga),
   )(page);
 };
 
@@ -295,7 +290,8 @@ export const resolvePageDimensions = (page, fontStore) => {
 const resolveDimensions = (node, fontStore) => {
   if (!node.children) return node;
 
-  const resolveChild = child => resolvePageDimensions(child, fontStore);
+  const resolveChild = child =>
+    resolvePageDimensions(child, fontStore, node.yoga);
   const children = node.children.map(resolveChild);
 
   return Object.assign({}, node, { children });

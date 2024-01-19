@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 import setPositionType from '../../src/node/setPositionType';
 
@@ -22,7 +22,7 @@ describe('node setPositionType', () => {
     const result = setPositionType('relative')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.POSITION_TYPE_RELATIVE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Relative);
     expect(result).toBe(node);
   });
 
@@ -30,7 +30,7 @@ describe('node setPositionType', () => {
     const result = setPositionType('absolute')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.POSITION_TYPE_ABSOLUTE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Absolute);
     expect(result).toBe(node);
   });
 });

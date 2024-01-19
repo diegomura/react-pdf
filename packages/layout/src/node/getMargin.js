@@ -1,4 +1,4 @@
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 const getComputedMargin = (node, edge) => {
   const { yogaNode } = node;
@@ -15,7 +15,7 @@ const getMargin = (node) => {
   const { style, box } = node;
 
   const marginTop =
-    getComputedMargin(node, Yoga.EDGE_TOP) ||
+    getComputedMargin(node, Yoga.Edge.Top) ||
     box?.marginTop ||
     style?.marginTop ||
     style?.marginVertical ||
@@ -23,7 +23,7 @@ const getMargin = (node) => {
     0;
 
   const marginRight =
-    getComputedMargin(node, Yoga.EDGE_RIGHT) ||
+    getComputedMargin(node, Yoga.Edge.Right) ||
     box?.marginRight ||
     style?.marginRight ||
     style?.marginHorizontal ||
@@ -31,7 +31,7 @@ const getMargin = (node) => {
     0;
 
   const marginBottom =
-    getComputedMargin(node, Yoga.EDGE_BOTTOM) ||
+    getComputedMargin(node, Yoga.Edge.Bottom) ||
     box?.marginBottom ||
     style?.marginBottom ||
     style?.marginVertical ||
@@ -39,7 +39,7 @@ const getMargin = (node) => {
     0;
 
   const marginLeft =
-    getComputedMargin(node, Yoga.EDGE_LEFT) ||
+    getComputedMargin(node, Yoga.Edge.Left) ||
     box?.marginLeft ||
     style?.marginLeft ||
     style?.marginHorizontal ||

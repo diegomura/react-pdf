@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import Yoga from '../../yoga';
+import * as Yoga from 'yoga-layout';
 
 import setFlexDirection from '../../src/node/setFlexDirection';
 
@@ -22,7 +22,7 @@ describe('node setFlexDirection', () => {
     const result = setFlexDirection(null)(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.FLEX_DIRECTION_COLUMN);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.FlexDirection.Column);
     expect(result).toBe(node);
   });
 
@@ -30,7 +30,7 @@ describe('node setFlexDirection', () => {
     const result = setFlexDirection('column')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.FLEX_DIRECTION_COLUMN);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.FlexDirection.Column);
     expect(result).toBe(node);
   });
 
@@ -38,7 +38,7 @@ describe('node setFlexDirection', () => {
     const result = setFlexDirection('row')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.FLEX_DIRECTION_ROW);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.FlexDirection.Row);
     expect(result).toBe(node);
   });
 
@@ -46,7 +46,7 @@ describe('node setFlexDirection', () => {
     const result = setFlexDirection('row-reverse')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.FLEX_DIRECTION_ROW_REVERSE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.FlexDirection.RowReverse);
     expect(result).toBe(node);
   });
 
@@ -54,7 +54,7 @@ describe('node setFlexDirection', () => {
     const result = setFlexDirection('column-reverse')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.FLEX_DIRECTION_COLUMN_REVERSE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.FlexDirection.ColumnReverse);
     expect(result).toBe(node);
   });
 });

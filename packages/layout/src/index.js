@@ -1,6 +1,7 @@
 import { asyncCompose } from '@react-pdf/fns';
 
 import resolveSvg from './steps/resolveSvg';
+import resolveYoga from './steps/resolveYoga';
 import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';
 import resolveStyles from './steps/resolveStyles';
@@ -32,6 +33,7 @@ const layout = asyncCompose(
   resolveLinkSubstitution,
   resolveBookmarks,
   resolvePageSizes,
+  resolveYoga,
 );
 
 export default layout;

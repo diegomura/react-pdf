@@ -16,14 +16,17 @@ describe('dom', () => {
   });
 
   test('should throw error when trying to use renderToString', () => {
+    // @ts-expect-error - intentionally invalid call
     expect(() => ReactPDF.renderToString()).toThrow();
   });
 
   test('should throw error when trying to use renderToStream', () => {
+    // @ts-expect-error - intentionally invalid call
     expect(() => ReactPDF.renderToStream()).toThrow();
   });
 
   test('should throw error when trying to use renderToFile', () => {
+    // @ts-expect-error - intentionally invalid call
     expect(() => ReactPDF.renderToFile()).toThrow();
   });
 });

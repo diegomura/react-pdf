@@ -1,5 +1,27 @@
 # @react-pdf/renderer
 
+## 3.3.0
+
+### Minor Changes
+
+- [#2505](https://github.com/diegomura/react-pdf/pull/2505) [`0f5c43f`](https://github.com/diegomura/react-pdf/commit/0f5c43fa6f3c0b53c067200cc1ac21e651504760) Thanks [@diegomura](https://github.com/diegomura)! - feat: wasm yoga
+
+### Patch Changes
+
+- [#2515](https://github.com/diegomura/react-pdf/pull/2515) [`64f7bba`](https://github.com/diegomura/react-pdf/commit/64f7bba0d840d17188e50086169c84c415abd8d5) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Allow <G style={…} /> in TypeScript
+
+* [#2522](https://github.com/diegomura/react-pdf/pull/2522) [`e817223`](https://github.com/diegomura/react-pdf/commit/e8172231d07d10ece4ca960641f9ee52c5d4660d) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Make options in usePDF optional in TypeScript
+
+- [#2519](https://github.com/diegomura/react-pdf/pull/2519) [`cf73180`](https://github.com/diegomura/react-pdf/commit/cf7318069e63170e160a36602359fc8cbc3386c2) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix props unnecessarily required in LinearGradient and RadialGradient in TypeScript
+
+* [#2516](https://github.com/diegomura/react-pdf/pull/2516) [`66a40b2`](https://github.com/diegomura/react-pdf/commit/66a40b2e41cefe11f1ef8d467ba449a8861adb69) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Allow <Link href={…} /> in TypeScript
+
+* Updated dependencies [[`9e5842b`](https://github.com/diegomura/react-pdf/commit/9e5842bbecca6e249af2c5fc50078bb7ddd5420f), [`0f5c43f`](https://github.com/diegomura/react-pdf/commit/0f5c43fa6f3c0b53c067200cc1ac21e651504760)]:
+  - @react-pdf/types@2.3.6
+  - @react-pdf/layout@3.10.0
+  - @react-pdf/font@2.4.1
+  - @react-pdf/render@3.3.2
+
 ## 3.2.1
 
 ### Patch Changes

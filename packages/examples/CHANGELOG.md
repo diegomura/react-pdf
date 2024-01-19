@@ -1,5 +1,18 @@
 # @react-pdf/examples
 
+## 3.2.2
+
+### Patch Changes
+
+- [#2518](https://github.com/diegomura/react-pdf/pull/2518) [`3c62070`](https://github.com/diegomura/react-pdf/commit/3c6207035d2f02109bb2b5ef8804febc5a05b488) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid prop (style) in Resume example
+
+* [#2521](https://github.com/diegomura/react-pdf/pull/2521) [`214207b`](https://github.com/diegomura/react-pdf/commit/214207b62bc8061a46a7cb220901e193d327effe) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid display property in objectFit example
+
+- [#2517](https://github.com/diegomura/react-pdf/pull/2517) [`bc0d4f4`](https://github.com/diegomura/react-pdf/commit/bc0d4f42fe5d8b8bd2fb560b753041fbf013ab33) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid props (xmlns, id) in SVG example
+
+- Updated dependencies [[`64f7bba`](https://github.com/diegomura/react-pdf/commit/64f7bba0d840d17188e50086169c84c415abd8d5), [`e817223`](https://github.com/diegomura/react-pdf/commit/e8172231d07d10ece4ca960641f9ee52c5d4660d), [`cf73180`](https://github.com/diegomura/react-pdf/commit/cf7318069e63170e160a36602359fc8cbc3386c2), [`0f5c43f`](https://github.com/diegomura/react-pdf/commit/0f5c43fa6f3c0b53c067200cc1ac21e651504760), [`66a40b2`](https://github.com/diegomura/react-pdf/commit/66a40b2e41cefe11f1ef8d467ba449a8861adb69)]:
+  - @react-pdf/renderer@3.3.0
+
 ## 3.2.1
 
 ### Patch Changes

@@ -6,6 +6,16 @@ cx = cy = px = py = sx = sy = 0;
 // parseDataPath copy pasted from svgo
 // https://github.com/svg/svgo/blob/e4918ccdd1a2b5831defe0f00c1286744b479448/lib/path.js
 
+/**
+ * @typedef {'M' | 'm' | 'Z' | 'z' | 'L' | 'l' | 'H' | 'h' | 'V' | 'v' | 'C' | 'c' | 'S' | 's' | 'Q' | 'q' | 'T' | 't' | 'A' | 'a'} PathDataCommand
+ */
+
+/**
+ * @typedef {Object} PathDataItem
+ * @property {PathDataCommand} command
+ * @property {number[]} args
+ */
+
 const argsCountPerCommand = {
   M: 2,
   m: 2,

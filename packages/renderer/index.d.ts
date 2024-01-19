@@ -401,10 +401,10 @@ declare namespace ReactPDF {
 
   interface LinearGradientProps {
     id: string;
-    x1: string | number;
-    x2: string | number;
-    y1: string | number;
-    y2: string | number;
+    x1?: string | number;
+    x2?: string | number;
+    y1?: string | number;
+    y2?: string | number;
   }
 
   /**
@@ -416,11 +416,11 @@ declare namespace ReactPDF {
 
   interface RadialGradientProps {
     id: string;
-    cx: string | number;
-    cy: string | number;
-    fr: string | number;
-    fx: string | number;
-    fy: string | number;
+    cx?: string | number;
+    cy?: string | number;
+    fr?: string | number;
+    fx?: string | number;
+    fy?: string | number;
   }
 
   /**

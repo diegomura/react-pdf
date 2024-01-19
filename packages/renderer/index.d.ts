@@ -497,7 +497,7 @@ declare namespace ReactPDF {
    * React hook for creating and updating a PDF document instance
    * @platform web
    */
-  function usePDF(options: {
+  function usePDF(options?: {
     document?: React.ReactElement<DocumentProps>;
   }): [
     UsePDFInstance,

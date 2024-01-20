@@ -7,6 +7,9 @@ module.exports = [
 
     modifyWebpackConfig: config => {
       config.resolve = {
+        fallback: {
+          "fs": false
+        },
         alias: {
           // TODO: ignore iconv-lite on default because it contains exotic encodings like `win1251`, that isn't used in pdf
           'iconv-lite': false,

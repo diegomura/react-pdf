@@ -11,8 +11,10 @@ import TextMixin from './mixins/text';
 import ImagesMixin from './mixins/images';
 import AnnotationsMixin from './mixins/annotations';
 import OutlineMixin from './mixins/outline';
+import MarkingsMixin from './mixins/markings';
 import AcroFormMixin from './mixins/acroform';
 import AttachmentsMixin from './mixins/attachments';
+import MetadataMixin from './mixins/metadata';
 import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
@@ -352,11 +354,12 @@ class PDFDocument extends stream.Readable {
   endAcroForm() {}
 }
 
-const mixin = (methods) => {
+const mixin = methods => {
   Object.assign(PDFDocument.prototype, methods);
 };
 
 // Load mixins
+mixin(MetadataMixin);
 mixin(ColorMixin);
 mixin(VectorMixin);
 mixin(FontsMixin);
@@ -364,7 +367,7 @@ mixin(TextMixin);
 mixin(ImagesMixin);
 mixin(AnnotationsMixin);
 mixin(OutlineMixin);
-// mixin(MarkingsMixin);
+mixin(MarkingsMixin);
 mixin(AcroFormMixin);
 mixin(AttachmentsMixin);
 

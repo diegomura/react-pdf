@@ -15,10 +15,11 @@ class PNGImage {
     let dataDecoded = false;
 
     this.document = document;
+    if (this.obj) {
+      return;
+    }
 
-    if (this.obj) return;
-
-    const { hasAlphaChannel } = this.image;
+    const hasAlphaChannel = this.image.hasAlphaChannel;
     const isInterlaced = this.image.interlaceMethod === 1;
 
     this.obj = this.document.ref({
@@ -117,14 +118,12 @@ class PNGImage {
 
     // free memory
     this.image = null;
-    this.imgData = null;
+    return (this.imgData = null);
   }
 
   splitAlphaChannel() {
     return this.image.decodePixels(pixels => {
-      let a;
-      let p;
-
+      let a, p;
       const colorCount = this.image.colors;
       const pixelCount = this.width * this.height;
       const imgData = Buffer.alloc(pixelCount * colorCount);
@@ -144,7 +143,6 @@ class PNGImage {
       }
 
       this.imgData = zlib.deflateSync(imgData);
-
       this.alphaChannel = zlib.deflateSync(alphaChannel);
       return this.finalize();
     });
@@ -161,7 +159,6 @@ class PNGImage {
       }
 
       this.alphaChannel = zlib.deflateSync(alphaChannel);
-
       return this.finalize();
     });
   }

@@ -3,7 +3,7 @@ import PDFImage from '../image';
 export default {
   initImages() {
     this._imageRegistry = {};
-    this._imageCount = 0;
+    return (this._imageCount = 0);
   },
 
   embedImage(src) {
@@ -29,45 +29,65 @@ export default {
   },
 
   image(src, x, y, options = {}) {
-    let bh;
-    let bp;
-    let bw;
-    let ip;
-    let left;
-    let left1;
-
+    let bh, bp, bw, image, ip, left, left1, rotateAngle, originX, originY;
     if (typeof x === 'object') {
       options = x;
       x = null;
     }
 
-    const image = src instanceof PDFImage ? src : this.embedImage(src);
+    // Ignore orientation based on document options or image options
+    const ignoreOrientation =
+      options.ignoreOrientation ||
+      (options.ignoreOrientation !== false && this.options.ignoreOrientation);
 
     x = (left = x != null ? x : options.x) != null ? left : this.x;
     y = (left1 = y != null ? y : options.y) != null ? left1 : this.y;
+
+    if (typeof src === 'string') {
+      image = this._imageRegistry[src];
+    }
+
+    if (!image) {
+      if (src.width && src.height) {
+        image = src;
+      } else {
+        image = this.openImage(src);
+      }
+    }
+
+    if (!image.obj) {
+      image.embed(this);
+    }
 
     if (this.page.xobjects[image.label] == null) {
       this.page.xobjects[image.label] = image.obj;
     }
 
-    let w = options.width || image.width;
-    let h = options.height || image.height;
+    let { width, height } = image;
+
+    // If EXIF orientation calls for it, swap width and height
+    if (!ignoreOrientation && image.orientation > 4) {
+      [width, height] = [height, width];
+    }
+
+    let w = options.width || width;
+    let h = options.height || height;
 
     if (options.width && !options.height) {
-      const wp = w / image.width;
-      w = image.width * wp;
-      h = image.height * wp;
+      const wp = w / width;
+      w = width * wp;
+      h = height * wp;
     } else if (options.height && !options.width) {
-      const hp = h / image.height;
-      w = image.width * hp;
-      h = image.height * hp;
+      const hp = h / height;
+      w = width * hp;
+      h = height * hp;
     } else if (options.scale) {
-      w = image.width * options.scale;
-      h = image.height * options.scale;
+      w = width * options.scale;
+      h = height * options.scale;
     } else if (options.fit) {
-      [bw, bh] = Array.from(options.fit);
+      [bw, bh] = options.fit;
       bp = bw / bh;
-      ip = image.width / image.height;
+      ip = width / height;
       if (ip > bp) {
         w = bw;
         h = bw / ip;
@@ -75,6 +95,116 @@ export default {
         h = bh;
         w = bh * ip;
       }
+    } else if (options.cover) {
+      [bw, bh] = options.cover;
+      bp = bw / bh;
+      ip = width / height;
+      if (ip > bp) {
+        h = bh;
+        w = bh * ip;
+      } else {
+        w = bw;
+        h = bw / ip;
+      }
+    }
+
+    if (options.fit || options.cover) {
+      if (options.align === 'center') {
+        x = x + bw / 2 - w / 2;
+      } else if (options.align === 'right') {
+        x = x + bw - w;
+      }
+
+      if (options.valign === 'center') {
+        y = y + bh / 2 - h / 2;
+      } else if (options.valign === 'bottom') {
+        y = y + bh - h;
+      }
+    }
+
+    if (!ignoreOrientation) {
+      switch (image.orientation) {
+        // No orientation (need to flip image, though, because of the default transform matrix on the document)
+        default:
+        case 1:
+          h = -h;
+          y -= h;
+
+          rotateAngle = 0;
+          break;
+        // Flip Horizontal
+        case 2:
+          w = -w;
+          h = -h;
+          x -= w;
+          y -= h;
+
+          rotateAngle = 0;
+          break;
+        // Rotate 180 degrees
+        case 3:
+          originX = x;
+          originY = y;
+
+          h = -h;
+          x -= w;
+
+          rotateAngle = 180;
+          break;
+        // Flip vertical
+        case 4:
+          // Do nothing, image will be flipped
+
+          break;
+        // Flip horizontally and rotate 270 degrees CW
+        case 5:
+          originX = x;
+          originY = y;
+
+          [w, h] = [h, w];
+          y -= h;
+
+          rotateAngle = 90;
+          break;
+        // Rotate 90 degrees CW
+        case 6:
+          originX = x;
+          originY = y;
+
+          [w, h] = [h, w];
+          h = -h;
+
+          rotateAngle = 90;
+          break;
+        // Flip horizontally and rotate 90 degrees CW
+        case 7:
+          originX = x;
+          originY = y;
+
+          [w, h] = [h, w];
+          h = -h;
+          w = -w;
+          x -= w;
+
+          rotateAngle = 90;
+          break;
+        // Rotate 270 degrees CW
+        case 8:
+          originX = x;
+          originY = y;
+
+          [w, h] = [h, w];
+          h = -h;
+          x -= w;
+          y -= h;
+
+          rotateAngle = -90;
+          break;
+      }
+    } else {
+      h = -h;
+      y -= h;
+      rotateAngle = 0;
     }
 
     // Set the current y position to below the image if it is in the document flow
@@ -83,7 +213,14 @@ export default {
     }
 
     this.save();
-    this.transform(w, 0, 0, -h, x, y + h);
+
+    if (rotateAngle) {
+      this.rotate(rotateAngle, {
+        origin: [originX, originY]
+      });
+    }
+
+    this.transform(w, 0, 0, h, x, y);
     this.addContent(`/${image.label} Do`);
     this.restore();
 

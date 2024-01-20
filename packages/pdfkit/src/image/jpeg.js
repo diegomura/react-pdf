@@ -1,4 +1,6 @@
-let MARKERS = [
+import exif from 'jpeg-exif';
+
+const MARKERS = [
   0xffc0,
   0xffc1,
   0xffc2,
@@ -16,27 +18,35 @@ let MARKERS = [
   0xffcf
 ];
 
+const COLOR_SPACE_MAP = {
+  1: 'DeviceGray',
+  3: 'DeviceRGB',
+  4: 'DeviceCMYK'
+};
+
 class JPEG {
   constructor(data, label) {
     let marker;
     this.data = data;
     this.label = label;
-
     if (this.data.readUInt16BE(0) !== 0xffd8) {
       throw 'SOI not found in JPEG';
     }
+
+    // Parse the EXIF orientation
+    this.orientation = exif.fromBuffer(this.data).Orientation || 1;
 
     let pos = 2;
     while (pos < this.data.length) {
       marker = this.data.readUInt16BE(pos);
       pos += 2;
-      if (Array.from(MARKERS).includes(marker)) {
+      if (MARKERS.includes(marker)) {
         break;
       }
       pos += this.data.readUInt16BE(pos);
     }
 
-    if (!Array.from(MARKERS).includes(marker)) {
+    if (!MARKERS.includes(marker)) {
       throw 'Invalid JPEG.';
     }
     pos += 2;
@@ -49,16 +59,7 @@ class JPEG {
     pos += 2;
 
     const channels = this.data[pos++];
-    this.colorSpace = (() => {
-      switch (channels) {
-        case 1:
-          return 'DeviceGray';
-        case 3:
-          return 'DeviceRGB';
-        case 4:
-          return 'DeviceCMYK';
-      }
-    })();
+    this.colorSpace = COLOR_SPACE_MAP[channels];
 
     this.obj = null;
   }
@@ -88,7 +89,7 @@ class JPEG {
     this.obj.end(this.data);
 
     // free memory
-    this.data = null;
+    return (this.data = null);
   }
 }
 

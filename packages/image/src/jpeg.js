@@ -1,4 +1,4 @@
-// Extracted from https://github.com/devongovett/pdfkit/blob/master/lib/image/jpeg.coffee
+import exif from 'jpeg-exif';
 
 const MARKERS = [
   0xffc0,
@@ -35,6 +35,9 @@ class JPEG {
     let marker;
     let pos = 2;
 
+    // Parse the EXIF orientation
+    this.orientation = exif.fromBuffer(this.data).Orientation || 1;
+
     while (pos < data.length) {
       marker = data.readUInt16BE(pos);
       pos += 2;
@@ -53,6 +56,10 @@ class JPEG {
 
     pos += 2;
     this.width = data.readUInt16BE(pos);
+
+    if (this.orientation > 4) {
+      [this.width, this.height] = [this.height, this.width];
+    }
   }
 }
 

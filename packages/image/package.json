@@ -32,7 +32,8 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@react-pdf/png-js": "^2.3.0",
-    "cross-fetch": "^3.1.5"
+    "cross-fetch": "^3.1.5",
+    "jpeg-exif": "^1.1.4"
   },
   "devDependencies": {
     "jest-fetch-mock": "^2.1.1"

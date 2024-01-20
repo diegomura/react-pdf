@@ -4,15 +4,6 @@ import path from 'path';
 import { Document, Page, View, Image } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
-// import Orientation1 from './images/orientation-1.jpeg';
-// import Orientation2 from './images/orientation-2.jpeg';
-// import Orientation3 from './images/orientation-3.jpeg';
-// import Orientation4 from './images/orientation-4.jpeg';
-// import Orientation5 from './images/orientation-5.jpeg';
-// import Orientation6 from './images/orientation-6.jpeg';
-// import Orientation7 from './images/orientation-7.jpeg';
-// import Orientation8 from './images/orientation-8.jpeg';
-
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const Orientation1 = fs.readFileSync(`${__dirname}/images/orientation-1.jpeg`);

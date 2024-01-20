@@ -1,3 +1,8 @@
+/*
+PDFImage - embeds images in PDF documents
+By Devon Govett
+*/
+
 import fs from 'fs';
 import JPEG from './image/jpeg';
 import PNG from './image/png';
@@ -10,24 +15,24 @@ class PDFImage {
     } else if (src instanceof ArrayBuffer) {
       data = Buffer.from(new Uint8Array(src));
     } else {
-      let match = /^data:.+;base64,(.*)$/.exec(src);
-      if (match) {
+      let match;
+      if ((match = /^data:.+?;base64,(.*)$/.exec(src))) {
         data = Buffer.from(match[1], 'base64');
-      } else if (!BROWSER) {
+      } else {
         data = fs.readFileSync(src);
-        if (!data) return;
+        if (!data) {
+          return;
+        }
       }
     }
 
     if (data[0] === 0xff && data[1] === 0xd8) {
       return new JPEG(data, label);
-    }
-
-    if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
+    } else if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
       return new PNG(data, label);
+    } else {
+      throw new Error('Unknown image format.');
     }
-
-    throw new Error('Unknown image format.');
   }
 }
 

@@ -61,35 +61,23 @@ export default {
     return this.addContent(`${number(m)} M`);
   },
 
-  dash(length, options) {
-    let phase;
-
-    if (options == null) {
-      options = {};
+  dash(length, options = {}) {
+    const originalLength = length;
+    if (!Array.isArray(length)) {
+      length = [length, options.space || length];
     }
 
-    if (length == null) {
-      return this;
+    const valid = length.every(x => Number.isFinite(x) && x > 0);
+    if (!valid) {
+      throw new Error(
+        `dash(${JSON.stringify(originalLength)}, ${JSON.stringify(
+          options
+        )}) invalid, lengths must be numeric and greater than zero`
+      );
     }
 
-    if (Array.isArray(length)) {
-      length = Array.from(length)
-        .map(v => PDFObject.number(v))
-        .join(' ');
-
-      phase = options.phase || 0;
-
-      return this.addContent(`[${length}] ${PDFObject.number(phase)} d`);
-    }
-
-    const space = options.space != null ? options.space : length;
-    phase = options.phase || 0;
-
-    return this.addContent(
-      `[${PDFObject.number(length)} ${PDFObject.number(
-        space
-      )}] ${PDFObject.number(phase)} d`
-    );
+    length = length.map(number).join(' ');
+    return this.addContent(`[${length}] ${number(options.phase || 0)} d`);
   },
 
   undash() {
@@ -205,11 +193,7 @@ export default {
     // calculate and render segments
     this.moveTo(ax, ay);
 
-    for (
-      let segIdx = 0, end = numSegs, asc = 0 <= end;
-      asc ? segIdx < end : segIdx > end;
-      asc ? segIdx++ : segIdx--
-    ) {
+    for (let segIdx = 0; segIdx < numSegs; segIdx++) {
       // starting control point
       const cp1x = ax + deltaCx;
       const cp1y = ay + deltaCy;
@@ -237,9 +221,9 @@ export default {
   },
 
   polygon(...points) {
-    this.moveTo(...Array.from(points.shift() || []));
-    for (let point of Array.from(points)) {
-      this.lineTo(...Array.from(point || []));
+    this.moveTo(...(points.shift() || []));
+    for (let point of points) {
+      this.lineTo(...(point || []));
     }
     return this.closePath();
   },
@@ -306,7 +290,7 @@ export default {
   transform(m11, m12, m21, m22, dx, dy) {
     // keep track of the current transformation matrix
     const m = this._ctm;
-    const [m0, m1, m2, m3, m4, m5] = Array.from(m);
+    const [m0, m1, m2, m3, m4, m5] = m;
     m[0] = m0 * m11 + m2 * m12;
     m[1] = m1 * m11 + m3 * m12;
     m[2] = m0 * m21 + m2 * m22;
@@ -314,9 +298,7 @@ export default {
     m[4] = m0 * dx + m2 * dy + m4;
     m[5] = m1 * dx + m3 * dy + m5;
 
-    const values = [m11, m12, m21, m22, dx, dy]
-      .map(v => PDFObject.number(v))
-      .join(' ');
+    const values = [m11, m12, m21, m22, dx, dy].map(v => number(v)).join(' ');
     return this.addContent(`${values} cm`);
   },
 
@@ -325,15 +307,14 @@ export default {
   },
 
   rotate(angle, options = {}) {
+    let y;
     const rad = (angle * Math.PI) / 180;
     const cos = Math.cos(rad);
     const sin = Math.sin(rad);
-
-    let x = 0;
-    let y = 0;
+    let x = (y = 0);
 
     if (options.origin != null) {
-      [x, y] = Array.from(options.origin);
+      [x, y] = options.origin;
       const x1 = x * cos - y * sin;
       const y1 = x * sin + y * cos;
       x -= x1;
@@ -344,6 +325,7 @@ export default {
   },
 
   scale(xFactor, yFactor, options = {}) {
+    let y;
     if (yFactor == null) {
       yFactor = xFactor;
     }
@@ -352,35 +334,13 @@ export default {
       yFactor = xFactor;
     }
 
-    let x = 0;
-    let y = 0;
-
+    let x = (y = 0);
     if (options.origin != null) {
-      [x, y] = Array.from(options.origin);
+      [x, y] = options.origin;
       x -= xFactor * x;
       y -= yFactor * y;
     }
 
     return this.transform(xFactor, 0, 0, yFactor, x, y);
-  },
-
-  skew(xAngle = 0, yAngle = 0, options) {
-    const radx = (xAngle * Math.PI) / 180;
-    const rady = (yAngle * Math.PI) / 180;
-    const tanx = Math.tan(radx);
-    const tany = Math.tan(rady);
-
-    let x = 0;
-    let y = 0;
-
-    if (options.origin != null) {
-      [x, y] = Array.from(options.origin);
-      const x1 = x + tanx * y;
-      const y1 = y + tany * x;
-      x -= x1;
-      y -= y1;
-    }
-
-    return this.transform(1, tany, tanx, 1, x, y);
   }
 };

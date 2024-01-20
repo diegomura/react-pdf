@@ -1,5 +1,14 @@
 # @react-pdf/examples
 
+## 3.2.3
+
+### Patch Changes
+
+- [#2529](https://github.com/diegomura/react-pdf/pull/2529) [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8) Thanks [@diegomura](https://github.com/diegomura)! - fix: jpeg exif orientation rendering
+
+- Updated dependencies [[`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8)]:
+  - @react-pdf/renderer@3.3.1
+
 ## 3.2.2
 
 ### Patch Changes

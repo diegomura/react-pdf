@@ -1,5 +1,13 @@
 # @react-pdf/pdfkit
 
+## 3.1.1
+
+### Patch Changes
+
+- [#2532](https://github.com/diegomura/react-pdf/pull/2532) [`36c6ba3`](https://github.com/diegomura/react-pdf/commit/36c6ba30ae73a512f19fe5bc47ac8c304887c0da) Thanks [@diegomura](https://github.com/diegomura)! - refactor: converge pdfkit
+
+* [#2529](https://github.com/diegomura/react-pdf/pull/2529) [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8) Thanks [@diegomura](https://github.com/diegomura)! - fix: jpeg exif orientation rendering
+
 ## 3.1.0
 
 ### Minor Changes

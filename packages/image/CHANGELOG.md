@@ -1,5 +1,11 @@
 # @react-pdf/image
 
+## 2.3.1
+
+### Patch Changes
+
+- [#2529](https://github.com/diegomura/react-pdf/pull/2529) [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8) Thanks [@diegomura](https://github.com/diegomura)! - fix: jpeg exif orientation rendering
+
 ## 2.3.0
 
 ### Minor Changes

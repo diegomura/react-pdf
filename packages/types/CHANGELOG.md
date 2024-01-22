@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.4.0
+
+### Minor Changes
+
+- [#2539](https://github.com/diegomura/react-pdf/pull/2539) [`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19) Thanks [@diegomura](https://github.com/diegomura)! - feat: add creation and modification dates
+
 ## 2.3.6
 
 ### Patch Changes

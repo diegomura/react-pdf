@@ -1,5 +1,18 @@
 # @react-pdf/render
 
+## 3.4.0
+
+### Minor Changes
+
+- [#2539](https://github.com/diegomura/react-pdf/pull/2539) [`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19) Thanks [@diegomura](https://github.com/diegomura)! - feat: add creation and modification dates
+
+### Patch Changes
+
+- [#2538](https://github.com/diegomura/react-pdf/pull/2538) [`cfd050c`](https://github.com/diegomura/react-pdf/commit/cfd050c3ae0980f78c4a466565852d81c8254e19) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix strokeDasharray crash
+
+- Updated dependencies [[`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19)]:
+  - @react-pdf/types@2.4.0
+
 ## 3.3.2
 
 ### Patch Changes

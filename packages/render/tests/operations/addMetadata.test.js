@@ -111,4 +111,31 @@ describe('operations addMetadata', () => {
 
     expect(ctx.info.Producer).toBe('test');
   });
+
+  test('should add creationDate metadata if provided', () => {
+    const ctx = createCTX();
+    const doc = { type: P.Document, props: { creationDate: 'test' } };
+
+    addMetadata(ctx, doc);
+
+    expect(ctx.info.CreationDate).toBe('test');
+  });
+
+  test('should not add modificationDate metadata if none provided', () => {
+    const ctx = createCTX();
+    const doc = { type: P.Document };
+
+    addMetadata(ctx, doc);
+
+    expect(ctx.info.ModificationDate).toBeUndefined();
+  });
+
+  test('should add modificationDate metadata if provided', () => {
+    const ctx = createCTX();
+    const doc = { type: P.Document, props: { modificationDate: 'test' } };
+
+    addMetadata(ctx, doc);
+
+    expect(ctx.info.ModificationDate).toBe('test');
+  });
 });

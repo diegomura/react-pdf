@@ -61,6 +61,8 @@ interface DocumentProps {
   keywords?: string;
   creator?: string;
   producer?: string;
+  creationDate?: Date;
+  modificationDate?: Date;
   pageLayout?: PageLayout;
   pageMode?: PageMode;
 }

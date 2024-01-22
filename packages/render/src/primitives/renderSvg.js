@@ -53,7 +53,7 @@ const setLineCap = (ctx, node) => {
 const setLineDash = (ctx, node) => {
   const value = node.props?.strokeDasharray || null;
 
-  if (value) ctx.dash(value.split(','));
+  if (value) ctx.dash(value.split(',').map(Number));
 };
 
 const hasLinearGradientFill = node =>

@@ -12,6 +12,7 @@ import {
   LinearGradient,
   RadialGradient,
   Stop,
+  Line,
 } from '@react-pdf/renderer';
 
 export const Tiger = () => (
@@ -809,5 +810,27 @@ export const Gradients = () => (
 
     <Circle cx="5" cy="5" r="4" fill="url('#myLinearGradient')" />
     <Circle cx="5" cy="14" r="4" fill="url('#myRadialGradient')" />
+  </Svg>
+);
+
+export const Dasharrays = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Line
+      x1="0"
+      y1="0"
+      x2="10"
+      y2="10"
+      stroke="red"
+      strokeWidth="1"
+      strokeDasharray="2"
+    />
+    <Circle
+      cx="5"
+      cy="15"
+      r="4"
+      stroke="red"
+      strokeWidth="1"
+      strokeDasharray="2"
+    />
   </Svg>
 );

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { Document, Page, Svg, Font, Text, Tspan } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
-import { Tiger, Chart, Chart2, Gradients } from './svgs';
+import { Tiger, Chart, Chart2, Gradients, Dasharrays } from './svgs';
 
 // pdf.js does not render default fonts in node and I use Open Sans (:
 Font.register({
@@ -67,11 +67,24 @@ describe('Svg', () => {
 
     expect(image).toMatchImageSnapshot();
   });
-  test('should render Svg4', async () => {
+
+  test('should render Gradients', async () => {
     const image = await renderToImage(
       <Document>
         <Page size={[100, 200]}>
           <Gradients />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render Dasharrays', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[100, 200]}>
+          <Dasharrays />
         </Page>
       </Document>,
     );

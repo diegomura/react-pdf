@@ -1,5 +1,14 @@
 # @react-pdf/renderer
 
+## 3.3.3
+
+### Patch Changes
+
+- [#2544](https://github.com/diegomura/react-pdf/pull/2544) [`b5380a1`](https://github.com/diegomura/react-pdf/commit/b5380a1a0a7397b4111d68ce97b4acb702d34d51) Thanks [@satelllte](https://github.com/satelllte)! - fix: creationDate and modificationDate types
+
+- Updated dependencies [[`b5380a1`](https://github.com/diegomura/react-pdf/commit/b5380a1a0a7397b4111d68ce97b4acb702d34d51)]:
+  - @react-pdf/render@3.4.1
+
 ## 3.3.2
 
 ### Patch Changes

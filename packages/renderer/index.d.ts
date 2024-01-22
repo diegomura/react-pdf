@@ -36,6 +36,8 @@ declare namespace ReactPDF {
     keywords?: string;
     producer?: string;
     language?: string;
+    creationDate?: Date;
+    modificationDate?: Date;
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
     pageLayout?: PageLayout;

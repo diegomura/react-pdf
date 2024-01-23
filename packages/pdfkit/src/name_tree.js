@@ -1,21 +1,21 @@
 /*
-PDFNumberTree - represents a number tree object
+PDFNameTree - represents a name tree object
 */
 
-import PDFTree from './tree';
+import PDFTree from "./tree";
 
-class PDFNumberTree extends PDFTree {
+class PDFNameTree extends PDFTree {
   _compareKeys(a, b) {
-    return parseInt(a) - parseInt(b);
+    return a.localeCompare(b);
   }
 
   _keysName() {
-    return 'Nums';
+    return 'Names';
   }
 
   _dataForKey(k) {
-    return parseInt(k);
+    return new String(k);
   }
 }
 
-export default PDFNumberTree;
+export default PDFNameTree;

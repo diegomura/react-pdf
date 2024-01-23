@@ -1,4 +1,5 @@
-/* eslint-disable react/no-array-index-key */
+import { describe, expect, test } from 'vitest';
+
 import { Document, Font, Link, Page, Text, View } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 

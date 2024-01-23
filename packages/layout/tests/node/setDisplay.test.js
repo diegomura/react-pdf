@@ -1,10 +1,11 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import * as Yoga from 'yoga-layout';
 
 import setDisplay from '../../src/node/setDisplay';
 
 describe('node setDisplay', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setDisplay: mock } };
 
   beforeEach(() => {

@@ -1,8 +1,8 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import fromCodePoint from '../../src/glyph/fromCodePoint';
 
 const font = {
-  glyphForCodePoint: jest.fn(x => ({
+  glyphForCodePoint: vi.fn(x => ({
     id: x,
     codePoints: [x],
     advancedWidth: 5,

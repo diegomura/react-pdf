@@ -1,10 +1,11 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import * as Yoga from 'yoga-layout';
 
 import setJustifyContent from '../../src/node/setJustifyContent';
 
 describe('node setJustifyContent', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setJustifyContent: mock } };
 
   beforeEach(() => {

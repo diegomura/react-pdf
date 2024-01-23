@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import capitalize from '../src/capitalize';
 
 describe('capitalize', () => {

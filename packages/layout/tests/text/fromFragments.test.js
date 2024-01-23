@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import fromFragments from '../../src/text/fromFragments';
 
 describe('attributeString fromFragments operator', () => {

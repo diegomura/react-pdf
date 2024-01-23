@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { Document, Page, View } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 

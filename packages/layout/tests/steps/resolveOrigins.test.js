@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveOrigins from '../../src/steps/resolveOrigins';
 
 describe('layout resolveOrigins', () => {

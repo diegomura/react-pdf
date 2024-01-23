@@ -1,5 +1,6 @@
-/* eslint-disable import/no-named-as-default-member */
-import ReactPDF from '../src/dom';
+import { describe, expect, test } from 'vitest';
+
+import ReactPDF from '@react-pdf/renderer';
 
 describe('dom', () => {
   test('should export font store', () => {

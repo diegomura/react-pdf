@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolvePageSizes from '../../src/steps/resolvePageSizes';
 
 describe('layout resolvePageSizes', () => {

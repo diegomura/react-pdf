@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import evolve from '../src/evolve';
 
 const add = a => b => a + b;

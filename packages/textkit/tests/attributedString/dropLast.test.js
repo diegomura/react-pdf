@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import pluck from '../internal/pluck';
 import dropLast from '../../src/attributedString/dropLast';
 

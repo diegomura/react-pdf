@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import isLandscape from '../../src/page/isLandscape';
 
 describe('page isLandscape', () => {

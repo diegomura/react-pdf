@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveInheritance from '../../src/steps/resolveInheritance';
 
 describe('layout resolveInheritance', () => {

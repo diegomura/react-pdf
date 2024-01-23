@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import expandStyles from '../src/expand';
 
 describe('stylesheet expand', () => {

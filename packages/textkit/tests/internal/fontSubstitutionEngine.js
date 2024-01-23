@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { vi } from 'vitest';
 
 /**
  * Test font substitution based on the string 'Lorem'
@@ -10,7 +10,7 @@ import { jest } from '@jest/globals';
  * @param {Object}  attributed string
  * @returns {Object} attributed string
  */
-export const fontSubstitutionImpl = jest.fn(string => {
+export const fontSubstitutionImpl = vi.fn(string => {
   const runs =
     string.runs.length === 0
       ? []
@@ -22,6 +22,6 @@ export const fontSubstitutionImpl = jest.fn(string => {
   return Object.assign({}, string, { runs });
 });
 
-const fontSubstitutionEngine = jest.fn(() => fontSubstitutionImpl);
+const fontSubstitutionEngine = vi.fn(() => fontSubstitutionImpl);
 
 export default fontSubstitutionEngine;

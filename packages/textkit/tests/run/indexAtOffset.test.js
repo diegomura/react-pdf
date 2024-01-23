@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import indexAtOffset from '../../src/run/indexAtOffset';
 
 describe('run indexAtOffset operator', () => {

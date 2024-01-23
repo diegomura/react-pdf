@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveObjectFit from '../../src/utils/resolveObjectFit';
 
 describe('object-fit', () => {

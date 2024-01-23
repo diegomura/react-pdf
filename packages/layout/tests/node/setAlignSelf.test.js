@@ -1,10 +1,11 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import * as Yoga from 'yoga-layout';
 
 import setAlignSelf from '../../src/node/setAlignSelf';
 
 describe('node setAlignSelf', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setAlignSelf: mock } };
 
   beforeEach(() => {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import * as P from '@react-pdf/primitives';
 
 import createCTX from '../ctx';

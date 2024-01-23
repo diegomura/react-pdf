@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import fs from 'fs';
 import url from 'url';
 import path from 'path';

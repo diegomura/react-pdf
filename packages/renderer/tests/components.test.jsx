@@ -1,8 +1,5 @@
-/**
- * @jest-environment ./tests/environment/jsdom.js
- */
-
-import { jest } from '@jest/globals';
+// Note that this file is ran using a separate Vitest configuration
+import { describe, expect, it, vi } from 'vitest';
 import { render, waitFor, screen } from '@testing-library/react';
 import {
   BlobProvider,
@@ -11,7 +8,7 @@ import {
   Document,
   Page,
   Text,
-} from '../src/dom';
+} from '@react-pdf/renderer';
 
 const TestDocument = ({ title = 'Default' }) => (
   <Document title={title}>
@@ -23,7 +20,7 @@ const TestDocument = ({ title = 'Default' }) => (
 
 describe('BlobProvider', () => {
   it('works', async () => {
-    const renderFunction = jest.fn();
+    const renderFunction = vi.fn();
 
     render(
       <BlobProvider document={<TestDocument />}>{renderFunction}</BlobProvider>,
@@ -44,7 +41,7 @@ describe('BlobProvider', () => {
 
 describe('BlobProvider', () => {
   it('works', async () => {
-    const renderFunction = jest.fn();
+    const renderFunction = vi.fn();
 
     render(
       <BlobProvider document={<TestDocument />}>{renderFunction}</BlobProvider>,

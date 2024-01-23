@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import empty from '../../src/attributedString/empty';
 import fontSubstitution from '../../src/engines/fontSubstitution';
 

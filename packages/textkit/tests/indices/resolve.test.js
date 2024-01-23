@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolve from '../../src/indices/resolve';
 
 const singleGlyph = { codePoints: ['codePoint'] };

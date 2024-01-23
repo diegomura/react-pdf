@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`layout resolveStyles should leave link with text children as it is 1`] = `
+exports[`layout resolveStyles > should leave link with text children as it is 1`] = `
 {
   "children": [
     {
@@ -24,7 +24,7 @@ exports[`layout resolveStyles should leave link with text children as it is 1`] 
 }
 `;
 
-exports[`layout resolveStyles should replace link with only many text instances as children 1`] = `
+exports[`layout resolveStyles > should replace link with only many text instances as children 1`] = `
 {
   "children": [
     {
@@ -65,7 +65,7 @@ exports[`layout resolveStyles should replace link with only many text instances 
 }
 `;
 
-exports[`layout resolveStyles should replace link with only one text instance as children 1`] = `
+exports[`layout resolveStyles > should replace link with only one text instance as children 1`] = `
 {
   "children": [
     {
@@ -97,7 +97,7 @@ exports[`layout resolveStyles should replace link with only one text instance as
 }
 `;
 
-exports[`layout resolveStyles should replace link with render prop 1`] = `
+exports[`layout resolveStyles > should replace link with render prop 1`] = `
 {
   "children": [
     {

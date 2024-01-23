@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolvePagePaddings from '../../src/steps/resolvePagePaddings';
 
 describe('layout resolvePagePaddings', () => {

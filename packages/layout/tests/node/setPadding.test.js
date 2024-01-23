@@ -1,4 +1,5 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import * as Yoga from 'yoga-layout';
 
 import setPadding, {
@@ -9,8 +10,8 @@ import setPadding, {
 } from '../../src/node/setPadding';
 
 describe('node setPadding', () => {
-  const mock = jest.fn();
-  const mockPercent = jest.fn();
+  const mock = vi.fn();
+  const mockPercent = vi.fn();
 
   const node = {
     yogaNode: { setPadding: mock, setPaddingPercent: mockPercent },

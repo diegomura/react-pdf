@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import copy from '../../src/rect/copy';
 
 describe('rect copy operator', () => {

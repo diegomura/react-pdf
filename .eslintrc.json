@@ -24,7 +24,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react", "jest"],
+  "plugins": ["react"],
   "rules": {
     "func-names": 0,
     "no-continue": 1,
@@ -43,10 +43,15 @@
   },
   "overrides": [
     {
-      "files": ["**/*.test.js", "**/tests/**/*.js", "setup.jest.js"],
-      "env": {
-        "jest": true
-      },
+      "files": [
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/tests/**/*.js",
+        "**/tests/**/*.jsx",
+        "vitest.config.js",
+        "vitest.*.config.js",
+        "vitest.setup.js"
+      ],
       "rules": {
         "import/no-extraneous-dependencies": 0
       }

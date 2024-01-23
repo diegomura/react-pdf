@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import applyDefaultStyles from '../../src/layout/applyDefaultStyles';
 
 const applyDefaultStylesInstance = applyDefaultStyles();

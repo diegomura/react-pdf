@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.2
+
+### Patch Changes
+
+- [#2549](https://github.com/diegomura/react-pdf/pull/2549) [`44bd45b`](https://github.com/diegomura/react-pdf/commit/44bd45b1961ca8bae4a2f84cc77db945e5c43419) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Fix named destinations (id attribute with string value)
+
 ## 3.1.1
 
 ### Patch Changes

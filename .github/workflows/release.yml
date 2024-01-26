@@ -30,6 +30,9 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
+      - name: Install required packages
+        run: sudo apt install libsdl-pango-dev libgif-dev
+
       - name: Install dependencies and build
         run: yarn --frozen-lockfile
 
@@ -53,6 +56,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE }}
+
+      - name: Install required packages
+        run: sudo apt install libsdl-pango-dev libgif-dev
 
       - name: Install dependencies and build
         run: yarn --frozen-lockfile

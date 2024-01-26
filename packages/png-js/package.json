@@ -7,8 +7,8 @@
   "main": "./lib/png-js.cjs",
   "module": "./lib/png-js.js",
   "browser": {
-    "./lib/png-js.js": "./lib/png-js.browser.js",
-    "./lib/png-js.cjs": "./lib/png-js.browser.cjs"
+    "./lib/png-js.cjs": "./lib/png-js.browser.cjs",
+    "./lib/png-js.js": "./lib/png-js.browser.js"
   },
   "exports": {
     ".": {

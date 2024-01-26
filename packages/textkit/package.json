@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.1.0",
+    "@react-pdf/fns": "workspace:^",
     "hyphen": "^1.6.4",
     "unicode-properties": "^1.4.1"
   }

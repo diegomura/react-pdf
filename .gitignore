@@ -1,9 +1,25 @@
-node_modules
-*.log
-dist
-coverage
-.jshintrc
-.idea
+# OS
 .DS_Store
+
+# Cache
 .cache
+.idea
+.jshintrc
 .parcel-cache
+.
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Project-generated directories and files
+coverage
+dist
+node_modules
+
+# Logs
+*.log

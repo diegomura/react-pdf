@@ -10,7 +10,7 @@
     "dev": "vite ./src --open"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^3.3.4"
+    "@react-pdf/renderer": "workspace:^"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

@@ -1,9 +1,5 @@
 name: Release
 
-env:
-  FORCE_COLOR: 2
-  NODE: 18
-
 on:
   push:
     branches:
@@ -13,38 +9,83 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-jobs:
-  release:
-    # prevents this action from running on forks
-    if: github.repository_owner == 'diegomura'
-    name: Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-        with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
-          fetch-depth: 0
+env:
+  FORCE_COLOR: 2
+  HUSKY: 0
+  NODE: 20
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+jobs:
+  test:
+    name: Run tests (Node.js ${{ matrix.node_version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [18, 20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
         with:
-          node-version: ${{ env.NODE }}
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
 
       - name: Install dependencies and build
-        run: yarn install
+        run: yarn --frozen-lockfile
 
       - name: Run tests
         run: yarn test
 
-      - name: Create Release Pull Request or Publish to npm
+  release:
+    # Prevents this action from running on forks
+    if: github.repository_owner == 'diegomura'
+    name: Create Release PR or Publish to npm
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE }}
+
+      - name: Install dependencies and build
+        run: yarn --frozen-lockfile
+
+      - name: Create Release PR or Publish to npm
         uses: changesets/action@v1
         with:
-          # this expects you to have a script called release which does a build for your packages and calls changeset publish
+          # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: yarn release
           version: yarn version-packages
-          commit: "chore: release packages"
-          title: "chore: release packages"
+          commit: 'chore: release packages'
+          title: 'chore: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

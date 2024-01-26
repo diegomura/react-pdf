@@ -7,8 +7,8 @@
   "main": "./lib/pdfkit.cjs",
   "module": "./lib/pdfkit.js",
   "browser": {
-    "./lib/pdfkit.js": "./lib/pdfkit.browser.js",
-    "./lib/pdfkit.cjs": "./lib/pdfkit.browser.cjs"
+    "./lib/pdfkit.cjs": "./lib/pdfkit.browser.cjs",
+    "./lib/pdfkit.js": "./lib/pdfkit.browser.js"
   },
   "exports": {
     ".": {
@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/png-js": "^2.3.1",
+    "@react-pdf/png-js": "workspace:^",
     "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.2.0",
     "fontkit": "^2.0.2",

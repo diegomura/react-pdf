@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.2.1",
-    "@react-pdf/types": "^2.4.1",
+    "@react-pdf/fns": "workspace:^",
+    "@react-pdf/types": "workspace:^",
     "color-string": "^1.9.1",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",

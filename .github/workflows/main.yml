@@ -1,9 +1,5 @@
 name: CI
 
-env:
-  FORCE_COLOR: 2
-  NODE: 18
-
 on:
   pull_request:
     branches:
@@ -13,17 +9,48 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  FORCE_COLOR: 2
+  NODE: 20
+
 jobs:
-  check:
+  size:
+    name: Check size
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE }}
+
       - name: Install dependencies and build
-        run: yarn install
+        run: yarn --frozen-lockfile
+
       - name: Check size
         run: yarn --cwd packages/renderer run size
+
+  test:
+    name: Run tests (Node.js ${{ matrix.node_version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [18, 20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Install dependencies and build
+        run: yarn --frozen-lockfile
+
       - name: Run tests
         run: yarn test

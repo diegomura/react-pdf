@@ -44,7 +44,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "babel-eslint": "^10.0.1",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "canvas": "^2.11.0",
+    "canvas": "^2.11.2",
     "chalk": "^2.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",

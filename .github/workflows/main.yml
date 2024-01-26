@@ -28,9 +28,6 @@ jobs:
           cache: yarn
           node-version: ${{ env.NODE }}
 
-      - name: Install required packages
-        run: sudo apt install libsdl-pango-dev libgif-dev
-
       - name: Install dependencies and build
         run: yarn --frozen-lockfile
 
@@ -53,9 +50,6 @@ jobs:
         with:
           cache: yarn
           node-version: ${{ matrix.node_version }}
-
-      - name: Install required packages
-        run: sudo apt install libsdl-pango-dev libgif-dev
 
       - name: Install dependencies and build
         run: yarn --frozen-lockfile

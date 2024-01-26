@@ -28,6 +28,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
+          cache: yarn
           node-version: ${{ matrix.node_version }}
 
       - name: Install required packages
@@ -55,6 +56,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
+          cache: yarn
           node-version: ${{ env.NODE }}
 
       - name: Install required packages

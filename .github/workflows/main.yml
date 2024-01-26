@@ -11,6 +11,7 @@ concurrency:
 
 env:
   FORCE_COLOR: 2
+  HUSKY: 0
   NODE: 20
 
 jobs:

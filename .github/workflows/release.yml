@@ -25,10 +25,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          cache: yarn
           node-version: ${{ matrix.node_version }}
 
       - name: Install dependencies and build
@@ -50,10 +59,19 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          cache: yarn
           node-version: ${{ env.NODE }}
 
       - name: Install dependencies and build

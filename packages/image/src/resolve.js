@@ -123,7 +123,30 @@ const resolveBufferImage = (buffer) => {
   return Promise.resolve();
 };
 
-const getImageFormat = (body) => {
+const resolveBlobImage = async blob => {
+  const { type } = blob;
+  if (!type || type === 'application/octet-stream') {
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    return resolveBufferImage(buffer);
+  }
+
+  if (!type.startsWith('image/')) {
+    throw new Error(`Invalid blob type: ${type}`);
+  }
+
+  const format = type.replace('image/', '');
+
+  if (!isValidFormat(format)) {
+    throw new Error(`Invalid blob type: ${type}`);
+  }
+
+  const buffer = await blob.arrayBuffer();
+
+  return getImage(Buffer.from(buffer), format);
+};
+
+const getImageFormat = body => {
   const isPng =
     body[0] === 137 &&
     body[1] === 80 &&
@@ -170,7 +193,9 @@ const resolveImage = (src, { cache = true } = {}) => {
   let image;
   const cacheKey = src.data ? src.data.toString() : src.uri;
 
-  if (Buffer.isBuffer(src)) {
+  if (typeof Blob !== 'undefined' && src instanceof Blob) {
+    image = resolveBlobImage(src);
+  } else if (Buffer.isBuffer(src)) {
     image = resolveBufferImage(src);
   } else if (cache && IMAGE_CACHE.get(cacheKey)) {
     return IMAGE_CACHE.get(cacheKey);

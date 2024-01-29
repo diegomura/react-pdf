@@ -12,15 +12,16 @@ concurrency:
 env:
   FORCE_COLOR: 2
   HUSKY: 0
-  NODE: 20
+  NODE_VERSION: 20
 
 jobs:
   test:
-    name: Run tests (Node.js ${{ matrix.node_version }})
+    name: Run tests (Node.js ${{ matrix.node_version }}; React ${{ matrix.react_version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node_version: [18, 20]
+        react_version: [16, 17, 18]
 
     steps:
       - name: Checkout
@@ -45,7 +46,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run tests
-        run: yarn test
+        run: REACT_VERSION=${{ matrix.react_version }} yarn test
 
   release:
     # Prevents this action from running on forks
@@ -73,7 +74,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE }}
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies and build
         run: yarn --frozen-lockfile

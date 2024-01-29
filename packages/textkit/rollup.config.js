@@ -23,7 +23,11 @@ const babelConfig = () => ({
 
 const input = './src/index.js';
 
-const getExternal = () => [...Object.keys(pkg.dependencies), /@babel\/runtime/];
+const getExternal = () => [
+  ...Object.keys(pkg.dependencies),
+  /@babel\/runtime/,
+  /hyphen/,
+];
 
 const getPlugins = () => [localResolve(), babel(babelConfig())];
 

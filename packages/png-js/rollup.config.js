@@ -27,12 +27,14 @@ const babelConfig = () => ({
   exclude: 'node_modules/**',
 });
 
-const getExternal = ({ browser }) => [
-  ...(browser ? [] : ['fs']),
-  ...Object.keys(pkg.dependencies).filter(
-    dep => !browser || 'browserify-zlib' !== dep,
-  ),
-];
+const getExternal = ({ browser }) =>
+  browser
+    ? [
+        ...Object.keys(pkg.dependencies).filter(
+          dep => dep !== 'browserify-zlib',
+        ),
+      ]
+    : ['fs', ...Object.keys(pkg.dependencies)];
 
 const getPlugins = ({ browser }) => [
   ...(browser

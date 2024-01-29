@@ -1,8 +1,9 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import pkg from './package.json';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
+
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   format: 'cjs',

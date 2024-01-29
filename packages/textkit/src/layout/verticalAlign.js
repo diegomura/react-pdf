@@ -11,8 +11,8 @@
  *
  * @returns {VerticalAlignment} verticalAlignment
  */
-const verticalAlignment = () => attributedString => {
-  attributedString.runs.forEach(run => {
+const verticalAlignment = () => (attributedString) => {
+  attributedString.runs.forEach((run) => {
     const { attributes } = run;
     const { verticalAlign } = attributes;
 

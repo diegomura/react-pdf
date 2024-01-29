@@ -8,7 +8,7 @@ import runDropLast from '../run/dropLast';
  * @param {Object} attributedString attributed string
  * @returns {Object} attributed string with new glyph
  */
-const dropLast = attributedString => {
+const dropLast = (attributedString) => {
   const string = arrayDropLast(attributedString.string);
   const runs = adjust(-1, runDropLast, attributedString.runs);
 

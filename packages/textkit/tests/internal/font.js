@@ -6,18 +6,18 @@ const longLigature = {
   advanceWidth: 10,
 };
 
-const glyphForCodePoint = v => {
+const glyphForCodePoint = (v) => {
   if (v === 64257) return shortLigature;
   if (v === 64259) return longLigature;
 
   return { id: v, codePoints: [v], advanceWidth: 8 };
 };
 
-const glyphFromChar = v => glyphForCodePoint(v.codePointAt(0));
+const glyphFromChar = (v) => glyphForCodePoint(v.codePointAt(0));
 
-const layoutGlyphs = v => {
+const layoutGlyphs = (v) => {
   const splits = v.split(/(ffi|fi|.)/g);
-  const result = splits.map(s => {
+  const result = splits.map((s) => {
     if (s === 'fi') return [shortLigature];
     if (s === 'ffi') return [longLigature];
 
@@ -27,8 +27,8 @@ const layoutGlyphs = v => {
   return result.flat();
 };
 
-const layoutPositions = positions => {
-  return positions.map(pos => ({
+const layoutPositions = (positions) => {
+  return positions.map((pos) => ({
     xAdvance: pos.advanceWidth || 0,
     yAdvance: 0,
     xOffset: 0,
@@ -36,7 +36,7 @@ const layoutPositions = positions => {
   }));
 };
 
-const layoutStringIndices = glyphs => {
+const layoutStringIndices = (glyphs) => {
   let counter = 0;
   const stringIndices = [];
 
@@ -49,7 +49,7 @@ const layoutStringIndices = glyphs => {
   return stringIndices;
 };
 
-const layout = string => {
+const layout = (string) => {
   const glyphs = layoutGlyphs(string);
   const positions = layoutPositions(glyphs);
   const stringIndices = layoutStringIndices(glyphs);

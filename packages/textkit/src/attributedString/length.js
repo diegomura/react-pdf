@@ -7,7 +7,7 @@ import end from './end';
  * @param {Object} attributedString glyph string
  * @returns {number} end
  */
-const length = attributedString => {
+const length = (attributedString) => {
   return end(attributedString) - start(attributedString);
 };
 

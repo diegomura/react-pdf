@@ -1,4 +1,4 @@
-const parse = transformString => {
+const parse = (transformString) => {
   const transforms = transformString.trim().split(/\) |\)/);
 
   // Handle "initial", "inherit", "unset".
@@ -14,7 +14,7 @@ const parse = transformString => {
     if (transform) {
       const [name, rawValue] = transform.split('(');
       const splitChar = rawValue.indexOf(',') >= 0 ? ',' : ' ';
-      const value = rawValue.split(splitChar).map(val => val.trim());
+      const value = rawValue.split(splitChar).map((val) => val.trim());
       parsed.push({ operation: name, value });
     }
   }
@@ -22,7 +22,7 @@ const parse = transformString => {
   return parsed;
 };
 
-const parseAngle = value => {
+const parseAngle = (value) => {
   const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
   const [, angle, unit] = unitsRegexp.exec(value);
   const number = Number.parseFloat(angle);
@@ -33,7 +33,7 @@ const parseAngle = value => {
 const normalizeTransformOperation = ({ operation, value }) => {
   switch (operation) {
     case 'scale': {
-      const [scaleX, scaleY = scaleX] = value.map(num =>
+      const [scaleX, scaleY = scaleX] = value.map((num) =>
         Number.parseFloat(num),
       );
       return { operation: 'scale', value: [scaleX, scaleY] };
@@ -53,7 +53,7 @@ const normalizeTransformOperation = ({ operation, value }) => {
     case 'translate': {
       return {
         operation: 'translate',
-        value: value.map(num => Number.parseFloat(num)),
+        value: value.map((num) => Number.parseFloat(num)),
       };
     }
 
@@ -81,16 +81,16 @@ const normalizeTransformOperation = ({ operation, value }) => {
     }
 
     default: {
-      return { operation, value: value.map(num => Number.parseFloat(num)) };
+      return { operation, value: value.map((num) => Number.parseFloat(num)) };
     }
   }
 };
 
-const normalize = operations => {
-  return operations.map(operation => normalizeTransformOperation(operation));
+const normalize = (operations) => {
+  return operations.map((operation) => normalizeTransformOperation(operation));
 };
 
-const processTransform = value => {
+const processTransform = (value) => {
   if (typeof value !== 'string') return value;
 
   return normalize(parse(value));

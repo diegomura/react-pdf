@@ -1,8 +1,8 @@
 import slice from './slice';
 
-const findCharIndex = string => string.search(/\S/g);
+const findCharIndex = (string) => string.search(/\S/g);
 
-const findLastCharIndex = string => {
+const findLastCharIndex = (string) => {
   const match = string.match(/\S/g);
   return match ? string.lastIndexOf(match[match.length - 1]) : -1;
 };
@@ -13,7 +13,7 @@ const findLastCharIndex = string => {
  * @param {Object}  attributedString
  * @returns {Object} attributedString
  */
-const trim = attributedString => {
+const trim = (attributedString) => {
   const start = findCharIndex(attributedString.string);
 
   const end = findLastCharIndex(attributedString.string);

@@ -594,7 +594,7 @@ const fillBorderLeft = (ctx, layout, style, rbl, rtl) => {
   ctx.undash();
 };
 
-const shouldRenderBorders = node =>
+const shouldRenderBorders = (node) =>
   node.box &&
   (node.box.borderTopWidth ||
     node.box.borderRightWidth ||

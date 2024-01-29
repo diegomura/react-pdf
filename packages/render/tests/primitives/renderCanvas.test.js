@@ -20,7 +20,7 @@ describe('primitive renderCanvas', () => {
   test('should call paint method with ctx', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const paint = p => expect(p).toBeTruthy();
+    const paint = (p) => expect(p).toBeTruthy();
     const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
@@ -29,7 +29,7 @@ describe('primitive renderCanvas', () => {
   test('should remove dangerous methods from passed ctx', () => {
     const ctx = createCTX();
     const box = { top: 20, left: 40, width: 140, height: 200 };
-    const paint = p => expect(p.registerFont).toBeFalsy();
+    const paint = (p) => expect(p.registerFont).toBeFalsy();
     const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);

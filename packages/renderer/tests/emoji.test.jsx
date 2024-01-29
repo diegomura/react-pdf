@@ -6,7 +6,7 @@ import renderToImage from './renderComponent';
 describe('emoji', () => {
   test('should support builder function', async () => {
     Font.registerEmojiSource({
-      builder: code =>
+      builder: (code) =>
         `https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/${code.toLowerCase()}_3d.png`,
     });
 

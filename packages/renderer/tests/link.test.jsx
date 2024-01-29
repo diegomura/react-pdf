@@ -9,7 +9,7 @@ Font.register({
   src: 'https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf',
 });
 
-const mount = async children => {
+const mount = async (children) => {
   const image = await renderToImage(
     <Document>
       <Page size={[50, 25]}>{children}</Page>

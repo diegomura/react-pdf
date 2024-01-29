@@ -56,10 +56,10 @@ const setLineDash = (ctx, node) => {
   if (value) ctx.dash(value.split(',').map(Number));
 };
 
-const hasLinearGradientFill = node =>
+const hasLinearGradientFill = (node) =>
   node.props?.fill?.type === P.LinearGradient;
 
-const hasRadialGradientFill = node =>
+const hasRadialGradientFill = (node) =>
   node.props?.fill?.type === P.RadialGradient;
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
@@ -84,7 +84,7 @@ const setLinearGradientFill = (ctx, node) => {
 
   const grad = ctx.linearGradient(gx1, gy1, gx2, gy2);
 
-  gradient.children.forEach(stop => {
+  gradient.children.forEach((stop) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
@@ -115,7 +115,7 @@ const setRadialGradientFill = (ctx, node) => {
 
   const grad = ctx.radialGradient(gfx, gfy, 0, gcx, gcy, gr);
 
-  gradient.children.forEach(stop => {
+  gradient.children.forEach((stop) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
@@ -199,7 +199,7 @@ const clipPath = (ctx, node) => {
 
   if (value) {
     const children = value.children || [];
-    children.forEach(child => renderNode(ctx, child));
+    children.forEach((child) => renderNode(ctx, child));
     ctx.clip();
   }
 };
@@ -207,7 +207,7 @@ const clipPath = (ctx, node) => {
 const drawChildren = (ctx, node) => {
   const children = node.children || [];
 
-  children.forEach(child => {
+  children.forEach((child) => {
     ctx.save();
 
     clipPath(ctx, child);

@@ -320,7 +320,7 @@ const linebreak = (nodes, lines, settings) => {
 
   if (activeNodes.size() !== 0) {
     // Find the best active node (the one with the least total demerits.)
-    activeNodes.forEach(node => {
+    activeNodes.forEach((node) => {
       if (node.data.demerits < tmp.data.demerits) {
         tmp = node;
       }

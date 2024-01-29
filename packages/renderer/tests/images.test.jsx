@@ -16,7 +16,7 @@ const Orientation6 = fs.readFileSync(`${__dirname}/images/orientation-6.jpeg`);
 const Orientation7 = fs.readFileSync(`${__dirname}/images/orientation-7.jpeg`);
 const Orientation8 = fs.readFileSync(`${__dirname}/images/orientation-8.jpeg`);
 
-const mount = async children => {
+const mount = async (children) => {
   const image = await renderToImage(
     <Document>
       <Page>{children}</Page>

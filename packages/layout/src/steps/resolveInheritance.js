@@ -22,16 +22,16 @@ const TEXT_INHERITABLE_PROPERTIES = [
   'backgroundColor',
 ];
 
-const isSvg = node => node.type === P.Svg;
+const isSvg = (node) => node.type === P.Svg;
 
-const isText = node => node.type === P.Text;
+const isText = (node) => node.type === P.Text;
 
 // Merge style values
 const mergeValues = (styleName, value, inheritedValue) => {
   switch (styleName) {
     case 'textDecoration': {
       // merge not none and not false textDecoration values to one rule
-      return [inheritedValue, value].filter(v => v && v !== 'none').join(' ');
+      return [inheritedValue, value].filter((v) => v && v !== 'none').join(' ');
     }
     default:
       return value;
@@ -65,7 +65,7 @@ const merge = (inheritedStyles, style) => {
  * @param {Object} inheritedStyles style object
  * @returns {MergeStyles} merge styles function
  */
-const mergeStyles = inheritedStyles => node => {
+const mergeStyles = (inheritedStyles) => (node) => {
   const style = merge(inheritedStyles, node.style || {});
   return Object.assign({}, node, { style });
 };
@@ -77,7 +77,7 @@ const mergeStyles = inheritedStyles => node => {
  * @returns {Object} document root with inheritance
  *
  */
-const resolveInheritance = node => {
+const resolveInheritance = (node) => {
   if (isSvg(node)) return node;
 
   if (!node.children) return node;

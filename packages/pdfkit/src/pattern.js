@@ -40,7 +40,7 @@ class PDFTilingPattern {
       BBox: this.bBox,
       XStep: this.xStep,
       YStep: this.yStep,
-      Matrix: m.map(v => +v.toFixed(5)),
+      Matrix: m.map((v) => +v.toFixed(5)),
       Resources: resources
     });
     pattern.end(this.stream);
@@ -50,7 +50,7 @@ class PDFTilingPattern {
   embedPatternColorSpaces() {
     // map each pattern to an underlying color space
     // and embed on each page
-    underlyingColorSpaces.forEach(csName => {
+    underlyingColorSpaces.forEach((csName) => {
       const csId = this.getPatternColorSpaceId(csName);
 
       if (this.doc.page.colorSpaces[csId]) return;

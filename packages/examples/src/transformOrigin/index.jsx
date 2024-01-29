@@ -1,6 +1,5 @@
-import React from 'react'
-import { Document, Page, View } from '@react-pdf/renderer'
-
+import React from 'react';
+import { Document, Page, View } from '@react-pdf/renderer';
 
 const Box = ({ origin }) => (
   <View
@@ -12,7 +11,7 @@ const Box = ({ origin }) => (
       transformOrigin: origin,
     }}
   />
-)
+);
 
 const App = () => {
   return (
@@ -46,7 +45,7 @@ const App = () => {
         <Box origin="10mm 1in" />
       </Page>
     </Document>
-  )
-}
+  );
+};
 
-export default App
+export default App;

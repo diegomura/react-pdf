@@ -2,14 +2,14 @@
 
 import getWrap from './getWrap';
 
-const getBreak = node => node.props?.break || false;
+const getBreak = (node) => node.props?.break || false;
 
-const getMinPresenceAhead = node => node.props?.minPresenceAhead || 0;
+const getMinPresenceAhead = (node) => node.props?.minPresenceAhead || 0;
 
-const getFurthestEnd = elements =>
-  Math.max(...elements.map(node => node.box.top + node.box.height));
+const getFurthestEnd = (elements) =>
+  Math.max(...elements.map((node) => node.box.top + node.box.height));
 
-const getEndOfMinPresenceAhead = child => {
+const getEndOfMinPresenceAhead = (child) => {
   return (
     child.box.top +
     child.box.height +
@@ -21,7 +21,7 @@ const getEndOfMinPresenceAhead = child => {
 const getEndOfPresence = (child, futureElements) => {
   const afterMinPresenceAhead = getEndOfMinPresenceAhead(child);
   const endOfFurthestFutureElement = getFurthestEnd(
-    futureElements.filter(node => !node.props?.fixed),
+    futureElements.filter((node) => !node.props?.fixed),
   );
   return Math.min(afterMinPresenceAhead, endOfFurthestFutureElement);
 };

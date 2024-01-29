@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-const setPDFMetadata = target => (key, value) => {
+const setPDFMetadata = (target) => (key, value) => {
   if (value) target.info[key] = value;
 };
 

@@ -19,7 +19,9 @@ const concat = (runA, runB) => {
 
   const runAIndices = runA.glyphIndices || [];
   const runALastIndex = last(runAIndices) || 0;
-  const runBIndices = (runB.glyphIndices || []).map(i => i + runALastIndex + 1);
+  const runBIndices = (runB.glyphIndices || []).map(
+    (i) => i + runALastIndex + 1,
+  );
   const glyphIndices = normalizeIndices(runAIndices.concat(runBIndices));
 
   return Object.assign({}, runA, {

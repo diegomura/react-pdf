@@ -21,7 +21,7 @@ export default {
   markContent(tag, options = null) {
     if (tag === 'Artifact' || (options && options.mcid)) {
       let toClose = 0;
-      this.page.markings.forEach(marking => {
+      this.page.markings.forEach((marking) => {
         if (toClose || marking.structContent || marking.tag === 'Artifact') {
           toClose++;
         }
@@ -58,7 +58,7 @@ export default {
       }
       if (
         Array.isArray(options.attached) &&
-        options.attached.every(val => typeof val === 'string')
+        options.attached.every((val) => typeof val === 'string')
       ) {
         dictionary.Attached = options.attached;
       }
@@ -119,7 +119,7 @@ export default {
   },
 
   initPageMarkings(pageMarkings) {
-    pageMarkings.forEach(marking => {
+    pageMarkings.forEach((marking) => {
       if (marking.structContent) {
         const structContent = marking.structContent;
         const newStructContent = this.markStructureContent(
@@ -177,7 +177,7 @@ export default {
     const structTreeRoot = this._root.data.StructTreeRoot;
     if (structTreeRoot) {
       structTreeRoot.end();
-      this.structChildren.forEach(structElem => structElem.end());
+      this.structChildren.forEach((structElem) => structElem.end());
     }
     if (this._root.data.MarkInfo) {
       this._root.data.MarkInfo.end();

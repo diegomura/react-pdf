@@ -50,7 +50,7 @@ export const setBorderLeft = setYogaValue('border', Yoga.Edge.Left);
  * @param {number | string} width border width
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setBorder = width => node => {
+export const setBorder = (width) => (node) => {
   setBorderTop(width)(node);
   setBorderRight(width)(node);
   setBorderBottom(width)(node);

@@ -2,7 +2,7 @@
 PDFNameTree - represents a name tree object
 */
 
-import PDFTree from "./tree";
+import PDFTree from './tree';
 
 class PDFNameTree extends PDFTree {
   _compareKeys(a, b) {

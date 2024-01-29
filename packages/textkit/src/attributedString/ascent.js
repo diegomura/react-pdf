@@ -6,7 +6,7 @@ import runAscent from '../run/ascent';
  * @param {Object} attributedString attributed string
  * @returns {number} ascent
  */
-const ascent = attributedString => {
+const ascent = (attributedString) => {
   const reducer = (acc, run) => Math.max(acc, runAscent(run));
   return attributedString.runs.reduce(reducer, 0);
 };

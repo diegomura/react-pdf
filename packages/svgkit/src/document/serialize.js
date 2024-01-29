@@ -1,12 +1,12 @@
-const serializeAttributes = attributes => {
-  const res = Object.keys(attributes).map(key => {
+const serializeAttributes = (attributes) => {
+  const res = Object.keys(attributes).map((key) => {
     return `${key}="${attributes[key]}"`;
   });
 
   return res.join(' ');
 };
 
-const serializeXML = element => {
+const serializeXML = (element) => {
   let res = '';
 
   if (typeof element === 'string') {
@@ -14,7 +14,7 @@ const serializeXML = element => {
   } else {
     res += `<${element.type} ${serializeAttributes(element.attributes)}>`;
 
-    element.children.forEach(child => {
+    element.children.forEach((child) => {
       res += serializeXML(child);
     });
 

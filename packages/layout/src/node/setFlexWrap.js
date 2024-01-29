@@ -17,7 +17,7 @@ const FLEX_WRAP = {
  * @param {string} value flex wrap value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setFlexWrap = value => node => {
+const setFlexWrap = (value) => (node) => {
   const { yogaNode } = node;
 
   if (yogaNode) {

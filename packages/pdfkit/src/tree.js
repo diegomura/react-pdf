@@ -27,8 +27,8 @@ class PDFTree {
 
     const out = ['<<'];
     if (this.limits && sortedKeys.length > 1) {
-      const first = sortedKeys[0],
-        last = sortedKeys[sortedKeys.length - 1];
+      const first = sortedKeys[0];
+      const last = sortedKeys[sortedKeys.length - 1];
       out.push(
         `  /Limits ${PDFObject.convert([
           this._dataForKey(first),

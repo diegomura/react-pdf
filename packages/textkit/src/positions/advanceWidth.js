@@ -4,7 +4,7 @@
  * @param {Object}  positions
  * @returns {number} advance width
  */
-const advanceWidth = positions => {
+const advanceWidth = (positions) => {
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);
 };
 

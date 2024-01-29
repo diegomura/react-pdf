@@ -1,10 +1,17 @@
 /* eslint react/prop-types: 0 */
 /* eslint react/jsx-sort-props: 0 */
 
-import React from 'react'
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer'
+import React from 'react';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Font,
+} from '@react-pdf/renderer';
 
-import RobotoFont from "../../public/Roboto-Regular.ttf";
+import RobotoFont from '../../public/Roboto-Regular.ttf';
 
 const styles = StyleSheet.create({
   body: {
@@ -17,18 +24,18 @@ const styles = StyleSheet.create({
     maxLines: 1,
     fontColor: '#000000',
     textOverflow: 'ellipsis',
-    fontFamily: 'Roboto'
+    fontFamily: 'Roboto',
   },
-})
+});
 
 Font.register({
-  family: "Roboto",
+  family: 'Roboto',
   fonts: [
     {
       src: RobotoFont,
       fontWeight: 400,
     },
-  ]
+  ],
 });
 
 const MyDoc = () => {
@@ -38,15 +45,15 @@ const MyDoc = () => {
         <Text style={styles.text}>And here here</Text>
       </View>
     </Page>
-  )
-}
+  );
+};
 
 const App = () => {
   return (
     <Document>
       <MyDoc />
     </Document>
-  )
-}
+  );
+};
 
-export default App
+export default App;

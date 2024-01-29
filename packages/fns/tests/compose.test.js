@@ -4,8 +4,8 @@ import compose from '../src/compose';
 
 describe('compose', () => {
   test('performs right-to-left function composition', () => {
-    const multiply = a => b => a * b;
-    const map = fn => collection => collection.map(fn);
+    const multiply = (a) => (b) => a * b;
+    const map = (fn) => (collection) => collection.map(fn);
     const f = compose(map, multiply, parseInt);
 
     expect(f('10')([1, 2, 3])).toEqual([10, 20, 30]);

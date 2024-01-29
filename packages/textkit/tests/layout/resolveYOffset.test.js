@@ -158,18 +158,10 @@ describe('resolveYOffset', () => {
 
     expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', string.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      101,
-      109,
+      76, 111, 114, 101, 109,
     ]);
     expect(pluck('xAdvance', string.runs[0].positions)).toEqual([
-      8,
-      7,
-      6,
-      5,
-      4,
+      8, 7, 6, 5, 4,
     ]);
   });
 
@@ -203,25 +195,13 @@ describe('resolveYOffset', () => {
 
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      101,
-      109,
+      76, 111, 114, 101, 109,
     ]);
     expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
-      8,
-      7,
-      6,
-      5,
-      4,
+      8, 7, 6, 5, 4,
     ]);
     expect(pluck('yOffset', result.runs[0].positions)).toEqual([
-      40,
-      40,
-      40,
-      40,
-      40,
+      40, 40, 40, 40, 40,
     ]); // yOffset * font.unitsPerEm
   });
 });

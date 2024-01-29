@@ -39,7 +39,7 @@ const slice = (start, end, run) => {
   const glyphs = (run.glyphs || []).slice(sliceStart, endIndex);
 
   // Compute new positions
-  const glyphPosition = g => ({ xAdvance: g.advanceWidth * runScale });
+  const glyphPosition = (g) => ({ xAdvance: g.advanceWidth * runScale });
   const startPositions = startGlyphs.map(glyphPosition);
   const positions = (run.positions || []).slice(sliceStart, endIndex);
   const endPositions = endGlyphs.map(glyphPosition);

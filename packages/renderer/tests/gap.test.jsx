@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 import { Document, Page, View } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
-const mount = async children => {
+const mount = async (children) => {
   const image = await renderToImage(
     <Document>
       <Page size={[100, 100]}>{children}</Page>

@@ -31,7 +31,7 @@ const STYLE_PROPS = [
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
 const HORIZONTAL_PROPS = ['x', 'x1', 'x2', 'width', 'cx', 'rx'];
 
-const isType = type => node => node.type === type;
+const isType = (type) => (node) => node.type === type;
 
 const isSvg = isType(P.Svg);
 
@@ -39,7 +39,7 @@ const isText = isType(P.Text);
 
 const isTextInstance = isType(P.TextInstance);
 
-const transformPercent = container => props =>
+const transformPercent = (container) => (props) =>
   mapValues(props, (value, key) => {
     const match = matchPercent(value);
 
@@ -54,12 +54,12 @@ const transformPercent = container => props =>
     return value;
   });
 
-const parsePercent = value => {
+const parsePercent = (value) => {
   const match = matchPercent(value);
   return match ? match.percent : parseFloat(value);
 };
 
-const parseProps = container => node => {
+const parseProps = (container) => (node) => {
   let props = transformPercent(container)(node.props);
 
   props = evolve(
@@ -91,21 +91,21 @@ const parseProps = container => node => {
   return Object.assign({}, node, { props });
 };
 
-const mergeStyles = node => {
+const mergeStyles = (node) => {
   const style = node.style || {};
   const props = Object.assign({}, style, node.props);
 
   return Object.assign({}, node, { props });
 };
 
-const removeNoneValues = node => {
-  const removeNone = value => (value === 'none' ? null : value);
+const removeNoneValues = (node) => {
+  const removeNone = (value) => (value === 'none' ? null : value);
   const props = mapValues(node.props, removeNone);
 
   return Object.assign({}, node, { props });
 };
 
-const pickStyleProps = node => {
+const pickStyleProps = (node) => {
   const props = node.props || {};
   const styleProps = pick(STYLE_PROPS, props);
   const style = Object.assign({}, styleProps, node.style || {});
@@ -113,7 +113,7 @@ const pickStyleProps = node => {
   return Object.assign({}, node, { style });
 };
 
-const parseSvgProps = node => {
+const parseSvgProps = (node) => {
   const props = evolve(
     {
       width: parseFloat,
@@ -127,17 +127,17 @@ const parseSvgProps = node => {
   return Object.assign({}, node, { props });
 };
 
-const wrapBetweenTspan = node => ({
+const wrapBetweenTspan = (node) => ({
   type: P.Tspan,
   props: {},
   children: [node],
 });
 
-const addMissingTspan = node => {
+const addMissingTspan = (node) => {
   if (!isText(node)) return node;
   if (!node.children) return node;
 
-  const resolveChild = child =>
+  const resolveChild = (child) =>
     isTextInstance(child) ? wrapBetweenTspan(child) : child;
 
   const children = node.children.map(resolveChild);
@@ -145,7 +145,7 @@ const addMissingTspan = node => {
   return Object.assign({}, node, { children });
 };
 
-const parseText = fontStore => node => {
+const parseText = (fontStore) => (node) => {
   if (isText(node)) return layoutText(fontStore, node);
 
   if (!node.children) return node;
@@ -155,7 +155,7 @@ const parseText = fontStore => node => {
   return Object.assign({}, node, { children });
 };
 
-const resolveSvgNode = container =>
+const resolveSvgNode = (container) =>
   compose(
     parseProps(container),
     addMissingTspan,
@@ -163,7 +163,7 @@ const resolveSvgNode = container =>
     mergeStyles,
   );
 
-const resolveChildren = container => node => {
+const resolveChildren = (container) => (node) => {
   if (!node.children) return node;
 
   const resolveChild = compose(
@@ -199,7 +199,7 @@ const resolveSvgRoot = (node, fontStore) => {
 const resolveSvg = (node, fontStore) => {
   if (!node.children) return node;
 
-  const resolveChild = child => resolveSvg(child, fontStore);
+  const resolveChild = (child) => resolveSvg(child, fontStore);
   const root = isSvg(node) ? resolveSvgRoot(node, fontStore) : node;
 
   const children = root.children.map(resolveChild);

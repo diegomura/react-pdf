@@ -32,10 +32,10 @@ export default {
     if (Array.isArray(color)) {
       // RGB
       if (color.length === 3) {
-        color = color.map(part => part / 255);
+        color = color.map((part) => part / 255);
         // CMYK
       } else if (color.length === 4) {
-        color = color.map(part => part / 100);
+        color = color.map((part) => part / 100);
       }
       return color;
     }
@@ -48,7 +48,8 @@ export default {
       color.apply(stroke);
       return true;
       // see if tiling pattern, decode & apply it it
-    } else if (Array.isArray(color) && color[0] instanceof PDFTilingPattern) {
+    }
+    if (Array.isArray(color) && color[0] instanceof PDFTilingPattern) {
       color[0].apply(stroke, color[1]);
       return true;
     }
@@ -117,7 +118,8 @@ export default {
   },
 
   _doOpacity(fillOpacity, strokeOpacity) {
-    let dictionary, name;
+    let dictionary;
+    let name;
     if (fillOpacity == null && strokeOpacity == null) {
       return;
     }

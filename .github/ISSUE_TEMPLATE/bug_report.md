@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **Describe the bug**
@@ -12,6 +11,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior including code snippet (if applies):
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -26,9 +26,10 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. MacOS, Windows]
- - Browser [e.g. chrome, safari]
- - React-pdf version [e.g. v1.1.0]
+
+- OS: [e.g. MacOS, Windows]
+- Browser [e.g. chrome, safari]
+- React-pdf version [e.g. v1.1.0]
 
 <!-- Love react-pdf? Please consider supporting our collective:
 👉  https://opencollective.com/react-pdf/donate -->

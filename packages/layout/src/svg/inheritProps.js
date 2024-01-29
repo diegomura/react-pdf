@@ -30,17 +30,17 @@ const SVG_INHERITED_PROPS = [
   'wordSpacing',
 ];
 
-const getInheritProps = node => {
+const getInheritProps = (node) => {
   const props = node.props || {};
   return pick(SVG_INHERITED_PROPS, props);
 };
 
-const inheritProps = node => {
+const inheritProps = (node) => {
   if (!node.children) return node;
 
   const inheritedProps = getInheritProps(node);
 
-  const children = node.children.map(child => {
+  const children = node.children.map((child) => {
     const props = Object.assign({}, inheritedProps, child.props || {});
     const newChild = Object.assign({}, child, { props });
     return inheritProps(newChild);

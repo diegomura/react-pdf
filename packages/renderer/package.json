@@ -50,9 +50,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "yarn run lint",
-      "prettier --write",
-      "git add"
+      "yarn lint",
+      "prettier --write"
     ]
   },
   "files": [

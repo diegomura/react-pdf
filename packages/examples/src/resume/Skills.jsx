@@ -21,7 +21,7 @@ const SkillEntry = ({ name, skills }) => (
   <View>
     <Text style={styles.title}>{name}</Text>
     <List>
-      {skills.map(skill => (
+      {skills.map((skill) => (
         <Item key={skill}>{skill}</Item>
       ))}
     </List>

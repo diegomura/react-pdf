@@ -16,8 +16,8 @@ const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
@@ -31,7 +31,7 @@ const getExternal = ({ browser }) =>
   browser
     ? [
         ...Object.keys(pkg.dependencies).filter(
-          dep => dep !== 'browserify-zlib',
+          (dep) => dep !== 'browserify-zlib',
         ),
       ]
     : ['fs', ...Object.keys(pkg.dependencies)];

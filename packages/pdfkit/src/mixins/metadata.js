@@ -12,9 +12,9 @@ export default {
   _addInfo() {
     this.appendXML(`
         <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
-            <xmp:CreateDate>${this.info.CreationDate.toISOString().split(
-              '.'
-            )[0] + 'Z'}</xmp:CreateDate>
+            <xmp:CreateDate>${
+              this.info.CreationDate.toISOString().split('.')[0] + 'Z'
+            }</xmp:CreateDate>
             <xmp:CreatorTool>${this.info.Creator}</xmp:CreatorTool>
         </rdf:Description>
         `);

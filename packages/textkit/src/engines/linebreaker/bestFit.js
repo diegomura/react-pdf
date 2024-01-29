@@ -8,7 +8,7 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   const sum = { width: 0, stretch: 0, shrink: 0 };
   const lineLength = widths[Math.min(lineNumber, widths.length - 1)];
 
-  const calculateRatio = node => {
+  const calculateRatio = (node) => {
     if (sum.width < lineLength) {
       return sum.stretch - node.stretch > 0
         ? (lineLength - sum.width) / sum.stretch

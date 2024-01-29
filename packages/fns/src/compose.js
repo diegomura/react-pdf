@@ -15,16 +15,18 @@ import reverse from './reverse';
  * @param {...Function} fns functions
  * @returns {Compose} composed function
  */
-const compose = (...fns) => (value, ...args) => {
-  let result = value;
-  const reversedFns = reverse(fns);
+const compose =
+  (...fns) =>
+  (value, ...args) => {
+    let result = value;
+    const reversedFns = reverse(fns);
 
-  for (let i = 0; i < reversedFns.length; i += 1) {
-    const fn = reversedFns[i];
-    result = fn(result, ...args);
-  }
+    for (let i = 0; i < reversedFns.length; i += 1) {
+      const fn = reversedFns[i];
+      result = fn(result, ...args);
+    }
 
-  return result;
-};
+    return result;
+  };
 
 export default compose;

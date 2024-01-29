@@ -22,8 +22,8 @@ const esm = {
   sourcemap: true,
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const nodeInput = './src/node/index.js';
 const domInput = './src/dom/index.js';
@@ -39,7 +39,9 @@ const getExternal = ({ browser }) => [
   /@babel\/runtime/,
   'react/jsx-runtime',
   ...(browser ? [] : ['fs', 'path', 'url']),
-  ...Object.keys(pkg.dependencies).filter(name => name !== 'react-reconciler'),
+  ...Object.keys(pkg.dependencies).filter(
+    (name) => name !== 'react-reconciler',
+  ),
   ...Object.keys(pkg.peerDependencies),
 ];
 
@@ -65,7 +67,7 @@ const getPlugins = ({ browser, declarationDests, minify = false }) => [
     },
   }),
   copy({
-    targets: declarationDests.map(destPath => {
+    targets: declarationDests.map((destPath) => {
       const [dest, rename] = destPath.split('/');
       return { src: 'index.d.ts', dest, rename };
     }),

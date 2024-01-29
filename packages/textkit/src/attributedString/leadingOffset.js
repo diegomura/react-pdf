@@ -6,7 +6,7 @@ import runLeadingOffset from '../run/leadingOffset';
  * @param {Object} attributedString attributed string
  * @returns {number} leading white space offset
  */
-const leadingOffset = attributedString => {
+const leadingOffset = (attributedString) => {
   const runs = attributedString.runs || [];
 
   return runLeadingOffset(runs[0]);

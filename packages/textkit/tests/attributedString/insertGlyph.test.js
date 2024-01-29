@@ -30,12 +30,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      105,
-      76,
-      111,
-      114,
-      101,
-      109,
+      105, 76, 111, 114, 101, 109,
     ]);
   });
 
@@ -65,12 +60,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      101,
-      109,
-      105,
+      76, 111, 114, 101, 109, 105,
     ]);
   });
 
@@ -100,12 +90,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      105,
-      101,
-      109,
+      76, 111, 114, 105, 101, 109,
     ]);
   });
 
@@ -135,12 +120,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      64257,
-      76,
-      111,
-      114,
-      101,
-      109,
+      64257, 76, 111, 114, 101, 109,
     ]);
   });
 
@@ -170,12 +150,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      101,
-      109,
-      64257,
+      76, 111, 114, 101, 109, 64257,
     ]);
   });
 
@@ -205,12 +180,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      114,
-      64257,
-      101,
-      109,
+      76, 111, 114, 64257, 101, 109,
     ]);
   });
 
@@ -240,12 +210,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      105,
-      76,
-      111,
-      64257,
-      101,
-      109,
+      105, 76, 111, 64257, 101, 109,
     ]);
   });
 
@@ -275,12 +240,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      64257,
-      101,
-      109,
-      105,
+      76, 111, 64257, 101, 109, 105,
     ]);
   });
 
@@ -310,12 +270,7 @@ describe('attributeString insertGlyph operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      64257,
-      105,
-      101,
-      109,
+      76, 111, 64257, 105, 101, 109,
     ]);
   });
 

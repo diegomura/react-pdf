@@ -4,6 +4,11 @@ import slice from '../../attributedString/slice';
 import insertGlyph from '../../attributedString/insertGlyph';
 import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 
+/**
+ * @typedef {import('../../types.js').AttributedString} AttributedString
+ * @typedef {import('../../types.js').Attributes} Attributes
+ */
+
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
@@ -17,12 +22,12 @@ const opts = {
 /**
  * Slice attributed string to many lines
  *
- * @param {Object} string attributed string
+ * @param {AttributedString} string attributed string
  * @param {Object[]} nodes
  * @param {Object[]} breaks
- * @returns {Object[]} attributed strings
+ * @returns {AttributedString[]} attributed strings
  */
-const breakLines = (string, nodes, breaks) => {
+function breakLines(string, nodes, breaks) {
   let start = 0;
   let end = null;
 
@@ -52,17 +57,17 @@ const breakLines = (string, nodes, breaks) => {
   lines.push(slice(start, string.string.length, string));
 
   return lines;
-};
+}
 
 /**
  * Return Knuth & Plass nodes based on line and previously calculated syllables
  *
- * @param {Object} attributedString attributed string
+ * @param {AttributedString} attributedString attributed string
  * @param {Object} args attributed string args
  * @param {Object} options layout options
  * @returns {Object[]} attributed strings
  */
-const getNodes = (attributedString, { align }, options) => {
+function getNodes(attributedString, { align }, options) {
   let start = 0;
 
   const hyphenWidth = 5;
@@ -103,48 +108,50 @@ const getNodes = (attributedString, { align }, options) => {
   result.push(linebreak.penalty(0, -linebreak.infinity, 1));
 
   return result;
-};
-
-const getStyles = (attributedString) =>
-  attributedString.runs?.[0]?.attributes || {};
+}
 
 /**
- * @typedef {Function} LineBreaker
- * @param {Object} attributedString attributed string
- * @param {Object} availableWidths available widths
- * @returns {Object[]} attributed strings
+ * @param {AttributedString} attributedString attributed string
+ * @returns {Attributes} styles
  */
+function getStyles(attributedString) {
+  return attributedString.runs?.[0]?.attributes || {};
+}
 
 /**
  * Performs Knuth & Plass line breaking algorithm
  * Fallbacks to best fit algorithm if latter not successful
  *
  * @param {Object} options layout options
- * @returns {LineBreaker} line breaker
  */
-const linebreaker = (options) => (attributedString, availableWidths) => {
-  let tolerance = options.tolerance || 4;
+export default function linebreaker(options) {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @param {number[]} availableWidths available widths
+   * @returns {AttributedString[]} attributed strings
+   */
+  return (attributedString, availableWidths) => {
+    let tolerance = options.tolerance || 4;
 
-  const style = getStyles(attributedString);
-  const nodes = getNodes(attributedString, style, options);
+    const style = getStyles(attributedString);
+    const nodes = getNodes(attributedString, style, options);
 
-  /** @type {Object[]} */
-  let breaks = linebreak(nodes, availableWidths, { tolerance });
+    /** @type {Object[]} */
+    let breaks = linebreak(nodes, availableWidths, { tolerance });
 
-  // Try again with a higher tolerance if the line breaking failed.
-  while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
-    tolerance += TOLERANCE_STEPS;
-    breaks = linebreak(nodes, availableWidths, { tolerance });
-  }
+    // Try again with a higher tolerance if the line breaking failed.
+    while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
+      tolerance += TOLERANCE_STEPS;
+      breaks = linebreak(nodes, availableWidths, { tolerance });
+    }
 
-  if (
-    breaks.length === 0 ||
-    (breaks.length === 1 && breaks[0].position === 0)
-  ) {
-    breaks = bestFit(nodes, availableWidths);
-  }
+    if (
+      breaks.length === 0 ||
+      (breaks.length === 1 && breaks[0].position === 0)
+    ) {
+      breaks = bestFit(nodes, availableWidths);
+    }
 
-  return breakLines(attributedString, nodes, breaks.slice(1));
-};
-
-export default linebreaker;
+    return breakLines(attributedString, nodes, breaks.slice(1));
+  };
+}

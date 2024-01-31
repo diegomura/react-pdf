@@ -47,33 +47,32 @@ const adjustOverflow = (line) => {
 };
 
 /**
- * @typedef {Function} JustifyLine
- * @param {Object} line
- * @returns {Object} line
- */
-
-/**
  * Performs line justification by calling appropiate engine
  *
  * @param {Object} engines engines
  * @param {Object} options layout options
  * @param {string} align text align
- * @returns {JustifyLine} justifyLine
  */
-const justifyLine = (engines, options, align) => (line) => {
-  const lineWidth = advanceWidth(line);
-  const alignFactor = ALIGNMENT_FACTORS[align] || 0;
-  const remainingWidth = Math.max(0, line.box.width - lineWidth);
-  const shouldJustify = align === 'justify' || lineWidth > line.box.width;
+function justifyLine(engines, options, align) {
+  /**
+   * @param {Object} line lint
+   * @returns {Object} line
+   */
+  return (line) => {
+    const lineWidth = advanceWidth(line);
+    const alignFactor = ALIGNMENT_FACTORS[align] || 0;
+    const remainingWidth = Math.max(0, line.box.width - lineWidth);
+    const shouldJustify = align === 'justify' || lineWidth > line.box.width;
 
-  const x = line.box.x + remainingWidth * alignFactor;
-  const box = Object.assign({}, line.box, { x });
-  const newLine = Object.assign({}, line, { box });
+    const x = line.box.x + remainingWidth * alignFactor;
+    const box = Object.assign({}, line.box, { x });
+    const newLine = Object.assign({}, line, { box });
 
-  return shouldJustify ? engines.justification(options)(newLine) : newLine;
-};
+    return shouldJustify ? engines.justification(options)(newLine) : newLine;
+  };
+}
 
-const finalizeLine = (line) => {
+function finalizeLine(line) {
   let lineAscent = 0;
   let lineDescent = 0;
   let lineHeight = 0;
@@ -100,15 +99,7 @@ const finalizeLine = (line) => {
     descent: lineDescent,
     xAdvance: lineXAdvance,
   });
-};
-
-/**
- * @typedef {Function} FinalizeBlock
- * @param {Object} line
- * @param {number} i line index
- * @param {Object[]} lines total lines
- * @returns {Object} line
- */
+}
 
 /**
  * Finalize line by performing line justification
@@ -116,11 +107,15 @@ const finalizeLine = (line) => {
  *
  * @param {Object} engines engines
  * @param {Object} options layout options
- * @returns {FinalizeBlock} finalize block
  */
-const finalizeBlock =
-  (engines = {}, options) =>
-  (line, i, lines) => {
+function finalizeBlock(engines = {}, options) {
+  /**
+   * @param {Object} line lint
+   * @param {number} i line index
+   * @param {Object[]} lines total lines
+   * @returns {Object} line
+   */
+  return (line, i, lines) => {
     const isLastFragment = i === lines.length - 1;
     const style = line.runs?.[0]?.attributes || {};
     const align = isLastFragment ? style.alignLastLine : style.align;
@@ -133,12 +128,7 @@ const finalizeBlock =
       removeNewLine,
     )(line);
   };
-
-/**
- * @typedef {Function} FinalizeFragments
- * @param {Object[]} blocks line blocks
- * @returns {Object[]} blocks
- */
+}
 
 /**
  * Finalize line block by performing line justification
@@ -146,11 +136,14 @@ const finalizeBlock =
  *
  * @param {Object} engines engines
  * @param {Object} options layout options
- * @returns {FinalizeFragments} finalizeFragments
  */
-const finalizeFragments = (engines, options) => (blocks) => {
-  const blockFinalizer = finalizeBlock(engines, options);
-  return blocks.map((block) => block.map(blockFinalizer));
-};
-
-export default finalizeFragments;
+export default function finalizeFragments(engines, options) {
+  /**
+   * @param {Object[]} blocks line blocks
+   * @returns {Object[]} blocks
+   */
+  return (blocks) => {
+    const blockFinalizer = finalizeBlock(engines, options);
+    return blocks.map((block) => block.map(blockFinalizer));
+  };
+}

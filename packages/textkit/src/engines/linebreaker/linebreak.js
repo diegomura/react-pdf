@@ -2,13 +2,16 @@
 import LinkedList from './linkedList';
 
 /**
+ * @param {Object[]} nodes
+ * @param {number[]} lines
+ * @param {Object} settings
  * @preserve Knuth and Plass line breaking algorithm in JavaScript
  *
  * Licensed under the new BSD License.
  * Copyright 2009-2010, Bram Stein
  * All rights reserved.
  */
-const linebreak = (nodes, lines, settings) => {
+function linebreak(nodes, lines, settings) {
   const options = {
     demerits: {
       line: (settings && settings.demerits && settings.demerits.line) || 10,
@@ -336,7 +339,7 @@ const linebreak = (nodes, lines, settings) => {
     return breaks.reverse();
   }
   return [];
-};
+}
 
 linebreak.infinity = 10000;
 

@@ -1,9 +1,13 @@
 /**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Clone rect
  *
- * @param {Object}  rect
- * @returns {Object} cloned rect
+ * @param {Rect} rect rect
+ * @returns {Rect} cloned rect
  */
-const copy = (rect) => Object.assign({}, rect);
-
-export default copy;
+export default function copy(rect) {
+  return Object.assign({}, rect);
+}

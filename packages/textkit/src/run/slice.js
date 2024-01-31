@@ -6,14 +6,18 @@ import glyphIndexAt from './glyphIndexAt';
 import normalizeIndices from '../indices/normalize';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Slice run between glyph indices range
  *
  * @param {number} start glyph index
  * @param {number} end glyph index
- * @param {Object} run
- * @returns {Object} sliced run
+ * @param {Run} run run
+ * @returns {Run} sliced run
  */
-const slice = (start, end, run) => {
+export default function slice(start, end, run) {
   const runScale = scale(run);
   const font = getFont(run);
 
@@ -51,6 +55,4 @@ const slice = (start, end, run) => {
     glyphs: [startGlyphs, glyphs, endGlyphs].flat(),
     positions: [startPositions, positions, endPositions].flat(),
   });
-};
-
-export default slice;
+}

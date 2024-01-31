@@ -12,11 +12,8 @@ import applyDefaultStyles from './applyDefaultStyles';
 import verticalAlignment from './verticalAlign';
 
 /**
- * @typedef {Function} LayoutEngine
- * @param {Object} attributedString attributed string
- * @param {Object} container container rect
- * @param {Object} options layout options
- * @returns {Object[]} paragraph blocks
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Rect} Rect
  */
 
 /**
@@ -27,11 +24,15 @@ import verticalAlignment from './verticalAlign';
  * layout behavior.
  *
  * @param {Object} engines engines
- * @returns {LayoutEngine} layout engine
  */
-const layoutEngine =
-  (engines) =>
-  (attributedString, container, options = {}) => {
+export default function layoutEngine(engines) {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @param {Rect} container container rect
+   * @param {Object} options layout options
+   * @returns {Object[]} paragraph blocks
+   */
+  return (attributedString, container, options = {}) => {
     const processParagraph = compose(
       resolveYOffset(),
       resolveAttachments(),
@@ -51,5 +52,4 @@ const layoutEngine =
       applyDefaultStyles(),
     )(attributedString);
   };
-
-export default layoutEngine;
+}

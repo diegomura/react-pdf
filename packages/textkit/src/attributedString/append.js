@@ -5,13 +5,18 @@ import appendToRun from '../run/append';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Glyph} Glyph
+ */
+
+/**
  * Append glyph into last run of attributed string
  *
- * @param {Object} glyph
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string with new glyph
+ * @param {Glyph} glyph glyph
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string with new glyph
  */
-const append = (glyph, attributedString) => {
+export default function append(glyph, attributedString) {
   const codePoints = glyph?.codePoints || [];
   const codePointsString = stringFromCodePoints(codePoints);
   const string = attributedString.string + codePointsString;
@@ -21,6 +26,4 @@ const append = (glyph, attributedString) => {
   const runs = firstRuns.concat(appendToRun(glyph, lastRun));
 
   return Object.assign({}, attributedString, { string, runs });
-};
-
-export default append;
+}

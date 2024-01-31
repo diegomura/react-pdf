@@ -1,11 +1,15 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get string index at offset
  *
- * @param {number} offset
- * @param {Object} run
+ * @param {number} offset offset
+ * @param {Run} run run
  * @returns {number} string index at offset N
  */
-const indexAtOffset = (offset, run) => {
+export default function indexAtOffset(offset, run) {
   let counter = 0;
   let index = 0;
 
@@ -22,6 +26,4 @@ const indexAtOffset = (offset, run) => {
   }
 
   return index;
-};
-
-export default indexAtOffset;
+}

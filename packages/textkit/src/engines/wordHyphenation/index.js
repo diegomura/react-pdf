@@ -6,24 +6,39 @@ import { isNil } from '@react-pdf/fns';
 
 const SOFT_HYPHEN = '\u00ad';
 const hyphenator = hyphen(pattern);
-const splitHyphen = (word) => word.split(SOFT_HYPHEN);
+
+/**
+ * @param {string} word
+ * @returns {string[]} word parts
+ */
+function splitHyphen(word) {
+  return word.split(SOFT_HYPHEN);
+}
 
 const cache = {};
 
-const getParts = (word) => {
+/**
+ * @param {string} word
+ * @returns {string[]} word parts
+ */
+function getParts(word) {
   const base = word.includes(SOFT_HYPHEN) ? word : hyphenator(word);
   return splitHyphen(base);
-};
+}
 
-const wordHyphenation = () => (word) => {
-  const cacheKey = `_${word}`;
+export default function wordHyphenation() {
+  /**
+   * @param {string} word word
+   * @returns {string[]} word parts
+   */
+  return (word) => {
+    const cacheKey = `_${word}`;
 
-  if (isNil(word)) return [];
-  if (cache[cacheKey]) return cache[cacheKey];
+    if (isNil(word)) return [];
+    if (cache[cacheKey]) return cache[cacheKey];
 
-  cache[cacheKey] = getParts(word);
+    cache[cacheKey] = getParts(word);
 
-  return cache[cacheKey];
-};
-
-export default wordHyphenation;
+    return cache[cacheKey];
+  };
+}

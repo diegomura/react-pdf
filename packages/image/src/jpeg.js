@@ -35,7 +35,7 @@ class JPEG {
   }
 }
 
-JPEG.isValid = data => {
+JPEG.isValid = (data) => {
   return data && Buffer.isBuffer(data) && data.readUInt16BE(0) === 0xffd8;
 };
 

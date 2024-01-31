@@ -5,14 +5,19 @@ import runIndexAt from './runIndexAt';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Glyph} Glyph
+ */
+
+/**
  * Insert glyph into attributed string
  *
- * @param {number} index
- * @param {Object} glyph
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string with new glyph
+ * @param {number} index index
+ * @param {Glyph} glyph glyph
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string with new glyph
  */
-const insertGlyph = (index, glyph, attributedString) => {
+function insertGlyph(index, glyph, attributedString) {
   const runIndex = runIndexAt(index, attributedString);
 
   // Add glyph to the end if run index invalid
@@ -34,6 +39,6 @@ const insertGlyph = (index, glyph, attributedString) => {
   });
 
   return Object.assign({}, attributedString, { string, runs });
-};
+}
 
 export default insertGlyph;

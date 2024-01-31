@@ -25,12 +25,6 @@ const justifyLine = (distances, line) => {
 };
 
 /**
- * @typedef {Function} Justification
- * @param {Object} line
- * @returns {Object} line
- */
-
-/**
  * A JustificationEngine is used by a Typesetter to perform line fragment
  * justification. This implementation is based on a description of Apple's
  * justification algorithm from a PDF in the Apple Font Tools package.
@@ -38,17 +32,22 @@ const justifyLine = (distances, line) => {
  * // TODO: Make it immutable
  *
  * @param {Object} options layout options
- * @returns {Justification} justification engine
  */
-const justification = (options) => (line) => {
-  const gap = line.box.width - advanceWidth(line);
+function justification(options) {
+  /**
+   * @param {Object} line
+   * @returns {Object} line
+   */
+  return (line) => {
+    const gap = line.box.width - advanceWidth(line);
 
-  if (gap === 0) return; // Exact fit
+    if (gap === 0) return; // Exact fit
 
-  const factors = getFactors(gap, line, options);
-  const distances = getDistances(gap, factors);
+    const factors = getFactors(gap, line, options);
+    const distances = getDistances(gap, factors);
 
-  return justifyLine(distances, line);
-};
+    return justifyLine(distances, line);
+  };
+}
 
 export default justification;

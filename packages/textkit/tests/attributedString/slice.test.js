@@ -6,20 +6,20 @@ import slice from '../../src/attributedString/slice';
 
 const testString = 'Lorem ipsum';
 const testRuns = [
-  { start: 0, end: 6, attributes: { attr: 1 } },
-  { start: 6, end: 11, attributes: { attr: 2 } },
+  { start: 0, end: 6, attributes: { font: {} } },
+  { start: 6, end: 11, attributes: { fontSize: 16 } },
 ];
 
 describe('attributeString slice operator', () => {
   test('should slice with one run', () => {
-    const runs = [{ start: 0, end: 11, attributes: { attr: 1 } }];
+    const runs = [{ start: 0, end: 11, attributes: { font: {} } }];
     const string = { string: testString, runs };
     const sliced = slice(2, 8, string);
 
     expect(sliced.string).toBe('rem ip');
     expect(sliced.runs[0]).toHaveProperty('start', 0);
     expect(sliced.runs[0]).toHaveProperty('end', 6);
-    expect(sliced.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(sliced.runs[0]).toHaveProperty('attributes', { font: {} });
   });
 
   test('should slice with two runs', () => {
@@ -29,17 +29,19 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 4);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
     expect(splittedString.runs[1]).toHaveProperty('start', 4);
     expect(splittedString.runs[1]).toHaveProperty('end', 6);
-    expect(splittedString.runs[1]).toHaveProperty('attributes', { attr: 2 });
+    expect(splittedString.runs[1]).toHaveProperty('attributes', {
+      fontSize: 16,
+    });
   });
 
   test('should slice with several runs', () => {
     const runs = [
-      { start: 0, end: 3, attributes: { attr: 1 } },
-      { start: 3, end: 6, attributes: { attr: 2 } },
-      { start: 6, end: 11, attributes: { attr: 3 } },
+      { start: 0, end: 3, attributes: { font: {} } },
+      { start: 3, end: 6, attributes: { fontSize: 16 } },
+      { start: 6, end: 11, attributes: { fontSize: 20 } },
     ];
     const string = { string: testString, runs };
     const splittedString = slice(2, 8, string);
@@ -47,13 +49,17 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 1);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
     expect(splittedString.runs[1]).toHaveProperty('start', 1);
     expect(splittedString.runs[1]).toHaveProperty('end', 4);
-    expect(splittedString.runs[1]).toHaveProperty('attributes', { attr: 2 });
+    expect(splittedString.runs[1]).toHaveProperty('attributes', {
+      fontSize: 16,
+    });
     expect(splittedString.runs[2]).toHaveProperty('start', 4);
     expect(splittedString.runs[2]).toHaveProperty('end', 6);
-    expect(splittedString.runs[2]).toHaveProperty('attributes', { attr: 3 });
+    expect(splittedString.runs[2]).toHaveProperty('attributes', {
+      fontSize: 20,
+    });
   });
 
   test('should ignore unnecesary leading runs when slice', () => {
@@ -64,7 +70,9 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('ipsum');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 5);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 2 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', {
+      fontSize: 16,
+    });
   });
 
   test('should ignore unnecesary trailing runs when slice', () => {
@@ -75,7 +83,7 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('orem ');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 5);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
   });
 
   test('should slice glyphs when one run', () => {

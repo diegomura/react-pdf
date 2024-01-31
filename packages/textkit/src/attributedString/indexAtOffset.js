@@ -3,13 +3,17 @@ import runAdvanceWidth from '../run/advanceWidth';
 import runIndexAtOffset from '../run/indexAtOffset';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get string index at offset
  *
  * @param {number} offset offset
- * @param {Object} string attributed string
+ * @param {AttributedString} string attributed string
  * @returns {number} string index at offset N
  */
-const indexAtOffset = (offset, string) => {
+export default function indexAtOffset(offset, string) {
   let index = 0;
   let counter = 0;
 
@@ -28,6 +32,4 @@ const indexAtOffset = (offset, string) => {
   }
 
   return index;
-};
-
-export default indexAtOffset;
+}

@@ -1,9 +1,26 @@
 import sort from './sort';
 import isEmpty from './isEmpty';
 
-const sortPoints = (a, b) => a[1] - b[1] || a[3] - b[3];
+/**
+ * @typedef {import('../types.js').Point} Point
+ * @typedef {import('../types.js').Run} Run
+ */
 
-const generatePoints = (runs) => {
+/**
+ * Sort points in ascending order
+ * @param {Point} a first point
+ * @param {Point} b second point
+ * @returns {number} sort order
+ */
+function sortPoints(a, b) {
+  return a[1] - b[1] || a[3] - b[3];
+}
+
+/**
+ * @param {Run[]} runs
+ * @returns {Point[]} points
+ */
+function generatePoints(runs) {
   const result = runs.reduce((acc, run, i) => {
     return acc.concat([
       ['start', run.start, run.attributes, i],
@@ -12,29 +29,46 @@ const generatePoints = (runs) => {
   }, []);
 
   return result.sort(sortPoints);
-};
+}
 
-const mergeRuns = (runs) =>
-  runs.reduce((acc, run) => {
+/**
+ * @param {Run[]} runs
+ * @returns {Run} merged runs
+ */
+function mergeRuns(runs) {
+  return runs.reduce((acc, run) => {
     const attributes = Object.assign({}, acc.attributes, run.attributes);
     return Object.assign({}, run, { attributes });
   }, {});
+}
 
-const groupEmptyRuns = (runs) => {
+/**
+ * @param {Run[]} runs
+ * @returns {Run[][]} grouped runs
+ */
+function groupEmptyRuns(runs) {
   const groups = runs.reduce((acc, run) => {
     if (!acc[run.start]) acc[run.start] = [];
     acc[run.start].push(run);
     return acc;
-  }, {});
+  }, []);
 
   return Object.values(groups);
-};
+}
 
-const flattenEmptyRuns = (runs) => {
+/**
+ * @param {Run[]} runs
+ * @returns {Run[]} flattened runs
+ */
+function flattenEmptyRuns(runs) {
   return groupEmptyRuns(runs).map(mergeRuns);
-};
+}
 
-const flattenRegularRuns = (runs) => {
+/**
+ * @param {Run[]} runs
+ * @returns {Run[]} flattened runs
+ */
+function flattenRegularRuns(runs) {
   const res = [];
   const points = generatePoints(runs);
 
@@ -69,19 +103,17 @@ const flattenRegularRuns = (runs) => {
   }
 
   return res;
-};
+}
 
 /**
  * Flatten many runs
  *
- * @param {Object[]} runs
- * @returns {Object[]} flatten runs
+ * @param {Run[]} runs
+ * @returns {Run[]} flattened runs
  */
-const flatten = (runs = []) => {
+export default function flatten(runs = []) {
   const emptyRuns = flattenEmptyRuns(runs.filter((run) => isEmpty(run)));
   const regularRuns = flattenRegularRuns(runs.filter((run) => !isEmpty(run)));
 
   return sort(emptyRuns.concat(regularRuns));
-};
-
-export default flatten;
+}

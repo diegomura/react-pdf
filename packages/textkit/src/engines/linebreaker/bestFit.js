@@ -1,7 +1,13 @@
 /* eslint-disable no-plusplus */
 const INFINITY = 10000;
 
-const getNextBreakpoint = (subnodes, widths, lineNumber) => {
+/**
+ * @param {Object[]} subnodes
+ * @param {number[]} widths
+ * @param {number} lineNumber
+ * @returns {number}
+ */
+function getNextBreakpoint(subnodes, widths, lineNumber) {
   let position = null;
   let minimumBadness = Infinity;
 
@@ -64,9 +70,13 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   }
 
   return sum.width - sum.shrink > lineLength ? position : null;
-};
+}
 
-const applyBestFit = (nodes, widths) => {
+/**
+ * @param {Object[]} nodes
+ * @param {number[]} widths
+ */
+export default function applyBestFit(nodes, widths) {
   let count = 0;
   let lineNumber = 0;
   let subnodes = nodes;
@@ -87,6 +97,4 @@ const applyBestFit = (nodes, widths) => {
   }
 
   return breakpoints;
-};
-
-export default applyBestFit;
+}

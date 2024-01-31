@@ -60,7 +60,7 @@ describe('resolveYOffset', () => {
             { xAdvance: 4, yOffset: 0 }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { something: 'blah' },
+          attributes: { font: {} },
         },
       ],
     };

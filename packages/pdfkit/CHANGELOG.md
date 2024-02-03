@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.3
+
+### Patch Changes
+
+- [`0590324`](https://github.com/diegomura/react-pdf/commit/0590324d7a6d75c0a49520b3f99cfb6594239390) Thanks [@diegomura](https://github.com/diegomura)! - fix: replace jpeg-exif with jay-peg
+
 ## 3.1.2
 
 ### Patch Changes

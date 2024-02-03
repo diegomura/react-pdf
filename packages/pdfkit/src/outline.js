@@ -5,15 +5,15 @@ class PDFOutline {
     this.outlineData = {};
 
     if (dest !== null) {
-      this.outlineData['Dest'] = [dest.dictionary, 'Fit'];
+      this.outlineData.Dest = [dest.dictionary, 'Fit'];
     }
 
     if (parent !== null) {
-      this.outlineData['Parent'] = parent;
+      this.outlineData.Parent = parent;
     }
 
     if (title !== null) {
-      this.outlineData['Title'] = new String(title);
+      this.outlineData.Title = new String(title);
     }
 
     this.dictionary = this.document.ref(this.outlineData);
@@ -39,8 +39,8 @@ class PDFOutline {
         this.outlineData.Count = this.children.length;
       }
 
-      const first = this.children[0],
-        last = this.children[this.children.length - 1];
+      const first = this.children[0];
+      const last = this.children[this.children.length - 1];
       this.outlineData.First = first.dictionary;
       this.outlineData.Last = last.dictionary;
 

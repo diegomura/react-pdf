@@ -354,7 +354,7 @@ class PDFDocument extends stream.Readable {
   endAcroForm() {}
 }
 
-const mixin = methods => {
+const mixin = (methods) => {
   Object.assign(PDFDocument.prototype, methods);
 };
 

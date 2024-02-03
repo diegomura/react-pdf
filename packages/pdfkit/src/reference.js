@@ -25,7 +25,7 @@ class PDFReference extends stream.Writable {
     this.data.Filter = 'FlateDecode';
 
     this.deflate = zlib.createDeflate();
-    this.deflate.on('data', chunk => {
+    this.deflate.on('data', (chunk) => {
       this.chunks.push(chunk);
       return (this.data.Length += chunk.length);
     });

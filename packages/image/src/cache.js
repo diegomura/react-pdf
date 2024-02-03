@@ -3,7 +3,7 @@ const createCache = ({ limit = 100 } = {}) => {
   let keys = [];
 
   return {
-    get: key => cache[key],
+    get: (key) => cache[key],
     set: (key, value) => {
       keys.push(key);
       if (keys.length > limit) {

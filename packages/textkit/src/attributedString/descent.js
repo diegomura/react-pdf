@@ -6,7 +6,7 @@ import runDescent from '../run/descent';
  * @param {Object} attributedString attributed string
  * @returns {number} descent
  */
-const descent = attributedString => {
+const descent = (attributedString) => {
   const reducer = (acc, run) => Math.min(acc, runDescent(run));
   return attributedString.runs.reduce(reducer, 0);
 };

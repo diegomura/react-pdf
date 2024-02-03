@@ -1,11 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { PDFViewer } from '@react-pdf/renderer'
+import { PDFViewer } from '@react-pdf/renderer';
 
-import Document from './pageWrap'
+import Document from './pageWrap';
 
-import './index.css'
+import './index.css';
 
 const DocumentWrapper = () => {
   return (
@@ -14,8 +14,8 @@ const DocumentWrapper = () => {
         <Document />
       </PDFViewer>
     </>
-  )
-}
+  );
+};
 
 const MOUNT_ELEMENT = document.createElement('div');
 

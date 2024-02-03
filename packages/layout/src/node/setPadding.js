@@ -50,7 +50,7 @@ export const setPaddingLeft = setYogaValue('padding', Yoga.Edge.Left);
  * @param {number | string} padding padding
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setPadding = padding => node => {
+export const setPadding = (padding) => (node) => {
   setPaddingTop(padding)(node);
   setPaddingRight(padding)(node);
   setPaddingBottom(padding)(node);

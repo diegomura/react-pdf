@@ -29,7 +29,7 @@ const ALIGN = {
  * @param {string} attr specific align property
  * @returns {AlignSetter} align setter
  */
-const setAlign = attr => value => node => {
+const setAlign = (attr) => (value) => (node) => {
   const { yogaNode } = node;
   const defaultValue = attr === 'items' ? Yoga.Align.Stretch : Yoga.Align.Auto;
 

@@ -163,18 +163,10 @@ describe('resolveAttachments', () => {
 
     expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', string.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      65532,
-      101,
-      109,
+      76, 111, 65532, 101, 109,
     ]);
     expect(pluck('xAdvance', string.runs[0].positions)).toEqual([
-      8,
-      7,
-      6,
-      5,
-      4,
+      8, 7, 6, 5, 4,
     ]);
   });
 
@@ -208,18 +200,10 @@ describe('resolveAttachments', () => {
 
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      76,
-      111,
-      65532,
-      101,
-      109,
+      76, 111, 65532, 101, 109,
     ]);
     expect(pluck('xAdvance', result.runs[0].positions)).toEqual([
-      8,
-      7,
-      20,
-      5,
-      4,
+      8, 7, 20, 5, 4,
     ]);
   });
 
@@ -251,10 +235,7 @@ describe('resolveAttachments', () => {
 
     expect(result.runs[0].glyphIndices).toEqual([0, 0, 1, 2, 3]);
     expect(pluck('id', result.runs[0].glyphs)).toEqual([
-      64257,
-      65532,
-      101,
-      109,
+      64257, 65532, 101, 109,
     ]);
     expect(pluck('xAdvance', result.runs[0].positions)).toEqual([10, 20, 5, 4]);
   });

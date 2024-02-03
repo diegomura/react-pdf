@@ -13,7 +13,7 @@ import { isNil } from '@react-pdf/fns';
  * @param {string} value position position type
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setPositionType = value => node => {
+const setPositionType = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

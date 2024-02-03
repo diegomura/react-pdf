@@ -1,5 +1,5 @@
-import React from 'react'
-import { Document, Page, View, StyleSheet } from '@react-pdf/renderer'
+import React from 'react';
+import { Document, Page, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   body: {
@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: 'red',
   },
-})
+});
 
 const MediaComponent = () => (
   <View style={styles.content}>
     <View style={[styles.block, { backgroundColor: 'red' }]} />
     <View style={[styles.block, { backgroundColor: 'green' }]} />
   </View>
-)
+);
 
 const mediaQueries = () => (
   <Document>
@@ -37,6 +37,6 @@ const mediaQueries = () => (
       <MediaComponent />
     </Page>
   </Document>
-)
+);
 
-export default mediaQueries
+export default mediaQueries;

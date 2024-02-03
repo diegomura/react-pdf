@@ -17,7 +17,7 @@ const offset = (index, run) => {
   const glyphIndices = run.glyphIndices || [];
   const value = glyphIndices[index];
 
-  return glyphIndices.slice(0, index).filter(i => i === value).length;
+  return glyphIndices.slice(0, index).filter((i) => i === value).length;
 };
 
 export default offset;

@@ -12,7 +12,7 @@ import resolveMediaQueries from './mediaQueries';
  * @returns {Object} resolved style object
  */
 const resolveStyles = (container, style) => {
-  const computeMediaQueries = value => resolveMediaQueries(container, value);
+  const computeMediaQueries = (value) => resolveMediaQueries(container, value);
 
   return compose(
     transformStyles(container),

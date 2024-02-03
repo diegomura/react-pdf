@@ -4,7 +4,7 @@
  * @param {Object}  run
  * @returns {number} length
  */
-const length = run => {
+const length = (run) => {
   return run.end - run.start;
 };
 

@@ -7,7 +7,7 @@ import { pdf } from '../index';
  * @param {React.ReactElement} element
  * @returns {Promise<NodeJS.ReadableStream>}
  */
-export const renderToStream = async element => {
+export const renderToStream = async (element) => {
   const instance = pdf(element);
   const stream = await instance.toBuffer();
   return stream;
@@ -37,23 +37,23 @@ export const renderToFile = async (element, filePath, callback) => {
  * @param {React.ReactElement} element
  * @returns {Promise<Buffer>}
  */
-export const renderToBuffer = element =>
+export const renderToBuffer = (element) =>
   renderToStream(element).then(
-    stream =>
+    (stream) =>
       new Promise((resolve, reject) => {
         const chunks = [];
-        stream.on('data', chunk => chunks.push(chunk));
+        stream.on('data', (chunk) => chunks.push(chunk));
         stream.on('end', () => resolve(Buffer.concat(chunks)));
-        stream.on('error', error => reject(error));
+        stream.on('error', (error) => reject(error));
       }),
   );
 
-export const renderToString = element => {
+export const renderToString = (element) => {
   if (process.env.NODE_ENV === 'development') {
     console.warn(
       '`renderToString` is deprecated and will be removed in next major release, use `renderToBuffer` instead',
     );
   }
 
-  return renderToBuffer(element).then(buffer => buffer.toString());
+  return renderToBuffer(element).then((buffer) => buffer.toString());
 };

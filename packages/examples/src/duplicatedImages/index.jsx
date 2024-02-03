@@ -1,10 +1,10 @@
 /* eslint react/prop-types: 0 */
 /* eslint react/jsx-sort-props: 0 */
 
-import React from 'react'
-import { Document, Page, Image, StyleSheet } from '@react-pdf/renderer'
+import React from 'react';
+import { Document, Page, Image, StyleSheet } from '@react-pdf/renderer';
 
-import Quijote1 from '../../public/quijote1.jpg'
+import Quijote1 from '../../public/quijote1.jpg';
 
 const styles = StyleSheet.create({
   body: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
     borderStyle: 'solid',
   },
-})
+});
 
 const MyDoc = () => {
   return (
@@ -49,15 +49,15 @@ const MyDoc = () => {
       <Image style={styles.image} src={Quijote1} />
       <Image style={styles.image2} src={Quijote1} />
     </Page>
-  )
-}
+  );
+};
 
 const App = () => {
   return (
     <Document>
       <MyDoc />
     </Document>
-  )
-}
+  );
+};
 
-export default App
+export default App;

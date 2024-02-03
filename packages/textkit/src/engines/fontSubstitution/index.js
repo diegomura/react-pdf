@@ -4,7 +4,7 @@ import { last } from '@react-pdf/fns';
 
 import empty from '../../attributedString/empty';
 
-const getFontSize = value => value.attributes.fontSize || 12;
+const getFontSize = (value) => value.attributes.fontSize || 12;
 
 /**
  * @typedef {Function} FontSubstitution
@@ -18,7 +18,7 @@ const getFontSize = value => value.attributes.fontSize || 12;
  *
  * @returns {FontSubstitution} font substitution
  */
-const fontSubstitution = () => attributedString => {
+const fontSubstitution = () => (attributedString) => {
   const { string, runs } = attributedString;
 
   let lastFont = null;

@@ -28,7 +28,7 @@ const checkPercents = (attr, value) => {
  * @param {number} value gap value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setRowGap = value => node => {
+export const setRowGap = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {
@@ -45,7 +45,7 @@ export const setRowGap = value => node => {
  * @param {number} value gap value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setColumnGap = value => node => {
+export const setColumnGap = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

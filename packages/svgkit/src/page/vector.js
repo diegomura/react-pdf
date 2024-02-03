@@ -96,7 +96,7 @@ export default {
 
     const element = createElement(gradient.type, gradient.attributes);
 
-    gradient.stops.forEach(stop => {
+    gradient.stops.forEach((stop) => {
       const stopChild = createElement('stop');
 
       stopChild.setAttribute('offset', stop.offset);

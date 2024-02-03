@@ -4,8 +4,8 @@ import omit from '../run/omit';
 import flatten from '../run/flatten';
 import empty from '../attributedString/empty';
 
-const omitFont = attributedString => {
-  const runs = attributedString.runs.map(run => omit('font', run));
+const omitFont = (attributedString) => {
+  const runs = attributedString.runs.map((run) => omit('font', run));
   return Object.assign({}, attributedString, { runs });
 };
 
@@ -22,7 +22,7 @@ const omitFont = attributedString => {
  * @param {Object} options layout options
  * @returns {PreprocessRuns} preprocess runs
  */
-const preprocessRuns = (engines, options) => attributedString => {
+const preprocessRuns = (engines, options) => (attributedString) => {
   if (isNil(attributedString)) return empty();
 
   const { string } = attributedString;

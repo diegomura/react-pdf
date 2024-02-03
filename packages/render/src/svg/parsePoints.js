@@ -5,7 +5,7 @@
  * @param {T[]} values array
  * @returns {T[][]} pairs
  */
-const pairs = values => {
+const pairs = (values) => {
   const result = [];
 
   for (let i = 0; i < values.length; i += 2) {
@@ -21,7 +21,7 @@ const pairs = values => {
  * @param {string} points string ex. "20,30 50,60"
  * @returns {number[][]} points array ex. [[20, 30], [50, 60]]
  */
-const parsePoints = points => {
+const parsePoints = (points) => {
   let values = (points || '')
     .trim()
     .replace(/,/g, ' ')

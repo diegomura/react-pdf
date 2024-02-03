@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-const hyphenator = vi.fn(v => {
+const hyphenator = vi.fn((v) => {
   if (v === '') return '';
   if (v === 'something') return 'some\u00adthing';
   if (v === 'neumonia') return 'neu\u00admo\u00adnia';

@@ -35,7 +35,7 @@ const getRoot = async (text = 'hello world', styles = {}) => ({
 });
 
 describe('text layout step', () => {
-  const getText = root => root.children[0].children[0];
+  const getText = (root) => root.children[0].children[0];
 
   test('should calculate lines for text while resolve dimensions', async () => {
     const root = await getRoot('text text text');

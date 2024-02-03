@@ -1,12 +1,12 @@
-const toHex = function(...codePoints) {
-  const codes = Array.from(codePoints).map(code =>
+const toHex = function (...codePoints) {
+  const codes = Array.from(codePoints).map((code) =>
     `0000${code.toString(16)}`.slice(-4)
   );
 
   return codes.join('');
 };
 
-const createEmbeddedFont = PDFFont =>
+const createEmbeddedFont = (PDFFont) =>
   class EmbeddedFont extends PDFFont {
     constructor(document, font, id) {
       super();

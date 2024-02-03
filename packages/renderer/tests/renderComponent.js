@@ -53,7 +53,7 @@ async function getCanvas(pagePromise) {
 }
 
 const GAP = 10;
-const composeCanvases = canvases => {
+const composeCanvases = (canvases) => {
   const [maxWidth, maxHeight] = canvases.reduce(
     ([width, height], canvas) => [
       Math.max(width, canvas.width),
@@ -89,9 +89,9 @@ const composeCanvases = canvases => {
  * @param {number} length — size of array
  * @returns {number[]} array
  */
-const range = length => Array.from({ length }, (_, index) => index);
+const range = (length) => Array.from({ length }, (_, index) => index);
 
-const renderComponent = async element => {
+const renderComponent = async (element) => {
   const source = await renderToBuffer(element);
 
   const document = await pdfjs.getDocument({
@@ -99,7 +99,7 @@ const renderComponent = async element => {
     verbosity: 0,
   }).promise;
 
-  const pages = range(document.numPages).map(pageIndex =>
+  const pages = range(document.numPages).map((pageIndex) =>
     document.getPage(pageIndex + 1),
   );
 
@@ -107,7 +107,7 @@ const renderComponent = async element => {
     return (await getCanvas(pages[0])).toBuffer();
   }
 
-  const canvases = await Promise.all(pages.map(page => getCanvas(page)));
+  const canvases = await Promise.all(pages.map((page) => getCanvas(page)));
   const pageSnapshots = composeCanvases(canvases);
 
   return pageSnapshots.toBuffer();

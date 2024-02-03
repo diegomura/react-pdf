@@ -4,7 +4,7 @@
  * @param {string} value scalar value
  * @returns {Object} parsed value
  */
-const parseValue = value => {
+const parseValue = (value) => {
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px)?$/g.exec(value);
 
   return match

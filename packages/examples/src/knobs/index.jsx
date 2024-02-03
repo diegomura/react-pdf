@@ -43,7 +43,7 @@ const Knob = ({ value }) => (
   </View>
 );
 
-const Select = props => (
+const Select = (props) => (
   <View style={styles.select}>
     <Text style={[styles.text, { marginRight: '15px' }]}>0%</Text>
     <View style={styles.bar}>
@@ -72,4 +72,4 @@ const Knobs = () => (
   </Document>
 );
 
-export default Knobs
+export default Knobs;

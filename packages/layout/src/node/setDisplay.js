@@ -12,7 +12,7 @@ import * as Yoga from 'yoga-layout';
  * @param {string} value display
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setDisplay = value => node => {
+const setDisplay = (value) => (node) => {
   const { yogaNode } = node;
 
   if (yogaNode) {

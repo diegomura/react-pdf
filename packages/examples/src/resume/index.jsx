@@ -76,7 +76,7 @@ Font.register({
   src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
 });
 
-const Resume = props => (
+const Resume = (props) => (
   <Page {...props} style={styles.page}>
     <Header />
     <View style={styles.container}>

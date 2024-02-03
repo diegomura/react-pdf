@@ -2,7 +2,7 @@
  * @param {string | number} value
  * @returns {RegExpExecArray | null} match
  */
-const isPercent = value => /((-)?\d+\.?\d*)%/g.exec(`${value}`);
+const isPercent = (value) => /((-)?\d+\.?\d*)%/g.exec(`${value}`);
 
 /**
  * Get percentage value of input
@@ -10,7 +10,7 @@ const isPercent = value => /((-)?\d+\.?\d*)%/g.exec(`${value}`);
  * @param {string | number} value
  * @returns {{ percent: number, value: number } | null} percent value (if matches)
  */
-const matchPercent = value => {
+const matchPercent = (value) => {
   const match = isPercent(value);
 
   if (match) {

@@ -13,7 +13,7 @@ function patchGlobals() {
   }
 
   if (typeof global.URL.createObjectURL === 'undefined') {
-    global.URL.createObjectURL = blob => `[Blob - ${blob.size}]`;
+    global.URL.createObjectURL = (blob) => `[Blob - ${blob.size}]`;
   }
 
   if (typeof global.URL.revokeObjectURL === 'undefined') {

@@ -15,7 +15,7 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const processFontWeight = value => {
+const processFontWeight = (value) => {
   if (!value) return FONT_WEIGHTS.normal;
   if (typeof value === 'number') return value;
 

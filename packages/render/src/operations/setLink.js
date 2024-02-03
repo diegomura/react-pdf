@@ -1,4 +1,4 @@
-const isSrcId = value => /^#.+/.test(value);
+const isSrcId = (value) => /^#.+/.test(value);
 
 const setLink = (ctx, node) => {
   const props = node.props || {};

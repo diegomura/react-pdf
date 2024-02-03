@@ -107,7 +107,7 @@ describe('applyDefaultStyles', () => {
   });
 
   // Default overrides
-  Object.keys(DEFAULTS).forEach(key => {
+  Object.keys(DEFAULTS).forEach((key) => {
     test(
       `should apply default ${key} to passed run`,
       shouldDefault(key, DEFAULTS[key]),
@@ -115,7 +115,7 @@ describe('applyDefaultStyles', () => {
   });
 
   // Overrides
-  Object.keys(OVERRIDES).forEach(key => {
+  Object.keys(OVERRIDES).forEach((key) => {
     test(
       `should apply ${key} to passed run`,
       shouldOverride(key, DEFAULTS[key]),

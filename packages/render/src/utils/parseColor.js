@@ -2,7 +2,7 @@ import colorString from 'color-string';
 
 const black = { value: [0, 0, 0], opacity: 1 };
 
-const parseColor = hex => {
+const parseColor = (hex) => {
   const parsed = colorString.get(hex);
 
   if (!parsed) return black;

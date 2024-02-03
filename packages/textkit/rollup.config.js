@@ -12,8 +12,8 @@ const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const babelConfig = () => ({
   babelrc: true,

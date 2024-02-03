@@ -50,7 +50,7 @@ export const setPositionLeft = setYogaValue('position', Yoga.Edge.Left);
  * @param {number | string} position position
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setPosition = position => node => {
+export const setPosition = (position) => (node) => {
   setPositionTop(position)(node);
   setPositionRight(position)(node);
   setPositionBottom(position)(node);

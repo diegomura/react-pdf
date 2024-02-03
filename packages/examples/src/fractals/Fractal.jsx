@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const toggle = direction => (direction === 'column' ? 'row' : 'column');
+const toggle = (direction) => (direction === 'column' ? 'row' : 'column');
 
 const Fractal = ({ steps, direction = 'column' }) => {
   if (steps === 0) {

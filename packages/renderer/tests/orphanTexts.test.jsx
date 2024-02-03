@@ -5,7 +5,7 @@ import renderToImage from './renderComponent';
 
 const emptyString = '';
 
-const mount = async children => {
+const mount = async (children) => {
   const image = await renderToImage(
     <Document>
       <Page size={[100, 100]}>{children}</Page>

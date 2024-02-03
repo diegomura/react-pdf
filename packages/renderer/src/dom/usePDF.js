@@ -26,19 +26,19 @@ export const usePDF = ({ document } = {}) => {
     const renderQueue = queue({ autostart: true, concurrency: 1 });
 
     const queueDocumentRender = () => {
-      setState(prev => ({ ...prev, loading: true }));
+      setState((prev) => ({ ...prev, loading: true }));
 
       renderQueue.splice(0, renderQueue.length, () =>
         state.error ? Promise.resolve() : pdfInstance.current.toBlob(),
       );
     };
 
-    const onRenderFailed = error => {
+    const onRenderFailed = (error) => {
       console.error(error);
-      setState(prev => ({ ...prev, loading: false, error }));
+      setState((prev) => ({ ...prev, loading: false, error }));
     };
 
-    const onRenderSuccessful = blob => {
+    const onRenderSuccessful = (blob) => {
       setState({
         blob,
         error: null,
@@ -71,7 +71,7 @@ export const usePDF = ({ document } = {}) => {
     };
   }, [state.url]);
 
-  const update = useCallback(newDoc => {
+  const update = useCallback((newDoc) => {
     pdfInstance.current.updateContainer(newDoc);
   }, []);
 

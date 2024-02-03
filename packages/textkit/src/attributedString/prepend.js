@@ -16,7 +16,9 @@ const prepend = (glyph, attributedString) => {
 
   const offset = codePoints.length;
   const firstRun = attributedString.runs[0] || emptyRun();
-  const lastRuns = attributedString.runs.slice(1).map(run => add(offset, run));
+  const lastRuns = attributedString.runs
+    .slice(1)
+    .map((run) => add(offset, run));
   const runs = [prependToRun(glyph, firstRun)].concat(lastRuns);
 
   return Object.assign({}, attributedString, { runs, string });

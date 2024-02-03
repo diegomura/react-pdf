@@ -18,7 +18,7 @@ const FLEX_DIRECTIONS = {
  * @param {string} value flex direction value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setFlexDirection = value => node => {
+const setFlexDirection = (value) => (node) => {
   const { yogaNode } = node;
 
   if (yogaNode) {

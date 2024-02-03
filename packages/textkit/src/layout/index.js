@@ -29,25 +29,27 @@ import verticalAlignment from './verticalAlign';
  * @param {Object} engines engines
  * @returns {LayoutEngine} layout engine
  */
-const layoutEngine = engines => (attributedString, container, options = {}) => {
-  const processParagraph = compose(
-    resolveYOffset(),
-    resolveAttachments(),
-    generateGlyphs(),
-    verticalAlignment(),
-    wrapWords(engines, options),
-  );
+const layoutEngine =
+  (engines) =>
+  (attributedString, container, options = {}) => {
+    const processParagraph = compose(
+      resolveYOffset(),
+      resolveAttachments(),
+      generateGlyphs(),
+      verticalAlignment(),
+      wrapWords(engines, options),
+    );
 
-  const processParagraphs = paragraphs => paragraphs.map(processParagraph);
+    const processParagraphs = (paragraphs) => paragraphs.map(processParagraph);
 
-  return compose(
-    finalizeFragments(engines, options),
-    typesetter(engines, options, container),
-    processParagraphs,
-    splitParagraphs(),
-    preprocessRuns(engines, options),
-    applyDefaultStyles(),
-  )(attributedString);
-};
+    return compose(
+      finalizeFragments(engines, options),
+      typesetter(engines, options, container),
+      processParagraphs,
+      splitParagraphs(),
+      preprocessRuns(engines, options),
+      applyDefaultStyles(),
+    )(attributedString);
+  };
 
 export default layoutEngine;

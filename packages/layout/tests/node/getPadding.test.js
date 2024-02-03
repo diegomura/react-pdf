@@ -4,7 +4,7 @@ import * as Yoga from 'yoga-layout';
 
 import getPadding from '../../src/node/getPadding';
 
-const getComputedPadding = value => {
+const getComputedPadding = (value) => {
   if (value === Yoga.Edge.Top) return 1;
   if (value === Yoga.Edge.Right) return 2;
   if (value === Yoga.Edge.Bottom) return 3;

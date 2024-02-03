@@ -17,7 +17,7 @@ let renderer;
 // We only want to trigger an update when PDF content changes
 const events = {};
 
-const pdf = initialValue => {
+const pdf = (initialValue) => {
   const onChange = () => {
     const listeners = events.change?.slice() || [];
     for (let i = 0; i < listeners.length; i += 1) listeners[i]();
@@ -60,13 +60,11 @@ const pdf = initialValue => {
 
   const toBlob = async () => {
     const chunks = [];
-    const {
-      layout: _INTERNAL__LAYOUT__DATA_,
-      fileStream: instance,
-    } = await render();
+    const { layout: _INTERNAL__LAYOUT__DATA_, fileStream: instance } =
+      await render();
 
     return new Promise((resolve, reject) => {
-      instance.on('data', chunk => {
+      instance.on('data', (chunk) => {
         chunks.push(
           chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk),
         );
@@ -108,7 +106,7 @@ const pdf = initialValue => {
 
     return new Promise((resolve, reject) => {
       try {
-        instance.on('data', buffer => {
+        instance.on('data', (buffer) => {
           result += buffer;
         });
 
@@ -147,7 +145,7 @@ const pdf = initialValue => {
 const Font = fontStore;
 
 const StyleSheet = {
-  create: s => s,
+  create: (s) => s,
 };
 
 export { version, Font, StyleSheet, pdf, createRenderer };

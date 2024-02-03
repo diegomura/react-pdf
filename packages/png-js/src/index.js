@@ -6,9 +6,9 @@ class PNG {
     if (BROWSER) {
       throw new Error('PNG.decode not available in browser build');
     } else {
-      return fs.readFile(path, function(err, file) {
+      return fs.readFile(path, function (err, file) {
         const png = new PNG(file);
-        return png.decode(pixels => fn(pixels));
+        return png.decode((pixels) => fn(pixels));
       });
     }
   }
@@ -387,7 +387,7 @@ class PNG {
 
   decode(fn) {
     const ret = Buffer.alloc(this.width * this.height * 4);
-    return this.decodePixels(pixels => {
+    return this.decodePixels((pixels) => {
       this.copyToImageData(ret, pixels);
       return fn(ret);
     });

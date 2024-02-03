@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import wrapWords from '../../src/layout/wrapWords';
 
 const emptyInstance = wrapWords({}, {});
-const wordHyphenationEngine = vi.fn(x => [x]);
+const wordHyphenationEngine = vi.fn((x) => [x]);
 const defaultInstance = wrapWords(
   { wordHyphenation: () => wordHyphenationEngine },
   {},
 );
-const mutateWordHyphenationEngine = vi.fn(x => (x === ' ' ? [x] : [`${x}o`]));
+const mutateWordHyphenationEngine = vi.fn((x) => (x === ' ' ? [x] : [`${x}o`]));
 const mutateInstance = wrapWords(
   { wordHyphenation: () => mutateWordHyphenationEngine },
   {},

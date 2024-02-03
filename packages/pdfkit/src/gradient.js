@@ -110,7 +110,7 @@ class PDFGradient {
 
     pattern.end();
 
-    if (this.stops.some(stop => stop[2] < 1)) {
+    if (this.stops.some((stop) => stop[2] < 1)) {
       let grad = this.opacityGradient();
       grad._colorSpace = 'DeviceGray';
 

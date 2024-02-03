@@ -17,7 +17,7 @@ const transformHeight = (pageArea, height) => {
  * @param {Object} page
  * @returns {number} page area
  */
-const getPageArea = page => {
+const getPageArea = (page) => {
   const pageHeight = page.style.height;
   const pagePaddingTop = page.style?.paddingTop || 0;
   const pagePaddingBottom = page.style?.paddingBottom || 0;
@@ -49,10 +49,10 @@ const resolveNodePercentHeight = (page, node) => {
  * @param {Object} page
  * @returns {Object} transformed page
  */
-const resolvePagePercentHeight = page => {
+const resolvePagePercentHeight = (page) => {
   if (!page.children) return page;
 
-  const resolveChild = child => resolveNodePercentHeight(page, child);
+  const resolveChild = (child) => resolveNodePercentHeight(page, child);
   const children = page.children.map(resolveChild);
 
   return Object.assign({}, page, { children });
@@ -65,7 +65,7 @@ const resolvePagePercentHeight = page => {
  * @param {Object} root document root
  * @returns {Object} transformed document root
  */
-const resolvePercentHeight = root => {
+const resolvePercentHeight = (root) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolvePagePercentHeight);

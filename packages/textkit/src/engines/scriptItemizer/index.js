@@ -15,7 +15,7 @@ const ignoredScripts = ['Common', 'Inherited', 'Unknown'];
  *
  * @returns {ScriptItemizer} script itemizer
  */
-const scriptItemizer = () => attributedString => {
+const scriptItemizer = () => (attributedString) => {
   const { string } = attributedString;
 
   let lastScript = 'Unknown';

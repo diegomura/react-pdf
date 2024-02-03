@@ -28,7 +28,7 @@ const fetchFont = async (src, options) => {
   return new Uint8Array(data);
 };
 
-const isDataUrl = dataUrl => {
+const isDataUrl = (dataUrl) => {
   const header = dataUrl.split(',')[0];
   const hasDataPrefix = header.substring(0, 5) === 'data:';
   const hasBase64Prefix = header.split(';')[1] === 'base64';
@@ -36,7 +36,7 @@ const isDataUrl = dataUrl => {
   return hasDataPrefix && hasBase64Prefix;
 };
 
-const resolveFontWeight = value => {
+const resolveFontWeight = (value) => {
   return typeof value === 'string' ? FONT_WEIGHTS[value] : value;
 };
 
@@ -62,7 +62,7 @@ class FontSource {
       const uint8Array = new Uint8Array(
         atob(raw)
           .split('')
-          .map(c => c.charCodeAt(0)),
+          .map((c) => c.charCodeAt(0)),
       );
       this.data = fontkit.create(uint8Array, postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
@@ -102,30 +102,30 @@ class Font {
 
   resolve(descriptor) {
     const { fontWeight = 400, fontStyle = 'normal' } = descriptor;
-    const styleSources = this.sources.filter(s => s.fontStyle === fontStyle);
+    const styleSources = this.sources.filter((s) => s.fontStyle === fontStyle);
 
     // Weight resolution. https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights
-    const exactFit = styleSources.find(s => s.fontWeight === fontWeight);
+    const exactFit = styleSources.find((s) => s.fontWeight === fontWeight);
 
     if (exactFit) return exactFit;
 
     let res;
 
     if (fontWeight >= 400 && fontWeight <= 500) {
-      const leftOffset = styleSources.filter(s => s.fontWeight <= fontWeight);
-      const rightOffset = styleSources.filter(s => s.fontWeight > 500);
+      const leftOffset = styleSources.filter((s) => s.fontWeight <= fontWeight);
+      const rightOffset = styleSources.filter((s) => s.fontWeight > 500);
       const fit = styleSources.filter(
-        s => s.fontWeight >= fontWeight && s.fontWeight < 500,
+        (s) => s.fontWeight >= fontWeight && s.fontWeight < 500,
       );
 
       res = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
     }
 
     const lt = styleSources
-      .filter(s => s.fontWeight < fontWeight)
+      .filter((s) => s.fontWeight < fontWeight)
       .sort(sortByFontWeight);
     const gt = styleSources
-      .filter(s => s.fontWeight > fontWeight)
+      .filter((s) => s.fontWeight > fontWeight)
       .sort(sortByFontWeight);
 
     if (fontWeight < 400) {

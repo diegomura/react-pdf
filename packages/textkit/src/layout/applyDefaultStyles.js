@@ -2,7 +2,7 @@
  * @param {Object} a attributes
  * @returns {Object} attributes with defaults
  */
-const applyAttributes = a => ({
+const applyAttributes = (a) => ({
   align: a.align || 'left',
   alignLastLine:
     a.alignLastLine || (a.align === 'justify' ? 'left' : a.align || 'left'),
@@ -48,7 +48,7 @@ const applyAttributes = a => ({
  * @param {Object} run run
  * @returns {Object} run with styles
  */
-const applyRunStyles = run => {
+const applyRunStyles = (run) => {
   const attributes = applyAttributes(run.attributes);
   return Object.assign({}, run, { attributes });
 };
@@ -64,7 +64,7 @@ const applyRunStyles = run => {
  *
  * @returns {ApplyDefaultStyles} applyDefaultStyles
  */
-const applyDefaultStyles = () => attributedString => {
+const applyDefaultStyles = () => (attributedString) => {
   const string = attributedString.string || '';
   const runs = (attributedString.runs || []).map(applyRunStyles);
 

@@ -4,8 +4,9 @@ import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import pkg from './package.json';
 import commonjs from '@rollup/plugin-commonjs';
+
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   exports: 'named',

@@ -1,6 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   format: 'cjs',

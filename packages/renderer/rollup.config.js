@@ -4,12 +4,11 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import alias from '@rollup/plugin-alias';
 import ignore from 'rollup-plugin-ignore';
-import { terser } from 'rollup-plugin-terser';
-import sourceMaps from 'rollup-plugin-sourcemaps';
+import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   format: 'cjs',
@@ -47,7 +46,6 @@ const getExternal = ({ browser }) => [
 
 const getPlugins = ({ browser, declarationDests, minify = false }) => [
   json(),
-  sourceMaps(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   alias({
     entries: {

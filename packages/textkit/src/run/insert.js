@@ -18,7 +18,7 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-function insertGlyph(index, glyph, run) {
+const insertGlyph = (index, glyph, run) => {
   if (!glyph) return run;
 
   // Split resolves ligature splitting in case new glyph breaks some
@@ -26,7 +26,7 @@ function insertGlyph(index, glyph, run) {
   const trailingRun = slice(index, Infinity, run);
 
   return concat(append(glyph, leadingRun), trailingRun);
-}
+};
 
 /**
  * Insert either glyph or code point to run in the given index
@@ -36,8 +36,10 @@ function insertGlyph(index, glyph, run) {
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-export default function insert(index, value, run) {
+const insert = (index, value, run) => {
   const font = getFont(run);
   const glyph = isNumber(value) ? glyphFromCodePoint(value, font) : value;
   return insertGlyph(index, glyph, run);
-}
+};
+
+export default insert;

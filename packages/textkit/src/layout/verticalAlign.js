@@ -7,7 +7,7 @@
 /**
  * Apply scaling and yOffset for verticalAlign 'sub' and 'super'.
  */
-export default function verticalAlignment() {
+const verticalAlignment = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -25,4 +25,6 @@ export default function verticalAlignment() {
     });
     return attributedString;
   };
-}
+};
+
+export default verticalAlignment;

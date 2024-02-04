@@ -13,7 +13,7 @@
  * @param {Glyph} glyph glyph to be sliced
  * @returns {Glyph[]} sliced glyph parts
  */
-export default function slice(start, end, font, glyph) {
+const slice = (start, end, font, glyph) => {
   if (!glyph) return [];
   if (start === end) return [];
   if (start === 0 && end === glyph.codePoints.length) return [glyph];
@@ -21,4 +21,6 @@ export default function slice(start, end, font, glyph) {
   const codePoints = glyph.codePoints.slice(start, end);
   const string = String.fromCodePoint(...codePoints);
   return font ? font.layout(string).glyphs : [glyph];
-}
+};
+
+export default slice;

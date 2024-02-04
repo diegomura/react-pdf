@@ -7,11 +7,13 @@
  * @param {number[]} indices glyph indices
  * @returns {number[]}  extended glyph indices
  */
-export default function prepend(length, indices) {
+const prepend = (length, indices) => {
   if (length === 0) return indices;
 
   const newIndices = Array(length).fill(0);
   const lastIndices = indices.map((value) => value + 1);
 
   return newIndices.concat(lastIndices);
-}
+};
+
+export default prepend;

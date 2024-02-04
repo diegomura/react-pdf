@@ -15,10 +15,12 @@ import runAdvanceWidthBetween from '../run/advanceWidthBetween';
  * @param {AttributedString} attributedString
  * @returns {number} advance width
  */
-export default function advanceWidthBetween(start, end, attributedString) {
+const advanceWidthBetween = (start, end, attributedString) => {
   const runs = filterRuns(start, end, attributedString.runs);
   return runs.reduce(
     (acc, run) => acc + runAdvanceWidthBetween(start, end, run),
     0,
   );
-}
+};
+
+export default advanceWidthBetween;

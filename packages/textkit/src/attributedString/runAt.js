@@ -12,7 +12,9 @@ import runIndexAt from './runIndexAt';
  * @param {AttributedString} attributedString attributed string
  * @returns {Run} run
  */
-export default function runAt(n, attributedString) {
+const runAt = (n, attributedString) => {
   const runIndex = runIndexAt(n, attributedString);
   return attributedString.runs[runIndex];
-}
+};
+
+export default runAt;

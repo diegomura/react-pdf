@@ -10,8 +10,10 @@ import scale from './scale';
  * @param {Run} run run
  * @returns {number} descent
  */
-export default function descent(run) {
+const descent = (run) => {
   const fontDescent = run.attributes?.font?.descent || 0;
 
   return scale(run) * fontDescent;
-}
+};
+
+export default descent;

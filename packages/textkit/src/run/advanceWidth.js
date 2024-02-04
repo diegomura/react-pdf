@@ -10,6 +10,8 @@ import positionsAdvanceWidth from '../positions/advanceWidth';
  * @param {Run} run run
  * @returns {number} advance width
  */
-export default function advanceWidth(run) {
+const advanceWidth = (run) => {
   return positionsAdvanceWidth(run.positions || []);
-}
+};
+
+export default advanceWidth;

@@ -7,7 +7,7 @@
  *
  * @returns {Run} empty run
  */
-export default function empty() {
+const empty = () => {
   return {
     start: 0,
     end: 0,
@@ -16,4 +16,6 @@ export default function empty() {
     positions: [],
     attributes: {},
   };
-}
+};
+
+export default empty;

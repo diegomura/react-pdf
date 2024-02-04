@@ -12,6 +12,8 @@ const ZERO = { x: 0, y: 0 };
  * @param {Rect} [rect] rect
  * @returns {{ x: number, y: number }} bottom left point
  */
-export default function bottomLeft(rect) {
+const bottomLeft = (rect) => {
   return rect ? { x: rect.x || 0, y: maxY(rect) } : ZERO;
-}
+};
+
+export default bottomLeft;

@@ -16,7 +16,7 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-function appendGlyph(glyph, run) {
+const appendGlyph = (glyph, run) => {
   const glyphLength = glyph.codePoints?.length || 0;
   const end = run.end + glyphLength;
   const glyphs = run.glyphs.concat(glyph);
@@ -30,7 +30,7 @@ function appendGlyph(glyph, run) {
   });
 
   return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
-}
+};
 
 /**
  * Append glyph or code point to run
@@ -39,11 +39,13 @@ function appendGlyph(glyph, run) {
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-export default function append(value, run) {
+const append = (value, run) => {
   if (!value) return run;
 
   const font = getFont(run);
   const glyph = isNumber(value) ? glyphFromCodePoint(value, font) : value;
 
   return appendGlyph(glyph, run);
-}
+};
+
+export default append;

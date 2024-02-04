@@ -14,7 +14,7 @@ import normalizeIndices from '../indices/normalize';
  * @param {Run} runB second run
  * @returns {Run} concatenated run
  */
-export default function concat(runA, runB) {
+const concat = (runA, runB) => {
   const end = runA.end + length(runB);
 
   const glyphs = (runA.glyphs || []).concat(runB.glyphs || []);
@@ -35,4 +35,6 @@ export default function concat(runA, runB) {
     attributes,
     glyphIndices,
   });
-}
+};
+
+export default concat;

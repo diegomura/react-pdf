@@ -8,6 +8,8 @@
  * @param {Rect} [rect] rect
  * @returns {number} rect area
  */
-export default function area(rect) {
+const area = (rect) => {
   return rect ? rect.height * rect.width : 0;
-}
+};
+
+export default area;

@@ -33,7 +33,7 @@ const justifyLine = (distances, line) => {
  *
  * @param {Object} options layout options
  */
-function justification(options) {
+const justification = (options) => {
   /**
    * @param {Object} line
    * @returns {Object} line
@@ -48,6 +48,6 @@ function justification(options) {
 
     return justifyLine(distances, line);
   };
-}
+};
 
 export default justification;

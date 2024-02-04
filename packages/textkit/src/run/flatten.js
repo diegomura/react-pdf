@@ -12,15 +12,15 @@ import isEmpty from './isEmpty';
  * @param {Point} b second point
  * @returns {number} sort order
  */
-function sortPoints(a, b) {
+const sortPoints = (a, b) => {
   return a[1] - b[1] || a[3] - b[3];
-}
+};
 
 /**
  * @param {Run[]} runs
  * @returns {Point[]} points
  */
-function generatePoints(runs) {
+const generatePoints = (runs) => {
   const result = runs.reduce((acc, run, i) => {
     return acc.concat([
       ['start', run.start, run.attributes, i],
@@ -29,24 +29,24 @@ function generatePoints(runs) {
   }, []);
 
   return result.sort(sortPoints);
-}
+};
 
 /**
  * @param {Run[]} runs
  * @returns {Run} merged runs
  */
-function mergeRuns(runs) {
+const mergeRuns = (runs) => {
   return runs.reduce((acc, run) => {
     const attributes = Object.assign({}, acc.attributes, run.attributes);
     return Object.assign({}, run, { attributes });
   }, {});
-}
+};
 
 /**
  * @param {Run[]} runs
  * @returns {Run[][]} grouped runs
  */
-function groupEmptyRuns(runs) {
+const groupEmptyRuns = (runs) => {
   const groups = runs.reduce((acc, run) => {
     if (!acc[run.start]) acc[run.start] = [];
     acc[run.start].push(run);
@@ -54,21 +54,21 @@ function groupEmptyRuns(runs) {
   }, []);
 
   return Object.values(groups);
-}
+};
 
 /**
  * @param {Run[]} runs
  * @returns {Run[]} flattened runs
  */
-function flattenEmptyRuns(runs) {
+const flattenEmptyRuns = (runs) => {
   return groupEmptyRuns(runs).map(mergeRuns);
-}
+};
 
 /**
  * @param {Run[]} runs
  * @returns {Run[]} flattened runs
  */
-function flattenRegularRuns(runs) {
+const flattenRegularRuns = (runs) => {
   const res = [];
   const points = generatePoints(runs);
 
@@ -103,7 +103,7 @@ function flattenRegularRuns(runs) {
   }
 
   return res;
-}
+};
 
 /**
  * Flatten many runs
@@ -111,9 +111,11 @@ function flattenRegularRuns(runs) {
  * @param {Run[]} runs
  * @returns {Run[]} flattened runs
  */
-export default function flatten(runs = []) {
+const flatten = (runs = []) => {
   const emptyRuns = flattenEmptyRuns(runs.filter((run) => isEmpty(run)));
   const regularRuns = flattenRegularRuns(runs.filter((run) => !isEmpty(run)));
 
   return sort(emptyRuns.concat(regularRuns));
-}
+};
+
+export default flatten;

@@ -20,7 +20,7 @@ import sliceBlockAtHeight from '../block/sliceAtHeight';
  * @param {Object} options layout options
  * @param {Rect} container container rect
  */
-export default function typesetter(engines, options, container) {
+const typesetter = (engines, options, container) => {
   /**
    * @param {AttributedString} attributedStrings attributed strings (paragraphs)
    * @returns {Object[]} paragraph blocks
@@ -60,4 +60,6 @@ export default function typesetter(engines, options, container) {
 
     return blocks;
   };
-}
+};
+
+export default typesetter;

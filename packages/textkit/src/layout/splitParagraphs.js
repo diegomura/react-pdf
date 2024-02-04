@@ -8,7 +8,7 @@ import slice from '../attributedString/slice';
 /**
  * Breaks attributed string into paragraphs
  */
-function splitParagraphs() {
+const splitParagraphs = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString[]} attributed string array
@@ -33,6 +33,6 @@ function splitParagraphs() {
 
     return res;
   };
-}
+};
 
 export default splitParagraphs;

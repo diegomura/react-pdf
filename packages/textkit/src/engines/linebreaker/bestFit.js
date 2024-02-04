@@ -7,7 +7,7 @@ const INFINITY = 10000;
  * @param {number} lineNumber
  * @returns {number}
  */
-function getNextBreakpoint(subnodes, widths, lineNumber) {
+const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   let position = null;
   let minimumBadness = Infinity;
 
@@ -70,13 +70,13 @@ function getNextBreakpoint(subnodes, widths, lineNumber) {
   }
 
   return sum.width - sum.shrink > lineLength ? position : null;
-}
+};
 
 /**
  * @param {Object[]} nodes
  * @param {number[]} widths
  */
-export default function applyBestFit(nodes, widths) {
+const applyBestFit = (nodes, widths) => {
   let count = 0;
   let lineNumber = 0;
   let subnodes = nodes;
@@ -97,4 +97,6 @@ export default function applyBestFit(nodes, widths) {
   }
 
   return breakpoints;
-}
+};
+
+export default applyBestFit;

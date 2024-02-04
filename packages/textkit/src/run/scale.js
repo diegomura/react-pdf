@@ -8,13 +8,13 @@
  * @param {Run} run run
  * @returns {number} scale
  */
-function calculateScale(run) {
+const calculateScale = (run) => {
   const attributes = run.attributes || {};
   const fontSize = attributes.fontSize || 12;
   const unitsPerEm = attributes.font?.unitsPerEm;
 
   return unitsPerEm ? fontSize / unitsPerEm : 0;
-}
+};
 
 /**
  * Get run scale
@@ -22,6 +22,8 @@ function calculateScale(run) {
  * @param {Object}  run
  * @returns {number} scale
  */
-export default function scale(run) {
+const scale = (run) => {
   return run.attributes?.scale || calculateScale(run);
-}
+};
+
+export default scale;

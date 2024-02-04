@@ -34,7 +34,7 @@ const resolveRunAttachments = (run) => {
 /**
  * Resolve attachments for multiple paragraphs
  */
-export default function resolveAttachments() {
+const resolveAttachments = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -43,4 +43,6 @@ export default function resolveAttachments() {
     const runs = attributedString.runs.map(resolveRunAttachments);
     return Object.assign({}, attributedString, { runs });
   };
-}
+};
+
+export default resolveAttachments;

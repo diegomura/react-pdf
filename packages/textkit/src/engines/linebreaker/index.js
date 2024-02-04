@@ -27,7 +27,7 @@ const opts = {
  * @param {Object[]} breaks
  * @returns {AttributedString[]} attributed strings
  */
-function breakLines(string, nodes, breaks) {
+const breakLines = (string, nodes, breaks) => {
   let start = 0;
   let end = null;
 
@@ -57,7 +57,7 @@ function breakLines(string, nodes, breaks) {
   lines.push(slice(start, string.string.length, string));
 
   return lines;
-}
+};
 
 /**
  * Return Knuth & Plass nodes based on line and previously calculated syllables
@@ -67,7 +67,7 @@ function breakLines(string, nodes, breaks) {
  * @param {Object} options layout options
  * @returns {Object[]} attributed strings
  */
-function getNodes(attributedString, { align }, options) {
+const getNodes = (attributedString, { align }, options) => {
   let start = 0;
 
   const hyphenWidth = 5;
@@ -108,15 +108,15 @@ function getNodes(attributedString, { align }, options) {
   result.push(linebreak.penalty(0, -linebreak.infinity, 1));
 
   return result;
-}
+};
 
 /**
  * @param {AttributedString} attributedString attributed string
  * @returns {Attributes} styles
  */
-function getStyles(attributedString) {
+const getStyles = (attributedString) => {
   return attributedString.runs?.[0]?.attributes || {};
-}
+};
 
 /**
  * Performs Knuth & Plass line breaking algorithm
@@ -124,7 +124,7 @@ function getStyles(attributedString) {
  *
  * @param {Object} options layout options
  */
-export default function linebreaker(options) {
+const linebreaker = (options) => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @param {number[]} availableWidths available widths
@@ -154,4 +154,6 @@ export default function linebreaker(options) {
 
     return breakLines(attributedString, nodes, breaks.slice(1));
   };
-}
+};
+
+export default linebreaker;

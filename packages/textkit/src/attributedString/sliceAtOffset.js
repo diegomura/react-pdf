@@ -12,7 +12,9 @@ import indexAtOffset from './indexAtOffset';
  * @param {AttributedString} string attributed string
  * @returns {AttributedString} attributed string
  */
-export default function sliceAtOffset(offset, string) {
+const sliceAtOffset = (offset, string) => {
   const index = indexAtOffset(offset, string);
   return slice(0, index, string);
-}
+};
+
+export default sliceAtOffset;

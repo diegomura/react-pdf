@@ -11,7 +11,7 @@ import LinkedList from './linkedList';
  * Copyright 2009-2010, Bram Stein
  * All rights reserved.
  */
-function linebreak(nodes, lines, settings) {
+const linebreak = (nodes, lines, settings) => {
   const options = {
     demerits: {
       line: (settings && settings.demerits && settings.demerits.line) || 10,
@@ -339,7 +339,7 @@ function linebreak(nodes, lines, settings) {
     return breaks.reverse();
   }
   return [];
-}
+};
 
 linebreak.infinity = 10000;
 

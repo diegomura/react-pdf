@@ -9,7 +9,7 @@
  * @param {Run} run run
  * @returns {number} string index at offset N
  */
-export default function indexAtOffset(offset, run) {
+const indexAtOffset = (offset, run) => {
   let counter = 0;
   let index = 0;
 
@@ -26,4 +26,6 @@ export default function indexAtOffset(offset, run) {
   }
 
   return index;
-}
+};
+
+export default indexAtOffset;

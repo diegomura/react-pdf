@@ -12,9 +12,11 @@ import runIndexAt from './runIndexAt';
  * @param {Run[]} runs
  * @returns {Run[]} filtered runs
  */
-export default function filter(start, end, runs) {
+const filter = (start, end, runs) => {
   const startIndex = runIndexAt(start, runs);
   const endIndex = Math.max(runIndexAt(end - 1, runs), startIndex);
 
   return runs.slice(startIndex, endIndex + 1);
-}
+};
+
+export default filter;

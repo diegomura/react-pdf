@@ -10,10 +10,12 @@
  * @param {Run} run run
  * @returns {Run} run without ommited attribute
  */
-export default function omit(value, run) {
+const omit = (value, run) => {
   const attributes = Object.assign({}, run.attributes);
 
   delete attributes[value];
 
   return Object.assign({}, run, { attributes });
-}
+};
+
+export default omit;

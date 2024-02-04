@@ -53,7 +53,7 @@ const adjustOverflow = (line) => {
  * @param {Object} options layout options
  * @param {string} align text align
  */
-function justifyLine(engines, options, align) {
+const justifyLine = (engines, options, align) => {
   /**
    * @param {Object} line lint
    * @returns {Object} line
@@ -70,9 +70,9 @@ function justifyLine(engines, options, align) {
 
     return shouldJustify ? engines.justification(options)(newLine) : newLine;
   };
-}
+};
 
-function finalizeLine(line) {
+const finalizeLine = (line) => {
   let lineAscent = 0;
   let lineDescent = 0;
   let lineHeight = 0;
@@ -99,7 +99,7 @@ function finalizeLine(line) {
     descent: lineDescent,
     xAdvance: lineXAdvance,
   });
-}
+};
 
 /**
  * Finalize line by performing line justification
@@ -108,7 +108,7 @@ function finalizeLine(line) {
  * @param {Object} engines engines
  * @param {Object} options layout options
  */
-function finalizeBlock(engines = {}, options) {
+const finalizeBlock = (engines = {}, options) => {
   /**
    * @param {Object} line lint
    * @param {number} i line index
@@ -128,7 +128,7 @@ function finalizeBlock(engines = {}, options) {
       removeNewLine,
     )(line);
   };
-}
+};
 
 /**
  * Finalize line block by performing line justification
@@ -137,7 +137,7 @@ function finalizeBlock(engines = {}, options) {
  * @param {Object} engines engines
  * @param {Object} options layout options
  */
-export default function finalizeFragments(engines, options) {
+const finalizeFragments = (engines, options) => {
   /**
    * @param {Object[]} blocks line blocks
    * @returns {Object[]} blocks
@@ -146,4 +146,6 @@ export default function finalizeFragments(engines, options) {
     const blockFinalizer = finalizeBlock(engines, options);
     return blocks.map((block) => block.map(blockFinalizer));
   };
-}
+};
+
+export default finalizeFragments;

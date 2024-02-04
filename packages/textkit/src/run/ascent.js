@@ -10,9 +10,11 @@ import scale from './scale';
  * @param {Run} run run
  * @returns {number} ascent
  */
-export default function ascent(run) {
+const ascent = (run) => {
   const attachmentHeight = run.attributes?.attachment?.height || 0;
   const fontAscent = run.attributes?.font?.ascent || 0;
 
   return Math.max(attachmentHeight, fontAscent * scale(run));
-}
+};
+
+export default ascent;

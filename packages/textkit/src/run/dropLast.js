@@ -10,6 +10,8 @@ import slice from './slice';
  * @param {Run} run run
  * @returns {Run} run without last char
  */
-export default function dropLast(run) {
+const dropLast = (run) => {
   return slice(0, run.end - run.start - 1, run);
-}
+};
+
+export default dropLast;

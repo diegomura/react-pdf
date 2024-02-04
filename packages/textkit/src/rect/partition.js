@@ -8,7 +8,7 @@
  * @param {number} height height
  * @returns {[Rect, Rect]} partitioned rects
  */
-export default function partition(rect, height) {
+const partition = (rect, height) => {
   const a = Object.assign({}, rect, { height });
 
   const b = Object.assign({}, rect, {
@@ -17,4 +17,6 @@ export default function partition(rect, height) {
   });
 
   return [a, b];
-}
+};
+
+export default partition;

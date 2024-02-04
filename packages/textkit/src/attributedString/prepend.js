@@ -15,7 +15,7 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {AttributedString} attributedString attributed string
  * @returns {AttributedString} attributed string with new glyph
  */
-export default function prepend(glyph, attributedString) {
+const prepend = (glyph, attributedString) => {
   const codePoints = glyph?.codePoints || [];
   const string = stringFromCodePoints(codePoints) + attributedString.string;
 
@@ -27,4 +27,6 @@ export default function prepend(glyph, attributedString) {
   const runs = [prependToRun(glyph, firstRun)].concat(lastRuns);
 
   return Object.assign({}, attributedString, { runs, string });
-}
+};
+
+export default prepend;

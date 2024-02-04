@@ -10,7 +10,7 @@ const DUMMY_CODEPOINT = 123;
  * @param {Glyph[]} glyphs
  * @returns {number[]} glyph indices
  */
-export default function resolve(glyphs = []) {
+const resolve = (glyphs = []) => {
   return glyphs.reduce((acc, glyph) => {
     const codePoints = glyph?.codePoints || [DUMMY_CODEPOINT];
 
@@ -21,4 +21,6 @@ export default function resolve(glyphs = []) {
 
     return [...acc, ...next];
   }, []);
-}
+};
+
+export default resolve;

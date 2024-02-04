@@ -12,9 +12,11 @@ import runDropLast from '../run/dropLast';
  * @param {AttributedString} attributedString attributed string
  * @returns {AttributedString} attributed string with new glyph
  */
-export default function dropLast(attributedString) {
+const dropLast = (attributedString) => {
   const string = arrayDropLast(attributedString.string);
   const runs = adjust(-1, runDropLast, attributedString.runs);
 
   return Object.assign({}, attributedString, { string, runs });
-}
+};
+
+export default dropLast;

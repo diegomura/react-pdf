@@ -11,6 +11,8 @@ import runIndexAtInternal from '../run/runIndexAt';
  * @param {AttributedString} string attributed string
  * @returns {number} run index
  */
-export default function runIndexAt(n, string) {
+const runIndexAt = (n, string) => {
   return runIndexAtInternal(n, string.runs);
-}
+};
+
+export default runIndexAt;

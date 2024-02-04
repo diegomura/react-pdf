@@ -8,6 +8,8 @@
  * @param {Run} run run
  * @returns {boolean} is run empty
  */
-export default function isEmpty(run) {
+const isEmpty = (run) => {
   return run.start === run.end;
-}
+};
+
+export default isEmpty;

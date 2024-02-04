@@ -8,6 +8,8 @@
  * @param {Rect} [rect] rect
  * @returns {number} x coordinate
  */
-export default function maxX(rect) {
+const maxX = (rect) => {
   return rect ? rect.x + rect.width : 0;
-}
+};
+
+export default maxX;

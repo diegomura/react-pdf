@@ -10,8 +10,10 @@ import runLeadingOffset from '../run/leadingOffset';
  * @param {AttributedString} attributedString attributed string
  * @returns {number} leading white space offset
  */
-export default function leadingOffset(attributedString) {
+const leadingOffset = (attributedString) => {
   const runs = attributedString.runs || [];
 
   return runLeadingOffset(runs[0]);
-}
+};
+
+export default leadingOffset;

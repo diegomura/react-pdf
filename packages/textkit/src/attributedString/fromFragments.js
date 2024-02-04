@@ -9,7 +9,7 @@
  * @param {Fragment[]} fragments fragments
  * @returns {AttributedString} attributed string
  */
-function fromFragments(fragments) {
+const fromFragments = (fragments) => {
   let offset = 0;
   let string = '';
   const runs = [];
@@ -27,6 +27,6 @@ function fromFragments(fragments) {
   });
 
   return { string, runs };
-}
+};
 
 export default fromFragments;

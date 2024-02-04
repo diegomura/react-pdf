@@ -70,7 +70,7 @@ const layoutLines = (rects, lines, indent) => {
  * @param {Object} engines engines
  * @param {Object} options layout options
  */
-export default function layoutParagraph(engines, options) {
+const layoutParagraph = (engines, options) => {
   /**
    * @param {Rect} container rect
    * @param {Object} paragraph attributed string
@@ -88,4 +88,6 @@ export default function layoutParagraph(engines, options) {
 
     return layoutLines(rects, lines, indent);
   };
-}
+};
+
+export default layoutParagraph;

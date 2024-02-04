@@ -9,6 +9,8 @@
  * @param {Run} run run
  * @returns {Font | null} font
  */
-export default function getFont(run) {
+const getFont = (run) => {
   return run.attributes?.font || null;
-}
+};
+
+export default getFont;

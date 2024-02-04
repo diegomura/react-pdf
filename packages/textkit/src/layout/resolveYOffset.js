@@ -9,7 +9,7 @@
  * @param {Run} run run
  * @returns {Run} run
  */
-function resolveRunYOffset(run) {
+const resolveRunYOffset = (run) => {
   if (!run.positions) return run;
 
   const unitsPerEm = run.attributes?.font?.unitsPerEm || 0;
@@ -17,12 +17,12 @@ function resolveRunYOffset(run) {
   const positions = run.positions.map((p) => Object.assign({}, p, { yOffset }));
 
   return Object.assign({}, run, { positions });
-}
+};
 
 /**
  * Resolves yOffset for multiple paragraphs
  */
-export default function resolveYOffset() {
+const resolveYOffset = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -31,4 +31,6 @@ export default function resolveYOffset() {
     const runs = attributedString.runs.map(resolveRunYOffset);
     return Object.assign({}, attributedString, { runs });
   };
-}
+};
+
+export default resolveYOffset;

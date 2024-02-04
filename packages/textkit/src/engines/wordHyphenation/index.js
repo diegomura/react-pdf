@@ -11,9 +11,9 @@ const hyphenator = hyphen(pattern);
  * @param {string} word
  * @returns {string[]} word parts
  */
-function splitHyphen(word) {
+const splitHyphen = (word) => {
   return word.split(SOFT_HYPHEN);
-}
+};
 
 const cache = {};
 
@@ -21,12 +21,12 @@ const cache = {};
  * @param {string} word
  * @returns {string[]} word parts
  */
-function getParts(word) {
+const getParts = (word) => {
   const base = word.includes(SOFT_HYPHEN) ? word : hyphenator(word);
   return splitHyphen(base);
-}
+};
 
-export default function wordHyphenation() {
+const wordHyphenation = () => {
   /**
    * @param {string} word word
    * @returns {string[]} word parts
@@ -41,4 +41,6 @@ export default function wordHyphenation() {
 
     return cache[cacheKey];
   };
-}
+};
+
+export default wordHyphenation;

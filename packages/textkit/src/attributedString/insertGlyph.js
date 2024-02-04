@@ -17,7 +17,7 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {AttributedString} attributedString attributed string
  * @returns {AttributedString} attributed string with new glyph
  */
-function insertGlyph(index, glyph, attributedString) {
+const insertGlyph = (index, glyph, attributedString) => {
   const runIndex = runIndexAt(index, attributedString);
 
   // Add glyph to the end if run index invalid
@@ -39,6 +39,6 @@ function insertGlyph(index, glyph, attributedString) {
   });
 
   return Object.assign({}, attributedString, { string, runs });
-}
+};
 
 export default insertGlyph;

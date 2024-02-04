@@ -17,7 +17,7 @@ import glyphFromCodePoint from '../glyph/fromCodePoint';
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-function prependGlyph(glyph, run) {
+const prependGlyph = (glyph, run) => {
   const runScale = scale(run);
   const glyphLength = glyph.codePoints.length;
 
@@ -30,7 +30,7 @@ function prependGlyph(glyph, run) {
   ]).concat(run.positions);
 
   return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
-}
+};
 
 /**
  * Prepend glyph or code point on run
@@ -39,11 +39,13 @@ function prependGlyph(glyph, run) {
  * @param {Run} run run
  * @returns {Run} run with glyph
  */
-export default function prepend(value, run) {
+const prepend = (value, run) => {
   if (!value) return run;
 
   const font = getFont(run);
   const glyph = isNumber(value) ? glyphFromCodePoint(value, font) : value;
 
   return prependGlyph(glyph, run);
-}
+};
+
+export default prepend;

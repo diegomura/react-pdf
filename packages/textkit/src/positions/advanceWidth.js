@@ -8,6 +8,8 @@
  * @param {Position[]} positions positions
  * @returns {number} advance width
  */
-export default function advanceWidth(positions) {
+const advanceWidth = (positions) => {
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);
-}
+};
+
+export default advanceWidth;

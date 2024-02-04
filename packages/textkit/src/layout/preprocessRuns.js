@@ -13,10 +13,10 @@ import empty from '../attributedString/empty';
  * @param {AttributedString} attributedString
  * @returns {AttributedString} attributed string without font
  */
-function omitFont(attributedString) {
+const omitFont = (attributedString) => {
   const runs = attributedString.runs.map((run) => omit('font', run));
   return Object.assign({}, attributedString, { runs });
-}
+};
 
 /**
  * Performs font substitution and script itemization on attributed string
@@ -24,7 +24,7 @@ function omitFont(attributedString) {
  * @param {Object} engines engines
  * @param {Object} options layout options
  */
-export default function preprocessRuns(engines, options) {
+const preprocessRuns = (engines, options) => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} processed attributed string
@@ -46,4 +46,6 @@ export default function preprocessRuns(engines, options) {
 
     return { string, runs: flatten(runs) };
   };
-}
+};
+
+export default preprocessRuns;

@@ -11,7 +11,7 @@ const ignoredScripts = ['Common', 'Inherited', 'Unknown'];
 /**
  * Resolves unicode script in runs, grouping equal runs together
  */
-export default function scriptItemizer() {
+const scriptItemizer = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -58,4 +58,6 @@ export default function scriptItemizer() {
 
     return { string, runs: res };
   };
-}
+};
+
+export default scriptItemizer;

@@ -11,7 +11,9 @@ import partition from './partition';
  * @param {Rect} rect rect
  * @returns {Rect} cropped rect
  */
-export default function crop(height, rect) {
+const crop = (height, rect) => {
   const [, result] = partition(rect, height);
   return result;
-}
+};
+
+export default crop;

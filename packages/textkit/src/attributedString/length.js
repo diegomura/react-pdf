@@ -11,6 +11,8 @@ import end from './end';
  * @param {AttributedString} attributedString attributed string
  * @returns {number} end
  */
-export default function length(attributedString) {
+const length = (attributedString) => {
   return end(attributedString) - start(attributedString);
-}
+};
+
+export default length;

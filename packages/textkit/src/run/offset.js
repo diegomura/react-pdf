@@ -15,11 +15,13 @@
  * @param {Run} run run
  * @returns {number} ligature offset
  */
-export default function offset(index, run) {
+const offset = (index, run) => {
   if (!run) return 0;
 
   const glyphIndices = run.glyphIndices || [];
   const value = glyphIndices[index];
 
   return glyphIndices.slice(0, index).filter((i) => i === value).length;
-}
+};
+
+export default offset;

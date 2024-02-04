@@ -13,11 +13,13 @@ import positionsAdvanceWidth from '../positions/advanceWidth';
  * @param {Run} run run
  * @returns {number} advanced width run
  */
-export default function advanceWidthBetween(start, end, run) {
+const advanceWidthBetween = (start, end, run) => {
   const runStart = run.start || 0;
   const glyphStartIndex = Math.max(0, glyphIndexAt(start - runStart, run));
   const glyphEndIndex = Math.max(0, glyphIndexAt(end - runStart, run));
   const positions = (run.positions || []).slice(glyphStartIndex, glyphEndIndex);
 
   return positionsAdvanceWidth(positions);
-}
+};
+
+export default advanceWidthBetween;

@@ -8,7 +8,7 @@
  * @param {Attributes} a attributes
  * @returns {Attributes} attributes with defaults
  */
-function applyAttributes(a) {
+const applyAttributes = (a) => {
   return {
     align: a.align || 'left',
     alignLastLine:
@@ -48,7 +48,7 @@ function applyAttributes(a) {
     wordSpacing: a.wordSpacing || 0,
     yOffset: a.yOffset || 0,
   };
-}
+};
 
 /**
  * Apply default style to run
@@ -56,15 +56,15 @@ function applyAttributes(a) {
  * @param {Run} run run
  * @returns {Run} run with styles
  */
-function applyRunStyles(run) {
+const applyRunStyles = (run) => {
   const attributes = applyAttributes(run.attributes);
   return Object.assign({}, run, { attributes });
-}
+};
 
 /**
  * Apply default attributes for an attributed string
  */
-export default function applyDefaultStyles() {
+const applyDefaultStyles = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -75,4 +75,6 @@ export default function applyDefaultStyles() {
 
     return { string, runs };
   };
-}
+};
+
+export default applyDefaultStyles;

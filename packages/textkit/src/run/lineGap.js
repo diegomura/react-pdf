@@ -10,6 +10,8 @@ import scale from './scale';
  * @param {Object} run run
  * @returns {number} lineGap
  */
-export default function lineGap(run) {
+const lineGap = (run) => {
   return (run.attributes?.font?.lineGap || 0) * scale(run);
-}
+};
+
+export default lineGap;

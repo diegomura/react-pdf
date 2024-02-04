@@ -13,15 +13,15 @@ import empty from '../../attributedString/empty';
  * @param {Run} run run
  * @returns {number}
  */
-function getFontSize(run) {
+const getFontSize = (run) => {
   return run.attributes.fontSize || 12;
-}
+};
 
 /**
  * Resolve font runs in an AttributedString, grouping equal
  * runs and performing font substitution where necessary.
  */
-export default function fontSubstitution() {
+const fontSubstitution = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string
@@ -83,4 +83,6 @@ export default function fontSubstitution() {
 
     return { string, runs: res };
   };
-}
+};
+
+export default fontSubstitution;

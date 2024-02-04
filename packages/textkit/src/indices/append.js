@@ -9,10 +9,12 @@ import { isNil, last } from '@react-pdf/fns';
  * @param {number[]} indices glyph indices
  * @returns {number[]} extended glyph indices
  */
-export default function appendIndices(length, indices) {
+const appendIndices = (length, indices) => {
   const lastIndex = last(indices);
   const value = isNil(lastIndex) ? 0 : lastIndex + 1;
   const newIndices = Array(length).fill(value);
 
   return indices.concat(newIndices);
-}
+};
+
+export default appendIndices;

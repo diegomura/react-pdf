@@ -10,6 +10,8 @@
  * @param {Font} [font] font
  * @returns {Glyph} glyph
  * */
-export default function fromCodePoint(value, font) {
+const fromCodePoint = (value, font) => {
   return font && value ? font.glyphForCodePoint(value) : null;
-}
+};
+
+export default fromCodePoint;

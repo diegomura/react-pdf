@@ -40,7 +40,7 @@ const sliceRuns = (start, end, runs) => {
  * @param {AttributedString} attributedString attributed string
  * @returns {AttributedString} attributed string
  */
-export default function slice(start, end, attributedString) {
+const slice = (start, end, attributedString) => {
   if (attributedString.string.length === 0) return attributedString;
 
   const string = attributedString.string.slice(start, end);
@@ -48,4 +48,6 @@ export default function slice(start, end, attributedString) {
   const slicedRuns = sliceRuns(start, end, filteredRuns);
 
   return Object.assign({}, attributedString, { string, runs: slicedRuns });
-}
+};
+
+export default slice;

@@ -19,7 +19,7 @@ const defaultHyphenationEngine = (word) => [word];
  * @param {Object} engines layout engines
  * @param {Object} options layout options
  */
-export default function wrapWords(engines = {}, options = {}) {
+const wrapWords = (engines = {}, options = {}) => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string including syllables
@@ -54,4 +54,6 @@ export default function wrapWords(engines = {}, options = {}) {
 
     return { ...fromFragments(fragments), syllables };
   };
-}
+};
+
+export default wrapWords;

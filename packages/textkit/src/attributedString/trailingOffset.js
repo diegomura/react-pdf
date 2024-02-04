@@ -12,8 +12,10 @@ import runTrailingOffset from '../run/trailingOffset';
  * @param {AttributedString} attributedString attributed string
  * @returns {number} trailing white space offset
  */
-export default function trailingOffset(attributedString) {
+const trailingOffset = (attributedString) => {
   const runs = attributedString.runs || [];
 
   return runTrailingOffset(last(runs));
-}
+};
+
+export default trailingOffset;

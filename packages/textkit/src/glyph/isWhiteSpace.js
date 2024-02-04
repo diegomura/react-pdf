@@ -10,7 +10,9 @@ const WHITE_SPACES_CODE = 32;
  * @param {Glyph} [glyph] glyph
  * @returns {boolean} whether glyph is white space
  * */
-export default function isWhiteSpace(glyph) {
+const isWhiteSpace = (glyph) => {
   const codePoints = glyph?.codePoints || [];
   return codePoints.includes(WHITE_SPACES_CODE);
-}
+};
+
+export default isWhiteSpace;

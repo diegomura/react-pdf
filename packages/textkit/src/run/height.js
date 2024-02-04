@@ -12,7 +12,9 @@ import lineGap from './lineGap';
  * @param {Run} run run
  * @returns {number} height
  */
-export default function height(run) {
+const height = (run) => {
   const lineHeight = run.attributes?.lineHeight;
   return lineHeight || lineGap(run) + ascent(run) - descent(run);
-}
+};
+
+export default height;

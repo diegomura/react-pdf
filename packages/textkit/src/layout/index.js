@@ -25,7 +25,7 @@ import verticalAlignment from './verticalAlign';
  *
  * @param {Object} engines engines
  */
-export default function layoutEngine(engines) {
+const layoutEngine = (engines) => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @param {Rect} container container rect
@@ -52,4 +52,6 @@ export default function layoutEngine(engines) {
       applyDefaultStyles(),
     )(attributedString);
   };
-}
+};
+
+export default layoutEngine;

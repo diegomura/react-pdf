@@ -11,9 +11,9 @@ import resolveGlyphIndices from '../indices/resolve';
  * @param {Run} run
  * @returns {number}
  */
-function getCharacterSpacing(run) {
+const getCharacterSpacing = (run) => {
   return run.attributes?.characterSpacing || 0;
-}
+};
 
 /**
  * Scale run positions
@@ -44,7 +44,7 @@ const scalePositions = (run, positions) => {
  *
  * @param {string} string string
  */
-function layoutRun(string) {
+const layoutRun = (string) => {
   /**
    * @param {Run} run run
    * @returns {Run} glyph run
@@ -67,12 +67,12 @@ function layoutRun(string) {
       glyphs: glyphRun.glyphs,
     };
   };
-}
+};
 
 /**
  * Generate glyphs for single attributed string
  */
-export default function generateGlyphs() {
+const generateGlyphs = () => {
   /**
    * @param {AttributedString} attributedString attributed string
    * @returns {AttributedString} attributed string with glyphs
@@ -81,4 +81,6 @@ export default function generateGlyphs() {
     const runs = attributedString.runs.map(layoutRun(attributedString.string));
     return Object.assign({}, attributedString, { runs });
   };
-}
+};
+
+export default generateGlyphs;

@@ -4,6 +4,8 @@
  * @param {number[]} codePoints points
  * @returns {string} string
  */
-export default function stringFromCodePoints(codePoints) {
+const stringFromCodePoints = (codePoints) => {
   return String.fromCodePoint(...(codePoints || []));
-}
+};
+
+export default stringFromCodePoints;

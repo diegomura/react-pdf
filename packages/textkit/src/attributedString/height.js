@@ -10,7 +10,9 @@ import runHeight from '../run/height';
  * @param {AttributedString} attributedString attributed string
  * @returns {number} height
  */
-export default function height(attributedString) {
+const height = (attributedString) => {
   const reducer = (acc, run) => Math.max(acc, runHeight(run));
   return attributedString.runs.reduce(reducer, 0);
-}
+};
+
+export default height;

@@ -10,9 +10,9 @@ import isWhiteSpace from '../glyph/isWhiteSpace';
  * @param {T[]} array
  * @returns {T[]} reversed array
  */
-function reverse(array) {
+const reverse = (array) => {
   return [...array].reverse();
-}
+};
 
 /**
  * Get white space trailing positions
@@ -20,13 +20,13 @@ function reverse(array) {
  * @param {Run} run run
  * @returns {Position[]} white space trailing positions
  */
-function trailingPositions(run) {
+const trailingPositions = (run) => {
   const glyphs = reverse(run.glyphs || []);
   const positions = reverse(run.positions || []);
   const leadingWhitespaces = glyphs.findIndex((g) => !isWhiteSpace(g));
 
   return positions.slice(0, leadingWhitespaces);
-}
+};
 
 /**
  * Get run trailing white space offset
@@ -34,8 +34,10 @@ function trailingPositions(run) {
  * @param {Run} run run
  * @returns {number} trailing white space offset
  */
-export default function trailingOffset(run) {
+const trailingOffset = (run) => {
   const positions = trailingPositions(run);
 
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);
-}
+};
+
+export default trailingOffset;

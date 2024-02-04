@@ -10,7 +10,9 @@ import runAscent from '../run/ascent';
  * @param {AttributedString} attributedString attributed string
  * @returns {number} ascent
  */
-export default function ascent(attributedString) {
+const ascent = (attributedString) => {
   const reducer = (acc, run) => Math.max(acc, runAscent(run));
   return attributedString.runs.reduce(reducer, 0);
-}
+};
+
+export default ascent;

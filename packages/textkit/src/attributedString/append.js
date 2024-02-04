@@ -16,7 +16,7 @@ import stringFromCodePoints from '../utils/stringFromCodePoints';
  * @param {AttributedString} attributedString attributed string
  * @returns {AttributedString} attributed string with new glyph
  */
-export default function append(glyph, attributedString) {
+const append = (glyph, attributedString) => {
   const codePoints = glyph?.codePoints || [];
   const codePointsString = stringFromCodePoints(codePoints);
   const string = attributedString.string + codePointsString;
@@ -26,4 +26,6 @@ export default function append(glyph, attributedString) {
   const runs = firstRuns.concat(appendToRun(glyph, lastRun));
 
   return Object.assign({}, attributedString, { string, runs });
-}
+};
+
+export default append;

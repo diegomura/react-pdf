@@ -17,7 +17,7 @@ import normalizeIndices from '../indices/normalize';
  * @param {Run} run run
  * @returns {Run} sliced run
  */
-export default function slice(start, end, run) {
+const slice = (start, end, run) => {
   const runScale = scale(run);
   const font = getFont(run);
 
@@ -55,4 +55,6 @@ export default function slice(start, end, run) {
     glyphs: [startGlyphs, glyphs, endGlyphs].flat(),
     positions: [startPositions, positions, endPositions].flat(),
   });
-}
+};
+
+export default slice;

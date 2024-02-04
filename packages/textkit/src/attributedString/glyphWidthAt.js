@@ -12,8 +12,10 @@ import glyphIndexAt from '../run/glyphIndexAt';
  * @param {AttributedString} string attributed string
  * @returns {number} glyph width
  */
-export default function glyphWidthAt(index, string) {
+const glyphWidthAt = (index, string) => {
   const run = runAt(index, string);
   const glyphIndex = glyphIndexAt(index, run);
   return run.positions[glyphIndex].xAdvance;
-}
+};
+
+export default glyphWidthAt;

@@ -12,7 +12,9 @@ import { isNil } from '@react-pdf/fns';
  * @param {Run} run run
  * @returns {number} glyph index
  */
-export default function glyphIndexAt(index, run) {
+const glyphIndexAt = (index, run) => {
   const result = run?.glyphIndices?.[index];
   return isNil(result) ? index : result;
-}
+};
+
+export default glyphIndexAt;

@@ -8,6 +8,8 @@
  * @param {Rect} rect rect
  * @returns {Rect} cloned rect
  */
-export default function copy(rect) {
+const copy = (rect) => {
   return Object.assign({}, rect);
-}
+};
+
+export default copy;

@@ -4,7 +4,9 @@ type SourceURL = string;
 
 type SourceBuffer = Buffer;
 
-type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' };
+type SourceBlob = Blob
+
+type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' }
 
 type SourceURLObject = {
   uri: string;
@@ -17,6 +19,7 @@ type SourceURLObject = {
 type Source =
   | SourceURL
   | SourceBuffer
+  | SourceBlob
   | SourceDataBuffer
   | SourceURLObject
   | undefined;

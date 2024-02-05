@@ -162,4 +162,33 @@ describe('image resolveImage', () => {
 
     expect(image1).not.toBe(image2);
   });
+
+  test('Should render a blob image', async () => {
+    const blob = new Blob([localJPGImage], { type: 'image/jpeg' });
+    const image = await resolveImage(blob);
+
+    expect(image.data).toBeTruthy();
+    expect(image.width).toBeGreaterThan(0);
+    expect(image.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a blob without type', async () => {
+    const blob = new Blob([localJPGImage]);
+    const image = await resolveImage(blob);
+
+    expect(image.data).toBeTruthy();
+    expect(image.width).toBeGreaterThan(0);
+    expect(image.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a blob image with type application/octet-stream', async () => {
+    const blob = new Blob([localJPGImage], {
+      type: 'application/octet-stream',
+    });
+    const image = await resolveImage(blob);
+
+    expect(image.data).toBeTruthy();
+    expect(image.width).toBeGreaterThan(0);
+    expect(image.height).toBeGreaterThan(0);
+  });
 });

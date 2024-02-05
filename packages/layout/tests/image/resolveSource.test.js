@@ -6,6 +6,7 @@ const SOURCE_URL = 'gotcha';
 const SOURCE_URL_OBJECT = { uri: 'gotcha', method: 'GET' };
 const SOURCE_BUFFER = Buffer.from('gotcha');
 const SOURCE_DATA_BUFFER = { data: Buffer.from('gotcha'), format: 'png' };
+const SOURCE_BLOB = new Blob([SOURCE_BUFFER], { type: 'image/png' });
 
 describe('image resolveSource', () => {
   describe('source', () => {
@@ -25,6 +26,10 @@ describe('image resolveSource', () => {
       expect(resolveSource(SOURCE_DATA_BUFFER)).resolves.toBe(
         SOURCE_DATA_BUFFER,
       );
+    });
+
+    it('resolves blob', () => {
+      expect(resolveSource(SOURCE_BLOB)).resolves.toBe(SOURCE_BLOB);
     });
   });
 
@@ -50,6 +55,12 @@ describe('image resolveSource', () => {
     it('resolves data buffer', () => {
       expect(resolveSource(Promise.resolve(SOURCE_DATA_BUFFER))).resolves.toBe(
         SOURCE_DATA_BUFFER,
+      );
+    });
+
+    it('resolves blob', () => {
+      expect(resolveSource(Promise.resolve(SOURCE_BLOB))).resolves.toBe(
+        SOURCE_BLOB,
       );
     });
   });
@@ -80,6 +91,10 @@ describe('image resolveSource', () => {
     it('resolves undefined', () => {
       expect(resolveSource(() => undefined)).resolves.toBe(undefined);
     });
+
+    it('resolves blob', () => {
+      expect(resolveSource(() => SOURCE_BLOB)).resolves.toBe(SOURCE_BLOB);
+    });
   });
 
   describe('async factory', () => {
@@ -109,6 +124,10 @@ describe('image resolveSource', () => {
 
     it('resolves undefined', () => {
       expect(resolveSource(async () => undefined)).resolves.toBe(undefined);
+    });
+
+    it('resolves blob', () => {
+      expect(resolveSource(async () => SOURCE_BLOB)).resolves.toBe(SOURCE_BLOB);
     });
   });
 });

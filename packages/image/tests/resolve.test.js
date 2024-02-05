@@ -172,7 +172,7 @@ describe('image resolveImage', () => {
     expect(image.height).toBeGreaterThan(0);
   });
 
-  test('Should render a blob whithout type', async () => {
+  test('Should render a blob without type', async () => {
     const blob = new Blob([localJPGImage]);
     const image = await resolveImage(blob);
 

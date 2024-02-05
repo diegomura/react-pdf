@@ -1,9 +1,13 @@
 /**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Check if two rect are equal
  *
  * @param {Object} a rect A
  * @param {Object} b rect B
- * @returns {boolean} rects are equal
+ * @returns {boolean} whether rects are equal
  *
  */
 const equals = (a, b) => {

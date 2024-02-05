@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Returns max rect Y coordinate
  *
- * @param {Object}  rect
+ * @param {Rect} [rect] rect
  * @returns {number} y coordinate
  */
 const maxY = (rect) => {

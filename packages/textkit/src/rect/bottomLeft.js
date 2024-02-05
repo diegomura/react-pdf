@@ -1,11 +1,15 @@
 import maxY from './maxY';
 
+/**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
 const ZERO = { x: 0, y: 0 };
 
 /**
  * Returns rect bottom left point
  *
- * @param {Object} rect rect
+ * @param {Rect} [rect] rect
  * @returns {{ x: number, y: number }} bottom left point
  */
 const bottomLeft = (rect) => {

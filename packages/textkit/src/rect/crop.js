@@ -1,10 +1,15 @@
 import partition from './partition';
 
 /**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Crop upper section of rect
  *
- * @param {Object}  rect
- * @returns {Object} cropped rect
+ * @param {number} height height
+ * @param {Rect} rect rect
+ * @returns {Rect} cropped rect
  */
 const crop = (height, rect) => {
   const [, result] = partition(rect, height);

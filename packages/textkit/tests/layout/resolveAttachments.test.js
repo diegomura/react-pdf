@@ -59,7 +59,7 @@ describe('resolveAttachments', () => {
             { xAdvance: 4 }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { something: 'blah' },
+          attributes: { font: {} },
         },
       ],
     };

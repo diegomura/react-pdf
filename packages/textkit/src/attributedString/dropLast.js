@@ -3,10 +3,14 @@ import { adjust, dropLast as arrayDropLast } from '@react-pdf/fns';
 import runDropLast from '../run/dropLast';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Drop last glyph
  *
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string with new glyph
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string with new glyph
  */
 const dropLast = (attributedString) => {
   const string = arrayDropLast(attributedString.string);

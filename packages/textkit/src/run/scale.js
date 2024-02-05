@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Calculate run scale
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} scale
  */
 const calculateScale = (run) => {

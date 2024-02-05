@@ -1,17 +1,24 @@
 import isWhiteSpace from '../glyph/isWhiteSpace';
 
 /**
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * @template T
  * @param {T[]} array
  * @returns {T[]} reversed array
  */
-const reverse = (array) => [...array].reverse();
+const reverse = (array) => {
+  return [...array].reverse();
+};
 
 /**
  * Get white space trailing positions
  *
- * @param {Object} run
- * @returns {Object[]} white space trailing positions
+ * @param {Run} run run
+ * @returns {Position[]} white space trailing positions
  */
 const trailingPositions = (run) => {
   const glyphs = reverse(run.glyphs || []);
@@ -24,7 +31,7 @@ const trailingPositions = (run) => {
 /**
  * Get run trailing white space offset
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} trailing white space offset
  */
 const trailingOffset = (run) => {

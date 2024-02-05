@@ -10,7 +10,7 @@ describe('run filter operator', () => {
   });
 
   test('should filter only one run', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const runs = [{ start: 0, end: 15, attributes }];
     const filtered = filter(2, 15, runs);
 

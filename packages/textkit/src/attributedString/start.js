@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get attributed string start value
  *
- * @param {Object} attributedString attributed string
+ * @param {AttributedString} attributedString attributed string
  * @returns {number} start
  */
 const start = (attributedString) => {

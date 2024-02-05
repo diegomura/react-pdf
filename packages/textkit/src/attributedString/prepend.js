@@ -4,11 +4,16 @@ import prependToRun from '../run/prepend';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Glyph} Glyph
+ */
+
+/**
  * prepend glyph into last run of attributed string
  *
- * @param {Object} glyph
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string with new glyph
+ * @param {Glyph} glyph
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string with new glyph
  */
 const prepend = (glyph, attributedString) => {
   const codePoints = glyph?.codePoints || [];

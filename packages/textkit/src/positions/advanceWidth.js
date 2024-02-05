@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').Position} Position
+ */
+
+/**
  * Return positions advance width
  *
- * @param {Object}  positions
+ * @param {Position[]} positions positions
  * @returns {number} advance width
  */
 const advanceWidth = (positions) => {

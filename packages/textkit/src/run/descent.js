@@ -1,9 +1,13 @@
 import scale from './scale';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get run descent
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} descent
  */
 const descent = (run) => {

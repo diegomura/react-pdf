@@ -3,12 +3,17 @@ import filterRuns from '../run/filter';
 import subtractRun from '../run/subtract';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Slice array of runs
  *
  * @param {number} start offset
  * @param {number} end offset
- * @param {Object[]} runs
- * @returns {Object[]} sliced runs
+ * @param {Run[]} runs
+ * @returns {Run[]} sliced runs
  */
 const sliceRuns = (start, end, runs) => {
   const sliceFirstRun = (a) => sliceRun(start - a.start, end - a.start, a);
@@ -32,8 +37,8 @@ const sliceRuns = (start, end, runs) => {
  *
  * @param {number} start offset
  * @param {number} end offset
- * @param {Object} attributedString attributed string
- * @returns {Object} attributedString
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string
  */
 const slice = (start, end, attributedString) => {
   if (attributedString.string.length === 0) return attributedString;

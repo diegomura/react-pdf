@@ -2,12 +2,12 @@ import { describe, expect, test } from 'vitest';
 
 import resolve from '../../src/indices/resolve';
 
-const singleGlyph = { codePoints: ['codePoint'] };
+const singleGlyph = { codePoints: [0] };
 
-const ligatureGlyph = { codePoints: ['codePoint', 'otherCodePoint'] };
+const ligatureGlyph = { codePoints: [0, 1] };
 
 const longerLigatureGlyph = {
-  codePoints: ['codePoint', 'otherCodePoint', 'anotherCodePoint'],
+  codePoints: [0, 1, 2],
 };
 
 describe('indices resolve operator', () => {

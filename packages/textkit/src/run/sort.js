@@ -1,10 +1,15 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Sort runs in ascending order
  *
- * @template {{ start: number, end: number }} T
- * @param {T[]} runs
- * @returns {T[]} sorted runs
+ * @param {Run[]} runs
+ * @returns {Run[]} sorted runs
  */
-const sort = (runs) => runs.sort((a, b) => a.start - b.start || a.end - b.end);
+const sort = (runs) => {
+  return runs.sort((a, b) => a.start - b.start || a.end - b.end);
+};
 
 export default sort;

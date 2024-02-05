@@ -2,11 +2,15 @@ import slice from './slice';
 import indexAtOffset from './indexAtOffset';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Slice attributed string at given offset
  *
  * @param {number} offset offset
- * @param {Object} string attributedString
- * @returns {Object} attributedString
+ * @param {AttributedString} string attributed string
+ * @returns {AttributedString} attributed string
  */
 const sliceAtOffset = (offset, string) => {
   const index = indexAtOffset(offset, string);

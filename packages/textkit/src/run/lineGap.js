@@ -1,9 +1,13 @@
 import scale from './scale';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get run lineGap
  *
- * @param {Object}  run
+ * @param {Object} run run
  * @returns {number} lineGap
  */
 const lineGap = (run) => {

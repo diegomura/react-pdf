@@ -1,9 +1,13 @@
 import positionsAdvanceWidth from '../positions/advanceWidth';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Return run advance width
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} advance width
  */
 const advanceWidth = (run) => {

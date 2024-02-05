@@ -1,9 +1,13 @@
 import { last } from '@react-pdf/fns';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get attributed string end value
  *
- * @param {Object} attributedString attributed string
+ * @param {AttributedString} attributedString attributed string
  * @returns {number} end
  */
 const end = (attributedString) => {

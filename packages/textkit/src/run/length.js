@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get run length
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} length
  */
 const length = (run) => {

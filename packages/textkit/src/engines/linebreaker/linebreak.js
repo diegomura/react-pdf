@@ -2,6 +2,9 @@
 import LinkedList from './linkedList';
 
 /**
+ * @param {Object[]} nodes
+ * @param {number[]} lines
+ * @param {Object} settings
  * @preserve Knuth and Plass line breaking algorithm in JavaScript
  *
  * Licensed under the new BSD License.

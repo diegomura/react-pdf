@@ -5,11 +5,16 @@ import appendIndices from '../indices/append';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 
 /**
+ * @typedef {import('../types.js').Glyph} Glyph
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Append glyph to run
  *
- * @param {Object}  glyph
- * @param {Object}  run
- * @returns {Object} run with glyph
+ * @param {Glyph} glyph glyph
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const appendGlyph = (glyph, run) => {
   const glyphLength = glyph.codePoints?.length || 0;
@@ -30,9 +35,9 @@ const appendGlyph = (glyph, run) => {
 /**
  * Append glyph or code point to run
  *
- * @param {Object | number} value glyph | codePoint
- * @param {Object} run
- * @returns {Object} run with glyph
+ * @param {Glyph | number | undefined} value glyph or codePoint
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const append = (value, run) => {
   if (!value) return run;

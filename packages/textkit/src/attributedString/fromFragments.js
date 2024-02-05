@@ -1,8 +1,13 @@
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Fragment} Fragment
+ */
+
+/**
  * Create attributed string from text fragments
  *
- * @param {Object[]} fragments fragments
- * @returns {Object} attributed string
+ * @param {Fragment[]} fragments fragments
+ * @returns {AttributedString} attributed string
  */
 const fromFragments = (fragments) => {
   let offset = 0;

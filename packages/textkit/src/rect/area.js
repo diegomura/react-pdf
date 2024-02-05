@@ -1,7 +1,11 @@
 /**
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Returns rect area
  *
- * @param {Object}  rect
+ * @param {Rect} [rect] rect
  * @returns {number} rect area
  */
 const area = (rect) => {

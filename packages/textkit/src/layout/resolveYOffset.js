@@ -1,8 +1,13 @@
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Resolves yOffset for run
  *
- * @param {Object}  run
- * @returns {Object} run
+ * @param {Run} run run
+ * @returns {Run} run
  */
 const resolveRunYOffset = (run) => {
   if (!run.positions) return run;
@@ -15,19 +20,17 @@ const resolveRunYOffset = (run) => {
 };
 
 /**
- * @typedef {Function} YOffsetResolver
- * @param {string} attributedString attributed string
- * @returns {string} attributed string
- */
-
-/**
  * Resolves yOffset for multiple paragraphs
- *
- * @returns {YOffsetResolver} yOffsetResolver
  */
-const resolveYOffset = () => (attributedString) => {
-  const runs = attributedString.runs.map(resolveRunYOffset);
-  return Object.assign({}, attributedString, { runs });
+const resolveYOffset = () => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString} attributed string
+   */
+  return (attributedString) => {
+    const runs = attributedString.runs.map(resolveRunYOffset);
+    return Object.assign({}, attributedString, { runs });
+  };
 };
 
 export default resolveYOffset;

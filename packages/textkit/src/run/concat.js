@@ -4,11 +4,15 @@ import length from './length';
 import normalizeIndices from '../indices/normalize';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Concats two runs into one
  *
- * @param {Object} runA first run
- * @param {Object} runB second run
- * @returns {Object} concatenated run
+ * @param {Run} runA first run
+ * @param {Run} runB second run
+ * @returns {Run} concatenated run
  */
 const concat = (runA, runB) => {
   const end = runA.end + length(runB);

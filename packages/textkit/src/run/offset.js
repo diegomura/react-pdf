@@ -1,4 +1,8 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get ligature offset by index
  *
  * Ex. ffi ligature
@@ -7,8 +11,8 @@
  *   glyphIndices:   0  1  2  2  2  3
  *   offset:         0  0  0  1  2  0
  *
- * @param {number}  index
- * @param {Object}  run
+ * @param {number} index
+ * @param {Run} run run
  * @returns {number} ligature offset
  */
 const offset = (index, run) => {

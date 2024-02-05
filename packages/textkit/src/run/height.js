@@ -3,9 +3,13 @@ import descent from './descent';
 import lineGap from './lineGap';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get run height
  *
- * @param {Object} run
+ * @param {Run} run run
  * @returns {number} height
  */
 const height = (run) => {

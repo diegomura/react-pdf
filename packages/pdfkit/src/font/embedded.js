@@ -31,7 +31,8 @@ const createEmbeddedFont = (PDFFont) =>
     }
 
     layoutRun(text, features) {
-      const run = this.font.layout(text, features);
+      // passing LTR To force fontkit to not reverse the string
+      const run = this.font.layout(text, features, undefined, undefined, 'ltr');
 
       // Normalize position values
       for (let i = 0; i < run.positions.length; i++) {

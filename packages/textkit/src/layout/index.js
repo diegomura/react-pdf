@@ -2,6 +2,7 @@ import { compose } from '@react-pdf/fns';
 
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';
+import bidiReordering from './bidiReordering';
 import generateGlyphs from './generateGlyphs';
 import resolveYOffset from './resolveYOffset';
 import preprocessRuns from './preprocessRuns';
@@ -10,6 +11,7 @@ import finalizeFragments from './finalizeFragments';
 import resolveAttachments from './resolveAttachments';
 import applyDefaultStyles from './applyDefaultStyles';
 import verticalAlignment from './verticalAlign';
+import bidiMirroring from './bidiMirroring';
 
 /**
  * @typedef {import('../types.js').AttributedString} AttributedString
@@ -36,19 +38,21 @@ const layoutEngine = (engines) => {
     const processParagraph = compose(
       resolveYOffset(),
       resolveAttachments(),
-      generateGlyphs(),
       verticalAlignment(),
       wrapWords(engines, options),
+      generateGlyphs(),
+      bidiMirroring(),
+      preprocessRuns(engines, options),
     );
 
     const processParagraphs = (paragraphs) => paragraphs.map(processParagraph);
 
     return compose(
       finalizeFragments(engines, options),
+      bidiReordering(),
       typesetter(engines, options, container),
       processParagraphs,
       splitParagraphs(),
-      preprocessRuns(engines, options),
       applyDefaultStyles(),
     )(attributedString);
   };

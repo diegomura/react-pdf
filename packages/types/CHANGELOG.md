@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.4.1
+
+### Patch Changes
+
+- [#2573](https://github.com/diegomura/react-pdf/pull/2573) [`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235) Thanks [@davbrito](https://github.com/davbrito)! - feat: add support for resolving blob images
+
 ## 2.4.0
 
 ### Minor Changes

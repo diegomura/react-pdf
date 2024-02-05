@@ -123,7 +123,7 @@ const resolveBufferImage = (buffer) => {
   return Promise.resolve();
 };
 
-const resolveBlobImage = async blob => {
+const resolveBlobImage = async (blob) => {
   const { type } = blob;
   if (!type || type === 'application/octet-stream') {
     const arrayBuffer = await blob.arrayBuffer();
@@ -146,7 +146,7 @@ const resolveBlobImage = async blob => {
   return getImage(Buffer.from(buffer), format);
 };
 
-const getImageFormat = body => {
+const getImageFormat = (body) => {
   const isPng =
     body[0] === 137 &&
     body[1] === 80 &&

@@ -1,5 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import layoutEngine, {
+  bidi,
   linebreaker,
   justification,
   scriptItemizer,
@@ -14,6 +15,7 @@ import fontSubstitution from '../text/fontSubstitution';
 const isTextInstance = (node) => node.type === P.TextInstance;
 
 const engines = {
+  bidi,
   linebreaker,
   justification,
   textDecoration,

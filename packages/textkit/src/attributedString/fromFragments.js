@@ -18,6 +18,7 @@ const fromFragments = (fragments) => {
     string += fragment.string;
 
     runs.push({
+      ...fragment,
       start: offset,
       end: offset + fragment.string.length,
       attributes: fragment.attributes || {},

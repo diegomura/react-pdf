@@ -1,4 +1,5 @@
 import layoutEngine, {
+  bidi,
   linebreaker,
   justification,
   scriptItemizer,
@@ -10,6 +11,7 @@ import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';
 
 const engines = {
+  bidi,
   linebreaker,
   justification,
   textDecoration,

@@ -2,16 +2,18 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import empty from '../../src/attributedString/empty';
 import preprocessRuns from '../../src/layout/preprocessRuns';
 import scriptItemizer, { scriptItemizerImpl } from '../internal/scriptItemizer';
+import bidi, { bidiEngineImpl } from '../internal/bidiEngine';
 import fontSubstitution, {
   fontSubstitutionImpl,
 } from '../internal/fontSubstitutionEngine';
 
-const preprocessor = preprocessRuns({ scriptItemizer, fontSubstitution });
+const preprocessor = preprocessRuns({ bidi, scriptItemizer, fontSubstitution });
 
 describe('preprocessRuns', () => {
   beforeEach(() => {
     scriptItemizerImpl.mockClear();
     fontSubstitutionImpl.mockClear();
+    bidiEngineImpl.mockClear();
   });
 
   test('should call both engines with attributed string', () => {
@@ -23,6 +25,8 @@ describe('preprocessRuns', () => {
     expect(scriptItemizerImpl.mock.calls[0][0]).toBe(param);
     expect(fontSubstitutionImpl.mock.calls).toHaveLength(1);
     expect(fontSubstitutionImpl.mock.calls[0][0]).toBe(param);
+    expect(bidiEngineImpl.mock.calls).toHaveLength(1);
+    expect(bidiEngineImpl.mock.calls[0][0]).toBe(param);
   });
 
   test('should return empty value for null param', () => {
@@ -53,17 +57,20 @@ describe('preprocessRuns', () => {
     expect(string.runs[0].attributes).toHaveProperty('color', 'red');
     expect(string.runs[0].attributes).toHaveProperty('script', 'Latin');
     expect(string.runs[0].attributes).toHaveProperty('font', 'Courier');
+    expect(string.runs[0].attributes).toHaveProperty('bidiLevel', 0);
 
     expect(string.runs[1]).toHaveProperty('start', 2);
     expect(string.runs[1]).toHaveProperty('end', 3);
     expect(string.runs[1].attributes).toHaveProperty('color', 'red');
     expect(string.runs[1].attributes).toHaveProperty('script', 'Latin');
     expect(string.runs[1].attributes).toHaveProperty('font', 'Helvetica');
+    expect(string.runs[1].attributes).toHaveProperty('bidiLevel', 0);
 
     expect(string.runs[2]).toHaveProperty('start', 3);
     expect(string.runs[2]).toHaveProperty('end', 5);
     expect(string.runs[2].attributes).toHaveProperty('color', 'red');
     expect(string.runs[2].attributes).toHaveProperty('script', 'Non-latin');
     expect(string.runs[2].attributes).toHaveProperty('font', 'Helvetica');
+    expect(string.runs[2].attributes).toHaveProperty('bidiLevel', 1);
   });
 });

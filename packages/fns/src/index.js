@@ -12,5 +12,6 @@ export { default as mapValues } from './mapValues';
 export { default as matchPercent } from './matchPercent';
 export { default as omit } from './omit';
 export { default as pick } from './pick';
+export { default as repeat } from './repeat';
 export { default as reverse } from './reverse';
 export { default as upperFirst } from './upperFirst';

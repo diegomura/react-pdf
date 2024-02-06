@@ -3,6 +3,7 @@ import babel from '@rollup/plugin-babel';
 const cjs = {
   exports: 'named',
   format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {

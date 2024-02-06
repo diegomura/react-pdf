@@ -4,8 +4,9 @@ import localResolve from 'rollup-plugin-local-resolve';
 import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {

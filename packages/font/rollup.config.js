@@ -3,8 +3,9 @@ import replace from '@rollup/plugin-replace';
 import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {

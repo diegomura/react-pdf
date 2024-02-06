@@ -11,8 +11,9 @@ import copy from 'rollup-plugin-copy';
 import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
   sourcemap: true,
 };
 

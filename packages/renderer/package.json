@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.3.6",
+  "version": "3.3.7",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -33,11 +33,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/font": "^2.4.3",
-    "@react-pdf/layout": "^3.11.0",
-    "@react-pdf/pdfkit": "^3.1.4",
+    "@react-pdf/font": "^2.4.4",
+    "@react-pdf/layout": "^3.11.1",
+    "@react-pdf/pdfkit": "^3.1.5",
     "@react-pdf/primitives": "^3.1.1",
-    "@react-pdf/render": "^3.4.2",
+    "@react-pdf/render": "^3.4.3",
     "@react-pdf/types": "^2.4.1",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",

@@ -1,5 +1,18 @@
 # @react-pdf/layout
 
+## 3.11.1
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/stylesheet@4.2.4
+  - @react-pdf/textkit@4.4.1
+  - @react-pdf/image@2.3.4
+  - @react-pdf/fns@2.2.1
+  - @react-pdf/pdfkit@3.1.5
+
 ## 3.11.0
 
 ### Minor Changes

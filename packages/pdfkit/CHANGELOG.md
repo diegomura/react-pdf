@@ -1,5 +1,12 @@
 # @react-pdf/pdfkit
 
+## 3.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/png-js@2.3.1
+
 ## 3.1.4
 
 ### Patch Changes

@@ -6,8 +6,9 @@ import nodePolyfills from 'rollup-plugin-polyfill-node';
 import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {

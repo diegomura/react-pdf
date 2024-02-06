@@ -11,6 +11,7 @@ import pkg from './package.json' assert { type: 'json' };
 const cjs = {
   exports: 'named',
   format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {

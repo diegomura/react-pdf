@@ -29,6 +29,7 @@ export const PDFViewer = ({
       ref={innerRef}
       style={style}
       className={className}
+      key={crypto.randomUUID()}
       {...props}
     />
   );

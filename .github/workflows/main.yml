@@ -49,7 +49,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [18, 20]
+        # We aim to test all maintained LTS versions of Node.js as well as the latest stable version
+        node_version: [18, 20, 21]
         react_version: [16, 17, 18]
 
     steps:

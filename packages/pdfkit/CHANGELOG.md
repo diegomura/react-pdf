@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.4
+
+### Patch Changes
+
+- [#2600](https://github.com/diegomura/react-pdf/pull/2600) [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7) Thanks [@diegomura](https://github.com/diegomura)! - feat: bidi support
+
 ## 3.1.3
 
 ### Patch Changes

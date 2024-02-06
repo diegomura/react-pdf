@@ -289,6 +289,17 @@ export default {
 
   transform(m11, m12, m21, m22, dx, dy) {
     // keep track of the current transformation matrix
+    if (
+      m11 === 1 &&
+      m12 === 0 &&
+      m21 === 0 &&
+      m22 === 1 &&
+      dx === 0 &&
+      dy === 0
+    ) {
+      // Ignore identity transforms
+      return this;
+    }
     const m = this._ctm;
     const [m0, m1, m2, m3, m4, m5] = m;
     m[0] = m0 * m11 + m2 * m12;

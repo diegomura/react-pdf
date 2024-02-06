@@ -1,5 +1,3 @@
-/* eslint-disable operator-assignment */
-
 /*
 PDF tiling pattern support. Uncolored only.
  */

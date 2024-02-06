@@ -48,8 +48,7 @@ export default {
       color.apply(stroke);
       return true;
       // see if tiling pattern, decode & apply it it
-    }
-    if (Array.isArray(color) && color[0] instanceof PDFTilingPattern) {
+    } else if (Array.isArray(color) && color[0] instanceof PDFTilingPattern) {
       color[0].apply(stroke, color[1]);
       return true;
     }
@@ -118,8 +117,7 @@ export default {
   },
 
   _doOpacity(fillOpacity, strokeOpacity) {
-    let dictionary;
-    let name;
+    let dictionary, name;
     if (fillOpacity == null && strokeOpacity == null) {
       return;
     }

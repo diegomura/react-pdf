@@ -6,7 +6,7 @@ class PNG {
     if (BROWSER) {
       throw new Error('PNG.decode not available in browser build');
     } else {
-      return fs.readFile(path, function (err, file) {
+      return fs.readFile(path, (err, file) => {
         const png = new PNG(file);
         return png.decode((pixels) => fn(pixels));
       });

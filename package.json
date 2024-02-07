@@ -78,7 +78,7 @@
     "vitest-fetch-mock": "^0.2.2"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,jsx,ts,tsx}": [
       "yarn lint",
       "prettier --write"
     ]

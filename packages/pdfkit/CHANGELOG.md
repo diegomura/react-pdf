@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.6
+
+### Patch Changes
+
+- [#2610](https://github.com/diegomura/react-pdf/pull/2610) [`dc54c13`](https://github.com/diegomura/react-pdf/commit/dc54c13625510482e93f80ed5cc07cf3a6a6d34c) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
 ## 3.1.5
 
 ### Patch Changes

@@ -1,8 +1,13 @@
+/*
+PDFPage - represents a single page in the PDF document
+By Devon Govett
+*/
+
 const DEFAULT_MARGINS = {
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0
+  top: 72,
+  left: 72,
+  bottom: 72,
+  right: 72
 };
 
 const SIZES = {
@@ -64,7 +69,20 @@ class PDFPage {
     this.size = options.size || 'letter';
     this.layout = options.layout || 'portrait';
     this.userUnit = options.userUnit || 1.0;
-    this.margins = DEFAULT_MARGINS;
+
+    // process margins
+    if (typeof options.margin === 'number') {
+      this.margins = {
+        top: options.margin,
+        left: options.margin,
+        bottom: options.margin,
+        right: options.margin
+      };
+
+      // default to 1 inch margins
+    } else {
+      this.margins = options.margins || DEFAULT_MARGINS;
+    }
 
     // calculate page dimensions
     const dimensions = Array.isArray(this.size)
@@ -89,6 +107,8 @@ class PDFPage {
       Resources: this.resources,
       UserUnit: this.userUnit
     });
+
+    this.markings = [];
   }
 
   // Lazily create these objects
@@ -130,7 +150,7 @@ class PDFPage {
   }
 
   maxY() {
-    return this.height;
+    return this.height - this.margins.bottom;
   }
 
   write(chunk) {

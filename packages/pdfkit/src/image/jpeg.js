@@ -54,7 +54,7 @@ class JPEG {
     // min and max values from the default, we invert the colors. See
     // section 4.8.4 of the spec.
     if (this.colorSpace === 'DeviceCMYK') {
-      this.obj.data.Decode = [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0];
+      this.obj.data['Decode'] = [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0];
     }
 
     this.obj.end(this.data);

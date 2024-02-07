@@ -11,7 +11,7 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "build": "lerna run build",
     "watch": "lerna run watch --parallel",
     "bootstrap": "lerna bootstrap",
@@ -55,7 +55,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
-    "husky": "^7.0.4",
+    "husky": "^9.0.0",
     "jest-image-snapshot": "^6.1.0",
     "jsdom": "^23.2.0",
     "lerna": "^8.0.2",

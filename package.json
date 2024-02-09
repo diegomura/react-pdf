@@ -8,7 +8,8 @@
   "type": "module",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "e2e/*"
   ],
   "scripts": {
     "prepare": "husky",

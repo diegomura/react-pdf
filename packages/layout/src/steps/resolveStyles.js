@@ -55,7 +55,7 @@ const resolveNodeStyles = (container) => (node) => {
  * @param {Object} page document page
  * @returns {Object} document page with resolved styles
  */
-const resolvePageStyles = (page) => {
+export const resolvePageStyles = (page) => {
   const dpi = page.props?.dpi || 72;
   const width = page.box?.width || page.style.width;
   const height = page.box?.height || page.style.height;

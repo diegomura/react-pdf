@@ -57,7 +57,7 @@ jobs:
         env:
           cache-name: yarn-cache
         with:
-          path: ~/.cache/yarn
+          path: ~/.yarn/berry/cache
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-name }}-
@@ -67,8 +67,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies and build
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
 
       - name: Check size
         run: yarn --cwd packages/renderer run size
@@ -91,7 +94,7 @@ jobs:
         env:
           cache-name: yarn-cache
         with:
-          path: ~/.cache/yarn
+          path: ~/.yarn/berry/cache
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-name }}-
@@ -101,8 +104,11 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies and build
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
 
       - name: Run tests
         run: REACT_VERSION=${{ matrix.react_version }} yarn test

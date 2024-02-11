@@ -12,14 +12,13 @@
     "e2e/*"
   ],
   "scripts": {
-    "prepare": "husky",
-    "build": "lerna run build",
-    "watch": "lerna run watch --parallel",
-    "bootstrap": "lerna bootstrap",
-    "prepublish": "lerna run build",
+    "postinstall": "husky && yarn build",
+    "build": "yarn workspaces foreach --all --topological run build",
+    "watch": "yarn workspaces foreach --all --parallel run watch",
+    "prepack": "yarn build",
     "lint": "eslint packages",
     "test": "vitest",
-    "dev": "lerna run dev --scope @react-pdf/examples",
+    "dev": "yarn workspace @react-pdf/examples run dev",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"
@@ -59,7 +58,6 @@
     "husky": "^9.0.0",
     "jest-image-snapshot": "^6.1.0",
     "jsdom": "^23.2.0",
-    "lerna": "^8.0.2",
     "lint-staged": "^10.5.4",
     "pdfjs-dist": "3.2.146",
     "prettier": "^3.2.0",
@@ -75,6 +73,7 @@
     "rollup-plugin-ignore": "^1.0.10",
     "rollup-plugin-local-resolve": "^1.0.7",
     "rollup-plugin-polyfill-node": "^0.13.0",
+    "vite": "^5.0.0",
     "vitest": "^1.2.0",
     "vitest-fetch-mock": "^0.2.2"
   },
@@ -89,5 +88,5 @@
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@4.1.0"
 }

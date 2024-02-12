@@ -5943,10 +5943,10 @@ jake@^10.8.5:
     filelist "^1.0.4"
     minimatch "^3.1.2"
 
-jay-peg@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/jay-peg/-/jay-peg-1.0.0.tgz#20c099750af38e6a53b03f9ccee6f611d16c282c"
-  integrity sha512-rCKRgTXsU/ZhKpmrKSXEodSoVG0EQjpBhxS+jYB8AnI31o0uKLsqR4LNR3seo1+vMARsa0ceXqWe8iq4GR6pIw==
+jay-peg@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jay-peg/-/jay-peg-1.0.1.tgz#f09b8615886cb1ce61c364c16e203f566eeaa779"
+  integrity sha512-zBfjkGbuuNXk8JW+rEePpPEbRRjupS8q+5yPak7kjy3e2GvvNwsLle9okEFvfGyZA6HvtSSiYrVd1/jgnYebaQ==
   dependencies:
     restructure "^3.0.0"
 

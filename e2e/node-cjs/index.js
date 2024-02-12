@@ -1,8 +1,11 @@
 const fs = require('node:fs/promises');
+const os = require('node:os');
 const assert = require('node:assert');
 const { test } = require('node:test');
 const { jsx } = require('react/jsx-runtime');
 const { Document, Page, Text, renderToBuffer } = require('@react-pdf/renderer');
+
+const platform = os.platform();
 
 const MyDocument = () =>
   jsx(Document, {
@@ -28,7 +31,7 @@ function removeMovingParts(buffer) {
 
 test('rendering a PDF', async () => {
   const bufferPromise = renderToBuffer(jsx(MyDocument, {}));
-  const referenceBufferPromise = fs.readFile('../reference.pdf');
+  const referenceBufferPromise = fs.readFile(`../reference-${platform}.pdf`);
 
   const [buffer, referenceBuffer] = await Promise.all([
     bufferPromise,

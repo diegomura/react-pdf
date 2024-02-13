@@ -1,24 +1,37 @@
 type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-type SourceURL = string
+type SourceURL = string;
 
-type SourceBuffer = Buffer
+type SourceBuffer = Buffer;
 
-type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' }
+type SourceBlob = Blob;
 
-type SourceURLObject =  { uri: string; method: HTTPMethod; body: any; headers: any; credentials?: 'omit' | 'same-origin' | 'include' }
+type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' };
+
+type SourceURLObject = {
+  uri: string;
+  method: HTTPMethod;
+  body: any;
+  headers: any;
+  credentials?: 'omit' | 'same-origin' | 'include';
+};
 
 type Source =
   | SourceURL
   | SourceBuffer
+  | SourceBlob
   | SourceDataBuffer
   | SourceURLObject
-  | undefined
+  | undefined;
 
-type SourceFactory = () => Source
+type SourceFactory = () => Source;
 
-type SourceAsync = Promise<Source>
+type SourceAsync = Promise<Source>;
 
-type SourceAsyncFactory = () => Promise<Source>
+type SourceAsyncFactory = () => Promise<Source>;
 
-export type SourceObject = Source | SourceFactory | SourceAsync | SourceAsyncFactory
+export type SourceObject =
+  | Source
+  | SourceFactory
+  | SourceAsync
+  | SourceAsyncFactory;

@@ -9,7 +9,7 @@ class PDFStructureContent {
   }
 
   push(structContent) {
-    structContent.refs.forEach(ref => this.refs.push(ref));
+    structContent.refs.forEach((ref) => this.refs.push(ref));
   }
 }
 

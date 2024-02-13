@@ -1,5 +1,24 @@
 # @react-pdf/render
 
+## 3.4.3
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/textkit@4.4.1
+  - @react-pdf/fns@2.2.1
+
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235), [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7)]:
+  - @react-pdf/types@2.4.1
+  - @react-pdf/textkit@4.4.0
+  - @react-pdf/fns@2.2.0
+
 ## 3.4.1
 
 ### Patch Changes

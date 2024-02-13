@@ -91,7 +91,7 @@ const debugPadding = (ctx, node) => {
     .fill();
 };
 
-const getMargin = box => {
+const getMargin = (box) => {
   const marginLeft = box.marginLeft === 'auto' ? 0 : box.marginLeft;
   const marginTop = box.marginTop === 'auto' ? 0 : box.marginTop;
   const marginRight = box.marginRight === 'auto' ? 0 : box.marginRight;

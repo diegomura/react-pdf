@@ -1,10 +1,15 @@
 import isWhiteSpace from '../glyph/isWhiteSpace';
 
 /**
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get white space leading positions
  *
- * @param {Object} run
- * @returns {Object[]} white space leading positions
+ * @param {Run} run run
+ * @returns {Position[]} white space leading positions
  */
 const leadingPositions = (run) => {
   const glyphs = run.glyphs || [];
@@ -17,7 +22,7 @@ const leadingPositions = (run) => {
 /**
  * Get run leading white space offset
  *
- * @param {Object}  run
+ * @param {Run} run run
  * @returns {number} leading white space offset
  */
 const leadingOffset = (run) => {

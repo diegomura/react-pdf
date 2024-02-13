@@ -1,19 +1,20 @@
 import babel from '@rollup/plugin-babel';
 import localResolve from 'rollup-plugin-local-resolve';
 
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const babelConfig = () => ({
   babelrc: true,

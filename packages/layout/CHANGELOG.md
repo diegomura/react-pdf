@@ -1,5 +1,51 @@
 # @react-pdf/layout
 
+## 3.11.2
+
+### Patch Changes
+
+- Updated dependencies [[`dc54c13`](https://github.com/diegomura/react-pdf/commit/dc54c13625510482e93f80ed5cc07cf3a6a6d34c)]:
+  - @react-pdf/pdfkit@3.1.6
+
+## 3.11.1
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/stylesheet@4.2.4
+  - @react-pdf/textkit@4.4.1
+  - @react-pdf/image@2.3.4
+  - @react-pdf/fns@2.2.1
+  - @react-pdf/pdfkit@3.1.5
+
+## 3.11.0
+
+### Minor Changes
+
+- [#2600](https://github.com/diegomura/react-pdf/pull/2600) [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7) Thanks [@diegomura](https://github.com/diegomura)! - feat: bidi support
+
+### Patch Changes
+
+- [#2573](https://github.com/diegomura/react-pdf/pull/2573) [`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235) Thanks [@davbrito](https://github.com/davbrito)! - feat: add support for resolving blob images
+
+- Updated dependencies [[`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235), [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7)]:
+  - @react-pdf/image@2.3.3
+  - @react-pdf/types@2.4.1
+  - @react-pdf/textkit@4.4.0
+  - @react-pdf/fns@2.2.0
+  - @react-pdf/pdfkit@3.1.4
+  - @react-pdf/stylesheet@4.2.3
+
+## 3.10.4
+
+### Patch Changes
+
+- Updated dependencies [[`0590324`](https://github.com/diegomura/react-pdf/commit/0590324d7a6d75c0a49520b3f99cfb6594239390)]:
+  - @react-pdf/image@2.3.2
+  - @react-pdf/pdfkit@3.1.3
+
 ## 3.10.3
 
 ### Patch Changes

@@ -4,7 +4,7 @@ import * as Yoga from 'yoga-layout';
 
 import getMargin from '../../src/node/getMargin';
 
-const getComputedMargin = value => {
+const getComputedMargin = (value) => {
   if (value === Yoga.Edge.Top) return 1;
   if (value === Yoga.Edge.Right) return 2;
   if (value === Yoga.Edge.Bottom) return 3;

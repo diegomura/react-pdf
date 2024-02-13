@@ -15,6 +15,35 @@ env:
   NODE_VERSION: 20
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies and build
+        run: yarn --frozen-lockfile
+
+      - name: Check size
+        run: yarn lint
+
   size:
     name: Check size
     runs-on: ubuntu-latest
@@ -45,11 +74,12 @@ jobs:
         run: yarn --cwd packages/renderer run size
 
   test:
-    name: Run tests (Node.js ${{ matrix.node_version }}; React ${{ matrix.react_version }})
+    name: Run unit tests (Node.js ${{ matrix.node_version }}; React ${{ matrix.react_version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [18, 20]
+        # We aim to test all maintained LTS versions of Node.js as well as the latest stable version
+        node_version: [18, 20, 21]
         react_version: [16, 17, 18]
 
     steps:
@@ -76,3 +106,36 @@ jobs:
 
       - name: Run tests
         run: REACT_VERSION=${{ matrix.react_version }} yarn test
+
+  e2e-node:
+    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cjs_or_esm: [cjs, esm]
+        node_version: [18, 20, 21]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v4
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Install dependencies and build
+        run: yarn --frozen-lockfile
+
+      - name: Run E2E tests
+        run: yarn --cwd e2e/node-${{ matrix.cjs_or_esm }} run start

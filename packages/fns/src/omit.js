@@ -5,7 +5,7 @@ const omit = (keys, object) => {
 
   const copy = Object.assign({}, object);
 
-  _keys.forEach(key => {
+  _keys.forEach((key) => {
     delete copy[key];
   });
 

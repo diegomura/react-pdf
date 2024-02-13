@@ -5,6 +5,7 @@
 First, thank you for considering contributing to react-pdf!
 
 We welcome any type of contribution, not only code. You can help with
+
 - **QA**: file bug reports, the more details you can give the better (e.g. screenshots with the console open)
 - **Marketing**: writing blog posts, howto's, printing stickers, ...
 - **Community**: presenting the project at meetups, organizing a dedicated meetup for the local community, ...
@@ -13,7 +14,7 @@ We welcome any type of contribution, not only code. You can help with
 
 ## Your First Contribution
 
-Working on your first Pull Request? You can learn how from this *free* series, [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
+Working on your first Pull Request? You can learn how from this _free_ series, [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/series/how-to-contribute-to-an-open-source-project-on-github).
 
 ## Set up your development environment
 
@@ -100,7 +101,6 @@ yarn link react-dom
 </pre>
 </details>
 
-
 ## Submitting code
 
 Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it. The pull request should also contain tests.
@@ -127,12 +127,10 @@ You can also reach us at hello@react-pdf.opencollective.com.
 Thank you to all the people who have already contributed to react-pdf!
 <a href="/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
-
 ### Backers
 
 Thank you to all our backers! [[Become a backer](https://opencollective.com/react-pdf#backer)]
 
 <a href="https://opencollective.com/react-pdf#backers" target="_blank"><img src="https://opencollective.com/react-pdf/backers.svg?width=890"></a>
-
 
 <!-- This `CONTRIBUTING.md` is based on @nayafia's template https://github.com/nayafia/contributing-template -->

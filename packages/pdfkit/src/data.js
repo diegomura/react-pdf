@@ -187,7 +187,7 @@ class Data {
   }
 
   write(bytes) {
-    return bytes.map(byte => this.writeByte(byte));
+    return bytes.map((byte) => this.writeByte(byte));
   }
 }
 

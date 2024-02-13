@@ -1,8 +1,12 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get string index at offset
  *
- * @param {number} offset
- * @param {Object} run
+ * @param {number} offset offset
+ * @param {Run} run run
  * @returns {number} string index at offset N
  */
 const indexAtOffset = (offset, run) => {

@@ -12,9 +12,7 @@ export default {
   _addInfo() {
     this.appendXML(`
         <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
-            <xmp:CreateDate>${this.info.CreationDate.toISOString().split(
-              '.'
-            )[0] + 'Z'}</xmp:CreateDate>
+            <xmp:CreateDate>${this.info.CreationDate.toISOString().split('.')[0] + 'Z'}</xmp:CreateDate>
             <xmp:CreatorTool>${this.info.Creator}</xmp:CreatorTool>
         </rdf:Description>
         `);
@@ -88,7 +86,7 @@ export default {
         Metadata was introduced in PDF 1.4, so adding it to 1.3
         will likely only take up more space.
         */
-    if (this.version !== 1.3) {
+    if (this.version != 1.3) {
       this.metadataRef = this.ref({
         length: this.metadata.getLength(),
         Type: 'Metadata',

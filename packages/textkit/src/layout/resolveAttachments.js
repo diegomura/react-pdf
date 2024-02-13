@@ -1,6 +1,10 @@
+/**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
 const ATTACHMENT_CODE = 0xfffc; // 65532
 
-const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
+const isReplaceGlyph = (glyph) => glyph.codePoints.includes(ATTACHMENT_CODE);
 
 /**
  * Resolve attachments of run
@@ -8,7 +12,7 @@ const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
  * @param {Object}  run
  * @returns {Object} run
  */
-const resolveRunAttachments = run => {
+const resolveRunAttachments = (run) => {
   if (!run.positions) return run;
 
   const glyphs = run.glyphs || [];
@@ -28,19 +32,17 @@ const resolveRunAttachments = run => {
 };
 
 /**
- * @typedef {Function} AttachmentResolver
- * @param {string} attributedString attributed string
- * @returns {string} attributed string
- */
-
-/**
  * Resolve attachments for multiple paragraphs
- *
- * @returns {AttachmentResolver} attachmentResolver
  */
-const resolveAttachments = () => attributedString => {
-  const runs = attributedString.runs.map(resolveRunAttachments);
-  return Object.assign({}, attributedString, { runs });
+const resolveAttachments = () => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString} attributed string
+   */
+  return (attributedString) => {
+    const runs = attributedString.runs.map(resolveRunAttachments);
+    return Object.assign({}, attributedString, { runs });
+  };
 };
 
 export default resolveAttachments;

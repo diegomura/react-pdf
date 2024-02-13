@@ -7,20 +7,13 @@ const LinkExample = () => (
       <Link src="https://google.com">Some text link</Link>
 
       <Link src="https://google.com">
-        Some
-        {' '}
-        <Text style={{ backgroundColor: 'red' }}>stylized</Text>
-        {' '}
-        text link
+        Some <Text style={{ backgroundColor: 'red' }}>stylized</Text> text link
       </Link>
 
       <Link src="https://google.com">
         <Text>
-          Some
-          {' '}
-          <Text style={{ backgroundColor: 'red' }}>stylized</Text>
-          {' '}
-          text link
+          Some <Text style={{ backgroundColor: 'red' }}>stylized</Text> text
+          link
         </Text>
       </Link>
 

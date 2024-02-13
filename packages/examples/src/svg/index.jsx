@@ -1,9 +1,5 @@
 import React from 'react';
-import ReactPDF, {
-  Document,
-  Page,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import ReactPDF, { Document, Page, StyleSheet } from '@react-pdf/renderer';
 
 import Svg0 from './svg';
 import Svg1 from './Svg1';

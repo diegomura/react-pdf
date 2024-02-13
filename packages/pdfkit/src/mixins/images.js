@@ -29,7 +29,16 @@ export default {
   },
 
   image(src, x, y, options = {}) {
-    let bh, bp, bw, image, ip, left, left1, rotateAngle, originX, originY;
+    let bh;
+    let bp;
+    let bw;
+    let image;
+    let ip;
+    let left;
+    let left1;
+    let rotateAngle;
+    let originX;
+    let originY;
     if (typeof x === 'object') {
       options = x;
       x = null;

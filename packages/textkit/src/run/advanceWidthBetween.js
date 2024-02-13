@@ -2,12 +2,16 @@ import glyphIndexAt from './glyphIndexAt';
 import positionsAdvanceWidth from '../positions/advanceWidth';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Advance width between two string indices
  *
- * @param {number}  start glyph index
- * @param {number}  end glyph index
- * @param {Object}  run
- * @returns {Object} advanced width run
+ * @param {number} start glyph index
+ * @param {number} end glyph index
+ * @param {Run} run run
+ * @returns {number} advanced width run
  */
 const advanceWidthBetween = (start, end, run) => {
   const runStart = run.start || 0;

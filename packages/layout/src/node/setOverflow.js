@@ -18,7 +18,7 @@ const OVERFLOW = {
  * @param {string} value overflow value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setOverflow = value => node => {
+const setOverflow = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

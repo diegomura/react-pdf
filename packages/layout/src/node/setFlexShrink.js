@@ -12,7 +12,7 @@ import setYogaValue from './setYogaValue';
  * @param {number} value flex shrink value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setFlexShrink = value => node => {
+const setFlexShrink = (value) => (node) => {
   return setYogaValue('flexShrink')(value || 1)(node);
 };
 

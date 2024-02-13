@@ -18,19 +18,19 @@ describe('run concat operator', () => {
     const runA = {
       start: 0,
       end: 3,
-      attributes: { hey: 'ho' },
+      attributes: { font: {} },
     };
     const runB = {
       start: 3,
       end: 5,
-      attributes: { lets: 'go' },
+      attributes: { fontSize: 16 },
     };
 
     const result = concat(runA, runB);
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
-    expect(result).toHaveProperty('attributes', { hey: 'ho', lets: 'go' });
+    expect(result).toHaveProperty('attributes', { font: {}, fontSize: 16 });
   });
 
   test('should concat runs glyphs', () => {

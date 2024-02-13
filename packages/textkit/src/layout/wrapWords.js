@@ -1,6 +1,10 @@
 import fromFragments from '../attributedString/fromFragments';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Default word hyphenation engine used when no one provided.
  * Does not perform word hyphenation at all
  *
@@ -10,21 +14,17 @@ import fromFragments from '../attributedString/fromFragments';
 const defaultHyphenationEngine = (word) => [word];
 
 /**
- * @typedef {Function} HyphenationCallback
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string including syllables
- */
-
-/**
  * Wrap words of attribute string
  *
  * @param {Object} engines layout engines
  * @param {Object} options layout options
- * @returns {HyphenationCallback} hyphenation callback
  */
-const wrapWords =
-  (engines = {}, options = {}) =>
-  (attributedString) => {
+const wrapWords = (engines = {}, options = {}) => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString} attributed string including syllables
+   */
+  return (attributedString) => {
     const syllables = [];
     const fragments = [];
 
@@ -49,10 +49,11 @@ const wrapWords =
         string += parts.join('');
       }
 
-      fragments.push({ string, attributes: run.attributes });
+      fragments.push({ ...run, string });
     }
 
     return { ...fromFragments(fragments), syllables };
   };
+};
 
 export default wrapWords;

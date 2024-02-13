@@ -1,5 +1,17 @@
 # @react-pdf/fns
 
+## 2.2.1
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+## 2.2.0
+
+### Minor Changes
+
+- [#2600](https://github.com/diegomura/react-pdf/pull/2600) [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7) Thanks [@diegomura](https://github.com/diegomura)! - feat: bidi support
+
 ## 2.1.0
 
 ### Minor Changes

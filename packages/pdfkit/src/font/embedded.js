@@ -1,12 +1,12 @@
-const toHex = function(...codePoints) {
-  const codes = Array.from(codePoints).map(code =>
+const toHex = function (...codePoints) {
+  const codes = Array.from(codePoints).map((code) =>
     `0000${code.toString(16)}`.slice(-4)
   );
 
   return codes.join('');
 };
 
-const createEmbeddedFont = PDFFont =>
+const createEmbeddedFont = (PDFFont) =>
   class EmbeddedFont extends PDFFont {
     constructor(document, font, id) {
       super();
@@ -31,7 +31,8 @@ const createEmbeddedFont = PDFFont =>
     }
 
     layoutRun(text, features) {
-      const run = this.font.layout(text, features);
+      // passing LTR To force fontkit to not reverse the string
+      const run = this.font.layout(text, features, undefined, undefined, 'ltr');
 
       // Normalize position values
       for (let i = 0; i < run.positions.length; i++) {

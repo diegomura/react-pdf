@@ -16,6 +16,7 @@ import shouldNodeBreak from '../node/shouldBreak';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
+import { resolvePageStyles } from './resolveStyles';
 
 const isText = (node) => node.type === P.Text;
 
@@ -33,8 +34,9 @@ const isDynamic = (node) => !isNil(node.props?.render);
 
 const relayoutPage = compose(
   resolveTextLayout,
-  resolveInheritance,
   resolvePageDimensions,
+  resolveInheritance,
+  resolvePageStyles,
 );
 
 const warnUnavailableSpace = (node) => {

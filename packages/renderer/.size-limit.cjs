@@ -5,10 +5,10 @@ module.exports = [
     path: 'lib/react-pdf.browser.js',
     limit: '550 kB',
 
-    modifyWebpackConfig: config => {
+    modifyWebpackConfig: (config) => {
       config.resolve = {
         fallback: {
-          "fs": false
+          fs: false,
         },
         alias: {
           // TODO: ignore iconv-lite on default because it contains exotic encodings like `win1251`, that isn't used in pdf

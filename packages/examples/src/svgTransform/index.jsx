@@ -1,5 +1,5 @@
-import React from 'react'
-import { Document, Page, Svg, G, Rect } from '@react-pdf/renderer'
+import React from 'react';
+import { Document, Page, Svg, G, Rect } from '@react-pdf/renderer';
 
 const App = () => {
   return (
@@ -12,7 +12,7 @@ const App = () => {
         </Svg>
       </Page>
     </Document>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -20,7 +20,7 @@ import { isNil, upperFirst, matchPercent } from '@react-pdf/fns';
  * @param {number} [edge] edge
  * @returns {YogaValueSetter} node instance wrapper
  */
-const setYogaValue = (attr, edge) => value => node => {
+const setYogaValue = (attr, edge) => (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

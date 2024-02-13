@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.3.4",
+  "version": "3.3.8",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -33,12 +33,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/font": "^2.4.2",
-    "@react-pdf/layout": "^3.10.3",
-    "@react-pdf/pdfkit": "^3.1.2",
+    "@react-pdf/font": "^2.4.4",
+    "@react-pdf/layout": "^3.11.2",
+    "@react-pdf/pdfkit": "^3.1.6",
     "@react-pdf/primitives": "^3.1.1",
-    "@react-pdf/render": "^3.4.1",
-    "@react-pdf/types": "^2.4.0",
+    "@react-pdf/render": "^3.4.3",
+    "@react-pdf/types": "^2.4.1",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",
     "prop-types": "^15.6.2",
@@ -50,9 +50,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "yarn run lint",
-      "prettier --write",
-      "git add"
+      "yarn lint",
+      "prettier --write"
     ]
   },
   "files": [
@@ -63,11 +62,6 @@
     "type": "opencollective",
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "git add . && lint-staged"
-    }
   },
   "devDependencies": {
     "@size-limit/preset-big-lib": "^11.0.1",

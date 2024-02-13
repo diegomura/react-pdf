@@ -1,10 +1,10 @@
 @font-face {
   font-family: Cairo;
-  src: url("../public/Cairo-Regular.ttf");
+  src: url('../public/Cairo-Regular.ttf');
 }
 @font-face {
   font-family: Rubik;
-  src: url("../public/Rubik-Regular.ttf");
+  src: url('../public/Rubik-Regular.ttf');
 }
 
 body {

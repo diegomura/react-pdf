@@ -1,19 +1,20 @@
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   exports: 'named',
   format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const configBase = {
   input: 'src/index.js',

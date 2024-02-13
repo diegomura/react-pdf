@@ -12,7 +12,7 @@ import { isNil } from '@react-pdf/fns';
  * @param {number} value ratio
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setAspectRatio = value => node => {
+const setAspectRatio = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

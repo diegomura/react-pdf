@@ -67,7 +67,7 @@ export default {
       length = [length, options.space || length];
     }
 
-    const valid = length.every(x => Number.isFinite(x) && x > 0);
+    const valid = length.every((x) => Number.isFinite(x) && x > 0);
     if (!valid) {
       throw new Error(
         `dash(${JSON.stringify(originalLength)}, ${JSON.stringify(
@@ -289,6 +289,17 @@ export default {
 
   transform(m11, m12, m21, m22, dx, dy) {
     // keep track of the current transformation matrix
+    if (
+      m11 === 1 &&
+      m12 === 0 &&
+      m21 === 0 &&
+      m22 === 1 &&
+      dx === 0 &&
+      dy === 0
+    ) {
+      // Ignore identity transforms
+      return this;
+    }
     const m = this._ctm;
     const [m0, m1, m2, m3, m4, m5] = m;
     m[0] = m0 * m11 + m2 * m12;
@@ -298,7 +309,7 @@ export default {
     m[4] = m0 * dx + m2 * dy + m4;
     m[5] = m1 * dx + m3 * dy + m5;
 
-    const values = [m11, m12, m21, m22, dx, dy].map(v => number(v)).join(' ');
+    const values = [m11, m12, m21, m22, dx, dy].map((v) => number(v)).join(' ');
     return this.addContent(`${values} cm`);
   },
 

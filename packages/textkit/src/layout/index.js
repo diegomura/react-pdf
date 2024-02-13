@@ -2,6 +2,7 @@ import { compose } from '@react-pdf/fns';
 
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';
+import bidiReordering from './bidiReordering';
 import generateGlyphs from './generateGlyphs';
 import resolveYOffset from './resolveYOffset';
 import preprocessRuns from './preprocessRuns';
@@ -10,13 +11,11 @@ import finalizeFragments from './finalizeFragments';
 import resolveAttachments from './resolveAttachments';
 import applyDefaultStyles from './applyDefaultStyles';
 import verticalAlignment from './verticalAlign';
+import bidiMirroring from './bidiMirroring';
 
 /**
- * @typedef {Function} LayoutEngine
- * @param {Object} attributedString attributed string
- * @param {Object} container container rect
- * @param {Object} options layout options
- * @returns {Object[]} paragraph blocks
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Rect} Rect
  */
 
 /**
@@ -27,27 +26,36 @@ import verticalAlignment from './verticalAlign';
  * layout behavior.
  *
  * @param {Object} engines engines
- * @returns {LayoutEngine} layout engine
  */
-const layoutEngine = engines => (attributedString, container, options = {}) => {
-  const processParagraph = compose(
-    resolveYOffset(),
-    resolveAttachments(),
-    generateGlyphs(),
-    verticalAlignment(),
-    wrapWords(engines, options),
-  );
+const layoutEngine = (engines) => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @param {Rect} container container rect
+   * @param {Object} options layout options
+   * @returns {Object[]} paragraph blocks
+   */
+  return (attributedString, container, options = {}) => {
+    const processParagraph = compose(
+      resolveYOffset(),
+      resolveAttachments(),
+      verticalAlignment(),
+      wrapWords(engines, options),
+      generateGlyphs(),
+      bidiMirroring(),
+      preprocessRuns(engines, options),
+    );
 
-  const processParagraphs = paragraphs => paragraphs.map(processParagraph);
+    const processParagraphs = (paragraphs) => paragraphs.map(processParagraph);
 
-  return compose(
-    finalizeFragments(engines, options),
-    typesetter(engines, options, container),
-    processParagraphs,
-    splitParagraphs(),
-    preprocessRuns(engines, options),
-    applyDefaultStyles(),
-  )(attributedString);
+    return compose(
+      finalizeFragments(engines, options),
+      bidiReordering(),
+      typesetter(engines, options, container),
+      processParagraphs,
+      splitParagraphs(),
+      applyDefaultStyles(),
+    )(attributedString);
+  };
 };
 
 export default layoutEngine;

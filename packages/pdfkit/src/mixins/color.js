@@ -32,10 +32,10 @@ export default {
     if (Array.isArray(color)) {
       // RGB
       if (color.length === 3) {
-        color = color.map(part => part / 255);
+        color = color.map((part) => part / 255);
         // CMYK
       } else if (color.length === 4) {
-        color = color.map(part => part / 100);
+        color = color.map((part) => part / 100);
       }
       return color;
     }

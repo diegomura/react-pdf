@@ -21,7 +21,7 @@ const JUSTIFY_CONTENT = {
  * @param {string} value justify content value
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setJustifyContent = value => node => {
+const setJustifyContent = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

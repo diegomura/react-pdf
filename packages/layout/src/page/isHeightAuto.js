@@ -6,6 +6,6 @@ import { isNil } from '@react-pdf/fns';
  * @param {Object} page
  * @returns {boolean} is page height auto
  */
-const isHeightAuto = page => isNil(page.box?.height);
+const isHeightAuto = (page) => isNil(page.box?.height);
 
 export default isHeightAuto;

@@ -8,7 +8,7 @@ const render = (ctx, doc) => {
 
   addMetadata(ctx, doc);
 
-  pages.forEach(page => renderNode(ctx, page, options));
+  pages.forEach((page) => renderNode(ctx, page, options));
 
   addBookmarks(ctx, doc);
 

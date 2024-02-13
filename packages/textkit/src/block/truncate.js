@@ -12,7 +12,7 @@ const ELLIPSIS_STRING = String.fromCharCode(ELLIPSIS_UNICODE);
  * @param {Object} font
  * @returns {Object} ellipsis codepoint
  */
-const getEllipsisCodePoint = font => {
+const getEllipsisCodePoint = (font) => {
   if (!font.encode) return ELLIPSIS_UNICODE;
 
   const [codePoints] = font.encode(ELLIPSIS_STRING);
@@ -26,7 +26,7 @@ const getEllipsisCodePoint = font => {
  * @param {Object} block paragraph block
  * @returns {Object} sliced paragraph block
  */
-const truncate = block => {
+const truncate = (block) => {
   const runs = last(block)?.runs || [];
   const font = last(runs)?.attributes?.font;
 

@@ -1,5 +1,10 @@
 /* eslint-disable no-lonely-if */
-let cx, cy, px, py, sx, sy;
+let cx;
+let cy;
+let px;
+let py;
+let sx;
+let sy;
 
 cx = cy = px = py = sx = sy = 0;
 
@@ -42,27 +47,27 @@ const argsCountPerCommand = {
 /**
  * @type {(c: string) => c is PathDataCommand}
  */
-const isCommand = c => {
+const isCommand = (c) => {
   return c in argsCountPerCommand;
 };
 
 /**
  * @type {(c: string) => boolean}
  */
-const isWsp = c => {
+const isWsp = (c) => {
   const codePoint = c.codePointAt(0);
   return (
-    (codePoint === 0x20 ||
+    codePoint === 0x20 ||
     codePoint === 0x9 ||
     codePoint === 0xd ||
-    codePoint === 0xa)
+    codePoint === 0xa
   );
 };
 
 /**
  * @type {(c: string) => boolean}
  */
-const isDigit = c => {
+const isDigit = (c) => {
   const codePoint = c.codePointAt(0);
   if (codePoint == null) {
     return false;
@@ -135,16 +140,15 @@ const readNumber = (string, cursor) => {
   const number = Number.parseFloat(value);
   if (Number.isNaN(number)) {
     return [cursor, null];
-  } else {
-    // step back to delegate iteration to parent loop
-    return [i - 1, number];
   }
+  // step back to delegate iteration to parent loop
+  return [i - 1, number];
 };
 
 /**
  * @type {(string: string) => Array<PathDataItem>}
  */
-const parsePathData = string => {
+const parsePathData = (string) => {
   /**
    * @type {Array<PathDataItem>}
    */
@@ -248,7 +252,7 @@ const parsePathData = string => {
   return pathData;
 };
 
-const apply = function(commands, doc) {
+const apply = function (commands, doc) {
   // current point, control point, and subpath starting point
   cx = cy = px = py = sx = sy = 0;
 
@@ -447,7 +451,7 @@ const runners = {
   }
 };
 
-const solveArc = function(doc, x, y, coords) {
+const solveArc = function (doc, x, y, coords) {
   const [rx, ry, rot, large, sweep, ex, ey] = coords;
   const segs = arcToSegments(ex, ey, rx, ry, large, sweep, rot, x, y);
 
@@ -458,7 +462,7 @@ const solveArc = function(doc, x, y, coords) {
 };
 
 // from Inkscape svgtopdf, thanks!
-const arcToSegments = function(x, y, rx, ry, large, sweep, rotateX, ox, oy) {
+const arcToSegments = function (x, y, rx, ry, large, sweep, rotateX, ox, oy) {
   const th = rotateX * (Math.PI / 180);
   const sin_th = Math.sin(th);
   const cos_th = Math.cos(th);
@@ -517,7 +521,7 @@ const arcToSegments = function(x, y, rx, ry, large, sweep, rotateX, ox, oy) {
   return result;
 };
 
-const segmentToBezier = function(cx, cy, th0, th1, rx, ry, sin_th, cos_th) {
+const segmentToBezier = function (cx, cy, th0, th1, rx, ry, sin_th, cos_th) {
   const a00 = cos_th * rx;
   const a01 = -sin_th * ry;
   const a10 = sin_th * rx;

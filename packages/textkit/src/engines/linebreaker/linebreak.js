@@ -2,6 +2,9 @@
 import LinkedList from './linkedList';
 
 /**
+ * @param {Object[]} nodes
+ * @param {number[]} lines
+ * @param {Object} settings
  * @preserve Knuth and Plass line breaking algorithm in JavaScript
  *
  * Licensed under the new BSD License.
@@ -320,7 +323,7 @@ const linebreak = (nodes, lines, settings) => {
 
   if (activeNodes.size() !== 0) {
     // Find the best active node (the one with the least total demerits.)
-    activeNodes.forEach(node => {
+    activeNodes.forEach((node) => {
       if (node.data.demerits < tmp.data.demerits) {
         tmp = node;
       }

@@ -1,8 +1,8 @@
 import * as P from '@react-pdf/primitives';
 
-const isDefs = node => node.type === P.Defs;
+const isDefs = (node) => node.type === P.Defs;
 
-const getDefs = node => {
+const getDefs = (node) => {
   const children = node.children || [];
   const defs = children.find(isDefs) || {};
   const values = defs.children || [];

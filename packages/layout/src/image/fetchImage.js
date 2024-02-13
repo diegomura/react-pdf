@@ -11,7 +11,7 @@ import resolveSource from './resolveSource';
  *
  * @param {Object} node
  */
-const fetchImage = async node => {
+const fetchImage = async (node) => {
   const src = getSource(node);
   const { cache } = node.props;
 

@@ -2,24 +2,26 @@ import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import commonjs from '@rollup/plugin-commonjs';
-import pkg from './package.json';
+
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   exports: 'named',
-  format: 'cjs'
+  format: 'cjs',
+  interop: 'compat'
 };
 
 const esm = {
   format: 'es'
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
@@ -31,7 +33,7 @@ const babelConfig = () => ({
 
 const getExternal = ({ browser }) => [
   ...Object.keys(pkg.dependencies).filter(
-    dep =>
+    (dep) =>
       !browser ||
       !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
   ),

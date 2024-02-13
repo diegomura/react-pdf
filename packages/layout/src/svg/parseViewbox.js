@@ -1,4 +1,4 @@
-const parseViewbox = value => {
+const parseViewbox = (value) => {
   if (!value) return null;
   const values = value.split(/[,\s]+/).map(parseFloat);
   if (values.length !== 4) return null;

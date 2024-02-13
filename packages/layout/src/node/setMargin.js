@@ -50,7 +50,7 @@ export const setMarginLeft = setYogaValue('margin', Yoga.Edge.Left);
  * @param {number | string} margin margin
  * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setMargin = margin => node => {
+export const setMargin = (margin) => (node) => {
   setMarginTop(margin)(node);
   setMarginRight(margin)(node);
   setMarginBottom(margin)(node);

@@ -1,5 +1,4 @@
-.gitignore
 node_modules
 lib
-rollup.config.js
-packages/yoga/dist
+dist
+packages/pdfkit

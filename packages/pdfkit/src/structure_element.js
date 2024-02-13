@@ -46,7 +46,7 @@ class PDFStructureElement {
       if (!Array.isArray(children)) {
         children = [children];
       }
-      children.forEach(child => this.add(child));
+      children.forEach((child) => this.add(child));
       this.end();
     }
   }
@@ -125,8 +125,8 @@ class PDFStructureElement {
     }
 
     this._children
-      .filter(child => child instanceof PDFStructureElement)
-      .forEach(child => child.end());
+      .filter((child) => child instanceof PDFStructureElement)
+      .forEach((child) => child.end());
 
     this._ended = true;
 
@@ -156,7 +156,7 @@ class PDFStructureElement {
       return false;
     }
 
-    return this._children.every(child => {
+    return this._children.every((child) => {
       if (typeof child === 'function') {
         return false;
       }
@@ -174,7 +174,7 @@ class PDFStructureElement {
 
     this.dictionary.data.K = [];
 
-    this._children.forEach(child => this._flushChild(child));
+    this._children.forEach((child) => this._flushChild(child));
 
     this.dictionary.end();
 

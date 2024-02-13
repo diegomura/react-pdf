@@ -13,7 +13,7 @@ import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 
-const isRecursiveNode = node => node.type !== P.Text && node.type !== P.Svg;
+const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg;
 
 const renderChildren = (ctx, node, options) => {
   ctx.save();
@@ -23,7 +23,7 @@ const renderChildren = (ctx, node, options) => {
   }
 
   const children = node.children || [];
-  const renderChild = child => renderNode(ctx, child, options);
+  const renderChild = (child) => renderNode(ctx, child, options);
 
   children.forEach(renderChild);
 

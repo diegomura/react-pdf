@@ -1,20 +1,22 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import pkg from './package.json';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
+import pkg from './package.json' assert { type: 'json' };
+
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = './src/index.js';
 

@@ -4,20 +4,22 @@ import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import pkg from './package.json';
 import commonjs from '@rollup/plugin-commonjs';
+
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   exports: 'named',
   format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
@@ -31,7 +33,7 @@ const getExternal = ({ browser }) =>
   browser
     ? [
         ...Object.keys(pkg.dependencies).filter(
-          dep => dep !== 'browserify-zlib',
+          (dep) => dep !== 'browserify-zlib',
         ),
       ]
     : ['fs', ...Object.keys(pkg.dependencies)];

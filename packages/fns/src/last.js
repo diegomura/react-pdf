@@ -1,4 +1,4 @@
-const last = value => {
+const last = (value) => {
   return value === '' ? '' : value[value.length - 1];
 };
 

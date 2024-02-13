@@ -10,7 +10,7 @@ import { vi } from 'vitest';
  * @param {Object}  attributed string
  * @returns {Object} attributed string
  */
-export const scriptItemizerImpl = vi.fn(string => {
+export const scriptItemizerImpl = vi.fn((string) => {
   const runs =
     string.runs.length === 0
       ? []

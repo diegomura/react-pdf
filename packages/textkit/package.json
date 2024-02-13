@@ -1,7 +1,7 @@
 {
   "name": "@react-pdf/textkit",
   "license": "MIT",
-  "version": "4.3.0",
+  "version": "4.4.1",
   "description": "An advanced text layout framework",
   "type": "module",
   "main": "./lib/textkit.cjs",
@@ -32,7 +32,8 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.1.0",
+    "@react-pdf/fns": "2.2.1",
+    "bidi-js": "^1.0.2",
     "hyphen": "^1.6.4",
     "unicode-properties": "^1.4.1"
   }

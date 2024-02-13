@@ -6,7 +6,7 @@ import getOrigin from '../node/getOrigin';
  * @param {Object} node
  * @returns {Object} node with origin attribute
  */
-const resolveNodeOrigin = node => {
+const resolveNodeOrigin = (node) => {
   const origin = getOrigin(node);
 
   const newNode = Object.assign({}, node, { origin });
@@ -25,7 +25,7 @@ const resolveNodeOrigin = node => {
  * @returns {Object} document root
  */
 
-const resolveOrigin = root => {
+const resolveOrigin = (root) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolveNodeOrigin);

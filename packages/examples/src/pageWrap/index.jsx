@@ -1,12 +1,19 @@
 import React from 'react';
-import { Document, Font, Text, Page, Image, StyleSheet } from '@react-pdf/renderer'
+import {
+  Document,
+  Font,
+  Text,
+  Page,
+  Image,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
-import Quijote1 from '../../public/quijote1.jpg'
-import Quijote2 from '../../public/quijote2.png'
+import Quijote1 from '../../public/quijote1.jpg';
+import Quijote2 from '../../public/quijote2.png';
 
 Font.register({
   family: 'Oswald',
-  src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
+  src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf',
 });
 
 const styles = StyleSheet.create({
@@ -28,13 +35,13 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     margin: 12,
-    fontFamily: 'Oswald'
+    fontFamily: 'Oswald',
   },
   text: {
     margin: 12,
     fontSize: 14,
     textAlign: 'justify',
-    fontFamily: 'Times-Roman'
+    fontFamily: 'Times-Roman',
   },
   image: {
     marginVertical: 15,
@@ -233,9 +240,5 @@ const Quixote = () => (
     </Page>
   </Document>
 );
-
-
-
-
 
 export default Quixote;

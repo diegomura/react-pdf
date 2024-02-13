@@ -1,5 +1,18 @@
 # @react-pdf/font
 
+## 2.4.4
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+## 2.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235)]:
+  - @react-pdf/types@2.4.1
+
 ## 2.4.2
 
 ### Patch Changes

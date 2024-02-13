@@ -5,10 +5,15 @@ import generateLineRects from './generateLineRects';
 const ATTACHMENT_CODE = '\ufffc'; // 65532
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Rect} Rect
+ */
+
+/**
  * Remove attachment attribute if no char present
  *
- * @param {Object} attributedString attributed string
- * @returns {Object} attributed string
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string
  */
 const purgeAttachments = (attributedString) => {
   const shouldPurge = !attributedString.string.includes(ATTACHMENT_CODE);
@@ -60,30 +65,29 @@ const layoutLines = (rects, lines, indent) => {
 };
 
 /**
- * @typedef {Function} LayoutParagraph
- * @param {Object} container rect
- * @param {Object} paragraph attributed string
- * @returns {Object} layout block
- */
-
-/**
  * Performs line breaking and layout
  *
  * @param {Object} engines engines
  * @param {Object} options layout options
- * @returns {LayoutParagraph} layout paragraph
  */
-const layoutParagraph = (engines, options) => (container, paragraph) => {
-  const height = stringHeight(paragraph);
-  const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
-  const rects = generateLineRects(container, height);
+const layoutParagraph = (engines, options) => {
+  /**
+   * @param {Rect} container rect
+   * @param {Object} paragraph attributed string
+   * @returns {Object} layout block
+   */
+  return (container, paragraph) => {
+    const height = stringHeight(paragraph);
+    const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
+    const rects = generateLineRects(container, height);
 
-  const availableWidths = rects.map((r) => r.width);
-  availableWidths[0] -= indent;
+    const availableWidths = rects.map((r) => r.width);
+    availableWidths[0] -= indent;
 
-  const lines = engines.linebreaker(options)(paragraph, availableWidths);
+    const lines = engines.linebreaker(options)(paragraph, availableWidths);
 
-  return layoutLines(rects, lines, indent);
+    return layoutLines(rects, lines, indent);
+  };
 };
 
 export default layoutParagraph;

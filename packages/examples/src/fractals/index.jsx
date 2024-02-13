@@ -1,7 +1,7 @@
-import React from 'react'
-import { Page, Document } from '@react-pdf/renderer'
+import React from 'react';
+import { Page, Document } from '@react-pdf/renderer';
 
-import Fractal from './Fractal'
+import Fractal from './Fractal';
 
 const Fractals = () => (
   <Document>
@@ -17,6 +17,6 @@ const Fractals = () => (
       <Fractal steps={10} />
     </Page>
   </Document>
-)
+);
 
-export default Fractals
+export default Fractals;

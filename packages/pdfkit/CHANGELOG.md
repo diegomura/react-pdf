@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.7
+
+### Patch Changes
+
+- [#2635](https://github.com/diegomura/react-pdf/pull/2635) [`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: bump jay-peg dependency to fix CJS module resolution error
+
 ## 3.1.6
 
 ### Patch Changes

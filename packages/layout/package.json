@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/layout",
-  "version": "3.11.2",
+  "version": "3.11.3",
   "license": "MIT",
   "description": "Resolve overall document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -28,8 +28,8 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@react-pdf/fns": "2.2.1",
-    "@react-pdf/image": "^2.3.4",
-    "@react-pdf/pdfkit": "^3.1.6",
+    "@react-pdf/image": "^2.3.5",
+    "@react-pdf/pdfkit": "^3.1.7",
     "@react-pdf/primitives": "^3.1.1",
     "@react-pdf/stylesheet": "^4.2.4",
     "@react-pdf/textkit": "^4.4.1",

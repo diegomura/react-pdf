@@ -20,7 +20,7 @@ export interface FontDescriptor {
 
 interface FontSource {
   src: string;
-  fontFamily: string;
+  fontFamily: string | string[];
   fontStyle: FontStyle;
   fontWeight: number;
   data: any;

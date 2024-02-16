@@ -43,7 +43,7 @@ class JPEG {
     this.obj = document.ref({
       Type: 'XObject',
       Subtype: 'Image',
-      BitsPerComponent: this.bits,
+      BitsPerComponent: 8,
       Width: this.width,
       Height: this.height,
       ColorSpace: this.colorSpace,

@@ -49,7 +49,7 @@ const getWhitespaceFactor = (direction, options) => {
     : Object.assign({}, SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
 };
 
-const factor = (direction, options) => glyphs => {
+const factor = (direction, options) => (glyphs) => {
   const charFactor = getCharFactor(direction, options);
   const whitespaceFactor = getWhitespaceFactor(direction, options);
 

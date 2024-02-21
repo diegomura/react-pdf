@@ -9,10 +9,22 @@ import serialize from './serialize';
 import { LinearGradient, RadialGradient } from '../gradient';
 
 class SVGDocument {
+  /**
+   * @param {{ font?: Object }} [options]
+   */
   constructor({ font } = {}) {
     this.info = {};
+    /**
+     * @type {Object[]}
+     */
     this.pages = [];
+    /**
+     * @type {Object}
+     */
     this.currentPage = null;
+    /**
+     * @type {Object}
+     */
     this.defaultFont = font;
   }
 
@@ -268,7 +280,7 @@ class SVGDocument {
   }
 
   end() {
-    this.serialized = this.pages.map(page => serialize(page.root)).join('');
+    this.serialized = this.pages.map((page) => serialize(page.root)).join('');
   }
 }
 

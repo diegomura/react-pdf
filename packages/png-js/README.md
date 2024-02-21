@@ -16,6 +16,7 @@ This project is a fork of [png.js](https://github.com/foliojs/png.js) by @devong
 
 - Build node and browser specific bundles
 - Uses rollup for build
+
 ## Browser Usage
 
 Simply include png.js and zlib.js on your HTML page, create a canvas element, and call PNG.load to load an image.
@@ -43,7 +44,7 @@ Require the module and decode a PNG
         // pixels is a 1d array (in rgba order) of decoded pixel data
     });
 
-You can also call `PNG.load` if you want to load the PNG (but not decode the pixels) synchronously.  If you already
-have the PNG data in a buffer, simply use `new PNG(buffer)`.  In both of these cases, you need to call `png.decode`
-yourself which passes your callback the decoded pixels as a buffer.  If you already have a buffer you want the pixels
+You can also call `PNG.load` if you want to load the PNG (but not decode the pixels) synchronously. If you already
+have the PNG data in a buffer, simply use `new PNG(buffer)`. In both of these cases, you need to call `png.decode`
+yourself which passes your callback the decoded pixels as a buffer. If you already have a buffer you want the pixels
 copied to, call `copyToImageData` with your buffer and the decoded pixels as returned from `decodePixels`.

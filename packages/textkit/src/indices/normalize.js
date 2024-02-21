@@ -1,12 +1,12 @@
 /**
  * Returns new array starting with zero, and keeping same relation between consecutive values
  *
- * @param  {Array[number]}  list
- * @return {boolean} normalized array
+ * @param {number[]} array list
+ * @returns {number[]} normalized array
  */
-const normalize = array => {
+const normalize = (array) => {
   const head = array[0];
-  return array.map(value => value - head);
+  return array.map((value) => value - head);
 };
 
 export default normalize;

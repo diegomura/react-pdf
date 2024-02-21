@@ -2,17 +2,17 @@
 /* eslint-disable prefer-const */
 /* eslint-disable prefer-destructuring */
 
-const getBookmarkValue = title => {
+const getBookmarkValue = (title) => {
   return typeof title === 'string'
     ? { title, fit: false, expanded: false }
     : title;
 };
 
-const resolveBookmarks = node => {
+const resolveBookmarks = (node) => {
   let refs = 0;
 
   const children = (node.children || []).slice(0);
-  const listToExplore = children.map(value => ({ value, parent: null }));
+  const listToExplore = children.map((value) => ({ value, parent: null }));
 
   while (listToExplore.length > 0) {
     const element = listToExplore.shift();
@@ -30,7 +30,7 @@ const resolveBookmarks = node => {
     }
 
     if (child.children) {
-      child.children.forEach(childNode => {
+      child.children.forEach((childNode) => {
         listToExplore.push({ value: childNode, parent });
       });
     }

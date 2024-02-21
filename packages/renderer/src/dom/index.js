@@ -6,7 +6,7 @@ import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
 import { pdf, version, Font, StyleSheet } from '../index';
 
-const throwEnvironmentError = name => {
+const throwEnvironmentError = (name) => {
   throw new Error(
     `${name} is a Node specific API. You're either using this method in a browser, or your bundler is not loading react-pdf from the appropriate web build.`,
   );

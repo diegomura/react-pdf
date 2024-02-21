@@ -35,15 +35,9 @@ export default {
     options.Subtype = 'Text';
     options.Contents = new String(contents);
     options.Name = 'Comment';
-
     if (options.color == null) {
       options.color = [243, 223, 92];
     }
-
-    options.Border = [0, 0, options.borderWidth || 0];
-
-    delete options.borderWidth;
-
     return this.annotate(x, y, w, h, options);
   },
 
@@ -97,6 +91,42 @@ export default {
       options.color = [241, 238, 148];
     }
     return this._markup(x, y, w, h, options);
+  },
+
+  underline(x, y, w, h, options = {}) {
+    options.Subtype = 'Underline';
+    return this._markup(x, y, w, h, options);
+  },
+
+  strike(x, y, w, h, options = {}) {
+    options.Subtype = 'StrikeOut';
+    return this._markup(x, y, w, h, options);
+  },
+
+  lineAnnotation(x1, y1, x2, y2, options = {}) {
+    options.Subtype = 'Line';
+    options.Contents = new String();
+    options.L = [x1, this.page.height - y1, x2, this.page.height - y2];
+    return this.annotate(x1, y1, x2, y2, options);
+  },
+
+  rectAnnotation(x, y, w, h, options = {}) {
+    options.Subtype = 'Square';
+    options.Contents = new String();
+    return this.annotate(x, y, w, h, options);
+  },
+
+  ellipseAnnotation(x, y, w, h, options = {}) {
+    options.Subtype = 'Circle';
+    options.Contents = new String();
+    return this.annotate(x, y, w, h, options);
+  },
+
+  textAnnotation(x, y, w, h, text, options = {}) {
+    options.Subtype = 'FreeText';
+    options.Contents = new String(text);
+    options.DA = new String();
+    return this.annotate(x, y, w, h, options);
   },
 
   fileAnnotation(x, y, w, h, file = {}, options = {}) {

@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
 
 const getComputedBorder = (yogaNode, edge) =>
   yogaNode ? yogaNode.getComputedBorder(edge) : 0;
@@ -7,16 +7,16 @@ const getComputedBorder = (yogaNode, edge) =>
  * Get Yoga computed border width. Zero otherwise
  *
  * @param {Object} node
- * @return {Object} border widths
+ * @returns {{ borderTopWidth: number, borderRightWidth: number, borderBottomWidth: number, borderLeftWidth: number }} border widths
  */
-const getBorderWidth = node => {
+const getBorderWidth = (node) => {
   const { yogaNode } = node;
 
   return {
-    borderTopWidth: getComputedBorder(yogaNode, Yoga.EDGE_TOP),
-    borderRightWidth: getComputedBorder(yogaNode, Yoga.EDGE_RIGHT),
-    borderBottomWidth: getComputedBorder(yogaNode, Yoga.EDGE_BOTTOM),
-    borderLeftWidth: getComputedBorder(yogaNode, Yoga.EDGE_LEFT),
+    borderTopWidth: getComputedBorder(yogaNode, Yoga.Edge.Top),
+    borderRightWidth: getComputedBorder(yogaNode, Yoga.Edge.Right),
+    borderBottomWidth: getComputedBorder(yogaNode, Yoga.Edge.Bottom),
+    borderLeftWidth: getComputedBorder(yogaNode, Yoga.Edge.Left),
   };
 };
 

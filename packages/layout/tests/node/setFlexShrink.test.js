@@ -1,7 +1,8 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import setFlexShrink from '../../src/node/setFlexShrink';
 
 describe('node setFlexShrink', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setFlexShrink: mock } };
 
   beforeEach(() => {

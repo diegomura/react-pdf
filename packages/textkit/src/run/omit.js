@@ -1,8 +1,14 @@
 /**
+ * @typedef {import('../types.js').Attributes} Attributes
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Omit attribute from run
  *
- * @param  {Object}  run
- * @return {Object} run without ommited attribute
+ * @param {keyof Attributes} value attribute value
+ * @param {Run} run run
+ * @returns {Run} run without ommited attribute
  */
 const omit = (value, run) => {
   const attributes = Object.assign({}, run.attributes);

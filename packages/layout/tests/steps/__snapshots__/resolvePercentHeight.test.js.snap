@@ -1,13 +1,13 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`layout resolvePercentHeight Should keep empty document untouched 1`] = `
+exports[`layout resolvePercentHeight > Should keep empty document untouched 1`] = `
 {
   "children": [],
   "type": "DOCUMENT",
 }
 `;
 
-exports[`layout resolvePercentHeight Should keep empty page untouched 1`] = `
+exports[`layout resolvePercentHeight > Should keep empty page untouched 1`] = `
 {
   "children": [
     {
@@ -18,7 +18,7 @@ exports[`layout resolvePercentHeight Should keep empty page untouched 1`] = `
 }
 `;
 
-exports[`layout resolvePercentHeight Should not resolve children if page dont have height 1`] = `
+exports[`layout resolvePercentHeight > Should not resolve children if page dont have height 1`] = `
 {
   "children": [
     {
@@ -38,7 +38,7 @@ exports[`layout resolvePercentHeight Should not resolve children if page dont ha
 }
 `;
 
-exports[`layout resolvePercentHeight Should resolve children percent dimensions if page have height 1`] = `
+exports[`layout resolvePercentHeight > Should resolve children percent dimensions if page have height 1`] = `
 {
   "children": [
     {

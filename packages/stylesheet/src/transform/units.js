@@ -1,14 +1,14 @@
 /**
  * Parses scalar value in value and unit pairs
  *
- * @param {String} scalar value
+ * @param {string} value scalar value
  * @returns {Object} parsed value
  */
-const parseValue = value => {
+const parseValue = (value) => {
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px)?$/g.exec(value);
 
   return match
-    ? { value: parseFloat(match[1], 10), unit: match[2] || 'pt' }
+    ? { value: parseFloat(match[1]), unit: match[2] || 'pt' }
     : { value, unit: undefined };
 };
 
@@ -16,7 +16,7 @@ const parseValue = value => {
  * Transform given scalar value
  *
  * @param {Object} container
- * @param {String} styles value
+ * @param {string} value styles value
  * @returns {Object} transformed value
  */
 const transformUnit = (container, value) => {

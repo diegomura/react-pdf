@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import parseColor from '../../src/utils/parseColor';
 
 describe('parse color util', () => {

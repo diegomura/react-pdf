@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import prepend from '../../src/indices/prepend';
 
 describe('indices prepend operator', () => {

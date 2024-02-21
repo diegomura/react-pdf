@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveMediaQueries from '../src/mediaQueries';
 
 describe('media queries', () => {

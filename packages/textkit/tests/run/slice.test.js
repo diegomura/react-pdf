@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import slice from '../../src/run/slice';
@@ -5,7 +7,7 @@ import slice from '../../src/run/slice';
 describe('run slice operator', () => {
   describe('slice start and end', () => {
     test('should slice containing range', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(2, 5, run);
 
@@ -15,7 +17,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exact range', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(0, 10, run);
 
@@ -25,7 +27,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exceeding range', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(2, 20, run);
 
@@ -35,7 +37,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice containing range when start not zero', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(2, 5, run);
 
@@ -45,7 +47,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exact range when start not zero', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(0, 10, run);
 
@@ -55,7 +57,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exceeding range when start not zero', () => {
-      const attributes = { something: 'blah' };
+      const attributes = { font: {} };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(8, 13, run);
 

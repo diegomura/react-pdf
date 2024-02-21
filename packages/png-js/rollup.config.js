@@ -4,20 +4,22 @@ import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import pkg from './package.json';
 import commonjs from '@rollup/plugin-commonjs';
+
+import pkg from './package.json' assert { type: 'json' };
 
 const cjs = {
   exports: 'named',
   format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
@@ -27,12 +29,14 @@ const babelConfig = () => ({
   exclude: 'node_modules/**',
 });
 
-const getExternal = ({ browser }) => [
-  ...(browser ? [] : ['fs']),
-  ...Object.keys(pkg.dependencies).filter(
-    dep => !browser || 'browserify-zlib' !== dep,
-  ),
-];
+const getExternal = ({ browser }) =>
+  browser
+    ? [
+        ...Object.keys(pkg.dependencies).filter(
+          (dep) => dep !== 'browserify-zlib',
+        ),
+      ]
+    : ['fs', ...Object.keys(pkg.dependencies)];
 
 const getPlugins = ({ browser }) => [
   ...(browser
@@ -60,8 +64,8 @@ const getPlugins = ({ browser }) => [
 const serverConfig = {
   input,
   output: [
-    getESM({ file: 'lib/png-js.es.js' }),
-    getCJS({ file: 'lib/png-js.cjs.js' }),
+    getESM({ file: 'lib/png-js.js' }),
+    getCJS({ file: 'lib/png-js.cjs' }),
   ],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
@@ -70,8 +74,8 @@ const serverConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/png-js.browser.es.js' }),
-    getCJS({ file: 'lib/png-js.browser.cjs.js' }),
+    getESM({ file: 'lib/png-js.browser.js' }),
+    getCJS({ file: 'lib/png-js.browser.cjs' }),
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true }),

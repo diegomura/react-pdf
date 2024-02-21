@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import filter from '../../src/run/filter';
 
 describe('run filter operator', () => {
@@ -8,7 +10,7 @@ describe('run filter operator', () => {
   });
 
   test('should filter only one run', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const runs = [{ start: 0, end: 15, attributes }];
     const filtered = filter(2, 15, runs);
 

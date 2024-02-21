@@ -1,6 +1,8 @@
+import { describe, expect, test } from 'vitest';
+
 import scriptItemizer from '../../src/engines/scriptItemizer';
 
-const instance = scriptItemizer({});
+const instance = scriptItemizer();
 
 describe('scriptItemizer', () => {
   test('should return empty array for empty string', () => {

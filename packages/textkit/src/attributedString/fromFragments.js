@@ -1,18 +1,24 @@
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Fragment} Fragment
+ */
+
+/**
  * Create attributed string from text fragments
  *
- * @param  {Array}  fragments
- * @return {Object} attributed string
+ * @param {Fragment[]} fragments fragments
+ * @returns {AttributedString} attributed string
  */
-const fromFragments = fragments => {
+const fromFragments = (fragments) => {
   let offset = 0;
   let string = '';
   const runs = [];
 
-  fragments.forEach(fragment => {
+  fragments.forEach((fragment) => {
     string += fragment.string;
 
     runs.push({
+      ...fragment,
       start: offset,
       end: offset + fragment.string.length,
       attributes: fragment.attributes || {},

@@ -4,7 +4,9 @@ import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
 
 import createRenderer from './renderer';
-import { version } from '../package.json';
+import packageJson from '../package.json';
+
+const { version } = packageJson;
 
 const fontStore = new FontStore();
 
@@ -58,13 +60,11 @@ const pdf = (initialValue,currentPageCallBack) => {
 
   const toBlob = async () => {
     const chunks = [];
-    const {
-      layout: _INTERNAL__LAYOUT__DATA_,
-      fileStream: instance,
-    } = await render();
+    const { layout: _INTERNAL__LAYOUT__DATA_, fileStream: instance } =
+      await render();
 
     return new Promise((resolve, reject) => {
-      instance.on('data', chunk => {
+      instance.on('data', (chunk) => {
         chunks.push(
           chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk),
         );
@@ -84,8 +84,13 @@ const pdf = (initialValue,currentPageCallBack) => {
 
   // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
   const toBuffer = async () => {
-    callOnRender();
-    return (await render()).fileStream;
+    const {
+      layout: _INTERNAL__LAYOUT__DATA_,
+      fileStream,
+    } = await render();
+    callOnRender({_INTERNAL__LAYOUT__DATA_});
+
+    return fileStream;
   };
 
   /*
@@ -106,7 +111,7 @@ const pdf = (initialValue,currentPageCallBack) => {
 
     return new Promise((resolve, reject) => {
       try {
-        instance.on('data', buffer => {
+        instance.on('data', (buffer) => {
           result += buffer;
         });
 
@@ -145,7 +150,7 @@ const pdf = (initialValue,currentPageCallBack) => {
 const Font = fontStore;
 
 const StyleSheet = {
-  create: s => s,
+  create: (s) => s,
 };
 
 export { version, Font, StyleSheet, pdf, createRenderer };

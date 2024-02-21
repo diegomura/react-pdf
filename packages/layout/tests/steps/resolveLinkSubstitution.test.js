@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveLinkSubstitution from '../../src/steps/resolveLinkSubstitution';
 
 describe('layout resolveStyles', () => {

@@ -1,7 +1,7 @@
 class Data {
   constructor(data = []) {
-    this.pos = 0;
     this.data = data;
+    this.pos = 0;
     this.length = this.data.length;
   }
 
@@ -42,12 +42,11 @@ class Data {
 
   readInt32() {
     const int = this.readUInt32();
-
     if (int >= 0x80000000) {
       return int - 0x100000000;
+    } else {
+      return int;
     }
-
-    return int;
   }
 
   writeInt32(val) {
@@ -72,8 +71,9 @@ class Data {
     const int = this.readUInt16();
     if (int >= 0x8000) {
       return int - 0x10000;
+    } else {
+      return int;
     }
-    return int;
   }
 
   writeInt16(val) {
@@ -187,7 +187,7 @@ class Data {
   }
 
   write(bytes) {
-    return bytes.map(byte => this.writeByte(byte));
+    return bytes.map((byte) => this.writeByte(byte));
   }
 }
 

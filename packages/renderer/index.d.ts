@@ -13,6 +13,12 @@ import {
   PageMode,
 } from '@react-pdf/types';
 
+declare class ReactPDF {
+  static default: typeof ReactPDF;
+}
+
+export = ReactPDF;
+
 declare namespace ReactPDF {
   interface Styles {
     [key: string]: Style;
@@ -30,6 +36,8 @@ declare namespace ReactPDF {
     keywords?: string;
     producer?: string;
     language?: string;
+    creationDate?: Date;
+    modificationDate?: Date;
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
@@ -206,7 +214,8 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/advanced#debugging
      */
     debug?: boolean;
-    src: string;
+    href?: string;
+    src?: string;
   }
 
   /**
@@ -236,7 +245,7 @@ declare namespace ReactPDF {
 
   class Canvas extends React.Component<CanvasProps> {}
 
-  interface SVGProps extends NodeProps {
+  interface SVGProps extends NodeProps, SVGPresentationAttributes {
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging
@@ -355,7 +364,9 @@ declare namespace ReactPDF {
    */
   class Tspan extends React.Component<React.PropsWithChildren<TspanProps>> {}
 
-  interface GProps extends SVGPresentationAttributes {}
+  interface GProps extends SVGPresentationAttributes {
+    style?: Style;
+  }
 
   /**
    * The <G /> SVG element is a container used to group other SVG elements.
@@ -395,10 +406,10 @@ declare namespace ReactPDF {
 
   interface LinearGradientProps {
     id: string;
-    x1: string | number;
-    x2: string | number;
-    y1: string | number;
-    y2: string | number;
+    x1?: string | number;
+    x2?: string | number;
+    y1?: string | number;
+    y2?: string | number;
   }
 
   /**
@@ -410,11 +421,11 @@ declare namespace ReactPDF {
 
   interface RadialGradientProps {
     id: string;
-    cx: string | number;
-    cy: string | number;
-    fr: string | number;
-    fx: string | number;
-    fy: string | number;
+    cx?: string | number;
+    cy?: string | number;
+    fr?: string | number;
+    fx?: string | number;
+    fy?: string | number;
   }
 
   /**
@@ -460,15 +471,18 @@ declare namespace ReactPDF {
    */
   class PDFViewer extends React.Component<PDFViewerProps> {}
 
-  interface PDFDownloadLinkProps {
-    document: React.ReactElement<DocumentProps>;
+  interface PDFDownloadLinkProps
+    extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+    /** PDF filename. Alias for anchor tag `download` attribute. */
     fileName?: string;
-    style?: Style | Style[];
-    className?: string;
+    document: React.ReactElement<DocumentProps>;
     children?:
       | React.ReactNode
       | ((params: BlobProviderParams) => React.ReactNode);
-    onClick?: Function;
+    onClick?(
+      event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+      instance: UsePDFInstance,
+    ): void;
   }
 
   /**
@@ -492,7 +506,10 @@ declare namespace ReactPDF {
   function usePDF(options: {
     currentPageCallBack? : ( value:Number ) => void;
     document?: React.ReactElement<DocumentProps>;
-  }): [UsePDFInstance, (newDocument: React.ReactElement<DocumentProps>) => void];
+  }): [
+    UsePDFInstance,
+    (newDocument: React.ReactElement<DocumentProps>) => void,
+  ];
 
   const Font: FontStore;
 
@@ -504,16 +521,17 @@ declare namespace ReactPDF {
 
   const PDFRenderer: any;
 
-  const pdf: (
-    initialValue?: React.ReactElement<DocumentProps>,
-  ) => {
+  const pdf: (initialValue?: React.ReactElement<DocumentProps>) => {
     container: any;
     isDirty: () => boolean;
     toString: () => string;
     toBlob: () => Promise<Blob>;
     toBuffer: () => Promise<NodeJS.ReadableStream>;
     on: (event: 'change', callback: () => void) => void;
-    updateContainer: (document: React.ReactElement<any>, callback?: () => void) => void;
+    updateContainer: (
+      document: React.ReactElement<any>,
+      callback?: () => void,
+    ) => void;
     removeListener: (event: 'change', callback: () => void) => void;
   };
 

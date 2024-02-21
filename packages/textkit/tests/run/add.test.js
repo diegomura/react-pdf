@@ -1,8 +1,10 @@
+import { describe, expect, test } from 'vitest';
+
 import add from '../../src/run/add';
 
 describe('run add operator', () => {
   test('should return equal run if 0', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const run = { start: 5, end: 15, attributes };
     const added = add(0, run);
 
@@ -13,7 +15,7 @@ describe('run add operator', () => {
   });
 
   test('should return added run', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const run = { start: 5, end: 15, attributes };
     const added = add(5, run);
 

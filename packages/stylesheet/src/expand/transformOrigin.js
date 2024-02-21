@@ -6,7 +6,7 @@ const sortTransformOriginPair = (a, b) => {
   return 0;
 };
 
-const getTransformOriginPair = values => {
+const getTransformOriginPair = (values) => {
   if (!values || values.length === 0) return ['center', 'center'];
 
   const pair = values.length === 1 ? [values[0], 'center'] : values;

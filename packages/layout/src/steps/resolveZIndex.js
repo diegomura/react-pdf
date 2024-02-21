@@ -1,8 +1,8 @@
 import * as P from '@react-pdf/primitives';
 
-const getZIndex = node => node.style.zIndex;
+const getZIndex = (node) => node.style.zIndex;
 
-const shouldSort = node => node.type !== P.Document && node.type !== P.Svg;
+const shouldSort = (node) => node.type !== P.Document && node.type !== P.Svg;
 
 const sortZIndex = (a, b) => {
   const za = getZIndex(a);
@@ -21,7 +21,7 @@ const sortZIndex = (a, b) => {
  * @param {Object} node
  * @returns {Object} node
  */
-const resolveZIndex = node => {
+const resolveZIndex = (node) => {
   if (!node.children) return node;
 
   const sortedChildren = shouldSort(node)

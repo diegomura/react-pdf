@@ -1,14 +1,18 @@
+/**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
 const ATTACHMENT_CODE = 0xfffc; // 65532
 
-const isReplaceGlyph = glyph => glyph.codePoints.includes(ATTACHMENT_CODE);
+const isReplaceGlyph = (glyph) => glyph.codePoints.includes(ATTACHMENT_CODE);
 
 /**
  * Resolve attachments of run
  *
- * @param  {Object}  run
- * @return {Object} run
+ * @param {Object}  run
+ * @returns {Object} run
  */
-const resolveRunAttachments = run => {
+const resolveRunAttachments = (run) => {
   if (!run.positions) return run;
 
   const glyphs = run.glyphs || [];
@@ -29,15 +33,16 @@ const resolveRunAttachments = run => {
 
 /**
  * Resolve attachments for multiple paragraphs
- *
- * @param  {Object} layout engines
- * @param  {Object}  layout options
- * @param  {Array}  attributed strings (paragraphs)
- * @return {Array} attributed strings (paragraphs)
  */
-const resolveAttachments = () => attributedString => {
-  const runs = attributedString.runs.map(resolveRunAttachments);
-  return Object.assign({}, attributedString, { runs });
+const resolveAttachments = () => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString} attributed string
+   */
+  return (attributedString) => {
+    const runs = attributedString.runs.map(resolveRunAttachments);
+    return Object.assign({}, attributedString, { runs });
+  };
 };
 
 export default resolveAttachments;

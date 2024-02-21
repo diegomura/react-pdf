@@ -1,11 +1,13 @@
-import Yoga from '@react-pdf/yoga';
+import { describe, expect, test } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import getMargin from '../../src/node/getMargin';
 
-const getComputedMargin = value => {
-  if (value === Yoga.EDGE_TOP) return 1;
-  if (value === Yoga.EDGE_RIGHT) return 2;
-  if (value === Yoga.EDGE_BOTTOM) return 3;
+const getComputedMargin = (value) => {
+  if (value === Yoga.Edge.Top) return 1;
+  if (value === Yoga.Edge.Right) return 2;
+  if (value === Yoga.Edge.Bottom) return 3;
   return 4;
 };
 

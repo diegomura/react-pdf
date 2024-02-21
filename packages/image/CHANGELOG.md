@@ -1,5 +1,51 @@
 # @react-pdf/image
 
+## 2.3.4
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/png-js@2.3.1
+
+## 2.3.3
+
+### Patch Changes
+
+- [#2573](https://github.com/diegomura/react-pdf/pull/2573) [`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235) Thanks [@davbrito](https://github.com/davbrito)! - feat: add support for resolving blob images
+
+- [#2600](https://github.com/diegomura/react-pdf/pull/2600) [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7) Thanks [@diegomura](https://github.com/diegomura)! - feat: bidi support
+
+## 2.3.2
+
+### Patch Changes
+
+- [`0590324`](https://github.com/diegomura/react-pdf/commit/0590324d7a6d75c0a49520b3f99cfb6594239390) Thanks [@diegomura](https://github.com/diegomura)! - fix: replace jpeg-exif with jay-peg
+
+## 2.3.1
+
+### Patch Changes
+
+- [#2529](https://github.com/diegomura/react-pdf/pull/2529) [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8) Thanks [@diegomura](https://github.com/diegomura)! - fix: jpeg exif orientation rendering
+
+## 2.3.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/png-js@2.3.0
+
+## 2.2.3
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
 ## 2.2.2
 
 ### Patch Changes

@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 /**
  * Test script itemizer based on the string 'Lorem'
  * Returns empty if no runs present, or arbitrary script itemization otherwise
@@ -5,10 +7,10 @@
  *   L     o     r     e     m
  * |---- Latin ----|- Non-latin-|
  *
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @param {Object}  attributed string
+ * @returns {Object} attributed string
  */
-export const scriptItemizerImpl = jest.fn(string => {
+export const scriptItemizerImpl = vi.fn((string) => {
   const runs =
     string.runs.length === 0
       ? []
@@ -20,6 +22,6 @@ export const scriptItemizerImpl = jest.fn(string => {
   return Object.assign({}, string, { runs });
 });
 
-const scriptItemizer = jest.fn(() => scriptItemizerImpl);
+const scriptItemizer = vi.fn(() => scriptItemizerImpl);
 
 export default scriptItemizer;

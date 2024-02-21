@@ -8,7 +8,7 @@ function FontStore() {
 
   let hyphenationCallback = null;
 
-  this.register = data => {
+  this.register = (data) => {
     const { family } = data;
 
     if (!fonts[family]) {
@@ -25,15 +25,20 @@ function FontStore() {
     }
   };
 
-  this.registerEmojiSource = ({ url, format = 'png', builder }) => {
-    emojiSource = { url, format, builder };
+  this.registerEmojiSource = ({
+    url,
+    format = 'png',
+    builder,
+    withVariationSelectors = false,
+  }) => {
+    emojiSource = { url, format, builder, withVariationSelectors };
   };
 
-  this.registerHyphenationCallback = callback => {
+  this.registerHyphenationCallback = (callback) => {
     hyphenationCallback = callback;
   };
 
-  this.getFont = descriptor => {
+  this.getFont = (descriptor) => {
     const { fontFamily } = descriptor;
     const isStandard = standard.includes(fontFamily);
 
@@ -48,7 +53,7 @@ function FontStore() {
     return fonts[fontFamily].resolve(descriptor);
   };
 
-  this.load = async descriptor => {
+  this.load = async (descriptor) => {
     const { fontFamily } = descriptor;
     const isStandard = standard.includes(fontFamily);
 

@@ -1,9 +1,11 @@
+import { describe, test } from 'vitest';
+
 import layoutParagraph from '../../src/layout/layoutParagraph';
 
 describe('layoutParagraph', () => {
   test('should keep overflowing text in the last rect', () => {
     // eslint-disable-next-line no-unused-vars
-    const linebreaker = _options => (attributedString, _availableWidths) => {
+    const linebreaker = (_options) => (attributedString, _availableWidths) => {
       return [attributedString];
     };
     const layouter = layoutParagraph({ linebreaker });

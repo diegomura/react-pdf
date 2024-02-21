@@ -15,10 +15,11 @@ class PNGImage {
     let dataDecoded = false;
 
     this.document = document;
+    if (this.obj) {
+      return;
+    }
 
-    if (this.obj) return;
-
-    const { hasAlphaChannel } = this.image;
+    const hasAlphaChannel = this.image.hasAlphaChannel;
     const isInterlaced = this.image.interlaceMethod === 1;
 
     this.obj = this.document.ref({
@@ -38,19 +39,19 @@ class PNGImage {
         Columns: this.width
       });
 
-      this.obj.data['DecodeParms'] = params;
+      this.obj.data.DecodeParms = params;
       params.end();
     }
 
     if (this.image.palette.length === 0) {
-      this.obj.data['ColorSpace'] = this.image.colorSpace;
+      this.obj.data.ColorSpace = this.image.colorSpace;
     } else {
       // embed the color palette in the PDF as an object stream
       const palette = this.document.ref();
       palette.end(Buffer.from(this.image.palette));
 
       // build the color space array for the image
-      this.obj.data['ColorSpace'] = [
+      this.obj.data.ColorSpace = [
         'Indexed',
         'DeviceRGB',
         this.image.palette.length / 3 - 1,
@@ -64,7 +65,7 @@ class PNGImage {
       // Use Color Key Masking (spec section 4.8.5)
       // An array with N elements, where N is two times the number of color components.
       const val = this.image.transparency.grayscale;
-      this.obj.data['Mask'] = [val, val];
+      this.obj.data.Mask = [val, val];
     } else if (this.image.transparency.rgb) {
       // Use Color Key Masking (spec section 4.8.5)
       // An array with N elements, where N is two times the number of color components.
@@ -74,7 +75,7 @@ class PNGImage {
         mask.push(x, x);
       }
 
-      this.obj.data['Mask'] = mask;
+      this.obj.data.Mask = mask;
     } else if (this.image.transparency.indexed) {
       // Create a transparency SMask for the image based on the data
       // in the PLTE and tRNS sections. See below for details on SMasks.
@@ -109,7 +110,7 @@ class PNGImage {
       });
 
       sMask.end(this.alphaChannel);
-      this.obj.data['SMask'] = sMask;
+      this.obj.data.SMask = sMask;
     }
 
     // add the actual image data
@@ -117,14 +118,13 @@ class PNGImage {
 
     // free memory
     this.image = null;
-    this.imgData = null;
+    return (this.imgData = null);
   }
 
   splitAlphaChannel() {
-    return this.image.decodePixels(pixels => {
+    return this.image.decodePixels((pixels) => {
       let a;
       let p;
-
       const colorCount = this.image.colors;
       const pixelCount = this.width * this.height;
       const imgData = Buffer.alloc(pixelCount * colorCount);
@@ -144,7 +144,6 @@ class PNGImage {
       }
 
       this.imgData = zlib.deflateSync(imgData);
-
       this.alphaChannel = zlib.deflateSync(alphaChannel);
       return this.finalize();
     });
@@ -152,7 +151,7 @@ class PNGImage {
 
   loadIndexedAlphaChannel() {
     const transparency = this.image.transparency.indexed;
-    return this.image.decodePixels(pixels => {
+    return this.image.decodePixels((pixels) => {
       const alphaChannel = Buffer.alloc(this.width * this.height);
 
       let i = 0;
@@ -161,13 +160,12 @@ class PNGImage {
       }
 
       this.alphaChannel = zlib.deflateSync(alphaChannel);
-
       return this.finalize();
     });
   }
 
   decodeData() {
-    this.image.decodePixels(pixels => {
+    this.image.decodePixels((pixels) => {
       this.imgData = zlib.deflateSync(pixels);
       this.finalize();
     });

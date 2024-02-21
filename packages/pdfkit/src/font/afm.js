@@ -1,5 +1,10 @@
+/* eslint-disable no-var */
+/* eslint-disable no-cond-assign */
+
 import fs from 'fs';
-import range from '../utils/range';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import range from '../utils/range.js';
 
 const WIN_ANSI_MAP = {
   402: 131,
@@ -183,9 +188,11 @@ class AFMFont {
     }
 
     this.charWidths = range(0, 255, true).map(
-      i => this.glyphWidths[characters[i]]
+      (i) => this.glyphWidths[characters[i]]
     );
-    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(e => +e);
+    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(
+      (e) => +e
+    );
     this.ascender = +(this.attributes.Ascender || 0);
     this.descender = +(this.attributes.Descender || 0);
     this.xHeight = +(this.attributes.XHeight || 0);

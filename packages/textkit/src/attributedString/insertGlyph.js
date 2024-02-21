@@ -5,12 +5,17 @@ import runIndexAt from './runIndexAt';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Glyph} Glyph
+ */
+
+/**
  * Insert glyph into attributed string
  *
- * @param {number} index
- * @param {Object} glyph
- * @param {Object} attributed string
- * @return {Object} attributed string with new glyph
+ * @param {number} index index
+ * @param {Glyph} glyph glyph
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string with new glyph
  */
 const insertGlyph = (index, glyph, attributedString) => {
   const runIndex = runIndexAt(index, attributedString);

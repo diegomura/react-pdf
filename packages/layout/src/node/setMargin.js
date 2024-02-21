@@ -1,51 +1,56 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set margin top attribute to node's Yoga instance
  *
- * @param {Number} margin top
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} margin margin top
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setMarginTop = setYogaValue('margin', Yoga.EDGE_TOP);
+export const setMarginTop = setYogaValue('margin', Yoga.Edge.Top);
 
 /**
  * Set margin right attribute to node's Yoga instance
  *
- * @param {Number} margin right
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} margin margin right
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setMarginRight = setYogaValue('margin', Yoga.EDGE_RIGHT);
+export const setMarginRight = setYogaValue('margin', Yoga.Edge.Right);
 
 /**
  * Set margin bottom attribute to node's Yoga instance
  *
- * @param {Number} margin bottom
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} margin margin bottom
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setMarginBottom = setYogaValue('margin', Yoga.EDGE_BOTTOM);
+export const setMarginBottom = setYogaValue('margin', Yoga.Edge.Bottom);
 
 /**
  * Set margin left attribute to node's Yoga instance
  *
- * @param {Number} margin left
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} margin margin left
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setMarginLeft = setYogaValue('margin', Yoga.EDGE_LEFT);
+export const setMarginLeft = setYogaValue('margin', Yoga.Edge.Left);
 
 /**
  * Set all margins at once
  *
- * @param {Number} margin
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number | string} margin margin
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setMargin = margin => node => {
+export const setMargin = (margin) => (node) => {
   setMarginTop(margin)(node);
   setMarginRight(margin)(node);
   setMarginBottom(margin)(node);

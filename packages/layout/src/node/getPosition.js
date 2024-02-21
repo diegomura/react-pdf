@@ -2,9 +2,9 @@
  * Get Yoga computed position. Zero otherwise
  *
  * @param {Object} node
- * @return {Object} position
+ * @returns {{ top: number, right: number, bottom: number, left: number }} position
  */
-const getPosition = node => {
+const getPosition = (node) => {
   const { yogaNode } = node;
 
   return {

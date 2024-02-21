@@ -6,12 +6,17 @@ import isNumber from '../utils/isNumber';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 
 /**
+ * @typedef {import('../types.js').Glyph} Glyph
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Insert glyph to run in the given index
  *
- * @param  {number}  string index
- * @param  {Object}  glyph
- * @param  {Object}  run
- * @return {Object}  run with glyph
+ * @param {number} index index
+ * @param {Glyph} glyph glyph
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const insertGlyph = (index, glyph, run) => {
   if (!glyph) return run;
@@ -26,10 +31,10 @@ const insertGlyph = (index, glyph, run) => {
 /**
  * Insert either glyph or code point to run in the given index
  *
- * @param  {number}  string index
- * @param  {Object | number}  glyph | codePoint
- * @param  {Object}  run
- * @return {Object}  run with glyph
+ * @param {number} index index
+ * @param {Glyph | number} value glyph or codePoint
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const insert = (index, value, run) => {
   const font = getFont(run);

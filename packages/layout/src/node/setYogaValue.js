@@ -2,15 +2,25 @@
 import { isNil, upperFirst, matchPercent } from '@react-pdf/fns';
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
+ * @typedef {Function} YogaValueSetter
+ * @param {any} value
+ * @returns {NodeInstanceWrapper} node instance wrapper
+ */
+
+/**
  * Set generic yoga attribute to node's Yoga instance, handing `auto`, edges and percentage cases
  *
- * @param {String} property
- * @param {Number} edge
- * @param {any} value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} attr property
+ * @param {number} [edge] edge
+ * @returns {YogaValueSetter} node instance wrapper
  */
-const setYogaValue = (attr, edge) => value => node => {
+const setYogaValue = (attr, edge) => (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

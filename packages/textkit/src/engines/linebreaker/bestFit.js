@@ -1,6 +1,12 @@
 /* eslint-disable no-plusplus */
 const INFINITY = 10000;
 
+/**
+ * @param {Object[]} subnodes
+ * @param {number[]} widths
+ * @param {number} lineNumber
+ * @returns {number}
+ */
 const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   let position = null;
   let minimumBadness = Infinity;
@@ -8,7 +14,7 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   const sum = { width: 0, stretch: 0, shrink: 0 };
   const lineLength = widths[Math.min(lineNumber, widths.length - 1)];
 
-  const calculateRatio = node => {
+  const calculateRatio = (node) => {
     if (sum.width < lineLength) {
       return sum.stretch - node.stretch > 0
         ? (lineLength - sum.width) / sum.stretch
@@ -66,6 +72,10 @@ const getNextBreakpoint = (subnodes, widths, lineNumber) => {
   return sum.width - sum.shrink > lineLength ? position : null;
 };
 
+/**
+ * @param {Object[]} nodes
+ * @param {number[]} widths
+ */
 const applyBestFit = (nodes, widths) => {
   let count = 0;
   let lineNumber = 0;

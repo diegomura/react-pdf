@@ -1,14 +1,18 @@
 import runHeight from '../run/height';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Returns attributed string height
  *
- * @param {Object} attributed string
- * @return {number} height
+ * @param {AttributedString} attributedString attributed string
+ * @returns {number} height
  */
-const height = attributeString => {
+const height = (attributedString) => {
   const reducer = (acc, run) => Math.max(acc, runHeight(run));
-  return attributeString.runs.reduce(reducer, 0);
+  return attributedString.runs.reduce(reducer, 0);
 };
 
 export default height;

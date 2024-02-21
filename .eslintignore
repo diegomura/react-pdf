@@ -1,4 +1,4 @@
-.gitignore
 node_modules
 lib
-rollup.config.js
+dist
+packages/pdfkit

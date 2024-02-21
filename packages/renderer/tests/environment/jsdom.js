@@ -1,28 +1,45 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const Environment = require('jest-environment-jsdom').default;
-const { TextEncoder, TextDecoder } = require('util');
+// false positive on import/no-unresolved
+// eslint-disable-next-line import/no-unresolved
+import { builtinEnvironments } from 'vitest/environments';
 
-class CustomEnvironment extends Environment {
-  async setup() {
-    await super.setup();
+function patchGlobals() {
+  if (typeof global.TextEncoder === 'undefined') {
+    global.TextEncoder = TextEncoder;
+    global.TextDecoder = TextDecoder;
+  }
 
-    if (typeof this.global.TextEncoder === 'undefined') {
-      this.global.TextEncoder = TextEncoder;
-      this.global.TextDecoder = TextDecoder;
-    }
+  if (typeof global.TextDecoder === 'undefined') {
+    global.TextDecoder = TextDecoder;
+  }
 
-    if (typeof this.global.TextDecoder === 'undefined') {
-      this.global.TextDecoder = TextDecoder;
-    }
+  if (typeof global.URL.createObjectURL === 'undefined') {
+    global.URL.createObjectURL = (blob) => `[Blob - ${blob.size}]`;
+  }
 
-    if (typeof this.global.URL.createObjectURL === 'undefined') {
-      this.global.URL.createObjectURL = blob => `[Blob - ${blob.size}]`;
-    }
-
-    if (typeof this.global.URL.revokeObjectURL === 'undefined') {
-      this.global.URL.revokeObjectURL = () => undefined;
-    }
+  if (typeof global.URL.revokeObjectURL === 'undefined') {
+    global.URL.revokeObjectURL = () => undefined;
   }
 }
 
-module.exports = CustomEnvironment;
+export default {
+  name: 'jsdom',
+  transformMode: 'web',
+  async setupVM({ jsdom = {} }) {
+    const superSetup = builtinEnvironments.jsdom.setupVM;
+
+    const result = await superSetup({ jsdom });
+
+    patchGlobals();
+
+    return result;
+  },
+  async setup(global, { jsdom = {} }) {
+    const superSetup = builtinEnvironments.jsdom.setup;
+
+    const result = await superSetup(global, { jsdom });
+
+    patchGlobals();
+
+    return result;
+  },
+};

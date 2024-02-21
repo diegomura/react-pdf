@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import stylesheet from '@react-pdf/stylesheet';
 
-const isLink = node => node.type === P.Link;
+const isLink = (node) => node.type === P.Link;
 
 const DEFAULT_LINK_STYLES = {
   color: 'blue',
@@ -12,7 +12,7 @@ const DEFAULT_LINK_STYLES = {
  * Computes styles using stylesheet
  *
  * @param {Object} container
- * @param {Object} document node
+ * @param {Object} node document node
  * @returns {Object} computed styles
  */
 const computeStyle = (container, node) => {
@@ -28,13 +28,18 @@ const computeStyle = (container, node) => {
 };
 
 /**
+ * @typedef {Function} ResolveNodeStyles
+ * @param {Object} node document node
+ * @returns {Object} node (and subnodes) with resolved styles
+ */
+
+/**
  * Resolves node styles
  *
  * @param {Object} container
- * @param {Object} document node
- * @returns {Object} node (and subnodes) with resolved styles
+ * @returns {ResolveNodeStyles} resolve node styles
  */
-const resolveNodeStyles = container => node => {
+const resolveNodeStyles = (container) => (node) => {
   const style = computeStyle(container, node);
 
   if (!node.children) return Object.assign({}, node, { style });
@@ -47,10 +52,10 @@ const resolveNodeStyles = container => node => {
 /**
  * Resolves page styles
  *
- * @param {Object} document page
+ * @param {Object} page document page
  * @returns {Object} document page with resolved styles
  */
-const resolvePageStyles = page => {
+export const resolvePageStyles = (page) => {
   const dpi = page.props?.dpi || 72;
   const width = page.box?.width || page.style.width;
   const height = page.box?.height || page.style.height;
@@ -63,10 +68,10 @@ const resolvePageStyles = page => {
 /**
  * Resolves document styles
  *
- * @param {Object} document root
+ * @param {Object} root document root
  * @returns {Object} document root with resolved styles
  */
-const resolveStyles = root => {
+const resolveStyles = (root) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolvePageStyles);

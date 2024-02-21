@@ -5,9 +5,11 @@
    By Yang Liu <hi@zesik.com>
  */
 
-import MD5 from 'crypto-js/md5';
+// This file is ran directly with Node - needs to have .js extension
+// eslint-disable-next-line import/extensions
+import MD5 from 'crypto-js/md5.js';
 
-const wordArrayToBuffer = wordArray => {
+const wordArrayToBuffer = (wordArray) => {
   const byteArray = [];
 
   for (let i = 0; i < wordArray.sigBytes; i++) {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import isHeightAuto from '../../src/page/isHeightAuto';
 
 describe('page isHeightAuto', () => {

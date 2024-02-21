@@ -5,11 +5,17 @@ import prependIndices from '../indices/prepend';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 
 /**
+ * @typedef {import('../types.js').Glyph} Glyph
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Prepend glyph to run
  *
- * @param  {Object}  glyph
- * @param  {Object}  run
- * @return {Object} run with glyph
+ * @param {Glyph} glyph glyph
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const prependGlyph = (glyph, run) => {
   const runScale = scale(run);
@@ -18,9 +24,10 @@ const prependGlyph = (glyph, run) => {
   const end = run.end + glyphLength;
   const glyphIndices = prependIndices(glyphLength, run.glyphIndices);
   const glyphs = [glyph].concat(run.glyphs);
-  const positions = [{ xAdvance: glyph.advanceWidth * runScale }].concat(
-    run.positions,
-  );
+
+  const positions = /** @type {Position[]} */ ([
+    { xAdvance: glyph.advanceWidth * runScale },
+  ]).concat(run.positions);
 
   return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
 };
@@ -28,9 +35,9 @@ const prependGlyph = (glyph, run) => {
 /**
  * Prepend glyph or code point on run
  *
- * @param  {Object | number}  glyph | codePoint
- * @param  {Object}  run
- * @return {Object} run with glyph
+ * @param {Glyph | number} value glyph or codePoint
+ * @param {Run} run run
+ * @returns {Run} run with glyph
  */
 const prepend = (value, run) => {
   if (!value) return run;

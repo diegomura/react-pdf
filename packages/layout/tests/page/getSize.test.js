@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import getSize from '../../src/page/getSize';
 
 describe('page getSize', () => {

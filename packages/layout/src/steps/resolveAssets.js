@@ -3,13 +3,14 @@ import * as P from '@react-pdf/primitives';
 import fetchEmojis from '../text/emoji';
 import fetchImage from '../image/fetchImage';
 
-const isImage = node => node.type === P.Image;
+const isImage = (node) => node.type === P.Image;
 
 /**
  * Get all asset promises that need to be resolved
  *
- * @param {Object} root node
- * @returns {Array} asset promises
+ * @param {Object} fontStore font store
+ * @param {Object} node root node
+ * @returns {Promise<void>[]} asset promises
  */
 const fetchAssets = (fontStore, node) => {
   const promises = [];
@@ -36,7 +37,7 @@ const fetchAssets = (fontStore, node) => {
     }
 
     if (n.children) {
-      n.children.forEach(childNode => {
+      n.children.forEach((childNode) => {
         listToExplore.push(childNode);
       });
     }
@@ -49,9 +50,9 @@ const fetchAssets = (fontStore, node) => {
  * Fetch image, font and emoji assets in parallel.
  * Layout process will not be resumed until promise resolves.
  *
- * @param {Object} root node
+ * @param {Object} node root node
  * @param {Object} fontStore font store
- * @returns {Object} root node
+ * @returns {Promise<Object>} root node
  */
 const resolveAssets = async (node, fontStore) => {
   const promises = fetchAssets(fontStore, node);

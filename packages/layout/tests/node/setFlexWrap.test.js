@@ -1,9 +1,11 @@
-import Yoga from '@react-pdf/yoga';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import setFlexWrap from '../../src/node/setFlexWrap';
 
 describe('node setFlexWrap', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setFlexWrap: mock } };
 
   beforeEach(() => {
@@ -21,7 +23,7 @@ describe('node setFlexWrap', () => {
     const result = setFlexWrap(null)(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.WRAP_NO_WRAP);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Wrap.NoWrap);
     expect(result).toBe(node);
   });
 
@@ -29,7 +31,7 @@ describe('node setFlexWrap', () => {
     const result = setFlexWrap('no-wrap')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.WRAP_NO_WRAP);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Wrap.NoWrap);
     expect(result).toBe(node);
   });
 
@@ -37,7 +39,7 @@ describe('node setFlexWrap', () => {
     const result = setFlexWrap('wrap')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.WRAP_WRAP);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Wrap.Wrap);
     expect(result).toBe(node);
   });
 
@@ -45,7 +47,7 @@ describe('node setFlexWrap', () => {
     const result = setFlexWrap('wrap-reverse')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.WRAP_WRAP_REVERSE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Wrap.WrapReverse);
     expect(result).toBe(node);
   });
 });

@@ -16,7 +16,7 @@ const escapable = {
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
 
 // Convert little endian UTF-16 to big endian
-const swapBytes = function(buff) {
+const swapBytes = function (buff) {
   const l = buff.length;
   if (l & 0x01) {
     throw new Error('Buffer length must be even');
@@ -58,7 +58,7 @@ class PDFObject {
       }
 
       // Escape characters as required by the spec
-      string = string.replace(escapableRe, c => escapable[c]);
+      string = string.replace(escapableRe, (c) => escapable[c]);
 
       return `(${string})`;
 
@@ -87,7 +87,7 @@ class PDFObject {
 
     if (Array.isArray(object)) {
       const items = Array.from(object)
-        .map(e => PDFObject.convert(e))
+        .map((e) => PDFObject.convert(e))
         .join(' ');
       return `[${items}]`;
     }

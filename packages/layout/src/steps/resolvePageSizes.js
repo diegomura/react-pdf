@@ -7,7 +7,7 @@ import getPageSize from '../page/getSize';
  * @param {Object} page
  * @returns {Object} page with resolved size in style attribute
  */
-export const resolvePageSize = page => {
+export const resolvePageSize = (page) => {
   const size = getPageSize(page);
   const style = flatten(page.style || {});
 
@@ -17,10 +17,10 @@ export const resolvePageSize = page => {
 /**
  * Resolves page sizes
  *
- * @param {Object} document root
+ * @param {Object} root document root
  * @returns {Object} document root with resolved page sizes
  */
-const resolvePageSizes = root => {
+const resolvePageSizes = (root) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolvePageSize);

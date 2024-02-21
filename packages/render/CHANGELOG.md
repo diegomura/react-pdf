@@ -1,5 +1,82 @@
 # @react-pdf/render
 
+## 3.4.3
+
+### Patch Changes
+
+- [#2605](https://github.com/diegomura/react-pdf/pull/2605) [`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: fix CJS compatibility
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/textkit@4.4.1
+  - @react-pdf/fns@2.2.1
+
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235), [`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7)]:
+  - @react-pdf/types@2.4.1
+  - @react-pdf/textkit@4.4.0
+  - @react-pdf/fns@2.2.0
+
+## 3.4.1
+
+### Patch Changes
+
+- [#2544](https://github.com/diegomura/react-pdf/pull/2544) [`b5380a1`](https://github.com/diegomura/react-pdf/commit/b5380a1a0a7397b4111d68ce97b4acb702d34d51) Thanks [@satelllte](https://github.com/satelllte)! - fix: creationDate and modificationDate types
+
+## 3.4.0
+
+### Minor Changes
+
+- [#2539](https://github.com/diegomura/react-pdf/pull/2539) [`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19) Thanks [@diegomura](https://github.com/diegomura)! - feat: add creation and modification dates
+
+### Patch Changes
+
+- [#2538](https://github.com/diegomura/react-pdf/pull/2538) [`cfd050c`](https://github.com/diegomura/react-pdf/commit/cfd050c3ae0980f78c4a466565852d81c8254e19) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix strokeDasharray crash
+
+- Updated dependencies [[`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19)]:
+  - @react-pdf/types@2.4.0
+
+## 3.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`9e5842b`](https://github.com/diegomura/react-pdf/commit/9e5842bbecca6e249af2c5fc50078bb7ddd5420f)]:
+  - @react-pdf/types@2.3.6
+
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`42bbbda`](https://github.com/diegomura/react-pdf/commit/42bbbda48058acd2d36d7a92c812d133608c459e)]:
+  - @react-pdf/primitives@3.1.1
+
+## 3.3.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- [#2498](https://github.com/diegomura/react-pdf/pull/2498) [`6bfe7e8`](https://github.com/diegomura/react-pdf/commit/6bfe7e8a30d96c04a1552800159992705f3605b1) Thanks [@diegomura](https://github.com/diegomura)! - fix: color parse error
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/primitives@3.1.0
+  - @react-pdf/textkit@4.3.0
+  - @react-pdf/fns@2.1.0
+
+## 3.2.8
+
+### Patch Changes
+
+- [#2363](https://github.com/diegomura/react-pdf/pull/2363) [`8654d00`](https://github.com/diegomura/react-pdf/commit/8654d003023dd0899cddfc2ea2f5a552e01cf570) Thanks [@azmy60](https://github.com/azmy60)! - fix: SVGPresentationAttributes types
+
+- Updated dependencies [[`e5c8fde`](https://github.com/diegomura/react-pdf/commit/e5c8fde9379a9a85ecac7e3d6273953e39d65f8d), [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4), [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2), [`4c40b14`](https://github.com/diegomura/react-pdf/commit/4c40b149cfed42f2513e1dd330a92ccc3363c04f)]:
+  - @react-pdf/types@2.3.5
+  - @react-pdf/textkit@4.2.1
+
 ## 3.2.7
 
 ### Patch Changes

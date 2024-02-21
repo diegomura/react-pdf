@@ -1,27 +1,25 @@
 import Gradient from '../gradient';
+import pattern from '../pattern';
 
 const { PDFGradient, PDFLinearGradient, PDFRadialGradient } = Gradient;
+const { PDFTilingPattern } = pattern;
 
 export default {
   initColor() {
     // The opacity dictionaries
     this._opacityRegistry = {};
     this._opacityCount = 0;
+    this._patternCount = 0;
     return (this._gradCount = 0);
   },
 
   _normalizeColor(color) {
-    if (color instanceof PDFGradient) {
-      return color;
-    }
-
-    let part;
     if (typeof color === 'string') {
       if (color.charAt(0) === '#') {
         if (color.length === 4) {
           color = color.replace(
             /#([0-9A-F])([0-9A-F])([0-9A-F])/i,
-            '#$1$1$2$2$3$3',
+            '#$1$1$2$2$3$3'
           );
         }
         const hex = parseInt(color.slice(1), 16);
@@ -34,25 +32,11 @@ export default {
     if (Array.isArray(color)) {
       // RGB
       if (color.length === 3) {
-        color = (() => {
-          const result = [];
-          for (part of Array.from(color)) {
-            result.push(part / 255);
-          }
-          return result;
-        })();
-
+        color = color.map((part) => part / 255);
         // CMYK
       } else if (color.length === 4) {
-        color = (() => {
-          const result1 = [];
-          for (part of Array.from(color)) {
-            result1.push(part / 100);
-          }
-          return result1;
-        })();
+        color = color.map((part) => part / 100);
       }
-
       return color;
     }
 
@@ -60,23 +44,30 @@ export default {
   },
 
   _setColor(color, stroke) {
+    if (color instanceof PDFGradient) {
+      color.apply(stroke);
+      return true;
+      // see if tiling pattern, decode & apply it it
+    } else if (Array.isArray(color) && color[0] instanceof PDFTilingPattern) {
+      color[0].apply(stroke, color[1]);
+      return true;
+    }
+    // any other case should be a normal color and not a pattern
+    return this._setColorCore(color, stroke);
+  },
+
+  _setColorCore(color, stroke) {
     color = this._normalizeColor(color);
     if (!color) {
       return false;
     }
 
     const op = stroke ? 'SCN' : 'scn';
+    const space = this._getColorSpace(color);
+    this._setColorSpace(space, stroke);
 
-    if (color instanceof PDFGradient) {
-      this._setColorSpace('Pattern', stroke);
-      color.apply(op);
-    } else {
-      const space = color.length === 4 ? 'DeviceCMYK' : 'DeviceRGB';
-      this._setColorSpace(space, stroke);
-
-      color = color.join(' ');
-      this.addContent(`${color} ${op}`);
-    }
+    color = color.join(' ');
+    this.addContent(`${color} ${op}`);
 
     return true;
   },
@@ -84,6 +75,10 @@ export default {
   _setColorSpace(space, stroke) {
     const op = stroke ? 'CS' : 'cs';
     return this.addContent(`/${space} ${op}`);
+  },
+
+  _getColorSpace(color) {
+    return color.length === 4 ? 'DeviceCMYK' : 'DeviceRGB';
   },
 
   fillColor(color, opacity) {
@@ -136,7 +131,7 @@ export default {
     const key = `${fillOpacity}_${strokeOpacity}`;
 
     if (this._opacityRegistry[key]) {
-      [dictionary, name] = Array.from(this._opacityRegistry[key]);
+      [dictionary, name] = this._opacityRegistry[key];
     } else {
       dictionary = { Type: 'ExtGState' };
 
@@ -165,6 +160,10 @@ export default {
   radialGradient(x1, y1, r1, x2, y2, r2) {
     return new PDFRadialGradient(this, x1, y1, r1, x2, y2, r2);
   },
+
+  pattern(bbox, xStep, yStep, stream) {
+    return new PDFTilingPattern(this, bbox, xStep, yStep, stream);
+  }
 };
 
 var namedColors = {
@@ -314,5 +313,5 @@ var namedColors = {
   white: [255, 255, 255],
   whitesmoke: [245, 245, 245],
   yellow: [255, 255, 0],
-  yellowgreen: [154, 205, 50],
+  yellowgreen: [154, 205, 50]
 };

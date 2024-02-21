@@ -1,17 +1,29 @@
 import isWhiteSpace from '../glyph/isWhiteSpace';
 
-const reverse = array => [...array].reverse();
+/**
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
+ * @template T
+ * @param {T[]} array
+ * @returns {T[]} reversed array
+ */
+const reverse = (array) => {
+  return [...array].reverse();
+};
 
 /**
  * Get white space trailing positions
  *
- * @param  {Object}  run
- * @return {Array} white space trailing positions
+ * @param {Run} run run
+ * @returns {Position[]} white space trailing positions
  */
-const trailingPositions = run => {
+const trailingPositions = (run) => {
   const glyphs = reverse(run.glyphs || []);
   const positions = reverse(run.positions || []);
-  const leadingWhitespaces = glyphs.findIndex(g => !isWhiteSpace(g));
+  const leadingWhitespaces = glyphs.findIndex((g) => !isWhiteSpace(g));
 
   return positions.slice(0, leadingWhitespaces);
 };
@@ -19,10 +31,10 @@ const trailingPositions = run => {
 /**
  * Get run trailing white space offset
  *
- * @param  {Object}  run
- * @return {number} trailing white space offset
+ * @param {Run} run run
+ * @returns {number} trailing white space offset
  */
-const trailingOffset = run => {
+const trailingOffset = (run) => {
   const positions = trailingPositions(run);
 
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);

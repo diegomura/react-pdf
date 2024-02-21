@@ -3,16 +3,21 @@ import filterRuns from '../run/filter';
 import subtractRun from '../run/subtract';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Slice array of runs
  *
- * @param  {number}  start offset
- * @param  {number}  end offset
- * @param  {Array}  runs
- * @return {Array} sliced runs
+ * @param {number} start offset
+ * @param {number} end offset
+ * @param {Run[]} runs
+ * @returns {Run[]} sliced runs
  */
 const sliceRuns = (start, end, runs) => {
-  const sliceFirstRun = a => sliceRun(start - a.start, end - a.start, a);
-  const sliceLastRun = a => sliceRun(0, end - a.start, a);
+  const sliceFirstRun = (a) => sliceRun(start - a.start, end - a.start, a);
+  const sliceLastRun = (a) => sliceRun(0, end - a.start, a);
 
   return runs.map((run, i) => {
     let result = run;
@@ -30,10 +35,10 @@ const sliceRuns = (start, end, runs) => {
 /**
  * Slice attributed string between two indices
  *
- * @param  {number}  start offset
- * @param  {number}  end offset
- * @param  {Object}  attributedString
- * @return {Object} attributedString
+ * @param {number} start offset
+ * @param {number} end offset
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} attributed string
  */
 const slice = (start, end, attributedString) => {
   if (attributedString.string.length === 0) return attributedString;

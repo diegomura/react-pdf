@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/font",
-  "version": "2.3.7",
+  "version": "2.4.4",
   "license": "MIT",
   "description": "Register font and emoji source for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -10,20 +10,28 @@
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/font"
   },
-  "main": "./lib/index.cjs.js",
-  "module": "./lib/index.es.js",
+  "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
   "browser": {
-    "./lib/index.es.js": "./lib/index.browser.es.js",
-    "./lib/index.cjs.js": "./lib/index.browser.cjs.js"
+    "./lib/index.js": "./lib/index.browser.js",
+    "./lib/index.cjs": "./lib/index.browser.cjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
+    }
   },
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/types": "^2.3.4",
+    "@react-pdf/types": "^2.4.1",
     "cross-fetch": "^3.1.5",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"

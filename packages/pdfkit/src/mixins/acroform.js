@@ -81,10 +81,10 @@ export default {
         throw new Error('No fonts specified for PDF form');
       }
       let fontDict = this._root.data.AcroForm.data.DR.Font;
-      Object.keys(this._acroform.fonts).forEach(name => {
+      Object.keys(this._acroform.fonts).forEach((name) => {
         fontDict[name] = this._acroform.fonts[name];
       });
-      this._root.data.AcroForm.data.Fields.forEach(fieldRef => {
+      this._root.data.AcroForm.data.Fields.forEach((fieldRef) => {
         this._endChild(fieldRef);
       });
       this._root.data.AcroForm.end();
@@ -94,7 +94,7 @@ export default {
 
   _endChild(ref) {
     if (Array.isArray(ref.data.Kids)) {
-      ref.data.Kids.forEach(childRef => {
+      ref.data.Kids.forEach((childRef) => {
         this._endChild(childRef);
       });
       ref.end();
@@ -297,7 +297,7 @@ export default {
 
   _resolveFlags(options) {
     let result = 0;
-    Object.keys(options).forEach(key => {
+    Object.keys(options).forEach((key) => {
       if (FIELD_FLAGS[key]) {
         result |= FIELD_FLAGS[key];
         delete options[key];
@@ -365,13 +365,13 @@ export default {
       options.Opt = select;
     }
 
-    Object.keys(VALUE_MAP).forEach(key => {
+    Object.keys(VALUE_MAP).forEach((key) => {
       if (options[key] !== undefined) {
         options[VALUE_MAP[key]] = options[key];
         delete options[key];
       }
     });
-    ['V', 'DV'].forEach(key => {
+    ['V', 'DV'].forEach((key) => {
       if (typeof options[key] === 'string') {
         options[key] = new String(options[key]);
       }

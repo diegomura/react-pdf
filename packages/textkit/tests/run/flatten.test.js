@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import flatten from '../../src/run/flatten';
 
 describe('run flatten operator', () => {

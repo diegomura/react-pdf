@@ -1,9 +1,11 @@
-import Yoga from '@react-pdf/yoga';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import setJustifyContent from '../../src/node/setJustifyContent';
 
 describe('node setJustifyContent', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setJustifyContent: mock } };
 
   beforeEach(() => {
@@ -21,7 +23,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('center')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_CENTER);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.Center);
     expect(result).toBe(node);
   });
 
@@ -29,7 +31,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('flex-end')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_FLEX_END);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.FlexEnd);
     expect(result).toBe(node);
   });
 
@@ -37,7 +39,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('flex-start')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_FLEX_START);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.FlexStart);
     expect(result).toBe(node);
   });
 
@@ -45,7 +47,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('space-between')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_SPACE_BETWEEN);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.SpaceBetween);
     expect(result).toBe(node);
   });
 
@@ -53,7 +55,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('space-around')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_SPACE_AROUND);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.SpaceAround);
     expect(result).toBe(node);
   });
 
@@ -61,7 +63,7 @@ describe('node setJustifyContent', () => {
     const result = setJustifyContent('space-evenly')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.JUSTIFY_SPACE_EVENLY);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Justify.SpaceEvenly);
     expect(result).toBe(node);
   });
 });

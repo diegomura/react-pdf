@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import createCache from '../src/cache';
 
 describe('Background', () => {

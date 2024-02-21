@@ -1,5 +1,33 @@
 # @react-pdf/types
 
+## 2.4.1
+
+### Patch Changes
+
+- [#2573](https://github.com/diegomura/react-pdf/pull/2573) [`9af07fe`](https://github.com/diegomura/react-pdf/commit/9af07feb59c2fe9c1d8960ac95f6fa6e03d16235) Thanks [@davbrito](https://github.com/davbrito)! - feat: add support for resolving blob images
+
+## 2.4.0
+
+### Minor Changes
+
+- [#2539](https://github.com/diegomura/react-pdf/pull/2539) [`fb5273d`](https://github.com/diegomura/react-pdf/commit/fb5273d8d80d919f7b9c214e02d67b79ce23fa19) Thanks [@diegomura](https://github.com/diegomura)! - feat: add creation and modification dates
+
+## 2.3.6
+
+### Patch Changes
+
+- [#2525](https://github.com/diegomura/react-pdf/pull/2525) [`9e5842b`](https://github.com/diegomura/react-pdf/commit/9e5842bbecca6e249af2c5fc50078bb7ddd5420f) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix rowGap and columnGap style properties not accepting strings
+
+## 2.3.5
+
+### Patch Changes
+
+- [#2453](https://github.com/diegomura/react-pdf/pull/2453) [`e5c8fde`](https://github.com/diegomura/react-pdf/commit/e5c8fde9379a9a85ecac7e3d6273953e39d65f8d) Thanks [@chuckspencer-aiq](https://github.com/chuckspencer-aiq)! - fix: add clipPath to typing for SVGPresentationAttributes
+
+* [#2467](https://github.com/diegomura/react-pdf/pull/2467) [`1f987cc`](https://github.com/diegomura/react-pdf/commit/1f987cc27c3fd1ef1b6748ebe58a289a78b538d2) Thanks [@JaeSeoKim](https://github.com/JaeSeoKim)! - feat: add withVariationSelectors option to registerEmojiSource [#2466](https://github.com/diegomura/react-pdf/issues/2466)
+
+- [#2416](https://github.com/diegomura/react-pdf/pull/2416) [`4c40b14`](https://github.com/diegomura/react-pdf/commit/4c40b149cfed42f2513e1dd330a92ccc3363c04f) Thanks [@TheMikeyRoss](https://github.com/TheMikeyRoss)! - Updated svg.d.ts to include strokeLinejoin
+
 ## 2.3.4
 
 ### Patch Changes

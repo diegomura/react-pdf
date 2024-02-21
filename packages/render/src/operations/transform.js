@@ -43,7 +43,7 @@ const applyTransformations = (ctx, node) => {
   const origin = [node.origin.left, node.origin.top];
   const operations = node.style?.transform || node.props?.transform || [];
 
-  operations.forEach(operation => {
+  operations.forEach((operation) => {
     applySingleTransformation(ctx, operation, origin);
   });
 };

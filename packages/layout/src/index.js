@@ -16,10 +16,12 @@ import resolvePagePaddings from './steps/resolvePagePaddings';
 import resolvePercentRadius from './steps/resolvePercentRadius';
 import resolvePercentHeight from './steps/resolvePercentHeight';
 import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
+import resolveBackgroundImages from './steps/resolveBackgroundImages';
 
 const layout = asyncCompose(
   resolveZIndex,
   resolveOrigins,
+  resolveBackgroundImages,
   resolveAssets,
   resolvePagination,
   resolveTextLayout,

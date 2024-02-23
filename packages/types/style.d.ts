@@ -58,6 +58,7 @@ export interface Style {
   // Color
 
   backgroundColor?: string;
+  backgroundImage?: string;
   color?: string;
   opacity?: number;
 

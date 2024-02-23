@@ -16,6 +16,19 @@ const drawBackground = (ctx, node) => {
     .fill();
 };
 
+const drawBackgroundImage = (ctx, node) => {
+  const { top, left, width, height } = node.box;
+  const opacity = isNil(node.style?.opacity) ? 1 : node.style.opacity;
+  const image = node?.backgroundImage;
+  ctx
+    .fillOpacity(opacity)
+    .image(image, left, top , {
+      fit: [width, height],
+      align: 'center',
+      valign: 'center',
+    });
+};
+
 const renderBackground = (ctx, node) => {
   const hasBackground = !!node.box && !!node.style?.backgroundColor;
 
@@ -23,6 +36,15 @@ const renderBackground = (ctx, node) => {
     ctx.save();
     clipNode(ctx, node);
     drawBackground(ctx, node);
+    ctx.restore();
+  }
+
+  const hasBackgroundImage = !!node.box && !!node.style?.backgroundImage;
+
+  if (hasBackgroundImage) {
+    ctx.save();
+    // clipNode(ctx, node);
+    drawBackgroundImage(ctx, node);
     ctx.restore();
   }
 };

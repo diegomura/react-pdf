@@ -260,7 +260,7 @@ const paginate = async (page, pageNumber, fontStore, yoga) => {
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(
+    splittedPage = await splitPage(
       nextPage,
       pageNumber + pages.length,
       fontStore,

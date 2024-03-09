@@ -22,7 +22,7 @@ const drawBackgroundImage = (ctx, node) => {
   const image = node?.backgroundImage;
   ctx
     .fillOpacity(opacity)
-    .image(image, left, top , {
+    .image(image, left, top, {
       fit: [width, height],
       align: 'center',
       valign: 'center',
@@ -170,18 +170,28 @@ const renderBackground = (ctx, node) => {
     drawBackgroundImage(ctx, node);
     ctx.restore();
 
-    ctx.save();
-    ctx.roundedRect(left+3, top+3, width-6, height-6, borderTopLeftRadius);
-    ctx.fillColor(whiteColor.value);
-    ctx.fillOpacity(whiteColor.opacity);
-    ctx.fill();
-    ctx.restore();
-
-    // ctx.strokeOpacity(0.2);
-    // ctx.stroke('#CDD3D7');
-    // clipNodeTest(ctx, node, 1, 1, 1, 1);
-    // ctx.strokeOpacity(0.7);
-    // ctx.stroke('#CDD3D7');
+    if (node.no_top) {
+      ctx.save();
+      ctx.roundedRect(left+3, top+3 - 30, width-6, height-6  + 30, borderTopLeftRadius);
+      ctx.fillColor(whiteColor.value);
+      ctx.fillOpacity(whiteColor.opacity);
+      ctx.fill();
+      ctx.restore();
+    } else if (node.no_bottom) {
+      ctx.save();
+      ctx.roundedRect(left+3, top+3, width-6, height-6 + 30, borderTopLeftRadius);
+      ctx.fillColor(whiteColor.value);
+      ctx.fillOpacity(whiteColor.opacity);
+      ctx.fill();
+      ctx.restore();
+    } else {
+      ctx.save();
+      ctx.roundedRect(left+3, top+3, width-6, height-6, borderTopLeftRadius);
+      ctx.fillColor(whiteColor.value);
+      ctx.fillOpacity(whiteColor.opacity);
+      ctx.fill();
+      ctx.restore();
+    }
 
   }
 };
@@ -291,7 +301,7 @@ const clipNodeTest = (ctx, node, xoffset, yoffset, heightDiff, widthDiff, color)
 
   // Border left
   const rtl = Math.min(borderTopLeftRadius, 0.5 * width, 0.5 * height);
-  const ctl = rtl * (1.0 - KAPPA);
+  // const ctl = rtl * (1.0 - KAPPA);
   ctx.moveTo(left, top + height - rbl);
   ctx.lineTo(left, top + rtl);
   ctx.strokeOpacity(color.opacity);
@@ -304,8 +314,6 @@ const clipNodeTest = (ctx, node, xoffset, yoffset, heightDiff, widthDiff, color)
   // ctx.stroke(color.value);
   // ctx.fill();
 };
-
-
 
 const clipNodeTestFill = (ctx, node, xoffset, yoffset, heightDiff, widthDiff, color) => {
   if (!node.style) return;

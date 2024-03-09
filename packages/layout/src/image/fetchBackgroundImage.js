@@ -5,6 +5,8 @@ import resolveImage from '@react-pdf/image';
 import resolveSource from './resolveSource';
 import NinePatch from './ninePatch';
 
+import { createCanvas, loadImage } from "canvas";
+
 const getBackgroundSource = (node) => node?.style?.backgroundImage;
 
 /**
@@ -26,6 +28,7 @@ const fetchBackgroundImage = async (node) => {
     const source = await resolveSource(src);
     const ninePatchUtil = new NinePatch();
     const { width, height } = node.box;
+    const { no_top = false, no_bottom = false } = node;
 
     if (!source) {
       throw new Error(`Image's "src" or "source" prop returned ${source}`);
@@ -35,10 +38,29 @@ const fetchBackgroundImage = async (node) => {
     const image = await resolveImage(source, { cache });
 
     const base64Img = `data:image/png;base64, ${encodeURIComponent(image.data.toString('base64'))}`;
+    let newHeight = height;
+    if (no_top || no_bottom) {
+      newHeight = height + 15;
+    }
+    const bgImage = await ninePatchUtil.scaleImage(base64Img, width*2, newHeight*2);
 
-    const bgImage = await ninePatchUtil.scaleImage(base64Img, width*2, height*2);
+    if (no_top || no_bottom) {
+      const backgroundImage = await loadImage(bgImage, {crossOrigin: "Anonymous"});
+      // Create a temporary canvas to get the 9Patch index data.
+      let cvs, ctx;
+      cvs = createCanvas(width*2, height*2);
+      ctx = cvs.getContext('2d');
+      //crop image top or bottom
+      if (no_bottom) {
+        ctx.drawImage(backgroundImage, 0, 0, width*2, height*2, 0, 0, width*2, height*2);
+      } else if (no_top) {
+        ctx.drawImage(backgroundImage, 0, 30, width*2, height*2, 0, 0, width*2, height*2);
+      }
 
-    node.backgroundImage = bgImage;
+      node.backgroundImage = cvs.toDataURL("image/png");
+    } else {
+      node.backgroundImage = bgImage;
+    }
 
   } catch (e) {
     node.backgroundImage = { width: 0, height: 0, key: null };

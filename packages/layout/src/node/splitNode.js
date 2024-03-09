@@ -8,21 +8,33 @@ const splitNode = (node, height) => {
   if (!node) return [null, null];
 
   const nodeTop = getTop(node);
-
-  const current = Object.assign({}, node, {
-    box: {
-      ...node.box,
-      borderBottomWidth: 0,
-    },
-    style: {
-      ...node.style,
-      marginBottom: 0,
-      paddingBottom: 0,
-      borderBottomWidth: 0,
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-    },
-  });
+  let current;
+  if (node?.style?.backgroundImage) {
+    current = Object.assign({}, node, {
+      no_bottom: true,
+      box: {
+        ...node.box,
+      },
+      style: {
+        ...node.style,
+      },
+    });
+  } else {
+    current = Object.assign({}, node, {
+      box: {
+        ...node.box,
+        borderBottomWidth: 0,
+      },
+      style: {
+        ...node.style,
+        marginBottom: 0,
+        paddingBottom: 0,
+        borderBottomWidth: 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+      },
+    });
+  }
 
   current.style.height = height - nodeTop;
 
@@ -30,21 +42,34 @@ const splitNode = (node, height) => {
     ? node.box.height - (height - nodeTop)
     : null;
 
-  const next = Object.assign({}, node, {
-    box: {
-      ...node.box,
-      top: 0,
-      borderTopWidth: 0,
-    },
-    style: {
-      ...node.style,
-      marginTop: 0,
-      paddingTop: 0,
-      borderTopWidth: 0,
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0,
-    },
-  });
+  let next;
+  if (node?.style?.backgroundImage) {
+    next = Object.assign({}, node, {
+        no_top: true,
+        box: {
+          ...node.box,
+        },
+        style: {
+          ...node.style,
+        },
+      });
+  } else {
+    next = Object.assign({}, node, {
+      box: {
+        ...node.box,
+        top: 0,
+        borderTopWidth: 0,
+      },
+      style: {
+        ...node.style,
+        marginTop: 0,
+        paddingTop: 0,
+        borderTopWidth: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+      },
+    });
+  }
 
   if (nextHeight) {
     next.style.height = nextHeight;

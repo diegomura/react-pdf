@@ -1,17 +1,24 @@
-import { createCanvas, loadImage } from "canvas";
+// import { createCanvas, loadImage } from "canvas";
+import { Canvas, loadImage, Image } from "skia-canvas";
 
 class NinePatch {
   // New version
   scaleImage(srcImg, newWidth, newHeight) {
     return new Promise(async (resolve, reject) => {
-      this.bgImage = await loadImage(srcImg, {crossOrigin: "Anonymous"});
 
+      // this.bgImage = await loadImage(srcImg);
+      // const x = new Promise((res, rej) => {
+      //   res(new Image(srcImg).decode());
+      // });
+      this.bgImage = new Image();
+      this.bgImage.src = srcImg;
+      await  this.bgImage.decode();
         let destWidth = newWidth;
         let destHeight = newHeight;
 
         // Create a temporary canvas to get the 9Patch index data.
         let cvs, ctx;
-        cvs = createCanvas(destWidth, destHeight);
+        cvs = new Canvas(destWidth, destHeight);
         ctx = cvs.getContext('2d');
         ctx.drawImage(this.bgImage, 0, 0);
         // Loop over each horizontal pixel and get piece
@@ -53,7 +60,7 @@ class NinePatch {
         }
 
         let dCtx, dCanvas;
-        dCanvas = createCanvas((srcWidth * ratio).toFixed(), (srcHeight * ratio).toFixed());
+        dCanvas = new Canvas((srcWidth * ratio).toFixed(), (srcHeight * ratio).toFixed());
         dCtx = dCanvas.getContext('2d');
         // dCanvas.width = (srcWidth * ratio).toFixed();
         // dCanvas.height = (srcHeight * ratio).toFixed();
@@ -85,11 +92,11 @@ class NinePatch {
   _getPieces(data, staticColor, repeatColor) {
     let curType, tempPosition, tempWidth, tempColor, tempType;
     let tempArray = [];
-  
+
     tempColor = this._getColorPattern(data[4], data[5], data[6], data[7]);
     curType = this._getType(tempColor, staticColor, repeatColor);
     tempPosition = 1;
-  
+
     for (var i = 4, n = data.length - 4; i < n; i += 4) {
       tempColor = this._getColorPattern(data[i], data[i + 1], data[i + 2], data[i + 3]);
       tempType = this._getType(tempColor, staticColor, repeatColor);
@@ -97,13 +104,13 @@ class NinePatch {
         // box changed colors
         tempWidth = (i / 4) - tempPosition;
         tempArray.push([curType, tempPosition, tempWidth]);
-  
+
         curType = tempType;
         tempPosition = i / 4;
         tempWidth = 1;
       }
     }
-  
+
     // push end
     tempWidth = (i / 4) - tempPosition;
     tempArray.push([curType, tempPosition, tempWidth]);
@@ -112,15 +119,15 @@ class NinePatch {
   }
 
   _draw(dWidth, dHeight) {
-    let dCanvas = createCanvas(dWidth, dHeight);
+    let dCanvas = new Canvas(dWidth, dHeight);
     let dCtx = dCanvas.getContext('2d');
     // dCanvas.width = dWidth;
     // dCanvas.height = dHeight;
-  
+
     // Determine the width for the static and dynamic pieces
     let tempStaticWidth = 0;
     let tempDynamicCount = 0;
-  
+
     for (let i = 0; i < this.horizontalPieces.length; i++) {
       if (this.horizontalPieces[i][0] == 's') {
         tempStaticWidth += this.horizontalPieces[i][2];
@@ -128,9 +135,9 @@ class NinePatch {
         tempDynamicCount++;
       }
     }
-  
+
     let totalDynamicWidth = (dWidth - tempStaticWidth) / tempDynamicCount;
-  
+
     // Determine the height for the static and dynamic pieces
     var tempStaticHeight = 0;
     tempDynamicCount = 0;
@@ -141,7 +148,7 @@ class NinePatch {
         tempDynamicCount++;
       }
     }
-  
+
     let totalDynamicHeight = (dHeight - tempStaticHeight) / tempDynamicCount;
 
     // Loop through each of the vertical/horizontal pieces and draw on
@@ -152,7 +159,7 @@ class NinePatch {
         let tempFillHeight = (this.verticalPieces[i][0] == 'd') ? totalDynamicHeight : this.verticalPieces[i][2];
 
         // Stretching :
-        let tempCanvas = createCanvas(this.horizontalPieces[j][2], this.verticalPieces[i][2]);
+        let tempCanvas = new Canvas(this.horizontalPieces[j][2], this.verticalPieces[i][2]);
         // tempCanvas.width = this.horizontalPieces[j][2];
         // tempCanvas.height = this.verticalPieces[i][2];
 
@@ -168,15 +175,15 @@ class NinePatch {
         dCtx.fillRect(
           0, 0,
           tempFillWidth, tempFillHeight);
-  
+
         // Shift to next x position
         dCtx.translate(tempFillWidth, 0);
       }
-  
+
       // shift back to 0 x and down to the next line
       dCtx.translate(-dWidth, (this.verticalPieces[i][0] == 's' ? this.verticalPieces[i][2] : totalDynamicHeight));
     }
-  
+
     // store the canvas as the div's background
     return dCanvas.toDataURL("image/png");
   }
@@ -315,7 +322,7 @@ class NinePatch {
   _getOffset(srcImg) {
     return new Promise((resolve, reject) => {
       let offset = { top: 0, right: 0, bottom: 0, left: 0 }
-      let canvas = createCanvas('canvas');
+      let canvas = new Canvas('canvas');
       let context = canvas.getContext('2d');
       let image = new Image();
       image.crossOrigin = "Anonymous";

@@ -16,7 +16,6 @@ const fetchAssets = (node) => {
     const n = listToExplore.shift();
 
     if (isBackgroundImage(n)) {
-      console.log(n?.style?.backgroundImage);
       promises.push(fetchBackgroundImage(n));
     }
 

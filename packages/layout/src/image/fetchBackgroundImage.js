@@ -2,10 +2,12 @@
 
 import resolveImage from '@react-pdf/image';
 
+// import { createCanvas, loadImage } from "canvas";
+import { Canvas, loadImage } from "skia-canvas";
+
 import resolveSource from './resolveSource';
 import NinePatch from './ninePatch';
 
-import { createCanvas, loadImage } from "canvas";
 
 const getBackgroundSource = (node) => node?.style?.backgroundImage;
 
@@ -42,13 +44,13 @@ const fetchBackgroundImage = async (node) => {
     if (no_top || no_bottom) {
       newHeight = height + 15;
     }
-    const bgImage = await ninePatchUtil.scaleImage(base64Img, width*2, newHeight*2);
 
+    const bgImage = await ninePatchUtil.scaleImage(decodeURIComponent(base64Img), width*2, newHeight*2);
     if (no_top || no_bottom) {
-      const backgroundImage = await loadImage(bgImage, {crossOrigin: "Anonymous"});
+      const backgroundImage = await loadImage(bgImage);
       // Create a temporary canvas to get the 9Patch index data.
       let cvs, ctx;
-      cvs = createCanvas(width*2, height*2);
+      cvs = new Canvas(width*2, height*2);
       ctx = cvs.getContext('2d');
       //crop image top or bottom
       if (no_bottom) {

@@ -1,5 +1,17 @@
 # @react-pdf/renderer
 
+## 3.4.0
+
+### Minor Changes
+
+- [#2582](https://github.com/diegomura/react-pdf/pull/2582) [`fab09cc`](https://github.com/diegomura/react-pdf/commit/fab09cc9814326fdb44d2bcb7097ba9960d441d1) Thanks [@SethThoburn](https://github.com/SethThoburn)! - Pass \_INTERNAL\_\_LAYOUT\_\_DATA\_ to onRenderCallback in toBuffer
+
+### Patch Changes
+
+- Updated dependencies [[`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a), [`087ee22`](https://github.com/diegomura/react-pdf/commit/087ee22f63a922a2d3ee01bae3b0351f99cb9021)]:
+  - @react-pdf/pdfkit@3.1.7
+  - @react-pdf/layout@3.11.3
+
 ## 3.3.8
 
 ### Patch Changes

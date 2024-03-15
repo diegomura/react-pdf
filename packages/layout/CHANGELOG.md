@@ -1,5 +1,15 @@
 # @react-pdf/layout
 
+## 3.11.3
+
+### Patch Changes
+
+- [#2629](https://github.com/diegomura/react-pdf/pull/2629) [`087ee22`](https://github.com/diegomura/react-pdf/commit/087ee22f63a922a2d3ee01bae3b0351f99cb9021) Thanks [@diegomura](https://github.com/diegomura)! - fix: resolve styles on dynamic elements
+
+- Updated dependencies [[`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a)]:
+  - @react-pdf/pdfkit@3.1.7
+  - @react-pdf/image@2.3.5
+
 ## 3.11.2
 
 ### Patch Changes

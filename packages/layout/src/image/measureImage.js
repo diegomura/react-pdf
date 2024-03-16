@@ -68,9 +68,16 @@ const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
     heightMode === Yoga.MeasureMode.AtMost
   ) {
     if (imageRatio > 1) {
+      if (width / imageRatio < height) {
+        return {
+          width,
+          height: Math.min(width / imageRatio, height),
+        };
+      }
+
       return {
-        width,
-        height: Math.min(width / imageRatio, height),
+        height,
+        width: Math.min(width / ( node.image.height / height ), width),
       };
     }
 

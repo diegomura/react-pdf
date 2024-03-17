@@ -52,9 +52,7 @@ const fetchLocalFile = (src) =>
 const fetchRemoteFile = async (uri, options) => {
   const response = await fetch(uri, options);
 
-  const buffer = await (response.buffer
-    ? response.buffer()
-    : response.arrayBuffer());
+  const buffer = await response.arrayBuffer();
 
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };

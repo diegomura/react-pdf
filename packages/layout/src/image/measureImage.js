@@ -67,17 +67,18 @@ const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
     widthMode === Yoga.MeasureMode.AtMost &&
     heightMode === Yoga.MeasureMode.AtMost
   ) {
-    if (imageRatio > 1) {
-      if (width / imageRatio < height) {
+    if ((node.image.width/width) > 1 || (node.image.height/height) > 1) {
+      if ((node.image.width/width) > (node.image.height/height)) {
+        const newRatio = (node.image.width/width);
         return {
-          width,
-          height: Math.min(width / imageRatio, height),
+          width: Math.min(node.image.width / newRatio, width),
+          height: Math.min(node.image.height / newRatio, height),
         };
       }
-
+      const newRatio = (node.image.height/height);
       return {
-        height,
-        width: Math.min(width / ( node.image.height / height ), width),
+        width: Math.min(node.image.width / newRatio, width),
+        height: Math.min(node.image.height / newRatio, height),
       };
     }
 

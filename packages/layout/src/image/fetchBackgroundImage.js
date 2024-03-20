@@ -59,7 +59,7 @@ const fetchBackgroundImage = async (node) => {
         ctx.drawImage(backgroundImage, 0, 30, width*2, height*2, 0, 0, width*2, height*2);
       }
 
-      node.backgroundImage = cvs.toDataURL("image/png");
+      node.backgroundImage = await cvs.toDataURL("image/png");
     } else {
       node.backgroundImage = bgImage;
     }

@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.8
+
+### Patch Changes
+
+- [#2687](https://github.com/diegomura/react-pdf/pull/2687) [`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f) Thanks [@diegomura](https://github.com/diegomura)! - chore: bump jay-peg
+
 ## 3.1.7
 
 ### Patch Changes

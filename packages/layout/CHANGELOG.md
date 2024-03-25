@@ -1,5 +1,13 @@
 # @react-pdf/layout
 
+## 3.11.4
+
+### Patch Changes
+
+- Updated dependencies [[`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f)]:
+  - @react-pdf/pdfkit@3.1.8
+  - @react-pdf/image@2.3.6
+
 ## 3.11.3
 
 ### Patch Changes

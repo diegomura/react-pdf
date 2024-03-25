@@ -1,5 +1,12 @@
 # @react-pdf/e2e-node-cjs
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.1
+
 ## 2.0.1
 
 ### Patch Changes

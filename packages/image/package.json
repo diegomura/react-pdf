@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/image",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

@@ -1,5 +1,12 @@
 # @react-pdf/svgkit
 
+## 2.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f)]:
+  - @react-pdf/pdfkit@3.1.8
+
 ## 2.3.7
 
 ### Patch Changes

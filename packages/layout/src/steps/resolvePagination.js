@@ -245,7 +245,7 @@ const dissocSubPageData = (page) => {
   return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
-const paginate = (page, pageNumber, fontStore, yoga) => {
+const paginate = (page, pageNumber, fontStore, yoga,currentPageCallBack) => {
   if (!page) return [];
 
   if (page.props?.wrap === false) return [page];
@@ -254,17 +254,17 @@ const paginate = (page, pageNumber, fontStore, yoga) => {
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
-
+  let pageCount = 1;
   while (nextPage !== null) {
-    splittedPage = splitPage(
-      nextPage,
-      pageNumber + pages.length,
-      fontStore,
-      yoga,
-    );
-
+    splittedPage = splitPage(nextPage, pageNumber + pages.length, fontStore,yoga);
+    pageCount++;
+    
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
+    // Call the progressCallback to update progress
+    if (currentPageCallBack) {
+      currentPageCallBack(pageCount);
+    }
   }
 
   return pages;
@@ -276,15 +276,16 @@ const paginate = (page, pageNumber, fontStore, yoga) => {
  *
  * @param {Object} doc node
  * @param {Object} fontStore font store
+ * @param {Function} currentPageCallBack Callback to track progress
  * @returns {Object} layout node
  */
-const resolvePagination = (doc, fontStore) => {
+const resolvePagination = (doc, fontStore, currentPageCallBack) => {
   let pages = [];
   let pageNumber = 1;
 
   for (let i = 0; i < doc.children.length; i += 1) {
     const page = doc.children[i];
-    let subpages = paginate(page, pageNumber, fontStore, doc.yoga);
+    let subpages = paginate(page, pageNumber, fontStore, doc.yoga, currentPageCallBack);
 
     subpages = assocSubPageData(subpages);
     pageNumber += subpages.length;

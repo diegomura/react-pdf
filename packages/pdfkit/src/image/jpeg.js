@@ -26,6 +26,7 @@ class JPEG {
       }
 
       if (marker.name === 'SOF') {
+        this.bits ||= marker.precision;
         this.width ||= marker.width;
         this.height ||= marker.height;
         this.colorSpace ||= COLOR_SPACE_MAP[marker.numberOfComponents];

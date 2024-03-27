@@ -1,5 +1,12 @@
 # @react-pdf/e2e-node-esm
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.2
+
 ## 2.0.2
 
 ### Patch Changes

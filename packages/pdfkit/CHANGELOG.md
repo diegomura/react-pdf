@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.9
+
+### Patch Changes
+
+- [#2689](https://github.com/diegomura/react-pdf/pull/2689) [`e2d21a4`](https://github.com/diegomura/react-pdf/commit/e2d21a433b881bb96ea4d0b3a01a7297dd1f4a94) Thanks [@joelybahh](https://github.com/joelybahh)! - fix: jpeg precision metadata
+
 ## 3.1.8
 
 ### Patch Changes

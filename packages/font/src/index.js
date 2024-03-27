@@ -55,14 +55,21 @@ function FontStore() {
 
   this.load = async (descriptor) => {
     const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
+    const fontFamilies =
+      typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
 
-    if (isStandard) return;
+    const promises = [];
 
-    const f = this.getFont(descriptor);
+    for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
+      const family = fontFamilies[i];
+      const isStandard = standard.includes(family);
+      if (isStandard) return;
 
-    // We cache the font to avoid fetching it many times
-    await f.load();
+      const f = this.getFont({ ...descriptor, fontFamily: family });
+      promises.push(f.load());
+    }
+
+    await Promise.all(promises);
   };
 
   this.reset = () => {

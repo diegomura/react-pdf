@@ -132,4 +132,7 @@ jobs:
       - name: Install dependencies and build
         run: yarn --frozen-lockfile
       - name: Run E2E tests
-        run: yarn --cwd e2e/node-${{ matrix.cjs_or_esm }} run start
+        run: |
+          FORMAT_UPPERCASE=$(echo "${{ matrix.cjs_or_esm }}" | tr '[:lower:]' '[:upper:]')
+          echo "Running E2E tests in $FORMAT_UPPERCASE mode"
+          yarn --cwd e2e/node-${{ matrix.cjs_or_esm }} run start

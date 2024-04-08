@@ -172,7 +172,7 @@ const renderBackground = (ctx, node) => {
 
     if (node.no_top) {
       ctx.save();
-      ctx.roundedRect(left+3, top+3 - 30, width-6, height-6  + 30, borderTopLeftRadius);
+      ctx.roundedRect(left+3, top+3 - 10, width-6, height-6  + 10, borderTopLeftRadius);
       ctx.fillColor(whiteColor.value);
       ctx.fillOpacity(whiteColor.opacity);
       ctx.fill();

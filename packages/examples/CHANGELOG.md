@@ -1,5 +1,16 @@
 # @react-pdf/examples
 
+## 3.3.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.3
+
 ## 3.2.13
 
 ### Patch Changes

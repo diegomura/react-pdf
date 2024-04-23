@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 3.1.10
+
+### Patch Changes
+
+- [#2721](https://github.com/diegomura/react-pdf/pull/2721) [`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52) Thanks [@cfhull](https://github.com/cfhull)! - fix: support values of `0` in stroke-dasharray
+
 ## 3.1.9
 
 ### Patch Changes

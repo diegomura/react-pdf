@@ -1,5 +1,11 @@
 # @react-pdf/font
 
+## 2.5.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
 ## 2.4.4
 
 ### Patch Changes

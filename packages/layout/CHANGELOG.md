@@ -1,5 +1,16 @@
 # @react-pdf/layout
 
+## 3.12.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
+### Patch Changes
+
+- Updated dependencies [[`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52)]:
+  - @react-pdf/pdfkit@3.1.10
+
 ## 3.11.5
 
 ### Patch Changes

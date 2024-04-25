@@ -1,5 +1,12 @@
 # @react-pdf/examples
 
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.4
+
 ## 3.3.0
 
 ### Minor Changes

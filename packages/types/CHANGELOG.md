@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.5.0
+
+### Minor Changes
+
+- [#2723](https://github.com/diegomura/react-pdf/pull/2723) [`22a34a9`](https://github.com/diegomura/react-pdf/commit/22a34a91b16a201cd8288e0dbea9368b12ca73f5) Thanks [@hendrikmolder](https://github.com/hendrikmolder)! - Allow passing a string array to fontFamily
+
 ## 2.4.1
 
 ### Patch Changes

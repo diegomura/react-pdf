@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/e2e-node-cjs",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "license": "MIT",
   "private": true,
   "type": "commonjs",
@@ -12,7 +12,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^3.4.3",
+    "@react-pdf/renderer": "^3.4.4",
     "react": "^18.2.0"
   }
 }

@@ -16,7 +16,12 @@ const styles = StyleSheet.create({
   },
   regular: {
     fontFamily: ['Roboto', 'NotoSansArabic'],
+    fontSize: '14',
     fontWeight: 900,
+  },
+  default: {
+    fontFamily: ['Courier-Bold', 'NotoSansArabic'],
+    fontSize: '14',
   },
 });
 
@@ -43,7 +48,19 @@ Font.register({
 const MyDoc = () => {
   return (
     <Page style={styles.body}>
-      <Text style={styles.regular}>Test امتحان</Text>
+      <Text style={{ fontFamily: 'Courier', marginBottom: '10px' }}>
+        This font is default Courier
+      </Text>
+      <Text style={{ fontSize: 10 }}>
+        The following is partially Roboto and Noto Sans Arabic
+      </Text>
+      <Text style={[styles.regular, { marginBottom: '10px' }]}>
+        Roboto / امتحان
+      </Text>
+      <Text style={{ fontSize: 10 }}>
+        The following is partially Courier-Bold and Noto Sans Arabic
+      </Text>
+      <Text style={styles.default}>Courier-Bold / امتحان</Text>
     </Page>
   );
 };

@@ -51,10 +51,9 @@ const fontSubstitution =
     for (let i = 0; i < runs.length; i += 1) {
       const run = runs[i];
 
-      const defaultFont =
-        typeof run.attributes.font === 'string'
-          ? getOrCreateFont(run.attributes.font)
-          : run.attributes.font;
+      const defaultFont = run.attributes.font.map((font) =>
+        typeof font === 'string' ? getOrCreateFont(font) : font,
+      );
 
       if (string.length === 0) {
         res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
@@ -67,11 +66,7 @@ const fontSubstitution =
         const char = chars[j];
         const codePoint = char.codePointAt();
         // If the default font does not have a glyph and the fallback font does, we use it
-        const font = pickFontFromFontStack(
-          codePoint,
-          run.attributes.font,
-          lastFont,
-        );
+        const font = pickFontFromFontStack(codePoint, defaultFont, lastFont);
         const fontSize = getFontSize(run);
 
         // If anything that would impact res has changed, update it

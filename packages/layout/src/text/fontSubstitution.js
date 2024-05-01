@@ -60,7 +60,7 @@ const fontSubstitution =
         break;
       }
 
-      const chars = string.slice(run.start, run.end);
+      const chars = [...string.slice(run.start, run.end)];
 
       for (let j = 0; j < chars.length; j += 1) {
         const char = chars[j];

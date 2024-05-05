@@ -327,6 +327,7 @@ export type TextStyle = {
   fontFamily?: string | string[];
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
+  fontFeatureSettings?: string[] | Record<string, boolean>;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   maxLines?: number;

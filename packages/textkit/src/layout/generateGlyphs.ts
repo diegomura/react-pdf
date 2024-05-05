@@ -42,7 +42,7 @@ const layoutRun = (string: string) => {
    */
   return (run: Run) => {
     const { start, end, attributes = {} } = run;
-    const { font } = attributes;
+    const { font, features } = attributes;
 
     if (!font) return { ...run, glyphs: [], glyphIndices: [], positions: [] };
 
@@ -53,7 +53,7 @@ const layoutRun = (string: string) => {
     // passing LTR To force fontkit to not reverse the string
     const glyphRun = font[0].layout(
       runString,
-      undefined,
+      features,
       undefined,
       undefined,
       'ltr',

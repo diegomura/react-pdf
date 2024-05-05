@@ -7,6 +7,7 @@ const BASE_INHERITABLE_PROPERTIES = [
   'fontSize',
   'fontStyle',
   'fontWeight',
+  'fontFeatureSettings',
   'letterSpacing',
   'opacity',
   'textDecoration',

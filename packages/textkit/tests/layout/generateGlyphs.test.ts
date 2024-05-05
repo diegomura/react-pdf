@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import font from '../internal/font';
 import pluck from '../internal/pluck';
@@ -7,6 +7,30 @@ import generateGlyphs from '../../src/layout/generateGlyphs';
 const instance = generateGlyphs();
 
 describe('generateGlyphs', () => {
+  test('should pass features to font layout', () => {
+    const features = { liga: false };
+    const layout = vi.fn(font.layout);
+
+    instance({
+      string: 'Lorem',
+      runs: [
+        {
+          start: 0,
+          end: 5,
+          attributes: { font: [{ ...font, layout }], features },
+        },
+      ],
+    });
+
+    expect(layout).toHaveBeenCalledWith(
+      'Lorem',
+      features,
+      undefined,
+      undefined,
+      'ltr',
+    );
+  });
+
   test('should return empty glyphs if font not provided', () => {
     const result = instance({
       string: 'Lorem ipsum',

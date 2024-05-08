@@ -20,10 +20,7 @@ const getOrCreateFont = (name) => {
 const getFallbackFont = () => getOrCreateFont('Helvetica');
 
 const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
-  const fontStackWithFallback = [...fontStack, getFallbackFont()];
-  if (lastFont) {
-    fontStackWithFallback.unshift(lastFont);
-  }
+  const fontStackWithFallback = [...fontStack, lastFont, getFallbackFont()];
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
     if (
@@ -53,6 +50,11 @@ const fontSubstitution =
 
       const defaultFont = run.attributes.font.map((font) =>
         typeof font === 'string' ? getOrCreateFont(font) : font,
+      );
+
+      console.log(
+        'defaultFontGlyphCount',
+        defaultFont[0].src?.font?.attributes.CharacterSet,
       );
 
       if (string.length === 0) {

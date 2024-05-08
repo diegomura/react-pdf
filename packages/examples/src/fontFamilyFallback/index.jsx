@@ -81,7 +81,7 @@ const MyDoc = () => {
       </Text>
 
       <Text style={{ fontSize: 10 }}>
-        The following is multiple font families, weights, and styles all on the
+        The following are multiple font families, weights, and styles all on the
         same line
       </Text>
       <Text style={{ fontFamily: 'Roboto' }}>

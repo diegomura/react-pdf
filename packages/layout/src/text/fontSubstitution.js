@@ -52,11 +52,6 @@ const fontSubstitution =
         typeof font === 'string' ? getOrCreateFont(font) : font,
       );
 
-      console.log(
-        'defaultFontGlyphCount',
-        defaultFont[0].src?.font?.attributes.CharacterSet,
-      );
-
       if (string.length === 0) {
         res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
         break;

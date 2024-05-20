@@ -10,11 +10,12 @@ export const PDFViewer = ({
   style,
   className,
   children,
+  currentPageCallBack,
   innerRef,
   showToolbar = true,
   ...props
 }) => {
-  const [instance, updateInstance] = usePDF();
+  const [instance, updateInstance] = usePDF({undefined,currentPageCallBack});
 
   useEffect(() => updateInstance(children), [children]);
 

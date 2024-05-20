@@ -5,13 +5,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { pdf } from '../index';
 
-/**
- * PDF hook
- *
- * @param {Object} [options] hook options
- * @returns {[Object, Function]} pdf state and update function
- */
-export const usePDF = ({ document } = {}) => {
+export const usePDF = ({ document, currentPageCallBack } = {}) => {
   const pdfInstance = useRef(null);
 
   const [state, setState] = useState({
@@ -47,7 +41,7 @@ export const usePDF = ({ document } = {}) => {
       });
     };
 
-    pdfInstance.current = pdf();
+    pdfInstance.current = pdf(undefined,currentPageCallBack);
     pdfInstance.current.on('change', queueDocumentRender);
     if (document) {
       pdfInstance.current.updateContainer(document);

@@ -22,7 +22,7 @@ const parseValue = (value) => {
 const transformUnit = (container, value) => {
   const scalar = parseValue(value);
 
-  const dpi = container.dpi || 72;
+  const dpi = 72; // Removed: container.dpi || 72
   const mmFactor = (1 / 25.4) * dpi;
   const cmFactor = (1 / 2.54) * dpi;
 

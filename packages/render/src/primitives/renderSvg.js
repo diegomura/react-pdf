@@ -13,6 +13,7 @@ import renderPolyline from './renderPolyline';
 import renderSvgImage from './renderSvgImage';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
+import setLink from '../operations/setLink';
 import getBoundingBox from '../svg/getBoundingBox';
 
 const setStrokeWidth = (ctx, node) => {
@@ -167,6 +168,7 @@ const renderFns = {
   [P.Ellipse]: renderEllipse,
   [P.Polygon]: renderPolygon,
   [P.Polyline]: renderPolyline,
+  [P.Link]: setLink
 };
 
 const renderNode = (ctx, node) => {

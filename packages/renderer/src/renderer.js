@@ -9,11 +9,9 @@ import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const appendChild = (parentInstance, child) => {
+const appendChild = (parent, child) => {
   const isParentText =
-    parentInstance.type === 'TEXT' ||
-    parentInstance.type === 'LINK' ||
-    parentInstance.type === 'TSPAN';
+    parent.type === 'TEXT' || parent.type === 'LINK' || parent.type === 'TSPAN';
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 
@@ -26,7 +24,7 @@ const appendChild = (parentInstance, child) => {
     return;
   }
 
-  parentInstance.children.push(child);
+  parent.children.push(child);
 };
 
 const createRenderer = ({ onChange = () => {} }) => {
@@ -100,11 +98,11 @@ const createRenderer = ({ onChange = () => {} }) => {
 
     appendChild,
 
-    appendChildToContainer(parentInstance, child) {
-      if (parentInstance.type === 'ROOT') {
-        parentInstance.document = child;
+    appendChildToContainer(container, child) {
+      if (container.type === 'ROOT') {
+        container.document = child;
       } else {
-        appendChild(parentInstance, child);
+        appendChild(container, child);
       }
     },
 

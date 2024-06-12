@@ -3,6 +3,7 @@
 /* eslint-disable no-param-reassign */
 
 import ReactFiberReconciler from 'react-reconciler';
+import { DefaultEventPriority } from 'react-reconciler/constants';
 import * as scheduler from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
@@ -70,10 +71,6 @@ const createRenderer = ({ onChange = () => {} }) => {
       // Noop
     },
 
-    prepareUpdate(element, type, oldProps, newProps) {
-      return !propsEqual(oldProps, newProps);
-    },
-
     resetAfterCommit: onChange,
 
     resetTextContent(element) {
@@ -92,7 +89,7 @@ const createRenderer = ({ onChange = () => {} }) => {
       return false;
     },
 
-    now: Date.now,
+    noTimeout: -1,
 
     useSyncScheduling: true,
 
@@ -135,10 +132,31 @@ const createRenderer = ({ onChange = () => {} }) => {
       textInstance.value = newText;
     },
 
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+    commitUpdate(instance, type, oldProps, newProps) {
+      if (propsEqual(oldProps, newProps)) return;
       const { style, ...props } = newProps;
       instance.props = props;
       instance.style = style;
+    },
+
+    getCurrentUpdatePriority() {
+      return DefaultEventPriority;
+    },
+
+    setCurrentUpdatePriority() {},
+
+    resolveUpdatePriority() {
+      return DefaultEventPriority;
+    },
+
+    shouldAttemptEagerTransition() {
+      return false;
+    },
+
+    requestPostPaintCallback() {},
+
+    maySuspendCommit() {
+      return false;
     },
   });
 };

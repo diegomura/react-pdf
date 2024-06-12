@@ -35,8 +35,7 @@ const getPlugins = ({ browser, declarationDests, minify = false }) => [
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   alias({
     entries: {
-      'react-reconciler':
-        'react-reconciler/cjs/react-reconciler.production.min.js',
+      'react-reconciler': 'react-reconciler/cjs/react-reconciler.production.js',
     },
   }),
   babel(babelConfig()),

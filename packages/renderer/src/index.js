@@ -1,7 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
+import { ConcurrentRoot } from 'react-reconciler/constants';
 
 import createRenderer from './renderer';
 import packageJson from '../package.json';
@@ -23,12 +26,27 @@ const pdf = (initialValue) => {
     for (let i = 0; i < listeners.length; i += 1) listeners[i]();
   };
 
+  const logRecoverableError =
+    typeof reportError === 'function' ? reportError : console.error;
+
   const container = { type: 'ROOT', document: null };
   renderer = renderer || createRenderer({ onChange });
-  const mountNode = renderer.createContainer(container);
+  const mountNode = renderer.createContainer(
+    container,
+    ConcurrentRoot, // tag
+    null, // hydration callbacks
+    false, // isStrictMode
+    null, // concurrentUpdatesByDefaultOverride
+    '', // identifierPrefix
+    logRecoverableError, // onUncaughtError
+    logRecoverableError, // onCaughtError
+    logRecoverableError, // onRecoverableError
+    null, // transitionCallbacks
+  );
 
   const updateContainer = (doc, callback) => {
-    renderer.updateContainer(doc, mountNode, null, callback);
+    renderer.updateContainerSync(doc, mountNode, null, callback);
+    renderer.flushSyncWork();
   };
 
   if (initialValue) updateContainer(initialValue);
@@ -84,11 +102,8 @@ const pdf = (initialValue) => {
 
   // TODO: rename this method to `toStream` in next major release, because it return stream not a buffer
   const toBuffer = async () => {
-    const {
-      layout: _INTERNAL__LAYOUT__DATA_,
-      fileStream,
-    } = await render();
-    callOnRender({_INTERNAL__LAYOUT__DATA_});
+    const { layout: _INTERNAL__LAYOUT__DATA_, fileStream } = await render();
+    callOnRender({ _INTERNAL__LAYOUT__DATA_ });
 
     return fileStream;
   };

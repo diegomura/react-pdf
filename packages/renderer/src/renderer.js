@@ -3,17 +3,16 @@
 /* eslint-disable no-param-reassign */
 
 import ReactFiberReconciler from 'react-reconciler';
+import { DefaultEventPriority } from 'react-reconciler/constants';
 import * as scheduler from 'scheduler';
 
 import propsEqual from './utils/propsEqual';
 
 const emptyObject = {};
 
-const appendChild = (parentInstance, child) => {
+const appendChild = (parent, child) => {
   const isParentText =
-    parentInstance.type === 'TEXT' ||
-    parentInstance.type === 'LINK' ||
-    parentInstance.type === 'TSPAN';
+    parent.type === 'TEXT' || parent.type === 'LINK' || parent.type === 'TSPAN';
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 
@@ -26,7 +25,7 @@ const appendChild = (parentInstance, child) => {
     return;
   }
 
-  parentInstance.children.push(child);
+  parent.children.push(child);
 };
 
 const createRenderer = ({ onChange = () => {} }) => {
@@ -72,10 +71,6 @@ const createRenderer = ({ onChange = () => {} }) => {
       // Noop
     },
 
-    prepareUpdate(element, type, oldProps, newProps) {
-      return !propsEqual(oldProps, newProps);
-    },
-
     resetAfterCommit: onChange,
 
     resetTextContent(element) {
@@ -94,17 +89,17 @@ const createRenderer = ({ onChange = () => {} }) => {
       return false;
     },
 
-    now: Date.now,
+    noTimeout: -1,
 
     useSyncScheduling: true,
 
     appendChild,
 
-    appendChildToContainer(parentInstance, child) {
-      if (parentInstance.type === 'ROOT') {
-        parentInstance.document = child;
+    appendChildToContainer(container, child) {
+      if (container.type === 'ROOT') {
+        container.document = child;
       } else {
-        appendChild(parentInstance, child);
+        appendChild(container, child);
       }
     },
 
@@ -137,10 +132,31 @@ const createRenderer = ({ onChange = () => {} }) => {
       textInstance.value = newText;
     },
 
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
+    commitUpdate(instance, type, oldProps, newProps) {
+      if (propsEqual(oldProps, newProps)) return;
       const { style, ...props } = newProps;
       instance.props = props;
       instance.style = style;
+    },
+
+    getCurrentUpdatePriority() {
+      return DefaultEventPriority;
+    },
+
+    setCurrentUpdatePriority() {},
+
+    resolveUpdatePriority() {
+      return DefaultEventPriority;
+    },
+
+    shouldAttemptEagerTransition() {
+      return false;
+    },
+
+    requestPostPaintCallback() {},
+
+    maySuspendCommit() {
+      return false;
     },
   });
 };

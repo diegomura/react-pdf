@@ -22,28 +22,17 @@ const babelConfig = () => ({
 const getExternal = ({ browser }) => [
   /@babel\/runtime/,
   'react/jsx-runtime',
+  'react-reconciler/constants',
   ...(browser ? [] : ['fs', 'path', 'url']),
   ...Object.keys(pkg.dependencies),
-  // ...Object.keys(pkg.dependencies).filter(
-  //   (name) => name !== 'react-reconciler',
-  // ),
   ...Object.keys(pkg.peerDependencies),
 ];
 
 const getPlugins = ({ browser, declarationDests, minify = false }) => [
   json(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
-  // alias({
-  //   entries: {
-  //     'react-reconciler': 'react-reconciler/cjs/react-reconciler.production.js',
-  //     'react-reconciler/constants':
-  //       'react-reconciler/cjs/react-reconciler-constants.production.js',
-  //   },
-  // }),
   babel(babelConfig()),
-  commonjs({
-    esmExternals: ['scheduler'],
-  }),
+  commonjs(),
   nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
     preventAssignment: true,

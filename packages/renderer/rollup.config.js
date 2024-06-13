@@ -39,7 +39,6 @@ const getPlugins = ({ browser, declarationDests, minify = false }) => [
     preventAssignment: true,
     values: {
       BROWSER: JSON.stringify(browser),
-      'process.env.NODE_ENV': JSON.stringify('production'),
     },
   }),
   copy({

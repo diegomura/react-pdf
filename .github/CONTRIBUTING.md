@@ -48,7 +48,6 @@ We need to download this project dependencies in order to make it work. Because 
 
 ```sh
 yarn install
-yarn bootstrap
 ```
 
 ### 4. Build & watch codebase

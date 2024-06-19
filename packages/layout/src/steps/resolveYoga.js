@@ -1,7 +1,7 @@
 import { loadYoga } from '../yoga/index';
 
-const resolveYoga = async (root) => {
-  const yoga = await loadYoga();
+const resolveYoga = (root) => {
+  const yoga = loadYoga();
 
   return Object.assign({}, root, { yoga });
 };

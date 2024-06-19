@@ -2,7 +2,7 @@
 
 import Yoga from 'yoga-layout';
 
-export const loadYoga = async () => {
+export const loadYoga = () => {
   const config = Yoga.Config.create();
 
   config.setPointScaleFactor(0);

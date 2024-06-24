@@ -60,7 +60,7 @@
     "jsdom": "^23.2.0",
     "lerna": "^8.0.2",
     "lint-staged": "^10.5.4",
-    "pdfjs-dist": "4.2.67",
+    "pdfjs-dist": "3.2.146",
     "prettier": "^3.2.0",
     "react": "^18.2.0",
     "react-16": "npm:react@^16.8.0",

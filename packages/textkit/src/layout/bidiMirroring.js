@@ -1,8 +1,17 @@
 import bidiFactory from 'bidi-js';
 import { repeat } from '@react-pdf/fns';
 
+/**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Run} Run
+ */
+
 const bidi = bidiFactory();
 
+/**
+ * @param {Run[]} runs
+ * @returns {number[]} bidi levels
+ */
 const getBidiLevels = (runs) => {
   return runs.reduce((acc, run) => {
     const length = run.end - run.start;

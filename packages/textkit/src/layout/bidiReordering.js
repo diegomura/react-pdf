@@ -3,8 +3,19 @@ import { repeat } from '@react-pdf/fns';
 
 import stringLength from '../attributedString/length';
 
+/**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Glyph} Glyph
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
 const bidi = bidiFactory();
 
+/**
+ * @param {Run[]} runs
+ * @returns {number[]} bidi levels
+ */
 const getBidiLevels = (runs) => {
   return runs.reduce((acc, run) => {
     const length = run.end - run.start;
@@ -30,6 +41,13 @@ const getReorderedIndices = (string, segments) => {
   return indices;
 };
 
+/**
+ * @template {'glyphs'|'positions'} T
+ * @param {Run[]} runs
+ * @param {T} objectName
+ * @param {number} index
+ * @returns {T extends 'glyphs' ? Glyph|undefined : Position|undefined}
+ */
 const getItemAtIndex = (runs, objectName, index) => {
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i];
@@ -42,6 +60,10 @@ const getItemAtIndex = (runs, objectName, index) => {
   throw new Error(`index ${index} out of range`);
 };
 
+/**
+ * @param {AttributedString} attributedString attributed string
+ * @returns {AttributedString} reordered attributed string
+ */
 const reorderLine = (attributedString) => {
   const levels = getBidiLevels(attributedString.runs);
   const direction = attributedString.runs[0]?.attributes.direction;
@@ -103,15 +125,23 @@ const reorderLine = (attributedString) => {
   };
 };
 
+/**
+ * Reorder a paragraph
+ *
+ * @param {AttributedString[]} lines
+ * @returns {AttributedString[]} reordered lines
+ */
 const reorderParagraph = (lines) => lines.map(reorderLine);
 
 /**
  * Perform bidi reordering
+ *
+ * @returns {(paragraphs: AttributedString[][]) => AttributedString[][]} reordered paragraphs
  */
 const bidiReordering = () => {
   /**
-   * @param {Object[]} paragraphs line blocks
-   * @returns {Object[]} paragraphs
+   * @param {AttributedString[][]} paragraphs line blocks
+   * @returns {AttributedString[][]} reordered line blocks
    */
   return (paragraphs) => paragraphs.map(reorderParagraph);
 };

@@ -20,10 +20,7 @@ const getOrCreateFont = (name) => {
 const getFallbackFont = () => getOrCreateFont('Helvetica');
 
 const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
-  const fontStackWithFallback = [...fontStack, getFallbackFont()];
-  if (lastFont) {
-    fontStackWithFallback.unshift(lastFont);
-  }
+  const fontStackWithFallback = [...fontStack, lastFont, getFallbackFont()];
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
     if (

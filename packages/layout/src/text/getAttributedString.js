@@ -32,6 +32,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     fontWeight,
     fontStyle,
     fontSize = 18,
+    fontFeatureSettings,
     textAlign,
     lineHeight,
     textDecoration,
@@ -83,6 +84,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     link: parentLink || instance.props?.src || instance.props?.href,
     lineHeight: lineHeight ? lineHeight * fontSize : null,
     align: textAlign || (direction === 'rtl' ? 'right' : 'left'),
+    features: fontFeatureSettings,
   };
 
   for (let i = 0; i < instance.children.length; i += 1) {

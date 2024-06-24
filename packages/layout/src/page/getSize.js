@@ -78,8 +78,8 @@ const flipSizeObject = (v) => ({ width: v.height, height: v.width });
  * @returns {{ width: number, height: number }} adjusted size object
  */
 const adjustDpi = (v, dpi) => ({
-  width: v.width ? v.width * dpi : v.width,
-  height: v.height ? v.height * dpi : v.height,
+  width: v.width ? v.width * (72 / dpi) : v.width,
+  height: v.height ? v.height * (72 / dpi) : v.height,
 });
 
 /**
@@ -121,13 +121,14 @@ const getSize = (page) => {
     size = getStringSize(value);
   } else if (Array.isArray(value)) {
     size = toSizeObject(value);
+    size = adjustDpi(size, dpi);
   } else if (type === 'number') {
     size = getNumberSize(value);
+    size = adjustDpi(size, dpi);
   } else {
     size = value;
+    size = adjustDpi(size, dpi);
   }
-
-  size = adjustDpi(size, dpi / 72);
 
   return isLandscape(page) ? flipSizeObject(size) : size;
 };

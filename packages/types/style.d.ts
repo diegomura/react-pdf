@@ -64,7 +64,7 @@ export interface Style {
   // Text
 
   fontSize?: number | string;
-  fontFamily?: string;
+  fontFamily?: string | string[];
   fontStyle?: string | 'normal';
   fontWeight?:
     | number

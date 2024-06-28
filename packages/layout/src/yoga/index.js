@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 
-import * as Yoga from 'yoga-layout';
+import { loadYoga as yogaLoadYoga } from 'yoga-layout/load';
 
 export const loadYoga = async () => {
-  const instance = await Yoga.loadYoga();
+  const instance = await yogaLoadYoga();
   const config = instance.Config.create();
 
   config.setPointScaleFactor(0);

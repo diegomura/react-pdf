@@ -10,7 +10,7 @@ const calcLayout = (node) => resolvePagination(resolveDimensions(node));
 
 describe('pagination step', () => {
   test('should stretch absolute block to full page size', async () => {
-    const yoga = loadYoga();
+    const yoga = await loadYoga();
 
     const root = {
       type: 'DOCUMENT',
@@ -63,7 +63,7 @@ describe('pagination step', () => {
   });
 
   test('should force new height for split nodes', async () => {
-    const yoga = loadYoga();
+    const yoga = await loadYoga();
 
     const root = {
       type: 'DOCUMENT',
@@ -113,7 +113,7 @@ describe('pagination step', () => {
   });
 
   test('should force new height for split nodes with fixed height', async () => {
-    const yoga = loadYoga();
+    const yoga = await loadYoga();
 
     const root = {
       type: 'DOCUMENT',
@@ -152,7 +152,7 @@ describe('pagination step', () => {
   });
 
   test('should not wrap page with false wrap prop', async () => {
-    const yoga = loadYoga();
+    const yoga = await loadYoga();
 
     const root = {
       type: 'DOCUMENT',
@@ -187,7 +187,7 @@ describe('pagination step', () => {
   });
 
   test('should break on a container whose children can not fit on a page', async () => {
-    const yoga = loadYoga();
+    const yoga = await loadYoga();
 
     const root = {
       type: 'DOCUMENT',

@@ -1,8 +1,11 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import assert from 'node:assert';
 import { test } from 'node:test';
 import { jsx } from 'react/jsx-runtime';
 import { Document, Page, Text, renderToBuffer } from '@react-pdf/renderer';
+
+const platform = os.platform();
 
 const MyDocument = () =>
   jsx(Document, {
@@ -28,7 +31,7 @@ function removeMovingParts(buffer) {
 
 test('rendering a PDF', async () => {
   const bufferPromise = renderToBuffer(jsx(MyDocument, {}));
-  const referenceBufferPromise = fs.readFile('../reference.pdf');
+  const referenceBufferPromise = fs.readFile(`../reference-${platform}.pdf`);
 
   const [buffer, referenceBuffer] = await Promise.all([
     bufferPromise,

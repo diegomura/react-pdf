@@ -5,6 +5,9 @@ import React from 'react';
 import { Document, Page, Text, StyleSheet, Font } from '@react-pdf/renderer';
 
 import RobotoFont from '../../public/Roboto-Regular.ttf';
+import RobotoBoldFont from '../../public/Roboto-Bold.ttf';
+import RobotItalicFont from '../../public/Roboto-Italic.ttf';
+
 import NotoSansArabicFont from '../../public/NotoSansArabic-Regular.ttf';
 
 const styles = StyleSheet.create({
@@ -30,7 +33,18 @@ Font.register({
   fonts: [
     {
       src: RobotoFont,
-      fontWeight: 400,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+    },
+    {
+      src: RobotItalicFont,
+      fontStyle: 'italic',
+      fontWeight: 'normal',
+    },
+    {
+      src: RobotoBoldFont,
+      fontStyle: 'normal',
+      fontWeight: 'bold',
     },
   ],
 });
@@ -48,19 +62,36 @@ Font.register({
 const MyDoc = () => {
   return (
     <Page style={styles.body}>
-      <Text style={{ fontFamily: 'Courier', marginBottom: '10px' }}>
+      <Text style={{ fontFamily: 'Courier', marginBottom: '20px' }}>
         This font is default Courier
       </Text>
+
       <Text style={{ fontSize: 10 }}>
         The following is partially Roboto and Noto Sans Arabic
       </Text>
-      <Text style={[styles.regular, { marginBottom: '10px' }]}>
+      <Text style={[styles.regular, { marginBottom: '20px' }]}>
         Roboto / امتحان
       </Text>
+
       <Text style={{ fontSize: 10 }}>
         The following is partially Courier-Bold and Noto Sans Arabic
       </Text>
-      <Text style={styles.default}>Courier-Bold / امتحان</Text>
+      <Text style={[styles.default, { marginBottom: '20px' }]}>
+        Courier-Bold / امتحان
+      </Text>
+
+      <Text style={{ fontSize: 10 }}>
+        The following are multiple font families, weights, and styles all on the
+        same line
+      </Text>
+      <Text style={{ fontFamily: 'Roboto' }}>
+        Roboto Normal{' / '}
+        <Text style={{ fontWeight: 'bold' }}>Roboto Bold</Text>
+        {' / '}
+        <Text style={{ fontStyle: 'italic' }}>Roboto Italic</Text>
+        {' / '}
+        <Text style={{ fontFamily: 'Courier' }}>Courier</Text>
+      </Text>
     </Page>
   );
 };

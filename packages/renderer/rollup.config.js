@@ -46,7 +46,7 @@ const getExternal = ({ browser }) => [
 ];
 
 const getPlugins = ({ browser, declarationDests, minify = false }) => [
-  json(),
+  json({ namedExports: false }),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   alias({
     entries: {

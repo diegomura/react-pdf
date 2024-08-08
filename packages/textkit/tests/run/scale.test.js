@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import scale from '../../src/run/scale';
 
 describe('run scale operator', () => {

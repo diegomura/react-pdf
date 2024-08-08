@@ -1,51 +1,56 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
 
 import setYogaValue from './setYogaValue';
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set padding top attribute to node's Yoga instance
  *
- * @param {Number} padding top
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} padding padding top
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setPaddingTop = setYogaValue('padding', Yoga.EDGE_TOP);
+export const setPaddingTop = setYogaValue('padding', Yoga.Edge.Top);
 
 /**
  * Set padding right attribute to node's Yoga instance
  *
- * @param {Number} padding right
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} padding padding right
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setPaddingRight = setYogaValue('padding', Yoga.EDGE_RIGHT);
+export const setPaddingRight = setYogaValue('padding', Yoga.Edge.Right);
 
 /**
  * Set padding bottom attribute to node's Yoga instance
  *
- * @param {Number} padding bottom
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} padding padding bottom
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setPaddingBottom = setYogaValue('padding', Yoga.EDGE_BOTTOM);
+export const setPaddingBottom = setYogaValue('padding', Yoga.Edge.Bottom);
 
 /**
  * Set padding left attribute to node's Yoga instance
  *
- * @param {Number} padding left
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} padding padding left
+ * @param {Object} node node instance
+ * @returns {Object} node instance
  */
-export const setPaddingLeft = setYogaValue('padding', Yoga.EDGE_LEFT);
+export const setPaddingLeft = setYogaValue('padding', Yoga.Edge.Left);
 
 /**
  * Set all paddings at once
  *
- * @param {Number} margin
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number | string} padding padding
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
-export const setPadding = padding => node => {
+export const setPadding = (padding) => (node) => {
   setPaddingTop(padding)(node);
   setPaddingRight(padding)(node);
   setPaddingBottom(padding)(node);

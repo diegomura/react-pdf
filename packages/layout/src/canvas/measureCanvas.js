@@ -6,7 +6,7 @@ import isHeightAuto from '../page/isHeightAuto';
 
 const SAFETY_HEIGHT = 10;
 
-const getMax = values => Math.max(-Infinity, ...values);
+const getMax = (values) => Math.max(-Infinity, ...values);
 
 /**
  * Helper object to predict canvas size
@@ -88,22 +88,23 @@ const measureCtx = () => {
   ctx.linearGradient = nil;
   ctx.radialGradient = nil;
 
-  ctx.getWidth = () => getMax(points.map(p => p[0]));
-  ctx.getHeight = () => getMax(points.map(p => p[1]));
+  ctx.getWidth = () => getMax(points.map((p) => p[0]));
+  ctx.getHeight = () => getMax(points.map((p) => p[1]));
 
   return ctx;
 };
+
+/**
+ * @typedef {Function} MeasureCanvas
+ * @returns {{ width: number, height: number }} canvas width and height
+ */
 
 /**
  * Yoga canvas measure function
  *
  * @param {Object} page
  * @param {Object} node
- * @param {Number} width
- * @param {Number} widthMode
- * @param {Number} height
- * @param {Number} heightMode
- * @returns {Object} canvas width and height
+ * @returns {MeasureCanvas} measure canvas
  */
 const measureCanvas = (page, node) => () => {
   const imageMargin = getMargin(node);
@@ -124,7 +125,7 @@ const measureCanvas = (page, node) => () => {
   const width = ctx.getWidth();
   const height = Math.min(pageArea, ctx.getHeight());
 
-  return { height, width };
+  return { width, height };
 };
 
 export default measureCanvas;

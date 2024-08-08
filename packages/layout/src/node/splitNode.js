@@ -1,8 +1,8 @@
 import { isNil } from '@react-pdf/fns';
 
-const getTop = node => node.box?.top || 0;
+const getTop = (node) => node.box?.top || 0;
 
-const hasFixedHeight = node => !isNil(node.style?.height);
+const hasFixedHeight = (node) => !isNil(node.style?.height);
 
 const splitNode = (node, height) => {
   if (!node) return [null, null];

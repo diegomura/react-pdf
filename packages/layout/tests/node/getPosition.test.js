@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import getPosition from '../../src/node/getPosition';
 
 const getComputedTop = () => 10;

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import slice from '../../src/glyph/slice';
 import font from '../internal/font';
 

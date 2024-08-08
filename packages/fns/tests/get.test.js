@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import get from '../src/get';
 
 describe('get', () => {

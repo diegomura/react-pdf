@@ -13,7 +13,7 @@ const BASE_FONT_SIZE = 12;
  * DecorationLines for a line fragment, including underlines
  * and strikes.
  */
-const textDecoration = () => lineFragment => {
+const textDecoration = () => (lineFragment) => {
   let x = lineFragment.overflowLeft || 0;
   const overflowRight = lineFragment.overflowRight || 0;
   const maxX = advanceWidth(lineFragment) - overflowRight;

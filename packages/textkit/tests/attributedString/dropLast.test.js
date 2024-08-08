@@ -1,24 +1,26 @@
+import { describe, expect, test } from 'vitest';
+
 import pluck from '../internal/pluck';
 import dropLast from '../../src/attributedString/dropLast';
 
 describe('attributeString dropLast operator', () => {
   test('should dropLast with one run', () => {
-    const runs = [{ start: 0, end: 11, attributes: { attr: 1 } }];
+    const runs = [{ start: 0, end: 11, attributes: { font: {} } }];
     const string = { string: 'Lorem ipsum', runs };
     const result = dropLast(string);
 
     expect(result.string).toBe('Lorem ipsu');
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 10);
-    expect(result.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(result.runs[0]).toHaveProperty('attributes', { font: {} });
   });
 
   test('should dropLast with two runs', () => {
     const string = {
       string: 'Lorem ipsum',
       runs: [
-        { start: 0, end: 6, attributes: { attr: 1 } },
-        { start: 6, end: 11, attributes: { attr: 2 } },
+        { start: 0, end: 6, attributes: { font: {} } },
+        { start: 6, end: 11, attributes: { fontSize: 16 } },
       ],
     };
     const splittedString = dropLast(string);
@@ -26,17 +28,19 @@ describe('attributeString dropLast operator', () => {
     expect(splittedString.string).toBe('Lorem ipsu');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 6);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
     expect(splittedString.runs[1]).toHaveProperty('start', 6);
     expect(splittedString.runs[1]).toHaveProperty('end', 10);
-    expect(splittedString.runs[1]).toHaveProperty('attributes', { attr: 2 });
+    expect(splittedString.runs[1]).toHaveProperty('attributes', {
+      fontSize: 16,
+    });
   });
 
   test('should slice with several runs', () => {
     const runs = [
-      { start: 0, end: 3, attributes: { attr: 1 } },
-      { start: 3, end: 6, attributes: { attr: 2 } },
-      { start: 6, end: 11, attributes: { attr: 3 } },
+      { start: 0, end: 3, attributes: { font: {} } },
+      { start: 3, end: 6, attributes: { fontSize: 16 } },
+      { start: 6, end: 11, attributes: { fontSize: 20 } },
     ];
     const string = { string: 'Lorem ipsum', runs };
     const splittedString = dropLast(string);
@@ -44,13 +48,17 @@ describe('attributeString dropLast operator', () => {
     expect(splittedString.string).toBe('Lorem ipsu');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 3);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { attr: 1 });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
     expect(splittedString.runs[1]).toHaveProperty('start', 3);
     expect(splittedString.runs[1]).toHaveProperty('end', 6);
-    expect(splittedString.runs[1]).toHaveProperty('attributes', { attr: 2 });
+    expect(splittedString.runs[1]).toHaveProperty('attributes', {
+      fontSize: 16,
+    });
     expect(splittedString.runs[2]).toHaveProperty('start', 6);
     expect(splittedString.runs[2]).toHaveProperty('end', 10);
-    expect(splittedString.runs[2]).toHaveProperty('attributes', { attr: 3 });
+    expect(splittedString.runs[2]).toHaveProperty('attributes', {
+      fontSize: 20,
+    });
   });
 
   test('should dropLast glyphs with one run', () => {

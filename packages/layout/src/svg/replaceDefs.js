@@ -2,9 +2,9 @@ import * as P from '@react-pdf/primitives';
 
 import getDefs from './getDefs';
 
-const isNotDefs = node => node.type !== P.Defs;
+const isNotDefs = (node) => node.type !== P.Defs;
 
-const detachDefs = node => {
+const detachDefs = (node) => {
   if (!node.children) return node;
 
   const children = node.children.filter(isNotDefs);
@@ -24,7 +24,7 @@ const replaceDef = (defs, value) => {
   return defs[match[1]];
 };
 
-const parseNodeDefs = defs => node => {
+const parseNodeDefs = (defs) => (node) => {
   const fill = replaceDef(defs, node.props?.fill);
   const clipPath = replaceDef(defs, node.props?.clipPath);
   const props = Object.assign({}, node.props, { fill, clipPath });
@@ -35,7 +35,7 @@ const parseNodeDefs = defs => node => {
   return Object.assign({}, node, { props, children });
 };
 
-const parseDefs = root => {
+const parseDefs = (root) => {
   if (!root.children) return root;
 
   const defs = getDefs(root);
@@ -44,7 +44,7 @@ const parseDefs = root => {
   return Object.assign({}, root, { children });
 };
 
-const replaceDefs = node => {
+const replaceDefs = (node) => {
   return detachDefs(parseDefs(node));
 };
 

@@ -1,7 +1,8 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import setAspectRatio from '../../src/node/setAspectRatio';
 
 describe('node setAspectRatio', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setAspectRatio: mock } };
 
   beforeEach(() => {

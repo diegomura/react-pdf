@@ -5,9 +5,9 @@ import { isNil, last } from '@react-pdf/fns';
  *
  * Ex. appendIndices(3, [0, 1, 2, 2]) => [0, 1, 2, 2, 3, 3, 3]
  *
- * @param  {number}  length
- * @param  {Array}  glyph indices
- * @return {Array}  extended glyph indices
+ * @param {number} length length
+ * @param {number[]} indices glyph indices
+ * @returns {number[]} extended glyph indices
  */
 const appendIndices = (length, indices) => {
   const lastIndex = last(indices);

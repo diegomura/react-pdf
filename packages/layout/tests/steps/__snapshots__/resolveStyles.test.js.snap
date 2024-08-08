@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`layout resolveStyles Should overide default link styles 1`] = `
+exports[`layout resolveStyles > Should overide default link styles 1`] = `
 {
   "children": [
     {
@@ -25,7 +25,7 @@ exports[`layout resolveStyles Should overide default link styles 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should overide default link styles with array 1`] = `
+exports[`layout resolveStyles > Should overide default link styles with array 1`] = `
 {
   "children": [
     {
@@ -50,7 +50,7 @@ exports[`layout resolveStyles Should overide default link styles with array 1`] 
 }
 `;
 
-exports[`layout resolveStyles Should resolve default link styles 1`] = `
+exports[`layout resolveStyles > Should resolve default link styles 1`] = `
 {
   "children": [
     {
@@ -75,7 +75,7 @@ exports[`layout resolveStyles Should resolve default link styles 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should resolve nested node styles 1`] = `
+exports[`layout resolveStyles > Should resolve nested node styles 1`] = `
 {
   "children": [
     {
@@ -115,7 +115,7 @@ exports[`layout resolveStyles Should resolve nested node styles 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should resolve nested node styles array 1`] = `
+exports[`layout resolveStyles > Should resolve nested node styles array 1`] = `
 {
   "children": [
     {
@@ -155,7 +155,7 @@ exports[`layout resolveStyles Should resolve nested node styles array 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should resolve nested node styles media queries 1`] = `
+exports[`layout resolveStyles > Should resolve nested node styles media queries 1`] = `
 {
   "children": [
     {
@@ -185,7 +185,7 @@ exports[`layout resolveStyles Should resolve nested node styles media queries 1`
 }
 `;
 
-exports[`layout resolveStyles Should resolve nested node styles media queries with page style 1`] = `
+exports[`layout resolveStyles > Should resolve nested node styles media queries with page style 1`] = `
 {
   "children": [
     {
@@ -214,7 +214,7 @@ exports[`layout resolveStyles Should resolve nested node styles media queries wi
 }
 `;
 
-exports[`layout resolveStyles Should resolve page styles 1`] = `
+exports[`layout resolveStyles > Should resolve page styles 1`] = `
 {
   "children": [
     {
@@ -244,7 +244,7 @@ exports[`layout resolveStyles Should resolve page styles 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should resolve page styles array 1`] = `
+exports[`layout resolveStyles > Should resolve page styles array 1`] = `
 {
   "children": [
     {
@@ -274,7 +274,7 @@ exports[`layout resolveStyles Should resolve page styles array 1`] = `
 }
 `;
 
-exports[`layout resolveStyles Should resolve several pages styles 1`] = `
+exports[`layout resolveStyles > Should resolve several pages styles 1`] = `
 {
   "children": [
     {

@@ -17,7 +17,8 @@ export default {
   },
 
   font(src, family, size) {
-    let cacheKey, font;
+    let cacheKey;
+    let font;
     if (typeof family === 'number') {
       size = family;
       family = null;
@@ -82,9 +83,9 @@ export default {
   registerFont(name, src, family) {
     this._registeredFonts[name] = {
       src,
-      family,
+      family
     };
 
     return this;
-  },
+  }
 };

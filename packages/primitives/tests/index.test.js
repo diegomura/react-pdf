@@ -1,4 +1,6 @@
-const primitives = require('../src');
+import { describe, expect, test } from 'vitest';
+
+import * as primitives from '../src';
 
 describe('primitives', () => {
   test('should export group', () => {

@@ -7,6 +7,7 @@
 > React-pdf render engine
 
 ## How to install
+
 ```sh
 yarn add @react-pdf/render
 ```
@@ -61,8 +62,8 @@ render.default(ctx, doc);
 
 This library exports a `render` function that takes two arguments:
 
-- *ctx*: This is the target context where the document is going to be rendered. React-pdf currently uses a [pdfkit](https://github.com/react-pdf/pdfkit) document as context, but it can target any other type of structure as long as it signature matches pdfkit API. In the future this will enable rendering documents into muliple formats in addition to PDF.
-- *node*: Document root node. A node is a nested structure that defines a single element in a document. They are defined by it's `type` and arguments.
+- _ctx_: This is the target context where the document is going to be rendered. React-pdf currently uses a [pdfkit](https://github.com/react-pdf/pdfkit) document as context, but it can target any other type of structure as long as it signature matches pdfkit API. In the future this will enable rendering documents into muliple formats in addition to PDF.
+- _node_: Document root node. A node is a nested structure that defines a single element in a document. They are defined by it's `type` and arguments.
 
 ## Node structure
 

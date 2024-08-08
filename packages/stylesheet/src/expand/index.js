@@ -49,9 +49,9 @@ const shorthands = {
 /**
  * Transforms style key-value
  *
- * @param {String} key style key
- * @param {String} value style value
- * @returns {String | Number} transformed style values
+ * @param {string} key style key
+ * @param {string} value style value
+ * @returns {string | Number} transformed style values
  */
 const expandStyle = (key, value) => {
   return shorthands[key] ? shorthands[key](key, value) : { [key]: value };
@@ -60,10 +60,10 @@ const expandStyle = (key, value) => {
 /**
  * Expand the shorthand properties.
  *
- * @param { Object } style object
- * @returns { Object } expanded style object
+ * @param {Object} style object
+ * @returns {Object} expanded style object
  */
-const expand = style => {
+const expand = (style) => {
   if (!style) return style;
 
   const propsArray = Object.keys(style);

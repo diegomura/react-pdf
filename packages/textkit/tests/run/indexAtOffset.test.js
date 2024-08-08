@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import indexAtOffset from '../../src/run/indexAtOffset';
 
 describe('run indexAtOffset operator', () => {
@@ -26,7 +28,7 @@ describe('run indexAtOffset operator', () => {
       ],
     };
 
-    expect(indexAtOffset(run, 5)).toBe(0);
+    expect(indexAtOffset(5, run)).toBe(0);
   });
 
   test('should return 0 if glyphs empty', () => {
@@ -43,7 +45,7 @@ describe('run indexAtOffset operator', () => {
       ],
     };
 
-    expect(indexAtOffset(run, 5)).toBe(0);
+    expect(indexAtOffset(5, run)).toBe(0);
   });
 
   test('should return correct index', () => {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import length from '../../src/run/length';
 
 describe('run length operator', () => {

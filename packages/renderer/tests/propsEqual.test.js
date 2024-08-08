@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import propsEqual from '../src/utils/propsEqual';
 
 describe('propsEqual', () => {

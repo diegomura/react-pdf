@@ -22,7 +22,7 @@ const addNodeBookmark = (ctx, node, pageNumber, registry) => {
 
   if (!node.children) return;
 
-  node.children.forEach(child =>
+  node.children.forEach((child) =>
     addNodeBookmark(ctx, child, pageNumber, registry),
   );
 };

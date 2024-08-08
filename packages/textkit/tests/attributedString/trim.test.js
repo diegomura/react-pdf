@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import trim from '../../src/attributedString/trim';
 
 // const runs = [{ start: 0, end  }]

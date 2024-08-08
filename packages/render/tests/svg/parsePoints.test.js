@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import parsePoints from '../../src/svg/parsePoints';
 
 describe('svg parsePoints', () => {

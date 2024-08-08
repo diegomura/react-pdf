@@ -1,12 +1,16 @@
 import scale from './scale';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Get run ascent
  *
- * @param  {Object}  run
- * @return {boolean} ascent
+ * @param {Run} run run
+ * @returns {number} ascent
  */
-const ascent = run => {
+const ascent = (run) => {
   const attachmentHeight = run.attributes?.attachment?.height || 0;
   const fontAscent = run.attributes?.font?.ascent || 0;
 

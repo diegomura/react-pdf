@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import getDimension from '../../src/node/getDimension';
 
 const getComputedWidth = () => 10;

@@ -9,7 +9,7 @@ import advanceWidth from '../../attributedString/advanceWidth';
 /**
  * Adjust run positions by given distances
  *
- * @param {Array} distances
+ * @param {number[]} distances
  * @param {Object} line
  * @returns {Object} line
  */
@@ -29,21 +29,25 @@ const justifyLine = (distances, line) => {
  * justification. This implementation is based on a description of Apple's
  * justification algorithm from a PDF in the Apple Font Tools package.
  *
- * //TODO: Make it immutable
+ * // TODO: Make it immutable
  *
- * @param {Object} layout options
- * @param {Object} line
- * @returns {Object} line
+ * @param {Object} options layout options
  */
-const justification = options => line => {
-  const gap = line.box.width - advanceWidth(line);
+const justification = (options) => {
+  /**
+   * @param {Object} line
+   * @returns {Object} line
+   */
+  return (line) => {
+    const gap = line.box.width - advanceWidth(line);
 
-  if (gap === 0) return; // Exact fit
+    if (gap === 0) return; // Exact fit
 
-  const factors = getFactors(gap, line, options);
-  const distances = getDistances(gap, factors);
+    const factors = getFactors(gap, line, options);
+    const distances = getDistances(gap, factors);
 
-  return justifyLine(distances, line);
+    return justifyLine(distances, line);
+  };
 };
 
 export default justification;

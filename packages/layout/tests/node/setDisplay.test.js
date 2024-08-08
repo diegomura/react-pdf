@@ -1,9 +1,11 @@
-import Yoga from '@react-pdf/yoga';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import setDisplay from '../../src/node/setDisplay';
 
 describe('node setDisplay', () => {
-  const mock = jest.fn();
+  const mock = vi.fn();
   const node = { yogaNode: { setDisplay: mock } };
 
   beforeEach(() => {
@@ -21,7 +23,7 @@ describe('node setDisplay', () => {
     const result = setDisplay(null)(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.DISPLAY_FLEX);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Display.Flex);
     expect(result).toBe(node);
   });
 
@@ -29,7 +31,7 @@ describe('node setDisplay', () => {
     const result = setDisplay('flex')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.DISPLAY_FLEX);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Display.Flex);
     expect(result).toBe(node);
   });
 
@@ -37,7 +39,7 @@ describe('node setDisplay', () => {
     const result = setDisplay('none')(node);
 
     expect(mock.mock.calls).toHaveLength(1);
-    expect(mock.mock.calls[0][0]).toBe(Yoga.DISPLAY_NONE);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Display.None);
     expect(result).toBe(node);
   });
 });

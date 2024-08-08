@@ -1,18 +1,23 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
+
+/**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
 
 /**
  * Set display attribute to node's Yoga instance
  *
- * @param {String} display
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} value display
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setDisplay = value => node => {
+const setDisplay = (value) => (node) => {
   const { yogaNode } = node;
 
   if (yogaNode) {
     yogaNode.setDisplay(
-      value === 'none' ? Yoga.DISPLAY_NONE : Yoga.DISPLAY_FLEX,
+      value === 'none' ? Yoga.Display.None : Yoga.Display.Flex,
     );
   }
 

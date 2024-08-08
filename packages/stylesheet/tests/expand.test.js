@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import expandStyles from '../src/expand';
 
 describe('stylesheet expand', () => {
@@ -20,11 +22,11 @@ describe('stylesheet expand', () => {
         { marginBottom: '1 2 3' },
         { marginHorizontal: '1 2 3' },
         { margin: '1 2 3 4 5' },
-        { margin: () => console.log('function') },
+        { margin: () => {} },
       ];
       const expanded = {};
 
-      margins.forEach(style => {
+      margins.forEach((style) => {
         expect(expandStyles(style)).toEqual(expanded);
       });
     });
@@ -157,11 +159,11 @@ describe('stylesheet expand', () => {
         { paddingBottom: '1 2 3' },
         { paddingHorizontal: '1 2 3' },
         { padding: '1 2 3 4 5' },
-        { padding: () => console.log('function') },
+        { padding: () => {} },
       ];
       const expanded = {};
 
-      paddings.forEach(style => {
+      paddings.forEach((style) => {
         expect(expandStyles(style)).toEqual(expanded);
       });
     });

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import advanceWidth from '../../src/run/advanceWidth';
 
 describe('run advanceWidth operator', () => {
@@ -29,6 +31,7 @@ describe('run advanceWidth operator', () => {
     ];
     const run = { start: 5, end: 15, attributes: {}, positions };
 
+    // @ts-expect-error - intentionally invalid argument
     expect(advanceWidth(run)).toBe(30);
   });
 });

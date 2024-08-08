@@ -1,4 +1,6 @@
-import Yoga from '@react-pdf/yoga';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import setMargin, {
   setMarginTop,
@@ -8,9 +10,9 @@ import setMargin, {
 } from '../../src/node/setMargin';
 
 describe('node setMargin', () => {
-  const mock = jest.fn();
-  const mockAuto = jest.fn();
-  const mockPercent = jest.fn();
+  const mock = vi.fn();
+  const mockAuto = vi.fn();
+  const mockPercent = vi.fn();
 
   const node = {
     yogaNode: {
@@ -38,7 +40,7 @@ describe('node setMargin', () => {
       const result = setMarginTop('auto')(node);
 
       expect(mockAuto.mock.calls).toHaveLength(1);
-      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(result).toBe(node);
     });
 
@@ -46,7 +48,7 @@ describe('node setMargin', () => {
       const result = setMarginTop(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -55,7 +57,7 @@ describe('node setMargin', () => {
       const result = setMarginTop('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -73,7 +75,7 @@ describe('node setMargin', () => {
       const result = setMarginRight('auto')(node);
 
       expect(mockAuto.mock.calls).toHaveLength(1);
-      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(result).toBe(node);
     });
 
@@ -81,7 +83,7 @@ describe('node setMargin', () => {
       const result = setMarginRight(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -90,7 +92,7 @@ describe('node setMargin', () => {
       const result = setMarginRight('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -108,7 +110,7 @@ describe('node setMargin', () => {
       const result = setMarginBottom('auto')(node);
 
       expect(mockAuto.mock.calls).toHaveLength(1);
-      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(result).toBe(node);
     });
 
@@ -116,7 +118,7 @@ describe('node setMargin', () => {
       const result = setMarginBottom(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -125,7 +127,7 @@ describe('node setMargin', () => {
       const result = setMarginBottom('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -143,7 +145,7 @@ describe('node setMargin', () => {
       const result = setMarginLeft('auto')(node);
 
       expect(mockAuto.mock.calls).toHaveLength(1);
-      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(result).toBe(node);
     });
 
@@ -151,7 +153,7 @@ describe('node setMargin', () => {
       const result = setMarginLeft(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -160,7 +162,7 @@ describe('node setMargin', () => {
       const result = setMarginLeft('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -178,10 +180,10 @@ describe('node setMargin', () => {
       const result = setMargin('auto')(node);
 
       expect(mockAuto.mock.calls).toHaveLength(4);
-      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
-      expect(mockAuto.mock.calls[1][0]).toBe(Yoga.EDGE_RIGHT);
-      expect(mockAuto.mock.calls[2][0]).toBe(Yoga.EDGE_BOTTOM);
-      expect(mockAuto.mock.calls[3][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mockAuto.mock.calls[0][0]).toBe(Yoga.Edge.Top);
+      expect(mockAuto.mock.calls[1][0]).toBe(Yoga.Edge.Right);
+      expect(mockAuto.mock.calls[2][0]).toBe(Yoga.Edge.Bottom);
+      expect(mockAuto.mock.calls[3][0]).toBe(Yoga.Edge.Left);
       expect(result).toBe(node);
     });
 
@@ -189,10 +191,10 @@ describe('node setMargin', () => {
       const result = setMargin(50)(node);
 
       expect(mock.mock.calls).toHaveLength(4);
-      expect(mock.mock.calls[0]).toEqual([Yoga.EDGE_TOP, 50]);
-      expect(mock.mock.calls[1]).toEqual([Yoga.EDGE_RIGHT, 50]);
-      expect(mock.mock.calls[2]).toEqual([Yoga.EDGE_BOTTOM, 50]);
-      expect(mock.mock.calls[3]).toEqual([Yoga.EDGE_LEFT, 50]);
+      expect(mock.mock.calls[0]).toEqual([Yoga.Edge.Top, 50]);
+      expect(mock.mock.calls[1]).toEqual([Yoga.Edge.Right, 50]);
+      expect(mock.mock.calls[2]).toEqual([Yoga.Edge.Bottom, 50]);
+      expect(mock.mock.calls[3]).toEqual([Yoga.Edge.Left, 50]);
       expect(result).toBe(node);
     });
 
@@ -200,10 +202,10 @@ describe('node setMargin', () => {
       const result = setMargin('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(4);
-      expect(mockPercent.mock.calls[0]).toEqual([Yoga.EDGE_TOP, 50]);
-      expect(mockPercent.mock.calls[1]).toEqual([Yoga.EDGE_RIGHT, 50]);
-      expect(mockPercent.mock.calls[2]).toEqual([Yoga.EDGE_BOTTOM, 50]);
-      expect(mockPercent.mock.calls[3]).toEqual([Yoga.EDGE_LEFT, 50]);
+      expect(mockPercent.mock.calls[0]).toEqual([Yoga.Edge.Top, 50]);
+      expect(mockPercent.mock.calls[1]).toEqual([Yoga.Edge.Right, 50]);
+      expect(mockPercent.mock.calls[2]).toEqual([Yoga.Edge.Bottom, 50]);
+      expect(mockPercent.mock.calls[3]).toEqual([Yoga.Edge.Left, 50]);
       expect(result).toBe(node);
     });
   });

@@ -22,12 +22,18 @@ const transformStyle = (key, value, container) => {
 };
 
 /**
- * Transform styles values
- *
- * @param {Object} styles object
+ * @typedef {Function} Transform
+ * @param {Object} style styles object
  * @returns {Object} transformed styles
  */
-const transform = container => style => {
+
+/**
+ * Transform styles values
+ *
+ * @param {Object} container
+ * @returns {Transform} transform function
+ */
+const transform = (container) => (style) => {
   if (!style) return style;
 
   const propsArray = Object.keys(style);

@@ -3,9 +3,9 @@ import { capitalize, upperFirst } from '@react-pdf/fns';
 /**
  * Apply transformation to text string
  *
- * @param {String} text
- * @param {String} transformation type
- * @returns {String} transformed text
+ * @param {string} text
+ * @param {string} transformation type
+ * @returns {string} transformed text
  */
 const transformText = (text, transformation) => {
   switch (transformation) {

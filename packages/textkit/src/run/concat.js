@@ -4,11 +4,15 @@ import length from './length';
 import normalizeIndices from '../indices/normalize';
 
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Concats two runs into one
  *
- * @param  {Object}  first run
- * @param  {Object}  second run
- * @return {Object}  concatenated run
+ * @param {Run} runA first run
+ * @param {Run} runB second run
+ * @returns {Run} concatenated run
  */
 const concat = (runA, runB) => {
   const end = runA.end + length(runB);
@@ -19,7 +23,9 @@ const concat = (runA, runB) => {
 
   const runAIndices = runA.glyphIndices || [];
   const runALastIndex = last(runAIndices) || 0;
-  const runBIndices = (runB.glyphIndices || []).map(i => i + runALastIndex + 1);
+  const runBIndices = (runB.glyphIndices || []).map(
+    (i) => i + runALastIndex + 1,
+  );
   const glyphIndices = normalizeIndices(runAIndices.concat(runBIndices));
 
   return Object.assign({}, runA, {

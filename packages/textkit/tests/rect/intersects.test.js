@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import intersects from '../../src/rect/intersects';
 
 describe('rect intersects operator', () => {

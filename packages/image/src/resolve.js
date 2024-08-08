@@ -9,14 +9,19 @@ import createCache from './cache';
 
 export const IMAGE_CACHE = createCache({ limit: 30 });
 
-const getAbsoluteLocalPath = src => {
+const getAbsoluteLocalPath = (src) => {
   if (BROWSER) {
     throw new Error('Cannot check local paths in client-side environment');
   }
 
-  const { protocol, auth, host, port, hostname, path: pathname } = url.parse(
-    src,
-  );
+  const {
+    protocol,
+    auth,
+    host,
+    port,
+    hostname,
+    path: pathname,
+  } = url.parse(src);
   const absolutePath = path.resolve(pathname);
   if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
     return undefined;
@@ -24,7 +29,7 @@ const getAbsoluteLocalPath = src => {
   return absolutePath;
 };
 
-const fetchLocalFile = src =>
+const fetchLocalFile = (src) =>
   new Promise((resolve, reject) => {
     try {
       if (BROWSER) {
@@ -54,12 +59,12 @@ const fetchRemoteFile = async (uri, options) => {
   return buffer.constructor.name === 'Buffer' ? buffer : Buffer.from(buffer);
 };
 
-const isValidFormat = format => {
+const isValidFormat = (format) => {
   const lower = format.toLowerCase();
   return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
 };
 
-const guessFormat = buffer => {
+const guessFormat = (buffer) => {
   let format;
 
   if (JPEG.isValid(buffer)) {
@@ -95,30 +100,53 @@ const resolveBase64Image = ({ uri }) => {
     throw new Error(`Base64 image invalid format: ${format}`);
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     return resolve(getImage(Buffer.from(data, 'base64'), format));
   });
 };
 
-const resolveImageFromData = src => {
+const resolveImageFromData = (src) => {
   if (src.data && src.format) {
-    return new Promise(resolve => resolve(getImage(src.data, src.format)));
+    return new Promise((resolve) => resolve(getImage(src.data, src.format)));
   }
 
   throw new Error(`Invalid data given for local file: ${JSON.stringify(src)}`);
 };
 
-const resolveBufferImage = buffer => {
+const resolveBufferImage = (buffer) => {
   const format = guessFormat(buffer);
 
   if (format) {
-    return new Promise(resolve => resolve(getImage(buffer, format)));
+    return new Promise((resolve) => resolve(getImage(buffer, format)));
   }
 
   return Promise.resolve();
 };
 
-const getImageFormat = body => {
+const resolveBlobImage = async (blob) => {
+  const { type } = blob;
+  if (!type || type === 'application/octet-stream') {
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    return resolveBufferImage(buffer);
+  }
+
+  if (!type.startsWith('image/')) {
+    throw new Error(`Invalid blob type: ${type}`);
+  }
+
+  const format = type.replace('image/', '');
+
+  if (!isValidFormat(format)) {
+    throw new Error(`Invalid blob type: ${type}`);
+  }
+
+  const buffer = await blob.arrayBuffer();
+
+  return getImage(Buffer.from(buffer), format);
+};
+
+const getImageFormat = (body) => {
   const isPng =
     body[0] === 137 &&
     body[1] === 80 &&
@@ -143,7 +171,7 @@ const getImageFormat = body => {
   return extension;
 };
 
-const resolveImageFromUrl = async src => {
+const resolveImageFromUrl = async (src) => {
   const { uri, body, headers, method = 'GET', credentials } = src;
 
   const data =
@@ -165,7 +193,9 @@ const resolveImage = (src, { cache = true } = {}) => {
   let image;
   const cacheKey = src.data ? src.data.toString() : src.uri;
 
-  if (Buffer.isBuffer(src)) {
+  if (typeof Blob !== 'undefined' && src instanceof Blob) {
+    image = resolveBlobImage(src);
+  } else if (Buffer.isBuffer(src)) {
     image = resolveBufferImage(src);
   } else if (cache && IMAGE_CACHE.get(cacheKey)) {
     return IMAGE_CACHE.get(cacheKey);

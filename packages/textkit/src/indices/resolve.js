@@ -1,10 +1,14 @@
-const DUMMY_CODEPOINT = 123
+/**
+ * @typedef {import('../types.js').Glyph} Glyph
+ */
+
+const DUMMY_CODEPOINT = 123;
 
 /**
  * Resolve string indices based on glyphs code points
  *
- * @param  {Array}  glyphs
- * @return {Array} glyph indices
+ * @param {Glyph[]} glyphs
+ * @returns {number[]} glyph indices
  */
 const resolve = (glyphs = []) => {
   return glyphs.reduce((acc, glyph) => {
@@ -15,7 +19,7 @@ const resolve = (glyphs = []) => {
     const last = acc[acc.length - 1];
     const next = codePoints.map(() => last + 1);
 
-    return [...acc, ...next]
+    return [...acc, ...next];
   }, []);
 };
 

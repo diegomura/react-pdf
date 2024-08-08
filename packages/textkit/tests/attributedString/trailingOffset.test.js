@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import trailingOffset from '../../src/attributedString/trailingOffset';
 
 describe('attributeString trailingOffset operator', () => {

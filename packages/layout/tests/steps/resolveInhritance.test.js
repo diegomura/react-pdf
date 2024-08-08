@@ -1,7 +1,9 @@
+import { describe, expect, test } from 'vitest';
+
 import resolveInheritance from '../../src/steps/resolveInheritance';
 
 describe('layout resolveInheritance', () => {
-  const shouldInherit = prop => () => {
+  const shouldInherit = (prop) => () => {
     const root = {
       type: 'DOCUMENT',
       children: [
@@ -109,6 +111,32 @@ describe('layout resolveInheritance', () => {
       'textDecoration',
       'line-through underline',
     );
+  });
+
+  test('Should inherit background color for text childs', () => {
+    const root = {
+      type: 'DOCUMENT',
+      children: [
+        {
+          type: 'PAGE',
+          style: {},
+          children: [
+            {
+              type: 'TEXT',
+              style: { backgroundColor: 'red' },
+              children: [{ type: 'TEXT' }],
+            },
+          ],
+        },
+      ],
+    };
+
+    const result = resolveInheritance(root);
+    const text1 = result.children[0].children[0];
+    const text2 = text1.children[0];
+
+    expect(text1.style).toHaveProperty('backgroundColor', 'red');
+    expect(text2.style).toHaveProperty('backgroundColor', 'red');
   });
 
   test('Should inherit color value', shouldInherit('color'));

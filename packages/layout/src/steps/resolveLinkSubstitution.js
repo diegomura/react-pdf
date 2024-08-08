@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { compose } from '@react-pdf/fns';
 
-const isType = type => node => node.type === type;
+const isType = (type) => (node) => node.type === type;
 
 const isLink = isType(P.Link);
 
@@ -13,25 +13,25 @@ const isTextInstance = isType(P.TextInstance);
  * Checks if node has render prop
  *
  * @param {Object} node
- * @returns {Boolean} has render prop?
+ * @returns {boolean} has render prop?
  */
-const hasRenderProp = node => !!node.props?.render;
+const hasRenderProp = (node) => !!node.props?.render;
 
 /**
  * Checks if node is text type (Text or TextInstance)
  *
  * @param {Object} node
- * @returns {Boolean} are all children text instances?
+ * @returns {boolean} are all children text instances?
  */
-const isTextType = node => isText(node) || isTextInstance(node);
+const isTextType = (node) => isText(node) || isTextInstance(node);
 
 /**
  * Checks if is tet link that needs to be wrapped in Text
  *
  * @param {Object} node
- * @returns {Boolean} are all children text instances?
+ * @returns {boolean} are all children text instances?
  */
-const isTextLink = node => {
+const isTextLink = (node) => {
   const children = node.children || [];
 
   // Text string inside a Link
@@ -47,9 +47,9 @@ const isTextLink = node => {
  * Wraps node children inside Text node
  *
  * @param {Object} node
- * @returns {Boolean} node with intermediate Text child
+ * @returns {boolean} node with intermediate Text child
  */
-const wrapText = node => {
+const wrapText = (node) => {
   const textElement = {
     type: P.Text,
     props: {},
@@ -61,7 +61,7 @@ const wrapText = node => {
   return Object.assign({}, node, { children: [textElement] });
 };
 
-const transformLink = node => {
+const transformLink = (node) => {
   if (!isLink(node)) return node;
 
   // If has render prop substitute the instance by a Text, that will
@@ -82,7 +82,7 @@ const transformLink = node => {
  * @param {Object} node
  * @returns {Object} node with link substitution
  */
-const resolveLinkSubstitution = node => {
+const resolveLinkSubstitution = (node) => {
   if (!node.children) return node;
 
   const resolveChild = compose(transformLink, resolveLinkSubstitution);

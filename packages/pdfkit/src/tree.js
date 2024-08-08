@@ -27,19 +27,13 @@ class PDFTree {
 
     const out = ['<<'];
     if (this.limits && sortedKeys.length > 1) {
-      const first = sortedKeys[0];
-      const last = sortedKeys[sortedKeys.length - 1];
-
+      const first = sortedKeys[0],
+        last = sortedKeys[sortedKeys.length - 1];
       out.push(
-        `  /Limits ${PDFObject.convert([
-          this._dataForKey(first),
-          this._dataForKey(last)
-        ])}`
+        `  /Limits ${PDFObject.convert([this._dataForKey(first), this._dataForKey(last)])}`
       );
     }
-
     out.push(`  /${this._keysName()} [`);
-
     for (let key of sortedKeys) {
       out.push(
         `    ${PDFObject.convert(this._dataForKey(key))} ${PDFObject.convert(
@@ -47,13 +41,12 @@ class PDFTree {
         )}`
       );
     }
-
     out.push(']');
     out.push('>>');
     return out.join('\n');
   }
 
-  _compareKeys() {
+  _compareKeys(/*a, b*/) {
     throw new Error('Must be implemented by subclasses');
   }
 
@@ -61,7 +54,7 @@ class PDFTree {
     throw new Error('Must be implemented by subclasses');
   }
 
-  _dataForKey() {
+  _dataForKey(/*k*/) {
     throw new Error('Must be implemented by subclasses');
   }
 }

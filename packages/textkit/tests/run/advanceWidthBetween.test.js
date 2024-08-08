@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import advanceWidthBetween from '../../src/run/advanceWidthBetween';
 
 describe('run advanceWidthBetween operator', () => {

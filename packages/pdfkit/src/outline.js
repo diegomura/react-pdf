@@ -1,55 +1,31 @@
-const DEFAULT_OPTIONS = {
-  top: 0,
-  left: 0,
-  zoom: 0,
-  fit: false,
-  pageNumber: null,
-  expanded: false
-};
-
 class PDFOutline {
-  constructor(document, parent, title, dest, options = DEFAULT_OPTIONS) {
+  constructor(document, parent, title, dest, options = { expanded: false }) {
     this.document = document;
     this.options = options;
     this.outlineData = {};
 
     if (dest !== null) {
-      const destWidth = dest.data.MediaBox[2];
-      const destHeight = dest.data.MediaBox[3];
-      const top = destHeight - (options.top || 0);
-      const left = destWidth - (options.left || 0);
-      const zoom = options.zoom || 0;
-
-      this.outlineData.Dest = options.fit
-        ? [dest, 'Fit']
-        : [dest, 'XYZ', left, top, zoom];
+      this.outlineData['Dest'] = [dest.dictionary, 'Fit'];
     }
 
     if (parent !== null) {
-      this.outlineData.Parent = parent;
+      this.outlineData['Parent'] = parent;
     }
 
     if (title !== null) {
-      this.outlineData.Title = new String(title);
+      this.outlineData['Title'] = new String(title);
     }
 
     this.dictionary = this.document.ref(this.outlineData);
     this.children = [];
   }
 
-  addItem(title, options = DEFAULT_OPTIONS) {
-    const pages = this.document._root.data.Pages.data.Kids;
-
-    const dest =
-      options.pageNumber !== null
-        ? pages[options.pageNumber]
-        : this.document.page.dictionary;
-
+  addItem(title, options = { expanded: false }) {
     const result = new PDFOutline(
       this.document,
       this.dictionary,
       title,
-      dest,
+      this.document.page,
       options
     );
     this.children.push(result);
@@ -63,8 +39,8 @@ class PDFOutline {
         this.outlineData.Count = this.children.length;
       }
 
-      const first = this.children[0];
-      const last = this.children[this.children.length - 1];
+      const first = this.children[0],
+        last = this.children[this.children.length - 1];
       this.outlineData.First = first.dictionary;
       this.outlineData.Last = last.dictionary;
 

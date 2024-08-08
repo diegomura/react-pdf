@@ -1,14 +1,26 @@
 import scale from '../run/scale';
 import resolveGlyphIndices from '../indices/resolve';
 
-const getCharacterSpacing = run => run.attributes?.characterSpacing || 0;
+/**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ * @typedef {import('../types.js').Position} Position
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
+ * @param {Run} run
+ * @returns {number}
+ */
+const getCharacterSpacing = (run) => {
+  return run.attributes?.characterSpacing || 0;
+};
 
 /**
  * Scale run positions
  *
- * @param  {Object}  run
- * @param  {Array}  positions
- * @return {Array} scaled positions
+ * @param {Run} run
+ * @param {Position[]} positions
+ * @returns {Position[]} scaled positions
  */
 const scalePositions = (run, positions) => {
   const runScale = scale(run);
@@ -30,40 +42,54 @@ const scalePositions = (run, positions) => {
 /**
  * Create glyph run
  *
- * @param  {String}  string
- * @param  {Object}  run
- * @return {Object}  glyph run
+ * @param {string} string string
  */
-const layoutRun = string => run => {
-  const { start, end, attributes = {} } = run;
-  const { font } = attributes;
+const layoutRun = (string) => {
+  /**
+   * @param {Run} run run
+   * @returns {Run} glyph run
+   */
+  return (run) => {
+    const { start, end, attributes = {} } = run;
+    const { font } = attributes;
 
-  if (!font) return { ...run, glyphs: [], glyphIndices: [], positions: [] };
+    if (!font) return { ...run, glyphs: [], glyphIndices: [], positions: [] };
 
-  const runString = string.slice(start, end);
-  const glyphRun = font.layout(runString);
-  const positions = scalePositions(run, glyphRun.positions);
-  const glyphIndices = resolveGlyphIndices(glyphRun.glyphs);
+    const runString = string.slice(start, end);
 
-  return {
-    ...run,
-    positions,
-    glyphIndices,
-    glyphs: glyphRun.glyphs,
+    // passing LTR To force fontkit to not reverse the string
+    const glyphRun = font.layout(
+      runString,
+      undefined,
+      undefined,
+      undefined,
+      'ltr',
+    );
+
+    const positions = scalePositions(run, glyphRun.positions);
+    const glyphIndices = resolveGlyphIndices(glyphRun.glyphs);
+
+    return {
+      ...run,
+      positions,
+      glyphIndices,
+      glyphs: glyphRun.glyphs,
+    };
   };
 };
 
 /**
  * Generate glyphs for single attributed string
- *
- * @param  {Object}  layout engines
- * @param  {Object}  layout options
- * @param  {Array}  attributed strings
- * @return {Array} attributed string with glyphs
  */
-const generateGlyphs = () => attributedString => {
-  const runs = attributedString.runs.map(layoutRun(attributedString.string));
-  return Object.assign({}, attributedString, { runs });
+const generateGlyphs = () => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString} attributed string with glyphs
+   */
+  return (attributedString) => {
+    const runs = attributedString.runs.map(layoutRun(attributedString.string));
+    return Object.assign({}, attributedString, { runs });
+  };
 };
 
 export default generateGlyphs;

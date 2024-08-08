@@ -1,39 +1,49 @@
 {
   "name": "@react-pdf/layout",
-  "version": "3.6.3",
+  "version": "3.12.1",
   "license": "MIT",
   "description": "Resolve overall document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
+  "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/layout"
   },
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.0.1",
-    "@react-pdf/image": "^2.2.2",
-    "@react-pdf/pdfkit": "^3.0.2",
-    "@react-pdf/primitives": "^3.0.0",
-    "@react-pdf/stylesheet": "^4.1.8",
-    "@react-pdf/textkit": "^4.2.0",
-    "@react-pdf/types": "^2.3.4",
-    "@react-pdf/yoga": "^4.1.2",
+    "@react-pdf/fns": "2.2.1",
+    "@react-pdf/image": "^2.3.6",
+    "@react-pdf/pdfkit": "^3.1.10",
+    "@react-pdf/primitives": "^3.1.1",
+    "@react-pdf/stylesheet": "^4.2.5",
+    "@react-pdf/textkit": "^4.4.1",
+    "@react-pdf/types": "^2.5.0",
     "cross-fetch": "^3.1.5",
     "emoji-regex": "^10.2.1",
     "lodash.flatten": "^4.4.0",
     "queue": "^6.0.1"
   },
   "devDependencies": {
-    "jest-fetch-mock": "^2.1.1"
+    "jest-fetch-mock": "^2.1.1",
+    "emoji-regex": "^10.3.0",
+    "queue": "^6.0.1",
+    "yoga-layout": "^2.0.1"
   },
   "files": [
     "lib"

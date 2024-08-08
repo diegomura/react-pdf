@@ -1,4 +1,3 @@
-import Yoga from '@react-pdf/yoga';
 import * as P from '@react-pdf/primitives';
 import { isNil, compose } from '@react-pdf/fns';
 
@@ -58,11 +57,7 @@ import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
 
-const YOGA_CONFIG = Yoga.Config.create();
-
-YOGA_CONFIG.setPointScaleFactor(0);
-
-const isType = type => node => node.type === type;
+const isType = (type) => (node) => node.type === type;
 
 const isSvg = isType(P.Svg);
 const isText = isType(P.Text);
@@ -72,7 +67,7 @@ const isImage = isType(P.Image);
 const isCanvas = isType(P.Canvas);
 const isTextInstance = isType(P.TextInstance);
 
-const setNodeHeight = node => {
+const setNodeHeight = (node) => {
   const value = isPage(node) ? node.box.height : node.style.height;
   return setHeight(value);
 };
@@ -83,7 +78,7 @@ const setNodeHeight = node => {
  * @param {Object} node
  * @returns {Object} node
  */
-const setYogaValues = node => {
+const setYogaValues = (node) => {
   compose(
     setNodeHeight(node),
     setWidth(node.style.width),
@@ -126,13 +121,18 @@ const setYogaValues = node => {
 };
 
 /**
+ * @typedef {Function} InsertYogaNodes
+ * @param {Object} child child node
+ * @returns {Object} node
+ */
+
+/**
  * Inserts child into parent' yoga node
  *
- * @param {Object} parent
- * @param {Object} node
- * @param {Object} node
+ * @param {Object} parent parent
+ * @returns {InsertYogaNodes} insert yoga nodes
  */
-const insertYogaNodes = parent => child => {
+const insertYogaNodes = (parent) => (child) => {
   parent.insertChild(child.yogaNode, parent.getChildCount());
   return child;
 };
@@ -159,17 +159,23 @@ const setMeasureFunc = (node, page, fontStore) => {
   return node;
 };
 
-const isLayoutElement = node => !isText(node) && !isNote(node) && !isSvg(node);
+const isLayoutElement = (node) =>
+  !isText(node) && !isNote(node) && !isSvg(node);
+
+/**
+ * @typedef {Function} CreateYogaNodes
+ * @param {Object} node
+ * @returns {Object} node with appended yoga node
+ */
 
 /**
  * Creates and add yoga node to document tree
  * Handles measure function for text and image nodes
  *
- * @param {Object} node
- * @returns {Object} node with appended yoga node
+ * @returns {CreateYogaNodes} create yoga nodes
  */
-const createYogaNodes = (page, fontStore) => node => {
-  const yogaNode = Yoga.Node.createWithConfig(YOGA_CONFIG);
+const createYogaNodes = (page, fontStore, yoga) => (node) => {
+  const yogaNode = yoga.node.create();
 
   const result = Object.assign({}, node, { yogaNode });
 
@@ -178,7 +184,7 @@ const createYogaNodes = (page, fontStore) => node => {
   if (isLayoutElement(node) && node.children) {
     const resolveChild = compose(
       insertYogaNodes(yogaNode),
-      createYogaNodes(page, fontStore),
+      createYogaNodes(page, fontStore, yoga),
     );
 
     result.children = node.children.map(resolveChild);
@@ -192,10 +198,10 @@ const createYogaNodes = (page, fontStore) => node => {
 /**
  * Performs yoga calculation
  *
- * @param {Object} node
- * @returns {Object} node
+ * @param {Object} page page node
+ * @returns {Object} page node
  */
-const calculateLayout = page => {
+const calculateLayout = (page) => {
   page.yogaNode.calculateLayout();
   return page;
 };
@@ -206,7 +212,7 @@ const calculateLayout = page => {
  * @param {Object} node
  * @returns {Object} node with box data
  */
-const persistDimensions = node => {
+const persistDimensions = (node) => {
   if (isTextInstance(node)) return node;
 
   const box = Object.assign(
@@ -232,7 +238,7 @@ const persistDimensions = node => {
  * @param {Object} node
  * @returns {Object} node without yoga node
  */
-const destroyYogaNodes = node => {
+const destroyYogaNodes = (node) => {
   const newNode = Object.assign({}, node);
 
   delete newNode.yogaNode;
@@ -250,7 +256,7 @@ const destroyYogaNodes = node => {
  * @param {Object} node
  * @returns {Object} node without yoga node
  */
-const freeYogaNodes = node => {
+const freeYogaNodes = (node) => {
   if (node.yogaNode) node.yogaNode.freeRecursive();
   return node;
 };
@@ -263,7 +269,7 @@ const freeYogaNodes = node => {
  * @param {Object} page object
  * @returns {Object} page object with correct 'box' layout attributes
  */
-export const resolvePageDimensions = (page, fontStore) => {
+export const resolvePageDimensions = (page, fontStore, yoga) => {
   if (isNil(page)) return null;
 
   return compose(
@@ -271,20 +277,22 @@ export const resolvePageDimensions = (page, fontStore) => {
     freeYogaNodes,
     persistDimensions,
     calculateLayout,
-    createYogaNodes(page, fontStore),
+    createYogaNodes(page, fontStore, yoga),
   )(page);
 };
 
 /**
  * Calculates root object layout using Yoga.
  *
- * @param {Object} root object
+ * @param {Object} node root object
+ * @param {Object} fontStore font store
  * @returns {Object} root object with correct 'box' layout attributes
  */
 const resolveDimensions = (node, fontStore) => {
   if (!node.children) return node;
 
-  const resolveChild = child => resolvePageDimensions(child, fontStore);
+  const resolveChild = (child) =>
+    resolvePageDimensions(child, fontStore, node.yoga);
   const children = node.children.map(resolveChild);
 
   return Object.assign({}, node, { children });

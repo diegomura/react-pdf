@@ -4,9 +4,9 @@ import flatten from 'lodash.flatten';
 
 import fetchImage from '../image/fetchImage';
 
-const isString = value => typeof value === 'string';
+const isString = (value) => typeof value === 'string';
 
-const isNumber = value => typeof value === 'number';
+const isNumber = (value) => typeof value === 'number';
 
 const isImage = value => value.type === Image;
 
@@ -18,8 +18,8 @@ const isFragment = value =>
  *
  * Can return multiple instances in the case of arrays or fragments.
  *
- * @param {Object} React element
- * @returns {Array} parsed react elements
+ * @param {Object} element React element
+ * @returns {Object[]} parsed React elements
  */
 const createInstances = async element => {
   if (!element) return [];

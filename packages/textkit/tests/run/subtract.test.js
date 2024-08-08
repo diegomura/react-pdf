@@ -1,8 +1,10 @@
+import { describe, expect, test } from 'vitest';
+
 import subtract from '../../src/run/subtract';
 
 describe('run subtract operator', () => {
   test('should return equal run if 0', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const run = { start: 5, end: 15, attributes };
     const subtracted = subtract(0, run);
 
@@ -13,7 +15,7 @@ describe('run subtract operator', () => {
   });
 
   test('should return subtracted run', () => {
-    const attributes = { something: 'blah' };
+    const attributes = { font: {} };
     const run = { start: 5, end: 15, attributes };
     const subtracted = subtract(5, run);
 

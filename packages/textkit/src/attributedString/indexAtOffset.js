@@ -3,11 +3,15 @@ import runAdvanceWidth from '../run/advanceWidth';
 import runIndexAtOffset from '../run/indexAtOffset';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get string index at offset
  *
- * @param  {Object}  attributed string
- * @param  {number}  offset
- * @return {number} string index at offset N
+ * @param {number} offset offset
+ * @param {AttributedString} string attributed string
+ * @returns {number} string index at offset N
  */
 const indexAtOffset = (offset, string) => {
   let index = 0;

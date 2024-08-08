@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import getBoundingBox from '../../src/svg/getBoundingBox';
 
 describe('path getBoundingBox', () => {

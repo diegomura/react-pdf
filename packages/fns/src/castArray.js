@@ -1,10 +1,11 @@
 /**
  * Casts value to array
  *
- * @param {any} value
- * @returns {Array} casted value
+ * @template T
+ * @param {T|T[]} value value
+ * @returns {T[]} array
  */
-const castArray = value => {
+const castArray = (value) => {
   return Array.isArray(value) ? value : [value];
 };
 

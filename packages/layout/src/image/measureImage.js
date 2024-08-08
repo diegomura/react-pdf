@@ -1,4 +1,4 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
 
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';
@@ -8,15 +8,20 @@ import isHeightAuto from '../page/isHeightAuto';
 const SAFETY_HEIGHT = 10;
 
 /**
+ * @typedef {Function} MeasureImage
+ * @param {number} width
+ * @param {number} widthMode
+ * @param {number} height
+ * @param {number} heightMode
+ * @returns {{ width: number, height: number }} image width and height
+ */
+
+/**
  * Yoga image measure function
  *
- * @param {Object} page
- * @param {Object} node
- * @param {Number} width
- * @param {Number} widthMode
- * @param {Number} height
- * @param {Number} heightMode
- * @returns {Object} image width and height
+ * @param {Object} page page
+ * @param {Object} node node
+ * @returns {MeasureImage} measure image
  */
 const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
   const imageRatio = getRatio(node);
@@ -35,32 +40,32 @@ const measureImage = (page, node) => (width, widthMode, height, heightMode) => {
   if (!node.image) return { width: 0, height: 0 };
 
   if (
-    widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-    heightMode === Yoga.MEASURE_MODE_UNDEFINED
+    widthMode === Yoga.MeasureMode.Exactly &&
+    heightMode === Yoga.MeasureMode.Undefined
   ) {
     const scaledHeight = width / imageRatio;
     return { height: Math.min(pageArea, scaledHeight) };
   }
 
   if (
-    heightMode === Yoga.MEASURE_MODE_EXACTLY &&
-    (widthMode === Yoga.MEASURE_MODE_AT_MOST ||
-      widthMode === Yoga.MEASURE_MODE_UNDEFINED)
+    heightMode === Yoga.MeasureMode.Exactly &&
+    (widthMode === Yoga.MeasureMode.AtMost ||
+      widthMode === Yoga.MeasureMode.Undefined)
   ) {
     return { width: Math.min(height * imageRatio, width) };
   }
 
   if (
-    widthMode === Yoga.MEASURE_MODE_EXACTLY &&
-    heightMode === Yoga.MEASURE_MODE_AT_MOST
+    widthMode === Yoga.MeasureMode.Exactly &&
+    heightMode === Yoga.MeasureMode.AtMost
   ) {
     const scaledHeight = width / imageRatio;
     return { height: Math.min(height, pageArea, scaledHeight) };
   }
 
   if (
-    widthMode === Yoga.MEASURE_MODE_AT_MOST &&
-    heightMode === Yoga.MEASURE_MODE_AT_MOST
+    widthMode === Yoga.MeasureMode.AtMost &&
+    heightMode === Yoga.MeasureMode.AtMost
   ) {
     if (imageRatio > 1) {
       return {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import equals from '../../src/rect/equals';
 
 describe('rect equals operator', () => {

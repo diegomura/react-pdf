@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-continue */
 /* eslint-disable prefer-destructuring */
 
@@ -15,28 +16,30 @@ import shouldNodeBreak from '../node/shouldBreak';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
+import { resolvePageStyles } from './resolveStyles';
 
-const isText = node => node.type === P.Text;
+const isText = (node) => node.type === P.Text;
 
 // Prevent splitting elements by low decimal numbers
-const SAFTY_THRESHOLD = 0.001;
+const SAFETY_THRESHOLD = 0.001;
 
 const assingChildren = (children, node) =>
   Object.assign({}, node, { children });
 
-const getTop = node => node.box?.top || 0;
+const getTop = (node) => node.box?.top || 0;
 
-const allFixed = nodes => nodes.every(isFixed);
+const allFixed = (nodes) => nodes.every(isFixed);
 
-const isDynamic = node => !isNil(node.props?.render);
+const isDynamic = (node) => !isNil(node.props?.render);
 
 const relayoutPage = compose(
   resolveTextLayout,
-  resolveInheritance,
   resolvePageDimensions,
+  resolveInheritance,
+  resolvePageStyles,
 );
 
-const warnUnavailableSpace = node => {
+const warnUnavailableSpace = (node) => {
   console.warn(
     `Node of type ${node.type} can't wrap between pages and it's bigger than available page height`,
   );
@@ -55,7 +58,7 @@ const splitNodes = (height, contentArea, nodes) => {
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
     const shouldBreak = shouldNodeBreak(child, futureNodes, height);
-    const shouldSplit = height + SAFTY_THRESHOLD < nodeTop + nodeHeight;
+    const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;
 
@@ -142,7 +145,7 @@ const splitView = (node, height, contentArea) => {
 const split = (node, height, contentArea) =>
   isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
 
-const shouldResolveDynamicNodes = node => {
+const shouldResolveDynamicNodes = (node) => {
   const children = node.children || [];
   return isDynamic(node) || children.some(shouldResolveDynamicNodes);
 };
@@ -200,7 +203,7 @@ const splitPage = async (page, pageNumber, fontStore) => {
     dynamicPage.children,
   );
 
-  const relayout = node => relayoutPage(node, fontStore);
+  const relayout = (node) => relayoutPage(node, fontStore, yoga);
 
   const currentBox = { ...page.box, height };
   const currentPage = relayout(
@@ -234,10 +237,10 @@ const resolvePageIndices = async (fontStore, page, pageNumber, pages) => {
     subPageTotalPages: page.subPageTotalPages,
   };
 
-  return resolveDynamicPage(props, page, fontStore);
+  return resolveDynamicPage(props, page, fontStore, yoga);
 };
 
-const assocSubPageData = subpages => {
+const assocSubPageData = (subpages) => {
   return subpages.map((page, i) => ({
     ...page,
     subPageNumber: i,
@@ -245,7 +248,7 @@ const assocSubPageData = subpages => {
   }));
 };
 
-const dissocSubPageData = page => {
+const dissocSubPageData = (page) => {
   return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
@@ -278,7 +281,7 @@ const paginate = async (page, pageNumber, fontStore) => {
  * Performs pagination. This is the step responsible of breaking the whole document
  * into pages following pagiation rules, such as `fixed`, `break` and dynamic nodes.
  *
- * @param {Object} node
+ * @param {Object} doc node
  * @param {Object} fontStore font store
  * @returns {Object} layout node
  */

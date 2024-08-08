@@ -1,20 +1,22 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import pkg from './package.json';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
+import pkg from './package.json' assert { type: 'json' };
+
 const cjs = {
-  format: 'cjs',
   exports: 'named',
+  format: 'cjs',
+  interop: 'compat',
 };
 
 const esm = {
   format: 'es',
 };
 
-const getCJS = override => Object.assign({}, cjs, override);
-const getESM = override => Object.assign({}, esm, override);
+const getCJS = (override) => Object.assign({}, cjs, override);
+const getESM = (override) => Object.assign({}, esm, override);
 
 const input = './src/index.js';
 
@@ -48,10 +50,7 @@ const getPlugins = ({ browser }) => [
 
 const serverConfig = {
   input,
-  output: [
-    getESM({ file: 'lib/index.es.js' }),
-    getCJS({ file: 'lib/index.cjs.js' }),
-  ],
+  output: [getESM({ file: 'lib/index.js' }), getCJS({ file: 'lib/index.cjs' })],
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
 };
@@ -59,8 +58,8 @@ const serverConfig = {
 const browserConfig = {
   input,
   output: [
-    getESM({ file: 'lib/index.browser.es.js' }),
-    getCJS({ file: 'lib/index.browser.cjs.js' }),
+    getESM({ file: 'lib/index.browser.js' }),
+    getCJS({ file: 'lib/index.browser.cjs' }),
   ],
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true }),

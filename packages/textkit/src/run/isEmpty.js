@@ -1,10 +1,14 @@
 /**
+ * @typedef {import('../types.js').Run} Run
+ */
+
+/**
  * Is run empty (start === end)
  *
- * @param  {Object}  run
- * @return {Object} is run empty
+ * @param {Run} run run
+ * @returns {boolean} is run empty
  */
-const isEmpty = run => {
+const isEmpty = (run) => {
   return run.start === run.end;
 };
 

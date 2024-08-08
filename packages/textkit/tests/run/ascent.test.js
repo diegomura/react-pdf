@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import ascent from '../../src/run/ascent';
 
 describe('run ascent operator', () => {

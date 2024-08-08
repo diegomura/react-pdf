@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import empty from '../../src/rect/empty';
 import bottomRight from '../../src/rect/bottomRight';
 

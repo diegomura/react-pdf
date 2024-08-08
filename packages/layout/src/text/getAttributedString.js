@@ -7,16 +7,18 @@ import transformText from './transformText';
 
 const PREPROCESSORS = [ignoreChars, embedEmojis];
 
-const isImage = node => node.type === P.Image;
+const isImage = (node) => node.type === P.Image;
 
-const isTextInstance = node => node.type === P.TextInstance;
+const isTextInstance = (node) => node.type === P.TextInstance;
 
 /**
  * Get textkit fragments of given node object
  *
- * @param {Object} font store
+ * @param {Object} fontStore font store
  * @param {Object} instance node
- * @returns {Array} text fragments
+ * @param {string} [parentLink] parent link
+ * @param {number} [level] fragment level
+ * @returns {Object[]} text fragments
  */
 const getFragments = (fontStore, instance, parentLink, level = 0) => {
   if (!instance) return [{ string: '' }];
@@ -25,11 +27,12 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
 
   const {
     color = 'black',
+    direction = 'ltr',
     fontFamily = 'Helvetica',
     fontWeight,
     fontStyle,
     fontSize = 18,
-    textAlign = 'left',
+    textAlign,
     lineHeight,
     textDecoration,
     textDecorationColor,
@@ -41,9 +44,16 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     verticalAlign,
   } = instance.style;
 
-  const opts = { fontFamily, fontWeight, fontStyle };
-  const obj = fontStore ? fontStore.getFont(opts) : null;
-  const font = obj ? obj.data : fontFamily;
+  const fontFamilies =
+    typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
+
+  const font = fontFamilies.map((fontFamilyName) => {
+    if (typeof fontFamilyName !== 'string') return fontFamilyName;
+
+    const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
+    const obj = fontStore ? fontStore.getFont(opts) : null;
+    return obj ? obj.data : fontFamilyName;
+  });
 
   // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
@@ -53,8 +63,9 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     color,
     opacity,
     fontSize,
+    direction,
+    verticalAlign,
     backgroundColor,
-    align: textAlign,
     indent: textIndent,
     characterSpacing: letterSpacing,
     strikeStyle: textDecorationStyle,
@@ -71,7 +82,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     underlineColor: textDecorationColor || color,
     link: parentLink || instance.props?.src || instance.props?.href,
     lineHeight: lineHeight ? lineHeight * fontSize : null,
-    verticalAlign,
+    align: textAlign || (direction === 'rtl' ? 'right' : 'left'),
   };
 
   for (let i = 0; i < instance.children.length; i += 1) {
@@ -112,7 +123,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
 /**
  * Get textkit attributed string from text node
  *
- * @param {Object} font store
+ * @param {Object} fontStore font store
  * @param {Object} instance node
  * @returns {Object} attributed string
  */

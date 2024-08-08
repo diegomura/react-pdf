@@ -1,22 +1,27 @@
-import Yoga from '@react-pdf/yoga';
+import * as Yoga from 'yoga-layout';
 
 const FLEX_WRAP = {
-  wrap: Yoga.WRAP_WRAP,
-  'wrap-reverse': Yoga.WRAP_WRAP_REVERSE,
+  wrap: Yoga.Wrap.Wrap,
+  'wrap-reverse': Yoga.Wrap.WrapReverse,
 };
+
+/**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
 
 /**
  * Set flex wrap attribute to node's Yoga instance
  *
- * @param {String} flex wrap value
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {string} value flex wrap value
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setFlexWrap = value => node => {
+const setFlexWrap = (value) => (node) => {
   const { yogaNode } = node;
 
   if (yogaNode) {
-    const flexWrap = FLEX_WRAP[value] || Yoga.WRAP_NO_WRAP;
+    const flexWrap = FLEX_WRAP[value] || Yoga.Wrap.NoWrap;
     yogaNode.setFlexWrap(flexWrap);
   }
 

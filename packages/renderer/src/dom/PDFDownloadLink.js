@@ -5,12 +5,12 @@ import { useEffect } from 'react';
 import usePDF from './usePDF';
 
 export const PDFDownloadLink = ({
-  style,
-  children,
-  className,
-  document: doc,
   fileName = 'document.pdf',
+  document: doc,
+  children,
   onClick,
+  href: _filteredOutHref,
+  ...rest
 }) => {
   const [instance, updateInstance] = usePDF();
 
@@ -28,19 +28,13 @@ export const PDFDownloadLink = ({
     }
   };
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     handleDownloadIE();
     if (typeof onClick === 'function') onClick(event, instance);
   };
 
   return (
-    <a
-      style={style}
-      href={instance.url}
-      download={fileName}
-      className={className}
-      onClick={handleClick}
-    >
+    <a href={instance.url} download={fileName} onClick={handleClick} {...rest}>
       {typeof children === 'function' ? children(instance) : children}
     </a>
   );

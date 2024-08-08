@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import reverse from '../src/reverse';
 
 describe('reverse', () => {

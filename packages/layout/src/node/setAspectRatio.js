@@ -1,13 +1,18 @@
 import { isNil } from '@react-pdf/fns';
 
 /**
+ * @typedef {Function} NodeInstanceWrapper
+ * @param {Object} node node instance
+ * @returns {Object} node instance
+ */
+
+/**
  * Set aspect ratio attribute to node's Yoga instance
  *
- * @param {Number} ratio
- * @param {Object} node instance
- * @return {Object} node instance
+ * @param {number} value ratio
+ * @returns {NodeInstanceWrapper} node instance wrapper
  */
-const setAspectRatio = value => node => {
+const setAspectRatio = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {

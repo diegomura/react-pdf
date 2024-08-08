@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import empty from '../../src/run/empty';
 import leadingOffset from '../../src/run/leadingOffset';
 

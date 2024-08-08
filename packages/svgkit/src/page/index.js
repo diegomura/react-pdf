@@ -76,9 +76,18 @@ class SVGPage {
     const state = this.stack.pop();
     this.applyStyleState(state);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  setDefaultStyles() {}
+
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  applyStyleState(state) {}
+
+  // eslint-disable-next-line class-methods-use-this
+  getStyleState() {}
 }
 
-const mixin = methods => {
+const mixin = (methods) => {
   return (() => {
     const result = [];
     for (const name in methods) {

@@ -6,17 +6,19 @@ import resolveImage from '@react-pdf/image';
 const emojis = {};
 const regex = emojiRegex();
 
-const reflect = promise => (...args) =>
-  promise(...args).then(
-    v => v,
-    e => e,
-  );
+const reflect =
+  (promise) =>
+  (...args) =>
+    promise(...args).then(
+      (v) => v,
+      (e) => e,
+    );
 
 // Returns a function to be able to mock resolveImage.
 const makeFetchEmojiImage = () => reflect(resolveImage);
 
 /**
- * When an emoji as no color, it might still have 2 parts,
+ * When an emoji as no variations, it might still have 2 parts,
  * the canonical emoji and an empty string.
  * ex.
  *   (no color) Array.from('❤️') => ["❤", "️"]
@@ -25,21 +27,21 @@ const makeFetchEmojiImage = () => reflect(resolveImage);
  * The empty string needs to be removed otherwise the generated
  * url will be incorect.
  */
-const _removeNoColor = x => x !== '️';
+const _removeVariationSelectors = (x) => x !== '️';
 
-const getCodePoints = string =>
+const getCodePoints = (string, withVariationSelectors) =>
   Array.from(string)
-    .filter(_removeNoColor)
-    .map(char => char.codePointAt(0).toString(16))
+    .filter(withVariationSelectors ? () => true : _removeVariationSelectors)
+    .map((char) => char.codePointAt(0).toString(16))
     .join('-');
 
 const buildEmojiUrl = (emoji, source) => {
-  const { url, format, builder } = source;
+  const { url, format, builder, withVariationSelectors } = source;
   if (typeof builder === 'function') {
-    return builder(getCodePoints(emoji));
+    return builder(getCodePoints(emoji, withVariationSelectors));
   }
 
-  return `${url}${getCodePoints(emoji)}.${format}`;
+  return `${url}${getCodePoints(emoji, withVariationSelectors)}.${format}`;
 };
 
 export const fetchEmojis = (string, source) => {
@@ -47,7 +49,7 @@ export const fetchEmojis = (string, source) => {
 
   const promises = [];
 
-  Array.from(string.matchAll(regex)).forEach(match => {
+  Array.from(string.matchAll(regex)).forEach((match) => {
     const emoji = match[0];
 
     if (!emojis[emoji] || emojis[emoji].loading) {
@@ -56,7 +58,7 @@ export const fetchEmojis = (string, source) => {
       emojis[emoji] = { loading: true };
       const fetchEmojiImage = makeFetchEmojiImage();
       promises.push(
-        fetchEmojiImage({ uri: emojiUrl }).then(image => {
+        fetchEmojiImage({ uri: emojiUrl }).then((image) => {
           emojis[emoji].loading = false;
           emojis[emoji].data = image.data;
         }),
@@ -67,7 +69,9 @@ export const fetchEmojis = (string, source) => {
   return promises;
 };
 
-export const embedEmojis = fragments => {
+const specialCases = ['©️', '®', '™']; // Do not treat these as emojis if emoji not present
+
+export const embedEmojis = (fragments) => {
   const result = [];
 
   for (let i = 0; i < fragments.length; i += 1) {
@@ -75,9 +79,11 @@ export const embedEmojis = fragments => {
 
     let lastIndex = 0;
 
-    Array.from(fragment.string.matchAll(regex)).forEach(match => {
+    Array.from(fragment.string.matchAll(regex)).forEach((match) => {
       const { index } = match;
       const emoji = match[0];
+      const isSpecialCase = specialCases.includes(emoji);
+
       const emojiSize = fragment.attributes.fontSize;
       const chunk = fragment.string.slice(lastIndex, index + match[0].length);
 
@@ -96,6 +102,8 @@ export const embedEmojis = fragments => {
             },
           },
         });
+      } else if (isSpecialCase) {
+        result.push({ string: chunk, attributes: fragment.attributes });
       } else {
         // If no emoji data, we just replace the emoji with a nodef char
         result.push({

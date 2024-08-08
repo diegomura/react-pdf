@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`layout resolveOrigins should not resolve for node without box 1`] = `
+exports[`layout resolveOrigins > should not resolve for node without box 1`] = `
 {
   "children": [
     {
@@ -20,7 +20,7 @@ exports[`layout resolveOrigins should not resolve for node without box 1`] = `
 }
 `;
 
-exports[`layout resolveOrigins should resolve centered origin by default 1`] = `
+exports[`layout resolveOrigins > should resolve centered origin by default 1`] = `
 {
   "children": [
     {
@@ -42,7 +42,7 @@ exports[`layout resolveOrigins should resolve centered origin by default 1`] = `
 }
 `;
 
-exports[`layout resolveOrigins should resolve origin adjusted by fixed values 1`] = `
+exports[`layout resolveOrigins > should resolve origin adjusted by fixed values 1`] = `
 {
   "children": [
     {
@@ -67,7 +67,7 @@ exports[`layout resolveOrigins should resolve origin adjusted by fixed values 1`
 }
 `;
 
-exports[`layout resolveOrigins should resolve origin adjusted by percent values 1`] = `
+exports[`layout resolveOrigins > should resolve origin adjusted by percent values 1`] = `
 {
   "children": [
     {
@@ -92,7 +92,7 @@ exports[`layout resolveOrigins should resolve origin adjusted by percent values 
 }
 `;
 
-exports[`layout resolveOrigins should resolve origins for nested elements 1`] = `
+exports[`layout resolveOrigins > should resolve origins for nested elements 1`] = `
 {
   "children": [
     {

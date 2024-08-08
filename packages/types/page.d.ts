@@ -51,8 +51,7 @@ type StandardPageSize =
   | 'LEGAL'
   | 'LETTER'
   | 'TABLOID'
-  | 'ID1'
-  ;
+  | 'ID1';
 
 type StaticSize = number | string;
 

@@ -55,53 +55,59 @@ const PAGE_SIZES = {
 /**
  * Transforms array into size object
  *
- * @param {Array} array
- * @returns {Object} size object with width and height
+ * @param {number[]} v array
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const toSizeObject = v => ({ width: v[0], height: v[1] });
+const toSizeObject = (v) => ({ width: v[0], height: v[1] });
 
 /**
  * Flip size object
  *
- * @param {Object} size object
- * @returns {Object} flipped size object
+ * @param {{ width: number, height: number }} v size object
+ * @returns {{ width: number, height: number }} flipped size object
  */
-const flipSizeObject = v => ({ width: v.height, height: v.width });
+const flipSizeObject = (v) => ({ width: v.height, height: v.width });
 
 /**
  * Returns size object from a given string
  *
- * @param {String} page size string
- * @returns {Object} size object with width and height
+ * @param {string} v page size string
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const getStringSize = v => {
+const getStringSize = (v) => {
   return toSizeObject(PAGE_SIZES[v.toUpperCase()]);
 };
 
 /**
  * Returns size object from a single number
  *
- * @param {Number} page size number
- * @returns {Object} size object with width and height
+ * @param {number} n page size number
+ * @returns {{ width: number, height: number }} size object with width and height
  */
-const getNumberSize = n => toSizeObject([n]);
+const getNumberSize = (n) => toSizeObject([n]);
 
 /**
- * // TODO: Move this to separate pacjage to reuse with layout
+ * // TODO: Move this to separate package to reuse with layout
  * Return page size in an object { width, height }
  *
- * @param {Object} page instance
- * @returns {Object} size object with width and height
+ * @param {string | number[] | number | { width: number, height: number }} value page instance
+ * @param {string} orientation page orientation
+ * @returns {{ width: number, height: number }} size object with width and height
  */
 const getSize = (value, orientation) => {
-  let size = value;
+  /**
+   * @type {{ width: number, height: number }}
+   */
+  let size;
 
-  if (typeof size === 'string') {
+  if (typeof value === 'string') {
     size = getStringSize(value);
   } else if (Array.isArray(value)) {
     size = toSizeObject(value);
-  } else if (typeof size === 'number') {
+  } else if (typeof value === 'number') {
     size = getNumberSize(value);
+  } else {
+    size = value;
   }
 
   return orientation === 'landscape' ? flipSizeObject(size) : size;

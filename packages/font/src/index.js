@@ -8,7 +8,7 @@ function FontStore() {
 
   let hyphenationCallback = null;
 
-  this.register = data => {
+  this.register = (data) => {
     const { family } = data;
 
     if (!fonts[family]) {
@@ -25,15 +25,20 @@ function FontStore() {
     }
   };
 
-  this.registerEmojiSource = ({ url, format = 'png', builder }) => {
-    emojiSource = { url, format, builder };
+  this.registerEmojiSource = ({
+    url,
+    format = 'png',
+    builder,
+    withVariationSelectors = false,
+  }) => {
+    emojiSource = { url, format, builder, withVariationSelectors };
   };
 
-  this.registerHyphenationCallback = callback => {
+  this.registerHyphenationCallback = (callback) => {
     hyphenationCallback = callback;
   };
 
-  this.getFont = descriptor => {
+  this.getFont = (descriptor) => {
     const { fontFamily } = descriptor;
     const isStandard = standard.includes(fontFamily);
 
@@ -48,16 +53,23 @@ function FontStore() {
     return fonts[fontFamily].resolve(descriptor);
   };
 
-  this.load = async descriptor => {
+  this.load = async (descriptor) => {
     const { fontFamily } = descriptor;
-    const isStandard = standard.includes(fontFamily);
+    const fontFamilies =
+      typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
 
-    if (isStandard) return;
+    const promises = [];
 
-    const f = this.getFont(descriptor);
+    for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
+      const family = fontFamilies[i];
+      const isStandard = standard.includes(family);
+      if (isStandard) return;
 
-    // We cache the font to avoid fetching it many times
-    await f.load();
+      const f = this.getFont({ ...descriptor, fontFamily: family });
+      promises.push(f.load());
+    }
+
+    await Promise.all(promises);
   };
 
   this.reset = () => {

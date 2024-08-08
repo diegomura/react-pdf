@@ -1,10 +1,12 @@
 /* eslint-disable */
+import { vi } from 'vitest';
+import createFetchMock from 'vitest-fetch-mock';
+
 import '../../polyfills';
+
+const fetchMocker = createFetchMock(vi);
+fetchMocker.enableMocks();
 
 global.BROWSER = false;
 
-const customGlobal = global;
-customGlobal.fetch = require('jest-fetch-mock');
-customGlobal.fetchMock = customGlobal.fetch;
-
-jest.setMock('cross-fetch', fetch);
+vi.mock('cross-fetch', () => ({ default: global.fetch }));

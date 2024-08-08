@@ -1,4 +1,6 @@
-import Yoga from '@react-pdf/yoga';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import * as Yoga from 'yoga-layout';
 
 import setPadding, {
   setPaddingTop,
@@ -8,8 +10,8 @@ import setPadding, {
 } from '../../src/node/setPadding';
 
 describe('node setPadding', () => {
-  const mock = jest.fn();
-  const mockPercent = jest.fn();
+  const mock = vi.fn();
+  const mockPercent = vi.fn();
 
   const node = {
     yogaNode: { setPadding: mock, setPaddingPercent: mockPercent },
@@ -32,7 +34,7 @@ describe('node setPadding', () => {
       const result = setPaddingTop(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -41,7 +43,7 @@ describe('node setPadding', () => {
       const result = setPaddingTop('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_TOP);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Top);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -59,7 +61,7 @@ describe('node setPadding', () => {
       const result = setPaddingRight(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -68,7 +70,7 @@ describe('node setPadding', () => {
       const result = setPaddingRight('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_RIGHT);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Right);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -86,7 +88,7 @@ describe('node setPadding', () => {
       const result = setPaddingBottom(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -95,7 +97,7 @@ describe('node setPadding', () => {
       const result = setPaddingBottom('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_BOTTOM);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Bottom);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -113,7 +115,7 @@ describe('node setPadding', () => {
       const result = setPaddingLeft(50)(node);
 
       expect(mock.mock.calls).toHaveLength(1);
-      expect(mock.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mock.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(mock.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -122,7 +124,7 @@ describe('node setPadding', () => {
       const result = setPaddingLeft('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(1);
-      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.EDGE_LEFT);
+      expect(mockPercent.mock.calls[0][0]).toBe(Yoga.Edge.Left);
       expect(mockPercent.mock.calls[0][1]).toBe(50);
       expect(result).toBe(node);
     });
@@ -140,10 +142,10 @@ describe('node setPadding', () => {
       const result = setPadding(50)(node);
 
       expect(mock.mock.calls).toHaveLength(4);
-      expect(mock.mock.calls[0]).toEqual([Yoga.EDGE_TOP, 50]);
-      expect(mock.mock.calls[1]).toEqual([Yoga.EDGE_RIGHT, 50]);
-      expect(mock.mock.calls[2]).toEqual([Yoga.EDGE_BOTTOM, 50]);
-      expect(mock.mock.calls[3]).toEqual([Yoga.EDGE_LEFT, 50]);
+      expect(mock.mock.calls[0]).toEqual([Yoga.Edge.Top, 50]);
+      expect(mock.mock.calls[1]).toEqual([Yoga.Edge.Right, 50]);
+      expect(mock.mock.calls[2]).toEqual([Yoga.Edge.Bottom, 50]);
+      expect(mock.mock.calls[3]).toEqual([Yoga.Edge.Left, 50]);
       expect(result).toBe(node);
     });
 
@@ -151,10 +153,10 @@ describe('node setPadding', () => {
       const result = setPadding('50%')(node);
 
       expect(mockPercent.mock.calls).toHaveLength(4);
-      expect(mockPercent.mock.calls[0]).toEqual([Yoga.EDGE_TOP, 50]);
-      expect(mockPercent.mock.calls[1]).toEqual([Yoga.EDGE_RIGHT, 50]);
-      expect(mockPercent.mock.calls[2]).toEqual([Yoga.EDGE_BOTTOM, 50]);
-      expect(mockPercent.mock.calls[3]).toEqual([Yoga.EDGE_LEFT, 50]);
+      expect(mockPercent.mock.calls[0]).toEqual([Yoga.Edge.Top, 50]);
+      expect(mockPercent.mock.calls[1]).toEqual([Yoga.Edge.Right, 50]);
+      expect(mockPercent.mock.calls[2]).toEqual([Yoga.Edge.Bottom, 50]);
+      expect(mockPercent.mock.calls[3]).toEqual([Yoga.Edge.Left, 50]);
       expect(result).toBe(node);
     });
   });

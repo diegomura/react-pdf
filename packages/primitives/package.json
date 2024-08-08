@@ -1,20 +1,28 @@
 {
   "name": "@react-pdf/primitives",
-  "version": "3.0.1",
+  "version": "3.1.1",
   "license": "MIT",
   "description": "Define uninitialized elements",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
-  "main": "./lib/index.js",
+  "type": "module",
+  "main": "./lib/index.cjs",
   "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./src/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/primitives"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
-    "test": "jest"
+    "build": "babel src --out-dir lib && mv lib/index.js lib/index.cjs",
+    "test": "vitest"
   },
   "files": [
     "lib",

@@ -26,43 +26,43 @@ You can also try out an interactive in-browser demo of PDFKit [here](http://pdfk
 
 ## Installation
 
-Installation uses the [npm](http://npmjs.org/) package manager.  Just type the following command after installing npm.
+Installation uses the [npm](http://npmjs.org/) package manager. Just type the following command after installing npm.
 
     npm install @react-pdf/pdfkit
 
 ## Features
 
-* Vector graphics
-  * HTML5 canvas-like API
-  * Path operations
-  * SVG path parser for easy path creation
-  * Transformations
-  * Linear and radial gradients
-* Text
-  * Line wrapping
-  * Text alignments
-  * Bulleted lists
-* Font embedding
-  * Supports TrueType (.ttf), OpenType (.otf), WOFF, WOFF2, TrueType Collections (.ttc), and Datafork TrueType (.dfont) fonts
-  * Font subsetting
-  * See [fontkit](http://github.com/devongovett/fontkit) for more details on advanced glyph layout support.
-* Image embedding
-  * Supports JPEG and PNG files (including indexed PNGs, and PNGs with transparency)
-* Annotations
-  * Links
-  * Notes
-  * Highlights
-  * Underlines
-  * etc.
+- Vector graphics
+  - HTML5 canvas-like API
+  - Path operations
+  - SVG path parser for easy path creation
+  - Transformations
+  - Linear and radial gradients
+- Text
+  - Line wrapping
+  - Text alignments
+  - Bulleted lists
+- Font embedding
+  - Supports TrueType (.ttf), OpenType (.otf), WOFF, WOFF2, TrueType Collections (.ttc), and Datafork TrueType (.dfont) fonts
+  - Font subsetting
+  - See [fontkit](http://github.com/devongovett/fontkit) for more details on advanced glyph layout support.
+- Image embedding
+  - Supports JPEG and PNG files (including indexed PNGs, and PNGs with transparency)
+- Annotations
+  - Links
+  - Notes
+  - Highlights
+  - Underlines
+  - etc.
 
 ## Coming soon!
 
-* Patterns fills
-* Outlines
-* PDF Security
-* Higher level APIs for creating tables and laying out content
-* More performance optimizations
-* Even more awesomeness, perhaps written by you! Please fork this repository and send me pull requests.
+- Patterns fills
+- Outlines
+- PDF Security
+- Higher level APIs for creating tables and laying out content
+- More performance optimizations
+- Even more awesomeness, perhaps written by you! Please fork this repository and send me pull requests.
 
 ## Documentation
 

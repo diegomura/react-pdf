@@ -2,15 +2,15 @@ import * as P from '@react-pdf/primitives';
 
 import layoutText from '../text/layoutText';
 
-const isType = type => node => node.type === type;
+const isType = (type) => (node) => node.type === type;
 
 const isSvg = isType(P.Svg);
 
 const isText = isType(P.Text);
 
-const shouldIterate = node => !isSvg(node) && !isText(node);
+const shouldIterate = (node) => !isSvg(node) && !isText(node);
 
-const shouldLayoutText = node => isText(node) && !node.lines;
+const shouldLayoutText = (node) => isText(node) && !node.lines;
 
 /**
  * Performs text layout on text node if wasn't calculated before.
@@ -34,7 +34,7 @@ const resolveTextLayout = (node, fontStore) => {
   if (shouldIterate(node)) {
     if (!node.children) return node;
 
-    const mapChild = child => resolveTextLayout(child, fontStore);
+    const mapChild = (child) => resolveTextLayout(child, fontStore);
 
     const children = node.children.map(mapChild);
 

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import getSource from '../../src/image/getSource';
 
 const VALUE = 'gotcha';

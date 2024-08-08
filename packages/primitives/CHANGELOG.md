@@ -1,5 +1,17 @@
 # @react-pdf/primitives
 
+## 3.1.1
+
+### Patch Changes
+
+- [#2510](https://github.com/diegomura/react-pdf/pull/2510) [`42bbbda`](https://github.com/diegomura/react-pdf/commit/42bbbda48058acd2d36d7a92c812d133608c459e) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix require @react-pdf/primitives from CJS
+
+## 3.1.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
 ## 3.0.1
 
 ### Patch Changes

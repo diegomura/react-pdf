@@ -4,7 +4,7 @@ import expandData from './data/expandData';
 
 const STANDARD_FONTS = expandData(data);
 
-const createStandardFont = PDFFont =>
+const createStandardFont = (PDFFont) =>
   class StandardFont extends PDFFont {
     constructor(document, name, id) {
       super();

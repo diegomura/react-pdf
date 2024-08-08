@@ -11,7 +11,9 @@ export interface SVGPresentationAttributes {
   strokeOpacity?: string | number;
   textAnchor?: 'start' | 'middle' | 'end';
   strokeLineCap?: 'butt' | 'round' | 'square';
+  strokeLinejoin?: 'butt' | 'round' | 'square';
   visibility?: 'visible' | 'hidden' | 'collapse';
+  clipPath?: string;
   dominantBaseline?:
     | 'auto'
     | 'middle'

@@ -1,5 +1,100 @@
 # @react-pdf/svgkit
 
+## 2.3.10
+
+### Patch Changes
+
+- Updated dependencies [[`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52)]:
+  - @react-pdf/pdfkit@3.1.10
+
+## 2.3.9
+
+### Patch Changes
+
+- Updated dependencies [[`e2d21a4`](https://github.com/diegomura/react-pdf/commit/e2d21a433b881bb96ea4d0b3a01a7297dd1f4a94)]:
+  - @react-pdf/pdfkit@3.1.9
+
+## 2.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f)]:
+  - @react-pdf/pdfkit@3.1.8
+
+## 2.3.7
+
+### Patch Changes
+
+- Updated dependencies [[`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a)]:
+  - @react-pdf/pdfkit@3.1.7
+
+## 2.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`dc54c13`](https://github.com/diegomura/react-pdf/commit/dc54c13625510482e93f80ed5cc07cf3a6a6d34c)]:
+  - @react-pdf/pdfkit@3.1.6
+
+## 2.3.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/pdfkit@3.1.5
+
+## 2.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`8350154`](https://github.com/diegomura/react-pdf/commit/83501541e3a050021e18e112bb472b2dabc142a7)]:
+  - @react-pdf/pdfkit@3.1.4
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`0590324`](https://github.com/diegomura/react-pdf/commit/0590324d7a6d75c0a49520b3f99cfb6594239390)]:
+  - @react-pdf/pdfkit@3.1.3
+
+## 2.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`44bd45b`](https://github.com/diegomura/react-pdf/commit/44bd45b1961ca8bae4a2f84cc77db945e5c43419)]:
+  - @react-pdf/pdfkit@3.1.2
+
+## 2.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`36c6ba3`](https://github.com/diegomura/react-pdf/commit/36c6ba30ae73a512f19fe5bc47ac8c304887c0da), [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8)]:
+  - @react-pdf/pdfkit@3.1.1
+
+## 2.3.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+### Patch Changes
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/pdfkit@3.1.0
+
+## 2.2.4
+
+### Patch Changes
+
+- Updated dependencies [[`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4), [`b457a0c`](https://github.com/diegomura/react-pdf/commit/b457a0cc1c1352325e6c633af3000a3c9241f7f7)]:
+  - @react-pdf/pdfkit@3.0.4
+
+## 2.2.3
+
+### Patch Changes
+
+- Updated dependencies [[`4cfb84d`](https://github.com/diegomura/react-pdf/commit/4cfb84d9f3d2301720b68b4c40a0257b9520c6e1)]:
+  - @react-pdf/pdfkit@3.0.3
+
 ## 2.2.2
 
 ### Patch Changes

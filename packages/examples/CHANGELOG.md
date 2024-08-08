@@ -1,5 +1,166 @@
 # @react-pdf/examples
 
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.4
+
+## 3.3.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.3
+
+## 3.2.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.2
+
+## 3.2.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.1
+
+## 3.2.11
+
+### Patch Changes
+
+- Updated dependencies [[`fab09cc`](https://github.com/diegomura/react-pdf/commit/fab09cc9814326fdb44d2bcb7097ba9960d441d1)]:
+  - @react-pdf/renderer@3.4.0
+
+## 3.2.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.3.8
+
+## 3.2.9
+
+### Patch Changes
+
+- Updated dependencies [[`f7505ed`](https://github.com/diegomura/react-pdf/commit/f7505ed453a1a0ae960d0e5e4a1d155803861b71)]:
+  - @react-pdf/renderer@3.3.7
+
+## 3.2.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.3.6
+
+## 3.2.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.3.5
+
+## 3.2.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.3.4
+
+## 3.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`b5380a1`](https://github.com/diegomura/react-pdf/commit/b5380a1a0a7397b4111d68ce97b4acb702d34d51)]:
+  - @react-pdf/renderer@3.3.3
+
+## 3.2.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.3.2
+
+## 3.2.3
+
+### Patch Changes
+
+- [#2529](https://github.com/diegomura/react-pdf/pull/2529) [`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8) Thanks [@diegomura](https://github.com/diegomura)! - fix: jpeg exif orientation rendering
+
+- Updated dependencies [[`a35b1ba`](https://github.com/diegomura/react-pdf/commit/a35b1ba18d293df51293600d8d56015094d222d8)]:
+  - @react-pdf/renderer@3.3.1
+
+## 3.2.2
+
+### Patch Changes
+
+- [#2518](https://github.com/diegomura/react-pdf/pull/2518) [`3c62070`](https://github.com/diegomura/react-pdf/commit/3c6207035d2f02109bb2b5ef8804febc5a05b488) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid prop (style) in Resume example
+
+* [#2521](https://github.com/diegomura/react-pdf/pull/2521) [`214207b`](https://github.com/diegomura/react-pdf/commit/214207b62bc8061a46a7cb220901e193d327effe) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid display property in objectFit example
+
+- [#2517](https://github.com/diegomura/react-pdf/pull/2517) [`bc0d4f4`](https://github.com/diegomura/react-pdf/commit/bc0d4f42fe5d8b8bd2fb560b753041fbf013ab33) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fix invalid props (xmlns, id) in SVG example
+
+- Updated dependencies [[`64f7bba`](https://github.com/diegomura/react-pdf/commit/64f7bba0d840d17188e50086169c84c415abd8d5), [`e817223`](https://github.com/diegomura/react-pdf/commit/e8172231d07d10ece4ca960641f9ee52c5d4660d), [`cf73180`](https://github.com/diegomura/react-pdf/commit/cf7318069e63170e160a36602359fc8cbc3386c2), [`0f5c43f`](https://github.com/diegomura/react-pdf/commit/0f5c43fa6f3c0b53c067200cc1ac21e651504760), [`66a40b2`](https://github.com/diegomura/react-pdf/commit/66a40b2e41cefe11f1ef8d467ba449a8861adb69)]:
+  - @react-pdf/renderer@3.3.0
+
+## 3.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.2.1
+
+## 3.2.0
+
+### Minor Changes
+
+- [#2409](https://github.com/diegomura/react-pdf/pull/2409) [`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Add support for native ESM
+
+* [#2496](https://github.com/diegomura/react-pdf/pull/2496) [`c8fe2c8`](https://github.com/diegomura/react-pdf/commit/c8fe2c86639cb8e44f26f78e62fc67379a8e3ceb) Thanks [@diegomura](https://github.com/diegomura)! - fix: copyright and registered symbol rendering
+
+### Patch Changes
+
+- Updated dependencies [[`b6a14fd`](https://github.com/diegomura/react-pdf/commit/b6a14fd160fab26a49f798e5294b0e361e67fe37)]:
+  - @react-pdf/renderer@3.2.0
+
+## 3.1.0
+
+### Minor Changes
+
+- [#2491](https://github.com/diegomura/react-pdf/pull/2491) [`ed8524f`](https://github.com/diegomura/react-pdf/commit/ed8524f867f71fc8407faeb74edc4574e99a1137) Thanks [@diegomura](https://github.com/diegomura)! - feat: add minPresenceAhead example
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.1.17
+
+## 3.0.0
+
+### Major Changes
+
+- [#2487](https://github.com/diegomura/react-pdf/pull/2487) [`3f31046`](https://github.com/diegomura/react-pdf/commit/3f310460dcadb7bd65adeab0309812aa757cde29) Thanks [@diegomura](https://github.com/diegomura)! - add dev script
+
+### Patch Changes
+
+- [#2479](https://github.com/diegomura/react-pdf/pull/2479) [`45b2bd3`](https://github.com/diegomura/react-pdf/commit/45b2bd37037c605727ad5783f2f2a438dc19cac4) Thanks [@diegomura](https://github.com/diegomura)! - fix linting
+
+- Updated dependencies [[`8654d00`](https://github.com/diegomura/react-pdf/commit/8654d003023dd0899cddfc2ea2f5a552e01cf570)]:
+  - @react-pdf/renderer@3.1.16
+
+## 2.0.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.1.15
+
 ## 2.0.13
 
 ### Patch Changes

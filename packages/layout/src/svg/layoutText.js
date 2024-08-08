@@ -1,5 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import layoutEngine, {
+  bidi,
   linebreaker,
   justification,
   scriptItemizer,
@@ -11,9 +12,10 @@ import fromFragments from '../text/fromFragments';
 import transformText from '../text/transformText';
 import fontSubstitution from '../text/fontSubstitution';
 
-const isTextInstance = node => node.type === P.TextInstance;
+const isTextInstance = (node) => node.type === P.TextInstance;
 
 const engines = {
+  bidi,
   linebreaker,
   justification,
   textDecoration,
@@ -90,7 +92,7 @@ const AlmostInfinity = 999999999999;
 
 const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 
-const layoutTspan = fontStore => node => {
+const layoutTspan = (fontStore) => (node) => {
   const attributedString = getAttributedString(fontStore, node);
 
   const x = node.props?.x || 0;

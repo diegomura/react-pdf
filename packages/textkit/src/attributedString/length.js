@@ -2,12 +2,16 @@ import start from './start';
 import end from './end';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get attributed string length
  *
- * @param  {Object}  glyph string
- * @return {number} end
+ * @param {AttributedString} attributedString attributed string
+ * @returns {number} end
  */
-const length = attributedString => {
+const length = (attributedString) => {
   return end(attributedString) - start(attributedString);
 };
 

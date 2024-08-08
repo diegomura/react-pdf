@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import castArray from '../src/castArray';
 
 describe('castArray', () => {

@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import removePaddings from '../../src/node/removePaddings';
 
 describe('node removePaddings', () => {

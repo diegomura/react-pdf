@@ -2,11 +2,15 @@ import runAt from './runAt';
 import glyphIndexAt from '../run/glyphIndexAt';
 
 /**
+ * @typedef {import('../types.js').AttributedString} AttributedString
+ */
+
+/**
  * Get glyph width at string index
  *
- * @param {number} string index
- * @param {Object} attributed string
- * @return {number} glyph width
+ * @param {number} index string index
+ * @param {AttributedString} string attributed string
+ * @returns {number} glyph width
  */
 const glyphWidthAt = (index, string) => {
   const run = runAt(index, string);

@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 /**
  * Test font substitution based on the string 'Lorem'
  * Returns empry if no runs present, or arbitrary font substitution otherwise
@@ -5,10 +7,10 @@
  *   L     o     r     e     m
  * |- Courier -|-- Helvetica --|
  *
- * @param  {Object}  attributed string
- * @return {Object} attributed string
+ * @param {Object}  attributed string
+ * @returns {Object} attributed string
  */
-export const fontSubstitutionImpl = jest.fn(string => {
+export const fontSubstitutionImpl = vi.fn((string) => {
   const runs =
     string.runs.length === 0
       ? []
@@ -20,6 +22,6 @@ export const fontSubstitutionImpl = jest.fn(string => {
   return Object.assign({}, string, { runs });
 });
 
-const fontSubstitutionEngine = jest.fn(() => fontSubstitutionImpl);
+const fontSubstitutionEngine = vi.fn(() => fontSubstitutionImpl);
 
 export default fontSubstitutionEngine;

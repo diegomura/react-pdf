@@ -1,12 +1,17 @@
 import { evolve, matchPercent } from '@react-pdf/fns';
 
 /**
- *
- * @param {Object} container width and height
- * @param {String | Number} value border radius value
- * @returns {Number} fixed border radius value
+ * @typedef {Function} ResolveRadius
+ * @param {string | number} value border radius value
+ * @returns {number} resolved radius value
  */
-const resolveRadius = container => value => {
+
+/**
+ *
+ * @param {{ width: number, height: number }} container width and height
+ * @returns {ResolveRadius} resolve radius function
+ */
+const resolveRadius = (container) => (value) => {
   if (!value) return undefined;
 
   const match = matchPercent(value);
@@ -22,7 +27,7 @@ const resolveRadius = container => value => {
  * @param {Object} node
  * @returns {Object} node
  */
-const resolvePercentRadius = node => {
+const resolvePercentRadius = (node) => {
   const style = evolve(
     {
       borderTopLeftRadius: resolveRadius(node.box),

@@ -1,4 +1,4 @@
-const parseAspectRatio = value => {
+const parseAspectRatio = (value) => {
   const match = value
     .replace(/[\s\r\t\n]+/gm, ' ')
     .replace(/^defer\s/, '')

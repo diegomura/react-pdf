@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import isNumber from '../../src/utils/isNumber';
 
 describe('utils isNumber operator', () => {

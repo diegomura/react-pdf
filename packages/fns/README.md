@@ -7,6 +7,7 @@
 > React-pdf helper functions
 
 ## How to install
+
 ```sh
 yarn add @react-pdf/fns
 ```

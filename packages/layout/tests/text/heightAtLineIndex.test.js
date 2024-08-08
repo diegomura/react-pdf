@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import heightAtLineIndex from '../../src/text/heightAtLineIndex';
 
 const TEST_LINE = { box: { height: 25 } };

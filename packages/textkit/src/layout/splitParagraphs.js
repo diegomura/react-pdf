@@ -2,32 +2,37 @@ import length from '../attributedString/length';
 import slice from '../attributedString/slice';
 
 /**
- * Breaks attributed string into paragraphs
- *
- * @param  {Object}  engines
- * @param  {Object}  layout options
- * @param  {Object}  attributed string
- * @return {Array} attributed string array
+ * @typedef {import('../types.js').AttributedString} AttributedString
  */
-const splitParagraphs = () => attributedString => {
-  const res = [];
 
-  let start = 0;
-  let breakPoint = attributedString.string.indexOf('\n') + 1;
+/**
+ * Breaks attributed string into paragraphs
+ */
+const splitParagraphs = () => {
+  /**
+   * @param {AttributedString} attributedString attributed string
+   * @returns {AttributedString[]} attributed string array
+   */
+  return (attributedString) => {
+    const res = [];
 
-  while (breakPoint > 0) {
-    res.push(slice(start, breakPoint, attributedString));
-    start = breakPoint;
-    breakPoint = attributedString.string.indexOf('\n', breakPoint) + 1;
-  }
+    let start = 0;
+    let breakPoint = attributedString.string.indexOf('\n') + 1;
 
-  if (start === 0) {
-    res.push(attributedString);
-  } else if (start < attributedString.string.length) {
-    res.push(slice(start, length(attributedString), attributedString));
-  }
+    while (breakPoint > 0) {
+      res.push(slice(start, breakPoint, attributedString));
+      start = breakPoint;
+      breakPoint = attributedString.string.indexOf('\n', breakPoint) + 1;
+    }
 
-  return res;
+    if (start === 0) {
+      res.push(attributedString);
+    } else if (start < attributedString.string.length) {
+      res.push(slice(start, length(attributedString), attributedString));
+    }
+
+    return res;
+  };
 };
 
 export default splitParagraphs;

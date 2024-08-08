@@ -1,9 +1,9 @@
-const matchNumber = value =>
+const matchNumber = (value) =>
   typeof value === 'string' && /^-?\d*\.?\d*$/.test(value);
 
-const castFloat = value => {
+const castFloat = (value) => {
   if (typeof value !== 'string') return value;
-  if (matchNumber(value)) return parseFloat(value, 10);
+  if (matchNumber(value)) return parseFloat(value);
   return value;
 };
 

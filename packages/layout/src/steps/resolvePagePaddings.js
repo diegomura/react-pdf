@@ -1,25 +1,35 @@
 import { evolve, matchPercent } from '@react-pdf/fns';
 
-/*
- * Translates page percentage horizontal paddings in fixed ones
- *
- * @param {Object} page container
- * @param {String} padding value
+/**
+ * @typedef {Function} ResolvePageHorizontalPadding
+ * @param {string} value padding value
  * @returns {Object} translated padding value
  */
-const resolvePageHorizontalPadding = container => value => {
+
+/**
+ * Translates page percentage horizontal paddings in fixed ones
+ *
+ * @param {Object} container page container
+ * @returns {ResolvePageHorizontalPadding} resolve page horizontal padding
+ */
+const resolvePageHorizontalPadding = (container) => (value) => {
   const match = matchPercent(value);
   return match ? match.percent * container.width : value;
 };
 
 /**
- * Translates page percentage vertical paddings in fixed ones
- *
- * @param {Object} page container
- * @param {String} padding value
+ * @typedef {Function} ResolvePageVerticalPadding
+ * @param {string} padding value
  * @returns {Object} translated padding value
  */
-const resolvePageVerticalPadding = container => value => {
+
+/**
+ * Translates page percentage vertical paddings in fixed ones
+ *
+ * @param {Object} container page container
+ * @returns {ResolvePageVerticalPadding} resolve page vertical padding
+ */
+const resolvePageVerticalPadding = (container) => (value) => {
   const match = matchPercent(value);
   return match ? match.percent * container.height : value;
 };
@@ -30,7 +40,7 @@ const resolvePageVerticalPadding = container => value => {
  * @param {Object} page
  * @returns {Object} page with fixed paddings
  */
-const resolvePagePaddings = page => {
+const resolvePagePaddings = (page) => {
   const container = page.style;
 
   const style = evolve(
@@ -51,10 +61,10 @@ const resolvePagePaddings = page => {
  * This has to be computed from pages calculated size and not by Yoga
  * because at this point we didn't performed pagination yet.
  *
- * @param {Object} document root
+ * @param {Object} root document root
  * @returns {Object} document root with translated page paddings
  */
-const resolvePagesPaddings = root => {
+const resolvePagesPaddings = (root) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolvePagePaddings);

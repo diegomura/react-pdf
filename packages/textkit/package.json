@@ -1,10 +1,18 @@
 {
   "name": "@react-pdf/textkit",
   "license": "MIT",
-  "version": "4.2.0",
+  "version": "4.4.1",
   "description": "An advanced text layout framework",
-  "main": "./lib/textkit.cjs.js",
-  "module": "./lib/textkit.es.js",
+  "type": "module",
+  "main": "./lib/textkit.cjs",
+  "module": "./lib/textkit.js",
+  "exports": {
+    ".": {
+      "import": "./lib/textkit.js",
+      "require": "./lib/textkit.cjs",
+      "default": "./lib/textkit.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -15,7 +23,7 @@
     "Diego Muracciole <diegomuracciole@gmail.com>"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w"
   },
@@ -24,7 +32,8 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "2.0.1",
+    "@react-pdf/fns": "2.2.1",
+    "bidi-js": "^1.0.2",
     "hyphen": "^1.6.4",
     "unicode-properties": "^1.4.1"
   }

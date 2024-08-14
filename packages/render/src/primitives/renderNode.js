@@ -12,8 +12,14 @@ import setLink from '../operations/setLink';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
+import renderForm from './form/renderForm';
+import renderFormField from './form/renderFormField';
+import renderTextInput from './form/renderTextInput';
+import renderFormPushButton from './form/renderFormPushButton';
+import renderPicker from './form/renderPicker';
+import renderFormList from './form/renderFormList';
 
-const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg;
+const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg && node.type !== P.Form && node.type !== P.FormField;
 
 const renderChildren = (ctx, node, options) => {
   ctx.save();
@@ -34,6 +40,12 @@ const renderFns = {
   [P.Text]: renderText,
   [P.Note]: renderNote,
   [P.Image]: renderImage,
+  [P.Form]: renderForm,
+  [P.FormField]: renderFormField,
+  [P.TextInput]: renderTextInput,
+  [P.FormPushButton]: renderFormPushButton,
+  [P.Picker]: renderPicker,
+  [P.FormList]: renderFormList,
   [P.Canvas]: renderCanvas,
   [P.Svg]: renderSvg,
   [P.Link]: setLink,

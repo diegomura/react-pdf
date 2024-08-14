@@ -48,6 +48,8 @@ const createCTX = () => {
   instance.lineCap = vi.fn().mockReturnValue(instance);
   instance.text = vi.fn().mockReturnValue(instance);
   instance.font = vi.fn().mockReturnValue(instance);
+  instance.formField = jest.fn().mockReturnValue(instance);
+  instance.textInput = jest.fn().mockReturnValue(instance);
 
   return instance;
 };

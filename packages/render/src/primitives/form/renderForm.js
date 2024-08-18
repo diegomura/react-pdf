@@ -5,7 +5,7 @@ const renderForm = (ctx, node, options) => {
   ctx.initForm();
 
   const children = node.children || [];
-  children.forEach((child) => renderNode(ctx, child, options))
+  children.forEach((child) => renderNode(ctx, child, options));
 
   ctx.restore();
 };

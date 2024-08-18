@@ -19,7 +19,11 @@ import renderFormPushButton from './form/renderFormPushButton';
 import renderPicker from './form/renderPicker';
 import renderFormList from './form/renderFormList';
 
-const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg && node.type !== P.Form && node.type !== P.FormField;
+const isRecursiveNode = (node) =>
+  node.type !== P.Text &&
+  node.type !== P.Svg &&
+  node.type !== P.Form &&
+  node.type !== P.FormField;
 
 const renderChildren = (ctx, node, options) => {
   ctx.save();

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import * as P from '@react-pdf/primitives';
 
 import createCTX from '../ctx';
@@ -35,11 +36,11 @@ describe('primitive renderFormField', () => {
           type: P.View,
           children: [
             {
-              type: P.TextInput
-            }
-          ]
-        }
-      ]
+              type: P.TextInput,
+            },
+          ],
+        },
+      ],
     };
 
     renderFormField(ctx, node);

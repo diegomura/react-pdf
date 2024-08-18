@@ -46,6 +46,10 @@ export default {
    * this method to set the default font.
    */
   initForm() {
+    if (!!this._root.data.AcroForm) {
+      // Form is already initialized
+      return this;
+    }
     if (!this._font) {
       throw new Error('Must set a font before calling initForm method');
     }

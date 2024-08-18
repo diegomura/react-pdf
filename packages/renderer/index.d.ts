@@ -227,14 +227,14 @@ declare namespace ReactPDF {
   /**
    * The fundamental component for building a Form.
    */
-  class Form extends React.Component<NodeProps> {}
+  class Form extends React.Component<React.PropsWithChildren<NodeProps>> {}
 
   interface FormCommonProps extends NodeProps {
     name?: string;
     required?: boolean;
     noExport?: boolean;
     readOnly?: boolean;
-    value ?: number | string;
+    value?: number | string;
     defaultValue?: number | string;
   }
 
@@ -242,11 +242,21 @@ declare namespace ReactPDF {
     name: string;
   }
 
-  class FormField extends React.Component<FormFieldProps> {}
+  class FormField extends React.Component<
+    React.PropsWithChildren<FormFieldProps>
+  > {}
 
   // see http://pdfkit.org/docs/forms.html#text_field_formatting
   interface TextFieldFormatting {
-    type: 'date' | 'time' | 'percent' | 'number' | 'zip' | 'zipPlus4' | 'phone' | 'ssn';
+    type:
+      | 'date'
+      | 'time'
+      | 'percent'
+      | 'number'
+      | 'zip'
+      | 'zipPlus4'
+      | 'phone'
+      | 'ssn';
     param?: string;
     nDec?: number;
     sepComma?: boolean;
@@ -261,7 +271,7 @@ declare namespace ReactPDF {
     multiline?: boolean;
     password?: boolean;
     noSpell?: boolean;
-    format?: TextFieldFormatting
+    format?: TextFieldFormatting;
   }
 
   class TextInput extends React.Component<TextInputProps> {}

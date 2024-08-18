@@ -24,16 +24,27 @@ const FormPdf = () => (
       >
         <Form>
           <FormField name="user-info" style={{ flexDirection: 'column' }}>
-            <Text>FormText</Text>
+            <Text>TextInput</Text>
             <TextInput
-              name="name"
-              value="hello"
+              name="username"
+              value="foo"
               align="center"
               style={{ height: '50px' }}
-              password
             />
 
-            <Text>FormCombo</Text>
+            {/* Nested works as well */}
+            <View>
+              <Text>TextInput</Text>
+              <TextInput
+                name="password"
+                value="bar"
+                align="center"
+                style={{ height: '50px' }}
+                password
+              />
+            </View>
+
+            <Text>Picker</Text>
             <Picker
               name="combo"
               select={['', 'option 1', 'option 2']}
@@ -72,7 +83,7 @@ const FormPdf = () => (
       >
         <Form>
           <FormField name="user-details" style={{ flexDirection: 'column' }}>
-            <Text>FormText</Text>
+            <Text>TextInput</Text>
             <TextInput
               name="details"
               value="hello"

@@ -5,6 +5,7 @@ import {
   View,
   Text,
   Form,
+  Checkbox,
   FormField,
   TextInput,
   Picker,
@@ -43,6 +44,10 @@ const FormPdf = () => (
                 password
               />
             </View>
+
+            <Text>Checkbox</Text>
+            {/* TODO: how to check automatically? */}
+            <Checkbox name="checkbox" style={{ height: '20px' }} />
 
             <Text>Picker</Text>
             <Picker

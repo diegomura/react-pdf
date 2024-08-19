@@ -1,8 +1,8 @@
-const clean = options => {
+const clean = (options) => {
   const opt = { ...options };
 
   // We need to ensure the elements are no present if not true
-  Object.entries(opt).forEach(pair => {
+  Object.entries(opt).forEach((pair) => {
     if (!pair[1]) {
       delete opt[pair[0]];
     }
@@ -11,7 +11,7 @@ const clean = options => {
   return opt;
 };
 
-const parseCommonFormOptions = node => {
+const parseCommonFormOptions = (node) => {
   // Common Options
   return {
     required: node.props?.required || false,
@@ -34,7 +34,7 @@ const parseTextFieldOptions = (node, formField) => {
   });
 };
 
-const parsePickerAndListFieldOptions = node => {
+const parsePickerAndListFieldOptions = (node) => {
   return clean({
     ...parseCommonFormOptions(node),
     sort: node.props?.sort || false,
@@ -45,10 +45,19 @@ const parsePickerAndListFieldOptions = node => {
   });
 };
 
-const parseButtonFieldOptions = node => {
+const parseButtonFieldOptions = (node) => {
   return clean({
     ...parseCommonFormOptions(node),
     label: node.props?.label || '???',
+  });
+};
+
+const parseCheckboxOptions = (node, formField) => {
+  return clean({
+    ...parseCommonFormOptions(node),
+    backgroundColor: node.props?.backgroundColor || undefined,
+    borderColor: node.props?.borderColor || undefined,
+    parent: formField || undefined,
   });
 };
 
@@ -56,4 +65,5 @@ export {
   parseTextFieldOptions,
   parsePickerAndListFieldOptions,
   parseButtonFieldOptions,
+  parseCheckboxOptions,
 };

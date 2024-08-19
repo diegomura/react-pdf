@@ -643,6 +643,7 @@ declare const Form: typeof ReactPDF.Form;
 declare const FormField: typeof ReactPDF.FormField;
 declare const TextInput: typeof ReactPDF.TextInput;
 declare const Picker: typeof ReactPDF.Picker;
+declare const Checkbox: typeof ReactPDF.Checkbox;
 declare const FormList: typeof ReactPDF.FormList;
 declare const FormPushButton: typeof ReactPDF.FormPushButton;
 declare const Note: typeof ReactPDF.Note;
@@ -724,4 +725,11 @@ export {
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
+  Form,
+  FormField,
+  TextInput,
+  Picker,
+  Checkbox,
+  FormList,
+  FormPushButton,
 };

@@ -88,12 +88,13 @@ const FormPdf = () => (
       >
         <Form>
           <FormField name="user-details" style={{ flexDirection: 'column' }}>
-            <Text>TextInput</Text>
+            <Text>TextInput (multiline)</Text>
             <TextInput
               name="details"
               value="hello"
               align="center"
-              style={{ height: '50px' }}
+              multiline
+              style={{ fontSize: 8, height: '100px' }}
             />
           </FormField>
         </Form>

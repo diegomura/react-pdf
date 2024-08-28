@@ -6,6 +6,10 @@ const renderFormList = (ctx, node) => {
   // Element's name
   const name = node.props?.name || '';
 
+  if (!ctx._root.data.AcroForm) {
+    ctx.initForm();
+  }
+
   ctx.formList(
     name,
     left,

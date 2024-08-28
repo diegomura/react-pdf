@@ -4,7 +4,6 @@ import {
   Page,
   View,
   Text,
-  Form,
   Checkbox,
   FormField,
   TextInput,
@@ -23,60 +22,62 @@ const FormPdf = () => (
           height: '100%',
         }}
       >
-        <Form>
-          <FormField name="user-info" style={{ flexDirection: 'column' }}>
+        <FormField name="user-info" style={{ flexDirection: 'column' }}>
+          <Text>TextInput</Text>
+          <TextInput
+            name="username"
+            value="foo"
+            align="center"
+            style={{ height: '50px' }}
+          />
+
+          {/* Nested works as well */}
+          <View>
             <Text>TextInput</Text>
             <TextInput
-              name="username"
-              value="foo"
+              name="password"
+              value="bar"
               align="center"
               style={{ height: '50px' }}
+              password
             />
+          </View>
 
-            {/* Nested works as well */}
-            <View>
-              <Text>TextInput</Text>
-              <TextInput
-                name="password"
-                value="bar"
-                align="center"
-                style={{ height: '50px' }}
-                password
-              />
-            </View>
+          <Text>Checkbox (not checked)</Text>
+          <Checkbox name="checkbox-default" style={{ height: '20px' }} />
 
-            <Text>Checkbox (not checked)</Text>
-            <Checkbox name="checkbox" style={{ height: '20px' }} />
+          <Text>Checkbox (checked)</Text>
+          <Checkbox
+            name="checkbox-checked"
+            checked
+            style={{ height: '20px' }}
+          />
 
-            <Text>Checkbox (checked)</Text>
-            <Checkbox name="checkbox" checked style={{ height: '20px' }} />
+          <Text>Picker</Text>
+          <Picker
+            name="combo"
+            select={['', 'option 1', 'option 2']}
+            value=""
+            defaultValue=""
+            style={{ height: '20px' }}
+          />
 
-            <Text>Picker</Text>
-            <Picker
-              name="combo"
-              select={['', 'option 1', 'option 2']}
-              value=""
-              defaultValue=""
-              style={{ height: '20px' }}
-            />
+          <Text>FormList</Text>
+          <FormList
+            name="list"
+            select={['', 'option 1', 'option 2']}
+            value=""
+            defaultValue=""
+            style={{ height: '50px' }}
+          />
 
-            <Text>FormList</Text>
-            <FormList
-              name="list"
-              select={['', 'option 1', 'option 2']}
-              value=""
-              defaultValue=""
-              style={{ height: '50px' }}
-            />
-
-            <Text>FormPushButton</Text>
-            <FormPushButton
-              name="bouton"
-              label="push button"
-              style={{ height: '50px' }}
-            />
-          </FormField>
-        </Form>
+          <Text>FormPushButton</Text>
+          <FormPushButton
+            name="bouton"
+            label="push button"
+            style={{ height: '50px' }}
+          />
+        </FormField>
       </View>
     </Page>
 
@@ -88,18 +89,16 @@ const FormPdf = () => (
           height: '100%',
         }}
       >
-        <Form>
-          <FormField name="user-details" style={{ flexDirection: 'column' }}>
-            <Text>TextInput (multiline)</Text>
-            <TextInput
-              name="details"
-              value="hello"
-              align="center"
-              multiline
-              style={{ fontSize: 8, height: '100px' }}
-            />
-          </FormField>
-        </Form>
+        <FormField name="user-details" style={{ flexDirection: 'column' }}>
+          <Text>TextInput (multiline)</Text>
+          <TextInput
+            name="details"
+            value="hello"
+            align="center"
+            multiline
+            style={{ fontSize: 8, height: '100px' }}
+          />
+        </FormField>
       </View>
     </Page>
   </Document>

@@ -224,11 +224,6 @@ declare namespace ReactPDF {
    */
   class Link extends React.Component<React.PropsWithChildren<LinkProps>> {}
 
-  /**
-   * The fundamental component for building a Form.
-   */
-  class Form extends React.Component<React.PropsWithChildren<NodeProps>> {}
-
   interface FormCommonProps extends NodeProps {
     name?: string;
     required?: boolean;
@@ -728,7 +723,6 @@ export {
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
-  Form,
   FormField,
   TextInput,
   Picker,

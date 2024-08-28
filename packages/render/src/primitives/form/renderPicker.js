@@ -6,6 +6,10 @@ const renderPicker = (ctx, node) => {
   // Element's name
   const name = node.props?.name || '';
 
+  if (!ctx._root.data.AcroForm) {
+    ctx.initForm();
+  }
+
   ctx.picker(
     name,
     left,

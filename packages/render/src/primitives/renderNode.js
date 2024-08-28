@@ -12,7 +12,6 @@ import setLink from '../operations/setLink';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
-import renderForm from './form/renderForm';
 import renderFormField from './form/renderFormField';
 import renderTextInput from './form/renderTextInput';
 import renderFormPushButton from './form/renderFormPushButton';
@@ -21,10 +20,7 @@ import renderFormList from './form/renderFormList';
 import renderCheckbox from './form/renderCheckbox';
 
 const isRecursiveNode = (node) =>
-  node.type !== P.Text &&
-  node.type !== P.Svg &&
-  node.type !== P.Form &&
-  node.type !== P.FormField;
+  node.type !== P.Text && node.type !== P.Svg && node.type !== P.FormField;
 
 const renderChildren = (ctx, node, options) => {
   ctx.save();

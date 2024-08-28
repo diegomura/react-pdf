@@ -14,7 +14,6 @@ import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 import renderFormField from './form/renderFormField';
 import renderTextInput from './form/renderTextInput';
-import renderFormPushButton from './form/renderFormPushButton';
 import renderPicker from './form/renderPicker';
 import renderFormList from './form/renderFormList';
 import renderCheckbox from './form/renderCheckbox';
@@ -44,7 +43,6 @@ const renderFns = {
   [P.Form]: renderForm,
   [P.FormField]: renderFormField,
   [P.TextInput]: renderTextInput,
-  [P.FormPushButton]: renderFormPushButton,
   [P.Picker]: renderPicker,
   [P.Checkbox]: renderCheckbox,
   [P.FormList]: renderFormList,

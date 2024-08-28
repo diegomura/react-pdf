@@ -45,13 +45,6 @@ const parsePickerAndListFieldOptions = (node) => {
   });
 };
 
-const parseButtonFieldOptions = (node) => {
-  return clean({
-    ...parseCommonFormOptions(node),
-    label: node.props?.label || '???',
-  });
-};
-
 const getAppearance = (ctx, data) => {
   const appearance = ctx.ref({
     Type: 'XObject',
@@ -90,6 +83,5 @@ const parseCheckboxOptions = (ctx, node, formField) => {
 export {
   parseTextFieldOptions,
   parsePickerAndListFieldOptions,
-  parseButtonFieldOptions,
   parseCheckboxOptions,
 };

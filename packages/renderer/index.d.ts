@@ -293,13 +293,6 @@ declare namespace ReactPDF {
 
   class FormList extends React.Component<PickerAndListProps> {}
 
-  // see http://pdfkit.org/docs/forms.html#button_field_options
-  interface FormButtonProps extends FormCommonProps {
-    label?: string;
-  }
-
-  class FormPushButton extends React.Component<FormButtonProps> {}
-
   interface NoteProps extends NodeProps {
     children: string;
   }
@@ -643,7 +636,6 @@ declare const TextInput: typeof ReactPDF.TextInput;
 declare const Picker: typeof ReactPDF.Picker;
 declare const Checkbox: typeof ReactPDF.Checkbox;
 declare const FormList: typeof ReactPDF.FormList;
-declare const FormPushButton: typeof ReactPDF.FormPushButton;
 declare const Note: typeof ReactPDF.Note;
 declare const Svg: typeof ReactPDF.Svg;
 declare const Line: typeof ReactPDF.Line;
@@ -728,5 +720,4 @@ export {
   Picker,
   Checkbox,
   FormList,
-  FormPushButton,
 };

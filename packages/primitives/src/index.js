@@ -10,7 +10,6 @@ export const Rect = 'RECT';
 export const Line = 'LINE';
 export const FormField = 'FORM_FIELD';
 export const TextInput = 'TEXT_INPUT';
-export const FormPushButton = 'FORM_PUSH_BUTTON';
 export const Picker = 'PICKER';
 export const Checkbox = 'CHECKBOX';
 export const FormList = 'FORM_LIST';

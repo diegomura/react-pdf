@@ -40,7 +40,6 @@ const renderFns = {
   [P.Text]: renderText,
   [P.Note]: renderNote,
   [P.Image]: renderImage,
-  [P.Form]: renderForm,
   [P.FormField]: renderFormField,
   [P.TextInput]: renderTextInput,
   [P.Picker]: renderPicker,

@@ -5,8 +5,9 @@ const renderTextInput = (ctx, node, options) => {
 
   // Element's name
   const name = node.props?.name || '';
+  const formFieldOptions = options.formFields?.at(0);
 
-  if (!options.formField)
+  if (!formFieldOptions)
     throw new Error(
       'The TextInput element must be a children of a FormField element.',
     );
@@ -21,7 +22,7 @@ const renderTextInput = (ctx, node, options) => {
     top,
     width,
     height,
-    parseTextFieldOptions(node, options.formField),
+    parseTextFieldOptions(node, formFieldOptions),
   );
 };
 

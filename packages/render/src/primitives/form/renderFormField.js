@@ -1,5 +1,3 @@
-import renderNode from '../renderNode';
-
 const renderFormField = (ctx, node, options) => {
   const name = node.props?.name || '';
 
@@ -8,11 +6,13 @@ const renderFormField = (ctx, node, options) => {
   }
 
   const formField = ctx.formField(name);
+  const option = options;
+  if (!option.formFields) option.formFields = [formField];
+  else option.formFields.push(formField);
+};
 
-  const children = node.children || [];
-  children.forEach((child) =>
-    renderNode(ctx, child, { ...options, formField }),
-  );
+export const cleanUpFormField = (_ctx, _node, options) => {
+  options.formFields.pop();
 };
 
 export default renderFormField;

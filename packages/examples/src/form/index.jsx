@@ -45,9 +45,11 @@ const FormPdf = () => (
               />
             </View>
 
-            <Text>Checkbox</Text>
-            {/* TODO: how to check automatically? */}
+            <Text>Checkbox (not checked)</Text>
             <Checkbox name="checkbox" style={{ height: '20px' }} />
+
+            <Text>Checkbox (checked)</Text>
+            <Checkbox name="checkbox" checked style={{ height: '20px' }} />
 
             <Text>Picker</Text>
             <Picker

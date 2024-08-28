@@ -17,7 +17,7 @@ const renderCheckbox = (ctx, node, options) => {
     top,
     width,
     height,
-    parseCheckboxOptions(node, options.formField),
+    parseCheckboxOptions(ctx, node, options.formField),
   );
 };
 

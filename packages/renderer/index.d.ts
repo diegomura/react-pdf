@@ -276,9 +276,12 @@ declare namespace ReactPDF {
 
   class TextInput extends React.Component<TextInputProps> {}
 
-  interface CheckboxProps extends FormCommonProps {
+  interface CheckboxProps extends FormCommonProps, FormCommonProps {
     backGroundColor?: string;
     borderColor?: string;
+    checked?: boolean;
+    onState?: string;
+    offState?: string;
   }
 
   class Checkbox extends React.Component<CheckboxProps> {}

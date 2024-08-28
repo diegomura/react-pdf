@@ -52,12 +52,38 @@ const parseButtonFieldOptions = (node) => {
   });
 };
 
-const parseCheckboxOptions = (node, formField) => {
+const getAppearance = (ctx, data) => {
+  const appearance = ctx.ref({
+    Type: 'XObject',
+    Subtype: 'Form',
+    BBox: [0, 0, 11.1, 11.1],
+    Resources: { ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'] },
+  });
+  appearance.initDeflate();
+  appearance.write(data);
+  appearance.end();
+  return appearance;
+};
+
+const parseCheckboxOptions = (ctx, node, formField) => {
+  const onOption = node.props?.onState || 'Yes';
+  const offOption = node.props?.offState || 'Off';
+  const normalAppearance = {};
+  normalAppearance[onOption] = getAppearance(
+    ctx,
+    '/Tx BMC\nq BT\n0 0 0 rg /F1 11.1 Tf\n1.8 1.8 Td (8) Tj\nET\nQ\nEMC',
+  );
+  normalAppearance[offOption] = getAppearance(ctx, '/Tx BMC\nEMC\n');
+
   return clean({
     ...parseCommonFormOptions(node),
     backgroundColor: node.props?.backgroundColor || undefined,
     borderColor: node.props?.borderColor || undefined,
     parent: formField || undefined,
+    value: `/${node.props?.checked}` === true ? onOption : offOption,
+    defaultValue: `/${node.props?.checked}` === true ? onOption : offOption,
+    AS: node.props?.checked === true ? onOption : offOption,
+    AP: { N: normalAppearance },
   });
 };
 

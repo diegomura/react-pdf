@@ -16,7 +16,7 @@ const renderTextInput = (ctx, node, options) => {
     ctx.initForm();
   }
 
-  ctx.textInput(
+  ctx.formText(
     name,
     left,
     top,

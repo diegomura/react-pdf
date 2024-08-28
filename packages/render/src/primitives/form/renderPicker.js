@@ -10,7 +10,7 @@ const renderPicker = (ctx, node) => {
     ctx.initForm();
   }
 
-  ctx.picker(
+  ctx.formCombo(
     name,
     left,
     top,

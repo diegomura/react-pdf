@@ -8,7 +8,6 @@ import {
   FormField,
   TextInput,
   Picker,
-  FormPushButton,
   FormList,
 } from '@react-pdf/renderer';
 
@@ -68,13 +67,6 @@ const FormPdf = () => (
             select={['', 'option 1', 'option 2']}
             value=""
             defaultValue=""
-            style={{ height: '50px' }}
-          />
-
-          <Text>FormPushButton</Text>
-          <FormPushButton
-            name="bouton"
-            label="push button"
             style={{ height: '50px' }}
           />
         </FormField>

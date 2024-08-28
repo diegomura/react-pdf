@@ -39,10 +39,6 @@ describe('primitives', () => {
     expect(primitives.Line).toBeTruthy();
   });
 
-  test('should export form', () => {
-    expect(primitives.Form).toBeTruthy();
-  });
-
   test('should export form field', () => {
     expect(primitives.FormField).toBeTruthy();
   });
@@ -57,10 +53,6 @@ describe('primitives', () => {
 
   test('should export picker', () => {
     expect(primitives.Picker).toBeTruthy();
-  });
-
-  test('should export form push button', () => {
-    expect(primitives.FormPushButton).toBeTruthy();
   });
 
   test('should export stop', () => {

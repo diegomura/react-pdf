@@ -59,12 +59,20 @@ const getAppearance = (ctx, data) => {
 };
 
 const parseCheckboxOptions = (ctx, node, formField) => {
+  const { width, height } = node.box || {};
+
+  let transform = '';
+  if (width / height <= 1)
+    transform = `1 0 0 ${width / height} 0 ${(10 - (width * 10) / height) / 2 + 1} cm\n`;
+  else
+    transform = `${height / width} 0 0 1 ${(10 - (height * 10) / width) / 2} 1 cm\n`;
+
   const onOption = node.props?.onState || 'Yes';
   const offOption = node.props?.offState || 'Off';
   const normalAppearance = {};
   normalAppearance[onOption] = getAppearance(
     ctx,
-    '/Tx BMC\nq BT\n0 0 0 rg /F1 11.1 Tf\n1.8 1.8 Td (8) Tj\nET\nQ\nEMC',
+    `/Tx BMC\nq\n${transform}q\n1 w\n/DeviceRGB CS\n0 0 0 SCN\n0 0 m\n10 10 l\nS\nQ\nq\n1 w\n/DeviceRGB CS\n0 0 0 SCN\n10 0 m\n0 10 l\nS\nQ\nQ\nEMC`,
   );
   normalAppearance[offOption] = getAppearance(ctx, '/Tx BMC\nEMC\n');
 

@@ -7,11 +7,6 @@ const renderTextInput = (ctx, node, options) => {
   const name = node.props?.name || '';
   const formFieldOptions = options.formFields?.at(0);
 
-  if (!formFieldOptions)
-    throw new Error(
-      'The TextInput element must be a children of a FormField element.',
-    );
-
   if (!ctx._root.data.AcroForm) {
     ctx.initForm();
   }

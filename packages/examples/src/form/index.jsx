@@ -93,6 +93,31 @@ const FormPdf = () => (
         </FormField>
       </View>
     </Page>
+
+    <Page>
+      <View
+        style={{
+          backgroundColor: 'rgba(182,28,28,0.62)',
+          width: '30%',
+          height: '100%',
+        }}
+      >
+        <Text>TextInput (no FormField)</Text>
+        <TextInput
+          name="textinput-no-formfield"
+          value="no formfield"
+          align="center"
+          style={{ height: '50px' }}
+        />
+
+        <Text>Checkbox (checked, no FormField)</Text>
+        <Checkbox
+          name="checkbox-no-formfield"
+          checked
+          style={{ height: '20px' }}
+        />
+      </View>
+    </Page>
   </Document>
 );
 

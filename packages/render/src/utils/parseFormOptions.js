@@ -45,15 +45,23 @@ const parsePickerAndListFieldOptions = (node) => {
   });
 };
 
-const getAppearance = (ctx, data) => {
+const getAppearance = (ctx, codepoint, width, height) => {
   const appearance = ctx.ref({
     Type: 'XObject',
     Subtype: 'Form',
-    BBox: [0, 0, 11.1, 11.1],
-    Resources: { ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'] },
+    BBox: [0, 0, width, height],
+    Resources: {
+      ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'],
+      Font: {
+        ZaDi: ctx._acroform.fonts.ZaDi,
+      },
+    },
   });
+
   appearance.initDeflate();
-  appearance.write(data);
+  appearance.write(
+    `/Tx BMC\nq\n/ZaDi ${height * 0.8} Tf\nBT\n${width * 0.45} ${height / 4} Td (${codepoint}) Tj\nET\nQ\nEMC`,
+  );
   appearance.end();
   return appearance;
 };
@@ -61,30 +69,43 @@ const getAppearance = (ctx, data) => {
 const parseCheckboxOptions = (ctx, node, formField) => {
   const { width, height } = node.box || {};
 
-  let transform = '';
-  if (width / height <= 1)
-    transform = `1 0 0 ${width / height} 0 ${(10 - (width * 10) / height) / 2 + 1} cm\n`;
-  else
-    transform = `${height / width} 0 0 1 ${(10 - (height * 10) / width) / 2} 1 cm\n`;
-
   const onOption = node.props?.onState || 'Yes';
   const offOption = node.props?.offState || 'Off';
+  const xMark = node.props?.xMark || false;
+
+  if (!Object.prototype.hasOwnProperty.call(ctx._acroform.fonts, 'ZaDi')) {
+    const ref = ctx.ref({
+      Type: 'Font',
+      Subtype: 'Type1',
+      BaseFont: 'ZapfDingbats',
+    });
+    ctx._acroform.fonts.ZaDi = ref;
+    ref.end();
+  }
+
   const normalAppearance = {};
   normalAppearance[onOption] = getAppearance(
     ctx,
-    `/Tx BMC\nq\n${transform}q\n1 w\n/DeviceRGB CS\n0 0 0 SCN\n0 0 m\n10 10 l\nS\nQ\nq\n1 w\n/DeviceRGB CS\n0 0 0 SCN\n10 0 m\n0 10 l\nS\nQ\nQ\nEMC`,
+    xMark ? '8' : '4',
+    width,
+    height,
   );
-  normalAppearance[offOption] = getAppearance(ctx, '/Tx BMC\nEMC\n');
+  normalAppearance[offOption] = getAppearance(
+    ctx,
+    xMark ? ' ' : '8',
+    width,
+    height,
+  );
 
   return clean({
     ...parseCommonFormOptions(node),
     backgroundColor: node.props?.backgroundColor || undefined,
     borderColor: node.props?.borderColor || undefined,
     parent: formField || undefined,
-    value: `/${node.props?.checked}` === true ? onOption : offOption,
-    defaultValue: `/${node.props?.checked}` === true ? onOption : offOption,
+    value: `/${node.props?.checked === true ? onOption : offOption}`,
+    defaultValue: `/${node.props?.checked === true ? onOption : offOption}`,
     AS: node.props?.checked === true ? onOption : offOption,
-    AP: { N: normalAppearance },
+    AP: { N: normalAppearance, D: normalAppearance },
   });
 };
 

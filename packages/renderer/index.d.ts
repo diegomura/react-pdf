@@ -224,6 +224,76 @@ declare namespace ReactPDF {
    */
   class Link extends React.Component<React.PropsWithChildren<LinkProps>> {}
 
+  interface FormCommonProps extends NodeProps {
+    name?: string;
+    required?: boolean;
+    noExport?: boolean;
+    readOnly?: boolean;
+    value?: number | string;
+    defaultValue?: number | string;
+  }
+
+  interface FormFieldProps extends NodeProps {
+    name: string;
+  }
+
+  class FormField extends React.Component<
+    React.PropsWithChildren<FormFieldProps>
+  > {}
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface TextFieldFormatting {
+    type:
+      | 'date'
+      | 'time'
+      | 'percent'
+      | 'number'
+      | 'zip'
+      | 'zipPlus4'
+      | 'phone'
+      | 'ssn';
+    param?: string;
+    nDec?: number;
+    sepComma?: boolean;
+    negStyle?: 'MinusBlack' | 'Red' | 'ParensBlack' | 'ParensRed';
+    currency?: string;
+    currencyPrepend?: boolean;
+  }
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface TextInputProps extends FormCommonProps {
+    align?: string;
+    multiline?: boolean;
+    password?: boolean;
+    noSpell?: boolean;
+    format?: TextFieldFormatting;
+  }
+
+  class TextInput extends React.Component<TextInputProps> {}
+
+  interface CheckboxProps extends FormCommonProps {
+    backGroundColor?: string;
+    borderColor?: string;
+    checked?: boolean;
+    onState?: string;
+    offState?: string;
+    xMark?: boolean;
+  }
+
+  class Checkbox extends React.Component<CheckboxProps> {}
+
+  interface PickerAndListProps extends FormCommonProps {
+    sort?: boolean;
+    edit?: boolean;
+    multiSelect?: boolean;
+    noSpell?: boolean;
+    select?: string[];
+  }
+
+  class Picker extends React.Component<PickerAndListProps> {}
+
+  class FormList extends React.Component<PickerAndListProps> {}
+
   interface NoteProps extends NodeProps {
     children: string;
   }
@@ -561,6 +631,12 @@ declare const Image: typeof ReactPDF.Image;
 declare const Text: typeof ReactPDF.Text;
 declare const Canvas: typeof ReactPDF.Canvas;
 declare const Link: typeof ReactPDF.Link;
+declare const Form: typeof ReactPDF.Form;
+declare const FormField: typeof ReactPDF.FormField;
+declare const TextInput: typeof ReactPDF.TextInput;
+declare const Picker: typeof ReactPDF.Picker;
+declare const Checkbox: typeof ReactPDF.Checkbox;
+declare const FormList: typeof ReactPDF.FormList;
 declare const Note: typeof ReactPDF.Note;
 declare const Svg: typeof ReactPDF.Svg;
 declare const Line: typeof ReactPDF.Line;
@@ -640,4 +716,9 @@ export {
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,
+  FormField,
+  TextInput,
+  Picker,
+  Checkbox,
+  FormList,
 };

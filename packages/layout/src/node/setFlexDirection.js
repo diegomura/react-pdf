@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 
 const FLEX_DIRECTIONS = {
   row: Yoga.FlexDirection.Row,

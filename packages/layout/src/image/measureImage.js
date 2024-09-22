@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';

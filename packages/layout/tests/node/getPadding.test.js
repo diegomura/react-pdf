@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 
 import getPadding from '../../src/node/getPadding';
 

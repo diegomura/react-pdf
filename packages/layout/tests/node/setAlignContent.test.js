@@ -82,4 +82,12 @@ describe('node setAlignContent', () => {
     expect(mock.mock.calls[0][0]).toBe(Yoga.Align.SpaceAround);
     expect(result).toBe(node);
   });
+
+  test('Should set space-evenly', () => {
+    const result = setAlignContent('space-evenly')(node);
+
+    expect(mock.mock.calls).toHaveLength(1);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Align.SpaceEvenly);
+    expect(result).toBe(node);
+  });
 });

@@ -7,7 +7,8 @@ export interface Style {
     | 'center'
     | 'stretch'
     | 'space-between'
-    | 'space-around';
+    | 'space-around'
+    | 'space-evenly';
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
   alignSelf?:
     | 'auto'

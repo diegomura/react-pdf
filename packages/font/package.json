@@ -11,18 +11,9 @@
     "directory": "packages/font"
   },
   "type": "module",
-  "main": "./lib/index.cjs",
-  "module": "./lib/index.js",
+  "main": "./lib/index.js",
   "browser": {
-    "./lib/index.js": "./lib/index.browser.js",
-    "./lib/index.cjs": "./lib/index.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/index.js",
-      "require": "./lib/index.cjs",
-      "default": "./lib/index.js"
-    }
+    "./lib/index.js": "./lib/index.browser.js"
   },
   "scripts": {
     "test": "vitest",

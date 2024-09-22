@@ -2,26 +2,12 @@ import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import terser from '@rollup/plugin-terser';
 import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json' assert { type: 'json' };
-
-const cjs = {
-  exports: 'named',
-  format: 'cjs',
-  interop: 'compat'
-};
-
-const esm = {
-  format: 'es'
-};
-
-const getCJS = (override) => Object.assign({}, cjs, override);
-const getESM = (override) => Object.assign({}, esm, override);
 
 const input = 'src/index.js';
 
@@ -43,7 +29,7 @@ const getExternal = ({ browser }) => [
   ...(browser ? [] : ['fs'])
 ];
 
-const getPlugins = ({ browser, minify = false }) => [
+const getPlugins = ({ browser }) => [
   json(),
   ...(browser
     ? [
@@ -77,52 +63,23 @@ const getPlugins = ({ browser, minify = false }) => [
     }
   }),
   babel(babelConfig()),
-  ...(minify ? [terser()] : [])
 ];
 
 const serverConfig = {
   input,
-  output: [
-    getESM({ file: 'lib/pdfkit.js' }),
-    getCJS({ file: 'lib/pdfkit.cjs' })
-  ],
+  output: { format: 'es', file: 'lib/pdfkit.js' },
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false })
 };
 
-const serverProdConfig = {
-  input,
-  output: [
-    getESM({ file: 'lib/pdfkit.min.js' }),
-    getCJS({ file: 'lib/pdfkit.min.cjs' })
-  ],
-  external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false, minify: true })
-};
-
 const browserConfig = {
   input,
-  output: [
-    getESM({ file: 'lib/pdfkit.browser.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.cjs' })
-  ],
+  output: { format: 'es', file: 'lib/pdfkit.browser.js' },
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true })
 };
 
-const browserProdConfig = Object.assign({}, browserConfig, {
-  input,
-  output: [
-    getESM({ file: 'lib/pdfkit.browser.min.js' }),
-    getCJS({ file: 'lib/pdfkit.browser.min.cjs' })
-  ],
-  external: getExternal({ browser: true }),
-  plugins: getPlugins({ browser: true, minify: true })
-});
-
 export default [
   serverConfig,
-  serverProdConfig,
   browserConfig,
-  browserProdConfig
 ];

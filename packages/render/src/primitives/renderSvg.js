@@ -172,10 +172,10 @@ const renderFns = {
 const renderNode = (ctx, node) => {
   const renderFn = renderFns[node.type];
 
-  if (renderFns) {
+  if (renderFn) {
     renderFn(ctx, node);
   } else {
-    console.warn(`SVG node of type ${node.type} is not currenty supported`);
+    console.warn(`SVG node of type ${node.type} is not currently supported`);
   }
 };
 

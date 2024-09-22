@@ -19,7 +19,7 @@
  * @property {string} [alignLastLine]
  * @property {Attachment} [attachment]
  * @property {string} [backgroundColor]
- * @property {unknown} [bidiLevel]
+ * @property {number} [bidiLevel]
  * @property {unknown} [bullet]
  * @property {number} [characterSpacing]
  * @property {string} [color]

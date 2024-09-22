@@ -20,6 +20,7 @@ import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
 const layout = asyncCompose(
   resolveZIndex,
   resolveOrigins,
+  resolveAssets,
   resolvePagination,
   resolveTextLayout,
   resolvePercentRadius,

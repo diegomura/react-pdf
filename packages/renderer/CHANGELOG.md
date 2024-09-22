@@ -1,5 +1,65 @@
 # @react-pdf/renderer
 
+## 3.4.5
+
+### Patch Changes
+
+- [#2669](https://github.com/diegomura/react-pdf/pull/2669) [`ed94775`](https://github.com/diegomura/react-pdf/commit/ed94775f4d44db0886ff08c71d09f446bace6392) Thanks [@Finanzasparahippies](https://github.com/Finanzasparahippies)! - fix: download IE checks
+
+- Updated dependencies [[`e425ca4`](https://github.com/diegomura/react-pdf/commit/e425ca4add7eb353b6282a40fd1020aad0da36c4), [`e42a79a`](https://github.com/diegomura/react-pdf/commit/e42a79a3857932a4ebc89feb6e4d2c891280d633), [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816), [`53bf803`](https://github.com/diegomura/react-pdf/commit/53bf803465f4fecf13531d1a10697c3d4067cf8f), [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/layout@3.13.0
+  - @react-pdf/render@3.5.0
+  - @react-pdf/pdfkit@3.2.0
+  - @react-pdf/types@2.6.0
+  - @react-pdf/font@2.5.2
+
+## 3.4.4
+
+### Patch Changes
+
+- Updated dependencies [[`22a34a9`](https://github.com/diegomura/react-pdf/commit/22a34a91b16a201cd8288e0dbea9368b12ca73f5)]:
+  - @react-pdf/types@2.5.0
+  - @react-pdf/font@2.5.1
+  - @react-pdf/layout@3.12.1
+  - @react-pdf/render@3.4.4
+
+## 3.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6), [`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52)]:
+  - @react-pdf/layout@3.12.0
+  - @react-pdf/font@2.5.0
+  - @react-pdf/pdfkit@3.1.10
+
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`e2d21a4`](https://github.com/diegomura/react-pdf/commit/e2d21a433b881bb96ea4d0b3a01a7297dd1f4a94)]:
+  - @react-pdf/pdfkit@3.1.9
+  - @react-pdf/layout@3.11.5
+
+## 3.4.1
+
+### Patch Changes
+
+- Updated dependencies [[`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f)]:
+  - @react-pdf/pdfkit@3.1.8
+  - @react-pdf/layout@3.11.4
+
+## 3.4.0
+
+### Minor Changes
+
+- [#2582](https://github.com/diegomura/react-pdf/pull/2582) [`fab09cc`](https://github.com/diegomura/react-pdf/commit/fab09cc9814326fdb44d2bcb7097ba9960d441d1) Thanks [@SethThoburn](https://github.com/SethThoburn)! - Pass \_INTERNAL\_\_LAYOUT\_\_DATA\_ to onRenderCallback in toBuffer
+
+### Patch Changes
+
+- Updated dependencies [[`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a), [`087ee22`](https://github.com/diegomura/react-pdf/commit/087ee22f63a922a2d3ee01bae3b0351f99cb9021)]:
+  - @react-pdf/pdfkit@3.1.7
+  - @react-pdf/layout@3.11.3
+
 ## 3.3.8
 
 ### Patch Changes

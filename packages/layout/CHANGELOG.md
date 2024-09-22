@@ -1,5 +1,68 @@
 # @react-pdf/layout
 
+## 3.13.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+### Patch Changes
+
+- [#2864](https://github.com/diegomura/react-pdf/pull/2864) [`e425ca4`](https://github.com/diegomura/react-pdf/commit/e425ca4add7eb353b6282a40fd1020aad0da36c4) Thanks [@nnaku](https://github.com/nnaku)! - Prevent loading yoga-layout wasm binaries more than once
+
+- [#2822](https://github.com/diegomura/react-pdf/pull/2822) [`e42a79a`](https://github.com/diegomura/react-pdf/commit/e42a79a3857932a4ebc89feb6e4d2c891280d633) Thanks [@mantljosh](https://github.com/mantljosh)! - fix: prevent infinite loop while splitting pages
+
+- [#2747](https://github.com/diegomura/react-pdf/pull/2747) [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816) Thanks [@andrew-spare](https://github.com/andrew-spare)! - fix: font selection regression
+
+- Updated dependencies [[`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/pdfkit@3.2.0
+  - @react-pdf/stylesheet@4.3.0
+  - @react-pdf/types@2.6.0
+
+## 3.12.1
+
+### Patch Changes
+
+- Updated dependencies [[`22a34a9`](https://github.com/diegomura/react-pdf/commit/22a34a91b16a201cd8288e0dbea9368b12ca73f5)]:
+  - @react-pdf/types@2.5.0
+  - @react-pdf/stylesheet@4.2.5
+
+## 3.12.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
+### Patch Changes
+
+- Updated dependencies [[`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52)]:
+  - @react-pdf/pdfkit@3.1.10
+
+## 3.11.5
+
+### Patch Changes
+
+- Updated dependencies [[`e2d21a4`](https://github.com/diegomura/react-pdf/commit/e2d21a433b881bb96ea4d0b3a01a7297dd1f4a94)]:
+  - @react-pdf/pdfkit@3.1.9
+
+## 3.11.4
+
+### Patch Changes
+
+- Updated dependencies [[`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f)]:
+  - @react-pdf/pdfkit@3.1.8
+  - @react-pdf/image@2.3.6
+
+## 3.11.3
+
+### Patch Changes
+
+- [#2629](https://github.com/diegomura/react-pdf/pull/2629) [`087ee22`](https://github.com/diegomura/react-pdf/commit/087ee22f63a922a2d3ee01bae3b0351f99cb9021) Thanks [@diegomura](https://github.com/diegomura)! - fix: resolve styles on dynamic elements
+
+- Updated dependencies [[`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a)]:
+  - @react-pdf/pdfkit@3.1.7
+  - @react-pdf/image@2.3.5
+
 ## 3.11.2
 
 ### Patch Changes

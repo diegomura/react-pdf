@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/render",
-  "version": "3.4.3",
+  "version": "3.5.0",
   "license": "MIT",
   "description": "A render engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

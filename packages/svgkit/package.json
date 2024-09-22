@@ -1,7 +1,7 @@
 {
   "name": "@react-pdf/svgkit",
   "license": "MIT",
-  "version": "2.3.6",
+  "version": "2.3.11",
   "description": "A SVG generation library for Node.js and browser",
   "type": "module",
   "main": "./lib/index.js",

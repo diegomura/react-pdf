@@ -1,5 +1,35 @@
 # @react-pdf/pdfkit
 
+## 3.2.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+## 3.1.10
+
+### Patch Changes
+
+- [#2721](https://github.com/diegomura/react-pdf/pull/2721) [`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52) Thanks [@cfhull](https://github.com/cfhull)! - fix: support values of `0` in stroke-dasharray
+
+## 3.1.9
+
+### Patch Changes
+
+- [#2689](https://github.com/diegomura/react-pdf/pull/2689) [`e2d21a4`](https://github.com/diegomura/react-pdf/commit/e2d21a433b881bb96ea4d0b3a01a7297dd1f4a94) Thanks [@joelybahh](https://github.com/joelybahh)! - fix: jpeg precision metadata
+
+## 3.1.8
+
+### Patch Changes
+
+- [#2687](https://github.com/diegomura/react-pdf/pull/2687) [`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f) Thanks [@diegomura](https://github.com/diegomura)! - chore: bump jay-peg
+
+## 3.1.7
+
+### Patch Changes
+
+- [#2635](https://github.com/diegomura/react-pdf/pull/2635) [`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: bump jay-peg dependency to fix CJS module resolution error
+
 ## 3.1.6
 
 ### Patch Changes

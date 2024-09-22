@@ -1,5 +1,17 @@
 # @react-pdf/image
 
+## 2.3.6
+
+### Patch Changes
+
+- [#2687](https://github.com/diegomura/react-pdf/pull/2687) [`68bfc57`](https://github.com/diegomura/react-pdf/commit/68bfc575adfb95302e320019715d1eec5398259f) Thanks [@diegomura](https://github.com/diegomura)! - chore: bump jay-peg
+
+## 2.3.5
+
+### Patch Changes
+
+- [#2635](https://github.com/diegomura/react-pdf/pull/2635) [`da10a9b`](https://github.com/diegomura/react-pdf/commit/da10a9bb43dc4c4765687850444a24cbc4eb402a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - fix: bump jay-peg dependency to fix CJS module resolution error
+
 ## 2.3.4
 
 ### Patch Changes

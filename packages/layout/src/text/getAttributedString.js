@@ -44,9 +44,16 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     verticalAlign,
   } = instance.style;
 
-  const opts = { fontFamily, fontWeight, fontStyle };
-  const obj = fontStore ? fontStore.getFont(opts) : null;
-  const font = obj ? obj.data : fontFamily;
+  const fontFamilies =
+    typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
+
+  const font = fontFamilies.map((fontFamilyName) => {
+    if (typeof fontFamilyName !== 'string') return fontFamilyName;
+
+    const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
+    const obj = fontStore ? fontStore.getFont(opts) : null;
+    return obj ? obj.data : fontFamilyName;
+  });
 
   // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;

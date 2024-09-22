@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.3.8",
+  "version": "3.4.5",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

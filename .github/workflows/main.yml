@@ -3,7 +3,10 @@ name: CI
 on:
   pull_request:
     branches:
-      - master
+      - '**'
+  push:
+    branches:
+      - '**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -114,7 +117,7 @@ jobs:
         run: REACT_VERSION=${{ matrix.react_version }} yarn test
 
   e2e-node:
-    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm.toUpperCase() }})
+    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})
     runs-on: ubuntu-latest
     strategy:
       matrix:

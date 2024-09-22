@@ -41,7 +41,7 @@ export interface Style {
   bottom?: number | string;
   display?: 'flex' | 'none';
   left?: number | string;
-  position?: 'absolute' | 'relative';
+  position?: 'absolute' | 'relative' | 'static';
   right?: number | string;
   top?: number | string;
   overflow?: 'hidden';

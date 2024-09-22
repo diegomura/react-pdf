@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 import { isNil, matchPercent } from '@react-pdf/fns';
 
 /**

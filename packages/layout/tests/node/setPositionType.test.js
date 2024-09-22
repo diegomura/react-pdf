@@ -34,4 +34,12 @@ describe('node setPositionType', () => {
     expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Absolute);
     expect(result).toBe(node);
   });
+
+  test('Should set static', () => {
+    const result = setPositionType('static')(node);
+
+    expect(mock.mock.calls).toHaveLength(1);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Static);
+    expect(result).toBe(node);
+  });
 });

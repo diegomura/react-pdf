@@ -1,6 +1,12 @@
 import * as Yoga from 'yoga-layout/load';
 import { isNil } from '@react-pdf/fns';
 
+const POSITION = {
+  absolute: Yoga.PositionType.Absolute,
+  relative: Yoga.PositionType.Relative,
+  static: Yoga.PositionType.Static,
+};
+
 /**
  * @typedef {Function} NodeInstanceWrapper
  * @param {Object} node node instance
@@ -17,11 +23,7 @@ const setPositionType = (value) => (node) => {
   const { yogaNode } = node;
 
   if (!isNil(value) && yogaNode) {
-    yogaNode.setPositionType(
-      value === 'absolute'
-        ? Yoga.PositionType.Absolute
-        : Yoga.PositionType.Relative,
-    );
+    yogaNode.setPositionType(POSITION[value]);
   }
 
   return node;

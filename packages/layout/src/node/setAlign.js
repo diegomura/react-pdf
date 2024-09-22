@@ -9,6 +9,7 @@ const ALIGN = {
   baseline: Yoga.Align.Baseline,
   'space-between': Yoga.Align.SpaceBetween,
   'space-around': Yoga.Align.SpaceAround,
+  'space-evenly': Yoga.Align.SpaceEvenly,
 };
 
 /**

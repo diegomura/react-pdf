@@ -249,4 +249,44 @@ describe('pagination step', () => {
     expect(page2.children.length).toBe(1);
     expect(page2.children[0].box.height).toBe(40);
   });
+
+  test('should not infinitely loop when splitting pages', async () => {
+    const yoga = await loadYoga();
+
+    const root = {
+      type: 'DOCUMENT',
+      yoga,
+      children: [
+        {
+          type: 'PAGE',
+          box: {},
+          style: {
+            height: 400,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              box: {},
+              style: { height: 401 },
+              children: [
+                {
+                  type: 'VIEW',
+                  box: {},
+                  style: {
+                    height: 400,
+                  },
+                  props: { wrap: false, break: true },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    calcLayout(root);
+
+    // If calcLayout returns then we did not hit an infinite loop
+    expect(true).toBe(true);
+  });
 });

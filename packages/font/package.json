@@ -14,8 +14,8 @@
   "main": "./lib/index.cjs",
   "module": "./lib/index.js",
   "browser": {
-    "./lib/index.js": "./lib/index.browser.js",
-    "./lib/index.cjs": "./lib/index.browser.cjs"
+    "./lib/index.cjs": "./lib/index.browser.cjs",
+    "./lib/index.js": "./lib/index.browser.js"
   },
   "exports": {
     ".": {
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/types": "^2.6.0",
+    "@react-pdf/types": "workspace:^",
     "cross-fetch": "^3.1.5",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"

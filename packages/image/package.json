@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/png-js": "^2.3.1",
+    "@react-pdf/png-js": "workspace:^",
     "cross-fetch": "^3.1.5",
     "jay-peg": "^1.0.2"
   },

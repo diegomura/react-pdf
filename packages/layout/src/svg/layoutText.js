@@ -45,10 +45,16 @@ const getFragments = (fontStore, instance) => {
 
   const _textDecoration = instance.props.textDecoration;
 
-  const obj = fontStore
-    ? fontStore.getFont({ fontFamily, fontWeight, fontStyle })
-    : null;
-  const font = obj ? obj.data : fontFamily;
+  const fontFamilies =
+    typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
+
+  const font = fontFamilies.map((fontFamilyName) => {
+    if (typeof fontFamilyName !== 'string') return fontFamilyName;
+
+    const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
+    const obj = fontStore ? fontStore.getFont(opts) : null;
+    return obj ? obj.data : fontFamilyName;
+  });
 
   const attributes = {
     font,

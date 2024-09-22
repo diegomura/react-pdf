@@ -19,11 +19,21 @@ const getOrCreateFont = (name) => {
 
 const getFallbackFont = () => getOrCreateFont('Helvetica');
 
-const shouldFallbackToFont = (codePoint, font) =>
-  !font ||
-  (!IGNORED_CODE_POINTS.includes(codePoint) &&
-    !font.hasGlyphForCodePoint(codePoint) &&
-    getFallbackFont().hasGlyphForCodePoint(codePoint));
+const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
+  const fontStackWithFallback = [...fontStack, lastFont, getFallbackFont()];
+  for (let i = 0; i < fontStackWithFallback.length; i += 1) {
+    const font = fontStackWithFallback[i];
+    if (
+      !IGNORED_CODE_POINTS.includes(codePoint) &&
+      font &&
+      font.hasGlyphForCodePoint &&
+      font.hasGlyphForCodePoint(codePoint)
+    ) {
+      return font;
+    }
+  }
+  return getFallbackFont();
+};
 
 const fontSubstitution =
   () =>
@@ -38,10 +48,9 @@ const fontSubstitution =
     for (let i = 0; i < runs.length; i += 1) {
       const run = runs[i];
 
-      const defaultFont =
-        typeof run.attributes.font === 'string'
-          ? getOrCreateFont(run.attributes.font)
-          : run.attributes.font;
+      const defaultFont = run.attributes.font.map((font) =>
+        typeof font === 'string' ? getOrCreateFont(font) : font,
+      );
 
       if (string.length === 0) {
         res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
@@ -53,9 +62,8 @@ const fontSubstitution =
       for (let j = 0; j < chars.length; j += 1) {
         const char = chars[j];
         const codePoint = char.codePointAt();
-        const shouldFallback = shouldFallbackToFont(codePoint, defaultFont);
         // If the default font does not have a glyph and the fallback font does, we use it
-        const font = shouldFallback ? getFallbackFont() : defaultFont;
+        const font = pickFontFromFontStack(codePoint, defaultFont, lastFont);
         const fontSize = getFontSize(run);
 
         // If anything that would impact res has changed, update it

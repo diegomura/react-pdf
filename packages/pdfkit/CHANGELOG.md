@@ -1,5 +1,17 @@
 # @react-pdf/pdfkit
 
+## 3.2.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+## 3.1.10
+
+### Patch Changes
+
+- [#2721](https://github.com/diegomura/react-pdf/pull/2721) [`713690c`](https://github.com/diegomura/react-pdf/commit/713690cca266116bb7e80d13cf84bc843f9dfd52) Thanks [@cfhull](https://github.com/cfhull)! - fix: support values of `0` in stroke-dasharray
+
 ## 3.1.9
 
 ### Patch Changes

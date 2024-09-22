@@ -1,5 +1,32 @@
 # @react-pdf/examples
 
+## 3.3.2
+
+### Patch Changes
+
+- [#2747](https://github.com/diegomura/react-pdf/pull/2747) [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816) Thanks [@andrew-spare](https://github.com/andrew-spare)! - fix: font selection regression
+
+- Updated dependencies [[`ed94775`](https://github.com/diegomura/react-pdf/commit/ed94775f4d44db0886ff08c71d09f446bace6392)]:
+  - @react-pdf/renderer@3.4.5
+
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.4
+
+## 3.3.0
+
+### Minor Changes
+
+- [#2640](https://github.com/diegomura/react-pdf/pull/2640) [`67c265a`](https://github.com/diegomura/react-pdf/commit/67c265a7e39cc0baa319f49137219677904695e6) Thanks [@nikgraf](https://github.com/nikgraf)! - Add support for fontFamily fallbacks e.g. fontFamily: ['Roboto', 'NotoSansArabic']
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@3.4.3
+
 ## 3.2.13
 
 ### Patch Changes

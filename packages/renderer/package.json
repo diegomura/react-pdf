@@ -1,23 +1,14 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.4.2",
+  "version": "3.4.5",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/react-pdf.cjs",
-  "module": "./lib/react-pdf.js",
+  "main": "./lib/react-pdf.js",
   "browser": {
-    "./lib/react-pdf.js": "./lib/react-pdf.browser.js",
-    "./lib/react-pdf.cjs": "./lib/react-pdf.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/react-pdf.js",
-      "require": "./lib/react-pdf.cjs",
-      "default": "./lib/react-pdf.js"
-    }
+    "./lib/react-pdf.js": "./lib/react-pdf.browser.js"
   },
   "repository": {
     "type": "git",
@@ -33,12 +24,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/font": "^2.4.4",
-    "@react-pdf/layout": "^3.11.5",
-    "@react-pdf/pdfkit": "^3.1.9",
+    "@react-pdf/font": "^2.5.2",
+    "@react-pdf/layout": "^3.13.0",
+    "@react-pdf/pdfkit": "^3.2.0",
     "@react-pdf/primitives": "^3.1.1",
-    "@react-pdf/render": "^3.4.3",
-    "@react-pdf/types": "^2.4.1",
+    "@react-pdf/render": "^3.5.0",
+    "@react-pdf/types": "^2.6.0",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",
     "prop-types": "^15.6.2",

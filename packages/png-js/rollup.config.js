@@ -8,19 +8,6 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json' assert { type: 'json' };
 
-const cjs = {
-  exports: 'named',
-  format: 'cjs',
-  interop: 'compat',
-};
-
-const esm = {
-  format: 'es',
-};
-
-const getCJS = (override) => Object.assign({}, cjs, override);
-const getESM = (override) => Object.assign({}, esm, override);
-
 const input = 'src/index.js';
 
 const babelConfig = () => ({
@@ -63,20 +50,14 @@ const getPlugins = ({ browser }) => [
 
 const serverConfig = {
   input,
-  output: [
-    getESM({ file: 'lib/png-js.js' }),
-    getCJS({ file: 'lib/png-js.cjs' }),
-  ],
+  output: { format: 'es', file: 'lib/png-js.js' },
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false }),
 };
 
 const browserConfig = {
   input,
-  output: [
-    getESM({ file: 'lib/png-js.browser.js' }),
-    getCJS({ file: 'lib/png-js.browser.cjs' }),
-  ],
+  output: { format: 'es', file: 'lib/png-js.browser.js' },
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true }),
 };

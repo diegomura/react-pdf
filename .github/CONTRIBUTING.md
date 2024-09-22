@@ -24,7 +24,7 @@ Here I present a quick guide about how to setup your development environment exa
 
 ### 1. Clone react-pdf project
 
-This goes without saying but first you need to download the code
+This goes without saying but first you need to download the code:
 
 ```sh
 git clone https://github.com/diegomura/react-pdf.git
@@ -33,14 +33,14 @@ cd react-pdf
 
 ### 2. Install Node 18
 
-If you have `nvm` installed all you have to do is
+If you have `nvm` installed all you have to do is:
 
 ```sh
 nvm install 18
 nvm use
 ```
 
-Other versions should work although I can't guarantee it
+Other versions should work although I can't guarantee it.
 
 ### 3. Install dependencies and boostrap monorepo
 
@@ -48,7 +48,6 @@ We need to download this project dependencies in order to make it work. Because 
 
 ```sh
 yarn install
-yarn bootstrap
 ```
 
 ### 4. Build & watch codebase
@@ -61,13 +60,13 @@ yarn watch
 
 ### 5. Setup testing project
 
-Now that we have react-pdf built and running, we need to setup a testing project to use as a development target. This might not be the more straighforward way to set up your dev environment but enables to use the lib as an "external" agent, just as final users will do. It's also extensible for testing in different environmens, whether it is a web or node project, or electron or native app. I usually have a web project (just a plain [create react app](https://reactjs.org/docs/create-a-new-react-app.html) project, and a Node one.
+Now that we have react-pdf built and running, we need to setup a testing project to use as a development target. This might not be the most straightforward way to set up your dev environment but enables use of the lib as an "external" agent, just as end users will do. It's also extensible for testing in different environments, whether it is a web or node project, or electron or native app. I usually have a web project (just a plain [create react app](https://reactjs.org/docs/create-a-new-react-app.html) project), and a Node one.
 
 ### 6. Link your react-pdf build to your testing project
 
 Now all we have to do is make our testing project point to our react-pdf watch instance so we can apply changes to it and see them working. For that I use `yarn link`.
 
-On another terminal
+On another terminal:
 
 ```sh
 cd react-pdf/packages/renderer # navigate to react-pdf renderer package

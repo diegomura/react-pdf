@@ -6,18 +6,9 @@
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/react-pdf.cjs",
-  "module": "./lib/react-pdf.js",
+  "main": "./lib/react-pdf.js",
   "browser": {
-    "./lib/react-pdf.js": "./lib/react-pdf.browser.js",
-    "./lib/react-pdf.cjs": "./lib/react-pdf.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/react-pdf.js",
-      "require": "./lib/react-pdf.cjs",
-      "default": "./lib/react-pdf.js"
-    }
+    "./lib/react-pdf.js": "./lib/react-pdf.browser.js"
   },
   "repository": {
     "type": "git",

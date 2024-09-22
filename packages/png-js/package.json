@@ -4,18 +4,9 @@
   "version": "2.3.1",
   "license": "MIT",
   "type": "module",
-  "main": "./lib/png-js.cjs",
-  "module": "./lib/png-js.js",
+  "main": "./lib/png-js.js",
   "browser": {
-    "./lib/png-js.js": "./lib/png-js.browser.js",
-    "./lib/png-js.cjs": "./lib/png-js.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/png-js.js",
-      "require": "./lib/png-js.cjs",
-      "default": "./lib/png-js.js"
-    }
+    "./lib/png-js.js": "./lib/png-js.browser.js"
   },
   "repository": {
     "type": "git",

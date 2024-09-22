@@ -4,18 +4,9 @@
   "license": "MIT",
   "description": "A PDF generation library for Node.js",
   "type": "module",
-  "main": "./lib/pdfkit.cjs",
-  "module": "./lib/pdfkit.js",
+  "main": "./lib/pdfkit.js",
   "browser": {
-    "./lib/pdfkit.js": "./lib/pdfkit.browser.js",
-    "./lib/pdfkit.cjs": "./lib/pdfkit.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/pdfkit.js",
-      "require": "./lib/pdfkit.cjs",
-      "default": "./lib/pdfkit.js"
-    }
+    "./lib/pdfkit.js": "./lib/pdfkit.browser.js"
   },
   "repository": {
     "type": "git",

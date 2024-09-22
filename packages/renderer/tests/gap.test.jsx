@@ -55,6 +55,34 @@ describe('flex', () => {
     expect(image).toMatchImageSnapshot();
   });
 
+  test('should support percentage gap', async () => {
+    const image = await mount(
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexWrap: 'wrap',
+          backgroundColor: '#e2e2e2',
+          gap: '15%',
+        }}
+      >
+        {items.map((color, index) => (
+          <View
+            key={index}
+            style={{
+              width: 10,
+              height: 10,
+              backgroundColor: color,
+            }}
+          />
+        ))}
+      </View>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
   test('should support rowGap and columnGap', async () => {
     const image = await mount(
       <View
@@ -84,9 +112,32 @@ describe('flex', () => {
     expect(image).toMatchImageSnapshot();
   });
 
-  test('should throw when value is percent', async () => {
-    expect(mount(<View style={{ gap: '10%' }} />)).rejects.toThrow(
-      "You can't pass percentage values to columnGap property",
+  test('should support percentage rowGap and columnGap', async () => {
+    const image = await mount(
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexWrap: 'wrap',
+          backgroundColor: '#e2e2e2',
+          rowGap: '10%',
+          columnGap: '20%',
+        }}
+      >
+        {items.map((color, index) => (
+          <View
+            key={index}
+            style={{
+              width: 10,
+              height: 10,
+              backgroundColor: color,
+            }}
+          />
+        ))}
+      </View>,
     );
+
+    expect(image).toMatchImageSnapshot();
   });
 });

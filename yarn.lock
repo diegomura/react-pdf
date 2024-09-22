@@ -10222,7 +10222,7 @@ yocto-queue@^1.0.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-1.0.0.tgz#7f816433fb2cbc511ec8bf7d263c3b58a1a3c251"
   integrity sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==
 
-yoga-layout@^3.0.0:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-3.0.3.tgz#0231bfbffe0b3aeb09fed53e02599d5c954d1946"
-  integrity sha512-7Y9/DP9BaEDKwrL2+rQPq5HFYSOdwED0hPceuXd1NIdnxQf6hnrYGMZBnUqG1CLXXL6njh/dEjsli574OmAcVw==
+yoga-layout@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-3.1.0.tgz#04d00d7c2160635640dc79b48e7e4fc6a2fba2b2"
+  integrity sha512-auzJ8lEovThZIpR8wLGWNo/JEj4VTO79q9/gOJ0dWb3shAYPFdX3t9VN0fC0v+jeQF77STUdCzebLwRMqzn5gQ==

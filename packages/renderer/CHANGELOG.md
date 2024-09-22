@@ -1,5 +1,18 @@
 # @react-pdf/renderer
 
+## 3.4.5
+
+### Patch Changes
+
+- [#2669](https://github.com/diegomura/react-pdf/pull/2669) [`ed94775`](https://github.com/diegomura/react-pdf/commit/ed94775f4d44db0886ff08c71d09f446bace6392) Thanks [@Finanzasparahippies](https://github.com/Finanzasparahippies)! - fix: download IE checks
+
+- Updated dependencies [[`e425ca4`](https://github.com/diegomura/react-pdf/commit/e425ca4add7eb353b6282a40fd1020aad0da36c4), [`e42a79a`](https://github.com/diegomura/react-pdf/commit/e42a79a3857932a4ebc89feb6e4d2c891280d633), [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816), [`53bf803`](https://github.com/diegomura/react-pdf/commit/53bf803465f4fecf13531d1a10697c3d4067cf8f), [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/layout@3.13.0
+  - @react-pdf/render@3.5.0
+  - @react-pdf/pdfkit@3.2.0
+  - @react-pdf/types@2.6.0
+  - @react-pdf/font@2.5.2
+
 ## 3.4.4
 
 ### Patch Changes

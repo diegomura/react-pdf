@@ -33,7 +33,7 @@
     "browserify-zlib": "^0.2.0",
     "crypto-js": "^4.2.0",
     "fontkit": "^2.0.2",
-    "jay-peg": "^1.0.2",
+    "jay-peg": "^1.1.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },
   "devDependencies": {

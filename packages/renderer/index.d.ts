@@ -3,17 +3,17 @@
 /* eslint-disable max-classes-per-file */
 import * as React from 'react';
 import {
-  Style,
-  PageSize,
-  FontStore,
-  PDFVersion,
-  Orientation,
-  SourceObject,
-  HyphenationCallback,
-  SVGPresentationAttributes,
   Bookmark,
+  FontStore,
+  HyphenationCallback,
+  Orientation,
   PageLayout,
   PageMode,
+  PageSize,
+  PDFVersion,
+  SourceObject,
+  Style,
+  SVGPresentationAttributes,
 } from '@react-pdf/types';
 
 declare class ReactPDF {
@@ -28,6 +28,7 @@ declare namespace ReactPDF {
   interface Styles {
     [key: string]: Style;
   }
+
   interface OnRenderProps {
     blob?: Blob;
   }
@@ -466,6 +467,7 @@ declare namespace ReactPDF {
     loading: boolean;
     error: Error | null;
   }
+
   interface BlobProviderProps {
     document: React.ReactElement<DocumentProps>;
     children: (params: BlobProviderParams) => React.ReactNode;
@@ -495,12 +497,15 @@ declare namespace ReactPDF {
    */
   export class PDFViewer extends React.Component<PDFViewerProps> {}
 
+  // @ts-ignore
   interface PDFDownloadLinkProps
     extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
     /** PDF filename. Alias for anchor tag `download` attribute. */
     fileName?: string;
     document: React.ReactElement<DocumentProps>;
-    children?: React.ReactNode | React.ReactElement<BlobProviderParams>;
+    children?:
+      | React.ReactNode
+      | ((props: BlobProviderParams) => React.ReactNode);
     onClick?: React.AnchorHTMLAttributes<HTMLAnchorElement>['onClick'] &
       ((
         event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,

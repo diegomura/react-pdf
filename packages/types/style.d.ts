@@ -83,6 +83,7 @@ export interface Style {
     | 'extrabold'
     | 'heavy'
     | 'black';
+  fontFeatureSettings?: string[] | Record<string, boolean>;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   maxLines?: number; // ?

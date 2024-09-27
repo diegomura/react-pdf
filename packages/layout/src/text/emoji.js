@@ -69,7 +69,12 @@ export const fetchEmojis = (string, source) => {
   return promises;
 };
 
-const specialCases = ['©️', '®', '™']; // Do not treat these as emojis if emoji not present
+/**
+ * Do not treat these as emojis if emoji not present.
+ * Note there are two different copyright symbols
+ *   (\xc2\xa9 and \xc2\xa9\xef\xb8\x8f)
+ */
+const specialCases = ['©', '©️', '®', '™'];
 
 export const embedEmojis = (fragments) => {
   const result = [];

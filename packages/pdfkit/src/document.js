@@ -119,7 +119,7 @@ class PDFDocument extends stream.Readable {
     this._id = PDFSecurity.generateFileID(this.info);
 
     // Initialize security settings
-    // this._security = PDFSecurity.create(this, options);
+    this._security = PDFSecurity.create(this, options);
 
     // Write the header PDF version
     this._write(`%PDF-${this.version}`);
@@ -276,9 +276,9 @@ class PDFDocument extends stream.Readable {
       this._root.data.ViewerPreferences.end();
     }
 
-    // if (this._security) {
-    //   this._security.end();
-    // }
+    if (this._security) {
+      this._security.end();
+    }
 
     if (this._waiting === 0) {
       return this._finalize();
@@ -307,9 +307,9 @@ class PDFDocument extends stream.Readable {
       ID: [this._id, this._id]
     };
 
-    // if (this._security) {
-    //   trailer.Encrypt = this._security.dictionary;
-    // }
+    if (this._security) {
+      trailer.Encrypt = this._security.dictionary;
+    }
 
     this._write('trailer');
     this._write(PDFObject.convert(trailer));

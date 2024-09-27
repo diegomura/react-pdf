@@ -115,9 +115,6 @@ class PDFDocument extends stream.Readable {
       });
     }
 
-    // Generate file ID
-    this._id = PDFSecurity.generateFileID(this.info);
-
     // Initialize security settings
     // this._security = PDFSecurity.create(this, options);
 
@@ -131,6 +128,10 @@ class PDFDocument extends stream.Readable {
     if (this.options.autoFirstPage !== false) {
       this.addPage();
     }
+  }
+
+  _id() {
+    return PDFSecurity.generateFileID(this.info);
   }
 
   addPage(options) {
@@ -300,11 +301,12 @@ class PDFDocument extends stream.Readable {
     }
 
     // trailer
+    const id = this._id();
     const trailer = {
       Size: this._offsets.length + 1,
       Root: this._root,
       Info: this._info,
-      ID: [this._id, this._id]
+      ID: [id, id]
     };
 
     // if (this._security) {

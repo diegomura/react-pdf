@@ -45,7 +45,7 @@ const warnUnavailableSpace = (node) => {
   );
 };
 
-const splitNodes = (height, contentArea, nodes) => {
+const splitNodes = (height, contentArea, paddingTop, nodes) => {
   const currentChildren = [];
   const nextChildren = [];
 
@@ -57,7 +57,7 @@ const splitNodes = (height, contentArea, nodes) => {
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
-    const shouldBreak = shouldNodeBreak(child, futureNodes, height);
+    const shouldBreak = shouldNodeBreak(child, futureNodes, height, paddingTop);
     const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;
@@ -128,17 +128,18 @@ const splitNodes = (height, contentArea, nodes) => {
   return [currentChildren, nextChildren];
 };
 
-const splitChildren = (height, contentArea, node) => {
+const splitChildren = (height, contentArea, paddingTop, node) => {
   const children = node.children || [];
   const availableHeight = height - getTop(node);
-  return splitNodes(availableHeight, contentArea, children);
+  return splitNodes(availableHeight, contentArea, paddingTop, children);
 };
 
-const splitView = (node, height, contentArea) => {
+const splitView = (node, height, contentArea, paddingTop) => {
   const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
+    paddingTop,
     node,
   );
 
@@ -148,8 +149,10 @@ const splitView = (node, height, contentArea) => {
   ];
 };
 
-const split = (node, height, contentArea) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (node, height, contentArea, paddingTop) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, paddingTop);
 
 const shouldResolveDynamicNodes = (node) => {
   const children = node.children || [];
@@ -192,13 +195,14 @@ const resolveDynamicPage = (props, page, fontStore, yoga) => {
 
 const splitPage = (page, pageNumber, fontStore, yoga) => {
   const wrapArea = getWrapArea(page);
-  const contentArea = getContentArea(page);
+  const { contentArea, paddingTop } = getContentArea(page);
   const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore, yoga);
   const height = page.style.height;
 
   const [currentChilds, nextChilds] = splitNodes(
     wrapArea,
     contentArea,
+    paddingTop,
     dynamicPage.children,
   );
 

@@ -26,7 +26,7 @@ const getEndOfPresence = (child, futureElements) => {
   return Math.min(afterMinPresenceAhead, endOfFurthestFutureElement);
 };
 
-const shouldBreak = (child, futureElements, height) => {
+const shouldBreak = (child, futureElements, height, paddingTop) => {
   if (child.props?.fixed) return false;
 
   const shouldSplit = height < child.box.top + child.box.height;
@@ -36,7 +36,8 @@ const shouldBreak = (child, futureElements, height) => {
   const endOfPresence = getEndOfPresence(child, futureElements);
   // If the child is already at the top of the page, breaking won't improve its presence
   // (as long as react-pdf does not support breaking into differently sized containers)
-  const breakingImprovesPresence = child.box.top > child.box.marginTop;
+  const breakingImprovesPresence =
+    child.box.top > child.box.marginTop + paddingTop;
 
   return (
     getBreak(child) ||

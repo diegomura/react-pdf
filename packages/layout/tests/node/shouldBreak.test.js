@@ -11,6 +11,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -24,6 +25,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      0,
     );
 
     expect(result).toEqual(true);
@@ -37,6 +39,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -51,6 +54,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      0,
     );
 
     expect(result).toEqual(true);
@@ -64,6 +68,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      0,
     );
 
     expect(result).toEqual(true);
@@ -77,6 +82,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(true);
@@ -90,6 +96,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 1100, height: 0, marginTop: 200, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(true);
@@ -103,6 +110,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -116,6 +124,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 100, marginTop: 0, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -129,6 +138,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 1000, height: 0, marginTop: 100, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -142,6 +152,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 100, marginTop: 0, marginBottom: 100 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -155,6 +166,21 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
       1000,
+      0,
+    );
+
+    expect(result).toEqual(false);
+  });
+
+  test('should consider padding when breaking on minPresenceAhead', () => {
+    const result = shouldBreak(
+      {
+        box: { top: 550, height: 400, marginTop: 500, marginBottom: 0 },
+        props: { minPresenceAhead: 400 },
+      },
+      [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
+      1000,
+      50,
     );
 
     expect(result).toEqual(false);
@@ -168,6 +194,7 @@ describe('node shouldBreak', () => {
       },
       [{ box: { top: 900, height: 200, marginTop: 0, marginBottom: 0 } }],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -186,6 +213,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -224,6 +252,7 @@ describe('node shouldBreak', () => {
         },
       ],
       811.89,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -262,6 +291,7 @@ describe('node shouldBreak', () => {
         },
       ],
       811.89,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -400,6 +430,7 @@ describe('node shouldBreak', () => {
         },
       ],
       781.89,
+      0,
     );
 
     expect(result).toEqual(false);
@@ -428,6 +459,7 @@ describe('node shouldBreak', () => {
         },
       ],
       776.89,
+      0,
     );
 
     expect(result).toEqual(false);

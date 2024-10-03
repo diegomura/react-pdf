@@ -4,7 +4,11 @@ const getContentArea = (page) => {
   const height = page.style?.height;
   const { paddingTop, paddingBottom } = getPadding(page);
 
-  return height - paddingBottom - paddingTop;
+  return {
+    contentArea: height - paddingBottom - paddingTop,
+    paddingTop,
+    paddingBottom,
+  };
 };
 
 export default getContentArea;

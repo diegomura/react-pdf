@@ -90,8 +90,10 @@ const transformUnit = (value, inputDpi) => {
       return scalar.value * mmFactor;
     case 'cm':
       return scalar.value * cmFactor;
+    case 'px':
+      return Math.round(scalar.value * (outputDpi / inputDpi));
     default:
-      return scalar.value * (outputDpi / inputDpi);
+      return scalar.value;
   }
 };
 

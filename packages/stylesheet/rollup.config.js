@@ -3,19 +3,6 @@ import babel from '@rollup/plugin-babel';
 
 import pkg from './package.json' assert { type: 'json' };
 
-const cjs = {
-  exports: 'named',
-  format: 'cjs',
-  interop: 'compat',
-};
-
-const esm = {
-  format: 'es',
-};
-
-const getCJS = (override) => Object.assign({}, cjs, override);
-const getESM = (override) => Object.assign({}, esm, override);
-
 const input = 'src/index.js';
 
 const getExternal = () => [
@@ -35,7 +22,7 @@ const getPlugins = () => [
 
 const config = {
   input,
-  output: [getESM({ file: 'lib/index.js' }), getCJS({ file: 'lib/index.cjs' })],
+  output: { format: 'es', file: 'lib/index.js' },
   external: getExternal(),
   plugins: getPlugins(),
 };

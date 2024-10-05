@@ -1,5 +1,23 @@
 # @react-pdf/types
 
+## 2.7.0
+
+### Minor Changes
+
+- [#2875](https://github.com/diegomura/react-pdf/pull/2875) [`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f) Thanks [@diegomura](https://github.com/diegomura)! - feat: add position: static support
+
+- [#2874](https://github.com/diegomura/react-pdf/pull/2874) [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f) Thanks [@diegomura](https://github.com/diegomura)! - feat: add align-content: space-evenly support
+
+## 2.6.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+### Patch Changes
+
+- [#2727](https://github.com/diegomura/react-pdf/pull/2727) [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b) Thanks [@hendrikmolder](https://github.com/hendrikmolder)! - accept string array for `fontFamily` in stylesheets
+
 ## 2.5.0
 
 ### Minor Changes

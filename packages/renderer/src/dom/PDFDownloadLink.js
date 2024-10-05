@@ -22,7 +22,7 @@ export const PDFDownloadLink = ({
   }
 
   const handleDownloadIE = () => {
-    if (window.navigator.msSaveBlob) {
+    if (instance && window.navigator.msSaveBlob) {
       // IE
       window.navigator.msSaveBlob(instance.blob, fileName);
     }

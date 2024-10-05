@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 import { upperFirst } from '@react-pdf/fns';
 
 const ALIGN = {
@@ -9,6 +9,7 @@ const ALIGN = {
   baseline: Yoga.Align.Baseline,
   'space-between': Yoga.Align.SpaceBetween,
   'space-around': Yoga.Align.SpaceAround,
+  'space-evenly': Yoga.Align.SpaceEvenly,
 };
 
 /**

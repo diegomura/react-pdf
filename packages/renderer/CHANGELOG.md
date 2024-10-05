@@ -1,5 +1,38 @@
 # @react-pdf/renderer
 
+## 4.0.0
+
+### Major Changes
+
+- [#2871](https://github.com/diegomura/react-pdf/pull/2871) [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119) Thanks [@diegomura](https://github.com/diegomura)! - feat!: drop cjs support
+
+### Minor Changes
+
+- [#2876](https://github.com/diegomura/react-pdf/pull/2876) [`afe4bcfe`](https://github.com/diegomura/react-pdf/commit/afe4bcfe6f4b991cf22341242fc27d169b758d47) Thanks [@diegomura](https://github.com/diegomura)! - feat: add gap percentage support
+
+### Patch Changes
+
+- Updated dependencies [[`afe4bcfe`](https://github.com/diegomura/react-pdf/commit/afe4bcfe6f4b991cf22341242fc27d169b758d47), [`42570321`](https://github.com/diegomura/react-pdf/commit/42570321af54bf331ca81f09a102664cd9f7c46a), [`fdcef566`](https://github.com/diegomura/react-pdf/commit/fdcef5666e4eeed542b625d394cdfe60d6346600), [`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f), [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f), [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119)]:
+  - @react-pdf/layout@4.0.0
+  - @react-pdf/pdfkit@4.0.0
+  - @react-pdf/types@2.7.0
+  - @react-pdf/primitives@4.0.0
+  - @react-pdf/render@4.0.0
+  - @react-pdf/font@3.0.0
+
+## 3.4.5
+
+### Patch Changes
+
+- [#2669](https://github.com/diegomura/react-pdf/pull/2669) [`ed94775`](https://github.com/diegomura/react-pdf/commit/ed94775f4d44db0886ff08c71d09f446bace6392) Thanks [@Finanzasparahippies](https://github.com/Finanzasparahippies)! - fix: download IE checks
+
+- Updated dependencies [[`e425ca4`](https://github.com/diegomura/react-pdf/commit/e425ca4add7eb353b6282a40fd1020aad0da36c4), [`e42a79a`](https://github.com/diegomura/react-pdf/commit/e42a79a3857932a4ebc89feb6e4d2c891280d633), [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816), [`53bf803`](https://github.com/diegomura/react-pdf/commit/53bf803465f4fecf13531d1a10697c3d4067cf8f), [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/layout@3.13.0
+  - @react-pdf/render@3.5.0
+  - @react-pdf/pdfkit@3.2.0
+  - @react-pdf/types@2.6.0
+  - @react-pdf/font@2.5.2
+
 ## 3.4.4
 
 ### Patch Changes

@@ -1,5 +1,51 @@
 # @react-pdf/layout
 
+## 4.0.0
+
+### Major Changes
+
+- [#2711](https://github.com/diegomura/react-pdf/pull/2711) [`42570321`](https://github.com/diegomura/react-pdf/commit/42570321af54bf331ca81f09a102664cd9f7c46a) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Update Yoga to 3.0
+
+- [#2871](https://github.com/diegomura/react-pdf/pull/2871) [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119) Thanks [@diegomura](https://github.com/diegomura)! - feat!: drop cjs support
+
+### Minor Changes
+
+- [#2876](https://github.com/diegomura/react-pdf/pull/2876) [`afe4bcfe`](https://github.com/diegomura/react-pdf/commit/afe4bcfe6f4b991cf22341242fc27d169b758d47) Thanks [@diegomura](https://github.com/diegomura)! - feat: add gap percentage support
+
+- [#2875](https://github.com/diegomura/react-pdf/pull/2875) [`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f) Thanks [@diegomura](https://github.com/diegomura)! - feat: add position: static support
+
+- [#2874](https://github.com/diegomura/react-pdf/pull/2874) [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f) Thanks [@diegomura](https://github.com/diegomura)! - feat: add align-content: space-evenly support
+
+### Patch Changes
+
+- Updated dependencies [[`fdcef566`](https://github.com/diegomura/react-pdf/commit/fdcef5666e4eeed542b625d394cdfe60d6346600), [`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f), [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f), [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119)]:
+  - @react-pdf/pdfkit@4.0.0
+  - @react-pdf/image@3.0.0
+  - @react-pdf/types@2.7.0
+  - @react-pdf/primitives@4.0.0
+  - @react-pdf/stylesheet@5.0.0
+  - @react-pdf/textkit@5.0.0
+  - @react-pdf/fns@3.0.0
+
+## 3.13.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+### Patch Changes
+
+- [#2864](https://github.com/diegomura/react-pdf/pull/2864) [`e425ca4`](https://github.com/diegomura/react-pdf/commit/e425ca4add7eb353b6282a40fd1020aad0da36c4) Thanks [@nnaku](https://github.com/nnaku)! - Prevent loading yoga-layout wasm binaries more than once
+
+- [#2822](https://github.com/diegomura/react-pdf/pull/2822) [`e42a79a`](https://github.com/diegomura/react-pdf/commit/e42a79a3857932a4ebc89feb6e4d2c891280d633) Thanks [@mantljosh](https://github.com/mantljosh)! - fix: prevent infinite loop while splitting pages
+
+- [#2747](https://github.com/diegomura/react-pdf/pull/2747) [`5af35ec`](https://github.com/diegomura/react-pdf/commit/5af35ec9743cc0d7bf75f5ca789627517ff35816) Thanks [@andrew-spare](https://github.com/andrew-spare)! - fix: font selection regression
+
+- Updated dependencies [[`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/pdfkit@3.2.0
+  - @react-pdf/stylesheet@4.3.0
+  - @react-pdf/types@2.6.0
+
 ## 3.12.1
 
 ### Patch Changes

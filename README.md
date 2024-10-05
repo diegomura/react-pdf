@@ -5,9 +5,6 @@
     <a href="https://www.npmjs.com/package/@react-pdf/renderer">
       <img src="https://img.shields.io/npm/v/@react-pdf/renderer.svg" />
     </a>
-    <a href="https://travis-ci.org/diegomura/react-pdf">
-      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
-    </a>
     <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
     </a>

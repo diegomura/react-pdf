@@ -7,7 +7,8 @@ export interface Style {
     | 'center'
     | 'stretch'
     | 'space-between'
-    | 'space-around';
+    | 'space-around'
+    | 'space-evenly';
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
   alignSelf?:
     | 'auto'
@@ -40,7 +41,7 @@ export interface Style {
   bottom?: number | string;
   display?: 'flex' | 'none';
   left?: number | string;
-  position?: 'absolute' | 'relative';
+  position?: 'absolute' | 'relative' | 'static';
   right?: number | string;
   top?: number | string;
   overflow?: 'hidden';
@@ -64,7 +65,7 @@ export interface Style {
   // Text
 
   fontSize?: number | string;
-  fontFamily?: string;
+  fontFamily?: string | string[];
   fontStyle?: string | 'normal';
   fontWeight?:
     | number

@@ -1,9 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 
-import * as Yoga from 'yoga-layout';
+import { loadYoga as yogaLoadYoga } from 'yoga-layout/load';
+
+let instance;
 
 export const loadYoga = async () => {
-  const instance = await Yoga.loadYoga();
+  if (!instance) {
+    // Yoga WASM binaries must be asynchronously compiled and loaded
+    // to prevent Event emitter memory leak warnings, Yoga must be loaded only once
+    instance = await yogaLoadYoga();
+  }
+
   const config = instance.Config.create();
 
   config.setPointScaleFactor(0);

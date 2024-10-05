@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 
 import setPositionType from '../../src/node/setPositionType';
 
@@ -32,6 +32,14 @@ describe('node setPositionType', () => {
 
     expect(mock.mock.calls).toHaveLength(1);
     expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Absolute);
+    expect(result).toBe(node);
+  });
+
+  test('Should set static', () => {
+    const result = setPositionType('static')(node);
+
+    expect(mock.mock.calls).toHaveLength(1);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.PositionType.Static);
     expect(result).toBe(node);
   });
 });

@@ -38,7 +38,7 @@
     "cross-fetch": "^3.1.5",
     "emoji-regex": "^10.3.0",
     "queue": "^6.0.1",
-    "skia-canvas": "^1.0.1",
+    "skia-canvas": "https://github.com/samizdatco/skia-canvas/releases/download/v1.0.1/skia-canvas-v1.0.1-linux-x64-glibc.tar.gz",
     "yoga-layout": "^2.0.1"
   },
   "files": [

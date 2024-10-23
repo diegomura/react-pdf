@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.0.0",
-    "react": "^19.0.0-rc-a26e3f403e-20240611"
+    "react": "^19.0.0-rc-45804af1-20241021"
   }
 }

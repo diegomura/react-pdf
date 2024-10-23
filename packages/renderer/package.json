@@ -58,7 +58,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
-    "react-reconciler": "0.31.0-rc-a26e3f403e-20240611",
+    "react-reconciler": "0.31.0-rc-45804af1-20241021",
     "size-limit": "^11.0.1",
     "util": "^0.12.4"
   }

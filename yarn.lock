@@ -8057,7 +8057,7 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-dom@^19.0.0-rc-45804af1-20241021:
+react-dom@^19.0.0-rc-603e6108-20241029:
   version "19.0.0-rc-fb9a90fa48-20240614"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.0.0-rc-fb9a90fa48-20240614.tgz#8dce9ed0650096d65437e4bce790628e483831a2"
   integrity sha512-PoEsPe32F7KPLYOBvZfjylEI1B67N44PwY3lyvpmBkhlluLnLz0jH8q2Wg9YidAi6z0k3iUnNRm5x10wurzt9Q==
@@ -8079,19 +8079,19 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-reconciler@0.31.0-rc-45804af1-20241021:
-  version "0.31.0-rc-45804af1-20241021"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.31.0-rc-45804af1-20241021.tgz#8016e3a28815de6faf7e38598f285a0407f9f415"
-  integrity sha512-X9RSNsCrQSQqXKG6YiiUZrKKGPCfE0bPOg4TcEbTItlyomq8vjPeKvFDXT1zMvmfoN8hGnCsHKyFlAZYebW8Fw==
+react-reconciler@0.31.0-rc-603e6108-20241029:
+  version "0.31.0-rc-603e6108-20241029"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.31.0-rc-603e6108-20241029.tgz#548c14190b107e6e8b886e9e1142a1b341efe020"
+  integrity sha512-zCAmctVyk2efv9DR0GnpHNbd/mVxeWuOGrWeXwx1QXqSGTBWUqzoPEd4jv88e+3U53upXZqb86AMhKf0c9vkLw==
   dependencies:
-    scheduler "0.25.0-rc-45804af1-20241021"
+    scheduler "0.25.0-rc-603e6108-20241029"
 
 react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
-react@^19.0.0-rc-45804af1-20241021:
+react@^19.0.0-rc-603e6108-20241029:
   version "19.0.0-rc-fb9a90fa48-20240614"
   resolved "https://registry.yarnpkg.com/react/-/react-19.0.0-rc-fb9a90fa48-20240614.tgz#90eb43a0b005e8cc3cbf0d801c14816d01df1b08"
   integrity sha512-nvE3Gy+IOIfH/DXhkyxFVQSrITarFcQz4+shzC/McxQXEUSonpw2oDy/Wi9hdDtV3hlP12VYuDL95iiBREedNQ==
@@ -8513,20 +8513,15 @@ saxes@^6.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@0.25.0-rc-45804af1-20241021:
-  version "0.25.0-rc-45804af1-20241021"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0-rc-45804af1-20241021.tgz#0c8c38627b3c951dd5ae40957b10e8d453852e31"
-  integrity sha512-8jyu/iy3tGFNakMMCWnKw/vsiTcapDyl0LKlZ3fUKBcBicZAkrrCC1bdqVFx0Ioxgry1SzOrCGcZLM7vtWK00A==
+scheduler@0.25.0-rc-603e6108-20241029:
+  version "0.25.0-rc-603e6108-20241029"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0-rc-603e6108-20241029.tgz#684dd96647e104d23e0d29a37f18937daf82df19"
+  integrity sha512-pFwF6H1XrSdYYNLfOcGlM28/j8CGLu8IvdrxqhjWULe2bPcKiKW4CV+OWqR/9fT52mywx65l7ysNkjLKBda7eA==
 
-scheduler@0.25.0-rc-fb9a90fa48-20240614:
+scheduler@0.25.0-rc-fb9a90fa48-20240614, scheduler@^0.25.0-rc-603e6108-20241029:
   version "0.25.0-rc-fb9a90fa48-20240614"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0-rc-fb9a90fa48-20240614.tgz#9ee11063b7c0f47aef3fea53d9f1be3f13794dce"
   integrity sha512-HHqQ/SqbeiDfXXVKgNxTpbQTD4n7IUb4hZATvHjp03jr3TF7igehCyHdOjeYTrzIseLO93cTTfSb5f4qWcirMQ==
-
-scheduler@^0.25.0-rc-a26e3f403e-20240611:
-  version "0.25.0-rc-f994737d14-20240522"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.25.0-rc-f994737d14-20240522.tgz#6bbdbf50adeb250035a26f082bf966077d264a7e"
-  integrity sha512-qS+xGFF7AljP2APO2iJe8zESNsK20k25MACz+WGOXPybUsRdi1ssvaoF93im2nSX2q/XT3wKkjdz6RQfbmaxdw==
 
 schema-utils@^3.1.1, schema-utils@^3.2.0:
   version "3.3.0"

@@ -13,6 +13,7 @@ const nodeInput = './src/node/index.js';
 const domInput = './src/dom/index.js';
 
 const babelConfig = () => ({
+  compact: false,
   babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',

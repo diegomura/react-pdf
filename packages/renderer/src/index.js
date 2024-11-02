@@ -7,9 +7,7 @@ import layoutDocument from '@react-pdf/layout';
 import { ConcurrentRoot } from 'react-reconciler/constants';
 
 import createRenderer from './renderer';
-import packageJson from '../package.json';
-
-const { version } = packageJson;
+import { version } from '../package.json';
 
 const fontStore = new FontStore();
 

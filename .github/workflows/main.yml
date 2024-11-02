@@ -83,7 +83,7 @@ jobs:
       matrix:
         # We aim to test all maintained LTS versions of Node.js as well as the latest stable version
         node_version: [18, 20, 21]
-        react_version: [16, 17, 18]
+        react_version: [19]
 
     steps:
       - name: Checkout
@@ -111,7 +111,7 @@ jobs:
         run: REACT_VERSION=${{ matrix.react_version }} yarn test
 
   e2e-node:
-    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})
+    name: "Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})"
     runs-on: ubuntu-latest
     strategy:
       matrix:

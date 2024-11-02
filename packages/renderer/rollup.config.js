@@ -2,7 +2,6 @@ import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import alias from '@rollup/plugin-alias';
 import ignore from 'rollup-plugin-ignore';
 import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
@@ -14,6 +13,7 @@ const nodeInput = './src/node/index.js';
 const domInput = './src/dom/index.js';
 
 const babelConfig = () => ({
+  compact: false,
   babelrc: true,
   exclude: 'node_modules/**',
   babelHelpers: 'runtime',
@@ -24,21 +24,13 @@ const getExternal = ({ browser }) => [
   /@babel\/runtime/,
   'react/jsx-runtime',
   ...(browser ? [] : ['fs', 'path', 'url']),
-  ...Object.keys(pkg.dependencies).filter(
-    (name) => name !== 'react-reconciler',
-  ),
+  ...Object.keys(pkg.dependencies),
   ...Object.keys(pkg.peerDependencies),
 ];
 
 const getPlugins = ({ browser, declarationDests, minify = false }) => [
   json(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
-  alias({
-    entries: {
-      'react-reconciler':
-        'react-reconciler/cjs/react-reconciler.production.min.js',
-    },
-  }),
   babel(babelConfig()),
   commonjs({
     esmExternals: ['scheduler'],

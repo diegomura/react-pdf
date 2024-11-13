@@ -16,7 +16,9 @@ const ExamplesPage = () => {
   useEffect(() => {
     const listener = (event) =>
       setHash(event.target.location.hash.substring(1));
+
     window.addEventListener('popstate', listener);
+
     return () => window.removeEventListener('popstate', listener);
   });
 

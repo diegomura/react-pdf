@@ -1,5 +1,5 @@
 {
-  "extends": ["../../.eslintrc.json", "plugin:react/recommended"],
+  "extends": ["../../../.eslintrc.json", "plugin:react/recommended"],
   "rules": {
     "react/prop-types": 0,
     "jsx-a11y/anchor-is-valid": 0,

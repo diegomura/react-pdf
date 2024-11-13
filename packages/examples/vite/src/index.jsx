@@ -8,7 +8,7 @@ import EXAMPLES from './examples';
 
 const ExamplesPage = () => {
   const [hash, setHash] = useState(
-    window.location.hash.substring(1) || 'page-wrap'
+    window.location.hash.substring(1) || 'page-wrap',
   );
 
   const index = EXAMPLES.findIndex((example) => example.id === hash);
@@ -16,7 +16,9 @@ const ExamplesPage = () => {
   useEffect(() => {
     const listener = (event) =>
       setHash(event.target.location.hash.substring(1));
+
     window.addEventListener('popstate', listener);
+
     return () => window.removeEventListener('popstate', listener);
   });
 

@@ -9,6 +9,7 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "workspaces": [
     "packages/*",
+    "packages/examples/*",
     "e2e/*"
   ],
   "scripts": {
@@ -18,7 +19,7 @@
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "vitest",
-    "dev": "lerna run dev --scope @react-pdf/examples",
+    "dev": "lerna run dev --scope @react-pdf/examples --",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"

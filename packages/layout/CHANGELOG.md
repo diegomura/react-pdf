@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 4.1.0
+
+### Minor Changes
+
+- [#2736](https://github.com/diegomura/react-pdf/pull/2736) [`b242e59a`](https://github.com/diegomura/react-pdf/commit/b242e59a14a856e280c9fcbad81f707248819721) Thanks [@siketyan](https://github.com/siketyan)! - Use monochrome emojis contained in the font family if no emoji source available
+
 ## 4.0.1
 
 ### Patch Changes

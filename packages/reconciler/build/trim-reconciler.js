@@ -30,7 +30,7 @@ const KEEP_OPTIONS = {
   appendInitialChild: true,
 };
 
-const REPLACE_OPTIONS = {
+const STATIC_OPTIONS = {
   useSyncScheduling: { value: true },
   supportsMutation: { value: true },
   isPrimaryRenderer: { value: false },
@@ -44,47 +44,39 @@ const METHOD_KEYS = {
 
 function clearReconcilerOptions(path) {
   const { node } = path;
-  const objectName = node.object.name;
-  const optionName = node.property.name;
+  const objectName = node.object?.name;
+  const optionName = node.property?.name;
 
   // If we are not visiting config object, skip.
-  if (objectName !== '$$$hostConfig') {
-    this.traverse(path);
-    return;
-  }
+  if (objectName !== '$$$hostConfig') return;
 
   // If it's an option we want to keep, skip.
-  if (KEEP_OPTIONS[optionName]) {
-    this.traverse(path);
-    return;
-  }
+  if (KEEP_OPTIONS[optionName]) return;
 
   // If it's an option we want to replace, replace it.
-  if (REPLACE_OPTIONS[optionName]) {
-    const newValue = REPLACE_OPTIONS[optionName].value;
+  if (STATIC_OPTIONS[optionName]) {
+    const newValue = STATIC_OPTIONS[optionName].value;
     path.replace(newValue ? trueLiteral : falseLiteral);
-    this.traverse(path);
     return;
   }
 
   // Remove option.
   path.replace(nullLiteral);
-  this.traverse(path);
 }
 
 function clearReconcilerMethods(path) {
   const { node } = path;
+  const objectName = node.object?.name;
+  const optionName = node.property?.name;
 
-  // Hacky: vg here comes from minified package
-  if (node.id.name === 'vg') {
-    const newProperties = node.init.properties.filter(
-      (property) => METHOD_KEYS[property.key.name],
-    );
+  // If we are not visiting an exported method, skip.
+  if (objectName !== 'exports') return;
 
-    path.get('init', 'properties').replace(newProperties);
-  }
+  // If it's a method we want to keep, skip.
+  if (METHOD_KEYS[optionName]) return;
 
-  this.traverse(path);
+  // Remove method.
+  path.parent.replace(nullLiteral);
 }
 
 const trimReconciler = () => {
@@ -95,8 +87,11 @@ const trimReconciler = () => {
       const ast = recast.parse(code);
 
       visit(ast, {
-        visitMemberExpression: clearReconcilerOptions,
-        visitVariableDeclarator: clearReconcilerMethods,
+        visitMemberExpression(path) {
+          clearReconcilerOptions(path);
+          clearReconcilerMethods(path);
+          this.traverse(path);
+        },
       });
 
       return { code: recast.print(ast).code };

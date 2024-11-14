@@ -22,7 +22,7 @@
   "files": ["lib"],
   "devDependencies": {
     "ast-types": "^0.14.2",
-    "react-reconciler": "0.23.0",
+    "react-reconciler": "0.26.0",
     "recast": "^0.23.9"
   }
 }

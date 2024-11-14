@@ -19,10 +19,6 @@ const createRenderer = ({
   resetAfterCommit,
 }) => {
   return Reconciler({
-    supportsMutation: true,
-    isPrimaryRenderer: false,
-    warnsIfNotActing: false,
-    useSyncScheduling: true,
     appendChild,
     appendChildToContainer,
     appendInitialChild: appendChild,

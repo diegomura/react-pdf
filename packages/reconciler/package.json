@@ -1,0 +1,28 @@
+{
+  "name": "@react-pdf/reconciler",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Define uninitialized elements",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/reconciler"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
+    "size": "size-limit",
+    "lint": "eslint src",
+    "test": "vitest"
+  },
+  "files": ["lib"],
+  "devDependencies": {
+    "ast-types": "^0.14.2",
+    "react-reconciler": "0.26.0",
+    "recast": "^0.23.9"
+  }
+}

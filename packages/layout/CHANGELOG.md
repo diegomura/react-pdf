@@ -1,5 +1,11 @@
 # @react-pdf/layout
 
+## 4.0.1
+
+### Patch Changes
+
+- [#2878](https://github.com/diegomura/react-pdf/pull/2878) [`58f9a047`](https://github.com/diegomura/react-pdf/commit/58f9a04740ed1331ef1dfa9999fb43c0ee10fa5b) Thanks [@jmezzacappa](https://github.com/jmezzacappa)! - Prevent Yoga init from running more than once
+
 ## 4.0.0
 
 ### Major Changes

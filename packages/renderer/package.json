@@ -28,6 +28,7 @@
     "@react-pdf/layout": "^4.0.0",
     "@react-pdf/pdfkit": "^4.0.0",
     "@react-pdf/primitives": "^4.0.0",
+    "@react-pdf/reconciler": "^1.0.0",
     "@react-pdf/render": "^4.0.0",
     "@react-pdf/types": "^2.7.0",
     "events": "^3.3.0",
@@ -60,7 +61,6 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
-    "react-reconciler": "0.23.0",
     "size-limit": "^11.0.1",
     "util": "^0.12.4"
   }

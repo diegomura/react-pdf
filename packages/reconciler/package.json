@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/reconciler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Define uninitialized elements",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -19,7 +19,9 @@
     "lint": "eslint src",
     "test": "vitest"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "devDependencies": {
     "ast-types": "^0.14.2",
     "react-reconciler": "0.26.0",

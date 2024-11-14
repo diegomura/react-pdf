@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/vite-example",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "license": "MIT",
   "private": true,
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -10,7 +10,7 @@
     "dev": "vite ./src --open"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^4.0.1"
+    "@react-pdf/renderer": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

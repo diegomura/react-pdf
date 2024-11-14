@@ -10,9 +10,9 @@ type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' };
 
 type SourceURLObject = {
   uri: string;
-  method: HTTPMethod;
-  body: any;
-  headers: any;
+  method?: HTTPMethod;
+  body?: any;
+  headers?: any;
   credentials?: 'omit' | 'same-origin' | 'include';
 };
 

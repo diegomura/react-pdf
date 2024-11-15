@@ -28,6 +28,13 @@ const KEEP_OPTIONS = {
   createTextInstance: true,
   createInstance: true,
   appendInitialChild: true,
+  noTimeout: true,
+  getCurrentUpdatePriority: true,
+  setCurrentUpdatePriority: true,
+  resolveUpdatePriority: true,
+  shouldAttemptEagerTransition: true,
+  requestPostPaintCallback: true,
+  maySuspendCommit: true,
 };
 
 const STATIC_OPTIONS = {
@@ -39,7 +46,9 @@ const STATIC_OPTIONS = {
 
 const METHOD_KEYS = {
   updateContainer: true,
+  updateContainerSync: true,
   createContainer: true,
+  flushSyncWork: true,
 };
 
 function clearReconcilerOptions(path) {
@@ -48,7 +57,7 @@ function clearReconcilerOptions(path) {
   const optionName = node.property?.name;
 
   // If we are not visiting config object, skip.
-  if (objectName !== '$$$hostConfig') return;
+  if (objectName !== '$$$hostConfig' && objectName !== '$$$config') return;
 
   // If it's an option we want to keep, skip.
   if (KEEP_OPTIONS[optionName]) return;

@@ -7,7 +7,8 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "scripts": {
-    "dev": "vite ./src --open"
+    "dev": "vite ./src --open",
+    "build:site": "vite build ./src"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.0.2"

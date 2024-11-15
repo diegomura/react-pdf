@@ -1,11 +1,11 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import Reconciler from 'react-reconciler-31/cjs/react-reconciler.production.js';
+import Reconciler from 'react-reconciler-31';
 import {
   ConcurrentRoot,
   DefaultEventPriority,
-} from 'react-reconciler-31/cjs/react-reconciler-constants.production.js';
+} from 'react-reconciler-31/constants';
 
 import propsEqual from './propsEqual';
 
@@ -84,7 +84,6 @@ const createRenderer = ({
   };
 
   return {
-    ...reconciler,
     createContainer,
     updateContainer,
   };

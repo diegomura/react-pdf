@@ -28,8 +28,8 @@ export default [
     plugins: [
       resolve({ resolveOnly: ['react-reconciler-31'] }),
       commonjs({ esmExternals: (id) => id === 'scheduler' }),
-      // trimReconciler(),
-      // terser({ compress: { dead_code: true } }),
+      trimReconciler(),
+      terser({ compress: { dead_code: true } }),
     ],
   },
 ];

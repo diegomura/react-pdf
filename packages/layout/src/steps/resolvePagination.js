@@ -156,44 +156,51 @@ const shouldResolveDynamicNodes = (node) => {
   return isDynamic(node) || children.some(shouldResolveDynamicNodes);
 };
 
-const resolveDynamicNodes = (props, node) => {
+const resolveDynamicNodes = async (props, node) => {
   const isNodeDynamic = isDynamic(node);
 
   // Call render prop on dynamic nodes and append result to children
-  const resolveChildren = (children = []) => {
+  const resolveChildren = async (children = []) => {
     if (isNodeDynamic) {
-      const res = node.props.render(props);
-      return createInstances(res)
-        .filter(Boolean)
-        .map((n) => resolveDynamicNodes(props, n));
+      const dynamicRenderResult = node.props.render(props);
+      const dynamicInstances = await createInstances(dynamicRenderResult);
+      const resolvedDynamicNodes = await Promise.all(
+        dynamicInstances
+          .filter(Boolean)
+          .map(n => resolveDynamicNodes(props, n)),
+      );
+      return resolvedDynamicNodes;
     }
 
-    return children.map((c) => resolveDynamicNodes(props, c));
+    const resolvedChildren = await Promise.all(
+      children.map(c => resolveDynamicNodes(props, c)),
+    );
+    return resolvedChildren;
   };
 
   // We reset dynamic text box so it can be computed again later on
   const resetHeight = isNodeDynamic && isText(node);
   const box = resetHeight ? { ...node.box, height: 0 } : node.box;
 
-  const children = resolveChildren(node.children);
+  const children = await resolveChildren(node.children);
   const lines = isNodeDynamic ? null : node.lines;
 
   return Object.assign({}, node, { box, lines, children });
 };
 
-const resolveDynamicPage = (props, page, fontStore, yoga) => {
+const resolveDynamicPage = async (props, page, fontStore) => {
   if (shouldResolveDynamicNodes(page)) {
-    const resolvedPage = resolveDynamicNodes(props, page);
-    return relayoutPage(resolvedPage, fontStore, yoga);
+    const resolvedPage = await resolveDynamicNodes(props, page);
+    return relayoutPage(resolvedPage, fontStore);
   }
 
   return page;
 };
 
-const splitPage = (page, pageNumber, fontStore, yoga) => {
+const splitPage = async (page, pageNumber, fontStore) => {
   const wrapArea = getWrapArea(page);
   const contentArea = getContentArea(page);
-  const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore, yoga);
+  const dynamicPage = await resolveDynamicPage({ pageNumber }, page, fontStore);
   const height = page.style.height;
 
   const [currentChilds, nextChilds] = splitNodes(
@@ -226,7 +233,7 @@ const splitPage = (page, pageNumber, fontStore, yoga) => {
   return [currentPage, nextPage];
 };
 
-const resolvePageIndices = (fontStore, yoga, page, pageNumber, pages) => {
+const resolvePageIndices = async (fontStore, page, pageNumber, pages) => {
   const totalPages = pages.length;
 
   const props = {
@@ -251,22 +258,22 @@ const dissocSubPageData = (page) => {
   return omit(['subPageNumber', 'subPageTotalPages'], page);
 };
 
-const paginate = (page, pageNumber, fontStore, yoga) => {
+const paginate = async (page, pageNumber, fontStore) => {
   if (!page) return [];
 
   if (page.props?.wrap === false) return [page];
 
-  let splittedPage = splitPage(page, pageNumber, fontStore, yoga);
+  let splittedPage = await splitPage(page, pageNumber, fontStore);
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(
+    // eslint-disable-next-line no-await-in-loop
+    splittedPage = await splitPage(
       nextPage,
       pageNumber + pages.length,
       fontStore,
-      yoga,
     );
 
     pages.push(splittedPage[0]);
@@ -284,24 +291,27 @@ const paginate = (page, pageNumber, fontStore, yoga) => {
  * @param {Object} fontStore font store
  * @returns {Object} layout node
  */
-const resolvePagination = (doc, fontStore) => {
+const resolvePagination = async (doc, fontStore) => {
   let pages = [];
   let pageNumber = 1;
 
-  for (let i = 0; i < doc.children.length; i += 1) {
-    const page = doc.children[i];
-    let subpages = paginate(page, pageNumber, fontStore, doc.yoga);
-
+  // eslint-disable-next-line no-restricted-syntax
+  for (const page of doc.children) {
+    // eslint-disable-next-line no-await-in-loop
+    let subpages = await paginate(page, pageNumber, fontStore);
     subpages = assocSubPageData(subpages);
     pageNumber += subpages.length;
     pages = pages.concat(subpages);
   }
 
-  pages = pages.map((...args) =>
-    dissocSubPageData(resolvePageIndices(fontStore, doc.yoga, ...args)),
-  );
-
-  return assingChildren(pages, doc);
+  const nextPages = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [index, page] of pages.entries()) {
+    // eslint-disable-next-line no-await-in-loop
+    const indices = await resolvePageIndices(fontStore, page, index, pages);
+    nextPages.push(dissocSubPageData(indices));
+  }
+  return assingChildren(nextPages, doc);
 };
 
 export default resolvePagination;

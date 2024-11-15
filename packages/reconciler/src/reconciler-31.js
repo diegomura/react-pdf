@@ -1,0 +1,93 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-extraneous-dependencies */
+
+import Reconciler from 'react-reconciler-31/cjs/react-reconciler.production.js';
+import {
+  ConcurrentRoot,
+  DefaultEventPriority,
+} from 'react-reconciler-31/cjs/react-reconciler-constants.production.js';
+
+import propsEqual from './propsEqual';
+
+const emptyObject = {};
+
+const logRecoverableError = console.error;
+
+const createRenderer = ({
+  appendChild,
+  appendChildToContainer,
+  commitTextUpdate,
+  commitUpdate,
+  createInstance,
+  createTextInstance,
+  insertBefore,
+  removeChild,
+  removeChildFromContainer,
+  resetAfterCommit,
+}) => {
+  const _commitUpdate = (instance, type, oldProps, newProps) => {
+    if (propsEqual(oldProps, newProps)) return;
+    commitUpdate(instance, null, type, oldProps, newProps);
+  };
+
+  const reconciler = Reconciler({
+    supportsMutation: true,
+    isPrimaryRenderer: false,
+    warnsIfNotActing: false,
+    appendInitialChild: appendChild,
+    createInstance,
+    createTextInstance,
+    finalizeInitialChildren: () => false,
+    getPublicInstance: (instance) => instance,
+    prepareForCommit() {},
+    clearContainer() {},
+    resetAfterCommit,
+    resetTextContent() {},
+    getRootHostContext: () => emptyObject,
+    getChildHostContext: () => emptyObject,
+    shouldSetTextContent: () => false,
+    noTimeout: -1,
+    useSyncScheduling: true,
+    appendChild,
+    appendChildToContainer,
+    insertBefore,
+    removeChild,
+    removeChildFromContainer,
+    commitTextUpdate,
+    commitUpdate: _commitUpdate,
+    getCurrentUpdatePriority: () => DefaultEventPriority,
+    setCurrentUpdatePriority: () => {},
+    resolveUpdatePriority: () => DefaultEventPriority,
+    shouldAttemptEagerTransition: () => false,
+    requestPostPaintCallback: () => {},
+    maySuspendCommit: () => false,
+  });
+
+  const createContainer = (container) => {
+    return reconciler.createContainer(
+      container,
+      ConcurrentRoot, // tag
+      null, // hydration callbacks
+      false, // isStrictMode
+      null, // concurrentUpdatesByDefaultOverride
+      '', // identifierPrefix
+      logRecoverableError, // onUncaughtError
+      logRecoverableError, // onCaughtError
+      logRecoverableError, // onRecoverableError
+      null, // transitionCallbacks
+    );
+  };
+
+  const updateContainer = (doc, mountNode, parentComponent, callback) => {
+    reconciler.updateContainerSync(doc, mountNode, parentComponent, callback);
+    reconciler.flushSyncWork();
+  };
+
+  return {
+    ...reconciler,
+    createContainer,
+    updateContainer,
+  };
+};
+
+export default createRenderer;

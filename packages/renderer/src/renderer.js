@@ -13,11 +13,9 @@ const createInstance = (type, { style, children, ...props }) => ({
 
 const createTextInstance = (text) => ({ type: 'TEXT_INSTANCE', value: text });
 
-const appendChild = (parentInstance, child) => {
+const appendChild = (parent, child) => {
   const isParentText =
-    parentInstance.type === 'TEXT' ||
-    parentInstance.type === 'LINK' ||
-    parentInstance.type === 'TSPAN';
+    parent.type === 'TEXT' || parent.type === 'LINK' || parent.type === 'TSPAN';
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 
@@ -30,7 +28,7 @@ const appendChild = (parentInstance, child) => {
     return;
   }
 
-  parentInstance.children.push(child);
+  parent.children.push(child);
 };
 
 const appendChildToContainer = (parentInstance, child) => {

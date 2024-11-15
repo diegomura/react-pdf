@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPDF, { Document, Page, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, StyleSheet } from '@react-pdf/renderer';
 
 import Svg0 from './svg';
 import Svg1 from './Svg1';
@@ -7,9 +7,6 @@ import Svg2 from './Svg2';
 import Svg4 from './Svg4';
 import Star from './Star';
 import Heart from './Heart';
-
-console.log(`React version: ${React.version}`);
-console.log(`React-pdf version: ${ReactPDF.version}`);
 
 const styles = StyleSheet.create({
   page: {

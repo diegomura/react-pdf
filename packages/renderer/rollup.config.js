@@ -31,9 +31,7 @@ const getPlugins = ({ browser, declarationDests, minify = false }) => [
   json(),
   ...(browser ? [ignore(['fs', 'path', 'url'])] : []),
   babel(babelConfig()),
-  commonjs({
-    esmExternals: ['scheduler'],
-  }),
+  commonjs(),
   nodeResolve({ browser, preferBuiltins: !browser }),
   replace({
     preventAssignment: true,

@@ -223,8 +223,8 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/advanced#debugging
      */
     debug?: boolean;
-    href?: string;
-    src?: string;
+    href?: number | string;
+    src?: number | string;
   }
 
   /**

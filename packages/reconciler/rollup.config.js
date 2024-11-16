@@ -10,7 +10,7 @@ export default [
   {
     input: 'src/index.js',
     output: { format: 'es', file: 'lib/index.js' },
-    external: ['./reconciler-26', './reconciler-31'],
+    external: ['./reconciler-26.js', './reconciler-31.js'],
   },
   {
     input: 'src/reconciler-26.js',

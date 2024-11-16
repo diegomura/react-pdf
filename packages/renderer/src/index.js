@@ -5,6 +5,7 @@ import layoutDocument from '@react-pdf/layout';
 
 import createRenderer from './renderer';
 import packageJson from '../package.json';
+import { omitNils } from './utils';
 
 const { version } = packageJson;
 
@@ -35,7 +36,20 @@ const pdf = (initialValue) => {
 
   const render = async (compress = true) => {
     const props = container.document.props || {};
-    const { pdfVersion, language, pageLayout, pageMode } = props;
+    const {
+      pdfVersion,
+      language,
+      pageLayout,
+      pageMode,
+      title,
+      author,
+      subject,
+      keyboards,
+      creator = 'react-pdf',
+      producer = 'react-pdf',
+      creationDate = new Date(),
+      modificationDate,
+    } = props;
 
     const ctx = new PDFDocument({
       compress,
@@ -45,6 +59,16 @@ const pdf = (initialValue) => {
       autoFirstPage: false,
       pageLayout,
       pageMode,
+      info: omitNils({
+        Title: title,
+        Author: author,
+        Subject: subject,
+        Keywords: keyboards,
+        Creator: creator,
+        Producer: producer,
+        CreationDate: creationDate,
+        ModificationDate: modificationDate,
+      }),
     });
 
     const layout = await layoutDocument(container.document, fontStore);

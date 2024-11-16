@@ -6,5 +6,3 @@ const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();
 
 global.BROWSER = false;
-
-vi.mock('cross-fetch', () => ({ default: global.fetch }));

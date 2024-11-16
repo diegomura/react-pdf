@@ -1,5 +1,16 @@
 # @react-pdf/renderer
 
+## 4.1.0
+
+### Minor Changes
+
+- [`52b2f253`](https://github.com/diegomura/react-pdf/commit/52b2f25349bee0c09399bc2e7e5e89db5e1433fd) Thanks [@diegomura](https://github.com/diegomura)! - feat: add React 19 support
+
+### Patch Changes
+
+- Updated dependencies [[`52b2f253`](https://github.com/diegomura/react-pdf/commit/52b2f25349bee0c09399bc2e7e5e89db5e1433fd)]:
+  - @react-pdf/reconciler@1.1.0
+
 ## 4.0.2
 
 ### Patch Changes

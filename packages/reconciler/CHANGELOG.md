@@ -1,5 +1,11 @@
 # @react-pdf/reconciler
 
+## 1.1.1
+
+### Patch Changes
+
+- [#2943](https://github.com/diegomura/react-pdf/pull/2943) [`82192b3a`](https://github.com/diegomura/react-pdf/commit/82192b3a53cf5db62230287e7456dc5bdeee6244) Thanks [@diegomura](https://github.com/diegomura)! - fix: reconciler build
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
 import isUrl from 'is-url';
-import fetch from 'cross-fetch';
 import * as fontkit from 'fontkit';
 
 const FONT_WEIGHTS = {

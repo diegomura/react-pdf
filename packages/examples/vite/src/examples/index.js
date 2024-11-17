@@ -5,6 +5,7 @@ import fontFamilyFallback from './font-family-fallback';
 import fontWeight from './font-weight';
 import fractals from './fractals';
 import goTo from './go-to';
+import imageStressTest from './image-stress-test';
 import JpgOrientation from './jpg-orientation';
 import knobs from './knobs';
 import link from './link';
@@ -38,6 +39,7 @@ const EXAMPLES = [
   svg,
   svgTransform,
   transformOrigin,
+  imageStressTest,
 ];
 
 export default EXAMPLES;

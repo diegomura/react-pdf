@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import _transformStyles from '../src/transform';
 
-const CONTAINER = { width: 200, height: 400 };
+const CONTAINER = { width: 200, height: 400, remBase: 10 };
 
 const transformStyles = _transformStyles(CONTAINER);
 

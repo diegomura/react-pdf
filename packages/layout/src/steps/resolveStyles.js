@@ -60,7 +60,8 @@ export const resolvePageStyles = (page) => {
   const width = page.box?.width || page.style.width;
   const height = page.box?.height || page.style.height;
   const orientation = page.props?.orientation || 'portrait';
-  const container = { width, height, orientation, dpi };
+  const remBase = page.style?.fontSize || 18;
+  const container = { width, height, orientation, dpi, remBase };
 
   return resolveNodeStyles(container)(page);
 };

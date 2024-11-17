@@ -1,5 +1,11 @@
 # @react-pdf/stylesheet
 
+## 5.0.1
+
+### Patch Changes
+
+- [#2950](https://github.com/diegomura/react-pdf/pull/2950) [`77e480cd`](https://github.com/diegomura/react-pdf/commit/77e480cdd161270ac07453525dfaf993e2d3f17f) Thanks [@diegomura](https://github.com/diegomura)! - feat: accept commas between transformations
+
 ## 5.0.0
 
 ### Major Changes

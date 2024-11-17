@@ -1,5 +1,13 @@
 # @react-pdf/render
 
+## 4.0.1
+
+### Patch Changes
+
+- [#2948](https://github.com/diegomura/react-pdf/pull/2948) [`03322a75`](https://github.com/diegomura/react-pdf/commit/03322a756f44863543673ff597582444c180989b) Thanks [@diegomura](https://github.com/diegomura)! - fix: stroke dash array computation
+
+- [#2945](https://github.com/diegomura/react-pdf/pull/2945) [`b5c0fe64`](https://github.com/diegomura/react-pdf/commit/b5c0fe646108a960a528290b175511842020d600) Thanks [@diegomura](https://github.com/diegomura)! - fix: skew transformation
+
 ## 4.0.0
 
 ### Major Changes

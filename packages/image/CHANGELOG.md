@@ -1,5 +1,11 @@
 # @react-pdf/image
 
+## 3.0.1
+
+### Patch Changes
+
+- [#2947](https://github.com/diegomura/react-pdf/pull/2947) [`ed562b9b`](https://github.com/diegomura/react-pdf/commit/ed562b9b7f14bc76a1cd83aaaf1dab966bd7540b) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove cross-fetch
+
 ## 3.0.0
 
 ### Major Changes

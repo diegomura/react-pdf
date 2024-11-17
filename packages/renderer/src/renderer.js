@@ -15,7 +15,11 @@ const createTextInstance = (text) => ({ type: 'TEXT_INSTANCE', value: text });
 
 const appendChild = (parent, child) => {
   const isParentText =
-    parent.type === 'TEXT' || parent.type === 'LINK' || parent.type === 'TSPAN';
+    parent.type === 'TEXT' ||
+    parent.type === 'LINK' ||
+    parent.type === 'TSPAN' ||
+    parent.type === 'NOTE';
+
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 

@@ -581,4 +581,16 @@ describe('stylesheet resolve', () => {
 
     expect(styles).toEqual({ fontSize: 10 });
   });
+
+  test('should resolve rem units correctly', () => {
+    const styles = resolve({ remBase: 10 }, { fontSize: '2rem' });
+
+    expect(styles).toEqual({ fontSize: 20 });
+  });
+
+  test('should resolve rem units when base not specificed', () => {
+    const styles = resolve({}, { fontSize: '2rem' });
+
+    expect(styles).toEqual({ fontSize: 36 });
+  });
 });

@@ -1,5 +1,12 @@
 # next-15
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@4.1.3
+
 ## 0.1.5
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 const BORDER_SHORTHAND_REGEX =
-  /(-?\d+(\.\d+)?(px|in|mm|cm|pt|vw|vh|px)?)\s(\S+)\s(.+)/;
+  /(-?\d+(\.\d+)?(in|mm|cm|pt|vw|vh|px|rem)?)\s(\S+)\s(.+)/;
 
 const matchBorderShorthand = (value) =>
   value.match(BORDER_SHORTHAND_REGEX) || [];

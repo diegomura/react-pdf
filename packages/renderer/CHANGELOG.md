@@ -1,5 +1,12 @@
 # @react-pdf/renderer
 
+## 4.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`f6e9e113`](https://github.com/diegomura/react-pdf/commit/f6e9e1136f47fe05f86158c76561729b2cc425c4)]:
+  - @react-pdf/reconciler@1.1.2
+
 ## 4.1.3
 
 ### Patch Changes

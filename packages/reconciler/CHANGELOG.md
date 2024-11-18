@@ -1,5 +1,11 @@
 # @react-pdf/reconciler
 
+## 1.1.2
+
+### Patch Changes
+
+- [#2958](https://github.com/diegomura/react-pdf/pull/2958) [`f6e9e113`](https://github.com/diegomura/react-pdf/commit/f6e9e1136f47fe05f86158c76561729b2cc425c4) Thanks [@diegomura](https://github.com/diegomura)! - fix: add scheduler dependency
+
 ## 1.1.1
 
 ### Patch Changes

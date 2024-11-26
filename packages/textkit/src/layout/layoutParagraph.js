@@ -82,7 +82,7 @@ const layoutParagraph = (engines, options) => {
     const rects = generateLineRects(container, height);
 
     const availableWidths = rects.map((r) => r.width);
-    availableWidths[0] -= indent;
+    availableWidths.unshift(availableWidths[0] - indent);
 
     const lines = engines.linebreaker(options)(paragraph, availableWidths);
 

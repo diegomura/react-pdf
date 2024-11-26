@@ -10,13 +10,13 @@ export default [
   {
     input: 'src/index.js',
     output: { format: 'es', file: 'lib/index.js' },
-    external: ['./reconciler-26.js', './reconciler-31.js'],
+    external: ['./reconciler-23.js', './reconciler-31.js'],
   },
   {
-    input: 'src/reconciler-26.js',
-    output: { format: 'es', file: 'lib/reconciler-26.js' },
+    input: 'src/reconciler-23.js',
+    output: { format: 'es', file: 'lib/reconciler-23.js' },
     plugins: [
-      resolve({ resolveOnly: ['react-reconciler-26'] }),
+      resolve({ resolveOnly: ['react-reconciler-23'] }),
       commonjs({ esmExternals: (id) => id === 'scheduler' }),
       trimReconciler(),
       terser({ compress: { dead_code: true } }),

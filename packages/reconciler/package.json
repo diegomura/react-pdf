@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "ast-types": "^0.14.2",
-    "react-reconciler-26": "npm:react-reconciler@0.26.0",
+    "react-reconciler-23": "npm:react-reconciler@0.23.0",
     "react-reconciler-31": "npm:react-reconciler@0.31.0-rc-603e6108-20241029",
     "recast": "^0.23.9"
   }

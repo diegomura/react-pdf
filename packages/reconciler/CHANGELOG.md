@@ -1,5 +1,13 @@
 # @react-pdf/reconciler
 
+## 1.1.3
+
+### Patch Changes
+
+- [#2983](https://github.com/diegomura/react-pdf/pull/2983) [`1916e840`](https://github.com/diegomura/react-pdf/commit/1916e8405ce2b566110f2a1d66cfd8b4c4fa34d4) Thanks [@diegomura](https://github.com/diegomura)! - fix: conditional rendering
+
+- [#2980](https://github.com/diegomura/react-pdf/pull/2980) [`165c70fb`](https://github.com/diegomura/react-pdf/commit/165c70fbd31a7a4520af83b218a03f2f78f486e9) Thanks [@diegomura](https://github.com/diegomura)! - fix(reconciler): missing dependencies
+
 ## 1.1.2
 
 ### Patch Changes

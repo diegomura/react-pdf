@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import propsEqual from '../src/utils/propsEqual';
+import propsEqual from '../src/propsEqual';
 
 describe('propsEqual', () => {
   test('should be true for two empty objects', () => {

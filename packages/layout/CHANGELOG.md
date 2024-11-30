@@ -1,5 +1,45 @@
 # @react-pdf/layout
 
+## 4.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`00bfdc1e`](https://github.com/diegomura/react-pdf/commit/00bfdc1e5a6c673d2de7b3ab09d5020e932562fb)]:
+  - @react-pdf/textkit@5.0.1
+
+## 4.1.2
+
+### Patch Changes
+
+- [#2955](https://github.com/diegomura/react-pdf/pull/2955) [`425f1183`](https://github.com/diegomura/react-pdf/commit/425f1183bba9a83fd5712a1371abb6cea2ed8fca) Thanks [@diegomura](https://github.com/diegomura)! - feat: support rem units
+
+- [#2952](https://github.com/diegomura/react-pdf/pull/2952) [`2c3c887e`](https://github.com/diegomura/react-pdf/commit/2c3c887ea2d3aed2863f49bff375d08feaf975aa) Thanks [@diegomura](https://github.com/diegomura)! - feat: support multiple line-height units
+
+- Updated dependencies [[`425f1183`](https://github.com/diegomura/react-pdf/commit/425f1183bba9a83fd5712a1371abb6cea2ed8fca), [`2c3c887e`](https://github.com/diegomura/react-pdf/commit/2c3c887ea2d3aed2863f49bff375d08feaf975aa)]:
+  - @react-pdf/stylesheet@5.1.0
+
+## 4.1.1
+
+### Patch Changes
+
+- [#2947](https://github.com/diegomura/react-pdf/pull/2947) [`ed562b9b`](https://github.com/diegomura/react-pdf/commit/ed562b9b7f14bc76a1cd83aaaf1dab966bd7540b) Thanks [@diegomura](https://github.com/diegomura)! - feat: remove cross-fetch
+
+- Updated dependencies [[`ed562b9b`](https://github.com/diegomura/react-pdf/commit/ed562b9b7f14bc76a1cd83aaaf1dab966bd7540b), [`77e480cd`](https://github.com/diegomura/react-pdf/commit/77e480cdd161270ac07453525dfaf993e2d3f17f)]:
+  - @react-pdf/image@3.0.1
+  - @react-pdf/stylesheet@5.0.1
+
+## 4.1.0
+
+### Minor Changes
+
+- [#2736](https://github.com/diegomura/react-pdf/pull/2736) [`b242e59a`](https://github.com/diegomura/react-pdf/commit/b242e59a14a856e280c9fcbad81f707248819721) Thanks [@siketyan](https://github.com/siketyan)! - Use monochrome emojis contained in the font family if no emoji source available
+
+## 4.0.1
+
+### Patch Changes
+
+- [#2878](https://github.com/diegomura/react-pdf/pull/2878) [`58f9a047`](https://github.com/diegomura/react-pdf/commit/58f9a04740ed1331ef1dfa9999fb43c0ee10fa5b) Thanks [@jmezzacappa](https://github.com/jmezzacappa)! - Prevent Yoga init from running more than once
+
 ## 4.0.0
 
 ### Major Changes

@@ -1,19 +1,25 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 
-import ReactFiberReconciler from 'react-reconciler';
-import * as scheduler from 'scheduler';
+import Reconciler from '@react-pdf/reconciler';
 
-import propsEqual from './utils/propsEqual';
+const createInstance = (type, { style, children, ...props }) => ({
+  type,
+  box: {},
+  style: style || {},
+  props: props || {},
+  children: [],
+});
 
-const emptyObject = {};
+const createTextInstance = (text) => ({ type: 'TEXT_INSTANCE', value: text });
 
-const appendChild = (parentInstance, child) => {
+const appendChild = (parent, child) => {
   const isParentText =
-    parentInstance.type === 'TEXT' ||
-    parentInstance.type === 'LINK' ||
-    parentInstance.type === 'TSPAN';
+    parent.type === 'TEXT' ||
+    parent.type === 'LINK' ||
+    parent.type === 'TSPAN' ||
+    parent.type === 'NOTE';
+
   const isChildTextInstance = child.type === 'TEXT_INSTANCE';
   const isOrphanTextInstance = isChildTextInstance && !isParentText;
 
@@ -26,123 +32,63 @@ const appendChild = (parentInstance, child) => {
     return;
   }
 
-  parentInstance.children.push(child);
+  parent.children.push(child);
 };
 
-const createRenderer = ({ onChange = () => {} }) => {
-  return ReactFiberReconciler({
-    schedulePassiveEffects: scheduler.unstable_scheduleCallback,
-    cancelPassiveEffects: scheduler.unstable_cancelCallback,
+const appendChildToContainer = (parentInstance, child) => {
+  if (parentInstance.type === 'ROOT') {
+    parentInstance.document = child;
+  } else {
+    appendChild(parentInstance, child);
+  }
+};
 
-    supportsMutation: true,
+const insertBefore = (parentInstance, child, beforeChild) => {
+  const index = parentInstance.children?.indexOf(beforeChild);
 
-    isPrimaryRenderer: false,
+  if (index === undefined) return;
 
-    warnsIfNotActing: false,
+  if (index !== -1 && child) parentInstance.children.splice(index, 0, child);
+};
 
-    appendInitialChild: appendChild,
+const removeChild = (parentInstance, child) => {
+  const index = parentInstance.children?.indexOf(child);
 
-    createInstance(type, { style, children, ...props }) {
-      return {
-        type,
-        box: {},
-        style: style || {},
-        props: props || {},
-        children: [],
-      };
-    },
+  if (index === undefined) return;
 
-    createTextInstance(text, rootContainerInstance) {
-      return { type: 'TEXT_INSTANCE', value: text };
-    },
+  if (index !== -1) parentInstance.children.splice(index, 1);
+};
 
-    finalizeInitialChildren(element, type, props) {
-      return false;
-    },
+const removeChildFromContainer = (parentInstance, child) => {
+  const index = parentInstance.children?.indexOf(child);
 
-    getPublicInstance(instance) {
-      return instance;
-    },
+  if (index === undefined) return;
 
-    prepareForCommit() {
-      // Noop
-    },
+  if (index !== -1) parentInstance.children.splice(index, 1);
+};
 
-    clearContainer() {
-      // Noop
-    },
+const commitTextUpdate = (textInstance, oldText, newText) => {
+  textInstance.value = newText;
+};
 
-    prepareUpdate(element, type, oldProps, newProps) {
-      return !propsEqual(oldProps, newProps);
-    },
+const commitUpdate = (instance, updatePayload, type, oldProps, newProps) => {
+  const { style, ...props } = newProps;
+  instance.props = props;
+  instance.style = style;
+};
 
-    resetAfterCommit: onChange,
-
-    resetTextContent(element) {
-      // Noop
-    },
-
-    getRootHostContext() {
-      return emptyObject;
-    },
-
-    getChildHostContext() {
-      return emptyObject;
-    },
-
-    shouldSetTextContent(type, props) {
-      return false;
-    },
-
-    now: Date.now,
-
-    useSyncScheduling: true,
-
+const createRenderer = ({ onChange = () => {} }) =>
+  Reconciler({
     appendChild,
-
-    appendChildToContainer(parentInstance, child) {
-      if (parentInstance.type === 'ROOT') {
-        parentInstance.document = child;
-      } else {
-        appendChild(parentInstance, child);
-      }
-    },
-
-    insertBefore(parentInstance, child, beforeChild) {
-      const index = parentInstance.children?.indexOf(beforeChild);
-
-      if (index === undefined) return;
-
-      if (index !== -1 && child)
-        parentInstance.children.splice(index, 0, child);
-    },
-
-    removeChild(parentInstance, child) {
-      const index = parentInstance.children?.indexOf(child);
-
-      if (index === undefined) return;
-
-      if (index !== -1) parentInstance.children.splice(index, 1);
-    },
-
-    removeChildFromContainer(parentInstance, child) {
-      const index = parentInstance.children?.indexOf(child);
-
-      if (index === undefined) return;
-
-      if (index !== -1) parentInstance.children.splice(index, 1);
-    },
-
-    commitTextUpdate(textInstance, oldText, newText) {
-      textInstance.value = newText;
-    },
-
-    commitUpdate(instance, updatePayload, type, oldProps, newProps) {
-      const { style, ...props } = newProps;
-      instance.props = props;
-      instance.style = style;
-    },
+    appendChildToContainer,
+    commitTextUpdate,
+    commitUpdate,
+    createInstance,
+    createTextInstance,
+    insertBefore,
+    removeChild,
+    removeChildFromContainer,
+    resetAfterCommit: onChange,
   });
-};
 
 export default createRenderer;

@@ -5,7 +5,7 @@
  * @returns {Object} parsed value
  */
 const parseValue = (value) => {
-  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px)?$/g.exec(value);
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px|rem)?$/g.exec(value);
 
   return match
     ? { value: parseFloat(match[1]), unit: match[2] || 'pt' }
@@ -27,6 +27,8 @@ const transformUnit = (container, value) => {
   const cmFactor = (1 / 2.54) * dpi;
 
   switch (scalar.unit) {
+    case 'rem':
+      return scalar.value * (container.remBase || 18);
     case 'in':
       return scalar.value * dpi;
     case 'mm':

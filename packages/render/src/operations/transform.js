@@ -21,8 +21,24 @@ const applySingleTransformation = (ctx, transform, origin) => {
     }
 
     case 'skew': {
-      const [xAngle, yAngle] = value;
-      ctx.skew(xAngle, yAngle, { origin });
+      const [xAngle = 0, yAngle = 0] = value;
+      const radx = (xAngle * Math.PI) / 180;
+      const rady = (yAngle * Math.PI) / 180;
+      const tanx = Math.tan(radx);
+      const tany = Math.tan(rady);
+
+      let x = 0;
+      let y = 0;
+
+      if (origin != null) {
+        [x, y] = Array.from(origin);
+        const x1 = x + tanx * y;
+        const y1 = y + tany * x;
+        x -= x1;
+        y -= y1;
+      }
+
+      ctx.transform(1, tany, tanx, 1, x, y);
       break;
     }
 

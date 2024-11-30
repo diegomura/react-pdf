@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/runtime": "^7.20.13",
     "@react-pdf/png-js": "^3.0.0",
-    "jay-peg": "^1.1.0"
+    "jay-peg": "^1.1.1"
   },
   "files": [
     "lib"

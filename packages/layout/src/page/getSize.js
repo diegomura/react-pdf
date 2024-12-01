@@ -1,6 +1,6 @@
 import isLandscape from './isLandscape';
 
-// page sizes for 72dpi. 72dpi is used internally by pdfkit
+// Page sizes for 72dpi. 72dpi is used internally by pdfkit.
 const PAGE_SIZES = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],

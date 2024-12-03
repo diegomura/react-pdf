@@ -32,7 +32,7 @@ const swapBytes = function (buff) {
 };
 
 class PDFObject {
-  static convert(object) {
+  static convert(object, encryptFn = null) {
     // String literals are converted to the PDF name type
     if (typeof object === 'string') {
       return `/${object}`;
@@ -51,10 +51,18 @@ class PDFObject {
       }
 
       // If so, encode it as big endian UTF-16
+      let stringBuffer;
       if (isUnicode) {
-        string = swapBytes(Buffer.from(`\ufeff${string}`, 'utf16le')).toString(
-          'binary'
-        );
+        stringBuffer = swapBytes(Buffer.from(`\ufeff${string}`, 'utf16le'));
+      } else {
+        stringBuffer = Buffer.from(string.valueOf(), 'ascii');
+      }
+
+      // Encrypt the string when necessary
+      if (encryptFn) {
+        string = encryptFn(stringBuffer).toString('binary');
+      } else {
+        string = stringBuffer.toString('binary');
       }
 
       // Escape characters as required by the spec
@@ -62,9 +70,9 @@ class PDFObject {
 
       return `(${string})`;
 
-      // Buffers are converted to PDF hex strings
     }
 
+    // Buffers are converted to PDF hex strings
     if (Buffer.isBuffer(object)) {
       return `<${object.toString('hex')}>`;
     }
@@ -74,20 +82,29 @@ class PDFObject {
     }
 
     if (object instanceof Date) {
-      return (
-        `(D:${pad(object.getUTCFullYear(), 4)}` +
+      let string =
+        `D:${pad(object.getUTCFullYear(), 4)}` +
         pad(object.getUTCMonth() + 1, 2) +
         pad(object.getUTCDate(), 2) +
         pad(object.getUTCHours(), 2) +
         pad(object.getUTCMinutes(), 2) +
         pad(object.getUTCSeconds(), 2) +
-        'Z)'
-      );
+        'Z';
+
+      // Encrypt the string when necessary
+      if (encryptFn) {
+        string = encryptFn(Buffer.from(string, 'ascii')).toString('binary');
+
+        // Escape characters as required by the spec
+        string = string.replace(escapableRe, c => escapable[c]);
+      }
+
+      return `(${string})`;
     }
 
     if (Array.isArray(object)) {
       const items = Array.from(object)
-        .map((e) => PDFObject.convert(e))
+        .map(e => PDFObject.convert(e, encryptFn))
         .join(' ');
       return `[${items}]`;
     }
@@ -96,7 +113,7 @@ class PDFObject {
       const out = ['<<'];
       for (let key in object) {
         const val = object[key];
-        out.push(`/${key} ${PDFObject.convert(val)}`);
+        out.push(`/${key} ${PDFObject.convert(val, encryptFn)}`);
       }
 
       out.push('>>');

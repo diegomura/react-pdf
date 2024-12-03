@@ -43,6 +43,13 @@ const inheritProps = (node) => {
   const children = node.children.map((child) => {
     const props = Object.assign({}, inheritedProps, child.props || {});
     const newChild = Object.assign({}, child, { props });
+
+    // Do not inherit "x" for <tspan> elements from <text> parent
+    // If no explicit x is provided, the x-offset will be calculated in layoutText.js
+    if (child.type === 'TSPAN') {
+      newChild.props.x = child.props.x;
+    }
+
     return inheritProps(newChild);
   });
 

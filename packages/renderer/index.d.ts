@@ -242,7 +242,7 @@ declare namespace ReactPDF {
   > {}
 
   // see http://pdfkit.org/docs/forms.html#text_field_formatting
-  interface TextFieldFormatting {
+  interface TextInputFormatting {
     type:
       | 'date'
       | 'time'
@@ -262,17 +262,17 @@ declare namespace ReactPDF {
 
   // see http://pdfkit.org/docs/forms.html#text_field_formatting
   interface TextInputProps extends FormCommonProps {
-    align?: string;
+    align?: 'left' | 'center' | 'right';
     multiline?: boolean;
     password?: boolean;
     noSpell?: boolean;
-    format?: TextFieldFormatting;
+    format?: TextInputFormatting;
   }
 
   class TextInput extends React.Component<TextInputProps> {}
 
   interface CheckboxProps extends FormCommonProps {
-    backGroundColor?: string;
+    backgroundColor?: string;
     borderColor?: string;
     checked?: boolean;
     onState?: string;
@@ -282,13 +282,27 @@ declare namespace ReactPDF {
 
   class Checkbox extends React.Component<CheckboxProps> {}
 
-  interface PickerAndListProps extends FormCommonProps {
+  interface PickerAndListPropsBase extends FormCommonProps {
     sort?: boolean;
     edit?: boolean;
     multiSelect?: boolean;
     noSpell?: boolean;
     select?: string[];
   }
+
+  type PickerAndListPropsWithEdit = PickerAndListPropsBase & {
+    edit: true | false;
+    noSpell: boolean;
+  };
+
+  type PickerAndListPropsWithNoSpell = PickerAndListPropsBase & {
+    edit: boolean;
+    noSpell: true | false;
+  };
+
+  type PickerAndListProps =
+    | PickerAndListPropsWithEdit
+    | PickerAndListPropsWithNoSpell;
 
   class Picker extends React.Component<PickerAndListProps> {}
 

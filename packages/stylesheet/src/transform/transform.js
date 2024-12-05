@@ -1,5 +1,5 @@
 const parse = (transformString) => {
-  const transforms = transformString.trim().split(/\) |\)/);
+  const transforms = transformString.trim().split(/\)[ ,]|\)/);
 
   // Handle "initial", "inherit", "unset".
   if (transforms.length === 1) {
@@ -15,7 +15,7 @@ const parse = (transformString) => {
       const [name, rawValue] = transform.split('(');
       const splitChar = rawValue.indexOf(',') >= 0 ? ',' : ' ';
       const value = rawValue.split(splitChar).map((val) => val.trim());
-      parsed.push({ operation: name, value });
+      parsed.push({ operation: name.trim(), value });
     }
   }
 

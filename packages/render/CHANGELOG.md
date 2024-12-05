@@ -1,5 +1,47 @@
 # @react-pdf/render
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`00bfdc1e`](https://github.com/diegomura/react-pdf/commit/00bfdc1e5a6c673d2de7b3ab09d5020e932562fb)]:
+  - @react-pdf/textkit@5.0.1
+
+## 4.0.1
+
+### Patch Changes
+
+- [#2948](https://github.com/diegomura/react-pdf/pull/2948) [`03322a75`](https://github.com/diegomura/react-pdf/commit/03322a756f44863543673ff597582444c180989b) Thanks [@diegomura](https://github.com/diegomura)! - fix: stroke dash array computation
+
+- [#2945](https://github.com/diegomura/react-pdf/pull/2945) [`b5c0fe64`](https://github.com/diegomura/react-pdf/commit/b5c0fe646108a960a528290b175511842020d600) Thanks [@diegomura](https://github.com/diegomura)! - fix: skew transformation
+
+## 4.0.0
+
+### Major Changes
+
+- [#2871](https://github.com/diegomura/react-pdf/pull/2871) [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119) Thanks [@diegomura](https://github.com/diegomura)! - feat!: drop cjs support
+
+### Patch Changes
+
+- Updated dependencies [[`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f), [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f), [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119)]:
+  - @react-pdf/types@2.7.0
+  - @react-pdf/primitives@4.0.0
+  - @react-pdf/textkit@5.0.0
+  - @react-pdf/fns@3.0.0
+
+## 3.5.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+### Patch Changes
+
+- [#2836](https://github.com/diegomura/react-pdf/pull/2836) [`53bf803`](https://github.com/diegomura/react-pdf/commit/53bf803465f4fecf13531d1a10697c3d4067cf8f) Thanks [@obi-awyss](https://github.com/obi-awyss)! - [fix] "TypeError: renderFn is not a function"
+  It may also address issue #2644
+- Updated dependencies [[`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/types@2.6.0
+
 ## 3.4.4
 
 ### Patch Changes

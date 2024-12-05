@@ -1,5 +1,44 @@
 # @react-pdf/stylesheet
 
+## 5.1.0
+
+### Minor Changes
+
+- [#2955](https://github.com/diegomura/react-pdf/pull/2955) [`425f1183`](https://github.com/diegomura/react-pdf/commit/425f1183bba9a83fd5712a1371abb6cea2ed8fca) Thanks [@diegomura](https://github.com/diegomura)! - feat: support rem units
+
+### Patch Changes
+
+- [#2952](https://github.com/diegomura/react-pdf/pull/2952) [`2c3c887e`](https://github.com/diegomura/react-pdf/commit/2c3c887ea2d3aed2863f49bff375d08feaf975aa) Thanks [@diegomura](https://github.com/diegomura)! - feat: support multiple line-height units
+
+## 5.0.1
+
+### Patch Changes
+
+- [#2950](https://github.com/diegomura/react-pdf/pull/2950) [`77e480cd`](https://github.com/diegomura/react-pdf/commit/77e480cdd161270ac07453525dfaf993e2d3f17f) Thanks [@diegomura](https://github.com/diegomura)! - feat: accept commas between transformations
+
+## 5.0.0
+
+### Major Changes
+
+- [#2871](https://github.com/diegomura/react-pdf/pull/2871) [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119) Thanks [@diegomura](https://github.com/diegomura)! - feat!: drop cjs support
+
+### Patch Changes
+
+- Updated dependencies [[`46c3047d`](https://github.com/diegomura/react-pdf/commit/46c3047de56ae82f062b72c4910a4e6096eee99f), [`55973278`](https://github.com/diegomura/react-pdf/commit/55973278ac8bc8f703b63844f57d6f155ae8d86f), [`70f29a04`](https://github.com/diegomura/react-pdf/commit/70f29a0407b1d56e9a7932b25c0d69132e9b4119)]:
+  - @react-pdf/types@2.7.0
+  - @react-pdf/fns@3.0.0
+
+## 4.3.0
+
+### Minor Changes
+
+- [#2771](https://github.com/diegomura/react-pdf/pull/2771) [`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2) Thanks [@nikischin](https://github.com/nikischin)! - fix: fix dpi
+
+### Patch Changes
+
+- Updated dependencies [[`8e6a832`](https://github.com/diegomura/react-pdf/commit/8e6a8320f86354aff950c296a96bc41a33e9dab2), [`4bafab8`](https://github.com/diegomura/react-pdf/commit/4bafab8455c9003759f48bad20a720baf4ed189b)]:
+  - @react-pdf/types@2.6.0
+
 ## 4.2.5
 
 ### Patch Changes

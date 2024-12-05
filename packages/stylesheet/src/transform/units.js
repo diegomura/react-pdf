@@ -5,7 +5,7 @@
  * @returns {Object} parsed value
  */
 const parseValue = (value) => {
-  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px)?$/g.exec(value);
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px|rem)?$/g.exec(value);
 
   return match
     ? { value: parseFloat(match[1]), unit: match[2] || 'pt' }
@@ -22,13 +22,16 @@ const parseValue = (value) => {
 const transformUnit = (container, value) => {
   const scalar = parseValue(value);
 
-  const dpi = 72; // Removed: container.dpi || 72
-  const mmFactor = (1 / 25.4) * dpi;
-  const cmFactor = (1 / 2.54) * dpi;
+  const outputDpi = 72;
+  const inputDpi = container.dpi || 72;
+  const mmFactor = (1 / 25.4) * outputDpi;
+  const cmFactor = (1 / 2.54) * outputDpi;
 
   switch (scalar.unit) {
+    case 'rem':
+      return scalar.value * (container.remBase || 18);
     case 'in':
-      return scalar.value * dpi;
+      return scalar.value * outputDpi;
     case 'mm':
       return scalar.value * mmFactor;
     case 'cm':
@@ -37,6 +40,8 @@ const transformUnit = (container, value) => {
       return scalar.value * (container.height / 100);
     case 'vw':
       return scalar.value * (container.width / 100);
+    case 'px':
+      return Math.round(scalar.value * (outputDpi / inputDpi));
     default:
       return scalar.value;
   }

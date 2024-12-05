@@ -53,7 +53,7 @@ const setLineCap = (ctx, node) => {
 const setLineDash = (ctx, node) => {
   const value = node.props?.strokeDasharray || null;
 
-  if (value) ctx.dash(value.split(',').map(Number));
+  if (value) ctx.dash(value.split(/[\s,]+/).map(Number));
 };
 
 const hasLinearGradientFill = (node) =>
@@ -172,10 +172,10 @@ const renderFns = {
 const renderNode = (ctx, node) => {
   const renderFn = renderFns[node.type];
 
-  if (renderFns) {
+  if (renderFn) {
     renderFn(ctx, node);
   } else {
-    console.warn(`SVG node of type ${node.type} is not currenty supported`);
+    console.warn(`SVG node of type ${node.type} is not currently supported`);
   }
 };
 

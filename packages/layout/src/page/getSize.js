@@ -1,5 +1,6 @@
 import isLandscape from './isLandscape';
 
+// Page sizes for 72dpi. 72dpi is used internally by pdfkit.
 const PAGE_SIZES = {
   '4A0': [4767.87, 6740.79],
   '2A0': [3370.39, 4767.87],
@@ -55,10 +56,57 @@ const PAGE_SIZES = {
 };
 
 /**
+ * Parses scalar value in value and unit pairs
+ *
+ * @param {string} value scalar value
+ * @returns {Object} parsed value
+ */
+const parseValue = (value) => {
+  const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|px)?$/g.exec(value);
+
+  return match
+    ? { value: parseFloat(match[1]), unit: match[2] || 'pt' }
+    : { value, unit: undefined };
+};
+
+/**
+ * Transform given scalar value to 72dpi equivalent of size
+ *
+ * @param {string} value styles value
+ * @param {number} inputDpi user defined dpi
+ * @returns {Object} transformed value
+ */
+const transformUnit = (value, inputDpi) => {
+  const scalar = parseValue(value);
+
+  const outputDpi = 72;
+  const mmFactor = (1 / 25.4) * outputDpi;
+  const cmFactor = (1 / 2.54) * outputDpi;
+
+  switch (scalar.unit) {
+    case 'in':
+      return scalar.value * outputDpi;
+    case 'mm':
+      return scalar.value * mmFactor;
+    case 'cm':
+      return scalar.value * cmFactor;
+    case 'px':
+      return Math.round(scalar.value * (outputDpi / inputDpi));
+    default:
+      return scalar.value;
+  }
+};
+
+const transformUnits = ({ width, height }, dpi) => ({
+  width: transformUnit(width, dpi),
+  height: transformUnit(height, dpi),
+});
+
+/**
  * Transforms array into size object
  *
- * @param {number[]} v array
- * @returns {{ width: number, height: number }} size object with width and height
+ * @param {number[] | string[]} v array
+ * @returns {{ width: number | string, height: number | string }} size object with width and height
  */
 const toSizeObject = (v) => ({ width: v[0], height: v[1] });
 
@@ -69,18 +117,6 @@ const toSizeObject = (v) => ({ width: v[0], height: v[1] });
  * @returns {{ width: number, height: number }} flipped size object
  */
 const flipSizeObject = (v) => ({ width: v.height, height: v.width });
-
-/**
- * Adjust page size to passed DPI
- *
- * @param {{ width: number, height: number }} v size object
- * @param {number} dpi DPI
- * @returns {{ width: number, height: number }} adjusted size object
- */
-const adjustDpi = (v, dpi) => ({
-  width: v.width ? v.width * (72 / dpi) : v.width,
-  height: v.height ? v.height * (72 / dpi) : v.height,
-});
 
 /**
  * Returns size object from a given string
@@ -95,10 +131,10 @@ const getStringSize = (v) => {
 /**
  * Returns size object from a single number
  *
- * @param {number} n page size number
- * @returns {{ width: number, height: number }} size object with width and height
+ * @param {number|string} n page size number
+ * @returns {{ width: number|string, height: number|string }} size object with width and height
  */
-const getNumberSize = (n) => toSizeObject([n]);
+const getNumberSize = (n) => toSizeObject([n, n]);
 
 /**
  * Return page size in an object { width, height }
@@ -116,18 +152,14 @@ const getSize = (page) => {
    * @type {{ width: number, height: number }}
    */
   let size;
-
   if (type === 'string') {
     size = getStringSize(value);
   } else if (Array.isArray(value)) {
-    size = toSizeObject(value);
-    size = adjustDpi(size, dpi);
+    size = transformUnits(toSizeObject(value), dpi);
   } else if (type === 'number') {
-    size = getNumberSize(value);
-    size = adjustDpi(size, dpi);
+    size = transformUnits(getNumberSize(value), dpi);
   } else {
-    size = value;
-    size = adjustDpi(size, dpi);
+    size = transformUnits(value, dpi);
   }
 
   return isLandscape(page) ? flipSizeObject(size) : size;

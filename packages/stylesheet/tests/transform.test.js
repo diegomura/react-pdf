@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import _transformStyles from '../src/transform';
 
-const CONTAINER = { width: 200, height: 400 };
+const CONTAINER = { width: 200, height: 400, remBase: 10 };
 
 const transformStyles = _transformStyles(CONTAINER);
 
@@ -102,6 +102,56 @@ describe('stylesheet transform', () => {
       const styles = transformStyles({ fontWeight: 'black' });
 
       expect(styles).toEqual({ fontWeight: 900 });
+    });
+  });
+
+  describe('transform lineHeight', () => {
+    test('should transform unitless number amount', () => {
+      const styles = transformStyles({ lineHeight: 2 });
+
+      expect(styles.lineHeight).toBe(18 * 2);
+    });
+
+    test('should transform unitless number amount with font-size', () => {
+      const styles = transformStyles({ lineHeight: 2, fontSize: 10 });
+
+      expect(styles.lineHeight).toBe(10 * 2);
+    });
+
+    test('should transform unitless string amount', () => {
+      const styles = transformStyles({ lineHeight: '2' });
+
+      expect(styles.lineHeight).toBe(18 * 2);
+    });
+
+    test('should transform unitless string amount with font-size', () => {
+      const styles = transformStyles({ lineHeight: '2', fontSize: 10 });
+
+      expect(styles.lineHeight).toBe(10 * 2);
+    });
+
+    test('should transform percentage amount', () => {
+      const styles = transformStyles({ lineHeight: '200%' });
+
+      expect(styles.lineHeight).toBe(18 * 2);
+    });
+
+    test('should transform percentage amount with font-size', () => {
+      const styles = transformStyles({ lineHeight: '200%', fontSize: 10 });
+
+      expect(styles.lineHeight).toBe(10 * 2);
+    });
+
+    test('should transform height px dimensions', () => {
+      const styles = transformStyles({ lineHeight: '20px' });
+
+      expect(styles.lineHeight).toBe(20);
+    });
+
+    test('should transform width mm dimensions', () => {
+      const styles = transformStyles({ lineHeight: '20mm' });
+
+      expect(styles.lineHeight).toBeCloseTo(56.69, 1);
     });
   });
 

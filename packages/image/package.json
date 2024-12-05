@@ -1,23 +1,14 @@
 {
   "name": "@react-pdf/image",
-  "version": "2.3.6",
+  "version": "3.0.1",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/index.cjs",
-  "module": "./lib/index.js",
+  "main": "./lib/index.js",
   "browser": {
-    "./lib/index.cjs": "./lib/index.browser.cjs",
     "./lib/index.js": "./lib/index.browser.js"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/index.js",
-      "require": "./lib/index.cjs",
-      "default": "./lib/index.js"
-    }
   },
   "repository": {
     "type": "git",
@@ -31,9 +22,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/png-js": "^2.3.1",
-    "cross-fetch": "^3.1.5",
-    "jay-peg": "^1.0.2"
+    "@react-pdf/png-js": "^3.0.0",
+    "jay-peg": "^1.1.1"
   },
   "files": [
     "lib"

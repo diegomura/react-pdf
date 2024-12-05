@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import * as Yoga from 'yoga-layout';
+import * as Yoga from 'yoga-layout/load';
 
 import setAlignContent from '../../src/node/setAlignContent';
 
@@ -80,6 +80,14 @@ describe('node setAlignContent', () => {
 
     expect(mock.mock.calls).toHaveLength(1);
     expect(mock.mock.calls[0][0]).toBe(Yoga.Align.SpaceAround);
+    expect(result).toBe(node);
+  });
+
+  test('Should set space-evenly', () => {
+    const result = setAlignContent('space-evenly')(node);
+
+    expect(mock.mock.calls).toHaveLength(1);
+    expect(mock.mock.calls[0][0]).toBe(Yoga.Align.SpaceEvenly);
     expect(result).toBe(node);
   });
 });

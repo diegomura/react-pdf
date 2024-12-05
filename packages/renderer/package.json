@@ -1,23 +1,14 @@
 {
   "name": "@react-pdf/renderer",
-  "version": "3.4.4",
+  "version": "4.1.5",
   "license": "MIT",
   "description": "Create PDF files on the browser and server",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
-  "main": "./lib/react-pdf.cjs",
-  "module": "./lib/react-pdf.js",
+  "main": "./lib/react-pdf.js",
   "browser": {
-    "./lib/react-pdf.js": "./lib/react-pdf.browser.js",
-    "./lib/react-pdf.cjs": "./lib/react-pdf.browser.cjs"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/react-pdf.js",
-      "require": "./lib/react-pdf.cjs",
-      "default": "./lib/react-pdf.js"
-    }
+    "./lib/react-pdf.js": "./lib/react-pdf.browser.js"
   },
   "repository": {
     "type": "git",
@@ -33,20 +24,20 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/font": "^2.5.1",
-    "@react-pdf/layout": "^3.12.1",
-    "@react-pdf/pdfkit": "^3.1.10",
-    "@react-pdf/primitives": "^3.1.1",
-    "@react-pdf/render": "^3.4.4",
-    "@react-pdf/types": "^2.5.0",
+    "@react-pdf/font": "^3.0.1",
+    "@react-pdf/layout": "^4.1.3",
+    "@react-pdf/pdfkit": "^4.0.0",
+    "@react-pdf/primitives": "^4.0.0",
+    "@react-pdf/reconciler": "^1.1.3",
+    "@react-pdf/render": "^4.0.2",
+    "@react-pdf/types": "^2.7.0",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",
     "prop-types": "^15.6.2",
-    "queue": "^6.0.1",
-    "scheduler": "^0.17.0"
+    "queue": "^6.0.1"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "lint-staged": {
     "*.js": [
@@ -69,7 +60,6 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
-    "react-reconciler": "0.23.0",
     "size-limit": "^11.0.1",
     "util": "^0.12.4"
   }

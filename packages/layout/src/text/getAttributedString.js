@@ -63,6 +63,7 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     color,
     opacity,
     fontSize,
+    lineHeight,
     direction,
     verticalAlign,
     backgroundColor,
@@ -81,7 +82,6 @@ const getFragments = (fontStore, instance, parentLink, level = 0) => {
     strikeColor: textDecorationColor || color,
     underlineColor: textDecorationColor || color,
     link: parentLink || instance.props?.src || instance.props?.href,
-    lineHeight: lineHeight ? lineHeight * fontSize : null,
     align: textAlign || (direction === 'rtl' ? 'right' : 'left'),
   };
 

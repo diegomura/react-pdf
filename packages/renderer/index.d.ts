@@ -248,7 +248,7 @@ declare namespace ReactPDF {
     name: string;
   }
 
-  class FormField extends React.Component<
+  export class FormField extends React.Component<
     React.PropsWithChildren<FormFieldProps>
   > {}
 
@@ -280,7 +280,7 @@ declare namespace ReactPDF {
     format?: TextInputFormatting;
   }
 
-  class TextInput extends React.Component<TextInputProps> {}
+  export class TextInput extends React.Component<TextInputProps> {}
 
   interface CheckboxProps extends FormCommonProps {
     backgroundColor?: string;
@@ -291,7 +291,7 @@ declare namespace ReactPDF {
     xMark?: boolean;
   }
 
-  class Checkbox extends React.Component<CheckboxProps> {}
+  export class Checkbox extends React.Component<CheckboxProps> {}
 
   interface PickerAndListPropsBase extends FormCommonProps {
     sort?: boolean;
@@ -315,9 +315,9 @@ declare namespace ReactPDF {
     | PickerAndListPropsWithEdit
     | PickerAndListPropsWithNoSpell;
 
-  class Picker extends React.Component<PickerAndListProps> {}
+  export class Picker extends React.Component<PickerAndListProps> {}
 
-  class FormList extends React.Component<PickerAndListProps> {}
+  export class FormList extends React.Component<PickerAndListProps> {}
 
   interface NoteProps extends NodeProps {
     children: string;

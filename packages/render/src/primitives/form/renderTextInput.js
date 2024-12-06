@@ -1,6 +1,6 @@
 import { parseTextFieldOptions } from '../../utils/parseFormOptions';
 
-const renderTextInput = (ctx, node, options) => {
+const renderTextInput = (ctx, node, options = {}) => {
   const { top, left, width, height } = node.box || {};
 
   // Element's name

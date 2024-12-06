@@ -1,4 +1,4 @@
-const renderFormField = (ctx, node, options) => {
+const renderFormField = (ctx, node, options = {}) => {
   const name = node.props?.name || '';
 
   if (!ctx._root.data.AcroForm) {

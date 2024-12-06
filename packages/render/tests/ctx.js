@@ -48,8 +48,9 @@ const createCTX = () => {
   instance.lineCap = vi.fn().mockReturnValue(instance);
   instance.text = vi.fn().mockReturnValue(instance);
   instance.font = vi.fn().mockReturnValue(instance);
-  instance.formField = vi.fn().mockReturnValue(instance);
+  instance._root = { data: { AcroForm: {} } };
   instance.textInput = vi.fn().mockReturnValue(instance);
+  instance.formField = vi.fn().mockReturnValue(instance);
 
   return instance;
 };

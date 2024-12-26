@@ -10,8 +10,9 @@ import getPageSize from '../page/getSize';
 export const resolvePageSize = (page) => {
   const size = getPageSize(page);
   const style = flatten(page.style || {});
+  const box = page.box || {};
 
-  return { ...page, style: { ...style, ...size } };
+  return { ...page, box, style: { ...style, ...size } };
 };
 
 /**

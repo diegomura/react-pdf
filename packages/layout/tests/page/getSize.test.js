@@ -74,14 +74,14 @@ describe('page getSize', () => {
     const size = getSize(page);
 
     expect(size).toHaveProperty('width', 100);
-    expect(size).toHaveProperty('height', undefined);
+    expect(size).toHaveProperty('height', 100);
   });
 
   test('Should accept size number in landscape mode', () => {
     const page = { props: { size: 100, orientation: 'landscape' } };
     const size = getSize(page);
 
-    expect(size).toHaveProperty('width', undefined);
+    expect(size).toHaveProperty('width', 100);
     expect(size).toHaveProperty('height', 100);
   });
 });

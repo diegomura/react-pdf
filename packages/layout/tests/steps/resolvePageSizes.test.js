@@ -113,7 +113,7 @@ describe('layout resolvePageSizes', () => {
     const result = resolvePageSizes(root);
 
     expect(result.children[0].style).toHaveProperty('width', 100);
-    expect(result.children[0].style).toHaveProperty('height', undefined);
+    expect(result.children[0].style).toHaveProperty('height', 100);
   });
 
   test('Should accept size number in landscape mode', () => {
@@ -125,7 +125,7 @@ describe('layout resolvePageSizes', () => {
     };
     const result = resolvePageSizes(root);
 
-    expect(result.children[0].style).toHaveProperty('width', undefined);
+    expect(result.children[0].style).toHaveProperty('width', 100);
     expect(result.children[0].style).toHaveProperty('height', 100);
   });
 

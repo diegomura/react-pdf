@@ -6,6 +6,8 @@ const fontCache = {};
 
 const IGNORED_CODE_POINTS = [173];
 
+const standard = ['Courier', 'Courier-Bold', 'Courier-Oblique', 'Courier-BoldOblique', 'Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique', 'Times-Roman', 'Times-Bold', 'Times-Italic', 'Times-BoldItalic'];
+
 const getFontSize = (node) => node.attributes.fontSize || 12;
 
 const getOrCreateFont = (name) => {
@@ -23,6 +25,9 @@ const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
   const fontStackWithFallback = [...fontStack, lastFont, getFallbackFont()];
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
+    if (standard.includes(font)) {
+      return getOrCreateFont(font);
+    }
     if (
       !IGNORED_CODE_POINTS.includes(codePoint) &&
       font &&

@@ -9,7 +9,7 @@ import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
  * @typedef {import('../../types.js').Attributes} Attributes
  */
 
-const HYPHEN = 0x002d;
+const HYPHEN = '-';
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
 
@@ -43,7 +43,9 @@ const breakLines = (string, nodes, breaks) => {
       end = prevNode.value.end;
 
       line = slice(start, end, string);
-      line = insertGlyph(line.length, HYPHEN, line);
+      if (!line.string?.endsWith(HYPHEN)) {
+        line = insertGlyph(line.length, HYPHEN.charCodeAt(0), line);
+      }
     } else {
       end = node.value.end;
       line = slice(start, end, string);

@@ -8,7 +8,7 @@ import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import commonjs from '@rollup/plugin-commonjs';
 
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 
 const cjs = {
   exports: 'named',

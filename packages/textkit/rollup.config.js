@@ -1,7 +1,7 @@
 import babel from '@rollup/plugin-babel';
 import localResolve from 'rollup-plugin-local-resolve';
 
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 
 const cjs = {
   exports: 'named',

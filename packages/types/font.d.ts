@@ -33,10 +33,7 @@ interface FontInstance {
   sources: FontSource[];
 }
 
-export type HyphenationCallback = (
-  words: string,
-  glyphString: { [key: string]: any },
-) => string[];
+export type HyphenationCallback = (word: string) => string[];
 
 interface RegisteredFont {
   src: string;

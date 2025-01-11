@@ -15,7 +15,7 @@ yarn add @react-pdf/stylesheet
 ## How it works
 
 ```js
-const stylesheet = require('@react-pdf/stylesheet');
+import stylesheet from '@react-pdf/stylesheet';
 
 const container = {
   width: 400,

@@ -15,8 +15,8 @@ yarn add @react-pdf/render
 ## How it works
 
 ```js
-const render = require('@react-pdf/render');
-const primitives = require('@react-pdf/primitives');
+import render from '@react-pdf/render';
+import primitives from '@react-pdf/primitives';
 
 const view = {
   type: primitives.View,
@@ -123,9 +123,9 @@ Specific node params needed to render correctly ot behave like certain way. Spec
 ## PDF example
 
 ```js
-const fs = require('fs');
-const render = require('@react-pdf/render');
-const pdfkit = require('@react-pdf/pdfkit');
+import fs from 'fs';
+import render from '@react-pdf/render';
+import pdfkit from '@react-pdf/pdfkit';
 
 const PDFDocument = pdfkit.default;
 

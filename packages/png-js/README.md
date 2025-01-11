@@ -39,7 +39,7 @@ Install the module using npm
 
 Require the module and decode a PNG
 
-    var PNG = require('png-js');
+    import PNG from 'png-js';
     PNG.decode('some.png', function(pixels) {
         // pixels is a 1d array (in rgba order) of decoded pixel data
     });

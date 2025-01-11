@@ -1,5 +1,15 @@
 # @react-pdf/layout
 
+## 4.2.1
+
+### Patch Changes
+
+- [`fabecc56`](https://github.com/diegomura/react-pdf/commit/fabecc56727dfb6d590a3fa1e11f50250ecbbea1) Thanks [@diegomura](https://github.com/diegomura)! - chore: bump yoga-layout
+
+- Updated dependencies [[`01944231`](https://github.com/diegomura/react-pdf/commit/01944231a342d502b832aeecb4c313020b8360c8)]:
+  - @react-pdf/types@2.7.1
+  - @react-pdf/stylesheet@5.2.1
+
 ## 4.2.0
 
 ### Minor Changes

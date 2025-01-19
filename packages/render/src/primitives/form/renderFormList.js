@@ -1,6 +1,6 @@
 import { parsePickerAndListFieldOptions } from '../../utils/parseFormOptions';
 
-const renderPicker = (ctx, node) => {
+const renderFormList = (ctx, node) => {
   const { top, left, width, height } = node.box || {};
 
   // Element's name
@@ -10,7 +10,7 @@ const renderPicker = (ctx, node) => {
     ctx.initForm();
   }
 
-  ctx.formCombo(
+  ctx.formList(
     name,
     left,
     top,
@@ -20,4 +20,4 @@ const renderPicker = (ctx, node) => {
   );
 };
 
-export default renderPicker;
+export default renderFormList;

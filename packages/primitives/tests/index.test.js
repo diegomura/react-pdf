@@ -43,6 +43,10 @@ describe('primitives', () => {
     expect(primitives.TextInput).toBeTruthy();
   });
 
+  test('should export form list', () => {
+    expect(primitives.FormList).toBeTruthy();
+  });
+
   test('should export picker', () => {
     expect(primitives.Picker).toBeTruthy();
   });

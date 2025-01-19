@@ -9,6 +9,7 @@ import {
   Checkbox,
   TextInput,
   Picker,
+  FormList,
 } from '@react-pdf/renderer';
 
 const PDFViewer = dynamic(
@@ -61,9 +62,8 @@ export default function Form() {
               style={{ height: '20px' }}
             />
 
-            <Text>Picker (Combo)</Text>
+            <Text>Picker</Text>
             <Picker
-              type="combo"
               name="page1.combo"
               select={['', 'option 1', 'option 2']}
               value=""
@@ -71,9 +71,8 @@ export default function Form() {
               style={{ height: '20px' }}
             />
 
-            <Text>Picker (List)</Text>
-            <Picker
-              type="list"
+            <Text>FormList</Text>
+            <FormList
               name="page1.list"
               select={['', 'option 1', 'option 2']}
               value=""

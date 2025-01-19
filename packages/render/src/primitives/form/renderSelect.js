@@ -1,6 +1,6 @@
-import { parsePickerAndListFieldOptions } from '../../utils/parseFormOptions';
+import { parseSelectAndListFieldOptions } from '../../utils/parseFormOptions';
 
-const renderPicker = (ctx, node) => {
+const renderSelect = (ctx, node) => {
   const { top, left, width, height } = node.box || {};
 
   // Element's name
@@ -16,8 +16,8 @@ const renderPicker = (ctx, node) => {
     top,
     width,
     height,
-    parsePickerAndListFieldOptions(node),
+    parseSelectAndListFieldOptions(node),
   );
 };
 
-export default renderPicker;
+export default renderSelect;

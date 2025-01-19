@@ -9,7 +9,7 @@ import {
   Checkbox,
   FormField,
   TextInput,
-  Picker,
+  Select,
   FormList,
 } from '@react-pdf/renderer';
 
@@ -63,8 +63,8 @@ export default function Form() {
               style={{ height: '20px' }}
             />
 
-            <Text>Picker</Text>
-            <Picker
+            <Text>Select</Text>
+            <Select
               name="combo"
               select={['', 'option 1', 'option 2']}
               value=""

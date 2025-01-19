@@ -51,8 +51,8 @@ describe('primitives', () => {
     expect(primitives.FormList).toBeTruthy();
   });
 
-  test('should export picker', () => {
-    expect(primitives.Picker).toBeTruthy();
+  test('should export select', () => {
+    expect(primitives.Select).toBeTruthy();
   });
 
   test('should export stop', () => {

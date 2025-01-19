@@ -1,4 +1,4 @@
-import { parsePickerAndListFieldOptions } from '../../utils/parseFormOptions';
+import { parseSelectAndListFieldOptions } from '../../utils/parseFormOptions';
 
 const renderFormList = (ctx, node) => {
   const { top, left, width, height } = node.box || {};
@@ -16,7 +16,7 @@ const renderFormList = (ctx, node) => {
     top,
     width,
     height,
-    parsePickerAndListFieldOptions(node),
+    parseSelectAndListFieldOptions(node),
   );
 };
 

@@ -34,7 +34,7 @@ const parseTextFieldOptions = (node, formField) => {
   });
 };
 
-const parsePickerAndListFieldOptions = (node) => {
+const parseSelectAndListFieldOptions = (node) => {
   return clean({
     ...parseCommonFormOptions(node),
     sort: node.props?.sort || false,
@@ -111,6 +111,6 @@ const parseCheckboxOptions = (ctx, node, formField) => {
 
 export {
   parseTextFieldOptions,
-  parsePickerAndListFieldOptions,
+  parseSelectAndListFieldOptions,
   parseCheckboxOptions,
 };

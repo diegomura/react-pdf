@@ -293,7 +293,7 @@ declare namespace ReactPDF {
 
   export class Checkbox extends React.Component<CheckboxProps> {}
 
-  interface PickerAndListPropsBase extends FormCommonProps {
+  interface SelectAndListPropsBase extends FormCommonProps {
     sort?: boolean;
     edit?: boolean;
     multiSelect?: boolean;
@@ -301,23 +301,23 @@ declare namespace ReactPDF {
     select?: string[];
   }
 
-  type PickerAndListPropsWithEdit = PickerAndListPropsBase & {
+  type SelectAndListPropsWithEdit = SelectAndListPropsBase & {
     edit: true | false;
     noSpell: boolean;
   };
 
-  type PickerAndListPropsWithNoSpell = PickerAndListPropsBase & {
+  type SelectAndListPropsWithNoSpell = SelectAndListPropsBase & {
     edit: boolean;
     noSpell: true | false;
   };
 
-  type PickerAndListProps =
-    | PickerAndListPropsWithEdit
-    | PickerAndListPropsWithNoSpell;
+  type SelectAndListProps =
+    | SelectAndListPropsWithEdit
+    | SelectAndListPropsWithNoSpell;
 
-  export class Picker extends React.Component<PickerAndListProps> {}
+  export class Select extends React.Component<SelectAndListProps> {}
 
-  export class FormList extends React.Component<PickerAndListProps> {}
+  export class FormList extends React.Component<SelectAndListProps> {}
 
   interface NoteProps extends NodeProps {
     children: string;

@@ -13,7 +13,7 @@ import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 import renderTextInput from './form/renderTextInput';
-import renderPicker from './form/renderPicker';
+import renderSelect from './form/renderSelect';
 import renderFormField, { cleanUpFormField } from './form/renderFormField';
 import renderFormList from './form/renderFormList';
 import renderCheckbox from './form/renderCheckbox';
@@ -42,7 +42,7 @@ const renderFns = {
   [P.Image]: renderImage,
   [P.FormField]: renderFormField,
   [P.TextInput]: renderTextInput,
-  [P.Picker]: renderPicker,
+  [P.Select]: renderSelect,
   [P.Checkbox]: renderCheckbox,
   [P.FormList]: renderFormList,
   [P.Canvas]: renderCanvas,

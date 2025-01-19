@@ -1,5 +1,11 @@
 # @react-pdf/stylesheet
 
+## 5.2.0
+
+### Minor Changes
+
+- [#2773](https://github.com/diegomura/react-pdf/pull/2773) [`18834efa`](https://github.com/diegomura/react-pdf/commit/18834efac2787a636c378718fee40cbe74f01ab8) Thanks [@nikischin](https://github.com/nikischin)! - Changed unit behavior according to PDF spec. Please note that all unitless values are considered as user unit which is a 72dpi equality of the value. This is according to PDF spec and ensures a consistent layout independent of the dpi setting.
+
 ## 5.1.0
 
 ### Minor Changes

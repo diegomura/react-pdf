@@ -1,6 +1,6 @@
 import { parseSelectAndListFieldOptions } from '../../utils/parseFormOptions';
 
-const renderFormList = (ctx, node) => {
+const renderList = (ctx, node) => {
   const { top, left, width, height } = node.box || {};
 
   // Element's name
@@ -20,4 +20,4 @@ const renderFormList = (ctx, node) => {
   );
 };
 
-export default renderFormList;
+export default renderList;

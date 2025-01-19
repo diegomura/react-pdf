@@ -48,7 +48,7 @@ describe('primitives', () => {
   });
 
   test('should export form list', () => {
-    expect(primitives.FormList).toBeTruthy();
+    expect(primitives.List).toBeTruthy();
   });
 
   test('should export select', () => {

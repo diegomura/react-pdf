@@ -10,7 +10,7 @@ import {
   FormField,
   TextInput,
   Select,
-  FormList,
+  List,
 } from '@react-pdf/renderer';
 
 const PDFViewer = dynamic(
@@ -72,8 +72,8 @@ export default function Form() {
               style={{ height: '20px' }}
             />
 
-            <Text>FormList</Text>
-            <FormList
+            <Text>List</Text>
+            <List
               name="list"
               select={['', 'option 1', 'option 2']}
               value=""

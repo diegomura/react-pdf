@@ -317,7 +317,7 @@ declare namespace ReactPDF {
 
   export class Select extends React.Component<SelectAndListProps> {}
 
-  export class FormList extends React.Component<SelectAndListProps> {}
+  export class List extends React.Component<SelectAndListProps> {}
 
   interface NoteProps extends NodeProps {
     children: string;

@@ -7,6 +7,7 @@ import {
   View,
   Text,
   Checkbox,
+  FormField,
   TextInput,
   Picker,
   FormList,
@@ -31,10 +32,10 @@ export default function Form() {
             height: '100%',
           }}
         >
-          <View style={{ flexDirection: 'column' }}>
+          <FormField name="user-info" style={{ flexDirection: 'column' }}>
             <Text>TextInput</Text>
             <TextInput
-              name="page1.username"
+              name="username"
               value="foo"
               align="center"
               style={{ height: '50px' }}
@@ -44,7 +45,7 @@ export default function Form() {
             <View>
               <Text>TextInput</Text>
               <TextInput
-                name="page1.password"
+                name="password"
                 value="bar"
                 align="center"
                 style={{ height: '50px' }}
@@ -53,21 +54,18 @@ export default function Form() {
             </View>
 
             <Text>Checkbox (not checked)</Text>
-            <Checkbox
-              name="page1.checkbox-default"
-              style={{ height: '20px' }}
-            />
+            <Checkbox name="checkbox-default" style={{ height: '20px' }} />
 
             <Text>Checkbox (checked)</Text>
             <Checkbox
-              name="page1.checkbox-checked"
+              name="checkbox-checked"
               checked
               style={{ height: '20px' }}
             />
 
             <Text>Picker</Text>
             <Picker
-              name="page1.combo"
+              name="combo"
               select={['', 'option 1', 'option 2']}
               value=""
               defaultValue=""
@@ -76,13 +74,13 @@ export default function Form() {
 
             <Text>FormList</Text>
             <FormList
-              name="page1.list"
+              name="list"
               select={['', 'option 1', 'option 2']}
               value=""
               defaultValue=""
               style={{ height: '50px' }}
             />
-          </View>
+          </FormField>
         </View>
       </Page>
 
@@ -94,16 +92,41 @@ export default function Form() {
             height: '100%',
           }}
         >
-          <View style={{ flexDirection: 'column' }}>
+          <FormField name="user-details" style={{ flexDirection: 'column' }}>
             <Text>TextInput (multiline)</Text>
             <TextInput
-              name="page2.details"
+              name="details"
               value="hello"
               align="center"
               multiline
               style={{ fontSize: 8, height: '100px' }}
             />
-          </View>
+          </FormField>
+        </View>
+      </Page>
+
+      <Page>
+        <View
+          style={{
+            backgroundColor: 'rgba(182,28,28,0.62)',
+            width: '30%',
+            height: '100%',
+          }}
+        >
+          <Text>TextInput (no FormField)</Text>
+          <TextInput
+            name="textinput-no-formfield"
+            value="no formfield"
+            align="center"
+            style={{ height: '50px' }}
+          />
+
+          <Text>Checkbox (checked, no FormField)</Text>
+          <Checkbox
+            name="checkbox-no-formfield"
+            checked
+            style={{ height: '20px' }}
+          />
         </View>
       </Page>
     </Document>

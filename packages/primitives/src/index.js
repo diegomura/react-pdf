@@ -8,6 +8,7 @@ export const Note = 'NOTE';
 export const Path = 'PATH';
 export const Rect = 'RECT';
 export const Line = 'LINE';
+export const FormField = 'FORM_FIELD';
 export const TextInput = 'TEXT_INPUT';
 export const Picker = 'PICKER';
 export const Checkbox = 'CHECKBOX';

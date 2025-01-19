@@ -14,7 +14,6 @@ import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 import renderTextInput from './form/renderTextInput';
 import renderPicker from './form/renderPicker';
-import renderFormField, { cleanUpFormField } from './form/renderFormField';
 import renderFormList from './form/renderFormList';
 import renderCheckbox from './form/renderCheckbox';
 
@@ -40,7 +39,6 @@ const renderFns = {
   [P.Text]: renderText,
   [P.Note]: renderNote,
   [P.Image]: renderImage,
-  [P.FormField]: renderFormField,
   [P.TextInput]: renderTextInput,
   [P.Picker]: renderPicker,
   [P.Checkbox]: renderCheckbox,
@@ -50,9 +48,7 @@ const renderFns = {
   [P.Link]: setLink,
 };
 
-const cleanUpFns = {
-  [P.FormField]: cleanUpFormField,
-};
+const cleanUpFns = {};
 
 const renderNode = (ctx, node, options) => {
   const overflowHidden = node.style?.overflow === 'hidden';

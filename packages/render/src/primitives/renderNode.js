@@ -14,7 +14,6 @@ import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
 import renderTextInput from './form/renderTextInput';
 import renderPicker from './form/renderPicker';
-import renderFormList from './form/renderFormList';
 import renderCheckbox from './form/renderCheckbox';
 
 const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg;
@@ -42,7 +41,6 @@ const renderFns = {
   [P.TextInput]: renderTextInput,
   [P.Picker]: renderPicker,
   [P.Checkbox]: renderCheckbox,
-  [P.FormList]: renderFormList,
   [P.Canvas]: renderCanvas,
   [P.Svg]: renderSvg,
   [P.Link]: setLink,

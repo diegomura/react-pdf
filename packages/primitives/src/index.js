@@ -11,7 +11,6 @@ export const Line = 'LINE';
 export const TextInput = 'TEXT_INPUT';
 export const Picker = 'PICKER';
 export const Checkbox = 'CHECKBOX';
-export const FormList = 'FORM_LIST';
 export const Stop = 'STOP';
 export const Defs = 'DEFS';
 export const Image = 'IMAGE';

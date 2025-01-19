@@ -228,7 +228,7 @@ declare namespace ReactPDF {
   }
 
   /**
-   * A React component for displaying a hyperlink. Link’s can be nested
+   * A React component for displaying a hyperlink. Link's can be nested
    * inside a Text component, or being inside any other valid primitive.
    */
   export class Link extends React.Component<
@@ -299,6 +299,7 @@ declare namespace ReactPDF {
     multiSelect?: boolean;
     noSpell?: boolean;
     select?: string[];
+    type?: 'combo' | 'list';
   }
 
   type PickerAndListPropsWithEdit = PickerAndListPropsBase & {
@@ -315,9 +316,11 @@ declare namespace ReactPDF {
     | PickerAndListPropsWithEdit
     | PickerAndListPropsWithNoSpell;
 
+  /**
+   * A React component for displaying combo boxes and lists in PDF forms.
+   * Use type="combo" for combo boxes (default) or type="list" for list boxes.
+   */
   export class Picker extends React.Component<PickerAndListProps> {}
-
-  export class FormList extends React.Component<PickerAndListProps> {}
 
   interface NoteProps extends NodeProps {
     children: string;

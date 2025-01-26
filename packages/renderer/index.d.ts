@@ -275,9 +275,19 @@ declare namespace ReactPDF {
   interface TextInputProps extends FormCommonProps {
     align?: 'left' | 'center' | 'right';
     multiline?: boolean;
+    /**
+     * The text will be masked (e.g. with asterisks).
+     */
     password?: boolean;
+    /**
+     * If set, text entered in the field is not spell-checked
+     */
     noSpell?: boolean;
     format?: TextInputFormatting;
+    /**
+     * Sets the fontSize (default or 0 means auto sizing)
+     */
+    fontSize?: number;
   }
 
   export class TextInput extends React.Component<TextInputProps> {}

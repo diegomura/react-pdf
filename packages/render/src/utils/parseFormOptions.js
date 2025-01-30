@@ -32,6 +32,7 @@ const parseTextFieldOptions = (node, formField) => {
     noSpell: node.props?.noSpell || false,
     format: node.props?.format || undefined,
     fontSize: node.props?.fontSize || undefined,
+    MaxLen: node.props?.maxLength || undefined,
   });
 };
 

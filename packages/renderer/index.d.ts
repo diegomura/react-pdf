@@ -288,6 +288,10 @@ declare namespace ReactPDF {
      * Sets the fontSize (default or 0 means auto sizing)
      */
     fontSize?: number;
+    /**
+     * Sets the maximum length (characters) of the text in the field
+     */
+    maxLength?: number;
   }
 
   export class TextInput extends React.Component<TextInputProps> {}

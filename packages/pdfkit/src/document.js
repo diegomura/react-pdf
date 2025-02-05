@@ -100,7 +100,7 @@ class PDFDocument extends stream.Readable {
     this.initImages();
     this.initOutline();
     this.initSubset(options);
-    // this.initMarkings(options)
+    this.initMarkings(options);
 
     // Initialize the metadata
     this.info = {
@@ -170,6 +170,16 @@ class PDFDocument extends stream.Readable {
     return this;
   }
 
+  continueOnNewPage(options) {
+    const pageMarkings = this.endPageMarkings(this.page);
+
+    this.addPage(options ?? this.page._options);
+
+    this.initPageMarkings(pageMarkings);
+
+    return this;
+  }
+
   flushPages() {
     // this local variable exists so we're future-proof against
     // reentrant calls to flushPages.
@@ -177,7 +187,7 @@ class PDFDocument extends stream.Readable {
     this._pageBuffer = [];
     this._pageBufferStart += pages.length;
     for (let page of Array.from(pages)) {
-      // this.endPageMarkings(page);
+      this.endPageMarkings(page);
       page.end();
     }
   }
@@ -272,7 +282,7 @@ class PDFDocument extends stream.Readable {
     }
 
     this.endOutline();
-    // this.endMarkings();
+    this.endMarkings();
 
     if (this.subset) {
       this.endSubset();

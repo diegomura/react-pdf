@@ -1,3 +1,8 @@
+/*
+PDFDocument - represents an entire PDF document
+By Devon Govett
+*/
+
 import stream from 'stream';
 import PDFObject from './object';
 import PDFReference from './reference';
@@ -15,11 +20,12 @@ import MarkingsMixin from './mixins/markings';
 import AcroFormMixin from './mixins/acroform';
 import AttachmentsMixin from './mixins/attachments';
 import MetadataMixin from './mixins/metadata';
+import SubsetMixin from './mixins/subsets';
 import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
-    super();
+    super(options);
     this.options = options;
 
     // PDF version
@@ -93,6 +99,7 @@ class PDFDocument extends stream.Readable {
     this.initText();
     this.initImages();
     this.initOutline();
+    this.initSubset(options);
     // this.initMarkings(options)
 
     // Initialize the metadata
@@ -267,6 +274,10 @@ class PDFDocument extends stream.Readable {
     this.endOutline();
     // this.endMarkings();
 
+    if (this.subset) {
+      this.endSubset();
+    }
+
     this._root.end();
     this._root.data.Pages.end();
     this._root.data.Names.end();
@@ -370,5 +381,6 @@ mixin(OutlineMixin);
 mixin(MarkingsMixin);
 mixin(AcroFormMixin);
 mixin(AttachmentsMixin);
+mixin(SubsetMixin);
 
 export default PDFDocument;

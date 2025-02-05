@@ -18,6 +18,7 @@ import resume from './resume';
 import svg from './svg';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
+import forms from './forms';
 
 const EXAMPLES = [
   duplicatedImages,
@@ -40,6 +41,7 @@ const EXAMPLES = [
   svgTransform,
   transformOrigin,
   imageStressTest,
+  forms,
 ];
 
 export default EXAMPLES;

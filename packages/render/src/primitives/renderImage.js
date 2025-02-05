@@ -1,6 +1,7 @@
 import { isNil } from '@react-pdf/fns';
 
 import clipNode from '../operations/clipNode';
+import embedImage from '../operations/embedImage';
 import resolveObjectFit from '../utils/resolveObjectFit';
 
 const drawImage = (ctx, node, options = {}) => {
@@ -29,7 +30,7 @@ const drawImage = (ctx, node, options = {}) => {
     if (width !== 0 && height !== 0) {
       const cacheKey = node.image.key;
 
-      const image = imageCache.get(cacheKey) || ctx.embedImage(node.image.data);
+      const image = imageCache.get(cacheKey) || embedImage(ctx, node);
 
       if (cacheKey) imageCache.set(cacheKey, image);
 

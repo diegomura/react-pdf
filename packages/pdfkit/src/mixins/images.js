@@ -6,28 +6,6 @@ export default {
     return (this._imageCount = 0);
   },
 
-  embedImage(src) {
-    let image;
-
-    if (typeof src === 'string') {
-      image = this._imageRegistry[src];
-    }
-
-    if (!image) {
-      if (src.width && src.height) {
-        image = src;
-      } else {
-        image = this.openImage(src);
-      }
-    }
-
-    if (!image.obj) {
-      image.embed(this);
-    }
-
-    return image;
-  },
-
   image(src, x, y, options = {}) {
     let bh, bp, bw, image, ip, left, left1, rotateAngle, originX, originY;
     if (typeof x === 'object') {

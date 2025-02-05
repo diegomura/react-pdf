@@ -12,11 +12,11 @@ import setLink from '../operations/setLink';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
-import renderTextInput from './form/renderTextInput';
-import renderSelect from './form/renderSelect';
-import renderFormField, { cleanUpFormField } from './form/renderFormField';
-import renderList from './form/renderList';
-import renderCheckbox from './form/renderCheckbox';
+import renderTextInput from './renderTextInput';
+import renderSelect from './renderSelect';
+import renderFieldSet, { cleanUpFieldSet } from './renderFieldSet';
+import renderList from './renderList';
+import renderCheckbox from './renderCheckbox';
 
 const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg;
 
@@ -40,7 +40,7 @@ const renderFns = {
   [P.Text]: renderText,
   [P.Note]: renderNote,
   [P.Image]: renderImage,
-  [P.FormField]: renderFormField,
+  [P.FieldSet]: renderFieldSet,
   [P.TextInput]: renderTextInput,
   [P.Select]: renderSelect,
   [P.Checkbox]: renderCheckbox,
@@ -51,7 +51,7 @@ const renderFns = {
 };
 
 const cleanUpFns = {
-  [P.FormField]: cleanUpFormField,
+  [P.FieldSet]: cleanUpFieldSet,
 };
 
 const renderNode = (ctx, node, options) => {

@@ -2,32 +2,32 @@ import { describe, expect, test } from 'vitest';
 import * as P from '@react-pdf/primitives';
 
 import createCTX from '../ctx';
-import renderFormField from '../../src/primitives/form/renderFormField';
+import renderFieldSet from '../../src/primitives/renderFieldSet';
 
-describe('primitive renderFormField', () => {
-  test('should render FormField correctly', () => {
+describe('primitive renderFieldSet', () => {
+  test('should render FieldSet correctly', () => {
     const ctx = createCTX();
     const args = 'example';
     const props = { name: args };
-    const node = { type: P.FormField, props };
+    const node = { type: P.FieldSet, props };
 
-    renderFormField(ctx, node);
+    renderFieldSet(ctx, node);
 
     expect(ctx.formField.mock.calls).toHaveLength(1);
     expect(ctx.formField.mock.calls[0]).toHaveLength(1);
     expect(ctx.formField.mock.calls[0][0]).toBe(args);
   });
 
-  test.todo('FormField with one textInput direct child', () => {
+  test.todo('FieldSet with one textInput direct child', () => {
     const ctx = createCTX();
-    const node = { type: P.FormField, children: [{ type: P.TextInput }] };
+    const node = { type: P.FieldSet, children: [{ type: P.TextInput }] };
 
-    renderFormField(ctx, node);
+    renderFieldSet(ctx, node);
 
     expect(ctx.textInput.mock.calls).toHaveLength(1);
   });
 
-  test.todo('FormField with one TextInput indirect child', () => {
+  test.todo('FieldSet with one TextInput indirect child', () => {
     const ctx = createCTX();
     const node = {
       type: P.TextInput,
@@ -43,7 +43,7 @@ describe('primitive renderFormField', () => {
       ],
     };
 
-    renderFormField(ctx, node);
+    renderFieldSet(ctx, node);
 
     expect(ctx.textInput.mock.calls).toHaveLength(1);
   });

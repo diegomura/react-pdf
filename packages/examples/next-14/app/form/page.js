@@ -7,7 +7,7 @@ import {
   View,
   Text,
   Checkbox,
-  FormField,
+  FieldSet,
   TextInput,
   Select,
   List,
@@ -32,7 +32,7 @@ export default function Form() {
             height: '100%',
           }}
         >
-          <FormField name="user-info" style={{ flexDirection: 'column' }}>
+          <FieldSet name="user-info" style={{ flexDirection: 'column' }}>
             <Text>TextInput</Text>
             <TextInput
               name="username"
@@ -80,7 +80,7 @@ export default function Form() {
               defaultValue=""
               style={{ height: '50px' }}
             />
-          </FormField>
+          </FieldSet>
         </View>
       </Page>
 
@@ -92,7 +92,7 @@ export default function Form() {
             height: '100%',
           }}
         >
-          <FormField name="user-details" style={{ flexDirection: 'column' }}>
+          <FieldSet name="user-details" style={{ flexDirection: 'column' }}>
             <Text>TextInput (multiline)</Text>
             <TextInput
               name="details"
@@ -101,7 +101,7 @@ export default function Form() {
               multiline
               style={{ fontSize: 8, height: '100px' }}
             />
-          </FormField>
+          </FieldSet>
         </View>
       </Page>
 
@@ -113,17 +113,17 @@ export default function Form() {
             height: '100%',
           }}
         >
-          <Text>TextInput (no FormField)</Text>
+          <Text>TextInput (no FieldSet)</Text>
           <TextInput
-            name="textinput-no-formfield"
-            value="no formfield"
+            name="textinput-no-fieldset"
+            value="no fieldset"
             align="center"
             style={{ height: '50px' }}
           />
 
-          <Text>Checkbox (checked, no FormField)</Text>
+          <Text>Checkbox (checked, no FieldSet)</Text>
           <Checkbox
-            name="checkbox-no-formfield"
+            name="checkbox-no-fieldset"
             checked
             style={{ height: '20px' }}
           />

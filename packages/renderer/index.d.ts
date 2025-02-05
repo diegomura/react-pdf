@@ -244,12 +244,12 @@ declare namespace ReactPDF {
     defaultValue?: number | string;
   }
 
-  interface FormFieldProps extends NodeProps {
+  interface FieldSetProps extends NodeProps {
     name: string;
   }
 
-  export class FormField extends React.Component<
-    React.PropsWithChildren<FormFieldProps>
+  export class FieldSet extends React.Component<
+    React.PropsWithChildren<FieldSetProps>
   > {}
 
   // see http://pdfkit.org/docs/forms.html#text_field_formatting

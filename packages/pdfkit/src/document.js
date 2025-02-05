@@ -19,8 +19,9 @@ import OutlineMixin from './mixins/outline';
 import MarkingsMixin from './mixins/markings';
 import AcroFormMixin from './mixins/acroform';
 import AttachmentsMixin from './mixins/attachments';
-import MetadataMixin from './mixins/metadata';
+import LineWrapper from './line_wrapper';
 import SubsetMixin from './mixins/subsets';
+import MetadataMixin from './mixins/metadata';
 import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
@@ -346,33 +347,6 @@ class PDFDocument extends stream.Readable {
   toString() {
     return '[object PDFDocument]';
   }
-
-  initColor() {}
-
-  initVector() {}
-
-  initFonts() {}
-
-  initText() {}
-
-  initImages() {}
-
-  initOutline() {}
-
-  /**
-   * @param {number} m11
-   * @param {number} m12
-   * @param {number} m21
-   * @param {number} m22
-   * @param {number} dx
-   * @param {number} dy
-   */
-  // eslint-disable-next-line no-unused-vars
-  transform(m11, m12, m21, m22, dx, dy) {}
-
-  endOutline() {}
-
-  endAcroForm() {}
 }
 
 const mixin = (methods) => {
@@ -392,5 +366,7 @@ mixin(MarkingsMixin);
 mixin(AcroFormMixin);
 mixin(AttachmentsMixin);
 mixin(SubsetMixin);
+
+PDFDocument.LineWrapper = LineWrapper;
 
 export default PDFDocument;

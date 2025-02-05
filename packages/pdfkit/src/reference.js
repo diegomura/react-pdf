@@ -1,3 +1,8 @@
+/*
+PDFReference - represents a reference to another object in the PDF object heirarchy
+By Devon Govett
+*/
+
 import zlib from 'zlib';
 import stream from 'stream';
 import PDFObject from './object';

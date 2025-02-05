@@ -34,7 +34,9 @@ export default {
   note(x, y, w, h, contents, options = {}) {
     options.Subtype = 'Text';
     options.Contents = new String(contents);
-    options.Name = 'Comment';
+    if (options.Name == null) {
+      options.Name = 'Comment';
+    }
     if (options.color == null) {
       options.color = [243, 223, 92];
     }

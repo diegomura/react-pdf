@@ -34,6 +34,7 @@
     "crypto-js": "^4.2.0",
     "fontkit": "^2.0.2",
     "jay-peg": "^1.1.1",
+    "linebreak": "^1.1.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },
   "devDependencies": {

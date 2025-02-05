@@ -181,7 +181,7 @@ export default {
   _fieldDict(name, type, options = {}) {
     if (!this._acroform) {
       throw new Error(
-        'Call document.initForms() method before adding form elements to document'
+        'Call document.initForm() method before adding form elements to document'
       );
     }
     let opts = Object.assign({}, options);
@@ -299,7 +299,9 @@ export default {
     let result = 0;
     Object.keys(options).forEach((key) => {
       if (FIELD_FLAGS[key]) {
-        result |= FIELD_FLAGS[key];
+        if (options[key]) {
+          result |= FIELD_FLAGS[key];
+        }
         delete options[key];
       }
     });
@@ -326,7 +328,7 @@ export default {
 
   _resolveFont(options) {
     // add current font to document-level AcroForm dict if necessary
-    if (this._acroform.fonts[this._font.id] === null) {
+    if (this._acroform.fonts[this._font.id] == null) {
       this._acroform.fonts[this._font.id] = this._font.ref();
     }
 

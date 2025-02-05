@@ -67,12 +67,12 @@ export default {
       length = [length, options.space || length];
     }
 
-    const valid = length.every((x) => Number.isFinite(x) && x >= 0);
+    const valid = length.every((x) => Number.isFinite(x) && x > 0);
     if (!valid) {
       throw new Error(
         `dash(${JSON.stringify(originalLength)}, ${JSON.stringify(
           options
-        )}) invalid, lengths must be numeric and greater than or equal to zero`
+        )}) invalid, lengths must be numeric and greater than zero`
       );
     }
 

@@ -12,11 +12,11 @@ import setLink from '../operations/setLink';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import setDestination from '../operations/setDestination';
-import renderTextInput from './form/renderTextInput';
-import renderSelect from './form/renderSelect';
-import renderFieldSet, { cleanUpFieldSet } from './form/renderFieldSet';
-import renderList from './form/renderList';
-import renderCheckbox from './form/renderCheckbox';
+import renderTextInput from './renderTextInput';
+import renderSelect from './renderSelect';
+import renderFieldSet, { cleanUpFieldSet } from './renderFieldSet';
+import renderList from './renderList';
+import renderCheckbox from './renderCheckbox';
 
 const isRecursiveNode = (node) => node.type !== P.Text && node.type !== P.Svg;
 

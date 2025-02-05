@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import * as P from '@react-pdf/primitives';
 
 import createCTX from '../ctx';
-import renderFieldSet from '../../src/primitives/form/renderFieldSet';
+import renderFieldSet from '../../src/primitives/renderFieldSet';
 
 describe('primitive renderFieldSet', () => {
   test('should render FieldSet correctly', () => {

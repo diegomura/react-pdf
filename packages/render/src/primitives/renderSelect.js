@@ -1,6 +1,6 @@
-import { parseSelectAndListFieldOptions } from '../../utils/parseFormOptions';
+import { parseSelectAndListFieldOptions } from '../utils/parseFormOptions';
 
-const renderList = (ctx, node) => {
+const renderSelect = (ctx, node) => {
   const { top, left, width, height } = node.box || {};
 
   // Element's name
@@ -10,7 +10,7 @@ const renderList = (ctx, node) => {
     ctx.initForm();
   }
 
-  ctx.formList(
+  ctx.formCombo(
     name,
     left,
     top,
@@ -20,4 +20,4 @@ const renderList = (ctx, node) => {
   );
 };
 
-export default renderList;
+export default renderSelect;

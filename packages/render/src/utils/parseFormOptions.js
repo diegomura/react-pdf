@@ -22,10 +22,10 @@ const parseCommonFormOptions = (node) => {
   };
 };
 
-const parseTextFieldOptions = (node, formField) => {
+const parseTextFieldOptions = (node, fieldSet) => {
   return clean({
     ...parseCommonFormOptions(node),
-    parent: formField || undefined,
+    parent: fieldSet || undefined,
     align: node.props?.align || 'left',
     multiline: node.props?.multiline || undefined,
     password: node.props?.password || false,
@@ -68,7 +68,7 @@ const getAppearance = (ctx, codepoint, width, height) => {
   return appearance;
 };
 
-const parseCheckboxOptions = (ctx, node, formField) => {
+const parseCheckboxOptions = (ctx, node, fieldSet) => {
   const { width, height } = node.box || {};
 
   const onOption = node.props?.onState || 'Yes';
@@ -103,7 +103,7 @@ const parseCheckboxOptions = (ctx, node, formField) => {
     ...parseCommonFormOptions(node),
     backgroundColor: node.props?.backgroundColor || undefined,
     borderColor: node.props?.borderColor || undefined,
-    parent: formField || undefined,
+    parent: fieldSet || undefined,
     value: `/${node.props?.checked === true ? onOption : offOption}`,
     defaultValue: `/${node.props?.checked === true ? onOption : offOption}`,
     AS: node.props?.checked === true ? onOption : offOption,

@@ -1,11 +1,13 @@
 import Gradient from '../gradient';
 import pattern from '../pattern';
+import SpotColor from '../spotcolor';
 
 const { PDFGradient, PDFLinearGradient, PDFRadialGradient } = Gradient;
 const { PDFTilingPattern } = pattern;
 
 export default {
   initColor() {
+    this.spotColors = {};
     // The opacity dictionaries
     this._opacityRegistry = {};
     this._opacityCount = 0;
@@ -26,6 +28,8 @@ export default {
         color = [hex >> 16, (hex >> 8) & 0xff, hex & 0xff];
       } else if (namedColors[color]) {
         color = namedColors[color];
+      } else if (this.spotColors[color]) {
+        return this.spotColors[color];
       }
     }
 
@@ -66,8 +70,12 @@ export default {
     const space = this._getColorSpace(color);
     this._setColorSpace(space, stroke);
 
-    color = color.join(' ');
-    this.addContent(`${color} ${op}`);
+    if (color instanceof SpotColor) {
+      this.page.colorSpaces[color.id] = color.ref;
+      this.addContent(`1 ${op}`);
+    } else {
+      this.addContent(`${color.join(' ')} ${op}`);
+    }
 
     return true;
   },
@@ -78,6 +86,10 @@ export default {
   },
 
   _getColorSpace(color) {
+    if (color instanceof SpotColor) {
+      return color.id;
+    }
+
     return color.length === 4 ? 'DeviceCMYK' : 'DeviceRGB';
   },
 
@@ -163,6 +175,12 @@ export default {
 
   pattern(bbox, xStep, yStep, stream) {
     return new PDFTilingPattern(this, bbox, xStep, yStep, stream);
+  },
+
+  addSpotColor(name, C, M, Y, K) {
+    const color = new SpotColor(this, name, C, M, Y, K);
+    this.spotColors[name] = color;
+    return this;
   }
 };
 

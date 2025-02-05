@@ -148,6 +148,10 @@ export default {
     return this._root.data.MarkInfo;
   },
 
+  hasMarkInfoDictionary() {
+    return !!this._root.data.MarkInfo;
+  },
+
   getStructTreeRoot() {
     if (!this._root.data.StructTreeRoot) {
       this._root.data.StructTreeRoot = this.ref({

@@ -235,6 +235,104 @@ declare namespace ReactPDF {
     React.PropsWithChildren<LinkProps>
   > {}
 
+  interface FormCommonProps extends NodeProps {
+    name?: string;
+    required?: boolean;
+    noExport?: boolean;
+    readOnly?: boolean;
+    value?: number | string;
+    defaultValue?: number | string;
+  }
+
+  interface FormFieldProps extends NodeProps {
+    name: string;
+  }
+
+  export class FormField extends React.Component<
+    React.PropsWithChildren<FormFieldProps>
+  > {}
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface TextInputFormatting {
+    type:
+      | 'date'
+      | 'time'
+      | 'percent'
+      | 'number'
+      | 'zip'
+      | 'zipPlus4'
+      | 'phone'
+      | 'ssn';
+    param?: string;
+    nDec?: number;
+    sepComma?: boolean;
+    negStyle?: 'MinusBlack' | 'Red' | 'ParensBlack' | 'ParensRed';
+    currency?: string;
+    currencyPrepend?: boolean;
+  }
+
+  // see http://pdfkit.org/docs/forms.html#text_field_formatting
+  interface TextInputProps extends FormCommonProps {
+    align?: 'left' | 'center' | 'right';
+    multiline?: boolean;
+    /**
+     * The text will be masked (e.g. with asterisks).
+     */
+    password?: boolean;
+    /**
+     * If set, text entered in the field is not spell-checked
+     */
+    noSpell?: boolean;
+    format?: TextInputFormatting;
+    /**
+     * Sets the fontSize (default or 0 means auto sizing)
+     */
+    fontSize?: number;
+    /**
+     * Sets the maximum length (characters) of the text in the field
+     */
+    maxLength?: number;
+  }
+
+  export class TextInput extends React.Component<TextInputProps> {}
+
+  interface CheckboxProps extends FormCommonProps {
+    backgroundColor?: string;
+    borderColor?: string;
+    checked?: boolean;
+    onState?: string;
+    offState?: string;
+    xMark?: boolean;
+  }
+
+  export class Checkbox extends React.Component<CheckboxProps> {}
+
+  interface SelectAndListPropsBase extends FormCommonProps {
+    sort?: boolean;
+    edit?: boolean;
+    multiSelect?: boolean;
+    noSpell?: boolean;
+    select?: string[];
+  }
+
+  type SelectAndListPropsWithEdit = SelectAndListPropsBase & {
+    edit: true | false;
+    noSpell: boolean;
+  };
+
+  type SelectAndListPropsWithNoSpell = SelectAndListPropsBase & {
+    edit: boolean;
+    noSpell: true | false;
+  };
+
+  type SelectAndListProps =
+    | SelectAndListPropsWithEdit
+    | SelectAndListPropsWithNoSpell;
+
+  export class Select extends React.Component<SelectAndListProps> {}
+
+  export class List extends React.Component<SelectAndListProps> {}
+
   interface NoteProps extends NodeProps {
     children: string;
   }

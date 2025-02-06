@@ -1,5 +1,17 @@
 # @react-pdf/pdfkit
 
+## 4.0.1
+
+### Patch Changes
+
+- [#3061](https://github.com/diegomura/react-pdf/pull/3061) [`6d875056`](https://github.com/diegomura/react-pdf/commit/6d875056a07e8479ef695416c1fed575491b6ff1) Thanks [@diegomura](https://github.com/diegomura)! - feat: pdfkit upstream changes
+
+- [#3060](https://github.com/diegomura/react-pdf/pull/3060) [`49daae8f`](https://github.com/diegomura/react-pdf/commit/49daae8fdfba672a3e828847232ee9b70bb51711) Thanks [@diegomura](https://github.com/diegomura)! - feat: enable pdfkit markings mixin
+
+- [#3062](https://github.com/diegomura/react-pdf/pull/3062) [`5cc47319`](https://github.com/diegomura/react-pdf/commit/5cc47319bb428f6d4bcad21cd6dba9afca5cdc17) Thanks [@diegomura](https://github.com/diegomura)! - refactor: unify pdfkit image mixin
+
+- [#3059](https://github.com/diegomura/react-pdf/pull/3059) [`aa0f6725`](https://github.com/diegomura/react-pdf/commit/aa0f672589683a66abc79f838291996ae9aaffb8) Thanks [@diegomura](https://github.com/diegomura)! - feat: add pdfkit subsets mixin
+
 ## 4.0.0
 
 ### Major Changes

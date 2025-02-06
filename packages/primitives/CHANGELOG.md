@@ -1,5 +1,11 @@
 # @react-pdf/primitives
 
+## 4.1.0
+
+### Minor Changes
+
+- [`7cd71714`](https://github.com/diegomura/react-pdf/commit/7cd7171472b0f300db56b7805c5f966bf4ced6e2) Thanks [@diegomura](https://github.com/diegomura)! - feat: added Form Annotation support
+
 ## 4.0.0
 
 ### Major Changes

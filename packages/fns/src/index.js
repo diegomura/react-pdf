@@ -15,3 +15,4 @@ export { default as pick } from './pick';
 export { default as repeat } from './repeat';
 export { default as reverse } from './reverse';
 export { default as upperFirst } from './upperFirst';
+export { default as without } from './without';

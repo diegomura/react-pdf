@@ -117,6 +117,27 @@ const layoutTspan = (fontStore) => (node, xOffset) => {
   return Object.assign({}, node, { lines });
 };
 
+// Consecutive <tspan> elements should be joined with a space
+const joinTSpanLines = (node) => {
+  const children = node.children.map((child, index) => {
+    const textInstance = child.children[0];
+
+    if (
+      child.props.x === undefined &&
+      index < node.children.length - 1 &&
+      textInstance?.value
+    ) {
+      return Object.assign({}, child, {
+        children: [{ ...textInstance, value: `${textInstance.value} ` }],
+      });
+    }
+
+    return child;
+  }, []);
+
+  return Object.assign({}, node, { children });
+};
+
 const layoutText = (fontStore, node) => {
   if (!node.children) return node;
 
@@ -124,21 +145,11 @@ const layoutText = (fontStore, node) => {
 
   const layoutFn = layoutTspan(fontStore);
 
-  const children = node.children.map((child, index) => {
-    // If the <tspan> has no explicit x position, and it's not the last child of the <text> node, and it has a value, add a space to the end of the value
-    if (
-      child.props.x === undefined &&
-      index < node.children.length - 1 &&
-      child.children?.[0]?.value
-    ) {
-      // eslint-disable-next-line no-param-reassign
-      child.children[0].value += ' ';
-    }
+  const joinedNode = joinTSpanLines(node);
 
+  const children = joinedNode.children.map((child) => {
     const childWithLayout = layoutFn(child, currentXOffset);
-
     currentXOffset += childWithLayout.lines[0].xAdvance;
-
     return childWithLayout;
   });
 

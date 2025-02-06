@@ -1,6 +1,7 @@
-import { pick } from '@react-pdf/fns';
+import * as P from '@react-pdf/primitives';
+import { pick, without } from '@react-pdf/fns';
 
-const SVG_INHERITED_PROPS = [
+const BASE_SVG_INHERITED_PROPS = [
   'x',
   'y',
   'clipPath',
@@ -30,9 +31,20 @@ const SVG_INHERITED_PROPS = [
   'wordSpacing',
 ];
 
+// Do not inherit "x" for <tspan> elements from <text> parent
+const TEXT_SVG_INHERITED_PROPS = without(['x'], BASE_SVG_INHERITED_PROPS);
+
+const SVG_INHERITED_PROPS = {
+  [P.Text]: TEXT_SVG_INHERITED_PROPS,
+};
+
 const getInheritProps = (node) => {
   const props = node.props || {};
-  return pick(SVG_INHERITED_PROPS, props);
+
+  const svgInheritedProps =
+    SVG_INHERITED_PROPS[node.type] ?? BASE_SVG_INHERITED_PROPS;
+
+  return pick(svgInheritedProps, props);
 };
 
 const inheritProps = (node) => {
@@ -43,13 +55,6 @@ const inheritProps = (node) => {
   const children = node.children.map((child) => {
     const props = Object.assign({}, inheritedProps, child.props || {});
     const newChild = Object.assign({}, child, { props });
-
-    // Do not inherit "x" for <tspan> elements from <text> parent
-    // If no explicit x is provided, the x-offset will be calculated in layoutText.js
-    if (child.type === 'TSPAN') {
-      newChild.props.x = child.props.x;
-    }
-
     return inheritProps(newChild);
   });
 

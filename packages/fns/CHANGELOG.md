@@ -1,5 +1,11 @@
 # @react-pdf/fns
 
+## 3.1.0
+
+### Minor Changes
+
+- [`d36ace66`](https://github.com/diegomura/react-pdf/commit/d36ace66c77d57d845894e89772be7ae0cdd25ee) Thanks [@diegomura](https://github.com/diegomura)! - feat: add without fn
+
 ## 3.0.0
 
 ### Major Changes

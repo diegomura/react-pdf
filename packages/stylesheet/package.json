@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/stylesheet",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "license": "MIT",
   "description": "A styles engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@react-pdf/fns": "3.0.0",
+    "@react-pdf/fns": "3.1.0",
     "@react-pdf/types": "^2.7.1",
     "color-string": "^1.9.1",
     "hsl-to-hex": "^1.0.0",

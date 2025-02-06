@@ -98,10 +98,10 @@ const AlmostInfinity = 999999999999;
 
 const shrinkWhitespaceFactor = { before: -0.5, after: -0.5 };
 
-const layoutTspan = (fontStore) => (node) => {
+const layoutTspan = (fontStore) => (node, xOffset) => {
   const attributedString = getAttributedString(fontStore, node);
 
-  const x = node.props?.x || 0;
+  const x = node.props.x === undefined ? xOffset : node.props.x;
   const y = node.props?.y || 0;
 
   const container = { x, y, width: AlmostInfinity, height: AlmostInfinity };
@@ -120,7 +120,27 @@ const layoutTspan = (fontStore) => (node) => {
 const layoutText = (fontStore, node) => {
   if (!node.children) return node;
 
-  const children = node.children.map(layoutTspan(fontStore));
+  let currentXOffset = node.props?.x || 0;
+
+  const layoutFn = layoutTspan(fontStore);
+
+  const children = node.children.map((child, index) => {
+    // If the <tspan> has no explicit x position, and it's not the last child of the <text> node, and it has a value, add a space to the end of the value
+    if (
+      child.props.x === undefined &&
+      index < node.children.length - 1 &&
+      child.children?.[0]?.value
+    ) {
+      // eslint-disable-next-line no-param-reassign
+      child.children[0].value += ' ';
+    }
+
+    const childWithLayout = layoutFn(child, currentXOffset);
+
+    currentXOffset += childWithLayout.lines[0].xAdvance;
+
+    return childWithLayout;
+  });
 
   return Object.assign({}, node, { children });
 };

@@ -1,5 +1,11 @@
 # @react-pdf/types
 
+## 2.7.1
+
+### Patch Changes
+
+- [#3019](https://github.com/diegomura/react-pdf/pull/3019) [`01944231`](https://github.com/diegomura/react-pdf/commit/01944231a342d502b832aeecb4c313020b8360c8) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Fixed HyphenationCallback type (confusing argument name, removed extra argument)
+
 ## 2.7.0
 
 ### Minor Changes

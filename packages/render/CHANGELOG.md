@@ -1,5 +1,19 @@
 # @react-pdf/render
 
+## 4.1.0
+
+### Minor Changes
+
+- [`7cd71714`](https://github.com/diegomura/react-pdf/commit/7cd7171472b0f300db56b7805c5f966bf4ced6e2) Thanks [@diegomura](https://github.com/diegomura)! - feat: added Form Annotation support
+
+### Patch Changes
+
+- [#3062](https://github.com/diegomura/react-pdf/pull/3062) [`5cc47319`](https://github.com/diegomura/react-pdf/commit/5cc47319bb428f6d4bcad21cd6dba9afca5cdc17) Thanks [@diegomura](https://github.com/diegomura)! - refactor: unify pdfkit image mixin
+
+- Updated dependencies [[`7cd71714`](https://github.com/diegomura/react-pdf/commit/7cd7171472b0f300db56b7805c5f966bf4ced6e2), [`01944231`](https://github.com/diegomura/react-pdf/commit/01944231a342d502b832aeecb4c313020b8360c8)]:
+  - @react-pdf/primitives@4.1.0
+  - @react-pdf/types@2.7.1
+
 ## 4.0.2
 
 ### Patch Changes

@@ -149,7 +149,7 @@ const createEmbeddedFont = (PDFFont) =>
         fontFile.data.Subtype = 'CIDFontType0C';
       }
 
-      fontFile.end(this.subset.encode());
+      fontFile.end(Buffer.from(this.subset.encode()));
 
       const familyClass =
         ((this.font['OS/2'] != null

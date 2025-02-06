@@ -2,6 +2,7 @@ export default [
   'packages/fns',
   'packages/font',
   'packages/image',
+  'packages/pdfkit',
   'packages/render',
   'packages/layout',
   'packages/svgkit',

@@ -1,5 +1,13 @@
 # @react-pdf/renderer
 
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/layout@4.2.2
+  - @react-pdf/render@4.1.1
+
 ## 4.2.0
 
 ### Minor Changes

@@ -49,8 +49,10 @@
   "overrides": [
     {
       "files": [
+        "**/*.test.ts",
         "**/*.test.js",
         "**/*.test.jsx",
+        "**/tests/**/*.ts",
         "**/tests/**/*.js",
         "**/tests/**/*.jsx",
         "rollup.config.js",

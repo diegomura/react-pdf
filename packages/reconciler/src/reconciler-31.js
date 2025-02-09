@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-extraneous-dependencies */
-
 import Reconciler from 'react-reconciler-31';
 import {
   ConcurrentRoot,

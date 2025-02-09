@@ -1,7 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-restricted-syntax */
-
 import getFactors from './getFactors';
 import getDistances from './getDistances';
 import advanceWidth from '../../attributedString/advanceWidth';

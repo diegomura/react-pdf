@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { useEffect } from 'react';
 
 import usePDF from './usePDF';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import { describe, expect, test, vi } from 'vitest';
 
 import fs from 'fs';

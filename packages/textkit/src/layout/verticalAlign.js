@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-
 /**
  * @typedef {import('../types.js').AttributedString} AttributedString
  */

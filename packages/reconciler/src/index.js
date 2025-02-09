@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-extraneous-dependencies */
-
 import React from 'react';
 import createRendererForReact19 from './reconciler-31.js';
 import createRendererForReact18AndLess from './reconciler-23.js';

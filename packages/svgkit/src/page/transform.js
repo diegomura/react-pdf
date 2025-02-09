@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { createElement } from './element';
 
 export default {

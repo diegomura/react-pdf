@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import { loadYoga as yogaLoadYoga } from 'yoga-layout/load';
 
 let instancePromise;

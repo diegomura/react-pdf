@@ -1,12 +1,9 @@
-/* eslint-disable no-prototype-builtins */
-
 /*
    PDFSecurity - represents PDF security settings
    By Yang Liu <hi@zesik.com>
  */
 
 // This file is ran directly with Node - needs to have .js extension
-// eslint-disable-next-line import/extensions
 import MD5 from 'crypto-js/md5.js';
 
 const wordArrayToBuffer = (wordArray) => {

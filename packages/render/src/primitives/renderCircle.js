@@ -5,7 +5,7 @@ const renderCircle = (ctx, node) => {
   const cy = node.props?.cy;
   const r = node.props?.r;
 
-  drawEllipse(ctx, cx, cy, r, r);
+  drawEllipse(ctx, r, r, cx, cy);
 };
 
 export default renderCircle;

@@ -1,7 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/prefer-default-export */
-
 import * as P from '@react-pdf/primitives';
 
 export enum Primitive {

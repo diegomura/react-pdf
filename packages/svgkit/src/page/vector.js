@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-destructuring */
-
 import uuid from '../utils/uuid';
 import { Gradient } from '../gradient';
 import { createElement } from './element';

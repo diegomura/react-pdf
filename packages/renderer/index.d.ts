@@ -1,6 +1,5 @@
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-classes-per-file */
+
 import * as React from 'react';
 import {
   Style,
@@ -17,13 +16,11 @@ import {
 } from '@react-pdf/types';
 
 declare class ReactPDF {
-  // eslint-disable-next-line no-use-before-define
   static default: typeof ReactPDF;
 }
 
 export = ReactPDF;
 
-// eslint-disable-next-line no-redeclare
 declare namespace ReactPDF {
   interface Styles {
     [key: string]: Style;
@@ -506,6 +503,7 @@ declare namespace ReactPDF {
     React.PropsWithChildren<StopProps>
   > {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface DefsProps {}
 
   /**
@@ -649,7 +647,6 @@ declare namespace ReactPDF {
     isDirty: () => boolean;
     toString: () => string;
     toBlob: () => Promise<Blob>;
-    // eslint-disable-next-line no-undef
     toBuffer: () => Promise<NodeJS.ReadableStream>;
     on: (event: 'change', callback: () => void) => void;
     updateContainer: (
@@ -661,7 +658,6 @@ declare namespace ReactPDF {
 
   export const renderToStream: (
     document: React.ReactElement<DocumentProps>,
-    // eslint-disable-next-line no-undef
   ) => Promise<NodeJS.ReadableStream>;
 
   /**
@@ -674,9 +670,7 @@ declare namespace ReactPDF {
   export const renderToFile: (
     document: React.ReactElement<DocumentProps>,
     filePath: string,
-    // eslint-disable-next-line no-undef
     callback?: (output: NodeJS.ReadableStream, _filePath: string) => any,
-    // eslint-disable-next-line no-undef
   ) => Promise<NodeJS.ReadableStream>;
 
   const render: typeof renderToFile;

@@ -1,6 +1,3 @@
-/* eslint-disable @vitest/no-identical-title */
-/* eslint-disable react/no-array-index-key */
-
 import { describe, expect, test } from 'vitest';
 
 import {

@@ -1,4 +1,3 @@
-/* eslint-disable no-cond-assign */
 import emojiRegex from 'emoji-regex';
 import resolveImage from '@react-pdf/image';
 

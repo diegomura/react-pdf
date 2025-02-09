@@ -1,7 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable prefer-const */
-/* eslint-disable prefer-destructuring */
-
 const getBookmarkValue = (title) => {
   return typeof title === 'string'
     ? { title, fit: false, expanded: false }

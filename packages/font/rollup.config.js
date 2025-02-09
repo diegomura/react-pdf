@@ -1,6 +1,7 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
-import pkg from './package.json' assert { type: 'json' };
+
+import pkg from './package.json' with { type: 'json' };
 
 const babelConfig = () => ({
   babelrc: true,

@@ -1,6 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable max-classes-per-file */
-
 import uuid from '../utils/uuid';
 
 export class Gradient {
@@ -35,7 +32,6 @@ export class Gradient {
   }
 }
 
-/* eslint-disable prefer-destructuring */
 export class LinearGradient extends Gradient {
   constructor(x1, y1, x2, y2) {
     super(x1, y1, x2, y2);

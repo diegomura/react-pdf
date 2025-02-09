@@ -1,5 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-
 import React from 'react';
 import { Document, Page, Svg, G, Rect } from '@react-pdf/renderer';
 

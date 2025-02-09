@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-
 import reverse from './reverse';
 
 /**

@@ -1,8 +1,6 @@
 import fs from 'fs';
 import url from 'url';
 import { basename, extname } from 'path';
-// This file is ran directly with Node - needs to have .js extension
-// eslint-disable-next-line import/extensions
 import { parse } from '../afm.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));

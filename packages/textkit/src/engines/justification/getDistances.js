@@ -1,4 +1,3 @@
-/* eslint-disable no-multi-assign */
 const KASHIDA_PRIORITY = 0;
 const NULL_PRIORITY = 3;
 

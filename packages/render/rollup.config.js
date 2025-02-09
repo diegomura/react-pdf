@@ -1,7 +1,7 @@
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
 
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 
 const config = {
   input: 'src/index.js',

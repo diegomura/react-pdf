@@ -1,5 +1,3 @@
-/* eslint-disable no-continue */
-
 import getWrap from './getWrap';
 
 const getBreak = (node) => node.props?.break || false;

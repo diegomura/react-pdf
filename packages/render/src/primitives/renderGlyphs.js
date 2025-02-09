@@ -1,7 +1,4 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
-/* eslint-disable no-nested-ternary */
 
 const number = (n) => {
   if (n > -1e21 && n < 1e21) {

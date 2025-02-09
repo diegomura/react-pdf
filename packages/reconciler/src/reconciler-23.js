@@ -1,5 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-extraneous-dependencies */
 import Reconciler from 'react-reconciler-23/cjs/react-reconciler.production.min.js';
 
 import propsEqual from './propsEqual';

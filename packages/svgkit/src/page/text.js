@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-escape */
-
 import { createElement } from './element';
 
 export default {

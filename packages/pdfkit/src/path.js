@@ -1,4 +1,3 @@
-/* eslint-disable no-lonely-if */
 let cx;
 let cy;
 let px;

@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable react/jsx-props-no-spreading */
-
 import { useEffect } from 'react';
 
 import usePDF from './usePDF';

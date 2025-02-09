@@ -162,6 +162,7 @@ const debugText = (ctx, node) => {
       `${roundedWidth} x ${roundedHeight}`,
       left - marginLeft,
       Math.max(top - marginTop - 4, 1),
+      { width: Infinity },
     );
 };
 

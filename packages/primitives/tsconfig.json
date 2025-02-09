@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "lib",
+    "emitDeclarationOnly": true,
+    "outDir": "lib",
+    "strict": true,
+    "types": ["vitest/globals"],
+    "allowImportingTsExtensions": true,
+  },
+}

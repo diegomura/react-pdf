@@ -10,5 +10,8 @@
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
     "directory": "packages/types"
+  },
+  "dependencies": {
+    "@react-pdf/primitives": "^4.1.0"
   }
 }

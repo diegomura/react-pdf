@@ -1,7 +1,14 @@
+/*
+PDFObject - converts JavaScript types into their corresponding PDF types.
+By Devon Govett
+*/
+
 import PDFReference from './reference';
 import PDFNameTree from './name_tree';
 
-const escapableRe = /[\n\r\t\b\f\(\)\\]/g;
+const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
+
+const escapableRe = /[\n\r\t\b\f()\\]/g;
 const escapable = {
   '\n': '\\n',
   '\r': '\\r',
@@ -12,8 +19,6 @@ const escapable = {
   '(': '\\(',
   ')': '\\)'
 };
-
-const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
 
 // Convert little endian UTF-16 to big endian
 const swapBytes = function (buff) {

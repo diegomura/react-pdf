@@ -3,9 +3,9 @@ import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
 
+import { capitalize, omitNils } from './utils';
 import createRenderer from './renderer';
 import packageJson from '../package.json';
-import { omitNils } from './utils';
 
 const { version } = packageJson;
 
@@ -57,8 +57,6 @@ const pdf = (initialValue) => {
       lang: language,
       displayTitle: true,
       autoFirstPage: false,
-      pageLayout,
-      pageMode,
       info: omitNils({
         Title: title,
         Author: author,
@@ -70,6 +68,14 @@ const pdf = (initialValue) => {
         ModificationDate: modificationDate,
       }),
     });
+
+    if (pageLayout) {
+      ctx._root.data.PageLayout = capitalize(pageLayout);
+    }
+
+    if (pageMode) {
+      ctx._root.data.PageMode = capitalize(pageMode);
+    }
 
     const layout = await layoutDocument(container.document, fontStore);
     const fileStream = renderPDF(ctx, layout);

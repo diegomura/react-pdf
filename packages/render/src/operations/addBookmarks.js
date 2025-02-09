@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 const addNodeBookmark = (ctx, node, pageNumber, registry) => {
   const bookmark = node.props?.bookmark;
 

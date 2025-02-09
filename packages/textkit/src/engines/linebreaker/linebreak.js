@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-properties */
 import LinkedList from './linkedList';
 
 /**
@@ -128,7 +127,6 @@ const linebreak = (nodes, lines, settings) => {
   }
 
   // The main loop of the algorithm
-  // eslint-disable-next-line no-shadow
   function mainLoop(node, index, nodes) {
     let active = activeNodes.first();
     let next = null;
@@ -305,7 +303,6 @@ const linebreak = (nodes, lines, settings) => {
     new LinkedList.Node(breakpoint(0, 0, 0, 0, 0, undefined, null)),
   );
 
-  // eslint-disable-next-line no-shadow
   nodes.forEach((node, index, nodes) => {
     if (node.type === 'box') {
       sum.width += node.width;

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import * as recast from 'recast';
 import { visit } from 'ast-types';
 

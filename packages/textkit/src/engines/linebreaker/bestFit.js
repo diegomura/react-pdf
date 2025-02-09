@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 const INFINITY = 10000;
 
 /**

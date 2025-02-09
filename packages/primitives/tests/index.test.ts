@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-
 import { describe, expect, test } from 'vitest';
 
 import * as primitives from '../src/index.ts';

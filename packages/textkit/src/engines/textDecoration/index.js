@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import runAscent from '../../run/ascent';
 import ascent from '../../attributedString/ascent';
 import runAdvanceWidth from '../../run/advanceWidth';

@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import Canvas from 'canvas';
 import pdfjs from 'pdfjs-dist/legacy/build/pdf';
 

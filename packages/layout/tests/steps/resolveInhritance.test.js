@@ -1,4 +1,4 @@
-/* eslint-disable @vitest/expect-expect */
+/* eslint-disable vitest/expect-expect */
 
 import { describe, expect, test } from 'vitest';
 

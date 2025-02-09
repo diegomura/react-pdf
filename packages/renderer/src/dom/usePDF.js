@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import queue from 'queue';
 import { useState, useRef, useEffect, useCallback } from 'react';
 

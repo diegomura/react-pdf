@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/no-array-index-key */
 import { describe, expect, test } from 'vitest';
 
 import {

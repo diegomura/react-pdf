@@ -27,7 +27,6 @@ const resolveTextLayout = (node, fontStore) => {
     const height =
       node.box.height - (node.box.paddingTop + node.box.paddingBottom);
 
-    // eslint-disable-next-line no-param-reassign
     node.lines = layoutText(node, width, height, fontStore);
   }
 

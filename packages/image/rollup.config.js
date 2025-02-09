@@ -3,7 +3,7 @@ import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 
 const input = './src/index.js';
 

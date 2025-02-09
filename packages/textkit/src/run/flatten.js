@@ -91,7 +91,6 @@ const flattenRegularRuns = (runs) => {
 
       for (let j = 0; j < stack.length; j += 1) {
         if (stack[j] === attributes) {
-          // eslint-disable-next-line no-plusplus
           stack.splice(j--, 1);
         } else {
           attrs = Object.assign({}, attrs, stack[j]);

@@ -1,8 +1,3 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-restricted-syntax */
-
 import Text from './text';
 import Vector from './vector';
 import Images from './images';
@@ -77,13 +72,10 @@ class SVGPage {
     this.applyStyleState(state);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   setDefaultStyles() {}
 
-  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   applyStyleState(state) {}
 
-  // eslint-disable-next-line class-methods-use-this
   getStyleState() {}
 }
 

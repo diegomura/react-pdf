@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable max-classes-per-file */
 class Node {
   constructor(data) {

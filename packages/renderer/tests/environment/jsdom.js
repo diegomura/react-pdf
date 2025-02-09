@@ -1,5 +1,3 @@
-// false positive on import/no-unresolved
-// eslint-disable-next-line import/no-unresolved
 import { builtinEnvironments } from 'vitest/environments';
 
 function patchGlobals() {

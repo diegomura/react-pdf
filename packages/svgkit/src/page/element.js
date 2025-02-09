@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 class Element {
   constructor(type, attributes = {}) {
     this.type = type;

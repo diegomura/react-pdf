@@ -267,7 +267,6 @@ const createEmbeddedFont = (PDFFont) =>
           encoded.push(toHex(value));
         }
 
-        // eslint-disable-next-line no-useless-concat
         entries.push('<' + toHex(index) + '>' + '<' + encoded.join(' ') + '>');
       }
       if (entries.length) {

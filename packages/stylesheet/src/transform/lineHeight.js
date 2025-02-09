@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import { matchPercent } from '@react-pdf/fns';
 
 const processLineHeight = (value, styles) => {

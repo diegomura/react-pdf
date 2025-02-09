@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import * as Yoga from 'yoga-layout/load';
 
 import layoutText from './layoutText';

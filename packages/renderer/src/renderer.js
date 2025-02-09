@@ -1,6 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-param-reassign */
-
 import Reconciler from '@react-pdf/reconciler';
 
 const createInstance = (type, { style, children, ...props }) => ({

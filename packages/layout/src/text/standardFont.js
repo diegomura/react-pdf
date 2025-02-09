@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-
 import { PDFFont } from '@react-pdf/pdfkit';
 
 class StandardFont {

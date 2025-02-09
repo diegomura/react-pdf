@@ -28,7 +28,7 @@ const renderChildren = (ctx, node, options) => {
   }
 
   const children = node.children || [];
-  // eslint-disable-next-line no-use-before-define
+
   const renderChild = (child) => renderNode(ctx, child, options);
 
   children.forEach(renderChild);

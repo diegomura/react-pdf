@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { isNil, upperFirst, matchPercent } from '@react-pdf/fns';
 
 /**

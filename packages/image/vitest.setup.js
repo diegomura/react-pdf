@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { vi } from 'vitest';
 import createFetchMock from 'vitest-fetch-mock';
 

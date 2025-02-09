@@ -110,4 +110,4 @@
  * @property {Attributes} [attributes]
  */
 
-module.exports = {};
+export default {};

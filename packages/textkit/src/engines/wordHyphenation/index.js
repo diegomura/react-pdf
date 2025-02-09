@@ -1,6 +1,4 @@
 import hyphen from 'hyphen';
-// This file is ran directly with Node - needs to have .js extension
-// eslint-disable-next-line import/extensions
 import pattern from 'hyphen/patterns/en-us.js';
 import { isNil } from '@react-pdf/fns';
 

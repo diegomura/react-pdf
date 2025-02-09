@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-
 import { last } from '@react-pdf/fns';
 
 import empty from '../../attributedString/empty';

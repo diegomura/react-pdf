@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { useEffect } from 'react';
 
 import usePDF from './usePDF';
@@ -9,7 +7,7 @@ export const PDFDownloadLink = ({
   document: doc,
   children,
   onClick,
-  href: _filteredOutHref,
+  href,
   ...rest
 }) => {
   const [instance, updateInstance] = usePDF();

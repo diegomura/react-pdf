@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { isNil } from '@react-pdf/fns';
 
 import renderGlyphs from './renderGlyphs';

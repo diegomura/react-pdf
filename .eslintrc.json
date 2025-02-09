@@ -44,10 +44,7 @@
     "react/jsx-props-no-spreading": 0,
     "react/jsx-no-useless-fragment": 0,
     "react/prop-types": 0,
-    "react/state-in-constructor": 0,
-    "@vitest/valid-expect": 0,
-    "@vitest/no-identical-title": 0,
-    "@vitest/expect-expect": 0
+    "react/state-in-constructor": 0
   },
   "overrides": [
     {

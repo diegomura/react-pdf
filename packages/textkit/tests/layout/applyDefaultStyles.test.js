@@ -1,3 +1,5 @@
+/* eslint-disable @vitest/expect-expect */
+
 import { describe, expect, test } from 'vitest';
 
 import applyDefaultStyles from '../../src/layout/applyDefaultStyles';

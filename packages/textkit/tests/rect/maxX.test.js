@@ -8,7 +8,7 @@ describe('rect maxX operator', () => {
     expect(maxX(null)).toBe(0);
   });
 
-  test('should return zero if no rect provided', () => {
+  test('should return zero if empty rect provided', () => {
     expect(maxX(empty())).toBe(0);
   });
 

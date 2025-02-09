@@ -26,7 +26,7 @@ describe('utils stringFromCodePoints operator', () => {
     expect(stringFromCodePoints([64257, 64259])).toBe('ﬁﬃ');
   });
 
-  test('should return get correct string for multipe code points', () => {
+  test('should return get correct string for even mode code points', () => {
     expect(stringFromCodePoints([76, 64257, 77, 64259, 78])).toBe('LﬁMﬃN');
   });
 });

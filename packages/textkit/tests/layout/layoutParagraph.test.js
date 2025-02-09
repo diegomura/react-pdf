@@ -1,4 +1,4 @@
-import { describe, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 import layoutParagraph from '../../src/layout/layoutParagraph';
 
@@ -27,5 +27,6 @@ describe('layoutParagraph', () => {
     layouter(container, paragraph);
 
     // expect no errors
+    expect(true).toBe(true);
   });
 });

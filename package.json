@@ -71,7 +71,7 @@
     "react-dom-17": "npm:react-dom@^17.0.0",
     "react-dom-19": "npm:react-dom@19.0.0-rc-66855b96-20241106",
     "rimraf": "^2.6.3",
-    "rollup": "^4.9.0",
+    "rollup": "^4.34.6",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-ignore": "^1.0.10",
     "rollup-plugin-local-resolve": "^1.0.7",

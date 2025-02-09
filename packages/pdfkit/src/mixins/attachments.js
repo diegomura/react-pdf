@@ -1,10 +1,5 @@
 import fs from 'fs';
-// This file is ran directly with Node - needs to have .js extension
-// eslint-disable-next-line import/extensions
-import * as CryptoJS from 'crypto-js/core.js';
-// This file is ran directly with Node - needs to have .js extension
-// eslint-disable-next-line import/extensions
-import MD5 from 'crypto-js/md5.js';
+import CryptoJS from 'crypto-js';
 
 export default {
   /**
@@ -17,10 +12,12 @@ export default {
    *  * options.hidden: if true, do not add attachment to EmbeddedFiles dictionary. Useful for file attachment annotations
    *  * options.creationDate: override creation date
    *  * options.modifiedDate: override modified date
+   *  * options.relationship: Relationship between the PDF document and its attached file. Can be 'Alternative', 'Data', 'Source', 'Supplement' or 'Unspecified'.
    * @returns filespec reference
    */
   file(src, options = {}) {
     options.name = options.name || src;
+    options.relationship = options.relationship || 'Unspecified';
 
     const refBody = {
       Type: 'EmbeddedFile',
@@ -37,12 +34,12 @@ export default {
       data = Buffer.from(new Uint8Array(src));
     } else {
       let match;
-      if ((match = /^data:(.*);base64,(.*)$/.exec(src))) {
+      if ((match = /^data:(.*?);base64,(.*)$/.exec(src))) {
         if (match[1]) {
           refBody.Subtype = match[1].replace('/', '#2F');
         }
         data = Buffer.from(match[2], 'base64');
-      } else if (!BROWSER) {
+      } else {
         data = fs.readFileSync(src);
         if (!data) {
           throw new Error(`Could not read contents of file at filepath ${src}`);
@@ -52,8 +49,6 @@ export default {
         const { birthtime, ctime } = fs.statSync(src);
         refBody.Params.CreationDate = birthtime;
         refBody.Params.ModDate = ctime;
-      } else {
-        throw new Error(`Could not find file ${src}`);
       }
     }
 
@@ -70,7 +65,9 @@ export default {
     }
 
     // add checksum and size information
-    const checksum = MD5(CryptoJS.lib.WordArray.create(new Uint8Array(data)));
+    const checksum = CryptoJS.MD5(
+      CryptoJS.lib.WordArray.create(new Uint8Array(data))
+    );
     refBody.Params.CheckSum = new String(checksum);
     refBody.Params.Size = data.byteLength;
 
@@ -90,6 +87,7 @@ export default {
     // add filespec for embedded file
     const fileSpecBody = {
       Type: 'Filespec',
+      AFRelationship: options.relationship,
       F: new String(options.name),
       EF: { F: ref },
       UF: new String(options.name)
@@ -104,6 +102,13 @@ export default {
       this.addNamedEmbeddedFile(options.name, filespec);
     }
 
+    // Add file to the catalogue to be PDF/A3 compliant
+    if (this._root.data.AF) {
+      this._root.data.AF.push(filespec);
+    } else {
+      this._root.data.AF = [filespec];
+    }
+
     return filespec;
   }
 };
@@ -114,7 +119,8 @@ function isEqual(a, b) {
     a.Subtype === b.Subtype &&
     a.Params.CheckSum.toString() === b.Params.CheckSum.toString() &&
     a.Params.Size === b.Params.Size &&
-    a.Params.CreationDate === b.Params.CreationDate &&
-    a.Params.ModDate === b.Params.ModDate
+    a.Params.CreationDate.getTime() === b.Params.CreationDate.getTime() &&
+    ((a.Params.ModDate === undefined && b.Params.ModDate === undefined) ||
+      a.Params.ModDate.getTime() === b.Params.ModDate.getTime())
   );
 }

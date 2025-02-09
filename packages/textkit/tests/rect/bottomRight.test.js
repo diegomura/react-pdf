@@ -10,7 +10,7 @@ describe('rect bottomRight operator', () => {
     expect(coord).toHaveProperty('y', 0);
   });
 
-  test('should return zero point if no rect provided', () => {
+  test('should return zero point if empty rect provided', () => {
     const coord = bottomRight(empty());
     expect(coord).toHaveProperty('x', 0);
     expect(coord).toHaveProperty('y', 0);

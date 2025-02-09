@@ -19,7 +19,7 @@ const TestDocument = ({ title = 'Default' }) => (
 );
 
 describe('BlobProvider', () => {
-  it('works', async () => {
+  it('calls render function', async () => {
     const renderFunction = vi.fn();
 
     render(
@@ -37,38 +37,15 @@ describe('BlobProvider', () => {
       }),
     );
   });
-});
 
-describe('BlobProvider', () => {
-  it('works', async () => {
-    const renderFunction = vi.fn();
-
-    render(
-      <BlobProvider document={<TestDocument />}>{renderFunction}</BlobProvider>,
-    );
-
-    await waitFor(() => expect(renderFunction).toBeCalledTimes(3));
-
-    expect(renderFunction).toHaveBeenCalledWith(
-      expect.objectContaining({
-        blob: expect.anything(),
-        url: expect.anything(),
-        error: null,
-        loading: false,
-      }),
-    );
-  });
-});
-
-describe('BlobProvider', () => {
-  it('works', async () => {
+  it('renders iframe', async () => {
     const { container } = render(
       <PDFViewer>
         <TestDocument />
       </PDFViewer>,
     );
 
-    await waitFor(() => expect(container.querySelector('iframe')));
+    await waitFor(() => expect(container.querySelector('iframe')).toBeTruthy());
   });
 });
 

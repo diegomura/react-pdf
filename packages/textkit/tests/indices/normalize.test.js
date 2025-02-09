@@ -25,7 +25,7 @@ describe('indices normalizeArray operator', () => {
     expect(normalizeArray(list)).toEqual([0, 3, 6]);
   });
 
-  test('should normalize consecutive numbers starting on zero', () => {
+  test('should normalize ascending non-consecutive numbers starting on zero', () => {
     const list = [0, 3, 8];
 
     expect(normalizeArray(list)).toEqual([0, 3, 8]);

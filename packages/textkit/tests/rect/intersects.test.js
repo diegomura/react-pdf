@@ -45,14 +45,14 @@ describe('rect intersects operator', () => {
     expect(intersects(a, b)).toEqual(true);
   });
 
-  test('should not intesect on top edge', () => {
+  test('should not intesect on right edge', () => {
     const a = { x: 50, y: 50, width: 90, height: 110 };
     const b = { x: 150, y: 40, width: 30, height: 30 };
 
     expect(intersects(a, b)).toEqual(false);
   });
 
-  test('should intesect on top edge', () => {
+  test('should intesect on right edge', () => {
     const a = { x: 50, y: 50, width: 90, height: 110 };
     const b = { x: 130, y: 40, width: 30, height: 30 };
 

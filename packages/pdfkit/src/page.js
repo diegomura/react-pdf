@@ -3,6 +3,9 @@ PDFPage - represents a single page in the PDF document
 By Devon Govett
 */
 
+/**
+ * @type {SideDefinition<Size>}
+ */
 const DEFAULT_MARGINS = {
   top: 72,
   left: 72,
@@ -66,6 +69,7 @@ const SIZES = {
 class PDFPage {
   constructor(document, options = {}) {
     this.document = document;
+    this._options = options;
     this.size = options.size || 'letter';
     this.layout = options.layout || 'portrait';
     this.userUnit = options.userUnit || 1.0;
@@ -92,6 +96,9 @@ class PDFPage {
     this.height = dimensions[this.layout === 'portrait' ? 1 : 0];
 
     this.content = this.document.ref();
+
+    if (options.font) document.font(options.font, options.fontFamily);
+    if (options.fontSize) document.fontSize(options.fontSize);
 
     // Initialize the Font, XObject, and ExtGState dictionaries
     this.resources = this.document.ref({
@@ -157,8 +164,20 @@ class PDFPage {
     return this.content.write(chunk);
   }
 
+  // Set tab order if document is tagged for accessibility.
+  _setTabOrder() {
+    if (!this.dictionary.Tabs && this.document.hasMarkInfoDictionary()) {
+      this.dictionary.data.Tabs = 'S';
+    }
+  }
+
   end() {
+    this._setTabOrder();
     this.dictionary.end();
+    this.resources.data.ColorSpace = this.resources.data.ColorSpace || {};
+    for (let color of Object.values(this.document.spotColors)) {
+      this.resources.data.ColorSpace[color.id] = color;
+    }
     this.resources.end();
     return this.content.end();
   }

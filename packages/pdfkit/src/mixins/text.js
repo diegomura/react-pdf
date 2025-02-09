@@ -56,10 +56,35 @@ export default {
       }
     };
 
-    for (let line of text.split('\n')) {
-      addStructure();
-      lineCallback(line, options);
+    // We can save some bytes if there is no rotation
+    if (options.rotation !== 0) {
+      this.save();
+      this.rotate(-options.rotation, { origin: [this.x, this.y] });
     }
+
+    // word wrapping
+    if (options.width) {
+      let wrapper = this._wrapper;
+      if (!wrapper) {
+        wrapper = new LineWrapper(this, options);
+        wrapper.on('line', lineCallback);
+        wrapper.on('firstLine', addStructure);
+      }
+
+      this._wrapper = options.continued ? wrapper : null;
+      this._textOptions = options.continued ? options : null;
+      wrapper.wrap(text, options);
+
+      // render paragraphs as single lines
+    } else {
+      for (let line of text.split('\n')) {
+        addStructure();
+        lineCallback(line, options);
+      }
+    }
+
+    // Cleanup if there was a rotation
+    if (options.rotation !== 0) this.restore();
 
     return this;
   },
@@ -88,127 +113,7 @@ export default {
    * @param options - Any text options (The same you would apply to `doc.text()`)
    * @returns {{x: number, y: number, width: number, height: number}}
    */
-  boundsOfString(string, x, y, options) {
-    options = this._initOptions(x, y, options);
-    ({ x, y } = this);
-    const lineGap = options.lineGap ?? this._lineGap ?? 0;
-    const lineHeight = this.currentLineHeight(true) + lineGap;
-    let contentWidth = 0;
-    // Convert text to a string
-    string = String(string ?? '');
-
-    // if the wordSpacing option is specified, remove multiple consecutive spaces
-    if (options.wordSpacing) {
-      string = string.replace(/\s{2,}/g, ' ');
-    }
-
-    // word wrapping
-    if (options.width) {
-      let wrapper = new LineWrapper(this, options);
-      wrapper.on('line', (text, options) => {
-        this.y += lineHeight;
-        text = text.replace(/\n/g, '');
-
-        if (text.length) {
-          // handle options
-          let wordSpacing = options.wordSpacing ?? 0;
-          const characterSpacing = options.characterSpacing ?? 0;
-
-          // justify alignments
-          if (options.width && options.align === 'justify') {
-            // calculate the word spacing value
-            const words = text.trim().split(/\s+/);
-            const textWidth = this.widthOfString(
-              text.replace(/\s+/g, ''),
-              options
-            );
-            const spaceWidth = this.widthOfString(' ') + characterSpacing;
-            wordSpacing = Math.max(
-              0,
-              (options.lineWidth - textWidth) / Math.max(1, words.length - 1) -
-                spaceWidth
-            );
-          }
-
-          // calculate the actual rendered width of the string after word and character spacing
-          contentWidth = Math.max(
-            contentWidth,
-            options.textWidth +
-              wordSpacing * (options.wordCount - 1) +
-              characterSpacing * (text.length - 1)
-          );
-        }
-      });
-      wrapper.wrap(string, options);
-    } else {
-      // render paragraphs as single lines
-      for (let line of string.split('\n')) {
-        const lineWidth = this.widthOfString(line, options);
-        this.y += lineHeight;
-        contentWidth = Math.max(contentWidth, lineWidth);
-      }
-    }
-
-    let contentHeight = this.y - y;
-    // Clamp height to max height
-    if (options.height) contentHeight = Math.min(contentHeight, options.height);
-
-    this.x = x;
-    this.y = y;
-
-    /**
-     * Rotates around top left corner
-     * [x1,y1]  >  [x2,y2]
-     *    ⌃           ⌄
-     * [x4,y4]  <  [x3,y3]
-     */
-    if (options.rotation === 0) {
-      // No rotation so we can use the existing values
-      return { x, y, width: contentWidth, height: contentHeight };
-      // Use fast computation without explicit trig
-    } else if (options.rotation === 90) {
-      return {
-        x: x,
-        y: y - contentWidth,
-        width: contentHeight,
-        height: contentWidth
-      };
-    } else if (options.rotation === 180) {
-      return {
-        x: x - contentWidth,
-        y: y - contentHeight,
-        width: contentWidth,
-        height: contentHeight
-      };
-    } else if (options.rotation === 270) {
-      return {
-        x: x - contentHeight,
-        y: y,
-        width: contentHeight,
-        height: contentWidth
-      };
-    }
-
-    // Non-trivial values so time for trig
-    const cos = cosine(options.rotation);
-    const sin = sine(options.rotation);
-
-    const x1 = x;
-    const y1 = y;
-    const x2 = x + contentWidth * cos;
-    const y2 = y - contentWidth * sin;
-    const x3 = x + contentWidth * cos + contentHeight * sin;
-    const y3 = y - contentWidth * sin + contentHeight * cos;
-    const x4 = x + contentHeight * sin;
-    const y4 = y + contentHeight * cos;
-
-    const xMin = Math.min(x1, x2, x3, x4);
-    const xMax = Math.max(x1, x2, x3, x4);
-    const yMin = Math.min(y1, y2, y3, y4);
-    const yMax = Math.max(y1, y2, y3, y4);
-
-    return { x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin };
-  },
+  boundsOfString(string, x, y, options) {},
 
   heightOfString(text, options) {
     const { x, y } = this;
@@ -364,10 +269,7 @@ export default {
       x = null;
     }
 
-    // shallow clone options object
-    /**
-     * @type {Object}
-     */
+    // clone options object
     const result = Object.assign({}, options);
 
     // extend options with previous values for continued text
@@ -404,6 +306,10 @@ export default {
     if (result.columnGap == null) {
       result.columnGap = 18;
     } // 1/4 inch
+
+    // Normalize rotation to between 0 - 360
+    result.rotation = Number(options.rotation ?? 0) % 360;
+    if (result.rotation < 0) result.rotation += 360;
 
     return result;
   },

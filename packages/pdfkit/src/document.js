@@ -22,7 +22,6 @@ import AttachmentsMixin from './mixins/attachments';
 import LineWrapper from './line_wrapper';
 import SubsetMixin from './mixins/subsets';
 import MetadataMixin from './mixins/metadata';
-import capitalize from './utils/capitalize';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -80,14 +79,6 @@ class PDFDocument extends stream.Readable {
 
     if (this.options.lang) {
       this._root.data.Lang = new String(this.options.lang);
-    }
-
-    if (this.options.pageLayout) {
-      this._root.data.PageLayout = capitalize(this.options.pageLayout);
-    }
-
-    if (this.options.pageMode) {
-      this._root.data.PageMode = capitalize(this.options.pageMode);
     }
 
     // The current page

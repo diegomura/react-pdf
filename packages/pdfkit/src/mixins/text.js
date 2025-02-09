@@ -408,37 +408,161 @@ export default {
     return result;
   },
 
-  _line(text, options = {}) {
+  _line(text, options = {}, wrapper) {
     this._fragment(text, this.x, this.y, options);
+    const lineGap = options.lineGap || this._lineGap || 0;
 
-    return (this.x += this.widthOfString(text));
+    if (!wrapper) {
+      return (this.x += this.widthOfString(text, options));
+    } else {
+      return (this.y += this.currentLineHeight(true) + lineGap);
+    }
   },
 
   _fragment(text, x, y, options) {
+    let dy, encoded, i, positions, textWidth, words;
     text = `${text}`.replace(/\n/g, '');
+    if (text.length === 0) {
+      return;
+    }
 
-    if (text.length === 0) return;
+    // handle options
+    const align = options.align || 'left';
+    let wordSpacing = options.wordSpacing || 0;
+    const characterSpacing = options.characterSpacing || 0;
+    const horizontalScaling = options.horizontalScaling || 100;
 
-    const [encoded, positions] = this._font.encode(text, options.features);
+    // text alignments
+    if (options.width) {
+      switch (align) {
+        case 'right':
+          textWidth = this.widthOfString(text.replace(/\s+$/, ''), options);
+          x += options.lineWidth - textWidth;
+          break;
 
-    const dy = (this._font.ascender / 1000) * this._fontSize;
+        case 'center':
+          x += options.lineWidth / 2 - options.textWidth / 2;
+          break;
 
-    this._glyphs(encoded, positions, x, y + dy, options);
-  },
+        case 'justify':
+          // calculate the word spacing value
+          words = text.trim().split(/\s+/);
+          textWidth = this.widthOfString(text.replace(/\s+/g, ''), options);
+          var spaceWidth = this.widthOfString(' ') + characterSpacing;
+          wordSpacing = Math.max(
+            0,
+            (options.lineWidth - textWidth) / Math.max(1, words.length - 1) -
+              spaceWidth
+          );
+          break;
+      }
+    }
 
-  _glyphs(encoded, positions, x, y, options) {
-    const commands = [];
-    const scale = this._fontSize / 1000;
+    // text baseline alignments based on http://wiki.apache.org/xmlgraphics-fop/LineLayout/AlignmentHandling
+    if (typeof options.baseline === 'number') {
+      dy = -options.baseline;
+    } else {
+      switch (options.baseline) {
+        case 'svg-middle':
+          dy = 0.5 * this._font.xHeight;
+          break;
+        case 'middle':
+        case 'svg-central':
+          dy = 0.5 * (this._font.descender + this._font.ascender);
+          break;
+        case 'bottom':
+        case 'ideographic':
+          dy = this._font.descender;
+          break;
+        case 'alphabetic':
+          dy = 0;
+          break;
+        case 'mathematical':
+          dy = 0.5 * this._font.ascender;
+          break;
+        case 'hanging':
+          dy = 0.8 * this._font.ascender;
+          break;
+        case 'top':
+          dy = this._font.ascender;
+          break;
+        default:
+          dy = this._font.ascender;
+      }
+      dy = (dy / 1000) * this._fontSize;
+    }
 
-    let i;
-    let last = 0;
-    let hadOffset = false;
+    // calculate the actual rendered width of the string after word and character spacing
+    const renderedWidth =
+      options.textWidth +
+      wordSpacing * (options.wordCount - 1) +
+      characterSpacing * (text.length - 1);
+
+    // create link annotations if the link option is given
+    if (options.link != null) {
+      this.link(x, y, renderedWidth, this.currentLineHeight(), options.link);
+    }
+    if (options.goTo != null) {
+      this.goTo(x, y, renderedWidth, this.currentLineHeight(), options.goTo);
+    }
+    if (options.destination != null) {
+      this.addNamedDestination(options.destination, 'XYZ', x, y, null);
+    }
+
+    // create underline
+    if (options.underline) {
+      this.save();
+      if (!options.stroke) {
+        this.strokeColor(...(this._fillColor || []));
+      }
+
+      const lineWidth =
+        this._fontSize < 10 ? 0.5 : Math.floor(this._fontSize / 10);
+      this.lineWidth(lineWidth);
+
+      let lineY = y + this.currentLineHeight() - lineWidth;
+      this.moveTo(x, lineY);
+      this.lineTo(x + renderedWidth, lineY);
+      this.stroke();
+      this.restore();
+    }
+
+    // create strikethrough line
+    if (options.strike) {
+      this.save();
+      if (!options.stroke) {
+        this.strokeColor(...(this._fillColor || []));
+      }
+
+      const lineWidth =
+        this._fontSize < 10 ? 0.5 : Math.floor(this._fontSize / 10);
+      this.lineWidth(lineWidth);
+
+      let lineY = y + this.currentLineHeight() / 2;
+      this.moveTo(x, lineY);
+      this.lineTo(x + renderedWidth, lineY);
+      this.stroke();
+      this.restore();
+    }
 
     this.save();
 
+    // oblique (angle in degrees or boolean)
+    if (options.oblique) {
+      let skew;
+      if (typeof options.oblique === 'number') {
+        skew = -Math.tan((options.oblique * Math.PI) / 180);
+      } else {
+        skew = -0.25;
+      }
+      this.transform(1, 0, 0, 1, x, y);
+      this.transform(1, 0, skew, 1, -skew * dy, 0);
+      this.transform(1, 0, 0, 1, -x, -y);
+    }
+
     // flip coordinate system
     this.transform(1, 0, 0, -1, 0, this.page.height);
-    y = this.page.height - y;
+    y = this.page.height - y - dy;
 
     // add current font to page if necessary
     if (this.page.fonts[this._font.id] == null) {
@@ -459,6 +583,55 @@ export default {
     if (mode) {
       this.addContent(`${mode} Tr`);
     }
+
+    // Character spacing
+    if (characterSpacing) {
+      this.addContent(`${number(characterSpacing)} Tc`);
+    }
+
+    // Horizontal scaling
+    if (horizontalScaling !== 100) {
+      this.addContent(`${horizontalScaling} Tz`);
+    }
+
+    // Add the actual text
+    // If we have a word spacing value, we need to encode each word separately
+    // since the normal Tw operator only works on character code 32, which isn't
+    // used for embedded fonts.
+    if (wordSpacing) {
+      words = text.trim().split(/\s+/);
+      wordSpacing += this.widthOfString(' ') + characterSpacing;
+      wordSpacing *= 1000 / this._fontSize;
+
+      encoded = [];
+      positions = [];
+      for (let word of words) {
+        const [encodedWord, positionsWord] = this._font.encode(
+          word,
+          options.features
+        );
+        encoded = encoded.concat(encodedWord);
+        positions = positions.concat(positionsWord);
+
+        // add the word spacing to the end of the word
+        // clone object because of cache
+        const space = {};
+        const object = positions[positions.length - 1];
+        for (let key in object) {
+          const val = object[key];
+          space[key] = val;
+        }
+        space.xAdvance += wordSpacing;
+        positions[positions.length - 1] = space;
+      }
+    } else {
+      [encoded, positions] = this._font.encode(text, options.features);
+    }
+
+    const scale = this._fontSize / 1000;
+    const commands = [];
+    let last = 0;
+    let hadOffset = false;
 
     // Adds a segment of text to the TJ command buffer
     const addSegment = (cur) => {

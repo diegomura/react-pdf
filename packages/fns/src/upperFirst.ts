@@ -1,10 +1,10 @@
 /**
  * Capitalize first letter of string
  *
- * @param {string} value string
- * @returns {string} capitalized string
+ * @param value - String
+ * @returns Capitalized string
  */
-const upperFirst = (value) => {
+const upperFirst = (value?: string | null): string | null | undefined => {
   if (!value) return value;
   return value.charAt(0).toUpperCase() + value.slice(1);
 };

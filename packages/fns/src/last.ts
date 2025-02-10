@@ -1,10 +1,10 @@
 /**
  * Returns the last character of a string.
  *
- * @param {string} value the input string
- * @returns {string} the last character of the string
+ * @param value - The input value
+ * @returns The last character of the string
  */
-const last = (value) => {
+const last = (value: string | any[]): any => {
   return value === '' ? '' : value[value.length - 1];
 };
 

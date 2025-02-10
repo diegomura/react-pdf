@@ -18,28 +18,28 @@ describe('match percent', () => {
   test('should return value for positive integer percents', () => {
     const match = matchPercent('35%');
 
-    expect(match.value).toBe(35);
-    expect(match.percent).toBe(0.35);
+    expect(match?.value).toBe(35);
+    expect(match?.percent).toBe(0.35);
   });
 
   test('should return value for positive real percents', () => {
     const match = matchPercent('35.5%');
 
-    expect(match.value).toBe(35.5);
-    expect(match.percent).toBe(0.355);
+    expect(match?.value).toBe(35.5);
+    expect(match?.percent).toBe(0.355);
   });
 
   test('should return value for negative integer percents', () => {
     const match = matchPercent('-35%');
 
-    expect(match.value).toBe(-35);
-    expect(match.percent).toBe(-0.35);
+    expect(match?.value).toBe(-35);
+    expect(match?.percent).toBe(-0.35);
   });
 
   test('should return value for negative real percents', () => {
     const match = matchPercent('-35.5%');
 
-    expect(match.value).toBe(-35.5);
-    expect(match.percent).toBe(-0.355);
+    expect(match?.value).toBe(-35.5);
+    expect(match?.percent).toBe(-0.355);
   });
 });

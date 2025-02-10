@@ -2,8 +2,9 @@ import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
+import { upperFirst } from '@react-pdf/fns';
 
-import { capitalize, omitNils } from './utils';
+import { omitNils } from './utils';
 import createRenderer from './renderer';
 import packageJson from '../package.json';
 
@@ -70,11 +71,11 @@ const pdf = (initialValue) => {
     });
 
     if (pageLayout) {
-      ctx._root.data.PageLayout = capitalize(pageLayout);
+      ctx._root.data.PageLayout = upperFirst(pageLayout);
     }
 
     if (pageMode) {
-      ctx._root.data.PageMode = capitalize(pageMode);
+      ctx._root.data.PageMode = upperFirst(pageMode);
     }
 
     const layout = await layoutDocument(container.document, fontStore);

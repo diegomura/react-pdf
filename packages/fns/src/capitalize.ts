@@ -1,10 +1,10 @@
 /**
  * Capitalize first letter of each word
  *
- * @param {string} value string
- * @returns {string} capitalized string
+ * @param value = Any string
+ * @returns Capitalized string
  */
-const capitalize = (value) => {
+const capitalize = (value?: string | null) => {
   if (!value) return value;
   return value.replace(/(^|\s)\S/g, (l) => l.toUpperCase());
 };

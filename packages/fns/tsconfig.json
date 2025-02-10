@@ -1,10 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
-    "declarationDir": "lib",
+    "declarationDir": "lib/types",
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022", "DOM"],
@@ -16,4 +15,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals"],
   },
+  "include": ["src"],
 }

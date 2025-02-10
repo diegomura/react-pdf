@@ -33,7 +33,6 @@ const availableMethods = [
   'quadraticCurveTo',
   'linearGradient',
   'radialGradient',
-  // 'stop',
 ];
 
 const gradientMethods = ['linearGradient', 'radialGradient'];

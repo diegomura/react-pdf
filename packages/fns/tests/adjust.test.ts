@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import adjust from '../src/adjust';
 
-const add = (v) => v + 1;
+const add = (v: number) => v + 1;
 
 describe('adjust', () => {
   test('applies the given function to the value at the given index of the supplied array', () => {

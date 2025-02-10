@@ -1,12 +1,12 @@
 /**
  * Applies a function to the value at the given index of an array
-
- * @param {number} index
- * @param {function} fn
- * @param {array} collection
- * @returns copy of the array with the element at the given index replaced with the result of the function application.
+ *
+ * @param index
+ * @param fn
+ * @param collection
+ * @returns Copy of the array with the element at the given index replaced with the result of the function application.
  */
-const adjust = (index, fn, collection) => {
+const adjust = (index: number, fn: (value: any) => any, collection: any[]) => {
   if (index >= 0 && index >= collection.length) return collection;
   if (index < 0 && Math.abs(index) > collection.length) return collection;
 

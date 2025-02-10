@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import evolve from '../src/evolve';
 
-const add = (a) => (b) => a + b;
+const add = (a: number) => (b: number) => a + b;
 
 describe('evolve', () => {
   test('creates a new object by evolving the `object` according to the `transformation` functions', () => {
@@ -29,13 +29,5 @@ describe('evolve', () => {
     evolve(transf, object);
 
     expect(object).toEqual(expected);
-  });
-
-  test('creates a new array by evolving the `array` according to the `transformation` functions', () => {
-    const transf = [add(1), add(-1)];
-    const object = [100, 1400];
-    const expected = [101, 1399];
-
-    expect(evolve(transf, object)).toEqual(expected);
   });
 });

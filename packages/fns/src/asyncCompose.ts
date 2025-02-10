@@ -3,21 +3,14 @@
 import reverse from './reverse';
 
 /**
- * @typedef {Function} AsyncCompose
- * @param {any} value
- * @param {...any} args
- * @returns {any} result
- */
-
-/**
  * Performs right-to-left function composition with async functions support
  *
- * @param {...Function} fns functions
- * @returns {AsyncCompose} composed function
+ * @param fns - Functions
+ * @returns Composed function
  */
 const asyncCompose =
-  (...fns) =>
-  async (value, ...args) => {
+  (...fns: any[]) =>
+  async (value: any, ...args: any[]) => {
     let result = value;
     const reversedFns = reverse(fns);
 

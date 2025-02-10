@@ -3,11 +3,11 @@ import castArray from './castArray';
 /**
  * Creates a new object by omitting specified keys from the original object.
  *
- * @param {string|string[]} keys the key or keys to omit
- * @param {object} object the original object
- * @returns {object} the new object without the omitted keys
+ * @param keys - The key or keys to omit
+ * @param object - The original object
+ * @returns The new object without the omitted keys
  */
-const omit = (keys, object) => {
+const omit = (keys: string | string[], object: Record<string, any>): object => {
   const _keys = castArray(keys);
 
   const copy = Object.assign({}, object);

@@ -68,3 +68,12 @@ describe('primitive renderCanvas', () => {
     renderCanvas(ctx, node);
   });
 });
+test('should be scoped operation - gradient', () => {
+  const ctx = createCTX();
+  const box = { top: 20, left: 40, width: 140, height: 200 };
+  const node = { type: P.Canvas, box, props: {} };
+  ctx.radialGradient(1, 2, 3, 4, 5, 6);
+  ctx.stop();
+  renderCanvas(ctx, node);
+  expect(ctx.stop.mock.calls).toHaveLength(1);
+});

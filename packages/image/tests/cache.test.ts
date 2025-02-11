@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import createCache from '../src/cache';
+import createCache from '../src/cache.js';
 
 describe('Background', () => {
   test('should have length 0 by default', () => {

@@ -1,37 +1,27 @@
-import babel from '@rollup/plugin-babel';
+import { dts } from 'rollup-plugin-dts';
+import del from 'rollup-plugin-delete';
+import typescript from '@rollup/plugin-typescript';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import pkg from './package.json' with { type: 'json' };
 
-const input = './src/index.js';
-
-const babelConfig = () => ({
-  babelrc: true,
-  exclude: 'node_modules/**',
-  babelHelpers: 'runtime',
-});
+const input = './src/index.ts';
 
 const getExternal = ({ browser }) => [
-  /@babel\/runtime/,
   ...Object.keys(pkg.dependencies),
   ...(browser ? [] : ['fs', 'path', 'url']),
 ];
 
 const getPlugins = ({ browser }) => [
-  babel(babelConfig()),
+  typescript(),
   replace({
     preventAssignment: true,
     values: { BROWSER: JSON.stringify(browser) },
   }),
   ...(browser
-    ? [
-        ignore(['fs', 'path', 'url']),
-        nodePolyfills({
-          include: [/node_modules\/.+\.js/, /\/image\/src\/.*\.js/],
-        }),
-      ]
+    ? [ignore(['fs', 'path', 'url']), nodePolyfills({ include: null })]
     : []),
 ];
 
@@ -49,4 +39,10 @@ const browserConfig = {
   plugins: getPlugins({ browser: true }),
 };
 
-export default [serverConfig, browserConfig];
+const dtsConfig = {
+  input: './lib/types/index.d.ts',
+  output: [{ file: 'lib/index.d.ts', format: 'es' }],
+  plugins: [dts(), del({ targets: 'lib/types', hook: 'buildEnd' })],
+};
+
+export default [serverConfig, browserConfig, dtsConfig];

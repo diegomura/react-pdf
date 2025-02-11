@@ -1,10 +1,10 @@
-const createCache = ({ limit = 100 } = {}) => {
-  let cache = {};
+const createCache = <T>({ limit = 100 } = {}) => {
+  let cache: Record<string, T> = {};
   let keys = [];
 
   return {
-    get: (key) => cache[key],
-    set: (key, value) => {
+    get: (key: string): T | undefined => cache[key],
+    set: (key: string, value: T) => {
       keys.push(key);
       if (keys.length > limit) {
         delete cache[keys.shift()];

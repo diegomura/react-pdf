@@ -1,12 +1,15 @@
 import matchMedia from 'media-engine';
 
+import { Container, Style } from '../types';
+
 /**
  * Resolves media queries in styles object
  *
- * @param {Object} container
- * @param {Object} styles object
+ * @param container - Container for which styles are resolved
+ * @param style - Style description
+ * @returns Resolved style object
  */
-const resolveMediaQueries = (container, styles) => {
+const resolveMediaQueries = (container: Container, styles: Style): Style => {
   return Object.keys(styles).reduce((acc, key) => {
     if (/@media/.test(key)) {
       return {

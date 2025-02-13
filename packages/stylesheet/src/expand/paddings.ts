@@ -1,6 +1,10 @@
+import { PaddingExpandedStyle, PaddingShorthandStyle } from '../types';
 import processBoxModel from './boxModel';
 
-const processPadding = processBoxModel({
+const processPadding = processBoxModel<
+  PaddingShorthandStyle,
+  PaddingExpandedStyle
+>({
   expandsTo: ({ first, second, third, fourth }) => ({
     paddingTop: first,
     paddingRight: second,
@@ -10,7 +14,10 @@ const processPadding = processBoxModel({
   maxValues: 4,
 });
 
-const processPaddingVertical = processBoxModel({
+const processPaddingVertical = processBoxModel<
+  PaddingShorthandStyle,
+  PaddingExpandedStyle
+>({
   expandsTo: ({ first, second }) => ({
     paddingTop: first,
     paddingBottom: second,
@@ -18,7 +25,10 @@ const processPaddingVertical = processBoxModel({
   maxValues: 2,
 });
 
-const processPaddingHorizontal = processBoxModel({
+const processPaddingHorizontal = processBoxModel<
+  PaddingShorthandStyle,
+  PaddingExpandedStyle
+>({
   expandsTo: ({ first, second }) => ({
     paddingRight: first,
     paddingLeft: second,
@@ -26,7 +36,10 @@ const processPaddingHorizontal = processBoxModel({
   maxValues: 2,
 });
 
-const processPaddingSingle = processBoxModel();
+const processPaddingSingle = processBoxModel<
+  PaddingShorthandStyle,
+  PaddingExpandedStyle
+>();
 
 export {
   processPadding,

@@ -7,6 +7,7 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -18,7 +19,6 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
     "@react-pdf/fns": "3.1.0",
     "@react-pdf/types": "^2.7.1",
     "color-string": "^1.9.1",

@@ -1,9 +1,14 @@
-const parse = (transformString) => {
+type TransformOperation = {
+  operation: string;
+  value: string[];
+};
+
+const parse = (transformString: string): TransformOperation[] => {
   const transforms = transformString.trim().split(/\)[ ,]|\)/);
 
   // Handle "initial", "inherit", "unset".
   if (transforms.length === 1) {
-    return [[transforms[0], true]];
+    return [];
   }
 
   const parsed = [];
@@ -22,50 +27,51 @@ const parse = (transformString) => {
   return parsed;
 };
 
-const parseAngle = (value) => {
+const parseAngle = (value: string): number => {
   const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
   const [, angle, unit] = unitsRegexp.exec(value);
-  const number = Number.parseFloat(angle);
+  const number = parseFloat(angle);
 
   return unit === 'rad' ? (number * 180) / Math.PI : number;
 };
 
-const normalizeTransformOperation = ({ operation, value }) => {
+const normalizeTransformOperation = ({
+  operation,
+  value,
+}: TransformOperation) => {
   switch (operation) {
     case 'scale': {
-      const [scaleX, scaleY = scaleX] = value.map((num) =>
-        Number.parseFloat(num),
-      );
+      const [scaleX, scaleY = scaleX] = value.map((num) => parseFloat(num));
       return { operation: 'scale', value: [scaleX, scaleY] };
     }
 
     case 'scaleX': {
-      return { operation: 'scale', value: [Number.parseFloat(value), 1] };
+      return { operation: 'scale', value: [parseFloat(value[0]), 1] };
     }
     case 'scaleY': {
-      return { operation: 'scale', value: [1, Number.parseFloat(value)] };
+      return { operation: 'scale', value: [1, parseFloat(value[0])] };
     }
 
     case 'rotate': {
-      return { operation: 'rotate', value: [parseAngle(value)] };
+      return { operation: 'rotate', value: [parseAngle(value[0])] };
     }
 
     case 'translate': {
       return {
         operation: 'translate',
-        value: value.map((num) => Number.parseFloat(num)),
+        value: value.map((num) => parseFloat(num)),
       };
     }
 
     case 'translateX': {
       return {
         operation: 'translate',
-        value: [Number.parseFloat(value), 0],
+        value: [parseFloat(value[0]), 0],
       };
     }
 
     case 'translateY': {
-      return { operation: 'translate', value: [0, Number.parseFloat(value)] };
+      return { operation: 'translate', value: [0, parseFloat(value[0])] };
     }
 
     case 'skew': {
@@ -73,15 +79,15 @@ const normalizeTransformOperation = ({ operation, value }) => {
     }
 
     case 'skewX': {
-      return { operation: 'skew', value: [parseAngle(value), 0] };
+      return { operation: 'skew', value: [parseAngle(value[0]), 0] };
     }
 
     case 'skewY': {
-      return { operation: 'skew', value: [0, parseAngle(value)] };
+      return { operation: 'skew', value: [0, parseAngle(value[0])] };
     }
 
     default: {
-      return { operation, value: value.map((num) => Number.parseFloat(num)) };
+      return { operation, value: value.map((num) => parseFloat(num)) };
     }
   }
 };
@@ -90,7 +96,7 @@ const normalize = (operations) => {
   return operations.map((operation) => normalizeTransformOperation(operation));
 };
 
-const processTransform = (value) => {
+const processTransform = (value: string) => {
   if (typeof value !== 'string') return value;
 
   return normalize(parse(value));

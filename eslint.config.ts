@@ -234,7 +234,6 @@ const tsConfig = {
     'no-unreachable': 'off',
     'no-unsafe-negation': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     '@typescript-eslint/no-empty-object-type': 'error',

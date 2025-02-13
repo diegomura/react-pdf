@@ -1,16 +1,28 @@
+import {
+  BorderExpandedStyle,
+  BorderShorthandStyle,
+  BorderStyleValue,
+} from '../types';
+
 const BORDER_SHORTHAND_REGEX =
   /(-?\d+(\.\d+)?(in|mm|cm|pt|vw|vh|px|rem)?)\s(\S+)\s(.+)/;
 
-const matchBorderShorthand = (value) =>
+const matchBorderShorthand = (value: string) =>
   value.match(BORDER_SHORTHAND_REGEX) || [];
 
-const expandBorders = (key, value) => {
+type BorderShorthandKey = keyof BorderShorthandStyle;
+
+const expandBorders = <K extends BorderShorthandKey>(
+  key: K,
+  value: BorderShorthandStyle[K],
+): BorderExpandedStyle => {
   const match = matchBorderShorthand(`${value}`);
 
   if (match) {
     const color = match[5] || value;
-    const style = match[4] || value;
     const width = match[1] || value;
+    const style = (match[4] || `${value}`) as BorderStyleValue;
+
     if (key.match(/(Top|Right|Bottom|Left)$/)) {
       return {
         [`${key}Color`]: color,
@@ -20,6 +32,10 @@ const expandBorders = (key, value) => {
     }
 
     if (key.match(/Color$/)) {
+      if (typeof color === 'number') {
+        throw new Error(`${key} must be a string`);
+      }
+
       return {
         borderTopColor: color,
         borderRightColor: color,
@@ -55,6 +71,10 @@ const expandBorders = (key, value) => {
       };
     }
 
+    if (typeof color === 'number') {
+      throw new Error(`${key} must be a string`);
+    }
+
     return {
       borderTopColor: color,
       borderTopStyle: style,
@@ -71,7 +91,7 @@ const expandBorders = (key, value) => {
     };
   }
 
-  return value;
+  return { [key]: value };
 };
 
 export default expandBorders;

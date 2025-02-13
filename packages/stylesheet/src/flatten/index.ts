@@ -1,21 +1,21 @@
 import { compose, castArray } from '@react-pdf/fns';
+import { Style } from '../types';
 
 /**
  * Remove nil values from array
  *
- * @template T
- * @param {(T | null | undefined)[]} array
- * @returns {T[]} array without nils
+ * @param array - Styles array
+ * @returns Styles array without nil values
  */
-const compact = (array) => array.filter(Boolean);
+const compact = (array: Style[]) => array.filter(Boolean);
 
 /**
  * Merges style objects array
  *
- * @param {Object[]} styles style objects array
- * @returns {Object} merged style object
+ * @param styles - Style objects array
+ * @returns Merged style object
  */
-const mergeStyles = (styles) =>
+const mergeStyles = (styles: Style[]) =>
   styles.reduce((acc, style) => {
     const s = Array.isArray(style) ? flatten(style) : style;
 
@@ -31,9 +31,13 @@ const mergeStyles = (styles) =>
 /**
  * Flattens an array of style objects, into one aggregated style object.
  *
- * @param {Object[]} styles style objects array
- * @returns {Object} flattened style object
+ * @param styles - Style objects or array
+ * @returns - Flattened style object
  */
-const flatten = compose(mergeStyles, compact, castArray);
+const flatten = compose(
+  mergeStyles,
+  compact,
+  castArray<Style | undefined | null>,
+);
 
 export default flatten;

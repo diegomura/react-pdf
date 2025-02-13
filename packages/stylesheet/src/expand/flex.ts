@@ -1,18 +1,22 @@
 // https://developer.mozilla.org/en-US/docs/Web/CSS/flex#values
 
-// TODO: change flex defaults to [0, 1, 'auto'] as in spec in next major release
-const flexDefaults = [1, 1, 0];
-/**
- * @type {(number | 'auto')[]}
- */
-const flexAuto = [1, 1, 'auto'];
+import { FlexboxStyle } from '../types';
 
-const expandFlex = (key, value) => {
-  /**
-   * @type {(number | 'auto')[]}
-   */
+// TODO: change flex defaults to [0, 1, 'auto'] as in spec in next major release
+const flexDefaults: FlexboxStyle = { flexGrow: 1, flexShrink: 1, flexBasis: 0 };
+
+const flexAuto: FlexboxStyle = {
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: 'auto',
+};
+
+type FlexValue = FlexboxStyle['flex'];
+
+const expandFlex = (key: 'flex', value: FlexValue): FlexboxStyle => {
   let defaults = flexDefaults;
   let matches = [];
+
   if (value === 'auto') {
     defaults = flexAuto;
   } else {

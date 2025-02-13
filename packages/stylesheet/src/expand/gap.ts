@@ -1,4 +1,8 @@
-const expandGap = (key, value) => {
+import { GapStyle } from '../types';
+
+type GapValue = GapStyle['gap'];
+
+const expandGap = (key: 'gap', value: GapValue): GapStyle => {
   const match = `${value}`.split(' ');
 
   return {

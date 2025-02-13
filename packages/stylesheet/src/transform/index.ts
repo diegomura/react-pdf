@@ -6,6 +6,9 @@ import processLineHeight from './lineHeight';
 import processObjectPosition from './objectPosition';
 import processTransformOrigin from './transformOrigin';
 import castFloat from '../utils/castFloat';
+import { Container, ExpandedStyle, SafeStyle } from '../types';
+
+type ExpandedStyleKey = keyof ExpandedStyle;
 
 const handlers = {
   transform: processTransform,
@@ -17,35 +20,39 @@ const handlers = {
   transformOriginY: processTransformOrigin,
 };
 
-const transformStyle = (key, value, styles, container) => {
-  const result = handlers[key] ? handlers[key](value, styles) : value;
+const transformStyle = <K extends ExpandedStyleKey>(
+  key: K,
+  value: ExpandedStyle[K],
+  styles: ExpandedStyle,
+  container: Container,
+) => {
+  // @ts-ignore
+  const result = key in handlers ? handlers[key](value, styles) : value;
 
   return transformColor(transformUnits(container, castFloat(result)));
 };
 
 /**
- * @typedef {Function} Transform
- * @param {Object} style styles object
- * @returns {Object} transformed styles
+ * @param style - Styles object
+ * @returns Transformed styles
  */
 
 /**
  * Transform styles values
  *
- * @param {Object} container
- * @returns {Transform} transform function
+ * @param container - Container for which styles are resolved
+ * @returns Style with transformed values
  */
-const transform = (container) => (styles) => {
-  if (!styles) return styles;
-
-  const propsArray = Object.keys(styles);
-  const resolvedStyle = {};
+const transform = (container: Container) => (styles: ExpandedStyle) => {
+  const propsArray = Object.keys(styles) as ExpandedStyleKey[];
+  const resolvedStyle: SafeStyle = {};
 
   for (let i = 0; i < propsArray.length; i += 1) {
     const key = propsArray[i];
     const value = styles[key];
     const transformed = transformStyle(key, value, styles, container);
 
+    // @ts-ignore
     resolvedStyle[key] = transformed;
   }
 

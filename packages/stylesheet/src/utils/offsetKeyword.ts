@@ -1,4 +1,4 @@
-const offsetKeyword = (value) => {
+const offsetKeyword = (value: string) => {
   switch (value) {
     case 'top':
     case 'left':

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import expandStyles from '../src/expand';
+import { Style } from '../src/types';
 
 describe('stylesheet expand', () => {
   test('should keep unrelated keys equal', () => {
@@ -27,7 +28,7 @@ describe('stylesheet expand', () => {
       const expanded = {};
 
       margins.forEach((style) => {
-        expect(expandStyles(style)).toEqual(expanded);
+        expect(expandStyles(style as any)).toEqual(expanded);
       });
     });
 
@@ -164,7 +165,7 @@ describe('stylesheet expand', () => {
       const expanded = {};
 
       paddings.forEach((style) => {
-        expect(expandStyles(style)).toEqual(expanded);
+        expect(expandStyles(style as any)).toEqual(expanded);
       });
     });
 
@@ -299,7 +300,7 @@ describe('stylesheet expand', () => {
         borderLeftStyle: 'solid',
       };
 
-      expect(expandStyles(style)).toEqual(expanded);
+      expect(expandStyles(style as Style)).toEqual(expanded);
     });
 
     test('should expand borderWidth attribute', () => {

@@ -19,13 +19,13 @@ describe('flex shorthand', () => {
   test('should support auto', async () => {
     const image = await mount(
       <View style={{ flexDirection: 'row', gap: 2 }}>
-        <View style={{ height: 20, width: 20, backgroundColor: 'red' }} />
+        <View style={{ height: 20, width: 20, backgroundColor: 'blue' }} />
         <View
           style={{
             height: 20,
             width: 20,
             flex: 'auto',
-            backgroundColor: 'red',
+            backgroundColor: 'blue',
           }}
         />
       </View>,

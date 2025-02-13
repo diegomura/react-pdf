@@ -1,3 +1,5 @@
+import { FontWeight } from '../types';
+
 const FONT_WEIGHTS = {
   thin: 100,
   hairline: 100,
@@ -15,15 +17,16 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const processFontWeight = (value) => {
+const processFontWeight = (value: FontWeight): number => {
   if (!value) return FONT_WEIGHTS.normal;
+
   if (typeof value === 'number') return value;
 
   const lv = value.toLowerCase();
 
-  if (FONT_WEIGHTS[lv]) return FONT_WEIGHTS[lv];
+  if (lv in FONT_WEIGHTS) return FONT_WEIGHTS[lv];
 
-  return value;
+  return Number(value);
 };
 
 export default processFontWeight;

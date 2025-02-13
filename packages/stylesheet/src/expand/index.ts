@@ -15,6 +15,9 @@ import {
 import processObjectPosition from './objectPosition';
 import processTransformOrigin from './transformOrigin';
 import processGap from './gap';
+import { ExpandedStyle, Style } from '../types';
+
+type StyleKey = keyof Style;
 
 const shorthands = {
   flex: processFlex,
@@ -46,28 +49,22 @@ const shorthands = {
   transformOrigin: processTransformOrigin,
 };
 
-/**
- * Transforms style key-value
- *
- * @param {string} key style key
- * @param {string} value style value
- * @returns {string | Number} transformed style values
- */
-const expandStyle = (key, value) => {
-  return shorthands[key] ? shorthands[key](key, value) : { [key]: value };
+const expandStyle = <K extends StyleKey>(key: K, value: Style[K]) => {
+  // @ts-ignore
+  return key in shorthands ? shorthands[key](key, value) : { [key]: value };
 };
 
 /**
  * Expand the shorthand properties.
  *
- * @param {Object} style object
- * @returns {Object} expanded style object
+ * @param style - Style object
+ * @returns Expanded style object
  */
-const expand = (style) => {
+const expand = (style: Style) => {
   if (!style) return style;
 
-  const propsArray = Object.keys(style);
-  const resolvedStyle = {};
+  const propsArray = Object.keys(style) as StyleKey[];
+  const resolvedStyle: ExpandedStyle = {};
 
   for (let i = 0; i < propsArray.length; i += 1) {
     const key = propsArray[i];

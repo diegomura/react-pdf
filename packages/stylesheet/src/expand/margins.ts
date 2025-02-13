@@ -1,6 +1,10 @@
+import { MarginExpandedStyle, MarginShorthandStyle } from '../types';
 import processBoxModel from './boxModel';
 
-const processMargin = processBoxModel({
+const processMargin = processBoxModel<
+  MarginShorthandStyle,
+  MarginExpandedStyle
+>({
   expandsTo: ({ first, second, third, fourth }) => ({
     marginTop: first,
     marginRight: second,
@@ -11,7 +15,10 @@ const processMargin = processBoxModel({
   autoSupported: true,
 });
 
-const processMarginVertical = processBoxModel({
+const processMarginVertical = processBoxModel<
+  MarginShorthandStyle,
+  MarginExpandedStyle
+>({
   expandsTo: ({ first, second }) => ({
     marginTop: first,
     marginBottom: second,
@@ -20,7 +27,10 @@ const processMarginVertical = processBoxModel({
   autoSupported: true,
 });
 
-const processMarginHorizontal = processBoxModel({
+const processMarginHorizontal = processBoxModel<
+  MarginShorthandStyle,
+  MarginExpandedStyle
+>({
   expandsTo: ({ first, second }) => ({
     marginRight: first,
     marginLeft: second,
@@ -29,7 +39,10 @@ const processMarginHorizontal = processBoxModel({
   autoSupported: true,
 });
 
-const processMarginSingle = processBoxModel({
+const processMarginSingle = processBoxModel<
+  MarginShorthandStyle,
+  MarginExpandedStyle
+>({
   autoSupported: true,
 });
 

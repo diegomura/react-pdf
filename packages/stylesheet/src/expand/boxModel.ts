@@ -1,27 +1,38 @@
+/* eslint-disable no-console */
+
 import parse from 'postcss-value-parser/lib/parse.js';
 import parseUnit from 'postcss-value-parser/lib/unit.js';
 
 const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
-const logError = (style, value) => {
+const logError = (style: any, value: any) => {
+  const name = style.toString();
+
   console.error(`
     @react-pdf/stylesheet parsing error:
 
-    ${style}: ${value},
-    ${' '.repeat(style.length + 2)}^
-    Unsupported ${style} value format
+    ${name}: ${value},
+    ${' '.repeat(name.length + 2)}^
+    Unsupported ${name} value format
   `);
 };
 
-/**
- * @param {Object} options
- * @param {Function} [options.expandsTo]
- * @param {number} [options.maxValues]
- * @param {boolean} [options.autoSupported]
- */
 const expandBoxModel =
-  ({ expandsTo, maxValues = 1, autoSupported = false } = {}) =>
-  (model, value) => {
+  <S, E>({
+    expandsTo,
+    maxValues = 1,
+    autoSupported = false,
+  }: {
+    expandsTo?: ({
+      first,
+      second,
+      third,
+      fourth,
+    }: Record<string, string | number>) => E;
+    maxValues?: number;
+    autoSupported?: boolean;
+  } = {}) =>
+  <K extends keyof S>(model: K, value: S[K]) => {
     const nodes = parse(`${value}`);
 
     const parts = [];
@@ -38,7 +49,7 @@ const expandBoxModel =
       ) {
         logError(model, value);
 
-        return {};
+        return {} as E;
       }
 
       if (node.type === 'word') {
@@ -53,17 +64,17 @@ const expandBoxModel =
           } else {
             logError(model, value);
 
-            return {};
+            return {} as E;
           }
         }
       }
     }
 
-    // checks that we have enough parsed values
+    // // checks that we have enough parsed values
     if (parts.length > maxValues) {
       logError(model, value);
 
-      return {};
+      return {} as E;
     }
 
     const first = parts[0];
@@ -78,7 +89,7 @@ const expandBoxModel =
 
     return {
       [model]: first,
-    };
+    } as E;
   };
 
 export default expandBoxModel;

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import flatten from '../src/flatten';
+import { Style } from '../src/types';
 
 describe('stylesheet flatten', () => {
   test('should return empty object for undefined', () => {
@@ -26,21 +27,21 @@ describe('stylesheet flatten', () => {
 
   test('should return identity for single style object', () => {
     const style = { color: 'red', textAlign: 'center' };
-    const result = flatten(style);
+    const result = flatten(style as Style);
 
     expect(result).toEqual(style);
   });
 
   test('should return identity for single style object array', () => {
     const style = [{ color: 'red', textAlign: 'center' }];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual(style[0]);
   });
 
   test('should return identity for single style object array with nil values', () => {
     const style = [null, { color: 'red', textAlign: 'center' }, undefined];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual(style[1]);
   });
@@ -50,7 +51,7 @@ describe('stylesheet flatten', () => {
       { backgroundColor: 'black' },
       { color: 'red', textAlign: 'center' },
     ];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -74,7 +75,7 @@ describe('stylesheet flatten', () => {
       { color: 'red', textAlign: 'center' },
       null,
     ];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -88,7 +89,7 @@ describe('stylesheet flatten', () => {
       { backgroundColor: 'black' },
       [{ color: 'red', textAlign: 'center' }],
     ];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -104,7 +105,7 @@ describe('stylesheet flatten', () => {
       undefined,
       [null, { color: 'red', textAlign: 'center' }, undefined],
     ];
-    const result = flatten(style);
+    const result = flatten(style as Style[]);
 
     expect(result).toEqual({
       backgroundColor: 'black',

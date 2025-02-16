@@ -12,6 +12,7 @@
     "directory": "packages/types"
   },
   "dependencies": {
+    "@react-pdf/font": "^3.0.2",
     "@react-pdf/primitives": "^4.1.0"
   }
 }

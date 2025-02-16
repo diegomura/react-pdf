@@ -2601,6 +2601,13 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.6.tgz#628effeeae2064a1b4e79f78e81d87b7e5fc7b50"
   integrity sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==
 
+"@types/fontkit@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@types/fontkit/-/fontkit-2.0.7.tgz#8391ca53ac9f5ef6ff52698ca0aeebab7e984ac4"
+  integrity sha512-f5BjGam6y3FrfEY2JxXwba66SYzqP+FREZh4UuBN1WDePl8EhTKjba3ZZQ2iORUufkrFt/c/UIugj0Uv/HEdRg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/fs-extra@^8.0.1":
   version "8.1.5"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.1.5.tgz#33aae2962d3b3ec9219b5aca2555ee00274f5927"

@@ -12,6 +12,7 @@
   },
   "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "browser": {
     "./lib/index.js": "./lib/index.browser.js"
   },
@@ -21,12 +22,14 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
     "@react-pdf/types": "^2.7.1",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"
   },
   "files": [
     "lib"
-  ]
+  ],
+  "devDependencies": {
+    "@types/fontkit": "^2.0.7"
+  }
 }

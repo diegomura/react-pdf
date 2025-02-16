@@ -87,8 +87,8 @@ describe('text layoutText', () => {
     const node = createTextNode(text, {}, { hyphenationCallback });
     const lines = layoutText(node, 50, 100, null);
 
-    expect(lines[0].string).toEqual('really');
-    expect(lines[1].string).toEqual('long');
+    expect(lines[0].string).toEqual('really-');
+    expect(lines[1].string).toEqual('long-');
     expect(lines[2].string).toEqual('text');
     expect(hyphenationCallback).toHaveBeenCalledWith('reallylongtext');
   });

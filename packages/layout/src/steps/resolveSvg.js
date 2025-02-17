@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { transformColor, processTransform } from '@react-pdf/stylesheet';
+import resolveStyle, { transformColor } from '@react-pdf/stylesheet';
 import { pick, evolve, compose, mapValues, matchPercent } from '@react-pdf/fns';
 
 import layoutText from '../svg/layoutText';
@@ -59,6 +59,10 @@ const parsePercent = (value) => {
   return match ? match.percent : parseFloat(value);
 };
 
+const parseTransform = (container) => (value) => {
+  return resolveStyle(container, { transform: value }).transform;
+};
+
 const parseProps = (container) => (node) => {
   let props = transformPercent(container)(node.props);
 
@@ -83,7 +87,7 @@ const parseProps = (container) => (node) => {
       stroke: transformColor,
       stopOpacity: parsePercent,
       stopColor: transformColor,
-      transform: processTransform,
+      transform: parseTransform(container),
     },
     props,
   );

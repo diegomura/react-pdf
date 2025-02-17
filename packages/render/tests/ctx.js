@@ -51,6 +51,7 @@ const createCTX = () => {
   instance._root = { data: { AcroForm: {} } };
   instance.textInput = vi.fn().mockReturnValue(instance);
   instance.formField = vi.fn().mockReturnValue(instance);
+  instance.stop = vi.fn().mockReturnValue(instance);
 
   return instance;
 };

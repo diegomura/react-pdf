@@ -35,18 +35,20 @@ const availableMethods = [
   'radialGradient',
 ];
 
+const gradientMethods = ['linearGradient', 'radialGradient'];
+
 const painter = (ctx) => {
-  const p = availableMethods.reduce(
-    (acc, prop) => ({
-      ...acc,
-      [prop]: (...args) => {
+  const p = {};
+  availableMethods.forEach((prop) => {
+    if (gradientMethods.includes(prop)) {
+      p[prop] = (...args) => ctx[prop](...args);
+    } else {
+      p[prop] = (...args) => {
         ctx[prop](...args);
         return p;
-      },
-    }),
-    {},
-  );
-
+      };
+    }
+  });
   return p;
 };
 

@@ -85,6 +85,7 @@ const measureCtx = () => {
   ctx.strokeOpacity = nil;
   ctx.linearGradient = nil;
   ctx.radialGradient = nil;
+  ctx.stop = nil;
 
   ctx.getWidth = () => getMax(points.map((p) => p[0]));
   ctx.getHeight = () => getMax(points.map((p) => p[1]));

@@ -25,21 +25,25 @@ describe('stylesheet flatten', () => {
   });
 
   test('should return identity for single style object', () => {
-    const style = { color: 'red', textAlign: 'center' };
+    const style = { color: 'red', textAlign: 'center' as const };
     const result = flatten(style);
 
     expect(result).toEqual(style);
   });
 
   test('should return identity for single style object array', () => {
-    const style = [{ color: 'red', textAlign: 'center' }];
+    const style = [{ color: 'red', textAlign: 'center' as const }];
     const result = flatten(style);
 
     expect(result).toEqual(style[0]);
   });
 
   test('should return identity for single style object array with nil values', () => {
-    const style = [null, { color: 'red', textAlign: 'center' }, undefined];
+    const style = [
+      null,
+      { color: 'red', textAlign: 'center' as const },
+      undefined,
+    ];
     const result = flatten(style);
 
     expect(result).toEqual(style[1]);
@@ -48,7 +52,7 @@ describe('stylesheet flatten', () => {
   test('should return flatten several style objects', () => {
     const style = [
       { backgroundColor: 'black' },
-      { color: 'red', textAlign: 'center' },
+      { color: 'red', textAlign: 'center' as const },
     ];
     const result = flatten(style);
 
@@ -71,7 +75,7 @@ describe('stylesheet flatten', () => {
       null,
       { backgroundColor: 'black' },
       undefined,
-      { color: 'red', textAlign: 'center' },
+      { color: 'red', textAlign: 'center' as const },
       null,
     ];
     const result = flatten(style);
@@ -86,9 +90,9 @@ describe('stylesheet flatten', () => {
   test('should return flatten nested style objects', () => {
     const style = [
       { backgroundColor: 'black' },
-      [{ color: 'red', textAlign: 'center' }],
+      [{ color: 'red', textAlign: 'center' as const }],
     ];
-    const result = flatten(style);
+    const result = flatten(style as any);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -102,9 +106,9 @@ describe('stylesheet flatten', () => {
       null,
       { backgroundColor: 'black' },
       undefined,
-      [null, { color: 'red', textAlign: 'center' }, undefined],
+      [null, { color: 'red', textAlign: 'center' as const }, undefined],
     ];
-    const result = flatten(style);
+    const result = flatten(style as any);
 
     expect(result).toEqual({
       backgroundColor: 'black',

@@ -1,22 +1,26 @@
 import { compose } from '@react-pdf/fns';
-import expandStyles from './expand';
-import flattenStyles from './flatten';
-import transformStyles from './transform';
-import resolveMediaQueries from './mediaQueries';
 
+import flattenStyles from './flatten';
+import resolveMediaQueries from './mediaQueries';
+import { Container, Style } from './types';
+import resolveStyle from './resolve';
+
+type StyleParam = Style | null | undefined;
 /**
  * Resolves styles
  *
- * @param {Object} container
- * @param {Object} style object
- * @returns {Object} resolved style object
+ * @param container
+ * @param style - Style
+ * @returns Resolved style
  */
-const resolveStyles = (container, style) => {
+const resolveStyles = (
+  container: Container,
+  style: StyleParam | StyleParam[],
+) => {
   const computeMediaQueries = (value) => resolveMediaQueries(container, value);
 
   return compose(
-    transformStyles(container),
-    expandStyles,
+    resolveStyle(container),
     computeMediaQueries,
     flattenStyles,
   )(style);

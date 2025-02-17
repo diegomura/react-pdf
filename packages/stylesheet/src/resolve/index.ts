@@ -12,7 +12,14 @@ import transformHandlers from './transform';
 import svgHandlers from './svg';
 import { Container, SafeStyle, Style, StyleKey } from '../types';
 
-const shorthands: Record<StyleKey, any> = {
+type Handler = (
+  key: StyleKey,
+  value: any,
+  container: Container,
+  style: Style,
+) => SafeStyle;
+
+const shorthands = {
   ...borderHandlers,
   ...colorHandlers,
   ...dimensionHandlers,
@@ -25,7 +32,7 @@ const shorthands: Record<StyleKey, any> = {
   ...textHandlers,
   ...transformHandlers,
   ...svgHandlers,
-};
+} as Record<StyleKey, Handler>;
 
 /**
  * Expand the shorthand properties.

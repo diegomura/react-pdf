@@ -17,6 +17,7 @@ import pageWrap from './page-wrap';
 import resume from './resume';
 import svg from './svg';
 import svgTransform from './svg-transform';
+import svgToCanvas from './svg-to-canvas';
 import transformOrigin from './transform-origin';
 import forms from './forms';
 
@@ -42,6 +43,7 @@ const EXAMPLES = [
   transformOrigin,
   imageStressTest,
   forms,
+  svgToCanvas,
 ];
 
 export default EXAMPLES;

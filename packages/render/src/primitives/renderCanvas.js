@@ -33,6 +33,8 @@ const availableMethods = [
   'quadraticCurveTo',
   'linearGradient',
   'radialGradient',
+  'closePath',
+  'transform',
 ];
 
 const painter = (ctx) => {

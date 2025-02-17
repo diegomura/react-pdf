@@ -1,5 +1,15 @@
 # @react-pdf/fns
 
+## 3.1.1
+
+### Patch Changes
+
+- [#3082](https://github.com/diegomura/react-pdf/pull/3082) [`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45) Thanks [@diegomura](https://github.com/diegomura)! - feat: rework and type stylesheet package
+
+- [#3077](https://github.com/diegomura/react-pdf/pull/3077) [`442ce355`](https://github.com/diegomura/react-pdf/commit/442ce35534f916b9146a35fd03870387ed488d92) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert textkit package to TS
+
+- [#3070](https://github.com/diegomura/react-pdf/pull/3070) [`3007d34a`](https://github.com/diegomura/react-pdf/commit/3007d34ad3e10bf32ada3631938f5bb08e1c549f) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert fns package to TS
+
 ## 3.1.0
 
 ### Minor Changes

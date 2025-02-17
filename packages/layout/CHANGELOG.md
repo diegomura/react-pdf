@@ -1,5 +1,22 @@
 # @react-pdf/layout
 
+## 4.2.3
+
+### Patch Changes
+
+- [#3082](https://github.com/diegomura/react-pdf/pull/3082) [`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45) Thanks [@diegomura](https://github.com/diegomura)! - feat: rework and type stylesheet package
+
+- [#3077](https://github.com/diegomura/react-pdf/pull/3077) [`442ce355`](https://github.com/diegomura/react-pdf/commit/442ce35534f916b9146a35fd03870387ed488d92) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert textkit package to TS
+
+- Updated dependencies [[`226467e3`](https://github.com/diegomura/react-pdf/commit/226467e39443d3690b8f8c3298aa8278b43fbfa6), [`96c2464d`](https://github.com/diegomura/react-pdf/commit/96c2464dfaa7294e0d79b7ed64743bfd7b1a8c72), [`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45), [`700535c5`](https://github.com/diegomura/react-pdf/commit/700535c57ff1b105d923be70f4fc4bfdf4479f91), [`442ce355`](https://github.com/diegomura/react-pdf/commit/442ce35534f916b9146a35fd03870387ed488d92), [`8d39fc46`](https://github.com/diegomura/react-pdf/commit/8d39fc4602730755ee63824ad4ed6ecd1bcd059f), [`3007d34a`](https://github.com/diegomura/react-pdf/commit/3007d34ad3e10bf32ada3631938f5bb08e1c549f)]:
+  - @react-pdf/pdfkit@4.0.2
+  - @react-pdf/primitives@4.1.1
+  - @react-pdf/types@2.8.0
+  - @react-pdf/stylesheet@6.0.0
+  - @react-pdf/fns@3.1.1
+  - @react-pdf/textkit@5.0.3
+  - @react-pdf/image@3.0.2
+
 ## 4.2.2
 
 ### Patch Changes

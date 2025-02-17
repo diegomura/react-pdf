@@ -1,5 +1,14 @@
 # @react-pdf/textkit
 
+## 5.0.3
+
+### Patch Changes
+
+- [#3077](https://github.com/diegomura/react-pdf/pull/3077) [`442ce355`](https://github.com/diegomura/react-pdf/commit/442ce35534f916b9146a35fd03870387ed488d92) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert textkit package to TS
+
+- Updated dependencies [[`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45), [`442ce355`](https://github.com/diegomura/react-pdf/commit/442ce35534f916b9146a35fd03870387ed488d92), [`3007d34a`](https://github.com/diegomura/react-pdf/commit/3007d34ad3e10bf32ada3631938f5bb08e1c549f)]:
+  - @react-pdf/fns@3.1.1
+
 ## 5.0.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @react-pdf/image
 
+## 3.0.2
+
+### Patch Changes
+
+- [#3078](https://github.com/diegomura/react-pdf/pull/3078) [`8d39fc46`](https://github.com/diegomura/react-pdf/commit/8d39fc4602730755ee63824ad4ed6ecd1bcd059f) Thanks [@diegomura](https://github.com/diegomura)! - fix: add types to image package.json
+
 ## 3.0.1
 
 ### Patch Changes

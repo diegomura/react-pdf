@@ -122,7 +122,7 @@ describe('resolve stylesheet text', () => {
   });
 
   test('should resolve font size rem units when base not specificed', () => {
-    const styles = resolve({})({ fontSize: '2rem' });
+    const styles = resolve({ width: 100, height: 100 })({ fontSize: '2rem' });
 
     expect(styles).toEqual({ fontSize: 36 });
   });

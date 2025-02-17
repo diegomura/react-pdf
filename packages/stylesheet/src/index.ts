@@ -27,10 +27,10 @@ const resolveStyles = (
 };
 
 // Utils exported for SVG processing
-export { default as transformColor } from './transform/colors';
-
-export { default as processTransform } from './transform/transform';
+export { default as transformColor } from './utils/colors';
 
 export { default as flatten } from './flatten';
+
+export { Style, SafeStyle } from './types';
 
 export default resolveStyles;

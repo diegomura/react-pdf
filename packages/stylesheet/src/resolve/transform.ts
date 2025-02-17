@@ -1,3 +1,7 @@
+import transformUnit from '../utils/units';
+import castFloat from '../utils/castFloat';
+import offsetKeyword from '../utils/offsetKeyword';
+
 const parse = (transformString) => {
   const transforms = transformString.trim().split(/\)[ ,]|\)/);
 
@@ -90,10 +94,55 @@ const normalize = (operations) => {
   return operations.map((operation) => normalizeTransformOperation(operation));
 };
 
-const processTransform = (value) => {
-  if (typeof value !== 'string') return value;
+const processTransform = (key, value) => {
+  if (typeof value !== 'string') return { [key]: value };
 
-  return normalize(parse(value));
+  return { [key]: normalize(parse(value)) };
 };
 
-export default processTransform;
+const Y_AXIS_SHORTHANDS = { top: true, bottom: true };
+
+const sortTransformOriginPair = (a, b) => {
+  if (Y_AXIS_SHORTHANDS[a]) return 1;
+  if (Y_AXIS_SHORTHANDS[b]) return -1;
+  return 0;
+};
+
+const getTransformOriginPair = (values) => {
+  if (!values || values.length === 0) return ['center', 'center'];
+
+  const pair = values.length === 1 ? [values[0], 'center'] : values;
+
+  return pair.sort(sortTransformOriginPair);
+};
+
+// Transforms shorthand transformOrigin values
+const processTransformOriginShorthand = (key, value, container) => {
+  const match = `${value}`.split(' ');
+
+  const pair = getTransformOriginPair(match);
+
+  const transformOriginX = transformUnit(container, pair[0]);
+  const transformOriginY = transformUnit(container, pair[1]);
+
+  return {
+    transformOriginX:
+      offsetKeyword(transformOriginX) || castFloat(transformOriginX),
+    transformOriginY:
+      offsetKeyword(transformOriginY) || castFloat(transformOriginY),
+  };
+};
+
+const processTransformOriginValue = (key, value: any, container) => {
+  const v = transformUnit(container, value);
+  return { [key]: offsetKeyword(v) || castFloat(v) };
+};
+
+const handlers = {
+  transform: processTransform,
+  transformOrigin: processTransformOriginShorthand,
+  transformOriginX: processTransformOriginValue,
+  transformOriginY: processTransformOriginValue,
+};
+
+export default handlers;

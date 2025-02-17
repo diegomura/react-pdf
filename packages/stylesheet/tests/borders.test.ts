@@ -96,6 +96,141 @@ describe('resolve stylesheet borders', () => {
     });
   });
 
+  test('should resolve border hex color shorthand', () => {
+    const styles = resolveStyle({ borderColor: '#FF0000' });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border rgb color shorthand', () => {
+    const styles = resolveStyle({ borderColor: 'rgb(255, 0, 0)' });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border rgba color shorthand', () => {
+    const styles = resolveStyle({ borderColor: 'rgba(0, 255, 0, 0.5)' });
+
+    expect(styles).toEqual({
+      borderTopColor: '#00FF0080',
+      borderRightColor: '#00FF0080',
+      borderBottomColor: '#00FF0080',
+      borderLeftColor: '#00FF0080',
+    });
+  });
+
+  test('should resolve border hsl color shorthand', () => {
+    const styles = resolveStyle({ borderColor: 'hsl(0, 100%, 50%)' });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border hsla color shorthand', () => {
+    const styles = resolveStyle({ borderColor: 'hsla(0, 100%, 50%, 0.5)' });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border hex color', () => {
+    const styles = resolveStyle({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border rgb color', () => {
+    const styles = resolveStyle({
+      borderTopColor: 'rgb(255, 0, 0)',
+      borderRightColor: 'rgb(255, 0, 0)',
+      borderBottomColor: 'rgb(255, 0, 0)',
+      borderLeftColor: 'rgb(255, 0, 0)',
+    });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border rgba color', () => {
+    const styles = resolveStyle({
+      borderTopColor: 'rgba(0, 255, 0, 0.5)',
+      borderRightColor: 'rgba(0, 255, 0, 0.5)',
+      borderBottomColor: 'rgba(0, 255, 0, 0.5)',
+      borderLeftColor: 'rgba(0, 255, 0, 0.5)',
+    });
+
+    expect(styles).toEqual({
+      borderTopColor: '#00FF0080',
+      borderRightColor: '#00FF0080',
+      borderBottomColor: '#00FF0080',
+      borderLeftColor: '#00FF0080',
+    });
+  });
+
+  test('should resolve border hsl color', () => {
+    const styles = resolveStyle({
+      borderTopColor: 'hsl(0, 100%, 50%)',
+      borderRightColor: 'hsl(0, 100%, 50%)',
+      borderBottomColor: 'hsl(0, 100%, 50%)',
+      borderLeftColor: 'hsl(0, 100%, 50%)',
+    });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border hsla color', () => {
+    const styles = resolveStyle({
+      borderTopColor: 'hsla(0, 100%, 50%, 0.5)',
+      borderRightColor: 'hsla(0, 100%, 50%, 0.5)',
+      borderBottomColor: 'hsla(0, 100%, 50%, 0.5)',
+      borderLeftColor: 'hsla(0, 100%, 50%, 0.5)',
+    });
+
+    expect(styles).toEqual({
+      borderTopColor: '#FF0000',
+      borderRightColor: '#FF0000',
+      borderBottomColor: '#FF0000',
+      borderLeftColor: '#FF0000',
+    });
+  });
+
   test('should resolve border radius shorthand', () => {
     const styles = resolveStyle({ borderRadius: '5px' });
 

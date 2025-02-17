@@ -9,7 +9,7 @@ const offsetKeyword = (value) => {
     case 'center':
       return '50%';
     default:
-      return null;
+      return value;
   }
 };
 

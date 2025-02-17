@@ -5,35 +5,35 @@ import resolve from '../src/index';
 describe('stylesheet resolve', () => {
   test('should return empty object for undefined', () => {
     const style = undefined;
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual({});
   });
 
   test('should return empty object for null', () => {
     const style = null;
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual({});
   });
 
   test('should return empty object for empty object', () => {
     const style = {};
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual({});
   });
 
   test('should return identity for single style object', () => {
     const style = { color: 'red', textAlign: 'center' as const };
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual(style);
   });
 
   test('should return identity for single style object array', () => {
     const style = [{ color: 'red', textAlign: 'center' as const }];
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual(style[0]);
   });
@@ -44,7 +44,7 @@ describe('stylesheet resolve', () => {
       { color: 'red', textAlign: 'center' as const },
       undefined,
     ];
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual(style[1]);
   });
@@ -54,7 +54,7 @@ describe('stylesheet resolve', () => {
       { backgroundColor: 'black' },
       { color: 'red', textAlign: 'center' as const },
     ];
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -65,7 +65,7 @@ describe('stylesheet resolve', () => {
 
   test('should return object of merged values from array', () => {
     const styles = [{ fontSize: 16, color: 'white' }, { color: 'green' }];
-    const result = resolve({}, styles);
+    const result = resolve({ width: 10, height: 10 }, styles);
 
     return expect(result).toEqual({ fontSize: 16, color: 'green' });
   });
@@ -78,7 +78,7 @@ describe('stylesheet resolve', () => {
       { color: 'red', textAlign: 'center' as const },
       null,
     ];
-    const result = resolve({}, style);
+    const result = resolve({ width: 10, height: 10 }, style);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -92,7 +92,7 @@ describe('stylesheet resolve', () => {
       { backgroundColor: 'black' },
       [{ color: 'red', textAlign: 'center' as const }],
     ];
-    const result = resolve({}, style as any);
+    const result = resolve({ width: 10, height: 10 }, style as any);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -108,7 +108,7 @@ describe('stylesheet resolve', () => {
       undefined,
       [null, { color: 'red', textAlign: 'center' as const }, undefined],
     ];
-    const result = resolve({}, style as any);
+    const result = resolve({ width: 10, height: 10 }, style as any);
 
     expect(result).toEqual({
       backgroundColor: 'black',

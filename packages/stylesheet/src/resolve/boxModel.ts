@@ -1,15 +1,24 @@
 import parse from 'postcss-value-parser/lib/parse.js';
 import parseUnit from 'postcss-value-parser/lib/unit.js';
+import transformUnit from '../utils/units';
+import { Container } from '../types';
 
 const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
 
-const logError = (style, value) => {
+interface ParseValue {
+  type: string;
+  value: string;
+}
+
+const logError = (style: any, value: any) => {
+  const name = style.toString();
+
+  // eslint-disable-next-line no-console
   console.error(`
     @react-pdf/stylesheet parsing error:
-
-    ${style}: ${value},
-    ${' '.repeat(style.length + 2)}^
-    Unsupported ${style} value format
+    ${name}: ${value},
+    ${' '.repeat(name.length + 2)}^
+    Unsupported ${name} value format
   `);
 };
 
@@ -20,11 +29,19 @@ const logError = (style, value) => {
  * @param {boolean} [options.autoSupported]
  */
 const expandBoxModel =
-  ({ expandsTo, maxValues = 1, autoSupported = false } = {}) =>
-  (model, value) => {
-    const nodes = parse(`${value}`);
+  <S, E>({
+    expandsTo,
+    maxValues = 1,
+    autoSupported = false,
+  }: {
+    expandsTo?: ({ first, second, third, fourth }: Record<string, number>) => E;
+    maxValues?: number;
+    autoSupported?: boolean;
+  } = {}) =>
+  <K extends keyof S>(model: K, value: S[K], container: Container) => {
+    const nodes: ParseValue[] = parse(`${value}`);
 
-    const parts = [];
+    const parts: string[] = [];
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -38,7 +55,7 @@ const expandBoxModel =
       ) {
         logError(model, value);
 
-        return {};
+        return {} as E;
       }
 
       if (node.type === 'word') {
@@ -53,7 +70,7 @@ const expandBoxModel =
           } else {
             logError(model, value);
 
-            return {};
+            return {} as E;
           }
         }
       }
@@ -63,22 +80,25 @@ const expandBoxModel =
     if (parts.length > maxValues) {
       logError(model, value);
 
-      return {};
+      return {} as E;
     }
 
-    const first = parts[0];
+    const first = transformUnit(container, parts[0]) as number;
 
     if (expandsTo) {
-      const second = parts[1] || parts[0];
-      const third = parts[2] || parts[0];
-      const fourth = parts[3] || parts[1] || parts[0];
+      const second = transformUnit(container, parts[1] || parts[0]) as number;
+      const third = transformUnit(container, parts[2] || parts[0]) as number;
+      const fourth = transformUnit(
+        container,
+        parts[3] || parts[1] || parts[0],
+      ) as number;
 
       return expandsTo({ first, second, third, fourth });
     }
 
     return {
       [model]: first,
-    };
+    } as E;
   };
 
 export default expandBoxModel;

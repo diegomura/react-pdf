@@ -65,6 +65,12 @@ describe('resolve stylesheet flex', () => {
     expect(styles).toEqual({ flexGrow: '40%' });
   });
 
+  test('should resolve flex grow auto', () => {
+    const styles = resolveStyle({ flexGrow: 'auto' });
+
+    expect(styles).toEqual({ flexGrow: 'auto' });
+  });
+
   test('should resolve flex shrink', () => {
     const styles = resolveStyle({ flexShrink: 1 });
 
@@ -83,6 +89,12 @@ describe('resolve stylesheet flex', () => {
     expect(styles).toEqual({ flexShrink: '40%' });
   });
 
+  test('should resolve flex shrink auto', () => {
+    const styles = resolveStyle({ flexShrink: 'auto%' });
+
+    expect(styles).toEqual({ flexShrink: 'auto%' });
+  });
+
   test('should resolve flex basis', () => {
     const styles = resolveStyle({ flexBasis: 1 });
 
@@ -99,6 +111,12 @@ describe('resolve stylesheet flex', () => {
     const styles = resolveStyle({ flexBasis: '40%' });
 
     expect(styles).toEqual({ flexBasis: '40%' });
+  });
+
+  test('should resolve flex basis auto', () => {
+    const styles = resolveStyle({ flexBasis: 'auto' });
+
+    expect(styles).toEqual({ flexBasis: 'auto' });
   });
 
   test('should resolve flex justify content', () => {

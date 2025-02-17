@@ -1,8 +1,8 @@
 export type Container = {
+  width: number;
+  height: number;
   dpi?: number;
   remBase?: number;
-  width?: number;
-  height?: number;
   orientation?: 'landscape' | 'portrait';
 };
 
@@ -96,6 +96,8 @@ export type JustifyContent =
   | 'space-between'
   | 'space-evenly';
 
+export type JustifySelf = string; // not really supported
+
 export type FlexboxExpandedStyle = {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
@@ -106,6 +108,7 @@ export type FlexboxExpandedStyle = {
   flexGrow?: number | string;
   flexShrink?: number | string;
   flexBasis?: number | string;
+  justifySelf?: JustifySelf;
   justifyContent?: JustifyContent;
 };
 
@@ -228,12 +231,16 @@ export type DimensionSafeStyle = DimensionExpandedStyle & {
 export type ColorStyle = {
   backgroundColor?: string;
   color?: string;
-  opacity?: number;
+  opacity?: number | string;
 };
 
 export type ColorExpandedStyle = ColorStyle;
 
-export type ColorSafeStyle = ColorExpandedStyle;
+export type ColorSafeStyle = {
+  backgroundColor?: string;
+  color?: string;
+  opacity?: number;
+};
 
 // Text
 
@@ -347,6 +354,39 @@ export type PaddingSafeStyle = PaddingExpandedStyle & {
 
 export type PaddingStyle = PaddingShorthandStyle & PaddingExpandedStyle;
 
+// Svg
+
+export interface SvgStyle {
+  fill?: string;
+  stroke?: string;
+  strokeDasharray?: string;
+  strokeWidth?: string | number;
+  fillOpacity?: string | number;
+  fillRule?: 'nonzero' | 'evenodd';
+  strokeOpacity?: string | number;
+  textAnchor?: 'start' | 'middle' | 'end';
+  strokeLinecap?: 'butt' | 'round' | 'square';
+  strokeLinejoin?: 'butt' | 'round' | 'square';
+  visibility?: 'visible' | 'hidden' | 'collapse';
+  clipPath?: string;
+  dominantBaseline?:
+    | 'auto'
+    | 'middle'
+    | 'central'
+    | 'hanging'
+    | 'mathematical'
+    | 'text-after-edge'
+    | 'text-before-edge';
+}
+
+export type SvgExpandedStyle = SvgStyle;
+
+export type SvgSafeStyle = SvgStyle & {
+  strokeWidth?: number;
+  fillOpacity?: number;
+  strokeOpacity?: number;
+};
+
 // Global
 
 type BaseStyle = BorderStyle &
@@ -359,7 +399,8 @@ type BaseStyle = BorderStyle &
   PaddingStyle &
   PositioningStyle &
   TextStyle &
-  TransformStyle;
+  TransformStyle &
+  SvgStyle;
 
 type MediaQueryStyle = {
   [key in `@media${string}`]: BaseStyle;
@@ -379,7 +420,8 @@ export type ExpandedStyle = BorderExpandedStyle &
   PaddingExpandedStyle &
   PositionExpandedStyle &
   TextExpandedStyle &
-  TransformExpandedStyle;
+  TransformExpandedStyle &
+  SvgExpandedStyle;
 
 export type SafeStyle = BorderSafeStyle &
   ColorSafeStyle &
@@ -391,4 +433,5 @@ export type SafeStyle = BorderSafeStyle &
   PaddingSafeStyle &
   PositionSafeStyle &
   TextSafeStyle &
-  TransformSafeStyle;
+  TransformSafeStyle &
+  SvgSafeStyle;

@@ -66,4 +66,22 @@ describe('resolve stylesheet colors', () => {
     expect(styles.backgroundColor).toBe('#0099FF');
     expect(styles.textDecorationColor).toBe('#00FF00');
   });
+
+  test('should resolve integer opacity', () => {
+    const styles = resolveStyle({ opacity: 0 });
+
+    expect(styles.opacity).toBe(0);
+  });
+
+  test('should resolve float opacity', () => {
+    const styles = resolveStyle({ opacity: 0.4 });
+
+    expect(styles.opacity).toBe(0.4);
+  });
+
+  test('should resolve string opacity', () => {
+    const styles = resolveStyle({ opacity: '0.4' });
+
+    expect(styles.opacity).toBe(0.4);
+  });
 });

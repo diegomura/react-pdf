@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/stylesheet",
-  "version": "5.2.2",
+  "version": "6.0.0",
   "license": "MIT",
   "description": "A styles engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -19,8 +19,8 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@react-pdf/fns": "3.1.0",
-    "@react-pdf/types": "^2.7.1",
+    "@react-pdf/fns": "3.1.1",
+    "@react-pdf/types": "^2.8.0",
     "color-string": "^1.9.1",
     "hsl-to-hex": "^1.0.0",
     "media-engine": "^1.0.3",

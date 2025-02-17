@@ -1,5 +1,22 @@
 # @react-pdf/types
 
+## 2.8.0
+
+### Minor Changes
+
+- [#3082](https://github.com/diegomura/react-pdf/pull/3082) [`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45) Thanks [@diegomura](https://github.com/diegomura)! - feat: rework and type stylesheet package
+
+- [#3079](https://github.com/diegomura/react-pdf/pull/3079) [`700535c5`](https://github.com/diegomura/react-pdf/commit/700535c57ff1b105d923be70f4fc4bfdf4479f91) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert font package to TS
+
+### Patch Changes
+
+- [#3067](https://github.com/diegomura/react-pdf/pull/3067) [`96c2464d`](https://github.com/diegomura/react-pdf/commit/96c2464dfaa7294e0d79b7ed64743bfd7b1a8c72) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert primitives package to TS
+
+- Updated dependencies [[`96c2464d`](https://github.com/diegomura/react-pdf/commit/96c2464dfaa7294e0d79b7ed64743bfd7b1a8c72), [`24fe4bf8`](https://github.com/diegomura/react-pdf/commit/24fe4bf894fff055121926488b30d0bf212a9c45), [`700535c5`](https://github.com/diegomura/react-pdf/commit/700535c57ff1b105d923be70f4fc4bfdf4479f91)]:
+  - @react-pdf/primitives@4.1.1
+  - @react-pdf/stylesheet@6.0.0
+  - @react-pdf/font@3.1.0
+
 ## 2.7.1
 
 ### Patch Changes

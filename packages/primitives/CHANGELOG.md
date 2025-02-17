@@ -1,5 +1,11 @@
 # @react-pdf/primitives
 
+## 4.1.1
+
+### Patch Changes
+
+- [#3067](https://github.com/diegomura/react-pdf/pull/3067) [`96c2464d`](https://github.com/diegomura/react-pdf/commit/96c2464dfaa7294e0d79b7ed64743bfd7b1a8c72) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert primitives package to TS
+
 ## 4.1.0
 
 ### Minor Changes

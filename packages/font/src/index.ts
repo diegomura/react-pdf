@@ -107,6 +107,8 @@ class FontStore {
   getRegisteredFontFamilies = (): string[] => Object.keys(this.fonts);
 }
 
+export type FontStoreType = typeof FontStore;
+
 export {
   FontStyle,
   FontWeight,

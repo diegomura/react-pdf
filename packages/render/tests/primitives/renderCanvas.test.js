@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import * as P from '@react-pdf/primitives';
 
@@ -66,5 +66,15 @@ describe('primitive renderCanvas', () => {
     const node = { type: P.Canvas, box, props: { paint } };
 
     renderCanvas(ctx, node);
+  });
+  test('should execute gradient.stop method correctly', () => {
+    const ctx = createCTX();
+    const stopSpy = vi.spyOn(ctx, 'stop');
+    const gradient = ctx.radialGradient(1, 2, 3, 4, 5, 6);
+    gradient.stop(0, 'red', 1);
+    gradient.stop(0, 'blue', 1);
+    expect(stopSpy).toHaveBeenCalledTimes(2);
+    expect(stopSpy).toHaveBeenCalledWith(0, 'red', 1);
+    expect(stopSpy).toHaveBeenCalledWith(0, 'blue', 1);
   });
 });

@@ -1,7 +1,8 @@
 import * as P from '@react-pdf/primitives';
 import { compose } from '@react-pdf/fns';
+import { Node } from '../types';
 
-const isType = (type) => (node) => node.type === type;
+const isType = (type: string) => (node: Node) => node.type === type;
 
 const isLink = isType(P.Link);
 
@@ -12,26 +13,26 @@ const isTextInstance = isType(P.TextInstance);
 /**
  * Checks if node has render prop
  *
- * @param {Object} node
- * @returns {boolean} has render prop?
+ * @param node
+ * @returns Has render prop?
  */
-const hasRenderProp = (node) => !!node.props?.render;
+const hasRenderProp = (node: Node) => 'render' in node.props;
 
 /**
  * Checks if node is text type (Text or TextInstance)
  *
- * @param {Object} node
- * @returns {boolean} are all children text instances?
+ * @param node
+ * @returns Are all children text instances?
  */
-const isTextType = (node) => isText(node) || isTextInstance(node);
+const isTextType = (node: Node) => isText(node) || isTextInstance(node);
 
 /**
  * Checks if is tet link that needs to be wrapped in Text
  *
- * @param {Object} node
- * @returns {boolean} are all children text instances?
+ * @param node
+ * @returns Are all children text instances?
  */
-const isTextLink = (node) => {
+const isTextLink = (node: Node) => {
   const children = node.children || [];
 
   // Text string inside a Link
@@ -46,8 +47,8 @@ const isTextLink = (node) => {
 /**
  * Wraps node children inside Text node
  *
- * @param {Object} node
- * @returns {boolean} node with intermediate Text child
+ * @param node
+ * @returns Node with intermediate Text child
  */
 const wrapText = (node) => {
   const textElement = {
@@ -61,14 +62,14 @@ const wrapText = (node) => {
   return Object.assign({}, node, { children: [textElement] });
 };
 
-const transformLink = (node) => {
+const transformLink = (node: Node) => {
   if (!isLink(node)) return node;
 
   // If has render prop substitute the instance by a Text, that will
   // ultimately render the inline Link via the textkit PDF renderer.
   if (hasRenderProp(node)) return Object.assign({}, node, { type: P.Text });
 
-  // If is a text link (either contains Text or TextInstalce), wrap it
+  // If is a text link (either contains Text or TextInstance), wrap it
   // inside a Text element so styles are applied correctly
 
   if (isTextLink(node)) return wrapText(node);
@@ -79,10 +80,10 @@ const transformLink = (node) => {
 /**
  * Transforms Link layout to correctly render text and dynamic rendered links
  *
- * @param {Object} node
- * @returns {Object} node with link substitution
+ * @param node
+ * @returns Node with link substitution
  */
-const resolveLinkSubstitution = (node) => {
+const resolveLinkSubstitution = (node: Node): Node => {
   if (!node.children) return node;
 
   const resolveChild = compose(transformLink, resolveLinkSubstitution);

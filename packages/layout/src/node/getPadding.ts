@@ -1,6 +1,8 @@
 import * as Yoga from 'yoga-layout/load';
 
-const getComputedPadding = (node, edge) => {
+import { Node } from '../types';
+
+const getComputedPadding = (node: Node, edge) => {
   const { yogaNode } = node;
   return yogaNode ? yogaNode.getComputedPadding(edge) : null;
 };
@@ -8,10 +10,10 @@ const getComputedPadding = (node, edge) => {
 /**
  * Get Yoga computed paddings. Zero otherwise
  *
- * @param {Object} node
- * @returns {{ paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number }} paddings
+ * @param  node
+ * @returns paddings
  */
-const getPadding = (node) => {
+const getPadding = (node: Node) => {
   const { style, box } = node;
 
   const paddingTop =

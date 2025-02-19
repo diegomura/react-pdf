@@ -1,27 +1,27 @@
 import { flatten } from '@react-pdf/stylesheet';
 import getPageSize from '../page/getSize';
+import { DocumentNode, PageNode } from '../types';
 
 /**
  * Resolves page size
  *
- * @param {Object} page
- * @returns {Object} page with resolved size in style attribute
+ * @param page
+ * @returns Page with resolved size in style attribute
  */
-export const resolvePageSize = (page) => {
+export const resolvePageSize = (page: PageNode): PageNode => {
   const size = getPageSize(page);
   const style = flatten(page.style || {});
-  const box = page.box || {};
 
-  return { ...page, box, style: { ...style, ...size } };
+  return { ...page, style: { ...style, ...size } };
 };
 
 /**
  * Resolves page sizes
  *
- * @param {Object} root document root
- * @returns {Object} document root with resolved page sizes
+ * @param root  -Document root
+ * @returns Document root with resolved page sizes
  */
-const resolvePageSizes = (root) => {
+const resolvePageSizes = (root: DocumentNode) => {
   if (!root.children) return root;
 
   const children = root.children.map(resolvePageSize);

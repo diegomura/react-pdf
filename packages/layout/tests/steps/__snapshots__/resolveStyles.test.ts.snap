@@ -1,0 +1,344 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout resolveStyles > Should overide default link styles 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "color": "wheat",
+            "textDecoration": "none",
+          },
+          "type": "LINK",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should overide default link styles with array 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "color": "wheat",
+            "textDecoration": "none",
+          },
+          "type": "LINK",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve default link styles 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "color": "blue",
+            "textDecoration": "underline",
+          },
+          "type": "LINK",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve nested node styles 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "red",
+            "borderBottomColor": "green",
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 28.346456692913385,
+            "borderLeftColor": "green",
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 28.346456692913385,
+            "borderRightColor": "green",
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 28.346456692913385,
+            "borderTopColor": "green",
+            "borderTopStyle": "dotted",
+            "borderTopWidth": 28.346456692913385,
+            "paddingBottom": 28.346456692913385,
+            "paddingLeft": 720,
+            "paddingRight": 720,
+            "paddingTop": 28.346456692913385,
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve nested node styles array 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "red",
+            "borderBottomColor": "green",
+            "borderBottomStyle": "dotted",
+            "borderBottomWidth": 28.346456692913385,
+            "borderLeftColor": "green",
+            "borderLeftStyle": "dotted",
+            "borderLeftWidth": 28.346456692913385,
+            "borderRightColor": "green",
+            "borderRightStyle": "dotted",
+            "borderRightWidth": 28.346456692913385,
+            "borderTopColor": "green",
+            "borderTopStyle": "dotted",
+            "borderTopWidth": 28.346456692913385,
+            "paddingBottom": 28.346456692913385,
+            "paddingLeft": 720,
+            "paddingRight": 720,
+            "paddingTop": 28.346456692913385,
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve nested node styles media queries 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "height": 200,
+        "width": 100,
+      },
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "green",
+          },
+          "type": "VIEW",
+        },
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "red",
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve nested node styles media queries with page style 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "green",
+          },
+          "type": "VIEW",
+        },
+        {
+          "props": {},
+          "style": {
+            "backgroundColor": "red",
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {
+        "height": 200,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve page styles 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve page styles array 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveStyles > Should resolve several pages styles 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "borderTopColor": "#FF00000",
+        "borderTopStyle": "solid",
+        "borderTopWidth": 4,
+        "paddingBottom": 28.346456692913385,
+        "paddingLeft": 720,
+        "paddingRight": 720,
+        "paddingTop": 28.346456692913385,
+      },
+      "type": "PAGE",
+    },
+    {
+      "props": {},
+      "style": {
+        "backgroundColor": "red",
+        "borderBottomColor": "green",
+        "borderBottomStyle": "dotted",
+        "borderBottomWidth": 28.346456692913385,
+        "borderLeftColor": "green",
+        "borderLeftStyle": "dotted",
+        "borderLeftWidth": 28.346456692913385,
+        "borderRightColor": "green",
+        "borderRightStyle": "dotted",
+        "borderRightWidth": 28.346456692913385,
+        "borderTopColor": "green",
+        "borderTopStyle": "dotted",
+        "borderTopWidth": 28.346456692913385,
+        "fontWeight": 700,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;

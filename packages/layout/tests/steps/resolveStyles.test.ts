@@ -4,11 +4,13 @@ import resolveStyles from '../../src/steps/resolveStyles';
 
 describe('layout resolveStyles', () => {
   test('Should resolve page styles', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           style: {
             paddingHorizontal: '10in',
             paddingVertical: '10mm',
@@ -17,18 +19,19 @@ describe('layout resolveStyles', () => {
           },
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve several pages styles', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           style: {
             paddingHorizontal: '10in',
             paddingVertical: '10mm',
@@ -37,6 +40,7 @@ describe('layout resolveStyles', () => {
         },
         {
           type: 'PAGE',
+          props: {},
           style: {
             backgroundColor: 'red',
             border: '1cm dotted green',
@@ -44,18 +48,19 @@ describe('layout resolveStyles', () => {
           },
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve page styles array', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           style: [
             {
               paddingHorizontal: '10in',
@@ -68,22 +73,24 @@ describe('layout resolveStyles', () => {
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve nested node styles', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'VIEW',
+              props: {},
               style: {
                 paddingHorizontal: '10in',
                 paddingVertical: '10mm',
@@ -94,22 +101,24 @@ describe('layout resolveStyles', () => {
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve nested node styles media queries', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'VIEW',
+              props: {},
               style: {
                 backgroundColor: 'red',
                 '@media max-width: 500': {
@@ -119,6 +128,7 @@ describe('layout resolveStyles', () => {
             },
             {
               type: 'VIEW',
+              props: {},
               style: {
                 backgroundColor: 'red',
                 '@media min-width: 500': {
@@ -129,22 +139,24 @@ describe('layout resolveStyles', () => {
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve nested node styles media queries with page style', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           style: { width: 100, height: 200 },
           children: [
             {
               type: 'VIEW',
+              props: {},
               style: {
                 backgroundColor: 'red',
                 '@media max-width: 500': {
@@ -154,6 +166,7 @@ describe('layout resolveStyles', () => {
             },
             {
               type: 'VIEW',
+              props: {},
               style: {
                 backgroundColor: 'red',
                 '@media min-width: 500': {
@@ -164,22 +177,24 @@ describe('layout resolveStyles', () => {
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve nested node styles array', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'VIEW',
+              props: {},
               style: [
                 {
                   paddingHorizontal: '10in',
@@ -194,71 +209,76 @@ describe('layout resolveStyles', () => {
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should resolve default link styles', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'LINK',
+              props: {},
               style: {},
             },
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should overide default link styles', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'LINK',
+              props: {},
               style: { color: 'wheat', textDecoration: 'none' },
             },
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });
 
   test('Should overide default link styles with array', () => {
-    const root = {
+    const result = resolveStyles({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
+          props: {},
           box: { width: 100, height: 200 },
           children: [
             {
               type: 'LINK',
+              props: {},
               style: [{ color: 'wheat', textDecoration: 'none' }],
             },
           ],
         },
       ],
-    };
-    const result = resolveStyles(root);
+    });
 
     expect(result).toMatchSnapshot();
   });

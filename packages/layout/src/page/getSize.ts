@@ -1,4 +1,9 @@
 import isLandscape from './isLandscape';
+import { PageNode } from '../types';
+
+type UnitSize = { width: string | number; height?: string | number };
+
+type Size = { width: number; height: number };
 
 // Page sizes for 72dpi. 72dpi is used internally by pdfkit.
 const PAGE_SIZES = {
@@ -58,10 +63,12 @@ const PAGE_SIZES = {
 /**
  * Parses scalar value in value and unit pairs
  *
- * @param {string} value scalar value
- * @returns {Object} parsed value
+ * @param value - Scalar value
+ * @returns Parsed value
  */
-const parseValue = (value) => {
+const parseValue = (value: string | number) => {
+  if (typeof value === 'number') return { value, unit: undefined };
+
   const match = /^(-?\d*\.?\d+)(in|mm|cm|pt|px)?$/g.exec(value);
 
   return match
@@ -72,16 +79,19 @@ const parseValue = (value) => {
 /**
  * Transform given scalar value to 72dpi equivalent of size
  *
- * @param {string} value styles value
- * @param {number} inputDpi user defined dpi
- * @returns {Object} transformed value
+ * @param value - Styles value
+ * @param inputDpi - User defined dpi
+ * @returns Transformed value
  */
-const transformUnit = (value, inputDpi) => {
+const transformUnit = (value: string | number, inputDpi: number) => {
   const scalar = parseValue(value);
 
   const outputDpi = 72;
   const mmFactor = (1 / 25.4) * outputDpi;
   const cmFactor = (1 / 2.54) * outputDpi;
+
+  if (typeof scalar.value === 'string')
+    throw new Error(`Invalid page size: ${value}`);
 
   switch (scalar.unit) {
     case 'in':
@@ -97,7 +107,7 @@ const transformUnit = (value, inputDpi) => {
   }
 };
 
-const transformUnits = ({ width, height }, dpi) => ({
+const transformUnits = ({ width, height }: UnitSize, dpi: number): Size => ({
   width: transformUnit(width, dpi),
   height: transformUnit(height, dpi),
 });
@@ -105,58 +115,59 @@ const transformUnits = ({ width, height }, dpi) => ({
 /**
  * Transforms array into size object
  *
- * @param {number[] | string[]} v array
- * @returns {{ width: number | string, height: number | string }} size object with width and height
+ * @param v - Values array
+ * @returns Size object with width and height
  */
-const toSizeObject = (v) => ({ width: v[0], height: v[1] });
+const toSizeObject = (v: (number | string)[]) => ({
+  width: v[0],
+  height: v[1],
+});
 
 /**
  * Flip size object
  *
- * @param {{ width: number, height: number }} v size object
- * @returns {{ width: number, height: number }} flipped size object
+ * @param v - Size object
+ * @returns Flipped size object
  */
-const flipSizeObject = (v) => ({ width: v.height, height: v.width });
+const flipSizeObject = (v: Size): Size => ({
+  width: v.height,
+  height: v.width,
+});
 
 /**
  * Returns size object from a given string
  *
- * @param {string} v page size string
- * @returns {{ width: number, height: number }} size object with width and height
+ * @param v - Page size string
+ * @returns Size object with width and height
  */
-const getStringSize = (v) => {
-  return toSizeObject(PAGE_SIZES[v.toUpperCase()]);
+const getStringSize = (v: string) => {
+  return toSizeObject(PAGE_SIZES[v.toUpperCase()]) as Size;
 };
 
 /**
  * Returns size object from a single number
  *
- * @param {number|string} n page size number
- * @returns {{ width: number|string, height: number|string }} size object with width and height
+ * @param n - Page size number
+ * @returns Size object with width and height
  */
-const getNumberSize = (n) => toSizeObject([n, n]);
+const getNumberSize = (n: number) => toSizeObject([n, n]);
 
 /**
  * Return page size in an object { width, height }
  *
- * @param {Object} page instance
- * @returns {{ width: number, height: number }} size object with width and height
+ * @param page - Page node
+ * @returns Size object with width and height
  */
-const getSize = (page) => {
+const getSize = (page: PageNode) => {
   const value = page.props?.size || 'A4';
-  const dpi = parseFloat(page.props?.dpi || 72);
+  const dpi = page.props?.dpi || 72;
 
-  const type = typeof value;
-
-  /**
-   * @type {{ width: number, height: number }}
-   */
-  let size;
-  if (type === 'string') {
+  let size: Size;
+  if (typeof value === 'string') {
     size = getStringSize(value);
   } else if (Array.isArray(value)) {
     size = transformUnits(toSizeObject(value), dpi);
-  } else if (type === 'number') {
+  } else if (typeof value === 'number') {
     size = transformUnits(getNumberSize(value), dpi);
   } else {
     size = transformUnits(value, dpi);

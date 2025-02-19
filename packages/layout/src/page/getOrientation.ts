@@ -1,12 +1,14 @@
+import { PageNode } from '../types';
+
 const VALID_ORIENTATIONS = ['portrait', 'landscape'];
 
 /**
  * Get page orientation. Defaults to portrait
  *
- * @param {Object} page object
- * @returns {string} page orientation
+ * @param page - Page object
+ * @returns Page orientation
  */
-const getOrientation = (page) => {
+const getOrientation = (page: PageNode) => {
   const value = page.props?.orientation || 'portrait';
   return VALID_ORIENTATIONS.includes(value) ? value : 'portrait';
 };

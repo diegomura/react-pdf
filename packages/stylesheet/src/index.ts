@@ -31,6 +31,6 @@ export { default as transformColor } from './utils/colors';
 
 export { default as flatten } from './flatten';
 
-export { Style, SafeStyle } from './types';
+export { Style, SafeStyle, Container } from './types';
 
 export default resolveStyles;

@@ -1,14 +1,19 @@
-const getBookmarkValue = (title) => {
-  return typeof title === 'string'
-    ? { title, fit: false, expanded: false }
-    : title;
+import { Bookmark, DocumentNode, Node } from '../types';
+
+const getBookmarkValue = (bookmark: Bookmark) => {
+  return typeof bookmark === 'string'
+    ? { title: bookmark, fit: false, expanded: false }
+    : bookmark;
 };
 
-const resolveBookmarks = (node) => {
+const resolveBookmarks = (node: DocumentNode) => {
   let refs = 0;
 
   const children = (node.children || []).slice(0);
-  const listToExplore = children.map((value) => ({ value, parent: null }));
+  const listToExplore: Node[] = children.map((value) => ({
+    value,
+    parent: null,
+  }));
 
   while (listToExplore.length > 0) {
     const element = listToExplore.shift();

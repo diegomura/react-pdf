@@ -1,26 +1,30 @@
 import { describe, expect, test } from 'vitest';
 
 import resolveBookmarks from '../../src/steps/resolveBookmarks';
+import { DocumentNode } from '../../src/types';
 
 describe('layout resolveBookmarks', () => {
   test('should keep nodes the same if no bookmark passed', () => {
     const root = {
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
           children: [{ type: 'VIEW', props: {} }],
         },
       ],
-    };
+    } as DocumentNode;
+
     const result = resolveBookmarks(root);
 
     expect(result).toEqual(root);
   });
 
   test('should resolve bookmark in page node', () => {
-    const root = {
+    const result = resolveBookmarks({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
@@ -28,10 +32,9 @@ describe('layout resolveBookmarks', () => {
           children: [{ type: 'VIEW', props: {} }],
         },
       ],
-    };
-    const result = resolveBookmarks(root);
+    });
 
-    expect(result.children[0].props.bookmark).toEqual({
+    expect(result.children?.[0]?.props?.bookmark).toEqual({
       ref: 0,
       title: 'page',
       fit: false,
@@ -40,8 +43,9 @@ describe('layout resolveBookmarks', () => {
   });
 
   test('should resolve bookmark hierarchy', () => {
-    const root = {
+    const result = resolveBookmarks({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
@@ -76,12 +80,12 @@ describe('layout resolveBookmarks', () => {
           ],
         },
       ],
-    };
-    const result = resolveBookmarks(root);
+    });
+
     const page = result.children[0];
-    const view = page.children[1];
-    const nestedView = page.children[0].children[0];
-    const subNestedView = nestedView.children[0];
+    const view = page.children![1];
+    const nestedView = page.children![0].children![0];
+    const subNestedView = nestedView!.children![0];
 
     expect(page.props.bookmark).toEqual({
       ref: 0,
@@ -98,7 +102,7 @@ describe('layout resolveBookmarks', () => {
       expanded: false,
     });
 
-    expect(nestedView.props.bookmark).toEqual({
+    expect(nestedView.props!.bookmark).toEqual({
       ref: 2,
       parent: 0,
       title: 'chapter 1',
@@ -106,7 +110,7 @@ describe('layout resolveBookmarks', () => {
       expanded: false,
     });
 
-    expect(subNestedView.props.bookmark).toEqual({
+    expect(subNestedView!.props!.bookmark).toEqual({
       ref: 3,
       parent: 2,
       title: 'sub chapter',
@@ -116,8 +120,9 @@ describe('layout resolveBookmarks', () => {
   });
 
   test('should resolve bookmark object prop', () => {
-    const root = {
+    const result = resolveBookmarks({
       type: 'DOCUMENT',
+      props: {},
       children: [
         {
           type: 'PAGE',
@@ -133,8 +138,7 @@ describe('layout resolveBookmarks', () => {
           children: [{ type: 'VIEW', props: {} }],
         },
       ],
-    };
-    const result = resolveBookmarks(root);
+    });
 
     expect(result.children[0].props.bookmark).toEqual({
       ref: 0,

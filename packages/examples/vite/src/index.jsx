@@ -1,8 +1,8 @@
 import './index.css';
 
+import { PDFViewer } from '@react-pdf/renderer';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { PDFViewer } from '@react-pdf/renderer';
 
 import EXAMPLES from './examples';
 

@@ -22,6 +22,7 @@ const BASE_SVG_INHERITED_PROPS = [
   'fontSize',
   'fontStyle',
   'fontWeight',
+  'fontFeatureSettings',
   'letterSpacing',
   'opacity',
   'textDecoration',

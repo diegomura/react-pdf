@@ -7,7 +7,7 @@ class JPEG implements Image {
   height: number;
   format: 'jpeg';
 
-  constructor(data) {
+  constructor(data: Buffer) {
     this.data = data;
     this.format = 'jpeg';
 

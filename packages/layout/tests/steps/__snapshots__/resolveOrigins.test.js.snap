@@ -6,12 +6,12 @@ exports[`layout resolveOrigins > should not resolve for node without box 1`] = `
     {
       "children": [
         {
-          "origin": {},
+          "origin": null,
           "style": {},
           "type": "VIEW",
         },
       ],
-      "origin": {},
+      "origin": null,
       "style": {},
       "type": "PAGE",
     },

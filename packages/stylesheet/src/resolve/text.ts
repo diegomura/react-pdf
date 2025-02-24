@@ -63,6 +63,7 @@ const processLineHeight = (key, value, container, styles) => {
 };
 
 const handlers = {
+  direction: processNoopValue,
   fontFamily: processNoopValue,
   fontSize: processUnitValue,
   fontStyle: processNoopValue,

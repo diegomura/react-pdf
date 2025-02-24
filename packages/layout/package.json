@@ -2,11 +2,12 @@
   "name": "@react-pdf/layout",
   "version": "4.2.3",
   "license": "MIT",
-  "description": "Resolve overall document component's layout",
+  "description": "Resolve document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -18,7 +19,6 @@
     "watch": "rimraf ./lib && rollup -c -w"
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
     "@react-pdf/fns": "3.1.1",
     "@react-pdf/image": "^3.0.2",
     "@react-pdf/pdfkit": "^4.0.2",

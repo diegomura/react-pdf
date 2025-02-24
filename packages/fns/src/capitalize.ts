@@ -1,7 +1,7 @@
 /**
  * Capitalize first letter of each word
  *
- * @param value = Any string
+ * @param value - Any string
  * @returns Capitalized string
  */
 const capitalize = (value?: string | null) => {

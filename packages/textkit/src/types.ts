@@ -1,3 +1,5 @@
+import type { Font as FontkitFont, Glyph as FontkitGlyph } from 'fontkit';
+
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -18,13 +20,7 @@ export type Container = Rect & {
   excludeRects?: Rect[];
 };
 
-export type Glyph = {
-  id: number;
-  advanceWidth: number;
-  codePoints: number[];
-  isMark?: boolean;
-  isLigature?: boolean;
-};
+export type Glyph = FontkitGlyph;
 
 export type Position = {
   xAdvance: number;
@@ -38,45 +34,12 @@ export type Attachment = {
   y?: number;
   width?: number;
   height?: number;
+  yOffset?: number;
+  image?: Buffer;
 };
 
-export type BBox = {
-  minX: number;
-  minY: number;
-  maxX: number;
-  maxY: number;
-  width: number;
-  height: number;
-};
-
-export type GlyphRun = {
-  glyphs: Glyph[];
-  positions: Position[];
-  stringIndices: number[];
-  script: string;
-  language: string;
-  direction: string;
-  features: object;
-  advanceWidth: number;
-  advanceHeight: number;
-  bbox: BBox;
-};
-
-export type Font = {
-  ascent?: number;
-  descent?: number;
-  height?: number;
-  unitsPerEm?: number;
-  lineGap?: number;
+export type Font = FontkitFont & {
   encode?: (string: string) => number[];
-  glyphForCodePoint?: (codePoint: number) => Glyph;
-  layout?: (
-    string: string,
-    userFeatures?: unknown,
-    script?: unknown,
-    language?: unknown,
-    direction?: 'rtl' | 'ltr',
-  ) => GlyphRun;
 };
 
 export type Attributes = {
@@ -129,6 +92,7 @@ export type Run = {
   glyphIndices?: number[];
   glyphs?: Glyph[];
   positions?: Position[];
+  xAdvance?: number;
 };
 
 export type DecorationLine = {
@@ -148,6 +112,7 @@ export type AttributedString = {
   // TODO: Remove these properties
   overflowLeft?: number;
   overflowRight?: number;
+  xAdvance?: number;
 };
 
 export type Fragment = {

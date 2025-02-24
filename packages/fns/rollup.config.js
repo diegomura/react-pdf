@@ -6,7 +6,7 @@ const config = [
   {
     input: 'src/index.ts',
     output: { format: 'es', dir: 'lib' },
-    plugins: [typescript(), del({ targets: 'lib' })],
+    plugins: [typescript()],
   },
   {
     input: './lib/types/index.d.ts',

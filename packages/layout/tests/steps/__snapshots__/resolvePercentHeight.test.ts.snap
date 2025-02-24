@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout resolvePercentHeight > Should keep empty document untouched 1`] = `
+{
+  "children": [],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePercentHeight > Should keep empty page untouched 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePercentHeight > Should not resolve children if page dont have height 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "height": "80%",
+            "width": "60%",
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePercentHeight > Should resolve children percent dimensions if page have height 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "style": {
+            "height": 800,
+          },
+          "type": "VIEW",
+        },
+      ],
+      "props": {},
+      "style": {
+        "height": 1000,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;

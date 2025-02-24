@@ -1,5 +1,4 @@
 import { Font } from '../types';
-
 /**
  * Get glyph for a given code point
  *

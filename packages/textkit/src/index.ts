@@ -6,6 +6,7 @@ import textDecoration from './engines/textDecoration';
 import scriptItemizer from './engines/scriptItemizer';
 import wordHyphenation from './engines/wordHyphenation';
 import fontSubstitution from './engines/fontSubstitution';
+import fromFragments from './attributedString/fromFragments';
 
 export {
   bidi,
@@ -15,6 +16,9 @@ export {
   scriptItemizer,
   wordHyphenation,
   fontSubstitution,
+  fromFragments,
 };
+
+export * from './types';
 
 export default layoutEngine;

@@ -1,0 +1,153 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout resolveOrigins > should not resolve for node without box 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "origin": null,
+          "props": {},
+          "style": {},
+          "type": "VIEW",
+        },
+      ],
+      "origin": null,
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins > should resolve centered origin by default 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "bottom": 0,
+        "height": 400,
+        "left": 100,
+        "right": 0,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": {
+        "left": 250,
+        "top": 250,
+      },
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins > should resolve origin adjusted by fixed values 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "bottom": 0,
+        "height": 400,
+        "left": 100,
+        "right": 0,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": {
+        "left": 200,
+        "top": 100,
+      },
+      "props": {},
+      "style": {
+        "transformOriginX": 100,
+        "transformOriginY": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins > should resolve origin adjusted by percent values 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "bottom": 0,
+        "height": 400,
+        "left": 100,
+        "right": 0,
+        "top": 50,
+        "width": 300,
+      },
+      "origin": {
+        "left": 160,
+        "top": 330,
+      },
+      "props": {},
+      "style": {
+        "transformOriginX": "20%",
+        "transformOriginY": "70%",
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolveOrigins > should resolve origins for nested elements 1`] = `
+{
+  "children": [
+    {
+      "box": {
+        "bottom": 0,
+        "height": 400,
+        "left": 100,
+        "right": 0,
+        "top": 50,
+        "width": 300,
+      },
+      "children": [
+        {
+          "box": {
+            "bottom": 0,
+            "height": 80,
+            "left": 10,
+            "right": 0,
+            "top": 0,
+            "width": 50,
+          },
+          "origin": {
+            "left": 35,
+            "top": 40,
+          },
+          "props": {},
+          "style": {},
+          "type": "VIEW",
+        },
+      ],
+      "origin": {
+        "left": 250,
+        "top": 250,
+      },
+      "props": {},
+      "style": {},
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;

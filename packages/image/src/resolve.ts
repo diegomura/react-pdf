@@ -15,7 +15,7 @@ import {
   RemoteImageSrc,
 } from './types';
 
-export const IMAGE_CACHE = createCache<Promise<Image>>({ limit: 30 });
+export const IMAGE_CACHE = createCache<Promise<Image | null>>({ limit: 30 });
 
 const isBuffer = Buffer.isBuffer;
 
@@ -45,7 +45,7 @@ const getAbsoluteLocalPath = (src: string) => {
     path: pathname,
   } = url.parse(src);
 
-  const absolutePath = path.resolve(pathname);
+  const absolutePath = pathname ? path.resolve(pathname) : undefined;
 
   if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
     return undefined;
@@ -123,12 +123,14 @@ function getImage(body: Buffer, format: string): Image | null {
 
 const resolveBase64Image = async ({ uri }: Base64ImageSrc) => {
   const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
+
+  if (!match) throw new Error(`Invalid base64 image: ${uri}`);
+
   const format = match[1];
   const data = match[2];
 
-  if (!isValidFormat(format)) {
+  if (!isValidFormat(format))
     throw new Error(`Base64 image invalid format: ${format}`);
-  }
 
   return getImage(Buffer.from(data, 'base64'), format);
 };

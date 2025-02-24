@@ -1,4 +1,5 @@
 import _JPEG from 'jay-peg';
+
 import { Image } from './types';
 
 class JPEG implements Image {
@@ -10,6 +11,8 @@ class JPEG implements Image {
   constructor(data: Buffer) {
     this.data = data;
     this.format = 'jpeg';
+    this.width = 0;
+    this.height = 0;
 
     if (data.readUInt16BE(0) !== 0xffd8) {
       throw new Error('SOI not found in JPEG');
@@ -37,7 +40,7 @@ class JPEG implements Image {
     }
   }
 
-  static isValid(data) {
+  static isValid(data: Buffer) {
     return data && Buffer.isBuffer(data) && data.readUInt16BE(0) === 0xffd8;
   }
 }

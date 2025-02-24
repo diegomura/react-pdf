@@ -7,6 +7,8 @@ import {
   FontSourceOptions,
   FontStyle,
   FontWeight,
+  RemoteOptions,
+  SingleLoad,
 } from './types';
 
 const FONT_WEIGHTS = {
@@ -26,7 +28,7 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const fetchFont = async (src: string, options) => {
+const fetchFont = async (src: string, options: RemoteOptions) => {
   const response = await fetch(src, options);
   const data = await response.arrayBuffer();
 
@@ -60,9 +62,9 @@ class FontSource {
   constructor(
     src: string,
     fontFamily: string,
-    fontStyle: FontStyle,
-    fontWeight: number,
-    options: FontSourceOptions,
+    fontStyle?: FontStyle,
+    fontWeight?: number,
+    options?: FontSourceOptions,
   ) {
     this.src = src;
     this.fontFamily = fontFamily;
@@ -70,7 +72,7 @@ class FontSource {
     this.fontWeight = fontWeight || 400;
 
     this.data = null;
-    this.options = options;
+    this.options = options || {};
     this.loadResultPromise = null;
   }
 
@@ -115,8 +117,15 @@ class Font {
     this.sources = [];
   }
 
-  register({ src, fontWeight, fontStyle, ...options }) {
-    const numericFontWeight = resolveFontWeight(fontWeight);
+  register({
+    src,
+    fontWeight,
+    fontStyle,
+    ...options
+  }: Omit<SingleLoad, 'family'>) {
+    const numericFontWeight = fontWeight
+      ? resolveFontWeight(fontWeight)
+      : undefined;
 
     this.sources.push(
       new FontSource(src, this.family, fontStyle, numericFontWeight, options),
@@ -133,7 +142,7 @@ class Font {
 
     // Weight resolution. https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights
 
-    let res: FontSource;
+    let font: FontSource | null = null;
 
     const numericFontWeight = resolveFontWeight(fontWeight);
 
@@ -148,7 +157,7 @@ class Font {
         (s) => s.fontWeight >= numericFontWeight && s.fontWeight < 500,
       );
 
-      res = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
+      font = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];
     }
 
     const lt = styleSources
@@ -159,20 +168,20 @@ class Font {
       .sort(sortByFontWeight);
 
     if (numericFontWeight < 400) {
-      res = lt[lt.length - 1] || gt[0];
+      font = lt[lt.length - 1] || gt[0];
     }
 
     if (numericFontWeight > 500) {
-      res = gt[0] || lt[lt.length - 1];
+      font = gt[0] || lt[lt.length - 1];
     }
 
-    if (!res) {
+    if (!font) {
       throw new Error(
         `Could not resolve font for ${this.family}, fontWeight ${fontWeight}, fontStyle ${fontStyle}`,
       );
     }
 
-    return res;
+    return font;
   }
 }
 

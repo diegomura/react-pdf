@@ -30,6 +30,7 @@
     "lib"
   ],
   "devDependencies": {
-    "@types/fontkit": "^2.0.7"
+    "@types/fontkit": "^2.0.7",
+    "@types/is-url": "^1.2.32"
   }
 }

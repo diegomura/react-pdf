@@ -62,7 +62,7 @@ class FontStore {
     const fontFamilies =
       typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
 
-    const promises = [];
+    const promises: Promise<void>[] = [];
 
     for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
       const family = fontFamilies[i];
@@ -70,7 +70,8 @@ class FontStore {
       if (isStandard) return;
 
       const f = this.getFont({ ...descriptor, fontFamily: family });
-      promises.push(f.load());
+
+      if (f) promises.push(f.load());
     }
 
     await Promise.all(promises);

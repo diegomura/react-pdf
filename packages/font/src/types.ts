@@ -18,12 +18,15 @@ export type FontDescriptor = {
   fontWeight?: FontWeight;
 };
 
-export type FontSourceOptions = {
-  postscriptName?: string;
+export type RemoteOptions = {
   method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
   body?: any;
 };
+
+export type FontSourceOptions = {
+  postscriptName?: string;
+} & RemoteOptions;
 
 export type FontSource = {
   src: string;

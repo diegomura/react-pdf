@@ -229,7 +229,7 @@ const resolveImage = (src: ImageSrc, { cache = true } = {}) => {
     image = resolveBlobImage(src);
   } else if (isBuffer(src)) {
     image = resolveBufferImage(src);
-  } else if (cache && cacheKey && IMAGE_CACHE.get(cacheKey)) {
+  } else if (cache && IMAGE_CACHE.get(cacheKey)) {
     return IMAGE_CACHE.get(cacheKey);
   } else if (isBase64Src(src)) {
     image = resolveBase64Image(src);

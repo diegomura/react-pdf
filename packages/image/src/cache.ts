@@ -3,7 +3,7 @@ const createCache = <T>({ limit = 100 } = {}) => {
   let keys: string[] = [];
 
   return {
-    get: (key: string): T | undefined => cache[key],
+    get: (key: string | null): T | null => (key ? cache[key] : null),
     set: (key: string, value: T) => {
       keys.push(key);
       if (keys.length > limit) {

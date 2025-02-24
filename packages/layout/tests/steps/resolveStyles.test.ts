@@ -86,7 +86,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'VIEW',
@@ -114,7 +121,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'VIEW',
@@ -190,7 +204,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'VIEW',
@@ -222,7 +243,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'LINK',
@@ -245,7 +273,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'LINK',
@@ -268,7 +303,14 @@ describe('layout resolveStyles', () => {
         {
           type: 'PAGE',
           props: {},
-          box: { width: 100, height: 200 },
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: 100,
+            height: 200,
+          },
           children: [
             {
               type: 'LINK',

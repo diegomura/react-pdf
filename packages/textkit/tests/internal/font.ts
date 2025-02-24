@@ -1,4 +1,6 @@
-import { Font, Glyph, GlyphRun } from '../../src/types';
+import { GlyphRun } from 'fontkit';
+
+import { Font, Glyph } from '../../src/types';
 
 const shortLigature = { id: 64257, codePoints: [102, 105], advanceWidth: 10 };
 

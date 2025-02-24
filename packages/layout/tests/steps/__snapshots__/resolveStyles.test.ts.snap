@@ -5,7 +5,11 @@ exports[`layout resolveStyles > Should overide default link styles 1`] = `
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [
@@ -33,7 +37,11 @@ exports[`layout resolveStyles > Should overide default link styles with array 1`
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [
@@ -61,7 +69,11 @@ exports[`layout resolveStyles > Should resolve default link styles 1`] = `
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [
@@ -89,7 +101,11 @@ exports[`layout resolveStyles > Should resolve nested node styles 1`] = `
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [
@@ -132,7 +148,11 @@ exports[`layout resolveStyles > Should resolve nested node styles array 1`] = `
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [
@@ -175,7 +195,11 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
   "children": [
     {
       "box": {
+        "bottom": 0,
         "height": 200,
+        "left": 0,
+        "right": 0,
+        "top": 0,
         "width": 100,
       },
       "children": [

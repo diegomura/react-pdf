@@ -1,0 +1,190 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout resolvePagePaddings > Should keep other styles untouched 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "color": "red",
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should leave numeric paddingBottom as it is 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "paddingBottom": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should leave numeric paddingLeft as it is 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "paddingLeft": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should leave numeric paddingRight as it is 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "paddingRight": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should leave numeric paddingTop as it is 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "paddingTop": 50,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should resolve percent paddingBottom 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingBottom": 20,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should resolve percent paddingLeft 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingLeft": 10,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should resolve percent paddingRight 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingRight": 10,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should resolve percent paddingTop 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingTop": 20,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;
+
+exports[`layout resolvePagePaddings > Should resolve several pages 1`] = `
+{
+  "children": [
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingTop": 10,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingBottom": 20,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+    {
+      "props": {},
+      "style": {
+        "height": 200,
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "width": 100,
+      },
+      "type": "PAGE",
+    },
+  ],
+  "props": {},
+  "type": "DOCUMENT",
+}
+`;

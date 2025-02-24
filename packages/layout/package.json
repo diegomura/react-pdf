@@ -7,6 +7,7 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",

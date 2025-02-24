@@ -37,4 +37,6 @@ const layout = asyncCompose(
   resolveYoga,
 );
 
+export * from './types';
+
 export default layout;

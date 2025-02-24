@@ -3,6 +3,7 @@ export interface Image {
   height: number;
   data: Buffer;
   format: 'jpeg' | 'png';
+  key?: string;
 }
 
 export type ImageFormat = 'jpg' | 'jpeg' | 'png';

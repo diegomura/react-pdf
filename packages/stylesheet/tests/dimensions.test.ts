@@ -43,6 +43,12 @@ describe('resolve stylesheet dimensions', () => {
     expect(styles.width).toBe(200);
   });
 
+  test('should resolve width percentage dimensions', () => {
+    const styles = resolveStyle({ width: '50%' });
+
+    expect(styles.width).toBe('50%');
+  });
+
   test('should resolve min/max width in dimensions', () => {
     const styles = resolveStyle({ minWidth: '1in', maxWidth: '2in' });
 
@@ -76,6 +82,13 @@ describe('resolve stylesheet dimensions', () => {
 
     expect(styles.minWidth).toBe(200);
     expect(styles.maxWidth).toBe(80);
+  });
+
+  test('should resolve min/max width percent dimensions', () => {
+    const styles = resolveStyle({ minWidth: '50%', maxWidth: '20%' });
+
+    expect(styles.minWidth).toBe('50%');
+    expect(styles.maxWidth).toBe('20%');
   });
 
   test('should resolve height dimensions', () => {
@@ -114,6 +127,12 @@ describe('resolve stylesheet dimensions', () => {
     expect(styles.height).toBe(200);
   });
 
+  test('should resolve height percentage dimensions', () => {
+    const styles = resolveStyle({ height: '50%' });
+
+    expect(styles.height).toBe('50%');
+  });
+
   test('should resolve min/max height in dimensions', () => {
     const styles = resolveStyle({ minWidth: '1in', maxWidth: '2in' });
 
@@ -147,5 +166,12 @@ describe('resolve stylesheet dimensions', () => {
 
     expect(styles.minHeight).toBe(200);
     expect(styles.maxHeight).toBe(80);
+  });
+
+  test('should resolve min/max height percentage dimensions', () => {
+    const styles = resolveStyle({ minHeight: '50%', maxHeight: '20%' });
+
+    expect(styles.minHeight).toBe('50%');
+    expect(styles.maxHeight).toBe('20%');
   });
 });

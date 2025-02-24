@@ -83,7 +83,12 @@ const parseValue = (value: string | number) => {
  * @param inputDpi - User defined dpi
  * @returns Transformed value
  */
-const transformUnit = (value: string | number, inputDpi: number) => {
+const transformUnit = (
+  value: string | number | undefined,
+  inputDpi: number,
+) => {
+  if (!value) return 0;
+
   const scalar = parseValue(value);
 
   const outputDpi = 72;

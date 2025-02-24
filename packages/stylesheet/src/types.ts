@@ -6,6 +6,8 @@ export type Container = {
   orientation?: 'landscape' | 'portrait';
 };
 
+export type Percentage = `${string}%`;
+
 // Borders
 
 export type BorderStyleValue = 'dashed' | 'dotted' | 'solid';
@@ -46,10 +48,10 @@ export type BorderSafeStyle = BorderExpandedStyle & {
   borderRightWidth?: number;
   borderBottomWidth?: number;
   borderLeftWidth?: number;
-  borderTopLeftRadius?: number;
-  borderTopRightRadius?: number;
-  borderBottomRightRadius?: number;
-  borderBottomLeftRadius?: number;
+  borderTopLeftRadius?: number | Percentage;
+  borderTopRightRadius?: number | Percentage;
+  borderBottomRightRadius?: number | Percentage;
+  borderBottomLeftRadius?: number | Percentage;
 };
 
 export type BorderStyle = BorderShorthandStyle & BorderExpandedStyle;
@@ -169,8 +171,8 @@ export type TransformExpandedStyle = {
 };
 
 export type TransformSafeStyle = TransformExpandedStyle & {
-  transformOriginX?: number;
-  transformOriginY?: number;
+  transformOriginX?: number | Percentage;
+  transformOriginY?: number | Percentage;
 };
 
 export type TransformStyle = TransformShorthandStyle & TransformExpandedStyle;
@@ -218,12 +220,12 @@ export type DimensionStyle = {
 export type DimensionExpandedStyle = DimensionStyle;
 
 export type DimensionSafeStyle = DimensionExpandedStyle & {
-  height?: number;
-  maxHeight?: number;
-  maxWidth?: number;
-  minHeight?: number;
-  minWidth?: number;
-  width?: number;
+  height?: number | Percentage;
+  maxHeight?: number | Percentage;
+  maxWidth?: number | Percentage;
+  minHeight?: number | Percentage;
+  minWidth?: number | Percentage;
+  width?: number | Percentage;
 };
 
 // Colors
@@ -275,11 +277,17 @@ export type TextDecoration =
 
 export type TextDecorationStyle = 'dashed' | 'dotted' | 'solid' | string;
 
-export type TextTransform = 'capitalize' | 'lowercase' | 'uppercase' | 'none';
+export type TextTransform =
+  | 'capitalize'
+  | 'lowercase'
+  | 'uppercase'
+  | 'upperfirst'
+  | 'none';
 
 export type VerticalAlign = 'sub' | 'super';
 
 export type TextStyle = {
+  direction?: 'ltr' | 'rtl';
   fontSize?: number | string;
   fontFamily?: string | string[];
   fontStyle?: FontStyle;
@@ -322,10 +330,10 @@ export type MarginExpandedStyle = {
 };
 
 export type MarginSafeStyle = MarginExpandedStyle & {
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+  marginTop?: number | Percentage;
+  marginRight?: number | Percentage;
+  marginBottom?: number | Percentage;
+  marginLeft?: number | Percentage;
 };
 
 export type MarginStyle = MarginShorthandStyle & MarginExpandedStyle;
@@ -346,10 +354,10 @@ export type PaddingExpandedStyle = {
 };
 
 export type PaddingSafeStyle = PaddingExpandedStyle & {
-  paddingTop?: number;
-  paddingRight?: number;
-  paddingBottom?: number;
-  paddingLeft?: number;
+  paddingTop?: number | Percentage;
+  paddingRight?: number | Percentage;
+  paddingBottom?: number | Percentage;
+  paddingLeft?: number | Percentage;
 };
 
 export type PaddingStyle = PaddingShorthandStyle & PaddingExpandedStyle;

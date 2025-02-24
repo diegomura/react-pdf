@@ -34,10 +34,10 @@ const getOverflowRight = (line: AttributedString) => {
 /**
  * Ignore whitespace at the start and end of a line for alignment
  *
- * @param {Object}  line
- * @returns {Object} line
+ * @param line
+ * @returns Line
  */
-const adjustOverflow = (line: AttributedString) => {
+const adjustOverflow = (line: AttributedString): AttributedString => {
   const overflowLeft = getOverflowLeft(line);
   const overflowRight = getOverflowRight(line);
 
@@ -51,9 +51,9 @@ const adjustOverflow = (line: AttributedString) => {
 /**
  * Performs line justification by calling appropiate engine
  *
- * @param {Object} engines engines
- * @param {Object} options layout options
- * @param {string} align text align
+ * @param engines - Engines
+ * @param options - Layout options
+ * @param align - Text align
  */
 const justifyLine = (
   engines: Engines,
@@ -78,7 +78,7 @@ const justifyLine = (
   };
 };
 
-const finalizeLine = (line: AttributedString) => {
+const finalizeLine = (line: AttributedString): AttributedString => {
   let lineAscent = 0;
   let lineDescent = 0;
   let lineHeight = 0;
@@ -148,7 +148,7 @@ const finalizeFragments = (engines: Engines, options: LayoutOptions) => {
    * @param paragraphs - Paragraphs
    * @returns Paragraphs
    */
-  return (paragraphs: Paragraph[]) => {
+  return (paragraphs: Paragraph[]): Paragraph[] => {
     const blockFinalizer = finalizeBlock(engines, options);
     return paragraphs.map((paragraph) => paragraph.map(blockFinalizer));
   };

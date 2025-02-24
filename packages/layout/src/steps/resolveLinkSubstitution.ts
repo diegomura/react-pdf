@@ -1,5 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import { compose } from '@react-pdf/fns';
+
 import { Node } from '../types';
 
 const isType = (type: string) => (node: Node) => node.type === type;

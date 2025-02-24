@@ -1,10 +1,9 @@
 import getPadding from '../node/getPadding';
-import { PageNode } from '../types';
+import { SafePageNode } from '../types';
 
-// TODO: Use safe node
-const getContentArea = (page: PageNode) => {
+const getContentArea = (page: SafePageNode) => {
   const height = page.style?.height as number;
-  const { paddingTop, paddingBottom } = getPadding(page);
+  const { paddingTop, paddingBottom } = getPadding(page as any);
 
   return height - (paddingBottom as number) - (paddingTop as number);
 };

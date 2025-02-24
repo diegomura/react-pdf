@@ -1,16 +1,16 @@
 /* eslint-disable no-await-in-loop */
 
-type Fn = (arg: any, ...args: any[]) => Promise<any>;
+type Fn = (arg: any, ...args: any[]) => Promise<any> | any;
 
 type FirstFnParameterType<T extends Fn[]> = T extends [
   ...any,
-  (arg: infer A, ...args: any[]) => Promise<any>,
+  (arg: infer A, ...args: any[]) => Promise<any> | any,
 ]
   ? A
   : never;
 
 type LastFnReturnType<T extends Fn[]> = T extends [
-  (arg: any, ...args: any[]) => Promise<infer R>,
+  (arg: any, ...args: any[]) => Promise<infer R> | infer R,
   ...any,
 ]
   ? R

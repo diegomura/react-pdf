@@ -9,7 +9,7 @@ import {
 } from './types';
 
 class FontStore {
-  fonts = {};
+  fonts: Record<string, font> = {};
 
   emojiSource: EmojiSource | null = null;
 
@@ -25,25 +25,17 @@ class FontStore {
     // Bulk loading
     if ('fonts' in data) {
       for (let i = 0; i < data.fonts.length; i += 1) {
-        this.fonts[family].register({ family, ...data.fonts[i] });
+        const { src, fontStyle, fontWeight, ...options } = data.fonts[i];
+        this.fonts[family].register({ src, fontStyle, fontWeight, ...options });
       }
     } else {
-      this.fonts[family].register(data);
+      const { src, fontStyle, fontWeight, ...options } = data;
+      this.fonts[family].register({ src, fontStyle, fontWeight, ...options });
     }
   };
 
   registerEmojiSource = (emojiSource: EmojiSource) => {
-    const url = 'url' in emojiSource ? emojiSource.url : undefined;
-    const format = 'format' in emojiSource ? emojiSource.format : undefined;
-    const builder = 'builder' in emojiSource ? emojiSource.builder : undefined;
-    const withVariationSelectors = emojiSource.withVariationSelectors || false;
-
-    this.emojiSource = {
-      url,
-      format: format || 'png',
-      builder,
-      withVariationSelectors,
-    };
+    this.emojiSource = emojiSource;
   };
 
   registerHyphenationCallback = (callback: HyphenationCallback) => {
@@ -89,7 +81,10 @@ class FontStore {
 
     for (let i = 0; i < keys.length; i += 1) {
       const key = keys[i];
-      this.fonts[key].data = null;
+      for (let j = 0; j < this.fonts[key].sources.length; j++) {
+        const fontSource = this.fonts[key].sources[j];
+        fontSource.data = null;
+      }
     }
   };
 

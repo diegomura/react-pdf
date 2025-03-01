@@ -202,6 +202,7 @@ declare module 'yoga-layout/load' {
     setMaxWidth(maxWidth: number | string): void;
     setMaxWidthPercent(maxWidth: number): void;
     setGap(gap: Gutter, value: number): void;
+    setGapPercent(gap: Gutter, value: number): void;
     setMeasureFunc(measureFunction: MeasureFunction): void;
     setMinHeight(minHeight: number | string): void;
     setMinHeightPercent(minHeight: number): void;

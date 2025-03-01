@@ -15,7 +15,8 @@
   "scripts": {
     "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
-    "watch": "rimraf ./lib && rollup -c -w"
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
@@ -28,6 +29,12 @@
     "normalize-svg-path": "^1.1.0",
     "parse-svg-path": "^0.1.2",
     "svg-arc-to-cubic-bezier": "^3.2.0"
+  },
+  "devDependencies": {
+    "@react-pdf/layout": "^4.2.3",
+    "@types/abs-svg-path": "^0.1.3",
+    "@types/color-string": "^1.5.5",
+    "@types/pdfkit": "^0.13.9"
   },
   "files": [
     "lib"

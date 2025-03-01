@@ -2537,6 +2537,11 @@
     "@tufjs/canonical-json" "2.0.0"
     minimatch "^9.0.3"
 
+"@types/abs-svg-path@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@types/abs-svg-path/-/abs-svg-path-0.1.3.tgz#61fe19625cd384a133492f0610e755574cf50124"
+  integrity sha512-kprGLHW7zTKkf9NkTO/O4l1BBcLgZGYfZyiYV7lvF6xHypAmi0d7RT/kk+MXkumMcQm0O244lHxSWerV78WQIg==
+
 "@types/aria-query@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.1.tgz#3286741fb8f1e1580ac28784add4c7a1d49bdfbc"
@@ -2574,6 +2579,11 @@
   integrity sha512-Vs0hm0vPahPMYi9tDjtP66llufgO3ST16WXaSTtDGEl9cewAl3AibmxWw6TINOqHPT9z0uABKAYjT9jNSg4npw==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/color-string@^1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@types/color-string/-/color-string-1.5.5.tgz#db38c62473c76eda9696ffb3c093b9dc8e9dceea"
+  integrity sha512-p9+C1ssJsjnHV8nn96rkimm2h90LclLIwgBfiMCHW0oUr6jLmB+wzZUEGJPduB/D2RzI2Ahoe69xKNOawX6jgw==
 
 "@types/eslint-scope@^3.7.7":
   version "3.7.7"
@@ -2679,6 +2689,13 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/pdfkit@^0.13.9":
+  version "0.13.9"
+  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.13.9.tgz#0acf17575737c8856a946e5dfad35ad444b510a1"
+  integrity sha512-RDG8Yb1zT7I01FfpwK7nMSA433XWpblMqSCtA5vJlSyavWZb303HUYPCel6JTiDDFqwGLvtAnYbH8N/e0Cb89g==
+  dependencies:
+    "@types/node" "*"
 
 "@types/prop-types@*":
   version "15.7.5"

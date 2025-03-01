@@ -27,18 +27,22 @@ export type Position = {
   yAdvance: number;
   xOffset: number;
   yOffset: number;
+  // TODO: remove?
+  advanceWidth?: number;
 };
 
 export type Attachment = {
   x?: number;
   y?: number;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
+  xOffset?: number;
   yOffset?: number;
-  image?: Buffer;
+  image: Buffer;
 };
 
 export type Font = FontkitFont & {
+  name?: string;
   encode?: (string: string) => number[];
 };
 
@@ -62,7 +66,7 @@ export type Attributes = {
   justificationFactor?: number;
   lineHeight?: number;
   lineSpacing?: number;
-  link?: unknown;
+  link?: string;
   margin?: number;
   marginLeft?: number;
   marginRight?: number;
@@ -93,6 +97,10 @@ export type Run = {
   glyphs?: Glyph[];
   positions?: Position[];
   xAdvance?: number;
+
+  // TODO: Remove these properties
+  height?: number;
+  descent?: number;
 };
 
 export type DecorationLine = {
@@ -113,6 +121,7 @@ export type AttributedString = {
   overflowLeft?: number;
   overflowRight?: number;
   xAdvance?: number;
+  ascent?: number;
 };
 
 export type Fragment = {

@@ -16,6 +16,7 @@
     "prepare": "husky",
     "build": "lerna run build",
     "watch": "lerna run watch --parallel",
+    "typecheck": "lerna run typecheck --parallel",
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "vitest",

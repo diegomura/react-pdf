@@ -11,7 +11,7 @@ import { SafeNode } from '../types';
  * @returns Node instance wrapper
  */
 const setYogaValue =
-  (attr: string, edge?: Yoga.Edge) =>
+  (attr: string, edge?: Yoga.Edge | Yoga.Gutter) =>
   (value?: string | number | null) =>
   (node: SafeNode) => {
     const { yogaNode } = node;

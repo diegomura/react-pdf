@@ -6,6 +6,12 @@ interface StopProps {
   stopOpacity?: string | number;
 }
 
+interface StopSafeProps {
+  offset: number;
+  stopColor: string;
+  stopOpacity?: number;
+}
+
 export type StopNode = {
   type: typeof P.Stop;
   props: StopProps;
@@ -16,4 +22,6 @@ export type StopNode = {
   children?: never[];
 };
 
-export type SafeStopNode = StopNode;
+export type SafeStopNode = Omit<StopNode, 'props'> & {
+  props: StopSafeProps;
+};

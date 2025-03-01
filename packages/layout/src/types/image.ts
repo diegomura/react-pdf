@@ -45,14 +45,18 @@ export type SourceObject =
 
 interface BaseImageProps extends NodeProps {
   cache?: boolean;
+  x?: number;
+  y?: number;
 }
 
 interface ImageWithSrcProp extends BaseImageProps {
   src: SourceObject;
+  source: never;
 }
 
 interface ImageWithSourceProp extends BaseImageProps {
   source: SourceObject;
+  src: never;
 }
 
 export type ImageProps = ImageWithSrcProp | ImageWithSourceProp;

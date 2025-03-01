@@ -10,6 +10,14 @@ interface LinearGradientProps {
   y2?: string | number;
 }
 
+interface SafeLinearGradientProps {
+  id: string;
+  x1?: number;
+  x2?: number;
+  y1?: number;
+  y2?: number;
+}
+
 export type LinearGradientNode = {
   type: typeof P.LinearGradient;
   props: LinearGradientProps;
@@ -20,6 +28,10 @@ export type LinearGradientNode = {
   children?: StopNode[];
 };
 
-export type SafeLinearGradientNode = Omit<LinearGradientNode, 'children'> & {
+export type SafeLinearGradientNode = Omit<
+  LinearGradientNode,
+  'props' | 'children'
+> & {
+  props: SafeLinearGradientProps;
   children?: SafeStopNode[];
 };

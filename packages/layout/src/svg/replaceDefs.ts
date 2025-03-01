@@ -30,10 +30,13 @@ const parseNodeDefs =
   (node: SafeNode): SafeNode => {
     const props = node.props;
 
-    const fill = `fill` in props ? replaceDef(defs, props?.fill) : undefined;
+    const fill =
+      `fill` in props ? replaceDef(defs, props?.fill as any) : undefined;
 
     const clipPath =
-      `clipPath` in props ? replaceDef(defs, props?.clipPath) : undefined;
+      `clipPath` in props
+        ? replaceDef(defs, props?.clipPath as any)
+        : undefined;
 
     const newProps = Object.assign({}, node.props, { fill, clipPath });
 

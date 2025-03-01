@@ -1,7 +1,10 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 
 interface LineProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
@@ -9,6 +12,14 @@ interface LineProps extends SVGPresentationAttributes {
   x2: string | number;
   y1: string | number;
   y2: string | number;
+}
+
+interface SafeLineProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
+  x1: number;
+  x2: number;
+  y1: number;
+  y2: number;
 }
 
 export type LineNode = {
@@ -21,6 +32,7 @@ export type LineNode = {
   children?: never[];
 };
 
-export type SafeLineNode = Omit<LineNode, 'style'> & {
+export type SafeLineNode = Omit<LineNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafeLineProps;
 };

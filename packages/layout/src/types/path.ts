@@ -1,10 +1,18 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 
 interface PathProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
+  d: string;
+}
+
+interface SafePathProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
   d: string;
 }
 
@@ -18,6 +26,7 @@ export type PathNode = {
   children?: never[];
 };
 
-export type SafePathNode = Omit<PathNode, 'style'> & {
+export type SafePathNode = Omit<PathNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafePathProps;
 };

@@ -1,5 +1,8 @@
 import { YogaNode } from 'yoga-layout/load';
 import * as React from 'react';
+import { SafeClipPathNode } from './clip-path';
+import { SafeLinearGradientNode } from './linear-gradient';
+import { SafeRadialGradientNode } from './radial-gradient';
 
 export type YogaInstance = {
   node: { create: () => YogaNode };
@@ -34,16 +37,16 @@ export type Origin = {
   top: number;
 };
 
-export interface ExpandedBookmark {
+export interface Bookmark {
   title: string;
   top?: number;
   left?: number;
   zoom?: number;
   fit?: true | false;
   expanded?: true | false;
+  parent?: number;
+  ref?: number;
 }
-
-export type Bookmark = string | ExpandedBookmark;
 
 export type DynamicPageProps = {
   pageNumber: number;
@@ -82,7 +85,26 @@ export type NodeProps = {
   bookmark?: Bookmark;
 };
 
-export interface SVGPresentationAttributes {
+export type FillRule = 'nonzero' | 'evenodd';
+
+export type TextAnchor = 'start' | 'middle' | 'end';
+
+export type StrokeLinecap = 'butt' | 'round' | 'square';
+
+export type StrokeLinejoin = 'butt' | 'round' | 'square';
+
+export type Visibility = 'visible' | 'hidden' | 'collapse';
+
+export type DominantBaseline =
+  | 'auto'
+  | 'middle'
+  | 'central'
+  | 'hanging'
+  | 'mathematical'
+  | 'text-after-edge'
+  | 'text-before-edge';
+
+export type SVGPresentationAttributes = {
   fill?: string;
   color?: string;
   stroke?: string;
@@ -91,22 +113,34 @@ export interface SVGPresentationAttributes {
   opacity?: string | number;
   strokeWidth?: string | number;
   fillOpacity?: string | number;
-  fillRule?: 'nonzero' | 'evenodd';
+  fillRule?: FillRule;
   strokeOpacity?: string | number;
-  textAnchor?: 'start' | 'middle' | 'end';
-  strokeLinecap?: 'butt' | 'round' | 'square';
-  strokeLinejoin?: 'butt' | 'round' | 'square';
-  visibility?: 'visible' | 'hidden' | 'collapse';
+  textAnchor?: TextAnchor;
+  strokeLinecap?: StrokeLinecap;
+  strokeLinejoin?: StrokeLinejoin;
+  visibility?: Visibility;
   clipPath?: string;
-  dominantBaseline?:
-    | 'auto'
-    | 'middle'
-    | 'central'
-    | 'hanging'
-    | 'mathematical'
-    | 'text-after-edge'
-    | 'text-before-edge';
-}
+  dominantBaseline?: DominantBaseline;
+};
+
+export type SafeSVGPresentationAttributes = {
+  fill?: string | SafeLinearGradientNode | SafeRadialGradientNode;
+  color?: string;
+  stroke?: string;
+  transform?: string;
+  strokeDasharray?: string;
+  opacity?: number;
+  strokeWidth?: number;
+  fillOpacity?: number;
+  fillRule?: FillRule;
+  strokeOpacity?: number;
+  textAnchor?: TextAnchor;
+  strokeLinecap?: StrokeLinecap;
+  strokeLinejoin?: StrokeLinejoin;
+  visibility?: Visibility;
+  clipPath?: SafeClipPathNode;
+  dominantBaseline?: DominantBaseline;
+};
 
 export interface FormCommonProps extends NodeProps {
   name?: string;

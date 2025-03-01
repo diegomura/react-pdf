@@ -1,7 +1,10 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 
 interface RectProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
@@ -11,6 +14,16 @@ interface RectProps extends SVGPresentationAttributes {
   height: string | number;
   rx?: string | number;
   ry?: string | number;
+}
+
+interface SafeRectProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
+  x?: number;
+  y?: number;
+  width: number;
+  height: number;
+  rx?: number;
+  ry?: number;
 }
 
 export type RectNode = {
@@ -23,6 +36,7 @@ export type RectNode = {
   children?: never[];
 };
 
-export type SafeRectNode = Omit<RectNode, 'style'> & {
+export type SafeRectNode = Omit<RectNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafeRectProps;
 };

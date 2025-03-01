@@ -6,19 +6,19 @@ import {
 } from './utils';
 
 const handlers = {
-  fill: processColorValue,
-  stroke: processColorValue,
-  strokeDasharray: processNoopValue,
-  strokeWidth: processUnitValue,
-  fillOpacity: processNumberValue,
-  strokeOpacity: processNumberValue,
-  fillRule: processNoopValue,
-  textAnchor: processNoopValue,
-  strokeLinecap: processNoopValue,
-  strokeLinejoin: processNoopValue,
-  visibility: processNoopValue,
-  clipPath: processNoopValue,
-  dominantBaseline: processNoopValue,
+  fill: processColorValue<'fill'>,
+  stroke: processColorValue<'stroke'>,
+  strokeDasharray: processNoopValue<'strokeDasharray'>,
+  strokeWidth: processUnitValue<'strokeWidth'>,
+  fillOpacity: processNumberValue<'fillOpacity'>,
+  strokeOpacity: processNumberValue<'strokeOpacity'>,
+  fillRule: processNoopValue<'fillRule'>,
+  textAnchor: processNoopValue<'textAnchor'>,
+  strokeLinecap: processNoopValue<'strokeLinecap'>,
+  strokeLinejoin: processNoopValue<'strokeLinejoin'>,
+  visibility: processNoopValue<'visibility'>,
+  clipPath: processNoopValue<'clipPath'>,
+  dominantBaseline: processNoopValue<'dominantBaseline'>,
 };
 
 export default handlers;

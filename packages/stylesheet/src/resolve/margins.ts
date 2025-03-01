@@ -35,13 +35,13 @@ const processMarginSingle = processBoxModel<MarginStyle, MarginSafeStyle>({
 });
 
 const handlers = {
-  margin: processMargin,
-  marginBottom: processMarginSingle,
-  marginHorizontal: processMarginHorizontal,
-  marginLeft: processMarginSingle,
-  marginRight: processMarginSingle,
-  marginTop: processMarginSingle,
-  marginVertical: processMarginVertical,
+  margin: processMargin<'margin'>,
+  marginBottom: processMarginSingle<'marginBottom'>,
+  marginHorizontal: processMarginHorizontal<'marginHorizontal'>,
+  marginLeft: processMarginSingle<'marginLeft'>,
+  marginRight: processMarginSingle<'marginRight'>,
+  marginTop: processMarginSingle<'marginTop'>,
+  marginVertical: processMarginVertical<'marginVertical'>,
 };
 
 export default handlers;

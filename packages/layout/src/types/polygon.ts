@@ -1,10 +1,18 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SafeSVGPresentationAttributes,
+  SVGPresentationAttributes,
+} from './base';
 
 interface PolygonProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
+  points: string;
+}
+
+interface SafePolygonProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
   points: string;
 }
 
@@ -18,6 +26,7 @@ export type PolygonNode = {
   children?: never[];
 };
 
-export type SafePolygonNode = Omit<PolygonNode, 'style'> & {
+export type SafePolygonNode = Omit<PolygonNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafePolygonProps;
 };

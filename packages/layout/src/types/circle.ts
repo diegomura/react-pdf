@@ -1,13 +1,24 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { Origin, SVGPresentationAttributes } from './base';
+import {
+  Origin,
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 
 interface CircleProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
   cx?: string | number;
   cy?: string | number;
   r: string | number;
+}
+
+interface SafeCircleProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
+  cx?: number;
+  cy?: number;
+  r: number;
 }
 
 export type CircleNode = {
@@ -20,6 +31,7 @@ export type CircleNode = {
   children?: never[];
 };
 
-export type SafeCircleNode = Omit<CircleNode, 'style'> & {
+export type SafeCircleNode = Omit<CircleNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafeCircleProps;
 };

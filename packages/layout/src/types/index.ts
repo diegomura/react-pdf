@@ -1,5 +1,7 @@
 export * from './base';
+export * from './canvas';
 export * from './circle';
+export * from './checkbox';
 export * from './clip-path';
 export * from './defs';
 export * from './document';

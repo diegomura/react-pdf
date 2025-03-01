@@ -2,7 +2,13 @@ import { SafeStyle, Style } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
-import { Box, NodeProps, Origin, SVGPresentationAttributes } from './base';
+import {
+  Box,
+  Origin,
+  NodeProps,
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 import { LineNode, SafeLineNode } from './line';
 import { PolylineNode, SafePolylineNode } from './polyline';
 import { PolygonNode, SafePolygonNode } from './polygon';
@@ -13,6 +19,8 @@ import { EllipseNode, SafeEllipseNode } from './ellipse';
 import { SafeTspanNode, TspanNode } from './tspan';
 import { GNode, SafeGNode } from './g';
 import { DefsNode, SafeDefsNode } from './defs';
+import { SafeTextNode, TextNode } from './text';
+import { ImageNode, SafeImageNode } from './image';
 
 export type Viewbox = {
   minX: number;
@@ -40,7 +48,14 @@ interface SvgProps extends NodeProps, SVGPresentationAttributes {
   width?: string | number;
   height?: string | number;
   viewBox?: string | Viewbox;
-  preserveAspectRatio?: string | PreserveAspectRatio;
+  preserveAspectRatio?: string;
+}
+
+interface SvgSafeProps extends NodeProps, SafeSVGPresentationAttributes {
+  width?: string | number;
+  height?: string | number;
+  viewBox?: Viewbox;
+  preserveAspectRatio?: PreserveAspectRatio;
 }
 
 export type SvgNode = {
@@ -58,14 +73,17 @@ export type SvgNode = {
     | RectNode
     | CircleNode
     | EllipseNode
+    | ImageNode
+    | TextNode
     | TspanNode
     | GNode
     | DefsNode
   )[];
 };
 
-export type SafeSvgNode = Omit<SvgNode, 'style' | 'children'> & {
+export type SafeSvgNode = Omit<SvgNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
+  props: SvgSafeProps;
   children?: (
     | SafeLineNode
     | SafePolylineNode
@@ -74,6 +92,8 @@ export type SafeSvgNode = Omit<SvgNode, 'style' | 'children'> & {
     | SafeRectNode
     | SafeCircleNode
     | SafeEllipseNode
+    | SafeImageNode
+    | SafeTextNode
     | SafeTspanNode
     | SafeGNode
     | SafeDefsNode

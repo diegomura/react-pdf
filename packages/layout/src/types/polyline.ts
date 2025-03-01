@@ -1,10 +1,18 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SVGPresentationAttributes,
+  SafeSVGPresentationAttributes,
+} from './base';
 
 interface PolylineProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
+  points: string;
+}
+
+interface SafePolylineProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
   points: string;
 }
 
@@ -18,6 +26,7 @@ export type PolylineNode = {
   children?: never[];
 };
 
-export type SafePolylineNode = Omit<PolylineNode, 'style'> & {
+export type SafePolylineNode = Omit<PolylineNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafePolylineProps;
 };

@@ -1,7 +1,10 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 
-import { SVGPresentationAttributes } from './base';
+import {
+  SafeSVGPresentationAttributes,
+  SVGPresentationAttributes,
+} from './base';
 
 interface EllipseProps extends SVGPresentationAttributes {
   style?: SVGPresentationAttributes;
@@ -9,6 +12,14 @@ interface EllipseProps extends SVGPresentationAttributes {
   cy?: string | number;
   rx: string | number;
   ry: string | number;
+}
+
+interface SafeEllipseProps extends SafeSVGPresentationAttributes {
+  style?: SafeSVGPresentationAttributes;
+  cx?: number;
+  cy?: number;
+  rx: number;
+  ry: number;
 }
 
 export type EllipseNode = {
@@ -21,6 +32,7 @@ export type EllipseNode = {
   children?: never[];
 };
 
-export type SafeEllipseNode = Omit<EllipseNode, 'style'> & {
+export type SafeEllipseNode = Omit<EllipseNode, 'style' | 'props'> & {
   style: SafeStyle;
+  props: SafeEllipseProps;
 };

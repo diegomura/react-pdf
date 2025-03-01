@@ -9,6 +9,17 @@ interface RadialGradientProps {
   fr?: string | number;
   fx?: string | number;
   fy?: string | number;
+  r?: string | number;
+}
+
+interface SafeRadialGradientProps {
+  id: string;
+  cx?: number;
+  cy?: number;
+  fr?: number;
+  fx?: number;
+  fy?: number;
+  r?: number;
 }
 
 export type RadialGradientNode = {
@@ -21,6 +32,10 @@ export type RadialGradientNode = {
   children?: StopNode[];
 };
 
-export type SafeRadialGradientNode = Omit<RadialGradientNode, 'children'> & {
+export type SafeRadialGradientNode = Omit<
+  RadialGradientNode,
+  'props' | 'children'
+> & {
+  props: SafeRadialGradientProps;
   children?: SafeStopNode[];
 };

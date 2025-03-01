@@ -1,3 +1,5 @@
+import { parseFloat } from '@react-pdf/fns';
+
 import transformUnit from '../utils/units';
 import transformColor from '../utils/colors';
 import { Container, Style, StyleKey } from '../types';

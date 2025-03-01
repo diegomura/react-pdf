@@ -33,13 +33,13 @@ const processPaddingHorizontal = processBoxModel<
 const processPaddingSingle = processBoxModel<PaddingStyle, PaddingSafeStyle>();
 
 const handlers = {
-  padding: processPadding,
-  paddingBottom: processPaddingSingle,
-  paddingHorizontal: processPaddingHorizontal,
-  paddingLeft: processPaddingSingle,
-  paddingRight: processPaddingSingle,
-  paddingTop: processPaddingSingle,
-  paddingVertical: processPaddingVertical,
+  padding: processPadding<'padding'>,
+  paddingBottom: processPaddingSingle<'paddingBottom'>,
+  paddingHorizontal: processPaddingHorizontal<'paddingHorizontal'>,
+  paddingLeft: processPaddingSingle<'paddingLeft'>,
+  paddingRight: processPaddingSingle<'paddingRight'>,
+  paddingTop: processPaddingSingle<'paddingTop'>,
+  paddingVertical: processPaddingVertical<'paddingVertical'>,
 };
 
 export default handlers;

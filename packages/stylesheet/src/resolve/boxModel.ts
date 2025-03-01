@@ -24,10 +24,10 @@ const logError = (style: any, value: any) => {
 };
 
 /**
- * @param {Object} options
- * @param {Function} [options.expandsTo]
- * @param {number} [options.maxValues]
- * @param {boolean} [options.autoSupported]
+ * @param options
+ * @param [options.expandsTo]
+ * @param [options.maxValues]
+ * @param [options.autoSupported]
  */
 const expandBoxModel =
   <S, E>({

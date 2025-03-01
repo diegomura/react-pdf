@@ -1,8 +1,9 @@
 import transformUnit from '../utils/units';
 import castFloat from '../utils/castFloat';
 import offsetKeyword from '../utils/offsetKeyword';
+import { Container, Style, StyleKey, Transform } from '../types';
 
-const parse = (transformString) => {
+const parse = (transformString: string) => {
   const transforms = transformString.trim().split(/\)[ ,]|\)/);
 
   // Handle "initial", "inherit", "unset".
@@ -26,7 +27,7 @@ const parse = (transformString) => {
   return parsed;
 };
 
-const parseAngle = (value) => {
+const parseAngle = (value: string) => {
   const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
   const [, angle, unit] = unitsRegexp.exec(value);
   const number = Number.parseFloat(angle);
@@ -34,7 +35,7 @@ const parseAngle = (value) => {
   return unit === 'rad' ? (number * 180) / Math.PI : number;
 };
 
-const normalizeTransformOperation = ({ operation, value }) => {
+const normalizeTransformOperation = ({ operation, value }): Transform => {
   switch (operation) {
     case 'scale': {
       const [scaleX, scaleY = scaleX] = value.map((num) =>
@@ -90,11 +91,11 @@ const normalizeTransformOperation = ({ operation, value }) => {
   }
 };
 
-const normalize = (operations) => {
+const normalize = (operations): Transform[] => {
   return operations.map((operation) => normalizeTransformOperation(operation));
 };
 
-const processTransform = (key, value) => {
+const processTransform = (key: 'transform', value: Style['transform']) => {
   if (typeof value !== 'string') return { [key]: value };
 
   return { [key]: normalize(parse(value)) };
@@ -117,7 +118,11 @@ const getTransformOriginPair = (values) => {
 };
 
 // Transforms shorthand transformOrigin values
-const processTransformOriginShorthand = (key, value, container) => {
+const processTransformOriginShorthand = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+  container: Container,
+) => {
   const match = `${value}`.split(' ');
 
   const pair = getTransformOriginPair(match);
@@ -133,16 +138,20 @@ const processTransformOriginShorthand = (key, value, container) => {
   };
 };
 
-const processTransformOriginValue = (key, value: any, container) => {
+const processTransformOriginValue = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+  container: Container,
+) => {
   const v = transformUnit(container, value);
   return { [key]: offsetKeyword(v) || castFloat(v) };
 };
 
 const handlers = {
   transform: processTransform,
-  transformOrigin: processTransformOriginShorthand,
-  transformOriginX: processTransformOriginValue,
-  transformOriginY: processTransformOriginValue,
+  transformOrigin: processTransformOriginShorthand<'transformOrigin'>,
+  transformOriginX: processTransformOriginValue<'transformOriginX'>,
+  transformOriginY: processTransformOriginValue<'transformOriginY'>,
 };
 
 export default handlers;

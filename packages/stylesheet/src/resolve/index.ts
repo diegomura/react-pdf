@@ -19,7 +19,7 @@ type Handler = (
   style: Style,
 ) => SafeStyle;
 
-const shorthands = {
+const shorthands: Partial<Record<StyleKey, Handler>> = {
   ...borderHandlers,
   ...colorHandlers,
   ...dimensionHandlers,
@@ -32,7 +32,7 @@ const shorthands = {
   ...textHandlers,
   ...transformHandlers,
   ...svgHandlers,
-} as Record<StyleKey, Handler>;
+};
 
 /**
  * Expand the shorthand properties.

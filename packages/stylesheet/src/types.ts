@@ -133,8 +133,8 @@ export type GapExpandedStyle = {
 };
 
 export type GapSafeStyle = {
-  rowGap?: number;
-  columnGap?: number;
+  rowGap?: number | Percentage;
+  columnGap?: number | Percentage;
 };
 
 export type GapStyle = GapShorthandStyle & GapExpandedStyle;
@@ -160,6 +160,38 @@ export type PositioningStyle = PositionShorthandStyle & PositionExpandedStyle;
 
 // Transform
 
+export type ScaleTransform = {
+  operation: 'scale';
+  value: [number, number];
+};
+
+export type TranslateTransform = {
+  operation: 'translate';
+  value: [number, number];
+};
+
+export type RotateTransform = {
+  operation: 'rotate';
+  value: [number];
+};
+
+export type SkewTransform = {
+  operation: 'skew';
+  value: [number, number];
+};
+
+export type MatrixTransform = {
+  operation: 'matrix';
+  value: [number, number, number, number, number, number];
+};
+
+export type Transform =
+  | ScaleTransform
+  | TranslateTransform
+  | RotateTransform
+  | SkewTransform
+  | MatrixTransform;
+
 export type TransformShorthandStyle = {
   transformOrigin?: number | string;
 };
@@ -167,12 +199,13 @@ export type TransformShorthandStyle = {
 export type TransformExpandedStyle = {
   transformOriginX?: number | string;
   transformOriginY?: number | string;
-  transform?: string;
+  transform?: string | Transform[];
 };
 
-export type TransformSafeStyle = TransformExpandedStyle & {
+export type TransformSafeStyle = Omit<TransformExpandedStyle, 'transform'> & {
   transformOriginX?: number | Percentage;
   transformOriginY?: number | Percentage;
+  transform?: Transform[];
 };
 
 export type TransformStyle = TransformShorthandStyle & TransformExpandedStyle;
@@ -416,7 +449,7 @@ type MediaQueryStyle = {
 
 export type Style = BaseStyle & MediaQueryStyle;
 
-export type StyleKey = keyof Style;
+export type StyleKey = keyof BaseStyle;
 
 export type ExpandedStyle = BorderExpandedStyle &
   ColorExpandedStyle &

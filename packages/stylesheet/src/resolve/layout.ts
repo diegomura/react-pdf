@@ -5,15 +5,15 @@ import {
 } from './utils';
 
 const handlers = {
-  aspectRatio: processNumberValue,
-  bottom: processUnitValue,
-  display: processNoopValue,
-  left: processUnitValue,
-  position: processNoopValue,
-  right: processUnitValue,
-  top: processUnitValue,
-  overflow: processNoopValue,
-  zIndex: processNumberValue,
+  aspectRatio: processNumberValue<'aspectRatio'>,
+  bottom: processUnitValue<'bottom'>,
+  display: processNoopValue<'display'>,
+  left: processUnitValue<'left'>,
+  position: processNoopValue<'position'>,
+  right: processUnitValue<'right'>,
+  top: processUnitValue<'top'>,
+  overflow: processNoopValue<'overflow'>,
+  zIndex: processNumberValue<'zIndex'>,
 };
 
 export default handlers;

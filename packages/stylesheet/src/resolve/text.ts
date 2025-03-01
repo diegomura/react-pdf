@@ -9,6 +9,7 @@ import { matchPercent } from '@react-pdf/fns';
 
 import castInt from '../utils/castInt';
 import transformUnit from '../utils/units';
+import { Container, FontWeight, Style, StyleKey } from '../types';
 
 const FONT_WEIGHTS = {
   thin: 100,
@@ -27,7 +28,7 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const transformFontWeight = (value) => {
+const transformFontWeight = (value: FontWeight) => {
   if (!value) return FONT_WEIGHTS.normal;
   if (typeof value === 'number') return value;
 
@@ -38,7 +39,7 @@ const transformFontWeight = (value) => {
   return castInt(value);
 };
 
-const processFontWeight = (key, value) => {
+const processFontWeight = <K extends StyleKey>(key: K, value: Style[K]) => {
   return { [key]: transformFontWeight(value) };
 };
 
@@ -56,29 +57,34 @@ const transformLineHeight = (value, styles, container) => {
   return isNaN(value) ? lineHeight : lineHeight * fontSize;
 };
 
-const processLineHeight = (key, value, container, styles) => {
+const processLineHeight = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+  container: Container,
+  styles: Style,
+) => {
   return {
     [key]: transformLineHeight(value, styles, container),
   };
 };
 
 const handlers = {
-  direction: processNoopValue,
-  fontFamily: processNoopValue,
-  fontSize: processUnitValue,
-  fontStyle: processNoopValue,
-  fontWeight: processFontWeight,
-  letterSpacing: processUnitValue,
-  lineHeight: processLineHeight,
-  maxLines: processNumberValue,
-  textAlign: processNoopValue,
-  textDecoration: processNoopValue,
-  textDecorationColor: processColorValue,
-  textDecorationStyle: processNoopValue,
-  textIndent: processNoopValue,
-  textOverflow: processNoopValue,
-  textTransform: processNoopValue,
-  verticalAlign: processNoopValue,
+  direction: processNoopValue<'direction'>,
+  fontFamily: processNoopValue<'fontFamily'>,
+  fontSize: processUnitValue<'fontSize'>,
+  fontStyle: processNoopValue<'fontStyle'>,
+  fontWeight: processFontWeight<'fontWeight'>,
+  letterSpacing: processUnitValue<'letterSpacing'>,
+  lineHeight: processLineHeight<'lineHeight'>,
+  maxLines: processNumberValue<'maxLines'>,
+  textAlign: processNoopValue<'textAlign'>,
+  textDecoration: processNoopValue<'textDecoration'>,
+  textDecorationColor: processColorValue<'textDecorationColor'>,
+  textDecorationStyle: processNoopValue<'textDecorationStyle'>,
+  textIndent: processNoopValue<'textIndent'>,
+  textOverflow: processNoopValue<'textOverflow'>,
+  textTransform: processNoopValue<'textTransform'>,
+  verticalAlign: processNoopValue<'verticalAlign'>,
 };
 
 export default handlers;

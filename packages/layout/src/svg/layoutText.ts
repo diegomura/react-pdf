@@ -6,6 +6,7 @@ import layoutEngine, {
   justification,
   scriptItemizer,
   wordHyphenation,
+  fontSubstitution,
   textDecoration,
   fromFragments,
   Fragment,
@@ -13,7 +14,6 @@ import layoutEngine, {
 } from '@react-pdf/textkit';
 
 import transformText from '../text/transformText';
-import fontSubstitution from '../text/fontSubstitution';
 import {
   SafeNode,
   SafeTextNode,

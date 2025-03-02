@@ -5,10 +5,10 @@ import layoutEngine, {
   scriptItemizer,
   wordHyphenation,
   textDecoration,
+  fontSubstitution,
 } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
 
-import fontSubstitution from './fontSubstitution';
 import getAttributedString from './getAttributedString';
 import { SafeTextNode } from '../types';
 

@@ -1,5 +1,5 @@
-import type { Font as FontkitFont, Glyph as FontkitGlyph } from 'fontkit';
-
+import type { Glyph as FontkitGlyph } from 'fontkit';
+import type { Font } from '@react-pdf/font';
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -39,11 +39,6 @@ export type Attachment = {
   xOffset?: number;
   yOffset?: number;
   image: Buffer;
-};
-
-export type Font = FontkitFont & {
-  name?: string;
-  encode?: (string: string) => number[];
 };
 
 export type Attributes = {
@@ -140,3 +135,5 @@ export type LayoutOptions = {
   expandWhitespaceFactor?: JustificationFactor;
   shrinkWhitespaceFactor?: JustificationFactor;
 };
+
+export type { Font } from '@react-pdf/font';

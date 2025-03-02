@@ -30,8 +30,6 @@ const getCodePoints = (
     .join('-');
 
 const buildEmojiUrl = (emoji: string, source: EmojiSource) => {
-  console.log(source);
-
   if ('builder' in source) {
     return source.builder(getCodePoints(emoji, source.withVariationSelectors));
   }

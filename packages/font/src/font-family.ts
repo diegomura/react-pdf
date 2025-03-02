@@ -25,12 +25,12 @@ const resolveFontWeight = (value: FontWeight) => {
 const sortByFontWeight = (a: FontSource, b: FontSource) =>
   a.fontWeight - b.fontWeight;
 
-class Font {
+class FontFamily {
   family: string;
   sources: FontSource[];
 
   static create(family: string) {
-    return new Font(family);
+    return new FontFamily(family);
   }
 
   constructor(family: string) {
@@ -107,4 +107,4 @@ class Font {
   }
 }
 
-export default Font;
+export default FontFamily;

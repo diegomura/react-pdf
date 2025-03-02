@@ -19,8 +19,9 @@ const renderRun = (ctx: Context, run: Run) => {
   if (color) ctx.fillColor(color);
   ctx.fillOpacity(opacity!);
 
-  // @ts-expect-error check these types
-  ctx.font(typeof font.name === 'string' ? font.name : font, fontSize);
+  if (font) {
+    ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
+  }
 
   try {
     renderGlyphs(ctx, run.glyphs!, run.positions!, 0, 0);

@@ -1,3 +1,10 @@
+import * as fontkit from 'fontkit';
+
+export type Font = Omit<fontkit.Font, 'type'> & {
+  type: 'TTF' | 'WOFF' | 'WOFF2' | 'STANDARD';
+  encode?: (string: string) => number[];
+};
+
 export type FontStyle = 'normal' | 'italic' | 'oblique';
 
 export type FontWeight =

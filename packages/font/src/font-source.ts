@@ -1,6 +1,8 @@
 import isUrl from 'is-url';
 import * as fontkit from 'fontkit';
-import { FontSourceOptions, FontStyle, RemoteOptions } from './types';
+
+import { Font, FontSourceOptions, FontStyle, RemoteOptions } from './types';
+import StandardFont, { STANDARD_FONTS } from './standard-font';
 
 const fetchFont = async (src: string, options: RemoteOptions) => {
   const response = await fetch(src, options);
@@ -22,7 +24,7 @@ class FontSource {
   fontFamily: string;
   fontStyle: FontStyle;
   fontWeight: number;
-  data: fontkit.Font | fontkit.FontCollection | null;
+  data: Font | null;
   options: FontSourceOptions;
   loadResultPromise: Promise<void> | null;
 
@@ -46,21 +48,31 @@ class FontSource {
   async _load(): Promise<void> {
     const { postscriptName } = this.options;
 
-    if (isDataUrl(this.src)) {
+    let data = null;
+
+    if (STANDARD_FONTS.includes(this.src)) {
+      data = new StandardFont(this.src);
+    } else if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
       const uint8Array = new Uint8Array(
         atob(raw)
           .split('')
           .map((c) => c.charCodeAt(0)),
       );
-      this.data = fontkit.create(uint8Array, postscriptName);
+      data = fontkit.create(uint8Array, postscriptName);
     } else if (BROWSER || isUrl(this.src)) {
       const { headers, body, method = 'GET' } = this.options;
-      const data = await fetchFont(this.src, { method, body, headers });
-      this.data = fontkit.create(data, postscriptName);
+      const buffer = await fetchFont(this.src, { method, body, headers });
+      data = fontkit.create(buffer, postscriptName);
     } else if (!BROWSER) {
-      this.data = await fontkit.open(this.src, postscriptName);
+      data = await fontkit.open(this.src, postscriptName);
     }
+
+    if (data && 'fonts' in data) {
+      throw new Error('Font collection is not supported');
+    }
+
+    this.data = data;
   }
 
   async load() {

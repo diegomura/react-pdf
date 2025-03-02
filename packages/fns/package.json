@@ -16,7 +16,8 @@
   "scripts": {
     "test": "vitest",
     "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "watch": "rollup -c -w",
+    "typecheck": "tsc --noEmit"
   },
   "files": [
     "lib"

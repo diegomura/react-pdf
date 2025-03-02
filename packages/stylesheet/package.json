@@ -16,7 +16,8 @@
   "scripts": {
     "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
-    "watch": "rimraf ./lib && rollup -c -w"
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@react-pdf/fns": "3.1.1",

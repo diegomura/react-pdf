@@ -22,7 +22,6 @@ const ignoreConfig = {
     '**/node_modules',
     '**/packages/pdfkit/**',
     '**/packages/png-js/**',
-    '**/packages/svgkit/**',
     '**/packages/yoga/**',
     '**/packages/examples/**',
   ],

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import * as primitives from '../src/index.ts';
+import * as primitives from '../src/index';
 
 describe('primitives', () => {
   test('should export group', () => {

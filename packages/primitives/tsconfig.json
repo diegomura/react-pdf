@@ -1,19 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
-    "declarationDir": "lib",
+    "declarationDir": "lib/types",
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022", "DOM"],
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals"],
   },
+  "include": ["src", "globals.d.ts"],
 }

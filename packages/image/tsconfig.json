@@ -15,5 +15,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals"],
   },
-  "include": ["src", "globals.d.ts"],
+  "include": ["src", "**/*.d.ts"],
 }

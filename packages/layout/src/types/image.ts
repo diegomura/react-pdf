@@ -51,12 +51,12 @@ interface BaseImageProps extends NodeProps {
 
 interface ImageWithSrcProp extends BaseImageProps {
   src: SourceObject;
-  source: never;
+  source?: never;
 }
 
 interface ImageWithSourceProp extends BaseImageProps {
   source: SourceObject;
-  src: never;
+  src?: never;
 }
 
 export type ImageProps = ImageWithSrcProp | ImageWithSourceProp;

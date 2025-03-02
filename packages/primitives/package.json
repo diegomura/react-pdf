@@ -16,7 +16,8 @@
   "scripts": {
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w",
-    "test": "vitest"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "files": [
     "lib"

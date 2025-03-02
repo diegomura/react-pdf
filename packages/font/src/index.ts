@@ -58,23 +58,8 @@ class FontStore {
   };
 
   load = async (descriptor: FontDescriptor) => {
-    const { fontFamily } = descriptor;
-    const fontFamilies =
-      typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
-
-    const promises: Promise<void>[] = [];
-
-    for (let len = fontFamilies.length, i = 0; i < len; i += 1) {
-      const family = fontFamilies[i];
-      const isStandard = standard.includes(family);
-      if (isStandard) return;
-
-      const f = this.getFont({ ...descriptor, fontFamily: family });
-
-      if (f) promises.push(f.load());
-    }
-
-    await Promise.all(promises);
+    const font = this.getFont(descriptor);
+    if (font) await font.load();
   };
 
   reset = () => {

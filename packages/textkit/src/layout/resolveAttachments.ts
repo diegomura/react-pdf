@@ -14,12 +14,14 @@ const resolveRunAttachments = (run: Run) => {
   if (!run.positions) return run;
 
   const glyphs = run.glyphs || [];
-  const attachment = run.attributes?.attachment || {};
+  const attachment = run.attributes?.attachment;
+
+  if (!attachment) return;
 
   const positions = run.positions.map((position, i) => {
     const glyph = glyphs[i];
 
-    if (attachment && attachment.width && isReplaceGlyph(glyph)) {
+    if (attachment.width && isReplaceGlyph(glyph)) {
       return Object.assign({}, position, { xAdvance: attachment.width });
     }
 

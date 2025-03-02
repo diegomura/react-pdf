@@ -1,3 +1,4 @@
+import { Transform } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 import * as React from 'react';
 import { SafeClipPathNode } from './clip-path';
@@ -127,7 +128,7 @@ export type SafeSVGPresentationAttributes = {
   fill?: string | SafeLinearGradientNode | SafeRadialGradientNode;
   color?: string;
   stroke?: string;
-  transform?: string;
+  transform?: Transform[];
   strokeDasharray?: string;
   opacity?: number;
   strokeWidth?: number;

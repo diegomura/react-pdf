@@ -22,7 +22,6 @@
   "dependencies": {
     "@react-pdf/fns": "3.1.1",
     "@react-pdf/image": "^3.0.2",
-    "@react-pdf/pdfkit": "^4.0.2",
     "@react-pdf/primitives": "^4.1.1",
     "@react-pdf/stylesheet": "^6.0.0",
     "@react-pdf/textkit": "^5.0.3",

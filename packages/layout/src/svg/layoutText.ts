@@ -61,6 +61,9 @@ const getFragments = (fontStore: FontStore, instance) => {
   const fontFamilies =
     typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
 
+  // Fallback font
+  fontFamilies.push('Helvetica');
+
   // TODO: Fix multiple fonts passed
   const font = fontFamilies.map((fontFamilyName) => {
     if (typeof fontFamilyName !== 'string') return fontFamilyName;

@@ -1,7 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import fontSubstitution from '../../src/text/fontSubstitution';
+import FontStore from '@react-pdf/font';
 
 const instance = fontSubstitution();
+
+const fontStore = new FontStore();
 
 describe('FontSubstitution', () => {
   test('should return empty array if no runs passed', () => {
@@ -12,16 +15,18 @@ describe('FontSubstitution', () => {
   });
 
   test('should merge consecutive runs with same font', () => {
+    const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
+
     const run1 = {
       start: 0,
       end: 3,
-      attributes: { font: ['Helvetica'] },
+      attributes: { font: [helvetica] },
     } as any;
 
     const run2 = {
       start: 3,
       end: 5,
-      attributes: { font: ['Helvetica'] },
+      attributes: { font: [helvetica] },
     } as any;
 
     const string = instance({ string: 'Lorem', runs: [run1, run2] });
@@ -34,13 +39,19 @@ describe('FontSubstitution', () => {
   });
 
   test('should substitute many runs', () => {
-    const run1 = { start: 0, end: 3, attributes: { font: ['Courier'] } } as any;
+    const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
+    const helveticaBold = fontStore.getFont({
+      fontFamily: 'Helvetica',
+      fontWeight: 700,
+    }).data;
 
-    const run2 = {
-      start: 3,
-      end: 5,
-      attributes: { font: ['Helvetica'] },
+    const run1 = {
+      start: 0,
+      end: 3,
+      attributes: { font: [helveticaBold] },
     } as any;
+
+    const run2 = { start: 3, end: 5, attributes: { font: [helvetica] } } as any;
 
     const string = instance({ string: 'Lorem', runs: [run1, run2] });
 
@@ -61,11 +72,13 @@ describe('FontSubstitution', () => {
     };
 
     test('should utilize a fallback font that supports the provided glyph', () => {
+      const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
+
       const run = {
         start: 0,
         end: 1,
         attributes: {
-          font: ['Courier', SimplifiedChineseFont],
+          font: [helvetica, SimplifiedChineseFont],
         },
       } as any;
 
@@ -79,11 +92,13 @@ describe('FontSubstitution', () => {
     });
 
     test('should split a run when fallback font is used on a portion of the run', () => {
+      const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
+
       const run = {
         start: 0,
         end: 2,
         attributes: {
-          font: ['Courier', SimplifiedChineseFont],
+          font: [helvetica, SimplifiedChineseFont],
         },
       } as any;
 

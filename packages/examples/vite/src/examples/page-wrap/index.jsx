@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: 'center',
-    fontFamily: 'Oswald',
+    fontFamily: ['Oswald', 'Helvetica'],
   },
   author: {
     fontSize: 12,

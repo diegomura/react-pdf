@@ -1,27 +1,12 @@
 import { last } from '@react-pdf/fns';
 import { AttributedString, Run } from '@react-pdf/textkit';
 
-import StandardFont from './standardFont';
-
-const fontCache = {};
-
 const IGNORED_CODE_POINTS = [173];
 
 const getFontSize = (run: Run) => run.attributes.fontSize || 12;
 
-const getOrCreateFont = (name: string) => {
-  if (fontCache[name]) return fontCache[name];
-
-  const font = new StandardFont(name);
-  fontCache[name] = font;
-
-  return font;
-};
-
-const getFallbackFont = () => getOrCreateFont('Helvetica');
-
 const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
-  const fontStackWithFallback = [...fontStack, lastFont, getFallbackFont()];
+  const fontStackWithFallback = [...fontStack, lastFont];
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
     if (
@@ -33,7 +18,7 @@ const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
       return font;
     }
   }
-  return getFallbackFont();
+  return fontStack.at(-1);
 };
 
 const fontSubstitution =
@@ -49,13 +34,12 @@ const fontSubstitution =
     for (let i = 0; i < runs.length; i += 1) {
       const run = runs[i];
 
-      // @ts-expect-error need to make textkit to accept multiple fonts
-      const defaultFont = run.attributes.font.map((font) =>
-        typeof font === 'string' ? getOrCreateFont(font) : font,
-      );
-
       if (string.length === 0) {
-        res.push({ start: 0, end: 0, attributes: { font: defaultFont } });
+        res.push({
+          start: 0,
+          end: 0,
+          attributes: { font: run.attributes.font },
+        });
         break;
       }
 
@@ -65,7 +49,12 @@ const fontSubstitution =
         const char = chars[j];
         const codePoint = char.codePointAt(0);
         // If the default font does not have a glyph and the fallback font does, we use it
-        const font = pickFontFromFontStack(codePoint, defaultFont, lastFont);
+        const font = pickFontFromFontStack(
+          codePoint,
+          run.attributes.font,
+          lastFont,
+        );
+
         const fontSize = getFontSize(run);
 
         // If anything that would impact res has changed, update it

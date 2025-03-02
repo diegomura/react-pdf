@@ -87,8 +87,7 @@ const renderRun = (ctx: Context, run: Run) => {
 
   renderAttachments(ctx, run);
 
-  // @ts-expect-error figure out how this worked
-  ctx.font(typeof font.name === 'string' ? font.name : font, fontSize);
+  ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
 
   try {
     renderGlyphs(ctx, run.glyphs!, run.positions!, 0, 0);

@@ -16,7 +16,7 @@ const resolveRunAttachments = (run: Run) => {
   const glyphs = run.glyphs || [];
   const attachment = run.attributes?.attachment;
 
-  if (!attachment) return;
+  if (!attachment) return run;
 
   const positions = run.positions.map((position, i) => {
     const glyph = glyphs[i];

@@ -71,13 +71,18 @@ const layoutLines = (
   });
 };
 
+type layoutParagraphEngines = Pick<Engines, 'linebreaker'>;
+
 /**
  * Performs line breaking and layout
  *
  * @param engines - Engines
  * @param options - Layout options
  */
-const layoutParagraph = (engines: Engines, options: LayoutOptions = {}) => {
+const layoutParagraph = (
+  engines: layoutParagraphEngines,
+  options: LayoutOptions = {},
+) => {
   /**
    * @param container - Container
    * @param paragraph - Attributed string

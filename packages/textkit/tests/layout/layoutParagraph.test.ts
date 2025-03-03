@@ -6,7 +6,6 @@ describe('layoutParagraph', () => {
   test('should keep overflowing text in the last rect', () => {
     const linebreaker = () => (attributedString) => [attributedString];
 
-    // @ts-expect-error this step only uses linebreaker
     const layout = layoutParagraph({ linebreaker }!);
 
     const container = {

@@ -1,5 +1,22 @@
 # @react-pdf/font
 
+## 4.0.0
+
+### Major Changes
+
+- [#3102](https://github.com/diegomura/react-pdf/pull/3102) [`24690f52`](https://github.com/diegomura/react-pdf/commit/24690f5238e4eacf28351cf9996856a7d196d29e) Thanks [@diegomura](https://github.com/diegomura)! - feat: handle standard fonts in fonts package
+
+### Patch Changes
+
+- [#3087](https://github.com/diegomura/react-pdf/pull/3087) [`7cd66e4f`](https://github.com/diegomura/react-pdf/commit/7cd66e4fc37cd1393adc6250a919fe2629812082) Thanks [@diegomura](https://github.com/diegomura)! - fix: font exported types
+
+- [#3093](https://github.com/diegomura/react-pdf/pull/3093) [`a2de2685`](https://github.com/diegomura/react-pdf/commit/a2de2685b25c797f266775c2e35a6535090393b7) Thanks [@diegomura](https://github.com/diegomura)! - refactor: font strict type checking
+
+- [#3092](https://github.com/diegomura/react-pdf/pull/3092) [`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert layout package to TS
+
+- Updated dependencies [[`7cd66e4f`](https://github.com/diegomura/react-pdf/commit/7cd66e4fc37cd1393adc6250a919fe2629812082)]:
+  - @react-pdf/types@2.8.1
+
 ## 3.1.0
 
 ### Minor Changes

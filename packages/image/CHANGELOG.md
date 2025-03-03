@@ -1,5 +1,13 @@
 # @react-pdf/image
 
+## 3.0.3
+
+### Patch Changes
+
+- [#3094](https://github.com/diegomura/react-pdf/pull/3094) [`3fb01a90`](https://github.com/diegomura/react-pdf/commit/3fb01a90e590a31c097b3422fc911af61d65420a) Thanks [@diegomura](https://github.com/diegomura)! - refactor: image strict type checking
+
+- [#3092](https://github.com/diegomura/react-pdf/pull/3092) [`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert layout package to TS
+
 ## 3.0.2
 
 ### Patch Changes

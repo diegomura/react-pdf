@@ -1,5 +1,28 @@
 # @react-pdf/textkit
 
+## 6.0.0
+
+### Major Changes
+
+- [#3104](https://github.com/diegomura/react-pdf/pull/3104) [`ddfa3675`](https://github.com/diegomura/react-pdf/commit/ddfa367587618b313b4b0b3b57a9a7631e8e7604) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): expect font array
+
+### Minor Changes
+
+- [#3102](https://github.com/diegomura/react-pdf/pull/3102) [`24690f52`](https://github.com/diegomura/react-pdf/commit/24690f5238e4eacf28351cf9996856a7d196d29e) Thanks [@diegomura](https://github.com/diegomura)! - feat: handle standard fonts in fonts package
+
+- [#3103](https://github.com/diegomura/react-pdf/pull/3103) [`b06d3a0f`](https://github.com/diegomura/react-pdf/commit/b06d3a0f64593ac18097efd061334f1e5bd70095) Thanks [@diegomura](https://github.com/diegomura)! - refactor: unify font substitution engines
+
+### Patch Changes
+
+- [`c7b74963`](https://github.com/diegomura/react-pdf/commit/c7b749632f07db7808d58d99357dc830d4895da8) Thanks [@diegomura](https://github.com/diegomura)! - fix: resolve attachments
+
+- [#3098](https://github.com/diegomura/react-pdf/pull/3098) [`bfb51ec0`](https://github.com/diegomura/react-pdf/commit/bfb51ec09b851c52659ce16fed1286173e9516a9) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert render package to TS
+
+- [#3092](https://github.com/diegomura/react-pdf/pull/3092) [`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert layout package to TS
+
+- Updated dependencies [[`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8)]:
+  - @react-pdf/fns@3.1.2
+
 ## 5.0.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/font",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "license": "MIT",
   "description": "Register font and emoji source for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@react-pdf/pdfkit": "^4.0.2",
-    "@react-pdf/types": "^2.8.0",
+    "@react-pdf/types": "^2.8.1",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4"
   },

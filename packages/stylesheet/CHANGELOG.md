@@ -1,5 +1,19 @@
 # @react-pdf/stylesheet
 
+## 6.0.1
+
+### Patch Changes
+
+- [#3099](https://github.com/diegomura/react-pdf/pull/3099) [`2a4f1bfc`](https://github.com/diegomura/react-pdf/commit/2a4f1bfca6b84e6c6bbde683447ce8079a1febbe) Thanks [@diegomura](https://github.com/diegomura)! - refactor: stylesheet types
+
+- [#3098](https://github.com/diegomura/react-pdf/pull/3098) [`bfb51ec0`](https://github.com/diegomura/react-pdf/commit/bfb51ec09b851c52659ce16fed1286173e9516a9) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert render package to TS
+
+- [#3092](https://github.com/diegomura/react-pdf/pull/3092) [`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert layout package to TS
+
+- Updated dependencies [[`7cd66e4f`](https://github.com/diegomura/react-pdf/commit/7cd66e4fc37cd1393adc6250a919fe2629812082), [`481b536f`](https://github.com/diegomura/react-pdf/commit/481b536f4ad145fb227829399b85a35838a506f8)]:
+  - @react-pdf/types@2.8.1
+  - @react-pdf/fns@3.1.2
+
 ## 6.0.0
 
 ### Major Changes

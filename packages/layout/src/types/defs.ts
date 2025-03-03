@@ -5,8 +5,8 @@ import { RadialGradientNode, SafeRadialGradientNode } from './radial-gradient';
 
 export type DefsNode = {
   type: typeof P.Defs;
-  props: never;
-  style: never;
+  props?: never;
+  style?: never;
   box?: never;
   origin?: never;
   yogaNode?: never;

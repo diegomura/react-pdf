@@ -92,7 +92,7 @@ export type TextAnchor = 'start' | 'middle' | 'end';
 
 export type StrokeLinecap = 'butt' | 'round' | 'square';
 
-export type StrokeLinejoin = 'butt' | 'round' | 'square';
+export type StrokeLinejoin = 'butt' | 'round' | 'square' | 'miter' | 'bevel';
 
 export type Visibility = 'visible' | 'hidden' | 'collapse';
 

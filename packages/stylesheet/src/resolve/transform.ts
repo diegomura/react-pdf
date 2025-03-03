@@ -149,6 +149,7 @@ const processTransformOriginValue = <K extends StyleKey>(
 
 const handlers = {
   transform: processTransform,
+  gradientTransform: processTransform,
   transformOrigin: processTransformOriginShorthand<'transformOrigin'>,
   transformOriginX: processTransformOriginValue<'transformOriginX'>,
   transformOriginY: processTransformOriginValue<'transformOriginY'>,

@@ -1,5 +1,12 @@
 import * as P from '@react-pdf/primitives';
 import { isNil } from '@react-pdf/fns';
+import { Transform } from '@react-pdf/stylesheet';
+import {
+  SafeLinearGradientNode,
+  SafeNode,
+  SafeRadialGradientNode,
+  SafeSvgNode,
+} from '@react-pdf/layout';
 
 import renderPath from './renderPath';
 import renderRect from './renderRect';
@@ -15,12 +22,6 @@ import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
 import { Context } from '../types';
-import {
-  SafeLinearGradientNode,
-  SafeNode,
-  SafeRadialGradientNode,
-  SafeSvgNode,
-} from '@react-pdf/layout';
 
 type Primitives = (typeof P)[keyof typeof P];
 
@@ -106,6 +107,72 @@ const hasRadialGradientFill = (node: SafeNode) => {
   return node.props.fill?.type === P.RadialGradient;
 };
 
+function multiplyMatrices(m1: number[], m2: number[]) {
+  const a = m1[0] * m2[0] + m1[2] * m2[1];
+  const b = m1[1] * m2[0] + m1[3] * m2[1];
+  const c = m1[0] * m2[2] + m1[2] * m2[3];
+  const d = m1[1] * m2[2] + m1[3] * m2[3];
+  const e = m1[0] * m2[4] + m1[2] * m2[5] + m1[4];
+  const f = m1[1] * m2[4] + m1[3] * m2[5] + m1[5];
+  return [a, b, c, d, e, f];
+}
+
+const transformGradient = (
+  grad: any,
+  transforms: Transform[],
+  bbox: number[],
+  units: string,
+) => {
+  const matrices = transforms.map((transform) => {
+    switch (transform.operation) {
+      case 'scale': {
+        const value = transform.value;
+        return [value[0], 0, 0, value[1], 0, 0];
+      }
+      case 'translate': {
+        const value = transform.value;
+        let x = value[0] || 0;
+        let y = value[1] || 0;
+
+        if (units === 'objectBoundingBox') {
+          x = (bbox[2] - bbox[0]) * x;
+          y = (bbox[3] - bbox[1]) * y;
+        }
+
+        return [1, 0, 0, 1, x, y];
+      }
+      case 'rotate': {
+        const value = transform.value;
+        const cos = Math.cos(value[0]);
+        const sin = Math.sin(value[0]);
+        return [cos, sin, -sin, cos, 0, 0];
+      }
+      case 'skew': {
+        const value = transform.value;
+        return [1, Math.tan(value[0]), Math.tan(value[1]), 1, 0, 0];
+      }
+      case 'matrix': {
+        const value = transform.value;
+        let x = value[4] || 0;
+        let y = value[5] || 0;
+
+        if (units === 'objectBoundingBox') {
+          x = (bbox[2] - bbox[0]) * x;
+          y = (bbox[3] - bbox[1]) * y;
+        }
+
+        return [value[0], value[1], value[2], value[3], x, y];
+      }
+      default:
+        return [1, 0, 0, 1, 0, 0];
+    }
+  });
+
+  const matrix = matrices.reduce(multiplyMatrices, [1, 0, 0, 1, 0, 0]);
+
+  grad.setTransform(...matrix);
+};
+
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
 const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
   if (!node.props) return;
@@ -116,22 +183,29 @@ const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
 
   if (!gradient) return;
 
-  const x1 = gradient.props.x1 || 0;
-  const y1 = gradient.props.y1 || 0;
-  const x2 = gradient.props.x2 || 1;
-  const y2 = gradient.props.y2 || 0;
+  const units = gradient.props.gradientUnits || 'objectBoundingBox';
+  const transforms = gradient.props.gradientTransform || [];
 
-  const m0 = bbox[2] - bbox[0];
-  const m3 = bbox[3] - bbox[1];
-  const m4 = bbox[0];
-  const m5 = bbox[1];
+  let x1 = gradient.props.x1 || 0;
+  let y1 = gradient.props.y1 || 0;
+  let x2 = gradient.props.x2 || 1;
+  let y2 = gradient.props.y2 || 0;
 
-  const gx1 = m0 * x1 + m4;
-  const gy1 = m3 * y1 + m5;
-  const gx2 = m0 * x2 + m4;
-  const gy2 = m3 * y2 + m5;
+  if (units === 'objectBoundingBox') {
+    const m0 = bbox[2] - bbox[0];
+    const m3 = bbox[3] - bbox[1];
+    const m4 = bbox[0];
+    const m5 = bbox[1];
 
-  const grad = ctx.linearGradient(gx1, gy1, gx2, gy2);
+    x1 = m0 * x1 + m4;
+    y1 = m3 * y1 + m5;
+    x2 = m0 * x2 + m4;
+    y2 = m3 * y2 + m5;
+  }
+
+  const grad = ctx.linearGradient(x1, y1, x2, y2);
+
+  transformGradient(grad, transforms, bbox, units);
 
   gradient.children?.forEach((stop) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
@@ -150,24 +224,31 @@ const setRadialGradientFill = (ctx: Context, node: SafeNode) => {
 
   if (!gradient) return;
 
-  const cx = gradient.props.cx || 0.5;
-  const cy = gradient.props.cy || 0.5;
-  const fx = gradient.props.fx || cx;
-  const fy = gradient.props.fy || cy;
-  const r = gradient.props.r || 0.5;
+  const units = gradient.props.gradientUnits || 'objectBoundingBox';
+  const transforms = gradient.props.gradientTransform || [];
 
-  const m0 = bbox[2] - bbox[0];
-  const m3 = bbox[3] - bbox[1];
-  const m4 = bbox[0];
-  const m5 = bbox[1];
+  let r = gradient.props.r || 0.5;
+  let cx = gradient.props.cx || 0.5;
+  let cy = gradient.props.cy || 0.5;
+  let fx = gradient.props.fx || cx;
+  let fy = gradient.props.fy || cy;
 
-  const gr = r * m0;
-  const gcx = m0 * cx + m4;
-  const gcy = m3 * cy + m5;
-  const gfx = m0 * fx + m4;
-  const gfy = m3 * fy + m5;
+  if (units === 'objectBoundingBox') {
+    const m0 = bbox[2] - bbox[0];
+    const m3 = bbox[3] - bbox[1];
+    const m4 = bbox[0];
+    const m5 = bbox[1];
 
-  const grad = ctx.radialGradient(gfx, gfy, 0, gcx, gcy, gr);
+    r = r * m0;
+    cx = m0 * cx + m4;
+    cy = m3 * cy + m5;
+    fx = m0 * fx + m4;
+    fy = m3 * fy + m5;
+  }
+
+  const grad = ctx.radialGradient(cx, cy, 0, fx, fy, r);
+
+  transformGradient(grad, transforms, bbox, units);
 
   gradient.children?.forEach((stop) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);

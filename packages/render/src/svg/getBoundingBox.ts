@@ -100,7 +100,7 @@ const boundingBoxFns: Partial<Record<Primitives, any>> = {
   [P.Polyline]: getPolylineBoundingBox,
 };
 
-const getBoundingBox = (node: SafeNode) => {
+const getBoundingBox = (node: SafeNode): number[] => {
   const boundingBoxFn = boundingBoxFns[node.type];
   return boundingBoxFn ? boundingBoxFn(node) : [0, 0, 0, 0];
 };

@@ -14,7 +14,6 @@ const addNodeBookmark = (ctx, node, pageNumber, registry) => {
       zoom,
       fit,
     });
-
     registry[bookmark.ref] = instance;
   }
 
@@ -25,14 +24,4 @@ const addNodeBookmark = (ctx, node, pageNumber, registry) => {
   );
 };
 
-const addBookmarks = (ctx, root) => {
-  const registry = {};
-
-  const pages = root.children || [];
-
-  pages.forEach((page, i) => {
-    addNodeBookmark(ctx, page, i, registry);
-  });
-};
-
-export default addBookmarks;
+export default addNodeBookmark;

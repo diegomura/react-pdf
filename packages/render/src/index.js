@@ -1,13 +1,16 @@
 import renderNode from './primitives/renderNode';
-import addBookmarks from './operations/addBookmarks';
+import addNodeBookmark from './operations/addNodeBookmark';
 
 const render = (ctx, doc) => {
   const pages = doc.children || [];
   const options = { imageCache: new Map() };
 
-  pages.forEach((page) => renderNode(ctx, page, options));
+  const registry = {};
 
-  addBookmarks(ctx, doc);
+  pages.forEach((page, i) => {
+    renderNode(ctx, page, options);
+    addNodeBookmark(ctx, page, i, registry);
+  });
 
   ctx.end();
 

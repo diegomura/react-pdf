@@ -2,8 +2,9 @@ import { describe, expect, test } from 'vitest';
 
 import empty from '../../src/attributedString/empty';
 import ascent from '../../src/attributedString/ascent';
+import { Font } from '../../src/types';
 
-const font = { ascent: 10, unitsPerEm: 2 };
+const font = { ascent: 10, unitsPerEm: 2 } as Font;
 
 describe('attributeString ascent operator', () => {
   test('should return 0 for empty string', () => {
@@ -25,8 +26,8 @@ describe('attributeString ascent operator', () => {
 
   test('should max runs ascent', () => {
     const runs = [
-      { start: 2, end: 4, attributes: { fontSize: 10, font } }, // 50
-      { start: 4, end: 6, attributes: { fontSize: 12, font } }, // 60
+      { start: 2, end: 4, attributes: { fontSize: 10, font: [font] } }, // 50
+      { start: 4, end: 6, attributes: { fontSize: 12, font: [font] } }, // 60
     ];
     const string = { string: '', runs };
 
@@ -35,11 +36,15 @@ describe('attributeString ascent operator', () => {
 
   test('should sum up runs ascent with attachments', () => {
     const runs = [
-      { start: 4, end: 6, attributes: { fontSize: 12, font } }, // 60
+      { start: 4, end: 6, attributes: { fontSize: 12, font: [font] } }, // 60
       {
         start: 2,
         end: 4,
-        attributes: { fontSize: 10, font, attachment: { height: 70 } },
+        attributes: {
+          fontSize: 10,
+          font: [font],
+          attachment: { width: 70, height: 70, image: Buffer.from('') },
+        },
       }, // 70
     ];
     const string = { string: '', runs };

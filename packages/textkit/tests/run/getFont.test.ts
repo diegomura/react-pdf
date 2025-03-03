@@ -14,8 +14,8 @@ describe('run getFont glyph operator', () => {
     expect(getFont(run)).toBeNull();
   });
 
-  test('should return font when present', () => {
-    const run = { start: 0, end: 5, attributes: { font } };
+  test('should return first font when present', () => {
+    const run = { start: 0, end: 5, attributes: { font: [font] } };
     expect(getFont(run)).toBe(font);
   });
 });

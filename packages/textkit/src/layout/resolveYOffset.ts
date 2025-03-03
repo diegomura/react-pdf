@@ -9,7 +9,7 @@ import { AttributedString, Run } from '../types';
 const resolveRunYOffset = (run: Run) => {
   if (!run.positions) return run;
 
-  const unitsPerEm = run.attributes?.font?.unitsPerEm || 0;
+  const unitsPerEm = run.attributes?.font?.[0]?.unitsPerEm || 0;
   const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
   const positions = run.positions.map((p) => Object.assign({}, p, { yOffset }));
 

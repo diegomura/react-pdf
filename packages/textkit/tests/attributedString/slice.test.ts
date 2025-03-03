@@ -3,23 +3,24 @@ import { describe, expect, test } from 'vitest';
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import slice from '../../src/attributedString/slice';
+import { Glyph } from '../../src/types';
 
 const testString = 'Lorem ipsum';
 const testRuns = [
-  { start: 0, end: 6, attributes: { font: {} } },
+  { start: 0, end: 6, attributes: { font: [] } },
   { start: 6, end: 11, attributes: { fontSize: 16 } },
 ];
 
 describe('attributeString slice operator', () => {
   test('should slice with one run', () => {
-    const runs = [{ start: 0, end: 11, attributes: { font: {} } }];
+    const runs = [{ start: 0, end: 11, attributes: { font: [] } }];
     const string = { string: testString, runs };
     const sliced = slice(2, 8, string);
 
     expect(sliced.string).toBe('rem ip');
     expect(sliced.runs[0]).toHaveProperty('start', 0);
     expect(sliced.runs[0]).toHaveProperty('end', 6);
-    expect(sliced.runs[0]).toHaveProperty('attributes', { font: {} });
+    expect(sliced.runs[0]).toHaveProperty('attributes', { font: [] });
   });
 
   test('should slice with two runs', () => {
@@ -29,7 +30,7 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 4);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: [] });
     expect(splittedString.runs[1]).toHaveProperty('start', 4);
     expect(splittedString.runs[1]).toHaveProperty('end', 6);
     expect(splittedString.runs[1]).toHaveProperty('attributes', {
@@ -39,7 +40,7 @@ describe('attributeString slice operator', () => {
 
   test('should slice with several runs', () => {
     const runs = [
-      { start: 0, end: 3, attributes: { font: {} } },
+      { start: 0, end: 3, attributes: { font: [] } },
       { start: 3, end: 6, attributes: { fontSize: 16 } },
       { start: 6, end: 11, attributes: { fontSize: 20 } },
     ];
@@ -49,7 +50,7 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('rem ip');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 1);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: [] });
     expect(splittedString.runs[1]).toHaveProperty('start', 1);
     expect(splittedString.runs[1]).toHaveProperty('end', 4);
     expect(splittedString.runs[1]).toHaveProperty('attributes', {
@@ -83,7 +84,7 @@ describe('attributeString slice operator', () => {
     expect(splittedString.string).toBe('orem ');
     expect(splittedString.runs[0]).toHaveProperty('start', 0);
     expect(splittedString.runs[0]).toHaveProperty('end', 5);
-    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: {} });
+    expect(splittedString.runs[0]).toHaveProperty('attributes', { font: [] });
   });
 
   test('should slice glyphs when one run', () => {
@@ -98,7 +99,7 @@ describe('attributeString slice operator', () => {
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -128,7 +129,7 @@ describe('attributeString slice operator', () => {
           { id: 76, advanceWidth: 0, codePoints: [76] }, // L
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -143,7 +144,7 @@ describe('attributeString slice operator', () => {
         glyphs: [
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -173,7 +174,7 @@ describe('attributeString slice operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -181,7 +182,7 @@ describe('attributeString slice operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 
@@ -204,7 +205,7 @@ describe('attributeString slice operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -212,7 +213,7 @@ describe('attributeString slice operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 

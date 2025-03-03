@@ -3,11 +3,12 @@ import { describe, expect, test } from 'vitest';
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import slice from '../../src/run/slice';
+import { Glyph } from '../../src/types';
 
 describe('run slice operator', () => {
   describe('slice start and end', () => {
     test('should slice containing range', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(2, 5, run);
 
@@ -17,7 +18,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exact range', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(0, 10, run);
 
@@ -27,7 +28,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exceeding range', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 0, end: 10, attributes };
       const sliced = slice(2, 20, run);
 
@@ -37,7 +38,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice containing range when start not zero', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(2, 5, run);
 
@@ -47,7 +48,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exact range when start not zero', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(0, 10, run);
 
@@ -57,7 +58,7 @@ describe('run slice operator', () => {
     });
 
     test('should slice exceeding range when start not zero', () => {
-      const attributes = { font: {} };
+      const attributes = { font: [] };
       const run = { start: 5, end: 15, attributes };
       const sliced = slice(8, 13, run);
 
@@ -79,7 +80,7 @@ describe('run slice operator', () => {
           { id: 114, advanceWidth: 10, codePoints: [114] }, // r
           { id: 101, advanceWidth: 10, codePoints: [101] }, // e
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
       };
       const sliced = slice(0, 5, run);
 
@@ -98,7 +99,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
       };
       const sliced = slice(0, 5, run);
 
@@ -119,7 +120,7 @@ describe('run slice operator', () => {
           { id: 114, advanceWidth: 10, codePoints: [114] }, // r
           { id: 101, advanceWidth: 10, codePoints: [101] }, // e
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
       };
       const sliced = slice(2, 4, run);
 
@@ -136,7 +137,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 5, run);
@@ -156,9 +157,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 0, 1, 2, 3],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
 
@@ -178,7 +179,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(2, 5, run);
@@ -199,7 +200,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 4, run);
@@ -219,9 +220,9 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
 
@@ -240,9 +241,9 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(1, 3, run);
 
@@ -260,9 +261,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
 
@@ -280,9 +281,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(0, 4, run);
 
@@ -300,9 +301,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(2, 5, run);
 
@@ -320,9 +321,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
 
@@ -340,9 +341,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(0, 2, run);
 
@@ -360,9 +361,9 @@ describe('run slice operator', () => {
           { id: 76, advanceWidth: 10, codePoints: [76] }, // l
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         glyphIndices: [0, 1, 1, 1, 2],
-        attributes: { font },
+        attributes: { font: [font] },
       };
       const sliced = slice(0, 3, run);
 
@@ -499,7 +500,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
@@ -507,7 +508,7 @@ describe('run slice operator', () => {
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(3, 5, run);
 
@@ -525,7 +526,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
@@ -533,7 +534,7 @@ describe('run slice operator', () => {
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
         glyphIndices: [0, 1, 2, 2, 3],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(1, 3, run);
 

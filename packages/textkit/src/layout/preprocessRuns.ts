@@ -16,12 +16,17 @@ const omitFont = (attributedString: AttributedString): AttributedString => {
   return Object.assign({}, attributedString, { runs });
 };
 
+type ProcessRunsEngines = Pick<
+  Engines,
+  'bidi' | 'scriptItemizer' | 'fontSubstitution'
+>;
+
 /**
  * Performs font substitution and script itemization on attributed string
  *
  * @param engines - engines
  */
-const preprocessRuns = (engines: Engines) => {
+const preprocessRuns = (engines: ProcessRunsEngines) => {
   /**
    * @param attributedString - Attributed string
    * @returns Processed attributed string

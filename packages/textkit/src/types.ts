@@ -53,7 +53,7 @@ export type Attributes = {
   direction?: 'rtl' | 'ltr';
   features?: unknown[];
   fill?: boolean;
-  font?: Font;
+  font?: Font[];
   fontSize?: number;
   hangingPunctuation?: boolean;
   hyphenationFactor?: number;

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import pluck from '../internal/pluck';
 import insertGlyph from '../../src/attributedString/insertGlyph';
+import { Glyph } from '../../src/types';
 
 describe('attributeString insertGlyph operator', () => {
   test('should insert glyph on single run string at beggining', () => {
@@ -18,12 +19,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(0, glyph, string);
 
     expect(result).toHaveProperty('string', 'ilorem');
@@ -49,12 +50,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(5, glyph, string);
 
     expect(result).toHaveProperty('string', 'loremi');
@@ -80,12 +81,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(3, glyph, string);
 
     expect(result).toHaveProperty('string', 'loriem');
@@ -111,12 +112,16 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 64257, advanceWidth: 0, codePoints: [102, 105] }; // fi
+    const glyph = {
+      id: 64257,
+      advanceWidth: 0,
+      codePoints: [102, 105],
+    } as Glyph; // fi
     const result = insertGlyph(0, glyph, string);
 
     expect(result).toHaveProperty('string', 'filorem');
@@ -142,12 +147,16 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 64257, advanceWidth: 0, codePoints: [102, 105] }; // fi
+    const glyph = {
+      id: 64257,
+      advanceWidth: 0,
+      codePoints: [102, 105],
+    } as Glyph; // fi
     const result = insertGlyph(5, glyph, string);
 
     expect(result).toHaveProperty('string', 'loremfi');
@@ -173,12 +182,16 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 64257, advanceWidth: 0, codePoints: [102, 105] }; // fi
+    const glyph = {
+      id: 64257,
+      advanceWidth: 0,
+      codePoints: [102, 105],
+    } as Glyph; // fi
     const result = insertGlyph(3, glyph, string);
 
     expect(result).toHaveProperty('string', 'lorfiem');
@@ -204,12 +217,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(0, glyph, string);
 
     expect(result).toHaveProperty('string', 'ilofiem');
@@ -235,12 +248,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(6, glyph, string);
 
     expect(result).toHaveProperty('string', 'lofiemi');
@@ -266,12 +279,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(4, glyph, string);
 
     expect(result).toHaveProperty('string', 'lofiiem');
@@ -294,7 +307,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -305,12 +318,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(0, glyph, string);
 
     expect(result).toHaveProperty('string', 'ilorem');
@@ -336,7 +349,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -347,12 +360,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(1, glyph, string);
 
     expect(result).toHaveProperty('string', 'liorem');
@@ -378,7 +391,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -389,12 +402,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(0, glyph, string);
 
     expect(result).toHaveProperty('string', 'ilorem');
@@ -420,7 +433,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -431,12 +444,12 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] };
+    const glyph = { id: 105, advanceWidth: 0, codePoints: [105] } as Glyph;
     const result = insertGlyph(2, glyph, string);
 
     expect(result).toHaveProperty('string', 'loirem');
@@ -462,7 +475,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -473,12 +486,16 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 64259, advanceWidth: 0, codePoints: [102, 102, 105] }; // ffii
+    const glyph = {
+      id: 64259,
+      advanceWidth: 0,
+      codePoints: [102, 102, 105],
+    } as Glyph; // ffii
     const result = insertGlyph(1, glyph, string);
 
     expect(result).toHaveProperty('string', 'lffiorem');
@@ -504,7 +521,7 @@ describe('attributeString insertGlyph operator', () => {
           glyphs: [
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1],
         },
         {
@@ -515,12 +532,16 @@ describe('attributeString insertGlyph operator', () => {
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2],
         },
       ],
     };
-    const glyph = { id: 64259, advanceWidth: 0, codePoints: [102, 102, 105] }; // ffii
+    const glyph = {
+      id: 64259,
+      advanceWidth: 0,
+      codePoints: [102, 102, 105],
+    } as Glyph; // ffii
     const result = insertGlyph(4, glyph, string);
 
     expect(result).toHaveProperty('string', 'loreffim');

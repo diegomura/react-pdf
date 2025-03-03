@@ -1,16 +1,17 @@
 import { describe, expect, test } from 'vitest';
 
 import resolve from '../../src/indices/resolve';
+import { Glyph } from '../../src/types';
 
-const singleGlyph = { id: 1, advanceWidth: 0, codePoints: [0] };
+const singleGlyph = { id: 1, advanceWidth: 0, codePoints: [0] } as Glyph;
 
-const ligatureGlyph = { id: 1, advanceWidth: 0, codePoints: [0, 1] };
+const ligatureGlyph = { id: 1, advanceWidth: 0, codePoints: [0, 1] } as Glyph;
 
 const longerLigatureGlyph = {
   id: 1,
   advanceWidth: 0,
   codePoints: [0, 1, 2],
-};
+} as Glyph;
 
 describe('indices resolve operator', () => {
   test('should return empty array from empty array', () => {

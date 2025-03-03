@@ -51,7 +51,7 @@ const layoutRun = (string: string) => {
     if (typeof font === 'string') throw new Error('Invalid font');
 
     // passing LTR To force fontkit to not reverse the string
-    const glyphRun = font.layout(
+    const glyphRun = font[0].layout(
       runString,
       undefined,
       undefined,

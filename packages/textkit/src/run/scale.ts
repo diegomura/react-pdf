@@ -10,7 +10,7 @@ const calculateScale = (run: Run) => {
   const attributes = run.attributes || {};
   const fontSize = attributes.fontSize || 12;
   const font = attributes.font;
-  const unitsPerEm = typeof font === 'string' ? null : font?.unitsPerEm;
+  const unitsPerEm = typeof font === 'string' ? null : font?.[0]?.unitsPerEm;
 
   return unitsPerEm ? fontSize / unitsPerEm : 0;
 };

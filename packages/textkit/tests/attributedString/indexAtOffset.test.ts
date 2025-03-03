@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import indexAtOffset from '../../src/attributedString/indexAtOffset';
+import { Glyph } from '../../src/types';
 
 describe('attributeString indexAtOffset operator', () => {
   test('should return index for single run string', () => {
@@ -15,7 +16,7 @@ describe('attributeString indexAtOffset operator', () => {
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -46,7 +47,7 @@ describe('attributeString indexAtOffset operator', () => {
           { id: 76, advanceWidth: 0, codePoints: [76] }, // L
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -60,7 +61,7 @@ describe('attributeString indexAtOffset operator', () => {
         glyphs: [
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -88,7 +89,7 @@ describe('attributeString indexAtOffset operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -118,7 +119,7 @@ describe('attributeString indexAtOffset operator', () => {
           { id: 76, advanceWidth: 0, codePoints: [76] }, // L
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -133,7 +134,7 @@ describe('attributeString indexAtOffset operator', () => {
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },

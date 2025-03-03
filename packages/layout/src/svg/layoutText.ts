@@ -10,7 +10,6 @@ import layoutEngine, {
   textDecoration,
   fromFragments,
   Fragment,
-  Font,
 } from '@react-pdf/textkit';
 
 import transformText from '../text/transformText';
@@ -64,14 +63,11 @@ const getFragments = (fontStore: FontStore, instance) => {
   // Fallback font
   fontFamilies.push('Helvetica');
 
-  // TODO: Fix multiple fonts passed
   const font = fontFamilies.map((fontFamilyName) => {
-    if (typeof fontFamilyName !== 'string') return fontFamilyName;
-
     const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
     const obj = fontStore.getFont(opts);
-    return obj ? obj.data : fontFamilyName;
-  }) as Font[];
+    return obj?.data;
+  });
 
   const attributes = {
     font,
@@ -98,7 +94,6 @@ const getFragments = (fontStore: FontStore, instance) => {
     if (isTextInstance(child)) {
       fragments.push({
         string: transformText(child.value, textTransform),
-        // @ts-expect-error custom font substitution engine deals with multiple fonts. unify with textkit
         attributes,
       });
     } else if (child) {

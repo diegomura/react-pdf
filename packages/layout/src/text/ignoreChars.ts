@@ -19,7 +19,7 @@ const buildSubsetForFont = (font: Font) =>
 
 const ignoreChars = (fragments: Fragment[]): Fragment[] =>
   fragments.map((fragment) => {
-    const charSubset = buildSubsetForFont(fragment.attributes.font);
+    const charSubset = buildSubsetForFont(fragment.attributes.font[0]);
     const subsetRegex = new RegExp(charSubset.join('|'));
 
     return {

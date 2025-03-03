@@ -17,7 +17,7 @@ const applyAttributes = (a: Attributes): Attributes => {
     direction: a.direction || 'ltr',
     features: a.features || [],
     fill: a.fill !== false,
-    font: a.font || null,
+    font: a.font || [],
     fontSize: a.fontSize || 12,
     hangingPunctuation: a.hangingPunctuation || false,
     hyphenationFactor: a.hyphenationFactor || 0,

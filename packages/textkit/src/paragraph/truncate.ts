@@ -29,7 +29,7 @@ const getEllipsisCodePoint = (font: Font) => {
  */
 const truncate = (paragraph: Paragraph) => {
   const runs = last(paragraph)?.runs || [];
-  const font = last(runs)?.attributes?.font;
+  const font = last(runs)?.attributes?.font[0];
 
   if (font) {
     const index = paragraph.length - 1;

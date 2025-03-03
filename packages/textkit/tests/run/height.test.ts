@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import height from '../../src/run/height';
+import { Font } from '../../src/types';
 
 describe('run height operator', () => {
   test('should return 0 if attributes empty', () => {
@@ -22,7 +23,11 @@ describe('run height operator', () => {
   });
 
   test('should return 0 if fontSize not present', () => {
-    const run = { start: 0, end: 0, attributes: { font: { unitsPerEm: 2 } } };
+    const run = {
+      start: 0,
+      end: 0,
+      attributes: { font: [{ unitsPerEm: 2 } as Font] },
+    };
 
     expect(height(run)).toBe(0);
   });
@@ -31,7 +36,7 @@ describe('run height operator', () => {
     const run = {
       start: 0,
       end: 0,
-      attributes: { fontSize: 12, font: { height: 10 } },
+      attributes: { fontSize: 12, font: [{ fullName: 'other' } as Font] },
     };
 
     expect(height(run)).toBe(0);
@@ -41,7 +46,7 @@ describe('run height operator', () => {
     const run = {
       start: 0,
       end: 0,
-      attributes: { fontSize: 12, font: { unitsPerEm: 2 } },
+      attributes: { fontSize: 12, font: [{ unitsPerEm: 2 } as Font] },
     };
 
     expect(height(run)).toBe(0);
@@ -51,7 +56,7 @@ describe('run height operator', () => {
     const run = {
       start: 0,
       end: 0,
-      attributes: { fontSize: 12, font: { unitsPerEm: 2 } },
+      attributes: { fontSize: 12, font: [{ unitsPerEm: 2 } as Font] },
     };
 
     expect(height(run)).toBe(0);
@@ -63,7 +68,7 @@ describe('run height operator', () => {
       end: 0,
       attributes: {
         fontSize: 12,
-        font: { descent: -10, ascent: 15, lineGap: 2, unitsPerEm: 2 },
+        font: [{ descent: -10, ascent: 15, lineGap: 2, unitsPerEm: 2 } as Font],
       },
     };
 

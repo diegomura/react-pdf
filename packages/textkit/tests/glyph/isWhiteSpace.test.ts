@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import isWhiteSpace from '../../src/glyph/isWhiteSpace';
+import { Glyph } from '../../src/types';
 
 describe('glyph isWhiteSpace operator', () => {
   test('should return false if no glyph provided', () => {
@@ -10,13 +11,21 @@ describe('glyph isWhiteSpace operator', () => {
   });
 
   test('should return false for non white space glyph', () => {
-    const result = isWhiteSpace({ id: 45, codePoints: [45], advanceWidth: 0 });
+    const result = isWhiteSpace({
+      id: 45,
+      codePoints: [45],
+      advanceWidth: 0,
+    } as Glyph);
 
     expect(result).toBeFalsy();
   });
 
   test('should get glyph from font', () => {
-    const result = isWhiteSpace({ id: 32, codePoints: [32], advanceWidth: 0 });
+    const result = isWhiteSpace({
+      id: 32,
+      codePoints: [32],
+      advanceWidth: 0,
+    } as Glyph);
 
     expect(result).toBeTruthy();
   });

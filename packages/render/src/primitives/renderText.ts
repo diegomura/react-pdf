@@ -33,7 +33,7 @@ const renderAttachments = (ctx: Context, run: Run) => {
   if (!run.glyphs) return;
   if (!run.positions) return;
 
-  const { font } = run.attributes;
+  const font = run.attributes.font?.[0];
   if (!font) return;
 
   ctx.save();
@@ -63,10 +63,10 @@ const renderRun = (ctx: Context, run: Run) => {
   if (!run.glyphs) return;
   if (!run.positions) return;
 
-  const { font, fontSize, link } = run.attributes;
-
+  const font = run.attributes.font?.[0];
   if (!font) return;
 
+  const { fontSize, link } = run.attributes;
   const color = parseColor(run.attributes.color);
   const opacity = isNil(run.attributes.opacity)
     ? color.opacity

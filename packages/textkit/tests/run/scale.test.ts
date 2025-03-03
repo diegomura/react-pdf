@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import scale from '../../src/run/scale';
+import { Font } from '../../src/types';
 
 describe('run scale operator', () => {
   test('should return 0 if font not present', () => {
@@ -10,7 +11,7 @@ describe('run scale operator', () => {
   });
 
   test('should return 0 if unknown font unitsPerEm', () => {
-    const font = { ascent: 0 };
+    const font = [{ ascent: 0 } as Font];
 
     const run = {
       start: 0,
@@ -25,7 +26,7 @@ describe('run scale operator', () => {
     const run = {
       start: 0,
       end: 0,
-      attributes: { fontSize: 12, font: { unitsPerEm: 2 } },
+      attributes: { fontSize: 12, font: [{ unitsPerEm: 2 } as Font] },
     };
 
     expect(scale(run)).toBe(12 / 2);

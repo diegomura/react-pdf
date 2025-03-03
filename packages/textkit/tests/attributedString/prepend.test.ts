@@ -4,6 +4,7 @@ import font from '../internal/font';
 import pluck from '../internal/pluck';
 import empty from '../../src/attributedString/empty';
 import prepend from '../../src/attributedString/prepend';
+import { Glyph } from '../../src/types';
 
 describe('attributeString prepend operator', () => {
   test('should return copy of string if no glyph provided', () => {
@@ -18,7 +19,7 @@ describe('attributeString prepend operator', () => {
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -39,7 +40,7 @@ describe('attributeString prepend operator', () => {
 
   test('should prepend glyph to empty string', () => {
     const string = empty();
-    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 }; // L
+    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 } as Glyph; // L
     const result = prepend(glyph, string);
 
     expect(result).toHaveProperty('string', 'L');
@@ -61,7 +62,7 @@ describe('attributeString prepend operator', () => {
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -70,12 +71,12 @@ describe('attributeString prepend operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2, 3, 4],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 
     const string = { string: 'lorem', runs };
-    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 }; // L
+    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 } as Glyph; // L
     const result = prepend(glyph, string);
 
     expect(result).toHaveProperty('string', 'Llorem');
@@ -100,14 +101,14 @@ describe('attributeString prepend operator', () => {
           { id: 76, advanceWidth: 0, codePoints: [76] }, // l
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
       {
         start: 3,
@@ -115,18 +116,18 @@ describe('attributeString prepend operator', () => {
         glyphs: [
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 
     const string = { string: 'lorem', runs };
-    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 }; // L
+    const glyph = { id: 76, codePoints: [76], advanceWidth: 10 } as Glyph; // L
     const result = prepend(glyph, string);
 
     expect(result).toHaveProperty('string', 'Llorem');
@@ -158,7 +159,7 @@ describe('attributeString prepend operator', () => {
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -167,12 +168,16 @@ describe('attributeString prepend operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2, 3, 4],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 
     const string = { string: 'lorem', runs };
-    const glyph = { id: 64257, codePoints: [102, 105], advanceWidth: 10 }; // fi
+    const glyph = {
+      id: 64257,
+      codePoints: [102, 105],
+      advanceWidth: 10,
+    } as Glyph; // fi
     const result = prepend(glyph, string);
 
     expect(result).toHaveProperty('string', 'filorem');
@@ -197,14 +202,14 @@ describe('attributeString prepend operator', () => {
           { id: 76, advanceWidth: 0, codePoints: [76] }, // l
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1, 2],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
       {
         start: 3,
@@ -212,18 +217,22 @@ describe('attributeString prepend operator', () => {
         glyphs: [
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-        ],
+        ] as Glyph[],
         positions: [
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
         glyphIndices: [0, 1],
-        attributes: { font, fontSize: 2 },
+        attributes: { font: [font], fontSize: 2 },
       },
     ];
 
     const string = { string: 'lorem', runs };
-    const glyph = { id: 64257, codePoints: [102, 105], advanceWidth: 10 }; // fi
+    const glyph = {
+      id: 64257,
+      codePoints: [102, 105],
+      advanceWidth: 10,
+    } as Glyph; // fi
     const result = prepend(glyph, string);
 
     expect(result).toHaveProperty('string', 'filorem');

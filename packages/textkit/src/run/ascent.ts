@@ -10,7 +10,7 @@ import scale from './scale';
 const ascent = (run: Run) => {
   const { font, attachment } = run.attributes;
   const attachmentHeight = attachment?.height || 0;
-  const fontAscent = typeof font === 'string' ? 0 : font?.ascent || 0;
+  const fontAscent = typeof font === 'string' ? 0 : font?.[0]?.ascent || 0;
 
   return Math.max(attachmentHeight, fontAscent * scale(run));
 };

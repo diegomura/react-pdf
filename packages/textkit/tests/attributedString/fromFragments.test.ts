@@ -33,11 +33,11 @@ describe('attributeString fromFragments operator', () => {
 
   test('should preserve fragment attributes', () => {
     const attributedString = fromFragments([
-      { string: 'Hey', attributes: { font: {} } },
+      { string: 'Hey', attributes: { font: [] } },
       { string: ' ho', attributes: { fontSize: 16 } },
     ]);
 
-    expect(attributedString.runs[0]).toHaveProperty('attributes', { font: {} });
+    expect(attributedString.runs[0]).toHaveProperty('attributes', { font: [] });
     expect(attributedString.runs[1]).toHaveProperty('attributes', {
       fontSize: 16,
     });

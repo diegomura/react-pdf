@@ -1,8 +1,7 @@
 import * as P from '@react-pdf/primitives';
-
-import { SafeStopNode, StopNode } from './stop';
 import { Transform } from '@react-pdf/stylesheet';
 
+import { SafeStopNode, StopNode } from './stop';
 interface LinearGradientProps {
   id: string;
   x1?: string | number;

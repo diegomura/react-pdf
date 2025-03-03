@@ -37,7 +37,7 @@ describe('FontSubstitution', () => {
     expect(string.runs).toHaveLength(1);
     expect(string.runs[0]).toHaveProperty('start', 0);
     expect(string.runs[0]).toHaveProperty('end', 5);
-    expect(string.runs[0].attributes.font).toBeTruthy();
+    expect(string.runs[0].attributes.font).toEqual([helvetica]);
   });
 
   test('should substitute many runs', () => {
@@ -61,10 +61,10 @@ describe('FontSubstitution', () => {
     expect(string.runs).toHaveLength(2);
     expect(string.runs[0]).toHaveProperty('start', 0);
     expect(string.runs[0]).toHaveProperty('end', 3);
-    expect(string.runs[0].attributes.font).toBeTruthy();
+    expect(string.runs[0].attributes.font).toEqual([helveticaBold]);
     expect(string.runs[1]).toHaveProperty('start', 3);
     expect(string.runs[1]).toHaveProperty('end', 5);
-    expect(string.runs[1].attributes.font).toBeTruthy();
+    expect(string.runs[1].attributes.font).toEqual([helvetica]);
   });
 
   describe('Fallback Font', () => {
@@ -90,7 +90,7 @@ describe('FontSubstitution', () => {
       expect(string.runs).toHaveLength(1);
       expect(string.runs[0]).toHaveProperty('start', 0);
       expect(string.runs[0]).toHaveProperty('end', 1);
-      expect(string.runs[0].attributes.font).toBe(SimplifiedChineseFont);
+      expect(string.runs[0].attributes.font).toEqual([SimplifiedChineseFont]);
     });
 
     test('should split a run when fallback font is used on a portion of the run', () => {
@@ -110,10 +110,10 @@ describe('FontSubstitution', () => {
       expect(string.runs).toHaveLength(2);
       expect(string.runs[0]).toHaveProperty('start', 0);
       expect(string.runs[0]).toHaveProperty('end', 1);
-      expect(string.runs[0].attributes.font).toBeTruthy();
+      expect(string.runs[0].attributes.font).toEqual([helvetica]);
       expect(string.runs[1]).toHaveProperty('start', 1);
       expect(string.runs[1]).toHaveProperty('end', 2);
-      expect(string.runs[1].attributes.font).toBe(SimplifiedChineseFont);
+      expect(string.runs[1].attributes.font).toEqual([SimplifiedChineseFont]);
     });
   });
 });

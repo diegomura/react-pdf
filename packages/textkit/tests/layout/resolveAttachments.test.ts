@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import pluck from '../internal/pluck';
 import resolveAttachments from '../../src/layout/resolveAttachments';
+import { Glyph } from '../../src/types';
 
 const instance = resolveAttachments();
 
@@ -20,7 +21,7 @@ describe('resolveAttachments', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -76,7 +77,7 @@ describe('resolveAttachments', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -110,7 +111,7 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { font: {} },
+          attributes: { font: [] },
         },
       ],
     };
@@ -133,7 +134,7 @@ describe('resolveAttachments', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -167,7 +168,9 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { attachment: { width: 20 } },
+          attributes: {
+            attachment: { height: 20, width: 20, image: Buffer.from('') },
+          },
         },
       ],
     };
@@ -191,7 +194,7 @@ describe('resolveAttachments', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -247,7 +250,7 @@ describe('resolveAttachments', () => {
             { id: 65532, advanceWidth: 10, codePoints: [65532] }, // ATTACHMENT REPLACE
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -281,7 +284,9 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { attachment: { width: 20 } },
+          attributes: {
+            attachment: { height: 20, width: 20, image: Buffer.from('') },
+          },
         },
       ],
     };
@@ -310,7 +315,7 @@ describe('resolveAttachments', () => {
             { id: 65532, advanceWidth: 10, codePoints: [65532] }, // ATTACHMENT REPLACE
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -344,7 +349,9 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { attachment: { width: 20 } },
+          attributes: {
+            attachment: { height: 20, width: 20, image: Buffer.from('') },
+          },
         },
       ],
     };
@@ -371,7 +378,7 @@ describe('resolveAttachments', () => {
             { id: 65532, advanceWidth: 10, codePoints: [65532] }, // ATTACHMENT REPLACE
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 10,
@@ -399,7 +406,9 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 0, 1, 2, 3],
-          attributes: { attachment: { width: 20 } },
+          attributes: {
+            attachment: { height: 20, width: 20, image: Buffer.from('') },
+          },
         },
       ],
     };
@@ -426,7 +435,7 @@ describe('resolveAttachments', () => {
             { id: 65532, advanceWidth: 10, codePoints: [65532] }, // ATTACHMENT REPLACE
             { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 7,
@@ -454,7 +463,9 @@ describe('resolveAttachments', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 2, 3],
-          attributes: { attachment: { width: 20 } },
+          attributes: {
+            attachment: { height: 20, width: 20, image: Buffer.from('') },
+          },
         },
       ],
     };

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import indexAtOffset from '../../src/run/indexAtOffset';
+import { Glyph } from '../../src/types';
 
 describe('run indexAtOffset operator', () => {
   test('should return 0 if positions not present', () => {
@@ -61,7 +62,7 @@ describe('run indexAtOffset operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -90,7 +91,7 @@ describe('run indexAtOffset operator', () => {
         { id: 111, advanceWidth: 0, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },

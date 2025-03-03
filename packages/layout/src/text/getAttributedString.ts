@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { Font, Fragment, fromFragments } from '@react-pdf/textkit';
+import { Fragment, fromFragments } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
 
 import { embedEmojis } from './emoji';
@@ -65,14 +65,11 @@ const getFragments = (
   // Fallback font
   fontFamilies.push('Helvetica');
 
-  // TODO: Fix multiple fonts passed
   const font = fontFamilies.map((fontFamilyName) => {
-    if (typeof fontFamilyName !== 'string') return fontFamilyName;
-
     const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
     const obj = fontStore.getFont(opts);
-    return obj ? obj.data : fontFamilyName;
-  }) as Font[];
+    return obj?.data;
+  });
 
   // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
@@ -111,7 +108,6 @@ const getFragments = (
     if (isImage(child)) {
       fragments.push({
         string: String.fromCharCode(0xfffc),
-        // @ts-expect-error custom font substitution engine deals with multiple fonts. unify with textkit
         attributes: {
           ...attributes,
           attachment: {
@@ -124,7 +120,6 @@ const getFragments = (
     } else if (isTextInstance(child)) {
       fragments.push({
         string: transformText(child.value, textTransform),
-        // @ts-expect-error custom font substitution engine deals with multiple fonts. unify with textkit
         attributes,
       });
     } else if (child) {

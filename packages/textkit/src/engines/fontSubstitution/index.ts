@@ -1,11 +1,15 @@
 import { last } from '@react-pdf/fns';
-import { AttributedString, Run } from '../../types';
+import { AttributedString, Font, Run } from '../../types';
 
 const IGNORED_CODE_POINTS = [173];
 
 const getFontSize = (run: Run) => run.attributes.fontSize || 12;
 
-const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
+const pickFontFromFontStack = (
+  codePoint: number,
+  fontStack: Font[],
+  lastFont?: Font,
+) => {
   const fontStackWithFallback = [...fontStack, lastFont];
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
@@ -24,8 +28,8 @@ const pickFontFromFontStack = (codePoint, fontStack, lastFont) => {
 const fontSubstitution =
   () =>
   ({ string, runs }: AttributedString) => {
-    let lastFont = null;
-    let lastFontSize = null;
+    let lastFont: Font | null = null;
+    let lastFontSize: number | null = null;
     let lastIndex = 0;
     let index = 0;
 
@@ -68,7 +72,7 @@ const fontSubstitution =
               start: lastIndex,
               end: index,
               attributes: {
-                font: lastFont,
+                font: [lastFont],
                 scale: lastFontSize / lastFont.unitsPerEm,
               },
             });
@@ -90,7 +94,7 @@ const fontSubstitution =
         start: lastIndex,
         end: string.length,
         attributes: {
-          font: lastFont,
+          font: [lastFont],
           scale: fontSize / lastFont.unitsPerEm,
         },
       });

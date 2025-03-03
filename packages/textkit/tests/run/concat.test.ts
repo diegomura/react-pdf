@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import pluck from '../internal/pluck';
 import concat from '../../src/run/concat';
+import { Glyph } from '../../src/types';
 
 describe('run concat operator', () => {
   test('should concat with empty run return same run', () => {
@@ -18,7 +19,7 @@ describe('run concat operator', () => {
     const runA = {
       start: 0,
       end: 3,
-      attributes: { font: {} },
+      attributes: { font: [] },
     };
     const runB = {
       start: 3,
@@ -30,7 +31,7 @@ describe('run concat operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
-    expect(result).toHaveProperty('attributes', { font: {}, fontSize: 16 });
+    expect(result).toHaveProperty('attributes', { font: [], fontSize: 16 });
   });
 
   test('should concat runs glyphs', () => {
@@ -42,7 +43,7 @@ describe('run concat operator', () => {
         { id: 76, advanceWidth: 10, codePoints: [76] }, // l
         { id: 111, advanceWidth: 10, codePoints: [111] }, // o
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
-      ],
+      ] as Glyph[],
     };
     const runB = {
       start: 3,
@@ -51,7 +52,7 @@ describe('run concat operator', () => {
       glyphs: [
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
     };
 
     const result = concat(runA, runB);

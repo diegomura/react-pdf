@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import resolveYOffset from '../../src/layout/resolveYOffset';
+import { Glyph } from '../../src/types';
 
 const instance = resolveYOffset();
 
@@ -21,7 +22,7 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -77,7 +78,7 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -111,7 +112,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { font: {} },
+          attributes: { font: [] },
         },
       ],
     };
@@ -134,7 +135,7 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -191,9 +192,9 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { yOffset: 20, font },
+          attributes: { yOffset: 20, font: [font] },
         },
       ],
     };
@@ -216,7 +217,7 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -250,7 +251,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { yOffset: 20, font },
+          attributes: { yOffset: 20, font: [font] },
         },
       ],
     };
@@ -279,7 +280,7 @@ describe('resolveYOffset', () => {
             { id: 114, advanceWidth: 10, codePoints: [114] }, // r
             { id: 101, advanceWidth: 10, codePoints: [101] }, // e
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-          ],
+          ] as Glyph[],
           positions: [
             {
               xAdvance: 8,
@@ -313,7 +314,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { yOffset: 20, font },
+          attributes: { yOffset: 20, font: [font] },
         },
       ],
     };

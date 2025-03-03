@@ -2,17 +2,18 @@ import { describe, expect, test } from 'vitest';
 
 import slice from '../../src/glyph/slice';
 import font from '../internal/font';
+import { Glyph } from '../../src/types';
 
 describe('glyph slice operator', () => {
   test('should return no glyph for empty slice', () => {
-    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] };
+    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] } as Glyph;
     const sliced = slice(0, 0, font, glyph);
 
     expect(sliced).toHaveLength(0);
   });
 
   test('should return same glyph for exact slice', () => {
-    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] };
+    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] } as Glyph;
     const sliced = slice(0, 1, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -21,7 +22,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should return same ligature glyphs for exact slice', () => {
-    const glyph = { id: 64257, advanceWidth: 10, codePoints: [102, 105] }; // fi;
+    const glyph = {
+      id: 64257,
+      advanceWidth: 10,
+      codePoints: [102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(0, 2, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -30,7 +36,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should return same long ligature glyphs for exact slice', () => {
-    const glyph = { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }; // fi;
+    const glyph = {
+      id: 64259,
+      advanceWidth: 10,
+      codePoints: [102, 102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(0, 3, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -39,7 +50,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break ligature glyph in half at start', () => {
-    const glyph = { id: 64257, advanceWidth: 10, codePoints: [102, 105] }; // fi;
+    const glyph = {
+      id: 64257,
+      advanceWidth: 10,
+      codePoints: [102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(0, 1, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -48,7 +64,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break ligature glyph in half at end', () => {
-    const glyph = { id: 64257, advanceWidth: 10, codePoints: [102, 105] }; // fi;
+    const glyph = {
+      id: 64257,
+      advanceWidth: 10,
+      codePoints: [102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(1, 2, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -57,7 +78,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break long ligature glyph in 1st char at start', () => {
-    const glyph = { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }; // fi;
+    const glyph = {
+      id: 64259,
+      advanceWidth: 10,
+      codePoints: [102, 102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(0, 1, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -66,7 +92,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break long ligature glyph in 1st char at end', () => {
-    const glyph = { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }; // fi;
+    const glyph = {
+      id: 64259,
+      advanceWidth: 10,
+      codePoints: [102, 102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(1, 3, font, glyph);
 
     expect(sliced).toHaveLength(1);
@@ -75,7 +106,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break long ligature glyph in 2nd char at start', () => {
-    const glyph = { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }; // ffi;
+    const glyph = {
+      id: 64259,
+      advanceWidth: 10,
+      codePoints: [102, 102, 105],
+    } as Glyph; // ffi;
+
     const sliced = slice(0, 2, font, glyph);
 
     expect(sliced).toHaveLength(2);
@@ -86,7 +122,12 @@ describe('glyph slice operator', () => {
   });
 
   test('should break long ligature glyph in 2nd char at end', () => {
-    const glyph = { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }; // fi;
+    const glyph = {
+      id: 64259,
+      advanceWidth: 10,
+      codePoints: [102, 102, 105],
+    } as Glyph; // fi;
+
     const sliced = slice(2, 3, font, glyph);
 
     expect(sliced).toHaveLength(1);

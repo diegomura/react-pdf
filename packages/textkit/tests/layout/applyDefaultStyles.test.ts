@@ -14,7 +14,7 @@ const DEFAULTS = {
   color: 'black',
   features: [],
   fill: true,
-  font: null,
+  font: [],
   fontSize: 12,
   hangingPunctuation: false,
   hyphenationFactor: 0,

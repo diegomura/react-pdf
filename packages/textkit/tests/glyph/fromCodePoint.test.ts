@@ -21,13 +21,13 @@ describe('glyph fromCodePoint operator', () => {
   });
 
   test('should return null if no value provided', () => {
-    const result = fromCodePoint(null, font);
+    const result = fromCodePoint(null, font as any);
 
     expect(result).toBeNull();
   });
 
   test('should get glyph from font', () => {
-    const result = fromCodePoint(76, font);
+    const result = fromCodePoint(76, font as any);
 
     expect(result).toHaveProperty('id', 76);
     expect(font.glyphForCodePoint.mock.calls).toHaveLength(1);

@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'vitest';
 
 import bidiReordering from '../../src/layout/bidiReordering';
+import { Glyph } from '../../src/types';
 
 const bidiReorderingInstance = bidiReordering();
 
@@ -124,7 +125,7 @@ describe('bidiReordering', () => {
             { id: 0, advanceWidth: 10, codePoints: [0], isLigature: true },
             { id: 0, advanceWidth: 10, codePoints: [0], isLigature: true },
             { id: 0, advanceWidth: 10, codePoints: [0], isLigature: true },
-          ],
+          ] as Glyph[],
           positions: [
             { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
             { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },

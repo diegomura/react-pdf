@@ -14,7 +14,8 @@ const renderRun = (ctx: Context, run: Run) => {
   if (!run.positions) return;
 
   const runAdvanceWidth = run.xAdvance;
-  const { font, fontSize, color, opacity } = run.attributes;
+  const font = run.attributes.font?.[0];
+  const { fontSize, color, opacity } = run.attributes;
 
   if (color) ctx.fillColor(color);
   ctx.fillOpacity(opacity!);
@@ -42,7 +43,7 @@ const renderSpan = (
 
   const x = line.box?.x || 0;
   const y = line.box?.y || 0;
-  const font = line.runs[0]?.attributes.font;
+  const font = line.runs[0]?.attributes.font?.[0];
   const scale = line.runs[0]?.attributes?.scale || 1;
   const width = line.xAdvance!;
 

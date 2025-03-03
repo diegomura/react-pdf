@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import prepend from '../../src/run/prepend';
+import { Glyph } from '../../src/types';
 
 describe('run prepend glyph operator', () => {
   test('should return same run if no glyph provided', () => {
@@ -15,7 +16,7 @@ describe('run prepend glyph operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -24,7 +25,7 @@ describe('run prepend glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(null, run);
@@ -44,7 +45,7 @@ describe('run prepend glyph operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -53,10 +54,10 @@ describe('run prepend glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 }; // i
+    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
     const result = prepend(glyph, run);
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
@@ -74,7 +75,7 @@ describe('run prepend glyph operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -83,10 +84,14 @@ describe('run prepend glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 64257, codePoints: [102, 105], advanceWidth: 10 }; // fi
+    const glyph = {
+      id: 64257,
+      codePoints: [102, 105],
+      advanceWidth: 10,
+    } as Glyph; // fi
     const result = prepend(glyph, run); // filorem
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 1, 2, 3, 4, 5]);
@@ -105,7 +110,7 @@ describe('run prepend glyph operator', () => {
         { id: 111, advanceWidth: 10, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -113,10 +118,10 @@ describe('run prepend glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 }; // i
+    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
     const result = prepend(glyph, run); // ilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 3, 4]);
@@ -133,7 +138,7 @@ describe('run prepend glyph operator', () => {
         { id: 111, advanceWidth: 10, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -141,10 +146,14 @@ describe('run prepend glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 64259, codePoints: [102, 102, 105], advanceWidth: 10 }; // ffi
+    const glyph = {
+      id: 64259,
+      codePoints: [102, 102, 105],
+      advanceWidth: 10,
+    } as Glyph; // ffi
     const result = prepend(glyph, run); //  ffilofim
 
     expect(result).toHaveProperty('glyphIndices', [0, 0, 0, 1, 2, 3, 3, 4]);
@@ -164,7 +173,7 @@ describe('run prepend code point operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -173,7 +182,7 @@ describe('run prepend code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(null, run);
@@ -193,7 +202,7 @@ describe('run prepend code point operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -202,7 +211,7 @@ describe('run prepend code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(105, run);
@@ -222,7 +231,7 @@ describe('run prepend code point operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -231,7 +240,7 @@ describe('run prepend code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(64257, run); // filorem
@@ -252,7 +261,7 @@ describe('run prepend code point operator', () => {
         { id: 111, advanceWidth: 10, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -260,7 +269,7 @@ describe('run prepend code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(105, run); // ilofim
@@ -279,7 +288,7 @@ describe('run prepend code point operator', () => {
         { id: 111, advanceWidth: 10, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -287,7 +296,7 @@ describe('run prepend code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = prepend(64259, run); //  ffilofim

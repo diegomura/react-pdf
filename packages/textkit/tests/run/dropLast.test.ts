@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import pluck from '../internal/pluck';
 import dropLast from '../../src/run/dropLast';
+import { Glyph } from '../../src/types';
 
 describe('run dropLast operator', () => {
   test('should have one less char', () => {
@@ -23,7 +24,7 @@ describe('run dropLast operator', () => {
         { id: 82, advanceWidth: 0, codePoints: [82] },
         { id: 74, advanceWidth: 0, codePoints: [74] },
         { id: 109, advanceWidth: 0, codePoints: [109] },
-      ],
+      ] as Glyph[],
     };
     const result = dropLast(run);
 
@@ -63,7 +64,7 @@ describe('run dropLast operator', () => {
         { id: 82, advanceWidth: 0, codePoints: [82] },
         { id: 74, advanceWidth: 0, codePoints: [74] },
         { id: 109, advanceWidth: 0, codePoints: [109] },
-      ],
+      ] as Glyph[],
       glyphIndices: [0, 1, 2, 3, 4],
     };
     const result = dropLast(run);

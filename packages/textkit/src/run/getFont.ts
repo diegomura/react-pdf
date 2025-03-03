@@ -7,7 +7,7 @@ import { Run } from '../types';
  * @returns Font
  */
 const getFont = (run: Run) => {
-  return run.attributes?.font || null;
+  return run.attributes?.font?.[0] || null;
 };
 
 export default getFont;

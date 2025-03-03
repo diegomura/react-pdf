@@ -9,7 +9,7 @@ import scale from './scale';
  */
 const lineGap = (run: Run) => {
   const font = run.attributes?.font;
-  const lineGap = typeof font === 'string' ? 0 : font?.lineGap || 0;
+  const lineGap = typeof font === 'string' ? 0 : font?.[0]?.lineGap || 0;
   return lineGap * scale(run);
 };
 

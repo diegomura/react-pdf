@@ -4,7 +4,7 @@ import add from '../../src/run/add';
 
 describe('run add operator', () => {
   test('should return equal run if 0', () => {
-    const attributes = { font: {} };
+    const attributes = { font: [] };
     const run = {
       start: 5,
       end: 15,
@@ -22,7 +22,7 @@ describe('run add operator', () => {
   });
 
   test('should return added run', () => {
-    const attributes = { font: {} };
+    const attributes = { font: [] };
     const run = {
       start: 5,
       end: 15,

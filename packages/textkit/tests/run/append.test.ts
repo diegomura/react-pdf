@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import append from '../../src/run/append';
+import { Glyph } from '../../src/types';
 
 describe('run append glyph operator', () => {
   test('should return same run if no glyph provided', () => {
@@ -16,7 +17,7 @@ describe('run append glyph operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -45,7 +46,7 @@ describe('run append glyph operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -54,10 +55,10 @@ describe('run append glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 }; // i
+    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
     const result = append(glyph, run);
 
     expect(result).toHaveProperty('start', 0);
@@ -77,7 +78,7 @@ describe('run append glyph operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -86,10 +87,14 @@ describe('run append glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 64257, codePoints: [102, 105], advanceWidth: 10 }; // fi
+    const glyph = {
+      id: 64257,
+      codePoints: [102, 105],
+      advanceWidth: 10,
+    } as Glyph; // fi
     const result = append(glyph, run); // loremfi
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5, 5]);
@@ -108,7 +113,7 @@ describe('run append glyph operator', () => {
         { id: 111, advanceWidth: 0, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -116,10 +121,10 @@ describe('run append glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 }; // i
+    const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
     const result = append(glyph, run); // lofimi
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4]);
@@ -136,7 +141,7 @@ describe('run append glyph operator', () => {
         { id: 111, advanceWidth: 0, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -144,10 +149,14 @@ describe('run append glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
-    const glyph = { id: 64259, codePoints: [102, 102, 105], advanceWidth: 10 }; // ffi
+    const glyph = {
+      id: 64259,
+      codePoints: [102, 102, 105],
+      advanceWidth: 10,
+    } as Glyph; // ffi
     const result = append(glyph, run); //  lofimffi
 
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4, 4, 4]);
@@ -167,7 +176,7 @@ describe('run append code point operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -176,7 +185,7 @@ describe('run append code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(null, run);
@@ -196,7 +205,7 @@ describe('run append code point operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -205,7 +214,7 @@ describe('run append code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(105, run);
@@ -225,7 +234,7 @@ describe('run append code point operator', () => {
         { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         { id: 101, advanceWidth: 0, codePoints: [101] }, // e
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -234,7 +243,7 @@ describe('run append code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 3, 4],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(64257, run); // loremfi
@@ -255,7 +264,7 @@ describe('run append code point operator', () => {
         { id: 111, advanceWidth: 0, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -263,7 +272,7 @@ describe('run append code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(105, run); // lofimi
@@ -282,7 +291,7 @@ describe('run append code point operator', () => {
         { id: 111, advanceWidth: 0, codePoints: [111] }, // o
         { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 0, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -290,7 +299,7 @@ describe('run append code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       glyphIndices: [0, 1, 2, 2, 3],
-      attributes: { font, fontSize: 2 },
+      attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(64259, run); //  lofimffi

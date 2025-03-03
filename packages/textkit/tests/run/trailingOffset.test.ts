@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import empty from '../../src/run/empty';
 import trailingOffset from '../../src/run/trailingOffset';
+import { Glyph } from '../../src/types';
 
 describe('run trailingOffset operator', () => {
   test('should return zero for empty run', () => {
@@ -21,7 +22,7 @@ describe('run trailingOffset operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -48,7 +49,7 @@ describe('run trailingOffset operator', () => {
         { id: 114, advanceWidth: 10, codePoints: [114] }, // r
         { id: 101, advanceWidth: 10, codePoints: [101] }, // e
         { id: 32, advanceWidth: 10, codePoints: [32] }, // space
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -75,7 +76,7 @@ describe('run trailingOffset operator', () => {
         { id: 32, advanceWidth: 10, codePoints: [32] }, // space
         { id: 32, advanceWidth: 10, codePoints: [32] }, // space
         { id: 32, advanceWidth: 10, codePoints: [32] }, // space
-      ],
+      ] as Glyph[],
       positions: [
         { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },

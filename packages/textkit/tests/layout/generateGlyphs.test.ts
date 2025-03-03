@@ -34,7 +34,7 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -58,12 +58,12 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 3,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
         {
           start: 3,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -90,7 +90,7 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -110,7 +110,7 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 10,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -134,12 +134,12 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 3,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
         {
           start: 3,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -166,12 +166,12 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 4,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
         {
           start: 4,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -198,7 +198,7 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -218,12 +218,12 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 1,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
         {
           start: 1,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -250,7 +250,7 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });
@@ -270,12 +270,12 @@ describe('generateGlyphs', () => {
         {
           start: 0,
           end: 4,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
         {
           start: 4,
           end: 5,
-          attributes: { font, fontSize: 2 },
+          attributes: { font: [font], fontSize: 2 },
         },
       ],
     });

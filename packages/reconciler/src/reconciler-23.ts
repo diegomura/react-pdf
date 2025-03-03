@@ -1,10 +1,11 @@
 import Reconciler from 'react-reconciler-23/cjs/react-reconciler.production.min.js';
 
 import propsEqual from './propsEqual';
+import { ReconcilerFactory } from './types';
 
 const emptyObject = {};
 
-const createRenderer = ({
+const createRenderer: ReconcilerFactory = ({
   appendChild,
   appendChildToContainer,
   commitTextUpdate,

@@ -5,12 +5,13 @@ import {
 } from 'react-reconciler-31/constants';
 
 import propsEqual from './propsEqual';
+import { ReconcilerFactory } from './types';
 
 const emptyObject = {};
 
 const logRecoverableError = console.error;
 
-const createRenderer = ({
+const createRenderer: ReconcilerFactory = ({
   appendChild,
   appendChildToContainer,
   commitTextUpdate,

@@ -22,6 +22,7 @@ interface TextInputFormatting {
   currency?: string;
   currencyPrepend?: boolean;
 }
+
 // see http://pdfkit.org/docs/forms.html#text_field_formatting
 interface TextInputProps extends FormCommonProps {
   align?: 'left' | 'center' | 'right';

@@ -4,27 +4,13 @@ import { YogaNode } from 'yoga-layout/load';
 
 import { Box, FormCommonProps, Origin } from './base';
 
-interface SelectAndListPropsBase extends FormCommonProps {
+interface SelectAndListProps extends FormCommonProps {
   sort?: boolean;
   edit?: boolean;
   multiSelect?: boolean;
   noSpell?: boolean;
   select?: string[];
 }
-
-type SelectAndListPropsWithEdit = SelectAndListPropsBase & {
-  edit: true | false;
-  noSpell: boolean;
-};
-
-type SelectAndListPropsWithNoSpell = SelectAndListPropsBase & {
-  edit: boolean;
-  noSpell: true | false;
-};
-
-type SelectAndListProps =
-  | SelectAndListPropsWithEdit
-  | SelectAndListPropsWithNoSpell;
 
 export type SelectNode = {
   type: typeof P.Select;

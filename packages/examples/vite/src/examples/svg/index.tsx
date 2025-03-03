@@ -7,6 +7,7 @@ import Svg2 from './Svg2';
 import Svg4 from './Svg4';
 import Star from './Star';
 import Heart from './Heart';
+import Pattern from './Pattern';
 
 const styles = StyleSheet.create({
   page: {
@@ -26,6 +27,7 @@ const App = () => {
         <Svg2 />
         <Svg4 />
         <Heart />
+        <Pattern />
       </Page>
     </Document>
   );

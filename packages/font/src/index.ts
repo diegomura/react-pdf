@@ -200,7 +200,7 @@ class FontStore {
   getRegisteredFontFamilies = (): string[] => Object.keys(this.fontFamilies);
 }
 
-export type FontStoreType = typeof FontStore;
+export type FontStoreType = FontStore;
 
 export * from './types';
 

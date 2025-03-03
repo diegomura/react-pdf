@@ -1,13 +1,16 @@
 import * as P from '@react-pdf/primitives';
+import { Transform } from '@react-pdf/stylesheet';
 
 import { SafeStopNode, StopNode } from './stop';
-
 interface LinearGradientProps {
   id: string;
   x1?: string | number;
   x2?: string | number;
   y1?: string | number;
   y2?: string | number;
+  xlinkHref?: string;
+  gradientTransform?: string;
+  gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
 }
 
 interface SafeLinearGradientProps {
@@ -16,6 +19,9 @@ interface SafeLinearGradientProps {
   x2?: number;
   y1?: number;
   y2?: number;
+  xlinkHref?: string;
+  gradientTransform?: Transform[];
+  gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
 }
 
 export type LinearGradientNode = {

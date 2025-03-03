@@ -8,6 +8,7 @@ import Svg4 from './Svg4';
 import Star from './Star';
 import Heart from './Heart';
 import Pattern from './Pattern';
+import Car from './Car';
 
 const styles = StyleSheet.create({
   page: {
@@ -28,6 +29,7 @@ const App = () => {
         <Svg4 />
         <Heart />
         <Pattern />
+        <Car />
       </Page>
     </Document>
   );

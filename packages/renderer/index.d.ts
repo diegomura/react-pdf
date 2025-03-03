@@ -531,6 +531,9 @@ declare namespace ReactPDF {
     x2?: string | number;
     y1?: string | number;
     y2?: string | number;
+    xlinkHref?: string;
+    gradientTransform?: string;
+    gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
   }
 
   /**
@@ -544,9 +547,12 @@ declare namespace ReactPDF {
     id: string;
     cx?: string | number;
     cy?: string | number;
-    fr?: string | number;
+    r?: string | number;
     fx?: string | number;
     fy?: string | number;
+    xlinkHref?: string;
+    gradientTransform?: string;
+    gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
   }
 
   /**

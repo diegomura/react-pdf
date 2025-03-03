@@ -1,4 +1,5 @@
 import * as P from '@react-pdf/primitives';
+import { Transform } from '@react-pdf/stylesheet';
 
 import { SafeStopNode, StopNode } from './stop';
 
@@ -10,6 +11,9 @@ interface RadialGradientProps {
   fx?: string | number;
   fy?: string | number;
   r?: string | number;
+  xlinkHref?: string;
+  gradientTransform?: string;
+  gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
 }
 
 interface SafeRadialGradientProps {
@@ -20,6 +24,9 @@ interface SafeRadialGradientProps {
   fx?: number;
   fy?: number;
   r?: number;
+  xlinkHref?: string;
+  gradientTransform?: Transform[];
+  gradientUnits?: 'userSpaceOnUse' | 'objectBoundingBox';
 }
 
 export type RadialGradientNode = {

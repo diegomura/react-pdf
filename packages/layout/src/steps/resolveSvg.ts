@@ -43,6 +43,8 @@ const STYLE_PROPS = [
   'strokeLinejoin',
   'strokeLinecap',
   'strokeDasharray',
+  'gradientUnits',
+  'gradientTransform',
 ];
 
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
@@ -106,6 +108,7 @@ const parseProps =
         stopOpacity: parsePercent,
         stopColor: transformColor,
         transform: parseTransform(container),
+        gradientTransform: parseTransform(container),
       },
       props,
     );
@@ -203,6 +206,48 @@ const resolveChildren =
     return Object.assign({}, node, { children });
   };
 
+const buildXLinksIndex = (node: SafeSvgNode) => {
+  const idIndex: Record<string, SafeNode> = {};
+  const listToExplore: SafeNode[] = node.children?.slice(0) || [];
+
+  while (listToExplore.length > 0) {
+    const child = listToExplore.shift();
+
+    if (child.props && 'id' in child.props) {
+      idIndex[child.props.id] = child;
+    }
+
+    if (child.children) listToExplore.push(...child.children);
+  }
+
+  return idIndex;
+};
+
+const replaceXLinks = (node: SafeNode, idIndex: Record<string, SafeNode>) => {
+  if (node.props && 'xlinkHref' in node.props) {
+    const linkedNode = idIndex[node.props.xlinkHref.replace(/^#/, '')];
+
+    // No node to extend from
+    if (!linkedNode) return node;
+
+    const newProps = Object.assign({}, linkedNode.props, node.props);
+
+    delete newProps.xlinkHref;
+
+    return Object.assign({}, linkedNode, { props: newProps });
+  }
+
+  const children = node.children?.map((child) => replaceXLinks(child, idIndex));
+
+  return Object.assign({}, node, { children });
+};
+
+export const resolveXLinks = (node: SafeSvgNode): SafeSvgNode => {
+  const idIndex = buildXLinksIndex(node);
+
+  return replaceXLinks(node, idIndex);
+};
+
 const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
   const container = getContainer(node);
 
@@ -213,6 +258,7 @@ const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
     pickStyleProps,
     inheritProps,
     resolveChildren(container),
+    resolveXLinks,
   )(node);
 };
 

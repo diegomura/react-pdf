@@ -200,12 +200,14 @@ export type TransformExpandedStyle = {
   transformOriginX?: number | string;
   transformOriginY?: number | string;
   transform?: string | Transform[];
+  gradientTransform?: string | Transform[];
 };
 
 export type TransformSafeStyle = Omit<TransformExpandedStyle, 'transform'> & {
   transformOriginX?: number | Percentage;
   transformOriginY?: number | Percentage;
   transform?: Transform[];
+  gradientTransform?: Transform[];
 };
 
 export type TransformStyle = TransformShorthandStyle & TransformExpandedStyle;
@@ -407,7 +409,7 @@ export interface SvgStyle {
   strokeOpacity?: string | number;
   textAnchor?: 'start' | 'middle' | 'end';
   strokeLinecap?: 'butt' | 'round' | 'square';
-  strokeLinejoin?: 'butt' | 'round' | 'square';
+  strokeLinejoin?: 'butt' | 'round' | 'square' | 'miter' | 'bevel';
   visibility?: 'visible' | 'hidden' | 'collapse';
   clipPath?: string;
   dominantBaseline?:

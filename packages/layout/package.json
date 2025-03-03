@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/layout",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "license": "MIT",
   "description": "Resolve document component's layout",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -20,12 +20,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-pdf/fns": "3.1.1",
-    "@react-pdf/image": "^3.0.2",
+    "@react-pdf/fns": "3.1.2",
+    "@react-pdf/image": "^3.0.3",
     "@react-pdf/primitives": "^4.1.1",
-    "@react-pdf/stylesheet": "^6.0.0",
-    "@react-pdf/textkit": "^5.0.3",
-    "@react-pdf/types": "^2.8.0",
+    "@react-pdf/stylesheet": "^6.0.1",
+    "@react-pdf/textkit": "^6.0.0",
+    "@react-pdf/types": "^2.8.1",
     "emoji-regex": "^10.3.0",
     "queue": "^6.0.1",
     "yoga-layout": "^3.2.1"

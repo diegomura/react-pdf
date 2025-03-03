@@ -1,5 +1,11 @@
 # @react-pdf/reconciler
 
+## 1.1.4
+
+### Patch Changes
+
+- [`b95a6dc4`](https://github.com/diegomura/react-pdf/commit/b95a6dc4350b0580ee8c1c8320871cc7145676f2) Thanks [@diegomura](https://github.com/diegomura)! - refactor: convert reconciler package to TS
+
 ## 1.1.3
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @react-pdf/font
 
+## 4.0.1
+
+### Patch Changes
+
+- [`e257f7ee`](https://github.com/diegomura/react-pdf/commit/e257f7ee18ff09f4895cd16c0b21b824678384c8) Thanks [@diegomura](https://github.com/diegomura)! - fix: font store types
+
+- Updated dependencies []:
+  - @react-pdf/types@2.8.2
+
 ## 4.0.0
 
 ### Major Changes

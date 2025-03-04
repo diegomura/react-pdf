@@ -55,4 +55,28 @@ describe('debug', () => {
 
     expect(image).toMatchImageSnapshot();
   });
+
+  test('should not render debug if false passed', async () => {
+    const image = await renderToImage(
+      <Document style={{ fontFamily: 'Open Sans' }}>
+        <Page size={[50, 25]}>
+          <Text debug={false}>hello</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should not render debug if undefined passed', async () => {
+    const image = await renderToImage(
+      <Document style={{ fontFamily: 'Open Sans' }}>
+        <Page size={[50, 25]}>
+          <Text debug={undefined}>hello</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
 });

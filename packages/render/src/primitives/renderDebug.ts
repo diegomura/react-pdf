@@ -175,7 +175,7 @@ const debugOrigin = (ctx: Context, node: SafeNode) => {
 
 const renderDebug = (ctx: Context, node: SafeNode) => {
   if (!node.props) return;
-  if (!('debug' in node.props)) return;
+  if (!('debug' in node.props) || !node.props.debug) return;
 
   ctx.save();
 

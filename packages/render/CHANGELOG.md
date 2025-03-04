@@ -1,5 +1,18 @@
 # @react-pdf/render
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3112](https://github.com/diegomura/react-pdf/pull/3112) [`f89f75c1`](https://github.com/diegomura/react-pdf/commit/f89f75c1f132ba19b54847c3ac23efec675f8d0a) Thanks [@diegomura](https://github.com/diegomura)! - feat: add xLinkHref, gradientTransform and gradientUnits support
+
+### Patch Changes
+
+- [`01b4ff5c`](https://github.com/diegomura/react-pdf/commit/01b4ff5cb00420dd37c2f28fb95822dd18cdd982) Thanks [@diegomura](https://github.com/diegomura)! - fix: debug prop
+
+- Updated dependencies [[`f89f75c1`](https://github.com/diegomura/react-pdf/commit/f89f75c1f132ba19b54847c3ac23efec675f8d0a)]:
+  - @react-pdf/types@2.9.0
+
 ## 4.2.1
 
 ### Patch Changes

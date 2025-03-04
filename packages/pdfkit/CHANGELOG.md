@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 4.0.3
+
+### Patch Changes
+
+- [#3118](https://github.com/diegomura/react-pdf/pull/3118) [`106699e8`](https://github.com/diegomura/react-pdf/commit/106699e850dad2285e6999d59975111f217e8a81) Thanks [@diegomura](https://github.com/diegomura)! - feat: compile nullish coalescing operator
+
 ## 4.0.2
 
 ### Patch Changes

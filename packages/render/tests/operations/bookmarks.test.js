@@ -19,7 +19,6 @@ describe('operations bookmarks', () => {
     const p2 = { bookmark: { ref: 2, title: BOOKMARK2 } };
     const p3 = { bookmark: { ref: 3, title: BOOKMARK3 } };
     const box = { left: 0, top: 0, width: 100, height: 100, x: 0, y: 0 };
-    // eslint-disable-next-line prettier/prettier
     const makeLine = (pageNumber) => {
       const line = {
         ascent: 16.2,
@@ -33,7 +32,6 @@ describe('operations bookmarks', () => {
         decorationLines: [],
       };
       return line;
-      // eslint-disable-next-line prettier/prettier
     };
     const doc = {
       type: P.Document,
@@ -68,8 +66,8 @@ describe('operations bookmarks', () => {
     ).toBe(true);
     const children = ctx._root.document.outline.children;
     expect(children).toHaveLength(3);
-    expect(children[0].outlineData.Title.toString()).toEqual(BOOKMARK1);
-    expect(children[1].outlineData.Title.toString()).toEqual(BOOKMARK2);
-    expect(children[2].outlineData.Title.toString()).toEqual(BOOKMARK3);
+    expect(children[0].outlineData.Title.toString()).toBe(BOOKMARK1);
+    expect(children[1].outlineData.Title.toString()).toBe(BOOKMARK2);
+    expect(children[2].outlineData.Title.toString()).toBe(BOOKMARK3);
   });
 });

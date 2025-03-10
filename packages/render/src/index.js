@@ -7,9 +7,9 @@ const render = (ctx, doc) => {
 
   const registry = {};
 
-  pages.forEach((page, i) => {
+  pages.forEach((page, index) => {
     renderNode(ctx, page, options);
-    addNodeBookmark(ctx, page, i, registry);
+    addNodeBookmark(ctx, page, index, registry);
   });
 
   ctx.end();

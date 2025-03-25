@@ -49,9 +49,9 @@ const fontSubstitution =
 
       const chars = string.slice(run.start, run.end);
 
-      for (let j = 0; j < chars.length; j += 1) {
-        const char = chars[j];
-        const codePoint = char.codePointAt(0);
+      let j = 0;
+      while (j < chars.length) {
+        const codePoint = chars.codePointAt(j);
         // If the default font does not have a glyph and the fallback font does, we use it
         const font = pickFontFromFontStack(
           codePoint,
@@ -83,7 +83,10 @@ const fontSubstitution =
           lastIndex = index;
         }
 
-        index += char.length;
+        // Calculate character length based on code point (1 for BMP, 2 for others)
+        const charLength = codePoint > 0xffff ? 2 : 1;
+        j += charLength;
+        index += charLength;
       }
     }
 

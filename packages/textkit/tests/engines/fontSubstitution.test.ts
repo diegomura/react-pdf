@@ -116,4 +116,112 @@ describe('FontSubstitution', () => {
       expect(string.runs[1].attributes.font).toEqual([SimplifiedChineseFont]);
     });
   });
+
+  describe('Surrogate Pairs', () => {
+    const EmojiFont = {
+      name: 'EmojiFont',
+      unitsPerEm: 1000,
+      hasGlyphForCodePoint: (codePoint) =>
+        codePoint === 0x1f600 || // 😀 Grinning Face
+        codePoint === 0x1f60d, // 😍 Heart Eyes
+    };
+
+    const RegularFont = {
+      name: 'RegularFont',
+      unitsPerEm: 1000,
+      hasGlyphForCodePoint: (codePoint) => codePoint < 0xffff,
+    };
+
+    test('should handle surrogate pairs in text', () => {
+      const run = {
+        start: 0,
+        end: 3, // A + surrogate pair (2 JS chars)
+        attributes: {
+          font: [RegularFont, EmojiFont],
+          fontSize: 12,
+        },
+      } as any;
+
+      // A + 😀 (Grinning Face emoji, surrogate pair)
+      const string = instance({ string: 'A😀', runs: [run] });
+
+      expect(string).toHaveProperty('string', 'A😀');
+      expect(string.runs).toHaveLength(2);
+
+      // First run is the letter "A" with RegularFont
+      expect(string.runs[0]).toHaveProperty('start', 0);
+      expect(string.runs[0]).toHaveProperty('end', 1);
+      expect(string.runs[0].attributes.font).toEqual([RegularFont]);
+
+      // Second run is the emoji "😀" with EmojiFont
+      expect(string.runs[1]).toHaveProperty('start', 1);
+      expect(string.runs[1]).toHaveProperty('end', 3); // Surrogate pair takes 2 positions
+      expect(string.runs[1].attributes.font).toEqual([EmojiFont]);
+    });
+
+    test('should handle multiple surrogate pairs in text', () => {
+      const run = {
+        start: 0,
+        end: 5, // A + surrogate pair (2) + B (1) + surrogate pair (2) = 5
+        attributes: {
+          font: [RegularFont, EmojiFont],
+          fontSize: 12,
+        },
+      } as any;
+
+      // A + 😀 (Grinning Face) + 😍 (Heart Eyes)
+      const string = instance({ string: 'A😀😍', runs: [run] });
+
+      expect(string).toHaveProperty('string', 'A😀😍');
+      expect(string.runs).toHaveLength(2);
+
+      // First run is the letter "A" with RegularFont
+      expect(string.runs[0]).toHaveProperty('start', 0);
+      expect(string.runs[0]).toHaveProperty('end', 1);
+      expect(string.runs[0].attributes.font).toEqual([RegularFont]);
+
+      // Second run is both emojis with EmojiFont
+      expect(string.runs[1]).toHaveProperty('start', 1);
+      expect(string.runs[1]).toHaveProperty('end', 5); // Two surrogate pairs
+      expect(string.runs[1].attributes.font).toEqual([EmojiFont]);
+    });
+
+    test('should handle surrogate pairs interspersed with regular text', () => {
+      const run = {
+        start: 0,
+        end: 7, // A + surrogate pair (2) + B + surrogate pair (2) + C = 7
+        attributes: {
+          font: [RegularFont, EmojiFont],
+          fontSize: 12,
+        },
+      } as any;
+
+      // A + 😀 (Grinning Face) + B + 😍 (Heart Eyes) + C
+      const string = instance({ string: 'A😀B😍C', runs: [run] });
+
+      expect(string).toHaveProperty('string', 'A😀B😍C');
+      expect(string.runs).toHaveLength(5);
+
+      // Alternating fonts for regular chars and emojis
+      expect(string.runs[0]).toHaveProperty('start', 0);
+      expect(string.runs[0]).toHaveProperty('end', 1);
+      expect(string.runs[0].attributes.font).toEqual([RegularFont]);
+
+      expect(string.runs[1]).toHaveProperty('start', 1);
+      expect(string.runs[1]).toHaveProperty('end', 3);
+      expect(string.runs[1].attributes.font).toEqual([EmojiFont]);
+
+      expect(string.runs[2]).toHaveProperty('start', 3);
+      expect(string.runs[2]).toHaveProperty('end', 4);
+      expect(string.runs[2].attributes.font).toEqual([RegularFont]);
+
+      expect(string.runs[3]).toHaveProperty('start', 4);
+      expect(string.runs[3]).toHaveProperty('end', 6);
+      expect(string.runs[3].attributes.font).toEqual([EmojiFont]);
+
+      expect(string.runs[4]).toHaveProperty('start', 6);
+      expect(string.runs[4]).toHaveProperty('end', 7);
+      expect(string.runs[4].attributes.font).toEqual([RegularFont]);
+    });
+  });
 });

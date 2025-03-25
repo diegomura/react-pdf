@@ -1,4 +1,4 @@
-import { last } from '@react-pdf/fns';
+import { last, getUTF16Increment } from '@react-pdf/fns';
 import { AttributedString, Font, Run } from '../../types';
 
 const IGNORED_CODE_POINTS = [173];
@@ -83,8 +83,7 @@ const fontSubstitution =
           lastIndex = index;
         }
 
-        // Calculate character length based on code point (1 for BMP, 2 for others)
-        const charLength = codePoint > 0xffff ? 2 : 1;
+        const charLength = getUTF16Increment(codePoint);
         j += charLength;
         index += charLength;
       }

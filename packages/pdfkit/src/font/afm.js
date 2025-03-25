@@ -1,5 +1,6 @@
 import fs from 'fs';
 import range from '../utils/range.js';
+import { getUTF16Increment } from '@react-pdf/fns';
 
 const WIN_ANSI_MAP = {
   402: 131,
@@ -207,13 +208,13 @@ class AFMFont {
   encodeText(text) {
     const res = [];
     let i = 0;
-    
+
     while (i < text.length) {
       const codePoint = text.codePointAt(i);
       const char = WIN_ANSI_MAP[codePoint] || codePoint;
       res.push(char.toString(16));
-      
-      i += codePoint > 0xFFFF ? 2 : 1;
+
+      i += getUTF16Increment(codePoint);
     }
 
     return res;
@@ -222,12 +223,12 @@ class AFMFont {
   glyphsForString(string) {
     const glyphs = [];
     let i = 0;
-    
+
     while (i < string.length) {
       const codePoint = string.codePointAt(i);
       glyphs.push(this.characterToGlyph(codePoint));
 
-      i += codePoint > 0xFFFF ? 2 : 1;
+      i += getUTF16Increment(codePoint);
     }
 
     return glyphs;

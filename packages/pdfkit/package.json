@@ -35,7 +35,8 @@
     "fontkit": "^2.0.2",
     "jay-peg": "^1.1.1",
     "linebreak": "^1.1.0",
-    "vite-compatible-readable-stream": "^3.6.1"
+    "vite-compatible-readable-stream": "^3.6.1",
+    "pako": "~1.0.5"
   },
   "devDependencies": {
     "iconv-lite": "^0.4.13"

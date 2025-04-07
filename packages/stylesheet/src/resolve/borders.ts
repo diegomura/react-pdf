@@ -25,7 +25,7 @@ const resolveBorderShorthand = <K extends BorderKey>(
 
   if (match) {
     const widthMatch = match[1] || value;
-    const styleMatch = match[4] || value;
+    const styleMatch = match[4] || value || 'solid';
     const colorMatch = match[5] || value;
 
     const style = styleMatch as BorderStyleValue;

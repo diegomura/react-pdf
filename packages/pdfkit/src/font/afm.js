@@ -80,7 +80,7 @@ oe            .notdef        zcaron         ydieresis
 space         exclamdown     cent           sterling
 currency      yen            brokenbar      section
 dieresis      copyright      ordfeminine    guillemotleft
-logicalnot    hyphen         registered     macron
+logicalnot    softhyphen     registered     macron
 degree        plusminus      twosuperior    threesuperior
 acute         mu             paragraph      periodcentered
 cedilla       onesuperior    ordmasculine   guillemotright

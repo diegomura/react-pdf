@@ -19,6 +19,7 @@
     "url": "http://badassjs.com/"
   },
   "scripts": {
+    "test": "vitest",
     "clear": "rimraf ./lib ./src/font/data/*.json",
     "parse:afm": "node ./src/font/data/compressData.js",
     "build": "npm run clear && npm run parse:afm && rollup -c ",

@@ -454,7 +454,7 @@ export type Style = BaseStyle & MediaQueryStyle;
 interface RecursiveArray<T>
   extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> { };
 
-export type StyleProp<T> = RecursiveArray<T | undefined>;
+export type StyleProp<T> = T | RecursiveArray<T | undefined>;
 
 export type StyleKey = keyof BaseStyle;
 

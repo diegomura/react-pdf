@@ -1,8 +1,9 @@
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 import linebreakerFactory from '../../src/engines/linebreaker';
 import applyBestFit from '../../src/engines/linebreaker/bestFit';
 import applyKnuthPlass from '../../src/engines/linebreaker/knuthPlass';
+import font from '../internal/font';
 
 const width = 50;
 
@@ -10,21 +11,6 @@ describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
   test('should break lines and adds hyphens only where indicated', () => {
-    const fontMock = {
-      glyphForCodePoint: vi.fn().mockReturnValue({
-        id: 45,
-        codePoints: [45],
-        isLigature: false,
-        name: 'softhyphen',
-        _font: null,
-        advanceWidth: 0,
-      }),
-      postscriptName: '',
-      fullName: '',
-      familyName: '',
-      subfamilyName: '',
-    };
-
     const attributedString = {
       string: 'Potentieel broeikas­gas­emissierapport',
       runs: [
@@ -44,7 +30,7 @@ describe('linebreaker', () => {
             color: 'black',
             direction: 'ltr' as const,
             features: [],
-            font: [fontMock],
+            font: [font],
             fill: true,
             fontSize: 12,
             hangingPunctuation: false,
@@ -273,12 +259,11 @@ describe('linebreaker', () => {
       syllables: ['Potentieel', ' ', 'broeikas­gas­', 'emissie', 'rapport'],
     };
 
-    // @ts-expect-error we are mocking the font part of attributed string
     const result = linebreaker(attributedString, [10]);
     expect(result.map((line) => line.string)).toMatchInlineSnapshot(`
       [
         "Potentieel ",
-        "broeikas­gas­-",
+        "broeikasgas-",
         "emissie",
         "rapport",
       ]

@@ -5,7 +5,9 @@ import insertGlyph from '../../attributedString/insertGlyph';
 import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
+import generateGlyphs from '../../layout/generateGlyphs';
 
+const SOFT_HYPHEN = '\u00AD';
 const HYPHEN_CODE_POINT = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
@@ -56,13 +58,36 @@ const breakLines = (
 
     start = end;
 
-    return [...acc, line];
+    return [...acc, removeSoftHyphens(line)];
   }, []);
 
-  // Last line
-  lines.push(slice(start, attributedString.string.length, attributedString));
+  const lastLine = slice(
+    start,
+    attributedString.string.length,
+    attributedString,
+  );
+  lines.push(removeSoftHyphens(lastLine));
 
   return lines;
+};
+
+/**
+ * Remove all soft hyphen characters from the line.
+ * Soft hyphens are not relevant anymore after line breaking, and will only
+ * disrupt the rendering later down the line if left in the text.
+ *
+ * @param line
+ */
+const removeSoftHyphens = (line: AttributedString): AttributedString => {
+  const modifiedLine = {
+    ...line,
+    string: line.string.split(SOFT_HYPHEN).join(''),
+  };
+
+  return {
+    ...modifiedLine,
+    ...generateGlyphs()(modifiedLine),
+  };
 };
 
 /**

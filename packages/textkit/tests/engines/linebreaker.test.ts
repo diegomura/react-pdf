@@ -369,6 +369,65 @@ describe('bestFit', () => {
 
     expect(breakpoints.length).toBe(3);
   });
+
+  test('should consider the length of a potentially added hyphen when calculating breakpoints', () => {
+    const node = [
+      {
+        type: 'box' as const,
+        width: 25,
+        start: 0,
+        end: 5,
+      },
+      {
+        type: 'penalty' as const,
+        penalty: 1000,
+        width: 0,
+        stretch: 0,
+        shrink: 0,
+        start: 5,
+        end: 6,
+      },
+      {
+        type: 'box' as const,
+        width: 20,
+        start: 6,
+        end: 10,
+      },
+      {
+        type: 'penalty' as const,
+        penalty: 1000,
+        width: 6,
+        stretch: 0,
+        shrink: 0,
+        start: 10,
+        end: 11,
+      },
+      {
+        type: 'box' as const,
+        width: 25,
+        start: 11,
+        end: 15,
+      },
+      {
+        type: 'glue' as const,
+        width: 6,
+        stretch: 1,
+        shrink: 1,
+        start: 15,
+        end: 16,
+      },
+      {
+        type: 'box' as const,
+        width: 30,
+        start: 16,
+        end: 20,
+      },
+    ];
+
+    const breakpoints = applyBestFit(node, [width]);
+
+    expect(breakpoints).toEqual([0, 1, 5]);
+  });
 });
 
 describe('knuthPlass', () => {

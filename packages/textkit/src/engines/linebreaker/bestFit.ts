@@ -2,6 +2,16 @@ import { Node } from './types';
 
 const INFINITY = 10000;
 
+const skipPastGlueAndPenalty = (nodes: Node[], start: number): Node => {
+  let j = start + 1;
+  for (; j < nodes.length; j++) {
+    if (nodes[j].type !== 'glue' && nodes[j].type !== 'penalty') {
+      break;
+    }
+  }
+  return nodes[j - 1];
+};
+
 const getNextBreakpoint = (
   subnodes: Node[],
   widths: number[],
@@ -37,6 +47,8 @@ const getNextBreakpoint = (
     return 0;
   };
 
+  let hyphenWidth = 0;
+
   for (let i = 0; i < subnodes.length; i += 1) {
     const node = subnodes[i];
 
@@ -50,7 +62,11 @@ const getNextBreakpoint = (
       sum.shrink += node.shrink;
     }
 
-    if (sum.width - sum.shrink > lineLength) {
+    const potentialEndOfLine = skipPastGlueAndPenalty(subnodes, i);
+    hyphenWidth =
+      potentialEndOfLine.type === 'penalty' ? potentialEndOfLine.width : 0;
+
+    if (sum.width - sum.shrink + hyphenWidth > lineLength) {
       if (position === null) {
         let j = i === 0 ? i + 1 : i;
 
@@ -78,7 +94,7 @@ const getNextBreakpoint = (
     }
   }
 
-  return sum.width - sum.shrink > lineLength ? position : null;
+  return sum.width - sum.shrink + hyphenWidth > lineLength ? position : null;
 };
 
 const applyBestFit = (nodes: Node[], widths: number[]): number[] => {

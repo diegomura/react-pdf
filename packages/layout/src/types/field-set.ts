@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
@@ -14,7 +14,7 @@ interface FieldSetProps extends NodeProps {
 export type FieldSetNode = {
   type: typeof P.FieldSet;
   props: FieldSetProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

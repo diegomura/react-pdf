@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 
 import {
   SVGPresentationAttributes,
@@ -29,7 +29,7 @@ interface SafeRectProps extends SafeSVGPresentationAttributes {
 export type RectNode = {
   type: typeof P.Rect;
   props: RectProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: never;
   origin?: never;
   yogaNode?: never;

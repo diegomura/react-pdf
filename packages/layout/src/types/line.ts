@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 
 import {
   SVGPresentationAttributes,
@@ -25,7 +25,7 @@ interface SafeLineProps extends SafeSVGPresentationAttributes {
 export type LineNode = {
   type: typeof P.Line;
   props: LineProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: never;
   origin?: never;
   yogaNode?: never;

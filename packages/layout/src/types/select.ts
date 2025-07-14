@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, FormCommonProps, Origin } from './base';
@@ -15,7 +15,7 @@ interface SelectAndListProps extends FormCommonProps {
 export type SelectNode = {
   type: typeof P.Select;
   props: SelectAndListProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: Box;
   origin?: Origin;
   yogaNode?: never;
@@ -29,7 +29,7 @@ export type SafeSelectNode = Omit<SelectNode, 'style'> & {
 export type ListNode = {
   type: typeof P.List;
   props: SelectAndListProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

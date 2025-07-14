@@ -1,4 +1,4 @@
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
@@ -22,7 +22,7 @@ interface LinkProps extends NodeProps {
 export type LinkNode = {
   type: typeof P.Link;
   props: LinkProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

@@ -6,6 +6,7 @@ import layoutEngine, {
   justification,
   textDecoration,
   fontSubstitution,
+  wordHyphenation,
 } from '../../src';
 import FontStore from '@react-pdf/font';
 
@@ -54,5 +55,64 @@ describe('layoutEngine', () => {
 
     const output = layoutEngineInstance(attributedString, container, options);
     expect(output).toMatchFileSnapshot('layoutEngineOutput.json');
+  });
+
+  test('should layout text with custom word wrapping function', () => {
+    const originalHyphenationCallback = wordHyphenation();
+    const wordHyphenationFactory = () => {
+      return (word: string): string[] => {
+        return originalHyphenationCallback(word).reduce(
+          (acc, w) => acc.concat(w.split(/(?<=[-])/)),
+          [],
+        );
+      };
+    };
+
+    const layoutEngineInstance = layoutEngine({
+      scriptItemizer,
+      bidi,
+      linebreaker,
+      justification,
+      textDecoration,
+      fontSubstitution,
+      wordHyphenation: wordHyphenationFactory,
+    });
+
+    const fontStore = new FontStore();
+    const font = [
+      fontStore.getFont({
+        fontFamily: 'Helvetica',
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+      })?.data,
+    ];
+
+    const attributedString = {
+      string: '0.00000001-0.1234',
+      runs: [
+        {
+          start: 0,
+          end: 17,
+          attributes: { font },
+        },
+      ],
+    };
+    const container = {
+      x: 0,
+      y: 0,
+      width: 98,
+      height: 200,
+    };
+    const options = {
+      shrinkWhitespaceFactor: {
+        before: -0.5,
+        after: -0.5,
+      },
+    };
+
+    const output = layoutEngineInstance(attributedString, container, options);
+    expect(output).toMatchFileSnapshot(
+      'layoutEngineOutputCustomWordWrapping.json',
+    );
   });
 });

@@ -52,10 +52,15 @@ export const fetchEmojis = (string: string, source?: EmojiSource) => {
       emojis[emoji] = { loading: true };
 
       promises.push(
-        resolveImage({ uri: emojiUrl }).then((image) => {
-          emojis[emoji].loading = false;
-          emojis[emoji].data = image.data;
-        }),
+        resolveImage({ uri: emojiUrl })
+          .then((image) => {
+            emojis[emoji].loading = false;
+            emojis[emoji].data = image.data;
+          })
+          .catch(e) => {
+            console.warn(e, 'Failed to load emoji image');
+            emojis[emoji].loading = false;
+          }),
       );
     }
   });

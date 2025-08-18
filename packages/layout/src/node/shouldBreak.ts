@@ -1,5 +1,6 @@
 import { SafeNode } from '../types';
 import getWrap from './getWrap';
+import isFixed from './isFixed';
 
 const getBreak = (node: SafeNode) =>
   'break' in node.props ? node.props.break : false;
@@ -31,6 +32,7 @@ const shouldBreak = (
   child: SafeNode,
   futureElements: SafeNode[],
   height: number,
+  previousElements: SafeNode[],
 ) => {
   if ('fixed' in child.props) return false;
 
@@ -42,7 +44,8 @@ const shouldBreak = (
 
   // If the child is already at the top of the page, breaking won't improve its presence
   // (as long as react-pdf does not support breaking into differently sized containers)
-  const breakingImprovesPresence = child.box.top > child.box.marginTop;
+  const breakingImprovesPresence =
+    previousElements.filter((node: SafeNode) => !isFixed(node)).length > 0;
 
   return (
     getBreak(child) ||

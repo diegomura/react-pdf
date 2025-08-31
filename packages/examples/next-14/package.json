@@ -11,7 +11,7 @@
     "@react-pdf/renderer": "^4.3.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.21"
+    "next": "14.2.32"
   },
   "devDependencies": {
     "postcss": "^8",

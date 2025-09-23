@@ -1,4 +1,4 @@
-import emojiRegex from 'emoji-regex';
+import emojiRegex from 'emoji-regex-xs';
 import resolveImage from '@react-pdf/image';
 import { Fragment } from '@react-pdf/textkit';
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import emojiRegex from 'emoji-regex-xs';
 import resolveImage from '@react-pdf/image';
 import { Fragment } from '@react-pdf/textkit';
@@ -57,7 +59,7 @@ export const fetchEmojis = (string: string, source?: EmojiSource) => {
             emojis[emoji].loading = false;
             emojis[emoji].data = image.data;
           })
-          .catch(e) => {
+          .catch((e) => {
             console.warn(e, 'Failed to load emoji image');
             emojis[emoji].loading = false;
           }),

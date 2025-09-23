@@ -2,14 +2,17 @@ import { forwardRef, useEffect } from 'react';
 
 import usePDF from './usePDF';
 
-const PDFDownloadLinkBase = ({
-  fileName = 'document.pdf',
-  document: doc,
-  children,
-  onClick,
-  href,
-  ...rest
-}, ref) => {
+const PDFDownloadLinkBase = (
+  {
+    fileName = 'document.pdf',
+    document: doc,
+    children,
+    onClick,
+    href,
+    ...rest
+  },
+  ref,
+) => {
   const [instance, updateInstance] = usePDF();
 
   useEffect(() => updateInstance(doc), [doc]);
@@ -32,12 +35,18 @@ const PDFDownloadLinkBase = ({
   };
 
   return (
-    <a href={instance.url} download={fileName} onClick={handleClick} ref={ref} {...rest}>
+    <a
+      href={instance.url}
+      download={fileName}
+      onClick={handleClick}
+      ref={ref}
+      {...rest}
+    >
       {typeof children === 'function' ? children(instance) : children}
     </a>
   );
 };
 
-export const PDFDownloadLink = forwardRef(PDFDownloadLinkBase)
+export const PDFDownloadLink = forwardRef(PDFDownloadLinkBase);
 
 export default PDFDownloadLink;

@@ -18,7 +18,72 @@ describe('layout resolveBookmarks', () => {
 
     const result = resolveBookmarks(root);
 
-    expect(result).toEqual(root);
+    expect(result).toEqual({
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          children: [{ type: 'VIEW', props: {} }],
+        },
+      ],
+    });
+  });
+
+  test('should keep nodes the same if an undefined bookmark passed', () => {
+    const root = {
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: { bookmark: undefined },
+          children: [{ type: 'VIEW', props: {} }],
+        },
+      ],
+    } as DocumentNode;
+
+    const result = resolveBookmarks(root);
+
+    expect(result).toEqual({
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: { bookmark: undefined },
+          children: [{ type: 'VIEW', props: {} }],
+        },
+      ],
+    });
+  });
+
+  test('should keep nodes the same if a null bookmark passed', () => {
+    const root = {
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: { bookmark: null },
+          children: [{ type: 'VIEW', props: {} }],
+        },
+      ],
+    } as DocumentNode;
+
+    const result = resolveBookmarks(root);
+
+    expect(result).toEqual({
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: { bookmark: null },
+          children: [{ type: 'VIEW', props: {} }],
+        },
+      ],
+    });
   });
 
   test('should resolve bookmark in page node', () => {

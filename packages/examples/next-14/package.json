@@ -1,6 +1,6 @@
 {
   "name": "next-14",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^4.3.0",
+    "@react-pdf/renderer": "^4.3.1",
     "react": "^18",
     "react-dom": "^18",
     "next": "14.2.32"

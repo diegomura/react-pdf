@@ -1,5 +1,20 @@
 # @react-pdf/layout
 
+## 4.4.1
+
+### Patch Changes
+
+- [#3152](https://github.com/diegomura/react-pdf/pull/3152) [`beaffd3d`](https://github.com/diegomura/react-pdf/commit/beaffd3d2bb5ac81033ef53421413662d6d71158) Thanks [@Namchee](https://github.com/Namchee)! - chore: replace emoji-regex with emoji-regex-xs
+
+- [#3190](https://github.com/diegomura/react-pdf/pull/3190) [`a99d10fb`](https://github.com/diegomura/react-pdf/commit/a99d10fb2fbb6bfeb233ccb9bf0b703ed092e8d5) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Fix yoga error Invalid array length at Array.push(<anonymous>)
+  Fix infinite loop while wrapping pages
+
+- [#3203](https://github.com/diegomura/react-pdf/pull/3203) [`ec063bec`](https://github.com/diegomura/react-pdf/commit/ec063bec8d6a56df42849a8e66521fad7719dc29) Thanks [@100Gyeon](https://github.com/100Gyeon)! - fix: prevent unhandled promise rejections when loading emoji images
+
+- Updated dependencies []:
+  - @react-pdf/types@2.9.1
+  - @react-pdf/stylesheet@6.1.1
+
 ## 4.4.0
 
 ### Minor Changes

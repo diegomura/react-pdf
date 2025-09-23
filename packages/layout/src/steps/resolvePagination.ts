@@ -67,7 +67,12 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
-    const shouldBreak = shouldNodeBreak(child, futureNodes, height);
+    const shouldBreak = shouldNodeBreak(
+      child,
+      futureNodes,
+      height,
+      currentChildren,
+    );
     const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
     const fitsInsidePage = nodeHeight <= contentArea;

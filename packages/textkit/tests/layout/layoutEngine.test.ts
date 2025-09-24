@@ -58,16 +58,6 @@ describe('layoutEngine', () => {
   });
 
   test('should layout text with custom word wrapping function', () => {
-    const originalHyphenationCallback = wordHyphenation();
-    const wordHyphenationFactory = () => {
-      return (word: string): string[] => {
-        return originalHyphenationCallback(word).reduce(
-          (acc, w) => acc.concat(w.split(/(?<=[-])/)),
-          [],
-        );
-      };
-    };
-
     const layoutEngineInstance = layoutEngine({
       scriptItemizer,
       bidi,
@@ -75,7 +65,7 @@ describe('layoutEngine', () => {
       justification,
       textDecoration,
       fontSubstitution,
-      wordHyphenation: wordHyphenationFactory,
+      wordHyphenation,
     });
 
     const fontStore = new FontStore();
@@ -107,6 +97,15 @@ describe('layoutEngine', () => {
       shrinkWhitespaceFactor: {
         before: -0.5,
         after: -0.5,
+      },
+      hyphenationCallback: (
+        word: string | null,
+        originalHyphenationCallback: (word: string | null) => string[],
+      ): string[] => {
+        return originalHyphenationCallback(word).reduce(
+          (acc, w) => acc.concat(w.split(/(?<=-)/)),
+          [],
+        );
       },
     };
 

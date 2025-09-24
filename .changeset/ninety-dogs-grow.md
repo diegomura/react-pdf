@@ -9,12 +9,10 @@ Fix and rework the hyphenation algorithm, and allow custom word hyphenation algo
 
 This allows you to break correctly on normal hyphens or other special characters in your text. For example, to use the default english-language syllable breaking built into react-pdf, but also break after hyphens naturally occurring in your text (such as is often present in hyperlinks), you could use the following hyphenation callback:
 ```js
-import { wordHyphenation } from '@react-pdf/textkit';
 import { Font } from '@react-pdf/renderer';
 
-const originalHyphenationCallback = wordHyphenation()
-Font.registerHyphenationCallback((word) => {
-  return originalHyphenationCallback(word).flatMap(w => w.split(/(?<=[-])/))
+Font.registerHyphenationCallback((word, originalHyphenationCallback) => {
+  return originalHyphenationCallback(word).flatMap(w => w.split(/(?<=-)/))
 })
 ```
 (`flatMap` requires at least ES2019)

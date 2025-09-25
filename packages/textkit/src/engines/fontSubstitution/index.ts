@@ -1,4 +1,4 @@
-import { last } from '@react-pdf/fns';
+import { last, getUTF16Increment } from '@react-pdf/fns';
 import { AttributedString, Font, Run } from '../../types';
 
 const IGNORED_CODE_POINTS = [173];
@@ -49,9 +49,9 @@ const fontSubstitution =
 
       const chars = string.slice(run.start, run.end);
 
-      for (let j = 0; j < chars.length; j += 1) {
-        const char = chars[j];
-        const codePoint = char.codePointAt(0);
+      let j = 0;
+      while (j < chars.length) {
+        const codePoint = chars.codePointAt(j);
         // If the default font does not have a glyph and the fallback font does, we use it
         const font = pickFontFromFontStack(
           codePoint,
@@ -83,7 +83,9 @@ const fontSubstitution =
           lastIndex = index;
         }
 
-        index += char.length;
+        const charLength = getUTF16Increment(codePoint);
+        j += charLength;
+        index += charLength;
       }
     }
 

@@ -17,3 +17,4 @@ export { default as reverse } from './reverse.js';
 export { default as upperFirst } from './upperFirst.js';
 export { default as without } from './without.js';
 export { default as parseFloat } from './parseFloat.js';
+export { default as getUTF16Increment } from './getUTF16Increment.js';

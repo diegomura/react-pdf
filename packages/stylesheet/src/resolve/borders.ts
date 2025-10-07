@@ -25,12 +25,15 @@ const resolveBorderShorthand = <K extends BorderKey>(
 
   if (match) {
     const widthMatch = match[1] || value;
-    const styleMatch = match[4] || value;
+    const styleMatch = match[4] || value || 'solid';
     const colorMatch = match[5] || value;
 
     const style = styleMatch as BorderStyleValue;
     const color = colorMatch ? transformColor(colorMatch as string) : undefined;
-    const width = widthMatch ? transformUnit(container, widthMatch) : undefined;
+    const width =
+      typeof widthMatch !== 'undefined'
+        ? transformUnit(container, widthMatch)
+        : undefined;
 
     if (key.match(/(Top|Right|Bottom|Left)$/)) {
       return {

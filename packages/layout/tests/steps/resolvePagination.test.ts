@@ -276,4 +276,67 @@ describe('pagination step', () => {
     // If calcLayout returns then we did not hit an infinite loop
     expect(true).toBe(true);
   });
+
+  test('should take padding into account when splitting pages', async () => {
+    const yoga = await loadYoga();
+
+    const root = {
+      type: 'DOCUMENT' as const,
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE' as const,
+          box: {
+            width: 612,
+            height: 792,
+            top: 0,
+            left: 0,
+            right: 612,
+            bottom: 792,
+          },
+          style: {
+            paddingTop: 30,
+            width: 612,
+            height: 792,
+          },
+          props: { wrap: true },
+          children: [
+            {
+              type: 'VIEW' as const,
+              box: {
+                width: 612,
+                height: 761,
+                top: 0,
+                left: 0,
+                right: 612,
+                bottom: 761,
+              },
+              style: { height: 761, marginBottom: 24 },
+              props: { wrap: true, break: false },
+            },
+            {
+              type: 'VIEW' as const,
+              box: {
+                width: 612,
+                height: 80,
+                top: 761,
+                left: 0,
+                right: 612,
+                bottom: 841,
+              },
+              style: { height: 80 },
+              props: { wrap: true, break: false },
+            },
+          ],
+        },
+      ],
+    };
+
+    calcLayout(root);
+
+    // If calcLayout returns then we did not hit an infinite loop
+    expect(true).toBe(true);
+  });
 });

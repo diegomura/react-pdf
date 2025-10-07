@@ -1,5 +1,12 @@
 # @react-pdf/e2e-node-cjs
 
+## 2.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`dcc7b403`](https://github.com/diegomura/react-pdf/commit/dcc7b40313b5662b9bd16678fbc0b62eeaf65d71)]:
+  - @react-pdf/renderer@4.3.1
+
 ## 2.0.22
 
 ### Patch Changes

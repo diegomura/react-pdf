@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 4.0.4
+
+### Patch Changes
+
+- [#2715](https://github.com/diegomura/react-pdf/pull/2715) [`5cbe2fb0`](https://github.com/diegomura/react-pdf/commit/5cbe2fb0bde45c44eb68dde01f20feea245908c6) Thanks [@mgmolisani](https://github.com/mgmolisani)! - Add back functionality for bookmark props
+
 ## 4.0.3
 
 ### Patch Changes

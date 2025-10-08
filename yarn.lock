@@ -8959,6 +8959,11 @@ randombytes@^2.1.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
+"react-19-2@npm:react@^19.2.0":
+  version "19.2.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.2.0.tgz#d33dd1721698f4376ae57a54098cb47fc75d93a5"
+  integrity sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==
+
 "react-19@npm:react@19.0.0-rc-66855b96-20241106", react@19.0.0-rc-66855b96-20241106:
   name react-19
   version "19.0.0-rc-66855b96-20241106"
@@ -8983,6 +8988,13 @@ randombytes@^2.1.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+"react-dom-19-2@npm:react-dom@^19.2.0":
+  version "19.2.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.2.0.tgz#00ed1e959c365e9a9d48f8918377465466ec3af8"
+  integrity sha512-UlbRu4cAiGaIewkPyiRGJk0imDN2T3JjieT6spoL2UeSf5od4n5LB/mQ4ejmxhCFT1tYe8IvaFulzynWovsEFQ==
+  dependencies:
+    scheduler "^0.27.0"
 
 "react-dom-19@npm:react-dom@19.0.0-rc-66855b96-20241106", react-dom@19.0.0-rc-66855b96-20241106:
   name react-dom-19
@@ -9031,6 +9043,13 @@ react-is@^18.0.0:
   integrity sha512-zCAmctVyk2efv9DR0GnpHNbd/mVxeWuOGrWeXwx1QXqSGTBWUqzoPEd4jv88e+3U53upXZqb86AMhKf0c9vkLw==
   dependencies:
     scheduler "0.25.0-rc-603e6108-20241029"
+
+"react-reconciler-33@npm:react-reconciler@0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.33.0.tgz#9dd20208d45baa5b0b4701781f858236657f15e1"
+  integrity sha512-KetWRytFv1epdpJc3J4G75I4WrplZE5jOL7Yq0p34+OVOKF4Se7WrdIdVC45XsSSmUTlht2FM/fM1FZb1mfQeA==
+  dependencies:
+    scheduler "^0.27.0"
 
 react-refresh@^0.14.0:
   version "0.14.0"
@@ -9581,6 +9600,11 @@ scheduler@^0.23.2:
   integrity sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==
   dependencies:
     loose-envify "^1.1.0"
+
+scheduler@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.27.0.tgz#0c4ef82d67d1e5c1e359e8fc76d3a87f045fe5bd"
+  integrity sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==
 
 schema-utils@^3.1.1, schema-utils@^3.2.0:
   version "3.3.0"

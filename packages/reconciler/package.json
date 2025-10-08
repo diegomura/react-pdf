@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/reconciler",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "license": "MIT",
   "description": "Define uninitialized elements",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -34,6 +34,7 @@
     "ast-types": "^0.14.2",
     "react-reconciler-23": "npm:react-reconciler@0.23.0",
     "react-reconciler-31": "npm:react-reconciler@0.31.0-rc-603e6108-20241029",
+    "react-reconciler-33": "npm:react-reconciler@0.33.0",
     "recast": "^0.23.9"
   }
 }

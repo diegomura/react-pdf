@@ -33,6 +33,11 @@ interface ViewProps extends BaseProps {
 
 interface PageProps extends BaseProps {
   wrap?: boolean;
+  /**
+   * Styles to apply to each page when wrapping occurs.
+   * Function receives page index (0-based) and total pages count.
+   */
+  wrapStyles?: (pageIndex: number, totalPages: number) => Style | Style[];
   size?: PageSize;
   orientation?: Orientation;
   dpi?: number;

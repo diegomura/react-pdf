@@ -86,9 +86,13 @@ interface PageProps extends NodeProps {
   wrap?: boolean;
   /**
    * Styles to apply to each page when wrapping occurs.
-   * Function receives page index (0-based) and total pages count.
+   * Function receives page index (0-based), total pages count, and absolute page number.
    */
-  wrapStyles?: (pageIndex: number, totalPages: number) => Style | Style[];
+  wrapStyles?: (
+    pageIndex: number,
+    totalPages: number,
+    absolutePageNumber: number,
+  ) => Style | Style[];
   size?: PageSize;
   orientation?: Orientation;
   dpi?: number;

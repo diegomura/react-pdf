@@ -88,6 +88,15 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/advanced#debugging
      */
     debug?: boolean;
+    /**
+     * Styles to apply to each page when wrapping occurs.
+     * Function receives page index (0-based), total pages count, and absolute page number.
+     */
+    wrapStyles?: (
+      pageIndex: number,
+      totalPages: number,
+      absolutePageNumber: number,
+    ) => Style | Style[];
     size?: PageSize;
     orientation?: Orientation;
     dpi?: number;

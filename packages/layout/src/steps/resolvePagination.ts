@@ -271,12 +271,40 @@ const resolvePageIndices = (fontStore, yoga, page, pageNumber, pages) => {
   return resolveDynamicPage(props, page, fontStore, yoga);
 };
 
-const assocSubPageData = (subpages) => {
-  return subpages.map((page, i) => ({
-    ...page,
-    subPageNumber: i,
-    subPageTotalPages: subpages.length,
-  }));
+const assocSubPageData = (
+  subpages: SafePageNode[],
+  originalPage?: SafePageNode,
+  startPageNumber?: number,
+) => {
+  return subpages.map((page, i) => {
+    const basePage = {
+      ...page,
+      subPageNumber: i,
+      subPageTotalPages: subpages.length,
+    };
+
+    // Apply wrapStyles if provided
+    // Always apply wrapStyles (even for single pages) to ensure correct styling
+    // based on absolute page number in the document
+    if (originalPage?.props?.wrapStyles) {
+      // Calculate absolute page number for this subpage
+      const absolutePageNumber =
+        startPageNumber !== undefined ? startPageNumber + i : i + 1;
+      const wrapStyles = originalPage.props.wrapStyles(
+        i,
+        subpages.length,
+        absolutePageNumber,
+      );
+      if (wrapStyles) {
+        // Merge wrapStyles with existing style
+        basePage.style = Array.isArray(basePage.style)
+          ? ([...basePage.style, wrapStyles] as any)
+          : ([basePage.style || {}, wrapStyles] as any);
+      }
+    }
+
+    return basePage;
+  });
 };
 
 const dissocSubPageData = (page) => {
@@ -332,7 +360,7 @@ const resolvePagination = (
     const page = root.children[i];
     let subpages = paginate(page, pageNumber, fontStore, root.yoga);
 
-    subpages = assocSubPageData(subpages);
+    subpages = assocSubPageData(subpages, page, pageNumber);
     pageNumber += subpages.length;
     pages = pages.concat(subpages);
   }

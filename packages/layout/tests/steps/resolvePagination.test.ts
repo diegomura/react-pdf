@@ -339,4 +339,138 @@ describe('pagination step', () => {
     // If calcLayout returns then we did not hit an infinite loop
     expect(true).toBe(true);
   });
+
+  test('should apply wrapStyles to each wrapped page', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          style: {
+            width: 5,
+            height: 60,
+          },
+          props: {
+            wrap: true,
+            wrapStyles: (pageIndex: number) => ({
+              backgroundColor: pageIndex === 0 ? 'red' : 'blue',
+              padding: pageIndex * 10,
+            }),
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 130 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children.length).toBe(3);
+
+    // First page should have red background and no padding
+    const page1 = layout.children[0];
+    expect(page1.style).toEqual([
+      { width: 5, height: 60 },
+      { backgroundColor: 'red', padding: 0 },
+    ]);
+
+    // Second page should have blue background and padding of 10
+    const page2 = layout.children[1];
+    expect(page2.style).toEqual([
+      { width: 5, height: 60 },
+      { backgroundColor: 'blue', padding: 10 },
+    ]);
+
+    // Third page should have blue background and padding of 20
+    const page3 = layout.children[2];
+    expect(page3.style).toEqual([
+      { width: 5, height: 60 },
+      { backgroundColor: 'blue', padding: 20 },
+    ]);
+  });
+
+  test('should not apply wrapStyles when wrap is false', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          style: {
+            width: 5,
+            height: 60,
+          },
+          props: {
+            wrap: false,
+            wrapStyles: () => ({
+              backgroundColor: 'red',
+            }),
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 130 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children.length).toBe(1);
+    const page = layout.children[0];
+    expect(page.style).toEqual({ width: 5, height: 60 });
+  });
+
+  test('should not apply wrapStyles when only one page is generated', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          style: {
+            width: 5,
+            height: 60,
+          },
+          props: {
+            wrap: true,
+            wrapStyles: () => ({
+              backgroundColor: 'red',
+            }),
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 30 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children.length).toBe(1);
+    const page = layout.children[0];
+    expect(page.style).toEqual({ width: 5, height: 60 });
+  });
 });

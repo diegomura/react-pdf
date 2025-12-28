@@ -34,6 +34,9 @@ const KEEP_OPTIONS = {
   requestPostPaintCallback: true,
   maySuspendCommit: true,
   detachDeletedInstance: true,
+  resolveEventTimeStamp: true,
+  resolveEventType: true,
+  trackSchedulerEvent: true,
 };
 
 const STATIC_OPTIONS = {

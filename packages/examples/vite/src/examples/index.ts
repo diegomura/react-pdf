@@ -2,7 +2,9 @@ import duplicatedImages from './duplicated-images';
 import ellipsis from './ellipsis';
 import emoji from './emoji';
 import fontFamilyFallback from './font-family-fallback';
+import fontFeatureSettings from './font-feature-settings';
 import fontWeight from './font-weight';
+import forms from './forms';
 import fractals from './fractals';
 import goTo from './go-to';
 import imageStressTest from './image-stress-test';
@@ -18,7 +20,6 @@ import resume from './resume';
 import svg from './svg';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
-import forms from './forms';
 
 const EXAMPLES = [
   duplicatedImages,
@@ -26,6 +27,7 @@ const EXAMPLES = [
   emoji,
   fontFamilyFallback,
   fontWeight,
+  fontFeatureSettings,
   fractals,
   goTo,
   JpgOrientation,

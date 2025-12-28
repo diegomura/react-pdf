@@ -1,5 +1,6 @@
-import type { Glyph as FontkitGlyph } from 'fontkit';
 import type { Font } from '@react-pdf/font';
+import type { FontFeatureSettings } from '@react-pdf/stylesheet';
+import type { Glyph as FontkitGlyph } from 'fontkit';
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -50,7 +51,7 @@ export type Attributes = {
   bullet?: unknown;
   characterSpacing?: number;
   color?: string;
-  direction?: 'rtl' | 'ltr';
+  direction?: FontFeatureSettings;
   features?: unknown[];
   fill?: boolean;
   font?: Font[];

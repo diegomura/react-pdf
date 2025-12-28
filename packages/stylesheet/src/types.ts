@@ -321,12 +321,44 @@ export type TextTransform =
 
 export type VerticalAlign = 'sub' | 'super';
 
+export type FontFeatureSetting =
+  | 'liga'
+  | 'dlig'
+  | 'onum'
+  | 'lnum'
+  | 'tnum'
+  | 'zero'
+  | 'frac'
+  | 'sups'
+  | 'subs'
+  | 'smcp'
+  | 'c2sc'
+  | 'case'
+  | 'hlig'
+  | 'calt'
+  | 'swsh'
+  | 'hist'
+  | 'ss**'
+  | 'kern'
+  | 'locl'
+  | 'rlig'
+  | 'medi'
+  | 'init'
+  | 'isol'
+  | 'fina'
+  | 'mark'
+  | 'mkmk';
+export type FontFeatureSettings =
+  | FontFeatureSetting[]
+  | Record<FontFeatureSetting, number>;
+
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
   fontSize?: number | string;
   fontFamily?: string | string[];
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
+  fontFeatureSettings?: FontFeatureSettings;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   maxLines?: number;

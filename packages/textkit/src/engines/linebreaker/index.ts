@@ -5,8 +5,10 @@ import insertGlyph from '../../attributedString/insertGlyph';
 import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
+import generateGlyphs from '../../layout/generateGlyphs';
 
-const HYPHEN = 0x002d;
+const SOFT_HYPHEN = '\u00AD';
+const HYPHEN_CODE_POINT = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
 
@@ -45,7 +47,10 @@ const breakLines = (
       end = prevNode.end;
 
       line = slice(start, end, attributedString);
-      line = insertGlyph(line.string.length, HYPHEN, line);
+      if (node.width > 0) {
+        // A non-zero-width penalty indicates an additional hyphen should be inserted
+        line = insertGlyph(line.string.length, HYPHEN_CODE_POINT, line);
+      }
     } else {
       end = node.end;
       line = slice(start, end, attributedString);
@@ -53,13 +58,36 @@ const breakLines = (
 
     start = end;
 
-    return [...acc, line];
+    return [...acc, removeSoftHyphens(line)];
   }, []);
 
-  // Last line
-  lines.push(slice(start, attributedString.string.length, attributedString));
+  const lastLine = slice(
+    start,
+    attributedString.string.length,
+    attributedString,
+  );
+  lines.push(removeSoftHyphens(lastLine));
 
   return lines;
+};
+
+/**
+ * Remove all soft hyphen characters from the line.
+ * Soft hyphens are not relevant anymore after line breaking, and will only
+ * disrupt the rendering later down the line if left in the text.
+ *
+ * @param line
+ */
+const removeSoftHyphens = (line: AttributedString): AttributedString => {
+  const modifiedLine = {
+    ...line,
+    string: line.string.split(SOFT_HYPHEN).join(''),
+  };
+
+  return {
+    ...modifiedLine,
+    ...generateGlyphs()(modifiedLine),
+  };
 };
 
 /**
@@ -78,6 +106,7 @@ const getNodes = (
   let start = 0;
 
   const hyphenWidth = 5;
+  const softHyphen = '\u00ad';
 
   const { syllables } = attributedString;
 
@@ -107,7 +136,8 @@ const getNodes = (
 
       if (syllables[index + 1] && hyphenated) {
         // Add penalty node. Penalty nodes are used to represent hyphenation points.
-        acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
+        const penaltyWidth = s.endsWith(softHyphen) ? hyphenWidth : 0;
+        acc.push(knuthPlass.penalty(penaltyWidth, hyphenPenalty, 1));
       }
     }
 

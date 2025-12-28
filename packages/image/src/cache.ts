@@ -1,21 +1,23 @@
 const createCache = <T>({ limit = 100 } = {}) => {
-  let cache: Record<string, T> = {};
-  let keys: string[] = [];
+  let cache = new Map<string, T>();
 
   return {
-    get: (key: string | null): T | null => (key ? cache[key] : null),
+    get: (key: string | null): T | undefined | null =>
+      key ? cache.get(key) ?? undefined : null,
     set: (key: string, value: T) => {
-      keys.push(key);
-      if (keys.length > limit) {
-        delete cache[keys.shift()!];
+      cache.delete(key);
+
+      if (cache.size >= limit) {
+        const firstKey = cache.keys().next().value as string;
+        cache.delete(firstKey);
       }
-      cache[key] = value;
+
+      cache.set(key, value);
     },
     reset: () => {
-      cache = {};
-      keys = [];
+      cache = new Map();
     },
-    length: () => keys.length,
+    length: () => cache.size,
   };
 };
 

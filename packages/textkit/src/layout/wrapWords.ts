@@ -29,10 +29,9 @@ const wrapWords = (
     const syllables = [];
     const fragments = [];
 
-    const hyphenateWord =
-      options.hyphenationCallback ||
-      engines.wordHyphenation?.() ||
-      defaultHyphenationEngine;
+    const builtinHyphenateWord =
+      engines.wordHyphenation?.() || defaultHyphenationEngine;
+    const hyphenateWord = options.hyphenationCallback || builtinHyphenateWord;
 
     for (let i = 0; i < attributedString.runs.length; i += 1) {
       let string = '';
@@ -44,7 +43,7 @@ const wrapWords = (
 
       for (let j = 0; j < words.length; j += 1) {
         const word = words[j];
-        const parts = hyphenateWord(word);
+        const parts = hyphenateWord(word, builtinHyphenateWord);
 
         syllables.push(...parts);
         string += parts.join('');

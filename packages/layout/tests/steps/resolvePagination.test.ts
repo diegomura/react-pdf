@@ -339,4 +339,124 @@ describe('pagination step', () => {
     // If calcLayout returns then we did not hit an infinite loop
     expect(true).toBe(true);
   });
+
+  test('should not duplicate bookmarks', async () => {
+    const yoga = await loadYoga();
+
+    const bookmarkChapter1 = {
+      ref: 0,
+      title: 'chapter 1',
+      fit: false,
+      expanded: false,
+    };
+    const bookmarkChapter2 = {
+      ref: 1,
+      title: 'chapter 2',
+      fit: false,
+      expanded: false,
+    };
+    const bookmarkSubChapter1 = {
+      ref: 2,
+      parent: 1,
+      title: 'sub chapter 2',
+      fit: false,
+      expanded: false,
+    };
+    const bookmarkSubChapter2 = {
+      ref: 3,
+      parent: 1,
+      title: 'sub chapter 2',
+      fit: false,
+      expanded: false,
+    };
+    const bookmarkSubChapter3 = {
+      ref: 4,
+      parent: 1,
+      title: 'sub chapter 2',
+      fit: false,
+      expanded: false,
+    };
+
+    const result = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 5, height: 60 },
+          children: [
+            {
+              type: 'VIEW',
+              props: { bookmark: bookmarkChapter1 },
+              style: {
+                height: 30,
+              },
+            },
+            {
+              type: 'VIEW',
+              props: { bookmark: bookmarkChapter2 },
+              style: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  props: {
+                    bookmark: bookmarkSubChapter1,
+                  },
+                  style: {
+                    height: 20,
+                  },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  props: {
+                    bookmark: bookmarkSubChapter2,
+                  },
+                  style: {
+                    height: 20,
+                  },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  props: {
+                    bookmark: bookmarkSubChapter3,
+                  },
+                  style: {
+                    height: 20,
+                  },
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = result.children[0];
+    const page2 = result.children[1];
+    const chapter1 = page1.children![0];
+    const chapter2page1 = page1.children![1];
+    const chapter2page2 = page2.children![0];
+    const subChapter1 = chapter2page1.children![0];
+    const subChapter2page1 = chapter2page1.children![1];
+    const subChapter2page2 = chapter2page2.children![0];
+    const subChapter3 = chapter2page2.children![1];
+
+    expect(chapter1.props.bookmark).toEqual(bookmarkChapter1);
+
+    expect(chapter2page1.props.bookmark).toEqual(bookmarkChapter2);
+    expect(chapter2page2.props.bookmark).toEqual(null);
+
+    expect(subChapter1.props!.bookmark).toEqual(bookmarkSubChapter1);
+
+    expect(subChapter2page1.props!.bookmark).toEqual(bookmarkSubChapter2);
+    expect(subChapter2page2.props!.bookmark).toEqual(null);
+
+    expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
+  });
 });

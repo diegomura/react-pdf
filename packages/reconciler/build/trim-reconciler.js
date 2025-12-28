@@ -33,6 +33,7 @@ const KEEP_OPTIONS = {
   shouldAttemptEagerTransition: true,
   requestPostPaintCallback: true,
   maySuspendCommit: true,
+  detachDeletedInstance: true
 };
 
 const STATIC_OPTIONS = {

@@ -31,7 +31,7 @@ const resolveBookmarks = (node: DocumentNode) => {
 
     let parent = element.parent;
 
-    if (child.props && 'bookmark' in child.props) {
+    if (child.props && 'bookmark' in child.props && child.props.bookmark) {
       const bookmark = getBookmarkValue(child.props.bookmark);
       const ref = refs++;
       const newHierarchy = { ref, parent: parent?.ref, ...bookmark };

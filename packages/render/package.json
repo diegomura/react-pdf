@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/render",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "license": "MIT",
   "description": "A render engine for Node and the browser",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -23,7 +23,7 @@
     "@react-pdf/fns": "3.1.2",
     "@react-pdf/primitives": "^4.1.1",
     "@react-pdf/textkit": "^6.0.0",
-    "@react-pdf/types": "^2.9.0",
+    "@react-pdf/types": "^2.9.1",
     "abs-svg-path": "^0.1.1",
     "color-string": "^1.9.1",
     "normalize-svg-path": "^1.1.0",
@@ -31,7 +31,7 @@
     "svg-arc-to-cubic-bezier": "^3.2.0"
   },
   "devDependencies": {
-    "@react-pdf/layout": "^4.4.0",
+    "@react-pdf/layout": "^4.4.1",
     "@types/abs-svg-path": "^0.1.3",
     "@types/color-string": "^1.5.5",
     "@types/pdfkit": "^0.13.9"

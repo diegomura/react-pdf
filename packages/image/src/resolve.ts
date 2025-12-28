@@ -45,7 +45,7 @@ const getAbsoluteLocalPath = (src: string) => {
     path: pathname,
   } = url.parse(src);
 
-  const absolutePath = pathname ? path.resolve(pathname) : undefined;
+  const absolutePath = pathname ? path.resolve(src) : undefined;
 
   if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
     return undefined;

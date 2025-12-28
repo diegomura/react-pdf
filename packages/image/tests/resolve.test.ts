@@ -92,9 +92,50 @@ describe('image resolveImage', () => {
     expect(image?.height).toBeGreaterThan(0);
   });
 
+  test('Should render a local image from absolute path', async () => {
+    const absolutePath = path.join(__dirname, './assets/test.jpg');
+    const image = await resolveImage({ uri: absolutePath });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+
+  test('Should render a local image from relative path', async () => {
+    const image = await resolveImage({
+      uri: 'packages/layout/tests/assets/test.jpg',
+    });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+
   test('Should render a local image from src object', async () => {
     const image = await resolveImage({
       uri: './packages/layout/tests/assets/test.jpg',
+    });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a local image with spaces in filename', async () => {
+    const image = await resolveImage({
+      uri: './packages/image/tests/assets/test with spaces.jpg',
+    });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a local image with special characters in filename', async () => {
+    const image = await resolveImage({
+      uri: './packages/image/tests/assets/special_ _%20_@&é"\'(§è!çà)-^$ù`,;:=?.+%£¨*<>.jpg',
     });
 
     expect(image?.data).toBeTruthy();

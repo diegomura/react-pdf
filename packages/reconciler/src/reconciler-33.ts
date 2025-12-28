@@ -1,8 +1,8 @@
-import Reconciler from 'react-reconciler-31';
+import Reconciler from 'react-reconciler-33';
 import {
   ConcurrentRoot,
   DefaultEventPriority,
-} from 'react-reconciler-31/constants';
+} from 'react-reconciler-33/constants';
 
 import propsEqual from './propsEqual';
 import { ReconcilerFactory } from './types';
@@ -55,21 +55,21 @@ const createRenderer: ReconcilerFactory = ({
     resolveUpdatePriority: () => DefaultEventPriority,
     setCurrentUpdatePriority: () => {},
     shouldAttemptEagerTransition: () => false,
-    detachDeletedInstance: () => {},
   });
 
   const createContainer = (container) => {
     return reconciler.createContainer(
-      container,
-      ConcurrentRoot, // tag
-      null, // hydration callbacks
-      false, // isStrictMode
-      null, // concurrentUpdatesByDefaultOverride
-      '', // identifierPrefix
-      logRecoverableError, // onUncaughtError
-      logRecoverableError, // onCaughtError
-      logRecoverableError, // onRecoverableError
-      null, // transitionCallbacks
+      container, // containerInfo: Container
+      ConcurrentRoot, // tag: RootTag
+      null, // hydration callbacks: null | SuspenseHydrationCallbacks
+      false, // isStrictMode: boolean
+      null, // concurrentUpdatesByDefaultOverride: null | boolean
+      '', // identifierPrefix: string
+      logRecoverableError, // onUncaughtError: (error: mixed, errorInfo: {+componentStack?: ?string}) => void
+      logRecoverableError, // onCaughtError: (error: mixed, errorInfo: { ... }) => void
+      logRecoverableError, // onRecoverableError: (error: mixed, errorInfo: {+componentStack?: ?string}) => void
+      () => {}, // NEW IN REACT 19.2.0: onDefaultTransitionIndicator: () => void | (() => void)
+      null, // transitionCallbacks: null | TransitionTracingCallbacks
     );
   };
 

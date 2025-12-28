@@ -55,6 +55,10 @@ const createRenderer: ReconcilerFactory = ({
     resolveUpdatePriority: () => DefaultEventPriority,
     setCurrentUpdatePriority: () => {},
     shouldAttemptEagerTransition: () => false,
+    detachDeletedInstance: () => {},
+    resolveEventTimeStamp: () => {},
+    resolveEventType: () => {},
+    trackSchedulerEvent: () => {},
   });
 
   const createContainer = (container) => {

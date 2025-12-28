@@ -46,6 +46,10 @@ const splitNode = (node: SafeNode, height: number) => {
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
     },
+    props: {
+      ...node.props,
+      bookmark: null,
+    },
   });
 
   if (nextHeight) {

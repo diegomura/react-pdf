@@ -101,7 +101,6 @@ describe('image resolveImage', () => {
     expect(image?.height).toBeGreaterThan(0);
   });
 
-
   test('Should render a local image from relative path', async () => {
     const image = await resolveImage({
       uri: 'packages/layout/tests/assets/test.jpg',
@@ -111,7 +110,6 @@ describe('image resolveImage', () => {
     expect(image?.width).toBeGreaterThan(0);
     expect(image?.height).toBeGreaterThan(0);
   });
-
 
   test('Should render a local image from src object', async () => {
     const image = await resolveImage({

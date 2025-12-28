@@ -58,14 +58,14 @@ const fetchLocalFile = (src: LocalImageSrc): Promise<Buffer> =>
   new Promise((resolve, reject) => {
     try {
       if (BROWSER) {
-        reject(new Error('Cannot fetch local file in this environemnt'));
+        reject(new Error('Cannot fetch local file in this environment'));
         return;
       }
 
       const absolutePath = getAbsoluteLocalPath(src.uri);
 
       if (!absolutePath) {
-        reject(new Error(`Cannot fetch non-local path: ${src}`));
+        reject(new Error(`Cannot fetch non-local path: ${src.uri}`));
         return;
       }
 
@@ -97,13 +97,13 @@ const isValidFormat = (format: string): format is ImageFormat => {
   return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
 };
 
-const guessFormat = (buffer: Buffer) => {
+const getImageFormat = (buffer: Buffer) => {
   let format;
 
   if (JPEG.isValid(buffer)) {
-    format = 'jpg';
+    format = 'jpg' as const;
   } else if (PNG.isValid(buffer)) {
-    format = 'png';
+    format = 'png' as const;
   }
 
   return format;
@@ -144,7 +144,7 @@ const resolveImageFromData = async (src: DataImageSrc) => {
 };
 
 const resolveBufferImage = async (buffer: Buffer) => {
-  const format = guessFormat(buffer);
+  const format = getImageFormat(buffer);
 
   if (format) {
     return getImage(buffer, format);
@@ -176,31 +176,6 @@ const resolveBlobImage = async (blob: Blob) => {
   return getImage(Buffer.from(buffer), format);
 };
 
-const getImageFormat = (body: Buffer) => {
-  const isPng =
-    body[0] === 137 &&
-    body[1] === 80 &&
-    body[2] === 78 &&
-    body[3] === 71 &&
-    body[4] === 13 &&
-    body[5] === 10 &&
-    body[6] === 26 &&
-    body[7] === 10;
-
-  const isJpg = body[0] === 255 && body[1] === 216 && body[2] === 255;
-
-  let extension = '';
-  if (isPng) {
-    extension = 'png';
-  } else if (isJpg) {
-    extension = 'jpg';
-  } else {
-    throw new Error('Not valid image extension');
-  }
-
-  return extension;
-};
-
 const resolveImageFromUrl = async (src: LocalImageSrc | RemoteImageSrc) => {
   const data =
     !BROWSER && getAbsoluteLocalPath(src.uri)
@@ -209,13 +184,17 @@ const resolveImageFromUrl = async (src: LocalImageSrc | RemoteImageSrc) => {
 
   const format = getImageFormat(data);
 
+  if (!format) {
+    throw new Error('Not valid image extension');
+  }
+
   return getImage(data, format);
 };
 
 const getCacheKey = (src: ImageSrc): string | null => {
   if (isBlob(src) || isBuffer(src)) return null;
 
-  if (isDataImageSrc(src)) return src.data.toString();
+  if (isDataImageSrc(src)) return src.data.toString('base64');
 
   return src.uri;
 };
@@ -237,10 +216,6 @@ const resolveImage = (src: ImageSrc, { cache = true } = {}) => {
     image = resolveImageFromData(src);
   } else {
     image = resolveImageFromUrl(src);
-  }
-
-  if (!image) {
-    throw new Error('Cannot resolve image');
   }
 
   if (cache && cacheKey) {

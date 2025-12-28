@@ -27,9 +27,8 @@ const isDataImageSrc = (src: ImageSrc): src is DataImageSrc => {
   return 'data' in src;
 };
 
-const isBase64Src = (imageSrc: ImageSrc): imageSrc is Base64ImageSrc =>
-  'uri' in imageSrc &&
-  /^data:image\/[a-zA-Z]*;base64,[^"]*/g.test(imageSrc.uri);
+const isDataUri = (imageSrc: ImageSrc): imageSrc is Base64ImageSrc =>
+  'uri' in imageSrc && imageSrc.uri.startsWith('data:');
 
 const getAbsoluteLocalPath = (src: string) => {
   if (BROWSER) {
@@ -194,7 +193,7 @@ const resolveImageFromUrl = async (src: LocalImageSrc | RemoteImageSrc) => {
 const getCacheKey = (src: ImageSrc): string | null => {
   if (isBlob(src) || isBuffer(src)) return null;
 
-  if (isDataImageSrc(src)) return src.data.toString('base64');
+  if (isDataImageSrc(src)) return src.data?.toString('base64') ?? null;
 
   return src.uri;
 };
@@ -210,7 +209,7 @@ const resolveImage = (src: ImageSrc, { cache = true } = {}) => {
     image = resolveBufferImage(src);
   } else if (cache && IMAGE_CACHE.get(cacheKey)) {
     return IMAGE_CACHE.get(cacheKey);
-  } else if (isBase64Src(src)) {
+  } else if (isDataUri(src)) {
     image = resolveBase64Image(src);
   } else if (isDataImageSrc(src)) {
     image = resolveImageFromData(src);

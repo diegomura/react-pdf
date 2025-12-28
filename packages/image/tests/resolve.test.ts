@@ -230,4 +230,81 @@ describe('image resolveImage', () => {
     expect(image?.width).toBeGreaterThan(0);
     expect(image?.height).toBeGreaterThan(0);
   });
+
+  test('Should throw error for unsupported base64 format', async () => {
+    await expect(
+      resolveImage({
+        uri: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
+      }),
+    ).rejects.toThrow('Base64 image invalid format: gif');
+  });
+
+  test('Should throw error for invalid base64 URI', async () => {
+    await expect(
+      resolveImage({ uri: 'data:image/pngbase64,invalid' } as any),
+    ).rejects.toThrow('Invalid base64 image');
+  });
+
+  test('Should throw error for invalid blob type', async () => {
+    const blob = new Blob([localJPGImage], { type: 'text/plain' });
+    await expect(resolveImage(blob)).rejects.toThrow(
+      'Invalid blob type: text/plain',
+    );
+  });
+
+  test('Should throw error for unsupported blob image type', async () => {
+    const blob = new Blob([localJPGImage], { type: 'image/gif' });
+    await expect(resolveImage(blob)).rejects.toThrow(
+      'Invalid blob type: image/gif',
+    );
+  });
+
+  test('Should throw error for invalid data source', async () => {
+    await expect(
+      resolveImage({ data: undefined as any, format: 'jpg' }),
+    ).rejects.toThrow('Invalid data given for local file');
+  });
+
+  test('Should throw error for non-existent local file', async () => {
+    await expect(
+      resolveImage({ uri: '/nonexistent/path/image.jpg' }),
+    ).rejects.toThrow();
+  });
+
+  test('Should return null for invalid buffer', async () => {
+    const invalidBuffer = Buffer.from('not an image');
+    const image = await resolveImage(invalidBuffer);
+    expect(image).toBeNull();
+  });
+
+  test('Should throw on network fetch failure', async () => {
+    fetchMock.once(() => {
+      throw new Error('Network error');
+    });
+
+    await expect(resolveImage({ uri: jpgImageUrl })).rejects.toThrow(
+      'Network error',
+    );
+  });
+
+  test('Should throw for unsupported remote image format', async () => {
+    // GIF89a magic bytes - neither JPEG nor PNG
+    const gifBuffer = Buffer.from([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]);
+    fetchMock.once(gifBuffer);
+
+    await expect(
+      resolveImage({ uri: 'https://example.com/image.gif' }),
+    ).rejects.toThrow('Not valid image extension');
+  });
+
+  test('Should cache DataImageSrc images using base64 key', async () => {
+    const image1 = await resolveImage({ data: localJPGImage, format: 'jpg' });
+    const image2 = await resolveImage({ data: localJPGImage, format: 'jpg' });
+
+    expect(image1).toBe(image2);
+  });
+
+  test('Should return null when getting cache with null key', () => {
+    expect(IMAGE_CACHE.get(null)).toBeNull();
+  });
 });

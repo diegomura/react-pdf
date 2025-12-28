@@ -127,7 +127,10 @@ export type Fragment = {
 export type Paragraph = AttributedString[];
 
 export type LayoutOptions = {
-  hyphenationCallback?: (word: string) => string[];
+  hyphenationCallback?: (
+    word: string | null,
+    originalHyphenationCallback: (word: string | null) => string[],
+  ) => string[];
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;

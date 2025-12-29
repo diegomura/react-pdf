@@ -41,8 +41,6 @@ const wrapWords = (
     const syllables = [];
     const fragments = [];
 
-    console.log('>>>> attributedString', attributedString);
-
     const builtinHyphenate = engines.wordHyphenation?.() || defaultHyphenate;
 
     const hyphenate = options.hyphenationCallback || builtinHyphenate;

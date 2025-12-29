@@ -19,6 +19,7 @@ import svg from './svg';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
 import forms from './forms';
+import softHyphens from './soft-hyphens';
 
 const EXAMPLES = [
   duplicatedImages,
@@ -42,6 +43,7 @@ const EXAMPLES = [
   transformOrigin,
   imageStressTest,
   forms,
+  softHyphens,
 ];
 
 export default EXAMPLES;

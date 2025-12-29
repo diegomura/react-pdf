@@ -129,7 +129,7 @@ export type Paragraph = AttributedString[];
 export type LayoutOptions = {
   hyphenationCallback?: (
     word: string | null,
-    originalHyphenationCallback: (word: string | null) => string[],
+    fallback: (word: string | null) => string[],
   ) => string[];
   tolerance?: number;
   hyphenationPenalty?: number;

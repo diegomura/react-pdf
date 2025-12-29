@@ -96,7 +96,7 @@ describe('text layoutText', () => {
     const lines = layoutText(node, 50, 100, fontStore);
 
     expect(lines[0].string).toEqual('really-');
-    expect(lines[1].string).toEqual('long');
+    expect(lines[1].string).toEqual('long-');
     expect(lines[2].string).toEqual('text');
     expect(hyphenationCallback).toHaveBeenCalledWith(
       'reallylongtext',

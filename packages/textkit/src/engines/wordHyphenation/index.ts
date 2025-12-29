@@ -10,7 +10,7 @@ const hyphenator = hyphen(pattern);
  * @returns Word parts
  */
 const splitHyphen = (word: string) => {
-  return word.split(new RegExp(`(?<=${SOFT_HYPHEN})`));
+  return word.split(SOFT_HYPHEN);
 };
 
 const cache: Record<string, string[]> = {};

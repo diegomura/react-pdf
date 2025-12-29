@@ -1,5 +1,13 @@
 # @react-pdf/image
 
+## 3.0.4
+
+### Patch Changes
+
+- [#3183](https://github.com/diegomura/react-pdf/pull/3183) [`a5979c15`](https://github.com/diegomura/react-pdf/commit/a5979c1568761107076172e4c1843e66f62a08ab) Thanks [@thgh](https://github.com/thgh)! - Fix resolving images with special characters like space in filename
+
+- [#3264](https://github.com/diegomura/react-pdf/pull/3264) [`04922fea`](https://github.com/diegomura/react-pdf/commit/04922fea2e60930ac550ec31beaeb7f20551cf63) Thanks [@diegomura](https://github.com/diegomura)! - feat(image): various improvements
+
 ## 3.0.3
 
 ### Patch Changes

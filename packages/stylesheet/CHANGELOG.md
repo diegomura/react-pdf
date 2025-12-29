@@ -1,5 +1,12 @@
 # @react-pdf/stylesheet
 
+## 6.1.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.9.2
+
 ## 6.1.1
 
 ### Patch Changes

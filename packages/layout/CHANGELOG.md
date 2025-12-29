@@ -1,5 +1,17 @@
 # @react-pdf/layout
 
+## 4.4.2
+
+### Patch Changes
+
+- [#3254](https://github.com/diegomura/react-pdf/pull/3254) [`cc1aff24`](https://github.com/diegomura/react-pdf/commit/cc1aff2454263f64d1f79c9df051d21d74f8d7cf) Thanks [@rafw87](https://github.com/rafw87)! - fix duplicated bookmarks when View is spanning multiple pages
+
+- Updated dependencies [[`a5979c15`](https://github.com/diegomura/react-pdf/commit/a5979c1568761107076172e4c1843e66f62a08ab), [`f034491b`](https://github.com/diegomura/react-pdf/commit/f034491b1f77ce6f18a5db88e70b10b9c502ca35), [`04922fea`](https://github.com/diegomura/react-pdf/commit/04922fea2e60930ac550ec31beaeb7f20551cf63)]:
+  - @react-pdf/image@3.0.4
+  - @react-pdf/textkit@6.1.0
+  - @react-pdf/types@2.9.2
+  - @react-pdf/stylesheet@6.1.2
+
 ## 4.4.1
 
 ### Patch Changes

@@ -36,7 +36,7 @@ describe('wordHyphenation', () => {
     const parts = instance(word);
 
     expect(parts).toHaveLength(2);
-    expect(parts[0]).toEqual('some\u00ad');
+    expect(parts[0]).toEqual('some');
     expect(parts[1]).toEqual('thing');
     expect(hyphenator.mock.calls).toHaveLength(1);
   });
@@ -46,8 +46,8 @@ describe('wordHyphenation', () => {
     const parts = instance(word);
 
     expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('neu\u00ad');
-    expect(parts[1]).toEqual('mo\u00ad');
+    expect(parts[0]).toEqual('neu');
+    expect(parts[1]).toEqual('mo');
     expect(parts[2]).toEqual('nia');
     expect(hyphenator.mock.calls).toHaveLength(1);
   });
@@ -57,7 +57,7 @@ describe('wordHyphenation', () => {
     const parts = instance(word);
 
     expect(parts).toHaveLength(2);
-    expect(parts[0]).toEqual('so\u00ad');
+    expect(parts[0]).toEqual('so');
     expect(parts[1]).toEqual('mething');
     expect(hyphenator.mock.calls).toHaveLength(0);
   });
@@ -67,8 +67,8 @@ describe('wordHyphenation', () => {
     const parts = instance(word);
 
     expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('so\u00ad');
-    expect(parts[1]).toEqual('me\u00ad');
+    expect(parts[0]).toEqual('so');
+    expect(parts[1]).toEqual('me');
     expect(parts[2]).toEqual('thing');
     expect(hyphenator.mock.calls).toHaveLength(0);
   });
@@ -87,8 +87,8 @@ describe('wordHyphenation', () => {
     const parts = instance(word);
 
     expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('pro\u00ad');
-    expect(parts[1]).toEqual('gram\u00ad');
+    expect(parts[0]).toEqual('pro');
+    expect(parts[1]).toEqual('gram');
     expect(parts[2]).toEqual('ming');
 
     // Hyphen not called again. Got value from cache

@@ -10,11 +10,13 @@ const pickFontFromFontStack = (
   fontStack: Font[],
   lastFont?: Font,
 ) => {
+  if (IGNORED_CODE_POINTS.includes(codePoint)) return lastFont;
+
   const fontStackWithFallback = [...fontStack, lastFont];
+
   for (let i = 0; i < fontStackWithFallback.length; i += 1) {
     const font = fontStackWithFallback[i];
     if (
-      !IGNORED_CODE_POINTS.includes(codePoint) &&
       font &&
       font.hasGlyphForCodePoint &&
       font.hasGlyphForCodePoint(codePoint)
@@ -22,6 +24,7 @@ const pickFontFromFontStack = (
       return font;
     }
   }
+
   return fontStack.at(-1);
 };
 
@@ -52,6 +55,7 @@ const fontSubstitution =
       for (let j = 0; j < chars.length; j += 1) {
         const char = chars[j];
         const codePoint = char.codePointAt(0);
+
         // If the default font does not have a glyph and the fallback font does, we use it
         const font = pickFontFromFontStack(
           codePoint,

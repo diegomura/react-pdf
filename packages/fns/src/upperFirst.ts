@@ -1,12 +1,20 @@
 /**
- * Capitalize first letter of string
+ * Converts the first character of a string to uppercase. Does not affect other characters.
  *
- * @param value - String
- * @returns Capitalized string
+ * @example
+ * upperFirst('hello')  // => 'Hello'
+ * upperFirst('hELLO')  // => 'HELLO'
+ * upperFirst('')       // => ''
+ * upperFirst(null)     // => null
+ *
+ * @param value - The string to transform
+ * @returns String with first character uppercased, or the original value if null/undefined/empty
  */
-const upperFirst = (value?: string | null): string | null | undefined => {
-  if (!value) return value;
-  return value.charAt(0).toUpperCase() + value.slice(1);
+const upperFirst = <T extends string | null | undefined>(
+  value: T,
+): T extends string ? string : T => {
+  if (!value) return value as any;
+  return (value.charAt(0).toUpperCase() + value.slice(1)) as any;
 };
 
 export default upperFirst;

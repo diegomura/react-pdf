@@ -26,4 +26,28 @@ describe('parseFloat', () => {
   test('should parse string float', () => {
     expect(parseFloat('10.1')).toBe(10.1);
   });
+
+  test('should parse negative numbers', () => {
+    expect(parseFloat(-5)).toBe(-5);
+    expect(parseFloat('-5.5')).toBe(-5.5);
+  });
+
+  test('should parse zero', () => {
+    expect(parseFloat(0)).toBe(0);
+    expect(parseFloat('0')).toBe(0);
+  });
+
+  test('should return NaN for invalid strings', () => {
+    expect(parseFloat('abc')).toBeNaN();
+    expect(parseFloat('')).toBeNaN();
+  });
+
+  test('should parse numbers from strings with trailing characters', () => {
+    expect(parseFloat('10px')).toBe(10);
+    expect(parseFloat('3.14rem')).toBe(3.14);
+  });
+
+  test('should parse strings with leading whitespace', () => {
+    expect(parseFloat('  42')).toBe(42);
+  });
 });

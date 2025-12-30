@@ -75,7 +75,7 @@ class FontFamily {
       const rightOffset = styleSources.filter((s) => s.fontWeight > 500);
 
       const fit = styleSources.filter(
-        (s) => s.fontWeight >= numericFontWeight && s.fontWeight < 500,
+        (s) => s.fontWeight >= numericFontWeight && s.fontWeight <= 500,
       );
 
       font = fit[0] || leftOffset[leftOffset.length - 1] || rightOffset[0];

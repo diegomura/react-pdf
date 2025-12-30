@@ -10,14 +10,19 @@ export type FontStyle = 'normal' | 'italic' | 'oblique';
 export type FontWeight =
   | number
   | 'thin'
+  | 'hairline'
   | 'ultralight'
+  | 'extralight'
   | 'light'
   | 'normal'
   | 'medium'
   | 'semibold'
+  | 'demibold'
   | 'bold'
   | 'ultrabold'
-  | 'heavy';
+  | 'extrabold'
+  | 'heavy'
+  | 'black';
 
 export type FontDescriptor = {
   fontFamily: string;

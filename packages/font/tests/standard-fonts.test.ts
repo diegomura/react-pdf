@@ -273,6 +273,6 @@ describe('standard fonts', () => {
 
     const font = fontStore.getFont({ fontFamily: 'Helvetica' });
 
-    expect(font.data.encode(SOFT_HYPHEN)[1][0].advanceWidth).toBe(0);
+    expect(font.data!.encode!(SOFT_HYPHEN)[1][0].advanceWidth).toBe(0);
   });
 });

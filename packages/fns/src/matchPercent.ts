@@ -3,23 +3,27 @@ interface PercentMatch {
   value: number;
 }
 
-const isPercent = (value: string | number | null) =>
-  /((-)?\d+\.?\d*)%/g.exec(`${value}`);
+const PERCENT_REGEX = /(-?\d+\.?\d*)%/;
 
 /**
- * Get percentage value of input
+ * Parses a percentage string and returns both the numeric value and decimal percent.
  *
- * @param value
- * @returns Percent value (if matches)
+ * @example
+ * matchPercent('50%')  // => { value: 50, percent: 0.5 }
+ * matchPercent('-25%') // => { value: -25, percent: -0.25 }
+ * matchPercent('abc')  // => null
+ *
+ * @param value - The value to parse
+ * @returns Object with value and percent, or null if not a valid percentage
  */
 const matchPercent = (value: string | number | null): PercentMatch | null => {
-  const match = isPercent(value);
+  const match = PERCENT_REGEX.exec(`${value}`);
 
   if (match) {
-    const f = parseFloat(match[1]);
-    const percent = f / 100;
+    const numericValue = parseFloat(match[1]);
+    const percent = numericValue / 100;
 
-    return { percent, value: f };
+    return { percent, value: numericValue };
   }
 
   return null;

@@ -14,4 +14,27 @@ describe('repeat', () => {
   test('should not repeat property', () => {
     expect(repeat('Lorem')).toEqual([]);
   });
+
+  test('should repeat numbers', () => {
+    expect(repeat(42, 3)).toEqual([42, 42, 42]);
+    expect(repeat(0, 2)).toEqual([0, 0]);
+  });
+
+  test('should repeat objects with same reference', () => {
+    const obj = { id: 1 };
+    const result = repeat(obj, 3);
+
+    expect(result).toEqual([obj, obj, obj]);
+    expect(result[0]).toBe(obj);
+    expect(result[1]).toBe(obj);
+    expect(result[2]).toBe(obj);
+  });
+
+  test('should repeat null', () => {
+    expect(repeat(null, 2)).toEqual([null, null]);
+  });
+
+  test('should repeat false', () => {
+    expect(repeat(false, 3)).toEqual([false, false, false]);
+  });
 });

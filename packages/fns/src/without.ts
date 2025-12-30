@@ -1,17 +1,21 @@
 /**
- * Returns a new array with all the values from the original array that are not present in the keys array.
+ * Returns a new array excluding the specified values.
  *
- * @param keys - The keys to pick from the object
- * @param array - Array to filter the values from
- * @returns A new array with without the omitted values
+ * @example
+ * without([2, 4], [1, 2, 3, 4, 5]) // => [1, 3, 5]
+ * without(['b'], ['a', 'b', 'c'])  // => ['a', 'c']
+ *
+ * @param exclude - Values to exclude from the array
+ * @param array - Array to filter
+ * @returns A new array without the excluded values
  */
-const without = <T = any>(keys: T[], array: T[]): T[] => {
-  const result = [];
+const without = <T>(exclude: T[], array: T[]): T[] => {
+  const result: T[] = [];
 
   for (let i = 0; i < array.length; i += 1) {
     const value = array[i];
 
-    if (!keys.includes(value)) result.push(value);
+    if (!exclude.includes(value)) result.push(value);
   }
 
   return result;

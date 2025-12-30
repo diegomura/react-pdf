@@ -18,4 +18,26 @@ describe('upperFirst', () => {
   test('should return string with first char upperFirstd', () => {
     expect(upperFirst('reactpdf')).toBe('Reactpdf');
   });
+
+  test('should keep already capitalized strings unchanged', () => {
+    expect(upperFirst('Reactpdf')).toBe('Reactpdf');
+  });
+
+  test('should only capitalize first character', () => {
+    expect(upperFirst('HELLO')).toBe('HELLO');
+    expect(upperFirst('hELLO')).toBe('HELLO');
+  });
+
+  test('should handle single character strings', () => {
+    expect(upperFirst('a')).toBe('A');
+    expect(upperFirst('A')).toBe('A');
+  });
+
+  test('should handle strings starting with numbers', () => {
+    expect(upperFirst('123abc')).toBe('123abc');
+  });
+
+  test('should handle strings with spaces', () => {
+    expect(upperFirst('hello world')).toBe('Hello world');
+  });
 });

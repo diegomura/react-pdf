@@ -17,8 +17,15 @@ describe('stylesheet flatten', () => {
     expect(result).toEqual({});
   });
 
-  test('should return empty object for empty array', () => {
+  test('should return empty object for empty object', () => {
     const style = {};
+    const result = flatten(style);
+
+    expect(result).toEqual({});
+  });
+
+  test('should return empty object for empty array', () => {
+    const style: [] = [];
     const result = flatten(style);
 
     expect(result).toEqual({});
@@ -92,7 +99,7 @@ describe('stylesheet flatten', () => {
       { backgroundColor: 'black' },
       [{ color: 'red', textAlign: 'center' as const }],
     ];
-    const result = flatten(style as any);
+    const result = flatten(style);
 
     expect(result).toEqual({
       backgroundColor: 'black',
@@ -108,12 +115,100 @@ describe('stylesheet flatten', () => {
       undefined,
       [null, { color: 'red', textAlign: 'center' as const }, undefined],
     ];
-    const result = flatten(style as any);
+    const result = flatten(style);
 
     expect(result).toEqual({
       backgroundColor: 'black',
       color: 'red',
       textAlign: 'center',
     });
+  });
+
+  test('should return empty object for array with only nil values', () => {
+    const style = [null, undefined, null];
+    const result = flatten(style);
+
+    expect(result).toEqual({});
+  });
+
+  test('should flatten deeply nested style arrays', () => {
+    const style = [
+      { color: 'red' },
+      [[{ fontSize: 12 }], [{ backgroundColor: 'blue' }]],
+      [[[{ margin: 10 }]]],
+    ];
+    const result = flatten(style);
+
+    expect(result).toEqual({
+      color: 'red',
+      fontSize: 12,
+      backgroundColor: 'blue',
+      margin: 10,
+    });
+  });
+
+  test('should ignore null values inside style objects', () => {
+    const style = [{ color: 'red', fontSize: null as unknown as number }];
+    const result = flatten(style);
+
+    expect(result).toEqual({ color: 'red' });
+  });
+
+  test('should ignore undefined values inside style objects', () => {
+    const style = [{ color: 'red', fontSize: undefined }];
+    const result = flatten(style);
+
+    expect(result).toEqual({ color: 'red' });
+  });
+
+  test('should not override with null values from later styles', () => {
+    const style = [
+      { color: 'red', fontSize: 12 },
+      { color: null as unknown as string },
+    ];
+    const result = flatten(style);
+
+    expect(result).toEqual({ color: 'red', fontSize: 12 });
+  });
+
+  test('should preserve falsy values like 0', () => {
+    const style = [{ margin: 10 }, { margin: 0 }];
+    const result = flatten(style);
+
+    expect(result).toEqual({ margin: 0 });
+  });
+
+  test('should preserve empty string values', () => {
+    const style = [{ color: 'red' }, { color: '' }];
+    const result = flatten(style);
+
+    expect(result).toEqual({ color: '' });
+  });
+
+  test('should handle complex merge with multiple overlapping keys', () => {
+    const style = [
+      { color: 'red', fontSize: 12, margin: 5 },
+      { color: 'blue', padding: 10 },
+      { fontSize: 14, margin: 10 },
+    ];
+    const result = flatten(style);
+
+    expect(result).toEqual({
+      color: 'blue',
+      fontSize: 14,
+      margin: 10,
+      padding: 10,
+    });
+  });
+
+  test('should handle nested arrays with overlapping keys', () => {
+    const style = [
+      { color: 'red' },
+      [{ color: 'blue' }, { color: 'green' }],
+      { color: 'yellow' },
+    ];
+    const result = flatten(style);
+
+    expect(result).toEqual({ color: 'yellow' });
   });
 });

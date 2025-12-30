@@ -203,4 +203,145 @@ describe('resolve stylesheet positioning', () => {
       objectFit: 'cover',
     });
   });
+
+  test('should resolve object fit contain', () => {
+    const styles = resolveStyle({ objectFit: 'contain' });
+
+    expect(styles).toEqual({
+      objectFit: 'contain',
+    });
+  });
+
+  test('should resolve object fit fill', () => {
+    const styles = resolveStyle({ objectFit: 'fill' });
+
+    expect(styles).toEqual({
+      objectFit: 'fill',
+    });
+  });
+
+  test('should resolve object fit none', () => {
+    const styles = resolveStyle({ objectFit: 'none' });
+
+    expect(styles).toEqual({
+      objectFit: 'none',
+    });
+  });
+
+  test('should resolve object fit scale-down', () => {
+    const styles = resolveStyle({ objectFit: 'scale-down' });
+
+    expect(styles).toEqual({
+      objectFit: 'scale-down',
+    });
+  });
+
+  test('should resolve object position single keyword center', () => {
+    const styles = resolveStyle({ objectPosition: 'center' });
+
+    expect(styles).toEqual({
+      objectPositionX: '50%',
+      objectPositionY: '50%',
+    });
+  });
+
+  test('should resolve object position single keyword left', () => {
+    const styles = resolveStyle({ objectPosition: 'left' });
+
+    expect(styles).toEqual({
+      objectPositionX: '0%',
+      objectPositionY: '0%',
+    });
+  });
+
+  test('should resolve object position single keyword right', () => {
+    const styles = resolveStyle({ objectPosition: 'right' });
+
+    expect(styles).toEqual({
+      objectPositionX: '100%',
+      objectPositionY: '100%',
+    });
+  });
+
+  test('should resolve object position with in unit', () => {
+    const styles = resolveStyle({ objectPosition: '1in 2in' });
+
+    expect(styles).toEqual({
+      objectPositionX: 72,
+      objectPositionY: 144,
+    });
+  });
+
+  test('should resolve object position with rem unit', () => {
+    const styles = resolveStyle({ objectPosition: '1rem 2rem' });
+
+    expect(styles).toEqual({
+      objectPositionX: 10,
+      objectPositionY: 20,
+    });
+  });
+
+  test('should resolve object position with vw unit', () => {
+    const styles = resolveStyle({ objectPosition: '50vw 25vw' });
+
+    expect(styles).toEqual({
+      objectPositionX: 100,
+      objectPositionY: 50,
+    });
+  });
+
+  test('should resolve object position with vh unit', () => {
+    const styles = resolveStyle({ objectPosition: '50vh 25vh' });
+
+    expect(styles).toEqual({
+      objectPositionX: 200,
+      objectPositionY: 100,
+    });
+  });
+
+  test('should resolve object position with px unit', () => {
+    const styles = resolveStyle({ objectPosition: '10px 20px' });
+
+    expect(styles).toEqual({
+      objectPositionX: 10,
+      objectPositionY: 20,
+    });
+  });
+
+  test('should resolve object position with mixed keyword and value', () => {
+    const styles = resolveStyle({ objectPosition: 'left 50' });
+
+    expect(styles).toEqual({
+      objectPositionX: '0%',
+      objectPositionY: 50,
+    });
+  });
+
+  test('should resolve numeric objectPositionX and objectPositionY', () => {
+    const styles = resolveStyle({
+      objectPositionX: 20,
+      objectPositionY: 30,
+    });
+
+    expect(styles).toEqual({
+      objectPositionX: 20,
+      objectPositionY: 30,
+    });
+  });
+
+  test('should resolve objectPositionX with in unit', () => {
+    const styles = resolveStyle({ objectPositionX: '1in' });
+
+    expect(styles).toEqual({
+      objectPositionX: 72,
+    });
+  });
+
+  test('should resolve objectPositionY with rem unit', () => {
+    const styles = resolveStyle({ objectPositionY: '2rem' });
+
+    expect(styles).toEqual({
+      objectPositionY: 20,
+    });
+  });
 });

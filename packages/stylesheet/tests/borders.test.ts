@@ -144,10 +144,10 @@ describe('resolve stylesheet borders', () => {
     const styles = resolveStyle({ borderColor: 'hsla(0, 100%, 50%, 0.5)' });
 
     expect(styles).toEqual({
-      borderTopColor: '#FF0000',
-      borderRightColor: '#FF0000',
-      borderBottomColor: '#FF0000',
-      borderLeftColor: '#FF0000',
+      borderTopColor: '#FF000080',
+      borderRightColor: '#FF000080',
+      borderBottomColor: '#FF000080',
+      borderLeftColor: '#FF000080',
     });
   });
 
@@ -224,10 +224,10 @@ describe('resolve stylesheet borders', () => {
     });
 
     expect(styles).toEqual({
-      borderTopColor: '#FF0000',
-      borderRightColor: '#FF0000',
-      borderBottomColor: '#FF0000',
-      borderLeftColor: '#FF0000',
+      borderTopColor: '#FF000080',
+      borderRightColor: '#FF000080',
+      borderBottomColor: '#FF000080',
+      borderLeftColor: '#FF000080',
     });
   });
 

@@ -100,4 +100,74 @@ describe('resolve stylesheet flex', () => {
 
     expect(styles).toEqual({ justifyContent: 'space-between' });
   });
+
+  test('should resolve flex justify self', () => {
+    const styles = resolveStyle({ justifySelf: 'center' });
+
+    expect(styles).toEqual({ justifySelf: 'center' });
+  });
+
+  test('should resolve flex flow', () => {
+    const styles = resolveStyle({ flexFlow: 'row wrap' });
+
+    expect(styles).toEqual({ flexFlow: 'row wrap' });
+  });
+
+  test('should resolve flex shorthand auto', () => {
+    const style = resolveStyle({ flex: 'auto' });
+
+    expect(style).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 'auto',
+    });
+  });
+
+  test('should resolve flex shorthand single value', () => {
+    const style = resolveStyle({ flex: '2' });
+
+    expect(style).toEqual({
+      flexGrow: 2,
+      flexShrink: 1,
+      flexBasis: 0,
+    });
+  });
+
+  test('should resolve flex shorthand two values', () => {
+    const style = resolveStyle({ flex: '2 3' });
+
+    expect(style).toEqual({
+      flexGrow: 2,
+      flexShrink: 3,
+      flexBasis: 0,
+    });
+  });
+
+  test('should resolve flex shorthand numeric value', () => {
+    const style = resolveStyle({ flex: 1 });
+
+    expect(style).toEqual({
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+    });
+  });
+
+  test('should resolve flex basis with in unit', () => {
+    const styles = resolveStyle({ flexBasis: '1in' });
+
+    expect(styles).toEqual({ flexBasis: 72 });
+  });
+
+  test('should resolve flex basis with rem unit', () => {
+    const styles = resolveStyle({ flexBasis: '2rem' });
+
+    expect(styles).toEqual({ flexBasis: 20 });
+  });
+
+  test('should resolve flex basis with vw unit', () => {
+    const styles = resolveStyle({ flexBasis: '50vw' });
+
+    expect(styles).toEqual({ flexBasis: 100 });
+  });
 });

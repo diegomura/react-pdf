@@ -4,7 +4,7 @@ import parseUnit from 'postcss-value-parser/lib/unit.js';
 import transformUnit from '../utils/units';
 import { Container } from '../types';
 
-const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
+const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh,rem';
 
 interface ParseValue {
   type: string;

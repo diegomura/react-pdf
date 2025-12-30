@@ -329,7 +329,7 @@ export type TextStyle = {
   fontWeight?: FontWeight;
   letterSpacing?: number | string;
   lineHeight?: number | string;
-  maxLines?: number;
+  maxLines?: number | string;
   textAlign?: TextAlign;
   textDecoration?: TextDecoration;
   textDecorationColor?: string;

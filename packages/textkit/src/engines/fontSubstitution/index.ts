@@ -87,7 +87,7 @@ const fontSubstitution =
       }
     }
 
-   if (lastIndex < string.length) {
+    if (lastIndex < string.length) {
       const fontSize = getFontSize(last(runs));
 
       res.push({

@@ -1,6 +1,7 @@
 import hyphen from 'hyphen';
 import pattern from 'hyphen/patterns/en-us.js';
 import { isNil } from '@react-pdf/fns';
+import { HyphenatedWord } from '../../types';
 
 const SOFT_HYPHEN = '\u00ad';
 const hyphenator = hyphen(pattern);
@@ -13,7 +14,7 @@ const splitHyphen = (word: string) => {
   return word.split(SOFT_HYPHEN);
 };
 
-const cache: Record<string, string[]> = {};
+const cache: Record<string, HyphenatedWord> = {};
 
 /**
  * @param word
@@ -21,7 +22,7 @@ const cache: Record<string, string[]> = {};
  */
 const getParts = (word: string) => {
   const base = word.includes(SOFT_HYPHEN) ? word : hyphenator(word);
-  return splitHyphen(base);
+  return { parts: splitHyphen(base), hyphen: '-' as const };
 };
 
 const wordHyphenation = () => {
@@ -32,7 +33,7 @@ const wordHyphenation = () => {
   return (word: string | null) => {
     const cacheKey = `_${word}`;
 
-    if (isNil(word)) return [];
+    if (isNil(word)) return { parts: [], hyphen: '-' as const };
     if (cache[cacheKey]) return cache[cacheKey];
 
     cache[cacheKey] = getParts(word);

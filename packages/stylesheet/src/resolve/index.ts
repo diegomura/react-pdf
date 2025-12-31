@@ -35,10 +35,10 @@ const shorthands: Partial<Record<StyleKey, Handler>> = {
 };
 
 /**
- * Expand the shorthand properties.
+ * Expand shorthand properties and resolve units/values.
  *
- * @param style - Style object
- * @returns Expanded style object
+ * @param container - Container dimensions for unit resolution
+ * @returns Function that resolves a style object
  */
 const resolve =
   (container: Container) =>
@@ -56,14 +56,8 @@ const resolve =
       }
 
       const resolved = shorthands[key](key, value, container, style);
-      const keys = Object.keys(resolved);
 
-      for (let j = 0; j < keys.length; j += 1) {
-        const propName = keys[j];
-        const propValue = resolved[propName];
-
-        resolvedStyle[propName] = propValue;
-      }
+      Object.assign(resolvedStyle, resolved);
     }
 
     return resolvedStyle;

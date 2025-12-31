@@ -638,4 +638,146 @@ describe('resolve stylesheet transform', () => {
       { operation: 'rotate', value: [-180.0004209182994] },
     ]);
   });
+
+  test('should resolve transform origin with rem units', () => {
+    const style = resolveStyle({ transformOrigin: '2rem 3rem' });
+
+    expect(style).toEqual({
+      transformOriginX: 20,
+      transformOriginY: 30,
+    });
+  });
+
+  test('should resolve transform origin with vw units', () => {
+    const style = resolveStyle({ transformOrigin: '50vw 25vw' });
+
+    expect(style).toEqual({
+      transformOriginX: 100,
+      transformOriginY: 50,
+    });
+  });
+
+  test('should resolve transform origin with vh units', () => {
+    const style = resolveStyle({ transformOrigin: '50vh 25vh' });
+
+    expect(style).toEqual({
+      transformOriginX: 200,
+      transformOriginY: 100,
+    });
+  });
+
+  test('should resolve transformOriginX with rem unit', () => {
+    const style = resolveStyle({ transformOriginX: '2rem' });
+
+    expect(style).toEqual({ transformOriginX: 20 });
+  });
+
+  test('should resolve transformOriginY with vw unit', () => {
+    const style = resolveStyle({ transformOriginY: '50vw' });
+
+    expect(style).toEqual({ transformOriginY: 100 });
+  });
+
+  test('should resolve translate operation parses numeric value', () => {
+    const style = resolveStyle({ transform: 'translate(100, 200)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'translate', value: [100, 200] },
+    ]);
+  });
+
+  test('should resolve single value skew operation', () => {
+    const style = resolveStyle({ transform: 'skew(30deg)' });
+
+    expect(style.transform).toEqual([{ operation: 'skew', value: [30] }]);
+  });
+
+  test('should resolve transform origin top left shorthand', () => {
+    const style = resolveStyle({ transformOrigin: 'top left' });
+
+    expect(style).toEqual({
+      transformOriginX: '0%',
+      transformOriginY: '0%',
+    });
+  });
+
+  test('should resolve transform origin bottom right shorthand', () => {
+    const style = resolveStyle({ transformOrigin: 'bottom right' });
+
+    expect(style).toEqual({
+      transformOriginX: '100%',
+      transformOriginY: '100%',
+    });
+  });
+
+  test('should resolve transform origin center top shorthand', () => {
+    const style = resolveStyle({ transformOrigin: 'center top' });
+
+    expect(style).toEqual({
+      transformOriginX: '50%',
+      transformOriginY: '0%',
+    });
+  });
+
+  test('should resolve numeric transformOriginX and transformOriginY', () => {
+    const style = resolveStyle({
+      transformOriginX: 50,
+      transformOriginY: 100,
+    });
+
+    expect(style).toEqual({
+      transformOriginX: 50,
+      transformOriginY: 100,
+    });
+  });
+
+  test('should resolve combined rotate and translate operations', () => {
+    const style = resolveStyle({
+      transform: 'rotate(45deg) translate(10px, 20px)',
+    });
+
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [45] },
+      { operation: 'translate', value: [10, 20] },
+    ]);
+  });
+
+  test('should resolve combined scale and rotate operations', () => {
+    const style = resolveStyle({
+      transform: 'scale(2) rotate(90deg)',
+    });
+
+    expect(style.transform).toEqual([
+      { operation: 'scale', value: [2, 2] },
+      { operation: 'rotate', value: [90] },
+    ]);
+  });
+
+  test('should resolve skewX with deg unit', () => {
+    const style = resolveStyle({ transform: 'skewX(30deg)' });
+
+    expect(style.transform).toEqual([{ operation: 'skew', value: [30, 0] }]);
+  });
+
+  test('should resolve skewY with deg unit', () => {
+    const style = resolveStyle({ transform: 'skewY(45deg)' });
+
+    expect(style.transform).toEqual([{ operation: 'skew', value: [0, 45] }]);
+  });
+
+  test('should resolve skewX with rad unit', () => {
+    const style = resolveStyle({ transform: 'skewX(1.5708rad)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'skew', value: [90.0002104591497, 0] },
+    ]);
+  });
+
+  test('should resolve skewY with rad unit', () => {
+    const style = resolveStyle({ transform: 'skewY(1.5708rad)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'skew', value: [0, 90.0002104591497] },
+    ]);
+  });
 });

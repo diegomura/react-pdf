@@ -246,4 +246,166 @@ describe('resolve stylesheet text', () => {
 
     expect(styles).toEqual({ verticalAlign: 'sub' });
   });
+
+  test('should resolve direction ltr', () => {
+    const styles = resolveStyle({ direction: 'ltr' });
+
+    expect(styles).toEqual({ direction: 'ltr' });
+  });
+
+  test('should resolve direction rtl', () => {
+    const styles = resolveStyle({ direction: 'rtl' });
+
+    expect(styles).toEqual({ direction: 'rtl' });
+  });
+
+  test('should resolve text decoration color', () => {
+    const styles = resolveStyle({ textDecorationColor: 'red' });
+
+    expect(styles).toEqual({ textDecorationColor: 'red' });
+  });
+
+  test('should resolve text decoration color hex', () => {
+    const styles = resolveStyle({ textDecorationColor: '#ff0000' });
+
+    expect(styles).toEqual({ textDecorationColor: '#ff0000' });
+  });
+
+  test('should resolve text decoration color rgb', () => {
+    const styles = resolveStyle({ textDecorationColor: 'rgb(255, 0, 0)' });
+
+    expect(styles).toEqual({ textDecorationColor: '#FF0000' });
+  });
+
+  test('should resolve text indent', () => {
+    const styles = resolveStyle({ textIndent: 20 });
+
+    expect(styles).toEqual({ textIndent: 20 });
+  });
+
+  test('should resolve font size vw units', () => {
+    const styles = resolveStyle({ fontSize: '10vw' });
+
+    expect(styles).toEqual({ fontSize: 20 });
+  });
+
+  test('should resolve font size vh units', () => {
+    const styles = resolveStyle({ fontSize: '10vh' });
+
+    expect(styles).toEqual({ fontSize: 40 });
+  });
+
+  test('should resolve font size pt units', () => {
+    const styles = resolveStyle({ fontSize: '12pt' });
+
+    expect(styles).toEqual({ fontSize: 12 });
+  });
+
+  test('should resolve font size mm units', () => {
+    const styles = resolveStyle({ fontSize: '10mm' });
+
+    expect(styles.fontSize).toBeCloseTo(28.35, 1);
+  });
+
+  test('should resolve font size cm units', () => {
+    const styles = resolveStyle({ fontSize: '1cm' });
+
+    expect(styles.fontSize).toBeCloseTo(28.35, 1);
+  });
+
+  test('should resolve letter spacing rem units', () => {
+    const styles = resolveStyle({ letterSpacing: '0.5rem' });
+
+    expect(styles).toEqual({ letterSpacing: 5 });
+  });
+
+  test('should resolve letter spacing vw units', () => {
+    const styles = resolveStyle({ letterSpacing: '1vw' });
+
+    expect(styles).toEqual({ letterSpacing: 2 });
+  });
+
+  test('should resolve line height rem units', () => {
+    const styles = resolveStyle({ lineHeight: '2rem' });
+
+    expect(styles).toEqual({ lineHeight: 20 });
+  });
+
+  test('should resolve line height in units', () => {
+    const styles = resolveStyle({ lineHeight: '0.5in' });
+
+    expect(styles).toEqual({ lineHeight: 36 });
+  });
+
+  test('should resolve string max lines', () => {
+    const styles = resolveStyle({ maxLines: '3' });
+
+    expect(styles).toEqual({ maxLines: 3 });
+  });
+
+  test('should resolve font style italic', () => {
+    const styles = resolveStyle({ fontStyle: 'italic' });
+
+    expect(styles).toEqual({ fontStyle: 'italic' });
+  });
+
+  test('should resolve font style oblique', () => {
+    const styles = resolveStyle({ fontStyle: 'oblique' });
+
+    expect(styles).toEqual({ fontStyle: 'oblique' });
+  });
+
+  test('should resolve text align left', () => {
+    const styles = resolveStyle({ textAlign: 'left' });
+
+    expect(styles).toEqual({ textAlign: 'left' });
+  });
+
+  test('should resolve text align right', () => {
+    const styles = resolveStyle({ textAlign: 'right' });
+
+    expect(styles).toEqual({ textAlign: 'right' });
+  });
+
+  test('should resolve text align justify', () => {
+    const styles = resolveStyle({ textAlign: 'justify' });
+
+    expect(styles).toEqual({ textAlign: 'justify' });
+  });
+
+  test('should resolve text decoration line-through', () => {
+    const styles = resolveStyle({ textDecoration: 'line-through' });
+
+    expect(styles).toEqual({ textDecoration: 'line-through' });
+  });
+
+  test('should resolve text decoration style solid', () => {
+    const styles = resolveStyle({ textDecorationStyle: 'solid' });
+
+    expect(styles).toEqual({ textDecorationStyle: 'solid' });
+  });
+
+  test('should resolve text decoration style dotted', () => {
+    const styles = resolveStyle({ textDecorationStyle: 'dotted' });
+
+    expect(styles).toEqual({ textDecorationStyle: 'dotted' });
+  });
+
+  test('should resolve text transform uppercase', () => {
+    const styles = resolveStyle({ textTransform: 'uppercase' });
+
+    expect(styles).toEqual({ textTransform: 'uppercase' });
+  });
+
+  test('should resolve text transform lowercase', () => {
+    const styles = resolveStyle({ textTransform: 'lowercase' });
+
+    expect(styles).toEqual({ textTransform: 'lowercase' });
+  });
+
+  test('should resolve vertical align super', () => {
+    const styles = resolveStyle({ verticalAlign: 'super' });
+
+    expect(styles).toEqual({ verticalAlign: 'super' });
+  });
 });

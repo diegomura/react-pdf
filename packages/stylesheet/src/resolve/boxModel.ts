@@ -4,14 +4,25 @@ import parseUnit from 'postcss-value-parser/lib/unit.js';
 import transformUnit from '../utils/units';
 import { Container } from '../types';
 
-const BOX_MODEL_UNITS = 'px,in,mm,cm,pt,%,vw,vh';
+const BOX_MODEL_UNITS = new Set([
+  'px',
+  'in',
+  'mm',
+  'cm',
+  'pt',
+  '%',
+  'vw',
+  'vh',
+  'rem',
+  '',
+]);
 
 interface ParseValue {
   type: string;
   value: string;
 }
 
-const logError = (style: any, value: any) => {
+const logError = (style: string | number | symbol, value: unknown) => {
   const name = style.toString();
 
   // eslint-disable-next-line no-console
@@ -66,7 +77,7 @@ const expandBoxModel =
           const result = parseUnit(node.value);
 
           // when unit isn't specified this condition is true
-          if (result && BOX_MODEL_UNITS.includes(result.unit)) {
+          if (result && BOX_MODEL_UNITS.has(result.unit)) {
             parts.push(node.value);
           } else {
             logError(model, value);

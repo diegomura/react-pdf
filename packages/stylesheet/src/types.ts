@@ -133,8 +133,8 @@ export type GapExpandedStyle = {
 };
 
 export type GapSafeStyle = {
-  rowGap?: number | Percentage;
-  columnGap?: number | Percentage;
+  rowGap?: number | string;
+  columnGap?: number | string;
 };
 
 export type GapStyle = GapShorthandStyle & GapExpandedStyle;
@@ -329,7 +329,7 @@ export type TextStyle = {
   fontWeight?: FontWeight;
   letterSpacing?: number | string;
   lineHeight?: number | string;
-  maxLines?: number;
+  maxLines?: number | string;
   textAlign?: TextAlign;
   textDecoration?: TextDecoration;
   textDecorationColor?: string;

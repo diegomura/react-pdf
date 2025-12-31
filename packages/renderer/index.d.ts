@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {
   Style,
+  StyleProp,
   PageSize,
   FontStore,
   PDFVersion,
@@ -30,7 +31,7 @@ declare namespace ReactPDF {
   }
 
   interface DocumentProps {
-    style?: Style | Style[];
+    style?: StyleProp<Style | Style[]>;
     title?: string;
     author?: string;
     subject?: string;
@@ -58,7 +59,7 @@ declare namespace ReactPDF {
 
   interface NodeProps {
     id?: string;
-    style?: Style | Style[];
+    style?: StyleProp<Style | Style[]>;
     /**
      * Render component in all wrapped pages.
      * @see https://react-pdf.org/advanced#fixed-components
@@ -584,7 +585,7 @@ declare namespace ReactPDF {
   interface PDFViewerProps {
     width?: number | string;
     height?: number | string;
-    style?: Style | Style[];
+    style?: StyleProp<Style | Style[]>;
     className?: string;
     children?: React.ReactElement<DocumentProps>;
     innerRef?: React.Ref<HTMLIFrameElement>;

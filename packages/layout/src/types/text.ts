@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 import { HyphenationCallback } from '@react-pdf/font';
 import { YogaNode } from 'yoga-layout/load';
 import { Paragraph } from '@react-pdf/textkit';
@@ -39,7 +39,7 @@ interface TextProps extends NodeProps {
 export type TextNode = {
   type: typeof P.Text;
   props: TextProps;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

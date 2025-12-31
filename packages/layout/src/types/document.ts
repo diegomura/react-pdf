@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 
 import { PageNode, SafePageNode } from './page';
 import { YogaInstance } from './base';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
 
 export type PDFVersion = '1.3' | '1.4' | '1.5' | '1.6' | '1.7' | '1.7ext3';
 
@@ -48,7 +48,7 @@ export type DocumentNode = {
   props: DocumentProps;
   box?: never;
   origin?: never;
-  style?: Style | Style[];
+  style?: StyleProp<Style | Style[]>;
   yoga?: YogaInstance;
   yogaNode?: never;
   children: PageNode[];

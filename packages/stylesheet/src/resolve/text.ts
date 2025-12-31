@@ -11,7 +11,9 @@ import castInt from '../utils/castInt';
 import transformUnit from '../utils/units';
 import { Container, FontWeight, Style, StyleKey } from '../types';
 
-const FONT_WEIGHTS = {
+const DEFAULT_FONT_SIZE = 18;
+
+const FONT_WEIGHTS: Record<string, number> = {
   thin: 100,
   hairline: 100,
   ultralight: 200,
@@ -28,25 +30,32 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const transformFontWeight = (value: FontWeight) => {
+const transformFontWeight = (value: FontWeight): number => {
   if (!value) return FONT_WEIGHTS.normal;
   if (typeof value === 'number') return value;
 
   const lv = value.toLowerCase();
 
-  if (FONT_WEIGHTS[lv]) return FONT_WEIGHTS[lv];
+  if (lv in FONT_WEIGHTS) return FONT_WEIGHTS[lv];
 
   return castInt(value);
 };
 
 const processFontWeight = <K extends StyleKey>(key: K, value: Style[K]) => {
-  return { [key]: transformFontWeight(value) };
+  return { [key]: transformFontWeight(value as FontWeight) };
 };
 
-const transformLineHeight = (value, styles, container) => {
+const transformLineHeight = (
+  value: Style['lineHeight'],
+  styles: Style,
+  container: Container,
+): string | number => {
   if (value === '') return value;
 
-  const fontSize = transformUnit(container, styles.fontSize || 18) as number;
+  const fontSize = transformUnit(
+    container,
+    styles.fontSize || DEFAULT_FONT_SIZE,
+  ) as number;
   const lineHeight = transformUnit(container, value) as number;
 
   // Percent values: use this number multiplied by the element's font size
@@ -54,7 +63,7 @@ const transformLineHeight = (value, styles, container) => {
   if (percent) return percent * fontSize;
 
   // Unitless values: use this number multiplied by the element's font size
-  return isNaN(value) ? lineHeight : lineHeight * fontSize;
+  return isNaN(Number(value)) ? lineHeight : lineHeight * fontSize;
 };
 
 const processLineHeight = <K extends StyleKey>(

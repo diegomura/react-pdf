@@ -250,7 +250,7 @@ describe('resolve stylesheet positioning', () => {
 
     expect(styles).toEqual({
       objectPositionX: '0%',
-      objectPositionY: '0%',
+      objectPositionY: '50%',
     });
   });
 
@@ -259,6 +259,24 @@ describe('resolve stylesheet positioning', () => {
 
     expect(styles).toEqual({
       objectPositionX: '100%',
+      objectPositionY: '50%',
+    });
+  });
+
+  test('should resolve object position single keyword top', () => {
+    const styles = resolveStyle({ objectPosition: 'top' });
+
+    expect(styles).toEqual({
+      objectPositionX: '50%',
+      objectPositionY: '0%',
+    });
+  });
+
+  test('should resolve object position single keyword bottom', () => {
+    const styles = resolveStyle({ objectPosition: 'bottom' });
+
+    expect(styles).toEqual({
+      objectPositionX: '50%',
       objectPositionY: '100%',
     });
   });
@@ -342,6 +360,78 @@ describe('resolve stylesheet positioning', () => {
 
     expect(styles).toEqual({
       objectPositionY: 20,
+    });
+  });
+
+  test('should resolve object position single numeric value', () => {
+    const styles = resolveStyle({ objectPosition: '50' });
+
+    expect(styles).toEqual({
+      objectPositionX: 50,
+      objectPositionY: '50%',
+    });
+  });
+
+  test('should resolve object position single percentage value', () => {
+    const styles = resolveStyle({ objectPosition: '25%' });
+
+    expect(styles).toEqual({
+      objectPositionX: '25%',
+      objectPositionY: '50%',
+    });
+  });
+
+  test('should resolve object position with zero values', () => {
+    const styles = resolveStyle({ objectPosition: '0 0' });
+
+    expect(styles).toEqual({
+      objectPositionX: 0,
+      objectPositionY: 0,
+    });
+  });
+
+  test('should resolve object position with negative values', () => {
+    const styles = resolveStyle({ objectPosition: '-10 -20' });
+
+    expect(styles).toEqual({
+      objectPositionX: -10,
+      objectPositionY: -20,
+    });
+  });
+
+  test('should resolve object position with mixed units', () => {
+    const styles = resolveStyle({ objectPosition: '1in 2rem' });
+
+    expect(styles).toEqual({
+      objectPositionX: 72,
+      objectPositionY: 20,
+    });
+  });
+
+  test('should resolve object position with cm unit', () => {
+    const styles = resolveStyle({ objectPosition: '2.54cm 5.08cm' });
+
+    expect(styles).toEqual({
+      objectPositionX: 72,
+      objectPositionY: 144,
+    });
+  });
+
+  test('should resolve object position with mm unit', () => {
+    const styles = resolveStyle({ objectPosition: '25.4mm 50.8mm' });
+
+    expect(styles).toEqual({
+      objectPositionX: 72,
+      objectPositionY: 144,
+    });
+  });
+
+  test('should resolve object position with value and keyword', () => {
+    const styles = resolveStyle({ objectPosition: '30% bottom' });
+
+    expect(styles).toEqual({
+      objectPositionX: '30%',
+      objectPositionY: '100%',
     });
   });
 });

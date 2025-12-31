@@ -39,7 +39,7 @@ const parseValue = (value: string | number): ParsedValue => {
 const transformUnit = (
   container: Container,
   value: string | number,
-): string | number => {
+): number | string => {
   const scalar = parseValue(value);
 
   if (typeof scalar.value !== 'number') return scalar.value;

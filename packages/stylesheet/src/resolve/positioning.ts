@@ -3,6 +3,9 @@ import offsetKeyword from '../utils/offsetKeyword';
 import { processNoopValue } from './utils';
 import { Container, Style, StyleKey } from '../types';
 
+const isVerticalKeyword = (value: string) =>
+  value === 'top' || value === 'bottom';
+
 const processObjectPosition = <K extends StyleKey>(
   key: K,
   value: Style[K],
@@ -10,12 +13,27 @@ const processObjectPosition = <K extends StyleKey>(
 ) => {
   const match = `${value}`.split(' ');
 
-  const objectPositionX = offsetKeyword(
-    transformUnit(container, match?.[0] || value),
-  );
-  const objectPositionY = offsetKeyword(
-    transformUnit(container, match?.[1] || value),
-  );
+  let xValue: string;
+  let yValue: string;
+
+  if (match.length === 1) {
+    // Per CSS spec, single vertical keywords (top/bottom) default X to 'center'
+    // Single horizontal keywords (left/right/center) default Y to 'center'
+    if (isVerticalKeyword(match[0])) {
+      xValue = 'center';
+      yValue = match[0];
+    } else {
+      xValue = match[0];
+      yValue = 'center';
+    }
+  } else {
+    xValue = match[0];
+    yValue = match[1];
+  }
+
+  const objectPositionX = offsetKeyword(transformUnit(container, xValue));
+  const objectPositionY = offsetKeyword(transformUnit(container, yValue));
+
   return { objectPositionX, objectPositionY };
 };
 

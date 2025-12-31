@@ -133,8 +133,8 @@ export type GapExpandedStyle = {
 };
 
 export type GapSafeStyle = {
-  rowGap?: number | Percentage;
-  columnGap?: number | Percentage;
+  rowGap?: number | string;
+  columnGap?: number | string;
 };
 
 export type GapStyle = GapShorthandStyle & GapExpandedStyle;

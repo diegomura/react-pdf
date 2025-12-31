@@ -123,6 +123,26 @@ describe('resolve stylesheet flex', () => {
     });
   });
 
+  test('should resolve flex shorthand none', () => {
+    const style = resolveStyle({ flex: 'none' });
+
+    expect(style).toEqual({
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
+    });
+  });
+
+  test('should resolve flex shorthand initial', () => {
+    const style = resolveStyle({ flex: 'initial' });
+
+    expect(style).toEqual({
+      flexGrow: 0,
+      flexShrink: 1,
+      flexBasis: 'auto',
+    });
+  });
+
   test('should resolve flex shorthand single value', () => {
     const style = resolveStyle({ flex: '2' });
 

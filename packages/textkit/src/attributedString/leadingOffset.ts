@@ -1,18 +1,6 @@
-import isWhiteSpace from '../glyph/isWhiteSpace';
+import isRunWhiteSpace from '../run/isWhiteSpace';
 import runLeadingOffset from '../run/leadingOffset';
-import { AttributedString, Run } from '../types';
-
-/**
- * Check if run is entirely whitespace
- *
- * @param run - Run
- * @returns Whether run is entirely whitespace
- */
-const isRunWhiteSpace = (run: Run) => {
-  const glyphs = run?.glyphs || [];
-
-  return glyphs.length > 0 && glyphs.every(isWhiteSpace);
-};
+import { AttributedString } from '../types';
 
 /**
  * Get attributed string leading white space offset

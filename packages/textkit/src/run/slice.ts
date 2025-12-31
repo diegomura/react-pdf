@@ -51,8 +51,8 @@ const slice = (start: number, end: number, run: Run): Run => {
   const endPositions = endGlyphs.map(glyphPosition);
 
   return Object.assign({}, run, {
-    start: run.start + start,
-    end: Math.min(run.end, run.start + end),
+    start: Math.max(run.start + start, 0),
+    end: Math.max(Math.min(run.end, run.start + end), 0),
     glyphIndices: normalizeIndices((run.glyphIndices || []).slice(start, end)),
     glyphs: [startGlyphs, glyphs, endGlyphs].flat(),
     positions: [startPositions, positions, endPositions].flat(),

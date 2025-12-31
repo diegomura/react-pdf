@@ -1,27 +1,34 @@
 import { Font, Glyph } from '../types';
 
 /**
- * Slice glyph between codePoints range
- * Util for breaking ligatures
+ * Slice glyph between codePoints range.
+ * Useful for breaking ligatures into individual glyphs.
  *
  * @param start - Start code point index
  * @param end - End code point index
- * @param font - Font to generate new glyph
+ * @param font - Font to generate new glyphs from
  * @param glyph - Glyph to be sliced
- * @returns Sliced glyph parts
+ * @returns Array of sliced glyph parts
  */
-const slice = (start: number, end: number, font: Font, glyph: Glyph) => {
+const slice = (
+  start: number,
+  end: number,
+  font: Font,
+  glyph: Glyph,
+): Glyph[] => {
   if (!glyph) return [];
   if (start === end) return [];
-  if (start === 0 && end === glyph.codePoints.length) return [glyph];
 
-  const codePoints = glyph.codePoints.slice(start, end);
-  const string = String.fromCodePoint(...codePoints);
+  const { codePoints } = glyph;
 
-  // passing LTR To force fontkit to not reverse the string
-  return font
-    ? font.layout(string, undefined, undefined, undefined, 'ltr').glyphs
-    : [glyph];
+  if (start === 0 && end === codePoints.length) return [glyph];
+  if (!font) return [glyph];
+
+  const slicedCodePoints = codePoints.slice(start, end);
+  const string = String.fromCodePoint(...slicedCodePoints);
+
+  // Force LTR direction to prevent fontkit from reversing the string
+  return font.layout(string, undefined, undefined, undefined, 'ltr').glyphs;
 };
 
 export default slice;

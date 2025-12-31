@@ -28,6 +28,53 @@ describe('attributeString advanceWidth operator', () => {
     expect(advanceWidth(string)).toBe(0);
   });
 
+  test('should return advance width for single run', () => {
+    const string = {
+      string: '',
+      runs: [
+        {
+          start: 0,
+          end: 2,
+          glyphIndices: [],
+          glyphs: [],
+          positions: [
+            { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
+            { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          ],
+          attributes: {},
+        },
+      ],
+    };
+
+    expect(advanceWidth(string)).toBe(15);
+  });
+
+  test('should handle mixed runs with and without positions', () => {
+    const string = {
+      string: '',
+      runs: [
+        {
+          start: 0,
+          end: 2,
+          attributes: {},
+        },
+        {
+          start: 2,
+          end: 4,
+          glyphIndices: [],
+          glyphs: [],
+          positions: [
+            { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
+            { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          ],
+          attributes: {},
+        },
+      ],
+    };
+
+    expect(advanceWidth(string)).toBe(10);
+  });
+
   test('should sum up runs advance width', () => {
     const runs = [
       {

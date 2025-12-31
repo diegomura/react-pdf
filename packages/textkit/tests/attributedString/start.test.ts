@@ -8,6 +8,14 @@ describe('attributeString start operator', () => {
     expect(start(empty())).toBe(0);
   });
 
+  test('should return start value for single run', () => {
+    const string = {
+      string: '',
+      runs: [{ start: 0, end: 5, attributes: {} }],
+    };
+    expect(start(string)).toBe(0);
+  });
+
   test('should return first run start value', () => {
     const string = {
       string: '',

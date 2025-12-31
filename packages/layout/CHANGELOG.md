@@ -1,5 +1,15 @@
 # @react-pdf/layout
 
+## 4.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/stylesheet@6.1.3
+  - @react-pdf/types@2.9.3
+
 ## 4.4.2
 
 ### Patch Changes

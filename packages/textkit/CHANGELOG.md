@@ -1,5 +1,16 @@
 # @react-pdf/textkit
 
+## 6.1.1
+
+### Patch Changes
+
+- [#3273](https://github.com/diegomura/react-pdf/pull/3273) [`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): various improvements
+
+- [#3240](https://github.com/diegomura/react-pdf/pull/3240) [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212) Thanks [@Pasquale007](https://github.com/Pasquale007)! - fix: cannot read units for Em
+
+- Updated dependencies [[`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @react-pdf/fns@3.1.3
+
 ## 6.1.0
 
 ### Minor Changes

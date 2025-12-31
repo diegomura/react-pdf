@@ -1,5 +1,14 @@
 # @react-pdf/font
 
+## 4.0.5
+
+### Patch Changes
+
+- [#3271](https://github.com/diegomura/react-pdf/pull/3271) [`e27cdb48`](https://github.com/diegomura/react-pdf/commit/e27cdb4843c790d0cd3a0fdc2cc3680cee3270c3) Thanks [@diegomura](https://github.com/diegomura)! - feat(font): various improvements
+
+- Updated dependencies []:
+  - @react-pdf/types@2.9.3
+
 ## 4.0.4
 
 ### Patch Changes

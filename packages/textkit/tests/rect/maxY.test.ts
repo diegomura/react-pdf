@@ -16,4 +16,14 @@ describe('rect maxY operator', () => {
     const rect = { x: 2, y: 10, width: 4, height: 8 };
     expect(maxY(rect)).toBe(18);
   });
+
+  test('should return maxY for rect at origin', () => {
+    const rect = { x: 0, y: 0, width: 100, height: 50 };
+    expect(maxY(rect)).toBe(50);
+  });
+
+  test('should return y for rect with zero height', () => {
+    const rect = { x: 10, y: 25, width: 20, height: 0 };
+    expect(maxY(rect)).toBe(25);
+  });
 });

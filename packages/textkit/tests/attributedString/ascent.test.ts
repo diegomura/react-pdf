@@ -24,6 +24,15 @@ describe('attributeString ascent operator', () => {
     expect(ascent(string)).toBe(0);
   });
 
+  test('should return ascent for single run', () => {
+    const runs = [
+      { start: 0, end: 5, attributes: { fontSize: 10, font: [font] } }, // 50
+    ];
+    const string = { string: '', runs };
+
+    expect(ascent(string)).toBe(50);
+  });
+
   test('should max runs ascent', () => {
     const runs = [
       { start: 2, end: 4, attributes: { fontSize: 10, font: [font] } }, // 50

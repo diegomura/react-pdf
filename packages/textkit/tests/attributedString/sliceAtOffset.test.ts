@@ -3,8 +3,46 @@ import { describe, expect, test } from 'vitest';
 import pluck from '../internal/pluck';
 import sliceAtOffset from '../../src/attributedString/sliceAtOffset';
 import { Glyph } from '../../src/types';
+import empty from '../../src/attributedString/empty';
 
 describe('attributeString sliceAtOffset operator', () => {
+  test('should return empty string for empty attributed string', () => {
+    const result = sliceAtOffset(10, empty());
+
+    expect(result).toHaveProperty('string', '');
+    expect(result.runs).toHaveLength(0);
+  });
+
+  test('should return empty string at zero offset', () => {
+    const runs = [
+      {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 0, codePoints: [76] }, // L
+          { id: 111, advanceWidth: 0, codePoints: [111] }, // o
+          { id: 114, advanceWidth: 0, codePoints: [114] }, // r
+          { id: 101, advanceWidth: 0, codePoints: [101] }, // e
+          { id: 109, advanceWidth: 0, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
+          { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        ],
+        glyphIndices: [0, 1, 2, 3, 4],
+      },
+    ];
+
+    const string = { string: 'Lorem', runs };
+    const result = sliceAtOffset(0, string);
+
+    expect(result).toHaveProperty('string', '');
+  });
+
   test('should slice single run string', () => {
     const runs = [
       {

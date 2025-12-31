@@ -13,7 +13,9 @@ const trailingPositions = (run: Run) => {
   const positions = reverse(run.positions || []);
   const leadingWhitespaces = glyphs.findIndex((g) => !isWhiteSpace(g));
 
-  return positions.slice(0, leadingWhitespaces);
+  return leadingWhitespaces === -1
+    ? positions
+    : positions.slice(0, leadingWhitespaces);
 };
 
 /**
@@ -23,6 +25,8 @@ const trailingPositions = (run: Run) => {
  * @returns Trailing white space offset
  */
 const trailingOffset = (run: Run) => {
+  if (!run) return 0;
+
   const positions = trailingPositions(run);
 
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);

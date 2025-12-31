@@ -4,6 +4,13 @@ import indexAtOffset from '../../src/attributedString/indexAtOffset';
 import { Glyph } from '../../src/types';
 
 describe('attributeString indexAtOffset operator', () => {
+  test('should return 0 for empty attributed string', () => {
+    const string = { string: '', runs: [] };
+
+    expect(indexAtOffset(0, string)).toBe(0);
+    expect(indexAtOffset(10, string)).toBe(0);
+  });
+
   test('should return index for single run string', () => {
     const runs = [
       {

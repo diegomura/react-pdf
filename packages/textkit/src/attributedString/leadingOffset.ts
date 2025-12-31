@@ -1,5 +1,18 @@
+import isWhiteSpace from '../glyph/isWhiteSpace';
 import runLeadingOffset from '../run/leadingOffset';
-import { AttributedString } from '../types';
+import { AttributedString, Run } from '../types';
+
+/**
+ * Check if run is entirely whitespace
+ *
+ * @param run - Run
+ * @returns Whether run is entirely whitespace
+ */
+const isRunWhiteSpace = (run: Run) => {
+  const glyphs = run?.glyphs || [];
+
+  return glyphs.length > 0 && glyphs.every(isWhiteSpace);
+};
 
 /**
  * Get attributed string leading white space offset
@@ -10,7 +23,15 @@ import { AttributedString } from '../types';
 const leadingOffset = (attributedString: AttributedString) => {
   const runs = attributedString.runs || [];
 
-  return runLeadingOffset(runs[0]);
+  let offset = 0;
+
+  for (const run of runs) {
+    offset += runLeadingOffset(run);
+
+    if (!isRunWhiteSpace(run)) break;
+  }
+
+  return offset;
 };
 
 export default leadingOffset;

@@ -69,7 +69,7 @@ const fontSubstitution =
         if (
           font !== lastFont ||
           fontSize !== lastFontSize ||
-         font.unitsPerEm !== lastFont?.unitsPerEm
+          font.unitsPerEm !== lastFont?.unitsPerEm
         ) {
           if (lastFont) {
             res.push({

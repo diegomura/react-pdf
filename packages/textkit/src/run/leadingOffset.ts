@@ -12,7 +12,9 @@ const leadingPositions = (run: Run) => {
   const positions = run.positions || [];
   const leadingWhitespaces = glyphs.findIndex((g) => !isWhiteSpace(g));
 
-  return positions.slice(0, leadingWhitespaces);
+  return leadingWhitespaces === -1
+    ? positions
+    : positions.slice(0, leadingWhitespaces);
 };
 
 /**
@@ -22,6 +24,8 @@ const leadingPositions = (run: Run) => {
  * @returns Leading white space offset
  */
 const leadingOffset = (run: Run) => {
+  if (!run) return 0;
+
   const positions = leadingPositions(run);
 
   return positions.reduce((acc, pos) => acc + (pos.xAdvance || 0), 0);

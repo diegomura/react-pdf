@@ -8,7 +8,7 @@ describe('attributeString length operator', () => {
     expect(length(empty())).toBe(0);
   });
 
-  test('should correct length for attributed string', () => {
+  test('should return correct length for attributed string', () => {
     const string = {
       string: '',
       runs: [
@@ -17,5 +17,13 @@ describe('attributeString length operator', () => {
       ],
     };
     expect(length(string)).toBe(6);
+  });
+
+  test('should return correct length for single run', () => {
+    const string = {
+      string: '',
+      runs: [{ start: 0, end: 10, attributes: {} }],
+    };
+    expect(length(string)).toBe(10);
   });
 });

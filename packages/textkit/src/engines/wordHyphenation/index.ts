@@ -11,7 +11,7 @@ const hyphenator = hyphen(pattern);
  * @returns Word parts
  */
 const splitHyphen = (word: string) => {
-  return word.split(SOFT_HYPHEN);
+  return word.split(SOFT_HYPHEN).flatMap((part) => part.split(/(?<=[-])/g));
 };
 
 const cache: Record<string, HyphenatedWord> = {};

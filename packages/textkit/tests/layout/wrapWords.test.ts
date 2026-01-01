@@ -242,6 +242,27 @@ describe('wrapWords', () => {
       expect(result.runs[1]).toHaveProperty('end', 11);
     });
 
+    test('should split at hyphen and not duplicate hyphen in hyphenation', () => {
+      const result = builtinInstance({
+        string: 'Lo-rem ipsum-',
+        runs: [
+          {
+            start: 0,
+            end: 13,
+            attributes: {},
+          },
+        ],
+      });
+
+      expect(result.syllables).toEqual([
+        { string: 'Lo-', hyphen: null },
+        { string: 'rem', hyphen: null },
+        { string: ' ', hyphen: null },
+        { string: 'ip', hyphen: '-' },
+        { string: 'sum-', hyphen: null },
+      ]);
+    });
+
     test('should not apply default english syllable split to word containing soft hyphen', () => {
       const result = builtinInstance({
         string: 'Lorem ips\u00adum',

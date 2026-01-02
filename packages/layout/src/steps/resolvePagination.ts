@@ -39,8 +39,9 @@ const allFixed = (nodes: SafeNode[]) => nodes.every(isFixed);
 
 const isDynamic = (
   node: SafeNode,
-): node is SafeLinkNode | SafeTextNode | SafeViewNode =>
-  node.props && 'render' in node.props;
+): node is SafeLinkNode | SafeTextNode | SafeViewNode => {
+  return node.props && 'render' in node.props && !!node.props.render;
+};
 
 const relayoutPage = compose(
   resolveTextLayout,

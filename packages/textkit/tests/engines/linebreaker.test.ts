@@ -280,7 +280,13 @@ describe('linebreaker', () => {
           string: 'Potentieel broeikasgasemissierapport',
         },
       ],
-      syllables: ['Potentieel', ' ', 'broeikasgas', 'emissie', 'rapport'],
+      syllables: [
+        { string: 'Potentieel', hyphen: null },
+        { string: ' ', hyphen: null },
+        { string: 'broeikasgas', hyphen: '-' as const },
+        { string: 'emissie', hyphen: '-' as const },
+        { string: 'rapport', hyphen: null },
+      ],
     };
 
     const result = linebreaker(attributedString, [10]);

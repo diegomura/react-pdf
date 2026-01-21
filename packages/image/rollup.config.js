@@ -21,7 +21,10 @@ const getPlugins = ({ browser }) => [
     values: { BROWSER: JSON.stringify(browser) },
   }),
   ...(browser
-    ? [ignore(['fs', 'path', 'url']), nodePolyfills({ include: null })]
+    ? [
+        ignore(['fs', 'path', 'url', 'linkedom']),
+        nodePolyfills({ include: null }),
+      ]
     : []),
 ];
 

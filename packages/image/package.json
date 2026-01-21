@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "@react-pdf/png-js": "^3.0.0",
-    "jay-peg": "^1.1.1"
+    "jay-peg": "^1.1.1",
+    "linkedom": "^0.18.12"
   },
   "files": [
     "lib"

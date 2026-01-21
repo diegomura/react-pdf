@@ -17,6 +17,7 @@ import objectFit from './object-fit';
 import pageWrap from './page-wrap';
 import resume from './resume';
 import svg from './svg';
+import svgImage from './svg-image';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
 import forms from './forms';
@@ -43,6 +44,7 @@ const EXAMPLES = [
   pageWrap,
   resume,
   svg,
+  svgImage,
   svgTransform,
   transformOrigin,
   imageBackground,

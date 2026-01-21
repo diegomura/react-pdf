@@ -4,18 +4,19 @@ import path from 'path';
 
 import PNG from './png';
 import JPEG from './jpeg';
+import SVG from './svg';
 import createCache from './cache.js';
 import {
+  AnyImage,
   Base64ImageSrc,
   DataImageSrc,
-  Image,
   ImageFormat,
   ImageSrc,
   LocalImageSrc,
   RemoteImageSrc,
 } from './types';
 
-export const IMAGE_CACHE = createCache<Promise<Image | null>>({ limit: 30 });
+export const IMAGE_CACHE = createCache<Promise<AnyImage | null>>({ limit: 30 });
 
 const isBuffer = Buffer.isBuffer;
 
@@ -93,7 +94,13 @@ const fetchRemoteFile = async (src: RemoteImageSrc) => {
 
 const isValidFormat = (format: string): format is ImageFormat => {
   const lower = format.toLowerCase();
-  return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
+  return (
+    lower === 'jpg' ||
+    lower === 'jpeg' ||
+    lower === 'png' ||
+    lower === 'svg' ||
+    lower === 'svg+xml'
+  );
 };
 
 const getImageFormat = (buffer: Buffer) => {
@@ -103,25 +110,30 @@ const getImageFormat = (buffer: Buffer) => {
     format = 'jpg' as const;
   } else if (PNG.isValid(buffer)) {
     format = 'png' as const;
+  } else if (SVG.isValid(buffer)) {
+    format = 'svg' as const;
   }
 
   return format;
 };
 
-function getImage(body: Buffer, format: string): Image | null {
+function getImage(body: Buffer, format: string): AnyImage | null {
   switch (format.toLowerCase()) {
     case 'jpg':
     case 'jpeg':
       return new JPEG(body);
     case 'png':
       return new PNG(body);
+    case 'svg':
+    case 'svg+xml':
+      return new SVG(body);
     default:
       return null;
   }
 }
 
 const resolveBase64Image = async ({ uri }: Base64ImageSrc) => {
-  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
+  const match = /^data:image\/([a-zA-Z+]*);base64,([^"]*)/g.exec(uri);
 
   if (!match) throw new Error(`Invalid base64 image: ${uri}`);
 
@@ -199,7 +211,7 @@ const getCacheKey = (src: ImageSrc): string | null => {
 };
 
 const resolveImage = (src: ImageSrc, { cache = true } = {}) => {
-  let image: Promise<Image | null>;
+  let image: Promise<AnyImage | null>;
 
   const cacheKey = getCacheKey(src);
 

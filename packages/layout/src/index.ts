@@ -16,6 +16,7 @@ import resolvePagePaddings from './steps/resolvePagePaddings';
 import resolvePercentRadius from './steps/resolvePercentRadius';
 import resolvePercentHeight from './steps/resolvePercentHeight';
 import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
+import resolveSvgImages from './steps/resolveSvgImages';
 
 const layout = asyncCompose(
   resolveZIndex,
@@ -26,6 +27,7 @@ const layout = asyncCompose(
   resolvePercentRadius,
   resolveDimensions,
   resolveSvg,
+  resolveSvgImages,
   resolveAssets,
   resolveInheritance,
   resolvePercentHeight,

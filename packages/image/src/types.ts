@@ -6,7 +6,32 @@ export interface Image {
   key?: string;
 }
 
-export type ImageFormat = 'jpg' | 'jpeg' | 'png';
+export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
+
+export type Viewbox = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+};
+
+export interface SvgNode {
+  type: string;
+  props: Record<string, unknown>;
+  children?: SvgNode[];
+}
+
+export interface SvgImage {
+  width: number;
+  height: number;
+  data: string;
+  format: 'svg';
+  viewBox?: Viewbox;
+  children: SvgNode[];
+  key?: string;
+}
+
+export type AnyImage = Image | SvgImage;
 
 export type DataImageSrc = {
   data: Buffer;

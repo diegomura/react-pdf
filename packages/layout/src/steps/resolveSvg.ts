@@ -45,6 +45,8 @@ const STYLE_PROPS = [
   'strokeDasharray',
   'gradientUnits',
   'gradientTransform',
+  'stopColor',
+  'stopOpacity',
 ];
 
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
@@ -81,6 +83,15 @@ const parseTransform = (container: Container) => (value) => {
   return resolveStyle(container, { transform: value }).transform;
 };
 
+// Skip transformColor for url() references (gradients, patterns)
+const URL_REGEX = /^url\(/;
+const transformColorSafe = (value) => {
+  if (typeof value === 'string' && URL_REGEX.test(value)) {
+    return value;
+  }
+  return transformColor(value);
+};
+
 const parseProps =
   (container: Container) =>
   (node: SafeNode): SafeNode => {
@@ -101,10 +112,16 @@ const parseProps =
         cy: parseFloat,
         width: parseFloat,
         height: parseFloat,
+        fontSize: parseFloat,
+        strokeWidth: parseFloat,
+        strokeMiterlimit: parseFloat,
+        strokeDashoffset: parseFloat,
         offset: parsePercent,
-        fill: transformColor,
+        fill: transformColorSafe,
+        fillOpacity: parsePercent,
         opacity: parsePercent,
-        stroke: transformColor,
+        stroke: transformColorSafe,
+        strokeOpacity: parsePercent,
         stopOpacity: parsePercent,
         stopColor: transformColor,
         transform: parseTransform(container),
@@ -115,6 +132,23 @@ const parseProps =
 
     return Object.assign({}, node, { props });
   };
+
+// SVG spec: if rx is specified but ry is not, ry defaults to rx (and vice versa)
+const resolveRectRadius = (node: SafeNode): SafeNode => {
+  if (node.type !== P.Rect || !node.props) return node;
+
+  const { rx, ry } = node.props as { rx?: number; ry?: number };
+
+  // If both are specified or neither is specified, no change needed
+  if ((rx && ry) || (!rx && !ry)) return node;
+
+  const newProps = Object.assign({}, node.props, {
+    rx: rx ?? ry,
+    ry: ry ?? rx,
+  });
+
+  return Object.assign({}, node, { props: newProps });
+};
 
 const mergeStyles = (node: SafeNode): SafeNode => {
   const style = node.style || {};
@@ -186,10 +220,54 @@ const parseText =
 const resolveSvgNode = (container: Container) =>
   compose(
     parseProps(container),
+    resolveRectRadius,
+    pickStyleProps,
     addMissingTspan,
     removeNoneValues,
     mergeStyles,
   );
+
+// Gradient transforms typically don't use percentages, so use minimal container
+const ZERO_CONTAINER: Container = { width: 0, height: 0 };
+const parseGradientTransform = parseTransform(ZERO_CONTAINER);
+
+// Process DEFS children (LINEAR_GRADIENT, RADIAL_GRADIENT, STOP) without container-based percent transform
+const parseDefsProps = (node: SafeNode): SafeNode => {
+  const props = evolve(
+    {
+      // Gradient coordinates (percent becomes 0-1 range)
+      x1: parsePercent,
+      y1: parsePercent,
+      x2: parsePercent,
+      y2: parsePercent,
+      cx: parsePercent,
+      cy: parsePercent,
+      fx: parsePercent,
+      fy: parsePercent,
+      r: parsePercent,
+      gradientTransform: parseGradientTransform,
+      // Stop properties
+      offset: parsePercent,
+      stopColor: transformColor,
+      stopOpacity: parsePercent,
+    } as any,
+    node.props || {},
+  );
+
+  return Object.assign({}, node, { props });
+};
+
+const resolveDefsChildren = (node: SafeNode): SafeNode => {
+  if (!node.children) return node;
+
+  const children = node.children.map((child) =>
+    resolveDefsChildren(parseDefsProps(child)),
+  );
+
+  return Object.assign({}, node, { children });
+};
+
+const isDefs = (node: SafeNode) => node.type === P.Defs;
 
 const resolveChildren =
   (container: Container) =>
@@ -201,7 +279,10 @@ const resolveChildren =
       resolveSvgNode(container),
     );
 
-    const children = node.children.map(resolveChild);
+    // Process DEFS separately without container-based percent transform
+    const children = node.children.map((child) =>
+      isDefs(child) ? resolveDefsChildren(child) : resolveChild(child),
+    );
 
     return Object.assign({}, node, { children });
   };

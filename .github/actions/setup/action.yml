@@ -1,0 +1,20 @@
+name: Setup
+description: Download and install 3rd party software.
+runs:
+  using: composite
+  steps:
+    - name: Install Mise
+      uses: jdx/mise-action@v3.6.1
+      with:
+        version: 2026.1.6
+
+    - name: Install Dependencies
+      shell: bash
+      run: yarn install --frozen-lockfile
+
+    - name: Configure Git
+      shell: bash
+      run: |
+        git config --global init.defaultBranch main
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"

@@ -15,7 +15,6 @@ concurrency:
 env:
   FORCE_COLOR: 2
   HUSKY: 0
-  NODE_VERSION: 20
 
 jobs:
   lint:
@@ -24,28 +23,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
-      - name: Cache Yarn cache
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
+      - uses: ./.github/actions/setup
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies and build
-        run: yarn --frozen-lockfile
-
-      - name: Check size
-        run: yarn lint
+      - run: yarn lint
 
   size:
     name: Check size
@@ -53,25 +35,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
-      - name: Cache Yarn cache
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies and build
-        run: yarn --frozen-lockfile
+      - uses: ./.github/actions/setup
 
       - name: Check size
         run: yarn --cwd packages/renderer run size
@@ -87,57 +53,27 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
 
-      - name: Cache Yarn cache
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node_version }}
-
-      - name: Install dependencies and build
-        run: yarn --frozen-lockfile
-
+      - uses: ./.github/actions/setup
+      - run: mise use node@${{ matrix.node_version }}
+      
       - name: Run tests
         run: REACT_VERSION=${{ matrix.react_version }} yarn test
 
   e2e-node:
-    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    name: Run E2E tests (Node.js ${{ matrix.node_version }}
     strategy:
       matrix:
-        cjs_or_esm: [cjs, esm]
         node_version: [18, 20, 21]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Yarn cache
-        uses: actions/cache@v4
-        env:
-          cache-name: yarn-cache
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node_version }}
-
-      - name: Install dependencies and build
-        run: yarn --frozen-lockfile
+      - uses: ./.github/actions/setup
+      - run: mise use node@${{ matrix.node_version }}
 
       - name: Run E2E tests
-        run: yarn --cwd e2e/node-${{ matrix.cjs_or_esm }} run start
+        run: yarn --cwd e2e/node-esm run start

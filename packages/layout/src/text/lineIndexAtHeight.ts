@@ -1,20 +1,20 @@
 import { SafeTextNode } from '../types';
+import getLineTop from './getLineTop';
 
 /**
- * Get line index at given height
+ * Get line index at given height.
  *
  * @param node
  * @param height
  */
 const lineIndexAtHeight = (node: SafeTextNode, height: number) => {
-  let y = 0;
-
   if (!node.lines) return 0;
 
   for (let i = 0; i < node.lines.length; i += 1) {
-    const line = node.lines[i];
-    if (y + line.box.height > height) return i;
-    y += line.box.height;
+    const lineTop = getLineTop(node.lines, i);
+    const lineBottom = lineTop + node.lines[i].box.height;
+
+    if (lineBottom > height) return i;
   }
 
   return node.lines.length;

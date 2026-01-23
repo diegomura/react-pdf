@@ -218,10 +218,16 @@ export type Display = 'flex' | 'none';
 
 export type Position = 'absolute' | 'relative' | 'static';
 
+export type Float = 'left' | 'right' | 'none';
+
+export type Clear = Float | 'both';
+
 export type LayoutStyle = {
   aspectRatio?: number | string;
   bottom?: number | string;
+  clear?: Clear;
   display?: Display;
+  float?: Float;
   left?: number | string;
   position?: Position;
   right?: number | string;
@@ -235,6 +241,8 @@ export type LayoutExpandedStyle = LayoutStyle;
 export type LayoutSafeStyle = LayoutExpandedStyle & {
   aspectRatio?: number;
   bottom?: number;
+  clear?: Clear;
+  float?: Float;
   left?: number;
   right?: number;
   top?: number;

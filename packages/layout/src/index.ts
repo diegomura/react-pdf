@@ -5,6 +5,7 @@ import resolveYoga from './steps/resolveYoga';
 import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';
 import resolveStyles from './steps/resolveStyles';
+import resolveFloats from './steps/resolveFloats';
 import resolveOrigins from './steps/resolveOrigins';
 import resolveBookmarks from './steps/resolveBookmarks';
 import resolvePageSizes from './steps/resolvePageSizes';
@@ -41,6 +42,7 @@ const layout = asyncCompose(
   resolveAssets,
   paginationStep,
   resolveTextLayout,
+  resolveFloats,
   resolvePercentRadius,
   resolveDimensions,
   resolveSvg,

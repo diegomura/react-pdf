@@ -81,6 +81,18 @@ const setNodeHeight = (node: SafeNode) => {
 };
 
 /**
+ * Get position type for node, treating float elements as absolute
+ */
+const getPositionType = (node: SafeNode): string | undefined => {
+  const float = node.style?.float;
+  // Float elements are treated as absolute positioned
+  if (float === 'left' || float === 'right') {
+    return 'absolute';
+  }
+  return node.style.position;
+};
+
+/**
  * Set styles valeus into yoga node before layout calculation
  *
  * @param node
@@ -101,7 +113,7 @@ const setYogaValues = (node: SafeNode) => {
     setPaddingRight(node.style.paddingRight),
     setPaddingBottom(node.style.paddingBottom),
     setPaddingLeft(node.style.paddingLeft),
-    setPositionType(node.style.position),
+    setPositionType(getPositionType(node)),
     setPositionTop(node.style.top),
     setPositionRight(node.style.right),
     setPositionBottom(node.style.bottom),

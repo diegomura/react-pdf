@@ -6,6 +6,7 @@ import layoutEngine, {
   wordHyphenation,
   textDecoration,
   fontSubstitution,
+  Rect,
 } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
 
@@ -34,9 +35,15 @@ const getTextOverflow = (node) => node.style?.textOverflow;
  * @param {number} width
  * @param {number} height
  * @param {Object} node
+ * @param {Rect[]} excludeRects - Areas to exclude from text layout (for float)
  * @returns {Object} layout container
  */
-const getContainer = (width, height, node) => {
+const getContainer = (
+  width: number,
+  height: number,
+  node: SafeTextNode,
+  excludeRects?: Rect[],
+) => {
   const maxLines = getMaxLines(node);
   const textOverflow = getTextOverflow(node);
 
@@ -47,6 +54,7 @@ const getContainer = (width, height, node) => {
     maxLines,
     height: height || Infinity,
     truncateMode: textOverflow,
+    excludeRects,
   };
 };
 
@@ -72,6 +80,7 @@ const getLayoutOptions = (fontStore, node) => ({
  * @param width - Container width
  * @param height - Container height
  * @param fontStore - Font store
+ * @param excludeRects - Areas to exclude from text layout (for float)
  * @returns Layout lines
  */
 const layoutText = (
@@ -79,9 +88,10 @@ const layoutText = (
   width: number,
   height: number,
   fontStore: FontStore,
+  excludeRects?: Rect[],
 ) => {
   const attributedString = getAttributedString(fontStore, node);
-  const container = getContainer(width, height, node);
+  const container = getContainer(width, height, node, excludeRects);
   const options = getLayoutOptions(fontStore, node);
   const lines = engine(attributedString, container, options);
 

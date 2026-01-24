@@ -62,7 +62,14 @@ const normalizeTransformOperation = ({
     }
 
     case 'rotate': {
-      return { operation: 'rotate', value: [parseAngle(value[0])] };
+      return {
+        operation: 'rotate',
+        value: [
+          parseAngle(value[0]),
+          parseFloat(value[1] || '0'),
+          parseFloat(value[2] || '0'),
+        ],
+      };
     }
 
     case 'translate': {

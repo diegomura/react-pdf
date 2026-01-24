@@ -18,8 +18,8 @@ const applySingleTransformation = (
     }
 
     case 'rotate': {
-      const [angle] = value;
-      ctx.rotate(angle, { origin });
+      const [angle, posX, posY] = value;
+      ctx.rotate(angle, { origin: [posX, posY] });
       break;
     }
 

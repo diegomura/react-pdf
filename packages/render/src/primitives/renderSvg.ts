@@ -145,7 +145,16 @@ const transformGradient = (
         const value = transform.value;
         const cos = Math.cos(value[0]);
         const sin = Math.sin(value[0]);
-        return [cos, sin, -sin, cos, 0, 0];
+        const x = value[1] || 0;
+        const y = value[2] || 0;
+        return [
+          cos,
+          sin,
+          -sin,
+          cos,
+          x * (1 - cos) + y * sin,
+          y * (1 - cos) + x * sin,
+        ];
       }
       case 'skew': {
         const value = transform.value;

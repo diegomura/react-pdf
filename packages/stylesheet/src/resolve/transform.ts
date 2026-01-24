@@ -62,13 +62,15 @@ const normalizeTransformOperation = ({
     }
 
     case 'rotate': {
+      const angle = parseAngle(value[0]);
+      const valueTuple: [number, number, number] =
+        !value[1] || !value[2]
+          ? [angle, 0, 0]
+          : [angle, parseFloat(value[1]), parseFloat(value[2])];
+
       return {
         operation: 'rotate',
-        value: [
-          parseAngle(value[0]),
-          parseFloat(value[1] || '0'),
-          parseFloat(value[2] || '0'),
-        ],
+        value: valueTuple,
       };
     }
 

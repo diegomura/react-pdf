@@ -140,6 +140,26 @@ export type LayoutOptions = {
   shrinkCharFactor?: JustificationFactor;
   expandWhitespaceFactor?: JustificationFactor;
   shrinkWhitespaceFactor?: JustificationFactor;
+  /**
+   * CSS-like hyphens property.
+   * - 'none': No hyphenation at line breaks
+   * - 'manual': Hyphenation only at soft hyphens (default behavior)
+   * - 'auto': Automatic hyphenation (same as 'manual' currently)
+   */
+  hyphens?: 'none' | 'auto' | 'manual';
+  /**
+   * CSS-like hyphenate-character property.
+   * Character to display when hyphenating. Default is '-'.
+   * Set to empty string to disable hyphen display.
+   */
+  hyphenateCharacter?: string;
+  /**
+   * CSS-like word-break property.
+   * - 'normal': CJK text can break at any character (default)
+   * - 'break-all': All text can break at any character
+   * - 'keep-all': CJK text only breaks at word boundaries
+   */
+  wordBreak?: 'normal' | 'break-all' | 'keep-all';
 };
 
 export type { Font } from '@react-pdf/font';

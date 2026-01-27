@@ -321,12 +321,19 @@ export type TextTransform =
 
 export type VerticalAlign = 'sub' | 'super';
 
+export type Hyphens = 'none' | 'manual' | 'auto';
+
+export type WordBreak = 'normal' | 'break-all' | 'keep-all';
+
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
   fontSize?: number | string;
   fontFamily?: string | string[];
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
+  hyphens?: Hyphens;
+  hyphenateCharacter?: string;
+  wordBreak?: WordBreak;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   maxLines?: number | string;

@@ -7,285 +7,44 @@ import font from '../internal/font';
 
 const width = 50;
 
+const CJK_ADVANCE = 10;
+
+const makePosition = (xAdvance: number) => ({
+  xAdvance,
+  yAdvance: 0,
+  xOffset: 0,
+  yOffset: 0,
+});
+
+const makeAttributedString = (
+  str: string,
+  syllables: string[],
+  advanceWidth = CJK_ADVANCE,
+) => ({
+  string: str,
+  runs: [
+    {
+      start: 0,
+      end: str.length,
+      attributes: { font: [font] },
+      glyphIndices: Array.from({ length: str.length }, (_, i) => i),
+      positions: Array.from({ length: str.length }, () =>
+        makePosition(advanceWidth),
+      ),
+      glyphs: [],
+      string: str,
+    },
+  ],
+  syllables,
+});
+
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
   test('should break lines and adds hyphens only where indicated', () => {
-    const attributedString = {
-      string: 'Potentieel broeikasgasemissierapport',
-      runs: [
-        {
-          start: 0,
-          end: 36,
-          attributes: { font: [font] },
-          stringIndices: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-          ],
-          glyphIndices: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-          ],
-          positions: [
-            {
-              xAdvance: 11.106,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 667,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 5.004,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 278,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 5.004,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 278,
-            },
-            {
-              xAdvance: 3.9959999999999996,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 222,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 3.9959999999999996,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 222,
-            },
-            {
-              xAdvance: 5.004,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 278,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 5.994,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 333,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 3.9959999999999996,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 222,
-            },
-            {
-              xAdvance: 9,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 500,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 9,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 500,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 9,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 500,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 14.993999999999998,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 833,
-            },
-            {
-              xAdvance: 3.9959999999999996,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 222,
-            },
-            {
-              xAdvance: 9,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 500,
-            },
-            {
-              xAdvance: 9,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 500,
-            },
-            {
-              xAdvance: 3.9959999999999996,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 222,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 5.813999999999999,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 333,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 10.008,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 556,
-            },
-            {
-              xAdvance: 6.7139999999999995,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 333,
-            },
-            {
-              xAdvance: 5.004,
-              yAdvance: 0,
-              xOffset: 0,
-              yOffset: 0,
-              advanceWidth: 278,
-            },
-          ],
-          glyphs: [],
-          string: 'Potentieel broeikasgasemissierapport',
-        },
-      ],
-      syllables: ['Potentieel', ' ', 'broeikasgas', 'emissie', 'rapport'],
-    };
+    const str = 'Potentieel broeikasgasemissierapport';
+    const syllables = ['Potentieel', ' ', 'broeikasgas', 'emissie', 'rapport'];
+    const attributedString = makeAttributedString(str, syllables, 8);
 
     const result = linebreaker(attributedString, [10]);
 

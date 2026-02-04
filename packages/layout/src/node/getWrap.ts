@@ -8,7 +8,11 @@ const getWrap = (node: SafeNode) => {
 
   if (!node.props) return true;
 
-  return 'wrap' in node.props ? node.props.wrap : true;
+  if ('wrap' in node.props) {
+    return node.props.wrap == null ? true : node.props.wrap;
+  }
+
+  return true;
 };
 
 export default getWrap;

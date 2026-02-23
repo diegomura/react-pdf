@@ -1,5 +1,13 @@
 # @nutshelllabs/stylesheet
 
+## 6.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @nutshelllabs/fns@3.1.3
+  - @nutshelllabs/types@2.9.3
+
 ## 6.1.2
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @nutshelllabs/renderer
 
+## 4.3.3
+
+### Patch Changes
+
+- [`d7e7b9d5`](https://github.com/diegomura/react-pdf/commit/d7e7b9d56de69310db3b1949de2637e2ae204582) - fix(renderer): update test imports from @react-pdf/renderer to @nutshelllabs/renderer
+
+- [`d7e7b9d5`](https://github.com/diegomura/react-pdf/commit/d7e7b9d56de69310db3b1949de2637e2ae204582) - chore: upgrade canvas to v3, update CI to node 22, and add canvas native dependencies
+
+- Updated dependencies [[`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`d7e7b9d5`](https://github.com/diegomura/react-pdf/commit/d7e7b9d56de69310db3b1949de2637e2ae204582), [`e27cdb48`](https://github.com/diegomura/react-pdf/commit/e27cdb4843c790d0cd3a0fdc2cc3680cee3270c3)]:
+  - @nutshelllabs/fns@3.1.3
+  - @nutshelllabs/layout@4.4.3
+  - @nutshelllabs/font@4.0.5
+  - @nutshelllabs/render@4.3.3
+  - @nutshelllabs/types@2.9.3
+
 ## 4.3.2
 
 ### Patch Changes

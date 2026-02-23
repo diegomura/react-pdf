@@ -1,5 +1,12 @@
 # next-14
 
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies [[`d7e7b9d5`](https://github.com/diegomura/react-pdf/commit/d7e7b9d56de69310db3b1949de2637e2ae204582), [`d7e7b9d5`](https://github.com/diegomura/react-pdf/commit/d7e7b9d56de69310db3b1949de2637e2ae204582)]:
+  - @nutshelllabs/renderer@4.3.3
+
 ## 0.1.17
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/types",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "license": "MIT",
   "description": "React-pdf TypeScript definitions",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -12,8 +12,8 @@
     "directory": "packages/types"
   },
   "dependencies": {
-    "@nutshelllabs/font": "^4.0.4",
+    "@nutshelllabs/font": "^4.0.5",
     "@nutshelllabs/primitives": "^4.1.1",
-    "@nutshelllabs/stylesheet": "^6.1.2"
+    "@nutshelllabs/stylesheet": "^6.1.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@nutshelllabs/vite-example",
-  "version": "3.3.20",
+  "version": "3.3.21",
   "license": "MIT",
   "private": true,
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -11,7 +11,7 @@
     "build:site": "vite build ./src"
   },
   "dependencies": {
-    "@nutshelllabs/renderer": "^4.3.2"
+    "@nutshelllabs/renderer": "^4.3.3"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",

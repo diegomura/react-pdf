@@ -1,5 +1,13 @@
 # @nutshelllabs/types
 
+## 2.9.3
+
+### Patch Changes
+
+- Updated dependencies [[`e27cdb48`](https://github.com/diegomura/react-pdf/commit/e27cdb4843c790d0cd3a0fdc2cc3680cee3270c3)]:
+  - @nutshelllabs/font@4.0.5
+  - @nutshelllabs/stylesheet@6.1.3
+
 ## 2.9.2
 
 ### Patch Changes

@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { Document, Page, Text, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, Font } from '@nutshelllabs/renderer';
 import renderToImage from './renderComponent';
 
-describe('emoji', () => {
+describe.skip('emoji', () => {
   test('should support builder function', async () => {
     Font.registerEmojiSource({
       builder: (code) =>

@@ -134,6 +134,8 @@ const getFragments = (
     fragments = preprocessor(fragments);
   }
 
+  fragments = fragments.filter((f) => f.string.length > 0);
+
   return fragments;
 };
 

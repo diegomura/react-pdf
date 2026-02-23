@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import ReactPDF from '@react-pdf/renderer';
+import ReactPDF from '@nutshelllabs/renderer';
 
 describe('dom', () => {
   test('should export font store', () => {

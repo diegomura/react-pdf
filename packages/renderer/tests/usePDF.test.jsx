@@ -2,7 +2,7 @@
 import { expect, it } from 'vitest';
 
 import { renderHook, waitFor, act } from '@testing-library/react';
-import { usePDF, Document, Page, Text } from '@react-pdf/renderer';
+import { usePDF, Document, Page, Text } from '@nutshelllabs/renderer';
 
 const TestDocument = ({ title = 'Default' }) => (
   <Document title={title}>

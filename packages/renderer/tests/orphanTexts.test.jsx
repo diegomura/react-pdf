@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Text, Document, Page } from '@react-pdf/primitives';
+import { Text, Document, Page } from '@nutshelllabs/primitives';
 import renderToImage from './renderComponent';
 
 const emptyString = '';

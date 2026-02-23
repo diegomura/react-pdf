@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import fs from 'fs';
 import url from 'url';
 import path from 'path';
-import { Document, Page, View, Image } from '@react-pdf/renderer';
+import { Document, Page, View, Image } from '@nutshelllabs/renderer';
 import renderToImage from './renderComponent';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));

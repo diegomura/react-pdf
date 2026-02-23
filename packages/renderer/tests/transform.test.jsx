@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Document, Page, View } from '@react-pdf/renderer';
+import { Document, Page, View } from '@nutshelllabs/renderer';
 import renderToImage from './renderComponent';
 
 const TestDocument = ({ transform, width = 20, height = 20 }) => {

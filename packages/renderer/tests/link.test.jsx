@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Document, Page, Link, Font, Text } from '@react-pdf/renderer';
+import { Document, Page, Link, Font, Text } from '@nutshelllabs/renderer';
 import renderToImage from './renderComponent';
 
 // pdf.js does not render default fonts in node and I use Open Sans (:

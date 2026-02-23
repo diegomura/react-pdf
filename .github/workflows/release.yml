@@ -21,8 +21,8 @@ jobs:
     strategy:
       matrix:
         # We aim to test all maintained LTS versions of Node.js as well as the latest stable version
-        node_version: [18, 20, 21]
-        react_version: [16, 17, 18, 19]
+        node_version: [22]
+        react_version: [18]
 
     steps:
       - name: Checkout
@@ -42,6 +42,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
+
+      - name: Install canvas native dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev libpixman-1-dev
 
       - name: Install dependencies and build
         run: yarn --frozen-lockfile

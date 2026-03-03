@@ -102,14 +102,12 @@ describe('bidiReordering', () => {
     const result = bidiReorderingInstance([[string]]);
 
     expect(result[0][0].string).toBe('Lorem muspi');
-    expect(result[0][0].runs[0].glyphs).toEqual(string.runs[0].glyphs);
-    expect(result[0][0].runs[0].positions).toEqual(string.runs[0].positions);
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(6));
+    expect(result[0][0].runs[0].positions).toEqual(initializeToIndex(6));
 
-    expect(result[0][0].runs[1].glyphs).toEqual(
-      string.runs[1].glyphs.reverse(),
-    );
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5).reverse());
     expect(result[0][0].runs[1].positions).toEqual(
-      string.runs[1].positions.reverse(),
+      initializeToIndex(5).reverse(),
     );
   });
 
@@ -145,5 +143,99 @@ describe('bidiReordering', () => {
     const result = bidiReorderingInstance([[string]]);
 
     expect(result[0][0].string).toBe('eroL');
+  });
+
+  test('should preserve run attributes when reordering multiple RTL runs', () => {
+    // <Text style={{ direction: 'rtl' }}>ABC <Text style={{ color: 'red' }}>DEF</Text> GHI</Text>
+    const string = {
+      string: 'ABC DEF GHI',
+      runs: [
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+            color: 'black',
+          },
+          start: 0,
+          end: 4,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+        },
+        {
+          attributes: { direction: 'rtl' as const, bidiLevel: 1, color: 'red' },
+          start: 4,
+          end: 7,
+          glyphs: initializeToIndex(3),
+          positions: initializeToIndex(3),
+        },
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+            color: 'black',
+          },
+          start: 7,
+          end: 11,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+        },
+      ],
+    };
+
+    const result = bidiReorderingInstance([[string]]);
+
+    expect(result[0][0].string).toBe('IHG FED CBA');
+
+    expect(result[0][0].runs[0].attributes.color).toBe('black');
+    expect(result[0][0].runs[0].start).toBe(0);
+    expect(result[0][0].runs[0].end).toBe(4);
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(4).reverse());
+
+    expect(result[0][0].runs[1].attributes.color).toBe('red');
+    expect(result[0][0].runs[1].start).toBe(4);
+    expect(result[0][0].runs[1].end).toBe(7);
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(3).reverse());
+
+    expect(result[0][0].runs[2].attributes.color).toBe('black');
+    expect(result[0][0].runs[2].start).toBe(7);
+    expect(result[0][0].runs[2].end).toBe(11);
+    expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
+  });
+
+  test('should reorder ltr runs embedded in rtl ones', () => {
+    // <Text style={{ direction: 'rtl' }}>AAA Hello BBB</Text>
+    const string = {
+      string: 'AAA Hello BBB',
+      runs: [
+        {
+          attributes: { direction: 'rtl' as const, bidiLevel: 1 },
+          start: 0,
+          end: 4,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+        },
+        {
+          attributes: { direction: 'ltr' as const, bidiLevel: 2 },
+          start: 4,
+          end: 9,
+          glyphs: initializeToIndex(5),
+          positions: initializeToIndex(5),
+        },
+        {
+          attributes: { direction: 'rtl' as const, bidiLevel: 1 },
+          start: 9,
+          end: 13,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+        },
+      ],
+    };
+
+    const result = bidiReorderingInstance([[string]]);
+
+    expect(result[0][0].string).toBe('BBB Hello AAA');
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(4).reverse());
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5));
+    expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
   });
 });

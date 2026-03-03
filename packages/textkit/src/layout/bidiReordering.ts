@@ -1,96 +1,123 @@
-import bidiFactory from 'bidi-js';
-import { repeat } from '@react-pdf/fns';
-
-import stringLength from '../attributedString/length';
 import { AttributedString, Paragraph, Run } from '../types';
 
-const bidi = bidiFactory();
+/**
+ * Reorder a single line for bidi display.
+ *
+ * The previous implementation shuffled individual glyphs across run boundaries
+ * using character-level index remapping. This broke run attributes (color,
+ * font-weight, etc.) because glyphs from one styled run ended up in another.
+ *
+ * This implementation instead:
+ * 1. Applies UAX #9 L2 at the run level to determine visual run order
+ * 2. Reverses glyphs/positions within RTL runs (odd bidiLevel)
+ * 3. Preserves all run attributes intact
+ */
+const reorderLine = (line: AttributedString): AttributedString => {
+  const { runs } = line;
 
-const getBidiLevels = (runs: Run[]) => {
-  return runs.reduce((acc, run) => {
-    const length = run.end - run.start;
-    const levels = repeat(run.attributes.bidiLevel, length);
-    return acc.concat(levels);
-  }, []);
-};
+  if (runs.length === 0) return line;
 
-const getReorderedIndices = (string: string, segments) => {
-  // Fill an array with indices
-  const indices = [];
-  for (let i = 0; i < string.length; i += 1) {
-    indices[i] = i;
-  }
-  // Reverse each segment in order
-  segments.forEach(([start, end]) => {
-    const slice = indices.slice(start, end + 1);
-    for (let i = slice.length - 1; i >= 0; i -= 1) {
-      indices[end - i] = slice[i];
-    }
-  });
+  const direction = runs[0]?.attributes.direction;
+  const baseLevel = direction === 'rtl' ? 1 : 0;
 
-  return indices;
-};
+  // Get bidi level per run (uniform within each run after preprocessing)
+  const runLevels = runs.map((r) => r.attributes.bidiLevel ?? 0);
+  const maxLevel = Math.max(...runLevels);
 
-const getItemAtIndex = (runs: Run[], objectName: string, index: number) => {
-  for (let i = 0; i < runs.length; i += 1) {
-    const run = runs[i];
-    const updatedIndex = run.glyphIndices[index - run.start];
-    if (index >= run.start && index < run.end) {
-      return run[objectName][updatedIndex];
-    }
-  }
+  // No reordering needed if all runs are LTR at base level
+  if (maxLevel === 0 && baseLevel === 0) return line;
 
-  throw new Error(`index ${index} out of range`);
-};
+  // UAX #9 L2: From highest level to lowest odd level,
+  // reverse contiguous sequences of runs at that level or higher
+  const orderedIndices = runs.map((_, i) => i);
 
-const reorderLine = (line: AttributedString) => {
-  const levels = getBidiLevels(line.runs);
-  const direction = line.runs[0]?.attributes.direction;
-  const level = direction === 'rtl' ? 1 : 0;
-  const end = stringLength(line) - 1;
-  const paragraphs = [{ start: 0, end, level }];
-  const embeddingLevels = { paragraphs, levels };
+  for (let level = maxLevel; level >= 1; level -= 1) {
+    let i = 0;
 
-  const segments = bidi.getReorderSegments(line.string, embeddingLevels);
+    while (i < orderedIndices.length) {
+      if (runLevels[orderedIndices[i]] >= level) {
+        let j = i + 1;
 
-  // No need for bidi reordering
-  if (segments.length === 0) return line;
+        while (
+          j < orderedIndices.length &&
+          runLevels[orderedIndices[j]] >= level
+        ) {
+          j += 1;
+        }
 
-  const indices = getReorderedIndices(line.string, segments);
+        // Reverse the segment [i, j)
+        const segment = orderedIndices.slice(i, j).reverse();
 
-  const updatedString = bidi.getReorderedString(line.string, embeddingLevels);
+        for (let k = 0; k < segment.length; k += 1) {
+          orderedIndices[i + k] = segment[k];
+        }
 
-  const updatedRuns = line.runs.map((run) => {
-    const selectedIndices = indices.slice(run.start, run.end);
-    const updatedGlyphs = [];
-    const updatedPositions = [];
-
-    const addedGlyphs = new Set();
-
-    for (let i = 0; i < selectedIndices.length; i += 1) {
-      const index = selectedIndices[i];
-
-      const glyph = getItemAtIndex(line.runs, 'glyphs', index);
-
-      if (addedGlyphs.has(glyph.id)) continue;
-
-      updatedGlyphs.push(glyph);
-      updatedPositions.push(getItemAtIndex(line.runs, 'positions', index));
-
-      if (glyph.isLigature) {
-        addedGlyphs.add(glyph.id);
+        i = j;
+      } else {
+        i += 1;
       }
     }
+  }
 
-    return {
+  // Build reordered runs with internal glyph reversal for RTL runs
+  let updatedString = '';
+  let offset = 0;
+
+  const updatedRuns: Run[] = orderedIndices.map((origIdx) => {
+    const run = runs[origIdx];
+    const runStr = line.string.slice(run.start, run.end);
+    const isRtl = runLevels[origIdx] % 2 === 1;
+    const runLength = run.end - run.start;
+
+    let glyphs = run.glyphs ? [...run.glyphs] : [];
+    let positions = run.positions ? [...run.positions] : [];
+
+    if (isRtl) {
+      glyphs = glyphs.reverse();
+      positions = positions.reverse();
+
+      // Deduplicate ligature glyphs (a ligature glyph represents multiple
+      // characters but should only appear once in the glyph array)
+      const seen = new Set();
+      const filteredGlyphs: typeof glyphs = [];
+      const filteredPositions: typeof positions = [];
+
+      for (let i = 0; i < glyphs.length; i += 1) {
+        const glyph = glyphs[i];
+
+        if (glyph?.isLigature && seen.has(glyph.id)) continue;
+
+        filteredGlyphs.push(glyph);
+        filteredPositions.push(positions[i]);
+
+        if (glyph?.isLigature) {
+          seen.add(glyph.id);
+        }
+      }
+
+      glyphs = filteredGlyphs;
+      positions = filteredPositions;
+
+      // Reverse the string using Array.from to handle surrogate pairs
+      updatedString += Array.from(runStr).reverse().join('');
+    } else {
+      updatedString += runStr;
+    }
+
+    const newRun: Run = {
       ...run,
-      glyphs: updatedGlyphs,
-      positions: updatedPositions,
+      start: offset,
+      end: offset + runLength,
+      glyphs,
+      positions,
     };
+
+    offset += runLength;
+    return newRun;
   });
 
   return {
-    box: line.box,
+    ...line,
     runs: updatedRuns,
     string: updatedString,
   } as AttributedString;

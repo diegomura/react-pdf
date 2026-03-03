@@ -98,14 +98,12 @@ describe('bidiReordering', () => {
     const result = bidiReorderingInstance([[string]]);
 
     expect(result[0][0].string).toBe('Lorem muspi');
-    expect(result[0][0].runs[0].glyphs).toEqual(string.runs[0].glyphs);
-    expect(result[0][0].runs[0].positions).toEqual(string.runs[0].positions);
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(6));
+    expect(result[0][0].runs[0].positions).toEqual(initializeToIndex(6));
 
-    expect(result[0][0].runs[1].glyphs).toEqual(
-      string.runs[1].glyphs.reverse(),
-    );
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5).reverse());
     expect(result[0][0].runs[1].positions).toEqual(
-      string.runs[1].positions.reverse(),
+      initializeToIndex(5).reverse(),
     );
   });
 
@@ -140,5 +138,137 @@ describe('bidiReordering', () => {
     const result = bidiReorderingInstance([[string]]);
 
     expect(result[0][0].string).toBe('eroL');
+  });
+
+  test('should preserve run attributes when reordering multiple RTL runs', () => {
+    // Simulates: <Text dir='rtl'>עברית <Text color='red'>קשה</Text> שפה</Text>
+    // Run0: "ABC " (default style), Run1: "DEF" (red), Run2: " GHI" (default)
+    // All RTL (bidiLevel 1). Runs should be reordered as units, not character-by-character.
+    const string = {
+      string: 'ABC DEF GHI',
+      runs: [
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+            color: 'black',
+          },
+          start: 0,
+          end: 4,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+          glyphIndices: initializeToIndex(4),
+        },
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+            color: 'red',
+          },
+          start: 4,
+          end: 7,
+          glyphs: initializeToIndex(3),
+          positions: initializeToIndex(3),
+          glyphIndices: initializeToIndex(3),
+        },
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+            color: 'black',
+          },
+          start: 7,
+          end: 11,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+          glyphIndices: initializeToIndex(4),
+        },
+      ],
+    };
+
+    const result = bidiReorderingInstance([[string]]);
+
+    // Runs should be reordered: Run2, Run1, Run0 (reversed for RTL)
+    // Each run's glyphs should be reversed internally
+    expect(result[0][0].string).toBe('IHG FED CBA');
+
+    // Run2 is now first - should keep its 'black' color attribute
+    expect(result[0][0].runs[0].attributes.color).toBe('black');
+    expect(result[0][0].runs[0].start).toBe(0);
+    expect(result[0][0].runs[0].end).toBe(4);
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(4).reverse());
+
+    // Run1 is now second - should keep its 'red' color attribute
+    expect(result[0][0].runs[1].attributes.color).toBe('red');
+    expect(result[0][0].runs[1].start).toBe(4);
+    expect(result[0][0].runs[1].end).toBe(7);
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(3).reverse());
+
+    // Run0 is now last - should keep its 'black' color attribute
+    expect(result[0][0].runs[2].attributes.color).toBe('black');
+    expect(result[0][0].runs[2].start).toBe(7);
+    expect(result[0][0].runs[2].end).toBe(11);
+    expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
+  });
+
+  test('should handle LTR embedded in RTL correctly', () => {
+    // Simulates: <Text dir='rtl'>שלום Hello עולם</Text>
+    // Run0: "AAA " (RTL level 1), Run1: "Hello" (LTR level 2), Run2: " BBB" (RTL level 1)
+    const string = {
+      string: 'AAA Hello BBB',
+      runs: [
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+          },
+          start: 0,
+          end: 4,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+          glyphIndices: initializeToIndex(4),
+        },
+        {
+          attributes: {
+            direction: 'ltr' as const,
+            bidiLevel: 2,
+          },
+          start: 4,
+          end: 9,
+          glyphs: initializeToIndex(5),
+          positions: initializeToIndex(5),
+          glyphIndices: initializeToIndex(5),
+        },
+        {
+          attributes: {
+            direction: 'rtl' as const,
+            bidiLevel: 1,
+          },
+          start: 9,
+          end: 13,
+          glyphs: initializeToIndex(4),
+          positions: initializeToIndex(4),
+          glyphIndices: initializeToIndex(4),
+        },
+      ],
+    };
+
+    const result = bidiReorderingInstance([[string]]);
+
+    // L2 reordering for RTL base:
+    // Level 2: reverse contiguous runs at >=2: Run1 alone, no change
+    // Level 1: reverse contiguous runs at >=1: all three → Run2, Run1, Run0
+    // Run2 (RTL) and Run0 (RTL) get internal glyph reversal
+    // Run1 (LTR, level 2 = even) keeps glyphs as-is
+    expect(result[0][0].string).toBe('BBB Hello AAA');
+
+    // Run2 first (RTL, reversed internally)
+    expect(result[0][0].runs[0].glyphs).toEqual(initializeToIndex(4).reverse());
+
+    // Run1 second (LTR, not reversed)
+    expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5));
+
+    // Run0 last (RTL, reversed internally)
+    expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
   });
 });

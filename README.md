@@ -20,9 +20,6 @@
   </p>
 </p>
 
-> [!NOTE]  
-> Generating PDFs in bulk? [Talk to us.](https://axxy020tu5c.typeform.com/to/eU21hXDy)
-
 ## Lost?
 
 This package is used to _create_ PDFs using React. If you wish to _display_ existing PDFs, you may be looking for [react-pdf](https://github.com/wojtekmaj/react-pdf).
@@ -116,4 +113,4 @@ MIT © [Diego Muracciole](http://github.com/diegomura)
 
 ---
 
-![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)
+[![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)](https://www.npmjs.com/package/@react-pdf/renderer)

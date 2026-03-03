@@ -8,7 +8,15 @@ describe('attributeString end operator', () => {
     expect(end(empty())).toBe(0);
   });
 
-  test('should return first run end value', () => {
+  test('should return end value for single run', () => {
+    const string = {
+      string: '',
+      runs: [{ start: 0, end: 5, attributes: {} }],
+    };
+    expect(end(string)).toBe(5);
+  });
+
+  test('should return last run end value', () => {
     const string = {
       string: '',
       runs: [

@@ -30,4 +30,22 @@ describe('evolve', () => {
 
     expect(object).toEqual(expected);
   });
+
+  test('returns empty object when given empty object', () => {
+    expect(evolve({}, {})).toEqual({});
+  });
+
+  test('returns copy of object when given empty transformations', () => {
+    const object = { a: 1, b: 2 };
+
+    expect(evolve({}, object)).toEqual({ a: 1, b: 2 });
+  });
+
+  test('transforms all keys when all have transformations', () => {
+    const double = (x: number) => x * 2;
+    const transf = { a: double, b: double };
+    const object = { a: 1, b: 2 };
+
+    expect(evolve(transf, object)).toEqual({ a: 2, b: 4 });
+  });
 });

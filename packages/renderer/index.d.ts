@@ -612,6 +612,7 @@ declare namespace ReactPDF {
         event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
         instance: UsePDFInstance,
       ) => void);
+    ref?: React.Ref<HTMLAnchorElement> | undefined;
   }
 
   /**

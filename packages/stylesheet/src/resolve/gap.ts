@@ -1,16 +1,16 @@
-import { Container, Style, StyleKey } from '../types';
+import { Container, GapSafeStyle, Style, StyleKey } from '../types';
 import transformUnit from '../utils/units';
 import { processUnitValue } from './utils';
 
 const processGapShorthand = <K extends StyleKey>(
-  key: K,
+  _key: K,
   value: Style[K],
   container: Container,
-) => {
-  const match = `${value}`.split(' ');
+): GapSafeStyle => {
+  const parts = `${value}`.split(' ');
 
-  const rowGap = transformUnit(container, match?.[0] || value) as any;
-  const columnGap = transformUnit(container, match?.[1] || value) as any;
+  const rowGap = transformUnit(container, parts[0]);
+  const columnGap = transformUnit(container, parts[1] || parts[0]);
 
   return { rowGap, columnGap };
 };

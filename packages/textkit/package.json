@@ -1,7 +1,7 @@
 {
   "name": "@react-pdf/textkit",
   "license": "MIT",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "An advanced text layout framework",
   "type": "module",
   "main": "./lib/textkit.js",

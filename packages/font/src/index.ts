@@ -188,6 +188,8 @@ class FontStore {
 
   clear = () => {
     this.fontFamilies = {};
+    this.emojiSource = null;
+    this.hyphenationCallback = null;
   };
 
   getRegisteredFonts = () => this.fontFamilies;

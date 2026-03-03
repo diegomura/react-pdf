@@ -11,7 +11,11 @@ export default [
   {
     input: 'src/index.ts',
     output: { format: 'es', file: 'lib/index.js' },
-    external: ['./reconciler-23.js', './reconciler-31.js'],
+    external: [
+      './reconciler-23.js',
+      './reconciler-31.js',
+      './reconciler-33.js',
+    ],
     plugins: [typescript()],
   },
   {
@@ -31,6 +35,17 @@ export default [
     plugins: [
       typescript(),
       resolve({ resolveOnly: ['react-reconciler-31'] }),
+      commonjs({ esmExternals: (id) => id === 'scheduler' }),
+      trimReconciler(),
+      terser({ compress: { dead_code: true } }),
+    ],
+  },
+  {
+    input: 'src/reconciler-33.ts',
+    output: { format: 'es', file: 'lib/reconciler-33.js' },
+    plugins: [
+      typescript(),
+      resolve({ resolveOnly: ['react-reconciler-33'] }),
       commonjs({ esmExternals: (id) => id === 'scheduler' }),
       trimReconciler(),
       terser({ compress: { dead_code: true } }),

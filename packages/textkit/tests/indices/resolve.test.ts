@@ -142,4 +142,43 @@ describe('indices resolve operator', () => {
 
     expect(result).toEqual([0, 1, 2, 3, 4]);
   });
+
+  test('should return indices for single glyph', () => {
+    const result = resolve([singleGlyph]);
+
+    expect(result).toEqual([0]);
+  });
+
+  test('should return indices for single ligature glyph', () => {
+    const result = resolve([ligatureGlyph]);
+
+    expect(result).toEqual([0, 0]);
+  });
+
+  test('should return indices for single long ligature glyph', () => {
+    const result = resolve([longerLigatureGlyph]);
+
+    expect(result).toEqual([0, 0, 0]);
+  });
+
+  test('should handle consecutive ligatures', () => {
+    // ex. fifi
+    const result = resolve([ligatureGlyph, ligatureGlyph]);
+
+    expect(result).toEqual([0, 0, 1, 1]);
+  });
+
+  test('should handle multiple consecutive ligatures', () => {
+    // ex. fififi
+    const result = resolve([ligatureGlyph, ligatureGlyph, ligatureGlyph]);
+
+    expect(result).toEqual([0, 0, 1, 1, 2, 2]);
+  });
+
+  test('should handle consecutive long ligatures', () => {
+    // ex. ffiffi
+    const result = resolve([longerLigatureGlyph, longerLigatureGlyph]);
+
+    expect(result).toEqual([0, 0, 0, 1, 1, 1]);
+  });
 });

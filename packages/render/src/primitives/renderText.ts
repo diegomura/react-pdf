@@ -29,8 +29,8 @@ const renderAttachment = (ctx: Context, attachment: Attachment) => {
   });
 };
 
-const renderAttachments = (ctx: Context, run: Run) => {
-  if (!run.glyphs) return;
+const renderAttachments = (ctx: Context, run: Run, glyphs: Run['glyphs']) => {
+  if (!glyphs) return;
   if (!run.positions) return;
 
   const font = run.attributes.font?.[0];
@@ -42,16 +42,16 @@ const renderAttachments = (ctx: Context, run: Run) => {
   const objectReplacement = font.glyphForCodePoint(0xfffc);
 
   let attachmentAdvance = 0;
-  for (let i = 0; i < run.glyphs.length; i += 1) {
+  for (let i = 0; i < glyphs.length; i += 1) {
     const position = run.positions[i];
-    const glyph = run.glyphs[i];
+    const glyph = glyphs[i];
 
     attachmentAdvance += position.xAdvance || 0;
 
     if (glyph.id === objectReplacement.id && run.attributes.attachment) {
       ctx.translate(attachmentAdvance, position.yOffset || 0);
       renderAttachment(ctx, run.attributes.attachment);
-      run.glyphs[i] = space;
+      glyphs[i] = space;
       attachmentAdvance = 0;
     }
   }
@@ -85,12 +85,15 @@ const renderRun = (ctx: Context, run: Run) => {
     }
   }
 
-  renderAttachments(ctx, run);
+  // Copy glyphs to avoid mutating the original array
+  const glyphs = [...run.glyphs];
+
+  renderAttachments(ctx, run, glyphs);
 
   ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
 
   try {
-    renderGlyphs(ctx, run.glyphs!, run.positions!, 0, 0);
+    renderGlyphs(ctx, glyphs, run.positions!, 0, 0);
   } catch (error) {
     console.log(error);
   }

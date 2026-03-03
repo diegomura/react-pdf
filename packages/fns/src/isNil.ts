@@ -1,7 +1,11 @@
 /**
  * Checks if a value is null or undefined.
  *
- * @template T - The type of the value.
+ * @example
+ * isNil(null)      // => true
+ * isNil(undefined) // => true
+ * isNil(0)         // => false
+ *
  * @param value - The value to check
  * @returns True if the value is null or undefined, false otherwise
  */

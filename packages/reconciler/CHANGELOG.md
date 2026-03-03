@@ -1,5 +1,15 @@
 # @react-pdf/reconciler
 
+## 2.0.0
+
+### Major Changes
+
+- [#3224](https://github.com/diegomura/react-pdf/pull/3224) [`fafbcb12`](https://github.com/diegomura/react-pdf/commit/fafbcb12a0ecf3231165bb2944de7ad3b7761dec) Thanks [@ZandercraftGames](https://github.com/ZandercraftGames)! - feat: add React 19.2.X support
+
+### Patch Changes
+
+- [#3261](https://github.com/diegomura/react-pdf/pull/3261) [`2eba70bd`](https://github.com/diegomura/react-pdf/commit/2eba70bd9cbb942a675ac686a2b335164279035a) Thanks [@Nukem154](https://github.com/Nukem154)! - fix(reconciler): prevent crash when removing elements
+
 ## 1.1.4
 
 ### Patch Changes

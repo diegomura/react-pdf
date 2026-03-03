@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/pdfkit",
-  "version": "4.0.3",
+  "version": "4.1.0",
   "license": "MIT",
   "description": "A PDF generation library for Node.js",
   "type": "module",
@@ -19,6 +19,7 @@
     "url": "http://badassjs.com/"
   },
   "scripts": {
+    "test": "vitest",
     "clear": "rimraf ./lib ./src/font/data/*.json",
     "parse:afm": "node ./src/font/data/compressData.js",
     "build": "npm run clear && npm run parse:afm && rollup -c ",

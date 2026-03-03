@@ -29,13 +29,23 @@ const parse = (transformString: string) => {
 
 const parseAngle = (value: string) => {
   const unitsRegexp = /(-?\d*\.?\d*)(\w*)?/i;
-  const [, angle, unit] = unitsRegexp.exec(value);
+  const match = unitsRegexp.exec(value);
+  const angle = match?.[1] ?? '';
+  const unit = match?.[2] ?? '';
   const number = Number.parseFloat(angle);
 
   return unit === 'rad' ? (number * 180) / Math.PI : number;
 };
 
-const normalizeTransformOperation = ({ operation, value }): Transform => {
+type ParsedTransformOperation = {
+  operation: string;
+  value: string[];
+};
+
+const normalizeTransformOperation = ({
+  operation,
+  value,
+}: ParsedTransformOperation): Transform => {
   switch (operation) {
     case 'scale': {
       const [scaleX, scaleY = scaleX] = value.map((num) =>
@@ -45,53 +55,61 @@ const normalizeTransformOperation = ({ operation, value }): Transform => {
     }
 
     case 'scaleX': {
-      return { operation: 'scale', value: [Number.parseFloat(value), 1] };
+      return { operation: 'scale', value: [Number.parseFloat(value[0]), 1] };
     }
     case 'scaleY': {
-      return { operation: 'scale', value: [1, Number.parseFloat(value)] };
+      return { operation: 'scale', value: [1, Number.parseFloat(value[0])] };
     }
 
     case 'rotate': {
-      return { operation: 'rotate', value: [parseAngle(value)] };
+      return { operation: 'rotate', value: [parseAngle(value[0])] };
     }
 
     case 'translate': {
-      return {
-        operation: 'translate',
-        value: value.map((num) => Number.parseFloat(num)),
-      };
+      const [x, y] = value.map((num) => Number.parseFloat(num));
+      return { operation: 'translate', value: [x, y] };
     }
 
     case 'translateX': {
       return {
         operation: 'translate',
-        value: [Number.parseFloat(value), 0],
+        value: [Number.parseFloat(value[0]), 0],
       };
     }
 
     case 'translateY': {
-      return { operation: 'translate', value: [0, Number.parseFloat(value)] };
+      return {
+        operation: 'translate',
+        value: [0, Number.parseFloat(value[0])],
+      };
     }
 
     case 'skew': {
-      return { operation: 'skew', value: value.map(parseAngle) };
+      return {
+        operation: 'skew',
+        value: value.map(parseAngle) as [number, number],
+      };
     }
 
     case 'skewX': {
-      return { operation: 'skew', value: [parseAngle(value), 0] };
+      return { operation: 'skew', value: [parseAngle(value[0]), 0] };
     }
 
     case 'skewY': {
-      return { operation: 'skew', value: [0, parseAngle(value)] };
+      return { operation: 'skew', value: [0, parseAngle(value[0])] };
     }
 
     default: {
-      return { operation, value: value.map((num) => Number.parseFloat(num)) };
+      // Handle matrix and other potential operations
+      return {
+        operation,
+        value: value.map((num) => Number.parseFloat(num)),
+      } as Transform;
     }
   }
 };
 
-const normalize = (operations): Transform[] => {
+const normalize = (operations: ParsedTransformOperation[]): Transform[] => {
   return operations.map((operation) => normalizeTransformOperation(operation));
 };
 
@@ -101,20 +119,21 @@ const processTransform = (key: 'transform', value: Style['transform']) => {
   return { [key]: normalize(parse(value)) };
 };
 
-const Y_AXIS_SHORTHANDS = { top: true, bottom: true };
+const Y_AXIS_SHORTHANDS: Record<string, boolean> = { top: true, bottom: true };
 
-const sortTransformOriginPair = (a, b) => {
+const sortTransformOriginPair = (a: string, b: string) => {
   if (Y_AXIS_SHORTHANDS[a]) return 1;
   if (Y_AXIS_SHORTHANDS[b]) return -1;
   return 0;
 };
 
-const getTransformOriginPair = (values) => {
+const getTransformOriginPair = (values: string[]): [string, string] => {
   if (!values || values.length === 0) return ['center', 'center'];
 
-  const pair = values.length === 1 ? [values[0], 'center'] : values;
+  const pair: [string, string] =
+    values.length === 1 ? [values[0], 'center'] : [values[0], values[1]];
 
-  return pair.sort(sortTransformOriginPair);
+  return pair.sort(sortTransformOriginPair) as [string, string];
 };
 
 // Transforms shorthand transformOrigin values

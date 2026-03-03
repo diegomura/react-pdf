@@ -1,5 +1,30 @@
 # @react-pdf/renderer
 
+## 4.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`f034491b`](https://github.com/diegomura/react-pdf/commit/f034491b1f77ce6f18a5db88e70b10b9c502ca35), [`2eba70bd`](https://github.com/diegomura/react-pdf/commit/2eba70bd9cbb942a675ac686a2b335164279035a), [`fafbcb12`](https://github.com/diegomura/react-pdf/commit/fafbcb12a0ecf3231165bb2944de7ad3b7761dec), [`cc1aff24`](https://github.com/diegomura/react-pdf/commit/cc1aff2454263f64d1f79c9df051d21d74f8d7cf)]:
+  - @react-pdf/pdfkit@4.1.0
+  - @react-pdf/reconciler@2.0.0
+  - @react-pdf/layout@4.4.2
+  - @react-pdf/font@4.0.4
+  - @react-pdf/render@4.3.2
+  - @react-pdf/types@2.9.2
+
+## 4.3.1
+
+### Patch Changes
+
+- [#3124](https://github.com/diegomura/react-pdf/pull/3124) [`dcc7b403`](https://github.com/diegomura/react-pdf/commit/dcc7b40313b5662b9bd16678fbc0b62eeaf65d71) Thanks [@pcorpet](https://github.com/pcorpet)! - feat(pdfdownloadlink): add a ref to the link component
+
+- Updated dependencies [[`beaffd3d`](https://github.com/diegomura/react-pdf/commit/beaffd3d2bb5ac81033ef53421413662d6d71158), [`a99d10fb`](https://github.com/diegomura/react-pdf/commit/a99d10fb2fbb6bfeb233ccb9bf0b703ed092e8d5), [`5cbe2fb0`](https://github.com/diegomura/react-pdf/commit/5cbe2fb0bde45c44eb68dde01f20feea245908c6), [`ec063bec`](https://github.com/diegomura/react-pdf/commit/ec063bec8d6a56df42849a8e66521fad7719dc29)]:
+  - @react-pdf/layout@4.4.1
+  - @react-pdf/pdfkit@4.0.4
+  - @react-pdf/render@4.3.1
+  - @react-pdf/font@4.0.3
+  - @react-pdf/types@2.9.1
+
 ## 4.3.0
 
 ### Minor Changes

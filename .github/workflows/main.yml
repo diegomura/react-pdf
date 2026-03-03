@@ -111,8 +111,7 @@ jobs:
         run: REACT_VERSION=${{ matrix.react_version }} yarn test
 
   e2e-node:
-    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})
-    runs-on: ubuntu-latest
+    name: Run E2E tests (Node.js ${{ matrix.node_version }}; ${{ matrix.cjs_or_esm == 'cjs' ? 'CJS' : 'ESM' }})    runs-on: ubuntu-latest
     strategy:
       matrix:
         cjs_or_esm: [cjs, esm]

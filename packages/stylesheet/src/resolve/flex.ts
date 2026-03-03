@@ -9,12 +9,16 @@ import {
   processUnitValue,
 } from './utils';
 
-type FlexDefaults = (number | string | 'auto')[];
+type FlexDefaults = (number | string)[];
 
 // TODO: change flex defaults to [0, 1, 'auto'] as in spec in next major release
 const flexDefaults: FlexDefaults = [1, 1, 0];
 
 const flexAuto: FlexDefaults = [1, 1, 'auto'];
+
+const flexNone: FlexDefaults = [0, 0, 'auto'];
+
+const flexInitial: FlexDefaults = [0, 1, 'auto'];
 
 const processFlexShorthand = <K extends StyleKey>(
   key: K,
@@ -22,10 +26,14 @@ const processFlexShorthand = <K extends StyleKey>(
   container: Container,
 ) => {
   let defaults = flexDefaults;
-  let matches: FlexDefaults = [];
+  let matches: string[] = [];
 
   if (value === 'auto') {
     defaults = flexAuto;
+  } else if (value === 'none') {
+    defaults = flexNone;
+  } else if (value === 'initial') {
+    defaults = flexInitial;
   } else {
     matches = `${value}`.split(' ');
   }

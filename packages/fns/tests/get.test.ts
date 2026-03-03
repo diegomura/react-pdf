@@ -56,4 +56,25 @@ describe('get', () => {
       Boolean.prototype.toString,
     );
   });
+
+  test('returns falsy values when they exist (not default)', () => {
+    expect(get(deepObject, ['falseVal'], 'Unknown')).toBe(false);
+    expect(get({ zero: 0 }, ['zero'], 'Unknown')).toBe(0);
+    expect(get({ empty: '' }, ['empty'], 'Unknown')).toBe('');
+  });
+
+  test('returns default for null/undefined values in object', () => {
+    expect(get(deepObject, ['nullVal'], 'Unknown')).toBe('Unknown');
+    expect(get(deepObject, ['undefinedVal'], 'Unknown')).toBe('Unknown');
+  });
+
+  test('accesses array values', () => {
+    expect(get(deepObject, ['arrayVal', 0], 'Unknown')).toBe('arr');
+    expect(get(deepObject, ['arrayVal', 1], 'Unknown')).toBe('Unknown');
+  });
+
+  test('returns default when path goes through null/undefined', () => {
+    expect(get(deepObject, ['nullVal', 'foo'], 'Unknown')).toBe('Unknown');
+    expect(get(deepObject, ['undefinedVal', 'foo'], 'Unknown')).toBe('Unknown');
+  });
 });

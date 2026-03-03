@@ -93,8 +93,8 @@ describe('attributeString dropLast operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 4);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3]);
-    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114, 101]);
-    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8, 9]);
+    expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114, 101]);
+    expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8, 9]);
   });
 
   test('should dropLast glyphs with several runs', () => {
@@ -138,13 +138,89 @@ describe('attributeString dropLast operator', () => {
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(pluck('id', result.runs[0].glyphs)).toEqual([76, 111, 114]);
-    expect(pluck('xAdvance', result.runs[0].positions)).toEqual([6, 7, 8]);
+    expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
+    expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 4);
     expect(result.runs[1].glyphIndices).toEqual([0]);
-    expect(pluck('id', result.runs[1].glyphs)).toEqual([101]);
-    expect(pluck('xAdvance', result.runs[1].positions)).toEqual([9]);
+    expect(pluck('id', result.runs[1].glyphs!)).toEqual([101]);
+    expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([9]);
+  });
+
+  test('should return empty string when dropping last from single character', () => {
+    const runs = [{ start: 0, end: 1, attributes: { font: [] } }];
+    const string = { string: 'A', runs };
+    const result = dropLast(string);
+
+    expect(result.string).toBe('');
+    expect(result.runs[0]).toHaveProperty('start', 0);
+    expect(result.runs[0]).toHaveProperty('end', 0);
+    expect(result.runs[0]).toHaveProperty('attributes', { font: [] });
+  });
+
+  test('should handle empty string', () => {
+    const runs = [{ start: 0, end: 0, attributes: { font: [] } }];
+    const string = { string: '', runs };
+    const result = dropLast(string);
+
+    expect(result.string).toBe('');
+    expect(result.runs[0]).toHaveProperty('start', 0);
+    expect(result.runs[0]).toHaveProperty('end', 0);
+  });
+
+  test('should make last run empty when it has single character', () => {
+    const runs = [
+      { start: 0, end: 5, attributes: { font: [] } },
+      { start: 5, end: 6, attributes: { fontSize: 16 } },
+    ];
+    const string = { string: 'Lorem!', runs };
+    const result = dropLast(string);
+
+    expect(result.string).toBe('Lorem');
+    expect(result.runs[0]).toHaveProperty('start', 0);
+    expect(result.runs[0]).toHaveProperty('end', 5);
+    expect(result.runs[0]).toHaveProperty('attributes', { font: [] });
+    expect(result.runs[1]).toHaveProperty('start', 5);
+    expect(result.runs[1]).toHaveProperty('end', 5);
+    expect(result.runs[1]).toHaveProperty('attributes', { fontSize: 16 });
+  });
+
+  test('should preserve other attributed string properties', () => {
+    const runs = [{ start: 0, end: 5, attributes: { font: [] } }];
+    const string = {
+      string: 'Lorem',
+      runs,
+      syllables: ['Lo', 'rem'],
+      customProp: 'test',
+    } as ReturnType<typeof dropLast> & { customProp: string };
+    const result = dropLast(string) as typeof string;
+
+    expect(result.string).toBe('Lore');
+    expect(result.syllables).toEqual(['Lo', 'rem']);
+    expect(result.customProp).toBe('test');
+  });
+
+  test('should dropLast glyph from single character run', () => {
+    const runs = [
+      {
+        start: 0,
+        end: 1,
+        attributes: {},
+        glyphs: [{ id: 65, advanceWidth: 0, codePoints: [65] }] as Glyph[], // A
+        positions: [{ xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }],
+        glyphIndices: [0],
+      },
+    ];
+
+    const string = { string: 'A', runs };
+    const result = dropLast(string);
+
+    expect(result.string).toBe('');
+    expect(result.runs[0]).toHaveProperty('start', 0);
+    expect(result.runs[0]).toHaveProperty('end', 0);
+    expect(result.runs[0].glyphIndices).toEqual([]);
+    expect(result.runs[0].glyphs).toEqual([]);
+    expect(result.runs[0].positions).toEqual([]);
   });
 });

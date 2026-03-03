@@ -15,6 +15,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -31,6 +32,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      [],
     );
 
     expect(result).toEqual(true);
@@ -54,6 +56,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -77,6 +80,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      [],
     );
 
     expect(result).toEqual(true);
@@ -100,6 +104,7 @@ describe('node shouldBreak', () => {
       },
       [],
       1000,
+      [],
     );
 
     expect(result).toEqual(true);
@@ -142,6 +147,24 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 200,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
     );
 
     expect(result).toEqual(true);
@@ -184,6 +207,24 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 200,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
     );
 
     expect(result).toEqual(true);
@@ -226,6 +267,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -268,6 +310,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -310,6 +353,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -352,12 +396,13 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
   });
 
-  test('should not break due to minPresenceAhead when breaking does not improve presence, to avoid infinite loops', () => {
+  test('should not break due to minPresenceAhead when breaking does not improve presence because the node is already the first non-fixed node on the page, to avoid infinite loops', () => {
     const result = shouldBreak(
       {
         type: 'VIEW',
@@ -394,6 +439,69 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
+    );
+
+    expect(result).toEqual(false);
+  });
+
+  test('should not break due to minPresenceAhead even when there are some previous fixed nodes on the page, to avoid infinite loops', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { minPresenceAhead: 400 },
+        style: {},
+        children: [],
+        box: {
+          top: 500,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 400,
+          width: 200,
+          marginTop: 500,
+          marginBottom: 0,
+        },
+      },
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 200,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+      1000,
+      [
+        {
+          type: 'VIEW',
+          props: {
+            fixed: true,
+          },
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 200,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
     );
 
     expect(result).toEqual(false);
@@ -436,6 +544,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -478,6 +587,7 @@ describe('node shouldBreak', () => {
         },
       ],
       1000,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -536,6 +646,7 @@ describe('node shouldBreak', () => {
         },
       ],
       811.89,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -594,6 +705,7 @@ describe('node shouldBreak', () => {
         },
       ],
       811.89,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -721,6 +833,7 @@ describe('node shouldBreak', () => {
         },
       ],
       781.89,
+      [],
     );
 
     expect(result).toEqual(false);
@@ -763,6 +876,7 @@ describe('node shouldBreak', () => {
         },
       ],
       776.89,
+      [],
     );
 
     expect(result).toEqual(false);

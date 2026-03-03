@@ -8,7 +8,7 @@ import { AttributedString, Run } from '../types';
  * @returns Ascent
  */
 const ascent = (attributedString: AttributedString) => {
-  const reducer = (acc, run: Run) => Math.max(acc, runAscent(run));
+  const reducer = (acc: number, run: Run) => Math.max(acc, runAscent(run));
   return attributedString.runs.reduce(reducer, 0);
 };
 

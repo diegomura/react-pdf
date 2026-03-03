@@ -8,11 +8,12 @@ import {
 } from '../types';
 import { processColorValue, processNoopValue, processUnitValue } from './utils';
 
+// Matches border shorthand: "width style color" (e.g., "1px solid red")
 const BORDER_SHORTHAND_REGEX =
-  /(-?\d+(\.\d+)?(in|mm|cm|pt|vw|vh|px|rem)?)\s(\S+)\s(.+)/;
+  /^(?<width>-?\d+(?:\.\d+)?(?:in|mm|cm|pt|vw|vh|px|rem)?)\s+(?<style>\S+)\s+(?<color>.+)$/;
 
 const matchBorderShorthand = (value: string) =>
-  value.match(BORDER_SHORTHAND_REGEX) || [];
+  BORDER_SHORTHAND_REGEX.exec(value);
 
 type BorderKey = keyof BorderStyle;
 
@@ -23,24 +24,11 @@ const resolveBorderShorthand = <K extends BorderKey>(
 ): BorderSafeStyle => {
   const match = matchBorderShorthand(`${value}`);
 
-  if (match) {
-    const widthMatch = match[1] || value;
-    const styleMatch = match[4] || value;
-    const colorMatch = match[5] || value;
-
-    const style = styleMatch as BorderStyleValue;
-    const color = colorMatch ? transformColor(colorMatch as string) : undefined;
-    const width = widthMatch ? transformUnit(container, widthMatch) : undefined;
-
-    if (key.match(/(Top|Right|Bottom|Left)$/)) {
-      return {
-        [`${key}Color`]: color,
-        [`${key}Style`]: style,
-        [`${key}Width`]: width,
-      };
-    }
-
+  // Handle shorthand properties that don't match the full border pattern
+  // (e.g., borderColor: 'red', borderWidth: 5, borderRadius: 10)
+  if (!match) {
     if (key.match(/Color$/)) {
+      const color = transformColor(`${value}`);
       return {
         borderTopColor: color,
         borderRightColor: color,
@@ -50,6 +38,8 @@ const resolveBorderShorthand = <K extends BorderKey>(
     }
 
     if (key.match(/Style$/)) {
+      const style = value as BorderStyleValue;
+
       if (typeof style === 'number')
         throw new Error(`Invalid border style: ${style}`);
 
@@ -62,6 +52,8 @@ const resolveBorderShorthand = <K extends BorderKey>(
     }
 
     if (key.match(/Width$/)) {
+      const width = transformUnit(container, value);
+
       if (typeof width !== 'number')
         throw new Error(`Invalid border width: ${width}`);
 
@@ -74,7 +66,7 @@ const resolveBorderShorthand = <K extends BorderKey>(
     }
 
     if (key.match(/Radius$/)) {
-      const radius = value ? transformUnit(container, value) : undefined;
+      const radius = transformUnit(container, value);
 
       if (typeof radius !== 'number')
         throw new Error(`Invalid border radius: ${radius}`);
@@ -87,29 +79,48 @@ const resolveBorderShorthand = <K extends BorderKey>(
       };
     }
 
-    if (typeof width !== 'number')
-      throw new Error(`Invalid border width: ${width}`);
+    return { [key]: value };
+  }
 
-    if (typeof style === 'number')
-      throw new Error(`Invalid border style: ${style}`);
+  // Full border shorthand matched: "width style color"
+  const {
+    width: widthMatch,
+    style: styleMatch,
+    color: colorMatch,
+  } = match.groups!;
 
+  const style = styleMatch as BorderStyleValue;
+  const color = transformColor(colorMatch);
+  const width = transformUnit(container, widthMatch);
+
+  if (key.match(/(Top|Right|Bottom|Left)$/)) {
     return {
-      borderTopColor: color,
-      borderTopStyle: style,
-      borderTopWidth: width,
-      borderRightColor: color,
-      borderRightStyle: style,
-      borderRightWidth: width,
-      borderBottomColor: color,
-      borderBottomStyle: style,
-      borderBottomWidth: width,
-      borderLeftColor: color,
-      borderLeftStyle: style,
-      borderLeftWidth: width,
+      [`${key}Color`]: color,
+      [`${key}Style`]: style,
+      [`${key}Width`]: width,
     };
   }
 
-  return { [key]: value };
+  if (typeof width !== 'number')
+    throw new Error(`Invalid border width: ${width}`);
+
+  if (typeof style === 'number')
+    throw new Error(`Invalid border style: ${style}`);
+
+  return {
+    borderTopColor: color,
+    borderTopStyle: style,
+    borderTopWidth: width,
+    borderRightColor: color,
+    borderRightStyle: style,
+    borderRightWidth: width,
+    borderBottomColor: color,
+    borderBottomStyle: style,
+    borderBottomWidth: width,
+    borderLeftColor: color,
+    borderLeftStyle: style,
+    borderLeftWidth: width,
+  };
 };
 
 const handlers = {

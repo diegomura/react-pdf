@@ -42,4 +42,14 @@ describe('attributeString fromFragments operator', () => {
       fontSize: 16,
     });
   });
+
+  test('should default to empty attributes when not provided', () => {
+    const attributedString = fromFragments([
+      { string: 'Hey' },
+      { string: ' ho' },
+    ]);
+
+    expect(attributedString.runs[0]).toHaveProperty('attributes', {});
+    expect(attributedString.runs[1]).toHaveProperty('attributes', {});
+  });
 });

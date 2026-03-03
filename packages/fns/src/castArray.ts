@@ -3,9 +3,9 @@
  *
  * @template T - The type of the value.
  * @param value - The value to cast into an array.
- * @returns An array containing the given value.
+ * @returns The value as-is if already an array, otherwise wrapped in an array.
  */
-const castArray = <T = any>(value: T | T[]): T[] => {
+const castArray = <T>(value: T | T[]): T[] => {
   return Array.isArray(value) ? value : [value];
 };
 

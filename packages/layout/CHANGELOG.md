@@ -1,5 +1,32 @@
 # @react-pdf/layout
 
+## 4.4.2
+
+### Patch Changes
+
+- [#3254](https://github.com/diegomura/react-pdf/pull/3254) [`cc1aff24`](https://github.com/diegomura/react-pdf/commit/cc1aff2454263f64d1f79c9df051d21d74f8d7cf) Thanks [@rafw87](https://github.com/rafw87)! - fix duplicated bookmarks when View is spanning multiple pages
+
+- Updated dependencies [[`a5979c15`](https://github.com/diegomura/react-pdf/commit/a5979c1568761107076172e4c1843e66f62a08ab), [`f034491b`](https://github.com/diegomura/react-pdf/commit/f034491b1f77ce6f18a5db88e70b10b9c502ca35), [`04922fea`](https://github.com/diegomura/react-pdf/commit/04922fea2e60930ac550ec31beaeb7f20551cf63)]:
+  - @react-pdf/image@3.0.4
+  - @react-pdf/textkit@6.1.0
+  - @react-pdf/types@2.9.2
+  - @react-pdf/stylesheet@6.1.2
+
+## 4.4.1
+
+### Patch Changes
+
+- [#3152](https://github.com/diegomura/react-pdf/pull/3152) [`beaffd3d`](https://github.com/diegomura/react-pdf/commit/beaffd3d2bb5ac81033ef53421413662d6d71158) Thanks [@Namchee](https://github.com/Namchee)! - chore: replace emoji-regex with emoji-regex-xs
+
+- [#3190](https://github.com/diegomura/react-pdf/pull/3190) [`a99d10fb`](https://github.com/diegomura/react-pdf/commit/a99d10fb2fbb6bfeb233ccb9bf0b703ed092e8d5) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Fix yoga error Invalid array length at Array.push(<anonymous>)
+  Fix infinite loop while wrapping pages
+
+- [#3203](https://github.com/diegomura/react-pdf/pull/3203) [`ec063bec`](https://github.com/diegomura/react-pdf/commit/ec063bec8d6a56df42849a8e66521fad7719dc29) Thanks [@100Gyeon](https://github.com/100Gyeon)! - fix: prevent unhandled promise rejections when loading emoji images
+
+- Updated dependencies []:
+  - @react-pdf/types@2.9.1
+  - @react-pdf/stylesheet@6.1.1
+
 ## 4.4.0
 
 ### Minor Changes

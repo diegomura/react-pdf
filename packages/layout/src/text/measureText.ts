@@ -26,7 +26,7 @@ const measureText =
     if (widthMode === Yoga.MeasureMode.Exactly) {
       if (!node.lines) node.lines = layoutText(node, width, height, fontStore);
 
-      return { height: linesHeight(node) };
+      return { height: linesHeight(node), width };
     }
 
     if (widthMode === Yoga.MeasureMode.AtMost) {

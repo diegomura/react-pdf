@@ -1,4 +1,4 @@
-import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
@@ -61,7 +61,7 @@ interface SvgSafeProps extends NodeProps, SafeSVGPresentationAttributes {
 export type SvgNode = {
   type: typeof P.Svg;
   props: SvgProps;
-  style?: StyleProp<Style | Style[]>;
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

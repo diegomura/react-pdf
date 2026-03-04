@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 import { YogaNode } from 'yoga-layout/load';
 
@@ -16,7 +16,7 @@ interface CanvasProps extends NodeProps {
 export type CanvasNode = {
   type: typeof P.Canvas;
   props: CanvasProps;
-  style?: StyleProp<Style | Style[]>;
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

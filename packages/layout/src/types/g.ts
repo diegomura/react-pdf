@@ -1,4 +1,4 @@
-import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 
 import { LineNode, SafeLineNode } from './line';
@@ -17,7 +17,7 @@ import {
 } from './base';
 
 interface GProps extends SVGPresentationAttributes {
-  style?: StyleProp<Style | Style[]>;
+  style?: StyleProp;
 }
 
 interface SafeGProps extends SafeSVGPresentationAttributes {
@@ -27,7 +27,7 @@ interface SafeGProps extends SafeSVGPresentationAttributes {
 export type GNode = {
   type: typeof P.G;
   props: GProps;
-  style?: StyleProp<Style | Style[]>;
+  style?: StyleProp;
   box?: never;
   origin?: never;
   yogaNode?: never;

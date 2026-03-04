@@ -1,4 +1,4 @@
-import { SafeStyle, Style, StyleProp } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
@@ -65,7 +65,7 @@ export type ImageNode = {
   type: typeof P.Image;
   props: ImageProps;
   image?: Image;
-  style?: StyleProp<Style | Style[]>;
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

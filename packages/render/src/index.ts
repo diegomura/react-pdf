@@ -6,7 +6,11 @@ import { Context } from './types';
 
 const render = (ctx: Context, doc: SafeDocumentNode) => {
   const pages = doc.children || [];
-  const options = { imageCache: new Map(), fieldSets: [] };
+  const options = {
+    imageCache: new Map(),
+    fieldSets: [],
+    registeredDestinations: new Set<string>(),
+  };
 
   pages.forEach((page) => renderNode(ctx, page, options));
 

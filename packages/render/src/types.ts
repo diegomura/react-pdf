@@ -22,4 +22,5 @@ export type Context = typeof PDFKitDocument & {
 export interface RenderOptions {
   imageCache: Map<string | undefined, any>;
   fieldSets: (typeof PDFKitReference)[];
+  registeredDestinations: Set<string>;
 }

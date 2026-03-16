@@ -1,6 +1,7 @@
 import duplicatedImages from './duplicated-images';
 import ellipsis from './ellipsis';
 import emoji from './emoji';
+import endnote from './endnote';
 import fontFamilyFallback from './font-family-fallback';
 import fontWeight from './font-weight';
 import fractals from './fractals';
@@ -25,6 +26,7 @@ const EXAMPLES = [
   duplicatedImages,
   ellipsis,
   emoji,
+  endnote,
   fontFamilyFallback,
   fontWeight,
   fractals,

@@ -88,7 +88,7 @@ const renderNode = (ctx: Context, node: SafeNode, options: RenderOptions) => {
 
   if (cleanUpFn) cleanUpFn(ctx, node, options);
 
-  setDestination(ctx, node);
+  setDestination(ctx, node, options);
   renderDebug(ctx, node);
 
   ctx.restore();

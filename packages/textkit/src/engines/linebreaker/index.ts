@@ -7,6 +7,8 @@ import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
 
 const HYPHEN = 0x002d;
+// CJK characters: Hiragana, Katakana, CJK Ideographs, CJK punctuation, fullwidth forms
+const CJK_RANGE = /[\u3000-\u9fff\uf900-\ufaff\uff00-\uffef]/;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
 
@@ -46,7 +48,11 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      line = insertGlyph(line.string.length, HYPHEN, line);
+      // Skip hyphen insertion for CJK characters — they wrap without hyphens
+      const charAtBreak = attributedString.string.charAt(end - 1);
+      if (!CJK_RANGE.test(charAtBreak)) {
+        line = insertGlyph(line.string.length, HYPHEN, line);
+      }
     } else {
       end = node.end;
       line = slice(start, end, attributedString);

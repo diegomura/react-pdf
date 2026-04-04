@@ -1,50 +1,18 @@
-import Canvas from 'canvas';
-import pdfjs from 'pdfjs-dist/legacy/build/pdf';
+import { createCanvas } from '@napi-rs/canvas';
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 import { renderToBuffer } from '@react-pdf/renderer';
-
-/**
- * copy-pasted code from
- * https://github.com/mozilla/pdf.js/blob/master/examples/node/pdf2png/pdf2png.js#L20-L49
- */
-const NodeCanvasFactory = {
-  create(width, height) {
-    const canvas = Canvas.createCanvas(width, height);
-    const context = canvas.getContext('2d');
-    return {
-      canvas,
-      context,
-    };
-  },
-
-  reset(canvasAndContext, width, height) {
-    canvasAndContext.canvas.width = width;
-    canvasAndContext.canvas.height = height;
-  },
-
-  destroy(canvasAndContext) {
-    canvasAndContext.canvas.width = 0;
-    canvasAndContext.canvas.height = 0;
-    canvasAndContext.canvas = null;
-    canvasAndContext.context = null;
-  },
-};
 
 async function getCanvas(pagePromise) {
   const page = await pagePromise;
   const viewport = page.getViewport({ scale: 1.0 });
-  const canvasFactory = NodeCanvasFactory;
-  const { canvas, context } = canvasFactory.create(
-    viewport.width,
-    viewport.height,
-  );
-  const renderContext = {
+  const canvas = createCanvas(viewport.width, viewport.height);
+  const context = canvas.getContext('2d');
+
+  const renderTask = page.render({
     canvasContext: context,
     viewport,
-    canvasFactory,
-  };
-
-  const renderTask = page.render(renderContext);
+  });
   await renderTask.promise;
 
   return canvas;
@@ -60,7 +28,7 @@ const composeCanvases = (canvases) => {
     [0, 0],
   );
 
-  const resultCanvas = Canvas.createCanvas(
+  const resultCanvas = createCanvas(
     maxWidth,
     maxHeight * canvases.length + GAP * (canvases.length - 1),
   );
@@ -92,8 +60,8 @@ const range = (length) => Array.from({ length }, (_, index) => index);
 const renderComponent = async (element) => {
   const source = await renderToBuffer(element);
 
-  const document = await pdfjs.getDocument({
-    data: source,
+  const document = await getDocument({
+    data: new Uint8Array(source),
     verbosity: 0,
   }).promise;
 
@@ -102,13 +70,13 @@ const renderComponent = async (element) => {
   );
 
   if (pages.length === 1) {
-    return (await getCanvas(pages[0])).toBuffer();
+    return (await getCanvas(pages[0])).toBuffer('image/png');
   }
 
   const canvases = await Promise.all(pages.map((page) => getCanvas(page)));
   const pageSnapshots = composeCanvases(canvases);
 
-  return pageSnapshots.toBuffer();
+  return pageSnapshots.toBuffer('image/png');
 };
 
 export default renderComponent;

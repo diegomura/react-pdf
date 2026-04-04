@@ -1,5 +1,17 @@
 # @react-pdf/stylesheet
 
+## 6.1.3
+
+### Patch Changes
+
+- [#3326](https://github.com/diegomura/react-pdf/pull/3326) [`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55) Thanks [@diegomura](https://github.com/diegomura)! - fix(stylesheet): trim color strings
+
+- [#3324](https://github.com/diegomura/react-pdf/pull/3324) [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2) Thanks [@diegomura](https://github.com/diegomura)! - feat: rotate explicit origin support
+
+- Updated dependencies [[`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/types@2.9.3
+
 ## 6.1.2
 
 ### Patch Changes

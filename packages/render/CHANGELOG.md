@@ -1,5 +1,18 @@
 # @react-pdf/render
 
+## 4.3.3
+
+### Patch Changes
+
+- [#3329](https://github.com/diegomura/react-pdf/pull/3329) [`143317f2`](https://github.com/diegomura/react-pdf/commit/143317f244377226e0aec0f5512001538188229c) Thanks [@diegomura](https://github.com/diegomura)! - fix(render): text decoration color opacity
+
+- [#3324](https://github.com/diegomura/react-pdf/pull/3324) [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2) Thanks [@diegomura](https://github.com/diegomura)! - feat: rotate explicit origin support
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/types@2.9.3
+
 ## 4.3.2
 
 ### Patch Changes

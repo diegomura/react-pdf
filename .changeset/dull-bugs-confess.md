@@ -1,5 +1,5 @@
 ---
-"@react-pdf/fns": fix
+'@react-pdf/fns': patch
 ---
 
 fix(fns): prototype pollution issues

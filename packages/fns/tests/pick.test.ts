@@ -48,4 +48,12 @@ describe('pick', () => {
       e: undefined,
     });
   });
+
+  test('should not be vulnerable to prototype pollution via __proto__', () => {
+    const obj = JSON.parse('{"__proto__": {"polluted": "yes"}, "a": 1}');
+    const result = pick(['__proto__', 'a'], obj);
+
+    expect(result.a).toBe(1);
+    expect(({} as any).polluted).toBeUndefined();
+  });
 });

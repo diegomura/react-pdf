@@ -43,4 +43,12 @@ describe('mapValues', () => {
 
     expect(mapValues(obj, toUpper)).toEqual({ name: 'TEST', count: 5 });
   });
+
+  test('should not be vulnerable to prototype pollution via __proto__', () => {
+    const obj = JSON.parse('{"__proto__": {"polluted": "yes"}, "a": 1}');
+    const result = mapValues(obj, (x) => x);
+
+    expect(result.a).toBe(1);
+    expect(({} as any).polluted).toBeUndefined();
+  });
 });

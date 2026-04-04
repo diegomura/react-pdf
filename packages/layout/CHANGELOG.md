@@ -1,5 +1,19 @@
 # @react-pdf/layout
 
+## 4.4.3
+
+### Patch Changes
+
+- [#3321](https://github.com/diegomura/react-pdf/pull/3321) [`39886cd7`](https://github.com/diegomura/react-pdf/commit/39886cd77b9bad2b7012eba31778dfcce1983562) Thanks [@StephaneRavet](https://github.com/StephaneRavet)! - fix(layout): fix minPresenceAhead ignored when element has no future siblings
+
+- [#3328](https://github.com/diegomura/react-pdf/pull/3328) [`7d05a6d9`](https://github.com/diegomura/react-pdf/commit/7d05a6d9898fb555f45e108e61dc69c24a7ea1a6) Thanks [@diegomura](https://github.com/diegomura)! - feat(layout): ignore word joiner codepoint
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212), [`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55), [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/stylesheet@6.1.3
+  - @react-pdf/types@2.9.3
+
 ## 4.4.2
 
 ### Patch Changes

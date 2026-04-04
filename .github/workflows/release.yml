@@ -12,7 +12,7 @@ concurrency:
 env:
   FORCE_COLOR: 2
   HUSKY: 0
-  NODE_VERSION: 20
+  NODE_VERSION: 22
 
 jobs:
   test:
@@ -55,6 +55,10 @@ jobs:
     name: Create Release PR or Publish to npm
     needs: [test]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write # Required for OIDC Trusted Publishing
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,6 +80,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies and build
         run: yarn --frozen-lockfile
@@ -90,4 +95,3 @@ jobs:
           title: 'chore: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

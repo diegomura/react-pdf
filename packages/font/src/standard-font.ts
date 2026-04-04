@@ -1,5 +1,5 @@
 // @ts-expect-error ts being silly
-import { PDFFont } from '@react-pdf/pdfkit';
+import PDFDocument from '@react-pdf/pdfkit';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
 
@@ -17,6 +17,18 @@ export const STANDARD_FONTS = [
   'Times-Italic',
   'Times-BoldItalic',
 ];
+
+// Create a shared lightweight document for accessing standard font instances.
+// Standard fonts are created once and cached, so this is negligible overhead.
+let _sharedDoc: any = null;
+
+const openStandardFont = (src: string) => {
+  if (!_sharedDoc) {
+    _sharedDoc = new PDFDocument({ autoFirstPage: false });
+  }
+  _sharedDoc.font(src);
+  return _sharedDoc._font;
+};
 
 class StandardFont implements Font {
   name: string;
@@ -57,11 +69,21 @@ class StandardFont implements Font {
     this.numGlyphs = 0;
     this.characterSet = [];
 
-    this.src = PDFFont.open(null, src);
+    this.src = openStandardFont(src);
   }
 
   encode(str: string) {
-    return this.src.encode(str);
+    const [encoded, positions] = this.src.encode(str);
+
+    // Soft hyphens (U+00AD) should have zero width for line breaking purposes.
+    // Upstream pdfkit maps them to 'hyphen' in AFM data, so we override here.
+    for (let i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) === 0x00ad) {
+        positions[i].advanceWidth = 0;
+      }
+    }
+
+    return [encoded, positions];
   }
 
   layout(str: string) {

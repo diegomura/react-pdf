@@ -48,7 +48,7 @@ const parseHsl = (value: string) => {
  * @returns Transformed value
  */
 const transformColor = (value: string): string => {
-  const trimmed = value.trim();
+  const trimmed = value?.trim();
 
   if (isRgb(trimmed)) return parseRgb(trimmed);
   if (isHsl(trimmed)) return parseHsl(trimmed);

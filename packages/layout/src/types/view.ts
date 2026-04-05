@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
@@ -26,7 +26,7 @@ interface ViewProps extends NodeProps {
 export type ViewNode = {
   type: typeof P.View;
   props: ViewProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

@@ -451,6 +451,13 @@ type MediaQueryStyle = {
 
 export type Style = BaseStyle & MediaQueryStyle;
 
+type RecursiveArray<T> = Array<T | ReadonlyArray<T> | RecursiveArray<T>>;
+
+export type StyleProp =
+  | Style
+  | Style[]
+  | RecursiveArray<Style | Style[] | undefined>;
+
 export type StyleKey = keyof BaseStyle;
 
 export type ExpandedStyle = BorderExpandedStyle &

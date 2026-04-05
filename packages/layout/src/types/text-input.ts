@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, FormCommonProps, Origin } from './base';
@@ -49,7 +49,7 @@ interface TextInputProps extends FormCommonProps {
 export type TextInputNode = {
   type: typeof P.TextInput;
   props: TextInputProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

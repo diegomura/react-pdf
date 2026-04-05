@@ -7,12 +7,16 @@ import fetchImage from '../image/fetchImage';
 import {
   SafeDocumentNode,
   SafeImageNode,
+  SafeImageBackgroundNode,
   SafeNode,
   SafePageNode,
 } from '../types';
 
 const isImage = (node: SafeNode): node is SafeImageNode =>
   node.type === P.Image;
+
+const isImageBackground = (node: SafeNode): node is SafeImageBackgroundNode =>
+  node.type === P.ImageBackground;
 
 /**
  * Get all asset promises that need to be resolved
@@ -33,7 +37,7 @@ const fetchAssets = (
   while (listToExplore.length > 0) {
     const n = listToExplore.shift();
 
-    if (isImage(n)) {
+    if (isImage(n) || isImageBackground(n)) {
       promises.push(fetchImage(n, pageWidth));
     }
 

@@ -9,6 +9,7 @@ export * from './ellipse';
 export * from './field-set';
 export * from './g';
 export * from './image';
+export * from './image-background';
 export * from './line';
 export * from './linear-gradient';
 export * from './link';

@@ -1,12 +1,12 @@
-import { SafeImageNode } from '@react-pdf/layout';
+import { SafeImageBackgroundNode } from '@react-pdf/layout';
 
 import clipNode from '../operations/clipNode';
 import drawImage from '../operations/drawImage';
 import { Context, RenderOptions } from '../types';
 
-const renderImage = (
+const renderImageBackground = (
   ctx: Context,
-  node: SafeImageNode,
+  node: SafeImageBackgroundNode,
   options: RenderOptions,
 ) => {
   if (!node.box) return;
@@ -38,4 +38,4 @@ const renderImage = (
   ctx.restore();
 };
 
-export default renderImage;
+export default renderImageBackground;

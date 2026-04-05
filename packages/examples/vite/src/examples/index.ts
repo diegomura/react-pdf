@@ -5,6 +5,7 @@ import fontFamilyFallback from './font-family-fallback';
 import fontWeight from './font-weight';
 import fractals from './fractals';
 import goTo from './go-to';
+import imageBackground from './image-background';
 import imageStressTest from './image-stress-test';
 import JpgOrientation from './jpg-orientation';
 import knobs from './knobs';
@@ -42,6 +43,7 @@ const EXAMPLES = [
   svg,
   svgTransform,
   transformOrigin,
+  imageBackground,
   imageStressTest,
   responsiveImages,
   forms,

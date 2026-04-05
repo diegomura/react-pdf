@@ -1,4 +1,6 @@
-import { SafeImageNode } from '../types';
+import { SafeImageNode, SafeImageBackgroundNode } from '../types';
+
+type ImageLikeNode = SafeImageNode | SafeImageBackgroundNode;
 
 type SrcSetEntry = {
   uri: string;
@@ -153,7 +155,7 @@ const parseSizes = (
  * @param pageWidth - Page width for srcSet resolution
  * @returns Image src
  */
-const getSource = (node: SafeImageNode, pageWidth: number) => {
+const getSource = (node: ImageLikeNode, pageWidth: number) => {
   const { srcSet, sizes } = node.props;
 
   if (srcSet) {

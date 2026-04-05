@@ -172,6 +172,52 @@ declare namespace ReactPDF {
    */
   export class Image extends React.Component<ImageProps> {}
 
+  interface BaseImageBackgroundProps extends NodeProps {
+    /**
+     * Enables debug mode on page bounding box.
+     * @see https://react-pdf.org/advanced#debugging
+     */
+    debug?: boolean;
+    cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * @example 300
+     */
+    sizes?: Sizes;
+    /**
+     * Style applied to the background image.
+     */
+    imageStyle?: Style;
+  }
+
+  interface ImageBackgroundWithSrcProp extends BaseImageBackgroundProps {
+    src: SourceObject;
+  }
+
+  interface ImageBackgroundWithSourceProp extends BaseImageBackgroundProps {
+    source: SourceObject;
+  }
+
+  type ImageBackgroundProps =
+    | ImageBackgroundWithSrcProp
+    | ImageBackgroundWithSourceProp;
+
+  /**
+   * A React component for displaying an image behind child content.
+   * Compatible with React Native's ImageBackground component.
+   * @see https://reactnative.dev/docs/imagebackground
+   */
+  export class ImageBackground extends React.Component<
+    React.PropsWithChildren<ImageBackgroundProps>
+  > {}
+
   interface TextProps extends NodeProps {
     id?: string;
     /**

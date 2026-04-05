@@ -16,6 +16,7 @@ export const List = 'LIST';
 export const Stop = 'STOP';
 export const Defs = 'DEFS';
 export const Image = 'IMAGE';
+export const ImageBackground = 'IMAGE_BACKGROUND';
 export const Tspan = 'TSPAN';
 export const Canvas = 'CANVAS';
 export const Circle = 'CIRCLE';

@@ -8,6 +8,8 @@ import {
   PDFVersion,
   Orientation,
   SourceObject,
+  SrcSet,
+  Sizes,
   HyphenationCallback,
   SVGPresentationAttributes,
   Bookmark,
@@ -138,6 +140,20 @@ declare namespace ReactPDF {
      */
     debug?: boolean;
     cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * Works like the HTML img sizes attribute.
+     * @example 300
+     * @example "300"
+     */
+    sizes?: Sizes;
   }
 
   interface ImageWithSrcProp extends BaseImageProps {

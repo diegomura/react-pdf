@@ -1,0 +1,39 @@
+{
+  "name": "@react-pdf/math",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Render LaTeX math expressions in react-pdf documents",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/math"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "mathjax-full": "^3.2.2"
+  },
+  "peerDependencies": {
+    "@react-pdf/renderer": ">=4.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.97",
+    "@vitejs/plugin-react": "^4.2.1",
+    "jest-image-snapshot": "^6.1.0",
+    "pdfjs-dist": "^5.6.205",
+    "vitest": "^1.2.0"
+  }
+}

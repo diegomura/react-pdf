@@ -11,6 +11,7 @@
     "build:site": "vite build ./src"
   },
   "dependencies": {
+    "@react-pdf/math": "^0.1.0",
     "@react-pdf/renderer": "^4.3.3"
   },
   "peerDependencies": {

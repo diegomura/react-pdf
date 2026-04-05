@@ -365,8 +365,6 @@ const runners = {
     }
 
     doc.quadraticCurveTo(px, py, a[0], a[1]);
-    px = cx - (px - cx);
-    py = cy - (py - cy);
     cx = a[0];
     return (cy = a[1]);
   },

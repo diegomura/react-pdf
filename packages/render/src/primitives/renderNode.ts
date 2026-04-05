@@ -10,6 +10,7 @@ import renderDebug from './renderDebug';
 import renderCanvas from './renderCanvas';
 import renderBorders from './renderBorders';
 import renderBackground from './renderBackground';
+import renderBackgroundImage from './renderBackgroundImage';
 import setLink from '../operations/setLink';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
@@ -76,6 +77,7 @@ const renderNode = (ctx: Context, node: SafeNode, options: RenderOptions) => {
 
   transform(ctx, node);
   renderBackground(ctx, node);
+  renderBackgroundImage(ctx, node, options);
   renderBorders(ctx, node);
 
   const renderFn = renderFns[node.type];

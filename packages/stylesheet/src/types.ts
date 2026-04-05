@@ -1,3 +1,5 @@
+import { Image } from '@react-pdf/image';
+
 export type Container = {
   width: number;
   height: number;
@@ -267,6 +269,7 @@ export type DimensionSafeStyle = DimensionExpandedStyle & {
 
 export type ColorStyle = {
   backgroundColor?: string;
+  backgroundImage?: string;
   color?: string;
   opacity?: number | string;
 };
@@ -275,6 +278,7 @@ export type ColorExpandedStyle = ColorStyle;
 
 export type ColorSafeStyle = {
   backgroundColor?: string;
+  backgroundImage?: Image;
   color?: string;
   opacity?: number;
 };

@@ -10,9 +10,13 @@ import {
   SafeNode,
   SafePageNode,
 } from '../types';
+import fetchBackgroundImage from '../image/fetchBackgroundImage';
 
 const isImage = (node: SafeNode): node is SafeImageNode =>
   node.type === P.Image;
+
+const hasBackgroundImage = (node: SafeNode) =>
+  !!(node.style as Record<string, any>)?.backgroundImage;
 
 /**
  * Get all asset promises that need to be resolved
@@ -35,6 +39,10 @@ const fetchAssets = (
 
     if (isImage(n)) {
       promises.push(fetchImage(n, pageWidth));
+    }
+
+    if (hasBackgroundImage(n)) {
+      promises.push(fetchBackgroundImage(n));
     }
 
     if (fontStore && n.style?.fontFamily) {

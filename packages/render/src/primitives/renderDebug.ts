@@ -1,9 +1,11 @@
 import { SafeNode } from '@react-pdf/layout';
 import { Context } from '../types';
+import resolveHitSlop from '../utils/resolveHitSlop';
 
 const CONTENT_COLOR = '#a1c6e7';
 const PADDING_COLOR = '#c4deb9';
 const MARGIN_COLOR = '#f8cca1';
+const HITSLOP_COLOR = '#d8b4fe';
 
 // TODO: Draw debug boxes using clipping to enhance quality
 
@@ -173,6 +175,52 @@ const debugOrigin = (ctx: Context, node: SafeNode) => {
   }
 };
 
+const debugHitSlop = (ctx: Context, node: SafeNode) => {
+  if (!node.box || !node.props) return;
+  if (!('hitSlop' in node.props)) return;
+
+  const slop = resolveHitSlop(node.props.hitSlop);
+  if (!slop.top && !slop.bottom && !slop.left && !slop.right) return;
+
+  const { left, top, width, height } = node.box;
+
+  ctx.fillColor(HITSLOP_COLOR).opacity(0.35);
+
+  // Top
+  if (slop.top) {
+    ctx
+      .rect(
+        left - slop.left,
+        top - slop.top,
+        width + slop.left + slop.right,
+        slop.top,
+      )
+      .fill();
+  }
+
+  // Bottom
+  if (slop.bottom) {
+    ctx
+      .rect(
+        left - slop.left,
+        top + height,
+        width + slop.left + slop.right,
+        slop.bottom,
+      )
+      .fill();
+  }
+
+  // Left
+  if (slop.left) {
+    ctx.rect(left - slop.left, top, slop.left, height).fill();
+  }
+
+  // Right
+  if (slop.right) {
+    ctx.rect(left + width, top, slop.right, height).fill();
+  }
+};
+
 const renderDebug = (ctx: Context, node: SafeNode) => {
   if (!node.props) return;
   if (!('debug' in node.props) || !node.props.debug) return;
@@ -182,6 +230,7 @@ const renderDebug = (ctx: Context, node: SafeNode) => {
   debugContent(ctx, node);
   debugPadding(ctx, node);
   debugMargin(ctx, node);
+  debugHitSlop(ctx, node);
   debugText(ctx, node);
   debugOrigin(ctx, node);
 

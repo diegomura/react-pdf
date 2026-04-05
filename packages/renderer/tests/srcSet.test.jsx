@@ -1,5 +1,4 @@
 import { describe, expect, test } from 'vitest';
-import fs from 'fs';
 import url from 'url';
 import path from 'path';
 import { Document, Page, Image } from '@react-pdf/renderer';
@@ -7,9 +6,9 @@ import renderToImage from './renderComponent';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-const small = `file://${path.join(__dirname, 'images/srcset-small.png')}`;
-const medium = `file://${path.join(__dirname, 'images/srcset-medium.png')}`;
-const large = `file://${path.join(__dirname, 'images/srcset-large.png')}`;
+const small = path.resolve(__dirname, 'images/srcset-small.png');
+const medium = path.resolve(__dirname, 'images/srcset-medium.png');
+const large = path.resolve(__dirname, 'images/srcset-large.png');
 
 const srcSet = `${small} 200w, ${medium} 400w, ${large} 600w`;
 

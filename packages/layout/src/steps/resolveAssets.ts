@@ -27,7 +27,7 @@ const fetchAssets = (
   pageWidth: number,
 ) => {
   const promises: Promise<void>[] = [];
-  const listToExplore = node.children?.slice(0) || [];
+  const listToExplore = [node];
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
   while (listToExplore.length > 0) {

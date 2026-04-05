@@ -1,9 +1,9 @@
 import React from 'react';
 import { Document, Page, Image, Text, StyleSheet } from '@react-pdf/renderer';
 
-const SMALL = 'https://placehold.co/300x200/orange/white?text=300w';
-const MEDIUM = 'https://placehold.co/600x400/teal/white?text=600w';
-const LARGE = 'https://placehold.co/900x600/purple/white?text=900w';
+const SMALL = 'https://placehold.co/300x200/orange/white.png?text=300w';
+const MEDIUM = 'https://placehold.co/600x400/teal/white.png?text=600w';
+const LARGE = 'https://placehold.co/900x600/purple/white.png?text=900w';
 
 const styles = StyleSheet.create({
   page: {

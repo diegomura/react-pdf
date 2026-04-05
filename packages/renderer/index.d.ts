@@ -13,6 +13,7 @@ import {
   Bookmark,
   PageLayout,
   PageMode,
+  HitSlop,
 } from '@react-pdf/types';
 
 declare class ReactPDF {
@@ -222,6 +223,12 @@ declare namespace ReactPDF {
     debug?: boolean;
     href?: string;
     src?: string;
+    /**
+     * Extends the clickable area of the link beyond its visible bounds.
+     * Accepts a number (applied to all sides) or an object with top, bottom, left, right.
+     * @see https://reactnative.dev/docs/view#hitslop
+     */
+    hitSlop?: HitSlop;
   }
 
   /**

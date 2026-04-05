@@ -5,14 +5,16 @@ import resolveSource from './resolveSource';
 import { SafeImageNode } from '../types';
 
 /**
- * Fetches image and append data to node
+ * Fetches image and appends data to node.
  * Ideally this fn should be immutable.
  *
- * @param node
+ * @param node - Image node
+ * @param pageWidth - Page width for srcSet resolution
  */
-const fetchImage = async (node: SafeImageNode) => {
-  const src = getSource(node);
+const fetchImage = async (node: SafeImageNode, pageWidth: number) => {
   const { cache } = node.props;
+
+  const src = getSource(node, pageWidth);
 
   if (!src) {
     console.warn(false, 'Image should receive either a "src" or "source" prop');

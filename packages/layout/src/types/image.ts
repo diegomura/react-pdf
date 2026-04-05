@@ -1,4 +1,5 @@
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SrcSet, Sizes } from '@react-pdf/types';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
@@ -47,6 +48,8 @@ interface BaseImageProps extends NodeProps {
   cache?: boolean;
   x?: number;
   y?: number;
+  srcSet?: SrcSet;
+  sizes?: Sizes;
 }
 
 interface ImageWithSrcProp extends BaseImageProps {

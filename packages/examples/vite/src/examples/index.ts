@@ -19,6 +19,7 @@ import svg from './svg';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
 import forms from './forms';
+import responsiveImages from './responsive-images';
 import softHyphens from './soft-hyphens';
 
 const EXAMPLES = [
@@ -42,6 +43,7 @@ const EXAMPLES = [
   svgTransform,
   transformOrigin,
   imageStressTest,
+  responsiveImages,
   forms,
   softHyphens,
 ];

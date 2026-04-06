@@ -1,9 +1,9 @@
-import { mathjax } from 'mathjax-full/js/mathjax';
-import { TeX } from 'mathjax-full/js/input/tex';
-import { SVG } from 'mathjax-full/js/output/svg';
-import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor';
-import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html';
-import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages';
+import { mathjax } from 'mathjax-full/js/mathjax.js';
+import { TeX } from 'mathjax-full/js/input/tex.js';
+import { SVG } from 'mathjax-full/js/output/svg.js';
+import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js';
+import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js';
+import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js';
 
 const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);

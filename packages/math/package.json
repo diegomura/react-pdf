@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/math",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Render LaTeX math expressions in react-pdf documents",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

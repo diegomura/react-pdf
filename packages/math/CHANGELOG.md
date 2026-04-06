@@ -1,5 +1,11 @@
 # @react-pdf/math
 
+## 1.0.1
+
+### Patch Changes
+
+- [#3347](https://github.com/diegomura/react-pdf/pull/3347) [`65f16cd6`](https://github.com/diegomura/react-pdf/commit/65f16cd66e359a86a923702fbd2835b6d6f6b0ef) Thanks [@diegomura](https://github.com/diegomura)! - fix(math): include file extensions
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @react-pdf/primitives
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
 ## 4.1.1
 
 ### Patch Changes

@@ -50,6 +50,9 @@ const pdf = (initialValue) => {
       producer = 'react-pdf',
       creationDate = new Date(),
       modificationDate,
+      ownerPassword,
+      userPassword,
+      permissions,
     } = props;
 
     const ctx = new PDFDocument({
@@ -58,6 +61,9 @@ const pdf = (initialValue) => {
       lang: language,
       displayTitle: true,
       autoFirstPage: false,
+      ownerPassword,
+      userPassword,
+      permissions,
       info: omitNils({
         Title: title,
         Author: author,

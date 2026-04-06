@@ -4,8 +4,8 @@ import { Svg, G, Path } from '@react-pdf/renderer';
 const Chart = () => {
   return (
     <Svg
-      width="512pt"
-      height="512pt"
+      width="350pt"
+      height="350pt"
       preserveAspectRatio="xMinYMin slice"
       viewBox="0 0 512 512"
     >

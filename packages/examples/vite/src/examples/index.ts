@@ -3,7 +3,6 @@ import ellipsis from './ellipsis';
 import emoji from './emoji';
 import fontFamilyFallback from './font-family-fallback';
 import fontWeight from './font-weight';
-import fractals from './fractals';
 import goTo from './go-to';
 import imageBackground from './image-background';
 import imageStressTest from './image-stress-test';
@@ -30,7 +29,6 @@ const EXAMPLES = [
   emoji,
   fontFamilyFallback,
   fontWeight,
-  fractals,
   goTo,
   JpgOrientation,
   knobs,

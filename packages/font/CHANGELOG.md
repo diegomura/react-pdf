@@ -1,5 +1,15 @@
 # @react-pdf/font
 
+## 4.0.6
+
+### Patch Changes
+
+- [#3335](https://github.com/diegomura/react-pdf/pull/3335) [`2e91eb64`](https://github.com/diegomura/react-pdf/commit/2e91eb649318ee66ec8cab7386f1fdbae8eb8cef) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove font export
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`2e91eb64`](https://github.com/diegomura/react-pdf/commit/2e91eb649318ee66ec8cab7386f1fdbae8eb8cef), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`cf366d05`](https://github.com/diegomura/react-pdf/commit/cf366d050f795cce191863564182bd6efeb791af), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/pdfkit@5.0.0
+  - @react-pdf/types@2.10.0
+
 ## 4.0.5
 
 ### Patch Changes

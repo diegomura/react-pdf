@@ -32,8 +32,10 @@
     "@babel/runtime": "^7.20.13",
     "@react-pdf/png-js": "^3.0.0",
     "browserify-zlib": "^0.2.0",
-    "crypto-js": "^4.2.0",
+    "@noble/ciphers": "^1.0.0",
+    "@noble/hashes": "^1.6.0",
     "fontkit": "^2.0.2",
+    "js-md5": "^0.8.3",
     "jay-peg": "^1.1.1",
     "linebreak": "^1.1.0",
     "vite-compatible-readable-stream": "^3.6.1"

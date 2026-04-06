@@ -32,6 +32,16 @@ declare namespace ReactPDF {
     blob?: Blob;
   }
 
+  interface Permissions {
+    printing?: 'lowResolution' | 'highResolution';
+    modifying?: boolean;
+    copying?: boolean;
+    annotating?: boolean;
+    fillingForms?: boolean;
+    contentAccessibility?: boolean;
+    documentAssembly?: boolean;
+  }
+
   interface DocumentProps {
     style?: Style | Style[];
     title?: string;
@@ -46,6 +56,9 @@ declare namespace ReactPDF {
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
+    ownerPassword?: string;
+    userPassword?: string;
+    permissions?: Permissions;
     onRender?: (props: OnRenderProps) => any;
   }
 

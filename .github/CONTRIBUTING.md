@@ -31,12 +31,12 @@ git clone https://github.com/diegomura/react-pdf.git
 cd react-pdf
 ```
 
-### 2. Install Node 18
+### 2. Install Node 22
 
 If you have `nvm` installed all you have to do is:
 
 ```sh
-nvm install 18
+nvm install 22
 nvm use
 ```
 

@@ -1,9 +1,11 @@
 import { Transform } from '@react-pdf/stylesheet';
-import { YogaNode } from 'yoga-layout/load';
+import { TaffyNodeAdapter } from '../yoga/index';
 import * as React from 'react';
 import { SafeClipPathNode } from './clip-path';
 import { SafeLinearGradientNode } from './linear-gradient';
 import { SafeRadialGradientNode } from './radial-gradient';
+
+export type YogaNode = TaffyNodeAdapter;
 
 export type YogaInstance = {
   node: { create: () => YogaNode };

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../../src/yoga/enums';
 
 import setPositionType from '../../src/node/setPositionType';
 import { SafeNode } from '../../src/types';

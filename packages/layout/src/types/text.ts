@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 import { HyphenationCallback } from '@react-pdf/font';
-import { YogaNode } from 'yoga-layout/load';
+import { YogaNode } from './base';
 import { Paragraph } from '@react-pdf/textkit';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';

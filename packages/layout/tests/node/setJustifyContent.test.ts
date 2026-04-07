@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../../src/yoga/enums';
 
 import setJustifyContent from '../../src/node/setJustifyContent';
 import { SafeNode } from '../../src/types';

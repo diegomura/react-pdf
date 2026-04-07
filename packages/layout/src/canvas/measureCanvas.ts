@@ -1,4 +1,4 @@
-import { MeasureFunction } from 'yoga-layout/load';
+import { MeasureFunction } from '../yoga/enums';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import isHeightAuto from '../page/isHeightAuto';

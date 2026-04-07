@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../yoga/enums';
 import { isNil } from '@react-pdf/fns';
 import { SafeNode } from '../types';
 

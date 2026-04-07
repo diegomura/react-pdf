@@ -1,6 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
-import { YogaNode } from 'yoga-layout/load';
+import { YogaNode } from './base';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
 import { ImageNode, SafeImageNode } from './image';

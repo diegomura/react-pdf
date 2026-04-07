@@ -14,89 +14,161 @@ import {
 } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
-  fieldset: {
-    flexDirection: 'column',
-    backgroundColor: 'rgba(182,28,28,0.62)',
-    width: '50%',
-    marginBottom: 50,
+  page: {
+    backgroundColor: '#fafafa',
+    padding: 40,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    fontSize: 9,
+    color: '#888',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#e8e8e8',
+    marginBottom: 8,
+  },
+  sectionLabel: {
+    fontSize: 8,
+    color: '#999',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 12,
+  },
+  fieldGroup: {
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 10,
+    color: '#333',
+    marginBottom: 4,
+  },
+  textInput: {
+    height: 32,
+  },
+  textInputMultiline: {
+    fontSize: 8,
+    height: 80,
+  },
+  checkbox: {
+    height: 16,
+  },
+  select: {
+    height: 20,
+  },
+  list: {
+    height: 44,
   },
 });
 
 const MyDoc = () => {
   return (
-    <Page style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <FieldSet name="user-info" style={styles.fieldset}>
-        <Text>TextInput</Text>
-        <TextInput
-          name="username"
-          value="foo"
-          align="center"
-          style={{ height: '50px' }}
-        />
+    <Page style={styles.page}>
+      <Text style={styles.title}>Forms</Text>
+      <Text style={styles.subtitle}>Interactive form components</Text>
+
+      <FieldSet name="user-info" style={styles.card}>
+        <Text style={styles.sectionLabel}>User Information</Text>
+
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Username</Text>
+          <TextInput
+            name="username"
+            value="foo"
+            align="center"
+            style={styles.textInput}
+          />
+        </View>
 
         {/* Nested works as well */}
-        <View>
-          <Text>TextInput</Text>
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Password</Text>
           <TextInput
             name="password"
             value="bar"
             align="center"
-            style={{ height: '50px' }}
+            style={styles.textInput}
             password
           />
         </View>
 
-        <Text>Checkbox (not checked)</Text>
-        <Checkbox name="checkbox-default" style={{ height: '20px' }} />
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Checkbox (not checked)</Text>
+          <Checkbox name="checkbox-default" style={styles.checkbox} />
+        </View>
 
-        <Text>Checkbox (checked)</Text>
-        <Checkbox name="checkbox-checked" checked style={{ height: '20px' }} />
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Checkbox (checked)</Text>
+          <Checkbox name="checkbox-checked" checked style={styles.checkbox} />
+        </View>
 
-        <Text>Select</Text>
-        <Select
-          name="combo"
-          select={['', 'option 1', 'option 2']}
-          value=""
-          defaultValue=""
-          style={{ height: '20px' }}
-        />
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Select</Text>
+          <Select
+            name="combo"
+            select={['', 'option 1', 'option 2']}
+            value=""
+            defaultValue=""
+            style={styles.select}
+          />
+        </View>
 
-        <Text>List</Text>
-        <List
-          name="list"
-          select={['', 'option 1', 'option 2']}
-          value=""
-          defaultValue=""
-          style={{ height: '50px' }}
-        />
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>List</Text>
+          <List
+            name="list"
+            select={['', 'option 1', 'option 2']}
+            value=""
+            defaultValue=""
+            style={styles.list}
+          />
+        </View>
       </FieldSet>
 
-      <FieldSet name="user-details" style={styles.fieldset}>
-        <Text>TextInput (multiline)</Text>
-        <TextInput
-          name="details"
-          value="hello"
-          align="center"
-          multiline
-          style={{ fontSize: 8, height: '100px' }}
-        />
+      <FieldSet name="user-details" style={styles.card}>
+        <Text style={styles.sectionLabel}>User Details</Text>
+
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Details (multiline)</Text>
+          <TextInput
+            name="details"
+            value="hello"
+            align="center"
+            multiline
+            style={styles.textInputMultiline}
+          />
+        </View>
       </FieldSet>
 
-      <View style={styles.fieldset}>
-        <Text>TextInput (no FieldSet)</Text>
-        <TextInput
-          name="textinput-no-fieldset"
-          value="no fieldset"
-          align="center"
-          style={{ height: '50px' }}
-        />
+      <View style={styles.card}>
+        <Text style={styles.sectionLabel}>Standalone Fields</Text>
 
-        <Text>Checkbox (checked, no FieldSet)</Text>
-        <Checkbox
-          name="checkbox-no-fieldset"
-          checked
-          style={{ height: '20px' }}
-        />
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>TextInput (no FieldSet)</Text>
+          <TextInput
+            name="textinput-no-fieldset"
+            value="no fieldset"
+            align="center"
+            style={styles.textInput}
+          />
+        </View>
+
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Checkbox (checked, no FieldSet)</Text>
+          <Checkbox
+            name="checkbox-no-fieldset"
+            checked
+            style={styles.checkbox}
+          />
+        </View>
       </View>
     </Page>
   );

@@ -22,4 +22,29 @@ describe('indices append operator', () => {
     const result = append(3, [0, 1, 2, 2]);
     expect(result).toEqual([0, 1, 2, 2, 3, 3, 3]);
   });
+
+  test('should append single value to array', () => {
+    const result = append(1, [0, 1, 2]);
+    expect(result).toEqual([0, 1, 2, 3]);
+  });
+
+  test('should append to array with repeated values at end', () => {
+    const result = append(2, [0, 0, 1, 1]);
+    expect(result).toEqual([0, 0, 1, 1, 2, 2]);
+  });
+
+  test('should append single value to empty array', () => {
+    const result = append(1, []);
+    expect(result).toEqual([0]);
+  });
+
+  test('should append to single element array', () => {
+    const result = append(2, [0]);
+    expect(result).toEqual([0, 1, 1]);
+  });
+
+  test('should append large number of values', () => {
+    const result = append(5, [0, 1]);
+    expect(result).toEqual([0, 1, 2, 2, 2, 2, 2]);
+  });
 });

@@ -83,7 +83,11 @@ export type NodeProps = {
    * @see https://react-pdf.org/advanced#debugging
    */
   debug?: boolean;
-  bookmark?: Bookmark;
+  /**
+   * Bookmark for the element.
+   * @see https://react-pdf.org/advanced#bookmarks
+   */
+  bookmark?: string | Bookmark;
 };
 
 export type FillRule = 'nonzero' | 'evenodd';

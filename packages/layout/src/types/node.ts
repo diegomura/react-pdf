@@ -8,6 +8,10 @@ import { EllipseNode, SafeEllipseNode } from './ellipse';
 import { FieldSetNode, SafeFieldSetNode } from './field-set';
 import { GNode, SafeGNode } from './g';
 import { ImageNode, SafeImageNode } from './image';
+import {
+  ImageBackgroundNode,
+  SafeImageBackgroundNode,
+} from './image-background';
 import { LineNode, SafeLineNode } from './line';
 import { LinearGradientNode, SafeLinearGradientNode } from './linear-gradient';
 import { LinkNode, SafeLinkNode } from './link';
@@ -31,6 +35,7 @@ export type Node =
   | DocumentNode
   | PageNode
   | ImageNode
+  | ImageBackgroundNode
   | SvgNode
   | CircleNode
   | ClipPathNode
@@ -62,6 +67,7 @@ export type SafeNode =
   | SafeDocumentNode
   | SafePageNode
   | SafeImageNode
+  | SafeImageBackgroundNode
   | SafeSvgNode
   | SafeCircleNode
   | SafeClipPathNode

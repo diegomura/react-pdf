@@ -32,8 +32,8 @@ const layoutEngine = (engines: Engines) => {
       resolveYOffset(),
       resolveAttachments(),
       verticalAlignment(),
-      wrapWords(engines, options),
       generateGlyphs(),
+      wrapWords(engines, options),
       bidiMirroring(),
       preprocessRuns(engines),
     );

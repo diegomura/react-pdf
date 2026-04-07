@@ -1,5 +1,12 @@
 import React from 'react';
-import { Document, Page, Text, StyleSheet, Font } from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  View,
+  Text,
+  StyleSheet,
+  Font,
+} from '@react-pdf/renderer';
 
 import RobotoFont from '../../../public/Roboto-Regular.ttf';
 import RobotoBoldFont from '../../../public/Roboto-Bold.ttf';
@@ -9,19 +16,42 @@ import NotoSansArabicFont from '../../../public/NotoSansArabic-Regular.ttf';
 
 const styles = StyleSheet.create({
   body: {
-    paddingTop: 35,
-    paddingBottom: 45,
-    paddingHorizontal: 35,
-    position: 'relative',
+    padding: 40,
+    backgroundColor: '#fafafa',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    fontSize: 9,
+    color: '#888',
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#e8e8e8',
+    marginBottom: 8,
+  },
+  cardLabel: {
+    fontSize: 8,
+    color: '#999',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 6,
   },
   regular: {
     fontFamily: ['Roboto', 'NotoSansArabic'],
-    fontSize: '14',
+    fontSize: 14,
     fontWeight: 900,
   },
   default: {
     fontFamily: ['Courier-Bold', 'NotoSansArabic'],
-    fontSize: '14',
+    fontSize: 14,
   },
 });
 
@@ -59,36 +89,43 @@ Font.register({
 const MyDoc = () => {
   return (
     <Page style={styles.body}>
-      <Text style={{ fontFamily: 'Courier', marginBottom: '20px' }}>
-        This font is default Courier
+      <Text style={styles.title}>Font Family Fallback</Text>
+      <Text style={styles.subtitle}>
+        Demonstrating font fallbacks, mixed families, weights, and styles
       </Text>
 
-      <Text style={{ fontSize: 10 }}>
-        The following is partially Roboto and Noto Sans Arabic
-      </Text>
-      <Text style={[styles.regular, { marginBottom: '20px' }]}>
-        Roboto / امتحان
-      </Text>
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Default Courier</Text>
+        <Text style={{ fontFamily: 'Courier', fontSize: 14 }}>
+          This font is default Courier
+        </Text>
+      </View>
 
-      <Text style={{ fontSize: 10 }}>
-        The following is partially Courier-Bold and Noto Sans Arabic
-      </Text>
-      <Text style={[styles.default, { marginBottom: '20px' }]}>
-        Courier-Bold / امتحان
-      </Text>
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Roboto + Noto Sans Arabic fallback</Text>
+        <Text style={styles.regular}>Roboto / امتحان</Text>
+      </View>
 
-      <Text style={{ fontSize: 10 }}>
-        The following are multiple font families, weights, and styles all on the
-        same line
-      </Text>
-      <Text style={{ fontFamily: 'Roboto' }}>
-        Roboto Normal{' / '}
-        <Text style={{ fontWeight: 'bold' }}>Roboto Bold</Text>
-        {' / '}
-        <Text style={{ fontStyle: 'italic' }}>Roboto Italic</Text>
-        {' / '}
-        <Text style={{ fontFamily: 'Courier' }}>Courier</Text>
-      </Text>
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>
+          Courier-Bold + Noto Sans Arabic fallback
+        </Text>
+        <Text style={styles.default}>Courier-Bold / امتحان</Text>
+      </View>
+
+      <View style={[styles.card, { padding: 12 }]}>
+        <Text style={styles.cardLabel}>
+          Multiple font families, weights, and styles on the same line
+        </Text>
+        <Text style={{ fontFamily: 'Roboto', fontSize: 14 }}>
+          Roboto Normal{' / '}
+          <Text style={{ fontWeight: 'bold' }}>Roboto Bold</Text>
+          {' / '}
+          <Text style={{ fontStyle: 'italic' }}>Roboto Italic</Text>
+          {' / '}
+          <Text style={{ fontFamily: 'Courier' }}>Courier</Text>
+        </Text>
+      </View>
     </Page>
   );
 };

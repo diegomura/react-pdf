@@ -4,10 +4,19 @@ import { castArray } from '@react-pdf/fns';
 
 import fetchEmojis from '../text/emoji';
 import fetchImage from '../image/fetchImage';
-import { SafeImageNode, SafeNode } from '../types';
+import {
+  SafeDocumentNode,
+  SafeImageNode,
+  SafeImageBackgroundNode,
+  SafeNode,
+  SafePageNode,
+} from '../types';
 
 const isImage = (node: SafeNode): node is SafeImageNode =>
   node.type === P.Image;
+
+const isImageBackground = (node: SafeNode): node is SafeImageBackgroundNode =>
+  node.type === P.ImageBackground;
 
 /**
  * Get all asset promises that need to be resolved
@@ -16,16 +25,20 @@ const isImage = (node: SafeNode): node is SafeImageNode =>
  * @param node - Root node
  * @returns Asset promises
  */
-const fetchAssets = (fontStore: FontStore, node: SafeNode) => {
+const fetchAssets = (
+  fontStore: FontStore,
+  node: SafeNode,
+  pageWidth: number,
+) => {
   const promises: Promise<void>[] = [];
-  const listToExplore = node.children?.slice(0) || [];
+  const listToExplore = [node];
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
   while (listToExplore.length > 0) {
     const n = listToExplore.shift();
 
-    if (isImage(n)) {
-      promises.push(fetchImage(n));
+    if (isImage(n) || isImageBackground(n)) {
+      promises.push(fetchImage(n, pageWidth));
     }
 
     if (fontStore && n.style?.fontFamily) {
@@ -61,6 +74,21 @@ const fetchAssets = (fontStore: FontStore, node: SafeNode) => {
 };
 
 /**
+ * Fetch assets for a page
+ *
+ * @param fontStore - Font store
+ * @param page - Page node
+ * @returns Asset promises
+ */
+const fetchPageAssets = (fontStore: FontStore, page: SafePageNode) => {
+  const pageWidth = page.style?.width as number;
+
+  return page.children
+    ?.map((child) => fetchAssets(fontStore, child, pageWidth))
+    .flat();
+};
+
+/**
  * Fetch image, font and emoji assets in parallel.
  * Layout process will not be resumed until promise resolves.
  *
@@ -68,9 +96,13 @@ const fetchAssets = (fontStore: FontStore, node: SafeNode) => {
  * @param fontStore font store
  * @returns Root node
  */
-const resolveAssets = async (node: SafeNode, fontStore: FontStore) => {
-  const promises = fetchAssets(fontStore, node);
+const resolveAssets = async (node: SafeDocumentNode, fontStore: FontStore) => {
+  const promises = node.children
+    .map((page) => fetchPageAssets(fontStore, page))
+    .flat();
+
   await Promise.all(promises);
+
   return node;
 };
 

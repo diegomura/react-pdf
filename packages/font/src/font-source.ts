@@ -6,15 +6,25 @@ import StandardFont, { STANDARD_FONTS } from './standard-font';
 
 const fetchFont = async (src: string, options: RemoteOptions) => {
   const response = await fetch(src, options);
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch font from ${src}: ${response.status} ${response.statusText}`,
+    );
+  }
+
   const data = await response.arrayBuffer();
 
   return new Uint8Array(data);
 };
 
 const isDataUrl = (dataUrl: string) => {
-  const header = dataUrl.split(',')[0];
-  const hasDataPrefix = header.substring(0, 5) === 'data:';
-  const hasBase64Prefix = header.split(';')[1] === 'base64';
+  const commaIndex = dataUrl.indexOf(',');
+  if (commaIndex === -1) return false;
+
+  const header = dataUrl.substring(0, commaIndex);
+  const hasDataPrefix = header.startsWith('data:');
+  const hasBase64Prefix = header.includes(';base64');
 
   return hasDataPrefix && hasBase64Prefix;
 };

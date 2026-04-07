@@ -58,7 +58,7 @@ describe('resolve stylesheet borders', () => {
   test('should resolve border right shorthand', () => {
     const styles = resolveStyle({ borderRight: '1 solid red' });
 
-    expect(resolveStyle(styles)).toEqual({
+    expect(styles).toEqual({
       borderRightColor: 'red',
       borderRightStyle: 'solid',
       borderRightWidth: 1,
@@ -68,7 +68,7 @@ describe('resolve stylesheet borders', () => {
   test('should resolve border bottom shorthand', () => {
     const styles = resolveStyle({ borderBottom: '1px dashed #000' });
 
-    expect(resolveStyle(styles)).toEqual({
+    expect(styles).toEqual({
       borderBottomColor: '#000',
       borderBottomStyle: 'dashed',
       borderBottomWidth: 1,
@@ -78,7 +78,7 @@ describe('resolve stylesheet borders', () => {
   test('should resolve border left shorthand', () => {
     const styles = resolveStyle({ borderLeft: '1in solid rgb(1, 0, 0)' });
 
-    expect(resolveStyle(styles)).toEqual({
+    expect(styles).toEqual({
       borderLeftColor: '#010000',
       borderLeftStyle: 'solid',
       borderLeftWidth: 72,
@@ -144,10 +144,10 @@ describe('resolve stylesheet borders', () => {
     const styles = resolveStyle({ borderColor: 'hsla(0, 100%, 50%, 0.5)' });
 
     expect(styles).toEqual({
-      borderTopColor: '#FF0000',
-      borderRightColor: '#FF0000',
-      borderBottomColor: '#FF0000',
-      borderLeftColor: '#FF0000',
+      borderTopColor: '#FF000080',
+      borderRightColor: '#FF000080',
+      borderBottomColor: '#FF000080',
+      borderLeftColor: '#FF000080',
     });
   });
 
@@ -224,10 +224,10 @@ describe('resolve stylesheet borders', () => {
     });
 
     expect(styles).toEqual({
-      borderTopColor: '#FF0000',
-      borderRightColor: '#FF0000',
-      borderBottomColor: '#FF0000',
-      borderLeftColor: '#FF0000',
+      borderTopColor: '#FF000080',
+      borderRightColor: '#FF000080',
+      borderBottomColor: '#FF000080',
+      borderLeftColor: '#FF000080',
     });
   });
 
@@ -332,5 +332,201 @@ describe('resolve stylesheet borders', () => {
     expect(styles.borderRightWidth).toBeCloseTo(28.346 * 2, 1);
     expect(styles.borderBottomWidth).toBeCloseTo(28.346 * 3, 1);
     expect(styles.borderLeftWidth).toBeCloseTo(28.346 * 4, 1);
+  });
+
+  test('should resolve borders in rem', () => {
+    const styles = resolveStyle({
+      borderTopWidth: '1rem',
+      borderRightWidth: '2rem',
+      borderBottomWidth: '3rem',
+      borderLeftWidth: '4rem',
+    });
+
+    expect(styles.borderTopWidth).toBe(10);
+    expect(styles.borderRightWidth).toBe(20);
+    expect(styles.borderBottomWidth).toBe(30);
+    expect(styles.borderLeftWidth).toBe(40);
+  });
+
+  test('should resolve borders in pt', () => {
+    const styles = resolveStyle({
+      borderTopWidth: '10pt',
+      borderRightWidth: '20pt',
+      borderBottomWidth: '30pt',
+      borderLeftWidth: '40pt',
+    });
+
+    expect(styles.borderTopWidth).toBe(10);
+    expect(styles.borderRightWidth).toBe(20);
+    expect(styles.borderBottomWidth).toBe(30);
+    expect(styles.borderLeftWidth).toBe(40);
+  });
+
+  test('should resolve border width shorthand with string units', () => {
+    const styles = resolveStyle({ borderWidth: '2in' });
+
+    expect(styles).toEqual({
+      borderTopWidth: 144,
+      borderRightWidth: 144,
+      borderBottomWidth: 144,
+      borderLeftWidth: 144,
+    });
+  });
+
+  test('should resolve border shorthand with pt units', () => {
+    const styles = resolveStyle({ border: '10pt solid blue' });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopColor: 'blue',
+      borderLeftColor: 'blue',
+      borderRightColor: 'blue',
+      borderBottomColor: 'blue',
+      borderTopWidth: 10,
+      borderLeftWidth: 10,
+      borderRightWidth: 10,
+      borderBottomWidth: 10,
+    });
+  });
+
+  test('should resolve border shorthand with rem units', () => {
+    const styles = resolveStyle({ border: '2rem dashed green' });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'dashed',
+      borderLeftStyle: 'dashed',
+      borderRightStyle: 'dashed',
+      borderBottomStyle: 'dashed',
+      borderTopColor: 'green',
+      borderLeftColor: 'green',
+      borderRightColor: 'green',
+      borderBottomColor: 'green',
+      borderTopWidth: 20,
+      borderLeftWidth: 20,
+      borderRightWidth: 20,
+      borderBottomWidth: 20,
+    });
+  });
+
+  test('should resolve border shorthand with zero width', () => {
+    const styles = resolveStyle({ border: '0 solid red' });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopColor: 'red',
+      borderLeftColor: 'red',
+      borderRightColor: 'red',
+      borderBottomColor: 'red',
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      borderBottomWidth: 0,
+    });
+  });
+
+  test('should resolve individual border styles', () => {
+    const styles = resolveStyle({
+      borderTopStyle: 'solid',
+      borderRightStyle: 'dashed',
+      borderBottomStyle: 'dotted',
+      borderLeftStyle: 'solid',
+    });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'solid',
+      borderRightStyle: 'dashed',
+      borderBottomStyle: 'dotted',
+      borderLeftStyle: 'solid',
+    });
+  });
+
+  test('should resolve individual border radius', () => {
+    const styles = resolveStyle({
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 15,
+      borderBottomLeftRadius: 20,
+    });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 15,
+      borderBottomLeftRadius: 20,
+    });
+  });
+
+  test('should resolve individual border radius with units', () => {
+    const styles = resolveStyle({
+      borderTopLeftRadius: '1in',
+      borderTopRightRadius: '10vw',
+      borderBottomRightRadius: '10vh',
+      borderBottomLeftRadius: '1rem',
+    });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 72,
+      borderTopRightRadius: 20,
+      borderBottomRightRadius: 40,
+      borderBottomLeftRadius: 10,
+    });
+  });
+
+  test('should resolve border radius shorthand with in units', () => {
+    const styles = resolveStyle({ borderRadius: '0.5in' });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 36,
+      borderTopRightRadius: 36,
+      borderBottomRightRadius: 36,
+      borderBottomLeftRadius: 36,
+    });
+  });
+
+  test('should resolve border radius shorthand with rem units', () => {
+    const styles = resolveStyle({ borderRadius: '2rem' });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomRightRadius: 20,
+      borderBottomLeftRadius: 20,
+    });
+  });
+
+  test('should resolve border radius shorthand with vw units', () => {
+    const styles = resolveStyle({ borderRadius: '5vw' });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10,
+      borderBottomLeftRadius: 10,
+    });
+  });
+
+  test('should resolve border shorthand with multiple whitespaces', () => {
+    const styles = resolveStyle({ border: '2px   solid   blue' });
+
+    expect(styles).toEqual({
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopColor: 'blue',
+      borderLeftColor: 'blue',
+      borderRightColor: 'blue',
+      borderBottomColor: 'blue',
+      borderTopWidth: 2,
+      borderLeftWidth: 2,
+      borderRightWidth: 2,
+      borderBottomWidth: 2,
+    });
   });
 });

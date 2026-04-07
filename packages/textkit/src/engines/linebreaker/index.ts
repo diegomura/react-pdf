@@ -45,6 +45,7 @@ const breakLines = (
       end = prevNode.end;
 
       line = slice(start, end, attributedString);
+
       line = insertGlyph(line.string.length, HYPHEN, line);
     } else {
       end = node.end;
@@ -56,7 +57,6 @@ const breakLines = (
     return [...acc, line];
   }, []);
 
-  // Last line
   lines.push(slice(start, attributedString.string.length, attributedString));
 
   return lines;

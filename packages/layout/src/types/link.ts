@@ -1,5 +1,6 @@
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
+import { HitSlop } from '@react-pdf/types';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
@@ -16,6 +17,7 @@ interface LinkProps extends NodeProps {
   wrap?: boolean;
   href?: string;
   src?: string;
+  hitSlop?: HitSlop;
   render?: RenderProp;
 }
 

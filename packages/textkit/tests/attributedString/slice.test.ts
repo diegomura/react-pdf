@@ -4,6 +4,7 @@ import font from '../internal/font';
 import pluck from '../internal/pluck';
 import slice from '../../src/attributedString/slice';
 import { Glyph } from '../../src/types';
+import empty from '../../src/attributedString/empty';
 
 const testString = 'Lorem ipsum';
 const testRuns = [
@@ -12,6 +13,56 @@ const testRuns = [
 ];
 
 describe('attributeString slice operator', () => {
+  test('should return same attributed string when empty', () => {
+    const string = empty();
+    const sliced = slice(0, 0, string);
+
+    expect(sliced).toBe(string);
+  });
+
+  test('should slice from start of string', () => {
+    const string = { string: testString, runs: testRuns };
+    const sliced = slice(0, 5, string);
+
+    expect(sliced.string).toBe('Lorem');
+    expect(sliced.runs.length).toBe(1);
+    expect(sliced.runs[0]).toHaveProperty('start', 0);
+    expect(sliced.runs[0]).toHaveProperty('end', 5);
+    expect(sliced.runs[0]).toHaveProperty('attributes', { font: [] });
+  });
+
+  test('should slice to end of string', () => {
+    const string = { string: testString, runs: testRuns };
+    const sliced = slice(6, 11, string);
+
+    expect(sliced.string).toBe('ipsum');
+    expect(sliced.runs.length).toBe(1);
+    expect(sliced.runs[0]).toHaveProperty('start', 0);
+    expect(sliced.runs[0]).toHaveProperty('end', 5);
+    expect(sliced.runs[0]).toHaveProperty('attributes', { fontSize: 16 });
+  });
+
+  test('should slice entire string', () => {
+    const string = { string: testString, runs: testRuns };
+    const sliced = slice(0, 11, string);
+
+    expect(sliced.string).toBe('Lorem ipsum');
+    expect(sliced.runs.length).toBe(2);
+    expect(sliced.runs[0]).toHaveProperty('start', 0);
+    expect(sliced.runs[0]).toHaveProperty('end', 6);
+    expect(sliced.runs[0]).toHaveProperty('attributes', { font: [] });
+    expect(sliced.runs[1]).toHaveProperty('start', 6);
+    expect(sliced.runs[1]).toHaveProperty('end', 11);
+    expect(sliced.runs[1]).toHaveProperty('attributes', { fontSize: 16 });
+  });
+
+  test('should return empty string when start equals end', () => {
+    const string = { string: testString, runs: testRuns };
+    const sliced = slice(5, 5, string);
+
+    expect(sliced.string).toBe('');
+  });
+
   test('should slice with one run', () => {
     const runs = [{ start: 0, end: 11, attributes: { font: [] } }];
     const string = { string: testString, runs };

@@ -10,16 +10,13 @@ import { Container, Style } from '../types';
  * @returns Resolved style object
  */
 const resolveMediaQueries = (container: Container, style: Style): Style => {
-  return Object.keys(style).reduce((acc, key) => {
-    if (/@media/.test(key)) {
-      return {
-        ...acc,
-        ...matchMedia({ [key]: style[key] }, container),
-      };
+  return Object.entries(style).reduce<Style>((acc, [key, value]) => {
+    if (key.startsWith('@media')) {
+      return { ...acc, ...matchMedia({ [key]: value }, container) };
     }
 
-    return { ...acc, [key]: style[key] };
-  }, {});
+    return { ...acc, [key]: value };
+  }, {} as Style);
 };
 
 export default resolveMediaQueries;

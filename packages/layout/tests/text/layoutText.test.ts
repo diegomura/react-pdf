@@ -89,7 +89,7 @@ describe('text layoutText', () => {
 
   test('should allow hyphenation callback to be overriden', async () => {
     const text = 'reallylongtext';
-    const hyphens = ['really', 'long', 'text'];
+    const hyphens = ['really­', 'long', 'text'];
     const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
 
     const node = createTextNode(text, {}, { hyphenationCallback });
@@ -98,6 +98,9 @@ describe('text layoutText', () => {
     expect(lines[0].string).toEqual('really-');
     expect(lines[1].string).toEqual('long-');
     expect(lines[2].string).toEqual('text');
-    expect(hyphenationCallback).toHaveBeenCalledWith('reallylongtext');
+    expect(hyphenationCallback).toHaveBeenCalledWith(
+      'reallylongtext',
+      expect.any(Function),
+    );
   });
 });

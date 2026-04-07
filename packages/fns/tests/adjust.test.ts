@@ -31,4 +31,44 @@ describe('adjust', () => {
     adjust(2, add, expected);
     expect([0, 1, 2, 3]).toEqual(expected);
   });
+
+  test('returns the original empty array when given empty array', () => {
+    const empty: number[] = [];
+    expect(adjust(0, add, empty)).toBe(empty);
+  });
+
+  test('adjusts single element array', () => {
+    expect(adjust(0, add, [5])).toEqual([6]);
+  });
+
+  test('adjusts first element with index 0', () => {
+    expect(adjust(0, add, [1, 2, 3])).toEqual([2, 2, 3]);
+  });
+
+  test('adjusts last element with positive index', () => {
+    expect(adjust(3, add, [1, 2, 3, 4])).toEqual([1, 2, 3, 5]);
+  });
+
+  test('adjusts last element with index -1', () => {
+    expect(adjust(-1, add, [1, 2, 3, 4])).toEqual([1, 2, 3, 5]);
+  });
+
+  test('adjusts first element with negative index equal to length', () => {
+    expect(adjust(-4, add, [1, 2, 3, 4])).toEqual([2, 2, 3, 4]);
+  });
+
+  test('works with string arrays', () => {
+    const toUpper = (s: string) => s.toUpperCase();
+    expect(adjust(1, toUpper, ['a', 'b', 'c'])).toEqual(['a', 'B', 'c']);
+  });
+
+  test('works with object arrays', () => {
+    const increment = (obj: { value: number }) => ({ value: obj.value + 1 });
+    const arr = [{ value: 1 }, { value: 2 }, { value: 3 }];
+    expect(adjust(1, increment, arr)).toEqual([
+      { value: 1 },
+      { value: 3 },
+      { value: 3 },
+    ]);
+  });
 });

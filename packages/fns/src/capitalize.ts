@@ -4,7 +4,7 @@
  * @param value - Any string
  * @returns Capitalized string
  */
-const capitalize = (value?: string | null) => {
+const capitalize = (value?: string | null): typeof value => {
   if (!value) return value;
   return value.replace(/(^|\s)\S/g, (l) => l.toUpperCase());
 };

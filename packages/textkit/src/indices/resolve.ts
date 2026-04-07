@@ -1,24 +1,29 @@
 import { Glyph } from '../types';
 
-const DUMMY_CODEPOINT = 123;
-
 /**
- * Resolve string indices based on glyphs code points
+ * Resolve string indices based on glyphs code points.
+ * Maps each glyph to its corresponding string index, handling ligatures
+ * by assigning the same index to all code points within a ligature.
  *
- * @param glyphs
- * @returns Glyph indices
+ * @param glyphs - Array of glyphs (may contain undefined for missing glyphs)
+ * @returns Glyph indices array
  */
-const resolve = (glyphs: (Glyph | undefined)[] = []) => {
-  return glyphs.reduce((acc, glyph) => {
-    const codePoints = glyph?.codePoints || [DUMMY_CODEPOINT];
+const resolve = (glyphs: (Glyph | undefined)[] = []): number[] => {
+  const result: number[] = [];
+  let currentIndex = 0;
 
-    if (acc.length === 0) return codePoints.map(() => 0);
+  for (let i = 0; i < glyphs.length; i += 1) {
+    const glyph = glyphs[i];
+    const codePointCount = glyph?.codePoints?.length || 1;
 
-    const last = acc[acc.length - 1];
-    const next = codePoints.map(() => last + 1);
+    for (let j = 0; j < codePointCount; j += 1) {
+      result.push(currentIndex);
+    }
 
-    return [...acc, ...next];
-  }, []);
+    currentIndex += 1;
+  }
+
+  return result;
 };
 
 export default resolve;

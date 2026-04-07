@@ -70,7 +70,7 @@ describe('resolve stylesheet paddings', () => {
       paddingLeft: 40,
       paddingRight: 1440,
       paddingTop: 283.46456692913387,
-      paddingBottom: 85.03937007874015,
+      paddingBottom: 85.03937007874016,
     });
   });
 
@@ -81,7 +81,7 @@ describe('resolve stylesheet paddings', () => {
       paddingTop: -10,
       paddingLeft: '-40%',
       paddingRight: -1440,
-      paddingBottom: -85.03937007874015,
+      paddingBottom: -85.03937007874016,
     });
   });
 
@@ -94,7 +94,7 @@ describe('resolve stylesheet paddings', () => {
       paddingRight: 1440.36,
       paddingLeft: 40.0000005,
       paddingTop: 297.6377952755905,
-      paddingBottom: 85.32283464566929,
+      paddingBottom: 85.3228346456693,
     });
   });
 
@@ -146,7 +146,7 @@ describe('resolve stylesheet paddings', () => {
       paddingLeft: 40,
       paddingRight: 1440,
       paddingTop: 283.46456692913387,
-      paddingBottom: 85.03937007874015,
+      paddingBottom: 85.03937007874016,
     });
   });
 
@@ -214,6 +214,92 @@ describe('resolve stylesheet paddings', () => {
       paddingRight: 1,
       paddingBottom: 1,
       paddingLeft: 1,
+    });
+  });
+
+  test('should resolve padding rem dimensions', () => {
+    const styles = resolveStyle({
+      paddingTop: '1rem',
+      paddingRight: '2rem',
+      paddingBottom: '3rem',
+      paddingLeft: '4rem',
+    });
+
+    expect(styles.paddingTop).toBe(10);
+    expect(styles.paddingRight).toBe(20);
+    expect(styles.paddingBottom).toBe(30);
+    expect(styles.paddingLeft).toBe(40);
+  });
+
+  test('should resolve padding shorthand with rem', () => {
+    const styles = resolveStyle({ padding: '2rem' });
+
+    expect(styles).toEqual({
+      paddingTop: 20,
+      paddingRight: 20,
+      paddingBottom: 20,
+      paddingLeft: 20,
+    });
+  });
+
+  test('should resolve padding horizontal with rem', () => {
+    const styles = resolveStyle({ paddingHorizontal: '2rem' });
+
+    expect(styles).toEqual({
+      paddingLeft: 20,
+      paddingRight: 20,
+    });
+  });
+
+  test('should resolve padding vertical with rem', () => {
+    const styles = resolveStyle({ paddingVertical: '2rem' });
+
+    expect(styles).toEqual({
+      paddingTop: 20,
+      paddingBottom: 20,
+    });
+  });
+
+  test('should resolve padding shorthand with three values', () => {
+    const styles = resolveStyle({ padding: '10 20 30' });
+
+    expect(styles).toEqual({
+      paddingTop: 10,
+      paddingRight: 20,
+      paddingBottom: 30,
+      paddingLeft: 20,
+    });
+  });
+
+  test('should resolve numeric individual paddings', () => {
+    const styles = resolveStyle({
+      paddingTop: 10,
+      paddingRight: 20,
+      paddingBottom: 30,
+      paddingLeft: 40,
+    });
+
+    expect(styles).toEqual({
+      paddingTop: 10,
+      paddingRight: 20,
+      paddingBottom: 30,
+      paddingLeft: 40,
+    });
+  });
+
+  test('should resolve individual padding with percentage', () => {
+    const styles = resolveStyle({
+      paddingTop: '10%',
+      paddingRight: '20%',
+      paddingBottom: '30%',
+      paddingLeft: '40%',
+    });
+
+    expect(styles).toEqual({
+      paddingTop: '10%',
+      paddingRight: '20%',
+      paddingBottom: '30%',
+      paddingLeft: '40%',
     });
   });
 });

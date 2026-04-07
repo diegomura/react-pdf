@@ -1,5 +1,50 @@
 # @react-pdf/layout
 
+## 4.5.0
+
+### Minor Changes
+
+- [#3344](https://github.com/diegomura/react-pdf/pull/3344) [`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea) Thanks [@diegomura](https://github.com/diegomura)! - feat: password protection support
+
+- [#3336](https://github.com/diegomura/react-pdf/pull/3336) [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575) Thanks [@diegomura](https://github.com/diegomura)! - feat: add link hitslop
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
+- [#3339](https://github.com/diegomura/react-pdf/pull/3339) [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715) Thanks [@diegomura](https://github.com/diegomura)! - feat: responsive images
+
+### Patch Changes
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/types@2.10.0
+  - @react-pdf/primitives@4.2.0
+  - @react-pdf/stylesheet@6.1.4
+
+## 4.4.3
+
+### Patch Changes
+
+- [#3321](https://github.com/diegomura/react-pdf/pull/3321) [`39886cd7`](https://github.com/diegomura/react-pdf/commit/39886cd77b9bad2b7012eba31778dfcce1983562) Thanks [@StephaneRavet](https://github.com/StephaneRavet)! - fix(layout): fix minPresenceAhead ignored when element has no future siblings
+
+- [#3328](https://github.com/diegomura/react-pdf/pull/3328) [`7d05a6d9`](https://github.com/diegomura/react-pdf/commit/7d05a6d9898fb555f45e108e61dc69c24a7ea1a6) Thanks [@diegomura](https://github.com/diegomura)! - feat(layout): ignore word joiner codepoint
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212), [`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55), [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/stylesheet@6.1.3
+  - @react-pdf/types@2.9.3
+
+## 4.4.2
+
+### Patch Changes
+
+- [#3254](https://github.com/diegomura/react-pdf/pull/3254) [`cc1aff24`](https://github.com/diegomura/react-pdf/commit/cc1aff2454263f64d1f79c9df051d21d74f8d7cf) Thanks [@rafw87](https://github.com/rafw87)! - fix duplicated bookmarks when View is spanning multiple pages
+
+- Updated dependencies [[`a5979c15`](https://github.com/diegomura/react-pdf/commit/a5979c1568761107076172e4c1843e66f62a08ab), [`f034491b`](https://github.com/diegomura/react-pdf/commit/f034491b1f77ce6f18a5db88e70b10b9c502ca35), [`04922fea`](https://github.com/diegomura/react-pdf/commit/04922fea2e60930ac550ec31beaeb7f20551cf63)]:
+  - @react-pdf/image@3.0.4
+  - @react-pdf/textkit@6.1.0
+  - @react-pdf/types@2.9.2
+  - @react-pdf/stylesheet@6.1.2
+
 ## 4.4.1
 
 ### Patch Changes

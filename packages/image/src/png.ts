@@ -18,11 +18,18 @@ class PNG implements Image {
   }
 
   static isValid(data: Buffer): boolean {
-    try {
-      return !!new PNG(data);
-    } catch {
-      return false;
-    }
+    return (
+      data &&
+      Buffer.isBuffer(data) &&
+      data[0] === 137 &&
+      data[1] === 80 &&
+      data[2] === 78 &&
+      data[3] === 71 &&
+      data[4] === 13 &&
+      data[5] === 10 &&
+      data[6] === 26 &&
+      data[7] === 10
+    );
   }
 }
 

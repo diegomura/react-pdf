@@ -1,4 +1,4 @@
-import { AttributedString, Fragment } from '../types';
+import { AttributedString, Fragment, Run } from '../types';
 
 /**
  * Create attributed string from text fragments
@@ -8,23 +8,26 @@ import { AttributedString, Fragment } from '../types';
  */
 const fromFragments = (fragments: Fragment[]): AttributedString => {
   let offset = 0;
-  let string = '';
-  const runs = [];
+  const strings: string[] = [];
+  const runs: Run[] = [];
 
-  fragments.forEach((fragment) => {
-    string += fragment.string;
+  for (let i = 0; i < fragments.length; i += 1) {
+    const fragment = fragments[i];
+    const fragmentLength = fragment.string.length;
+
+    strings.push(fragment.string);
 
     runs.push({
       ...fragment,
       start: offset,
-      end: offset + fragment.string.length,
+      end: offset + fragmentLength,
       attributes: fragment.attributes || {},
     });
 
-    offset += fragment.string.length;
-  });
+    offset += fragmentLength;
+  }
 
-  return { string, runs };
+  return { string: strings.join(''), runs };
 };
 
 export default fromFragments;

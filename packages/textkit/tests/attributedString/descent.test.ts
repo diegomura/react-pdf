@@ -23,6 +23,15 @@ describe('attributeString descent operator', () => {
     expect(descent(string)).toBe(0);
   });
 
+  test('should return descent for single run', () => {
+    const runs = [
+      { start: 0, end: 5, attributes: { fontSize: 10, font: [font] } }, // -50
+    ];
+    const string = { string: '', runs };
+
+    expect(descent(string)).toBe(-50);
+  });
+
   test('should return min runs descent', () => {
     const runs = [
       { start: 2, end: 4, attributes: { fontSize: 10, font: [font] } }, // -50

@@ -69,7 +69,7 @@ describe('resolve stylesheet margins', () => {
       marginLeft: 40,
       marginRight: 1440,
       marginTop: 283.46456692913387,
-      marginBottom: 85.03937007874015,
+      marginBottom: 85.03937007874016,
     });
   });
 
@@ -80,7 +80,7 @@ describe('resolve stylesheet margins', () => {
       marginTop: -10,
       marginLeft: '-40%',
       marginRight: -1440,
-      marginBottom: -85.03937007874015,
+      marginBottom: -85.03937007874016,
     });
   });
 
@@ -133,7 +133,7 @@ describe('resolve stylesheet margins', () => {
       marginRight: 1440.36,
       marginLeft: 40.0000005,
       marginTop: 297.6377952755905,
-      marginBottom: 85.32283464566929,
+      marginBottom: 85.3228346456693,
     });
   });
 
@@ -214,7 +214,7 @@ describe('resolve stylesheet margins', () => {
       marginLeft: 40,
       marginRight: 1440,
       marginTop: 283.46456692913387,
-      marginBottom: 85.03937007874015,
+      marginBottom: 85.03937007874016,
     });
   });
 
@@ -282,6 +282,108 @@ describe('resolve stylesheet margins', () => {
       marginRight: 1,
       marginBottom: 1,
       marginLeft: 1,
+    });
+  });
+
+  test('should resolve margin shorthand with three values', () => {
+    const styles = resolveStyle({ margin: '10 20 30' });
+
+    expect(styles).toEqual({
+      marginTop: 10,
+      marginRight: 20,
+      marginBottom: 30,
+      marginLeft: 20,
+    });
+  });
+
+  test('should resolve individual margin with auto', () => {
+    const styles = resolveStyle({
+      marginTop: 'auto',
+      marginRight: 'auto',
+      marginBottom: 'auto',
+      marginLeft: 'auto',
+    });
+
+    expect(styles).toEqual({
+      marginTop: 'auto',
+      marginRight: 'auto',
+      marginBottom: 'auto',
+      marginLeft: 'auto',
+    });
+  });
+
+  test('should resolve individual margin with percentage', () => {
+    const styles = resolveStyle({
+      marginTop: '10%',
+      marginRight: '20%',
+      marginBottom: '30%',
+      marginLeft: '40%',
+    });
+
+    expect(styles).toEqual({
+      marginTop: '10%',
+      marginRight: '20%',
+      marginBottom: '30%',
+      marginLeft: '40%',
+    });
+  });
+
+  test('should resolve numeric individual margins', () => {
+    const styles = resolveStyle({
+      marginTop: 10,
+      marginRight: 20,
+      marginBottom: 30,
+      marginLeft: 40,
+    });
+
+    expect(styles).toEqual({
+      marginTop: 10,
+      marginRight: 20,
+      marginBottom: 30,
+      marginLeft: 40,
+    });
+  });
+
+  test('should resolve margin rem dimensions', () => {
+    const styles = resolveStyle({
+      marginTop: '1rem',
+      marginRight: '2rem',
+      marginBottom: '3rem',
+      marginLeft: '4rem',
+    });
+
+    expect(styles.marginTop).toBe(10);
+    expect(styles.marginRight).toBe(20);
+    expect(styles.marginBottom).toBe(30);
+    expect(styles.marginLeft).toBe(40);
+  });
+
+  test('should resolve margin shorthand with rem', () => {
+    const styles = resolveStyle({ margin: '2rem' });
+
+    expect(styles).toEqual({
+      marginTop: 20,
+      marginRight: 20,
+      marginBottom: 20,
+      marginLeft: 20,
+    });
+  });
+
+  test('should resolve margin horizontal with rem', () => {
+    const styles = resolveStyle({ marginHorizontal: '2rem' });
+
+    expect(styles).toEqual({
+      marginLeft: 20,
+      marginRight: 20,
+    });
+  });
+
+  test('should resolve margin vertical with rem', () => {
+    const styles = resolveStyle({ marginVertical: '2rem' });
+
+    expect(styles).toEqual({
+      marginTop: 20,
+      marginBottom: 20,
     });
   });
 });

@@ -23,4 +23,20 @@ describe('rect bottomRight operator', () => {
     expect(coord).toHaveProperty('x', 6);
     expect(coord).toHaveProperty('y', 18);
   });
+
+  test('should return bottomRight for rect at origin', () => {
+    const rect = { x: 0, y: 0, width: 100, height: 50 };
+    const coord = bottomRight(rect);
+
+    expect(coord).toHaveProperty('x', 100);
+    expect(coord).toHaveProperty('y', 50);
+  });
+
+  test('should return bottomRight for rect with zero dimensions', () => {
+    const rect = { x: 5, y: 10, width: 0, height: 0 };
+    const coord = bottomRight(rect);
+
+    expect(coord).toHaveProperty('x', 5);
+    expect(coord).toHaveProperty('y', 10);
+  });
 });

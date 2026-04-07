@@ -134,10 +134,10 @@ describe('resolve stylesheet dimensions', () => {
   });
 
   test('should resolve min/max height in dimensions', () => {
-    const styles = resolveStyle({ minWidth: '1in', maxWidth: '2in' });
+    const styles = resolveStyle({ minHeight: '1in', maxHeight: '2in' });
 
-    expect(styles.minWidth).toBe(72);
-    expect(styles.maxWidth).toBe(72 * 2);
+    expect(styles.minHeight).toBe(72);
+    expect(styles.maxHeight).toBe(72 * 2);
   });
 
   test('should resolve min/max height mm dimensions', () => {
@@ -173,5 +173,73 @@ describe('resolve stylesheet dimensions', () => {
 
     expect(styles.minHeight).toBe('50%');
     expect(styles.maxHeight).toBe('20%');
+  });
+
+  test('should resolve width pt dimensions', () => {
+    const styles = resolveStyle({ width: '100pt' });
+
+    expect(styles.width).toBe(100);
+  });
+
+  test('should resolve height pt dimensions', () => {
+    const styles = resolveStyle({ height: '100pt' });
+
+    expect(styles.height).toBe(100);
+  });
+
+  test('should resolve width rem dimensions', () => {
+    const styles = resolveStyle({ width: '2rem' });
+
+    expect(styles.width).toBe(20);
+  });
+
+  test('should resolve height rem dimensions', () => {
+    const styles = resolveStyle({ height: '2rem' });
+
+    expect(styles.height).toBe(20);
+  });
+
+  test('should resolve min/max width rem dimensions', () => {
+    const styles = resolveStyle({ minWidth: '1rem', maxWidth: '3rem' });
+
+    expect(styles.minWidth).toBe(10);
+    expect(styles.maxWidth).toBe(30);
+  });
+
+  test('should resolve min/max height rem dimensions', () => {
+    const styles = resolveStyle({ minHeight: '1rem', maxHeight: '3rem' });
+
+    expect(styles.minHeight).toBe(10);
+    expect(styles.maxHeight).toBe(30);
+  });
+
+  test('should resolve numeric width value', () => {
+    const styles = resolveStyle({ width: 100 });
+
+    expect(styles.width).toBe(100);
+  });
+
+  test('should resolve numeric height value', () => {
+    const styles = resolveStyle({ height: 100 });
+
+    expect(styles.height).toBe(100);
+  });
+
+  test('should resolve string number width as pt', () => {
+    const styles = resolveStyle({ width: '100' });
+
+    expect(styles.width).toBe(100);
+  });
+
+  test('should resolve negative width dimensions', () => {
+    const styles = resolveStyle({ width: '-10pt' });
+
+    expect(styles.width).toBe(-10);
+  });
+
+  test('should resolve zero width dimensions', () => {
+    const styles = resolveStyle({ width: '0' });
+
+    expect(styles.width).toBe(0);
   });
 });

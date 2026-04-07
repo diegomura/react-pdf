@@ -1,13 +1,13 @@
 import add from '../run/add';
 import emptyRun from '../run/empty';
 import prependToRun from '../run/prepend';
-import { AttributedString, Glyph } from '../types';
+import { AttributedString, Glyph, Run } from '../types';
 import stringFromCodePoints from '../utils/stringFromCodePoints';
 
 /**
- * prepend glyph into last run of attributed string
+ * Prepend glyph into first run of attributed string
  *
- * @param glyph
+ * @param glyph - Glyph to prepend
  * @param attributedString - Attributed string
  * @returns Attributed string with new glyph
  */
@@ -19,13 +19,16 @@ const prepend = (
   const string = stringFromCodePoints(codePoints) + attributedString.string;
 
   const offset = codePoints.length;
-  const firstRun = attributedString.runs[0] || emptyRun();
-  const lastRuns = attributedString.runs
-    .slice(1)
-    .map((run) => add(offset, run));
-  const runs = [prependToRun(glyph, firstRun)].concat(lastRuns);
+  const { runs: existingRuns } = attributedString;
+  const firstRun = existingRuns[0] || emptyRun();
 
-  return Object.assign({}, attributedString, { runs, string });
+  // Build new runs array: prepend to first run, offset remaining runs
+  const runs: Run[] = [prependToRun(glyph, firstRun)];
+  for (let i = 1; i < existingRuns.length; i += 1) {
+    runs.push(add(offset, existingRuns[i]));
+  }
+
+  return { ...attributedString, runs, string };
 };
 
 export default prepend;

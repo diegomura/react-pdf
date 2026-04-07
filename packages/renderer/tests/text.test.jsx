@@ -126,4 +126,33 @@ describe('text', () => {
 
     expect(image).toMatchImageSnapshot();
   });
+
+  test('should hyphenate text with soft hyphen', async () => {
+    const shy = '\u00ad';
+
+    const style = {
+      text: {
+        fontFamily: 'Oswald',
+        fontSize: 20,
+        width: 100,
+        border: '1px solid red',
+      },
+    };
+
+    const image = await renderToImage(
+      <Document>
+        <Page style={{ padding: 20 }}>
+          <Text
+            style={style.text}
+          >{`Potentieel broeikas${shy}gas${shy}emissie${shy}rapport`}</Text>
+
+          <Text
+            style={style.text}
+          >{`Potentieel broeikas${shy}gasemissie${shy}rapport`}</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
 });

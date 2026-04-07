@@ -1,13 +1,29 @@
 import { AttributedString } from '../types';
 import slice from './slice';
 
+const WHITESPACE_REGEX = /\S/;
+
+/**
+ * Find index of first non-whitespace character
+ *
+ * @param string - String to search
+ * @returns Index of first non-whitespace character, or -1 if not found
+ */
 const findCharIndex = (string: string) => {
-  return string.search(/\S/g);
+  return string.search(WHITESPACE_REGEX);
 };
 
+/**
+ * Find index of last non-whitespace character
+ *
+ * @param string - String to search
+ * @returns Index of last non-whitespace character, or -1 if not found
+ */
 const findLastCharIndex = (string: string) => {
-  const match = string.match(/\S/g);
-  return match ? string.lastIndexOf(match[match.length - 1]) : -1;
+  for (let i = string.length - 1; i >= 0; i -= 1) {
+    if (WHITESPACE_REGEX.test(string[i])) return i;
+  }
+  return -1;
 };
 
 /**
@@ -18,7 +34,6 @@ const findLastCharIndex = (string: string) => {
  */
 const trim = (attributedString: AttributedString) => {
   const start = findCharIndex(attributedString.string);
-
   const end = findLastCharIndex(attributedString.string);
 
   return slice(start, end + 1, attributedString);

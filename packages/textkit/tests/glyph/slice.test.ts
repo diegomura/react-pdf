@@ -2,12 +2,39 @@ import { describe, expect, test } from 'vitest';
 
 import slice from '../../src/glyph/slice';
 import font from '../internal/font';
-import { Glyph } from '../../src/types';
+import { Glyph, Font } from '../../src/types';
 
 describe('glyph slice operator', () => {
+  test('should return empty array for null glyph', () => {
+    const sliced = slice(0, 1, font, null as unknown as Glyph);
+
+    expect(sliced).toHaveLength(0);
+  });
+
+  test('should return empty array for undefined glyph', () => {
+    const sliced = slice(0, 1, font, undefined as unknown as Glyph);
+
+    expect(sliced).toHaveLength(0);
+  });
+
+  test('should return same glyph when no font provided', () => {
+    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] } as Glyph;
+    const sliced = slice(0, 1, null as unknown as Font, glyph);
+
+    expect(sliced).toHaveLength(1);
+    expect(sliced[0]).toBe(glyph);
+  });
+
   test('should return no glyph for empty slice', () => {
     const glyph = { id: 76, advanceWidth: 10, codePoints: [76] } as Glyph;
     const sliced = slice(0, 0, font, glyph);
+
+    expect(sliced).toHaveLength(0);
+  });
+
+  test('should return no glyph when start equals end', () => {
+    const glyph = { id: 76, advanceWidth: 10, codePoints: [76] } as Glyph;
+    const sliced = slice(1, 1, font, glyph);
 
     expect(sliced).toHaveLength(0);
   });

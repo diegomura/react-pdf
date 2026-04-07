@@ -118,7 +118,7 @@ class PDFDocument extends stream.Readable {
     this._id = PDFSecurity.generateFileID(this.info);
 
     // Initialize security settings
-    // this._security = PDFSecurity.create(this, options);
+    this._security = PDFSecurity.create(this, options);
 
     // Write the header
     // PDF version

@@ -62,9 +62,9 @@ describe('resolve stylesheet colors', () => {
       textDecorationColor: 'hsla(120, 100%, 50%, 0.75)',
     });
 
-    expect(styles.color).toBe('#FF0000');
+    expect(styles.color).toBe('#FF000080');
     expect(styles.backgroundColor).toBe('#0099FF');
-    expect(styles.textDecorationColor).toBe('#00FF00');
+    expect(styles.textDecorationColor).toBe('#00FF00BF');
   });
 
   test('should resolve integer opacity', () => {
@@ -83,5 +83,83 @@ describe('resolve stylesheet colors', () => {
     const styles = resolveStyle({ opacity: '0.4' });
 
     expect(styles.opacity).toBe(0.4);
+  });
+
+  test('should keep named colors as they are', () => {
+    const styles = resolveStyle({
+      color: 'red',
+      backgroundColor: 'blue',
+      textDecorationColor: 'transparent',
+    });
+
+    expect(styles.color).toBe('red');
+    expect(styles.backgroundColor).toBe('blue');
+    expect(styles.textDecorationColor).toBe('transparent');
+  });
+
+  test('should keep short hex colors as they are', () => {
+    const styles = resolveStyle({
+      color: '#F00',
+      backgroundColor: '#0F0',
+      textDecorationColor: '#00F',
+    });
+
+    expect(styles.color).toBe('#F00');
+    expect(styles.backgroundColor).toBe('#0F0');
+    expect(styles.textDecorationColor).toBe('#00F');
+  });
+
+  test('should keep 8-digit hex colors as they are', () => {
+    const styles = resolveStyle({
+      color: '#FF000080',
+      backgroundColor: '#00FF00BF',
+    });
+
+    expect(styles.color).toBe('#FF000080');
+    expect(styles.backgroundColor).toBe('#00FF00BF');
+  });
+
+  test('should keep 4-digit hex colors as they are', () => {
+    const styles = resolveStyle({
+      color: '#F008',
+      backgroundColor: '#0F0F',
+    });
+
+    expect(styles.color).toBe('#F008');
+    expect(styles.backgroundColor).toBe('#0F0F');
+  });
+
+  test('should handle colors with leading whitespace', () => {
+    const styles = resolveStyle({
+      color: ' rgb(255, 255, 0)',
+      backgroundColor: '  hsl(0, 100%, 50%)',
+      textDecorationColor: ' #0000FF',
+    });
+
+    expect(styles.color).toBe('#FFFF00');
+    expect(styles.backgroundColor).toBe('#FF0000');
+    expect(styles.textDecorationColor).toBe('#0000FF');
+  });
+
+  test('should handle colors with trailing whitespace', () => {
+    const styles = resolveStyle({
+      color: 'rgb(255, 255, 0) ',
+      backgroundColor: 'hsl(0, 100%, 50%) ',
+    });
+
+    expect(styles.color).toBe('#FFFF00');
+    expect(styles.backgroundColor).toBe('#FF0000');
+  });
+
+  test('should resolve full opacity', () => {
+    const styles = resolveStyle({ opacity: 1 });
+
+    expect(styles.opacity).toBe(1);
+  });
+
+  test('should resolve string full opacity', () => {
+    const styles = resolveStyle({ opacity: '1' });
+
+    expect(styles.opacity).toBe(1);
   });
 });

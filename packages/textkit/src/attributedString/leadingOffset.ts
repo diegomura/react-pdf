@@ -1,3 +1,4 @@
+import isRunWhiteSpace from '../run/isWhiteSpace';
 import runLeadingOffset from '../run/leadingOffset';
 import { AttributedString } from '../types';
 
@@ -10,7 +11,15 @@ import { AttributedString } from '../types';
 const leadingOffset = (attributedString: AttributedString) => {
   const runs = attributedString.runs || [];
 
-  return runLeadingOffset(runs[0]);
+  let offset = 0;
+
+  for (const run of runs) {
+    offset += runLeadingOffset(run);
+
+    if (!isRunWhiteSpace(run)) break;
+  }
+
+  return offset;
 };
 
 export default leadingOffset;

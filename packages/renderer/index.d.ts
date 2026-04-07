@@ -8,11 +8,14 @@ import {
   PDFVersion,
   Orientation,
   SourceObject,
+  SrcSet,
+  Sizes,
   HyphenationCallback,
   SVGPresentationAttributes,
   Bookmark,
   PageLayout,
   PageMode,
+  HitSlop,
 } from '@react-pdf/types';
 
 declare class ReactPDF {
@@ -29,6 +32,16 @@ declare namespace ReactPDF {
     blob?: Blob;
   }
 
+  interface Permissions {
+    printing?: 'lowResolution' | 'highResolution';
+    modifying?: boolean;
+    copying?: boolean;
+    annotating?: boolean;
+    fillingForms?: boolean;
+    contentAccessibility?: boolean;
+    documentAssembly?: boolean;
+  }
+
   interface DocumentProps {
     style?: Style | Style[];
     title?: string;
@@ -43,6 +56,9 @@ declare namespace ReactPDF {
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
+    ownerPassword?: string;
+    userPassword?: string;
+    permissions?: Permissions;
     onRender?: (props: OnRenderProps) => any;
   }
 
@@ -137,6 +153,20 @@ declare namespace ReactPDF {
      */
     debug?: boolean;
     cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * Works like the HTML img sizes attribute.
+     * @example 300
+     * @example "300"
+     */
+    sizes?: Sizes;
   }
 
   interface ImageWithSrcProp extends BaseImageProps {
@@ -154,6 +184,52 @@ declare namespace ReactPDF {
    * PNG images, as well as base64 encoded image strings.
    */
   export class Image extends React.Component<ImageProps> {}
+
+  interface BaseImageBackgroundProps extends NodeProps {
+    /**
+     * Enables debug mode on page bounding box.
+     * @see https://react-pdf.org/advanced#debugging
+     */
+    debug?: boolean;
+    cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * @example 300
+     */
+    sizes?: Sizes;
+    /**
+     * Style applied to the background image.
+     */
+    imageStyle?: Style;
+  }
+
+  interface ImageBackgroundWithSrcProp extends BaseImageBackgroundProps {
+    src: SourceObject;
+  }
+
+  interface ImageBackgroundWithSourceProp extends BaseImageBackgroundProps {
+    source: SourceObject;
+  }
+
+  type ImageBackgroundProps =
+    | ImageBackgroundWithSrcProp
+    | ImageBackgroundWithSourceProp;
+
+  /**
+   * A React component for displaying an image behind child content.
+   * Compatible with React Native's ImageBackground component.
+   * @see https://reactnative.dev/docs/imagebackground
+   */
+  export class ImageBackground extends React.Component<
+    React.PropsWithChildren<ImageBackgroundProps>
+  > {}
 
   interface TextProps extends NodeProps {
     id?: string;
@@ -222,6 +298,12 @@ declare namespace ReactPDF {
     debug?: boolean;
     href?: string;
     src?: string;
+    /**
+     * Extends the clickable area of the link beyond its visible bounds.
+     * Accepts a number (applied to all sides) or an object with top, bottom, left, right.
+     * @see https://reactnative.dev/docs/view#hitslop
+     */
+    hitSlop?: HitSlop;
   }
 
   /**

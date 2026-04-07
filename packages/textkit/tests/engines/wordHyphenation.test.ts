@@ -73,7 +73,7 @@ describe('wordHyphenation', () => {
     expect(hyphenator.mock.calls).toHaveLength(0);
   });
 
-  test('should get previosuly word from cache', () => {
+  test('should get previously hyphenated word from cache', () => {
     const word = 'programming';
 
     // Hyphen not called yet
@@ -89,7 +89,6 @@ describe('wordHyphenation', () => {
     expect(parts).toHaveLength(3);
     expect(parts[0]).toEqual('pro');
     expect(parts[1]).toEqual('gram');
-    expect(parts[2]).toEqual('ming');
     expect(parts[2]).toEqual('ming');
 
     // Hyphen not called again. Got value from cache

@@ -12,6 +12,10 @@ import {
   JustifyContent as TaffyJustifyContent,
   Overflow as TaffyOverflow,
   Position as TaffyPosition,
+  GridAutoFlow as TaffyGridAutoFlow,
+  type GridPlacement as TaffyGridPlacement,
+  type TrackSizingFunction,
+  type GridTemplateComponent,
   type MeasureFunction as TaffyMeasureFunction,
   type AvailableSpace,
   type Size,
@@ -318,8 +322,13 @@ export class TaffyNodeAdapter {
   // --- Display / Overflow / Position ---
 
   setDisplay(value: Display) {
-    this.style.display =
-      value === Display.None ? TaffyDisplay.None : TaffyDisplay.Flex;
+    if (value === Display.None) {
+      this.style.display = TaffyDisplay.None;
+    } else if (value === Display.Grid) {
+      this.style.display = TaffyDisplay.Grid;
+    } else {
+      this.style.display = TaffyDisplay.Flex;
+    }
   }
 
   setOverflow(value: Overflow) {
@@ -341,6 +350,44 @@ export class TaffyNodeAdapter {
 
   setAspectRatio(value: number) {
     this.style.aspectRatio = value;
+  }
+
+  // --- Grid properties ---
+
+  setGridTemplateColumns(tracks: GridTemplateComponent[]) {
+    this.style.gridTemplateColumns = tracks;
+  }
+
+  setGridTemplateRows(tracks: GridTemplateComponent[]) {
+    this.style.gridTemplateRows = tracks;
+  }
+
+  setGridAutoColumns(tracks: TrackSizingFunction[]) {
+    this.style.gridAutoColumns = tracks;
+  }
+
+  setGridAutoRows(tracks: TrackSizingFunction[]) {
+    this.style.gridAutoRows = tracks;
+  }
+
+  setGridAutoFlow(value: TaffyGridAutoFlow) {
+    this.style.gridAutoFlow = value;
+  }
+
+  setGridColumnStart(value: TaffyGridPlacement) {
+    this.style.gridColumnStart = value;
+  }
+
+  setGridColumnEnd(value: TaffyGridPlacement) {
+    this.style.gridColumnEnd = value;
+  }
+
+  setGridRowStart(value: TaffyGridPlacement) {
+    this.style.gridRowStart = value;
+  }
+
+  setGridRowEnd(value: TaffyGridPlacement) {
+    this.style.gridRowEnd = value;
   }
 
   // --- Measure function ---

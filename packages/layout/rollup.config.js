@@ -22,8 +22,16 @@ function taffyWasmInlinePlugin() {
     // Walk up to find hoisted node_modules (yarn workspaces)
     let dir = __dirname;
     while (dir !== '/') {
-      const candidate = resolve(dir, 'node_modules/taffy-layout/pkg/taffy_wasm_bg.wasm');
-      try { wasmBase64 = readFileSync(candidate).toString('base64'); return wasmBase64; } catch {}
+      const candidate = resolve(
+        dir,
+        'node_modules/taffy-layout/pkg/taffy_wasm_bg.wasm',
+      );
+      try {
+        wasmBase64 = readFileSync(candidate).toString('base64');
+        return wasmBase64;
+      } catch {
+        // noop
+      }
       dir = dirname(dir);
     }
     throw new Error('Could not find taffy_wasm_bg.wasm');
@@ -39,7 +47,8 @@ function taffyWasmInlinePlugin() {
       return null;
     },
     load(id) {
-      if (!id.endsWith('/yoga/initTaffy') && !id.endsWith('/yoga/initTaffy.ts')) return null;
+      if (!id.endsWith('/yoga/initTaffy') && !id.endsWith('/yoga/initTaffy.ts'))
+        return null;
 
       // Replace initTaffy module with inlined WASM version
       const base64 = getWasmBase64();

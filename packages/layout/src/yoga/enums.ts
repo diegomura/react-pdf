@@ -37,6 +37,7 @@ export enum FlexDirection {
 export enum Display {
   Flex = 0,
   None = 1,
+  Grid = 2,
 }
 
 export enum Justify {

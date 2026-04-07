@@ -607,7 +607,7 @@ const clipBorderLeft = (
     ctx.clip();
   }
 
-  if (borderBottomWidth) {
+  if (borderTopWidth) {
     const trSlope = -borderTopWidth / borderLeftWidth;
     ctx.moveTo(left + width / 2, trSlope * (-width / 2) + top);
     ctx.lineTo(left, top);

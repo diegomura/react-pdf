@@ -129,7 +129,7 @@ describe('run prepend glyph operator', () => {
     };
 
     const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
-    const result = prepend(glyph, run); // ilofim
+    const result = prepend(glyph, run); // iolfim
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 3, 4]);
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 5]);

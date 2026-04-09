@@ -18,19 +18,19 @@ const concat = (runA: Run, runB: Run): Run => {
   const positions = (runA.positions || []).concat(runB.positions || []);
   const attributes = Object.assign({}, runA.attributes, runB.attributes);
 
-  const runAIndices = runA.glyphIndices || [];
+  const runAIndices = runA.stringIndices || [];
   const runALastIndex = last(runAIndices) || 0;
-  const runBIndices = (runB.glyphIndices || []).map(
+  const runBIndices = (runB.stringIndices || []).map(
     (i) => i + runALastIndex + 1,
   );
-  const glyphIndices = normalizeIndices(runAIndices.concat(runBIndices));
+  const stringIndices = normalizeIndices(runAIndices.concat(runBIndices));
 
   return Object.assign({}, runA, {
     end,
     glyphs,
     positions,
     attributes,
-    glyphIndices,
+    stringIndices,
   });
 };
 

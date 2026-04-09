@@ -9,7 +9,7 @@ describe('run add operator', () => {
       start: 5,
       end: 15,
       attributes,
-      glyphIndices: [],
+      stringIndices: [],
       glyphs: [],
       positions: [],
     };
@@ -27,7 +27,7 @@ describe('run add operator', () => {
       start: 5,
       end: 15,
       attributes,
-      glyphIndices: [],
+      stringIndices: [],
       glyphs: [],
       positions: [],
     };

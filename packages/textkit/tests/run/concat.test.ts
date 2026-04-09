@@ -95,19 +95,19 @@ describe('run concat operator', () => {
       start: 0,
       end: 3,
       attributes: {},
-      glyphIndices: [0, 1, 2],
+      stringIndices: [0, 1, 2],
     };
     const runB = {
       start: 3,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1],
+      stringIndices: [0, 1],
     };
 
     const result = concat(runA, runB);
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4]);
   });
 });

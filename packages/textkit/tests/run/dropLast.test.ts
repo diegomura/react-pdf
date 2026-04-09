@@ -65,12 +65,12 @@ describe('run dropLast operator', () => {
         { id: 74, advanceWidth: 0, codePoints: [74] },
         { id: 109, advanceWidth: 0, codePoints: [109] },
       ] as Glyph[],
-      glyphIndices: [0, 1, 2, 3, 4],
+      stringIndices: [0, 1, 2, 3, 4],
     };
     const result = dropLast(run);
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 4);
-    expect(result.glyphIndices).toEqual([0, 1, 2, 3]);
+    expect(result.stringIndices).toEqual([0, 1, 2, 3]);
   });
 });

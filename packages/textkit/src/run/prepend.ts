@@ -17,7 +17,7 @@ const prependGlyph = (glyph: Glyph, run: Run): Run => {
   const glyphLength = glyph.codePoints.length;
 
   const end = run.end + glyphLength;
-  const glyphIndices = prependIndices(glyphLength, run.glyphIndices);
+  const stringIndices = prependIndices(glyphLength, run.stringIndices);
   const glyphs = [glyph].concat(run.glyphs);
 
   const positions: Position[] = [
@@ -29,7 +29,7 @@ const prependGlyph = (glyph: Glyph, run: Run): Run => {
     },
   ].concat(run.positions);
 
-  return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
+  return Object.assign({}, run, { end, glyphs, stringIndices, positions });
 };
 
 /**

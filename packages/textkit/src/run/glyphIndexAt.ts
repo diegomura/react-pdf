@@ -10,7 +10,7 @@ import { Run } from '../types';
  * @returns Glyph index
  */
 const glyphIndexAt = (index: number, run: Run) => {
-  const result = run?.glyphIndices?.[index];
+  const result = run?.stringIndices?.[index];
   return isNil(result) ? index : result;
 };
 

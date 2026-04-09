@@ -88,7 +88,8 @@ export type Run = {
   start: number;
   end: number;
   attributes: Attributes;
-  glyphIndices?: number[];
+  /** Maps each string codepoint index to its corresponding glyph index */
+  stringIndices?: number[];
   glyphs?: Glyph[];
   positions?: Position[];
   xAdvance?: number;

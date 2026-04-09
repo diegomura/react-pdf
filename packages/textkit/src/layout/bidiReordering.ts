@@ -34,7 +34,7 @@ const getReorderedIndices = (string: string, segments) => {
 const getItemAtIndex = (runs: Run[], objectName: string, index: number) => {
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i];
-    const updatedIndex = run.glyphIndices[index - run.start];
+    const updatedIndex = run.stringIndices[index - run.start];
     if (index >= run.start && index < run.end) {
       return run[objectName][updatedIndex];
     }

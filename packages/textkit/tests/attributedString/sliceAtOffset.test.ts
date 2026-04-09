@@ -33,7 +33,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       },
     ];
 
@@ -63,7 +63,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       },
     ];
 
@@ -72,7 +72,7 @@ describe('attributeString sliceAtOffset operator', () => {
 
     expect(result).toHaveProperty('string', 'Lor');
     expect(result.runs).toHaveLength(1);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8]);
   });
@@ -97,7 +97,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       },
     ];
 
@@ -120,7 +120,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -135,7 +135,7 @@ describe('attributeString sliceAtOffset operator', () => {
 
     expect(result).toHaveProperty('string', 'Lo');
     expect(result.runs).toHaveLength(1);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7]);
   });
@@ -152,7 +152,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -167,7 +167,7 @@ describe('attributeString sliceAtOffset operator', () => {
 
     expect(result).toHaveProperty('string', 'Lofi');
     expect(result.runs).toHaveLength(1);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 64257]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 10]);
   });
@@ -183,7 +183,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -198,7 +198,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -212,11 +212,11 @@ describe('attributeString sliceAtOffset operator', () => {
     expect(result).toHaveProperty('string', 'Lore');
     expect(result.runs).toHaveLength(2);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8]);
 
-    expect(result.runs[1].glyphIndices).toEqual([0]);
+    expect(result.runs[1].stringIndices).toEqual([0]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([9]);
   });
@@ -232,7 +232,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -247,7 +247,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 101, advanceWidth: 0, codePoints: [101] }, // e
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -273,7 +273,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -289,7 +289,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -304,7 +304,7 @@ describe('attributeString sliceAtOffset operator', () => {
     expect(result).toHaveProperty('string', 'L');
     expect(result.runs).toHaveLength(1);
 
-    expect(result.runs[0].glyphIndices).toEqual([0]);
+    expect(result.runs[0].stringIndices).toEqual([0]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6]);
   });
@@ -320,7 +320,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -336,7 +336,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -351,7 +351,7 @@ describe('attributeString sliceAtOffset operator', () => {
     expect(result).toHaveProperty('string', 'Lfi');
     expect(result.runs).toHaveLength(1);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 1]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 1]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 64257]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 10]);
   });
@@ -367,7 +367,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -383,7 +383,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -398,11 +398,11 @@ describe('attributeString sliceAtOffset operator', () => {
     expect(result).toHaveProperty('string', 'Lfire');
     expect(result.runs).toHaveLength(2);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 1, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 64257, 114]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 10, 8]);
 
-    expect(result.runs[1].glyphIndices).toEqual([0]);
+    expect(result.runs[1].stringIndices).toEqual([0]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([9]);
   });
@@ -418,7 +418,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -434,7 +434,7 @@ describe('attributeString sliceAtOffset operator', () => {
           { id: 64257, advanceWidth: 0, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 0, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 2],
+        stringIndices: [0, 1, 1, 2],
         positions: [
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
@@ -449,11 +449,11 @@ describe('attributeString sliceAtOffset operator', () => {
     expect(result).toHaveProperty('string', 'Lfirefi');
     expect(result.runs).toHaveLength(2);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 1, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 64257, 114]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 10, 8]);
 
-    expect(result.runs[1].glyphIndices).toEqual([0, 1, 1]);
+    expect(result.runs[1].stringIndices).toEqual([0, 1, 1]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101, 64257]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([9, 10]);
   });

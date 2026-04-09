@@ -33,7 +33,7 @@ describe('bidiMirroring', () => {
           end: 7,
           glyphs: initializeToIndex(word.length),
           positions: initializeToIndex(word.length),
-          glyphIndices: initializeToIndex(word.length),
+          stringIndices: initializeToIndex(word.length),
         },
       ],
     };
@@ -69,7 +69,7 @@ describe('bidiMirroring', () => {
           end: 7,
           glyphs: initializeToIndex(word.length),
           positions: initializeToIndex(word.length),
-          glyphIndices: initializeToIndex(word.length),
+          stringIndices: initializeToIndex(word.length),
         },
       ],
     };

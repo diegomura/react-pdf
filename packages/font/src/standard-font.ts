@@ -102,7 +102,6 @@ class StandardFont implements Font {
 
     return {
       positions,
-      stringIndices: positions.map((_: any, i: any) => i),
       glyphs,
       script: 'latin',
       language: 'dflt',

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import append from '../../src/indices/append';
+import append from '../../src/string-indices/append';
 
 describe('indices append operator', () => {
   test('should append indices to empty string', () => {

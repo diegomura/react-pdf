@@ -1,5 +1,5 @@
 import scale from '../run/scale';
-import resolveGlyphIndices from '../indices/resolve';
+import resolveStringIndices from '../string-indices/resolve';
 import { AttributedString, Position, Run } from '../types';
 
 const getCharacterSpacing = (run: Run) => {
@@ -60,7 +60,7 @@ const layoutRun = (string: string) => {
     );
 
     const positions = scalePositions(run, glyphRun.positions);
-    const stringIndices = resolveGlyphIndices(glyphRun.glyphs);
+    const stringIndices = resolveStringIndices(glyphRun.glyphs);
 
     const result: Run = {
       ...run,

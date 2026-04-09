@@ -1,7 +1,7 @@
 import { last } from '@react-pdf/fns';
 
 import length from './length';
-import normalizeIndices from '../indices/normalize';
+import normalizeStringIndices from '../string-indices/normalize';
 import { Run } from '../types';
 
 /**
@@ -23,7 +23,7 @@ const concat = (runA: Run, runB: Run): Run => {
   const runBIndices = (runB.stringIndices || []).map(
     (i) => i + runALastIndex + 1,
   );
-  const stringIndices = normalizeIndices(runAIndices.concat(runBIndices));
+  const stringIndices = normalizeStringIndices(runAIndices.concat(runBIndices));
 
   return Object.assign({}, runA, {
     end,

@@ -1,7 +1,7 @@
 import scale from './scale';
 import getFont from './getFont';
 import isNumber from '../utils/isNumber';
-import appendIndices from '../indices/append';
+import apendStringIndices from '../string-indices/append';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 import { Glyph, Run } from '../types';
 
@@ -16,7 +16,7 @@ const appendGlyph = (glyph: Glyph, run: Run): Run => {
   const glyphLength = glyph.codePoints?.length || 0;
   const end = run.end + glyphLength;
   const glyphs = run.glyphs.concat(glyph);
-  const stringIndices = appendIndices(glyphLength, run.stringIndices);
+  const stringIndices = apendStringIndices(glyphLength, run.stringIndices);
 
   if (!run.positions)
     return Object.assign({}, run, { end, glyphs, stringIndices });

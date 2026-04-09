@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import resolve from '../../src/indices/resolve';
+import resolve from '../../src/string-indices/resolve';
 import { Glyph } from '../../src/types';
 
 const singleGlyph = { id: 1, advanceWidth: 0, codePoints: [0] } as Glyph;

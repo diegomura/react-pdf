@@ -26,7 +26,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -47,7 +47,7 @@ describe('attributeString append operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 1);
-    expect(result.runs[0].glyphIndices).toEqual([0]);
+    expect(result.runs[0].stringIndices).toEqual([0]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76]);
   });
 
@@ -70,7 +70,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -83,7 +83,7 @@ describe('attributeString append operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 111, 114, 101, 109, 76,
     ]);
@@ -111,7 +111,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -123,7 +123,7 @@ describe('attributeString append operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 6);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 111, 114, 101, 109, 76,
     ]);
@@ -147,7 +147,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
       {
@@ -161,7 +161,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -178,8 +178,8 @@ describe('attributeString append operator', () => {
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 6);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(result.runs[1].glyphIndices).toEqual([0, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
+    expect(result.runs[1].stringIndices).toEqual([0, 1, 2]);
 
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101, 109, 76]);
@@ -203,7 +203,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
       {
@@ -217,7 +217,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -233,8 +233,8 @@ describe('attributeString append operator', () => {
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 6);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(result.runs[1].glyphIndices).toEqual([0, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
+    expect(result.runs[1].stringIndices).toEqual([0, 1, 2]);
 
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101, 109, 76]);
@@ -262,7 +262,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -279,7 +279,7 @@ describe('attributeString append operator', () => {
     expect(result.runs).toHaveLength(1);
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 7);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4, 5, 5]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4, 5, 5]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 111, 114, 101, 109, 64257,
     ]);
@@ -303,7 +303,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
       {
@@ -317,7 +317,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -338,8 +338,8 @@ describe('attributeString append operator', () => {
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 7);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
-    expect(result.runs[1].glyphIndices).toEqual([0, 1, 2, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
+    expect(result.runs[1].stringIndices).toEqual([0, 1, 2, 2]);
 
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101, 109, 64257]);
@@ -363,7 +363,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -394,7 +394,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -421,7 +421,7 @@ describe('attributeString append operator', () => {
           { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -449,7 +449,7 @@ describe('attributeString append operator', () => {
           { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           { id: 114, advanceWidth: 0, codePoints: [114] }, // r
         ] as Glyph[],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
         attributes: { font: [font], fontSize: 2 },
       },
     ];

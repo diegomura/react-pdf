@@ -22,7 +22,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -53,7 +53,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -84,7 +84,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -115,7 +115,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -150,7 +150,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -185,7 +185,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -220,7 +220,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 2, 3, 4],
+          stringIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
@@ -251,7 +251,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 2, 3, 4],
+          stringIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
@@ -282,7 +282,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 2, 3, 4],
+          stringIndices: [0, 1, 2, 2, 3, 4],
         },
       ],
     };
@@ -310,7 +310,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -321,7 +321,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -352,7 +352,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -363,7 +363,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -394,7 +394,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -405,7 +405,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -436,7 +436,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -447,7 +447,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -478,7 +478,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -489,7 +489,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -524,7 +524,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -535,7 +535,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -575,7 +575,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -603,7 +603,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3, 4],
+          stringIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -643,7 +643,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
             { id: 114, advanceWidth: 0, codePoints: [114] }, // r
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
         {
           start: 3,
@@ -655,7 +655,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 105, advanceWidth: 0, codePoints: [105] }, // i
             { id: 112, advanceWidth: 0, codePoints: [112] }, // p
           ] as Glyph[],
-          glyphIndices: [0, 1, 2, 3],
+          stringIndices: [0, 1, 2, 3],
         },
         {
           start: 7,
@@ -666,7 +666,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 117, advanceWidth: 0, codePoints: [117] }, // u
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };
@@ -703,7 +703,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 76, advanceWidth: 0, codePoints: [76] }, // l
             { id: 111, advanceWidth: 0, codePoints: [111] }, // o
           ] as Glyph[],
-          glyphIndices: [0, 1],
+          stringIndices: [0, 1],
         },
         {
           start: 2,
@@ -714,7 +714,7 @@ describe('attributeString insertGlyph operator', () => {
             { id: 101, advanceWidth: 0, codePoints: [101] }, // e
             { id: 109, advanceWidth: 0, codePoints: [109] }, // m
           ] as Glyph[],
-          glyphIndices: [0, 1, 2],
+          stringIndices: [0, 1, 2],
         },
       ],
     };

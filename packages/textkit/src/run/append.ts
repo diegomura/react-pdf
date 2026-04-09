@@ -16,10 +16,10 @@ const appendGlyph = (glyph: Glyph, run: Run): Run => {
   const glyphLength = glyph.codePoints?.length || 0;
   const end = run.end + glyphLength;
   const glyphs = run.glyphs.concat(glyph);
-  const glyphIndices = appendIndices(glyphLength, run.glyphIndices);
+  const stringIndices = appendIndices(glyphLength, run.stringIndices);
 
   if (!run.positions)
-    return Object.assign({}, run, { end, glyphs, glyphIndices });
+    return Object.assign({}, run, { end, glyphs, stringIndices });
 
   const positions = run.positions.concat({
     xAdvance: glyph.advanceWidth * scale(run),
@@ -28,7 +28,7 @@ const appendGlyph = (glyph: Glyph, run: Run): Run => {
     yOffset: 0,
   });
 
-  return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
+  return Object.assign({}, run, { end, glyphs, stringIndices, positions });
 };
 
 /**

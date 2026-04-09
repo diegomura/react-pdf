@@ -138,7 +138,7 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 5, run);
 
@@ -158,7 +158,7 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 0, 1, 2, 3],
+        stringIndices: [0, 0, 1, 2, 3],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
@@ -180,7 +180,7 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(2, 5, run);
 
@@ -201,7 +201,7 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 4, run);
 
@@ -221,7 +221,7 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
@@ -242,7 +242,7 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 3, run);
@@ -262,7 +262,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
@@ -282,7 +282,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 4, run);
@@ -302,7 +302,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(2, 5, run);
@@ -322,7 +322,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
@@ -342,7 +342,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 2, run);
@@ -362,7 +362,7 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 3, run);
@@ -462,7 +462,7 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(2, 5, run);
 
@@ -482,7 +482,7 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 4, run);
 
@@ -507,7 +507,7 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(3, 5, run);
@@ -533,7 +533,7 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
         attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(1, 3, run);
@@ -550,11 +550,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       };
       const sliced = slice(0, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 2, 3, 4]);
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 3, 4]);
     });
 
     test('should correctly slice glyph indices', () => {
@@ -562,11 +562,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       };
       const sliced = slice(2, 4, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1]);
+      expect(sliced.stringIndices).toEqual([0, 1]);
     });
 
     test('should exact slice return same glyph indices when ligature', () => {
@@ -574,11 +574,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(0, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 2, 2, 3]);
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 2, 3]);
     });
 
     test('should correctly slice glyph indices containing ligature', () => {
@@ -586,11 +586,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 1, 2]);
+      expect(sliced.stringIndices).toEqual([0, 1, 1, 2]);
     });
 
     test('should correctly slice glyph indices starting in ligature', () => {
@@ -598,11 +598,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(2, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 0, 1]);
+      expect(sliced.stringIndices).toEqual([0, 0, 1]);
     });
 
     test('should correctly slice glyph indices ending in ligature', () => {
@@ -610,11 +610,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 4, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 1]);
+      expect(sliced.stringIndices).toEqual([0, 1, 1]);
     });
 
     test('should correctly slice glyph indices breaking ligature at start', () => {
@@ -622,11 +622,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(3, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1]);
+      expect(sliced.stringIndices).toEqual([0, 1]);
     });
 
     test('should correctly slice glyph indices breaking ligature at end', () => {
@@ -634,11 +634,11 @@ describe('run slice operator', () => {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
       };
       const sliced = slice(1, 3, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1]);
+      expect(sliced.stringIndices).toEqual([0, 1]);
     });
   });
 });

@@ -14,7 +14,7 @@ describe('run glyphIndexAt operator', () => {
       start: 0,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1, 2, 3, 4],
+      stringIndices: [0, 1, 2, 3, 4],
     };
 
     expect(glyphIndexAt(1, run)).toBe(1);
@@ -25,7 +25,7 @@ describe('run glyphIndexAt operator', () => {
       start: 0,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
     };
 
     expect(glyphIndexAt(1, run)).toBe(1);
@@ -36,7 +36,7 @@ describe('run glyphIndexAt operator', () => {
       start: 0,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
     };
 
     expect(glyphIndexAt(4, run)).toBe(3);
@@ -47,7 +47,7 @@ describe('run glyphIndexAt operator', () => {
       start: 0,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
     };
 
     expect(glyphIndexAt(2, run)).toBe(2);
@@ -58,7 +58,7 @@ describe('run glyphIndexAt operator', () => {
       start: 0,
       end: 5,
       attributes: {},
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
     };
 
     expect(glyphIndexAt(3, run)).toBe(2);

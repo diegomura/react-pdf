@@ -82,7 +82,7 @@ const flattenRegularRuns = (runs: Run[]) => {
         start,
         end: offset,
         attributes: attrs,
-        glyphIndices: [],
+        stringIndices: [],
         glyphs: [],
         positions: [],
       });

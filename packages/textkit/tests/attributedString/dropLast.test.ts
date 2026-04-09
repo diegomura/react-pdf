@@ -82,7 +82,7 @@ describe('attributeString dropLast operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 3, 4],
+        stringIndices: [0, 1, 2, 3, 4],
       },
     ];
 
@@ -92,7 +92,7 @@ describe('attributeString dropLast operator', () => {
     expect(result.string).toBe('Lore');
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 4);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114, 101]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8, 9]);
   });
@@ -113,7 +113,7 @@ describe('attributeString dropLast operator', () => {
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2],
+        stringIndices: [0, 1, 2],
       },
       {
         start: 3,
@@ -127,7 +127,7 @@ describe('attributeString dropLast operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1],
+        stringIndices: [0, 1],
       },
     ];
     const string = { string: 'Lorem', runs };
@@ -137,13 +137,13 @@ describe('attributeString dropLast operator', () => {
 
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 3);
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([76, 111, 114]);
     expect(pluck('xAdvance', result.runs[0].positions!)).toEqual([6, 7, 8]);
 
     expect(result.runs[1]).toHaveProperty('start', 3);
     expect(result.runs[1]).toHaveProperty('end', 4);
-    expect(result.runs[1].glyphIndices).toEqual([0]);
+    expect(result.runs[1].stringIndices).toEqual([0]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([101]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([9]);
   });
@@ -209,7 +209,7 @@ describe('attributeString dropLast operator', () => {
         attributes: {},
         glyphs: [{ id: 65, advanceWidth: 0, codePoints: [65] }] as Glyph[], // A
         positions: [{ xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }],
-        glyphIndices: [0],
+        stringIndices: [0],
       },
     ];
 
@@ -219,7 +219,7 @@ describe('attributeString dropLast operator', () => {
     expect(result.string).toBe('');
     expect(result.runs[0]).toHaveProperty('start', 0);
     expect(result.runs[0]).toHaveProperty('end', 0);
-    expect(result.runs[0].glyphIndices).toEqual([]);
+    expect(result.runs[0].stringIndices).toEqual([]);
     expect(result.runs[0].glyphs).toEqual([]);
     expect(result.runs[0].positions).toEqual([]);
   });

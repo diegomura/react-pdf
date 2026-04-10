@@ -36,6 +36,7 @@ describe('run advanceWidth operator', () => {
       positions,
       glyphs: [],
       stringIndices: [],
+      glyphIndices: [],
     };
 
     expect(advanceWidth(run)).toBe(30);
@@ -55,6 +56,7 @@ describe('run advanceWidth operator', () => {
       positions,
       glyphs: [],
       stringIndices: [],
+      glyphIndices: [],
     };
 
     // @ts-expect-error - intentionally invalid argument

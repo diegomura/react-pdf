@@ -38,6 +38,7 @@ describe('run offset operator', () => {
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     expect(offset(0, run)).toBe(0);
@@ -59,6 +60,7 @@ describe('run offset operator', () => {
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     expect(offset(0, run)).toBe(0);
@@ -79,6 +81,7 @@ describe('run offset operator', () => {
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
       stringIndices: [0, 1, 1, 1, 2],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     expect(offset(0, run)).toBe(0);

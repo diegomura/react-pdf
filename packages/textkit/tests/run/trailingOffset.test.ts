@@ -31,6 +31,7 @@ describe('run trailingOffset operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     const result = trailingOffset(run);
@@ -58,6 +59,7 @@ describe('run trailingOffset operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     const result = trailingOffset(run);
@@ -85,6 +87,7 @@ describe('run trailingOffset operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
     };
 
     const result = trailingOffset(run);

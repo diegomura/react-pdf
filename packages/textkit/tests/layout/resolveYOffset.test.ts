@@ -56,6 +56,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
     };
@@ -112,6 +113,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
           attributes: { font: [] },
         },
       ],
@@ -169,6 +171,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
           attributes: { yOffset: 20 },
         },
       ],
@@ -194,6 +197,7 @@ describe('resolveYOffset', () => {
             { id: 109, advanceWidth: 10, codePoints: [109] }, // m
           ] as Glyph[],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
           attributes: { yOffset: 20, font: [font] },
         },
       ],
@@ -251,6 +255,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
           attributes: { yOffset: 20, font: [font] },
         },
       ],
@@ -259,6 +264,7 @@ describe('resolveYOffset', () => {
     instance(string);
 
     expect(string.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4]);
+    expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', string.runs[0].glyphs)).toEqual([
       76, 111, 114, 101, 109,
     ]);
@@ -314,6 +320,7 @@ describe('resolveYOffset', () => {
             }, // m
           ],
           stringIndices: [0, 1, 2, 3, 4],
+          glyphIndices: [0, 1, 2, 3, 4],
           attributes: { yOffset: 20, font: [font] },
         },
       ],
@@ -321,6 +328,7 @@ describe('resolveYOffset', () => {
     const result = instance(string);
 
     expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4]);
+    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 111, 114, 101, 109,
     ]);

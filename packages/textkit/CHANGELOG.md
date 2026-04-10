@@ -1,5 +1,19 @@
 # @react-pdf/textkit
 
+## 6.2.0
+
+### Minor Changes
+
+- [#3358](https://github.com/diegomura/react-pdf/pull/3358) [`7b37bc8c`](https://github.com/diegomura/react-pdf/commit/7b37bc8c744d3805fd696f7d961d70cf47258dcf) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): glyph indices resolution
+
+- [#3355](https://github.com/diegomura/react-pdf/pull/3355) [`b28b61cf`](https://github.com/diegomura/react-pdf/commit/b28b61cf2ce5b1f0ae5b78551cf987d06df8c6c0) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): decompose unicode step
+
+### Patch Changes
+
+- [#3357](https://github.com/diegomura/react-pdf/pull/3357) [`f30cf001`](https://github.com/diegomura/react-pdf/commit/f30cf0013336d0f6ccfd7b103fee66a203ac6b07) Thanks [@diegomura](https://github.com/diegomura)! - fix(textkit): string indices resolution
+
+- [#3354](https://github.com/diegomura/react-pdf/pull/3354) [`7fa9c06e`](https://github.com/diegomura/react-pdf/commit/7fa9c06e65760272e0994d0a61dc4a53b081a816) Thanks [@diegomura](https://github.com/diegomura)! - refactor(textkit): rename glyphIndices to stringIndices
+
 ## 6.1.1
 
 ### Patch Changes

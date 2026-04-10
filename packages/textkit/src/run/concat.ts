@@ -33,6 +33,7 @@ const concat = (runA: Run, runB: Run): Run => {
   const glyphs = (runA.glyphs || []).concat(runB.glyphs || []);
   const positions = (runA.positions || []).concat(runB.positions || []);
   const attributes = Object.assign({}, runA.attributes, runB.attributes);
+
   const stringIndices = concatStringIndices(runA, runB);
   const glyphIndices = concatGlyphIndices(runA, runB);
 

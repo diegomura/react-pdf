@@ -974,7 +974,7 @@ describe('run slice operator', () => {
       expect(sliced.glyphIndices).toEqual([0, 1]);
     });
 
-    test('should correctly slice string indices breaking ligature at end', () => {
+    test('should correctly slice indices breaking ligature at end', () => {
       const run = {
         start: 0,
         end: 5,

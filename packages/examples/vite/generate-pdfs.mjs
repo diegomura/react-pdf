@@ -9,11 +9,9 @@
 import { build } from 'esbuild';
 import { mkdirSync, unlinkSync } from 'fs';
 import { join, resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
 
 const EXAMPLES_DIR = join(__dirname, 'src', 'examples');
 const OUTPUT_DIR = join(__dirname, 'output');
@@ -41,6 +39,7 @@ const exampleNames = [
   'forms',
   'responsive-images',
   'resume',
+  'scripts',
   'soft-hyphens',
   'svg',
   'svg-transform',
@@ -73,7 +72,7 @@ mkdirSync(OUTPUT_DIR, { recursive: true });
 
 async function generatePdf(name) {
   const entryPoint = join(EXAMPLES_DIR, name, 'index.tsx');
-  const bundlePath = join(OUTPUT_DIR, `_bundle_${name}.cjs`);
+  const bundlePath = join(OUTPUT_DIR, `_bundle_${name}.mjs`);
   const pdfPath = join(OUTPUT_DIR, `${name}.pdf`);
 
   try {
@@ -82,7 +81,7 @@ async function generatePdf(name) {
       entryPoints: [entryPoint],
       bundle: true,
       platform: 'node',
-      format: 'cjs',
+      format: 'esm',
       outfile: bundlePath,
       external: [
         '@react-pdf/renderer',
@@ -97,7 +96,7 @@ async function generatePdf(name) {
     });
 
     // Load the bundle
-    const mod = require(bundlePath);
+    const mod = await import(pathToFileURL(bundlePath).href);
     const example = mod.default || mod;
     const DocumentComponent = example.Document;
 
@@ -107,8 +106,8 @@ async function generatePdf(name) {
     }
 
     // Render to PDF
-    const React = require('react');
-    const { renderToFile } = require('@react-pdf/renderer');
+    const React = await import('react');
+    const { renderToFile } = await import('@react-pdf/renderer');
     const element = React.createElement(DocumentComponent);
 
     await renderToFile(element, pdfPath);

@@ -16,6 +16,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const LATIN_FONT_PATH = path.resolve(__dirname, './assets/latin.ttf');
+const BENGALI_FONT_PATH = path.resolve(__dirname, './assets/bengali.ttf');
+const THAI_FONT_PATH = path.resolve(__dirname, './assets/thai.ttf');
 
 const engines = {
   bidi,
@@ -27,16 +29,20 @@ const engines = {
 };
 
 let font: Font;
+let bengaliFont: Font;
+let thaiFont: Font;
 
 beforeAll(async () => {
   font = (await fontkit.open(LATIN_FONT_PATH)) as unknown as Font;
+  bengaliFont = (await fontkit.open(BENGALI_FONT_PATH)) as unknown as Font;
+  thaiFont = (await fontkit.open(THAI_FONT_PATH)) as unknown as Font;
 });
 
 const layout = (
   string: string,
-  opts: { fontSize?: number; width?: number } = {},
+  opts: { fontSize?: number; width?: number; font?: Font } = {},
 ) => {
-  const { fontSize = 12, width = 500 } = opts;
+  const { fontSize = 12, width = 500, font: f } = opts;
   const engine = layoutEngine(engines);
 
   const attributedString = {
@@ -45,7 +51,7 @@ const layout = (
       {
         start: 0,
         end: string.length,
-        attributes: { font: [font], fontSize },
+        attributes: { font: [f ?? font], fontSize },
       },
     ],
   };
@@ -177,4 +183,75 @@ describe('layoutEngine', () => {
     expect(codePoints).toHaveLength(1);
     expect(codePoints).toEqual([[102, 102, 105]]);
   });
+});
+
+test('should produce glyphs for Bengali text', () => {
+  const result = layout('বাংলা', { font: bengaliFont });
+  const ids = getGlyphIds(result);
+  const positions = getPositions(result);
+
+  expect(ids).toHaveLength(5);
+  expect(ids).toEqual([42, 54, 6, 47, 54]);
+  expect(positions).toHaveLength(5);
+  for (const pos of positions) {
+    expect(pos.xAdvance).toBeGreaterThan(0);
+  }
+});
+
+test('should produce correct glyphs for Bengali with vowel signs', () => {
+  const result = layout('হোসেন', { font: bengaliFont });
+  const ids = getGlyphIds(result);
+
+  // হো decomposes: ে (2503) reorders before হ (2489) + া (2494)
+  // সে decomposes: ে (2503) reorders before স (2488)
+  // ন (2472)
+  expect(ids).toEqual([418, 51, 54, 418, 50, 39]);
+});
+
+test('should produce positive advances for all Bengali glyphs', () => {
+  const result = layout('মুফতি ইকবাল হোসেন নাটোরি', {
+    font: bengaliFont,
+  });
+  const positions = getPositions(result);
+
+  expect(positions.length).toBeGreaterThan(0);
+  for (const pos of positions) {
+    expect(pos.xAdvance).toBeGreaterThanOrEqual(0);
+  }
+});
+
+test('should produce glyphs for Thai กำ', () => {
+  const result = layout('กำ', { font: thaiFont });
+  const ids = getGlyphIds(result);
+  const positions = getPositions(result);
+
+  // กำ (U+0E01 U+0E33) produces 3 glyphs due to Sara Am decomposition
+  expect(ids).toHaveLength(3);
+  expect(ids).toEqual([431, 759, 487]);
+  expect(positions).toHaveLength(3);
+});
+
+test('should produce glyphs for Thai with Sara Am in longer text', () => {
+  const result = layout('กำกก', { font: thaiFont });
+  const ids = getGlyphIds(result);
+
+  // กำ produces 3 glyphs, then กก produces 2
+  expect(ids).toEqual([431, 759, 487, 431, 431]);
+});
+
+test('should produce glyphs for Thai with vowel marks', () => {
+  const result = layout('สวัสดี', { font: thaiFont });
+  const ids = getGlyphIds(result);
+
+  expect(ids).toEqual([480, 477, 732, 480, 456, 753]);
+});
+
+test('should produce positive advances for all Thai glyphs', () => {
+  const result = layout('สวัสดีครับ ยินดีต้อนรับ', { font: thaiFont });
+  const positions = getPositions(result);
+
+  expect(positions.length).toBeGreaterThan(0);
+  for (const pos of positions) {
+    expect(pos.xAdvance).toBeGreaterThanOrEqual(0);
+  }
 });

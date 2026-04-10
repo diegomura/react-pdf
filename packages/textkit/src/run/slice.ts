@@ -3,7 +3,7 @@ import offset from './offset';
 import getFont from './getFont';
 import sliceGlyph from '../glyph/slice';
 import glyphIndexAt from './glyphIndexAt';
-import normalizeStringIndices from '../string-indices/normalize';
+import normalize from '../utils/normalize';
 import { Glyph, Position, Run } from '../types';
 
 /**
@@ -51,9 +51,7 @@ const slice = (start: number, end: number, run: Run): Run => {
   const endPositions = endGlyphs.map(glyphPosition);
 
   // Compute new string indices
-  const stringIndices = normalizeStringIndices(
-    (run.stringIndices || []).slice(start, end),
-  );
+  const stringIndices = normalize((run.stringIndices || []).slice(start, end));
 
   return Object.assign({}, run, {
     start: Math.max(run.start + start, 0),

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import normalizeArray from '../../src/string-indices/normalize';
+import normalizeArray from '../../src/utils/normalize';
 
 describe('indices normalizeArray operator', () => {
   test('should return empty array for empty array', () => {

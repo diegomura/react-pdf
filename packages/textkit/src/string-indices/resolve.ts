@@ -14,7 +14,8 @@ const resolve = (glyphs: (Glyph | undefined)[] = []): number[] => {
 
   for (let i = 0; i < glyphs.length; i += 1) {
     const glyph = glyphs[i];
-    const codePointCount = glyph?.codePoints?.length || 1;
+
+    const codePointCount = glyph?.codePoints?.length || 0;
 
     for (let j = 0; j < codePointCount; j += 1) {
       result.push(currentIndex);

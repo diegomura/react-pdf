@@ -75,10 +75,9 @@ describe('pagination step', () => {
           type: 'PAGE',
           props: {},
           style: {
-            width: 15,
+            width: 13,
             height: 60,
           },
-
           children: [
             {
               type: 'VIEW',

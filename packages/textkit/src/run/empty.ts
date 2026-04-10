@@ -10,6 +10,7 @@ const empty = (): Run => {
     start: 0,
     end: 0,
     stringIndices: [],
+    glyphIndices: [],
     glyphs: [],
     positions: [],
     attributes: {},

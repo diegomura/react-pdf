@@ -90,18 +90,20 @@ describe('run concat operator', () => {
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9]);
   });
 
-  test('should concat runs glyph indices', () => {
+  test('should concat runs indices', () => {
     const runA = {
       start: 0,
       end: 3,
       attributes: {},
       stringIndices: [0, 1, 2],
+      glyphIndices: [0, 1, 2],
     };
     const runB = {
       start: 3,
       end: 5,
       attributes: {},
       stringIndices: [0, 1],
+      glyphIndices: [0, 1],
     };
 
     const result = concat(runA, runB);
@@ -109,5 +111,78 @@ describe('run concat operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
+  });
+
+  test('should concat runs indices with ligature in first run', () => {
+    // runA: "lofi" → glyphs [l, o, fi], fi is a ligature
+    const runA = {
+      start: 0,
+      end: 4,
+      attributes: {},
+      stringIndices: [0, 1, 2, 2],
+      glyphIndices: [0, 1, 2],
+    };
+    // runB: "em" → glyphs [e, m]
+    const runB = {
+      start: 4,
+      end: 6,
+      attributes: {},
+      stringIndices: [0, 1],
+      glyphIndices: [0, 1],
+    };
+
+    const result = concat(runA, runB);
+
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
+  });
+
+  test('should concat runs string indices with ligature in second run', () => {
+    // runA: "lo" → glyphs [l, o]
+    const runA = {
+      start: 0,
+      end: 2,
+      attributes: {},
+      stringIndices: [0, 1],
+      glyphIndices: [0, 1],
+    };
+    // runB: "fim" → glyphs [fi, m], fi is a ligature
+    const runB = {
+      start: 2,
+      end: 5,
+      attributes: {},
+      stringIndices: [0, 0, 1],
+      glyphIndices: [0, 2],
+    };
+
+    const result = concat(runA, runB);
+
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4]);
+  });
+
+  test('should concat runs string indices with ligatures in both runs', () => {
+    // runA: "lofi" → glyphs [l, o, fi]
+    const runA = {
+      start: 0,
+      end: 4,
+      attributes: {},
+      stringIndices: [0, 1, 2, 2],
+      glyphIndices: [0, 1, 2],
+    };
+    // runB: "ffi" → glyphs [ffi]
+    const runB = {
+      start: 4,
+      end: 7,
+      attributes: {},
+      stringIndices: [0, 0, 0],
+      glyphIndices: [0],
+    };
+
+    const result = concat(runA, runB);
+
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 3, 3]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4]);
   });
 });

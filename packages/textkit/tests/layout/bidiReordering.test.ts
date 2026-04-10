@@ -30,6 +30,7 @@ describe('bidiReordering', () => {
           glyphs: initializeToIndex(5),
           positions: initializeToIndex(5),
           stringIndices: initializeToIndex(5),
+          glyphIndices: initializeToIndex(5),
         },
       ],
     };
@@ -58,6 +59,7 @@ describe('bidiReordering', () => {
           glyphs: initializeToIndex(word.length),
           positions: initializeToIndex(word.length),
           stringIndices: initializeToIndex(word.length),
+          glyphIndices: initializeToIndex(word.length),
         },
       ],
     };
@@ -81,6 +83,7 @@ describe('bidiReordering', () => {
           glyphs: initializeToIndex(6),
           positions: initializeToIndex(6),
           stringIndices: initializeToIndex(6),
+          glyphIndices: initializeToIndex(6),
         },
         {
           attributes: {
@@ -92,6 +95,7 @@ describe('bidiReordering', () => {
           glyphs: initializeToIndex(5),
           positions: initializeToIndex(5),
           stringIndices: initializeToIndex(5),
+          glyphIndices: initializeToIndex(5),
         },
       ],
     };
@@ -133,6 +137,7 @@ describe('bidiReordering', () => {
             { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
           ],
           stringIndices: initializeToIndex(4),
+          glyphIndices: initializeToIndex(4),
         },
       ],
     };

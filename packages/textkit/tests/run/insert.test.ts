@@ -25,6 +25,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -33,6 +34,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9]);
   });
@@ -56,6 +58,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -65,6 +68,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([105, 76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([10, 5, 6, 7, 8, 9]);
   });
@@ -88,6 +92,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -97,6 +102,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9, 10]);
   });
@@ -120,6 +126,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -129,6 +136,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 105, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 10, 7, 8, 9]);
   });
@@ -152,6 +160,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -165,6 +174,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 7);
     expect(result).toHaveProperty('stringIndices', [0, 0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 2, 3, 4, 5, 6]);
     expect(pluck('id', result.glyphs!)).toEqual([
       64257, 76, 111, 114, 101, 109,
     ]);
@@ -190,6 +200,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -203,6 +214,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 7);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 114, 101, 109, 64257,
     ]);
@@ -228,6 +240,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -241,6 +254,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 7);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5, 6]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 64257, 114, 101, 109,
     ]);
@@ -264,6 +278,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -273,6 +288,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 105, 64257, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 10, 7, 8]);
   });
@@ -294,6 +310,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -303,6 +320,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 105, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 10, 8]);
   });
@@ -324,6 +342,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -333,6 +352,7 @@ describe('run insert glyph operator', () => {
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 102, 105, 105, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 8, 10, 8, 8]);
   });
@@ -354,6 +374,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -365,6 +386,7 @@ describe('run insert glyph operator', () => {
     const result = insert(1, glyph, run); // lffiofim
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 1, 1, 2, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 4, 5, 7]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 64259, 111, 64257, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 10, 6, 7, 8]);
   });
@@ -386,6 +408,7 @@ describe('run insert glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -397,6 +420,7 @@ describe('run insert glyph operator', () => {
     const result = insert(4, glyph, run); // lofiffim
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 7]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 64259, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 10, 8]);
   });
@@ -422,12 +446,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(2, null, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9]);
   });
@@ -451,12 +477,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(0, 105, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([105, 76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([8, 5, 6, 7, 8, 9]);
   });
@@ -480,12 +508,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(5, 105, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9, 8]);
   });
@@ -509,12 +539,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(2, 105, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 105, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 8, 7, 8, 9]);
   });
@@ -538,12 +570,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(0, 64257, run); // filorem
 
     expect(result).toHaveProperty('stringIndices', [0, 0, 1, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 2, 3, 4, 5, 6]);
     expect(pluck('id', result.glyphs!)).toEqual([
       64257, 76, 111, 114, 101, 109,
     ]);
@@ -569,12 +603,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(2, 64257, run); // lofirem
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5, 6]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 64257, 114, 101, 109,
     ]);
@@ -600,12 +636,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 3, 4],
+      glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(5, 64257, run); // loremfi
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 114, 101, 109, 64257,
     ]);
@@ -629,12 +667,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(1, 105, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 105, 111, 64257, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 8, 6, 7, 8]);
   });
@@ -656,12 +696,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(4, 105, run);
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 105, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 8]);
   });
@@ -683,12 +725,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(1, 64259, run); // lffiofim
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 1, 1, 2, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 4, 5, 7]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 64259, 111, 64257, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 10, 6, 7, 8]);
   });
@@ -710,12 +754,14 @@ describe('run insert code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
       stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = insert(4, 64259, run); // lofiffim
 
     expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 3, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 7]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 64259, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 10, 8]);
   });

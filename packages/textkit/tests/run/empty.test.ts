@@ -10,6 +10,7 @@ describe('run empty operator', () => {
     expect(result).toHaveProperty('end', 0);
     expect(result).toHaveProperty('glyphs', []);
     expect(result).toHaveProperty('stringIndices', []);
+    expect(result).toHaveProperty('glyphIndices', []);
     expect(result).toHaveProperty('positions', []);
   });
 });

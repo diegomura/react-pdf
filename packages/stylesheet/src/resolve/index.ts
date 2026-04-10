@@ -3,6 +3,7 @@ import colorHandlers from './colors';
 import dimensionHandlers from './dimensions';
 import flexHandlers from './flex';
 import gapHandlers from './gap';
+import gridHandlers from './grid';
 import layoutHandlers from './layout';
 import marginHandlers from './margins';
 import paddingHandlers from './paddings';
@@ -25,6 +26,7 @@ const shorthands: Partial<Record<StyleKey, Handler>> = {
   ...dimensionHandlers,
   ...flexHandlers,
   ...gapHandlers,
+  ...gridHandlers,
   ...layoutHandlers,
   ...marginHandlers,
   ...paddingHandlers,

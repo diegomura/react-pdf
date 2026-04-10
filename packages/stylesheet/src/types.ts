@@ -214,7 +214,7 @@ export type TransformStyle = TransformShorthandStyle & TransformExpandedStyle;
 
 // Layout
 
-export type Display = 'flex' | 'none';
+export type Display = 'flex' | 'grid' | 'none';
 
 export type Position = 'absolute' | 'relative' | 'static';
 
@@ -430,6 +430,30 @@ export type SvgSafeStyle = SvgStyle & {
   strokeOpacity?: number;
 };
 
+// Grid
+
+export type GridAutoFlow = 'row' | 'column' | 'row dense' | 'column dense';
+
+export type GridPlacement = 'auto' | number | string;
+
+export type GridStyle = {
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gridAutoColumns?: string;
+  gridAutoRows?: string;
+  gridAutoFlow?: GridAutoFlow;
+  gridColumn?: string;
+  gridColumnStart?: GridPlacement;
+  gridColumnEnd?: GridPlacement;
+  gridRow?: string;
+  gridRowStart?: GridPlacement;
+  gridRowEnd?: GridPlacement;
+};
+
+export type GridExpandedStyle = GridStyle;
+
+export type GridSafeStyle = GridStyle;
+
 // Global
 
 type BaseStyle = BorderStyle &
@@ -437,6 +461,7 @@ type BaseStyle = BorderStyle &
   DimensionStyle &
   FlexboxStyle &
   GapStyle &
+  GridStyle &
   LayoutStyle &
   MarginStyle &
   PaddingStyle &
@@ -458,6 +483,7 @@ export type ExpandedStyle = BorderExpandedStyle &
   DimensionExpandedStyle &
   FlexboxExpandedStyle &
   GapExpandedStyle &
+  GridExpandedStyle &
   LayoutExpandedStyle &
   MarginExpandedStyle &
   PaddingExpandedStyle &
@@ -471,6 +497,7 @@ export type SafeStyle = BorderSafeStyle &
   DimensionSafeStyle &
   FlexboxSafeStyle &
   GapSafeStyle &
+  GridSafeStyle &
   LayoutSafeStyle &
   MarginSafeStyle &
   PaddingSafeStyle &

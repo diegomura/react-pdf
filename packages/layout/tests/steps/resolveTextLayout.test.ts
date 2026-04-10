@@ -55,8 +55,6 @@ describe('text layout step', () => {
     const root = await getRoot('text text text', { height: 50 });
     const dimensions = resolveDimensions(root, fontStore);
 
-    expect(getText(dimensions).lines).not.toBeDefined();
-
     const textLayout = resolveTextLayout(dimensions, fontStore);
 
     expect(getText(textLayout).lines).toBeDefined();

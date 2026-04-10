@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../yoga/enums';
 import FontStore from '@react-pdf/font';
 
 import layoutText from './layoutText';

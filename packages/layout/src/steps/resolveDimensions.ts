@@ -21,6 +21,19 @@ import setPositionType from '../node/setPositionType';
 import setFlexDirection from '../node/setFlexDirection';
 import setJustifyContent from '../node/setJustifyContent';
 import {
+  setGridTemplateColumns,
+  setGridTemplateRows,
+  setGridAutoColumns,
+  setGridAutoRows,
+  setGridAutoFlow,
+  setGridColumn,
+  setGridRow,
+  setGridColumnStart,
+  setGridColumnEnd,
+  setGridRowStart,
+  setGridRowEnd,
+} from '../node/setGrid';
+import {
   setMarginTop,
   setMarginRight,
   setMarginBottom,
@@ -124,6 +137,17 @@ const setYogaValues = (node: SafeNode) => {
     setFlexShrink(node.style.flexShrink),
     setRowGap(node.style.rowGap),
     setColumnGap(node.style.columnGap),
+    setGridTemplateColumns(node.style.gridTemplateColumns),
+    setGridTemplateRows(node.style.gridTemplateRows),
+    setGridAutoColumns(node.style.gridAutoColumns),
+    setGridAutoRows(node.style.gridAutoRows),
+    setGridAutoFlow(node.style.gridAutoFlow),
+    setGridColumn(node.style.gridColumn),
+    setGridRow(node.style.gridRow),
+    setGridColumnStart(node.style.gridColumnStart),
+    setGridColumnEnd(node.style.gridColumnEnd),
+    setGridRowStart(node.style.gridRowStart),
+    setGridRowEnd(node.style.gridRowEnd),
   )(node);
 };
 

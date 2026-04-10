@@ -1,5 +1,5 @@
 import { isNil, upperFirst, matchPercent } from '@react-pdf/fns';
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../yoga/enums';
 
 import { SafeNode } from '../types';
 

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import * as Yoga from 'yoga-layout/load';
+import * as Yoga from '../../src/yoga/enums';
 
 import getBorderWidth from '../../src/node/getBorderWidth';
 

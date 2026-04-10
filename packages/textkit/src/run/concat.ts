@@ -4,6 +4,22 @@ import { Run } from '../types';
 import length from './length';
 import normalize from '../utils/normalize';
 
+const concatStringIndices = (runA: Run, runB: Run): number[] => {
+  const runAIndices = runA.stringIndices || [];
+  const runALastIndex = last(runAIndices) || 0;
+  const runBIndices = (runB.stringIndices || []).map(
+    (i) => i + runALastIndex + 1,
+  );
+  return normalize(runAIndices.concat(runBIndices));
+};
+
+const concatGlyphIndices = (runA: Run, runB: Run): number[] => {
+  const runAIndices = runA.glyphIndices || [];
+  const runALength = runA.stringIndices?.length || 0;
+  const runBIndices = (runB.glyphIndices || []).map((i) => i + runALength);
+  return normalize(runAIndices.concat(runBIndices));
+};
+
 /**
  * Concats two runs into one
  *
@@ -18,12 +34,8 @@ const concat = (runA: Run, runB: Run): Run => {
   const positions = (runA.positions || []).concat(runB.positions || []);
   const attributes = Object.assign({}, runA.attributes, runB.attributes);
 
-  const runAIndices = runA.stringIndices || [];
-  const runALastIndex = last(runAIndices) || 0;
-  const runBIndices = (runB.stringIndices || []).map(
-    (i) => i + runALastIndex + 1,
-  );
-  const stringIndices = normalize(runAIndices.concat(runBIndices));
+  const stringIndices = concatStringIndices(runA, runB);
+  const glyphIndices = concatGlyphIndices(runA, runB);
 
   return Object.assign({}, runA, {
     end,
@@ -31,6 +43,7 @@ const concat = (runA: Run, runB: Run): Run => {
     positions,
     attributes,
     stringIndices,
+    glyphIndices,
   });
 };
 

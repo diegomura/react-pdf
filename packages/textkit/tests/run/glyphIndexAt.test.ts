@@ -68,4 +68,17 @@ describe('run glyphIndexAt operator', () => {
 
     expect(glyphIndexAt(3, run)).toBe(2);
   });
+
+  test('should correctly return glyph index for composed characters', () => {
+    const run = {
+      start: 0,
+      end: 2,
+      attributes: {},
+      stringIndices: [0, 1],
+      glyphIndices: [0, 1, 1],
+    };
+
+    expect(glyphIndexAt(0, run)).toBe(0);
+    expect(glyphIndexAt(1, run)).toBe(2);
+  });
 });

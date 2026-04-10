@@ -1,3 +1,4 @@
+import scripts from './scripts';
 import duplicatedImages from './duplicated-images';
 import ellipsis from './ellipsis';
 import emoji from './emoji';
@@ -25,6 +26,7 @@ import passwordProtection from './password-protection';
 import softHyphens from './soft-hyphens';
 
 const EXAMPLES = [
+  scripts,
   duplicatedImages,
   ellipsis,
   emoji,

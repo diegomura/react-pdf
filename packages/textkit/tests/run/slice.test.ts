@@ -869,7 +869,7 @@ describe('run slice operator', () => {
     });
   });
 
-  describe('slice glyph indices', () => {
+  describe('slice indices', () => {
     test('should exact slice return same indices', () => {
       const run = {
         start: 0,
@@ -974,7 +974,7 @@ describe('run slice operator', () => {
       expect(sliced.glyphIndices).toEqual([0, 1]);
     });
 
-    test('should correctly slice glyph indices breaking ligature at end', () => {
+    test('should correctly slice indices breaking ligature at end', () => {
       const run = {
         start: 0,
         end: 5,

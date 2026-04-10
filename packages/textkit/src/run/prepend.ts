@@ -2,6 +2,7 @@ import scale from './scale';
 import getFont from './getFont';
 import isNumber from '../utils/isNumber';
 import prependStringIndices from '../string-indices/prepend';
+import prependGlyphIndices from '../glyph-indices/prepend';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 import { Glyph, Position, Run } from '../types';
 
@@ -18,6 +19,7 @@ const prependGlyph = (glyph: Glyph, run: Run): Run => {
 
   const end = run.end + glyphLength;
   const stringIndices = prependStringIndices(glyphLength, run.stringIndices);
+  const glyphIndices = prependGlyphIndices(glyphLength, run.glyphIndices);
   const glyphs = [glyph].concat(run.glyphs);
 
   const positions: Position[] = [
@@ -29,7 +31,13 @@ const prependGlyph = (glyph: Glyph, run: Run): Run => {
     },
   ].concat(run.positions);
 
-  return Object.assign({}, run, { end, glyphs, stringIndices, positions });
+  return Object.assign({}, run, {
+    end,
+    glyphs,
+    stringIndices,
+    glyphIndices,
+    positions,
+  });
 };
 
 /**

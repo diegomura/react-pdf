@@ -1,5 +1,15 @@
 # @react-pdf/renderer
 
+## 4.4.1
+
+### Patch Changes
+
+- [#3351](https://github.com/diegomura/react-pdf/pull/3351) [`e585e352`](https://github.com/diegomura/react-pdf/commit/e585e3523ecb50001cc9f47e00b139738c02b87f) Thanks [@diegomura](https://github.com/diegomura)! - fix(render): border rendering + tests
+
+- Updated dependencies [[`e585e352`](https://github.com/diegomura/react-pdf/commit/e585e3523ecb50001cc9f47e00b139738c02b87f)]:
+  - @react-pdf/render@4.4.1
+  - @react-pdf/layout@4.5.1
+
 ## 4.4.0
 
 ### Minor Changes

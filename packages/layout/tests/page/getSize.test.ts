@@ -180,6 +180,33 @@ describe('page getSize', () => {
     ).toThrow('Invalid page size');
   });
 
+  test('should accept single element array with auto height', () => {
+    const size = getSize({ type: 'PAGE', props: { size: [595.28] } });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
+  test('should accept size object with no height', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: { width: 595.28 } },
+    });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
+  test('should accept size object with auto height', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: { width: 595.28, height: 'auto' } },
+    });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
   test('should throw for unknown string size name', () => {
     expect(() =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

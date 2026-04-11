@@ -9,6 +9,7 @@ import {
   matchPercent,
   parseFloat,
 } from '@react-pdf/fns';
+import { SvgImage, SvgNode as ParsedSvgNode } from '@react-pdf/image';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
@@ -18,6 +19,7 @@ import inheritProps from '../svg/inheritProps';
 import parseAspectRatio from '../svg/parseAspectRatio';
 import {
   SafeNode,
+  SafeImageNode,
   SafeSvgNode,
   SafeTextInstanceNode,
   SafeTextNode,
@@ -343,18 +345,59 @@ const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
   )(node);
 };
 
+const isSvgImage = (
+  node: SafeNode,
+): node is SafeImageNode & { image: SvgImage } =>
+  node.type === P.Image && (node as SafeImageNode).image?.format === 'svg';
+
+function convertParsedNode(node: ParsedSvgNode) {
+  return {
+    type: node.type,
+    props: node.props,
+    style: {},
+    children: node.children?.map(convertParsedNode),
+    ...('value' in node && { value: node.value as string }),
+  };
+}
+
+function convertToSvgNode(
+  imageNode: SafeImageNode,
+  svgImage: SvgImage,
+): SafeSvgNode {
+  const width = imageNode.style?.width ?? svgImage.width;
+  const height = imageNode.style?.height ?? svgImage.height;
+
+  return {
+    type: P.Svg,
+    props: {
+      width,
+      height,
+      viewBox: svgImage.viewBox,
+      preserveAspectRatio: { align: 'xMidYMid', meetOrSlice: 'meet' },
+    },
+    style: { ...imageNode.style, width, height },
+    box: imageNode.box,
+    origin: imageNode.origin,
+    yogaNode: imageNode.yogaNode,
+    children: svgImage.children.map(convertParsedNode),
+  };
+}
+
 /**
- * Pre-process SVG nodes so they can be rendered in the next steps
+ * Pre-process SVG nodes so they can be rendered in the next steps.
+ * Also converts Image nodes containing SVG data into SvgNodes.
  *
  * @param node - Root node
  * @param fontStore - Font store
  * @returns Root node
  */
 const resolveSvg = (node: SafeNode, fontStore: FontStore) => {
-  if (!('children' in node)) return node;
+  const resolved = isSvgImage(node) ? convertToSvgNode(node, node.image) : node;
+
+  if (!('children' in resolved)) return resolved;
 
   const resolveChild = (child) => resolveSvg(child, fontStore);
-  const root = isSvg(node) ? resolveSvgRoot(node, fontStore) : node;
+  const root = isSvg(resolved) ? resolveSvgRoot(resolved, fontStore) : resolved;
   const children = root.children?.map(resolveChild);
 
   return Object.assign({}, root, { children });

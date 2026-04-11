@@ -209,7 +209,6 @@ describe('page getSize', () => {
 
   test('should throw for unknown string size name', () => {
     expect(() =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       getSize({ type: 'PAGE', props: { size: 'UNKNOWN' as any } }),
     ).toThrow();
   });

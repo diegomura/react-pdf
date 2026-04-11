@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parseSvg > XML preamble and comments > CDATA sections are preserved as text 1`] = `
+exports[`parseSvg > XML preamble and comments > should preserve CDATA sections as text 1`] = `
 {
   "children": [
     {
@@ -27,7 +27,7 @@ exports[`parseSvg > XML preamble and comments > CDATA sections are preserved as 
 }
 `;
 
-exports[`parseSvg > XML preamble and comments > DOCTYPE is stripped 1`] = `
+exports[`parseSvg > XML preamble and comments > should strip DOCTYPE 1`] = `
 {
   "children": [
     {
@@ -45,7 +45,7 @@ exports[`parseSvg > XML preamble and comments > DOCTYPE is stripped 1`] = `
 }
 `;
 
-exports[`parseSvg > XML preamble and comments > XML declaration is stripped 1`] = `
+exports[`parseSvg > XML preamble and comments > should strip XML declaration 1`] = `
 {
   "children": [
     {
@@ -66,7 +66,7 @@ exports[`parseSvg > XML preamble and comments > XML declaration is stripped 1`] 
 }
 `;
 
-exports[`parseSvg > XML preamble and comments > comments are stripped 1`] = `
+exports[`parseSvg > XML preamble and comments > should strip comments 1`] = `
 {
   "children": [
     {
@@ -87,7 +87,30 @@ exports[`parseSvg > XML preamble and comments > comments are stripped 1`] = `
 }
 `;
 
-exports[`parseSvg > attribute handling > XML entities in attribute values 1`] = `
+exports[`parseSvg > attribute handling > should convert hyphenated attributes to camelCase 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fillOpacity": "0.5",
+        "strokeDasharray": "5,3",
+        "strokeLinecap": "round",
+        "strokeWidth": "2",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should decode XML entities in attribute values 1`] = `
 {
   "children": [
     {
@@ -114,16 +137,16 @@ exports[`parseSvg > attribute handling > XML entities in attribute values 1`] = 
 }
 `;
 
-exports[`parseSvg > attribute handling > camelCase conversion of hyphenated attributes 1`] = `
+exports[`parseSvg > attribute handling > should expand inline style attribute 1`] = `
 {
   "children": [
     {
       "children": [],
       "props": {
-        "fillOpacity": "0.5",
-        "strokeDasharray": "5,3",
-        "strokeLinecap": "round",
-        "strokeWidth": "2",
+        "fill": "red",
+        "opacity": "0.8",
+        "stroke": "blue",
+        "strokeWidth": "2px",
       },
       "type": "RECT",
     },
@@ -137,7 +160,7 @@ exports[`parseSvg > attribute handling > camelCase conversion of hyphenated attr
 }
 `;
 
-exports[`parseSvg > attribute handling > direct attributes and style are merged 1`] = `
+exports[`parseSvg > attribute handling > should merge direct attributes and style 1`] = `
 {
   "children": [
     {
@@ -161,30 +184,7 @@ exports[`parseSvg > attribute handling > direct attributes and style are merged 
 }
 `;
 
-exports[`parseSvg > attribute handling > inline style attribute is expanded 1`] = `
-{
-  "children": [
-    {
-      "children": [],
-      "props": {
-        "fill": "red",
-        "opacity": "0.8",
-        "stroke": "blue",
-        "strokeWidth": "2px",
-      },
-      "type": "RECT",
-    },
-  ],
-  "props": {
-    "height": "100",
-    "width": "100",
-    "xmlns": "http://www.w3.org/2000/svg",
-  },
-  "type": "SVG",
-}
-`;
-
-exports[`parseSvg > attribute handling > single-quoted attributes 1`] = `
+exports[`parseSvg > attribute handling > should parse single-quoted attributes 1`] = `
 {
   "children": [
     {
@@ -206,31 +206,7 @@ exports[`parseSvg > attribute handling > single-quoted attributes 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > dimensions from viewBox when width/height absent 1`] = `
-{
-  "children": [],
-  "props": {
-    "viewBox": "10 20 300 200",
-    "xmlns": "http://www.w3.org/2000/svg",
-  },
-  "type": "SVG",
-}
-`;
-
-exports[`parseSvg > dimensions > explicit dimensions take precedence over viewBox 1`] = `
-{
-  "children": [],
-  "props": {
-    "height": "50",
-    "viewBox": "0 0 300 200",
-    "width": "50",
-    "xmlns": "http://www.w3.org/2000/svg",
-  },
-  "type": "SVG",
-}
-`;
-
-exports[`parseSvg > dimensions > no dimensions and no viewBox 1`] = `
+exports[`parseSvg > dimensions > should handle no dimensions and no viewBox 1`] = `
 {
   "children": [],
   "props": {
@@ -240,7 +216,7 @@ exports[`parseSvg > dimensions > no dimensions and no viewBox 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > unitless width and height 1`] = `
+exports[`parseSvg > dimensions > should parse unitless width and height 1`] = `
 {
   "children": [],
   "props": {
@@ -252,7 +228,18 @@ exports[`parseSvg > dimensions > unitless width and height 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > width and height in cm 1`] = `
+exports[`parseSvg > dimensions > should parse viewbox 1`] = `
+{
+  "children": [],
+  "props": {
+    "viewBox": "10 20 300 200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in cm 1`] = `
 {
   "children": [],
   "props": {
@@ -264,7 +251,7 @@ exports[`parseSvg > dimensions > width and height in cm 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > width and height in inches 1`] = `
+exports[`parseSvg > dimensions > should parse width and height in inches 1`] = `
 {
   "children": [],
   "props": {
@@ -276,7 +263,7 @@ exports[`parseSvg > dimensions > width and height in inches 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > width and height in mm 1`] = `
+exports[`parseSvg > dimensions > should parse width and height in mm 1`] = `
 {
   "children": [],
   "props": {
@@ -288,7 +275,7 @@ exports[`parseSvg > dimensions > width and height in mm 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > width and height in pt 1`] = `
+exports[`parseSvg > dimensions > should parse width and height in pt 1`] = `
 {
   "children": [],
   "props": {
@@ -300,7 +287,7 @@ exports[`parseSvg > dimensions > width and height in pt 1`] = `
 }
 `;
 
-exports[`parseSvg > dimensions > width and height in px 1`] = `
+exports[`parseSvg > dimensions > should parse width and height in px 1`] = `
 {
   "children": [],
   "props": {
@@ -312,7 +299,7 @@ exports[`parseSvg > dimensions > width and height in px 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > basic shapes 1`] = `
+exports[`parseSvg > element mapping > should map basic shapes 1`] = `
 {
   "children": [
     {
@@ -381,7 +368,7 @@ exports[`parseSvg > element mapping > basic shapes 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > clipPath element 1`] = `
+exports[`parseSvg > element mapping > should map clipPath element 1`] = `
 {
   "children": [
     {
@@ -416,7 +403,7 @@ exports[`parseSvg > element mapping > clipPath element 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > gradient definitions 1`] = `
+exports[`parseSvg > element mapping > should map gradient definitions 1`] = `
 {
   "children": [
     {
@@ -490,7 +477,7 @@ exports[`parseSvg > element mapping > gradient definitions 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > image element 1`] = `
+exports[`parseSvg > element mapping > should map image element 1`] = `
 {
   "children": [
     {
@@ -514,7 +501,7 @@ exports[`parseSvg > element mapping > image element 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > nested groups 1`] = `
+exports[`parseSvg > element mapping > should map nested groups 1`] = `
 {
   "children": [
     {
@@ -560,7 +547,7 @@ exports[`parseSvg > element mapping > nested groups 1`] = `
 }
 `;
 
-exports[`parseSvg > element mapping > path element 1`] = `
+exports[`parseSvg > element mapping > should map path element 1`] = `
 {
   "children": [
     {
@@ -582,7 +569,7 @@ exports[`parseSvg > element mapping > path element 1`] = `
 }
 `;
 
-exports[`parseSvg > invalid input > empty string 1`] = `
+exports[`parseSvg > invalid input > should handle empty string 1`] = `
 {
   "children": [],
   "props": {},
@@ -590,7 +577,15 @@ exports[`parseSvg > invalid input > empty string 1`] = `
 }
 `;
 
-exports[`parseSvg > invalid input > invalid viewBox is ignored 1`] = `
+exports[`parseSvg > invalid input > should handle non-svg root element 1`] = `
+{
+  "children": [],
+  "props": {},
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > invalid input > should ignore invalid viewBox 1`] = `
 {
   "children": [],
   "props": {
@@ -603,15 +598,7 @@ exports[`parseSvg > invalid input > invalid viewBox is ignored 1`] = `
 }
 `;
 
-exports[`parseSvg > invalid input > non-svg root element 1`] = `
-{
-  "children": [],
-  "props": {},
-  "type": "SVG",
-}
-`;
-
-exports[`parseSvg > invalid input > viewBox with wrong number of values is ignored 1`] = `
+exports[`parseSvg > invalid input > should ignore viewBox with wrong number of values 1`] = `
 {
   "children": [],
   "props": {
@@ -624,7 +611,7 @@ exports[`parseSvg > invalid input > viewBox with wrong number of values is ignor
 }
 `;
 
-exports[`parseSvg > real-world SVGs > chart with styled elements 1`] = `
+exports[`parseSvg > real-world SVGs > should parse chart with styled elements 1`] = `
 {
   "children": [
     {
@@ -702,7 +689,7 @@ exports[`parseSvg > real-world SVGs > chart with styled elements 1`] = `
 }
 `;
 
-exports[`parseSvg > real-world SVGs > icon with gradients and paths 1`] = `
+exports[`parseSvg > real-world SVGs > should parse icon with gradients and paths 1`] = `
 {
   "children": [
     {
@@ -782,7 +769,7 @@ exports[`parseSvg > real-world SVGs > icon with gradients and paths 1`] = `
 }
 `;
 
-exports[`parseSvg > skipped elements > script, filter, mask, and other unsupported elements are omitted 1`] = `
+exports[`parseSvg > skipped elements > should omit script, filter, mask, and other unsupported elements 1`] = `
 {
   "children": [
     {
@@ -812,7 +799,7 @@ exports[`parseSvg > skipped elements > script, filter, mask, and other unsupport
 }
 `;
 
-exports[`parseSvg > skipped elements > unknown elements are silently ignored 1`] = `
+exports[`parseSvg > skipped elements > should silently ignore unknown elements 1`] = `
 {
   "children": [
     {
@@ -833,7 +820,7 @@ exports[`parseSvg > skipped elements > unknown elements are silently ignored 1`]
 }
 `;
 
-exports[`parseSvg > text handling > text content in non-text elements is ignored 1`] = `
+exports[`parseSvg > text handling > should ignore text content in non-text elements 1`] = `
 {
   "children": [
     {
@@ -851,7 +838,7 @@ exports[`parseSvg > text handling > text content in non-text elements is ignored
 }
 `;
 
-exports[`parseSvg > text handling > text with content 1`] = `
+exports[`parseSvg > text handling > should parse text with content 1`] = `
 {
   "children": [
     {
@@ -879,7 +866,7 @@ exports[`parseSvg > text handling > text with content 1`] = `
 }
 `;
 
-exports[`parseSvg > text handling > text with tspan children 1`] = `
+exports[`parseSvg > text handling > should parse text with tspan children 1`] = `
 {
   "children": [
     {

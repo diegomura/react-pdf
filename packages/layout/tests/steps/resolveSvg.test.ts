@@ -86,26 +86,30 @@ describe('layout resolveSvg', () => {
       format: 'svg',
       width: 100,
       height: 100,
-      data: '<svg></svg>',
-      viewBox: { minX: 0, minY: 0, maxX: 100, maxY: 100 },
-      children: [
-        {
-          type: 'RECT',
-          props: {
-            x: '10',
-            y: '10',
-            width: '80',
-            height: '80',
-            fill: 'blue',
+      data: {
+        type: 'SVG',
+        props: {
+          viewbox: '0 0 100 100',
+        },
+        children: [
+          {
+            type: 'RECT',
+            props: {
+              x: '10',
+              y: '10',
+              width: '80',
+              height: '80',
+              fill: 'blue',
+            },
+            children: [],
           },
-          children: [],
-        },
-        {
-          type: 'CIRCLE',
-          props: { cx: '50', cy: '50', r: '30', fill: 'red' },
-          children: [],
-        },
-      ],
+          {
+            type: 'CIRCLE',
+            props: { cx: '50', cy: '50', r: '30', fill: 'red' },
+            children: [],
+          },
+        ],
+      },
     });
 
     const createMockImageNode = (image?: SvgImage): SafeImageNode => ({

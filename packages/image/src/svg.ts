@@ -1,4 +1,4 @@
-import { parseSvg } from '@react-pdf/svg';
+import { parseSvg, SvgNode } from '@react-pdf/svg';
 import { SvgImage, Viewbox } from './types';
 
 const UNIT_TO_PT: Record<string, number> = {
@@ -42,24 +42,20 @@ function parseViewBox(value: unknown): Viewbox | undefined {
 }
 
 class SVG implements SvgImage {
-  data: string;
+  data: SvgNode;
   width: number;
   height: number;
   format: 'svg';
-  viewBox?: Viewbox;
-  children: SvgImage['children'];
 
   constructor(data: Buffer) {
     const svgString = data.toString('utf-8');
     const parsed = parseSvg(svgString);
     const viewBox = parseViewBox(parsed.props.viewBox);
 
-    this.data = svgString;
+    this.data = parsed;
     this.format = 'svg';
     this.width = parseNumber(parsed.props.width) ?? viewBox?.maxX ?? 0;
     this.height = parseNumber(parsed.props.height) ?? viewBox?.maxY ?? 0;
-    this.viewBox = viewBox;
-    this.children = parsed.children ?? [];
   }
 
   static isValid(data: unknown): boolean {

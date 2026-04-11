@@ -9,7 +9,7 @@ import {
   matchPercent,
   parseFloat,
 } from '@react-pdf/fns';
-import { SvgImage, SvgNode as ParsedSvgNode } from '@react-pdf/image';
+import { SvgImage } from '@react-pdf/image';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
@@ -350,6 +350,8 @@ const isSvgImage = (
 ): node is SafeImageNode & { image: SvgImage } =>
   node.type === P.Image && node.image?.format === 'svg';
 
+type ParsedSvgNode = SvgImage['data'];
+
 function convertParsedNode(node: ParsedSvgNode) {
   return {
     type: node.type,
@@ -360,26 +362,25 @@ function convertParsedNode(node: ParsedSvgNode) {
   };
 }
 
-function convertToSvgNode(
-  imageNode: SafeImageNode,
-  svgImage: SvgImage,
-): SafeSvgNode {
-  const width = imageNode.style?.width ?? svgImage.width;
-  const height = imageNode.style?.height ?? svgImage.height;
+function convertToSvgNode(imageNode: SafeImageNode): SafeSvgNode {
+  const image = imageNode.image as SvgImage;
+  const width = imageNode.style?.width ?? image.width;
+  const height = imageNode.style?.height ?? image.height;
+  const viewBox = parseViewbox(image.data.props.viewBox as string);
 
   return {
     type: P.Svg,
     props: {
       width,
       height,
-      viewBox: svgImage.viewBox,
+      viewBox,
       preserveAspectRatio: { align: 'xMidYMid', meetOrSlice: 'meet' },
     },
     style: { ...imageNode.style, width, height },
     box: imageNode.box,
     origin: imageNode.origin,
     yogaNode: imageNode.yogaNode,
-    children: svgImage.children.map(convertParsedNode),
+    children: image.data.children.map(convertParsedNode),
   };
 }
 
@@ -392,7 +393,7 @@ function convertToSvgNode(
  * @returns Root node
  */
 const resolveSvg = (node: SafeNode, fontStore: FontStore) => {
-  const resolved = isSvgImage(node) ? convertToSvgNode(node, node.image) : node;
+  const resolved = isSvgImage(node) ? convertToSvgNode(node) : node;
 
   if (!('children' in resolved)) return resolved;
 

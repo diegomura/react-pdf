@@ -8,6 +8,16 @@ export interface RasterImage {
   key?: string;
 }
 
+export interface SvgImage {
+  width: number;
+  height: number;
+  data: SvgNode;
+  format: 'svg';
+  key?: string;
+}
+
+export type Image = RasterImage | SvgImage;
+
 export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
 
 export type Viewbox = {
@@ -16,18 +26,6 @@ export type Viewbox = {
   maxX: number;
   maxY: number;
 };
-
-export interface SvgImage {
-  width: number;
-  height: number;
-  data: string;
-  format: 'svg';
-  viewBox?: Viewbox;
-  children: SvgNode[];
-  key?: string;
-}
-
-export type Image = RasterImage | SvgImage;
 
 export type DataImageSrc = {
   data: Buffer;

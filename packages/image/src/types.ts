@@ -1,4 +1,4 @@
-import type { Viewbox, SvgNode } from '@react-pdf/svg';
+import type { SvgNode } from '@react-pdf/svg';
 
 export interface RasterImage {
   width: number;
@@ -9,6 +9,13 @@ export interface RasterImage {
 }
 
 export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
+
+export type Viewbox = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+};
 
 export interface SvgImage {
   width: number;

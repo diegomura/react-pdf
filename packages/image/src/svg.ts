@@ -1,5 +1,5 @@
-import { parseSvg, SvgNode, Viewbox } from '@react-pdf/svg';
-import { SvgImage } from './types';
+import { parseSvg } from '@react-pdf/svg';
+import { SvgImage, Viewbox } from './types';
 
 const UNIT_TO_PT: Record<string, number> = {
   px: 72 / 96,
@@ -9,8 +9,8 @@ const UNIT_TO_PT: Record<string, number> = {
   mm: 72 / 25.4,
 };
 
-function parseNumber(value: string | null): number | undefined {
-  if (!value) return undefined;
+function parseNumber(value: unknown): number | undefined {
+  if (typeof value !== 'string') return undefined;
 
   const match = value.match(/^(-?\d*\.?\d+)(px|pt|in|cm|mm)?$/);
   if (!match) return undefined;
@@ -23,26 +23,43 @@ function parseNumber(value: string | null): number | undefined {
   return num * (UNIT_TO_PT[unit] ?? 1);
 }
 
+function parseViewBox(value: unknown): Viewbox | undefined {
+  if (typeof value !== 'string') return undefined;
+
+  const parts = value
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number);
+
+  if (parts.length !== 4 || parts.some(isNaN)) return undefined;
+
+  return {
+    minX: parts[0],
+    minY: parts[1],
+    maxX: parts[2],
+    maxY: parts[3],
+  };
+}
+
 class SVG implements SvgImage {
   data: string;
   width: number;
   height: number;
   format: 'svg';
   viewBox?: Viewbox;
-  children: SvgNode[];
+  children: SvgImage['children'];
 
   constructor(data: Buffer) {
     const svgString = data.toString('utf-8');
     const parsed = parseSvg(svgString);
-    const width = parseNumber(parsed.width) ?? parsed.viewBox?.maxX ?? 0;
-    const height = parseNumber(parsed.height) ?? parsed.viewBox?.maxY ?? 0;
+    const viewBox = parseViewBox(parsed.props.viewBox);
 
     this.data = svgString;
     this.format = 'svg';
-    this.width = width;
-    this.height = height;
-    this.viewBox = parsed.viewBox;
-    this.children = parsed.children;
+    this.width = parseNumber(parsed.props.width) ?? viewBox?.maxX ?? 0;
+    this.height = parseNumber(parsed.props.height) ?? viewBox?.maxY ?? 0;
+    this.viewBox = viewBox;
+    this.children = parsed.children ?? [];
   }
 
   static isValid(data: unknown): boolean {

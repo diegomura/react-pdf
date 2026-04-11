@@ -1,8 +1,9 @@
-import { SvgNode, Viewbox } from './types';
+import { SvgNode } from './types';
 
 declare const BROWSER: boolean;
 
 const ATTR_REGEX = /([a-zA-Z][a-zA-Z0-9_:-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')/g;
+
 const CAMEL_CASE_REGEX = /[-:]([a-z])/g;
 
 const XML_ENTITY_MAP: Record<string, string> = {
@@ -238,24 +239,6 @@ function toCamelCase(str: string): string {
   return str.replace(CAMEL_CASE_REGEX, (_, letter) => letter.toUpperCase());
 }
 
-function parseViewBox(viewBox: string | null): Viewbox | undefined {
-  if (!viewBox) return undefined;
-
-  const parts = viewBox
-    .trim()
-    .split(/[\s,]+/)
-    .map(Number);
-
-  if (parts.length !== 4 || parts.some(isNaN)) return undefined;
-
-  return {
-    minX: parts[0],
-    minY: parts[1],
-    maxX: parts[2],
-    maxY: parts[3],
-  };
-}
-
 function parseStyleAttribute(styleString: string): Record<string, string> {
   if (!styleString) return {};
 
@@ -276,18 +259,8 @@ function parseStyleAttribute(styleString: string): Record<string, string> {
   return result;
 }
 
-export interface ParsedSvg {
-  width: string | null;
-  height: string | null;
-  viewBox?: Viewbox;
-  children: SvgNode[];
-}
-
-function emptyResult(): ParsedSvg {
-  return { width: null, height: null, children: [] };
-}
-
 type AnyElement = Element | MiniElement;
+
 type AnyDocument = Document | MiniDocument;
 
 function elementToNode(element: AnyElement): SvgNode | null {
@@ -335,7 +308,9 @@ function elementToNode(element: AnyElement): SvgNode | null {
   return { type: mappedType, props, children };
 }
 
-export function parseSvg(svgString: string): ParsedSvg {
+const EMPTY_SVG: SvgNode = { type: 'SVG', props: {}, children: [] };
+
+export function parseSvg(svgString: string): SvgNode {
   const parser: { parseFromString(s: string, t?: string): AnyDocument } =
     BROWSER ? new DOMParser() : createNodeDOMParser();
 
@@ -344,27 +319,10 @@ export function parseSvg(svgString: string): ParsedSvg {
   const parseError = doc.querySelector('parsererror');
   if (parseError) {
     console.warn('SVG parse error:', parseError.textContent);
-    return emptyResult();
+    return EMPTY_SVG;
   }
 
   const svgElement = doc.documentElement;
 
-  if (svgElement.tagName.toLowerCase() !== 'svg') {
-    console.warn('Invalid SVG: root element is not <svg>');
-    return emptyResult();
-  }
-
-  const viewBox = parseViewBox(svgElement.getAttribute('viewBox'));
-  const width = svgElement.getAttribute('width');
-  const height = svgElement.getAttribute('height');
-
-  const elChildren = svgElement.children;
-  const children: SvgNode[] = [];
-
-  for (let i = 0; i < elChildren.length; i++) {
-    const node = elementToNode(elChildren[i]);
-    if (node) children.push(node);
-  }
-
-  return { width, height, viewBox, children };
+  return elementToNode(svgElement) ?? EMPTY_SVG;
 }

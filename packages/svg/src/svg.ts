@@ -1,7 +1,7 @@
 import * as P from '@react-pdf/primitives';
 
-import { SvgNode, XmlElement } from './types';
-import parseXml from './xml';
+import tokenize from './tokenize';
+import { Token, SvgNode } from './types';
 
 const CAMEL_CASE_REGEX = /[-:]([a-z])/g;
 
@@ -40,6 +40,8 @@ const SKIP_ELEMENTS = new Set([
   'set',
 ]);
 
+const TEXT_TYPES = new Set([P.Text, P.Tspan]);
+
 function toCamelCase(str: string): string {
   return str.replace(CAMEL_CASE_REGEX, (_, letter) => letter.toUpperCase());
 }
@@ -64,20 +66,12 @@ function parseStyleAttribute(styleString: string): Record<string, string> {
   return result;
 }
 
-function elementToNode(element: XmlElement): SvgNode | null {
-  const tagName = element.tagName.toLowerCase();
-
-  if (SKIP_ELEMENTS.has(tagName)) {
-    console.warn(`Unsupported SVG element: <${tagName}> will be skipped`);
-    return null;
-  }
-
-  const mappedType = TAG_NAME_MAP[tagName];
-  if (!mappedType) return null;
-
+function convertAttributes(
+  attributes: Record<string, string>,
+): Record<string, unknown> {
   const props: Record<string, unknown> = {};
 
-  for (const [name, value] of Object.entries(element.attributes)) {
+  for (const [name, value] of Object.entries(attributes)) {
     if (name === 'style') {
       Object.assign(props, parseStyleAttribute(value));
     } else {
@@ -85,37 +79,97 @@ function elementToNode(element: XmlElement): SvgNode | null {
     }
   }
 
-  const children: SvgNode[] = [];
+  return props;
+}
 
-  for (const child of element.children) {
-    if ('tagName' in child) {
-      const childNode = elementToNode(child);
-      if (childNode) children.push(childNode);
-    } else if (child.text) {
-      const text = child.text.trim();
+function buildTree(tokens: Token[]): SvgNode | null {
+  const stack: SvgNode[] = [];
+  const tagNames: string[] = [];
+  let root: SvgNode | null = null;
+  let skipDepth = 0;
 
-      if (text && (mappedType === P.Text || mappedType === P.Tspan)) {
-        children.push({
+  for (const token of tokens) {
+    if (token.type === 'text') {
+      if (skipDepth || stack.length === 0) continue;
+
+      const parent = stack[stack.length - 1];
+      if (!TEXT_TYPES.has(parent.type)) continue;
+
+      const text = token.text.trim();
+      if (text) {
+        parent.children!.push({
           type: P.TextInstance,
           props: {},
           value: text,
         } as SvgNode);
       }
+      continue;
+    }
+
+    if (token.type === 'close') {
+      if (skipDepth) {
+        skipDepth--;
+      } else if (stack.length > 1) {
+        if (tagNames[tagNames.length - 1] === token.tagName) {
+          tagNames.pop();
+          stack.pop();
+        }
+      }
+      continue;
+    }
+
+    // open or self-close
+    if (skipDepth) {
+      if (token.type === 'open') skipDepth++;
+      continue;
+    }
+
+    const lowerTag = token.tagName.toLowerCase();
+
+    if (SKIP_ELEMENTS.has(lowerTag)) {
+      console.warn(`Unsupported SVG element: <${lowerTag}> will be skipped`);
+      if (token.type === 'open') skipDepth = 1;
+      continue;
+    }
+
+    const mappedType = TAG_NAME_MAP[lowerTag];
+
+    if (!mappedType) {
+      if (token.type === 'open') skipDepth = 1;
+      continue;
+    }
+
+    const node: SvgNode = {
+      type: mappedType,
+      props: convertAttributes(token.attributes),
+      children: [],
+    };
+
+    if (stack.length > 0) {
+      stack[stack.length - 1].children!.push(node);
+    }
+
+    if (!root) root = node;
+
+    if (token.type === 'open') {
+      tagNames.push(token.tagName);
+      stack.push(node);
     }
   }
 
-  return { type: mappedType, props, children };
+  return root;
 }
 
 const EMPTY_SVG: SvgNode = { type: P.Svg, props: {}, children: [] };
 
 export function parseSvg(svgString: string): SvgNode {
-  const parsed = parseXml(svgString);
+  const tokens = tokenize(svgString);
+  const root = buildTree(tokens);
 
-  if (!parsed) {
+  if (!root) {
     console.warn('SVG parse error: failed to parse XML');
     return EMPTY_SVG;
   }
 
-  return elementToNode(parsed) ?? EMPTY_SVG;
+  return root;
 }

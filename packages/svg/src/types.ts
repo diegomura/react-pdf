@@ -4,12 +4,20 @@ export interface SvgNode {
   children?: SvgNode[];
 }
 
-export interface XmlElement {
+type OpenToken = {
+  type: 'open';
   tagName: string;
   attributes: Record<string, string>;
-  children: (XmlElement | XmlText)[];
-}
+};
 
-export interface XmlText {
-  text: string;
-}
+type SelfCloseToken = {
+  type: 'self-close';
+  tagName: string;
+  attributes: Record<string, string>;
+};
+
+type CloseToken = { type: 'close'; tagName: string };
+
+type TextToken = { type: 'text'; text: string };
+
+export type Token = OpenToken | SelfCloseToken | CloseToken | TextToken;

@@ -1,4 +1,4 @@
-import { XmlElement } from './types';
+import { Token } from './types';
 
 const XML_ENTITY_MAP: Record<string, string> = {
   amp: '&',
@@ -16,7 +16,7 @@ function decodeXmlEntities(str: string): string {
   return str.replace(ENTITY_REGEX, (_, key) => XML_ENTITY_MAP[key]);
 }
 
-function parseXmlAttributes(attrString: string): Record<string, string> {
+function parseAttributes(attrString: string): Record<string, string> {
   const attrs: Record<string, string> = {};
   ATTR_REGEX.lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -28,35 +28,34 @@ function parseXmlAttributes(attrString: string): Record<string, string> {
   return attrs;
 }
 
-function parseXml(xmlString: string): XmlElement | null {
+function tokenize(xmlString: string): Token[] {
   const str = xmlString.replace(
     /<\?xml[^?]*\?>|<!DOCTYPE[^>]*>|<!--[\s\S]*?-->/gi,
     '',
   );
 
-  const stack: XmlElement[] = [];
-  let root: XmlElement | null = null;
+  const tokens: Token[] = [];
   let pos = 0;
 
   while (pos < str.length) {
     const nextTag = str.indexOf('<', pos);
     if (nextTag === -1) break;
 
+    // Text content between tags
     if (nextTag > pos) {
       const raw = str.slice(pos, nextTag);
-      if (/\S/.test(raw) && stack.length > 0) {
-        stack[stack.length - 1].children.push({
-          text: decodeXmlEntities(raw),
-        });
+      if (/\S/.test(raw)) {
+        tokens.push({ type: 'text', text: decodeXmlEntities(raw) });
       }
     }
 
+    // CDATA section
     if (str.startsWith('<![CDATA[', nextTag)) {
       const cdataEnd = str.indexOf(']]>', nextTag + 9);
       if (cdataEnd === -1) break;
       const text = str.slice(nextTag + 9, cdataEnd);
-      if (text && stack.length > 0) {
-        stack[stack.length - 1].children.push({ text });
+      if (text) {
+        tokens.push({ type: 'text', text });
       }
       pos = cdataEnd + 3;
       continue;
@@ -66,19 +65,15 @@ function parseXml(xmlString: string): XmlElement | null {
     if (tagEnd === -1) break;
 
     const tagContent = str.slice(nextTag + 1, tagEnd);
+    pos = tagEnd + 1;
 
+    // Closing tag
     if (tagContent.startsWith('/')) {
-      const closeTagName = tagContent.slice(1).trim();
-      if (stack.length > 1) {
-        const top = stack[stack.length - 1];
-        if (top.tagName === closeTagName) {
-          stack.pop();
-        }
-      }
-      pos = tagEnd + 1;
+      tokens.push({ type: 'close', tagName: tagContent.slice(1).trim() });
       continue;
     }
 
+    // Opening or self-closing tag
     const isSelfClosing = tagContent.endsWith('/');
     const rawTag = isSelfClosing ? tagContent.slice(0, -1) : tagContent;
 
@@ -87,26 +82,14 @@ function parseXml(xmlString: string): XmlElement | null {
       spaceIndex === -1 ? rawTag.trim() : rawTag.slice(0, spaceIndex).trim();
     const attrString = spaceIndex === -1 ? '' : rawTag.slice(spaceIndex);
 
-    const element: XmlElement = {
+    tokens.push({
+      type: isSelfClosing ? 'self-close' : 'open',
       tagName,
-      attributes: parseXmlAttributes(attrString),
-      children: [],
-    };
-
-    if (stack.length > 0) {
-      stack[stack.length - 1].children.push(element);
-    }
-
-    if (!root) root = element;
-
-    if (!isSelfClosing) {
-      stack.push(element);
-    }
-
-    pos = tagEnd + 1;
+      attributes: parseAttributes(attrString),
+    });
   }
 
-  return root;
+  return tokens;
 }
 
-export default parseXml;
+export default tokenize;

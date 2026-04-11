@@ -85,6 +85,7 @@ function convertAttributes(
 function buildTree(tokens: Token[]): SvgNode | null {
   const stack: SvgNode[] = [];
   const tagNames: string[] = [];
+
   let root: SvgNode | null = null;
   let skipDepth = 0;
 

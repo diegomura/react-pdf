@@ -23,6 +23,7 @@
     "lib"
   ],
   "dependencies": {
+    "@react-pdf/svg": "^1.0.0",
     "mathjax-full": "^3.2.2"
   },
   "peerDependencies": {

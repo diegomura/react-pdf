@@ -3,6 +3,10 @@ import resolveStringIndices from '../string-indices/resolve';
 import resolveGlyphIndices from '../glyph-indices/resolve';
 import { AttributedString, Position, Run } from '../types';
 
+// Cache font.layout() results by font instance + string.
+// font.layout() has no internal caching and is expensive (GSUB/GPOS processing).
+const layoutCache = new WeakMap<object, Map<string, any>>();
+
 const getCharacterSpacing = (run: Run) => {
   return run.attributes?.characterSpacing || 0;
 };
@@ -58,14 +62,27 @@ const layoutRun = (string: string) => {
 
     if (typeof font === 'string') throw new Error('Invalid font');
 
-    // passing LTR To force fontkit to not reverse the string
-    const glyphRun = font[0].layout(
-      runString,
-      undefined,
-      undefined,
-      undefined,
-      'ltr',
-    );
+    const fontObj = font[0];
+
+    // Check cache before calling expensive font.layout()
+    let fontCache = layoutCache.get(fontObj);
+    if (!fontCache) {
+      fontCache = new Map();
+      layoutCache.set(fontObj, fontCache);
+    }
+
+    let glyphRun = fontCache.get(runString);
+    if (!glyphRun) {
+      // passing LTR to force fontkit to not reverse the string
+      glyphRun = fontObj.layout(
+        runString,
+        undefined,
+        undefined,
+        undefined,
+        'ltr',
+      );
+      fontCache.set(runString, glyphRun);
+    }
 
     const positions = scalePositions(run, glyphRun.positions);
     const stringIndices = resolveStringIndices(glyphRun.glyphs);

@@ -4,7 +4,7 @@ export type {
   Image,
   ImageSrc,
   SvgImage,
-  AnyImage,
+  RasterImage,
   SvgNode,
   Viewbox,
 } from './types';

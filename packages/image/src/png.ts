@@ -1,8 +1,8 @@
 import _PNG from '@react-pdf/png-js';
 
-import { Image } from './types';
+import { RasterImage } from './types';
 
-class PNG implements Image {
+class PNG implements RasterImage {
   data: Buffer;
   width: number;
   height: number;

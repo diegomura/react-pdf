@@ -1,4 +1,4 @@
-export interface Image {
+export interface RasterImage {
   width: number;
   height: number;
   data: Buffer;
@@ -31,7 +31,7 @@ export interface SvgImage {
   key?: string;
 }
 
-export type AnyImage = Image | SvgImage;
+export type Image = RasterImage | SvgImage;
 
 export type DataImageSrc = {
   data: Buffer;

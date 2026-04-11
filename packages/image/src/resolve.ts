@@ -7,7 +7,7 @@ import JPEG from './jpeg';
 import SVG from './svg';
 import createCache from './cache.js';
 import {
-  AnyImage,
+  Image,
   Base64ImageSrc,
   DataImageSrc,
   ImageFormat,
@@ -16,7 +16,7 @@ import {
   RemoteImageSrc,
 } from './types';
 
-export const IMAGE_CACHE = createCache<Promise<AnyImage | null>>({ limit: 30 });
+export const IMAGE_CACHE = createCache<Promise<Image | null>>({ limit: 30 });
 
 const isBuffer = Buffer.isBuffer;
 
@@ -117,7 +117,7 @@ const getImageFormat = (buffer: Buffer) => {
   return format;
 };
 
-function getImage(body: Buffer, format: string): AnyImage | null {
+function getImage(body: Buffer, format: string): Image | null {
   switch (format.toLowerCase()) {
     case 'jpg':
     case 'jpeg':
@@ -211,7 +211,7 @@ const getCacheKey = (src: ImageSrc): string | null => {
 };
 
 const resolveImage = (src: ImageSrc, { cache = true } = {}) => {
-  let image: Promise<AnyImage | null>;
+  let image: Promise<Image | null>;
 
   const cacheKey = getCacheKey(src);
 

@@ -1,65 +1,39 @@
 import sort from './sort';
-import isEmpty from './isEmpty';
 import { Attributes, Run } from '../types';
 
-type Point = ['start' | 'end', number, Attributes, number];
-
-/**
- * Sort points in ascending order
- * @param a - First point
- * @param b - Second point
- * @returns Sort order
- */
-const sortPoints = (a: Point, b: Point) => {
-  return a[1] - b[1] || a[3] - b[3];
-};
+type PointType = 0 | 1; // (0 = start), (1 = end);
+type Point = [PointType, number, Attributes, number]; // [type , offset, attrs, index]
 
 /**
  * @param runs
- * @returns Points
+ * @returns Points sorted by offset then index
  */
 const generatePoints = (runs: Run[]) => {
-  const result: Point[] = runs.reduce((acc, run, i) => {
-    return acc.concat([
-      ['start', run.start, run.attributes, i],
-      ['end', run.end, run.attributes, i],
-    ]);
-  }, []);
+  const len = runs.length;
+  const result: Point[] = new Array(len * 2);
 
-  return result.sort(sortPoints);
+  for (let i = 0; i < len; i++) {
+    const run = runs[i];
+    result[i * 2] = [0, run.start, run.attributes, i];
+    result[i * 2 + 1] = [1, run.end, run.attributes, i];
+  }
+
+  result.sort((a, b) => a[1] - b[1] || a[3] - b[3]);
+  return result;
 };
 
 /**
- * @param runs
- * @returns Merged runs
+ * Rebuild attributes from stack without allocating per-item
  */
-const mergeRuns = (runs: Run[]): Run => {
-  return runs.reduce((acc: any, run) => {
-    const attributes = Object.assign({}, acc.attributes, run.attributes);
-    return Object.assign({}, run, { attributes });
-  }, {});
-};
+const rebuildAttrs = (stack: Attributes[]): Attributes => {
+  const result = {};
 
-/**
- * @param runs
- * @returns Grouped runs
- */
-const groupEmptyRuns = (runs: Run[]): Run[][] => {
-  const groups = runs.reduce((acc, run) => {
-    if (!acc[run.start]) acc[run.start] = [];
-    acc[run.start].push(run);
-    return acc;
-  }, []);
+  const len = stack.length;
+  for (let i = 0; i < len; i++) {
+    Object.assign(result, stack[i]);
+  }
 
-  return Object.values(groups);
-};
-
-/**
- * @param runs
- * @returns Flattened runs
- */
-const flattenEmptyRuns = (runs: Run[]) => {
-  return groupEmptyRuns(runs).map(mergeRuns);
+  return result;
 };
 
 /**
@@ -71,10 +45,11 @@ const flattenRegularRuns = (runs: Run[]) => {
   const points = generatePoints(runs);
 
   let start = -1;
-  let attrs = {};
-  const stack = [];
+  let attrs: Attributes = {};
+  const stack: Attributes[] = [];
 
-  for (let i = 0; i < points.length; i += 1) {
+  const len = points.length;
+  for (let i = 0; i < len; i += 1) {
     const [type, offset, attributes] = points[i];
 
     if (start !== -1 && start < offset) {
@@ -89,19 +64,17 @@ const flattenRegularRuns = (runs: Run[]) => {
       });
     }
 
-    if (type === 'start') {
+    if (type === 0) {
       stack.push(attributes);
       attrs = Object.assign({}, attrs, attributes);
     } else {
-      attrs = {};
-
-      for (let j = 0; j < stack.length; j += 1) {
+      for (let j = stack.length - 1; j >= 0; j--) {
         if (stack[j] === attributes) {
-          stack.splice(j--, 1);
-        } else {
-          attrs = Object.assign({}, attrs, stack[j]);
+          stack.splice(j, 1);
+          break;
         }
       }
+      attrs = rebuildAttrs(stack);
     }
 
     start = offset;
@@ -111,16 +84,66 @@ const flattenRegularRuns = (runs: Run[]) => {
 };
 
 /**
+ * @param runs
+ * @returns Flattened empty runs (merged by start position)
+ */
+const flattenEmptyRuns = (runs: Run[]) => {
+  if (runs.length === 0) return runs;
+
+  const groups: Map<number, Attributes> = new Map();
+
+  const len = runs.length;
+  for (let i = 0; i < len; i++) {
+    const run = runs[i];
+    const existing = groups.get(run.start);
+
+    if (existing) {
+      Object.assign(existing, run.attributes);
+    } else {
+      groups.set(run.start, Object.assign({}, run.attributes));
+    }
+  }
+
+  const result: Run[] = [];
+
+  for (const [startPos, attributes] of groups) {
+    result.push({
+      start: startPos,
+      end: startPos,
+      attributes,
+      stringIndices: [],
+      glyphIndices: [],
+      glyphs: [],
+      positions: [],
+    });
+  }
+
+  return result;
+};
+
+/**
  * Flatten many runs
  *
  * @param runs
  * @returns Flattened runs
  */
 const flatten = (runs: Run[] = []) => {
-  const emptyRuns = flattenEmptyRuns(runs.filter((run) => isEmpty(run)));
-  const regularRuns = flattenRegularRuns(runs.filter((run) => !isEmpty(run)));
+  const emptyRuns: Run[] = [];
+  const regularRuns: Run[] = [];
 
-  return sort(emptyRuns.concat(regularRuns));
+  const len = runs.length;
+  for (let i = 0; i < len; i++) {
+    if (runs[i].start === runs[i].end) {
+      emptyRuns.push(runs[i]);
+    } else {
+      regularRuns.push(runs[i]);
+    }
+  }
+
+  const flatEmpty = flattenEmptyRuns(emptyRuns);
+  const flatRegular = flattenRegularRuns(regularRuns);
+
+  return sort(flatEmpty.concat(flatRegular));
 };
 
 export default flatten;

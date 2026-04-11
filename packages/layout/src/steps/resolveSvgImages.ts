@@ -3,13 +3,10 @@ import { SvgImage, SvgNode as ParsedSvgNode } from '@react-pdf/image';
 
 import { SafeNode, SafeImageNode, SafeSvgNode } from '../types';
 
-const isImage = (node: SafeNode): node is SafeImageNode => node.type === Image;
-
-const isSvgImage = (image: unknown): image is SvgImage =>
-  !!image &&
-  typeof image === 'object' &&
-  'format' in image &&
-  image.format === 'svg';
+const isSvgImage = (
+  node: SafeNode,
+): node is SafeImageNode & { image: SvgImage } =>
+  node.type === Image && (node as SafeImageNode).image?.format === 'svg';
 
 function convertParsedNode(node: ParsedSvgNode) {
   return {
@@ -51,7 +48,7 @@ function convertToSvgNode(
  * allowing them to be processed by the existing SVG rendering pipeline.
  */
 function resolveSvgImages(node: SafeNode): SafeNode {
-  if (isImage(node) && isSvgImage(node.image)) {
+  if (isSvgImage(node)) {
     return convertToSvgNode(node, node.image);
   }
 

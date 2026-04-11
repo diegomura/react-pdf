@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-pdf/math": "^1.0.2",
+    "@react-pdf/mermaid": "^1.0.0",
     "@react-pdf/renderer": "^4.4.1"
   },
   "peerDependencies": {

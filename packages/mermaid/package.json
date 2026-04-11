@@ -1,8 +1,8 @@
 {
-  "name": "@react-pdf/svg",
+  "name": "@react-pdf/mermaid",
   "version": "1.0.0",
   "license": "MIT",
-  "description": "SVG parsing for react-pdf",
+  "description": "Render Mermaid diagrams in react-pdf documents",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "type": "module",
@@ -11,22 +11,30 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
-    "directory": "packages/svg"
+    "directory": "packages/mermaid"
   },
   "scripts": {
-    "test": "vitest",
     "build": "rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
   },
   "files": [
     "lib"
   ],
   "dependencies": {
-    "@react-pdf/primitives": "^4.2.0"
+    "@react-pdf/svg": "^1.0.0",
+    "beautiful-mermaid": "^1.1.3"
+  },
+  "peerDependencies": {
+    "@react-pdf/renderer": ">=4.4.1",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^0.1.97",
     "@vitejs/plugin-react": "^4.2.1",
+    "jest-image-snapshot": "^6.1.0",
+    "pdfjs-dist": "^5.6.205",
     "vitest": "^1.2.0"
   }
 }

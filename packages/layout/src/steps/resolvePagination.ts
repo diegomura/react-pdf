@@ -49,6 +49,11 @@ const relayoutPage = compose(
   resolvePageStyles,
 );
 
+// Lightweight relayout for pagination splits. Styles and inheritance are
+// already resolved from the initial layout pass — only yoga dimensions
+// and text layout need recalculation.
+const relayoutPageFast = compose(resolveTextLayout, resolvePageDimensions);
+
 const warnUnavailableSpace = (node: SafeNode) => {
   console.warn(
     `Node of type ${node.type} can't wrap between pages and it's bigger than available page height`,
@@ -234,7 +239,7 @@ const splitPage = (
 
   const relayout = (node: SafePageNode): SafePageNode =>
     // @ts-expect-error rework pagination
-    relayoutPage(node, fontStore, yoga) as SafePageNode;
+    relayoutPageFast(node, fontStore, yoga) as SafePageNode;
 
   const currentBox = { ...page.box, height };
   const currentPage = relayout(

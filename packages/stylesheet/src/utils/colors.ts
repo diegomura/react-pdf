@@ -13,7 +13,7 @@ const isHsl = (value: string) => /^hsla?\(/i.test(value);
 const parseRgb = (value: string) => {
   const rgb = colorString.get.rgb(value);
   if (!rgb) return value;
-  return colorString.to.hex(rgb);
+  return colorString.to.hex(rgb[0], rgb[1], rgb[2], rgb[3]);
 };
 
 /**

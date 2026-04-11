@@ -4,6 +4,7 @@ export default [
   'packages/image',
   'packages/render',
   'packages/layout',
+  'packages/svg',
   'packages/svgkit',
   'packages/textkit',
   'packages/renderer/vitest.config.js',

@@ -256,28 +256,6 @@ function parseViewBox(viewBox: string | null): Viewbox | undefined {
   };
 }
 
-const UNIT_TO_PT: Record<string, number> = {
-  px: 72 / 96,
-  pt: 1,
-  in: 72,
-  cm: 72 / 2.54,
-  mm: 72 / 25.4,
-};
-
-function parseNumericValue(value: string | null): number | undefined {
-  if (!value) return undefined;
-
-  const match = value.match(/^(-?\d*\.?\d+)(px|pt|in|cm|mm)?$/);
-  if (!match) return undefined;
-
-  const num = parseFloat(match[1]);
-  const unit = match[2];
-
-  if (!unit) return num;
-
-  return num * (UNIT_TO_PT[unit] ?? 1);
-}
-
 function parseStyleAttribute(styleString: string): Record<string, string> {
   if (!styleString) return {};
 
@@ -299,14 +277,14 @@ function parseStyleAttribute(styleString: string): Record<string, string> {
 }
 
 export interface ParsedSvg {
-  width: number;
-  height: number;
+  width: string | null;
+  height: string | null;
   viewBox?: Viewbox;
   children: SvgNode[];
 }
 
 function emptyResult(): ParsedSvg {
-  return { width: 0, height: 0, children: [] };
+  return { width: null, height: null, children: [] };
 }
 
 type AnyElement = Element | MiniElement;
@@ -343,6 +321,7 @@ function elementToNode(element: AnyElement): SvgNode | null {
       if (childNode) children.push(childNode);
     } else if (child.nodeType === TEXT_NODE) {
       const text = child.textContent?.trim();
+
       if (text && (mappedType === 'TEXT' || mappedType === 'TSPAN')) {
         children.push({
           type: 'TEXT_INSTANCE',
@@ -376,10 +355,8 @@ export function parseSvg(svgString: string): ParsedSvg {
   }
 
   const viewBox = parseViewBox(svgElement.getAttribute('viewBox'));
-  const width =
-    parseNumericValue(svgElement.getAttribute('width')) ?? viewBox?.maxX ?? 0;
-  const height =
-    parseNumericValue(svgElement.getAttribute('height')) ?? viewBox?.maxY ?? 0;
+  const width = svgElement.getAttribute('width');
+  const height = svgElement.getAttribute('height');
 
   const elChildren = svgElement.children;
   const children: SvgNode[] = [];

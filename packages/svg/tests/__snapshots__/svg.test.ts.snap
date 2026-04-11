@@ -1,0 +1,847 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`parseSvg > XML preamble and comments > CDATA sections are preserved as text 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "Some <special> text",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "height": "50",
+  "viewBox": undefined,
+  "width": "200",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > DOCTYPE is stripped 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {},
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > XML declaration is stripped 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > comments are stripped 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > attribute handling > XML entities in attribute values 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "<hello> & "world"",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > attribute handling > camelCase conversion of hyphenated attributes 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fillOpacity": "0.5",
+        "strokeDasharray": "5,3",
+        "strokeLinecap": "round",
+        "strokeWidth": "2",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > attribute handling > direct attributes and style are merged 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "green",
+        "height": "50",
+        "stroke": "blue",
+        "strokeWidth": "3",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > attribute handling > inline style attribute is expanded 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "opacity": "0.8",
+        "stroke": "blue",
+        "strokeWidth": "2px",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > attribute handling > single-quoted attributes 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > dimensions > dimensions from viewBox when width/height absent 1`] = `
+{
+  "children": [],
+  "height": null,
+  "viewBox": {
+    "maxX": 300,
+    "maxY": 200,
+    "minX": 10,
+    "minY": 20,
+  },
+  "width": null,
+}
+`;
+
+exports[`parseSvg > dimensions > explicit dimensions take precedence over viewBox 1`] = `
+{
+  "children": [],
+  "height": "50",
+  "viewBox": {
+    "maxX": 300,
+    "maxY": 200,
+    "minX": 0,
+    "minY": 0,
+  },
+  "width": "50",
+}
+`;
+
+exports[`parseSvg > dimensions > no dimensions and no viewBox 1`] = `
+{
+  "children": [],
+  "height": null,
+  "viewBox": undefined,
+  "width": null,
+}
+`;
+
+exports[`parseSvg > dimensions > unitless width and height 1`] = `
+{
+  "children": [],
+  "height": "150",
+  "viewBox": undefined,
+  "width": "200",
+}
+`;
+
+exports[`parseSvg > dimensions > width and height in cm 1`] = `
+{
+  "children": [],
+  "height": "5.08cm",
+  "viewBox": undefined,
+  "width": "2.54cm",
+}
+`;
+
+exports[`parseSvg > dimensions > width and height in inches 1`] = `
+{
+  "children": [],
+  "height": "2in",
+  "viewBox": undefined,
+  "width": "1in",
+}
+`;
+
+exports[`parseSvg > dimensions > width and height in mm 1`] = `
+{
+  "children": [],
+  "height": "50.8mm",
+  "viewBox": undefined,
+  "width": "25.4mm",
+}
+`;
+
+exports[`parseSvg > dimensions > width and height in pt 1`] = `
+{
+  "children": [],
+  "height": "36pt",
+  "viewBox": undefined,
+  "width": "72pt",
+}
+`;
+
+exports[`parseSvg > dimensions > width and height in px 1`] = `
+{
+  "children": [],
+  "height": "48px",
+  "viewBox": undefined,
+  "width": "96px",
+}
+`;
+
+exports[`parseSvg > element mapping > basic shapes 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "height": "80",
+        "width": "80",
+        "x": "10",
+        "y": "10",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "fill": "blue",
+        "r": "25",
+      },
+      "type": "CIRCLE",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "rx": "40",
+        "ry": "20",
+      },
+      "type": "ELLIPSE",
+    },
+    {
+      "children": [],
+      "props": {
+        "stroke": "black",
+        "x1": "0",
+        "x2": "100",
+        "y1": "0",
+        "y2": "100",
+      },
+      "type": "LINE",
+    },
+    {
+      "children": [],
+      "props": {
+        "points": "0,0 50,50 100,0",
+      },
+      "type": "POLYLINE",
+    },
+    {
+      "children": [],
+      "props": {
+        "points": "50,0 100,100 0,100",
+      },
+      "type": "POLYGON",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > element mapping > clipPath element 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "height": "50",
+                "width": "50",
+              },
+              "type": "RECT",
+            },
+          ],
+          "props": {
+            "id": "clip1",
+          },
+          "type": "CLIP_PATH",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > element mapping > gradient definitions 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "red",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "blue",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "id": "lg1",
+            "x1": "0%",
+            "x2": "100%",
+            "y1": "0%",
+            "y2": "0%",
+          },
+          "type": "LINEAR_GRADIENT",
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "white",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "black",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "cx": "50%",
+            "cy": "50%",
+            "id": "rg1",
+            "r": "50%",
+          },
+          "type": "RADIAL_GRADIENT",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > element mapping > image element 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "100",
+        "href": "photo.png",
+        "width": "100",
+        "x": "0",
+        "y": "0",
+      },
+      "type": "IMAGE",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > element mapping > nested groups 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "height": "50",
+                "width": "50",
+              },
+              "type": "RECT",
+            },
+          ],
+          "props": {
+            "opacity": "0.5",
+          },
+          "type": "G",
+        },
+        {
+          "children": [],
+          "props": {
+            "cx": "75",
+            "cy": "75",
+            "r": "10",
+          },
+          "type": "CIRCLE",
+        },
+      ],
+      "props": {
+        "transform": "translate(10,10)",
+      },
+      "type": "G",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > element mapping > path element 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "d": "M10 10 H 90 V 90 H 10 Z",
+        "fill": "none",
+        "stroke": "black",
+      },
+      "type": "PATH",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > invalid input > empty string 1`] = `
+{
+  "children": [],
+  "height": null,
+  "width": null,
+}
+`;
+
+exports[`parseSvg > invalid input > invalid viewBox is ignored 1`] = `
+{
+  "children": [],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > invalid input > non-svg root element 1`] = `
+{
+  "children": [],
+  "height": null,
+  "width": null,
+}
+`;
+
+exports[`parseSvg > invalid input > viewBox with wrong number of values is ignored 1`] = `
+{
+  "children": [],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > real-world SVGs > chart with styled elements 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "#f0f0f0",
+        "height": "100",
+        "width": "200",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [
+        {
+          "children": [],
+          "props": {
+            "stroke": "#ccc",
+            "x1": "0",
+            "x2": "160",
+            "y1": "0",
+            "y2": "0",
+          },
+          "type": "LINE",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#4ecdc4",
+            "height": "60",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "0",
+            "y": "-60",
+          },
+          "type": "RECT",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#ff6b6b",
+            "height": "40",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "40",
+            "y": "-40",
+          },
+          "type": "RECT",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#45b7d1",
+            "height": "75",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "80",
+            "y": "-75",
+          },
+          "type": "RECT",
+        },
+      ],
+      "props": {
+        "transform": "translate(20,80)",
+      },
+      "type": "G",
+    },
+  ],
+  "height": "100",
+  "viewBox": {
+    "maxX": 200,
+    "maxY": 100,
+    "minX": 0,
+    "minY": 0,
+  },
+  "width": "200",
+}
+`;
+
+exports[`parseSvg > real-world SVGs > icon with gradients and paths 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "#ff6b6b",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "#4ecdc4",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "id": "grad",
+            "x1": "0",
+            "x2": "1",
+            "y1": "0",
+            "y2": "1",
+          },
+          "type": "LINEAR_GRADIENT",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+    {
+      "children": [
+        {
+          "children": [],
+          "props": {
+            "d": "M12 2L2 7l10 5 10-5-10-5z",
+          },
+          "type": "PATH",
+        },
+        {
+          "children": [],
+          "props": {
+            "d": "M2 17l10 5 10-5",
+          },
+          "type": "PATH",
+        },
+        {
+          "children": [],
+          "props": {
+            "d": "M2 12l10 5 10-5",
+          },
+          "type": "PATH",
+        },
+      ],
+      "props": {
+        "fill": "none",
+        "strokeLinecap": "round",
+        "strokeLinejoin": "round",
+        "strokeWidth": "2",
+      },
+      "type": "G",
+    },
+  ],
+  "height": "24",
+  "viewBox": {
+    "maxX": 24,
+    "maxY": 24,
+    "minX": 0,
+    "minY": 0,
+  },
+  "width": "24",
+}
+`;
+
+exports[`parseSvg > skipped elements > script, filter, mask, and other unsupported elements are omitted 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "r": "10",
+      },
+      "type": "CIRCLE",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > skipped elements > unknown elements are silently ignored 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > text handling > text content in non-text elements is ignored 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {},
+      "type": "RECT",
+    },
+  ],
+  "height": "100",
+  "viewBox": undefined,
+  "width": "100",
+}
+`;
+
+exports[`parseSvg > text handling > text with content 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "Hello World",
+        },
+      ],
+      "props": {
+        "fontSize": "20",
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "height": "50",
+  "viewBox": undefined,
+  "width": "200",
+}
+`;
+
+exports[`parseSvg > text handling > text with tspan children 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "props": {},
+              "type": "TEXT_INSTANCE",
+              "value": "Red",
+            },
+          ],
+          "props": {
+            "fill": "red",
+          },
+          "type": "TSPAN",
+        },
+        {
+          "children": [
+            {
+              "props": {},
+              "type": "TEXT_INSTANCE",
+              "value": "Blue",
+            },
+          ],
+          "props": {
+            "fill": "blue",
+          },
+          "type": "TSPAN",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "height": "50",
+  "viewBox": undefined,
+  "width": "200",
+}
+`;

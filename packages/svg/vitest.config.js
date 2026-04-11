@@ -5,7 +5,4 @@ export default defineConfig({
     include: ['tests/*.{test,spec}.?(c|m)[jt]s?(x)'],
     watch: false,
   },
-  define: {
-    BROWSER: false,
-  },
 });

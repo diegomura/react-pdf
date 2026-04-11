@@ -8,9 +8,6 @@
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
-  "browser": {
-    "./lib/index.js": "./lib/index.browser.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -24,5 +21,8 @@
   },
   "files": [
     "lib"
-  ]
+  ],
+  "dependencies": {
+    "@react-pdf/primitives": "^4.2.0"
+  }
 }

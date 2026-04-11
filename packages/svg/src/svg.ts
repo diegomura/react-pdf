@@ -1,6 +1,6 @@
-import { SvgNode } from './types';
+import * as P from '@react-pdf/primitives';
 
-declare const BROWSER: boolean;
+import { SvgNode } from './types';
 
 const ATTR_REGEX = /([a-zA-Z][a-zA-Z0-9_:-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')/g;
 
@@ -41,67 +41,6 @@ interface XmlElement {
 interface XmlText {
   text: string;
 }
-
-const ELEMENT_NODE = 1;
-const TEXT_NODE = 3;
-
-interface MiniAttr {
-  readonly name: string;
-  readonly value: string;
-}
-
-interface MiniNode {
-  readonly nodeType: number;
-  readonly textContent: string | null;
-}
-
-interface MiniElement extends MiniNode {
-  readonly tagName: string;
-  readonly attributes: MiniAttr[];
-  readonly children: MiniElement[];
-  readonly childNodes: MiniNode[];
-  getAttribute(name: string): string | null;
-}
-
-interface MiniDocument {
-  readonly documentElement: MiniElement;
-  querySelector(selector: string): MiniElement | null;
-}
-
-function wrapXmlElement(xml: XmlElement): MiniElement {
-  const attrs = Object.entries(xml.attributes).map(([name, value]) => ({
-    name,
-    value,
-  }));
-
-  const childNodes: MiniNode[] = xml.children.map((child) =>
-    'tagName' in child
-      ? wrapXmlElement(child)
-      : { nodeType: TEXT_NODE, textContent: child.text },
-  );
-
-  const children = childNodes.filter(
-    (c): c is MiniElement => c.nodeType === ELEMENT_NODE,
-  );
-
-  return {
-    nodeType: ELEMENT_NODE,
-    tagName: xml.tagName,
-    attributes: attrs,
-    children,
-    childNodes,
-    textContent: null,
-    getAttribute(name: string) {
-      return xml.attributes[name] ?? null;
-    },
-  };
-}
-
-const EMPTY_XML: XmlElement = Object.freeze({
-  tagName: '',
-  attributes: Object.freeze({}),
-  children: Object.freeze([]) as unknown as XmlElement['children'],
-});
 
 function parseXml(xmlString: string): XmlElement | null {
   const str = xmlString.replace(
@@ -184,40 +123,24 @@ function parseXml(xmlString: string): XmlElement | null {
   return root;
 }
 
-function createNodeDOMParser() {
-  return {
-    parseFromString(str: string): MiniDocument {
-      const parsed = parseXml(str);
-      if (!parsed) {
-        console.warn('SVG parse error: failed to parse XML');
-      }
-      const root = parsed ?? EMPTY_XML;
-      return {
-        documentElement: wrapXmlElement(root),
-        querySelector: () => null,
-      };
-    },
-  };
-}
-
 const TAG_NAME_MAP: Record<string, string> = {
-  svg: 'SVG',
-  g: 'G',
-  path: 'PATH',
-  rect: 'RECT',
-  circle: 'CIRCLE',
-  ellipse: 'ELLIPSE',
-  line: 'LINE',
-  polyline: 'POLYLINE',
-  polygon: 'POLYGON',
-  text: 'TEXT',
-  tspan: 'TSPAN',
-  defs: 'DEFS',
-  clippath: 'CLIP_PATH',
-  lineargradient: 'LINEAR_GRADIENT',
-  radialgradient: 'RADIAL_GRADIENT',
-  stop: 'STOP',
-  image: 'IMAGE',
+  svg: P.Svg,
+  g: P.G,
+  path: P.Path,
+  rect: P.Rect,
+  circle: P.Circle,
+  ellipse: P.Ellipse,
+  line: P.Line,
+  polyline: P.Polyline,
+  polygon: P.Polygon,
+  text: P.Text,
+  tspan: P.Tspan,
+  defs: P.Defs,
+  clippath: P.ClipPath,
+  lineargradient: P.LinearGradient,
+  radialgradient: P.RadialGradient,
+  stop: P.Stop,
+  image: P.Image,
 };
 
 const SKIP_ELEMENTS = new Set([
@@ -259,11 +182,7 @@ function parseStyleAttribute(styleString: string): Record<string, string> {
   return result;
 }
 
-type AnyElement = Element | MiniElement;
-
-type AnyDocument = Document | MiniDocument;
-
-function elementToNode(element: AnyElement): SvgNode | null {
+function elementToNode(element: XmlElement): SvgNode | null {
   const tagName = element.tagName.toLowerCase();
 
   if (SKIP_ELEMENTS.has(tagName)) {
@@ -275,29 +194,27 @@ function elementToNode(element: AnyElement): SvgNode | null {
   if (!mappedType) return null;
 
   const props: Record<string, unknown> = {};
-  const attrs = element.attributes;
 
-  for (let i = 0; i < attrs.length; i++) {
-    const attr = attrs[i];
-    if (attr.name === 'style') {
-      Object.assign(props, parseStyleAttribute(attr.value));
+  for (const [name, value] of Object.entries(element.attributes)) {
+    if (name === 'style') {
+      Object.assign(props, parseStyleAttribute(value));
     } else {
-      props[toCamelCase(attr.name)] = attr.value;
+      props[toCamelCase(name)] = value;
     }
   }
 
   const children: SvgNode[] = [];
 
-  for (const child of Array.from(element.childNodes)) {
-    if (child.nodeType === ELEMENT_NODE) {
-      const childNode = elementToNode(child as AnyElement);
+  for (const child of element.children) {
+    if ('tagName' in child) {
+      const childNode = elementToNode(child);
       if (childNode) children.push(childNode);
-    } else if (child.nodeType === TEXT_NODE) {
-      const text = child.textContent?.trim();
+    } else if (child.text) {
+      const text = child.text.trim();
 
-      if (text && (mappedType === 'TEXT' || mappedType === 'TSPAN')) {
+      if (text && (mappedType === P.Text || mappedType === P.Tspan)) {
         children.push({
-          type: 'TEXT_INSTANCE',
+          type: P.TextInstance,
           props: {},
           value: text,
         } as SvgNode);
@@ -308,21 +225,15 @@ function elementToNode(element: AnyElement): SvgNode | null {
   return { type: mappedType, props, children };
 }
 
-const EMPTY_SVG: SvgNode = { type: 'SVG', props: {}, children: [] };
+const EMPTY_SVG: SvgNode = { type: P.Svg, props: {}, children: [] };
 
 export function parseSvg(svgString: string): SvgNode {
-  const parser: { parseFromString(s: string, t?: string): AnyDocument } =
-    BROWSER ? new DOMParser() : createNodeDOMParser();
+  const parsed = parseXml(svgString);
 
-  const doc = parser.parseFromString(svgString, 'image/svg+xml');
-
-  const parseError = doc.querySelector('parsererror');
-  if (parseError) {
-    console.warn('SVG parse error:', parseError.textContent);
+  if (!parsed) {
+    console.warn('SVG parse error: failed to parse XML');
     return EMPTY_SVG;
   }
 
-  const svgElement = doc.documentElement;
-
-  return elementToNode(svgElement) ?? EMPTY_SVG;
+  return elementToNode(parsed) ?? EMPTY_SVG;
 }

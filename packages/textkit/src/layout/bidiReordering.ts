@@ -31,16 +31,32 @@ const getReorderedIndices = (string: string, segments) => {
   return indices;
 };
 
-const getItemAtIndex = (runs: Run[], objectName: string, index: number) => {
-  for (let i = 0; i < runs.length; i += 1) {
-    const run = runs[i];
-    const updatedIndex = run.stringIndices[index - run.start];
-    if (index >= run.start && index < run.end) {
-      return run[objectName][updatedIndex];
+/**
+ * Build a lookup array that maps each string index to its run index.
+ * Allows O(1) run lookup instead of O(R) linear search per index.
+ */
+const buildRunIndex = (runs: Run[], length: number) => {
+  const runIndex = new Int32Array(length);
+
+  for (let r = 0; r < runs.length; r++) {
+    const run = runs[r];
+    for (let j = run.start; j < run.end; j++) {
+      runIndex[j] = r;
     }
   }
 
-  throw new Error(`index ${index} out of range`);
+  return runIndex;
+};
+
+const getItemAtIndex = (
+  runs: Run[],
+  runIndex: Int32Array,
+  objectName: string,
+  index: number,
+) => {
+  const run = runs[runIndex[index]];
+  const updatedIndex = run.stringIndices[index - run.start];
+  return run[objectName][updatedIndex];
 };
 
 const reorderLine = (line: AttributedString) => {
@@ -57,6 +73,7 @@ const reorderLine = (line: AttributedString) => {
   if (segments.length === 0) return line;
 
   const indices = getReorderedIndices(line.string, segments);
+  const runIndex = buildRunIndex(line.runs, line.string.length);
 
   const updatedString = bidi.getReorderedString(line.string, embeddingLevels);
 
@@ -70,12 +87,14 @@ const reorderLine = (line: AttributedString) => {
     for (let i = 0; i < selectedIndices.length; i += 1) {
       const index = selectedIndices[i];
 
-      const glyph = getItemAtIndex(line.runs, 'glyphs', index);
+      const glyph = getItemAtIndex(line.runs, runIndex, 'glyphs', index);
 
       if (addedGlyphs.has(glyph.id)) continue;
 
       updatedGlyphs.push(glyph);
-      updatedPositions.push(getItemAtIndex(line.runs, 'positions', index));
+      updatedPositions.push(
+        getItemAtIndex(line.runs, runIndex, 'positions', index),
+      );
 
       if (glyph.isLigature) {
         addedGlyphs.add(glyph.id);

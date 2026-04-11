@@ -1,7 +1,7 @@
 import { mermaidToSvg } from './render';
 import { preprocessSvg } from './preprocessSvg';
-import { parseSvg, mapSvgNode } from '@react-pdf/svg';
-
+import { parseSvg } from '@react-pdf/svg';
+import { mapSvgNode } from './mapSvg';
 import type { MermaidRenderOptions } from './render';
 
 interface MermaidProps {
@@ -128,10 +128,8 @@ const Mermaid = ({
 
   if (!svgTree) return null;
 
-  // Use the SVG's own width/height attributes as defaults for Mermaid diagrams,
-  // since beautiful-mermaid produces SVGs with sensible pixel dimensions.
-  const svgWidth = width ?? svgTree.attributes.width;
-  const svgHeight = height ?? svgTree.attributes.height;
+  const svgWidth = width ?? svgTree.props.width;
+  const svgHeight = height ?? svgTree.props.height;
 
   return mapSvgNode(svgTree, 'mermaid', {
     width: svgWidth ? Number(svgWidth) : undefined,

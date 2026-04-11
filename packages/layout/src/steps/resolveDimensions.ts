@@ -1,5 +1,6 @@
 import * as P from '@react-pdf/primitives';
-import { isNil, compose } from '@react-pdf/fns';
+import { isNil, matchPercent, compose } from '@react-pdf/fns';
+import * as Yoga from 'yoga-layout/load';
 import FontStore from '@react-pdf/font';
 
 import getMargin from '../node/getMargin';
@@ -7,52 +8,6 @@ import getPadding from '../node/getPadding';
 import getPosition from '../node/getPosition';
 import getDimension from '../node/getDimension';
 import getBorderWidth from '../node/getBorderWidth';
-import setDisplay from '../node/setDisplay';
-import setOverflow from '../node/setOverflow';
-import setFlexWrap from '../node/setFlexWrap';
-import setFlexGrow from '../node/setFlexGrow';
-import setFlexBasis from '../node/setFlexBasis';
-import setAlignSelf from '../node/setAlignSelf';
-import setAlignItems from '../node/setAlignItems';
-import setFlexShrink from '../node/setFlexShrink';
-import setAspectRatio from '../node/setAspectRatio';
-import setAlignContent from '../node/setAlignContent';
-import setPositionType from '../node/setPositionType';
-import setFlexDirection from '../node/setFlexDirection';
-import setJustifyContent from '../node/setJustifyContent';
-import {
-  setMarginTop,
-  setMarginRight,
-  setMarginBottom,
-  setMarginLeft,
-} from '../node/setMargin';
-import {
-  setPaddingTop,
-  setPaddingRight,
-  setPaddingBottom,
-  setPaddingLeft,
-} from '../node/setPadding';
-import {
-  setBorderTop,
-  setBorderRight,
-  setBorderBottom,
-  setBorderLeft,
-} from '../node/setBorderWidth';
-import {
-  setPositionTop,
-  setPositionRight,
-  setPositionBottom,
-  setPositionLeft,
-} from '../node/setPosition';
-import {
-  setWidth,
-  setHeight,
-  setMinWidth,
-  setMaxWidth,
-  setMinHeight,
-  setMaxHeight,
-} from '../node/setDimension';
-import { setRowGap, setColumnGap } from '../node/setGap';
 import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
 import measureImage from '../image/measureImage';
@@ -65,66 +20,183 @@ import {
   YogaInstance,
 } from '../types';
 
-const isType = (type) => (node) => node.type === type;
+const isSvg = (node) => node.type === P.Svg;
+const isText = (node) => node.type === P.Text;
+const isNote = (node) => node.type === P.Note;
+const isPage = (node) => node.type === P.Page;
+const isImage = (node) => node.type === P.Image;
+const isCanvas = (node) => node.type === P.Canvas;
+const isTextInstance = (node) => node.type === P.TextInstance;
 
-const isSvg = isType(P.Svg);
-const isText = isType(P.Text);
-const isNote = isType(P.Note);
-const isPage = isType(P.Page);
-const isImage = isType(P.Image);
-const isCanvas = isType(P.Canvas);
-const isTextInstance = isType(P.TextInstance);
+const FLEX_DIRECTIONS = {
+  row: Yoga.FlexDirection.Row,
+  'row-reverse': Yoga.FlexDirection.RowReverse,
+  'column-reverse': Yoga.FlexDirection.ColumnReverse,
+};
 
-const setNodeHeight = (node: SafeNode) => {
-  const value = isPage(node) ? node.box?.height : node.style?.height;
-  return setHeight(value);
+const JUSTIFY_CONTENT = {
+  center: Yoga.Justify.Center,
+  'flex-end': Yoga.Justify.FlexEnd,
+  'space-between': Yoga.Justify.SpaceBetween,
+  'space-around': Yoga.Justify.SpaceAround,
+  'space-evenly': Yoga.Justify.SpaceEvenly,
+};
+
+const ALIGN = {
+  'flex-start': Yoga.Align.FlexStart,
+  center: Yoga.Align.Center,
+  'flex-end': Yoga.Align.FlexEnd,
+  stretch: Yoga.Align.Stretch,
+  baseline: Yoga.Align.Baseline,
+  'space-between': Yoga.Align.SpaceBetween,
+  'space-around': Yoga.Align.SpaceAround,
+  'space-evenly': Yoga.Align.SpaceEvenly,
+};
+
+const FLEX_WRAP = {
+  wrap: Yoga.Wrap.Wrap,
+  'wrap-reverse': Yoga.Wrap.WrapReverse,
+};
+
+const OVERFLOW = {
+  hidden: Yoga.Overflow.Hidden,
+  scroll: Yoga.Overflow.Scroll,
+};
+
+const POSITION = {
+  absolute: Yoga.PositionType.Absolute,
+  relative: Yoga.PositionType.Relative,
+  static: Yoga.PositionType.Static,
 };
 
 /**
- * Set styles valeus into yoga node before layout calculation
- *
- * @param node
+ * Set a numeric/percentage/auto value on a yoga node.
+ * Calls setFoo / setFooPercent / setFooAuto, with or without an edge arg.
+ */
+const applyYogaValue = (
+  yogaNode: any,
+  setter: string,
+  value: string | number | null | undefined,
+  edge?: number,
+) => {
+  if (isNil(value)) return;
+
+  const percent = matchPercent(value);
+  const hasEdge = !isNil(edge);
+
+  if (percent) {
+    const fn = yogaNode[`${setter}Percent`];
+    if (!fn) throw new Error(`You can't pass percentage values to ${setter}`);
+    if (hasEdge) {
+      fn.call(yogaNode, edge, percent.value);
+    } else {
+      fn.call(yogaNode, percent.value);
+    }
+  } else if (value === 'auto') {
+    const fn = yogaNode[`${setter}Auto`];
+    if (fn) {
+      if (hasEdge) {
+        fn.call(yogaNode, edge);
+      } else {
+        fn.call(yogaNode);
+      }
+    }
+  } else if (hasEdge) {
+    yogaNode[setter](edge, value);
+  } else {
+    yogaNode[setter](value);
+  }
+};
+
+/**
+ * Set styles values into yoga node before layout calculation
  */
 const setYogaValues = (node: SafeNode) => {
-  compose(
-    setNodeHeight(node),
-    setWidth(node.style.width),
-    setMinWidth(node.style.minWidth),
-    setMaxWidth(node.style.maxWidth),
-    setMinHeight(node.style.minHeight),
-    setMaxHeight(node.style.maxHeight),
-    setMarginTop(node.style.marginTop),
-    setMarginRight(node.style.marginRight),
-    setMarginBottom(node.style.marginBottom),
-    setMarginLeft(node.style.marginLeft),
-    setPaddingTop(node.style.paddingTop),
-    setPaddingRight(node.style.paddingRight),
-    setPaddingBottom(node.style.paddingBottom),
-    setPaddingLeft(node.style.paddingLeft),
-    setPositionType(node.style.position),
-    setPositionTop(node.style.top),
-    setPositionRight(node.style.right),
-    setPositionBottom(node.style.bottom),
-    setPositionLeft(node.style.left),
-    setBorderTop(node.style.borderTopWidth),
-    setBorderRight(node.style.borderRightWidth),
-    setBorderBottom(node.style.borderBottomWidth),
-    setBorderLeft(node.style.borderLeftWidth),
-    setDisplay(node.style.display),
-    setFlexDirection(node.style.flexDirection),
-    setAlignSelf(node.style.alignSelf),
-    setAlignContent(node.style.alignContent),
-    setAlignItems(node.style.alignItems),
-    setJustifyContent(node.style.justifyContent),
-    setFlexWrap(node.style.flexWrap),
-    setOverflow(node.style.overflow),
-    setAspectRatio(node.style.aspectRatio),
-    setFlexBasis(node.style.flexBasis),
-    setFlexGrow(node.style.flexGrow),
-    setFlexShrink(node.style.flexShrink),
-    setRowGap(node.style.rowGap),
-    setColumnGap(node.style.columnGap),
-  )(node);
+  const { yogaNode } = node;
+  if (!yogaNode) return;
+
+  const { style } = node;
+  const height = isPage(node) ? node.box?.height : style?.height;
+
+  // Dimensions
+  applyYogaValue(yogaNode, 'setHeight', height);
+  applyYogaValue(yogaNode, 'setWidth', style.width);
+  applyYogaValue(yogaNode, 'setMinWidth', style.minWidth);
+  applyYogaValue(yogaNode, 'setMaxWidth', style.maxWidth);
+  applyYogaValue(yogaNode, 'setMinHeight', style.minHeight);
+  applyYogaValue(yogaNode, 'setMaxHeight', style.maxHeight);
+
+  // Margin
+  applyYogaValue(yogaNode, 'setMargin', style.marginTop, Yoga.Edge.Top);
+  applyYogaValue(yogaNode, 'setMargin', style.marginRight, Yoga.Edge.Right);
+  applyYogaValue(yogaNode, 'setMargin', style.marginBottom, Yoga.Edge.Bottom);
+  applyYogaValue(yogaNode, 'setMargin', style.marginLeft, Yoga.Edge.Left);
+
+  // Padding
+  applyYogaValue(yogaNode, 'setPadding', style.paddingTop, Yoga.Edge.Top);
+  applyYogaValue(yogaNode, 'setPadding', style.paddingRight, Yoga.Edge.Right);
+  applyYogaValue(yogaNode, 'setPadding', style.paddingBottom, Yoga.Edge.Bottom);
+  applyYogaValue(yogaNode, 'setPadding', style.paddingLeft, Yoga.Edge.Left);
+
+  // Position
+  if (!isNil(style.position))
+    yogaNode.setPositionType(POSITION[style.position]);
+  applyYogaValue(yogaNode, 'setPosition', style.top, Yoga.Edge.Top);
+  applyYogaValue(yogaNode, 'setPosition', style.right, Yoga.Edge.Right);
+  applyYogaValue(yogaNode, 'setPosition', style.bottom, Yoga.Edge.Bottom);
+  applyYogaValue(yogaNode, 'setPosition', style.left, Yoga.Edge.Left);
+
+  // Border
+  applyYogaValue(yogaNode, 'setBorder', style.borderTopWidth, Yoga.Edge.Top);
+  applyYogaValue(
+    yogaNode,
+    'setBorder',
+    style.borderRightWidth,
+    Yoga.Edge.Right,
+  );
+  applyYogaValue(
+    yogaNode,
+    'setBorder',
+    style.borderBottomWidth,
+    Yoga.Edge.Bottom,
+  );
+  applyYogaValue(yogaNode, 'setBorder', style.borderLeftWidth, Yoga.Edge.Left);
+
+  // Display
+  yogaNode.setDisplay(
+    style.display === 'none' ? Yoga.Display.None : Yoga.Display.Flex,
+  );
+
+  // Flex
+  yogaNode.setFlexDirection(
+    FLEX_DIRECTIONS[style.flexDirection] || Yoga.FlexDirection.Column,
+  );
+
+  if (!isNil(style.alignSelf))
+    yogaNode.setAlignSelf(ALIGN[style.alignSelf] || Yoga.Align.Auto);
+  if (!isNil(style.alignContent))
+    yogaNode.setAlignContent(ALIGN[style.alignContent] || Yoga.Align.Auto);
+  yogaNode.setAlignItems(ALIGN[style.alignItems] || Yoga.Align.Stretch);
+
+  if (!isNil(style.justifyContent))
+    yogaNode.setJustifyContent(
+      JUSTIFY_CONTENT[style.justifyContent] || Yoga.Justify.FlexStart,
+    );
+
+  yogaNode.setFlexWrap(FLEX_WRAP[style.flexWrap] || Yoga.Wrap.NoWrap);
+
+  if (!isNil(style.overflow))
+    yogaNode.setOverflow(OVERFLOW[style.overflow] || Yoga.Overflow.Visible);
+
+  if (!isNil(style.aspectRatio)) yogaNode.setAspectRatio(style.aspectRatio);
+
+  applyYogaValue(yogaNode, 'setFlexBasis', style.flexBasis);
+  yogaNode.setFlexGrow(style.flexGrow || 0);
+  yogaNode.setFlexShrink(style.flexShrink || 1);
+
+  // Gap
+  applyYogaValue(yogaNode, 'setGap', style.rowGap, Yoga.Gutter.Row);
+  applyYogaValue(yogaNode, 'setGap', style.columnGap, Yoga.Gutter.Column);
 };
 
 /**

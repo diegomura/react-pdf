@@ -1,10 +1,10 @@
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 import { SrcSet, Sizes } from '@react-pdf/types';
 import * as P from '@react-pdf/primitives';
+import { Image } from '@react-pdf/image';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
-import { AnyImage } from '@react-pdf/image';
 
 type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -67,7 +67,7 @@ export type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
 export type ImageNode = {
   type: typeof P.Image;
   props: ImageProps;
-  image?: AnyImage;
+  image?: Image;
   style?: Style | Style[];
   box?: Box;
   origin?: Origin;

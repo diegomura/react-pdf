@@ -1,5 +1,6 @@
+import { parseSvg } from '@react-pdf/svg';
+
 import { latexToSvg } from './mathjax';
-import { parseSvg } from './parseSvg';
 import { mapSvgNode } from './mapSvg';
 
 interface MathProps {
@@ -51,8 +52,6 @@ const Math = ({
 }: MathProps) => {
   const svgString = latexToSvg(children, { display: !inline });
   const svgTree = parseSvg(svgString);
-
-  if (!svgTree) return null;
 
   return mapSvgNode(svgTree, 'math', { width, height, color, debug });
 };

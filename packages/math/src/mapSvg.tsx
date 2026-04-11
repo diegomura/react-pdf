@@ -1,4 +1,5 @@
 import React from 'react';
+import * as P from '@react-pdf/primitives';
 import {
   Svg,
   G,
@@ -11,7 +12,7 @@ import {
   Polyline,
 } from '@react-pdf/renderer';
 
-import type { SvgNode } from './parseSvg';
+import type { SvgNode } from '@react-pdf/svg';
 
 export interface MathSvgOptions {
   width?: number | string;
@@ -29,11 +30,11 @@ const DEFAULT_HEIGHT = 22;
  * - If neither is provided, use a default height and derive width from the aspect ratio.
  */
 function resolveDimensions(
-  attributes: Record<string, string>,
+  props: Record<string, unknown>,
   width?: number | string,
   height?: number | string,
 ): { width: number; height: number } {
-  const viewBox = attributes.viewBox;
+  const viewBox = props.viewBox as string | undefined;
   const parts = viewBox?.split(/[\s,]+/).map(Number);
   const vbWidth = parts?.[2] || 1;
   const vbHeight = parts?.[3] || 1;
@@ -55,52 +56,38 @@ function resolveDimensions(
 }
 
 /**
- * Convert kebab-case SVG attribute names to camelCase for react-pdf.
- * e.g. "stroke-width" -> "strokeWidth", "fill-opacity" -> "fillOpacity"
- */
-function camelCase(name: string): string {
-  return name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-}
-
-/**
- * Attributes that should remain as-is (not camelCased)
- */
-const PASS_THROUGH_ATTRS = new Set(['d', 'x', 'y', 'x1', 'y1', 'x2', 'y2']);
-
-/**
  * Attributes to skip (not relevant for react-pdf)
  */
 const SKIP_ATTRS = new Set([
   'xmlns',
-  'xmlns:xlink',
-  'xlink:href',
+  'xmlnsXlink',
+  'xlinkHref',
   'class',
   'style',
   'role',
   'focusable',
-  'aria-hidden',
-  'data-mml-node',
-  'data-c',
+  'ariaHidden',
 ]);
 
 function mapAttributes(
-  attributes: Record<string, string>,
+  props: Record<string, unknown>,
   color: string,
-): Record<string, string | number> {
-  const mapped: Record<string, string | number> = {};
+): Record<string, unknown> {
+  const mapped: Record<string, unknown> = {};
 
-  for (const [key, value] of Object.entries(attributes)) {
-    if (SKIP_ATTRS.has(key) || key.startsWith('data-')) continue;
-
-    const propName = PASS_THROUGH_ATTRS.has(key) ? key : camelCase(key);
+  for (const [key, value] of Object.entries(props)) {
+    if (SKIP_ATTRS.has(key) || key.startsWith('data')) continue;
 
     // Resolve currentColor to the provided color
     const resolved = value === 'currentColor' ? color : value;
 
     // Convert numeric strings to numbers for dimensional attributes
-    const numValue = Number(resolved);
-    mapped[propName] =
-      !isNaN(numValue) && resolved !== '' ? numValue : resolved;
+    if (typeof resolved === 'string') {
+      const numValue = Number(resolved);
+      mapped[key] = !isNaN(numValue) && resolved !== '' ? numValue : resolved;
+    } else {
+      mapped[key] = resolved;
+    }
   }
 
   return mapped;
@@ -116,22 +103,18 @@ export function mapSvgNode(
   key: string | number = 0,
   options?: MathSvgOptions,
 ): React.ReactElement | null {
-  const { tagName, attributes, children } = node;
+  const { type, props, children } = node;
   const color = options?.color || 'black';
-  const childElements = children
+  const childElements = (children || [])
     .map((child, i) => mapSvgNode(child, i, { width: 0, height: 0, color }))
     .filter(Boolean);
 
-  const props = mapAttributes(attributes, color);
+  const mappedProps = mapAttributes(props, color);
 
-  switch (tagName) {
-    case 'svg': {
-      const svgProps: Record<string, any> = { ...props };
-      const dims = resolveDimensions(
-        attributes,
-        options?.width,
-        options?.height,
-      );
+  switch (type) {
+    case P.Svg: {
+      const svgProps: Record<string, any> = { ...mappedProps };
+      const dims = resolveDimensions(props, options?.width, options?.height);
 
       svgProps.width = dims.width;
       svgProps.height = dims.height;
@@ -142,26 +125,26 @@ export function mapSvgNode(
         </Svg>
       );
     }
-    case 'g':
+    case P.G:
       return (
-        <G key={key} {...(props as any)}>
+        <G key={key} {...(mappedProps as any)}>
           {childElements}
         </G>
       );
-    case 'path':
-      return <Path key={key} {...(props as any)} />;
-    case 'rect':
-      return <Rect key={key} {...(props as any)} />;
-    case 'line':
-      return <Line key={key} {...(props as any)} />;
-    case 'circle':
-      return <Circle key={key} {...(props as any)} />;
-    case 'ellipse':
-      return <Ellipse key={key} {...(props as any)} />;
-    case 'polygon':
-      return <Polygon key={key} {...(props as any)} />;
-    case 'polyline':
-      return <Polyline key={key} {...(props as any)} />;
+    case P.Path:
+      return <Path key={key} {...(mappedProps as any)} />;
+    case P.Rect:
+      return <Rect key={key} {...(mappedProps as any)} />;
+    case P.Line:
+      return <Line key={key} {...(mappedProps as any)} />;
+    case P.Circle:
+      return <Circle key={key} {...(mappedProps as any)} />;
+    case P.Ellipse:
+      return <Ellipse key={key} {...(mappedProps as any)} />;
+    case P.Polygon:
+      return <Polygon key={key} {...(mappedProps as any)} />;
+    case P.Polyline:
+      return <Polyline key={key} {...(mappedProps as any)} />;
     default:
       // For unsupported tags, wrap children in a G element
       if (childElements.length > 0) {

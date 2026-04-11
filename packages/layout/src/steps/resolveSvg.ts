@@ -348,7 +348,7 @@ const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
 const isSvgImage = (
   node: SafeNode,
 ): node is SafeImageNode & { image: SvgImage } =>
-  node.type === P.Image && (node as SafeImageNode).image?.format === 'svg';
+  node.type === P.Image && node.image?.format === 'svg';
 
 function convertParsedNode(node: ParsedSvgNode) {
   return {

@@ -4,7 +4,7 @@ import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
-import { Image } from '@react-pdf/image';
+import { AnyImage } from '@react-pdf/image';
 
 type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -67,7 +67,7 @@ export type ImageProps = ImageWithSrcProp | ImageWithSourceProp;
 export type ImageNode = {
   type: typeof P.Image;
   props: ImageProps;
-  image?: Image;
+  image?: AnyImage;
   style?: Style | Style[];
   box?: Box;
   origin?: Origin;

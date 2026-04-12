@@ -5,6 +5,8 @@ import { AttributedString, Position, Run } from '../types';
 
 // Cache font.layout() results by font instance + string.
 // font.layout() has no internal caching and is expensive (GSUB/GPOS processing).
+// Cached glyphs are read-only — downstream code must not mutate them.
+const MAX_CACHE_SIZE = 2000;
 const layoutCache = new WeakMap<object, Map<string, any>>();
 
 const getCharacterSpacing = (run: Run) => {
@@ -81,6 +83,7 @@ const layoutRun = (string: string) => {
         undefined,
         'ltr',
       );
+      if (fontCache.size >= MAX_CACHE_SIZE) fontCache.clear();
       fontCache.set(runString, glyphRun);
     }
 

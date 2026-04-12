@@ -5,12 +5,14 @@ const bidi = bidiFactory();
 
 /**
  * Fast check: returns true if a string might contain RTL characters.
- * Hebrew starts at U+0590, Arabic at U+0600. Scanning for char codes
- * >= 0x0590 catches all RTL scripts while skipping pure Latin text.
+ * Checks specifically for Hebrew (U+0590-U+05FF), Arabic (U+0600-U+06FF),
+ * and related RTL blocks up to U+08FF. Does not false-positive on CJK,
+ * Thai, Indic, or emoji text.
  */
 const mayContainRTL = (str: string) => {
   for (let i = 0; i < str.length; i++) {
-    if (str.charCodeAt(i) >= 0x0590) return true;
+    const c = str.charCodeAt(i);
+    if (c >= 0x0590 && c <= 0x08ff) return true;
   }
   return false;
 };

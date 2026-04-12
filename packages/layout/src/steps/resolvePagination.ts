@@ -51,7 +51,8 @@ const relayoutPage = compose(
 
 // Lightweight relayout for pagination splits. Styles and inheritance are
 // already resolved from the initial layout pass — only yoga dimensions
-// and text layout need recalculation.
+// and text layout need recalculation. This is safe because splitNode and
+// splitView preserve fully-resolved styles on all copied nodes.
 const relayoutPageFast = compose(resolveTextLayout, resolvePageDimensions);
 
 const warnUnavailableSpace = (node: SafeNode) => {

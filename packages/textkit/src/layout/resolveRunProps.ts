@@ -9,16 +9,17 @@ const isReplaceGlyph = (glyph) => glyph.codePoints.includes(ATTACHMENT_CODE);
  * Combines the logic of verticalAlignment, resolveAttachments and resolveYOffset.
  */
 const resolveRun = (run: Run) => {
-  const { attributes } = run;
+  let { attributes } = run;
 
-  // verticalAlignment: set yOffset attribute for sub/super
+  // verticalAlignment: derive yOffset for sub/super
   if (attributes.verticalAlign === 'sub') {
-    attributes.yOffset = -0.2;
+    attributes = { ...attributes, yOffset: -0.2 };
   } else if (attributes.verticalAlign === 'super') {
-    attributes.yOffset = 0.4;
+    attributes = { ...attributes, yOffset: 0.4 };
   }
 
-  if (!run.positions) return run;
+  if (!run.positions)
+    return attributes === run.attributes ? run : { ...run, attributes };
 
   const attachment = attributes.attachment;
   const unitsPerEm = attributes.font?.[0]?.unitsPerEm || 0;
@@ -44,7 +45,7 @@ const resolveRun = (run: Run) => {
     };
   });
 
-  return { ...run, positions };
+  return { ...run, attributes, positions };
 };
 
 /**

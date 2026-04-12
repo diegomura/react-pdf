@@ -139,6 +139,16 @@ const renderAttachments = (ctx: Context, run: Run, glyphs: Run['glyphs']) => {
   ctx.restore();
 };
 
+const calcVerticalRunAdvance = (run: Run): number => {
+  if (!run.positions || !run.attributes.fontSize) return 0;
+  const fontSize = run.attributes.fontSize;
+  let advance = 0;
+  for (const pos of run.positions) {
+    advance += Math.max(pos.xAdvance || 0, fontSize);
+  }
+  return advance;
+};
+
 const renderRun = (ctx: Context, run: Run, vertical = false) => {
   if (!run.glyphs) return;
   if (!run.positions) return;
@@ -293,11 +303,12 @@ const renderLine = (ctx: Context, line: AttributedString, vertical = false) => {
       const overflowRight = isLastRun ? line.overflowRight ?? 0 : 0;
 
       if (vertical) {
+        const runAdvance = calcVerticalRunAdvance(run);
         const backgroundRect = {
           x: 0,
           y: 0,
           width: line.box.width,
-          height: line.box.height,
+          height: runAdvance,
         };
         renderBackground(ctx, backgroundRect, run.attributes.backgroundColor);
       } else {

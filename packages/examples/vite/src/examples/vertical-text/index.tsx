@@ -138,7 +138,7 @@ const VerticalText = () => {
 
         <View style={styles.row}>
           <View style={styles.card}>
-            <Text style={styles.cardLabel}>Japanese (vertical-lr)</Text>
+            <Text style={styles.cardLabel}>Japanese</Text>
             <Text
               style={{
                 writingMode: 'vertical-lr',
@@ -152,10 +152,10 @@ const VerticalText = () => {
           </View>
 
           <View style={styles.card}>
-            <Text style={styles.cardLabel}>Latin text (vertical-rl)</Text>
+            <Text style={styles.cardLabel}>Latin text</Text>
             <Text
               style={{
-                writingMode: 'vertical-rl',
+                writingMode: 'vertical-lr',
                 fontSize: 14,
                 height: 80,
               }}

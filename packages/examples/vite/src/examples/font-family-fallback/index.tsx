@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   Font,
+  CJK,
 } from '@react-pdf/renderer';
 
 import RobotoFont from '../../../public/Roboto-Regular.ttf';
@@ -124,6 +125,45 @@ const MyDoc = () => {
           <Text style={{ fontStyle: 'italic' }}>Roboto Italic</Text>
           {' / '}
           <Text style={{ fontFamily: 'Courier' }}>Courier</Text>
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Built-in CJK — Korean (auto-registered)</Text>
+        <Text style={{ fontFamily: CJK.KOREAN, fontSize: 14 }}>
+          한국어 텍스트 — no Font.register() needed
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Built-in CJK — Japanese (auto-registered)</Text>
+        <Text style={{ fontFamily: CJK.JAPANESE, fontSize: 14 }}>
+          日本語テキスト — フォント登録不要
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>Built-in CJK — Simplified Chinese (auto-registered)</Text>
+        <Text style={{ fontFamily: CJK.CHINESE_SIMPLIFIED, fontSize: 14 }}>
+          简体中文文本 — 无需字体注册
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>
+          CJK auto-detection — no fontFamily specified
+        </Text>
+        <Text style={{ fontSize: 14 }}>
+          Mixed: Hello 한국어 日本語 中文 world
+        </Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>
+          Roboto + CJK fallback (mixed scripts)
+        </Text>
+        <Text style={{ fontFamily: ['Roboto', CJK.KOREAN], fontSize: 14 }}>
+          Roboto Latin with 한국어 fallback
         </Text>
       </View>
     </Page>

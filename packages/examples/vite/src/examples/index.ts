@@ -25,6 +25,7 @@ import responsiveImages from './responsive-images';
 import math from './math';
 import passwordProtection from './password-protection';
 import softHyphens from './soft-hyphens';
+import verticalText from './vertical-text';
 
 const EXAMPLES = [
   scripts,
@@ -54,6 +55,7 @@ const EXAMPLES = [
   math,
   passwordProtection,
   softHyphens,
+  verticalText,
 ];
 
 export default EXAMPLES;

@@ -8,6 +8,57 @@ import {
   SingleLoad,
 } from './types';
 
+/**
+ * Built-in CJK font family names.
+ * These are registered automatically and fetched lazily from Google Fonts.
+ *
+ * @example
+ * import { CJK } from '@react-pdf/font';
+ * // or: import { CJK } from '@react-pdf/renderer';
+ * <Text style={{ fontFamily: CJK.KOREAN }}>한국어</Text>
+ */
+export const CJK = {
+  /** Simplified Chinese (Mainland China) */
+  CHINESE_SIMPLIFIED: 'Noto Sans SC',
+  /** Traditional Chinese (Taiwan, Macau) */
+  CHINESE_TRADITIONAL: 'Noto Sans TC',
+  /** Japanese (Hiragana, Katakana, Kanji) */
+  JAPANESE: 'Noto Sans JP',
+  /** Korean (Hangul, Hanja) */
+  KOREAN: 'Noto Sans KR',
+} as const;
+
+/** @deprecated Use `CJK` instead */
+export const CJK_FONT_FAMILIES = CJK;
+
+/** All CJK font family names as an array */
+export const CJK_FONT_NAMES: string[] = Object.values(CJK);
+
+// Google Fonts CSS API base – resolved to static .ttf URLs at registration time.
+// Using the CSS2 API with TTF format ensures stable, versioned font file URLs.
+const CJK_FONT_SOURCES: Record<string, { normal: string; bold: string }> = {
+  [CJK.CHINESE_SIMPLIFIED]: {
+    normal:
+      'https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYw.ttf',
+    bold: 'https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaGzjCnYw.ttf',
+  },
+  [CJK.CHINESE_TRADITIONAL]: {
+    normal:
+      'https://fonts.gstatic.com/s/notosanstc/v39/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_Co.ttf',
+    bold: 'https://fonts.gstatic.com/s/notosanstc/v39/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz70e1_Co.ttf',
+  },
+  [CJK.JAPANESE]: {
+    normal:
+      'https://fonts.gstatic.com/s/notosansjp/v56/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEj75s.ttf',
+    bold: 'https://fonts.gstatic.com/s/notosansjp/v56/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFPYk75s.ttf',
+  },
+  [CJK.KOREAN]: {
+    normal:
+      'https://fonts.gstatic.com/s/notosanskr/v39/PbyxFmXiEBPT4ITbgNA5Cgms3VYcOA-vvnIzzuoyeLQ.ttf',
+    bold: 'https://fonts.gstatic.com/s/notosanskr/v39/PbyxFmXiEBPT4ITbgNA5Cgms3VYcOA-vvnIzzg01eLQ.ttf',
+  },
+};
+
 class FontStore {
   fontFamilies: Record<string, FontFamily> = {};
 
@@ -90,6 +141,17 @@ class FontStore {
       family: 'Times-BoldItalic',
       src: 'Times-BoldItalic',
     });
+
+    // Register built-in CJK fonts (lazy-loaded from Google Fonts CDN)
+    for (const [family, urls] of Object.entries(CJK_FONT_SOURCES)) {
+      this.register({
+        family,
+        fonts: [
+          { src: urls.normal, fontStyle: 'normal', fontWeight: 400 },
+          { src: urls.bold, fontStyle: 'normal', fontWeight: 700 },
+        ],
+      });
+    }
 
     // Load default fonts
 

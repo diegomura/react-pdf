@@ -26,6 +26,8 @@ import {
   SafeTspanNode,
 } from '../types';
 
+const isMarker = (node: SafeNode) => node.type === P.Marker;
+
 type Container = { width: number; height: number };
 
 const STYLE_PROPS = [
@@ -252,6 +254,12 @@ const parseDefsProps = (node: SafeNode): SafeNode => {
       offset: parsePercent,
       stopColor: transformColor,
       stopOpacity: parsePercent,
+      // Marker properties
+      refX: parseFloat,
+      refY: parseFloat,
+      markerWidth: parseFloat,
+      markerHeight: parseFloat,
+      viewBox: parseViewbox,
     } as any,
     node.props || {},
   );
@@ -259,12 +267,49 @@ const parseDefsProps = (node: SafeNode): SafeNode => {
   return Object.assign({}, node, { props });
 };
 
+const getMarkerContainer = (node: SafeNode): Container => {
+  const props = node.props || {};
+  const viewBox =
+    'viewBox' in props
+      ? (props.viewBox as {
+          minX: number;
+          minY: number;
+          maxX: number;
+          maxY: number;
+        } | null)
+      : null;
+
+  if (viewBox) {
+    return { width: viewBox.maxX, height: viewBox.maxY };
+  }
+
+  const markerWidth =
+    'markerWidth' in props ? (props.markerWidth as number) : 3;
+  const markerHeight =
+    'markerHeight' in props ? (props.markerHeight as number) : 3;
+
+  return { width: markerWidth, height: markerHeight };
+};
+
 const resolveDefsChildren = (node: SafeNode): SafeNode => {
   if (!node.children) return node;
 
-  const children = node.children.map((child) =>
-    resolveDefsChildren(parseDefsProps(child)),
-  );
+  const children = node.children.map((child) => {
+    const parsed = parseDefsProps(child);
+
+    // Marker children are SVG shapes that need full resolution
+    if (isMarker(parsed) && parsed.children) {
+      const container = getMarkerContainer(parsed);
+      const resolveChild = compose(
+        resolveChildren(container),
+        resolveSvgNode(container),
+      );
+      const markerChildren = parsed.children.map(resolveChild);
+      return Object.assign({}, parsed, { children: markerChildren });
+    }
+
+    return resolveDefsChildren(parsed);
+  });
 
   return Object.assign({}, node, { children });
 };

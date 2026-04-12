@@ -13,6 +13,7 @@ export * from './image-background';
 export * from './line';
 export * from './linear-gradient';
 export * from './link';
+export * from './marker';
 export * from './node';
 export * from './note';
 export * from './page';

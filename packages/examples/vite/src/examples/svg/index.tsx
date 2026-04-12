@@ -7,6 +7,7 @@ import Svg2 from './Svg2';
 import Svg4 from './Svg4';
 import Pattern from './Pattern';
 import Car from './Car';
+import Markers from './Markers';
 
 const styles = StyleSheet.create({
   page: {
@@ -73,34 +74,39 @@ const App = () => {
           Paths, shapes, gradients, patterns, and complex illustrations
         </Text>
 
-        <View style={styles.card}>
+        <View style={styles.card} wrap={false}>
           <Text style={styles.label}>Tiger (Complex Polygons)</Text>
           <Svg0 />
         </View>
 
-        <View style={styles.card} break>
+        <View style={styles.card} wrap={false}>
           <Text style={styles.label}>Line Chart</Text>
           <Svg2 />
         </View>
 
-        <View style={styles.card}>
+        <View style={styles.card} wrap={false}>
           <Text style={styles.label}>Pattern Fill</Text>
           <Pattern />
         </View>
 
-        <View style={styles.card} break>
+        <View style={styles.card} wrap={false}>
           <Text style={styles.label}>Car (Detailed Illustration)</Text>
           <Car />
         </View>
 
-        <View style={styles.row} break>
+        <View style={styles.card} wrap={false}>
+          <Text style={styles.label}>Markers</Text>
+          <Markers />
+        </View>
+
+        <View style={styles.row} wrap={false}>
           <View style={styles.halfCard}>
             <Text style={styles.label}>Pie Chart (Arcs + Text)</Text>
             <Svg1 />
           </View>
         </View>
 
-        <View style={styles.row}>
+        <View style={styles.row} wrap={false}>
           <View style={styles.halfCard}>
             <Text style={styles.label}>Gradients</Text>
             <Svg4 />

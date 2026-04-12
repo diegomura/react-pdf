@@ -607,6 +607,25 @@ declare namespace ReactPDF {
     React.PropsWithChildren<ClipPathProps>
   > {}
 
+  interface MarkerProps {
+    id: string;
+    viewBox?: string;
+    refX?: string | number;
+    refY?: string | number;
+    markerWidth?: string | number;
+    markerHeight?: string | number;
+    orient?: 'auto' | 'auto-start-reverse' | number;
+    markerUnits?: 'strokeWidth' | 'userSpaceOnUse';
+  }
+
+  /**
+   * The <Marker /> SVG element defines a graphic used for drawing arrows or polymarkers on a given <Path />, <Line />, <Polyline />, or <Polygon /> element.
+   * Markers can be attached to shapes using the markerStart, markerMid, and markerEnd properties.
+   */
+  export class Marker extends React.Component<
+    React.PropsWithChildren<MarkerProps>
+  > {}
+
   interface LinearGradientProps {
     id: string;
     x1?: string | number;

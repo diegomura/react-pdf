@@ -15,6 +15,7 @@ import {
 import { LineNode, SafeLineNode } from './line';
 import { LinearGradientNode, SafeLinearGradientNode } from './linear-gradient';
 import { LinkNode, SafeLinkNode } from './link';
+import { MarkerNode, SafeMarkerNode } from './marker';
 import { NoteNode, SafeNoteNode } from './note';
 import { PageNode, SafePageNode } from './page';
 import { PathNode, SafePathNode } from './path';
@@ -44,6 +45,7 @@ export type Node =
   | GNode
   | LineNode
   | LinearGradientNode
+  | MarkerNode
   | PathNode
   | PolygonNode
   | PolylineNode
@@ -76,6 +78,7 @@ export type SafeNode =
   | SafeGNode
   | SafeLineNode
   | SafeLinearGradientNode
+  | SafeMarkerNode
   | SafePathNode
   | SafePolygonNode
   | SafePolylineNode

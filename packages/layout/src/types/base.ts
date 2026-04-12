@@ -3,6 +3,7 @@ import { YogaNode } from 'yoga-layout/load';
 import * as React from 'react';
 import { SafeClipPathNode } from './clip-path';
 import { SafeLinearGradientNode } from './linear-gradient';
+import { SafeMarkerNode } from './marker';
 import { SafeRadialGradientNode } from './radial-gradient';
 
 export type YogaInstance = {
@@ -126,6 +127,9 @@ export type SVGPresentationAttributes = {
   visibility?: Visibility;
   clipPath?: string;
   dominantBaseline?: DominantBaseline;
+  markerStart?: string;
+  markerMid?: string;
+  markerEnd?: string;
 };
 
 export type SafeSVGPresentationAttributes = {
@@ -145,6 +149,9 @@ export type SafeSVGPresentationAttributes = {
   visibility?: Visibility;
   clipPath?: SafeClipPathNode;
   dominantBaseline?: DominantBaseline;
+  markerStart?: SafeMarkerNode;
+  markerMid?: SafeMarkerNode;
+  markerEnd?: SafeMarkerNode;
 };
 
 export interface FormCommonProps extends NodeProps {

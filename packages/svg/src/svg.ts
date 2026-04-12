@@ -21,6 +21,7 @@ const TAG_NAME_MAP: Record<string, string> = {
   clippath: P.ClipPath,
   lineargradient: P.LinearGradient,
   radialgradient: P.RadialGradient,
+  marker: P.Marker,
   stop: P.Stop,
   image: P.Image,
 };
@@ -33,7 +34,6 @@ const SKIP_ELEMENTS = new Set([
   'pattern',
   'use',
   'symbol',
-  'marker',
   'animate',
   'animatetransform',
   'animatemotion',

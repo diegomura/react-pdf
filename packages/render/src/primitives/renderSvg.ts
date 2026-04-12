@@ -21,6 +21,7 @@ import renderSvgImage from './renderSvgImage';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
+import renderMarkers from '../svg/renderMarker';
 import { Context } from '../types';
 
 type Primitives = (typeof P)[keyof typeof P];
@@ -363,6 +364,7 @@ const drawChildren = (ctx: Context, node: SafeNode) => {
 
     clipPath(ctx, child);
     drawNode(ctx, child);
+    renderMarkers(ctx, child, drawNode);
     drawChildren(ctx, child);
 
     ctx.restore();

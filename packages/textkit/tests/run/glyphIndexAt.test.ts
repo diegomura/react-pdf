@@ -81,4 +81,28 @@ describe('run glyphIndexAt operator', () => {
     expect(glyphIndexAt(0, run)).toBe(0);
     expect(glyphIndexAt(1, run)).toBe(2);
   });
+
+  test('should return length for index past all glyph mappings', () => {
+    const run = {
+      start: 0,
+      end: 2,
+      attributes: {},
+      glyphIndices: [0, 1],
+    };
+
+    expect(glyphIndexAt(2, run)).toBe(2);
+    expect(glyphIndexAt(5, run)).toBe(2);
+  });
+
+  test('should return length for index past ligature mappings', () => {
+    const run = {
+      start: 0,
+      end: 5,
+      attributes: {},
+      glyphIndices: [0, 1, 2, 4],
+    };
+
+    expect(glyphIndexAt(5, run)).toBe(4);
+    expect(glyphIndexAt(10, run)).toBe(4);
+  });
 });

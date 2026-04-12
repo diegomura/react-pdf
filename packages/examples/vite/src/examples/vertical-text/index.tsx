@@ -61,7 +61,9 @@ const VerticalText = () => {
           Demonstrating writingMode: vertical-rl and vertical-lr for CJK text
         </Text>
 
-        <Text style={styles.sectionTitle}>vertical-rl (right to left columns)</Text>
+        <Text style={styles.sectionTitle}>
+          vertical-rl (right to left columns)
+        </Text>
 
         <View style={styles.row}>
           <View style={styles.card}>
@@ -88,7 +90,7 @@ const VerticalText = () => {
                 height: 200,
               }}
             >
-              すべての人間は、生まれながらにして自由であり、かつ尊厳と権利とについて平等である。
+              すべての人間は、生まれながらにして自由であり、かつ尊厳と権。
             </Text>
           </View>
         </View>
@@ -104,7 +106,7 @@ const VerticalText = () => {
                 height: 200,
               }}
             >
-              人人生而自由，在尊严和权利上一律平等。
+              人人生而自由，在尊严和权利。
             </Text>
           </View>
 
@@ -118,25 +120,34 @@ const VerticalText = () => {
                 height: 200,
               }}
             >
-              人人生而自由，在尊嚴和權利上一律平等。
+              人人生而自由，在尊嚴和權利。
             </Text>
           </View>
         </View>
+      </Page>
 
-        <Text style={styles.sectionTitle}>vertical-lr (left to right columns)</Text>
+      <Page style={styles.body}>
+        <Text style={styles.title}>Vertical Writing Mode</Text>
+        <Text style={styles.subtitle}>
+          Demonstrating writingMode: vertical-rl and vertical-lr for CJK text
+        </Text>
+
+        <Text style={styles.sectionTitle}>
+          vertical-lr (left to right columns)
+        </Text>
 
         <View style={styles.row}>
           <View style={styles.card}>
-            <Text style={styles.cardLabel}>Korean (vertical-lr)</Text>
+            <Text style={styles.cardLabel}>Japanese (vertical-lr)</Text>
             <Text
               style={{
                 writingMode: 'vertical-lr',
-                fontFamily: CJK.KOREAN,
+                fontFamily: CJK.JAPANESE,
                 fontSize: 14,
                 height: 160,
               }}
             >
-              왼쪽에서 오른쪽으로 열이 진행됩니다.
+              すべての人間は、生まれながらにして自由であり、かつ尊厳と権。
             </Text>
           </View>
 
@@ -146,15 +157,18 @@ const VerticalText = () => {
               style={{
                 writingMode: 'vertical-rl',
                 fontSize: 14,
-                height: 160,
+                height: 80,
               }}
             >
-              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Aspernatur repellat minima itaque.
             </Text>
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Auto-detected CJK (no fontFamily)</Text>
+        <Text style={styles.sectionTitle}>
+          Auto-detected CJK (no fontFamily)
+        </Text>
 
         <View style={styles.card}>
           <Text style={styles.cardLabel}>
@@ -167,7 +181,8 @@ const VerticalText = () => {
               height: 180,
             }}
           >
-            한국어 日本語 中文 mixed text
+            한국어 日本語 中文 mixed text 人人生而自由，在尊嚴和權利。 모든
+            사람은 의견의 자유와 표현의 자유에 대한 권리를 가진다.
           </Text>
         </View>
       </Page>

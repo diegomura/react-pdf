@@ -131,12 +131,12 @@ const verticalColumnHeight = (line) => {
 const transformVerticalLines = (lines, containerWidth, writingMode) => {
   if (!lines || lines.length === 0) return lines;
 
-  // Calculate total columns width (sum of line heights in horizontal space = column widths in vertical)
   let columnX = 0;
-  const columnWidth = lines.length > 0 && lines[0].box ? lines[0].box.height : 0;
 
   return lines.map((line, i) => {
     if (!line.box) return line;
+
+    const columnWidth = line.box.height; // each column's own width
 
     // In vertical-rl, columns go from right to left
     // In vertical-lr, columns go from left to right
@@ -150,11 +150,11 @@ const transformVerticalLines = (lines, containerWidth, writingMode) => {
     const newBox = {
       x,
       y: line.box.x, // horizontal x position becomes vertical y position
-      width: line.box.height, // line height becomes column width
+      width: columnWidth, // line height becomes column width
       height: verticalColumnHeight(line), // fontSize-based height to match rendering
     };
 
-    columnX += line.box.height;
+    columnX += columnWidth;
 
     return Object.assign({}, line, { box: newBox });
   });

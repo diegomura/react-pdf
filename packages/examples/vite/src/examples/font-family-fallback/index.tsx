@@ -129,21 +129,27 @@ const MyDoc = () => {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardLabel}>Built-in CJK — Korean (auto-registered)</Text>
+        <Text style={styles.cardLabel}>
+          Built-in CJK — Korean (auto-registered)
+        </Text>
         <Text style={{ fontFamily: CJK.KOREAN, fontSize: 14 }}>
-          한국어 텍스트 — no Font.register() needed
+          한국어 텍스트
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardLabel}>Built-in CJK — Japanese (auto-registered)</Text>
+        <Text style={styles.cardLabel}>
+          Built-in CJK — Japanese (auto-registered)
+        </Text>
         <Text style={{ fontFamily: CJK.JAPANESE, fontSize: 14 }}>
           日本語テキスト — フォント登録不要
         </Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.cardLabel}>Built-in CJK — Simplified Chinese (auto-registered)</Text>
+        <Text style={styles.cardLabel}>
+          Built-in CJK — Simplified Chinese (auto-registered)
+        </Text>
         <Text style={{ fontFamily: CJK.CHINESE_SIMPLIFIED, fontSize: 14 }}>
           简体中文文本 — 无需字体注册
         </Text>

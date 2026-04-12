@@ -32,9 +32,25 @@ const getLineBreak = (node: SafeTextNode, height: number) => {
   return slicedLine;
 };
 
-// Also receives contentArea in case it's needed
-const splitText = (node: SafeTextNode, height: number) => {
-  const slicedLineIndex = getLineBreak(node, height);
+const splitText = (
+  node: SafeTextNode,
+  height: number,
+  contentArea: number = Infinity,
+) => {
+  let slicedLineIndex = getLineBreak(node, height);
+
+  // When no lines fit on the current page but lines exist, check if the first
+  // line (e.g. a vertical text column) is taller than any page can accommodate.
+  // If so, force at least one line onto the current page to prevent an infinite
+  // pagination loop where the oversized line is endlessly pushed to the next page.
+  if (slicedLineIndex === 0 && node.lines.length > 0) {
+    const firstLineHeight = node.lines[0]?.box?.height || 0;
+
+    if (firstLineHeight > contentArea) {
+      slicedLineIndex = 1;
+    }
+  }
+
   const currentHeight = heightAtLineIndex(node, slicedLineIndex);
   const nextHeight = node.box.height - currentHeight;
 
@@ -55,6 +71,15 @@ const splitText = (node: SafeTextNode, height: number) => {
     lines: node.lines.slice(0, slicedLineIndex),
   });
 
+  const nextLines = node.lines.slice(slicedLineIndex);
+
+  // If no lines remain for the next page, stop splitting. This prevents an
+  // infinite pagination loop when all text content has been consumed but the
+  // node still has a fixed height (from style) larger than the page.
+  if (nextLines.length === 0) {
+    return [current, null];
+  }
+
   const next: SafeTextNode = Object.assign({}, node, {
     box: {
       ...node.box,
@@ -70,7 +95,7 @@ const splitText = (node: SafeTextNode, height: number) => {
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
     },
-    lines: node.lines.slice(slicedLineIndex),
+    lines: nextLines,
   });
 
   return [current, next];

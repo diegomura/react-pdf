@@ -164,7 +164,9 @@ const splitView = (node: SafeNode, height: number, contentArea: number) => {
 };
 
 const split = (node: SafeNode, height: number, contentArea: number) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+  isText(node)
+    ? splitText(node, height, contentArea)
+    : splitView(node, height, contentArea);
 
 const shouldResolveDynamicNodes = (node: SafeNode) => {
   const children = node.children || [];

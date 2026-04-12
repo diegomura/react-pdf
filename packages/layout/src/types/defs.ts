@@ -14,8 +14,8 @@ export type DefsNode = {
   children?: (
     | ClipPathNode
     | LinearGradientNode
-    | MarkerNode
     | RadialGradientNode
+    | MarkerNode
   )[];
 };
 
@@ -25,8 +25,8 @@ export type SafeDefsNode = Omit<DefsNode, 'children'> & {
   children?: (
     | SafeClipPathNode
     | SafeLinearGradientNode
-    | SafeMarkerNode
     | SafeRadialGradientNode
+    | SafeMarkerNode
   )[];
 };
 

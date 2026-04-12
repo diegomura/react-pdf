@@ -269,6 +269,7 @@ const parseDefsProps = (node: SafeNode): SafeNode => {
 
 const getMarkerContainer = (node: SafeNode): Container => {
   const props = node.props || {};
+
   const viewBox =
     'viewBox' in props
       ? (props.viewBox as {
@@ -291,22 +292,28 @@ const getMarkerContainer = (node: SafeNode): Container => {
   return { width: markerWidth, height: markerHeight };
 };
 
+const resolveMarkerChildren = (node: SafeNode): SafeNode => {
+  if (!node.children) return node;
+
+  const container = getMarkerContainer(node);
+
+  const resolveChild = compose(
+    resolveChildren(container),
+    resolveSvgNode(container),
+  );
+
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
+};
+
 const resolveDefsChildren = (node: SafeNode): SafeNode => {
   if (!node.children) return node;
 
   const children = node.children.map((child) => {
     const parsed = parseDefsProps(child);
 
-    // Marker children are SVG shapes that need full resolution
-    if (isMarker(parsed) && parsed.children) {
-      const container = getMarkerContainer(parsed);
-      const resolveChild = compose(
-        resolveChildren(container),
-        resolveSvgNode(container),
-      );
-      const markerChildren = parsed.children.map(resolveChild);
-      return Object.assign({}, parsed, { children: markerChildren });
-    }
+    if (isMarker(parsed)) return resolveMarkerChildren(parsed);
 
     return resolveDefsChildren(parsed);
   });

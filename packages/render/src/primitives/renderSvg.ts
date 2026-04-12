@@ -364,7 +364,7 @@ const drawChildren = (ctx: Context, node: SafeNode) => {
 
     clipPath(ctx, child);
     drawNode(ctx, child);
-    renderMarkers(ctx, child, drawNode, drawChildren);
+    renderMarkers(ctx, child, drawNode);
     drawChildren(ctx, child);
 
     ctx.restore();

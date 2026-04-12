@@ -5,11 +5,25 @@ import { Context } from '../types';
 import getMarkerPoints, { MarkerPoint } from './getMarkerPoints';
 
 type DrawNodeFn = (ctx: Context, node: SafeNode) => void;
-type DrawChildrenFn = (ctx: Context, node: SafeNode) => void;
 
 const RAD_TO_DEG = 180 / Math.PI;
 const DEFAULT_MARKER_WIDTH = 3;
 const DEFAULT_MARKER_HEIGHT = 3;
+
+const drawMarkerChildren = (
+  ctx: Context,
+  node: SafeNode,
+  drawNode: DrawNodeFn,
+) => {
+  const children = node.children || [];
+
+  children.forEach((child) => {
+    ctx.save();
+    drawNode(ctx, child);
+    drawMarkerChildren(ctx, child, drawNode);
+    ctx.restore();
+  });
+};
 
 const renderMarkerInstance = (
   ctx: Context,
@@ -18,7 +32,6 @@ const renderMarkerInstance = (
   strokeWidth: number,
   isStart: boolean,
   drawNode: DrawNodeFn,
-  drawChildren: DrawChildrenFn,
 ) => {
   const props = marker.props || {};
   const markerWidth = props.markerWidth ?? DEFAULT_MARKER_WIDTH;
@@ -61,13 +74,7 @@ const renderMarkerInstance = (
   }
 
   // 5. Render marker children
-  const children = marker.children || [];
-  children.forEach((child) => {
-    ctx.save();
-    drawNode(ctx, child as SafeNode);
-    drawChildren(ctx, child as SafeNode);
-    ctx.restore();
-  });
+  drawMarkerChildren(ctx, marker as SafeNode, drawNode);
 
   ctx.restore();
 };
@@ -84,12 +91,7 @@ const hasMarkers = (node: SafeNode): boolean => {
 
 const MARKER_TYPES = new Set([P.Line, P.Polyline, P.Polygon, P.Path]);
 
-const renderMarkers = (
-  ctx: Context,
-  node: SafeNode,
-  drawNode: DrawNodeFn,
-  drawChildren: DrawChildrenFn,
-) => {
+const renderMarkers = (ctx: Context, node: SafeNode, drawNode: DrawNodeFn) => {
   if (!hasMarkers(node)) return;
   if (!MARKER_TYPES.has(node.type)) return;
 
@@ -110,22 +112,13 @@ const renderMarkers = (
       strokeWidth,
       true,
       drawNode,
-      drawChildren,
     );
   }
 
   if ('markerMid' in props && props.markerMid && points.mid) {
     const marker = props.markerMid as SafeMarkerNode;
     points.mid.forEach((point) => {
-      renderMarkerInstance(
-        ctx,
-        marker,
-        point,
-        strokeWidth,
-        false,
-        drawNode,
-        drawChildren,
-      );
+      renderMarkerInstance(ctx, marker, point, strokeWidth, false, drawNode);
     });
   }
 
@@ -137,7 +130,6 @@ const renderMarkers = (
       strokeWidth,
       false,
       drawNode,
-      drawChildren,
     );
   }
 };

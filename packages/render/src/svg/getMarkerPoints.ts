@@ -1,9 +1,4 @@
 import * as P from '@react-pdf/primitives';
-import absPath from 'abs-svg-path';
-import parsePath from 'parse-svg-path';
-import normalizePath from 'normalize-svg-path';
-
-import parsePoints from './parsePoints';
 import {
   SafeLineNode,
   SafeNode,
@@ -11,6 +6,11 @@ import {
   SafePolygonNode,
   SafePolylineNode,
 } from '@react-pdf/layout';
+import absPath from 'abs-svg-path';
+import parsePath from 'parse-svg-path';
+import normalizePath from 'normalize-svg-path';
+
+import parsePoints from './parsePoints';
 
 export type MarkerPoint = {
   x: number;

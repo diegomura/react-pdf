@@ -843,12 +843,13 @@ export const MarkerArrowLine = () => (
       <Marker
         id="arrowhead"
         markerWidth="10"
-        markerHeight="7"
-        refX="10"
-        refY="3.5"
+        markerHeight="10"
+        refX="8"
+        refY="5"
         orient="auto"
+        markerUnits="userSpaceOnUse"
       >
-        <Polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#333" />
       </Marker>
     </Defs>
     <Line
@@ -895,12 +896,13 @@ export const MarkerAutoPath = () => (
       <Marker
         id="arrow-auto"
         markerWidth="10"
-        markerHeight="6"
-        refX="5"
-        refY="3"
+        markerHeight="10"
+        refX="8"
+        refY="5"
         orient="auto"
+        markerUnits="userSpaceOnUse"
       >
-        <Path d="M0,0 L10,3 L0,6 Z" fill="#2ecc71" />
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#2ecc71" />
       </Marker>
     </Defs>
     <Path
@@ -921,12 +923,13 @@ export const MarkerDoubleArrow = () => (
       <Marker
         id="arrow-reverse"
         markerWidth="10"
-        markerHeight="7"
-        refX="10"
-        refY="3.5"
+        markerHeight="10"
+        refX="8"
+        refY="5"
         orient="auto-start-reverse"
+        markerUnits="userSpaceOnUse"
       >
-        <Polygon points="0 0, 10 3.5, 0 7" fill="#9b59b6" />
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#9b59b6" />
       </Marker>
     </Defs>
     <Line

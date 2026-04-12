@@ -614,7 +614,7 @@ declare namespace ReactPDF {
     refY?: string | number;
     markerWidth?: string | number;
     markerHeight?: string | number;
-    orient?: string | number;
+    orient?: 'auto' | 'auto-start-reverse' | number;
     markerUnits?: 'strokeWidth' | 'userSpaceOnUse';
   }
 

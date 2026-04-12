@@ -30,9 +30,6 @@ const BASE_SVG_INHERITED_PROPS = [
   'textAlign',
   'visibility',
   'wordSpacing',
-  'markerStart',
-  'markerMid',
-  'markerEnd',
 ];
 
 // Do not inherit "x" for <tspan> elements from <text> parent

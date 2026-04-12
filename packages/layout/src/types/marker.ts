@@ -10,6 +10,8 @@ import { CircleNode, SafeCircleNode } from './circle';
 import { EllipseNode, SafeEllipseNode } from './ellipse';
 import { GNode, SafeGNode } from './g';
 
+type MarkerOrient = 'auto' | 'auto-start-reverse' | number;
+
 interface MarkerProps {
   id: string;
   viewBox?: string;
@@ -17,7 +19,7 @@ interface MarkerProps {
   refY?: string | number;
   markerWidth?: string | number;
   markerHeight?: string | number;
-  orient?: string | number;
+  orient?: MarkerOrient;
   markerUnits?: 'strokeWidth' | 'userSpaceOnUse';
 }
 
@@ -28,7 +30,7 @@ interface SafeMarkerProps {
   refY?: number;
   markerWidth?: number;
   markerHeight?: number;
-  orient?: string | number;
+  orient?: MarkerOrient;
   markerUnits?: 'strokeWidth' | 'userSpaceOnUse';
 }
 

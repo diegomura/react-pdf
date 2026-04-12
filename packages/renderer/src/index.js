@@ -1,4 +1,4 @@
-import FontStore from '@react-pdf/font';
+import FontStore, { CJK, CJK_FONT_FAMILIES } from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
 import PDFDocument from '@react-pdf/pdfkit';
 import layoutDocument from '@react-pdf/layout';
@@ -187,4 +187,4 @@ const StyleSheet = {
   create: (s) => s,
 };
 
-export { version, Font, StyleSheet, pdf, createRenderer };
+export { version, Font, StyleSheet, pdf, createRenderer, CJK, CJK_FONT_FAMILIES };

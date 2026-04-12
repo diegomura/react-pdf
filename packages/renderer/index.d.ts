@@ -742,6 +742,27 @@ declare namespace ReactPDF {
 
   export const Font: FontStore;
 
+  /**
+   * Built-in CJK font family names.
+   * These are registered automatically and lazily loaded from Google Fonts.
+   *
+   * @example
+   * <Text style={{ fontFamily: CJK.KOREAN }}>한국어</Text>
+   */
+  export const CJK: {
+    /** Simplified Chinese (Mainland China) */
+    readonly CHINESE_SIMPLIFIED: 'Noto Sans SC';
+    /** Traditional Chinese (Taiwan, Macau) */
+    readonly CHINESE_TRADITIONAL: 'Noto Sans TC';
+    /** Japanese (Hiragana, Katakana, Kanji) */
+    readonly JAPANESE: 'Noto Sans JP';
+    /** Korean (Hangul, Hanja) */
+    readonly KOREAN: 'Noto Sans KR';
+  };
+
+  /** @deprecated Use `CJK` instead */
+  export const CJK_FONT_FAMILIES: typeof CJK;
+
   export const StyleSheet: {
     create: <T extends Styles>(styles: T) => T;
   };

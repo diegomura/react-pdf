@@ -11,6 +11,11 @@ import {
 } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
+Font.register({
+  family: 'NotoSansJP',
+  src: 'https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEj75s.ttf',
+});
+
 const styles = StyleSheet.create({
   title: {
     margin: 20,
@@ -149,6 +154,38 @@ describe('text', () => {
           <Text
             style={style.text}
           >{`Potentieel broeikas${shy}gasemissie${shy}rapport`}</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should wrap CJK text at character boundaries', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 120]} style={{ padding: 10 }}>
+          <View style={{ width: 80, padding: 5, border: '1px solid #ccc' }}>
+            <Text style={{ fontFamily: 'NotoSansJP', fontSize: 12 }}>
+              本当に長いテキスト
+            </Text>
+          </View>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should wrap mixed CJK and Latin text', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 120]} style={{ padding: 10 }}>
+          <View style={{ width: 100, padding: 5, border: '1px solid #ccc' }}>
+            <Text style={{ fontFamily: 'NotoSansJP', fontSize: 12 }}>
+              Hello世界！これはテストです。
+            </Text>
+          </View>
         </Page>
       </Document>,
     );

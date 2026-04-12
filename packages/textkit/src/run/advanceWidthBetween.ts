@@ -13,7 +13,7 @@ import { Run } from '../types';
 const advanceWidthBetween = (start: number, end: number, run: Run) => {
   const runStart = run.start || 0;
   const glyphStartIndex = Math.max(0, glyphIndexAt(start - runStart, run));
-  const glyphEndIndex = Math.max(0, glyphIndexAt(end - runStart, run));
+  const glyphEndIndex = Math.max(0, glyphIndexAt(end - runStart - 1, run) + 1);
   const positions = (run.positions || []).slice(glyphStartIndex, glyphEndIndex);
 
   return positionsAdvanceWidth(positions);

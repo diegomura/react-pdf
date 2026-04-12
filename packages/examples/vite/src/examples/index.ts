@@ -23,6 +23,7 @@ import transformOrigin from './transform-origin';
 import forms from './forms';
 import responsiveImages from './responsive-images';
 import math from './math';
+import mermaid from './mermaid';
 import passwordProtection from './password-protection';
 import softHyphens from './soft-hyphens';
 
@@ -52,6 +53,7 @@ const EXAMPLES = [
   responsiveImages,
   forms,
   math,
+  mermaid,
   passwordProtection,
   softHyphens,
 ];

@@ -11,4 +11,7 @@ export default [
   'packages/renderer/vitest.browser.config.js',
   'packages/stylesheet',
   'packages/primitives',
+  'packages/svg',
+  'packages/math',
+  'packages/mermaid',
 ];

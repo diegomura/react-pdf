@@ -30,7 +30,7 @@ const measureText =
   (width, widthMode, height) => {
     if (isVerticalWritingMode(node)) {
       // For vertical text, after transformVerticalLines:
-      // - linesWidth returns the total width of all columns (sum of column widths, via max xAdvance of line boxes)
+      // - linesWidth returns the total width of all columns (sum of `line.box.width` across columns)
       // - linesHeight returns the column height (the max height among columns)
       if (widthMode === Yoga.MeasureMode.Exactly) {
         if (!node.lines)

@@ -4,6 +4,7 @@ import { castArray } from '@react-pdf/fns';
 
 import fetchEmojis from '../text/emoji';
 import fetchImage from '../image/fetchImage';
+import { containsCJK, getCJKFallbackFontFamilies } from '../text/cjk';
 import {
   SafeDocumentNode,
   SafeImageNode,
@@ -33,6 +34,7 @@ const fetchAssets = (
   const promises: Promise<void>[] = [];
   const listToExplore = [node];
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
+  let cjkDetected = false;
 
   while (listToExplore.length > 0) {
     const n = listToExplore.shift();
@@ -57,16 +59,31 @@ const fetchAssets = (
 
     if (typeof n === 'string') {
       promises.push(...fetchEmojis(n, emojiSource));
+      if (!cjkDetected && containsCJK(n)) cjkDetected = true;
     }
 
     if ('value' in n && typeof n.value === 'string') {
       promises.push(...fetchEmojis(n.value, emojiSource));
+      if (!cjkDetected && containsCJK(n.value)) cjkDetected = true;
     }
 
     if (n.children) {
       n.children.forEach((childNode) => {
         listToExplore.push(childNode);
       });
+    }
+  }
+
+  // Auto-load CJK fonts when CJK characters are detected in text content
+  if (cjkDetected && fontStore) {
+    const cjkFamilies = getCJKFallbackFontFamilies();
+    for (const family of cjkFamilies) {
+      promises.push(
+        fontStore.load({ fontFamily: family, fontStyle: 'normal', fontWeight: 400 }),
+      );
+      promises.push(
+        fontStore.load({ fontFamily: family, fontStyle: 'normal', fontWeight: 700 }),
+      );
     }
   }
 

@@ -12,6 +12,8 @@ import {
   Polyline,
   Text,
   Tspan,
+  Defs,
+  Marker,
 } from '@react-pdf/renderer';
 
 import type { SvgNode } from '@react-pdf/svg';
@@ -158,6 +160,18 @@ export function mapSvgNode(
         <Tspan key={key} {...(mappedProps as any)}>
           {childElements}
         </Tspan>
+      );
+    case P.Defs:
+      return (
+        <Defs key={key} {...(mappedProps as any)}>
+          {childElements}
+        </Defs>
+      );
+    case P.Marker:
+      return (
+        <Marker key={key} {...(mappedProps as any)}>
+          {childElements}
+        </Marker>
       );
     case P.TextInstance:
       return (node as any).value || null;

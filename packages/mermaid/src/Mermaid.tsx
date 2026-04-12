@@ -1,6 +1,7 @@
+import { parseSvg } from '@react-pdf/svg';
+
 import { mermaidToSvg } from './render';
 import { preprocessSvg } from './preprocessSvg';
-import { parseSvg } from '@react-pdf/svg';
 import { mapSvgNode } from './mapSvg';
 import type { MermaidRenderOptions } from './render';
 

@@ -39,7 +39,7 @@ function buildVariableMap(
 
   // Extract xychart-specific color variables from the SVG
   // beautiful-mermaid defines: --xychart-color-0, --xychart-color-1, etc. as CSS custom properties
-  const xyColorRegex = /--xychart-color-(\d+):\s*([^;}\s]+)/g;
+  const xyColorRegex = /--xychart-color-(\d+):\s*([^;}\n]+)/g;
   let xyMatch;
 
   while ((xyMatch = xyColorRegex.exec(svgString)) !== null) {
@@ -49,7 +49,7 @@ function buildVariableMap(
   }
 
   // Extract xychart bar fill variables
-  const xyBarFillRegex = /--xychart-bar-fill-(\d+):\s*([^;}\s]+)/g;
+  const xyBarFillRegex = /--xychart-bar-fill-(\d+):\s*([^;}\n]+)/g;
   let xyBarMatch;
 
   while ((xyBarMatch = xyBarFillRegex.exec(svgString)) !== null) {
@@ -86,7 +86,7 @@ function resolveVarReferences(
 
   // Handle color-mix() calls that may remain after var resolution
   result = result.replace(
-    /color-mix\(in srgb,\s*(#[0-9a-fA-F]{3,8})\s+(\d+)%,\s*(#[0-9a-fA-F]{3,8})\)/g,
+    /color-mix\(in srgb,\s*(#[0-9a-fA-F]{3,8})\s+(\d+)%,\s*(#[0-9a-fA-F]{3,8})(?:\s+\d+%)?\)/g,
     (_, color1, percent, color2) => colorMix(color1, Number(percent), color2),
   );
 
@@ -111,26 +111,45 @@ function extractColorsFromStyle(styleAttr: string): {
 }
 
 interface CssRule {
-  selectors: string[];
+  /** Optional tag name constraint (e.g. "path", "circle"). Null means any tag. */
+  tag: string | null;
+  /** Class names that must all be present on the element. */
+  classes: string[];
   properties: Record<string, string>;
 }
 
 /**
- * Parse simple CSS class rules from a `<style>` block.
- * Only handles single-class and multi-class selectors like `.foo`, `.foo.bar`.
+ * Parse a single CSS selector like ".foo.bar" or "path.foo" into tag + class list.
+ * Returns null for selectors that can't be parsed.
+ */
+function parseSelector(
+  selector: string,
+): { tag: string | null; classes: string[] } | null {
+  const trimmed = selector.trim();
+  if (!trimmed || !trimmed.includes('.')) return null;
+
+  const dotIndex = trimmed.indexOf('.');
+  const tag = dotIndex > 0 ? trimmed.substring(0, dotIndex) : null;
+  const classes = trimmed.substring(dotIndex).split('.').filter(Boolean);
+
+  if (classes.length === 0) return null;
+  return { tag, classes };
+}
+
+/**
+ * Parse CSS rules from a `<style>` block.
+ * Handles class selectors (`.foo`, `.foo.bar`), tag-qualified selectors
+ * (`path.foo`), and comma-separated selectors (`path.foo, line.foo`).
  */
 function parseCssRules(styleBlock: string): CssRule[] {
   const rules: CssRule[] = [];
-  const ruleRegex = /((?:\.[a-zA-Z0-9_-]+)+)\s*\{([^}]*)\}/g;
+  const ruleRegex = /([^{}]+)\{([^}]*)\}/g;
 
   let match;
 
   while ((match = ruleRegex.exec(styleBlock)) !== null) {
     const selectorStr = match[1].trim();
     const bodyStr = match[2].trim();
-
-    // Parse selector into class list: ".foo.bar" -> ["foo", "bar"]
-    const selectors = selectorStr.split('.').filter(Boolean);
 
     // Parse declarations
     const properties: Record<string, string> = {};
@@ -144,8 +163,16 @@ function parseCssRules(styleBlock: string): CssRule[] {
       if (prop && val) properties[prop] = val;
     }
 
-    if (selectors.length > 0 && Object.keys(properties).length > 0) {
-      rules.push({ selectors, properties });
+    if (Object.keys(properties).length === 0) continue;
+
+    // Handle comma-separated selectors: each produces its own rule
+    const selectors = selectorStr.split(',');
+
+    for (const sel of selectors) {
+      const parsed = parseSelector(sel);
+      if (!parsed) continue;
+
+      rules.push({ tag: parsed.tag, classes: parsed.classes, properties });
     }
   }
 
@@ -153,14 +180,16 @@ function parseCssRules(styleBlock: string): CssRule[] {
 }
 
 /**
- * Check if an element's class attribute matches all selectors in a CSS rule.
+ * Check if an element matches a CSS rule (tag + class selectors).
  */
-function classMatchesSelectors(
+function matchesRule(
+  tagName: string,
   classAttr: string,
-  selectors: string[],
+  rule: CssRule,
 ): boolean {
+  if (rule.tag && rule.tag !== tagName) return false;
   const classes = classAttr.split(/\s+/);
-  return selectors.every((sel) => classes.includes(sel));
+  return rule.classes.every((sel) => classes.includes(sel));
 }
 
 /**
@@ -175,7 +204,9 @@ function inlineCssStyles(
   const styleBlocks = svgString.match(/<style[\s\S]*?<\/style>/g);
   if (!styleBlocks) return svgString;
 
-  const allCss = styleBlocks.join('\n');
+  const allCss = styleBlocks
+    .map((block) => block.replace(/<\/?style[^>]*>/g, ''))
+    .join('\n');
   const rules = parseCssRules(allCss);
   if (rules.length === 0) return svgString;
 
@@ -184,10 +215,10 @@ function inlineCssStyles(
   return svgString.replace(
     /<(\w+)([^>]*class="([^"]*)"[^>]*)\/?>(?:<\/\1>)?/g,
     (match, tagName, attrs, classValue) => {
-      let inlineStyle = '';
+      const inlined: Record<string, string> = {};
 
       for (const rule of rules) {
-        if (classMatchesSelectors(classValue, rule.selectors)) {
+        if (matchesRule(tagName, classValue, rule)) {
           for (const [prop, val] of Object.entries(rule.properties)) {
             const resolved = resolveVarReferences(val, vars);
             // Only inline SVG presentation attributes that react-pdf supports
@@ -205,11 +236,17 @@ function inlineCssStyles(
               // Check if the attribute already exists on the element
               const attrRegex = new RegExp(`${prop}="`);
               if (!attrRegex.test(attrs)) {
-                inlineStyle += ` ${prop}="${resolved}"`;
+                // Later rules override earlier ones (CSS specificity)
+                inlined[prop] = resolved;
               }
             }
           }
         }
+      }
+
+      let inlineStyle = '';
+      for (const [prop, val] of Object.entries(inlined)) {
+        inlineStyle += ` ${prop}="${val}"`;
       }
 
       if (inlineStyle) {
@@ -235,7 +272,7 @@ function inlineCssStyles(
  * Preprocess an SVG string from beautiful-mermaid to make it compatible with react-pdf.
  *
  * This resolves CSS variables, inlines CSS class styles, removes `<style>` blocks,
- * strips `<marker>` elements, and removes unsupported attributes.
+ * and removes unsupported attributes.
  */
 export function preprocessSvg(
   svgString: string,
@@ -265,13 +302,6 @@ export function preprocessSvg(
 
   // Remove <style>...</style> blocks
   result = result.replace(/<style[\s\S]*?<\/style>/g, '');
-
-  // Remove <defs>...</defs> blocks (contain marker definitions)
-  result = result.replace(/<defs[\s\S]*?<\/defs>/g, '');
-
-  // Remove marker-end and marker-start attributes
-  result = result.replace(/\s*marker-end="[^"]*"/g, '');
-  result = result.replace(/\s*marker-start="[^"]*"/g, '');
 
   // Remove class attributes
   result = result.replace(/\s*class="[^"]*"/g, '');

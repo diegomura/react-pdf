@@ -11,28 +11,28 @@ describe('preprocessSvg', () => {
     expect(result).toContain('<rect');
   });
 
-  test('removes defs blocks', () => {
+  test('preserves defs blocks with markers', () => {
     const svg =
       '<svg><defs><marker id="arrow"><polygon points="0 0, 8 2.5, 0 5"/></marker></defs><rect fill="red"/></svg>';
     const result = preprocessSvg(svg, { fg: '#000000', bg: '#FFFFFF' });
 
-    expect(result).not.toContain('<defs>');
-    expect(result).not.toContain('<marker');
+    expect(result).toContain('<defs>');
+    expect(result).toContain('<marker');
     expect(result).toContain('<rect');
   });
 
-  test('removes marker-end attributes', () => {
+  test('preserves marker-end attributes', () => {
     const svg = '<svg><line marker-end="url(#arrow)" x1="0" y1="0"/></svg>';
     const result = preprocessSvg(svg, { fg: '#000000', bg: '#FFFFFF' });
 
-    expect(result).not.toContain('marker-end');
+    expect(result).toContain('marker-end');
   });
 
-  test('removes marker-start attributes', () => {
+  test('preserves marker-start attributes', () => {
     const svg = '<svg><line marker-start="url(#arrow)" x1="0" y1="0"/></svg>';
     const result = preprocessSvg(svg, { fg: '#000000', bg: '#FFFFFF' });
 
-    expect(result).not.toContain('marker-start');
+    expect(result).toContain('marker-start');
   });
 
   test('removes class attributes', () => {

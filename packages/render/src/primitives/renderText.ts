@@ -168,7 +168,15 @@ const renderRun = (ctx: Context, run: Run, vertical = false) => {
   ctx.fillOpacity(opacity);
 
   if (link) {
-    if (isSrcId(link)) {
+    if (vertical) {
+      const runAdvance = calcVerticalRunAdvance(run);
+      const columnWidth = fontSize || 12;
+      if (isSrcId(link)) {
+        ctx.goTo(0, 0, columnWidth, runAdvance, link.slice(1));
+      } else {
+        ctx.link(0, 0, columnWidth, runAdvance, link);
+      }
+    } else if (isSrcId(link)) {
       ctx.goTo(0, -height - descent, xAdvance, height, link.slice(1));
     } else {
       ctx.link(0, -height - descent, xAdvance, height, link);

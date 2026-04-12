@@ -47,6 +47,7 @@ const renderGlyphsVertical = (
 ): number => {
   const unitsPerEm = ctx._font.font.unitsPerEm || 1000;
   const encodedGlyphs = encodeGlyphs(ctx._font, glyphs);
+  const scale = fontSize / unitsPerEm;
 
   ctx.save();
 
@@ -77,7 +78,7 @@ const renderGlyphsVertical = (
     const x = (fontSize - glyphWidth) / 2;
 
     ctx.addContent(
-      `1 0 0 1 ${number(x + (pos.xOffset || 0))} ${number(y)} Tm`,
+      `1 0 0 1 ${number(x + (pos.xOffset || 0) * scale)} ${number(y + (pos.yOffset || 0) * scale)} Tm`,
     );
     ctx.addContent(`<${encodedGlyphs[i]}> Tj`);
 

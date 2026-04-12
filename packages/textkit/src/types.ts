@@ -81,6 +81,7 @@ export type Attributes = {
   underlineStyle?: string;
   verticalAlign?: string;
   wordSpacing?: number;
+  writingMode?: 'horizontal-tb' | 'vertical-rl' | 'vertical-lr';
   yOffset?: number;
 };
 

@@ -94,6 +94,7 @@ const handlers = {
   textOverflow: processNoopValue<'textOverflow'>,
   textTransform: processNoopValue<'textTransform'>,
   verticalAlign: processNoopValue<'verticalAlign'>,
+  writingMode: processNoopValue<'writingMode'>,
 };
 
 export default handlers;

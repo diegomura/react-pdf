@@ -408,4 +408,22 @@ describe('resolve stylesheet text', () => {
 
     expect(styles).toEqual({ verticalAlign: 'super' });
   });
+
+  test('should resolve writing mode horizontal-tb', () => {
+    const styles = resolveStyle({ writingMode: 'horizontal-tb' });
+
+    expect(styles).toEqual({ writingMode: 'horizontal-tb' });
+  });
+
+  test('should resolve writing mode vertical-rl', () => {
+    const styles = resolveStyle({ writingMode: 'vertical-rl' });
+
+    expect(styles).toEqual({ writingMode: 'vertical-rl' });
+  });
+
+  test('should resolve writing mode vertical-lr', () => {
+    const styles = resolveStyle({ writingMode: 'vertical-lr' });
+
+    expect(styles).toEqual({ writingMode: 'vertical-lr' });
+  });
 });

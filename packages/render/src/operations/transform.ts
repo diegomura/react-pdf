@@ -70,7 +70,10 @@ const applyTransformations = (ctx: Context, node: SafeNode) => {
   const { props, style } = node;
   const origin = [node.origin.left, node.origin.top];
   const propsTransform = 'transform' in props ? props.transform : undefined;
-  const operations = style?.transform || propsTransform || [];
+  const styleTransform = Array.isArray(style?.transform)
+    ? style.transform
+    : undefined;
+  const operations = styleTransform || propsTransform || [];
 
   operations.forEach((operation) => {
     applySingleTransformation(ctx, operation, origin);

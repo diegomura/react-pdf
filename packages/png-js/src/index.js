@@ -1,5 +1,8 @@
 import fs from 'fs';
-import zlib from 'zlib';
+import { inflate as nodeInflate } from 'zlib';
+import { unzlib as browserInflate } from 'fflate';
+
+const inflate = BROWSER ? browserInflate : nodeInflate;
 
 class PNG {
   static decode(path, fn) {
@@ -167,7 +170,7 @@ class PNG {
   }
 
   decodePixels(fn) {
-    return zlib.inflate(this.imgData, (err, data) => {
+    return inflate(new Uint8Array(this.imgData), (err, data) => {
       if (err) throw err;
 
       var pos = 0;

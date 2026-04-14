@@ -23,9 +23,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-pdf/png-js": "^3.0.0",
     "@react-pdf/svg": "^1.0.0",
-    "jay-peg": "^1.1.1"
+    "jay-peg": "^1.1.1",
+    "png-js": "^2.0.0"
   },
   "files": [
     "lib"

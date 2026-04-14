@@ -1,7 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
 import ignore from 'rollup-plugin-ignore';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import pkg from './package.json' with { type: 'json' };
 
@@ -17,7 +16,7 @@ const getExternal = ({ browser }) =>
   browser ? [...Object.keys(pkg.dependencies), 'zlib'] : ['fs', 'zlib'];
 
 const getPlugins = ({ browser }) => [
-  ...(browser ? [ignore(['fs']), nodePolyfills({ include: null })] : []),
+  ...(browser ? [ignore(['fs'])] : []),
   babel(babelConfig()),
   replace({
     preventAssignment: true,

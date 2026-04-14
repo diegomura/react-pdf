@@ -1,5 +1,16 @@
 # @react-pdf/stylesheet
 
+## 6.2.0
+
+### Minor Changes
+
+- [#3280](https://github.com/diegomura/react-pdf/pull/3280) [`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb) Thanks [@exoego](https://github.com/exoego)! - Support hsla and hwba color models
+
+### Patch Changes
+
+- Updated dependencies [[`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/types@2.11.0
+
 ## 6.1.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @react-pdf/pdfkit
 
+## 5.1.0
+
+### Minor Changes
+
+- [#3375](https://github.com/diegomura/react-pdf/pull/3375) [`ccfcc632`](https://github.com/diegomura/react-pdf/commit/ccfcc632313152a7752bbe76c6a81c27efc93ef4) Thanks [@diegomura](https://github.com/diegomura)! - Replace internal @react-pdf/png-js with upstream png-js package
+
 ## 5.0.0
 
 ### Major Changes

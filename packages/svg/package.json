@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/svg",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "description": "SVG parsing for react-pdf",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -23,7 +23,7 @@
     "lib"
   ],
   "dependencies": {
-    "@react-pdf/primitives": "^4.2.0"
+    "@react-pdf/primitives": "^4.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

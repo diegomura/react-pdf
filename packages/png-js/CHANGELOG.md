@@ -1,5 +1,15 @@
 # @react-pdf/png-js
 
+## 4.0.0
+
+### Major Changes
+
+- [`12fb406d`](https://github.com/diegomura/react-pdf/commit/12fb406d2255c285f854b4028c3aced3a0b5e1bb) Thanks [@diegomura](https://github.com/diegomura)! - Replace Buffer usage with Uint8Array and remove node polyfills from browser build
+
+### Patch Changes
+
+- [#3373](https://github.com/diegomura/react-pdf/pull/3373) [`2e2a634c`](https://github.com/diegomura/react-pdf/commit/2e2a634cf9e607e7ec2584c64bfe66ef73edc410) Thanks [@diegomura](https://github.com/diegomura)! - feat(png-js): use fflate
+
 ## 3.0.0
 
 ### Major Changes

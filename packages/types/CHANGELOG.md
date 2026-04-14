@@ -1,5 +1,18 @@
 # @react-pdf/types
 
+## 2.11.0
+
+### Minor Changes
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+### Patch Changes
+
+- Updated dependencies [[`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb), [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/stylesheet@6.2.0
+  - @react-pdf/primitives@4.3.0
+  - @react-pdf/font@4.0.7
+
 ## 2.10.0
 
 ### Minor Changes

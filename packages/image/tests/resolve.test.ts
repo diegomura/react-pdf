@@ -133,7 +133,7 @@ describe('image resolveImage', () => {
 
   test('Should render a local image with special characters in filename', async () => {
     const image = await resolveImage({
-      uri: './packages/image/tests/assets/special_filename_breaks_on_windows.jpg',
+      uri: './packages/image/tests/assets/special_filename_breaks_on_windows.jpg', //HC_UPDATE bring back to the weird one
     });
 
     expect(image?.data).toBeTruthy();

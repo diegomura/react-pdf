@@ -1,5 +1,21 @@
 # @react-pdf/render
 
+## 4.5.0
+
+### Minor Changes
+
+- [#3281](https://github.com/diegomura/react-pdf/pull/3281) [`0138fddd`](https://github.com/diegomura/react-pdf/commit/0138fddd1696780774ebe322d30c3210a5924a7d) Thanks [@exoego](https://github.com/exoego)! - feat: Support loading external SVG file via <Image src="foo.svg" />
+
+- [#3280](https://github.com/diegomura/react-pdf/pull/3280) [`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb) Thanks [@exoego](https://github.com/exoego)! - Support hsla and hwba color models
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+### Patch Changes
+
+- Updated dependencies [[`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/primitives@4.3.0
+  - @react-pdf/types@2.11.0
+
 ## 4.4.1
 
 ### Patch Changes

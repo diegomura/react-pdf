@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/image",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "license": "MIT",
   "description": "Parses the images in png or jpeg format for react-pdf document",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-pdf/svg": "^1.0.0",
+    "@react-pdf/svg": "^1.1.0",
     "jay-peg": "^1.1.1",
     "png-js": "^2.0.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/math",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "license": "MIT",
   "description": "Render LaTeX math expressions in react-pdf documents",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -23,11 +23,11 @@
     "lib"
   ],
   "dependencies": {
-    "@react-pdf/svg": "^1.0.0",
+    "@react-pdf/svg": "^1.1.0",
     "mathjax-full": "^3.2.2"
   },
   "peerDependencies": {
-    "@react-pdf/renderer": ">=4.4.1",
+    "@react-pdf/renderer": ">=4.5.0",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "devDependencies": {

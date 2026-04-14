@@ -110,6 +110,69 @@ describe('node shouldBreak', () => {
     expect(result).toEqual(true);
   });
 
+  test('should break when breakWhenNeeded is enabled and moving improves presence', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { wrap: true, breakWhenNeeded: true },
+        style: {},
+        children: [],
+        box: {
+          top: 700,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 400,
+          width: 200,
+        },
+      },
+      [],
+      1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 700,
+            width: 200,
+          },
+        },
+      ],
+    );
+
+    expect(result).toEqual(true);
+  });
+
+  test('should not break when breakWhenNeeded is enabled but the node is already first on the page', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { wrap: true, breakWhenNeeded: true },
+        style: {},
+        children: [],
+        box: {
+          top: 700,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 400,
+          width: 200,
+        },
+      },
+      [],
+      1000,
+      [],
+    );
+
+    expect(result).toEqual(false);
+  });
+
   test('should break when minPresenceAhead is large enough and there are overflowing siblings after the child', () => {
     const result = shouldBreak(
       {

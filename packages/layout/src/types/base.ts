@@ -75,6 +75,12 @@ export type NodeProps = {
    */
   break?: boolean;
   /**
+   * Move the element to the next page when it would otherwise start splitting
+   * in the remaining space, while still allowing it to continue across later
+   * pages.
+   */
+  breakWhenNeeded?: boolean;
+  /**
    * Hint that no page wrapping should occur between all sibling elements following the element within n points
    * @see https://react-pdf.org/advanced#orphan-&-widow-protection
    */

@@ -26,6 +26,6 @@
     "lib"
   ],
   "dependencies": {
-    "browserify-zlib": "^0.2.0"
+    "fflate": "^0.8.2"
   }
 }

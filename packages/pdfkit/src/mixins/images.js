@@ -1,3 +1,5 @@
+// TODO: Unify orientation changes
+
 import PDFImage from '../image';
 
 export default {

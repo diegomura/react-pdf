@@ -1,7 +1,7 @@
 import { last } from '@react-pdf/fns';
 import { AttributedString, Font, Run } from '../../types';
 
-const IGNORED_CODE_POINTS = [173];
+const IGNORED_CODE_POINTS = [173]; // U+00AD Soft Hyphen
 
 const getFontSize = (run: Run) => run.attributes.fontSize || 12;
 

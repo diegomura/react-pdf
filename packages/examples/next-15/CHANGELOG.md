@@ -1,5 +1,12 @@
 # next-15
 
+## 0.1.22
+
+### Patch Changes
+
+- Updated dependencies [[`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77)]:
+  - @react-pdf/renderer@4.5.1
+
 ## 0.1.21
 
 ### Patch Changes

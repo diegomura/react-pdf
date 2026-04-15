@@ -64,6 +64,7 @@ const pdf = (initialValue) => {
       ownerPassword,
       userPassword,
       permissions,
+      pageLayout,
       info: omitNils({
         Title: title,
         Author: author,
@@ -75,10 +76,6 @@ const pdf = (initialValue) => {
         ModificationDate: modificationDate,
       }),
     });
-
-    if (pageLayout) {
-      ctx._root.data.PageLayout = upperFirst(pageLayout);
-    }
 
     if (pageMode) {
       ctx._root.data.PageMode = upperFirst(pageMode);

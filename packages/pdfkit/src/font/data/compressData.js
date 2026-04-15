@@ -1,3 +1,5 @@
+// TODO: Unify completely
+
 import fs from 'fs';
 import url from 'url';
 import { basename, extname } from 'path';

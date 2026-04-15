@@ -1,3 +1,5 @@
+// TODO: Unify completely
+
 import AFMFont from './afm';
 import data from './data/index.json';
 import expandData from './data/expandData';

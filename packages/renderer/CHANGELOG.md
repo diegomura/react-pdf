@@ -1,5 +1,18 @@
 # @react-pdf/renderer
 
+## 4.5.1
+
+### Patch Changes
+
+- [#3386](https://github.com/diegomura/react-pdf/pull/3386) [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77) Thanks [@diegomura](https://github.com/diegomura)! - Add pdfkit table mixin as part of unification plan
+
+- Updated dependencies [[`598cf0c6`](https://github.com/diegomura/react-pdf/commit/598cf0c63f45211d0ef1fc7c0c84011e79c9d4c2), [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77)]:
+  - @react-pdf/pdfkit@5.1.1
+  - @react-pdf/font@4.0.8
+  - @react-pdf/layout@4.6.1
+  - @react-pdf/render@4.5.1
+  - @react-pdf/types@2.11.1
+
 ## 4.5.0
 
 ### Minor Changes

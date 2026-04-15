@@ -1,5 +1,13 @@
 # @react-pdf/font
 
+## 4.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`598cf0c6`](https://github.com/diegomura/react-pdf/commit/598cf0c63f45211d0ef1fc7c0c84011e79c9d4c2), [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77)]:
+  - @react-pdf/pdfkit@5.1.1
+  - @react-pdf/types@2.11.1
+
 ## 4.0.7
 
 ### Patch Changes

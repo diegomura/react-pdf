@@ -1,5 +1,15 @@
 # @react-pdf/textkit
 
+## 6.3.0
+
+### Minor Changes
+
+- [#3369](https://github.com/diegomura/react-pdf/pull/3369) [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): advanceWidthBetween regression with glyphIndices
+
+### Patch Changes
+
+- [#3384](https://github.com/diegomura/react-pdf/pull/3384) [`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae) Thanks [@diegomura](https://github.com/diegomura)! - Fix NFD decomposition breaking Latin diacritics rendering by only decomposing complex scripts (Bengali, Devanagari, etc.) that need it for glyph mapping
+
 ## 6.2.0
 
 ### Minor Changes

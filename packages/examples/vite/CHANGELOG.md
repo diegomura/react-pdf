@@ -1,5 +1,14 @@
 # @react-pdf/examples
 
+## 3.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77)]:
+  - @react-pdf/renderer@4.5.1
+  - @react-pdf/math@2.0.1
+  - @react-pdf/mermaid@2.0.1
+
 ## 3.5.0
 
 ### Minor Changes

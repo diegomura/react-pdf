@@ -1,5 +1,14 @@
 # @react-pdf/layout
 
+## 4.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae), [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63)]:
+  - @react-pdf/textkit@6.3.0
+  - @react-pdf/types@2.11.1
+  - @react-pdf/stylesheet@6.2.1
+
 ## 4.6.0
 
 ### Minor Changes

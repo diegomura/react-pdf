@@ -1,5 +1,13 @@
 # @react-pdf/pdfkit
 
+## 5.1.1
+
+### Patch Changes
+
+- [#3387](https://github.com/diegomura/react-pdf/pull/3387) [`598cf0c6`](https://github.com/diegomura/react-pdf/commit/598cf0c63f45211d0ef1fc7c0c84011e79c9d4c2) Thanks [@diegomura](https://github.com/diegomura)! - Update pdfkit png logic, fixing interlacing rendering
+
+- [#3386](https://github.com/diegomura/react-pdf/pull/3386) [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77) Thanks [@diegomura](https://github.com/diegomura)! - Add pdfkit table mixin as part of unification plan
+
 ## 5.1.0
 
 ### Minor Changes

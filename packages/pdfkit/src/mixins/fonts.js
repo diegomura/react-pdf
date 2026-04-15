@@ -1,3 +1,4 @@
+// TODO: Unify completely
 import PDFFontFactory from '../font_factory';
 
 export default {

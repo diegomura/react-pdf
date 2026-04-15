@@ -15,8 +15,8 @@ class PDFImage {
     } else if (src instanceof ArrayBuffer) {
       data = Buffer.from(new Uint8Array(src));
     } else {
-      let match;
-      if ((match = /^data:.+?;base64,(.*)$/.exec(src))) {
+      const match = /^data:.+?;base64,(.*)$/.exec(src);
+      if (match) {
         data = Buffer.from(match[1], 'base64');
       } else {
         data = fs.readFileSync(src);

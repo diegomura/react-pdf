@@ -1,3 +1,5 @@
+// TODO: Unify completely
+
 import LineWrapper from '../line_wrapper';
 import PDFObject from '../object';
 import { cosine, sine } from '../utils';

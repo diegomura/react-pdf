@@ -1,13 +1,12 @@
-/* Custom fork start */
 const DEFAULT_OPTIONS = {
   top: 0,
   left: 0,
   zoom: 0,
+  // TODO: Switch to true
   fit: false,
   pageNumber: null,
-  expanded: false
+  expanded: false,
 };
-/* Custom fork end */
 
 class PDFOutline {
   constructor(document, parent, title, dest, options = DEFAULT_OPTIONS) {
@@ -16,7 +15,6 @@ class PDFOutline {
     this.outlineData = {};
 
     if (dest !== null) {
-      /* Custom fork start */
       const destWidth = dest.data.MediaBox[2];
       const destHeight = dest.data.MediaBox[3];
       const top = destHeight - (options.top || 0);
@@ -26,7 +24,6 @@ class PDFOutline {
       this.outlineData['Dest'] = options.fit
         ? [dest, 'Fit']
         : [dest, 'XYZ', left, top, zoom];
-      /* Custom fork end */
     }
 
     if (parent !== null) {
@@ -42,21 +39,18 @@ class PDFOutline {
   }
 
   addItem(title, options = DEFAULT_OPTIONS) {
-    /* Custom fork start */
     const pages = this.document._root.data.Pages.data.Kids;
-
     const dest =
-      options.pageNumber !== null
+      options.pageNumber != null
         ? pages[options.pageNumber]
         : this.document.page.dictionary;
-    /* Custom fork end */
 
     const result = new PDFOutline(
       this.document,
       this.dictionary,
       title,
       dest,
-      options
+      options,
     );
     this.children.push(result);
 

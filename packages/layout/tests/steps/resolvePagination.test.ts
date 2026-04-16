@@ -458,4 +458,330 @@ describe('pagination step', () => {
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
   });
+
+  test('should split auto-height container with multiple children across pages', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: {},
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { height: 40 },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 40 },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 40 },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Total content 120 > page height 100, should produce 2 pages
+    expect(layout.children.length).toBe(2);
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    expect(page1.box!.height).toBe(100);
+    // Page 1: 2 full children + partial 3rd (split at page boundary)
+    expect(page1.children![0].children!.length).toBe(3);
+    expect(page1.children![0].children![0].box!.height).toBe(40);
+    expect(page1.children![0].children![1].box!.height).toBe(40);
+    expect(page1.children![0].children![2].box!.height).toBe(20);
+
+    // Page 2: remainder of 3rd child
+    expect(page2.children![0].children!.length).toBe(1);
+    expect(page2.children![0].children![0].box!.height).toBe(20);
+  });
+
+  test('should split deeply nested views (3+ levels) across pages', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: {},
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: {},
+                  props: {},
+                  children: [
+                    {
+                      type: 'VIEW',
+                      style: { height: 60 },
+                      props: {},
+                      children: [],
+                    },
+                    {
+                      type: 'VIEW',
+                      style: { height: 60 },
+                      props: {},
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Total content 120 > page height 100, should produce 2 pages
+    expect(layout.children.length).toBe(2);
+
+    // Page 1 outermost container
+    const page1Outer = layout.children[0].children![0];
+    expect(page1Outer.box!.height).toBe(100);
+
+    // Page 2 should have remaining content
+    const page2Outer = layout.children[1].children![0];
+    expect(page2Outer.children!.length).toBeGreaterThan(0);
+  });
+
+  test('should correctly split page with padding and verify dimensions', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: {
+            width: 100,
+            height: 100,
+            paddingTop: 10,
+            paddingBottom: 10,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 50 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { height: 50 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Content area = 100 - 10 - 10 = 80, content = 100 > 80
+    expect(layout.children.length).toBe(2);
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    expect(page1.box!.height).toBe(100);
+    // First child should be on page 1
+    expect(
+      page1.children!.filter((c) => c.type !== 'TEXT_INSTANCE').length,
+    ).toBeGreaterThanOrEqual(1);
+    // Second page should have remaining content
+    expect(page2.children!.length).toBeGreaterThan(0);
+  });
+
+  test('should produce correct pages for many children (50+)', async () => {
+    const yoga = await loadYoga();
+
+    const children = Array.from({ length: 50 }, () => ({
+      type: 'VIEW' as const,
+      style: { height: 20 },
+      props: {},
+      children: [],
+    }));
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children,
+        },
+      ],
+    });
+
+    // 50 children × 20 height = 1000 total, page height 100
+    // Should produce 10 pages
+    expect(layout.children.length).toBe(10);
+
+    // Each page should have 5 children (100 / 20 = 5)
+    for (const page of layout.children) {
+      expect(page.children!.length).toBe(5);
+    }
+
+    // Last page's last child should have correct position
+    const lastPage = layout.children[9];
+    const lastChild = lastPage.children![4];
+    expect(lastChild.box!.height).toBe(20);
+  });
+
+  test('should split flex-grow children across pages', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 60, flexGrow: 1 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { height: 60, flexGrow: 1 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Total 120 > page 100, should split
+    expect(layout.children.length).toBe(2);
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    expect(page1.box!.height).toBe(100);
+    expect(page2.children!.length).toBeGreaterThan(0);
+  });
+
+  test('should handle large non-wrappable element (like Image)', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 30 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { height: 80 },
+              props: { wrap: false },
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    // 30 + 80 = 110 > 100, and second view can't wrap
+    expect(layout.children.length).toBe(2);
+
+    // Page 1: only first view
+    expect(layout.children[0].children!.length).toBe(1);
+    expect(layout.children[0].children![0].box!.height).toBe(30);
+
+    // Page 2: large non-wrappable view
+    expect(layout.children[1].children!.length).toBe(1);
+    expect(layout.children[1].children![0].box!.height).toBe(80);
+  });
+
+  test('should handle oversized non-wrappable element larger than page', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 150 },
+              props: { wrap: false },
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { height: 30 },
+              props: {},
+              children: [],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Oversized non-wrappable element overflows page 1, remaining child on next page
+    expect(layout.children.length).toBeGreaterThanOrEqual(2);
+
+    // Last page should have the small view
+    const lastPage = layout.children[layout.children.length - 1];
+    expect(lastPage.children!.length).toBeGreaterThan(0);
+  });
 });

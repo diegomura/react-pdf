@@ -285,13 +285,15 @@ const splitPage = (
   const nextBox = omit('height', page.box);
   const nextProps = omit('bookmark', page.props);
 
-  const nextPage = relayout(
-    Object.assign({}, page, {
-      props: nextProps,
-      box: nextBox,
-      children: nextChilds,
-    }),
-  );
+  // Skip relayout for nextPage: it's only used as input to the next splitPage call,
+  // never added to final output. Children already have correct box values
+  // (splitNodes adjusts box.top, split() computes dimensions for split nodes).
+  // The currentPage from the next iteration will be properly relayed out.
+  const nextPage = Object.assign({}, page, {
+    props: nextProps,
+    box: nextBox,
+    children: nextChilds,
+  }) as SafePageNode;
 
   return [currentPage, nextPage];
 };

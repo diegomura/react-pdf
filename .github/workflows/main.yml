@@ -13,7 +13,7 @@ concurrency:
 env:
   FORCE_COLOR: 2
   HUSKY: 0
-  NODE_VERSION: 20
+  NODE_VERSION: 24
 
 jobs:
   lint:

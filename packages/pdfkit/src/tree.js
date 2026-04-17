@@ -22,7 +22,7 @@ class PDFTree {
   toString() {
     // Needs to be sorted by key
     const sortedKeys = Object.keys(this._items).sort((a, b) =>
-      this._compareKeys(a, b)
+      this._compareKeys(a, b),
     );
 
     const out = ['<<'];
@@ -30,15 +30,15 @@ class PDFTree {
       const first = sortedKeys[0],
         last = sortedKeys[sortedKeys.length - 1];
       out.push(
-        `  /Limits ${PDFObject.convert([this._dataForKey(first), this._dataForKey(last)])}`
+        `  /Limits ${PDFObject.convert([this._dataForKey(first), this._dataForKey(last)])}`,
       );
     }
     out.push(`  /${this._keysName()} [`);
     for (let key of sortedKeys) {
       out.push(
         `    ${PDFObject.convert(this._dataForKey(key))} ${PDFObject.convert(
-          this._items[key]
-        )}`
+          this._items[key],
+        )}`,
       );
     }
     out.push(']');

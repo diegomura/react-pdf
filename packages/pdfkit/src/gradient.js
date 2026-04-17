@@ -74,7 +74,7 @@ class PDFGradient {
         Domain: [0, 1],
         C0: this.stops[i + 0][1],
         C1: this.stops[i + 1][1],
-        N: 1
+        N: 1,
       });
 
       stops.push(fn);
@@ -90,7 +90,7 @@ class PDFGradient {
         Domain: [0, 1],
         Functions: stops,
         Bounds: bounds,
-        Encode: encode
+        Encode: encode,
       });
 
       fn.end();
@@ -105,7 +105,7 @@ class PDFGradient {
       Type: 'Pattern',
       PatternType: 2,
       Shading: shader,
-      Matrix: this.matrix.map(number)
+      Matrix: this.matrix.map(number),
     });
 
     pattern.end();
@@ -130,14 +130,14 @@ class PDFGradient {
         Group: {
           Type: 'Group',
           S: 'Transparency',
-          CS: 'DeviceGray'
+          CS: 'DeviceGray',
         },
         Resources: {
           ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'],
           Pattern: {
-            Sh1: grad
-          }
-        }
+            Sh1: grad,
+          },
+        },
       });
 
       form.write('/Pattern cs /Sh1 scn');
@@ -148,8 +148,8 @@ class PDFGradient {
         SMask: {
           Type: 'Mask',
           S: 'Luminosity',
-          G: form
-        }
+          G: form,
+        },
       });
 
       gstate.end();
@@ -165,12 +165,12 @@ class PDFGradient {
         Resources: {
           ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'],
           Pattern: {
-            Sh1: pattern
+            Sh1: pattern,
           },
           ExtGState: {
-            Gs1: gstate
-          }
-        }
+            Gs1: gstate,
+          },
+        },
       });
 
       opacityPattern.write('/Gs1 gs /Pattern cs /Sh1 scn');
@@ -194,7 +194,7 @@ class PDFGradient {
       m0 * m21 + m2 * m22,
       m1 * m21 + m3 * m22,
       m0 * dx + m2 * dy + m4,
-      m1 * dx + m3 * dy + m5
+      m1 * dx + m3 * dy + m5,
     ];
 
     if (!this.embedded || m.join(' ') !== this.matrix.join(' ')) {
@@ -221,7 +221,7 @@ class PDFLinearGradient extends PDFGradient {
       ColorSpace: this._colorSpace,
       Coords: [this.x1, this.y1, this.x2, this.y2],
       Function: fn,
-      Extend: [true, true]
+      Extend: [true, true],
     });
   }
 
@@ -248,7 +248,7 @@ class PDFRadialGradient extends PDFGradient {
       ColorSpace: this._colorSpace,
       Coords: [this.x1, this.y1, this.r1, this.x2, this.y2, this.r2],
       Function: fn,
-      Extend: [true, true]
+      Extend: [true, true],
     });
   }
 
@@ -260,7 +260,7 @@ class PDFRadialGradient extends PDFGradient {
       this.r1,
       this.x2,
       this.y2,
-      this.r2
+      this.r2,
     );
   }
 }

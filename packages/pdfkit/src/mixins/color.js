@@ -12,7 +12,7 @@ export default {
     this._opacityRegistry = {};
     this._opacityCount = 0;
     this._patternCount = 0;
-    return (this._gradCount = 0);
+    this._gradCount = 0;
   },
 
   _normalizeColor(color) {
@@ -21,7 +21,7 @@ export default {
         if (color.length === 4) {
           color = color.replace(
             /#([0-9A-F])([0-9A-F])([0-9A-F])/i,
-            '#$1$1$2$2$3$3'
+            '#$1$1$2$2$3$3',
           );
         }
         const hex = parseInt(color.slice(1), 16);
@@ -181,7 +181,7 @@ export default {
     const color = new SpotColor(this, name, C, M, Y, K);
     this.spotColors[name] = color;
     return this;
-  }
+  },
 };
 
 var namedColors = {
@@ -331,5 +331,5 @@ var namedColors = {
   white: [255, 255, 255],
   whitesmoke: [245, 245, 245],
   yellow: [255, 255, 0],
-  yellowgreen: [154, 205, 50]
+  yellowgreen: [154, 205, 50],
 };

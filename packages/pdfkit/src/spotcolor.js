@@ -13,8 +13,8 @@ export default class SpotColor {
         C1: this.values.map((value) => value / 100),
         FunctionType: 2,
         Domain: [0, 1],
-        N: 1
-      }
+        N: 1,
+      },
     ]);
     this.ref.end();
   }

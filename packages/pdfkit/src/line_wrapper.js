@@ -11,6 +11,7 @@ class LineWrapper extends EventEmitter {
     this.document = document;
     this.horizontalScaling = options.horizontalScaling || 100;
     this.indent = ((options.indent || 0) * this.horizontalScaling) / 100;
+    this.indentAllLines = options.indentAllLines || false;
     this.characterSpacing =
       ((options.characterSpacing || 0) * this.horizontalScaling) / 100;
     this.wordSpacing =
@@ -56,14 +57,14 @@ class LineWrapper extends EventEmitter {
       }
 
       // otherwise we start the next line without indent
-      return this.once('line', () => {
+      this.once('line', () => {
         this.document.x -= indent;
         this.lineWidth += indent;
         if (options.continued && !this.continuedX) {
           this.continuedX = this.indent;
         }
         if (!options.continued) {
-          return (this.continuedX = 0);
+          this.continuedX = 0;
         }
       });
     });
@@ -76,7 +77,7 @@ class LineWrapper extends EventEmitter {
       }
       this.lastLine = true;
 
-      return this.once('line', () => {
+      this.once('line', () => {
         this.document.y += options.paragraphGap || 0;
         options.align = align;
         return (this.lastLine = false);
@@ -85,10 +86,10 @@ class LineWrapper extends EventEmitter {
   }
 
   wordWidth(word) {
-    return (
+    return PDFNumber(
       this.document.widthOfString(word, this) +
-      this.characterSpacing +
-      this.wordSpacing
+        this.characterSpacing +
+        this.wordSpacing,
     );
   }
 
@@ -110,7 +111,7 @@ class LineWrapper extends EventEmitter {
       var shouldContinue;
       let word = text.slice(
         (last != null ? last.position : undefined) || 0,
-        bk.position
+        bk.position,
       );
       let w =
         wordWidths[word] != null
@@ -285,6 +286,7 @@ class LineWrapper extends EventEmitter {
         // if we've reached the edge of the page,
         // continue on a new page or column
         if (PDFNumber(this.document.y + lh) > this.maxY) {
+          this.emit('sectionEnd', options, this);
           const shouldContinue = this.nextSection();
 
           // stop if we reached the maximum height
@@ -293,6 +295,7 @@ class LineWrapper extends EventEmitter {
             buffer = '';
             return false;
           }
+          this.emit('sectionStart', options, this);
         }
 
         // reset the space left and buffer
@@ -328,15 +331,13 @@ class LineWrapper extends EventEmitter {
         this.continuedX = 0;
       }
       this.continuedX += options.textWidth || 0;
-      return (this.document.y = y);
+      this.document.y = y;
     } else {
-      return (this.document.x = this.startX);
+      this.document.x = this.startX;
     }
   }
 
   nextSection(options) {
-    this.emit('sectionEnd', options, this);
-
     if (++this.column > this.columns) {
       // if a max height was specified by the user, we're done.
       // otherwise, the default is to make a new page at the bottom.
@@ -348,7 +349,13 @@ class LineWrapper extends EventEmitter {
       this.column = 1;
       this.startY = this.document.page.margins.top;
       this.maxY = this.document.page.maxY();
-      this.document.x = this.startX;
+      if (this.indentAllLines) {
+        const indent = this.continuedX || this.indent;
+        this.document.x += indent;
+        this.lineWidth -= indent;
+      } else {
+        this.document.x = this.startX;
+      }
       if (this.document._fillColor) {
         this.document.fillColor(...this.document._fillColor);
       }
@@ -359,7 +366,6 @@ class LineWrapper extends EventEmitter {
       this.emit('columnBreak', options, this);
     }
 
-    this.emit('sectionStart', options, this);
     return true;
   }
 }

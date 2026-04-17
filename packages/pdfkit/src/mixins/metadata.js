@@ -60,15 +60,15 @@ export default {
     this.appendXML(
       `
         <rdf:Description rdf:about="" xmlns:pdf="http://ns.adobe.com/pdf/1.3/">
-            <pdf:Producer>${this.info.Creator}</pdf:Producer>`,
-      false
+            <pdf:Producer>${this.info.Producer}</pdf:Producer>`,
+      false,
     );
 
     if (this.info.Keywords) {
       this.appendXML(
         `
             <pdf:Keywords>${this.info.Keywords}</pdf:Keywords>`,
-        false
+        false,
       );
     }
 
@@ -90,12 +90,12 @@ export default {
       this.metadataRef = this.ref({
         length: this.metadata.getLength(),
         Type: 'Metadata',
-        Subtype: 'XML'
+        Subtype: 'XML',
       });
       this.metadataRef.compress = false;
       this.metadataRef.write(Buffer.from(this.metadata.getXML(), 'utf-8'));
       this.metadataRef.end();
       this._root.data.Metadata = this.metadataRef;
     }
-  }
+  },
 };

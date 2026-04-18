@@ -30,12 +30,12 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "browserify-zlib": "^0.2.0",
     "@noble/ciphers": "^1.0.0",
     "@noble/hashes": "^1.6.0",
     "fontkit": "^2.0.2",
     "js-md5": "^0.8.3",
     "linebreak": "^1.1.0",
+    "pako": "^2.1.0",
     "png-js": "^2.0.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },

@@ -1,4 +1,4 @@
-import zlib from 'zlib';
+import { deflate } from 'pako';
 import PNG from 'png-js';
 
 class PNGImage {
@@ -142,8 +142,8 @@ class PNGImage {
         i += skipByteCount;
       }
 
-      this.imgData = zlib.deflateSync(imgData);
-      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      this.imgData = deflate(imgData);
+      this.alphaChannel = deflate(alphaChannel);
       return this.finalize();
     });
   }
@@ -161,17 +161,17 @@ class PNGImage {
 
       // For interlaced images, re-encode the decoded pixel data
       if (isInterlaced) {
-        this.imgData = zlib.deflateSync(Buffer.from(pixels));
+        this.imgData = deflate(pixels);
       }
 
-      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      this.alphaChannel = deflate(alphaChannel);
       return this.finalize();
     });
   }
 
   decodeData() {
     this.image.decodePixels((pixels) => {
-      this.imgData = zlib.deflateSync(pixels);
+      this.imgData = deflate(pixels);
       this.finalize();
     });
   }

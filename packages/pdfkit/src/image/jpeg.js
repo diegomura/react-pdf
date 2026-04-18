@@ -1,6 +1,14 @@
+import {
+  readUInt16BE,
+  readUInt16LE,
+  readUInt32BE,
+  readUInt32LE,
+  toBinaryString,
+} from '../binary';
+
 /**
  * Parse EXIF orientation from JPEG buffer
- * @param {Buffer} data - JPEG image data
+ * @param {Uint8Array} data - JPEG image data
  * @returns {number|null} Orientation value (1-8) or null if not found
  */
 const parseExifOrientation = (data) => {
@@ -13,7 +21,7 @@ const parseExifOrientation = (data) => {
     while (pos < data.length && data[pos] !== 0xff) pos++;
     if (pos >= data.length - 4) return null;
 
-    const marker = data.readUInt16BE(pos);
+    const marker = readUInt16BE(data, pos);
     pos += 2;
 
     // SOS marker - image data starts, stop searching
@@ -23,28 +31,28 @@ const parseExifOrientation = (data) => {
     if ((marker >= 0xffd0 && marker <= 0xffd9) || marker === 0xff01) continue;
 
     if (pos + 2 > data.length) return null;
-    const segmentLength = data.readUInt16BE(pos);
+    const segmentLength = readUInt16BE(data, pos);
 
     // APP1 (EXIF) marker
     if (marker === 0xffe1 && pos + 8 <= data.length) {
-      const exifHeader = data.subarray(pos + 2, pos + 8).toString('binary');
+      const exifHeader = toBinaryString(data.subarray(pos + 2, pos + 8));
       if (exifHeader === 'Exif\x00\x00') {
         const tiffStart = pos + 8;
         if (tiffStart + 8 > data.length) return null;
 
         // Byte order
-        const byteOrder = data
-          .subarray(tiffStart, tiffStart + 2)
-          .toString('ascii');
+        const byteOrder = toBinaryString(
+          data.subarray(tiffStart, tiffStart + 2),
+        );
         const isLittleEndian = byteOrder === 'II';
         if (!isLittleEndian && byteOrder !== 'MM') return null;
 
         const read16 = isLittleEndian
-          ? (o) => data.readUInt16LE(o)
-          : (o) => data.readUInt16BE(o);
+          ? (o) => readUInt16LE(data, o)
+          : (o) => readUInt16BE(data, o);
         const read32 = isLittleEndian
-          ? (o) => data.readUInt32LE(o)
-          : (o) => data.readUInt32BE(o);
+          ? (o) => readUInt32LE(data, o)
+          : (o) => readUInt32BE(data, o);
 
         // Verify TIFF magic number (42)
         if (read16(tiffStart + 2) !== 42) return null;

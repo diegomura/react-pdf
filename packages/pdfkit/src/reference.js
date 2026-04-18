@@ -3,7 +3,7 @@ PDFReference - represents a reference to another object in the PDF object heirar
 By Devon Govett
 */
 
-import zlib from 'zlib';
+import pako from 'pako';
 import stream from 'stream';
 import { concat, fromBinaryString } from './binary';
 import PDFObject from './object';
@@ -21,22 +21,9 @@ class PDFReference extends stream.Writable {
     this.data = data;
 
     this.gen = 0;
-    this.deflate = null;
     this.compress = this.document.compress && !this.data.Filter;
     this.uncompressedLength = 0;
     this.chunks = [];
-  }
-
-  initDeflate() {
-    this.data.Filter = 'FlateDecode';
-
-    this.deflate = zlib.createDeflate();
-    this.deflate.on('data', (chunk) => {
-      this.chunks.push(chunk);
-      return (this.data.Length += chunk.length);
-    });
-
-    return this.deflate.on('end', this.finalize);
   }
 
   _write(chunk, encoding, callback) {
@@ -49,26 +36,14 @@ class PDFReference extends stream.Writable {
       this.data.Length = 0;
     }
 
-    if (this.compress) {
-      if (!this.deflate) {
-        this.initDeflate();
-      }
-      this.deflate.write(chunk);
-    } else {
-      this.chunks.push(chunk);
-      this.data.Length += chunk.length;
-    }
+    this.chunks.push(chunk);
+    this.data.Length += chunk.length;
 
     return callback();
   }
 
   end() {
     super.end(...arguments);
-
-    if (this.deflate) {
-      return this.deflate.end();
-    }
-
     return this.finalize();
   }
 
@@ -81,6 +56,11 @@ class PDFReference extends stream.Writable {
 
     if (this.chunks.length) {
       let buffer = concat(this.chunks);
+
+      if (this.compress) {
+        this.data.Filter = 'FlateDecode';
+        buffer = pako.deflate(buffer);
+      }
 
       if (encryptFn) {
         buffer = encryptFn(buffer);

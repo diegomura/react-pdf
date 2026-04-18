@@ -5,6 +5,7 @@ By Devon Govett
 
 import zlib from 'zlib';
 import stream from 'stream';
+import { concat, fromBinaryString } from './binary';
 import PDFObject from './object';
 
 class PDFReference extends stream.Writable {
@@ -40,7 +41,7 @@ class PDFReference extends stream.Writable {
 
   _write(chunk, encoding, callback) {
     if (!(chunk instanceof Uint8Array)) {
-      chunk = Buffer.from(chunk + '\n', 'binary');
+      chunk = fromBinaryString(chunk + '\n');
     }
 
     this.uncompressedLength += chunk.length;
@@ -79,7 +80,7 @@ class PDFReference extends stream.Writable {
       : null;
 
     if (this.chunks.length) {
-      let buffer = Buffer.concat(this.chunks);
+      let buffer = concat(this.chunks);
 
       if (encryptFn) {
         buffer = encryptFn(buffer);

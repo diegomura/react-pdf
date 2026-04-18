@@ -1,4 +1,5 @@
 import PDFFontFactory from '../font_factory';
+import { CM_TO_IN, IN_TO_PT, MM_TO_CM, PC_TO_PT, PX_TO_IN } from '../utils';
 
 export default {
   initFonts() {
@@ -9,6 +10,9 @@ export default {
     // Font state
     this._fontSize = 12;
     this._font = null;
+
+    // rem size is fixed per document as the document is the root element
+    this._remSize = 12;
 
     this._registeredFonts = {};
 
@@ -83,9 +87,88 @@ export default {
   registerFont(name, src, family) {
     this._registeredFonts[name] = {
       src,
-      family
+      family,
     };
 
     return this;
-  }
+  },
+
+  /**
+   * Convert a {@link Size} into a point measurement
+   *
+   * @param {Size | boolean | undefined} size - The size to convert
+   * @param {Size | boolean | undefined} defaultValue - The default value when undefined
+   * @param {PDFPage} page - The page used for computing font sizes
+   * @param {number} [percentageWidth] - The value to use for computing size based on `%`
+   *
+   * @returns number
+   */
+  sizeToPoint(
+    size,
+    defaultValue = 0,
+    page = this.page,
+    percentageWidth = undefined,
+  ) {
+    if (!percentageWidth) percentageWidth = this._fontSize;
+    if (typeof defaultValue !== 'number')
+      defaultValue = this.sizeToPoint(defaultValue);
+    if (size === undefined) return defaultValue;
+    if (typeof size === 'number') return size;
+    if (typeof size === 'boolean') return Number(size);
+
+    const match = String(size).match(
+      /((\d+)?(\.\d+)?)(em|in|px|cm|mm|pc|ex|ch|rem|vw|vh|vmin|vmax|%|pt)?/,
+    );
+    if (!match) throw new Error(`Unsupported size '${size}'`);
+    let multiplier;
+    switch (match[4]) {
+      case 'em':
+        multiplier = this._fontSize;
+        break;
+      case 'in':
+        multiplier = IN_TO_PT;
+        break;
+      case 'px':
+        multiplier = PX_TO_IN * IN_TO_PT;
+        break;
+      case 'cm':
+        multiplier = CM_TO_IN * IN_TO_PT;
+        break;
+      case 'mm':
+        multiplier = MM_TO_CM * CM_TO_IN * IN_TO_PT;
+        break;
+      case 'pc':
+        multiplier = PC_TO_PT;
+        break;
+      case 'ex':
+        multiplier = this.currentLineHeight();
+        break;
+      case 'ch':
+        multiplier = this.widthOfString('0');
+        break;
+      case 'rem':
+        multiplier = this._remSize;
+        break;
+      case 'vw':
+        multiplier = page.width / 100;
+        break;
+      case 'vh':
+        multiplier = page.height / 100;
+        break;
+      case 'vmin':
+        multiplier = Math.min(page.width, page.height) / 100;
+        break;
+      case 'vmax':
+        multiplier = Math.max(page.width, page.height) / 100;
+        break;
+      case '%':
+        multiplier = percentageWidth / 100;
+        break;
+      case 'pt':
+      default:
+        multiplier = 1;
+    }
+
+    return multiplier * Number(match[1]);
+  },
 };

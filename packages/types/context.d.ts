@@ -64,7 +64,13 @@ export interface Context {
   ellipse(x: number, y: number, r1: number, r2?: number): this;
   quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): this;
   image(src: any, x?: number, y?: number, options?: ImageOption): Context;
-  roundedRect(x: number, y: number, w: number, h: number, r?: number): this;
+  roundedRect(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    borderRadius?: number | number[],
+  ): this;
   bezierCurveTo(
     cp1x: number,
     cp1y: number,

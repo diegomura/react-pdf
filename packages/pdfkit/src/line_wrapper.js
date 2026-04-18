@@ -1,13 +1,12 @@
-import { EventEmitter } from 'events';
 import LineBreaker from 'linebreak';
 import { PDFNumber } from './utils';
 
 const SOFT_HYPHEN = '\u00AD';
 const HYPHEN = '-';
 
-class LineWrapper extends EventEmitter {
+class LineWrapper {
   constructor(document, options) {
-    super();
+    this._listeners = Object.create(null);
     this.document = document;
     this.horizontalScaling = options.horizontalScaling || 100;
     this.indent = ((options.indent || 0) * this.horizontalScaling) / 100;
@@ -83,6 +82,25 @@ class LineWrapper extends EventEmitter {
         return (this.lastLine = false);
       });
     });
+  }
+
+  on(event, listener) {
+    (this._listeners[event] || (this._listeners[event] = [])).push(listener);
+  }
+
+  once(event, listener) {
+    const wrapper = (...args) => {
+      const listeners = this._listeners[event];
+      listeners.splice(listeners.indexOf(wrapper), 1);
+      listener(...args);
+    };
+    this.on(event, wrapper);
+  }
+
+  emit(event, ...args) {
+    const listeners = this._listeners[event];
+    if (!listeners) return;
+    for (const listener of listeners.slice()) listener(...args);
   }
 
   wordWidth(word) {

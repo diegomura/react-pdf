@@ -1,5 +1,3 @@
-// TODO: Unify completely
-
 import SVGPath from '../path';
 import PDFObject from '../object';
 

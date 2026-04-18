@@ -1,5 +1,13 @@
 # @react-pdf/layout
 
+## 4.6.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.2
+  - @react-pdf/stylesheet@6.2.2
+
 ## 4.6.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @react-pdf/pdfkit
 
+## 5.1.2
+
+### Patch Changes
+
+- [#3401](https://github.com/diegomura/react-pdf/pull/3401) [`d41a8207`](https://github.com/diegomura/react-pdf/commit/d41a8207fb06a56e60fcb53ac0e18ce27e7d32d6) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): replace events import in line_wrapper.js with inline emitter
+
+- [#3400](https://github.com/diegomura/react-pdf/pull/3400) [`c2da5098`](https://github.com/diegomura/react-pdf/commit/c2da5098ccf0b7ec298fd3a8d57e6ba849e51fa3) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): use byte-level PNG magic check in image.js
+
+- [#3398](https://github.com/diegomura/react-pdf/pull/3398) [`30dc2a47`](https://github.com/diegomura/react-pdf/commit/30dc2a475a731e9a976533d9024e1e72d885c7f4) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove Buffer dependency from EXIF orientation parser
+
 ## 5.1.1
 
 ### Patch Changes

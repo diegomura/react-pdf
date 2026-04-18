@@ -4,6 +4,7 @@ By Devon Govett
 */
 
 import fs from 'fs';
+import { fromBase64 } from './binary';
 import JPEG from './image/jpeg';
 import PNG from './image/png';
 
@@ -17,7 +18,7 @@ class PDFImage {
     } else {
       const match = /^data:.+?;base64,(.*)$/.exec(src);
       if (match) {
-        data = Buffer.from(match[1], 'base64');
+        data = fromBase64(match[1]);
       } else {
         data = fs.readFileSync(src);
         if (!data) {
@@ -28,7 +29,12 @@ class PDFImage {
 
     if (data[0] === 0xff && data[1] === 0xd8) {
       return new JPEG(data, label);
-    } else if (data[0] === 0x89 && data.toString('ascii', 1, 4) === 'PNG') {
+    } else if (
+      data[0] === 0x89 &&
+      data[1] === 0x50 &&
+      data[2] === 0x4e &&
+      data[3] === 0x47
+    ) {
       return new PNG(data, label);
     } else {
       throw new Error('Unknown image format.');

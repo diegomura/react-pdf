@@ -13,7 +13,7 @@ concurrency:
 env:
   FORCE_COLOR: 2
   HUSKY: 0
-  NODE_VERSION: 20
+  NODE_VERSION: 24
 
 jobs:
   lint:
@@ -80,8 +80,8 @@ jobs:
     strategy:
       matrix:
         # We aim to test all maintained LTS versions of Node.js as well as the latest stable version
-        node_version: [20, 22]
-        react_version: [16, 17, 18]
+        node_version: [20, 22, 24]
+        react_version: [16, 17, 18, 19]
 
     steps:
       - name: Checkout

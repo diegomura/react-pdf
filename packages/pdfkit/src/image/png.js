@@ -1,4 +1,4 @@
-import zlib from 'zlib';
+import pako from 'pako';
 import PNG from 'png-js';
 
 class PNGImage {
@@ -48,7 +48,7 @@ class PNGImage {
     } else {
       // embed the color palette in the PDF as an object stream
       const palette = this.document.ref();
-      palette.end(Buffer.from(this.image.palette));
+      palette.end(new Uint8Array(this.image.palette));
 
       // build the color space array for the image
       this.obj.data['ColorSpace'] = [
@@ -126,8 +126,8 @@ class PNGImage {
       let a, p;
       const colorCount = this.image.colors;
       const pixelCount = this.width * this.height;
-      const imgData = Buffer.alloc(pixelCount * colorCount);
-      const alphaChannel = Buffer.alloc(pixelCount);
+      const imgData = new Uint8Array(pixelCount * colorCount);
+      const alphaChannel = new Uint8Array(pixelCount);
 
       let i = (p = a = 0);
       const len = pixels.length;
@@ -142,8 +142,8 @@ class PNGImage {
         i += skipByteCount;
       }
 
-      this.imgData = zlib.deflateSync(imgData);
-      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      this.imgData = pako.deflate(imgData);
+      this.alphaChannel = pako.deflate(alphaChannel);
       return this.finalize();
     });
   }
@@ -152,7 +152,7 @@ class PNGImage {
     const transparency = this.image.transparency.indexed;
     const isInterlaced = this.image.interlaceMethod === 1;
     return this.image.decodePixels((pixels) => {
-      const alphaChannel = Buffer.alloc(this.width * this.height);
+      const alphaChannel = new Uint8Array(this.width * this.height);
 
       let i = 0;
       for (let j = 0, end = pixels.length; j < end; j++) {
@@ -161,17 +161,17 @@ class PNGImage {
 
       // For interlaced images, re-encode the decoded pixel data
       if (isInterlaced) {
-        this.imgData = zlib.deflateSync(Buffer.from(pixels));
+        this.imgData = pako.deflate(pixels);
       }
 
-      this.alphaChannel = zlib.deflateSync(alphaChannel);
+      this.alphaChannel = pako.deflate(alphaChannel);
       return this.finalize();
     });
   }
 
   decodeData() {
     this.image.decodePixels((pixels) => {
-      this.imgData = zlib.deflateSync(pixels);
+      this.imgData = pako.deflate(pixels);
       this.finalize();
     });
   }

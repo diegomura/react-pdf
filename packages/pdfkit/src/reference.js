@@ -3,15 +3,12 @@ PDFReference - represents a reference to another object in the PDF object heirar
 By Devon Govett
 */
 
-import zlib from 'zlib';
-import stream from 'stream';
+import pako from 'pako';
+import { concat, fromBinaryString } from './binary';
 import PDFObject from './object';
 
-class PDFReference extends stream.Writable {
+class PDFReference {
   constructor(document, id, data) {
-    super({ decodeStrings: false });
-
-    this.finalize = this.finalize.bind(this);
     this.document = document;
     this.id = id;
     if (data == null) {
@@ -20,27 +17,14 @@ class PDFReference extends stream.Writable {
     this.data = data;
 
     this.gen = 0;
-    this.deflate = null;
     this.compress = this.document.compress && !this.data.Filter;
     this.uncompressedLength = 0;
     this.chunks = [];
   }
 
-  initDeflate() {
-    this.data.Filter = 'FlateDecode';
-
-    this.deflate = zlib.createDeflate();
-    this.deflate.on('data', (chunk) => {
-      this.chunks.push(chunk);
-      return (this.data.Length += chunk.length);
-    });
-
-    return this.deflate.on('end', this.finalize);
-  }
-
-  _write(chunk, encoding, callback) {
+  write(chunk) {
     if (!(chunk instanceof Uint8Array)) {
-      chunk = Buffer.from(chunk + '\n', 'binary');
+      chunk = fromBinaryString(chunk + '\n');
     }
 
     this.uncompressedLength += chunk.length;
@@ -48,26 +32,12 @@ class PDFReference extends stream.Writable {
       this.data.Length = 0;
     }
 
-    if (this.compress) {
-      if (!this.deflate) {
-        this.initDeflate();
-      }
-      this.deflate.write(chunk);
-    } else {
-      this.chunks.push(chunk);
-      this.data.Length += chunk.length;
-    }
-
-    return callback();
+    this.chunks.push(chunk);
+    this.data.Length += chunk.length;
   }
 
-  end() {
-    super.end(...arguments);
-
-    if (this.deflate) {
-      return this.deflate.end();
-    }
-
+  end(chunk) {
+    if (chunk != null) this.write(chunk);
     return this.finalize();
   }
 
@@ -79,7 +49,12 @@ class PDFReference extends stream.Writable {
       : null;
 
     if (this.chunks.length) {
-      let buffer = Buffer.concat(this.chunks);
+      let buffer = concat(this.chunks);
+
+      if (this.compress) {
+        this.data.Filter = 'FlateDecode';
+        buffer = pako.deflate(buffer);
+      }
 
       if (encryptFn) {
         buffer = encryptFn(buffer);

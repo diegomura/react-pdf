@@ -33,7 +33,7 @@ class PDFSecurity {
       infoStr += `${key}: ${info[key].valueOf()}\n`;
     }
 
-    return Buffer.from(md5Hash(infoStr));
+    return md5Hash(infoStr);
   }
 
   static generateRandomWordArray(bytes) {
@@ -157,8 +157,8 @@ class PDFSecurity {
       encDict.StrF = 'StdCF';
     }
     encDict.R = r;
-    encDict.O = Buffer.from(ownerPasswordEntry);
-    encDict.U = Buffer.from(userPasswordEntry);
+    encDict.O = ownerPasswordEntry;
+    encDict.U = userPasswordEntry;
     encDict.P = permissions;
   }
 
@@ -214,12 +214,12 @@ class PDFSecurity {
     encDict.StmF = 'StdCF';
     encDict.StrF = 'StdCF';
     encDict.R = 5;
-    encDict.O = Buffer.from(ownerPasswordEntry);
-    encDict.OE = Buffer.from(ownerEncryptionKeyEntry);
-    encDict.U = Buffer.from(userPasswordEntry);
-    encDict.UE = Buffer.from(userEncryptionKeyEntry);
+    encDict.O = ownerPasswordEntry;
+    encDict.OE = ownerEncryptionKeyEntry;
+    encDict.U = userPasswordEntry;
+    encDict.UE = userEncryptionKeyEntry;
     encDict.P = permissions;
-    encDict.Perms = Buffer.from(permsEntry);
+    encDict.Perms = permsEntry;
   }
 
   getEncryptFn(obj, gen) {
@@ -240,7 +240,7 @@ class PDFSecurity {
       let key = md5Hash(digest);
       const keyLen = Math.min(16, this.keyBits / 8 + 5);
       key = key.slice(0, keyLen);
-      return (buffer) => Buffer.from(rc4(new Uint8Array(buffer), key));
+      return (buffer) => rc4(buffer, key);
     }
 
     let key;
@@ -255,8 +255,8 @@ class PDFSecurity {
     const iv = PDFSecurity.generateRandomWordArray(16);
 
     return (buffer) => {
-      const encrypted = aesCbcEncrypt(new Uint8Array(buffer), key, iv, true);
-      return Buffer.from(concatBytes(iv, encrypted));
+      const encrypted = aesCbcEncrypt(buffer, key, iv, true);
+      return concatBytes(iv, encrypted);
     };
   }
 

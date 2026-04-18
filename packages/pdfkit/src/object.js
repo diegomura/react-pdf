@@ -5,6 +5,12 @@ By Devon Govett
 
 import PDFReference from './reference';
 import PDFNameTree from './name_tree';
+import {
+  fromBinaryString,
+  fromUtf16BEWithBOM,
+  toBinaryString,
+  toHex,
+} from './binary';
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
 
@@ -20,22 +26,6 @@ const escapable = {
   ')': '\\)'
 };
 
-// Convert little endian UTF-16 to big endian
-const swapBytes = function (buff) {
-  const l = buff.length;
-  if (l & 0x01) {
-    throw new Error('Buffer length must be even');
-  } else {
-    for (let i = 0, end = l - 1; i < end; i += 2) {
-      const a = buff[i];
-      buff[i] = buff[i + 1];
-      buff[i + 1] = a;
-    }
-  }
-
-  return buff;
-};
-
 class PDFObject {
   static convert(object, encryptFn = null) {
     // String literals are converted to the PDF name type
@@ -45,7 +35,7 @@ class PDFObject {
 
     // String objects are converted to PDF strings (UTF-16)
     if (object instanceof String) {
-      let string = object;
+      const string = object;
       // Detect if this is a unicode string
       let isUnicode = false;
       for (let i = 0, end = string.length; i < end; i++) {
@@ -55,31 +45,26 @@ class PDFObject {
         }
       }
 
-      // If so, encode it as big endian UTF-16
-      let stringBuffer;
-      if (isUnicode) {
-        stringBuffer = swapBytes(Buffer.from(`\ufeff${string}`, 'utf16le'));
-      } else {
-        stringBuffer = Buffer.from(string.valueOf(), 'ascii');
-      }
+      let bytes = isUnicode
+        ? fromUtf16BEWithBOM(string.valueOf())
+        : fromBinaryString(string.valueOf());
 
-      // Encrypt the string when necessary
       if (encryptFn) {
-        string = encryptFn(stringBuffer).toString('binary');
-      } else {
-        string = stringBuffer.toString('binary');
+        bytes = encryptFn(bytes);
       }
 
       // Escape characters as required by the spec
-      string = string.replace(escapableRe, (c) => escapable[c]);
+      const escaped = toBinaryString(bytes).replace(
+        escapableRe,
+        (c) => escapable[c],
+      );
 
-      return `(${string})`;
-
-      // Buffers are converted to PDF hex strings
+      return `(${escaped})`;
     }
 
-    if (Buffer.isBuffer(object)) {
-      return `<${object.toString('hex')}>`;
+    // Byte arrays are converted to PDF hex strings
+    if (object instanceof Uint8Array) {
+      return `<${toHex(object)}>`;
     }
 
     if (object instanceof PDFReference || object instanceof PDFNameTree) {
@@ -98,7 +83,7 @@ class PDFObject {
 
       // Encrypt the string when necessary
       if (encryptFn) {
-        string = encryptFn(Buffer.from(string, 'ascii')).toString('binary');
+        string = toBinaryString(encryptFn(fromBinaryString(string)));
         string = string.replace(escapableRe, (c) => escapable[c]);
       }
 
@@ -106,7 +91,7 @@ class PDFObject {
     }
 
     if (Array.isArray(object)) {
-      const items = Array.from(object)
+      const items = object
         .map((e) => PDFObject.convert(e, encryptFn))
         .join(' ');
       return `[${items}]`;

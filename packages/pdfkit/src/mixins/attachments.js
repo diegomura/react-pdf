@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { fromBase64 } from '../binary';
 import { md5Hex } from '../crypto/md5';
 
 export default {
@@ -28,17 +29,17 @@ export default {
     if (!src) {
       throw new Error('No src specified');
     }
-    if (Buffer.isBuffer(src)) {
+    if (src instanceof Uint8Array) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = Buffer.from(new Uint8Array(src));
+      data = new Uint8Array(src);
     } else {
       const match = /^data:(.*?);base64,(.*)$/.exec(src);
       if (match) {
         if (match[1]) {
           refBody.Subtype = match[1].replace('/', '#2F');
         }
-        data = Buffer.from(match[2], 'base64');
+        data = fromBase64(match[2]);
       } else {
         data = fs.readFileSync(src);
         if (!data) {

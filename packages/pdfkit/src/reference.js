@@ -4,15 +4,11 @@ By Devon Govett
 */
 
 import pako from 'pako';
-import stream from 'stream';
 import { concat, fromBinaryString } from './binary';
 import PDFObject from './object';
 
-class PDFReference extends stream.Writable {
+class PDFReference {
   constructor(document, id, data) {
-    super({ decodeStrings: false });
-
-    this.finalize = this.finalize.bind(this);
     this.document = document;
     this.id = id;
     if (data == null) {
@@ -26,7 +22,7 @@ class PDFReference extends stream.Writable {
     this.chunks = [];
   }
 
-  _write(chunk, encoding, callback) {
+  write(chunk) {
     if (!(chunk instanceof Uint8Array)) {
       chunk = fromBinaryString(chunk + '\n');
     }
@@ -38,12 +34,10 @@ class PDFReference extends stream.Writable {
 
     this.chunks.push(chunk);
     this.data.Length += chunk.length;
-
-    return callback();
   }
 
-  end() {
-    super.end(...arguments);
+  end(chunk) {
+    if (chunk != null) this.write(chunk);
     return this.finalize();
   }
 

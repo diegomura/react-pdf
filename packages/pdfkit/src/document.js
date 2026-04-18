@@ -3,7 +3,7 @@ PDFDocument - represents an entire PDF document
 By Devon Govett
 */
 
-import stream from 'stream';
+import MiniReadable from './mini-stream';
 import { fromBinaryString } from './binary';
 import PDFObject from './object';
 import PDFReference from './reference';
@@ -25,9 +25,9 @@ import SubsetMixin from './mixins/subsets';
 import TableMixin from './mixins/table';
 import MetadataMixin from './mixins/metadata';
 
-class PDFDocument extends stream.Readable {
+class PDFDocument extends MiniReadable {
   constructor(options = {}) {
-    super(options);
+    super();
     this.options = options;
 
     // PDF version
@@ -254,9 +254,6 @@ class PDFDocument extends stream.Readable {
     this._waiting++;
     return ref;
   }
-
-  _read() {}
-  // do nothing, but this method is required by node
 
   _write(data) {
     if (!(data instanceof Uint8Array)) {

@@ -36,8 +36,7 @@
     "js-md5": "^0.8.3",
     "linebreak": "^1.1.0",
     "pako": "^2.1.0",
-    "png-js": "^2.0.0",
-    "vite-compatible-readable-stream": "^3.6.1"
+    "png-js": "^2.0.0"
   },
   "devDependencies": {
     "iconv-lite": "^0.4.13"

@@ -12,6 +12,16 @@ export const toBinaryString = (bytes) => {
   return out;
 };
 
+export const fromBase64 = (b64) => {
+  const binary = atob(b64);
+  const len = binary.length;
+  const out = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    out[i] = binary.charCodeAt(i);
+  }
+  return out;
+};
+
 export const readUInt16BE = (bytes, offset = 0) =>
   ((bytes[offset] << 8) | bytes[offset + 1]) >>> 0;
 

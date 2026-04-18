@@ -1,59 +1,35 @@
-let cx;
-let cy;
-let px;
-let py;
-let sx;
-let sy;
+let cx, cy, px, py, sx, sy;
 
 cx = cy = px = py = sx = sy = 0;
 
-// parseDataPath copy pasted from svgo
-// https://github.com/svg/svgo/blob/e4918ccdd1a2b5831defe0f00c1286744b479448/lib/path.js
-
-/**
- * @typedef {'M' | 'm' | 'Z' | 'z' | 'L' | 'l' | 'H' | 'h' | 'V' | 'v' | 'C' | 'c' | 'S' | 's' | 'Q' | 'q' | 'T' | 't' | 'A' | 'a'} PathDataCommand
- */
-
-/**
- * @typedef {Object} PathDataItem
- * @property {PathDataCommand} command
- * @property {number[]} args
- */
-
-const argsCountPerCommand = {
-  M: 2,
-  m: 2,
-  Z: 0,
-  z: 0,
-  L: 2,
-  l: 2,
-  H: 1,
-  h: 1,
-  V: 1,
-  v: 1,
+const parameters = {
+  A: 7,
+  a: 7,
   C: 6,
   c: 6,
-  S: 4,
-  s: 4,
+  H: 1,
+  h: 1,
+  L: 2,
+  l: 2,
+  M: 2,
+  m: 2,
   Q: 4,
   q: 4,
+  S: 4,
+  s: 4,
   T: 2,
   t: 2,
-  A: 7,
-  a: 7
+  V: 1,
+  v: 1,
+  Z: 0,
+  z: 0,
 };
 
-/**
- * @type {(c: string) => c is PathDataCommand}
- */
-const isCommand = (c) => {
-  return c in argsCountPerCommand;
+const isCommand = function (c) {
+  return c in parameters;
 };
 
-/**
- * @type {(c: string) => boolean}
- */
-const isWsp = (c) => {
+const isWsp = function (c) {
   const codePoint = c.codePointAt(0);
   return (
     codePoint === 0x20 ||
@@ -63,10 +39,7 @@ const isWsp = (c) => {
   );
 };
 
-/**
- * @type {(c: string) => boolean}
- */
-const isDigit = (c) => {
+const isDigit = function (c) {
   const codePoint = c.codePointAt(0);
   if (codePoint == null) {
     return false;
@@ -74,17 +47,10 @@ const isDigit = (c) => {
   return 48 <= codePoint && codePoint <= 57;
 };
 
-/**
- * @typedef {'none' | 'sign' | 'whole' | 'decimal_point' | 'decimal' | 'e' | 'exponent_sign' | 'exponent'} ReadNumberState
- */
-
-/**
- * @type {(string: string, cursor: number) => [number, number | null]}
- */
-const readNumber = (string, cursor) => {
+const readNumber = function (string, cursor) {
   let i = cursor;
   let value = '';
-  let state = /** @type {ReadNumberState} */ ('none');
+  let state = 'none';
   for (; i < string.length; i += 1) {
     const c = string[i];
     if (c === '+' || c === '-') {
@@ -144,24 +110,19 @@ const readNumber = (string, cursor) => {
   return [i - 1, number];
 };
 
-/**
- * @type {(string: string) => Array<PathDataItem>}
- */
-const parsePathData = (string) => {
-  /**
-   * @type {Array<PathDataItem>}
-   */
+// parse is based on the path parser from SVGO
+// https://github.com/svg/svgo/blob/main/lib/path.js
+// License: MIT
+
+const parse = function (path) {
   const pathData = [];
-  /**
-   * @type {null | PathDataCommand}
-   */
   let command = null;
-  let args = /** @type {number[]} */ ([]);
+  let args = [];
   let argsCount = 0;
   let canHaveComma = false;
   let hadComma = false;
-  for (let i = 0; i < string.length; i += 1) {
-    const c = string.charAt(i);
+  for (let i = 0; i < path.length; i += 1) {
+    const c = path.charAt(i);
     if (isWsp(c)) {
       continue;
     }
@@ -190,7 +151,7 @@ const parsePathData = (string) => {
       }
       command = c;
       args = [];
-      argsCount = argsCountPerCommand[command];
+      argsCount = parameters[command];
       canHaveComma = false;
       // flush command without arguments
       if (argsCount === 0) {
@@ -210,11 +171,11 @@ const parsePathData = (string) => {
       if (position === 0 || position === 1) {
         // allow only positive number without sign as first two arguments
         if (c !== '+' && c !== '-') {
-          [newCursor, number] = readNumber(string, i);
+          [newCursor, number] = readNumber(path, i);
         }
       }
       if (position === 2 || position === 5 || position === 6) {
-        [newCursor, number] = readNumber(string, i);
+        [newCursor, number] = readNumber(path, i);
       }
       if (position === 3 || position === 4) {
         // read flags
@@ -226,7 +187,7 @@ const parsePathData = (string) => {
         }
       }
     } else {
-      [newCursor, number] = readNumber(string, i);
+      [newCursor, number] = readNumber(path, i);
     }
     if (number == null) {
       return pathData;
@@ -238,7 +199,7 @@ const parsePathData = (string) => {
     // flush arguments when necessary count is reached
     if (args.length === argsCount) {
       pathData.push({ command, args });
-      // subsequent moveto coordinates are threated as implicit lineto commands
+      // subsequent moveto coordinates are treated as implicit lineto commands
       if (command === 'M') {
         command = 'L';
       }
@@ -257,9 +218,9 @@ const apply = function (commands, doc) {
 
   // run the commands
   for (let i = 0; i < commands.length; i++) {
-    const { command, args } = commands[i];
-    if (typeof runners[command] === 'function') {
-      runners[command](doc, args);
+    const c = commands[i];
+    if (typeof runners[c.command] === 'function') {
+      runners[c.command](doc, c.args);
     }
   }
 };
@@ -298,7 +259,7 @@ const runners = {
       a[2] + cx,
       a[3] + cy,
       a[4] + cx,
-      a[5] + cy
+      a[5] + cy,
     );
     px = cx + a[2];
     py = cy + a[3];
@@ -331,7 +292,7 @@ const runners = {
       cx + a[0],
       cy + a[1],
       cx + a[2],
-      cy + a[3]
+      cy + a[3],
     );
     px = cx + a[0];
     py = cy + a[1];
@@ -365,6 +326,8 @@ const runners = {
     }
 
     doc.quadraticCurveTo(px, py, a[0], a[1]);
+    px = cx - (px - cx);
+    py = cy - (py - cy);
     cx = a[0];
     return (cy = a[1]);
   },
@@ -445,7 +408,7 @@ const runners = {
     doc.closePath();
     cx = sx;
     return (cy = sy);
-  }
+  },
 };
 
 const solveArc = function (doc, x, y, coords) {
@@ -541,13 +504,13 @@ const segmentToBezier = function (cx, cy, th0, th1, rx, ry, sin_th, cos_th) {
     a00 * x2 + a01 * y2,
     a10 * x2 + a11 * y2,
     a00 * x3 + a01 * y3,
-    a10 * x3 + a11 * y3
+    a10 * x3 + a11 * y3,
   ];
 };
 
 class SVGPath {
   static apply(doc, path) {
-    const commands = parsePathData(path);
+    const commands = parse(path);
     apply(commands, doc);
   }
 }

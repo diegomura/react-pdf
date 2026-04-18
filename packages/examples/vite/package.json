@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/vite-example",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "license": "MIT",
   "private": true,
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -11,9 +11,9 @@
     "build:site": "vite build ./src"
   },
   "dependencies": {
-    "@react-pdf/math": "^2.0.1",
-    "@react-pdf/mermaid": "^2.0.1",
-    "@react-pdf/renderer": "^4.5.1"
+    "@react-pdf/math": "^2.0.2",
+    "@react-pdf/mermaid": "^2.0.2",
+    "@react-pdf/renderer": "^4.5.2"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",

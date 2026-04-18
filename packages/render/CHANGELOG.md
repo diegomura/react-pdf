@@ -1,5 +1,12 @@
 # @react-pdf/render
 
+## 4.5.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.2
+
 ## 4.5.1
 
 ### Patch Changes

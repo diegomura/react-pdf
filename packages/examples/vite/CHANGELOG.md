@@ -1,5 +1,14 @@
 # @react-pdf/examples
 
+## 3.5.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@4.5.2
+  - @react-pdf/math@2.0.2
+  - @react-pdf/mermaid@2.0.2
+
 ## 3.5.1
 
 ### Patch Changes

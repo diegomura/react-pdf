@@ -5,6 +5,9 @@ import isFixed from './isFixed';
 const getBreak = (node: SafeNode) =>
   'break' in node.props ? node.props.break : false;
 
+const getBreakWhenNeeded = (node: SafeNode) =>
+  'breakWhenNeeded' in node.props ? node.props.breakWhenNeeded : false;
+
 const getMinPresenceAhead = (node: SafeNode) =>
   'minPresenceAhead' in node.props ? node.props.minPresenceAhead : 0;
 
@@ -53,10 +56,16 @@ const shouldBreak = (
   // (as long as react-pdf does not support breaking into differently sized containers)
   const breakingImprovesPresence =
     previousElements.filter((node: SafeNode) => !isFixed(node)).length > 0;
+  const shouldBreakWhenNeeded =
+    shouldSplit &&
+    canWrap &&
+    getBreakWhenNeeded(child) &&
+    breakingImprovesPresence;
 
   return (
     getBreak(child) ||
     (shouldSplit && !canWrap) ||
+    shouldBreakWhenNeeded ||
     (!shouldSplit && endOfPresence > height && breakingImprovesPresence)
   );
 };

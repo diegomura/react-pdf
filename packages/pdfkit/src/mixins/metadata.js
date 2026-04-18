@@ -1,3 +1,4 @@
+import { fromUtf8String } from '../binary';
 import PDFMetadata from '../metadata';
 
 export default {
@@ -93,7 +94,7 @@ export default {
         Subtype: 'XML',
       });
       this.metadataRef.compress = false;
-      this.metadataRef.write(Buffer.from(this.metadata.getXML(), 'utf-8'));
+      this.metadataRef.write(fromUtf8String(this.metadata.getXML()));
       this.metadataRef.end();
       this._root.data.Metadata = this.metadataRef;
     }

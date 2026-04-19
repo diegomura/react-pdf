@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { omit, compose } from '@react-pdf/fns';
+import { compose, omit } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
@@ -9,7 +9,7 @@ import canNodeWrap from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
 import createInstances from '../node/createInstances';
-import shouldNodeBreak from '../node/shouldBreak';
+import { shouldBreakOptimized } from '../node/shouldBreak';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
@@ -37,6 +37,36 @@ const getTop = (node: SafeNode) => node.box?.top || 0;
 
 const allFixed = (nodes: SafeNode[]) => nodes.every(isFixed);
 
+/**
+ * Build suffix-max array: suffixFurthestEnd[i] = max(top + height)
+ * of non-fixed-prop nodes at indices > i, or null if none.
+ */
+const computeSuffixFurthestEnd = (nodes: SafeNode[]): (number | null)[] => {
+  const length = nodes.length;
+  const result: (number | null)[] = new Array(length);
+  let max: number | null = null;
+
+  for (let i = length - 1; i >= 0; i -= 1) {
+    result[i] = max;
+    const node = nodes[i];
+    if (!('fixed' in node.props)) {
+      const end = node.box.top + node.box.height;
+      max = max === null ? end : Math.max(max, end);
+    }
+  }
+
+  return result;
+};
+
+const collectFixedIndices = (nodes: SafeNode[]): number[] => {
+  const indices: number[] = [];
+  const length = nodes.length;
+  for (let i = 0; i < length; i += 1) {
+    if (isFixed(nodes[i])) indices.push(i);
+  }
+  return indices;
+};
+
 const isDynamic = (
   node: SafeNode,
 ): node is SafeLinkNode | SafeTextNode | SafeViewNode =>
@@ -58,24 +88,30 @@ const warnUnavailableSpace = (node: SafeNode) => {
 const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
   const currentChildren: SafeNode[] = [];
   const nextChildren: SafeNode[] = [];
+  const suffixFurthestEnd = computeSuffixFurthestEnd(nodes);
+  const fixedIndices = collectFixedIndices(nodes);
 
-  for (let i = 0; i < nodes.length; i += 1) {
+  const pushFutureFixed = (target: SafeNode[], afterIndex: number) => {
+    for (const idx of fixedIndices) {
+      if (idx > afterIndex) target.push(nodes[idx]);
+    }
+  };
+
+  // Adjust box.top for remaining nodes that are pushed to nextChildren without relayout.
+  // Fixed nodes keep their positions (absolute positioning).
+  const adjustRemaining = (fromIndex: number): SafeNode[] =>
+    nodes.slice(fromIndex).map((node) => {
+      if (isFixed(node)) return node;
+      return Object.assign({}, node, {
+        box: Object.assign({}, node.box, { top: node.box.top - height }),
+      });
+    });
+
+  let hasNonFixedPrevious = false;
+
+  const length = nodes.length;
+  for (let i = 0; i < length; i += 1) {
     const child = nodes[i];
-    const futureNodes = nodes.slice(i + 1);
-    const futureFixedNodes = futureNodes.filter(isFixed);
-
-    const nodeTop = getTop(child);
-    const nodeHeight = child.box.height;
-    const isOutside = height <= nodeTop;
-    const shouldBreak = shouldNodeBreak(
-      child,
-      futureNodes,
-      height,
-      currentChildren,
-    );
-    const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
-    const canWrap = canNodeWrap(child);
-    const fitsInsidePage = nodeHeight <= contentArea;
 
     if (isFixed(child)) {
       nextChildren.push(child);
@@ -83,6 +119,8 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       continue;
     }
 
+    const nodeTop = getTop(child);
+    const isOutside = height <= nodeTop;
     if (isOutside) {
       const box = Object.assign({}, child.box, { top: child.box.top - height });
       const next = Object.assign({}, child, { box });
@@ -90,13 +128,21 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       continue;
     }
 
-    if (!fitsInsidePage && !canWrap) {
+    const nodeHeight = child.box.height;
+    const fitsInsidePage = nodeHeight <= contentArea;
+    if (!fitsInsidePage && !canNodeWrap(child)) {
       currentChildren.push(child);
-      nextChildren.push(...futureNodes);
+      nextChildren.push(...adjustRemaining(i + 1));
       warnUnavailableSpace(child);
       break;
     }
 
+    const shouldBreak = shouldBreakOptimized(
+      child,
+      suffixFurthestEnd[i],
+      height,
+      hasNonFixedPrevious,
+    );
     if (shouldBreak) {
       const box = Object.assign({}, child.box, { top: child.box.top - height });
       const props = Object.assign({}, child.props, {
@@ -105,28 +151,28 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       });
       const next = Object.assign({}, child, { box, props });
 
-      currentChildren.push(...futureFixedNodes);
-      nextChildren.push(next, ...futureNodes);
+      pushFutureFixed(currentChildren, i);
+      nextChildren.push(next, ...adjustRemaining(i + 1));
       break;
     }
 
+    const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     if (shouldSplit) {
       const [currentChild, nextChild] = split(child, height, contentArea);
 
-      // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        // But if the current page is empty then we can just include the parent on the current page
         if (currentChildren.length === 0) {
-          currentChildren.push(child, ...futureFixedNodes);
-          nextChildren.push(...futureNodes);
+          currentChildren.push(child);
+          pushFutureFixed(currentChildren, i);
+          nextChildren.push(...adjustRemaining(i + 1));
         } else {
           const box = Object.assign({}, child.box, {
             top: child.box.top - height,
           });
           const next = Object.assign({}, child, { box });
 
-          currentChildren.push(...futureFixedNodes);
-          nextChildren.push(next, ...futureNodes);
+          pushFutureFixed(currentChildren, i);
+          nextChildren.push(next, ...adjustRemaining(i + 1));
         }
         break;
       }
@@ -134,10 +180,12 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       if (currentChild) currentChildren.push(currentChild);
       if (nextChild) nextChildren.push(nextChild);
 
+      hasNonFixedPrevious = true;
       continue;
     }
 
     currentChildren.push(child);
+    hasNonFixedPrevious = true;
   }
 
   return [currentChildren, nextChildren];
@@ -247,13 +295,15 @@ const splitPage = (
   const nextBox = omit('height', page.box);
   const nextProps = omit('bookmark', page.props);
 
-  const nextPage = relayout(
-    Object.assign({}, page, {
-      props: nextProps,
-      box: nextBox,
-      children: nextChilds,
-    }),
-  );
+  // Skip relayout for nextPage: it's only used as input to the next splitPage call,
+  // never added to final output. Children already have correct box values
+  // (splitNodes adjusts box.top, split() computes dimensions for split nodes).
+  // The currentPage from the next iteration will be properly relayed out.
+  const nextPage = Object.assign({}, page, {
+    props: nextProps,
+    box: nextBox,
+    children: nextChilds,
+  }) as SafePageNode;
 
   return [currentPage, nextPage];
 };

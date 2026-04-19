@@ -97,6 +97,16 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     }
   };
 
+  // Adjust box.top for remaining nodes that are pushed to nextChildren without relayout.
+  // Fixed nodes keep their positions (absolute positioning).
+  const adjustRemaining = (fromIndex: number): SafeNode[] =>
+    nodes.slice(fromIndex).map((node) => {
+      if (isFixed(node)) return node;
+      return Object.assign({}, node, {
+        box: Object.assign({}, node.box, { top: node.box.top - height }),
+      });
+    });
+
   let hasNonFixedPrevious = false;
 
   const length = nodes.length;
@@ -122,7 +132,7 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     const fitsInsidePage = nodeHeight <= contentArea;
     if (!fitsInsidePage && !canNodeWrap(child)) {
       currentChildren.push(child);
-      nextChildren.push(...nodes.slice(i + 1));
+      nextChildren.push(...adjustRemaining(i + 1));
       warnUnavailableSpace(child);
       break;
     }
@@ -142,7 +152,7 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       const next = Object.assign({}, child, { box, props });
 
       pushFutureFixed(currentChildren, i);
-      nextChildren.push(next, ...nodes.slice(i + 1));
+      nextChildren.push(next, ...adjustRemaining(i + 1));
       break;
     }
 
@@ -154,7 +164,7 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
         if (currentChildren.length === 0) {
           currentChildren.push(child);
           pushFutureFixed(currentChildren, i);
-          nextChildren.push(...nodes.slice(i + 1));
+          nextChildren.push(...adjustRemaining(i + 1));
         } else {
           const box = Object.assign({}, child.box, {
             top: child.box.top - height,
@@ -162,7 +172,7 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
           const next = Object.assign({}, child, { box });
 
           pushFutureFixed(currentChildren, i);
-          nextChildren.push(next, ...nodes.slice(i + 1));
+          nextChildren.push(next, ...adjustRemaining(i + 1));
         }
         break;
       }

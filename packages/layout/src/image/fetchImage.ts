@@ -32,7 +32,11 @@ const fetchImage = async (node: ImageLikeNode, pageWidth: number) => {
 
     node.image = await resolveImage(source, { cache });
 
-    if (Buffer.isBuffer(source) || source instanceof Blob) return;
+    if (
+      (typeof Buffer !== 'undefined' && Buffer.isBuffer(source)) ||
+      source instanceof Blob
+    )
+      return;
 
     node.image.key = 'data' in source ? source.data.toString() : source.uri;
   } catch (e: any) {

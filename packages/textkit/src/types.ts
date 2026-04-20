@@ -110,7 +110,7 @@ export type DecorationLine = {
 
 export type AttributedString = {
   string: string;
-  syllables?: string[];
+  syllables?: HyphenatedPart[];
   runs: Run[];
   box?: Rect;
   decorationLines?: DecorationLine[];
@@ -132,8 +132,8 @@ export type Paragraph = AttributedString[];
 export type LayoutOptions = {
   hyphenationCallback?: (
     word: string | null,
-    fallback: (word: string | null) => string[],
-  ) => string[];
+    fallback: (word: string | null) => HyphenatedWord,
+  ) => HyphenatedWord;
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;
@@ -141,5 +141,18 @@ export type LayoutOptions = {
   expandWhitespaceFactor?: JustificationFactor;
   shrinkWhitespaceFactor?: JustificationFactor;
 };
+
+export type HyphenatedPart = {
+  string: string;
+  hyphen?: '-';
+};
+
+export type HyphenatedWord =
+  | string[]
+  | {
+      parts: string[];
+      hyphen?: '-';
+    }
+  | HyphenatedPart[];
 
 export type { Font } from '@react-pdf/font';

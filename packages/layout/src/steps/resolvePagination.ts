@@ -10,6 +10,7 @@ import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
 import createInstances from '../node/createInstances';
 import shouldNodeBreak from '../node/shouldBreak';
+import { resolvePageFloats } from './resolveFloats';
 import resolveTextLayout from './resolveTextLayout';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
@@ -44,6 +45,7 @@ const isDynamic = (
 
 const relayoutPage = compose(
   resolveTextLayout,
+  resolvePageFloats,
   resolvePageDimensions,
   resolveInheritance,
   resolvePageStyles,

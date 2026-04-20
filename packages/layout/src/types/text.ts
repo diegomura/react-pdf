@@ -9,6 +9,21 @@ import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
 import { ImageNode, SafeImageNode } from './image';
 import { SafeTspanNode, TspanNode } from './tspan';
 
+/**
+ * Float element info attached to sibling text nodes
+ */
+export type FloatSibling = {
+  float: 'left' | 'right';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  marginTop: number;
+  marginRight: number;
+  marginBottom: number;
+  marginLeft: number;
+};
+
 interface TextProps extends NodeProps {
   /**
    * Enable/disable page wrapping for element.
@@ -56,4 +71,8 @@ export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
     | SafeImageNode
     | SafeTspanNode
   )[];
+  /** Float siblings attached by resolveFloats for text wrapping */
+  __floatSiblings__?: FloatSibling[];
+  /** Flag indicating this text node was split during pagination */
+  __wasSplit__?: boolean;
 };

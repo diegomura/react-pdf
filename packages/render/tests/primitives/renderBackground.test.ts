@@ -38,8 +38,20 @@ describe('primitive renderBackground', () => {
     renderBackground(ctx, node);
 
     expect(ctx.fillColor.mock.calls).toEqual([['#FF0000']]);
-    expect(ctx.rect.mock.calls).toEqual([[40, 20, 140, 200]]);
+    expect(ctx.rect.mock.calls).toEqual([[39.5, 19.5, 141, 201]]);
     expect(ctx.fill.mock.calls).toEqual([[]]);
+  });
+
+  test('should not apply bleed when border radius is present', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: 'red', borderTopLeftRadius: 5 };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.rect.mock.calls).toEqual([[40, 20, 140, 200]]);
+    expect(ctx.clip.mock.calls).toHaveLength(1);
   });
 
   test('should be scoped operation', () => {

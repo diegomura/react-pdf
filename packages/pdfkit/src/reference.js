@@ -1,3 +1,5 @@
+// TODO: Unify completely
+
 /*
 PDFReference - represents a reference to another object in the PDF object heirarchy
 By Devon Govett

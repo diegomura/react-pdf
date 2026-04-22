@@ -1,3 +1,5 @@
+// TODO: Unify completely
+
 const toHex = function (...codePoints) {
   const codes = Array.from(codePoints).map((code) =>
     `0000${code.toString(16)}`.slice(-4)

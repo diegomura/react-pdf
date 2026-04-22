@@ -10,6 +10,7 @@ import rc4 from './crypto/rc4';
 import randomBytes from './crypto/random';
 import saslprep from './saslprep/index';
 
+// TODO: use from @noble/hashes/utils
 function concatBytes(...arrays) {
   const length = arrays.reduce((a, b) => a + b.length, 0);
   const result = new Uint8Array(length);

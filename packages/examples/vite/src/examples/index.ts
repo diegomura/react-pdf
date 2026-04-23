@@ -2,6 +2,7 @@ import scripts from './scripts';
 import duplicatedImages from './duplicated-images';
 import ellipsis from './ellipsis';
 import emoji from './emoji';
+import endnote from './endnote';
 import fontFamilyFallback from './font-family-fallback';
 import fontWeight from './font-weight';
 import goTo from './go-to';
@@ -32,6 +33,7 @@ const EXAMPLES = [
   duplicatedImages,
   ellipsis,
   emoji,
+  endnote,
   fontFamilyFallback,
   fontWeight,
   goTo,

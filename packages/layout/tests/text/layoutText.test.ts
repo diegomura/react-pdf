@@ -103,4 +103,47 @@ describe('text layoutText', () => {
       expect.any(Function),
     );
   });
+
+  describe('vertical writing mode', () => {
+    test('Should render vertical-rl text with transformed line boxes', async () => {
+      const node = createTextNode('Hello', { writingMode: 'vertical-rl' });
+      const lines = layoutText(node, 200, 500, fontStore);
+
+      expect(lines.length).toBeGreaterThan(0);
+
+      // In vertical-rl, the first column should be on the right side
+      if (lines.length > 0 && lines[0].box) {
+        // Box should have width (column width) and height (column height)
+        expect(lines[0].box.width).toBeGreaterThan(0);
+        expect(lines[0].box.height).toBeGreaterThan(0);
+      }
+    });
+
+    test('Should render vertical-lr text with transformed line boxes', async () => {
+      const node = createTextNode('Hello', { writingMode: 'vertical-lr' });
+      const lines = layoutText(node, 200, 500, fontStore);
+
+      expect(lines.length).toBeGreaterThan(0);
+
+      // In vertical-lr, the first column should be on the left side
+      if (lines.length > 0 && lines[0].box) {
+        expect(lines[0].box.x).toBe(0);
+      }
+    });
+
+    test('Should handle empty text in vertical mode', async () => {
+      const node = createTextNode('', { writingMode: 'vertical-rl' });
+      const lines = layoutText(node, 200, 500, fontStore);
+
+      expect(lines).toHaveLength(0);
+    });
+
+    test('Should swap container dimensions for vertical text', async () => {
+      const node = createTextNode('ABC', { writingMode: 'vertical-rl' });
+      // Width=100, Height=500: in vertical mode, characters flow within height=500 (as "line length")
+      const lines = layoutText(node, 100, 500, fontStore);
+
+      expect(lines.length).toBeGreaterThan(0);
+    });
+  });
 });

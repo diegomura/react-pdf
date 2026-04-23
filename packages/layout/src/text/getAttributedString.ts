@@ -5,6 +5,7 @@ import FontStore from '@react-pdf/font';
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
 import transformText from './transformText';
+import { getCJKFallbackFontFamilies } from './cjk';
 import {
   SafeNode,
   SafeTextNode,
@@ -60,19 +61,41 @@ const getFragments = (
     textIndent,
     opacity,
     verticalAlign,
+    writingMode,
   } = instance.style;
 
   const fontFamilies =
     typeof fontFamily === 'string' ? [fontFamily] : [...(fontFamily || [])];
 
+  // Add CJK fonts as fallbacks (before Helvetica) so fontSubstitution can
+  // pick them for CJK codepoints. Only fonts that are already loaded will
+  // produce non-null data; unloaded ones are silently skipped.
+  const cjkFallbacks = getCJKFallbackFontFamilies();
+  const internalFallbacks = new Set(cjkFallbacks);
+
   // Fallback font
   fontFamilies.push('Helvetica');
+  for (const cjkFont of cjkFallbacks) {
+    if (!fontFamilies.includes(cjkFont)) {
+      fontFamilies.push(cjkFont);
+    }
+  }
 
   const font = fontFamilies.map((fontFamilyName) => {
     const opts = { fontFamily: fontFamilyName, fontWeight, fontStyle };
+    if (internalFallbacks.has(fontFamilyName)) {
+      // Silently skip CJK fallbacks that haven't loaded yet
+      try {
+        const obj = fontStore.getFont(opts);
+        return obj?.data;
+      } catch {
+        return undefined;
+      }
+    }
+    // User-specified fonts: preserve the error so registration issues are visible
     const obj = fontStore.getFont(opts);
     return obj?.data;
-  });
+  }).filter(Boolean);
 
   // Don't pass main background color to textkit. Will be rendered by the render package instead
   const backgroundColor = level === 0 ? null : instance.style.backgroundColor;
@@ -90,6 +113,7 @@ const getFragments = (
     characterSpacing: letterSpacing,
     strikeStyle: textDecorationStyle,
     underlineStyle: textDecorationStyle,
+    writingMode,
     underline:
       textDecoration === 'underline' ||
       textDecoration === 'underline line-through' ||

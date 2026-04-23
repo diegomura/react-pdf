@@ -321,10 +321,36 @@ export type TextTransform =
 
 export type VerticalAlign = 'sub' | 'super';
 
+export type WritingMode = 'horizontal-tb' | 'vertical-rl' | 'vertical-lr';
+
+/**
+ * Built-in font family names available without explicit registration.
+ * CJK fonts are auto-registered and lazily loaded from Google Fonts.
+ */
+export type BuiltInFontFamily =
+  | 'Courier'
+  | 'Courier-Bold'
+  | 'Courier-Oblique'
+  | 'Courier-BoldOblique'
+  | 'Helvetica'
+  | 'Helvetica-Bold'
+  | 'Helvetica-Oblique'
+  | 'Helvetica-BoldOblique'
+  | 'Times-Roman'
+  | 'Times-Bold'
+  | 'Times-Italic'
+  | 'Times-BoldItalic'
+  | 'Noto Sans SC'
+  | 'Noto Sans TC'
+  | 'Noto Sans JP'
+  | 'Noto Sans KR';
+
+export type FontFamily = BuiltInFontFamily | (string & {});
+
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
   fontSize?: number | string;
-  fontFamily?: string | string[];
+  fontFamily?: FontFamily | FontFamily[];
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
   letterSpacing?: number | string;
@@ -338,6 +364,7 @@ export type TextStyle = {
   textOverflow?: 'ellipsis';
   textTransform?: TextTransform;
   verticalAlign?: VerticalAlign;
+  writingMode?: WritingMode;
 };
 
 export type TextExpandedStyle = TextStyle;

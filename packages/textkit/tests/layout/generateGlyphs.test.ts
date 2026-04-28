@@ -53,6 +53,54 @@ describe('generateGlyphs', () => {
     ]);
   });
 
+  test('should preserve source code points when a glyph has empty code points', () => {
+    const glyphWithoutCodePoints = {
+      id: 27927,
+      codePoints: [],
+      advanceWidth: 8,
+    };
+
+    const fontWithEmptyCodePoints = {
+      ...font,
+      layout: () => {
+        const glyphs = [
+          glyphWithoutCodePoints,
+          { id: 27700, codePoints: [27700], advanceWidth: 8 },
+        ];
+
+        return {
+          glyphs,
+          positions: glyphs.map((glyph) => ({
+            xAdvance: glyph.advanceWidth,
+            yAdvance: 0,
+            xOffset: 0,
+            yOffset: 0,
+          })),
+        };
+      },
+    };
+
+    const result = instance({
+      string: '洗水',
+      runs: [
+        {
+          start: 0,
+          end: 2,
+          attributes: { font: [fontWithEmptyCodePoints], fontSize: 2 },
+        },
+      ],
+    });
+
+    expect(result.runs[0].stringIndices).toEqual([0, 1]);
+    expect(result.runs[0].glyphIndices).toEqual([0, 1]);
+    expect(result.runs[0].glyphs?.map((glyph) => glyph.codePoints)).toEqual([
+      [27927],
+      [27700],
+    ]);
+    expect(result.runs[0].glyphs?.[0]).not.toBe(glyphWithoutCodePoints);
+    expect(glyphWithoutCodePoints.codePoints).toEqual([]);
+  });
+
   test('should return correctly generate multi-run simple string glyphs', () => {
     const result = instance({
       string: 'Lorem',

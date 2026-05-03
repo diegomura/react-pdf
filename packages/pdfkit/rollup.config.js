@@ -4,10 +4,14 @@ import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import ignore from 'rollup-plugin-ignore';
 import alias from '@rollup/plugin-alias';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
+import inject from '@rollup/plugin-inject';
 import commonjs from '@rollup/plugin-commonjs';
+import { createRequire } from 'module';
 
 import pkg from './package.json' with { type: 'json' };
+
+const require = createRequire(import.meta.url);
+const stdLibBrowser = require('node-stdlib-browser');
 
 const input = 'src/index.js';
 
@@ -31,30 +35,37 @@ const getExternal = ({ browser }) => [
   ...(browser ? [] : ['fs'])
 ];
 
+// node-stdlib-browser entries are absolute paths (they point at installed
+// packages); these get bundled inline so the absolute paths are fine. Aliases
+// for externalized modules (pako/*) MUST stay as bare specifiers so the
+// consumer's bundler can resolve them.
+const browserAliasEntries = {
+  ...stdLibBrowser,
+  // Override stdLibBrowser's stream-browserify with the vite-compatible variant
+  // (bundled inline; nodeResolve will pick it up).
+  stream: 'vite-compatible-readable-stream',
+  // pako sub-paths fail to resolve without explicit .js suffix; see
+  // https://github.com/browserify/browserify-zlib/pull/45
+  'pako/lib/zlib/zstream': 'pako/lib/zlib/zstream.js',
+  'pako/lib/zlib/constants': 'pako/lib/zlib/constants.js',
+};
+
 const getPlugins = ({ browser }) => [
   json(),
   ...(browser
     ? [
         ignore(['fs']),
         alias({
-          entries: [
-            // See https://github.com/browserify/browserify-zlib/pull/45
-            {
-              find: 'pako/lib/zlib/zstream',
-              replacement: 'pako/lib/zlib/zstream.js'
-            },
-            {
-              find: 'pako/lib/zlib/constants',
-              replacement: 'pako/lib/zlib/constants.js'
-            },
-            { find: 'stream', replacement: 'vite-compatible-readable-stream' },
-            { find: 'zlib', replacement: 'browserify-zlib' }
-          ]
+          entries: Object.entries(browserAliasEntries).map(([find, replacement]) => ({
+            find,
+            replacement
+          }))
         }),
         commonjs(),
         nodeResolve({ browser, preferBuiltins: !browser }),
-        nodePolyfills({
-          include: [/node_modules\/.+\.js/, /pdfkit\/src\/.*\.js/]
+        inject({
+          Buffer: [stdLibBrowser.buffer, 'Buffer'],
+          process: stdLibBrowser.process
         })
       ]
     : [nodeResolve({ browser, preferBuiltins: !browser })]),

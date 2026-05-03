@@ -3,6 +3,8 @@ PDFPage - represents a single page in the PDF document
 By Devon Govett
 */
 
+import { normalizeSides } from './utils';
+
 /**
  * @type {SideDefinition<Size>}
  */
@@ -10,7 +12,7 @@ const DEFAULT_MARGINS = {
   top: 72,
   left: 72,
   bottom: 72,
-  right: 72
+  right: 72,
 };
 
 const SIZES = {
@@ -63,7 +65,7 @@ const SIZES = {
   FOLIO: [612.0, 936.0],
   LEGAL: [612.0, 1008.0],
   LETTER: [612.0, 792.0],
-  TABLOID: [792.0, 1224.0]
+  TABLOID: [792.0, 1224.0],
 };
 
 class PDFPage {
@@ -73,20 +75,6 @@ class PDFPage {
     this.size = options.size || 'letter';
     this.layout = options.layout || 'portrait';
     this.userUnit = options.userUnit || 1.0;
-
-    // process margins
-    if (typeof options.margin === 'number') {
-      this.margins = {
-        top: options.margin,
-        left: options.margin,
-        bottom: options.margin,
-        right: options.margin
-      };
-
-      // default to 1 inch margins
-    } else {
-      this.margins = options.margins || DEFAULT_MARGINS;
-    }
 
     // calculate page dimensions
     const dimensions = Array.isArray(this.size)
@@ -100,9 +88,17 @@ class PDFPage {
     if (options.font) document.font(options.font, options.fontFamily);
     if (options.fontSize) document.fontSize(options.fontSize);
 
+    // process margins
+    // Margin calculation must occur after font assignment to ensure any dynamic sizes are calculated correctly
+    this.margins = normalizeSides(
+      options.margin ?? options.margins,
+      DEFAULT_MARGINS,
+      (x) => document.sizeToPoint(x, 0, this),
+    );
+
     // Initialize the Font, XObject, and ExtGState dictionaries
     this.resources = this.document.ref({
-      ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI']
+      ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI'],
     });
 
     // The page dictionary
@@ -112,7 +108,7 @@ class PDFPage {
       MediaBox: [0, 0, this.width, this.height],
       Contents: this.content,
       Resources: this.resources,
-      UserUnit: this.userUnit
+      UserUnit: this.userUnit,
     });
 
     this.markings = [];
@@ -154,6 +150,24 @@ class PDFPage {
     return data.StructParents != null
       ? data.StructParents
       : (data.StructParents = this.document.createStructParentTreeNextKey());
+  }
+
+  /**
+   * The width of the safe contents of a page
+   *
+   * @returns {number}
+   */
+  get contentWidth() {
+    return this.width - this.margins.left - this.margins.right;
+  }
+
+  /**
+   * The height of the safe contents of a page
+   *
+   * @returns {number}
+   */
+  get contentHeight() {
+    return this.height - this.margins.top - this.margins.bottom;
   }
 
   maxY() {

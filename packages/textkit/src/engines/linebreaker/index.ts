@@ -116,6 +116,19 @@ const getNodes = (
     return acc;
   }, []);
 
+  // CSS text-wrap: pretty — forbid breaking at the last whitespace so the
+  // final line keeps at least the last two words together (avoid-orphans).
+  // Inserting an infinity penalty before the trailing glue makes K&P's
+  // `precedesBox` check fail at that position.
+  if (options.textWrap === 'pretty') {
+    for (let i = result.length - 1; i >= 0; i -= 1) {
+      if (result[i].type === 'glue') {
+        result.splice(i, 0, knuthPlass.penalty(0, knuthPlass.infinity, 0));
+        break;
+      }
+    }
+  }
+
   // Add mandatory final glue
   result.push(knuthPlass.glue(0, start, start, knuthPlass.infinity, 0));
   result.push(knuthPlass.penalty(0, -knuthPlass.infinity, 1));

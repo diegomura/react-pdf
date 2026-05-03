@@ -28,6 +28,8 @@ const getMaxLines = (node) => node.style?.maxLines;
 
 const getTextOverflow = (node) => node.style?.textOverflow;
 
+const getTextWrap = (node) => node.style?.textWrap;
+
 /**
  * Get layout container for specific text node
  *
@@ -63,6 +65,7 @@ const getLayoutOptions = (fontStore, node) => ({
     node.props.hyphenationCallback ||
     fontStore?.getHyphenationCallback() ||
     null,
+  textWrap: getTextWrap(node),
 });
 
 /**

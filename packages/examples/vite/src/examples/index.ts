@@ -26,6 +26,7 @@ import math from './math';
 import mermaid from './mermaid';
 import passwordProtection from './password-protection';
 import softHyphens from './soft-hyphens';
+import textWrap from './text-wrap';
 
 const EXAMPLES = [
   scripts,
@@ -56,6 +57,7 @@ const EXAMPLES = [
   mermaid,
   passwordProtection,
   softHyphens,
+  textWrap,
 ];
 
 export default EXAMPLES;

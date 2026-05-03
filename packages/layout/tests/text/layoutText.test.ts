@@ -103,4 +103,40 @@ describe('text layoutText', () => {
       expect.any(Function),
     );
   });
+
+  test('Should keep at least two words on the last line with textWrap: pretty', () => {
+    const text = 'alpha beta gamma delta epsilon zeta eta theta iota kappa';
+    const countWords = (s: string) =>
+      s.trim().split(/\s+/).filter(Boolean).length;
+
+    const node = createTextNode(text, { textWrap: 'pretty' });
+    const lines = layoutText(node, 100, 1000, fontStore);
+
+    expect(lines.length).toBeGreaterThan(1);
+    const lastLine = lines[lines.length - 1];
+    expect(countWords(lastLine.string)).toBeGreaterThanOrEqual(2);
+  });
+
+  test('Should keep the whole paragraph on a single line with textWrap: nowrap', () => {
+    const text = 'alpha beta gamma delta epsilon zeta eta theta iota kappa';
+
+    const node = createTextNode(text, { textWrap: 'nowrap' });
+    const lines = layoutText(node, 100, 1000, fontStore);
+
+    expect(lines).toHaveLength(1);
+    expect(lines[0].string.trim()).toBe(text);
+  });
+
+  test('Should preserve line count with textWrap: balance', () => {
+    const text =
+      'A short headline that should balance evenly across multiple lines';
+
+    const naturalNode = createTextNode(text);
+    const balancedNode = createTextNode(text, { textWrap: 'balance' });
+
+    const naturalLines = layoutText(naturalNode, 220, 1000, fontStore);
+    const balancedLines = layoutText(balancedNode, 220, 1000, fontStore);
+
+    expect(balancedLines).toHaveLength(naturalLines.length);
+  });
 });

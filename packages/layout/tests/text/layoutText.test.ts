@@ -103,4 +103,84 @@ describe('text layoutText', () => {
       expect.any(Function),
     );
   });
+
+  test('should not add hyphens when hyphens style is "none"', async () => {
+    const text = 'reallylongtext';
+    const hyphens = ['really­', 'long', 'text'];
+    const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
+
+    const node = createTextNode(
+      text,
+      { hyphens: 'none' },
+      { hyphenationCallback },
+    );
+    const lines = layoutText(node, 50, 100, fontStore);
+
+    expect(lines[0].string).toEqual('really');
+    expect(lines[1].string).toEqual('long');
+    expect(lines[2].string).toEqual('text');
+  });
+
+  test('should use custom hyphenate character when hyphenateCharacter is set', async () => {
+    const text = 'reallylongtext';
+    const hyphens = ['really­', 'long', 'text'];
+    const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
+
+    const node = createTextNode(
+      text,
+      { hyphenateCharacter: '・' },
+      { hyphenationCallback },
+    );
+    const lines = layoutText(node, 50, 100, fontStore);
+
+    expect(lines[0].string).toEqual('really・');
+    expect(lines[1].string).toEqual('long・');
+    expect(lines[2].string).toEqual('text');
+  });
+
+  test('should not add hyphens when hyphenateCharacter is empty string', async () => {
+    const text = 'reallylongtext';
+    const hyphens = ['really­', 'long', 'text'];
+    const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
+
+    const node = createTextNode(
+      text,
+      { hyphenateCharacter: '' },
+      { hyphenationCallback },
+    );
+    const lines = layoutText(node, 50, 100, fontStore);
+
+    expect(lines[0].string).toEqual('really');
+    expect(lines[1].string).toEqual('long');
+    expect(lines[2].string).toEqual('text');
+  });
+
+  test('should keep CJK text together with wordBreak: keep-all', async () => {
+    const text = '東京都区';
+    const hyphenationCallback = vi.fn().mockImplementation((word) => [...word]);
+
+    const node = createTextNode(
+      text,
+      { wordBreak: 'keep-all' },
+      { hyphenationCallback },
+    );
+    const lines = layoutText(node, 300, 100, fontStore);
+
+    expect(lines).toHaveLength(1);
+    expect(lines[0].string).toBe('東京都区');
+  });
+
+  test('should break all characters with wordBreak: break-all', async () => {
+    const text = 'Hello';
+    const node = createTextNode(text, {
+      wordBreak: 'break-all',
+      hyphens: 'none',
+    });
+    const lines = layoutText(node, 15, 100, fontStore);
+
+    expect(lines.length).toBeGreaterThan(1);
+
+    const allChars = lines.map((line) => line.string).join('');
+    expect(allChars).toBe('Hello');
+  });
 });

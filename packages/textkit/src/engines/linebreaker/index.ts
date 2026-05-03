@@ -1,3 +1,5 @@
+import unicode from 'unicode-properties';
+
 import bestFit from './bestFit';
 import knuthPlass from './knuthPlass';
 import slice from '../../attributedString/slice';
@@ -5,6 +7,17 @@ import insertGlyph from '../../attributedString/insertGlyph';
 import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
+
+/**
+ * Check if a character is East Asian Wide or Fullwidth.
+ * These characters don't need hyphens when wrapping.
+ */
+const isEastAsianWide = (char: string): boolean => {
+  const codePoint = char.codePointAt(0);
+  if (codePoint === undefined) return false;
+  const eaw = unicode.getEastAsianWidth(codePoint);
+  return eaw === 'W' || eaw === 'F';
+};
 
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
@@ -17,20 +30,81 @@ const opts = {
 };
 
 /**
+ * Get the hyphen character code point(s) based on options
+ *
+ * @param options - Layout options
+ * @returns Array of code points for the hyphen character, or null if no hyphen should be inserted
+ */
+const getHyphenCodePoints = (options: LayoutOptions): number[] | null => {
+  // If hyphens is 'none', don't insert any hyphen character
+  if (options.hyphens === 'none') {
+    return null;
+  }
+
+  // If hyphenateCharacter is explicitly set
+  if (options.hyphenateCharacter !== undefined) {
+    // Empty string means no hyphen
+    if (options.hyphenateCharacter === '') {
+      return null;
+    }
+    // Convert custom character to code points
+    const codePoints: number[] = [];
+    for (const char of options.hyphenateCharacter) {
+      const codePoint = char.codePointAt(0);
+      if (codePoint !== undefined) {
+        codePoints.push(codePoint);
+      }
+    }
+    return codePoints.length > 0 ? codePoints : null;
+  }
+
+  // Default: use standard hyphen
+  return [HYPHEN];
+};
+
+/**
+ * Check if a hyphen should be inserted at the end of a line.
+ * CJK characters don't need hyphens when wrapping.
+ *
+ * @param line - Line attributed string
+ * @param hyphenCodePoints - Hyphen code points to use
+ * @returns True if hyphen should be inserted
+ */
+const shouldInsertHyphen = (
+  line: AttributedString,
+  hyphenCodePoints: number[] | null,
+): boolean => {
+  if (hyphenCodePoints === null) return false;
+
+  // Get the last character of the line
+  const lastChar = line.string.slice(-1);
+  if (!lastChar) return false;
+
+  // Don't insert hyphen after East Asian Wide characters (CJK, etc.)
+  if (isEastAsianWide(lastChar)) return false;
+
+  return true;
+};
+
+/**
  * Slice attributed string to many lines
  *
  * @param attributedString - Attributed string
  * @param nodes
  * @param breaks
+ * @param options - Layout options
  * @returns Attributed strings
  */
 const breakLines = (
   attributedString: AttributedString,
   nodes: Node[],
   breaks: number[],
+  options: LayoutOptions,
 ) => {
   let start = 0;
   let end = null;
+
+  const hyphenCodePoints = getHyphenCodePoints(options);
 
   const lines: AttributedString[] = breaks.reduce((acc, breakPoint) => {
     const node = nodes[breakPoint];
@@ -46,7 +120,12 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      line = insertGlyph(line.string.length, HYPHEN, line);
+      // Insert hyphen character(s) if configured and appropriate
+      if (shouldInsertHyphen(line, hyphenCodePoints)) {
+        for (const codePoint of hyphenCodePoints!) {
+          line = insertGlyph(line.string.length, codePoint, line);
+        }
+      }
     } else {
       end = node.end;
       line = slice(start, end, attributedString);
@@ -54,7 +133,8 @@ const breakLines = (
 
     start = end;
 
-    return [...acc, line];
+    acc.push(line);
+    return acc;
   }, []);
 
   lines.push(slice(start, attributedString.string.length, attributedString));
@@ -77,12 +157,14 @@ const getNodes = (
 ): Node[] => {
   let start = 0;
 
-  const hyphenWidth = 5;
+  const hyphenWidth = getHyphenCodePoints(options) === null ? 0 : 5;
 
   const { syllables } = attributedString;
 
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
+
+  const allowCJKBreak = options.wordBreak !== 'keep-all';
 
   const result = syllables.reduce((acc: Node[], s: string, index: number) => {
     const width = advanceWidthBetween(
@@ -106,8 +188,13 @@ const getNodes = (
       acc.push(knuthPlass.box(width, start, end, hyphenated));
 
       if (syllables[index + 1] && hyphenated) {
-        // Add penalty node. Penalty nodes are used to represent hyphenation points.
-        acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
+        // CJK boundaries are soft wrap opportunities (penalty 0, no hyphen width)
+        // unless keep-all is set, which suppresses CJK breaks
+        const isSoftWrap = allowCJKBreak && isEastAsianWide(s.slice(-1));
+        const penaltyValue = isSoftWrap ? 0 : hyphenPenalty;
+        const penaltyWidth = isSoftWrap ? 0 : hyphenWidth;
+
+        acc.push(knuthPlass.penalty(penaltyWidth, penaltyValue, 1));
       }
     }
 
@@ -161,7 +248,7 @@ const linebreaker = (options: LayoutOptions) => {
       breaks = bestFit(nodes, availableWidths);
     }
 
-    return breakLines(attributedString, nodes, breaks.slice(1));
+    return breakLines(attributedString, nodes, breaks.slice(1), options);
   };
 };
 

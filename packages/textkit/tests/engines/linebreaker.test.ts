@@ -10,8 +10,8 @@ const width = 50;
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
-  const createLongAttributedString = (attributes = {}) => {
-    const string = Array(600).fill('word').join(' ');
+  const createAttributedString = () => {
+    const string = 'a b c d e f';
     const indices = Array.from({ length: string.length }, (_, index) => index);
 
     return {
@@ -20,15 +20,15 @@ describe('linebreaker', () => {
         {
           start: 0,
           end: string.length,
-          attributes: { font: [font], ...attributes },
+          attributes: { font: [font] },
           stringIndices: indices,
           glyphIndices: indices,
-          positions: indices.map(() => ({
-            xAdvance: 1,
+          positions: Array.from(string, (character) => ({
+            xAdvance: character === ' ' ? 2 : 3,
             yAdvance: 0,
             xOffset: 0,
             yOffset: 0,
-            advanceWidth: 1,
+            advanceWidth: character === ' ' ? 2 : 3,
           })),
           glyphs: [],
         },
@@ -324,29 +324,23 @@ describe('linebreaker', () => {
     ]);
   });
 
-  test('should use best-fit for long non-justified text in auto mode', () => {
-    const attributedString = createLongAttributedString();
-    const result = linebreakerFactory({})(attributedString, [50]);
-    const bestFitResult = linebreakerFactory({ lineBreakStrategy: 'best-fit' })(
+  test('should use best-fit when configured', () => {
+    const attributedString = createAttributedString();
+
+    const result = linebreakerFactory({ lineBreakStrategy: 'best-fit' })(
       attributedString,
-      [50],
+      [12],
     );
 
-    expect(result.map((line) => line.string)).toEqual(
-      bestFitResult.map((line) => line.string),
-    );
+    expect(result.map((line) => line.string)).toEqual(['a b ', 'c d ', 'e f']);
   });
 
-  test('should keep Knuth-Plass for long justified text in auto mode', () => {
-    const attributedString = createLongAttributedString({ align: 'justify' });
-    const result = linebreakerFactory({})(attributedString, [50]);
-    const knuthPlassResult = linebreakerFactory({
-      lineBreakStrategy: 'knuth-plass',
-    })(attributedString, [50]);
+  test('should use Knuth-Plass by default', () => {
+    const attributedString = createAttributedString();
 
-    expect(result.map((line) => line.string)).toEqual(
-      knuthPlassResult.map((line) => line.string),
-    );
+    const result = linebreakerFactory({})(attributedString, [12]);
+
+    expect(result.map((line) => line.string)).toEqual(['a b c ', 'd e f']);
   });
 });
 

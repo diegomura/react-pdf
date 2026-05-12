@@ -19,7 +19,15 @@ const offset = (index: number, run: Run) => {
   const stringIndices = run.stringIndices || [];
   const value = stringIndices[index];
 
-  return stringIndices.slice(0, index).filter((i) => i === value).length;
+  if (value === undefined) return 0;
+
+  let result = 0;
+
+  for (let i = index - 1; i >= 0 && stringIndices[i] === value; i -= 1) {
+    result += 1;
+  }
+
+  return result;
 };
 
 export default offset;

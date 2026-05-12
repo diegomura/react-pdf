@@ -134,6 +134,7 @@ export type LayoutOptions = {
     word: string | null,
     fallback: (word: string | null) => string[],
   ) => string[];
+  lineBreakStrategy?: 'auto' | 'best-fit' | 'knuth-plass';
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;

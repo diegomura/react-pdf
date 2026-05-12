@@ -1,4 +1,23 @@
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+vi.mock('../../src/engines/linebreaker/bestFit', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('../../src/engines/linebreaker/bestFit')
+    >();
+
+  return { default: vi.fn(actual.default) };
+});
+
+vi.mock('../../src/engines/linebreaker/knuthPlass', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('../../src/engines/linebreaker/knuthPlass')
+    >();
+  const fn = vi.fn(actual.default);
+
+  return { default: Object.assign(fn, actual.default) };
+});
 
 import linebreakerFactory from '../../src/engines/linebreaker';
 import applyBestFit from '../../src/engines/linebreaker/bestFit';
@@ -9,6 +28,38 @@ const width = 50;
 
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
+
+  beforeEach(() => {
+    vi.mocked(applyBestFit).mockClear();
+    vi.mocked(applyKnuthPlass).mockClear();
+  });
+
+  const createLongAttributedString = (attributes = {}) => {
+    const string = Array(600).fill('word').join(' ');
+    const indices = Array.from({ length: string.length }, (_, index) => index);
+
+    return {
+      string,
+      runs: [
+        {
+          start: 0,
+          end: string.length,
+          attributes: { font: [font], ...attributes },
+          stringIndices: indices,
+          glyphIndices: indices,
+          positions: indices.map(() => ({
+            xAdvance: 1,
+            yAdvance: 0,
+            xOffset: 0,
+            yOffset: 0,
+            advanceWidth: 1,
+          })),
+          glyphs: [],
+        },
+      ],
+      syllables: string.split(/([ ]+)/g).filter(Boolean),
+    };
+  };
 
   test('should break lines and adds hyphens only where indicated', () => {
     const attributedString = {
@@ -295,6 +346,24 @@ describe('linebreaker', () => {
       'emissie-',
       'rapport',
     ]);
+  });
+
+  test('should use best-fit for long non-justified text in auto mode', () => {
+    const attributedString = createLongAttributedString();
+
+    linebreakerFactory({})(attributedString, [50]);
+
+    expect(applyBestFit).toHaveBeenCalledTimes(1);
+    expect(applyKnuthPlass).not.toHaveBeenCalled();
+  });
+
+  test('should keep Knuth-Plass for long justified text in auto mode', () => {
+    const attributedString = createLongAttributedString({ align: 'justify' });
+
+    linebreakerFactory({})(attributedString, [50]);
+
+    expect(applyKnuthPlass).toHaveBeenCalled();
+    expect(applyBestFit).not.toHaveBeenCalled();
   });
 });
 

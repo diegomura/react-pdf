@@ -255,6 +255,10 @@ declare namespace ReactPDF {
      */
     hyphenationCallback?: HyphenationCallback;
     /**
+     * Controls which line-breaking strategy textkit uses.
+     */
+    lineBreakStrategy?: 'auto' | 'best-fit' | 'knuth-plass';
+    /**
      * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
      * @see https://react-pdf.org/advanced#orphan-&-widow-protection
      */

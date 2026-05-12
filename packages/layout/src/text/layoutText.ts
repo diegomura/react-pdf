@@ -58,6 +58,7 @@ const getContainer = (width, height, node) => {
  */
 const getLayoutOptions = (fontStore, node) => ({
   hyphenationPenalty: node.props.hyphenationPenalty,
+  lineBreakStrategy: node.props.lineBreakStrategy,
   shrinkWhitespaceFactor: { before: -0.5, after: -0.5 },
   hyphenationCallback:
     node.props.hyphenationCallback ||

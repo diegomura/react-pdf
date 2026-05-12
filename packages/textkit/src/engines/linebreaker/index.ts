@@ -9,6 +9,8 @@ import { Node } from './types';
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
+// Keep ordinary paragraphs on Knuth-Plass, but avoid active-node blowups for long ragged text.
+const BEST_FIT_CHARACTER_THRESHOLD = 2000;
 
 const opts = {
   width: 3,
@@ -131,9 +133,23 @@ const getAttributes = (attributedString: AttributedString) => {
   return attributedString.runs?.[0]?.attributes || {};
 };
 
+const shouldUseBestFit = (
+  attributedString: AttributedString,
+  attributes: Attributes,
+  options: LayoutOptions,
+) => {
+  if (options.lineBreakStrategy === 'best-fit') return true;
+  if (options.lineBreakStrategy === 'knuth-plass') return false;
+
+  return (
+    attributes.align !== 'justify' &&
+    attributedString.string.length > BEST_FIT_CHARACTER_THRESHOLD
+  );
+};
+
 /**
- * Performs Knuth & Plass line breaking algorithm
- * Fallbacks to best fit algorithm if latter not successful
+ * Performs line breaking using the configured strategy.
+ * Auto mode uses best-fit for long ragged text, otherwise Knuth-Plass with best-fit fallback.
  *
  * @param options - Layout options
  */
@@ -148,11 +164,14 @@ const linebreaker = (options: LayoutOptions) => {
 
     const attributes = getAttributes(attributedString);
     const nodes = getNodes(attributedString, attributes, options);
+    const useBestFit = shouldUseBestFit(attributedString, attributes, options);
 
-    let breaks = knuthPlass(nodes, availableWidths, tolerance);
+    let breaks = useBestFit
+      ? bestFit(nodes, availableWidths)
+      : knuthPlass(nodes, availableWidths, tolerance);
 
     // Try again with a higher tolerance if the line breaking failed.
-    while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
+    while (!useBestFit && breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
       tolerance += TOLERANCE_STEPS;
       breaks = knuthPlass(nodes, availableWidths, tolerance);
     }

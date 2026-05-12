@@ -24,6 +24,7 @@ interface TextProps extends BaseProps {
   orphans?: number;
   render?: DynamicRenderCallback;
   hyphenationCallback?: HyphenationCallback;
+  lineBreakStrategy?: 'auto' | 'best-fit' | 'knuth-plass';
 }
 
 interface ViewProps extends BaseProps {

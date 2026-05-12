@@ -97,12 +97,13 @@ const result = bidiEngine(attributedString);
 
 ### linebreaker
 
-Performs line breaking using the Knuth-Plass algorithm with fallback to best-fit. Handles hyphenation points and produces optimal line breaks.
+Performs line breaking using Knuth-Plass or best-fit. Handles hyphenation points and produces optimal line breaks. In `auto` mode, long non-justified text uses best-fit line breaking up front to avoid expensive global line optimization; other text uses Knuth-Plass with best-fit fallback.
 
 ```js
 import { linebreaker } from '@react-pdf/textkit';
 
 const linebreakerEngine = linebreaker({
+  lineBreakStrategy: 'auto',
   tolerance: 4,
   hyphenationPenalty: 100,
 });
@@ -318,6 +319,7 @@ type LayoutOptions = {
     word: string | null,
     fallback: (word: string | null) => string[],
   ) => string[];
+  lineBreakStrategy?: 'auto' | 'best-fit' | 'knuth-plass';
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;

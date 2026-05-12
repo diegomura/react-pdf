@@ -10,6 +10,33 @@ const width = 50;
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
+  const createLongAttributedString = (attributes = {}) => {
+    const string = Array(600).fill('word').join(' ');
+    const indices = Array.from({ length: string.length }, (_, index) => index);
+
+    return {
+      string,
+      runs: [
+        {
+          start: 0,
+          end: string.length,
+          attributes: { font: [font], ...attributes },
+          stringIndices: indices,
+          glyphIndices: indices,
+          positions: indices.map(() => ({
+            xAdvance: 1,
+            yAdvance: 0,
+            xOffset: 0,
+            yOffset: 0,
+            advanceWidth: 1,
+          })),
+          glyphs: [],
+        },
+      ],
+      syllables: string.split(/([ ]+)/g).filter(Boolean),
+    };
+  };
+
   test('should break lines and adds hyphens only where indicated', () => {
     const attributedString = {
       string: 'Potentieel broeikasgasemissierapport',
@@ -295,6 +322,31 @@ describe('linebreaker', () => {
       'emissie-',
       'rapport',
     ]);
+  });
+
+  test('should use best-fit for long non-justified text in auto mode', () => {
+    const attributedString = createLongAttributedString();
+    const result = linebreakerFactory({})(attributedString, [50]);
+    const bestFitResult = linebreakerFactory({ lineBreakStrategy: 'best-fit' })(
+      attributedString,
+      [50],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(
+      bestFitResult.map((line) => line.string),
+    );
+  });
+
+  test('should keep Knuth-Plass for long justified text in auto mode', () => {
+    const attributedString = createLongAttributedString({ align: 'justify' });
+    const result = linebreakerFactory({})(attributedString, [50]);
+    const knuthPlassResult = linebreakerFactory({
+      lineBreakStrategy: 'knuth-plass',
+    })(attributedString, [50]);
+
+    expect(result.map((line) => line.string)).toEqual(
+      knuthPlassResult.map((line) => line.string),
+    );
   });
 });
 

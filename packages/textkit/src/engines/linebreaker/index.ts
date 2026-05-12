@@ -134,8 +134,8 @@ const getAttributes = (attributedString: AttributedString) => {
 };
 
 /**
- * Performs Knuth & Plass line breaking algorithm
- * Fallbacks to best fit algorithm if latter not successful
+ * Performs line breaking using the configured strategy.
+ * Defaults to Knuth-Plass with best-fit fallback.
  *
  * @param options - Layout options
  */
@@ -150,11 +150,14 @@ const linebreaker = (options: LayoutOptions) => {
 
     const attributes = getAttributes(attributedString);
     const nodes = getNodes(attributedString, attributes, options);
+    const useBestFit = options.lineBreakStrategy === 'best-fit';
 
-    let breaks = knuthPlass(nodes, availableWidths, tolerance);
+    let breaks = useBestFit
+      ? bestFit(nodes, availableWidths)
+      : knuthPlass(nodes, availableWidths, tolerance);
 
     // Try again with a higher tolerance if the line breaking failed.
-    while (breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
+    while (!useBestFit && breaks.length === 0 && tolerance < TOLERANCE_LIMIT) {
       tolerance += TOLERANCE_STEPS;
       breaks = knuthPlass(nodes, availableWidths, tolerance);
     }

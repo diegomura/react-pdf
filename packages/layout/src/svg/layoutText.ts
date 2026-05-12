@@ -124,7 +124,11 @@ const layoutTspan = (fontStore: FontStore) => (node, xOffset) => {
     fontStore?.getHyphenationCallback() ||
     null;
 
-  const layoutOptions = { hyphenationCallback, shrinkWhitespaceFactor };
+  const layoutOptions = {
+    hyphenationCallback,
+    lineBreakStrategy: node.props.lineBreakStrategy,
+    shrinkWhitespaceFactor,
+  };
   const lines = engine(attributedString, container, layoutOptions).flat();
 
   return Object.assign({}, node, { lines });

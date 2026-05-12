@@ -1,4 +1,23 @@
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+vi.mock('../../src/engines/linebreaker/bestFit', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('../../src/engines/linebreaker/bestFit')
+    >();
+
+  return { default: vi.fn(actual.default) };
+});
+
+vi.mock('../../src/engines/linebreaker/knuthPlass', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('../../src/engines/linebreaker/knuthPlass')
+    >();
+  const fn = vi.fn(actual.default);
+
+  return { default: Object.assign(fn, actual.default) };
+});
 
 import linebreakerFactory from '../../src/engines/linebreaker';
 import applyBestFit from '../../src/engines/linebreaker/bestFit';
@@ -9,6 +28,11 @@ const width = 50;
 
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
+
+  beforeEach(() => {
+    vi.mocked(applyBestFit).mockClear();
+    vi.mocked(applyKnuthPlass).mockClear();
+  });
 
   const createLongAttributedString = (attributes = {}) => {
     const string = Array(600).fill('word').join(' ');
@@ -326,27 +350,20 @@ describe('linebreaker', () => {
 
   test('should use best-fit for long non-justified text in auto mode', () => {
     const attributedString = createLongAttributedString();
-    const result = linebreakerFactory({})(attributedString, [50]);
-    const bestFitResult = linebreakerFactory({ lineBreakStrategy: 'best-fit' })(
-      attributedString,
-      [50],
-    );
 
-    expect(result.map((line) => line.string)).toEqual(
-      bestFitResult.map((line) => line.string),
-    );
+    linebreakerFactory({})(attributedString, [50]);
+
+    expect(applyBestFit).toHaveBeenCalledTimes(1);
+    expect(applyKnuthPlass).not.toHaveBeenCalled();
   });
 
   test('should keep Knuth-Plass for long justified text in auto mode', () => {
     const attributedString = createLongAttributedString({ align: 'justify' });
-    const result = linebreakerFactory({})(attributedString, [50]);
-    const knuthPlassResult = linebreakerFactory({
-      lineBreakStrategy: 'knuth-plass',
-    })(attributedString, [50]);
 
-    expect(result.map((line) => line.string)).toEqual(
-      knuthPlassResult.map((line) => line.string),
-    );
+    linebreakerFactory({})(attributedString, [50]);
+
+    expect(applyKnuthPlass).toHaveBeenCalled();
+    expect(applyBestFit).not.toHaveBeenCalled();
   });
 });
 

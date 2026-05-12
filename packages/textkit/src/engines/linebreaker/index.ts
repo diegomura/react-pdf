@@ -9,7 +9,8 @@ import { Node } from './types';
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
-const BEST_FIT_THRESHOLD = 2000;
+// Keep ordinary paragraphs on Knuth-Plass, but avoid active-node blowups for long ragged text.
+const BEST_FIT_CHARACTER_THRESHOLD = 2000;
 
 const opts = {
   width: 3,
@@ -142,13 +143,13 @@ const shouldUseBestFit = (
 
   return (
     attributes.align !== 'justify' &&
-    attributedString.string.length > BEST_FIT_THRESHOLD
+    attributedString.string.length > BEST_FIT_CHARACTER_THRESHOLD
   );
 };
 
 /**
- * Performs Knuth & Plass line breaking algorithm
- * Fallbacks to best fit algorithm if latter not successful
+ * Performs line breaking using the configured strategy.
+ * Auto mode uses best-fit for long ragged text, otherwise Knuth-Plass with best-fit fallback.
  *
  * @param options - Layout options
  */

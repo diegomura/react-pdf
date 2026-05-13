@@ -52,9 +52,13 @@ const fontSubstitution =
 
       const chars = string.slice(run.start, run.end);
 
-      for (let j = 0; j < chars.length; j += 1) {
-        const char = chars[j];
-        const codePoint = char.codePointAt(0);
+      // Iterate by code point so that surrogate pairs (e.g. SIP characters
+      // U+10000 and above) are looked up as a single code point in the font
+      // stack, not as separate high/low surrogates.
+      let j = 0;
+      while (j < chars.length) {
+        const codePoint = chars.codePointAt(j)!;
+        const charLength = codePoint > 0xffff ? 2 : 1;
 
         // If the default font does not have a glyph and the fallback font does, we use it
         const font = pickFontFromFontStack(
@@ -87,7 +91,8 @@ const fontSubstitution =
           lastIndex = index;
         }
 
-        index += char.length;
+        j += charLength;
+        index += charLength;
       }
     }
 

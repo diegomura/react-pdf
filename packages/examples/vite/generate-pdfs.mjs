@@ -41,6 +41,7 @@ const exampleNames = [
   'resume',
   'scripts',
   'soft-hyphens',
+  'surrogate-pair',
   'svg',
   'svg-transform',
   'transform-origin',

@@ -24,6 +24,7 @@ interface TextProps extends BaseProps {
   hyphenationCallback?: HyphenationCallback;
   footnote?: (indexRelativeToPage: number) => {};
   breakIfLastOnPage?: boolean;
+  keepWithNextWrappedBlock?: boolean;
 }
 
 interface ViewProps extends BaseProps {
@@ -31,6 +32,7 @@ interface ViewProps extends BaseProps {
   render?: (props: { pageNumber: number }) => any;
   renderFootnotes?: boolean;
   breakIfLastOnPage?: boolean;
+  keepWithNextWrappedBlock?: boolean;
 }
 
 interface PageProps extends BaseProps {

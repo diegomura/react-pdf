@@ -14,6 +14,7 @@ import getWrapArea from '../page/getWrapArea';
 import { resolvePageDimensions } from './resolveDimensions';
 import resolveInheritance from './resolveInheritance';
 import resolveTextLayout from './resolveTextLayout';
+import resolveWrapOffKeepBreaks from './resolveWrapOffKeepBreaks';
 
 const assingChildren = R.assoc('children');
 
@@ -118,6 +119,7 @@ const splitPage = (page, pageNumber, fontStore) => {
     page,
     fontStore,
   );
+  const wrappedKeepPage = resolveWrapOffKeepBreaks(dynamicPage, fontStore);
 
   const relayout = node => relayoutPage(node, fontStore);
   const resolvePageWithFootnotes = footnotes =>
@@ -133,17 +135,19 @@ const splitPage = (page, pageNumber, fontStore) => {
   let [currentChildren, nextChildren] = splitNodes(
     wrapArea,
     contentArea,
-    dynamicPage.children,
+    wrappedKeepPage.children,
   );
 
   const pageFootnotes = getFootnotes({ children: currentChildren });
 
   let resolvedPage = resolvePageWithFootnotes(pageFootnotes);
+  resolvedPage = resolveWrapOffKeepBreaks(resolvedPage, fontStore);
   let footnotesPlaceholder = getFootnotePlaceholder(resolvedPage);
   const chosenFootnotes = chooseFootnotes(resolvedPage, pageFootnotes);
 
   if (chosenFootnotes.footnotes.length > 0 && footnotesPlaceholder) {
     resolvedPage = resolvePageWithFootnotes(chosenFootnotes.footnotes);
+    resolvedPage = resolveWrapOffKeepBreaks(resolvedPage, fontStore);
     footnotesPlaceholder = getFootnotePlaceholder(resolvedPage);
 
     const spacing =
@@ -174,7 +178,7 @@ const splitPage = (page, pageNumber, fontStore) => {
     [currentChildren, nextChildren] = splitNodes(
       updatedWrapArea,
       contentArea - chosenFootnotes.spacingNeeded,
-      dynamicPage.children,
+      wrappedKeepPage.children,
     );
   }
 

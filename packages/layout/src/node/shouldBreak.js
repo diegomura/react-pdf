@@ -14,6 +14,10 @@ const getBreakIfLastOnPage = R.pathOr(false, ['props', 'breakIfLastOnPage']);
 
 const getMinPresenceAhead = R.path(['props', 'minPresenceAhead']);
 
+const getKeepWithNextWrappedBlock = R.pathOr(false, ['props', 'keepWithNextWrappedBlock']);
+
+const getWrapOffKeepBreak = R.path(['props', 'wrapOffKeepBreak']);
+
 const defaultPresenceAhead = element => height =>
   Math.min(element.box.height, height);
 
@@ -108,6 +112,8 @@ const canDrawOnPage = (node, presenceAhead, height, contentArea) => {
 
 const shouldBreak = (child, futureElements, height, contentArea) => {
   const minPresenceAhead = getMinPresenceAhead(child);
+  const keepWithNextWrappedBlock = getKeepWithNextWrappedBlock(child);
+  const wrapOffKeepBreak = getWrapOffKeepBreak(child);
   const presenceAhead = getPresenceAhead(futureElements, height);
   const futureHeight = getNodesHeight(futureElements);
   const wrapTextAroundChildrenHeight = getWrapTextAroundChildrenHeight(child);
@@ -122,8 +128,11 @@ const shouldBreak = (child, futureElements, height, contentArea) => {
     (minPresenceAhead < futureHeight && presenceAhead < minPresenceAhead) ||
     (getBreakIfLastOnPage(child) &&
       futureElements.length &&
-      canDrawOnPage(futureElements[0], presenceAhead, height, contentArea))
+      (keepWithNextWrappedBlock
+        ? !!wrapOffKeepBreak
+        : canDrawOnPage(futureElements[0], presenceAhead, height, contentArea)))
   );
 };
 
+export { getPresenceAhead, canDrawOnPage };
 export default shouldBreak;

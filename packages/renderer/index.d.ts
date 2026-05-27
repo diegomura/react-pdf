@@ -122,6 +122,11 @@ declare namespace ReactPDF {
      */
     breakIfLastOnPage?: boolean;
 
+    /**
+     * Keep with the next text-wrap image. Page breaks use a wrap-off mimic for this decision.
+     */
+    keepWithNextWrappedBlock?: boolean;
+
     render?: (props: {
       pageNumber: number;
       subPageNumber: number;
@@ -202,6 +207,10 @@ declare namespace ReactPDF {
      * Should push the element to the next page if it is the last element on page
      */
     breakIfLastOnPage?: boolean;
+    /**
+     * Keep with the next text-wrap image. Page breaks use a wrap-off mimic for this decision.
+     */
+    keepWithNextWrappedBlock?: boolean;
   }
 
   interface SVGTextProps extends SVGPresentationAttributes {

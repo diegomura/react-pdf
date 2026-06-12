@@ -36,7 +36,19 @@ const getLineBreak = (node: SafeTextNode, height: number) => {
 const splitText = (node: SafeTextNode, height: number) => {
   const slicedLineIndex = getLineBreak(node, height);
   const currentHeight = heightAtLineIndex(node, slicedLineIndex);
-  const nextHeight = node.box.height - currentHeight;
+  // Compute next-half height from actual remaining line heights rather than
+  // geometric remainder (node.box.height - currentHeight).  The geometric
+  // form includes paddingTop (zeroed for the next-half by splitText) and
+  // mishandles minHeight when all lines end up on the current page, leaving a
+  // 0-line next node that yoga would render at minHeight, not at the ~1-2pt
+  // remainder.
+  const remainingLineHeight =
+    heightAtLineIndex(node, node.lines.length) - currentHeight;
+  const nextPaddingBottom =
+    typeof node.box?.paddingBottom === 'number' ? node.box.paddingBottom : 0;
+  const minH =
+    typeof node.style?.minHeight === 'number' ? node.style.minHeight : 0;
+  const nextHeight = Math.max(remainingLineHeight + nextPaddingBottom, minH);
 
   const current: SafeTextNode = Object.assign({}, node, {
     box: {

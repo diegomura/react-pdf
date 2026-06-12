@@ -37,7 +37,7 @@ export const shouldBreakOptimized = (
   height: number,
   hasNonFixedPrevious: boolean,
 ) => {
-  if ('fixed' in child.props) return false;
+  if (isFixed(child)) return false;
 
   const shouldSplit = height < child.box.top + child.box.height;
   const canWrap = getWrap(child);

@@ -36,6 +36,7 @@ const splitNode = (node: SafeNode, height: number) => {
     box: {
       ...node.box,
       top: 0,
+      marginTop: 0,
       borderTopWidth: 0,
       height: nextBoxHeight,
     },
@@ -53,7 +54,7 @@ const splitNode = (node: SafeNode, height: number) => {
     },
   });
 
-  if (nextHeight) {
+  if (nextHeight !== null) {
     next.style.height = nextHeight;
   }
 

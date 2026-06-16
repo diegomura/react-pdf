@@ -26,6 +26,16 @@ export interface OnRenderProps {
   blob?: Blob;
 }
 
+export type Permissions = {
+  printing?: 'lowResolution' | 'highResolution';
+  modifying?: boolean;
+  copying?: boolean;
+  annotating?: boolean;
+  fillingForms?: boolean;
+  contentAccessibility?: boolean;
+  documentAssembly?: boolean;
+};
+
 export type DocumentProps = {
   bookmark?: never;
   title?: string;
@@ -40,6 +50,9 @@ export type DocumentProps = {
   pdfVersion?: PDFVersion;
   pageMode?: PageMode;
   pageLayout?: PageLayout;
+  ownerPassword?: string;
+  userPassword?: string;
+  permissions?: Permissions;
   onRender?: (props: OnRenderProps) => any;
 };
 

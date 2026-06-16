@@ -1,4 +1,4 @@
-import PDFFont from '../font';
+import PDFFontFactory from '../font_factory';
 
 export default {
   initFonts() {
@@ -47,7 +47,7 @@ export default {
 
     // load the font
     const id = `F${++this._fontCount}`;
-    this._font = PDFFont.open(this, src, family, id);
+    this._font = PDFFontFactory.open(this, src, family, id);
 
     // check for existing font familes with the same name already in the PDF
     // useful if the font was passed as a buffer

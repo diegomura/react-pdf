@@ -3,5 +3,6 @@ node_modules/
 dist
 *.pdf
 *.ttf
+!tests/assets/*.ttf
 lerna-debug.log
 lib

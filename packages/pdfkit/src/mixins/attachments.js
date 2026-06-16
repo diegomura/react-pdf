@@ -1,5 +1,5 @@
 import fs from 'fs';
-import CryptoJS from 'crypto-js';
+import { md5Hex } from '../crypto/md5';
 
 export default {
   /**
@@ -21,7 +21,7 @@ export default {
 
     const refBody = {
       Type: 'EmbeddedFile',
-      Params: {}
+      Params: {},
     };
     let data;
 
@@ -33,8 +33,8 @@ export default {
     } else if (src instanceof ArrayBuffer) {
       data = Buffer.from(new Uint8Array(src));
     } else {
-      let match;
-      if ((match = /^data:(.*?);base64,(.*)$/.exec(src))) {
+      const match = /^data:(.*?);base64,(.*)$/.exec(src);
+      if (match) {
         if (match[1]) {
           refBody.Subtype = match[1].replace('/', '#2F');
         }
@@ -65,9 +65,7 @@ export default {
     }
 
     // add checksum and size information
-    const checksum = CryptoJS.MD5(
-      CryptoJS.lib.WordArray.create(new Uint8Array(data))
-    );
+    const checksum = md5Hex(new Uint8Array(data));
     refBody.Params.CheckSum = new String(checksum);
     refBody.Params.Size = data.byteLength;
 
@@ -90,7 +88,7 @@ export default {
       AFRelationship: options.relationship,
       F: new String(options.name),
       EF: { F: ref },
-      UF: new String(options.name)
+      UF: new String(options.name),
     };
     if (options.description) {
       fileSpecBody.Desc = new String(options.description);
@@ -110,7 +108,7 @@ export default {
     }
 
     return filespec;
-  }
+  },
 };
 
 /** check two embedded file metadata objects for equality */

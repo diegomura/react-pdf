@@ -3,11 +3,11 @@ import PDFImage from '../image';
 export default {
   initImages() {
     this._imageRegistry = {};
-    return (this._imageCount = 0);
+    this._imageCount = 0;
   },
 
   image(src, x, y, options = {}) {
-    let bh, bp, bw, image, ip, left, left1, rotateAngle, originX, originY;
+    let bh, bp, bw, image, ip, left, left1, originX, originY;
     if (typeof x === 'object') {
       options = x;
       x = null;
@@ -17,6 +17,8 @@ export default {
     const ignoreOrientation =
       options.ignoreOrientation ||
       (options.ignoreOrientation !== false && this.options.ignoreOrientation);
+
+    const inDocumentFlow = typeof y !== 'number';
 
     x = (left = x != null ? x : options.x) != null ? left : this.x;
     y = (left1 = y != null ? y : options.y) != null ? left1 : this.y;
@@ -100,32 +102,37 @@ export default {
       }
     }
 
+    // need to flip image by default because of the default transform matrix on the document
+    let rotateAngle = 0;
+    let xTransform = x;
+    let yTransform = y;
+    let hTransform = h;
+    let wTransform = w;
+
     if (!ignoreOrientation) {
       switch (image.orientation) {
         // No orientation (need to flip image, though, because of the default transform matrix on the document)
         default:
         case 1:
-          h = -h;
-          y -= h;
+          hTransform = -h;
+          yTransform += h;
 
-          rotateAngle = 0;
           break;
         // Flip Horizontal
         case 2:
-          w = -w;
-          h = -h;
-          x -= w;
-          y -= h;
+          wTransform = -w;
+          hTransform = -h;
+          xTransform += w;
+          yTransform += h;
 
-          rotateAngle = 0;
           break;
         // Rotate 180 degrees
         case 3:
           originX = x;
           originY = y;
 
-          h = -h;
-          x -= w;
+          hTransform = -h;
+          xTransform -= w;
 
           rotateAngle = 180;
           break;
@@ -139,8 +146,9 @@ export default {
           originX = x;
           originY = y;
 
-          [w, h] = [h, w];
-          y -= h;
+          wTransform = h;
+          hTransform = w;
+          yTransform -= hTransform;
 
           rotateAngle = 90;
           break;
@@ -149,8 +157,8 @@ export default {
           originX = x;
           originY = y;
 
-          [w, h] = [h, w];
-          h = -h;
+          wTransform = h;
+          hTransform = -w;
 
           rotateAngle = 90;
           break;
@@ -159,10 +167,9 @@ export default {
           originX = x;
           originY = y;
 
-          [w, h] = [h, w];
-          h = -h;
-          w = -w;
-          x -= w;
+          hTransform = -w;
+          wTransform = -h;
+          xTransform += h;
 
           rotateAngle = 90;
           break;
@@ -171,18 +178,17 @@ export default {
           originX = x;
           originY = y;
 
-          [w, h] = [h, w];
-          h = -h;
-          x -= w;
-          y -= h;
+          wTransform = h;
+          hTransform = -w;
+          xTransform -= h;
+          yTransform += w;
 
           rotateAngle = -90;
           break;
       }
     } else {
-      h = -h;
-      y -= h;
-      rotateAngle = 0;
+      hTransform = -h;
+      yTransform += h;
     }
 
     // create link annotations if the link option is given
@@ -197,19 +203,23 @@ export default {
     }
 
     // Set the current y position to below the image if it is in the document flow
-    if (this.y === y) {
+    if (inDocumentFlow) {
       this.y += h;
     }
 
     this.save();
 
+    if (options.opacity != null) {
+      this._doOpacity(options.opacity, null);
+    }
+
     if (rotateAngle) {
       this.rotate(rotateAngle, {
-        origin: [originX, originY]
+        origin: [originX, originY],
       });
     }
 
-    this.transform(w, 0, 0, h, x, y);
+    this.transform(wTransform, 0, 0, hTransform, xTransform, yTransform);
     this.addContent(`/${image.label} Do`);
     this.restore();
 
@@ -230,5 +240,5 @@ export default {
     }
 
     return image;
-  }
+  },
 };

@@ -10,7 +10,7 @@ class VirtualFileSystem {
     const data = this.fileData[virtualFileName];
     if (data == null) {
       throw new Error(
-        `File '${virtualFileName}' not found in virtual file system`
+        `File '${virtualFileName}' not found in virtual file system`,
       );
     }
 

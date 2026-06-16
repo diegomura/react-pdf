@@ -172,7 +172,7 @@ export type TranslateTransform = {
 
 export type RotateTransform = {
   operation: 'rotate';
-  value: [number];
+  value: [number, number, number];
 };
 
 export type SkewTransform = {

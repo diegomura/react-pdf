@@ -35,6 +35,7 @@ describe('run advanceWidth operator', () => {
       attributes: {},
       positions,
       glyphs: [],
+      stringIndices: [],
       glyphIndices: [],
     };
 
@@ -54,6 +55,7 @@ describe('run advanceWidth operator', () => {
       attributes: {},
       positions,
       glyphs: [],
+      stringIndices: [],
       glyphIndices: [],
     };
 

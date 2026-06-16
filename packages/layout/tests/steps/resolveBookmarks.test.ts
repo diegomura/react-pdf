@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import resolveBookmarks from '../../src/steps/resolveBookmarks';
-import { DocumentNode } from '../../src/types';
+import { DocumentNode, ViewNode } from '../../src/types';
 
 describe('layout resolveBookmarks', () => {
   test('should keep nodes the same if no bookmark passed', () => {
@@ -69,7 +69,7 @@ describe('layout resolveBookmarks', () => {
           children: [{ type: 'VIEW', props: {} }],
         },
       ],
-    } as DocumentNode;
+    } as unknown as DocumentNode;
 
     const result = resolveBookmarks(root);
 
@@ -149,8 +149,8 @@ describe('layout resolveBookmarks', () => {
 
     const page = result.children[0];
     const view = page.children![1];
-    const nestedView = page.children![0].children![0];
-    const subNestedView = nestedView!.children![0];
+    const nestedView = page.children![0].children![0] as ViewNode;
+    const subNestedView = nestedView!.children![0] as ViewNode;
 
     expect(page.props.bookmark).toEqual({
       ref: 0,

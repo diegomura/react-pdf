@@ -4,6 +4,10 @@ import { YogaNode } from 'yoga-layout/load';
 
 import type { Box, NodeProps, Origin } from './base';
 import { ImageNode, SafeImageNode } from './image';
+import {
+  ImageBackgroundNode,
+  SafeImageBackgroundNode,
+} from './image-background';
 import { SafeViewNode, ViewNode } from './view';
 import { SafeTextNode, TextNode } from './text';
 import { LinkNode, SafeLinkNode } from './link';
@@ -99,6 +103,7 @@ export type PageNode = {
   children?: (
     | ViewNode
     | ImageNode
+    | ImageBackgroundNode
     | TextNode
     | LinkNode
     | CanvasNode
@@ -116,6 +121,7 @@ export type SafePageNode = Omit<PageNode, 'style' | 'children'> & {
   children?: (
     | SafeViewNode
     | SafeImageNode
+    | SafeImageBackgroundNode
     | SafeTextNode
     | SafeLinkNode
     | SafeCanvasNode

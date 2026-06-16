@@ -9,6 +9,7 @@ import {
   matchPercent,
   parseFloat,
 } from '@react-pdf/fns';
+import { SvgImage } from '@react-pdf/image';
 
 import layoutText from '../svg/layoutText';
 import replaceDefs from '../svg/replaceDefs';
@@ -18,11 +19,14 @@ import inheritProps from '../svg/inheritProps';
 import parseAspectRatio from '../svg/parseAspectRatio';
 import {
   SafeNode,
+  SafeImageNode,
   SafeSvgNode,
   SafeTextInstanceNode,
   SafeTextNode,
   SafeTspanNode,
 } from '../types';
+
+const isMarker = (node: SafeNode) => node.type === P.Marker;
 
 type Container = { width: number; height: number };
 
@@ -45,6 +49,8 @@ const STYLE_PROPS = [
   'strokeDasharray',
   'gradientUnits',
   'gradientTransform',
+  'stopColor',
+  'stopOpacity',
 ];
 
 const VERTICAL_PROPS = ['y', 'y1', 'y2', 'height', 'cy', 'ry'];
@@ -81,6 +87,15 @@ const parseTransform = (container: Container) => (value) => {
   return resolveStyle(container, { transform: value }).transform;
 };
 
+// Skip transformColor for url() references (gradients, patterns)
+const URL_REGEX = /^url\(/;
+const transformColorSafe = (value) => {
+  if (typeof value === 'string' && URL_REGEX.test(value)) {
+    return value;
+  }
+  return transformColor(value);
+};
+
 const parseProps =
   (container: Container) =>
   (node: SafeNode): SafeNode => {
@@ -101,10 +116,16 @@ const parseProps =
         cy: parseFloat,
         width: parseFloat,
         height: parseFloat,
+        fontSize: parseFloat,
+        strokeWidth: parseFloat,
+        strokeMiterlimit: parseFloat,
+        strokeDashoffset: parseFloat,
         offset: parsePercent,
-        fill: transformColor,
+        fill: transformColorSafe,
+        fillOpacity: parsePercent,
         opacity: parsePercent,
-        stroke: transformColor,
+        stroke: transformColorSafe,
+        strokeOpacity: parsePercent,
         stopOpacity: parsePercent,
         stopColor: transformColor,
         transform: parseTransform(container),
@@ -115,6 +136,23 @@ const parseProps =
 
     return Object.assign({}, node, { props });
   };
+
+// SVG spec: if rx is specified but ry is not, ry defaults to rx (and vice versa)
+const resolveRectRadius = (node: SafeNode): SafeNode => {
+  if (node.type !== P.Rect || !node.props) return node;
+
+  const { rx, ry } = node.props as { rx?: number; ry?: number };
+
+  // If both are specified or neither is specified, no change needed
+  if ((rx && ry) || (!rx && !ry)) return node;
+
+  const newProps = Object.assign({}, node.props, {
+    rx: rx ?? ry,
+    ry: ry ?? rx,
+  });
+
+  return Object.assign({}, node, { props: newProps });
+};
 
 const mergeStyles = (node: SafeNode): SafeNode => {
   const style = node.style || {};
@@ -186,10 +224,104 @@ const parseText =
 const resolveSvgNode = (container: Container) =>
   compose(
     parseProps(container),
+    resolveRectRadius,
+    pickStyleProps,
     addMissingTspan,
     removeNoneValues,
     mergeStyles,
   );
+
+// Gradient transforms typically don't use percentages, so use minimal container
+const ZERO_CONTAINER: Container = { width: 0, height: 0 };
+const parseGradientTransform = parseTransform(ZERO_CONTAINER);
+
+// Process DEFS children (LINEAR_GRADIENT, RADIAL_GRADIENT, STOP) without container-based percent transform
+const parseDefsProps = (node: SafeNode): SafeNode => {
+  const props = evolve(
+    {
+      // Gradient coordinates (percent becomes 0-1 range)
+      x1: parsePercent,
+      y1: parsePercent,
+      x2: parsePercent,
+      y2: parsePercent,
+      cx: parsePercent,
+      cy: parsePercent,
+      fx: parsePercent,
+      fy: parsePercent,
+      r: parsePercent,
+      gradientTransform: parseGradientTransform,
+      // Stop properties
+      offset: parsePercent,
+      stopColor: transformColor,
+      stopOpacity: parsePercent,
+      // Marker properties
+      refX: parseFloat,
+      refY: parseFloat,
+      markerWidth: parseFloat,
+      markerHeight: parseFloat,
+      viewBox: parseViewbox,
+    } as any,
+    node.props || {},
+  );
+
+  return Object.assign({}, node, { props });
+};
+
+const getMarkerContainer = (node: SafeNode): Container => {
+  const props = node.props || {};
+
+  const viewBox =
+    'viewBox' in props
+      ? (props.viewBox as {
+          minX: number;
+          minY: number;
+          maxX: number;
+          maxY: number;
+        } | null)
+      : null;
+
+  if (viewBox) {
+    return { width: viewBox.maxX, height: viewBox.maxY };
+  }
+
+  const markerWidth =
+    'markerWidth' in props ? (props.markerWidth as number) : 3;
+  const markerHeight =
+    'markerHeight' in props ? (props.markerHeight as number) : 3;
+
+  return { width: markerWidth, height: markerHeight };
+};
+
+const resolveMarkerChildren = (node: SafeNode): SafeNode => {
+  if (!node.children) return node;
+
+  const container = getMarkerContainer(node);
+
+  const resolveChild = compose(
+    resolveChildren(container),
+    resolveSvgNode(container),
+  );
+
+  const children = node.children.map(resolveChild);
+
+  return Object.assign({}, node, { children });
+};
+
+const resolveDefsChildren = (node: SafeNode): SafeNode => {
+  if (!node.children) return node;
+
+  const children = node.children.map((child) => {
+    const parsed = parseDefsProps(child);
+
+    if (isMarker(parsed)) return resolveMarkerChildren(parsed);
+
+    return resolveDefsChildren(parsed);
+  });
+
+  return Object.assign({}, node, { children });
+};
+
+const isDefs = (node: SafeNode) => node.type === P.Defs;
 
 const resolveChildren =
   (container: Container) =>
@@ -201,7 +333,10 @@ const resolveChildren =
       resolveSvgNode(container),
     );
 
-    const children = node.children.map(resolveChild);
+    // Process DEFS separately without container-based percent transform
+    const children = node.children.map((child) =>
+      isDefs(child) ? resolveDefsChildren(child) : resolveChild(child),
+    );
 
     return Object.assign({}, node, { children });
   };
@@ -262,18 +397,60 @@ const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
   )(node);
 };
 
+const isSvgImage = (
+  node: SafeNode,
+): node is SafeImageNode & { image: SvgImage } =>
+  node.type === P.Image && node.image?.format === 'svg';
+
+type ParsedSvgNode = SvgImage['data'];
+
+function convertParsedNode(node: ParsedSvgNode) {
+  return {
+    type: node.type,
+    props: node.props,
+    style: {},
+    children: node.children?.map(convertParsedNode),
+    ...('value' in node && { value: node.value as string }),
+  };
+}
+
+function convertToSvgNode(imageNode: SafeImageNode): SafeSvgNode {
+  const image = imageNode.image as SvgImage;
+  const width = imageNode.style?.width ?? image.width;
+  const height = imageNode.style?.height ?? image.height;
+  const viewBox = parseViewbox(image.data.props.viewBox as string);
+
+  return {
+    type: P.Svg,
+    props: {
+      width,
+      height,
+      viewBox,
+      preserveAspectRatio: { align: 'xMidYMid', meetOrSlice: 'meet' },
+    },
+    style: { ...imageNode.style, width, height },
+    box: imageNode.box,
+    origin: imageNode.origin,
+    yogaNode: imageNode.yogaNode,
+    children: image.data.children.map(convertParsedNode),
+  };
+}
+
 /**
- * Pre-process SVG nodes so they can be rendered in the next steps
+ * Pre-process SVG nodes so they can be rendered in the next steps.
+ * Also converts Image nodes containing SVG data into SvgNodes.
  *
  * @param node - Root node
  * @param fontStore - Font store
  * @returns Root node
  */
 const resolveSvg = (node: SafeNode, fontStore: FontStore) => {
-  if (!('children' in node)) return node;
+  const resolved = isSvgImage(node) ? convertToSvgNode(node) : node;
+
+  if (!('children' in resolved)) return resolved;
 
   const resolveChild = (child) => resolveSvg(child, fontStore);
-  const root = isSvg(node) ? resolveSvgRoot(node, fontStore) : node;
+  const root = isSvg(resolved) ? resolveSvgRoot(resolved, fontStore) : resolved;
   const children = root.children?.map(resolveChild);
 
   return Object.assign({}, root, { children });

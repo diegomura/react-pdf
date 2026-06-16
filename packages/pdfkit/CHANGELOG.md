@@ -1,5 +1,31 @@
 # @react-pdf/pdfkit
 
+## 5.1.1
+
+### Patch Changes
+
+- [#3387](https://github.com/diegomura/react-pdf/pull/3387) [`598cf0c6`](https://github.com/diegomura/react-pdf/commit/598cf0c63f45211d0ef1fc7c0c84011e79c9d4c2) Thanks [@diegomura](https://github.com/diegomura)! - Update pdfkit png logic, fixing interlacing rendering
+
+- [#3386](https://github.com/diegomura/react-pdf/pull/3386) [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77) Thanks [@diegomura](https://github.com/diegomura)! - Add pdfkit table mixin as part of unification plan
+
+## 5.1.0
+
+### Minor Changes
+
+- [#3375](https://github.com/diegomura/react-pdf/pull/3375) [`ccfcc632`](https://github.com/diegomura/react-pdf/commit/ccfcc632313152a7752bbe76c6a81c27efc93ef4) Thanks [@diegomura](https://github.com/diegomura)! - Replace internal @react-pdf/png-js with upstream png-js package
+
+## 5.0.0
+
+### Major Changes
+
+- [#3335](https://github.com/diegomura/react-pdf/pull/3335) [`2e91eb64`](https://github.com/diegomura/react-pdf/commit/2e91eb649318ee66ec8cab7386f1fdbae8eb8cef) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove font export
+
+- [#3333](https://github.com/diegomura/react-pdf/pull/3333) [`cf366d05`](https://github.com/diegomura/react-pdf/commit/cf366d050f795cce191863564182bd6efeb791af) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove encode glyphs font methods
+
+### Minor Changes
+
+- [#3344](https://github.com/diegomura/react-pdf/pull/3344) [`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea) Thanks [@diegomura](https://github.com/diegomura)! - feat: password protection support
+
 ## 4.1.0
 
 ### Minor Changes

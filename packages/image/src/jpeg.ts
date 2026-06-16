@@ -1,8 +1,8 @@
 import _JPEG from 'jay-peg';
 
-import { Image } from './types';
+import { RasterImage } from './types';
 
-class JPEG implements Image {
+class JPEG implements RasterImage {
   data: Buffer;
   width: number;
   height: number;

@@ -340,56 +340,64 @@ describe('resolve stylesheet transform', () => {
   test('should resolve numeric rotate operation', () => {
     const style = resolveStyle({ transform: 'rotate(120)' });
 
-    expect(style.transform).toEqual([{ operation: 'rotate', value: [120] }]);
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [120, 0, 0] },
+    ]);
   });
 
   test('should resolve numeric rotate gradient operation', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(120)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [120] },
+      { operation: 'rotate', value: [120, 0, 0] },
     ]);
   });
 
   test('should resolve float rotate operation', () => {
     const style = resolveStyle({ transform: 'rotate(0.1)' });
 
-    expect(style.transform).toEqual([{ operation: 'rotate', value: [0.1] }]);
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [0.1, 0, 0] },
+    ]);
   });
 
   test('should resolve float rotate gradient operation', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(0.1)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [0.1] },
+      { operation: 'rotate', value: [0.1, 0, 0] },
     ]);
   });
 
   test('should resolve deg rotate operation', () => {
     const style = resolveStyle({ transform: 'rotate(2deg)' });
 
-    expect(style.transform).toEqual([{ operation: 'rotate', value: [2] }]);
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [2, 0, 0] },
+    ]);
   });
 
   test('should resolve deg rotate gradient operation', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(2deg)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [2] },
+      { operation: 'rotate', value: [2, 0, 0] },
     ]);
   });
 
   test('should resolve negative deg rotate operation', () => {
     const style = resolveStyle({ transform: 'rotate(-2deg)' });
 
-    expect(style.transform).toEqual([{ operation: 'rotate', value: [-2] }]);
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [-2, 0, 0] },
+    ]);
   });
 
   test('should resolve negative deg rotate gradient operation', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(-2deg)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [-2] },
+      { operation: 'rotate', value: [-2, 0, 0] },
     ]);
   });
 
@@ -397,7 +405,7 @@ describe('resolve stylesheet transform', () => {
     const style = resolveStyle({ transform: 'rotate(3.1416rad)' });
 
     expect(style.transform).toEqual([
-      { operation: 'rotate', value: [180.0004209182994] },
+      { operation: 'rotate', value: [180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -405,7 +413,7 @@ describe('resolve stylesheet transform', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(3.1416rad)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [180.0004209182994] },
+      { operation: 'rotate', value: [180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -413,7 +421,7 @@ describe('resolve stylesheet transform', () => {
     const style = resolveStyle({ transform: 'rotate(-3.1416rad)' });
 
     expect(style.transform).toEqual([
-      { operation: 'rotate', value: [-180.0004209182994] },
+      { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -421,7 +429,7 @@ describe('resolve stylesheet transform', () => {
     const style = resolveStyle({ gradientTransform: 'rotate(-3.1416rad)' });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [-180.0004209182994] },
+      { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -618,11 +626,13 @@ describe('resolve stylesheet transform', () => {
   // This can happen when transform get's parsed as prop and then again on an SVG node
   test('should leave parsed tranform value as is', () => {
     const style = resolveStyle({
-      transform: [{ operation: 'rotate', value: [-180.0004209182994] }] as any,
+      transform: [
+        { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
+      ] as any,
     });
 
     expect(style.transform).toEqual([
-      { operation: 'rotate', value: [-180.0004209182994] },
+      { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -630,12 +640,12 @@ describe('resolve stylesheet transform', () => {
   test('should leave parsed tranform gradient value as is', () => {
     const style = resolveStyle({
       gradientTransform: [
-        { operation: 'rotate', value: [-180.0004209182994] },
+        { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
       ] as any,
     });
 
     expect(style.gradientTransform).toEqual([
-      { operation: 'rotate', value: [-180.0004209182994] },
+      { operation: 'rotate', value: [-180.0004209182994, 0, 0] },
     ]);
   });
 
@@ -737,7 +747,7 @@ describe('resolve stylesheet transform', () => {
     });
 
     expect(style.transform).toEqual([
-      { operation: 'rotate', value: [45] },
+      { operation: 'rotate', value: [45, 0, 0] },
       { operation: 'translate', value: [10, 20] },
     ]);
   });
@@ -749,7 +759,7 @@ describe('resolve stylesheet transform', () => {
 
     expect(style.transform).toEqual([
       { operation: 'scale', value: [2, 2] },
-      { operation: 'rotate', value: [90] },
+      { operation: 'rotate', value: [90, 0, 0] },
     ]);
   });
 
@@ -778,6 +788,38 @@ describe('resolve stylesheet transform', () => {
 
     expect(style.transform).toEqual([
       { operation: 'skew', value: [0, 90.0002104591497] },
+    ]);
+  });
+
+  test('should resolve rotate with explicit origin', () => {
+    const style = resolveStyle({ transform: 'rotate(45, 10, 20)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [45, 10, 20] },
+    ]);
+  });
+
+  test('should resolve rotate gradient with explicit origin', () => {
+    const style = resolveStyle({ gradientTransform: 'rotate(45, 10, 20)' });
+
+    expect(style.gradientTransform).toEqual([
+      { operation: 'rotate', value: [45, 10, 20] },
+    ]);
+  });
+
+  test('should resolve rotate with explicit origin using space separator', () => {
+    const style = resolveStyle({ transform: 'rotate(45 10 20)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [45, 10, 20] },
+    ]);
+  });
+
+  test('should resolve rotate with negative origin values', () => {
+    const style = resolveStyle({ transform: 'rotate(90, -5, -10)' });
+
+    expect(style.transform).toEqual([
+      { operation: 'rotate', value: [90, -5, -10] },
     ]);
   });
 });

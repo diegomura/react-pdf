@@ -54,6 +54,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
@@ -110,6 +111,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
           attributes: { font: [] },
         },
@@ -167,6 +169,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
           attributes: {
             attachment: { height: 20, width: 20, image: Buffer.from('') },
@@ -227,6 +230,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
         },
       ],
@@ -283,6 +287,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
           attributes: {
             attachment: { height: 20, width: 20, image: Buffer.from('') },
@@ -293,6 +298,7 @@ describe('resolveAttachments', () => {
 
     instance(string);
 
+    expect(string.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4]);
     expect(string.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', string.runs[0].glyphs)).toEqual([
       76, 111, 65532, 101, 109,
@@ -348,6 +354,7 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
+          stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
           attributes: {
             attachment: { height: 20, width: 20, image: Buffer.from('') },
@@ -357,6 +364,7 @@ describe('resolveAttachments', () => {
     };
     const result = instance(string);
 
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 3, 4]);
     expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 111, 65532, 101, 109,
@@ -405,7 +413,8 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
-          glyphIndices: [0, 0, 1, 2, 3],
+          stringIndices: [0, 0, 1, 2, 3],
+          glyphIndices: [0, 2, 3, 4],
           attributes: {
             attachment: { height: 20, width: 20, image: Buffer.from('') },
           },
@@ -414,7 +423,8 @@ describe('resolveAttachments', () => {
     };
     const result = instance(string);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 0, 1, 2, 3]);
+    expect(result.runs[0].stringIndices).toEqual([0, 0, 1, 2, 3]);
+    expect(result.runs[0].glyphIndices).toEqual([0, 2, 3, 4]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       64257, 65532, 101, 109,
     ]);
@@ -462,7 +472,8 @@ describe('resolveAttachments', () => {
               yOffset: 0,
             }, // m
           ],
-          glyphIndices: [0, 1, 2, 2, 3],
+          stringIndices: [0, 1, 2, 2, 3],
+          glyphIndices: [0, 1, 2, 4],
           attributes: {
             attachment: { height: 20, width: 20, image: Buffer.from('') },
           },
@@ -471,7 +482,8 @@ describe('resolveAttachments', () => {
     };
     const result = instance(string);
 
-    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 2, 3]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1, 2, 2, 3]);
+    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 4]);
     expect(pluck('id', result.runs[0].glyphs!)).toEqual([
       76, 65532, 64257, 109,
     ]);

@@ -1,5 +1,20 @@
 # @react-pdf/image
 
+## 3.1.0
+
+### Minor Changes
+
+- [#3375](https://github.com/diegomura/react-pdf/pull/3375) [`ccfcc632`](https://github.com/diegomura/react-pdf/commit/ccfcc632313152a7752bbe76c6a81c27efc93ef4) Thanks [@diegomura](https://github.com/diegomura)! - Replace internal @react-pdf/png-js with upstream png-js package
+
+- [#3281](https://github.com/diegomura/react-pdf/pull/3281) [`0138fddd`](https://github.com/diegomura/react-pdf/commit/0138fddd1696780774ebe322d30c3210a5924a7d) Thanks [@exoego](https://github.com/exoego)! - feat: Support loading external SVG file via <Image src="foo.svg" />
+
+- [#3365](https://github.com/diegomura/react-pdf/pull/3365) [`27d1b487`](https://github.com/diegomura/react-pdf/commit/27d1b4877507b874a6cd7face5e86cd236d2a42f) Thanks [@diegomura](https://github.com/diegomura)! - feat(svg): extract svg parser
+
+### Patch Changes
+
+- Updated dependencies [[`72b4381e`](https://github.com/diegomura/react-pdf/commit/72b4381eddd3dae971b54a485a1faad4b6550fa6), [`27d1b487`](https://github.com/diegomura/react-pdf/commit/27d1b4877507b874a6cd7face5e86cd236d2a42f), [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/svg@1.1.0
+
 ## 3.0.4
 
 ### Patch Changes

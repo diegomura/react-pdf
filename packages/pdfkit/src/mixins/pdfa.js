@@ -21,12 +21,12 @@ export default {
 
   _addColorOutputIntent() {
     const iccProfile = fs.readFileSync(
-      `${__dirname}/data/sRGB_IEC61966_2_1.icc`
+      `${__dirname}/data/sRGB_IEC61966_2_1.icc`,
     );
 
     const colorProfileRef = this.ref({
       Length: iccProfile.length,
-      N: 3
+      N: 3,
     });
     colorProfileRef.write(iccProfile);
     colorProfileRef.end();
@@ -36,7 +36,7 @@ export default {
       S: 'GTS_PDFA1',
       Info: new String('sRGB IEC61966-2.1'),
       OutputConditionIdentifier: new String('sRGB IEC61966-2.1'),
-      DestOutputProfile: colorProfileRef
+      DestOutputProfile: colorProfileRef,
     });
     intentRef.end();
 
@@ -54,5 +54,5 @@ export default {
 
   _addPdfaMetadata() {
     this.appendXML(this._getPdfaid());
-  }
+  },
 };

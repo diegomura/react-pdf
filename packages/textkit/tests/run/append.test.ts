@@ -25,6 +25,7 @@ describe('run append glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
     };
 
@@ -32,6 +33,7 @@ describe('run append glyph operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 5);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9]);
   });
@@ -54,6 +56,7 @@ describe('run append glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
@@ -63,6 +66,7 @@ describe('run append glyph operator', () => {
 
     expect(result).toHaveProperty('start', 0);
     expect(result).toHaveProperty('end', 6);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9, 10]);
@@ -86,6 +90,7 @@ describe('run append glyph operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
@@ -97,7 +102,8 @@ describe('run append glyph operator', () => {
     } as Glyph; // fi
     const result = append(glyph, run); // loremfi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 114, 101, 109, 64257,
     ]);
@@ -120,14 +126,16 @@ describe('run append glyph operator', () => {
         { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const glyph = { id: 105, codePoints: [105], advanceWidth: 10 } as Glyph; // i
     const result = append(glyph, run); // lofimi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 10]);
   });
@@ -148,7 +156,8 @@ describe('run append glyph operator', () => {
         { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
@@ -159,7 +168,8 @@ describe('run append glyph operator', () => {
     } as Glyph; // ffi
     const result = append(glyph, run); //  lofimffi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4, 4, 4]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4, 4, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 109, 64259]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 10]);
   });
@@ -184,12 +194,14 @@ describe('run append code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(null, run);
 
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4]);
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9]);
@@ -213,12 +225,14 @@ describe('run append code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(105, run);
 
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5]);
     expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 114, 101, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 9, 8]);
@@ -242,13 +256,15 @@ describe('run append code point operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(64257, run); // loremfi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 3, 4, 5, 5]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 3, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([
       76, 111, 114, 101, 109, 64257,
     ]);
@@ -271,13 +287,15 @@ describe('run append code point operator', () => {
         { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(105, run); // lofimi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 109, 105]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 8]);
   });
@@ -298,13 +316,15 @@ describe('run append code point operator', () => {
         { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
       attributes: { font: [font], fontSize: 2 },
     };
 
     const result = append(64259, run); //  lofimffi
 
-    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 2, 3, 4, 4, 4]);
+    expect(result).toHaveProperty('stringIndices', [0, 1, 2, 2, 3, 4, 4, 4]);
+    expect(result).toHaveProperty('glyphIndices', [0, 1, 2, 4, 5]);
     expect(pluck('id', result.glyphs!)).toEqual([76, 111, 64257, 109, 64259]);
     expect(pluck('xAdvance', result.positions!)).toEqual([5, 6, 7, 8, 10]);
   });

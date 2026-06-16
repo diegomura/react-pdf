@@ -215,6 +215,7 @@ type Run = {
   attributes: Attributes;
   glyphs?: Glyph[];
   positions?: Position[];
+  stringIndices?: number[];
   glyphIndices?: number[];
 };
 ```

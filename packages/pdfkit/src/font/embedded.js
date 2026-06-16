@@ -117,24 +117,6 @@ const createEmbeddedFont = (PDFFont) =>
       return [res, positions];
     }
 
-    encodeGlyphs(glyphs) {
-      const res = [];
-      for (let i = 0; i < glyphs.length; i++) {
-        const glyph = glyphs[i];
-        const gid = this.subset.includeGlyph(glyph.id);
-        res.push(`0000${gid.toString(16)}`.slice(-4));
-
-        if (this.widths[gid] == null) {
-          this.widths[gid] = glyph.advanceWidth * this.scale;
-        }
-        if (this.unicode[gid] == null) {
-          this.unicode[gid] = glyph.codePoints;
-        }
-      }
-
-      return res;
-    }
-
     widthOfString(string, size, features) {
       const width = this.layout(string, features, true).advanceWidth;
       const scale = size / 1000;

@@ -14,6 +14,9 @@ export interface SVGPresentationAttributes {
   strokeLinejoin?: 'butt' | 'round' | 'square' | 'miter' | 'bevel';
   visibility?: 'visible' | 'hidden' | 'collapse';
   clipPath?: string;
+  markerStart?: string;
+  markerMid?: string;
+  markerEnd?: string;
   dominantBaseline?:
     | 'auto'
     | 'middle'

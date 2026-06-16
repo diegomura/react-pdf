@@ -50,16 +50,6 @@ const createStandardFont = (PDFFont) =>
       return [encoded, positions];
     }
 
-    encodeGlyphs(glyphs) {
-      const res = [];
-
-      for (let glyph of Array.from(glyphs)) {
-        res.push(`00${glyph.id.toString(16)}`.slice(-2));
-      }
-
-      return res;
-    }
-
     widthOfString(string, size) {
       const glyphs = this.font.glyphsForString(`${string}`);
       const advances = this.font.advancesForGlyphs(glyphs);

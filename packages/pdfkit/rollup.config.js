@@ -24,8 +24,10 @@ const getExternal = ({ browser }) => [
       !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
   ),
   /\/node_modules\/pako\//,
-  /crypto-js/,
   /@babel\/runtime/,
+  'js-md5',
+  '@noble/hashes/sha256',
+  '@noble/ciphers/aes',
   ...(browser ? [] : ['fs'])
 ];
 

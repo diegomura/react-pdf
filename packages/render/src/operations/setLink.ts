@@ -1,5 +1,6 @@
 import { SafeNode } from '@react-pdf/layout';
 import { Context } from '../types';
+import resolveHitSlop from '../utils/resolveHitSlop';
 
 const isString = (value: any): value is string => typeof value === 'string';
 
@@ -13,7 +14,16 @@ const renderLink = (ctx: Context, node: SafeNode, src: string) => {
   const value = isId ? src.slice(1) : src;
   const { top, left, width, height } = node.box;
 
-  ctx[method](left, top, width, height, value);
+  const props = node.props || {};
+  const slop = resolveHitSlop('hitSlop' in props ? props.hitSlop : undefined);
+
+  ctx[method](
+    left - slop.left,
+    top - slop.top,
+    width + slop.left + slop.right,
+    height + slop.top + slop.bottom,
+    value,
+  );
 };
 
 const setLink = (ctx: Context, node: SafeNode) => {

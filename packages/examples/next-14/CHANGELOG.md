@@ -1,5 +1,40 @@
 # next-14
 
+## 0.1.22
+
+### Patch Changes
+
+- Updated dependencies [[`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77)]:
+  - @react-pdf/renderer@4.5.1
+
+## 0.1.21
+
+### Patch Changes
+
+- Updated dependencies [[`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/renderer@4.5.0
+
+## 0.1.20
+
+### Patch Changes
+
+- Updated dependencies [[`e585e352`](https://github.com/diegomura/react-pdf/commit/e585e3523ecb50001cc9f47e00b139738c02b87f)]:
+  - @react-pdf/renderer@4.4.1
+
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/renderer@4.4.0
+
+## 0.1.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@4.3.3
+
 ## 0.1.17
 
 ### Patch Changes

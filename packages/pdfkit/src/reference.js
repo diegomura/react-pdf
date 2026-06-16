@@ -74,17 +74,27 @@ class PDFReference extends stream.Writable {
   finalize() {
     this.offset = this.document._offset;
 
-    this.document._write(`${this.id} ${this.gen} obj`);
-    this.document._write(PDFObject.convert(this.data));
+    const encryptFn = this.document._security
+      ? this.document._security.getEncryptFn(this.id, this.gen)
+      : null;
 
     if (this.chunks.length) {
-      this.document._write('stream');
-      for (let chunk of Array.from(this.chunks)) {
-        this.document._write(chunk);
+      let buffer = Buffer.concat(this.chunks);
+
+      if (encryptFn) {
+        buffer = encryptFn(buffer);
       }
 
-      this.chunks.length = 0; // free up memory
+      this.data.Length = buffer.length;
+      this.document._write(`${this.id} ${this.gen} obj`);
+      this.document._write(PDFObject.convert(this.data, encryptFn));
+      this.document._write('stream');
+      this.document._write(buffer);
+      this.chunks.length = 0;
       this.document._write('\nendstream');
+    } else {
+      this.document._write(`${this.id} ${this.gen} obj`);
+      this.document._write(PDFObject.convert(this.data, encryptFn));
     }
 
     this.document._write('endobj');

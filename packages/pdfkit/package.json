@@ -36,6 +36,7 @@
     "fontkit": "^2.0.2",
     "js-md5": "^0.8.3",
     "linebreak": "^1.1.0",
+    "pako": "^1.0.11",
     "png-js": "^2.0.0",
     "vite-compatible-readable-stream": "^3.6.1"
   },

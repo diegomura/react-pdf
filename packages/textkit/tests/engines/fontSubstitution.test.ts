@@ -73,6 +73,38 @@ describe('FontSubstitution', () => {
       hasGlyphForCodePoint: (codePoint) => codePoint === 20320,
     };
 
+    test.each([
+      ['Mongolian free variation selector', '\u1820', '\u180B'],
+      ['Mongolian free variation selector four', '\u1820', '\u180F'],
+      ['BMP variation selector', '\u6F22', '\uFE00'],
+      ['supplementary variation selector', '\u6F22', '\u{E0100}'],
+    ])('should preserve the preceding font for a %s', (_, base, selector) => {
+      const baseCodePoint = base.codePointAt(0);
+      const baseFont = {
+        name: 'BaseFont',
+        unitsPerEm: 1000,
+        hasGlyphForCodePoint: (codePoint) => codePoint === baseCodePoint,
+      };
+      const fallbackFont = {
+        name: 'FallbackFont',
+        unitsPerEm: 1000,
+        hasGlyphForCodePoint: () => true,
+      };
+      const value = `${base}${selector}`;
+      const run = {
+        start: 0,
+        end: value.length,
+        attributes: { font: [baseFont, fallbackFont] },
+      } as any;
+
+      const result = instance({ string: value, runs: [run] });
+
+      expect(result.runs).toHaveLength(1);
+      expect(result.runs[0]).toHaveProperty('start', 0);
+      expect(result.runs[0]).toHaveProperty('end', value.length);
+      expect(result.runs[0].attributes.font).toEqual([baseFont]);
+    });
+
     test('should utilize a fallback font that supports the provided glyph', () => {
       const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
 

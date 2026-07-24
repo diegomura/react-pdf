@@ -18,6 +18,14 @@ const __dirname = path.dirname(__filename);
 const LATIN_FONT_PATH = path.resolve(__dirname, './assets/latin.ttf');
 const BENGALI_FONT_PATH = path.resolve(__dirname, './assets/bengali.ttf');
 const THAI_FONT_PATH = path.resolve(__dirname, './assets/thai.ttf');
+const DEVANAGARI_FONT_PATH = path.resolve(
+  __dirname,
+  './assets/noto-sans-devanagari.ttf',
+);
+const ARABIC_FONT_PATH = path.resolve(
+  __dirname,
+  '../../examples/vite/public/NotoSansArabic-Regular.ttf',
+);
 
 const engines = {
   bidi,
@@ -31,19 +39,26 @@ const engines = {
 let font: Font;
 let bengaliFont: Font;
 let thaiFont: Font;
+let devanagariFont: Font;
+let arabicFont: Font;
 
 beforeAll(async () => {
   font = (await fontkit.open(LATIN_FONT_PATH)) as unknown as Font;
   bengaliFont = (await fontkit.open(BENGALI_FONT_PATH)) as unknown as Font;
   thaiFont = (await fontkit.open(THAI_FONT_PATH)) as unknown as Font;
+  devanagariFont = (await fontkit.open(
+    DEVANAGARI_FONT_PATH,
+  )) as unknown as Font;
+  arabicFont = (await fontkit.open(ARABIC_FONT_PATH)) as unknown as Font;
 });
 
 const layout = (
   string: string,
-  opts: { fontSize?: number; width?: number; font?: Font } = {},
+  opts: { fontSize?: number; width?: number; font?: Font | Font[] } = {},
 ) => {
   const { fontSize = 12, width = 500, font: f } = opts;
   const engine = layoutEngine(engines);
+  const fonts = Array.isArray(f) ? f : [f ?? font];
 
   const attributedString = {
     string,
@@ -51,7 +66,7 @@ const layout = (
       {
         start: 0,
         end: string.length,
-        attributes: { font: [f ?? font], fontSize },
+        attributes: { font: fonts, fontSize },
       },
     ],
   };
@@ -253,5 +268,70 @@ test('should produce positive advances for all Thai glyphs', () => {
   expect(positions.length).toBeGreaterThan(0);
   for (const pos of positions) {
     expect(pos.xAdvance).toBeGreaterThanOrEqual(0);
+  }
+});
+
+test('should preserve shaped glyph clusters during bidi reordering', () => {
+  const fonts = [font, devanagariFont, arabicFont];
+  const fontLabels = new Map([
+    [font, 'latin'],
+    [devanagariFont, 'devanagari'],
+    [arabicFont, 'arabic'],
+  ]);
+  const shape = (font: Font, string: string, label: string) =>
+    font
+      .layout(string, undefined, undefined, undefined, 'ltr')
+      .glyphs.map((glyph) => `${label}:${glyph.id}`);
+
+  layout('रृ', { font: fonts });
+
+  const cluster = devanagariFont.layout(
+    'र्क',
+    undefined,
+    undefined,
+    undefined,
+    'ltr',
+  );
+
+  expect('र्क').toHaveLength(3);
+  expect(cluster.glyphs).toHaveLength(2);
+  expect(cluster.glyphs.flatMap((glyph) => glyph.codePoints)).toHaveLength(2);
+
+  expect(getGlyphs(layout('abc र्क def', { font: fonts }))).toHaveLength(10);
+  expect(getGlyphs(layout('abc مصر def', { font: fonts }))).toHaveLength(11);
+  expect(getGlyphs(layout('abc किंतु مصر def', { font: fonts }))).toHaveLength(
+    17,
+  );
+
+  const expectedGlyphs = [
+    ...shape(font, 'abc ', 'latin'),
+    ...shape(devanagariFont, 'र्क', 'devanagari'),
+    ...shape(font, ' ', 'latin'),
+    ...shape(arabicFont, 'مصر', 'arabic'),
+    ...shape(font, ' def', 'latin'),
+  ].sort();
+
+  const result = layout('abc र्क مصر def', { font: fonts });
+  const glyphs = getGlyphs(result);
+  const positions = getPositions(result);
+  const actualGlyphs = result
+    .flatMap((lines) => lines)
+    .flatMap((line) => line.runs)
+    .flatMap((run) =>
+      (run.glyphs ?? []).map(
+        (glyph) => `${fontLabels.get(run.attributes.font?.[0])}:${glyph.id}`,
+      ),
+    )
+    .sort();
+
+  expect(actualGlyphs).toEqual(expectedGlyphs);
+  expect(positions).toHaveLength(glyphs.length);
+
+  for (const lines of result) {
+    for (const line of lines) {
+      for (const run of line.runs) {
+        expect(run.positions).toHaveLength(run.glyphs?.length ?? 0);
+      }
+    }
   }
 });

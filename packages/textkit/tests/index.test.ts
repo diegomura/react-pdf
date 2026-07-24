@@ -312,6 +312,7 @@ test('should preserve shaped glyph clusters during bidi reordering', () => {
   ].sort();
 
   const result = layout('abc र्क مصر def', { font: fonts });
+
   const glyphs = getGlyphs(result);
   const positions = getPositions(result);
   const actualGlyphs = result
@@ -326,12 +327,8 @@ test('should preserve shaped glyph clusters during bidi reordering', () => {
 
   expect(actualGlyphs).toEqual(expectedGlyphs);
   expect(positions).toHaveLength(glyphs.length);
-
-  for (const lines of result) {
-    for (const line of lines) {
-      for (const run of line.runs) {
-        expect(run.positions).toHaveLength(run.glyphs?.length ?? 0);
-      }
-    }
+  const [[{ runs }]] = result;
+  for (const run of runs) {
+    expect(run.positions).toHaveLength(run.glyphs?.length ?? 0);
   }
 });

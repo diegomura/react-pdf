@@ -312,7 +312,6 @@ test('should preserve shaped glyph clusters during bidi reordering', () => {
   ].sort();
 
   const result = layout('abc र्क مصر def', { font: fonts });
-
   const glyphs = getGlyphs(result);
   const positions = getPositions(result);
   const actualGlyphs = result

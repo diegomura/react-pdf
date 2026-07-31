@@ -70,7 +70,7 @@ class FontSource {
           .map((c) => c.charCodeAt(0)),
       );
       data = fontkit.create(uint8Array, postscriptName);
-    } else if (BROWSER || isUrl(this.src)) {
+    } else if (BROWSER || isUrl(this.src) || this.src.startsWith('blob:')) {
       const { headers, body, method = 'GET' } = this.options;
       const buffer = await fetchFont(this.src, { method, body, headers });
       data = fontkit.create(buffer, postscriptName);

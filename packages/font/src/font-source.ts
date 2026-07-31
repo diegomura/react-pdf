@@ -1,7 +1,13 @@
 import isUrl from 'is-url';
 import * as fontkit from 'fontkit';
 
-import { Font, FontSourceOptions, FontStyle, RemoteOptions } from './types';
+import {
+  BufferFontSource,
+  Font,
+  FontSourceOptions,
+  FontStyle,
+  RemoteOptions,
+} from './types';
 import StandardFont, { STANDARD_FONTS } from './standard-font';
 
 const fetchFont = async (src: string, options: RemoteOptions) => {
@@ -30,7 +36,7 @@ const isDataUrl = (dataUrl: string) => {
 };
 
 class FontSource {
-  src: string;
+  src: string | BufferFontSource;
   fontFamily: string;
   fontStyle: FontStyle;
   fontWeight: number;
@@ -39,7 +45,7 @@ class FontSource {
   loadResultPromise: Promise<void> | null;
 
   constructor(
-    src: string,
+    src: string | BufferFontSource,
     fontFamily: string,
     fontStyle?: FontStyle,
     fontWeight?: number,
@@ -60,7 +66,9 @@ class FontSource {
 
     let data = null;
 
-    if (STANDARD_FONTS.includes(this.src)) {
+    if (typeof this.src !== 'string') {
+      data = fontkit.create(this.src.buffer, postscriptName);
+    } else if (STANDARD_FONTS.includes(this.src)) {
       data = new StandardFont(this.src);
     } else if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];

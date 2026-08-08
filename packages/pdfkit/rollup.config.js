@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import ignore from 'rollup-plugin-ignore';
@@ -9,7 +8,22 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json' with { type: 'json' };
 
-const input = 'src/index.js';
+const STANDARD_FONTS = [
+  'Courier',
+  'CourierBold',
+  'CourierBoldOblique',
+  'CourierOblique',
+  'Helvetica',
+  'HelveticaBold',
+  'HelveticaBoldOblique',
+  'HelveticaOblique',
+  'Symbol',
+  'TimesBold',
+  'TimesBoldItalic',
+  'TimesItalic',
+  'TimesRoman',
+  'ZapfDingbats'
+];
 
 const babelConfig = () => ({
   babelrc: true,
@@ -32,7 +46,6 @@ const getExternal = ({ browser }) => [
 ];
 
 const getPlugins = ({ browser }) => [
-  json(),
   ...(browser
     ? [
         ignore(['fs']),
@@ -68,20 +81,30 @@ const getPlugins = ({ browser }) => [
 ];
 
 const serverConfig = {
-  input,
+  input: 'src/document.node.js',
   output: { format: 'es', file: 'lib/pdfkit.js' },
   external: getExternal({ browser: false }),
   plugins: getPlugins({ browser: false })
 };
 
 const browserConfig = {
-  input,
+  input: 'src/document.browser.js',
   output: { format: 'es', file: 'lib/pdfkit.browser.js' },
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true })
 };
 
+// Kept out of the bundles so browser consumers only pay for the fonts they register
+const standardFontsConfig = {
+  input: Object.fromEntries(
+    STANDARD_FONTS.map((name) => [name, `src/font/generated/${name}.js`])
+  ),
+  output: { format: 'es', dir: 'lib/standard-fonts' },
+  plugins: [babel(babelConfig())]
+};
+
 export default [
   serverConfig,
   browserConfig,
+  standardFontsConfig,
 ];

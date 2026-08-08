@@ -1,7 +1,43 @@
 // @ts-expect-error ts being silly
-import PDFDocument from '@react-pdf/pdfkit';
+import PDFDocument, { registerStdFonts } from '@react-pdf/pdfkit';
+import Courier from '@react-pdf/pdfkit/standard-fonts/Courier';
+import CourierBold from '@react-pdf/pdfkit/standard-fonts/CourierBold';
+import CourierBoldOblique from '@react-pdf/pdfkit/standard-fonts/CourierBoldOblique';
+import CourierOblique from '@react-pdf/pdfkit/standard-fonts/CourierOblique';
+import Helvetica from '@react-pdf/pdfkit/standard-fonts/Helvetica';
+import HelveticaBold from '@react-pdf/pdfkit/standard-fonts/HelveticaBold';
+import HelveticaBoldOblique from '@react-pdf/pdfkit/standard-fonts/HelveticaBoldOblique';
+import HelveticaOblique from '@react-pdf/pdfkit/standard-fonts/HelveticaOblique';
+import SymbolFont from '@react-pdf/pdfkit/standard-fonts/Symbol';
+import TimesBold from '@react-pdf/pdfkit/standard-fonts/TimesBold';
+import TimesBoldItalic from '@react-pdf/pdfkit/standard-fonts/TimesBoldItalic';
+import TimesItalic from '@react-pdf/pdfkit/standard-fonts/TimesItalic';
+import TimesRoman from '@react-pdf/pdfkit/standard-fonts/TimesRoman';
+import ZapfDingbats from '@react-pdf/pdfkit/standard-fonts/ZapfDingbats';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
+
+// The browser build of pdfkit ships without font metrics so consumers can pick
+// what they bundle. react-pdf resolves standard fonts by name at render time,
+// so it needs all of them. The node build registers them itself.
+if (BROWSER) {
+  registerStdFonts(
+    Courier,
+    CourierBold,
+    CourierBoldOblique,
+    CourierOblique,
+    Helvetica,
+    HelveticaBold,
+    HelveticaBoldOblique,
+    HelveticaOblique,
+    SymbolFont,
+    TimesBold,
+    TimesBoldItalic,
+    TimesItalic,
+    TimesRoman,
+    ZapfDingbats,
+  );
+}
 
 export const STANDARD_FONTS = [
   'Courier',

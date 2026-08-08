@@ -1,25 +1,21 @@
 import * as fontkit from 'fontkit';
-import PDFFont from './font';
-import createStandardFont from './font/standard';
-import createEmbeddedFont from './font/embedded';
-
-const StandardFont = createStandardFont(PDFFont);
-const EmbeddedFont = createEmbeddedFont(PDFFont);
+import StandardFont from './font/standard';
+import EmbeddedFont from './font/embedded';
+import { getStandardFont, isStandardFont } from './font/standard_fonts';
 
 class PDFFontFactory {
   static open(document, src, family, id) {
     let font;
-
     if (typeof src === 'string') {
-      if (StandardFont.isStandardFont(src)) {
-        return new StandardFont(document, src, id);
+      if (isStandardFont(src)) {
+        return new StandardFont(document, getStandardFont(src), id);
       }
 
-      if (!BROWSER) {
-        font = fontkit.openSync(src, family);
-      } else {
+      if (BROWSER) {
         throw new Error(`Can't open ${src} in browser build`);
       }
+
+      font = fontkit.openSync(src, family);
     } else if (src instanceof Uint8Array) {
       font = fontkit.create(src, family);
     } else if (src instanceof ArrayBuffer) {

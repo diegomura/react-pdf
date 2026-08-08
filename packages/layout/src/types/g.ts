@@ -21,7 +21,7 @@ interface GProps extends SVGPresentationAttributes {
 }
 
 interface SafeGProps extends SafeSVGPresentationAttributes {
-  style?: Style;
+  style?: SafeStyle;
 }
 
 export type GNode = {

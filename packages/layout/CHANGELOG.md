@@ -1,5 +1,19 @@
 # @react-pdf/layout
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3458](https://github.com/diegomura/react-pdf/pull/3458) [`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6) Thanks [@Codex-](https://github.com/Codex-)! - feat: expose `hyphenationPenalty` on `Text` props
+
+### Patch Changes
+
+- Updated dependencies [[`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee), [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427), [`6d7c2b79`](https://github.com/diegomura/react-pdf/commit/6d7c2b79187a85d0da7e3b45bd65373fdd7e928e), [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d), [`86c9fd88`](https://github.com/diegomura/react-pdf/commit/86c9fd8867b694eb607d8ae7df9145e86d8c8465)]:
+  - @react-pdf/textkit@6.4.0
+  - @react-pdf/image@3.1.1
+  - @react-pdf/types@2.11.2
+  - @react-pdf/stylesheet@6.2.2
+
 ## 4.6.1
 
 ### Patch Changes

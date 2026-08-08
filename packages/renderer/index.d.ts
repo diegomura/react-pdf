@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {
   Style,
+  StyleProp,
   PageSize,
   FontStore,
   PDFVersion,
@@ -43,7 +44,7 @@ declare namespace ReactPDF {
   }
 
   interface DocumentProps {
-    style?: Style | Style[];
+    style?: StyleProp;
     title?: string;
     author?: string;
     subject?: string;
@@ -74,7 +75,7 @@ declare namespace ReactPDF {
 
   interface NodeProps {
     id?: string;
-    style?: Style | Style[];
+    style?: StyleProp;
     /**
      * Render component in all wrapped pages.
      * @see https://react-pdf.org/advanced#fixed-components
@@ -254,6 +255,12 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/fonts#registerhyphenationcallback
      */
     hyphenationCallback?: HyphenationCallback;
+    /**
+     * Override the default hyphenation penalty
+     * Defaults to 100 for justified text and 600 otherwise.
+     * @see https://react-pdf.org/fonts#hyphenationpenalty
+     */
+    hyphenationPenalty?: number;
     /**
      * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
      * @see https://react-pdf.org/advanced#orphan-&-widow-protection
@@ -685,7 +692,7 @@ declare namespace ReactPDF {
   interface PDFViewerProps {
     width?: number | string;
     height?: number | string;
-    style?: Style | Style[];
+    style?: StyleProp;
     className?: string;
     children?: React.ReactElement<DocumentProps>;
     innerRef?: React.Ref<HTMLIFrameElement>;

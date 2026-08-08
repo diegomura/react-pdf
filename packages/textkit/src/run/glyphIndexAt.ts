@@ -23,12 +23,18 @@ const glyphIndexAt = (index: number, run: Run) => {
     return glyphIndices.length;
   }
 
+  let low = 0;
+  let high = glyphIndices.length - 1;
   let result = index;
 
-  for (let i = glyphIndices.length - 1; i >= 0; i -= 1) {
-    if (glyphIndices[i] <= index) {
-      result = i;
-      break;
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+
+    if (glyphIndices[mid] <= index) {
+      result = mid;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
     }
   }
 

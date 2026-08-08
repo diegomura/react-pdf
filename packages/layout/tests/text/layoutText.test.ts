@@ -139,4 +139,36 @@ describe('text layoutText', () => {
 
     expect(balancedLines).toHaveLength(naturalLines.length);
   });
+
+  test('should suppress hyphenation when `hyphenationPenalty` is set to `Infinity`', () => {
+    const text = 'Lorem ipsum dolor sit amet consectetur adipiscing elit';
+
+    // Using `justify` text uses a hyphenation penalty of 100 by default.
+    // This produces at least one line break with a trailing hyphen.
+    const defaultLines = layoutText(
+      createTextNode(text, { textAlign: 'justify' }),
+      180,
+      200,
+      fontStore,
+    );
+    expect(defaultLines[0].string).toEqual('Lorem ipsum dolor sit ');
+    expect(defaultLines[1].string).toEqual('amet consectetur adip-');
+    expect(defaultLines[2].string).toEqual('iscing elit');
+
+    // Setting a hyphenation penalty of `Infinity` makes hyphenation nearly
+    // impossible, so lines break only at word boundaries.
+    const noHyphenLines = layoutText(
+      createTextNode(
+        text,
+        { textAlign: 'justify' },
+        { hyphenationPenalty: Infinity },
+      ),
+      180,
+      200,
+      fontStore,
+    );
+    expect(noHyphenLines[0].string).toEqual('Lorem ipsum dolor ');
+    expect(noHyphenLines[1].string).toEqual('sit amet consectetur ');
+    expect(noHyphenLines[2].string).toEqual('adipiscing elit');
+  });
 });

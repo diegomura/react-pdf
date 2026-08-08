@@ -1,3 +1,5 @@
+import PDFAnnotationReference from '../structure_annotation';
+
 export default {
   annotate(x, y, w, h, options) {
     options.Type = 'Annot';
@@ -19,6 +21,9 @@ export default {
       options.Dest = new String(options.Dest);
     }
 
+    const structParent = options.structParent;
+    delete options.structParent;
+
     // Capitalize keys
     for (let key in options) {
       const val = options[key];
@@ -27,6 +32,12 @@ export default {
 
     const ref = this.ref(options);
     this.page.annotations.push(ref);
+
+    if (structParent && typeof structParent.add === 'function') {
+      const annotRef = new PDFAnnotationReference(ref);
+      structParent.add(annotRef);
+    }
+
     ref.end();
     return this;
   },
@@ -47,7 +58,7 @@ export default {
     options.Subtype = 'Link';
     options.A = this.ref({
       S: 'GoTo',
-      D: new String(name)
+      D: new String(name),
     });
     options.A.end();
     return this.annotate(x, y, w, h, options);
@@ -62,7 +73,7 @@ export default {
       if (url >= 0 && url < pages.Kids.length) {
         options.A = this.ref({
           S: 'GoTo',
-          D: [pages.Kids[url], 'XYZ', null, null, null]
+          D: [pages.Kids[url], 'XYZ', null, null, null],
         });
         options.A.end();
       } else {
@@ -72,9 +83,13 @@ export default {
       // Link to an external url
       options.A = this.ref({
         S: 'URI',
-        URI: new String(url)
+        URI: new String(url),
       });
       options.A.end();
+    }
+
+    if (options.structParent && !options.Contents) {
+      options.Contents = new String('');
     }
 
     return this.annotate(x, y, w, h, options);
@@ -164,5 +179,5 @@ export default {
     y2 = m1 * x2 + m3 * y2 + m5;
 
     return [x1, y1, x2, y2];
-  }
+  },
 };

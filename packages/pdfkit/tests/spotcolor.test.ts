@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import PDFDocument from '../src/document.js';
+import PDFDocument from '../src/document.node.js';
 
 const separationName = (doc, name) =>
   String(doc.spotColors[name].ref.data[1]);

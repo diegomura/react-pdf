@@ -1,5 +1,15 @@
 # @react-pdf/font
 
+## 4.0.9
+
+### Patch Changes
+
+- [#3474](https://github.com/diegomura/react-pdf/pull/3474) [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75) Thanks [@diegomura](https://github.com/diegomura)! - Use generated AFM font data instead of parsing raw font definitions, and split the node and browser entry points, aligning with upstream pdfkit
+
+- Updated dependencies [[`62c97745`](https://github.com/diegomura/react-pdf/commit/62c97745c5cd4fc36234de7a112d1023c49658ab), [`78ca6aa8`](https://github.com/diegomura/react-pdf/commit/78ca6aa855e0a3294c892e8857147026d2b53936), [`6098e648`](https://github.com/diegomura/react-pdf/commit/6098e6486c425db153518fd422be84bb16e84ab6), [`59aa9aea`](https://github.com/diegomura/react-pdf/commit/59aa9aea2c1a4f081654ed5877405be6c776f041), [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75), [`d41a8207`](https://github.com/diegomura/react-pdf/commit/d41a8207fb06a56e60fcb53ac0e18ce27e7d32d6), [`87911560`](https://github.com/diegomura/react-pdf/commit/87911560a5f87c82c4642db198a86b277126a26b), [`b2acd72b`](https://github.com/diegomura/react-pdf/commit/b2acd72bc90886f5486071bbe15d0a721c3b7f59), [`c2da5098`](https://github.com/diegomura/react-pdf/commit/c2da5098ccf0b7ec298fd3a8d57e6ba849e51fa3), [`30dc2a47`](https://github.com/diegomura/react-pdf/commit/30dc2a475a731e9a976533d9024e1e72d885c7f4), [`6e0102db`](https://github.com/diegomura/react-pdf/commit/6e0102db791e801c0b5aac76d77d5456f33298f6)]:
+  - @react-pdf/pdfkit@6.0.0
+  - @react-pdf/types@2.11.2
+
 ## 4.0.8
 
 ### Patch Changes

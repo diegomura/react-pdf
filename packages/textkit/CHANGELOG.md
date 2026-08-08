@@ -1,5 +1,17 @@
 # @react-pdf/textkit
 
+## 6.4.0
+
+### Minor Changes
+
+- [#3423](https://github.com/diegomura/react-pdf/pull/3423) [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): treat surrogate pairs as single code points in font substitution
+
+### Patch Changes
+
+- [#3303](https://github.com/diegomura/react-pdf/pull/3303) [`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee) Thanks [@matangot](https://github.com/matangot)! - Preserve run attributes during bidi reordering
+
+- [#3420](https://github.com/diegomura/react-pdf/pull/3420) [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Improve text line slicing performance for long paragraphs.
+
 ## 6.3.0
 
 ### Minor Changes

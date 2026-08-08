@@ -1,5 +1,13 @@
 # @react-pdf/image
 
+## 3.1.1
+
+### Patch Changes
+
+- [#3429](https://github.com/diegomura/react-pdf/pull/3429) [`6d7c2b79`](https://github.com/diegomura/react-pdf/commit/6d7c2b79187a85d0da7e3b45bd65373fdd7e928e) Thanks [@elitan](https://github.com/elitan)! - Replace deprecated url.parse usage in local image path resolution.
+
+- [#3443](https://github.com/diegomura/react-pdf/pull/3443) [`86c9fd88`](https://github.com/diegomura/react-pdf/commit/86c9fd8867b694eb607d8ae7df9145e86d8c8465) Thanks [@CodeSmith32](https://github.com/CodeSmith32)! - Fix cloning repo in Windows
+
 ## 3.1.0
 
 ### Minor Changes

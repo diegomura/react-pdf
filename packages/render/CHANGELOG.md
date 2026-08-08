@@ -1,5 +1,19 @@
 # @react-pdf/render
 
+## 4.6.0
+
+### Minor Changes
+
+- [#3279](https://github.com/diegomura/react-pdf/pull/3279) [`db681b16`](https://github.com/diegomura/react-pdf/commit/db681b1679d3850e0cb3f5a210aa075d56e98fcb) Thanks [@exoego](https://github.com/exoego)! - fix border colors with opacity rendered incorrectly
+
+### Patch Changes
+
+- [#3460](https://github.com/diegomura/react-pdf/pull/3460) [`2dcdb262`](https://github.com/diegomura/react-pdf/commit/2dcdb262e2590873875f3074524842ae2a73454c) Thanks [@benbowler](https://github.com/benbowler)! - fix(render): specify the left coordinate in named destinations so internal links navigate in macOS Preview
+
+- Updated dependencies [[`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee), [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427), [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d)]:
+  - @react-pdf/textkit@6.4.0
+  - @react-pdf/types@2.11.2
+
 ## 4.5.1
 
 ### Patch Changes

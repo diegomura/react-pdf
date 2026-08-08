@@ -7,7 +7,13 @@ const setDestination = (ctx: Context, node: SafeNode) => {
   if (!node.props) return;
 
   if ('id' in node.props) {
-    ctx.addNamedDestination(node.props.id!, 'XYZ', node.box.left ?? 0, node.box.top, null);
+    ctx.addNamedDestination(
+      node.props.id!,
+      'XYZ',
+      node.box.left ?? 0,
+      node.box.top,
+      null,
+    );
   }
 };
 

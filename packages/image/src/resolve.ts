@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { fileURLToPath } from 'url';
+import url from 'url';
 import path from 'path';
 
 import PNG from './png';
@@ -48,7 +48,7 @@ const getAbsoluteLocalPath = (src: string) => {
       return undefined;
     }
 
-    return fileURLToPath(parsed.href);
+    return url.fileURLToPath(parsed.href);
   } catch {
     if (!src) {
       return undefined;

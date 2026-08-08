@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 import {
   SafeSVGPresentationAttributes,
@@ -25,7 +25,7 @@ interface SafeEllipseProps extends SafeSVGPresentationAttributes {
 export type EllipseNode = {
   type: typeof P.Ellipse;
   props: EllipseProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: never;
   origin?: never;
   yogaNode?: never;

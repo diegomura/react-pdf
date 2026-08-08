@@ -23,6 +23,7 @@
     "lib"
   ],
   "dependencies": {
+    "@react-pdf/primitives": "^4.3.0",
     "@react-pdf/svg": "^1.1.0",
     "mathjax-full": "^3.2.2"
   },

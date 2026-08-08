@@ -14,4 +14,5 @@ export default [
   'packages/svg',
   'packages/math',
   'packages/mermaid',
+  'packages/pdfkit',
 ];

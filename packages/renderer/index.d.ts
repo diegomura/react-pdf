@@ -255,6 +255,12 @@ declare namespace ReactPDF {
      */
     hyphenationCallback?: HyphenationCallback;
     /**
+     * Override the default hyphenation penalty
+     * Defaults to 100 for justified text and 600 otherwise.
+     * @see https://react-pdf.org/fonts#hyphenationpenalty
+     */
+    hyphenationPenalty?: number;
+    /**
      * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
      * @see https://react-pdf.org/advanced#orphan-&-widow-protection
      */

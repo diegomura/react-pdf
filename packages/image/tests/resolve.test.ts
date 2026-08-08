@@ -101,6 +101,17 @@ describe('image resolveImage', () => {
     expect(image?.height).toBeGreaterThan(0);
   });
 
+  test('Should render a local image from file URL', async () => {
+    const absolutePath = path.join(__dirname, './assets/test.jpg');
+    const image = await resolveImage({
+      uri: url.pathToFileURL(absolutePath).href,
+    });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
   test('Should render a local image from relative path', async () => {
     const image = await resolveImage({
       uri: 'packages/layout/tests/assets/test.jpg',

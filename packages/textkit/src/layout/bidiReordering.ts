@@ -31,12 +31,12 @@ const getReorderedIndices = (string: string, segments) => {
   return indices;
 };
 
-const getItemAtIndex = (runs: Run[], objectName: string, index: number) => {
+const getRunItemAtIndex = (runs: Run[], index: number) => {
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i];
-    const updatedIndex = run.stringIndices[index - run.start];
     if (index >= run.start && index < run.end) {
-      return run[objectName][updatedIndex];
+      const glyphIndex = run.stringIndices?.[index - run.start];
+      if (glyphIndex !== undefined) return { run, glyphIndex };
     }
   }
 
@@ -60,34 +60,60 @@ const reorderLine = (line: AttributedString) => {
 
   const updatedString = bidi.getReorderedString(line.string, embeddingLevels);
 
-  const updatedRuns = line.runs.map((run) => {
-    const selectedIndices = indices.slice(run.start, run.end);
-    const updatedGlyphs = [];
-    const updatedPositions = [];
+  const updatedRuns: Run[] = [];
+  let currentRun: Run | null = null;
+  let currentStart = 0;
+  let currentGlyphs: NonNullable<Run['glyphs']> = [];
+  let currentGlyphIndices: number[] = [];
+  let currentPositions: NonNullable<Run['positions']> = [];
+  let currentStringIndices: number[] = [];
+  let currentStringIndexByGlyphIndex = new Map<number, number>();
 
-    const addedGlyphs = new Set();
+  const flushRun = (end: number) => {
+    if (!currentRun) return;
 
-    for (let i = 0; i < selectedIndices.length; i += 1) {
-      const index = selectedIndices[i];
+    updatedRuns.push({
+      ...currentRun,
+      start: currentStart,
+      end,
+      glyphs: currentGlyphs,
+      glyphIndices: currentGlyphIndices,
+      positions: currentPositions,
+      stringIndices: currentStringIndices,
+    });
+  };
 
-      const glyph = getItemAtIndex(line.runs, 'glyphs', index);
+  for (let visualIndex = 0; visualIndex < indices.length; visualIndex += 1) {
+    const { run, glyphIndex } = getRunItemAtIndex(
+      line.runs,
+      indices[visualIndex],
+    );
 
-      if (addedGlyphs.has(glyph.id)) continue;
-
-      updatedGlyphs.push(glyph);
-      updatedPositions.push(getItemAtIndex(line.runs, 'positions', index));
-
-      if (glyph.isLigature) {
-        addedGlyphs.add(glyph.id);
-      }
+    if (run !== currentRun) {
+      flushRun(visualIndex);
+      currentRun = run;
+      currentStart = visualIndex;
+      currentGlyphs = [];
+      currentGlyphIndices = [];
+      currentPositions = [];
+      currentStringIndices = [];
+      currentStringIndexByGlyphIndex = new Map<number, number>();
     }
 
-    return {
-      ...run,
-      glyphs: updatedGlyphs,
-      positions: updatedPositions,
-    };
-  });
+    let reorderedGlyphIndex = currentStringIndexByGlyphIndex.get(glyphIndex);
+
+    if (reorderedGlyphIndex === undefined) {
+      reorderedGlyphIndex = currentGlyphs.length;
+      currentStringIndexByGlyphIndex.set(glyphIndex, reorderedGlyphIndex);
+      currentGlyphs.push(run.glyphs![glyphIndex]);
+      currentGlyphIndices.push(visualIndex - currentStart);
+      currentPositions.push(run.positions![glyphIndex]);
+    }
+
+    currentStringIndices.push(reorderedGlyphIndex);
+  }
+
+  flushRun(indices.length);
 
   return {
     box: line.box,

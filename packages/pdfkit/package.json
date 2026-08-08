@@ -8,6 +8,26 @@
   "browser": {
     "./lib/pdfkit.js": "./lib/pdfkit.browser.js"
   },
+  "exports": {
+    ".": {
+      "browser": "./lib/pdfkit.browser.js",
+      "default": "./lib/pdfkit.js"
+    },
+    "./standard-fonts/Courier": "./lib/standard-fonts/Courier.js",
+    "./standard-fonts/CourierBold": "./lib/standard-fonts/CourierBold.js",
+    "./standard-fonts/CourierBoldOblique": "./lib/standard-fonts/CourierBoldOblique.js",
+    "./standard-fonts/CourierOblique": "./lib/standard-fonts/CourierOblique.js",
+    "./standard-fonts/Helvetica": "./lib/standard-fonts/Helvetica.js",
+    "./standard-fonts/HelveticaBold": "./lib/standard-fonts/HelveticaBold.js",
+    "./standard-fonts/HelveticaBoldOblique": "./lib/standard-fonts/HelveticaBoldOblique.js",
+    "./standard-fonts/HelveticaOblique": "./lib/standard-fonts/HelveticaOblique.js",
+    "./standard-fonts/Symbol": "./lib/standard-fonts/Symbol.js",
+    "./standard-fonts/TimesBold": "./lib/standard-fonts/TimesBold.js",
+    "./standard-fonts/TimesBoldItalic": "./lib/standard-fonts/TimesBoldItalic.js",
+    "./standard-fonts/TimesItalic": "./lib/standard-fonts/TimesItalic.js",
+    "./standard-fonts/TimesRoman": "./lib/standard-fonts/TimesRoman.js",
+    "./standard-fonts/ZapfDingbats": "./lib/standard-fonts/ZapfDingbats.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/diegomura/react-pdf.git",
@@ -20,10 +40,9 @@
   },
   "scripts": {
     "test": "vitest",
-    "clear": "rimraf ./lib ./src/font/data/*.json",
-    "parse:afm": "node ./src/font/data/compressData.js",
-    "build": "npm run clear && npm run parse:afm && rollup -c ",
-    "watch": "npm run clear && npm run parse:afm && rollup -c -w"
+    "clear": "rimraf ./lib",
+    "build": "npm run clear && rollup -c",
+    "watch": "npm run clear && rollup -c -w"
   },
   "files": [
     "lib"
@@ -39,8 +58,5 @@
     "pako": "^1.0.11",
     "png-js": "^2.0.0",
     "vite-compatible-readable-stream": "^3.6.1"
-  },
-  "devDependencies": {
-    "iconv-lite": "^0.4.13"
   }
 }

@@ -1,19 +1,26 @@
 // Ref: https://www.w3.org/TR/css-backgrounds-3/#borders
 
+import { isNil } from '@react-pdf/fns';
 import { Box, SafeNode } from '@react-pdf/layout';
+
+import parseColor from '../utils/parseColor';
 import { Context } from '../types';
 
 type SafeBorderStyle = {
   borderTopColor: string;
+  borderTopColorOpacity: number;
   borderTopWidth: number;
   borderTopStyle: string;
   borderLeftColor: string;
+  borderLeftColorOpacity: number;
   borderLeftWidth: number;
   borderLeftStyle: string;
   borderRightColor: string;
+  borderRightColorOpacity: number;
   borderRightWidth: number;
   borderRightStyle: string;
   borderBottomColor: string;
+  borderBottomColorOpacity: number;
   borderBottomWidth: number;
   borderBottomStyle: string;
   borderTopLeftRadius: number;
@@ -139,6 +146,7 @@ const fillBorderTop = (
   const { top, left, width } = layout;
   const {
     borderTopColor,
+    borderTopColorOpacity,
     borderTopWidth,
     borderTopStyle,
     borderRightWidth,
@@ -160,6 +168,7 @@ const fillBorderTop = (
     top + rtr,
   );
 
+  ctx.strokeOpacity(borderTopColorOpacity);
   ctx.strokeColor(borderTopColor);
   ctx.lineWidth(
     Math.max(borderRightWidth, borderTopWidth, borderLeftWidth) * 2,
@@ -300,6 +309,7 @@ const fillBorderRight = (
   const { top, left, width, height } = layout;
   const {
     borderRightColor,
+    borderRightColorOpacity,
     borderRightStyle,
     borderRightWidth,
     borderTopWidth,
@@ -328,6 +338,7 @@ const fillBorderRight = (
     top + height,
   );
 
+  ctx.strokeOpacity(borderRightColorOpacity);
   ctx.strokeColor(borderRightColor);
   ctx.lineWidth(
     Math.max(borderRightWidth, borderTopWidth, borderBottomWidth) * 2,
@@ -467,6 +478,7 @@ const fillBorderBottom = (
   const { top, left, width, height } = layout;
   const {
     borderBottomColor,
+    borderBottomColorOpacity,
     borderBottomStyle,
     borderBottomWidth,
     borderRightWidth,
@@ -495,6 +507,7 @@ const fillBorderBottom = (
     top + height - rbl,
   );
 
+  ctx.strokeOpacity(borderBottomColorOpacity);
   ctx.strokeColor(borderBottomColor);
   ctx.lineWidth(
     Math.max(borderBottomWidth, borderRightWidth, borderLeftWidth) * 2,
@@ -628,6 +641,7 @@ const fillBorderLeft = (
   const { top, left, height } = layout;
   const {
     borderLeftColor,
+    borderLeftColorOpacity,
     borderLeftStyle,
     borderLeftWidth,
     borderTopWidth,
@@ -649,6 +663,7 @@ const fillBorderLeft = (
   ctx.lineTo(left, top + rtl);
   ctx.bezierCurveTo(left, top + c1, left + c1, top, left + rtl, top);
 
+  ctx.strokeOpacity(borderLeftColorOpacity);
   ctx.strokeColor(borderLeftColor);
   ctx.lineWidth(
     Math.max(borderLeftWidth, borderTopWidth, borderBottomWidth) * 2,
@@ -685,7 +700,6 @@ const renderBorders = (ctx: Context, node: SafeNode) => {
   } = node.box;
 
   const {
-    opacity = 1,
     borderTopColor = 'black',
     borderTopStyle = 'solid',
     borderLeftColor = 'black',
@@ -695,6 +709,30 @@ const renderBorders = (ctx: Context, node: SafeNode) => {
     borderBottomColor = 'black',
     borderBottomStyle = 'solid',
   } = node.style;
+
+  const nodeOpacity = isNil(node.style?.opacity) ? 1 : node.style.opacity;
+
+  const parsedBorderTopColor = parseColor(borderTopColor);
+  const parsedBorderRightColor = parseColor(borderRightColor);
+  const parsedBorderBottomColor = parseColor(borderBottomColor);
+  const parsedBorderLeftColor = parseColor(borderLeftColor);
+
+  const borderTopColorOpacity = Math.min(
+    parsedBorderTopColor.opacity,
+    nodeOpacity,
+  );
+  const borderRightColorOpacity = Math.min(
+    parsedBorderRightColor.opacity,
+    nodeOpacity,
+  );
+  const borderBottomColorOpacity = Math.min(
+    parsedBorderBottomColor.opacity,
+    nodeOpacity,
+  );
+  const borderLeftColorOpacity = Math.min(
+    parsedBorderLeftColor.opacity,
+    nodeOpacity,
+  );
 
   // @ts-expect-error this is always a number due to resolve border radius step
   const borderTopLeftRadius: number = node.style.borderTopLeftRadius || 0;
@@ -707,16 +745,20 @@ const renderBorders = (ctx: Context, node: SafeNode) => {
     node.style.borderBottomRightRadius || 0;
 
   const style: SafeBorderStyle = {
-    borderTopColor,
+    borderTopColor: parsedBorderTopColor.value,
+    borderTopColorOpacity,
     borderTopWidth,
     borderTopStyle,
-    borderLeftColor,
+    borderLeftColor: parsedBorderLeftColor.value,
+    borderLeftColorOpacity,
     borderLeftWidth,
     borderLeftStyle,
-    borderRightColor,
+    borderRightColor: parsedBorderRightColor.value,
+    borderRightColorOpacity,
     borderRightWidth,
     borderRightStyle,
-    borderBottomColor,
+    borderBottomColor: parsedBorderBottomColor.value,
+    borderBottomColorOpacity,
     borderBottomWidth,
     borderBottomStyle,
     borderTopLeftRadius,
@@ -731,7 +773,6 @@ const renderBorders = (ctx: Context, node: SafeNode) => {
   const rbl = Math.min(borderBottomLeftRadius, 0.5 * width, 0.5 * height);
 
   ctx.save();
-  ctx.strokeOpacity(opacity);
 
   if (borderTopWidth) {
     ctx.save();

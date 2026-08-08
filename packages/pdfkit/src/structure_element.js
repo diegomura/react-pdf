@@ -25,30 +25,29 @@ class PDFStructureElement {
       options = {};
     }
 
-    if (typeof options.title !== 'undefined') {
+    if (options.title) {
       data.T = new String(options.title);
     }
-    if (typeof options.lang !== 'undefined') {
+    if (options.lang) {
       data.Lang = new String(options.lang);
     }
-    if (typeof options.alt !== 'undefined') {
+    if (options.alt) {
       data.Alt = new String(options.alt);
     }
-    if (typeof options.expanded !== 'undefined') {
+    if (options.expanded) {
       data.E = new String(options.expanded);
     }
-    if (typeof options.actual !== 'undefined') {
+    if (options.actual) {
       data.ActualText = new String(options.actual);
     }
-    if (
-      typeof options.bbox !== 'undefined' ||
-      typeof options.placement !== 'undefined'
-    ) {
+
+    const hasBbox = Array.isArray(options.bbox) && options.bbox.length === 4;
+    const hasPlacement = typeof options.placement === 'string';
+    if (hasBbox || hasPlacement) {
       const attrs = { O: 'Layout' };
-      attrs.Placement =
-        typeof options.placement !== 'undefined' ? options.placement : 'Block';
-      if (typeof options.bbox !== 'undefined') {
-        const height = this.document.page.height;
+      attrs.Placement = hasPlacement ? options.placement : 'Block';
+      if (hasBbox) {
+        const height = document.page.height;
         attrs.BBox = [
           options.bbox[0],
           height - options.bbox[3],
@@ -57,6 +56,14 @@ class PDFStructureElement {
         ];
       }
       data.A = attrs;
+    }
+
+    if (options.scope) {
+      data.A = {
+        ...(data.A || {}),
+        O: 'Table',
+        Scope: options.scope,
+      };
     }
 
     this._children = [];

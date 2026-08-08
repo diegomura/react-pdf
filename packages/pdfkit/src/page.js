@@ -69,7 +69,7 @@ const SIZES = {
 };
 
 class PDFPage {
-  constructor(document, options = {}) {
+  constructor(document, options) {
     this.document = document;
     this._options = options;
     this.size = options.size || 'letter';
@@ -84,9 +84,6 @@ class PDFPage {
     this.height = dimensions[this.layout === 'portrait' ? 1 : 0];
 
     this.content = this.document.ref();
-
-    if (options.font) document.font(options.font, options.fontFamily);
-    if (options.fontSize) document.fontSize(options.fontSize);
 
     // process margins
     // Margin calculation must occur after font assignment to ensure any dynamic sizes are calculated correctly

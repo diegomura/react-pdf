@@ -142,17 +142,23 @@ class PDFDocument extends stream.Readable {
   }
 
   addPage(options) {
-    if (options == null) {
-      ({ options } = this);
-    }
+    const documentOptions = this.options;
 
     // end the current page if needed
-    if (!this.options.bufferPages) {
+    if (!documentOptions.bufferPages) {
       this.flushPages();
     }
 
+    const font = options?.font;
+    if (font) {
+      this.font(font, options.fontFamily);
+    }
+
+    const fontSize = options?.fontSize;
+    if (fontSize) this.fontSize(fontSize);
+
     // create a page object
-    this.page = new PDFPage(this, options);
+    this.page = new PDFPage(this, options || documentOptions);
     this._pageBuffer.push(this.page);
 
     // add the page to the object store

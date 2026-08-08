@@ -3,8 +3,8 @@ PDFReference - represents a reference to another object in the PDF object heirar
 By Devon Govett
 */
 
-import zlib from 'zlib';
 import stream from 'stream';
+import { createDeflate } from './zlib';
 import PDFObject from './object';
 
 class PDFReference extends stream.Writable {
@@ -29,7 +29,7 @@ class PDFReference extends stream.Writable {
   initDeflate() {
     this.data.Filter = 'FlateDecode';
 
-    this.deflate = zlib.createDeflate();
+    this.deflate = createDeflate();
     this.deflate.on('data', (chunk) => {
       this.chunks.push(chunk);
       return (this.data.Length += chunk.length);

@@ -1,10 +1,10 @@
 import fs from 'fs';
-import { describe, expect, it, vi } from 'vitest';
+import { unzlibSync } from 'fflate';
+import { describe, expect, it } from 'vitest';
 
-vi.mock('zlib', async () => {
-  const zlib = await import('browserify-zlib');
-  return { ...zlib, default: zlib.default };
-});
+// src/image/png.js reads BROWSER as a bare identifier that rollup replaces at
+// build time; a global stands in for it so the browser branch can be exercised.
+globalThis.BROWSER = true;
 
 const { default: PNGImage } = await import('../../src/image/png.js');
 
@@ -31,7 +31,7 @@ const createDocument = () => {
 };
 
 describe('PNG images', () => {
-  it('deflates decoded interlaced RGB pixels as a Buffer in browser zlib builds', () => {
+  it('deflates decoded interlaced RGB pixels in browser builds', () => {
     // 8x8 RGB PNG generated with Adam7 interlace, filter type 0 rows, no alpha, and no tRNS chunk.
     const image = new PNGImage(fs.readFileSync(fixtureUrl), 'interlaced-rgb');
 
@@ -48,6 +48,9 @@ describe('PNG images', () => {
     const document = createDocument();
 
     expect(() => image.embed(document)).not.toThrow();
-    expect(Buffer.isBuffer(document.refs[0].value)).toBe(true);
+
+    // FlateDecode expects a zlib wrapper, not a raw deflate stream
+    const imgData = document.refs[0].value as Uint8Array;
+    expect(unzlibSync(imgData)).toEqual(decodedPixels);
   });
 });

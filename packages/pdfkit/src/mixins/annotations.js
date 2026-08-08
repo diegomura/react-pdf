@@ -2,38 +2,32 @@ import PDFAnnotationReference from '../structure_annotation';
 
 export default {
   annotate(x, y, w, h, options) {
-    options.Type = 'Annot';
-    options.Rect = this._convertRect(x, y, w, h);
-    options.Border = [0, 0, 0];
+    const { structParent, color, ...annotations } = options;
+    annotations.Type = 'Annot';
+    annotations.Rect = this._convertRect(x, y, w, h);
+    annotations.Border = [0, 0, 0];
 
-    if (options.Subtype === 'Link' && typeof options.F === 'undefined') {
-      options.F = 1 << 2; // Print Annotation Flag
+    if (
+      annotations.Subtype === 'Link' &&
+      typeof annotations.F === 'undefined'
+    ) {
+      annotations.F = 1 << 2; // Print Annotation Flag
     }
 
-    if (options.Subtype !== 'Link') {
-      if (options.C == null) {
-        options.C = this._normalizeColor(options.color || [0, 0, 0]);
+    if (annotations.Subtype !== 'Link') {
+      if (annotations.C == null) {
+        annotations.C = this._normalizeColor(color || [0, 0, 0]);
       }
-    } // convert colors
-    delete options.color;
-
-    if (typeof options.Dest === 'string') {
-      options.Dest = new String(options.Dest);
     }
 
-    const structParent = options.structParent;
-    delete options.structParent;
-
-    // Capitalize keys
-    for (let key in options) {
-      const val = options[key];
-      options[key[0].toUpperCase() + key.slice(1)] = val;
+    if (typeof annotations.Dest === 'string') {
+      annotations.Dest = new String(annotations.Dest);
     }
 
-    const ref = this.ref(options);
+    const ref = this.ref(annotations);
     this.page.annotations.push(ref);
 
-    if (structParent && typeof structParent.add === 'function') {
+    if (typeof structParent?.add === 'function') {
       const annotRef = new PDFAnnotationReference(ref);
       structParent.add(annotRef);
     }
@@ -42,125 +36,146 @@ export default {
     return this;
   },
 
-  note(x, y, w, h, contents, options = {}) {
-    options.Subtype = 'Text';
-    options.Contents = new String(contents);
-    if (options.Name == null) {
-      options.Name = 'Comment';
+  note(x, y, w, h, contents, options) {
+    const annotationOptions = {
+      ...options,
+      Subtype: 'Text',
+      Contents: new String(contents),
+    };
+    if (annotationOptions.Name == null) {
+      annotationOptions.Name = 'Comment';
     }
-    if (options.color == null) {
-      options.color = [243, 223, 92];
+    if (annotationOptions.color == null) {
+      annotationOptions.color = [243, 223, 92];
     }
-    return this.annotate(x, y, w, h, options);
+
+    return this.annotate(x, y, w, h, annotationOptions);
   },
 
-  goTo(x, y, w, h, name, options = {}) {
-    options.Subtype = 'Link';
-    options.A = this.ref({
-      S: 'GoTo',
-      D: new String(name),
-    });
-    options.A.end();
-    return this.annotate(x, y, w, h, options);
+  goTo(x, y, w, h, name, options) {
+    const annotateOptions = {
+      ...options,
+      Subtype: 'Link',
+      A: this.ref({ S: 'GoTo', D: new String(name) }),
+    };
+    annotateOptions.A.end();
+    return this.annotate(x, y, w, h, annotateOptions);
   },
 
-  link(x, y, w, h, url, options = {}) {
-    options.Subtype = 'Link';
+  link(x, y, w, h, url, options) {
+    const annotateOptions = { ...options, Subtype: 'Link' };
 
     if (typeof url === 'number') {
       // Link to a page in the document (the page must already exist)
       const pages = this._root.data.Pages.data;
       if (url >= 0 && url < pages.Kids.length) {
-        options.A = this.ref({
+        annotateOptions.A = this.ref({
           S: 'GoTo',
           D: [pages.Kids[url], 'XYZ', null, null, null],
         });
-        options.A.end();
+        annotateOptions.A.end();
       } else {
         throw new Error(`The document has no page ${url}`);
       }
     } else {
       // Link to an external url
-      options.A = this.ref({
+      annotateOptions.A = this.ref({
         S: 'URI',
         URI: new String(url),
       });
-      options.A.end();
+      annotateOptions.A.end();
     }
 
-    if (options.structParent && !options.Contents) {
-      options.Contents = new String('');
+    if (annotateOptions.structParent && !annotateOptions.Contents) {
+      annotateOptions.Contents = new String('');
     }
 
-    return this.annotate(x, y, w, h, options);
+    return this.annotate(x, y, w, h, annotateOptions);
   },
 
-  _markup(x, y, w, h, options = {}) {
+  _markup(x, y, w, h, options) {
     const [x1, y1, x2, y2] = this._convertRect(x, y, w, h);
-    options.QuadPoints = [x1, y2, x2, y2, x1, y1, x2, y1];
-    options.Contents = new String();
-    return this.annotate(x, y, w, h, options);
+    return this.annotate(x, y, w, h, {
+      ...options,
+      QuadPoints: [x1, y2, x2, y2, x1, y1, x2, y1],
+      Contents: new String(),
+    });
   },
 
-  highlight(x, y, w, h, options = {}) {
-    options.Subtype = 'Highlight';
-    if (options.color == null) {
-      options.color = [241, 238, 148];
+  highlight(x, y, w, h, options) {
+    const annotationOptions = { ...options, Subtype: 'Highlight' };
+    if (annotationOptions.color == null) {
+      annotationOptions.color = [241, 238, 148];
     }
-    return this._markup(x, y, w, h, options);
+    return this._markup(x, y, w, h, annotationOptions);
   },
 
-  underline(x, y, w, h, options = {}) {
-    options.Subtype = 'Underline';
-    return this._markup(x, y, w, h, options);
+  underline(x, y, w, h, options) {
+    const annotationOptions = { ...options, Subtype: 'Underline' };
+    return this._markup(x, y, w, h, annotationOptions);
   },
 
-  strike(x, y, w, h, options = {}) {
-    options.Subtype = 'StrikeOut';
-    return this._markup(x, y, w, h, options);
+  strike(x, y, w, h, options) {
+    const annotationOptions = { ...options, Subtype: 'StrikeOut' };
+    return this._markup(x, y, w, h, annotationOptions);
   },
 
-  lineAnnotation(x1, y1, x2, y2, options = {}) {
-    options.Subtype = 'Line';
-    options.Contents = new String();
-    options.L = [x1, this.page.height - y1, x2, this.page.height - y2];
-    return this.annotate(x1, y1, x2, y2, options);
+  lineAnnotation(x1, y1, x2, y2, options) {
+    const annotationOptions = {
+      ...options,
+      Subtype: 'Line',
+      Contents: new String(),
+      L: [x1, this.page.height - y1, x2, this.page.height - y2],
+    };
+    return this.annotate(x1, y1, x2, y2, annotationOptions);
   },
 
-  rectAnnotation(x, y, w, h, options = {}) {
-    options.Subtype = 'Square';
-    options.Contents = new String();
-    return this.annotate(x, y, w, h, options);
+  rectAnnotation(x, y, w, h, options) {
+    const annotationOptions = {
+      ...options,
+      Subtype: 'Square',
+      Contents: new String(),
+    };
+    return this.annotate(x, y, w, h, annotationOptions);
   },
 
-  ellipseAnnotation(x, y, w, h, options = {}) {
-    options.Subtype = 'Circle';
-    options.Contents = new String();
-    return this.annotate(x, y, w, h, options);
+  ellipseAnnotation(x, y, w, h, options) {
+    const annotationOptions = {
+      ...options,
+      Subtype: 'Circle',
+      Contents: new String(),
+    };
+    return this.annotate(x, y, w, h, annotationOptions);
   },
 
-  textAnnotation(x, y, w, h, text, options = {}) {
-    options.Subtype = 'FreeText';
-    options.Contents = new String(text);
-    options.DA = new String();
-    return this.annotate(x, y, w, h, options);
+  textAnnotation(x, y, w, h, text, options) {
+    const annotationOptions = {
+      ...options,
+      Subtype: 'FreeText',
+      Contents: new String(text),
+      DA: new String(),
+    };
+    return this.annotate(x, y, w, h, annotationOptions);
   },
 
-  fileAnnotation(x, y, w, h, file = {}, options = {}) {
+  fileAnnotation(x, y, w, h, file = {}, options) {
     // create hidden file
     const filespec = this.file(file.src, Object.assign({ hidden: true }, file));
 
-    options.Subtype = 'FileAttachment';
-    options.FS = filespec;
+    const annotationOptions = {
+      ...options,
+      Subtype: 'FileAttachment',
+      FS: filespec,
+    };
 
     // add description from filespec unless description (Contents) has already been set
-    if (options.Contents) {
-      options.Contents = new String(options.Contents);
+    if (annotationOptions.Contents) {
+      annotationOptions.Contents = new String(annotationOptions.Contents);
     } else if (filespec.data.Desc) {
-      options.Contents = filespec.data.Desc;
+      annotationOptions.Contents = new String(filespec.data.Desc);
     }
 
-    return this.annotate(x, y, w, h, options);
+    return this.annotate(x, y, w, h, annotationOptions);
   },
 
   _convertRect(x1, y1, w, h) {

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { md5Hex } from '../crypto/md5';
+import { escapeName } from '../object.js';
 
 export default {
   /**
@@ -36,7 +37,7 @@ export default {
       const match = /^data:(.*?);base64,(.*)$/.exec(src);
       if (match) {
         if (match[1]) {
-          refBody.Subtype = match[1].replace('/', '#2F');
+          refBody.Subtype = escapeName(match[1]);
         }
         data = Buffer.from(match[2], 'base64');
       } else {
@@ -61,7 +62,7 @@ export default {
     }
     // add optional subtype
     if (options.type) {
-      refBody.Subtype = options.type.replace('/', '#2F');
+      refBody.Subtype = escapeName(options.type);
     }
 
     // add checksum and size information

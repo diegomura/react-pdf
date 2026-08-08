@@ -8,6 +8,28 @@ import PDFNameTree from './name_tree';
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
 
+// PDF Name objects must escape delimiter characters and whitespace. We keep
+// non-ASCII characters unescaped for backward compatibility in existing output.
+const isSafeCharCode = (code) => {
+  if (code > 0x7f) return true; // keep non-ASCII characters as-is
+
+  return (
+    code > 0x20 && // exclude NUL/control chars + space (0x00-0x20)
+    code !== 0x7f && // exclude DEL
+    code !== 0x23 && // # (escape marker)
+    code !== 0x25 && // % (comment introducer)
+    code !== 0x28 && // ( (literal string delimiter)
+    code !== 0x29 && // ) (literal string delimiter)
+    code !== 0x2f && // / (name object delimiter)
+    code !== 0x3c && // < (hex string delimiter)
+    code !== 0x3e && // > (hex string delimiter)
+    code !== 0x5b && // [ (array start)
+    code !== 0x5d && // ] (array end)
+    code !== 0x7b && // { (dictionary start)
+    code !== 0x7d // } (dictionary end)
+  );
+};
+
 const escapableRe = /[\n\r\t\b\f()\\]/g;
 const escapable = {
   '\n': '\\n',
@@ -18,6 +40,21 @@ const escapable = {
   '\\': '\\\\',
   '(': '\\(',
   ')': '\\)'
+};
+
+export const escapeName = function (name) {
+  let escapedName = '';
+
+  for (const char of name) {
+    const code = char.charCodeAt(0);
+    if (isSafeCharCode(code)) {
+      escapedName += char;
+    } else {
+      escapedName += `#${code.toString(16).toUpperCase().padStart(2, '0')}`;
+    }
+  }
+
+  return escapedName;
 };
 
 // Convert little endian UTF-16 to big endian

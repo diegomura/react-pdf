@@ -106,12 +106,14 @@ const breakLines = (
 
   const hyphenCodePoints = getHyphenCodePoints(options);
 
-  const lines: AttributedString[] = breaks.reduce((acc, breakPoint) => {
+  const lines: AttributedString[] = [];
+
+  for (const breakPoint of breaks) {
     const node = nodes[breakPoint];
     const prevNode = nodes[breakPoint - 1];
 
     // Last breakpoint corresponds to K&P mandatory final glue
-    if (breakPoint === nodes.length - 1) return acc;
+    if (breakPoint === nodes.length - 1) continue;
 
     let line: AttributedString;
     if (node.type === 'penalty') {
@@ -133,9 +135,8 @@ const breakLines = (
 
     start = end;
 
-    acc.push(line);
-    return acc;
-  }, []);
+    lines.push(line);
+  }
 
   lines.push(slice(start, attributedString.string.length, attributedString));
 

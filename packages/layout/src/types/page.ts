@@ -1,4 +1,4 @@
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
@@ -96,7 +96,7 @@ interface PageProps extends NodeProps {
 export type PageNode = {
   type: typeof P.Page;
   props: PageProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;

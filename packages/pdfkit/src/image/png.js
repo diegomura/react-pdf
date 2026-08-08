@@ -171,7 +171,8 @@ class PNGImage {
 
   decodeData() {
     this.image.decodePixels((pixels) => {
-      this.imgData = zlib.deflateSync(pixels);
+      const data = Buffer.isBuffer(pixels) ? pixels : Buffer.from(pixels);
+      this.imgData = zlib.deflateSync(data);
       this.finalize();
     });
   }

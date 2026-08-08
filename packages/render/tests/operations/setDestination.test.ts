@@ -17,6 +17,20 @@ describe('operations setDestination', () => {
 
     expect(ctx.addNamedDestination.mock.calls).toHaveLength(1);
     expect(ctx.addNamedDestination.mock.calls[0][0]).toBe('test');
+    expect(ctx.addNamedDestination.mock.calls[0][2]).toBe(0);
+    expect(ctx.addNamedDestination.mock.calls[0][3]).toBe(20);
+  });
+
+  test('should pass the node left coordinate as the destination left', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 15 };
+    const props = { id: 'test' };
+    const doc = { type: P.View, style: {}, props, box } as SafeNode;
+
+    setDestination(ctx, doc);
+
+    expect(ctx.addNamedDestination.mock.calls).toHaveLength(1);
+    expect(ctx.addNamedDestination.mock.calls[0][2]).toBe(15);
     expect(ctx.addNamedDestination.mock.calls[0][3]).toBe(20);
   });
 

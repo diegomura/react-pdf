@@ -1,8 +1,25 @@
+const fArray = new Float32Array(1);
+const uArray = new Uint32Array(fArray.buffer);
+
 export function PDFNumber(n) {
   // PDF numbers are strictly 32bit
-  // so convert this number to the nearest 32bit number
+  // so convert this number to a 32bit number
   // @see ISO 32000-1 Annex C.2 (real numbers)
-  return Math.fround(n);
+  const rounded = Math.fround(n);
+  if (rounded <= n) return rounded;
+
+  // Will have to perform 32bit float truncation
+  fArray[0] = n;
+
+  // Get the 32-bit representation as integer and shift bits
+  if (n <= 0) {
+    uArray[0] += 1;
+  } else {
+    uArray[0] -= 1;
+  }
+
+  // Return the float value
+  return fArray[0];
 }
 
 /**
@@ -12,11 +29,10 @@ export function PDFNumber(n) {
  */
 
 /**
- * Measurement of how wide something is, false means 0 and true means 1
- *
- * @typedef {Size | boolean} Wideness
+ * @typedef {Array<PDFTilingPattern | PDFColor> | string | Array<number>} PDFColor
  */
 
+/** @typedef {string | Buffer | Uint8Array | ArrayBuffer} PDFFontSource */
 /**
  * Side definitions
  * - To define all sides, use a single value
@@ -49,19 +65,17 @@ export function PDFNumber(n) {
 export function normalizeSides(
   sides,
   defaultDefinition = undefined,
-  transformer = (v) => v
+  transformer = (v) => v,
 ) {
   if (
-    sides === undefined ||
-    sides === null ||
+    sides == null ||
     (typeof sides === 'object' && Object.keys(sides).length === 0)
   ) {
     sides = defaultDefinition;
   }
-  if (typeof sides !== 'object' || sides === null) {
-    sides = [sides, sides, sides, sides];
-  }
-  if (Array.isArray(sides)) {
+  if (sides == null || typeof sides !== 'object') {
+    sides = { top: sides, right: sides, bottom: sides, left: sides };
+  } else if (Array.isArray(sides)) {
     if (sides.length === 2) {
       sides = { vertical: sides[0], horizontal: sides[1] };
     } else {
@@ -69,7 +83,7 @@ export function normalizeSides(
         top: sides[0],
         right: sides[1],
         bottom: sides[2],
-        left: sides[3]
+        left: sides[3],
       };
     }
   }
@@ -79,7 +93,7 @@ export function normalizeSides(
       top: sides.vertical,
       right: sides.horizontal,
       bottom: sides.vertical,
-      left: sides.horizontal
+      left: sides.horizontal,
     };
   }
 
@@ -87,7 +101,7 @@ export function normalizeSides(
     top: transformer(sides.top),
     right: transformer(sides.right),
     bottom: transformer(sides.bottom),
-    left: transformer(sides.left)
+    left: transformer(sides.left),
   };
 }
 

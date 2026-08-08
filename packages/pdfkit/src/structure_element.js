@@ -4,6 +4,7 @@ By Ben Schmidt
 */
 
 import PDFStructureContent from './structure_content';
+import PDFAnnotationReference from './structure_annotation';
 
 class PDFStructureElement {
   constructor(document, type, options = {}, children = null) {
@@ -14,7 +15,7 @@ class PDFStructureElement {
     this._flushed = false;
     this.dictionary = document.ref({
       // Type: "StructElem",
-      S: type
+      S: type,
     });
 
     const data = this.dictionary.data;
@@ -24,20 +25,45 @@ class PDFStructureElement {
       options = {};
     }
 
-    if (typeof options.title !== 'undefined') {
+    if (options.title) {
       data.T = new String(options.title);
     }
-    if (typeof options.lang !== 'undefined') {
+    if (options.lang) {
       data.Lang = new String(options.lang);
     }
-    if (typeof options.alt !== 'undefined') {
+    if (options.alt) {
       data.Alt = new String(options.alt);
     }
-    if (typeof options.expanded !== 'undefined') {
+    if (options.expanded) {
       data.E = new String(options.expanded);
     }
-    if (typeof options.actual !== 'undefined') {
+    if (options.actual) {
       data.ActualText = new String(options.actual);
+    }
+
+    const hasBbox = Array.isArray(options.bbox) && options.bbox.length === 4;
+    const hasPlacement = typeof options.placement === 'string';
+    if (hasBbox || hasPlacement) {
+      const attrs = { O: 'Layout' };
+      attrs.Placement = hasPlacement ? options.placement : 'Block';
+      if (hasBbox) {
+        const height = document.page.height;
+        attrs.BBox = [
+          options.bbox[0],
+          height - options.bbox[3],
+          options.bbox[2],
+          height - options.bbox[1],
+        ];
+      }
+      data.A = attrs;
+    }
+
+    if (options.scope) {
+      data.A = {
+        ...(data.A || {}),
+        O: 'Table',
+        Scope: options.scope,
+      };
     }
 
     this._children = [];
@@ -71,6 +97,10 @@ class PDFStructureElement {
       this._addContentToParentTree(child);
     }
 
+    if (child instanceof PDFAnnotationReference) {
+      this._addAnnotationToParentTree(child.annotationRef);
+    }
+
     if (typeof child === 'function' && this._attached) {
       // _contentForClosure() adds the content to the parent tree
       child = this._contentForClosure(child);
@@ -88,6 +118,15 @@ class PDFStructureElement {
         .get(pageRef.data.StructParents);
       pageStructParents[mcid] = this.dictionary;
     });
+  }
+
+  _addAnnotationToParentTree(annotRef) {
+    const parentTreeKey = this.document.createStructParentTreeNextKey();
+
+    annotRef.data.StructParent = parentTreeKey;
+
+    const parentTree = this.document.getStructParentTree();
+    parentTree.add(parentTreeKey, this.dictionary);
   }
 
   setParent(parentRef) {
@@ -137,13 +176,25 @@ class PDFStructureElement {
     return (
       child instanceof PDFStructureElement ||
       child instanceof PDFStructureContent ||
+      child instanceof PDFAnnotationReference ||
       typeof child === 'function'
     );
   }
 
   _contentForClosure(closure) {
     const content = this.document.markStructureContent(this.dictionary.data.S);
+
+    const prevStructElement = this.document._currentStructureElement;
+    this.document._currentStructureElement = this;
+
+    const wasEnded = this._ended;
+    this._ended = false;
+
     closure();
+
+    this._ended = wasEnded;
+
+    this.document._currentStructureElement = prevStructElement;
     this.document.endMarkedContent();
 
     this._addContentToParentTree(content);
@@ -204,10 +255,20 @@ class PDFStructureElement {
           this.dictionary.data.K.push({
             Type: 'MCR',
             Pg: pageRef,
-            MCID: mcid
+            MCID: mcid,
           });
         }
       });
+    }
+
+    if (child instanceof PDFAnnotationReference) {
+      const pageRef = this.document.page.dictionary;
+      const objr = {
+        Type: 'OBJR',
+        Obj: child.annotationRef,
+        Pg: pageRef,
+      };
+      this.dictionary.data.K.push(objr);
     }
   }
 }

@@ -2,6 +2,12 @@
 Binary helpers — Uint8Array-native replacements for Node Buffer operations.
 */
 
+export const fromBinaryString = (str) => {
+  const out = new Uint8Array(str.length);
+  for (let i = 0; i < str.length; i++) out[i] = str.charCodeAt(i) & 0xff;
+  return out;
+};
+
 export const toBinaryString = (bytes) => {
   const chunkSize = 0x8000;
   let out = '';
@@ -12,15 +18,7 @@ export const toBinaryString = (bytes) => {
   return out;
 };
 
-export const fromBase64 = (b64) => {
-  const binary = atob(b64);
-  const len = binary.length;
-  const out = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    out[i] = binary.charCodeAt(i);
-  }
-  return out;
-};
+export const fromBase64 = (str) => fromBinaryString(atob(str));
 
 export const readUInt16BE = (bytes, offset = 0) =>
   ((bytes[offset] << 8) | bytes[offset + 1]) >>> 0;

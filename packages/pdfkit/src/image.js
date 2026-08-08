@@ -11,10 +11,10 @@ import PNG from './image/png';
 class PDFImage {
   static open(src, label) {
     let data;
-    if (Buffer.isBuffer(src)) {
+    if (src instanceof Uint8Array) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = Buffer.from(new Uint8Array(src));
+      data = new Uint8Array(src);
     } else {
       const match = /^data:.+?;base64,(.*)$/.exec(src);
       if (match) {

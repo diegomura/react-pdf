@@ -99,7 +99,7 @@ class JPEG {
     let marker;
     this.data = data;
     this.label = label;
-    if (this.data.readUInt16BE(0) !== 0xffd8) {
+    if (readUInt16BE(this.data, 0) !== 0xffd8) {
       throw 'SOI not found in JPEG';
     }
 
@@ -112,12 +112,12 @@ class JPEG {
       while (pos < this.data.length && this.data[pos] !== 0xff) pos++;
       if (pos >= this.data.length) break;
 
-      marker = this.data.readUInt16BE(pos);
+      marker = readUInt16BE(this.data, pos);
       pos += 2;
       if (MARKERS.includes(marker)) {
         break;
       }
-      pos += this.data.readUInt16BE(pos);
+      pos += readUInt16BE(this.data, pos);
     }
 
     if (!MARKERS.includes(marker)) {
@@ -126,13 +126,13 @@ class JPEG {
     pos += 2;
 
     this.bits = this.data[pos++];
-    this.height = this.data.readUInt16BE(pos);
+    this.height = readUInt16BE(this.data, pos);
     pos += 2;
 
-    this.width = this.data.readUInt16BE(pos);
+    this.width = readUInt16BE(this.data, pos);
     pos += 2;
 
-    const channels = this.data[pos++];
+    const channels = this.data[pos];
     this.colorSpace = COLOR_SPACE_MAP[channels];
 
     this.obj = null;

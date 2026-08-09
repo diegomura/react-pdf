@@ -55,6 +55,16 @@ const createCTX = () => {
   instance.formList = vi.fn().mockReturnValue(instance);
   instance.formText = vi.fn().mockReturnValue(instance);
   instance.initForm = vi.fn().mockReturnValue(instance);
+  instance.page = { annotations: [] };
+  instance.annotate = vi.fn((x, y, w, h, dict) => {
+    instance.page.annotations.push({ data: dict });
+    return instance;
+  });
+  instance._fieldDict = vi.fn((name: string, type: string) => ({
+    T: name,
+    FT: type,
+  }));
+  instance._addToParent = vi.fn().mockReturnValue(instance);
   instance.outline = {
     children: [],
     document: vi.fn().mockReturnValue(instance),

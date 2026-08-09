@@ -58,5 +58,8 @@
     "pako": "^1.0.11",
     "png-js": "^2.0.0",
     "vite-compatible-readable-stream": "^3.6.1"
+  },
+  "devDependencies": {
+    "node-stdlib-browser": "^1.3.1"
   }
 }

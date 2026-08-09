@@ -14,9 +14,8 @@ export const toBinaryString = (bytes) => {
 
 export const fromBase64 = (b64) => {
   const binary = atob(b64);
-  const len = binary.length;
-  const out = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
+  const out = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
     out[i] = binary.charCodeAt(i);
   }
   return out;

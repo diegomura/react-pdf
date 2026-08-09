@@ -1,5 +1,14 @@
 # @react-pdf/mermaid
 
+## 3.0.0
+
+### Patch Changes
+
+- [#3464](https://github.com/diegomura/react-pdf/pull/3464) [`8c723cca`](https://github.com/diegomura/react-pdf/commit/8c723ccac726e570db9839b514faa27d29855ef3) Thanks [@diegomura](https://github.com/diegomura)! - Declare `@react-pdf/primitives` dependency.
+
+- Updated dependencies [[`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6)]:
+  - @react-pdf/renderer@4.6.0
+
 ## 2.0.1
 
 ### Patch Changes

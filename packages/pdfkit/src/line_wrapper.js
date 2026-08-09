@@ -199,6 +199,7 @@ class LineWrapper {
   }
 
   wrap(text, options) {
+    const { document } = this;
     // override options from previous continued fragments
     this.horizontalScaling = options.horizontalScaling || 100;
     if (options.indent != null) {
@@ -218,8 +219,8 @@ class LineWrapper {
     // make sure we're actually on the page
     // and that the first line of is never by
     // itself at the bottom of a page (orphans)
-    const nextY = this.document.y + this.document.currentLineHeight(true);
-    if (this.document.y > this.maxY || nextY > this.maxY) {
+    const nextY = document.y + document.currentLineHeight(true);
+    if (document.y > this.maxY || nextY > this.maxY) {
       this.nextSection();
     }
 
@@ -228,12 +229,12 @@ class LineWrapper {
     let wc = 0;
     let lc = 0;
 
-    let { y } = this.document; // used to reset Y pos if options.continued (below)
+    let continueY = document.y; // used to reset Y pos if options.continued (below)
     const emitLine = () => {
       options.textWidth = textWidth + this.wordSpacing * (wc - 1);
       options.wordCount = wc;
       options.lineWidth = this.lineWidth;
-      ({ y } = this.document);
+      continueY = document.y;
       this.emit('line', buffer, options, this);
       return lc++;
     };
@@ -255,11 +256,11 @@ class LineWrapper {
       if (bk.required || !this.canFit(word, w)) {
         // if the user specified a max height and an ellipsis, and is about to pass the
         // max height and max columns after the next line, append the ellipsis
-        const lh = this.document.currentLineHeight(true);
+        const lh = document.currentLineHeight(true);
         if (
           this.height != null &&
           this.ellipsis &&
-          PDFNumber(this.document.y + lh * 2) > this.maxY &&
+          PDFNumber(document.y + lh * 2) > this.maxY &&
           this.column >= this.columns
         ) {
           if (this.ellipsis === true) {
@@ -303,7 +304,7 @@ class LineWrapper {
 
         // if we've reached the edge of the page,
         // continue on a new page or column
-        if (PDFNumber(this.document.y + lh) > this.maxY) {
+        if (PDFNumber(document.y + lh) > this.maxY) {
           this.emit('sectionEnd', options, this);
           const shouldContinue = this.nextSection();
 
@@ -349,9 +350,9 @@ class LineWrapper {
         this.continuedX = 0;
       }
       this.continuedX += options.textWidth || 0;
-      this.document.y = y;
+      document.y = continueY;
     } else {
-      this.document.x = this.startX;
+      document.x = this.startX;
     }
   }
 

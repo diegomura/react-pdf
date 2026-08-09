@@ -24,13 +24,9 @@ const DEFAULT_LINK_STYLES: Style = {
  * @returns Computed styles
  */
 const computeStyle = (container: Container, node: Node) => {
-  let baseStyle: Style[] = [node.style as Style];
-
-  if (isLink(node)) {
-    baseStyle = Array.isArray(node.style)
-      ? [DEFAULT_LINK_STYLES, ...node.style]
-      : [DEFAULT_LINK_STYLES, node.style];
-  }
+  const baseStyle = isLink(node)
+    ? [DEFAULT_LINK_STYLES, node.style]
+    : node.style;
 
   return stylesheet(container, baseStyle);
 };

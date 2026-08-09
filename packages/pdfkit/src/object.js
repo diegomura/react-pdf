@@ -3,10 +3,33 @@ PDFObject - converts JavaScript types into their corresponding PDF types.
 By Devon Govett
 */
 
-import PDFReference from './reference';
-import PDFNameTree from './name_tree';
+import PDFAbstractReference from './abstract_reference';
+import PDFTree from './tree';
+import SpotColor from './spotcolor';
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
+
+// PDF Name objects must escape delimiter characters and whitespace. We keep
+// non-ASCII characters unescaped for backward compatibility in existing output.
+const isSafeCharCode = (code) => {
+  if (code > 0x7f) return true; // keep non-ASCII characters as-is
+
+  return (
+    code > 0x20 && // exclude NUL/control chars + space (0x00-0x20)
+    code !== 0x7f && // exclude DEL
+    code !== 0x23 && // # (escape marker)
+    code !== 0x25 && // % (comment introducer)
+    code !== 0x28 && // ( (literal string delimiter)
+    code !== 0x29 && // ) (literal string delimiter)
+    code !== 0x2f && // / (name object delimiter)
+    code !== 0x3c && // < (hex string delimiter)
+    code !== 0x3e && // > (hex string delimiter)
+    code !== 0x5b && // [ (array start)
+    code !== 0x5d && // ] (array end)
+    code !== 0x7b && // { (dictionary start)
+    code !== 0x7d // } (dictionary end)
+  );
+};
 
 const escapableRe = /[\n\r\t\b\f()\\]/g;
 const escapable = {
@@ -17,7 +40,22 @@ const escapable = {
   '\f': '\\f',
   '\\': '\\\\',
   '(': '\\(',
-  ')': '\\)'
+  ')': '\\)',
+};
+
+export const escapeName = function (name) {
+  let escapedName = '';
+
+  for (const char of name) {
+    const code = char.charCodeAt(0);
+    if (isSafeCharCode(code)) {
+      escapedName += char;
+    } else {
+      escapedName += `#${code.toString(16).toUpperCase().padStart(2, '0')}`;
+    }
+  }
+
+  return escapedName;
 };
 
 // Convert little endian UTF-16 to big endian
@@ -41,10 +79,9 @@ class PDFObject {
     // String literals are converted to the PDF name type
     if (typeof object === 'string') {
       return `/${object}`;
-    }
 
-    // String objects are converted to PDF strings (UTF-16)
-    if (object instanceof String) {
+      // String objects are converted to PDF strings (UTF-16)
+    } else if (object instanceof String) {
       let string = object;
       // Detect if this is a unicode string
       let isUnicode = false;
@@ -76,17 +113,15 @@ class PDFObject {
       return `(${string})`;
 
       // Buffers are converted to PDF hex strings
-    }
-
-    if (Buffer.isBuffer(object)) {
+    } else if (Buffer.isBuffer(object)) {
       return `<${object.toString('hex')}>`;
-    }
-
-    if (object instanceof PDFReference || object instanceof PDFNameTree) {
+    } else if (
+      object instanceof PDFAbstractReference ||
+      object instanceof PDFTree ||
+      object instanceof SpotColor
+    ) {
       return object.toString();
-    }
-
-    if (object instanceof Date) {
+    } else if (object instanceof Date) {
       let string =
         `D:${pad(object.getUTCFullYear(), 4)}` +
         pad(object.getUTCMonth() + 1, 2) +
@@ -99,20 +134,18 @@ class PDFObject {
       // Encrypt the string when necessary
       if (encryptFn) {
         string = encryptFn(Buffer.from(string, 'ascii')).toString('binary');
+
+        // Escape characters as required by the spec
         string = string.replace(escapableRe, (c) => escapable[c]);
       }
 
       return `(${string})`;
-    }
-
-    if (Array.isArray(object)) {
-      const items = Array.from(object)
+    } else if (Array.isArray(object)) {
+      const items = object
         .map((e) => PDFObject.convert(e, encryptFn))
         .join(' ');
       return `[${items}]`;
-    }
-
-    if ({}.toString.call(object) === '[object Object]') {
+    } else if ({}.toString.call(object) === '[object Object]') {
       const out = ['<<'];
       for (let key in object) {
         const val = object[key];
@@ -121,13 +154,11 @@ class PDFObject {
 
       out.push('>>');
       return out.join('\n');
-    }
-
-    if (typeof object === 'number') {
+    } else if (typeof object === 'number') {
       return PDFObject.number(object);
+    } else {
+      return `${object}`;
     }
-
-    return `${object}`;
   }
 
   static number(n) {

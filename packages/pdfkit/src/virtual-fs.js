@@ -1,17 +1,13 @@
 class VirtualFileSystem {
   constructor() {
-    this.fileData = {};
+    this.files = {};
   }
 
   readFileSync(fileName, options = {}) {
     const encoding = typeof options === 'string' ? options : options.encoding;
-    const virtualFileName = normalizeFilename(fileName);
-
-    const data = this.fileData[virtualFileName];
+    const data = this.files[fileName];
     if (data == null) {
-      throw new Error(
-        `File '${virtualFileName}' not found in virtual file system`,
-      );
+      throw new Error(`File '${fileName}' not found in virtual file system`);
     }
 
     if (encoding) {
@@ -23,28 +19,16 @@ class VirtualFileSystem {
   }
 
   writeFileSync(fileName, content) {
-    this.fileData[normalizeFilename(fileName)] = content;
+    this.files[fileName] = content;
   }
 
   bindFileData(data = {}, options = {}) {
     if (options.reset) {
-      this.fileData = data;
+      this.files = data;
     } else {
-      Object.assign(this.fileData, data);
+      Object.assign(this.files, data);
     }
   }
-}
-
-function normalizeFilename(fileName) {
-  if (fileName.indexOf(__dirname) === 0) {
-    fileName = fileName.substring(__dirname.length);
-  }
-
-  if (fileName.indexOf('/') === 0) {
-    fileName = fileName.substring(1);
-  }
-
-  return fileName;
 }
 
 export default new VirtualFileSystem();

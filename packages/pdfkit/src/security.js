@@ -3,23 +3,13 @@
    By Yang Liu <hi@zesik.com>
  */
 
+import { concatBytes } from '@noble/hashes/utils';
 import { md5Hash } from './crypto/md5';
 import sha256Hash from './crypto/sha256';
 import { aesCbcEncrypt, aesEcbEncrypt } from './crypto/aes';
 import rc4 from './crypto/rc4';
 import randomBytes from './crypto/random';
 import saslprep from './saslprep/index';
-
-function concatBytes(...arrays) {
-  const length = arrays.reduce((a, b) => a + b.length, 0);
-  const result = new Uint8Array(length);
-  let offset = 0;
-  for (const arr of arrays) {
-    result.set(arr, offset);
-    offset += arr.length;
-  }
-  return result;
-}
 
 class PDFSecurity {
   static generateFileID(info = {}) {

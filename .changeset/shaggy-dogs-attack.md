@@ -1,5 +1,5 @@
 ---
-"@react-pdf/pdfkit": patch
+'@react-pdf/pdfkit': patch
 ---
 
-refactor: align pdfkit/reference.js with upstream with modern Buffer polyfill
+Switch the browser build's Node polyfills from `rollup-plugin-polyfill-node` to `node-stdlib-browser`

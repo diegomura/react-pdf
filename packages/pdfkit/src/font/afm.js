@@ -1,6 +1,3 @@
-import fs from 'fs';
-import range from '../utils/range.js';
-
 const WIN_ANSI_MAP = {
   402: 131,
   8211: 150,
@@ -28,7 +25,7 @@ const WIN_ANSI_MAP = {
   353: 154,
   376: 159,
   381: 142,
-  382: 158
+  382: 158,
 };
 
 const characters = `\
@@ -40,7 +37,7 @@ const characters = `\
 .notdef       .notdef        .notdef        .notdef
 .notdef       .notdef        .notdef        .notdef
 .notdef       .notdef        .notdef        .notdef
-
+  
 space         exclam         quotedbl       numbersign
 dollar        percent        ampersand      quotesingle
 parenleft     parenright     asterisk       plus
@@ -49,7 +46,7 @@ zero          one            two            three
 four          five           six            seven
 eight         nine           colon          semicolon
 less          equal          greater        question
-
+  
 at            A              B              C
 D             E              F              G
 H             I              J              K
@@ -58,7 +55,7 @@ P             Q              R              S
 T             U              V              W
 X             Y              Z              bracketleft
 backslash     bracketright   asciicircum    underscore
-
+  
 grave         a              b              c
 d             e              f              g
 h             i              j              k
@@ -67,7 +64,7 @@ p             q              r              s
 t             u              v              w
 x             y              z              braceleft
 bar           braceright     asciitilde     .notdef
-
+  
 Euro          .notdef        quotesinglbase florin
 quotedblbase  ellipsis       dagger         daggerdbl
 circumflex    perthousand    Scaron         guilsinglleft
@@ -76,7 +73,7 @@ OE            .notdef        Zcaron         .notdef
 quotedblright bullet         endash         emdash
 tilde         trademark      scaron         guilsinglright
 oe            .notdef        zcaron         ydieresis
-
+  
 space         exclamdown     cent           sterling
 currency      yen            brokenbar      section
 dieresis      copyright      ordfeminine    guillemotleft
@@ -85,7 +82,7 @@ degree        plusminus      twosuperior    threesuperior
 acute         mu             paragraph      periodcentered
 cedilla       onesuperior    ordmasculine   guillemotright
 onequarter    onehalf        threequarters  questiondown
-
+  
 Agrave        Aacute         Acircumflex    Atilde
 Adieresis     Aring          AE             Ccedilla
 Egrave        Eacute         Ecircumflex    Edieresis
@@ -94,7 +91,7 @@ Eth           Ntilde         Ograve         Oacute
 Ocircumflex   Otilde         Odieresis      multiply
 Oslash        Ugrave         Uacute         Ucircumflex
 Udieresis     Yacute         Thorn          germandbls
-
+  
 agrave        aacute         acircumflex    atilde
 adieresis     aring          ae             ccedilla
 egrave        eacute         ecircumflex    edieresis
@@ -105,112 +102,46 @@ oslash        ugrave         uacute         ucircumflex
 udieresis     yacute         thorn          ydieresis\
 `.split(/\s+/);
 
-function parse(contents) {
-  const obj = {
-    attributes: {},
-    glyphWidths: {},
-    kernPairs: {}
-  };
-
-  let section = '';
-  for (let line of contents.split('\n')) {
-    var match;
-    var a;
-    if ((match = line.match(/^Start(\w+)/))) {
-      section = match[1];
-      continue;
-    } else if ((match = line.match(/^End(\w+)/))) {
-      section = '';
-      continue;
-    }
-
-    switch (section) {
-      case 'FontMetrics':
-        match = line.match(/(^\w+)\s+(.*)/);
-        var key = match[1];
-        var value = match[2];
-
-        if ((a = obj.attributes[key])) {
-          if (!Array.isArray(a)) {
-            a = obj.attributes[key] = [a];
-          }
-          a.push(value);
-        } else {
-          obj.attributes[key] = value;
-        }
-        break;
-
-      case 'CharMetrics':
-        if (!/^CH?\s/.test(line)) {
-          continue;
-        }
-        var name = line.match(/\bN\s+(\.?\w+)\s*;/)[1];
-        obj.glyphWidths[name] = +line.match(/\bWX\s+(\d+)\s*;/)[1];
-        break;
-
-      case 'KernPairs':
-        match = line.match(/^KPX\s+(\.?\w+)\s+(\.?\w+)\s+(-?\d+)/);
-        if (match) {
-          obj.kernPairs[match[1] + match[2]] = parseInt(match[3]);
-        }
-        break;
-    }
-  }
-
-  return obj;
-}
-
 class AFMFont {
-  static open(filename) {
-    if (BROWSER) {
-      throw new Error('AFMFont.open not available on browser build');
-    }
-    return new AFMFont(fs.readFileSync(filename, 'utf8'));
-  }
-
-  static fromJson(json) {
-    return new AFMFont(json);
-  }
-
-  constructor(contents) {
-    if (typeof contents === 'string') {
-      this.contents = contents;
-      this.parse();
-    } else {
-      this.attributes = contents.attributes;
-      this.glyphWidths = contents.glyphWidths;
-      this.kernPairs = contents.kernPairs;
-    }
-
-    this.charWidths = range(0, 255, true).map(
-      (i) => this.glyphWidths[characters[i]]
-    );
-    this.bbox = Array.from(this.attributes.FontBBox.split(/\s+/)).map(
-      (e) => +e
-    );
-    this.ascender = +(this.attributes.Ascender || 0);
-    this.descender = +(this.attributes.Descender || 0);
-    this.xHeight = +(this.attributes.XHeight || 0);
-    this.capHeight = +(this.attributes.CapHeight || 0);
+  /**
+   * @param {object} data
+   */
+  constructor(data) {
+    this.name = data.name;
+    this.bbox = data.bbox.slice();
+    this.ascender = data.ascender;
+    this.descender = data.descender;
+    this.xHeight = data.xHeight;
+    this.capHeight = data.capHeight;
     this.lineGap =
       this.bbox[3] - this.bbox[1] - (this.ascender - this.descender);
+
+    const glyphNames = data.glyphNames.split(' ');
+    this.glyphWidths = Object.fromEntries(
+      glyphNames.map((name, index) => [name, data.glyphWidths[index]]),
+    );
+    this.kernPairs = {};
+
+    for (let index = 0; index < data.kernPairs.length; index += 2) {
+      const amount = data.kernPairs[index];
+      let pairId = 0;
+
+      for (const delta of data.kernPairs[index + 1]) {
+        pairId += delta;
+        const left = Math.floor(pairId / glyphNames.length);
+        const right = pairId % glyphNames.length;
+        this.kernPairs[`${glyphNames[left]}\0${glyphNames[right]}`] = amount;
+      }
+    }
   }
 
-  parse() {
-    const parsed = parse(this.contents);
-
-    this.attributes = parsed.attributes;
-    this.glyphWidths = parsed.glyphWidths;
-    this.kernPairs = parsed.kernPairs;
-  }
-
+  /**
+   * @param {string} text
+   * @returns
+   */
   encodeText(text) {
     const res = [];
-    for (
-      let i = 0, end = text.length, asc = 0 <= end;
-      asc ? i < end : i > end;
-      asc ? i++ : i--
-    ) {
+    for (let i = 0, len = text.length; i < len; i++) {
       let char = text.charCodeAt(i);
       char = WIN_ANSI_MAP[char] || char;
       res.push(char.toString(16));
@@ -222,11 +153,7 @@ class AFMFont {
   glyphsForString(string) {
     const glyphs = [];
 
-    for (
-      let i = 0, end = string.length, asc = 0 <= end;
-      asc ? i < end : i > end;
-      asc ? i++ : i--
-    ) {
+    for (let i = 0, len = string.length; i < len; i++) {
       const charCode = string.charCodeAt(i);
       glyphs.push(this.characterToGlyph(charCode));
     }
@@ -243,7 +170,7 @@ class AFMFont {
   }
 
   getKernPair(left, right) {
-    return this.kernPairs[left + right] || 0;
+    return this.kernPairs[left + '\0' + right] || 0;
   }
 
   advancesForGlyphs(glyphs) {
@@ -259,5 +186,4 @@ class AFMFont {
   }
 }
 
-export { parse };
 export default AFMFont;

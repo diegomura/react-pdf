@@ -2,10 +2,9 @@ import { compose } from '@react-pdf/fns';
 
 import flattenStyles from './flatten';
 import resolveMediaQueries from './mediaQueries';
-import { Container, Style } from './types';
+import { Container, StyleProp } from './types';
 import resolveStyle from './resolve';
 
-type StyleParam = Style | null | undefined;
 /**
  * Resolves styles
  *
@@ -15,7 +14,7 @@ type StyleParam = Style | null | undefined;
  */
 const resolveStyles = (
   container: Container,
-  style: StyleParam | StyleParam[],
+  style: StyleProp | null | undefined,
 ) => {
   const computeMediaQueries = (value) => resolveMediaQueries(container, value);
 

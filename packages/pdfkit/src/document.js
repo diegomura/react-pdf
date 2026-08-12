@@ -264,7 +264,7 @@ class PDFDocument extends stream.Readable {
   // do nothing, but this method is required by node
 
   _write(data) {
-    if (!Buffer.isBuffer(data)) {
+    if (!(data instanceof Uint8Array)) {
       data = Buffer.from(data + '\n', 'binary');
     }
 

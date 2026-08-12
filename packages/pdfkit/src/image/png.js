@@ -1,4 +1,4 @@
-import zlib from 'zlib';
+import zlib from '../zlib';
 import PNG from 'png-js';
 
 class PNGImage {
@@ -161,7 +161,7 @@ class PNGImage {
 
       // For interlaced images, re-encode the decoded pixel data
       if (isInterlaced) {
-        this.imgData = zlib.deflateSync(Buffer.from(pixels));
+        this.imgData = zlib.deflateSync(pixels);
       }
 
       this.alphaChannel = zlib.deflateSync(alphaChannel);
@@ -171,8 +171,7 @@ class PNGImage {
 
   decodeData() {
     this.image.decodePixels((pixels) => {
-      const data = Buffer.isBuffer(pixels) ? pixels : Buffer.from(pixels);
-      this.imgData = zlib.deflateSync(data);
+      this.imgData = zlib.deflateSync(pixels);
       this.finalize();
     });
   }

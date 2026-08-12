@@ -33,11 +33,8 @@ const babelConfig = () => ({
 
 const getExternal = ({ browser }) => [
   ...Object.keys(pkg.dependencies).filter(
-    (dep) =>
-      !browser ||
-      !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
+    (dep) => !browser || dep !== 'vite-compatible-readable-stream'
   ),
-  /\/node_modules\/pako\//,
   /@babel\/runtime/,
   'js-md5',
   '@noble/hashes/sha256',
@@ -51,17 +48,7 @@ const getPlugins = ({ browser }) => [
         ignore(['fs']),
         alias({
           entries: [
-            // See https://github.com/browserify/browserify-zlib/pull/45
-            {
-              find: 'pako/lib/zlib/zstream',
-              replacement: 'pako/lib/zlib/zstream.js'
-            },
-            {
-              find: 'pako/lib/zlib/constants',
-              replacement: 'pako/lib/zlib/constants.js'
-            },
-            { find: 'stream', replacement: 'vite-compatible-readable-stream' },
-            { find: 'zlib', replacement: 'browserify-zlib' }
+            { find: 'stream', replacement: 'vite-compatible-readable-stream' }
           ]
         }),
         commonjs(),
@@ -84,7 +71,8 @@ const serverConfig = {
   input: 'src/document.node.js',
   output: { format: 'es', file: 'lib/pdfkit.js' },
   external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false })
+  plugins: getPlugins({ browser: false }),
+  treeshake: { moduleSideEffects: 'no-external' }
 };
 
 const browserConfig = {

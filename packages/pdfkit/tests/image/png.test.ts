@@ -1,12 +1,7 @@
 import fs from 'fs';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('zlib', async () => {
-  const zlib = await import('browserify-zlib');
-  return { ...zlib, default: zlib.default };
-});
-
-const { default: PNGImage } = await import('../../src/image/png.js');
+import PNGImage from '../../src/image/png.js';
 
 const fixtureUrl = new URL('../assets/interlaced-rgb.png', import.meta.url);
 
@@ -31,7 +26,13 @@ const createDocument = () => {
 };
 
 describe('PNG images', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it('deflates decoded interlaced RGB pixels as a Buffer in browser zlib builds', () => {
+    vi.stubGlobal('BROWSER', true);
+
     // 8x8 RGB PNG generated with Adam7 interlace, filter type 0 rows, no alpha, and no tRNS chunk.
     const image = new PNGImage(fs.readFileSync(fixtureUrl), 'interlaced-rgb');
 

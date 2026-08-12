@@ -3,7 +3,7 @@ PDFReference - represents a reference to another object in the PDF object heirar
 By Devon Govett
 */
 
-import zlib from 'zlib';
+import zlib from './zlib';
 import PDFAbstractReference from './abstract_reference';
 import PDFObject from './object';
 

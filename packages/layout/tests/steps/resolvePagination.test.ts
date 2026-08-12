@@ -458,4 +458,124 @@ describe('pagination step', () => {
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
   });
+
+  test('should not leave a wrapping parent alone with its fixed child on the previous page', async () => {
+    const yoga = await loadYoga();
+
+    const result = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 200, height: 300 },
+          children: [
+            {
+              type: 'VIEW',
+              props: { id: 'filler' },
+              style: { height: 255 },
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              props: { id: 'block' },
+              style: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  props: { id: 'header', fixed: true },
+                  style: { height: 20 },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  props: { id: 'item-1', wrap: false },
+                  style: { height: 40 },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  props: { id: 'item-2', wrap: false },
+                  style: { height: 40 },
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = result.children[0];
+    const page2 = result.children[1];
+
+    expect(page1.children!.map((child) => child.props.id)).toEqual(['filler']);
+    expect(page2.children!.map((child) => child.props.id)).toEqual(['block']);
+    expect(page2.children![0].children!.map((child) => child.props.id)).toEqual(
+      ['header', 'item-1', 'item-2'],
+    );
+  });
+
+  test('should repeat fixed child on every page its parent spans', async () => {
+    const yoga = await loadYoga();
+
+    const result = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      style: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 200, height: 300 },
+          children: [
+            {
+              type: 'VIEW',
+              props: { id: 'block' },
+              style: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  props: { id: 'header', fixed: true },
+                  style: { height: 20 },
+                  children: [],
+                },
+                ...Array.from({ length: 10 }, (_, i) => ({
+                  type: 'VIEW' as const,
+                  props: { id: `item-${i + 1}`, wrap: false },
+                  style: { height: 40 },
+                  children: [],
+                })),
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = result.children[0];
+    const page2 = result.children[1];
+
+    expect(result.children).toHaveLength(2);
+    expect(page1.children![0].props.id).toBe('block');
+    expect(page2.children![0].props.id).toBe('block');
+    expect(page1.children![0].children![0].props.id).toBe('header');
+    expect(page2.children![0].children![0].props.id).toBe('header');
+
+    const itemsOnPage1 = page1
+      .children![0].children!.slice(1)
+      .map((child) => child.props.id);
+    const itemsOnPage2 = page2
+      .children![0].children!.slice(1)
+      .map((child) => child.props.id);
+
+    expect(itemsOnPage1.length).toBeGreaterThan(0);
+    expect([...itemsOnPage1, ...itemsOnPage2]).toEqual(
+      Array.from({ length: 10 }, (_, i) => `item-${i + 1}`),
+    );
+  });
 });

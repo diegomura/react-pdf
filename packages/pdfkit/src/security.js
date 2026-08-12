@@ -230,7 +230,7 @@ class PDFSecurity {
       let key = md5Hash(digest);
       const keyLen = Math.min(16, this.keyBits / 8 + 5);
       key = key.slice(0, keyLen);
-      return (buffer) => rc4(new Uint8Array(buffer), key);
+      return (buffer) => rc4(buffer, key);
     }
 
     let key;
@@ -245,7 +245,7 @@ class PDFSecurity {
     const iv = PDFSecurity.generateRandomWordArray(16);
 
     return (buffer) => {
-      const encrypted = aesCbcEncrypt(new Uint8Array(buffer), key, iv, true);
+      const encrypted = aesCbcEncrypt(buffer, key, iv, true);
       return concatBytes(iv, encrypted);
     };
   }

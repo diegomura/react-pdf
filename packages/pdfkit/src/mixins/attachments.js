@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { fromBase64 } from '../binary';
 import { md5Hex } from '../crypto/md5';
 import { escapeName } from '../object.js';
+import { fromBase64 } from '../binary';
 
 export default {
   /**

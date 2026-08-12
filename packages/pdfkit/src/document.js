@@ -4,7 +4,6 @@ By Devon Govett
 */
 
 import stream from 'stream';
-import { fromBinaryString } from './binary';
 import PDFObject from './object';
 import PDFReference from './reference';
 import PDFPage from './page';
@@ -24,6 +23,7 @@ import LineWrapper from './line_wrapper';
 import SubsetMixin from './mixins/subsets';
 import TableMixin from './mixins/table';
 import MetadataMixin from './mixins/metadata';
+import { fromBinaryString } from './binary';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {

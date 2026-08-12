@@ -3,10 +3,10 @@ PDFObject - converts JavaScript types into their corresponding PDF types.
 By Devon Govett
 */
 
+import { bytesToHex } from '@noble/hashes/utils';
 import PDFAbstractReference from './abstract_reference';
 import PDFTree from './tree';
 import SpotColor from './spotcolor';
-import { bytesToHex } from '@noble/hashes/utils';
 import { fromBinaryString, toBinaryString, toUTF16BE } from './binary';
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
@@ -81,17 +81,17 @@ class PDFObject {
       // If so, encode it as big endian UTF-16
       let stringBytes;
       if (isUnicode) {
-        stringBytes = toUTF16BE(`\ufeff${string}`);
+        stringBytes = toUTF16BE(string.valueOf());
       } else {
         stringBytes = fromBinaryString(string.valueOf());
       }
 
       // Encrypt the string when necessary
       if (encryptFn) {
-        string = toBinaryString(encryptFn(stringBytes));
-      } else {
-        string = toBinaryString(stringBytes);
+        stringBytes = encryptFn(stringBytes);
       }
+
+      string = toBinaryString(stringBytes);
 
       // Escape characters as required by the spec
       string = string.replace(escapableRe, (c) => escapable[c]);

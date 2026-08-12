@@ -23,6 +23,7 @@ import LineWrapper from './line_wrapper';
 import SubsetMixin from './mixins/subsets';
 import TableMixin from './mixins/table';
 import MetadataMixin from './mixins/metadata';
+import { fromBinaryString } from './binary';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -265,7 +266,7 @@ class PDFDocument extends stream.Readable {
 
   _write(data) {
     if (!(data instanceof Uint8Array)) {
-      data = Buffer.from(data + '\n', 'binary');
+      data = fromBinaryString(data + '\n');
     }
 
     this.push(data);

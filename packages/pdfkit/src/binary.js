@@ -12,11 +12,54 @@ export const toBinaryString = (bytes) => {
   return out;
 };
 
+export const fromBinaryString = (str) => {
+  const out = new Uint8Array(str.length);
+  for (let i = 0; i < str.length; i++) {
+    out[i] = str.charCodeAt(i) & 0xff;
+  }
+  return out;
+};
+
 export const fromBase64 = (b64) => {
   const binary = atob(b64);
   const out = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     out[i] = binary.charCodeAt(i);
+  }
+  return out;
+};
+
+export const toBase64 = (bytes) => {
+  const chunkSize = 0x8000;
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const end = Math.min(i + chunkSize, bytes.length);
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, end));
+  }
+  return btoa(binary);
+};
+
+export const concat = (chunks) => {
+  let length = 0;
+  for (const chunk of chunks) length += chunk.length;
+
+  const out = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) {
+    out.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return out;
+};
+
+export const toUTF16BE = (str) => {
+  const out = new Uint8Array((str.length + 1) * 2);
+  out[0] = 0xfe;
+  out[1] = 0xff;
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i);
+    out[i * 2 + 2] = code >> 8;
+    out[i * 2 + 3] = code & 0xff;
   }
   return out;
 };

@@ -1,11 +1,12 @@
 import fs from 'fs';
 import { md5Hex } from '../crypto/md5';
 import { escapeName } from '../object.js';
+import { fromBase64 } from '../binary';
 
 export default {
   /**
    * Embed contents of `src` in PDF
-   * @param {Buffer | ArrayBuffer | string} src input Buffer, ArrayBuffer, base64 encoded string or path to file
+   * @param {Buffer | Uint8Array | ArrayBuffer | string} src input Buffer, Uint8Array, ArrayBuffer, base64 encoded string or path to file
    * @param {object} options
    *  * options.name: filename to be shown in PDF, will use `src` if none set
    *  * options.type: filetype to be shown in PDF
@@ -29,17 +30,17 @@ export default {
     if (!src) {
       throw new Error('No src specified');
     }
-    if (Buffer.isBuffer(src)) {
+    if (src instanceof Uint8Array) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = Buffer.from(new Uint8Array(src));
+      data = new Uint8Array(src);
     } else {
       const match = /^data:(.*?);base64,(.*)$/.exec(src);
       if (match) {
         if (match[1]) {
           refBody.Subtype = escapeName(match[1]);
         }
-        data = Buffer.from(match[2], 'base64');
+        data = fromBase64(match[2]);
       } else {
         data = fs.readFileSync(src);
         if (!data) {

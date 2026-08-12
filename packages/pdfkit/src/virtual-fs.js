@@ -1,3 +1,5 @@
+import { fromBase64, toBase64 } from './binary';
+
 class VirtualFileSystem {
   constructor() {
     this.files = {};
@@ -12,10 +14,13 @@ class VirtualFileSystem {
 
     if (encoding) {
       // return a string
-      return typeof data === 'string' ? data : data.toString(encoding);
+      if (typeof data === 'string') return data;
+      return encoding === 'base64'
+        ? toBase64(data)
+        : new TextDecoder(encoding).decode(data);
     }
 
-    return Buffer.from(data, typeof data === 'string' ? 'base64' : undefined);
+    return typeof data === 'string' ? fromBase64(data) : new Uint8Array(data);
   }
 
   writeFileSync(fileName, content) {

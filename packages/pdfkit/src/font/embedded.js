@@ -1,11 +1,7 @@
 import PDFFont from '../font';
 
-const toHex = function (...codePoints) {
-  const codes = Array.from(codePoints).map((code) =>
-    `0000${code.toString(16)}`.slice(-4)
-  );
-
-  return codes.join('');
+const toHex = function (num) {
+  return `0000${num.toString(16)}`.slice(-4);
 };
 
 class EmbeddedFont extends PDFFont {
@@ -61,9 +57,6 @@ class EmbeddedFont extends PDFFont {
 
   layout(text, features, onlyWidth) {
     // Skip the cache if any user defined features are applied
-    if (onlyWidth == null) {
-      onlyWidth = false;
-    }
     if (features) {
       return this.layoutRun(text, features);
     }
@@ -153,11 +146,11 @@ class EmbeddedFont extends PDFFont {
       flags |= 1 << 6;
     }
 
-    // generate a random tag (6 uppercase letters. 65 is the char code for 'A')
-    const tag = [0, 1, 2, 3, 4, 5]
-      .map(() => String.fromCharCode(Math.random() * 26 + 65))
+    // generate a tag (6 uppercase letters. 17 is the char code offset from '0' to 'A'. 73 will map to 'Z')
+    const tag = [1, 2, 3, 4, 5, 6]
+      .map((i) => String.fromCharCode((this.id.charCodeAt(i) || 73) + 17))
       .join('');
-    const name = tag + '+' + this.font.postscriptName;
+    const name = tag + '+' + this.font.postscriptName?.replaceAll(' ', '_');
 
     const { bbox } = this.font;
     const descriptor = this.document.ref({
@@ -182,6 +175,21 @@ class EmbeddedFont extends PDFFont {
       descriptor.data.FontFile3 = fontFile;
     } else {
       descriptor.data.FontFile2 = fontFile;
+    }
+
+    if (this.document.subset === 1) {
+      const maxCID = this.widths.length - 1;
+      const cidSet = new Uint8Array(Math.ceil((maxCID + 1) / 8));
+      for (let cid = 0; cid <= maxCID; cid++) {
+        if (this.widths[cid] != null) {
+          cidSet[Math.floor(cid / 8)] |= 0x80 >> cid % 8;
+        }
+      }
+
+      const cidSetRef = this.document.ref();
+      cidSetRef.end(cidSet);
+
+      descriptor.data.CIDSet = cidSetRef;
     }
 
     descriptor.end();
@@ -225,21 +233,11 @@ class EmbeddedFont extends PDFFont {
   // unicode characters represented by each glyph.
   toUnicodeCmap() {
     const cmap = this.document.ref();
-    let entries = [];
-    let unicodeMap =
-      '/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n/CIDSystemInfo <<\n  /Registry (Adobe)\n  /Ordering (UCS)\n  /Supplement 0\n>> def\n/CMapName /Adobe-Identity-UCS def\n/CMapType 2 def\n1 begincodespacerange\n<0000><ffff>\nendcodespacerange';
 
-    for (let [index, codePoints] of this.unicode.entries()) {
+    const entries = [];
+    for (let codePoints of this.unicode) {
       const encoded = [];
-      if (entries.length >= 100) {
-        unicodeMap +=
-          '\n' +
-          entries.length +
-          ' beginbfchar\n' +
-          entries.join('\n') +
-          '\nendbfchar';
-        entries = [];
-      }
+
       // encode codePoints to utf16
       for (let value of codePoints) {
         if (value > 0xffff) {
@@ -247,22 +245,46 @@ class EmbeddedFont extends PDFFont {
           encoded.push(toHex(((value >>> 10) & 0x3ff) | 0xd800));
           value = 0xdc00 | (value & 0x3ff);
         }
+
         encoded.push(toHex(value));
       }
 
-      entries.push('<' + toHex(index) + '>' + '<' + encoded.join(' ') + '>');
+      entries.push(`<${encoded.join(' ')}>`);
     }
-    if (entries.length) {
-      unicodeMap +=
-        '\n' +
-        entries.length +
-        ' beginbfchar\n' +
-        entries.join('\n') +
-        '\nendbfchar\n';
+
+    const chunkSize = 256;
+    const chunks = Math.ceil(entries.length / chunkSize);
+    const ranges = [];
+    for (let i = 0; i < chunks; i++) {
+      const start = i * chunkSize;
+      const end = Math.min((i + 1) * chunkSize, entries.length);
+      ranges.push(
+        `<${toHex(start)}> <${toHex(end - 1)}> [${entries.slice(start, end).join(' ')}]`
+      );
     }
-    unicodeMap +=
-      'endcmap\nCMapName currentdict /CMap defineresource pop\nend\nend';
-    cmap.end(unicodeMap);
+
+    cmap.end(`\
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CIDSystemInfo <<
+  /Registry (Adobe)
+  /Ordering (UCS)
+  /Supplement 0
+>> def
+/CMapName /Adobe-Identity-UCS def
+/CMapType 2 def
+1 begincodespacerange
+<0000><ffff>
+endcodespacerange
+${ranges.length} beginbfrange
+${ranges.join('\n')}
+endbfrange
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end\
+`);
 
     return cmap;
   }

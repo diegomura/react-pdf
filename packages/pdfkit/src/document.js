@@ -4,6 +4,7 @@ By Devon Govett
 */
 
 import stream from 'stream';
+import { fromBinaryString } from './binary';
 import PDFObject from './object';
 import PDFReference from './reference';
 import PDFPage from './page';
@@ -265,7 +266,7 @@ class PDFDocument extends stream.Readable {
 
   _write(data) {
     if (!(data instanceof Uint8Array)) {
-      data = Buffer.from(data + '\n', 'binary');
+      data = fromBinaryString(data + '\n');
     }
 
     this.push(data);

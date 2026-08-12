@@ -12,6 +12,39 @@ export const toBinaryString = (bytes) => {
   return out;
 };
 
+export const fromBinaryString = (string) => {
+  const out = new Uint8Array(string.length);
+  for (let i = 0; i < string.length; i++) {
+    out[i] = string.charCodeAt(i);
+  }
+  return out;
+};
+
+export const toUTF16BE = (string) => {
+  const out = new Uint8Array(string.length * 2);
+  for (let i = 0; i < string.length; i++) {
+    const code = string.charCodeAt(i);
+    out[i * 2] = code >> 8;
+    out[i * 2 + 1] = code & 0xff;
+  }
+  return out;
+};
+
+// Takes an array rather than varargs like @noble's: a stream's chunk list can
+// exceed the spread limit on vector-heavy pages
+export const concatBytes = (chunks) => {
+  let length = 0;
+  for (const chunk of chunks) length += chunk.length;
+
+  const out = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) {
+    out.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return out;
+};
+
 export const fromBase64 = (b64) => {
   const binary = atob(b64);
   const out = new Uint8Array(binary.length);

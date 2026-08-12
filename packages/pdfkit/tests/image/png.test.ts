@@ -30,7 +30,7 @@ describe('PNG images', () => {
     vi.unstubAllGlobals();
   });
 
-  it('deflates decoded interlaced RGB pixels as a Buffer in browser zlib builds', () => {
+  it('deflates decoded interlaced RGB pixels in browser zlib builds', () => {
     vi.stubGlobal('BROWSER', true);
 
     // 8x8 RGB PNG generated with Adam7 interlace, filter type 0 rows, no alpha, and no tRNS chunk.
@@ -49,6 +49,6 @@ describe('PNG images', () => {
     const document = createDocument();
 
     expect(() => image.embed(document)).not.toThrow();
-    expect(Buffer.isBuffer(document.refs[0].value)).toBe(true);
+    expect(document.refs[0].value).toBeInstanceOf(Uint8Array);
   });
 });

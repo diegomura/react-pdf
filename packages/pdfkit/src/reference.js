@@ -6,6 +6,7 @@ By Devon Govett
 import zlib from './zlib';
 import PDFAbstractReference from './abstract_reference';
 import PDFObject from './object';
+import { concatBytes, fromBinaryString } from './binary';
 
 class PDFReference extends PDFAbstractReference {
   constructor(document, id, data = {}) {
@@ -21,7 +22,7 @@ class PDFReference extends PDFAbstractReference {
 
   write(chunk) {
     if (!(chunk instanceof Uint8Array)) {
-      chunk = Buffer.from(chunk + '\n', 'binary');
+      chunk = fromBinaryString(chunk + '\n');
     }
 
     this.uncompressedLength += chunk.length;
@@ -50,7 +51,7 @@ class PDFReference extends PDFAbstractReference {
       : null;
 
     if (this.buffer.length) {
-      this.buffer = Buffer.concat(this.buffer);
+      this.buffer = concatBytes(this.buffer);
       if (this.compress) {
         this.buffer = zlib.deflateSync(this.buffer);
       }

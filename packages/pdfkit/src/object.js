@@ -6,6 +6,8 @@ By Devon Govett
 import PDFAbstractReference from './abstract_reference';
 import PDFTree from './tree';
 import SpotColor from './spotcolor';
+import { bytesToHex } from '@noble/hashes/utils';
+import { fromBinaryString, toBinaryString, toUTF16BE } from './binary';
 
 const pad = (str, length) => (Array(length + 1).join('0') + str).slice(-length);
 
@@ -58,22 +60,6 @@ export const escapeName = function (name) {
   return escapedName;
 };
 
-// Convert little endian UTF-16 to big endian
-const swapBytes = function (buff) {
-  const l = buff.length;
-  if (l & 0x01) {
-    throw new Error('Buffer length must be even');
-  } else {
-    for (let i = 0, end = l - 1; i < end; i += 2) {
-      const a = buff[i];
-      buff[i] = buff[i + 1];
-      buff[i + 1] = a;
-    }
-  }
-
-  return buff;
-};
-
 class PDFObject {
   static convert(object, encryptFn = null) {
     // String literals are converted to the PDF name type
@@ -93,18 +79,18 @@ class PDFObject {
       }
 
       // If so, encode it as big endian UTF-16
-      let stringBuffer;
+      let stringBytes;
       if (isUnicode) {
-        stringBuffer = swapBytes(Buffer.from(`\ufeff${string}`, 'utf16le'));
+        stringBytes = toUTF16BE(`\ufeff${string}`);
       } else {
-        stringBuffer = Buffer.from(string.valueOf(), 'ascii');
+        stringBytes = fromBinaryString(string.valueOf());
       }
 
       // Encrypt the string when necessary
       if (encryptFn) {
-        string = encryptFn(stringBuffer).toString('binary');
+        string = toBinaryString(encryptFn(stringBytes));
       } else {
-        string = stringBuffer.toString('binary');
+        string = toBinaryString(stringBytes);
       }
 
       // Escape characters as required by the spec
@@ -112,9 +98,9 @@ class PDFObject {
 
       return `(${string})`;
 
-      // Buffers are converted to PDF hex strings
-    } else if (Buffer.isBuffer(object)) {
-      return `<${object.toString('hex')}>`;
+      // Byte arrays are converted to PDF hex strings
+    } else if (object instanceof Uint8Array) {
+      return `<${bytesToHex(object)}>`;
     } else if (
       object instanceof PDFAbstractReference ||
       object instanceof PDFTree ||
@@ -133,7 +119,7 @@ class PDFObject {
 
       // Encrypt the string when necessary
       if (encryptFn) {
-        string = encryptFn(Buffer.from(string, 'ascii')).toString('binary');
+        string = toBinaryString(encryptFn(fromBinaryString(string)));
 
         // Escape characters as required by the spec
         string = string.replace(escapableRe, (c) => escapable[c]);

@@ -93,7 +93,7 @@ export default {
         Subtype: 'XML',
       });
       this.metadataRef.compress = false;
-      this.metadataRef.write(Buffer.from(this.metadata.getXML(), 'utf-8'));
+      this.metadataRef.write(new TextEncoder().encode(this.metadata.getXML()));
       this.metadataRef.end();
       this._root.data.Metadata = this.metadataRef;
     }

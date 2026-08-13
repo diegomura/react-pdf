@@ -11,12 +11,12 @@ const FIELD_FLAGS = {
   edit: 0x40000,
   sort: 0x80000,
   multiSelect: 0x200000,
-  noSpell: 0x400000
+  noSpell: 0x400000,
 };
 const FIELD_JUSTIFY = {
   left: 0,
   center: 1,
-  right: 2
+  right: 2,
 };
 const VALUE_MAP = { value: 'V', defaultValue: 'DV' };
 const FORMAT_SPECIAL = {
@@ -24,7 +24,7 @@ const FORMAT_SPECIAL = {
   zipPlus4: '1',
   zip4: '1',
   phone: '2',
-  ssn: '3'
+  ssn: '3',
 };
 const FORMAT_DEFAULT = {
   number: {
@@ -32,13 +32,130 @@ const FORMAT_DEFAULT = {
     sepComma: false,
     negStyle: 'MinusBlack',
     currency: '',
-    currencyPrepend: true
+    currencyPrepend: true,
   },
   percent: {
     nDec: 0,
-    sepComma: false
-  }
+    sepComma: false,
+  },
 };
+
+function mapTypeAndFlags(type, userOptions, pdfObject) {
+  let flags = userOptions.Ff ?? 0;
+
+  if (type === 'text') {
+    pdfObject.FT = 'Tx';
+  } else if (type === 'pushButton') {
+    pdfObject.FT = 'Btn';
+    flags |= FIELD_FLAGS.pushButton;
+  } else if (type === 'radioButton') {
+    pdfObject.FT = 'Btn';
+    flags |= FIELD_FLAGS.radioButton;
+  } else if (type === 'checkbox') {
+    pdfObject.FT = 'Btn';
+  } else if (type === 'combo') {
+    pdfObject.FT = 'Ch';
+    flags |= FIELD_FLAGS.combo;
+  } else if (type === 'list') {
+    pdfObject.FT = 'Ch';
+  } else if (type) {
+    throw new Error(`Invalid form annotation type '${type}'`);
+  }
+
+  Object.keys(userOptions).forEach((key) => {
+    if (FIELD_FLAGS[key] && userOptions[key]) {
+      flags |= FIELD_FLAGS[key];
+    }
+  });
+
+  if (flags !== 0) {
+    pdfObject.Ff = flags;
+  }
+}
+
+function mapJustify(userOptions, pdfObject) {
+  const result = FIELD_JUSTIFY[userOptions.align];
+  if (typeof result === 'number' && result !== 0) {
+    pdfObject.Q = result;
+  }
+}
+
+function mapStrings(options, pdfObject) {
+  if (Array.isArray(options.select) && options.select.length) {
+    pdfObject.Opt = options.select.map((s) => {
+      if (typeof s === 'string') {
+        return new String(s);
+      }
+      return s;
+    });
+  }
+
+  Object.keys(VALUE_MAP).forEach((key) => {
+    if (key in options) {
+      const value = options[key] ?? '';
+      pdfObject[VALUE_MAP[key]] =
+        typeof value === 'string' ? new String(value) : value;
+    }
+  });
+
+  if (options.MK?.CA) {
+    pdfObject.MK = { CA: new String(options.MK.CA) };
+  }
+
+  if (options.label) {
+    pdfObject.MK = options.MK ?? {};
+    pdfObject.MK.CA = new String(options.label);
+  }
+}
+
+function mapFormat(options, pdfObject) {
+  const f = options.format;
+  if (f?.type) {
+    let fnKeystroke;
+    let fnFormat;
+    let params = '';
+    if (FORMAT_SPECIAL[f.type] !== undefined) {
+      fnKeystroke = `AFSpecial_Keystroke`;
+      fnFormat = `AFSpecial_Format`;
+      params = FORMAT_SPECIAL[f.type];
+    } else {
+      let format = f.type.charAt(0).toUpperCase() + f.type.slice(1);
+      fnKeystroke = `AF${format}_Keystroke`;
+      fnFormat = `AF${format}_Format`;
+
+      if (f.type === 'date') {
+        fnKeystroke += 'Ex';
+        params = String(f.param);
+      } else if (f.type === 'time') {
+        params = String(f.param);
+      } else if (f.type === 'number') {
+        let p = Object.assign({}, FORMAT_DEFAULT.number, f);
+        params = String(
+          [
+            String(p.nDec),
+            p.sepComma ? '0' : '1',
+            '"' + p.negStyle + '"',
+            'null',
+            '"' + p.currency + '"',
+            String(p.currencyPrepend),
+          ].join(','),
+        );
+      } else if (f.type === 'percent') {
+        let p = Object.assign({}, FORMAT_DEFAULT.percent, f);
+        params = String([String(p.nDec), p.sepComma ? '0' : '1'].join(','));
+      }
+    }
+    pdfObject.AA = options.AA ?? {};
+    pdfObject.AA.K = {
+      S: 'JavaScript',
+      JS: new String(`${fnKeystroke}(${params});`),
+    };
+    pdfObject.AA.F = {
+      S: 'JavaScript',
+      JS: new String(`${fnFormat}(${params});`),
+    };
+  }
+}
 
 export default {
   /**
@@ -51,7 +168,7 @@ export default {
     }
     this._acroform = {
       fonts: {},
-      defaultFont: this._font.name
+      defaultFont: this._font.name,
     };
     this._acroform.fonts[this._font.id] = this._font.ref();
 
@@ -60,8 +177,8 @@ export default {
       NeedAppearances: true,
       DA: new String(`/${this._font.id} 0 Tf 0 g`),
       DR: {
-        Font: {}
-      }
+        Font: {},
+      },
     };
     data.DR.Font[this._font.id] = this._font.ref();
     const AcroForm = this.ref(data);
@@ -181,212 +298,58 @@ export default {
   _fieldDict(name, type, options = {}) {
     if (!this._acroform) {
       throw new Error(
-        'Call document.initForm() method before adding form elements to document'
+        'Call document.initForm() method before adding form elements to document',
       );
     }
-    let opts = Object.assign({}, options);
-    if (type !== null) {
-      opts = this._resolveType(type, options);
+    const pdfObject = {};
+
+    mapTypeAndFlags(type, options, pdfObject);
+    mapJustify(options, pdfObject);
+    this._mapFont(options, pdfObject);
+    mapStrings(options, pdfObject);
+    this._mapColors(options, pdfObject);
+    mapFormat(options, pdfObject);
+
+    pdfObject.T = new String(name);
+
+    if (options.parent) {
+      pdfObject.Parent = options.parent;
     }
-    opts = this._resolveFlags(opts);
-    opts = this._resolveJustify(opts);
-    opts = this._resolveFont(opts);
-    opts = this._resolveStrings(opts);
-    opts = this._resolveColors(opts);
-    opts = this._resolveFormat(opts);
-    opts.T = new String(name);
-    if (opts.parent) {
-      opts.Parent = opts.parent;
-      delete opts.parent;
-    }
-    return opts;
+    return pdfObject;
   },
 
-  _resolveType(type, opts) {
-    if (type === 'text') {
-      opts.FT = 'Tx';
-    } else if (type === 'pushButton') {
-      opts.FT = 'Btn';
-      opts.pushButton = true;
-    } else if (type === 'radioButton') {
-      opts.FT = 'Btn';
-      opts.radioButton = true;
-    } else if (type === 'checkbox') {
-      opts.FT = 'Btn';
-    } else if (type === 'combo') {
-      opts.FT = 'Ch';
-      opts.combo = true;
-    } else if (type === 'list') {
-      opts.FT = 'Ch';
-    } else {
-      throw new Error(`Invalid form annotation type '${type}'`);
-    }
-    return opts;
-  },
-
-  _resolveFormat(opts) {
-    const f = opts.format;
-    if (f && f.type) {
-      let fnKeystroke;
-      let fnFormat;
-      let params = '';
-      if (FORMAT_SPECIAL[f.type] !== undefined) {
-        fnKeystroke = `AFSpecial_Keystroke`;
-        fnFormat = `AFSpecial_Format`;
-        params = FORMAT_SPECIAL[f.type];
-      } else {
-        let format = f.type.charAt(0).toUpperCase() + f.type.slice(1);
-        fnKeystroke = `AF${format}_Keystroke`;
-        fnFormat = `AF${format}_Format`;
-
-        if (f.type === 'date') {
-          fnKeystroke += 'Ex';
-          params = String(f.param);
-        } else if (f.type === 'time') {
-          params = String(f.param);
-        } else if (f.type === 'number') {
-          let p = Object.assign({}, FORMAT_DEFAULT.number, f);
-          params = String(
-            [
-              String(p.nDec),
-              p.sepComma ? '0' : '1',
-              '"' + p.negStyle + '"',
-              'null',
-              '"' + p.currency + '"',
-              String(p.currencyPrepend)
-            ].join(',')
-          );
-        } else if (f.type === 'percent') {
-          let p = Object.assign({}, FORMAT_DEFAULT.percent, f);
-          params = String([String(p.nDec), p.sepComma ? '0' : '1'].join(','));
-        }
-      }
-      opts.AA = opts.AA ? opts.AA : {};
-      opts.AA.K = {
-        S: 'JavaScript',
-        JS: new String(`${fnKeystroke}(${params});`)
-      };
-      opts.AA.F = {
-        S: 'JavaScript',
-        JS: new String(`${fnFormat}(${params});`)
-      };
-    }
-    delete opts.format;
-    return opts;
-  },
-
-  _resolveColors(opts) {
-    let color = this._normalizeColor(opts.backgroundColor);
+  _mapColors(options, pdfObject) {
+    let color = this._normalizeColor(options.backgroundColor);
     if (color) {
-      if (!opts.MK) {
-        opts.MK = {};
-      }
-      opts.MK.BG = color;
+      pdfObject.MK = pdfObject.MK ? pdfObject.MK : {};
+      pdfObject.MK.BG = color;
     }
-    color = this._normalizeColor(opts.borderColor);
+
+    color = this._normalizeColor(options.borderColor);
     if (color) {
-      if (!opts.MK) {
-        opts.MK = {};
+      if (!pdfObject.MK) {
+        pdfObject.MK = {};
       }
-      opts.MK.BC = color;
+      pdfObject.MK.BC = color;
     }
-    delete opts.backgroundColor;
-    delete opts.borderColor;
-    return opts;
   },
 
-  _resolveFlags(options) {
-    let result = 0;
-    Object.keys(options).forEach((key) => {
-      if (FIELD_FLAGS[key]) {
-        if (options[key]) {
-          result |= FIELD_FLAGS[key];
-        }
-        delete options[key];
-      }
-    });
-    if (result !== 0) {
-      options.Ff = options.Ff ? options.Ff : 0;
-      options.Ff |= result;
-    }
-    return options;
-  },
-
-  _resolveJustify(options) {
-    let result = 0;
-    if (options.align !== undefined) {
-      if (typeof FIELD_JUSTIFY[options.align] === 'number') {
-        result = FIELD_JUSTIFY[options.align];
-      }
-      delete options.align;
-    }
-    if (result !== 0) {
-      options.Q = result; // default
-    }
-    return options;
-  },
-
-  _resolveFont(options) {
+  _mapFont(options, pdfObject) {
+    const { _acroform, _font } = this;
     // add current font to document-level AcroForm dict if necessary
-    if (this._acroform.fonts[this._font.id] == null) {
-      this._acroform.fonts[this._font.id] = this._font.ref();
+    if (_acroform.fonts[_font.id] == null) {
+      _acroform.fonts[_font.id] = _font.ref();
     }
 
     // add current font to field's resource dict (RD) if not the default acroform font
-    if (this._acroform.defaultFont !== this._font.name) {
-      options.DR = { Font: {} };
+    if (_acroform.defaultFont !== _font.name) {
+      pdfObject.DR = { Font: {} };
 
       // Get the fontSize option. If not set use auto sizing
       const fontSize = options.fontSize || 0;
 
-      options.DR.Font[this._font.id] = this._font.ref();
-      options.DA = new String(`/${this._font.id} ${fontSize} Tf 0 g`);
+      pdfObject.DR.Font[_font.id] = _font.ref();
+      pdfObject.DA = new String(`/${_font.id} ${fontSize} Tf 0 g`);
     }
-    return options;
   },
-
-  _resolveStrings(options) {
-    let select = [];
-    function appendChoices(a) {
-      if (Array.isArray(a)) {
-        for (let idx = 0; idx < a.length; idx++) {
-          if (typeof a[idx] === 'string') {
-            select.push(new String(a[idx]));
-          } else {
-            select.push(a[idx]);
-          }
-        }
-      }
-    }
-    appendChoices(options.Opt);
-    if (options.select) {
-      appendChoices(options.select);
-      delete options.select;
-    }
-    if (select.length) {
-      options.Opt = select;
-    }
-
-    Object.keys(VALUE_MAP).forEach((key) => {
-      if (options[key] !== undefined) {
-        options[VALUE_MAP[key]] = options[key];
-        delete options[key];
-      }
-    });
-    ['V', 'DV'].forEach((key) => {
-      if (typeof options[key] === 'string') {
-        options[key] = new String(options[key]);
-      }
-    });
-
-    if (options.MK && options.MK.CA) {
-      options.MK.CA = new String(options.MK.CA);
-    }
-    if (options.label) {
-      options.MK = options.MK ? options.MK : {};
-      options.MK.CA = new String(options.label);
-      delete options.label;
-    }
-    return options;
-  }
 };

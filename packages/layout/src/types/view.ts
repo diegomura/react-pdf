@@ -1,9 +1,13 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
 import { ImageNode, SafeImageNode } from './image';
+import {
+  ImageBackgroundNode,
+  SafeImageBackgroundNode,
+} from './image-background';
 import { SafeTextNode, TextNode } from './text';
 import { LinkNode, SafeLinkNode } from './link';
 import { CanvasNode, SafeCanvasNode } from './canvas';
@@ -26,13 +30,14 @@ interface ViewProps extends NodeProps {
 export type ViewNode = {
   type: typeof P.View;
   props: ViewProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;
   children?: (
     | ViewNode
     | ImageNode
+    | ImageBackgroundNode
     | TextNode
     | LinkNode
     | CanvasNode
@@ -50,6 +55,7 @@ export type SafeViewNode = Omit<ViewNode, 'style' | 'children'> & {
   children?: (
     | SafeViewNode
     | SafeImageNode
+    | SafeImageBackgroundNode
     | SafeTextNode
     | SafeLinkNode
     | SafeCanvasNode

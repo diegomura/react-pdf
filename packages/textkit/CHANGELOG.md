@@ -1,5 +1,52 @@
 # @react-pdf/textkit
 
+## 6.4.0
+
+### Minor Changes
+
+- [#3423](https://github.com/diegomura/react-pdf/pull/3423) [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): treat surrogate pairs as single code points in font substitution
+
+### Patch Changes
+
+- [#3303](https://github.com/diegomura/react-pdf/pull/3303) [`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee) Thanks [@matangot](https://github.com/matangot)! - Preserve run attributes during bidi reordering
+
+- [#3420](https://github.com/diegomura/react-pdf/pull/3420) [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Improve text line slicing performance for long paragraphs.
+
+## 6.3.0
+
+### Minor Changes
+
+- [#3369](https://github.com/diegomura/react-pdf/pull/3369) [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): advanceWidthBetween regression with glyphIndices
+
+### Patch Changes
+
+- [#3384](https://github.com/diegomura/react-pdf/pull/3384) [`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae) Thanks [@diegomura](https://github.com/diegomura)! - Fix NFD decomposition breaking Latin diacritics rendering by only decomposing complex scripts (Bengali, Devanagari, etc.) that need it for glyph mapping
+
+## 6.2.0
+
+### Minor Changes
+
+- [#3358](https://github.com/diegomura/react-pdf/pull/3358) [`7b37bc8c`](https://github.com/diegomura/react-pdf/commit/7b37bc8c744d3805fd696f7d961d70cf47258dcf) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): glyph indices resolution
+
+- [#3355](https://github.com/diegomura/react-pdf/pull/3355) [`b28b61cf`](https://github.com/diegomura/react-pdf/commit/b28b61cf2ce5b1f0ae5b78551cf987d06df8c6c0) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): decompose unicode step
+
+### Patch Changes
+
+- [#3357](https://github.com/diegomura/react-pdf/pull/3357) [`f30cf001`](https://github.com/diegomura/react-pdf/commit/f30cf0013336d0f6ccfd7b103fee66a203ac6b07) Thanks [@diegomura](https://github.com/diegomura)! - fix(textkit): string indices resolution
+
+- [#3354](https://github.com/diegomura/react-pdf/pull/3354) [`7fa9c06e`](https://github.com/diegomura/react-pdf/commit/7fa9c06e65760272e0994d0a61dc4a53b081a816) Thanks [@diegomura](https://github.com/diegomura)! - refactor(textkit): rename glyphIndices to stringIndices
+
+## 6.1.1
+
+### Patch Changes
+
+- [#3273](https://github.com/diegomura/react-pdf/pull/3273) [`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): various improvements
+
+- [#3240](https://github.com/diegomura/react-pdf/pull/3240) [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212) Thanks [@Pasquale007](https://github.com/Pasquale007)! - fix: cannot read units for Em
+
+- Updated dependencies [[`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @react-pdf/fns@3.1.3
+
 ## 6.1.0
 
 ### Minor Changes

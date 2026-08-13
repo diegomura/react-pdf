@@ -45,11 +45,14 @@ const pdf = (initialValue) => {
       title,
       author,
       subject,
-      keyboards,
+      keywords,
       creator = 'react-pdf',
       producer = 'react-pdf',
       creationDate = new Date(),
       modificationDate,
+      ownerPassword,
+      userPassword,
+      permissions,
     } = props;
 
     const ctx = new PDFDocument({
@@ -58,21 +61,21 @@ const pdf = (initialValue) => {
       lang: language,
       displayTitle: true,
       autoFirstPage: false,
+      ownerPassword,
+      userPassword,
+      permissions,
+      pageLayout,
       info: omitNils({
         Title: title,
         Author: author,
         Subject: subject,
-        Keywords: keyboards,
+        Keywords: keywords,
         Creator: creator,
         Producer: producer,
         CreationDate: creationDate,
         ModificationDate: modificationDate,
       }),
     });
-
-    if (pageLayout) {
-      ctx._root.data.PageLayout = upperFirst(pageLayout);
-    }
 
     if (pageMode) {
       ctx._root.data.PageMode = upperFirst(pageMode);

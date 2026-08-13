@@ -1,3 +1,5 @@
+import { escapeName } from './object.js';
+
 export default class SpotColor {
   constructor(doc, name, C, M, Y, K) {
     this.id = 'CS' + Object.keys(doc.spotColors).length;
@@ -5,7 +7,7 @@ export default class SpotColor {
     this.values = [C, M, Y, K];
     this.ref = doc.ref([
       'Separation',
-      this.name,
+      escapeName(this.name),
       'DeviceCMYK',
       {
         Range: [0, 1, 0, 1, 0, 1, 0, 1],
@@ -13,8 +15,8 @@ export default class SpotColor {
         C1: this.values.map((value) => value / 100),
         FunctionType: 2,
         Domain: [0, 1],
-        N: 1
-      }
+        N: 1,
+      },
     ]);
     this.ref.end();
   }

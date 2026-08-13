@@ -2,7 +2,7 @@ import * as P from '@react-pdf/primitives';
 
 import { PageNode, SafePageNode } from './page';
 import { YogaInstance } from './base';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 export type PDFVersion = '1.3' | '1.4' | '1.5' | '1.6' | '1.7' | '1.7ext3';
 
@@ -26,6 +26,16 @@ export interface OnRenderProps {
   blob?: Blob;
 }
 
+export type Permissions = {
+  printing?: 'lowResolution' | 'highResolution';
+  modifying?: boolean;
+  copying?: boolean;
+  annotating?: boolean;
+  fillingForms?: boolean;
+  contentAccessibility?: boolean;
+  documentAssembly?: boolean;
+};
+
 export type DocumentProps = {
   bookmark?: never;
   title?: string;
@@ -40,6 +50,9 @@ export type DocumentProps = {
   pdfVersion?: PDFVersion;
   pageMode?: PageMode;
   pageLayout?: PageLayout;
+  ownerPassword?: string;
+  userPassword?: string;
+  permissions?: Permissions;
   onRender?: (props: OnRenderProps) => any;
 };
 
@@ -48,7 +61,7 @@ export type DocumentNode = {
   props: DocumentProps;
   box?: never;
   origin?: never;
-  style?: Style | Style[];
+  style?: StyleProp;
   yoga?: YogaInstance;
   yogaNode?: never;
   children: PageNode[];

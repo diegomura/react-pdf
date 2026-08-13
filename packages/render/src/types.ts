@@ -17,6 +17,11 @@ export type Context = typeof PDFKitDocument & {
   translate(x: number, y: number, options: any): Context;
   font(src: PDFFontSource, size?: number): Context;
   font(src: PDFFontSource, family: string, size?: number): Context;
+
+  /** @internal pdfkit acroform internals */
+  _fieldDict: (name: string, type: string, options: any) => any;
+  /** @internal pdfkit acroform internals */
+  _addToParent: (ref: any) => Context;
 };
 
 export interface RenderOptions {

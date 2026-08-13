@@ -3,16 +3,20 @@
 import * as React from 'react';
 import {
   Style,
+  StyleProp,
   PageSize,
   FontStore,
   PDFVersion,
   Orientation,
   SourceObject,
+  SrcSet,
+  Sizes,
   HyphenationCallback,
   SVGPresentationAttributes,
   Bookmark,
   PageLayout,
   PageMode,
+  HitSlop,
 } from '@react-pdf/types';
 
 declare class ReactPDF {
@@ -29,8 +33,18 @@ declare namespace ReactPDF {
     blob?: Blob;
   }
 
+  interface Permissions {
+    printing?: 'lowResolution' | 'highResolution';
+    modifying?: boolean;
+    copying?: boolean;
+    annotating?: boolean;
+    fillingForms?: boolean;
+    contentAccessibility?: boolean;
+    documentAssembly?: boolean;
+  }
+
   interface DocumentProps {
-    style?: Style | Style[];
+    style?: StyleProp;
     title?: string;
     author?: string;
     subject?: string;
@@ -43,6 +57,9 @@ declare namespace ReactPDF {
     pdfVersion?: PDFVersion;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
+    ownerPassword?: string;
+    userPassword?: string;
+    permissions?: Permissions;
     onRender?: (props: OnRenderProps) => any;
   }
 
@@ -58,7 +75,7 @@ declare namespace ReactPDF {
 
   interface NodeProps {
     id?: string;
-    style?: Style | Style[];
+    style?: StyleProp;
     /**
      * Render component in all wrapped pages.
      * @see https://react-pdf.org/advanced#fixed-components
@@ -137,6 +154,20 @@ declare namespace ReactPDF {
      */
     debug?: boolean;
     cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * Works like the HTML img sizes attribute.
+     * @example 300
+     * @example "300"
+     */
+    sizes?: Sizes;
   }
 
   interface ImageWithSrcProp extends BaseImageProps {
@@ -154,6 +185,52 @@ declare namespace ReactPDF {
    * PNG images, as well as base64 encoded image strings.
    */
   export class Image extends React.Component<ImageProps> {}
+
+  interface BaseImageBackgroundProps extends NodeProps {
+    /**
+     * Enables debug mode on page bounding box.
+     * @see https://react-pdf.org/advanced#debugging
+     */
+    debug?: boolean;
+    cache?: boolean;
+    /**
+     * A comma-separated list of image sources with width descriptors.
+     * Works like the HTML img srcSet attribute.
+     * @example "small.jpg 300w, medium.jpg 600w, large.jpg 900w"
+     */
+    srcSet?: SrcSet;
+    /**
+     * The intended display width of the image, used to select the best source
+     * from srcSet. Accepts a number (in points) or a string.
+     * @example 300
+     */
+    sizes?: Sizes;
+    /**
+     * Style applied to the background image.
+     */
+    imageStyle?: Style;
+  }
+
+  interface ImageBackgroundWithSrcProp extends BaseImageBackgroundProps {
+    src: SourceObject;
+  }
+
+  interface ImageBackgroundWithSourceProp extends BaseImageBackgroundProps {
+    source: SourceObject;
+  }
+
+  type ImageBackgroundProps =
+    | ImageBackgroundWithSrcProp
+    | ImageBackgroundWithSourceProp;
+
+  /**
+   * A React component for displaying an image behind child content.
+   * Compatible with React Native's ImageBackground component.
+   * @see https://reactnative.dev/docs/imagebackground
+   */
+  export class ImageBackground extends React.Component<
+    React.PropsWithChildren<ImageBackgroundProps>
+  > {}
 
   interface TextProps extends NodeProps {
     id?: string;
@@ -178,6 +255,12 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/fonts#registerhyphenationcallback
      */
     hyphenationCallback?: HyphenationCallback;
+    /**
+     * Override the default hyphenation penalty
+     * Defaults to 100 for justified text and 600 otherwise.
+     * @see https://react-pdf.org/fonts#hyphenationpenalty
+     */
+    hyphenationPenalty?: number;
     /**
      * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
      * @see https://react-pdf.org/advanced#orphan-&-widow-protection
@@ -222,6 +305,12 @@ declare namespace ReactPDF {
     debug?: boolean;
     href?: string;
     src?: string;
+    /**
+     * Extends the clickable area of the link beyond its visible bounds.
+     * Accepts a number (applied to all sides) or an object with top, bottom, left, right.
+     * @see https://reactnative.dev/docs/view#hitslop
+     */
+    hitSlop?: HitSlop;
   }
 
   /**
@@ -525,6 +614,25 @@ declare namespace ReactPDF {
     React.PropsWithChildren<ClipPathProps>
   > {}
 
+  interface MarkerProps {
+    id: string;
+    viewBox?: string;
+    refX?: string | number;
+    refY?: string | number;
+    markerWidth?: string | number;
+    markerHeight?: string | number;
+    orient?: 'auto' | 'auto-start-reverse' | number;
+    markerUnits?: 'strokeWidth' | 'userSpaceOnUse';
+  }
+
+  /**
+   * The <Marker /> SVG element defines a graphic used for drawing arrows or polymarkers on a given <Path />, <Line />, <Polyline />, or <Polygon /> element.
+   * Markers can be attached to shapes using the markerStart, markerMid, and markerEnd properties.
+   */
+  export class Marker extends React.Component<
+    React.PropsWithChildren<MarkerProps>
+  > {}
+
   interface LinearGradientProps {
     id: string;
     x1?: string | number;
@@ -584,7 +692,7 @@ declare namespace ReactPDF {
   interface PDFViewerProps {
     width?: number | string;
     height?: number | string;
-    style?: Style | Style[];
+    style?: StyleProp;
     className?: string;
     children?: React.ReactElement<DocumentProps>;
     innerRef?: React.Ref<HTMLIFrameElement>;

@@ -881,4 +881,158 @@ describe('node shouldBreak', () => {
 
     expect(result).toEqual(false);
   });
+
+  test('should break when minPresenceAhead overflows and there are no future siblings', () => {
+    // Bug fix: previously getFurthestEnd([]) returned -Infinity,
+    // causing minPresenceAhead to never trigger when element is the last child.
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { minPresenceAhead: 300 },
+        style: {},
+        children: [],
+        box: {
+          top: 600,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 200,
+          width: 200,
+          marginTop: 0,
+          marginBottom: 0,
+        },
+      },
+      [], // no future siblings
+      1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 600,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+    );
+
+    // endOfMinPresenceAhead = 600 + 200 + 0 + 300 = 1100 > 1000
+    // No future siblings, so endOfPresence = 1100 (not capped by -Infinity)
+    // breakingImprovesPresence = true (has previous non-fixed elements)
+    expect(result).toEqual(true);
+  });
+
+  test('should not break when minPresenceAhead fits and there are no future siblings', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { minPresenceAhead: 100 },
+        style: {},
+        children: [],
+        box: {
+          top: 400,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 200,
+          width: 200,
+          marginTop: 0,
+          marginBottom: 0,
+        },
+      },
+      [], // no future siblings
+      1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 400,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+    );
+
+    // endOfMinPresenceAhead = 400 + 200 + 0 + 100 = 700 < 1000
+    expect(result).toEqual(false);
+  });
+
+  test('should break when minPresenceAhead overflows and all future siblings are fixed', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { minPresenceAhead: 300 },
+        style: {},
+        children: [],
+        box: {
+          top: 600,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 200,
+          width: 200,
+          marginTop: 0,
+          marginBottom: 0,
+        },
+      },
+      [
+        {
+          type: 'VIEW',
+          props: { fixed: true },
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 50,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+      1000,
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 600,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+    );
+
+    // All future siblings are fixed, so treated as no future siblings
+    // endOfPresence = 600 + 200 + 0 + 300 = 1100 > 1000
+    expect(result).toEqual(true);
+  });
 });

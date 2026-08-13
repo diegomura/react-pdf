@@ -4,14 +4,31 @@ import { cosine, sine } from '../utils';
 
 const { number } = PDFObject;
 
+/**
+ * Format a list label based on the list type
+ * @param {number} n
+ * @param {'numbered' | 'lettered'} listType
+ * @returns {string}
+ */
+function formatListLabel(n, listType) {
+  if (listType === 'numbered') {
+    return `${n}.`;
+  }
+
+  // lettered
+  var letter = String.fromCharCode(((n - 1) % 26) + 65);
+  var times = Math.floor((n - 1) / 26 + 1);
+  var text = Array(times + 1).join(letter);
+  return `${text}.`;
+}
+
 export default {
   initText() {
     this._line = this._line.bind(this);
-
     // Current coordinates
     this.x = 0;
     this.y = 0;
-    return (this._lineGap = 0);
+    this._lineGap = 0;
   },
 
   lineGap(_lineGap) {
@@ -50,8 +67,8 @@ export default {
       if (options.structParent) {
         options.structParent.add(
           this.struct(options.structType || 'P', [
-            this.markStructureContent(options.structType || 'P')
-          ])
+            this.markStructureContent(options.structType || 'P'),
+          ]),
         );
       }
     };
@@ -113,7 +130,127 @@ export default {
    * @param options - Any text options (The same you would apply to `doc.text()`)
    * @returns {{x: number, y: number, width: number, height: number}}
    */
-  boundsOfString(string, x, y, options) {},
+  boundsOfString(string, x, y, options) {
+    options = this._initOptions(x, y, options);
+    ({ x, y } = this);
+    const lineGap = options.lineGap ?? this._lineGap ?? 0;
+    const lineHeight = this.currentLineHeight(true) + lineGap;
+    let contentWidth = 0;
+    // Convert text to a string
+    string = String(string ?? '');
+
+    // if the wordSpacing option is specified, remove multiple consecutive spaces
+    if (options.wordSpacing) {
+      string = string.replace(/\s{2,}/g, ' ');
+    }
+
+    // word wrapping
+    if (options.width) {
+      let wrapper = new LineWrapper(this, options);
+      wrapper.on('line', (text, options) => {
+        this.y += lineHeight;
+        text = text.replace(/\n/g, '');
+
+        if (text.length) {
+          // handle options
+          let wordSpacing = options.wordSpacing ?? 0;
+          const characterSpacing = options.characterSpacing ?? 0;
+
+          // justify alignments
+          if (options.width && options.align === 'justify') {
+            // calculate the word spacing value
+            const words = text.trim().split(/\s+/);
+            const textWidth = this.widthOfString(
+              text.replace(/\s+/g, ''),
+              options,
+            );
+            const spaceWidth = this.widthOfString(' ') + characterSpacing;
+            wordSpacing = Math.max(
+              0,
+              (options.lineWidth - textWidth) / Math.max(1, words.length - 1) -
+                spaceWidth,
+            );
+          }
+
+          // calculate the actual rendered width of the string after word and character spacing
+          contentWidth = Math.max(
+            contentWidth,
+            options.textWidth +
+              wordSpacing * (options.wordCount - 1) +
+              characterSpacing * (text.length - 1),
+          );
+        }
+      });
+      wrapper.wrap(string, options);
+    } else {
+      // render paragraphs as single lines
+      for (let line of string.split('\n')) {
+        const lineWidth = this.widthOfString(line, options);
+        this.y += lineHeight;
+        contentWidth = Math.max(contentWidth, lineWidth);
+      }
+    }
+
+    let contentHeight = this.y - y;
+    // Clamp height to max height
+    if (options.height) contentHeight = Math.min(contentHeight, options.height);
+
+    this.x = x;
+    this.y = y;
+
+    /**
+     * Rotates around top left corner
+     * [x1,y1]  >  [x2,y2]
+     *    ⌃           ⌄
+     * [x4,y4]  <  [x3,y3]
+     */
+    if (options.rotation === 0) {
+      // No rotation so we can use the existing values
+      return { x, y, width: contentWidth, height: contentHeight };
+      // Use fast computation without explicit trig
+    } else if (options.rotation === 90) {
+      return {
+        x: x,
+        y: y - contentWidth,
+        width: contentHeight,
+        height: contentWidth,
+      };
+    } else if (options.rotation === 180) {
+      return {
+        x: x - contentWidth,
+        y: y - contentHeight,
+        width: contentWidth,
+        height: contentHeight,
+      };
+    } else if (options.rotation === 270) {
+      return {
+        x: x - contentHeight,
+        y: y,
+        width: contentHeight,
+        height: contentWidth,
+      };
+    }
+
+    // Non-trivial values so time for trig
+    const cos = cosine(options.rotation);
+    const sin = sine(options.rotation);
+
+    const x1 = x;
+    const y1 = y;
+    const x2 = x + contentWidth * cos;
+    const y2 = y - contentWidth * sin;
+    const x3 = x + contentWidth * cos + contentHeight * sin;
+    const y3 = y - contentWidth * sin + contentHeight * cos;
+    const x4 = x + contentHeight * sin;
+    const y4 = y + contentHeight * cos;
+
+    const xMin = Math.min(x1, x2, x3, x4);
+    const xMax = Math.max(x1, x2, x3, x4);
+    const yMin = Math.min(y1, y2, y3, y4);
+    const yMax = Math.max(y1, y2, y3, y4);
+
+    return { x: xMin, y: yMin, width: xMax - xMin, height: yMax - yMin };
+  },
 
   heightOfString(text, options) {
     const { x, y } = this;
@@ -123,7 +260,7 @@ export default {
 
     const lineGap = options.lineGap || this._lineGap || 0;
     this._text(text, this.x, this.y, options, () => {
-      return (this.y += this.currentLineHeight(true) + lineGap);
+      this.y += this.currentLineHeight(true) + lineGap;
     });
 
     const height = this.y - y;
@@ -133,7 +270,7 @@ export default {
     return height;
   },
 
-  list(list, x, y, options, wrapper) {
+  list(list, x, y, options) {
     options = this._initOptions(x, y, options);
 
     const listType = options.listType || 'bullet';
@@ -170,20 +307,8 @@ export default {
 
     flatten(list);
 
-    const label = function (n) {
-      switch (listType) {
-        case 'numbered':
-          return `${n}.`;
-        case 'lettered':
-          var letter = String.fromCharCode(((n - 1) % 26) + 65);
-          var times = Math.floor((n - 1) / 26 + 1);
-          var text = Array(times + 1).join(letter);
-          return `${text}.`;
-      }
-    };
-
     const drawListItem = function (listItem, i) {
-      wrapper = new LineWrapper(this, options);
+      const wrapper = new LineWrapper(this, options);
       wrapper.on('line', this._line);
 
       level = 1;
@@ -215,8 +340,8 @@ export default {
         if (item && (labelType || bodyType)) {
           item.add(
             this.struct(labelType || bodyType, [
-              this.markStructureContent(labelType || bodyType)
-            ])
+              this.markStructureContent(labelType || bodyType),
+            ]),
           );
         }
         switch (listType) {
@@ -226,14 +351,14 @@ export default {
             break;
           case 'numbered':
           case 'lettered':
-            var text = label(numbers[i - 1]);
+            var text = formatListLabel(numbers[i - 1], listType);
             this._fragment(text, this.x - indent, this.y, options);
             break;
         }
 
         if (item && labelType && bodyType) {
           item.add(
-            this.struct(bodyType, [this.markStructureContent(bodyType)])
+            this.struct(bodyType, [this.markStructureContent(bodyType)]),
           );
         }
         if (item && item !== options.structParent) {
@@ -244,13 +369,13 @@ export default {
       wrapper.on('sectionStart', () => {
         const pos = indent + itemIndent * (level - 1);
         this.x += pos;
-        return (wrapper.lineWidth -= pos);
+        wrapper.lineWidth -= pos;
       });
 
       wrapper.on('sectionEnd', () => {
         const pos = indent + itemIndent * (level - 1);
         this.x -= pos;
-        return (wrapper.lineWidth += pos);
+        wrapper.lineWidth += pos;
       });
 
       wrapper.wrap(listItem, options);
@@ -264,7 +389,7 @@ export default {
   },
 
   _initOptions(x = {}, y, options = {}) {
-    if (typeof x === 'object') {
+    if (x && typeof x === 'object') {
       options = x;
       x = null;
     }
@@ -308,7 +433,7 @@ export default {
     } // 1/4 inch
 
     // Normalize rotation to between 0 - 360
-    result.rotation = Number(options.rotation ?? 0) % 360;
+    result.rotation = Number(result.rotation ?? 0) % 360;
     if (result.rotation < 0) result.rotation += 360;
 
     return result;
@@ -316,12 +441,12 @@ export default {
 
   _line(text, options = {}, wrapper) {
     this._fragment(text, this.x, this.y, options);
-    const lineGap = options.lineGap || this._lineGap || 0;
 
-    if (!wrapper) {
-      return (this.x += this.widthOfString(text, options));
+    if (wrapper) {
+      const lineGap = options.lineGap || this._lineGap || 0;
+      this.y += this.currentLineHeight(true) + lineGap;
     } else {
-      return (this.y += this.currentLineHeight(true) + lineGap);
+      this.x += this.widthOfString(text, options);
     }
   },
 
@@ -358,7 +483,7 @@ export default {
           wordSpacing = Math.max(
             0,
             (options.lineWidth - textWidth) / Math.max(1, words.length - 1) -
-              spaceWidth
+              spaceWidth,
           );
           break;
       }
@@ -406,7 +531,21 @@ export default {
 
     // create link annotations if the link option is given
     if (options.link != null) {
-      this.link(x, y, renderedWidth, this.currentLineHeight(), options.link);
+      const linkOptions = {};
+      if (
+        this._currentStructureElement &&
+        this._currentStructureElement.dictionary.data.S === 'Link'
+      ) {
+        linkOptions.structParent = this._currentStructureElement;
+      }
+      this.link(
+        x,
+        y,
+        renderedWidth,
+        this.currentLineHeight(),
+        options.link,
+        linkOptions,
+      );
     }
     if (options.goTo != null) {
       this.goTo(x, y, renderedWidth, this.currentLineHeight(), options.goTo);
@@ -514,7 +653,7 @@ export default {
       for (let word of words) {
         const [encodedWord, positionsWord] = this._font.encode(
           word,
-          options.features
+          options.features,
         );
         encoded = encoded.concat(encodedWord);
         positions = positions.concat(positionsWord);
@@ -548,7 +687,7 @@ export default {
         commands.push(`<${hex}> ${number(-advance)}`);
       }
 
-      return (last = cur);
+      last = cur;
     };
 
     // Flushes the current TJ commands to the output stream
@@ -557,7 +696,7 @@ export default {
 
       if (commands.length > 0) {
         this.addContent(`[${commands.join(' ')}] TJ`);
-        return (commands.length = 0);
+        commands.length = 0;
       }
     };
 
@@ -572,8 +711,8 @@ export default {
         // Move the text position and flush just the current character
         this.addContent(
           `1 0 0 1 ${number(x + pos.xOffset * scale)} ${number(
-            y + pos.yOffset * scale
-          )} Tm`
+            y + pos.yOffset * scale,
+          )} Tm`,
         );
         flush(i + 1);
 
@@ -601,6 +740,6 @@ export default {
     this.addContent('ET');
 
     // restore flipped coordinate system
-    return this.restore();
-  }
+    this.restore();
+  },
 };

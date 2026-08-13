@@ -3,7 +3,7 @@ import { PageNode } from '../types';
 
 type UnitSize = { width: string | number; height?: string | number };
 
-type Size = { width: number; height: number };
+type Size = { width: number; height?: number };
 
 // Page sizes for 72dpi. 72dpi is used internally by pdfkit.
 const PAGE_SIZES = {
@@ -86,8 +86,8 @@ const parseValue = (value: string | number) => {
 const transformUnit = (
   value: string | number | undefined,
   inputDpi: number,
-) => {
-  if (!value) return 0;
+): number | undefined => {
+  if (!value || value === 'auto') return undefined;
 
   const scalar = parseValue(value);
 
@@ -112,10 +112,12 @@ const transformUnit = (
   }
 };
 
-const transformUnits = ({ width, height }: UnitSize, dpi: number): Size => ({
-  width: transformUnit(width, dpi),
-  height: transformUnit(height, dpi),
-});
+const transformUnits = ({ width, height }: UnitSize, dpi: number): Size => {
+  const result: Size = { width: transformUnit(width, dpi) || 0 };
+  const h = transformUnit(height, dpi);
+  if (h !== undefined) result.height = h;
+  return result;
+};
 
 /**
  * Transforms array into size object
@@ -134,10 +136,11 @@ const toSizeObject = (v: (number | string)[]) => ({
  * @param v - Size object
  * @returns Flipped size object
  */
-const flipSizeObject = (v: Size): Size => ({
-  width: v.height,
-  height: v.width,
-});
+const flipSizeObject = (v: Size): Size => {
+  const result: Size = { width: v.height || 0 };
+  if (v.width !== undefined) result.height = v.width;
+  return result;
+};
 
 /**
  * Returns size object from a given string

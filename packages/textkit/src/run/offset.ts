@@ -6,7 +6,7 @@ import { Run } from '../types';
  * Ex. ffi ligature
  *
  *   glyphs:         l  o  f  f  i  m
- *   glyphIndices:   0  1  2  2  2  3
+ *   stringIndices:   0  1  2  2  2  3
  *   offset:         0  0  0  1  2  0
  *
  * @param index
@@ -16,10 +16,18 @@ import { Run } from '../types';
 const offset = (index: number, run: Run) => {
   if (!run) return 0;
 
-  const glyphIndices = run.glyphIndices || [];
-  const value = glyphIndices[index];
+  const stringIndices = run.stringIndices || [];
+  const value = stringIndices[index];
 
-  return glyphIndices.slice(0, index).filter((i) => i === value).length;
+  if (value === undefined) return 0;
+
+  let result = 0;
+
+  for (let i = index - 1; i >= 0 && stringIndices[i] === value; i -= 1) {
+    result += 1;
+  }
+
+  return result;
 };
 
 export default offset;

@@ -17,5 +17,5 @@ export default {
             <pdfuaid:part>${this.subset}</pdfuaid:part>
         </rdf:Description>
         `;
-  }
+  },
 };

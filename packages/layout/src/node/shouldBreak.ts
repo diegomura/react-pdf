@@ -8,8 +8,10 @@ const getBreak = (node: SafeNode) =>
 const getMinPresenceAhead = (node: SafeNode) =>
   'minPresenceAhead' in node.props ? node.props.minPresenceAhead : 0;
 
-const getFurthestEnd = (elements: SafeNode[]) =>
-  Math.max(...elements.map((node) => node.box.top + node.box.height));
+const getFurthestEnd = (elements: SafeNode[]) => {
+  if (elements.length === 0) return null;
+  return Math.max(...elements.map((node) => node.box.top + node.box.height));
+};
 
 const getEndOfMinPresenceAhead = (child: SafeNode) => {
   return (
@@ -22,9 +24,14 @@ const getEndOfMinPresenceAhead = (child: SafeNode) => {
 
 const getEndOfPresence = (child: SafeNode, futureElements: SafeNode[]) => {
   const afterMinPresenceAhead = getEndOfMinPresenceAhead(child);
-  const endOfFurthestFutureElement = getFurthestEnd(
-    futureElements.filter((node) => !('fixed' in node.props)),
+  const nonFixedFuture = futureElements.filter(
+    (node) => !('fixed' in node.props),
   );
+  const endOfFurthestFutureElement = getFurthestEnd(nonFixedFuture);
+
+  // When there are no future non-fixed siblings, use only minPresenceAhead
+  if (endOfFurthestFutureElement === null) return afterMinPresenceAhead;
+
   return Math.min(afterMinPresenceAhead, endOfFurthestFutureElement);
 };
 

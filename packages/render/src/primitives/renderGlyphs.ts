@@ -2,6 +2,7 @@
 
 import { Glyph, Position } from '@react-pdf/textkit';
 import { Context } from '../types';
+import encodeGlyphs from '../operations/encodeGlyphs';
 
 const number = (n: number) => {
   if (n > -1e21 && n < 1e21) {
@@ -13,7 +14,7 @@ const number = (n: number) => {
 
 const _renderGlyphs = (
   ctx: Context,
-  encoded: Glyph[],
+  encoded: string[],
   positions: Position[],
   x: number,
   y: number,
@@ -122,7 +123,7 @@ const renderGlyphs = (
   const advanceWidthScale = 1000 / unitsPerEm;
 
   // Glyph encoding and positioning
-  const encodedGlyphs = ctx._font.encodeGlyphs(glyphs);
+  const encodedGlyphs = encodeGlyphs(ctx._font, glyphs);
   const encodedPositions = positions.map((pos, i) => ({
     xAdvance: pos.xAdvance * scale,
     yAdvance: pos.yAdvance * scale,

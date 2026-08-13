@@ -1,5 +1,65 @@
 # @react-pdf/pdfkit
 
+## 6.0.0
+
+### Major Changes
+
+- [#3474](https://github.com/diegomura/react-pdf/pull/3474) [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75) Thanks [@diegomura](https://github.com/diegomura)! - Use generated AFM font data instead of parsing raw font definitions, and split the node and browser entry points, aligning with upstream pdfkit
+
+### Minor Changes
+
+- [#3468](https://github.com/diegomura/react-pdf/pull/3468) [`78ca6aa8`](https://github.com/diegomura/react-pdf/commit/78ca6aa855e0a3294c892e8857147026d2b53936) Thanks [@diegomura](https://github.com/diegomura)! - Align `structure_element.js` with upstream pdfkit
+
+- [#3410](https://github.com/diegomura/react-pdf/pull/3410) [`87911560`](https://github.com/diegomura/react-pdf/commit/87911560a5f87c82c4642db198a86b277126a26b) Thanks [@exoego](https://github.com/exoego)! - refactor: align mulptiles filesWith upstream
+
+### Patch Changes
+
+- [#3476](https://github.com/diegomura/react-pdf/pull/3476) [`62c97745`](https://github.com/diegomura/react-pdf/commit/62c97745c5cd4fc36234de7a112d1023c49658ab) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): align annotations.js, attachments.js and spotcolor.js with upstream
+
+  Spot color names are now escaped as PDF Name objects, so names containing
+  spaces or delimiters (e.g. `PANTONE 123 C`) no longer emit a malformed
+  Separation color space.
+
+- [#3453](https://github.com/diegomura/react-pdf/pull/3453) [`6098e648`](https://github.com/diegomura/react-pdf/commit/6098e6486c425db153518fd422be84bb16e84ab6) Thanks [@afonsojramos](https://github.com/afonsojramos)! - Declare the `pako` runtime dependency externalized by the browser build so it resolves with strict package managers.
+
+- [#3431](https://github.com/diegomura/react-pdf/pull/3431) [`59aa9aea`](https://github.com/diegomura/react-pdf/commit/59aa9aea2c1a4f081654ed5877405be6c776f041) Thanks [@5000164](https://github.com/5000164)! - fix(pdfkit): deflate decoded PNG pixels as Buffer
+
+- [#3401](https://github.com/diegomura/react-pdf/pull/3401) [`d41a8207`](https://github.com/diegomura/react-pdf/commit/d41a8207fb06a56e60fcb53ac0e18ce27e7d32d6) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): replace events import in line_wrapper.js with inline emitter
+
+- [#3470](https://github.com/diegomura/react-pdf/pull/3470) [`b2acd72b`](https://github.com/diegomura/react-pdf/commit/b2acd72bc90886f5486071bbe15d0a721c3b7f59) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): align page.js and document.js with upstream
+
+- [#3400](https://github.com/diegomura/react-pdf/pull/3400) [`c2da5098`](https://github.com/diegomura/react-pdf/commit/c2da5098ccf0b7ec298fd3a8d57e6ba849e51fa3) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): use byte-level PNG magic check in image.js
+
+- [#3398](https://github.com/diegomura/react-pdf/pull/3398) [`30dc2a47`](https://github.com/diegomura/react-pdf/commit/30dc2a475a731e9a976533d9024e1e72d885c7f4) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove Buffer dependency from EXIF orientation parser
+
+- [#3469](https://github.com/diegomura/react-pdf/pull/3469) [`6e0102db`](https://github.com/diegomura/react-pdf/commit/6e0102db791e801c0b5aac76d77d5456f33298f6) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): align line_wrapper.js with upstream
+
+## 5.1.1
+
+### Patch Changes
+
+- [#3387](https://github.com/diegomura/react-pdf/pull/3387) [`598cf0c6`](https://github.com/diegomura/react-pdf/commit/598cf0c63f45211d0ef1fc7c0c84011e79c9d4c2) Thanks [@diegomura](https://github.com/diegomura)! - Update pdfkit png logic, fixing interlacing rendering
+
+- [#3386](https://github.com/diegomura/react-pdf/pull/3386) [`cbce7149`](https://github.com/diegomura/react-pdf/commit/cbce714905fc127531e9bda5bda95019bfd62d77) Thanks [@diegomura](https://github.com/diegomura)! - Add pdfkit table mixin as part of unification plan
+
+## 5.1.0
+
+### Minor Changes
+
+- [#3375](https://github.com/diegomura/react-pdf/pull/3375) [`ccfcc632`](https://github.com/diegomura/react-pdf/commit/ccfcc632313152a7752bbe76c6a81c27efc93ef4) Thanks [@diegomura](https://github.com/diegomura)! - Replace internal @react-pdf/png-js with upstream png-js package
+
+## 5.0.0
+
+### Major Changes
+
+- [#3335](https://github.com/diegomura/react-pdf/pull/3335) [`2e91eb64`](https://github.com/diegomura/react-pdf/commit/2e91eb649318ee66ec8cab7386f1fdbae8eb8cef) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove font export
+
+- [#3333](https://github.com/diegomura/react-pdf/pull/3333) [`cf366d05`](https://github.com/diegomura/react-pdf/commit/cf366d050f795cce191863564182bd6efeb791af) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove encode glyphs font methods
+
+### Minor Changes
+
+- [#3344](https://github.com/diegomura/react-pdf/pull/3344) [`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea) Thanks [@diegomura](https://github.com/diegomura)! - feat: password protection support
+
 ## 4.1.0
 
 ### Minor Changes

@@ -53,7 +53,7 @@ export default {
           options.bbox[0],
           this.page.height - options.bbox[3],
           options.bbox[2],
-          this.page.height - options.bbox[1]
+          this.page.height - options.bbox[1],
         ];
       }
       if (
@@ -84,7 +84,7 @@ export default {
 
   markStructureContent(tag, options = {}) {
     const pageStructParents = this.getStructParentTree().get(
-      this.page.structParentTreeKey
+      this.page.structParentTreeKey,
     );
     const mcid = pageStructParents.length;
     pageStructParents.push(null);
@@ -99,6 +99,13 @@ export default {
   endMarkedContent() {
     this.page.markings.pop();
     this.addContent('EMC');
+    if (this._textOptions) {
+      delete this._textOptions.link;
+      delete this._textOptions.goTo;
+      delete this._textOptions.destination;
+      delete this._textOptions.underline;
+      delete this._textOptions.strike;
+    }
     return this;
   },
 
@@ -124,7 +131,7 @@ export default {
         const structContent = marking.structContent;
         const newStructContent = this.markStructureContent(
           marking.tag,
-          marking.options
+          marking.options,
         );
         structContent.push(newStructContent);
         this.page.markings.slice(-1)[0].structContent = structContent;
@@ -157,7 +164,7 @@ export default {
       this._root.data.StructTreeRoot = this.ref({
         Type: 'StructTreeRoot',
         ParentTree: new PDFNumberTree(),
-        ParentTreeNextKey: 0
+        ParentTreeNextKey: 0,
       });
     }
     return this._root.data.StructTreeRoot;
@@ -186,5 +193,5 @@ export default {
     if (this._root.data.MarkInfo) {
       this._root.data.MarkInfo.end();
     }
-  }
+  },
 };

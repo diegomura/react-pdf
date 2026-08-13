@@ -21,7 +21,9 @@ import AcroFormMixin from './mixins/acroform';
 import AttachmentsMixin from './mixins/attachments';
 import LineWrapper from './line_wrapper';
 import SubsetMixin from './mixins/subsets';
+import TableMixin from './mixins/table';
 import MetadataMixin from './mixins/metadata';
+import { fromBinaryString } from './binary';
 
 class PDFDocument extends stream.Readable {
   constructor(options = {}) {
@@ -63,21 +65,27 @@ class PDFDocument extends stream.Readable {
     const Pages = this.ref({
       Type: 'Pages',
       Count: 0,
-      Kids: []
+      Kids: [],
     });
 
     const Names = this.ref({
-      Dests: new PDFNameTree()
+      Dests: new PDFNameTree(),
     });
 
     this._root = this.ref({
       Type: 'Catalog',
       Pages,
-      Names
+      Names,
     });
 
     if (this.options.lang) {
       this._root.data.Lang = new String(this.options.lang);
+    }
+
+    if (this.options.pageLayout) {
+      const layout = this.options.pageLayout;
+      this._root.data.PageLayout =
+        layout.charAt(0).toUpperCase() + layout.slice(1);
     }
 
     // The current page
@@ -92,13 +100,14 @@ class PDFDocument extends stream.Readable {
     this.initImages();
     this.initOutline();
     this.initMarkings(options);
+    this.initTables();
     this.initSubset(options);
 
     // Initialize the metadata
     this.info = {
       Producer: 'PDFKit',
       Creator: 'PDFKit',
-      CreationDate: new Date()
+      CreationDate: new Date(),
     };
 
     if (this.options.info) {
@@ -110,7 +119,7 @@ class PDFDocument extends stream.Readable {
 
     if (this.options.displayTitle) {
       this._root.data.ViewerPreferences = this.ref({
-        DisplayDocTitle: true
+        DisplayDocTitle: true,
       });
     }
 
@@ -118,7 +127,7 @@ class PDFDocument extends stream.Readable {
     this._id = PDFSecurity.generateFileID(this.info);
 
     // Initialize security settings
-    // this._security = PDFSecurity.create(this, options);
+    this._security = PDFSecurity.create(this, options);
 
     // Write the header
     // PDF version
@@ -134,17 +143,23 @@ class PDFDocument extends stream.Readable {
   }
 
   addPage(options) {
-    if (options == null) {
-      ({ options } = this);
-    }
+    const documentOptions = this.options;
 
     // end the current page if needed
-    if (!this.options.bufferPages) {
+    if (!documentOptions.bufferPages) {
       this.flushPages();
     }
 
+    const font = options?.font;
+    if (font) {
+      this.font(font, options.fontFamily);
+    }
+
+    const fontSize = options?.fontSize;
+    if (fontSize) this.fontSize(fontSize);
+
     // create a page object
-    this.page = new PDFPage(this, options);
+    this.page = new PDFPage(this, options || documentOptions);
     this._pageBuffer.push(this.page);
 
     // add the page to the object store
@@ -186,7 +201,7 @@ class PDFDocument extends stream.Readable {
       throw new Error(
         `switchToPage(${n}) out of bounds, current buffer covers pages ${
           this._pageBufferStart
-        } to ${this._pageBufferStart + this._pageBuffer.length - 1}`
+        } to ${this._pageBufferStart + this._pageBuffer.length - 1}`,
       );
     }
 
@@ -220,7 +235,7 @@ class PDFDocument extends stream.Readable {
     if (!this._root.data.Names.data.EmbeddedFiles) {
       // disabling /Limits for this tree fixes attachments not showing in Adobe Reader
       this._root.data.Names.data.EmbeddedFiles = new PDFNameTree({
-        limits: false
+        limits: false,
       });
     }
 
@@ -234,7 +249,7 @@ class PDFDocument extends stream.Readable {
     }
     let data = {
       JS: new String(js),
-      S: 'JavaScript'
+      S: 'JavaScript',
     };
     this._root.data.Names.data.JavaScript.add(name, data);
   }
@@ -250,12 +265,12 @@ class PDFDocument extends stream.Readable {
   // do nothing, but this method is required by node
 
   _write(data) {
-    if (!Buffer.isBuffer(data)) {
-      data = Buffer.from(data + '\n', 'binary');
+    if (!(data instanceof Uint8Array)) {
+      data = fromBinaryString(data + '\n');
     }
 
     this.push(data);
-    return (this._offset += data.length);
+    this._offset += data.length;
   }
 
   addContent(data) {
@@ -267,7 +282,7 @@ class PDFDocument extends stream.Readable {
     this._offsets[ref.id - 1] = ref.offset;
     if (--this._waiting === 0 && this._ended) {
       this._finalize();
-      return (this._ended = false);
+      this._ended = false;
     }
   }
 
@@ -317,9 +332,9 @@ class PDFDocument extends stream.Readable {
     }
 
     if (this._waiting === 0) {
-      return this._finalize();
+      this._finalize();
     } else {
-      return (this._ended = true);
+      this._ended = true;
     }
   }
 
@@ -340,7 +355,7 @@ class PDFDocument extends stream.Readable {
       Size: this._offsets.length + 1,
       Root: this._root,
       Info: this._info,
-      ID: [this._id, this._id]
+      ID: [this._id, this._id],
     };
     if (this._security) {
       trailer.Encrypt = this._security.dictionary;
@@ -354,7 +369,7 @@ class PDFDocument extends stream.Readable {
     this._write('%%EOF');
 
     // end the stream
-    return this.push(null);
+    this.push(null);
   }
 
   toString() {
@@ -378,6 +393,7 @@ mixin(MarkingsMixin);
 mixin(AcroFormMixin);
 mixin(AttachmentsMixin);
 mixin(SubsetMixin);
+mixin(TableMixin);
 
 PDFDocument.LineWrapper = LineWrapper;
 

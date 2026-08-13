@@ -9,7 +9,7 @@ const KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 export default {
   initVector() {
     this._ctm = [1, 0, 0, 1, 0, 0]; // current transformation matrix
-    return (this._ctmStack = []);
+    this._ctmStack = [];
   },
 
   save() {
@@ -34,7 +34,7 @@ export default {
   _CAP_STYLES: {
     BUTT: 0,
     ROUND: 1,
-    SQUARE: 2
+    SQUARE: 2,
   },
 
   lineCap(c) {
@@ -47,7 +47,7 @@ export default {
   _JOIN_STYLES: {
     MITER: 0,
     ROUND: 1,
-    BEVEL: 2
+    BEVEL: 2,
   },
 
   lineJoin(j) {
@@ -71,8 +71,8 @@ export default {
     if (!valid) {
       throw new Error(
         `dash(${JSON.stringify(originalLength)}, ${JSON.stringify(
-          options
-        )}) invalid, lengths must be numeric and greater than zero`
+          options,
+        )}) invalid, lengths must be numeric and greater than zero`,
       );
     }
 
@@ -95,41 +95,85 @@ export default {
   bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) {
     return this.addContent(
       `${number(cp1x)} ${number(cp1y)} ${number(cp2x)} ${number(cp2y)} ${number(
-        x
-      )} ${number(y)} c`
+        x,
+      )} ${number(y)} c`,
     );
   },
 
   quadraticCurveTo(cpx, cpy, x, y) {
     return this.addContent(
-      `${number(cpx)} ${number(cpy)} ${number(x)} ${number(y)} v`
+      `${number(cpx)} ${number(cpy)} ${number(x)} ${number(y)} v`,
     );
   },
 
   rect(x, y, w, h) {
     return this.addContent(
-      `${number(x)} ${number(y)} ${number(w)} ${number(h)} re`
+      `${number(x)} ${number(y)} ${number(w)} ${number(h)} re`,
     );
   },
 
-  roundedRect(x, y, w, h, r) {
-    if (r == null) {
-      r = 0;
+  /**
+   * @param {number|number[]} borderRadius - Radius (number) or per-corner radii (array).
+   * If an array, order matches CSS `border-radius` with four values:
+   * top-left, top-right, bottom-right, bottom-left.
+   */
+  roundedRect(x, y, w, h, borderRadius) {
+    if (borderRadius == null) {
+      borderRadius = 0;
     }
-    r = Math.min(r, 0.5 * w, 0.5 * h);
 
-    // amount to inset control points from corners (see `ellipse`)
-    const c = r * (1.0 - KAPPA);
+    let radii;
+    if (Array.isArray(borderRadius)) {
+      radii = borderRadius.slice(0, 4);
+    } else {
+      radii = [borderRadius, borderRadius, borderRadius, borderRadius];
+    }
 
-    this.moveTo(x + r, y);
-    this.lineTo(x + w - r, y);
-    this.bezierCurveTo(x + w - c, y, x + w, y + c, x + w, y + r);
-    this.lineTo(x + w, y + h - r);
-    this.bezierCurveTo(x + w, y + h - c, x + w - c, y + h, x + w - r, y + h);
-    this.lineTo(x + r, y + h);
-    this.bezierCurveTo(x + c, y + h, x, y + h - c, x, y + h - r);
-    this.lineTo(x, y + r);
-    this.bezierCurveTo(x, y + c, x + c, y, x + r, y);
+    const limit = Math.min(0.5 * w, 0.5 * h);
+    const rTL = Math.max(0, Math.min(radii[0] || 0, limit));
+    const rTR = Math.max(0, Math.min(radii[1] || 0, limit));
+    const rBR = Math.max(0, Math.min(radii[2] || 0, limit));
+    const rBL = Math.max(0, Math.min(radii[3] || 0, limit));
+
+    const cpTR = rTR * (1.0 - KAPPA);
+    const cpBR = rBR * (1.0 - KAPPA);
+    const cpBL = rBL * (1.0 - KAPPA);
+    const cpTL = rTL * (1.0 - KAPPA);
+
+    // Start at the top edge, inset by top-left radius.
+    this.moveTo(x + rTL, y);
+
+    // Top edge to top-right.
+    this.lineTo(x + w - rTR, y);
+    if (rTR > 0) {
+      this.bezierCurveTo(x + w - cpTR, y, x + w, y + cpTR, x + w, y + rTR);
+    }
+
+    // Right edge to bottom-right.
+    this.lineTo(x + w, y + h - rBR);
+    if (rBR > 0) {
+      this.bezierCurveTo(
+        x + w,
+        y + h - cpBR,
+        x + w - cpBR,
+        y + h,
+        x + w - rBR,
+        y + h,
+      );
+    }
+
+    // Bottom edge to bottom-left.
+    this.lineTo(x + rBL, y + h);
+    if (rBL > 0) {
+      this.bezierCurveTo(x + cpBL, y + h, x, y + h - cpBL, x, y + h - rBL);
+    }
+
+    // Left edge to top-left.
+    this.lineTo(x, y + rTL);
+    if (rTL > 0) {
+      this.bezierCurveTo(x, y + cpTL, x + cpTL, y, x + rTL, y);
+    }
+
     return this.closePath();
   },
 
@@ -353,5 +397,5 @@ export default {
     }
 
     return this.transform(xFactor, 0, 0, yFactor, x, y);
-  }
+  },
 };

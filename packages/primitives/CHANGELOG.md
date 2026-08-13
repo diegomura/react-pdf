@@ -1,5 +1,17 @@
 # @react-pdf/primitives
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+## 4.2.0
+
+### Minor Changes
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
 ## 4.1.1
 
 ### Patch Changes

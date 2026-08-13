@@ -1,5 +1,86 @@
 # @react-pdf/layout
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3458](https://github.com/diegomura/react-pdf/pull/3458) [`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6) Thanks [@Codex-](https://github.com/Codex-)! - feat: expose `hyphenationPenalty` on `Text` props
+
+### Patch Changes
+
+- Updated dependencies [[`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee), [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427), [`6d7c2b79`](https://github.com/diegomura/react-pdf/commit/6d7c2b79187a85d0da7e3b45bd65373fdd7e928e), [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d), [`86c9fd88`](https://github.com/diegomura/react-pdf/commit/86c9fd8867b694eb607d8ae7df9145e86d8c8465)]:
+  - @react-pdf/textkit@6.4.0
+  - @react-pdf/image@3.1.1
+  - @react-pdf/types@2.11.2
+  - @react-pdf/stylesheet@6.2.2
+
+## 4.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae), [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63)]:
+  - @react-pdf/textkit@6.3.0
+  - @react-pdf/types@2.11.1
+  - @react-pdf/stylesheet@6.2.1
+
+## 4.6.0
+
+### Minor Changes
+
+- [#3281](https://github.com/diegomura/react-pdf/pull/3281) [`0138fddd`](https://github.com/diegomura/react-pdf/commit/0138fddd1696780774ebe322d30c3210a5924a7d) Thanks [@exoego](https://github.com/exoego)! - feat: Support loading external SVG file via <Image src="foo.svg" />
+
+- [#3365](https://github.com/diegomura/react-pdf/pull/3365) [`27d1b487`](https://github.com/diegomura/react-pdf/commit/27d1b4877507b874a6cd7face5e86cd236d2a42f) Thanks [@diegomura](https://github.com/diegomura)! - feat(svg): extract svg parser
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+### Patch Changes
+
+- Updated dependencies [[`ccfcc632`](https://github.com/diegomura/react-pdf/commit/ccfcc632313152a7752bbe76c6a81c27efc93ef4), [`0138fddd`](https://github.com/diegomura/react-pdf/commit/0138fddd1696780774ebe322d30c3210a5924a7d), [`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb), [`27d1b487`](https://github.com/diegomura/react-pdf/commit/27d1b4877507b874a6cd7face5e86cd236d2a42f), [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/image@3.1.0
+  - @react-pdf/stylesheet@6.2.0
+  - @react-pdf/primitives@4.3.0
+  - @react-pdf/types@2.11.0
+
+## 4.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`f30cf001`](https://github.com/diegomura/react-pdf/commit/f30cf0013336d0f6ccfd7b103fee66a203ac6b07), [`7fa9c06e`](https://github.com/diegomura/react-pdf/commit/7fa9c06e65760272e0994d0a61dc4a53b081a816), [`7b37bc8c`](https://github.com/diegomura/react-pdf/commit/7b37bc8c744d3805fd696f7d961d70cf47258dcf), [`b28b61cf`](https://github.com/diegomura/react-pdf/commit/b28b61cf2ce5b1f0ae5b78551cf987d06df8c6c0)]:
+  - @react-pdf/textkit@6.2.0
+
+## 4.5.0
+
+### Minor Changes
+
+- [#3344](https://github.com/diegomura/react-pdf/pull/3344) [`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea) Thanks [@diegomura](https://github.com/diegomura)! - feat: password protection support
+
+- [#3336](https://github.com/diegomura/react-pdf/pull/3336) [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575) Thanks [@diegomura](https://github.com/diegomura)! - feat: add link hitslop
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
+- [#3339](https://github.com/diegomura/react-pdf/pull/3339) [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715) Thanks [@diegomura](https://github.com/diegomura)! - feat: responsive images
+
+### Patch Changes
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/types@2.10.0
+  - @react-pdf/primitives@4.2.0
+  - @react-pdf/stylesheet@6.1.4
+
+## 4.4.3
+
+### Patch Changes
+
+- [#3321](https://github.com/diegomura/react-pdf/pull/3321) [`39886cd7`](https://github.com/diegomura/react-pdf/commit/39886cd77b9bad2b7012eba31778dfcce1983562) Thanks [@StephaneRavet](https://github.com/StephaneRavet)! - fix(layout): fix minPresenceAhead ignored when element has no future siblings
+
+- [#3328](https://github.com/diegomura/react-pdf/pull/3328) [`7d05a6d9`](https://github.com/diegomura/react-pdf/commit/7d05a6d9898fb555f45e108e61dc69c24a7ea1a6) Thanks [@diegomura](https://github.com/diegomura)! - feat(layout): ignore word joiner codepoint
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212), [`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55), [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/stylesheet@6.1.3
+  - @react-pdf/types@2.9.3
+
 ## 4.4.2
 
 ### Patch Changes

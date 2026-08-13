@@ -1,10 +1,12 @@
 import fs from 'fs';
-import CryptoJS from 'crypto-js';
+import { md5Hex } from '../crypto/md5';
+import { escapeName } from '../object.js';
+import { fromBase64 } from '../binary';
 
 export default {
   /**
    * Embed contents of `src` in PDF
-   * @param {Buffer | ArrayBuffer | string} src input Buffer, ArrayBuffer, base64 encoded string or path to file
+   * @param {Buffer | Uint8Array | ArrayBuffer | string} src input Buffer, Uint8Array, ArrayBuffer, base64 encoded string or path to file
    * @param {object} options
    *  * options.name: filename to be shown in PDF, will use `src` if none set
    *  * options.type: filetype to be shown in PDF
@@ -21,24 +23,24 @@ export default {
 
     const refBody = {
       Type: 'EmbeddedFile',
-      Params: {}
+      Params: {},
     };
     let data;
 
     if (!src) {
       throw new Error('No src specified');
     }
-    if (Buffer.isBuffer(src)) {
+    if (src instanceof Uint8Array) {
       data = src;
     } else if (src instanceof ArrayBuffer) {
-      data = Buffer.from(new Uint8Array(src));
+      data = new Uint8Array(src);
     } else {
-      let match;
-      if ((match = /^data:(.*?);base64,(.*)$/.exec(src))) {
+      const match = /^data:(.*?);base64,(.*)$/.exec(src);
+      if (match) {
         if (match[1]) {
-          refBody.Subtype = match[1].replace('/', '#2F');
+          refBody.Subtype = escapeName(match[1]);
         }
-        data = Buffer.from(match[2], 'base64');
+        data = fromBase64(match[2]);
       } else {
         data = fs.readFileSync(src);
         if (!data) {
@@ -61,13 +63,11 @@ export default {
     }
     // add optional subtype
     if (options.type) {
-      refBody.Subtype = options.type.replace('/', '#2F');
+      refBody.Subtype = escapeName(options.type);
     }
 
     // add checksum and size information
-    const checksum = CryptoJS.MD5(
-      CryptoJS.lib.WordArray.create(new Uint8Array(data))
-    );
+    const checksum = md5Hex(new Uint8Array(data));
     refBody.Params.CheckSum = new String(checksum);
     refBody.Params.Size = data.byteLength;
 
@@ -90,7 +90,7 @@ export default {
       AFRelationship: options.relationship,
       F: new String(options.name),
       EF: { F: ref },
-      UF: new String(options.name)
+      UF: new String(options.name),
     };
     if (options.description) {
       fileSpecBody.Desc = new String(options.description);
@@ -110,7 +110,7 @@ export default {
     }
 
     return filespec;
-  }
+  },
 };
 
 /** check two embedded file metadata objects for equality */

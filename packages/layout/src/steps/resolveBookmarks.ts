@@ -1,11 +1,5 @@
 import { Bookmark, DocumentNode, Node } from '../types';
 
-const getBookmarkValue = (bookmark: Bookmark) => {
-  return typeof bookmark === 'string'
-    ? { title: bookmark, fit: false, expanded: false }
-    : bookmark;
-};
-
 type Parent = Bookmark & { ref: number; parent: number | null };
 
 type Item = {
@@ -13,11 +7,30 @@ type Item = {
   parent: Parent | null;
 };
 
+/**
+ * Normalize bookmark value, expanding a plain string title into a full
+ * bookmark object with default fit and expanded values
+ *
+ * @param bookmark - Bookmark value
+ * @returns Normalized bookmark object
+ */
+const getBookmarkValue = (bookmark: string | Bookmark) => {
+  return typeof bookmark === 'string'
+    ? { title: bookmark, fit: false, expanded: false }
+    : bookmark;
+};
+
+/**
+ * Traverse document tree and resolve bookmark hierarchy, assigning each
+ * bookmark a ref index and a reference to its nearest bookmark ancestor
+ *
+ * @param node - Document node
+ * @returns Document node with resolved bookmarks
+ */
 const resolveBookmarks = (node: DocumentNode) => {
   let refs = 0;
 
-  const children = (node.children || []).slice(0);
-  const listToExplore: Item[] = children.map((value) => ({
+  const listToExplore: Item[] = (node.children || []).map((value) => ({
     value,
     parent: null,
   }));

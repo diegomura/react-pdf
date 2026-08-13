@@ -54,6 +54,16 @@ type PageMode =
   | 'useOC'
   | 'useAttachments';
 
+interface Permissions {
+  printing?: 'lowResolution' | 'highResolution';
+  modifying?: boolean;
+  copying?: boolean;
+  annotating?: boolean;
+  fillingForms?: boolean;
+  contentAccessibility?: boolean;
+  documentAssembly?: boolean;
+}
+
 interface DocumentProps {
   title?: string;
   author?: string;
@@ -65,6 +75,9 @@ interface DocumentProps {
   modificationDate?: Date;
   pageLayout?: PageLayout;
   pageMode?: PageMode;
+  ownerPassword?: string;
+  userPassword?: string;
+  permissions?: Permissions;
 }
 
 interface TextInstanceNode {

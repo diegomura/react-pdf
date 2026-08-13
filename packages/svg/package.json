@@ -1,0 +1,32 @@
+{
+  "name": "@react-pdf/svg",
+  "version": "1.1.0",
+  "license": "MIT",
+  "description": "SVG parsing for react-pdf",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/svg"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@react-pdf/primitives": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vitest": "^1.2.0"
+  }
+}

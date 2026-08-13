@@ -1,16 +1,16 @@
-import { EventEmitter } from 'events';
 import LineBreaker from 'linebreak';
 import { PDFNumber } from './utils';
 
 const SOFT_HYPHEN = '\u00AD';
 const HYPHEN = '-';
 
-class LineWrapper extends EventEmitter {
+class LineWrapper {
   constructor(document, options) {
-    super();
+    this._listeners = Object.create(null);
     this.document = document;
     this.horizontalScaling = options.horizontalScaling || 100;
     this.indent = ((options.indent || 0) * this.horizontalScaling) / 100;
+    this.indentAllLines = options.indentAllLines || false;
     this.characterSpacing =
       ((options.characterSpacing || 0) * this.horizontalScaling) / 100;
     this.wordSpacing =
@@ -56,14 +56,14 @@ class LineWrapper extends EventEmitter {
       }
 
       // otherwise we start the next line without indent
-      return this.once('line', () => {
+      this.once('line', () => {
         this.document.x -= indent;
         this.lineWidth += indent;
         if (options.continued && !this.continuedX) {
           this.continuedX = this.indent;
         }
         if (!options.continued) {
-          return (this.continuedX = 0);
+          this.continuedX = 0;
         }
       });
     });
@@ -76,7 +76,7 @@ class LineWrapper extends EventEmitter {
       }
       this.lastLine = true;
 
-      return this.once('line', () => {
+      this.once('line', () => {
         this.document.y += options.paragraphGap || 0;
         options.align = align;
         return (this.lastLine = false);
@@ -84,11 +84,30 @@ class LineWrapper extends EventEmitter {
     });
   }
 
+  on(event, listener) {
+    (this._listeners[event] || (this._listeners[event] = [])).push(listener);
+  }
+
+  once(event, listener) {
+    const wrapper = (...args) => {
+      const listeners = this._listeners[event];
+      listeners.splice(listeners.indexOf(wrapper), 1);
+      listener(...args);
+    };
+    this.on(event, wrapper);
+  }
+
+  emit(event, ...args) {
+    const listeners = this._listeners[event];
+    if (!listeners) return;
+    for (const listener of listeners.slice()) listener(...args);
+  }
+
   wordWidth(word) {
-    return (
+    return PDFNumber(
       this.document.widthOfString(word, this) +
-      this.characterSpacing +
-      this.wordSpacing
+        this.characterSpacing +
+        this.wordSpacing,
     );
   }
 
@@ -110,7 +129,7 @@ class LineWrapper extends EventEmitter {
       var shouldContinue;
       let word = text.slice(
         (last != null ? last.position : undefined) || 0,
-        bk.position
+        bk.position,
       );
       let w =
         wordWidths[word] != null
@@ -180,6 +199,7 @@ class LineWrapper extends EventEmitter {
   }
 
   wrap(text, options) {
+    const { document } = this;
     // override options from previous continued fragments
     this.horizontalScaling = options.horizontalScaling || 100;
     if (options.indent != null) {
@@ -199,8 +219,8 @@ class LineWrapper extends EventEmitter {
     // make sure we're actually on the page
     // and that the first line of is never by
     // itself at the bottom of a page (orphans)
-    const nextY = this.document.y + this.document.currentLineHeight(true);
-    if (this.document.y > this.maxY || nextY > this.maxY) {
+    const nextY = document.y + document.currentLineHeight(true);
+    if (document.y > this.maxY || nextY > this.maxY) {
       this.nextSection();
     }
 
@@ -209,12 +229,12 @@ class LineWrapper extends EventEmitter {
     let wc = 0;
     let lc = 0;
 
-    let { y } = this.document; // used to reset Y pos if options.continued (below)
+    let continueY = document.y; // used to reset Y pos if options.continued (below)
     const emitLine = () => {
       options.textWidth = textWidth + this.wordSpacing * (wc - 1);
       options.wordCount = wc;
       options.lineWidth = this.lineWidth;
-      ({ y } = this.document);
+      continueY = document.y;
       this.emit('line', buffer, options, this);
       return lc++;
     };
@@ -236,11 +256,11 @@ class LineWrapper extends EventEmitter {
       if (bk.required || !this.canFit(word, w)) {
         // if the user specified a max height and an ellipsis, and is about to pass the
         // max height and max columns after the next line, append the ellipsis
-        const lh = this.document.currentLineHeight(true);
+        const lh = document.currentLineHeight(true);
         if (
           this.height != null &&
           this.ellipsis &&
-          PDFNumber(this.document.y + lh * 2) > this.maxY &&
+          PDFNumber(document.y + lh * 2) > this.maxY &&
           this.column >= this.columns
         ) {
           if (this.ellipsis === true) {
@@ -284,7 +304,8 @@ class LineWrapper extends EventEmitter {
 
         // if we've reached the edge of the page,
         // continue on a new page or column
-        if (PDFNumber(this.document.y + lh) > this.maxY) {
+        if (PDFNumber(document.y + lh) > this.maxY) {
+          this.emit('sectionEnd', options, this);
           const shouldContinue = this.nextSection();
 
           // stop if we reached the maximum height
@@ -293,6 +314,7 @@ class LineWrapper extends EventEmitter {
             buffer = '';
             return false;
           }
+          this.emit('sectionStart', options, this);
         }
 
         // reset the space left and buffer
@@ -328,15 +350,13 @@ class LineWrapper extends EventEmitter {
         this.continuedX = 0;
       }
       this.continuedX += options.textWidth || 0;
-      return (this.document.y = y);
+      document.y = continueY;
     } else {
-      return (this.document.x = this.startX);
+      document.x = this.startX;
     }
   }
 
   nextSection(options) {
-    this.emit('sectionEnd', options, this);
-
     if (++this.column > this.columns) {
       // if a max height was specified by the user, we're done.
       // otherwise, the default is to make a new page at the bottom.
@@ -348,7 +368,13 @@ class LineWrapper extends EventEmitter {
       this.column = 1;
       this.startY = this.document.page.margins.top;
       this.maxY = this.document.page.maxY();
-      this.document.x = this.startX;
+      if (this.indentAllLines) {
+        const indent = this.continuedX || this.indent;
+        this.document.x += indent;
+        this.lineWidth -= indent;
+      } else {
+        this.document.x = this.startX;
+      }
       if (this.document._fillColor) {
         this.document.fillColor(...this.document._fillColor);
       }
@@ -359,7 +385,6 @@ class LineWrapper extends EventEmitter {
       this.emit('columnBreak', options, this);
     }
 
-    this.emit('sectionStart', options, this);
     return true;
   }
 }

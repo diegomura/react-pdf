@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import ignore from 'rollup-plugin-ignore';
@@ -9,7 +8,22 @@ import commonjs from '@rollup/plugin-commonjs';
 
 import pkg from './package.json' with { type: 'json' };
 
-const input = 'src/index.js';
+const STANDARD_FONTS = [
+  'Courier',
+  'CourierBold',
+  'CourierBoldOblique',
+  'CourierOblique',
+  'Helvetica',
+  'HelveticaBold',
+  'HelveticaBoldOblique',
+  'HelveticaOblique',
+  'Symbol',
+  'TimesBold',
+  'TimesBoldItalic',
+  'TimesItalic',
+  'TimesRoman',
+  'ZapfDingbats'
+];
 
 const babelConfig = () => ({
   babelrc: true,
@@ -19,34 +33,22 @@ const babelConfig = () => ({
 
 const getExternal = ({ browser }) => [
   ...Object.keys(pkg.dependencies).filter(
-    (dep) =>
-      !browser ||
-      !['vite-compatible-readable-stream', 'browserify-zlib'].includes(dep)
+    (dep) => !browser || dep !== 'vite-compatible-readable-stream'
   ),
-  /\/node_modules\/pako\//,
-  /crypto-js/,
   /@babel\/runtime/,
+  'js-md5',
+  '@noble/hashes/sha256',
+  '@noble/ciphers/aes',
   ...(browser ? [] : ['fs'])
 ];
 
 const getPlugins = ({ browser }) => [
-  json(),
   ...(browser
     ? [
         ignore(['fs']),
         alias({
           entries: [
-            // See https://github.com/browserify/browserify-zlib/pull/45
-            {
-              find: 'pako/lib/zlib/zstream',
-              replacement: 'pako/lib/zlib/zstream.js'
-            },
-            {
-              find: 'pako/lib/zlib/constants',
-              replacement: 'pako/lib/zlib/constants.js'
-            },
-            { find: 'stream', replacement: 'vite-compatible-readable-stream' },
-            { find: 'zlib', replacement: 'browserify-zlib' }
+            { find: 'stream', replacement: 'vite-compatible-readable-stream' }
           ]
         }),
         commonjs(),
@@ -66,20 +68,31 @@ const getPlugins = ({ browser }) => [
 ];
 
 const serverConfig = {
-  input,
+  input: 'src/document.node.js',
   output: { format: 'es', file: 'lib/pdfkit.js' },
   external: getExternal({ browser: false }),
-  plugins: getPlugins({ browser: false })
+  plugins: getPlugins({ browser: false }),
+  treeshake: { moduleSideEffects: 'no-external' }
 };
 
 const browserConfig = {
-  input,
+  input: 'src/document.browser.js',
   output: { format: 'es', file: 'lib/pdfkit.browser.js' },
   external: getExternal({ browser: true }),
   plugins: getPlugins({ browser: true })
 };
 
+// Kept out of the bundles so browser consumers only pay for the fonts they register
+const standardFontsConfig = {
+  input: Object.fromEntries(
+    STANDARD_FONTS.map((name) => [name, `src/font/generated/${name}.js`])
+  ),
+  output: { format: 'es', dir: 'lib/standard-fonts' },
+  plugins: [babel(babelConfig())]
+};
+
 export default [
   serverConfig,
   browserConfig,
+  standardFontsConfig,
 ];

@@ -18,6 +18,9 @@ const PREPROCESSORS = [ignoreChars, embedEmojis];
 const isImage = (node: SafeNode): node is SafeImageNode =>
   node.type === P.Image;
 
+const isRasterImage = (node: SafeImageNode): boolean =>
+  !!node.image && node.image.format !== 'svg';
+
 const isTextInstance = (node: SafeNode): node is SafeTextInstanceNode =>
   node.type === P.TextInstance;
 
@@ -105,7 +108,7 @@ const getFragments = (
   for (let i = 0; i < instance.children.length; i += 1) {
     const child = instance.children[i];
 
-    if (isImage(child)) {
+    if (isImage(child) && isRasterImage(child)) {
       fragments.push({
         string: String.fromCharCode(0xfffc),
         attributes: {
@@ -113,7 +116,7 @@ const getFragments = (
           attachment: {
             width: (child.style.width || fontSize) as number,
             height: (child.style.height || fontSize) as number,
-            image: child.image.data,
+            image: child.image!.data as Buffer,
           },
         },
       });
@@ -122,7 +125,7 @@ const getFragments = (
         string: transformText(child.value, textTransform),
         attributes,
       });
-    } else if (child) {
+    } else if (child && !isImage(child)) {
       fragments.push(
         ...getFragments(fontStore, child, attributes.link, level + 1),
       );

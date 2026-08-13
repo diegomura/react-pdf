@@ -28,7 +28,7 @@ class PDFTilingPattern {
       m0 * m21 + m2 * m22,
       m1 * m21 + m3 * m22,
       m0 * dx + m2 * dy + m4,
-      m1 * dx + m3 * dy + m5
+      m1 * dx + m3 * dy + m5,
     ];
     const pattern = this.doc.ref({
       Type: 'Pattern',
@@ -39,7 +39,7 @@ class PDFTilingPattern {
       XStep: this.xStep,
       YStep: this.yStep,
       Matrix: m.map((v) => +v.toFixed(5)),
-      Resources: resources
+      Resources: resources,
     });
     pattern.end(this.stream);
     return pattern;
@@ -86,14 +86,14 @@ class PDFTilingPattern {
 
     // select one of the pattern color spaces
     const csId = this.getPatternColorSpaceId(
-      this.doc._getColorSpace(normalizedColor)
+      this.doc._getColorSpace(normalizedColor),
     );
     this.doc._setColorSpace(csId, stroke);
 
     // stroke/fill using the pattern and color (in the above underlying color space)
     const op = stroke ? 'SCN' : 'scn';
     return this.doc.addContent(
-      `${normalizedColor.join(' ')} /${this.id} ${op}`
+      `${normalizedColor.join(' ')} /${this.id} ${op}`,
     );
   }
 }

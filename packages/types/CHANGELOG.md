@@ -1,5 +1,59 @@
 # @react-pdf/types
 
+## 2.11.2
+
+### Patch Changes
+
+- Updated dependencies [[`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75)]:
+  - @react-pdf/font@4.0.9
+  - @react-pdf/stylesheet@6.2.2
+
+## 2.11.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/font@4.0.8
+  - @react-pdf/stylesheet@6.2.1
+
+## 2.11.0
+
+### Minor Changes
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+### Patch Changes
+
+- Updated dependencies [[`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb), [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/stylesheet@6.2.0
+  - @react-pdf/primitives@4.3.0
+  - @react-pdf/font@4.0.7
+
+## 2.10.0
+
+### Minor Changes
+
+- [#3344](https://github.com/diegomura/react-pdf/pull/3344) [`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea) Thanks [@diegomura](https://github.com/diegomura)! - feat: password protection support
+
+- [#3336](https://github.com/diegomura/react-pdf/pull/3336) [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575) Thanks [@diegomura](https://github.com/diegomura)! - feat: add link hitslop
+
+- [#3339](https://github.com/diegomura/react-pdf/pull/3339) [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715) Thanks [@diegomura](https://github.com/diegomura)! - feat: responsive images
+
+### Patch Changes
+
+- Updated dependencies [[`2e91eb64`](https://github.com/diegomura/react-pdf/commit/2e91eb649318ee66ec8cab7386f1fdbae8eb8cef), [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d)]:
+  - @react-pdf/font@4.0.6
+  - @react-pdf/primitives@4.2.0
+  - @react-pdf/stylesheet@6.1.4
+
+## 2.9.3
+
+### Patch Changes
+
+- Updated dependencies [[`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55), [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2), [`e27cdb48`](https://github.com/diegomura/react-pdf/commit/e27cdb4843c790d0cd3a0fdc2cc3680cee3270c3)]:
+  - @react-pdf/stylesheet@6.1.3
+  - @react-pdf/font@4.0.5
+
 ## 2.9.2
 
 ### Patch Changes

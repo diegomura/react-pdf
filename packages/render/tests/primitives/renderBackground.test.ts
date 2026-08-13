@@ -97,4 +97,62 @@ describe('primitive renderBackground', () => {
 
     expect(ctx.fillOpacity.mock.calls).toEqual([[0]]);
   });
+
+  test('should apply RGBA color opacity correctly', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: 'rgba(255, 0, 0, 0.5)' };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillColor.mock.calls).toEqual([['#FF0000']]);
+    expect(ctx.fillOpacity.mock.calls).toEqual([[0.5]]);
+  });
+
+  test('should apply HSLA color opacity correctly', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: 'hsla(120, 100%, 50%, 0.6)' };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillColor.mock.calls).toEqual([['#00FF00']]);
+    expect(ctx.fillOpacity.mock.calls).toEqual([[0.6]]);
+  });
+
+  test('should apply 8-digit hex color opacity correctly', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: '#FF000080' };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillColor.mock.calls).toEqual([['#FF0000']]);
+    expect(ctx.fillOpacity.mock.calls[0][0]).toBeCloseTo(0.502, 2);
+  });
+
+  test('should use node opacity when color opacity is larger', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: 'rgba(255, 0, 0, 0.8)', opacity: 0.5 };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillOpacity.mock.calls).toEqual([[0.5]]);
+  });
+
+  test('should use color opacity when it is smaller than node opacity', () => {
+    const ctx = createCTX();
+    const box = { top: 20, left: 40, width: 140, height: 200 } as Box;
+    const style = { backgroundColor: 'rgba(255, 0, 0, 0.3)', opacity: 0.9 };
+    const node: SafeNode = { type: P.View, style, props: {}, box };
+
+    renderBackground(ctx, node);
+
+    expect(ctx.fillOpacity.mock.calls).toEqual([[0.3]]);
+  });
 });

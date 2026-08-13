@@ -35,3 +35,7 @@ export type SourceObject =
   | SourceFactory
   | SourceAsync
   | SourceAsyncFactory;
+
+export type SrcSet = string;
+
+export type Sizes = string | number;

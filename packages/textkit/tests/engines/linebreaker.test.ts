@@ -7,6 +7,35 @@ import font from '../internal/font';
 
 const width = 50;
 
+// Single run with uniform advances, so a tiny line width breaks on every
+// syllable boundary and each break is a hyphenation point.
+const attributedStringOf = (string: string, syllables: string[]) => {
+  const indices = Array.from(string, (_, index) => index);
+
+  return {
+    string,
+    runs: [
+      {
+        start: 0,
+        end: string.length,
+        attributes: { font: [font] },
+        stringIndices: indices,
+        glyphIndices: indices,
+        positions: indices.map(() => ({
+          xAdvance: 10,
+          yAdvance: 0,
+          xOffset: 0,
+          yOffset: 0,
+          advanceWidth: 556,
+        })),
+        glyphs: [],
+        string,
+      },
+    ],
+    syllables,
+  };
+};
+
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
@@ -294,6 +323,38 @@ describe('linebreaker', () => {
       'broeikasgas-',
       'emissie-',
       'rapport',
+    ]);
+  });
+
+  test('should not add hyphens when breaking between CJK characters', () => {
+    const attributedString = attributedStringOf('日本語組版処理', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    const result = linebreaker(attributedString, [10]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
+  test('should add hyphens when breaking between latin characters', () => {
+    const attributedString = attributedStringOf('hyphenation', [
+      'hy',
+      'phen',
+      'ation',
+    ]);
+
+    const result = linebreaker(attributedString, [10]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'hy-',
+      'phen-',
+      'ation',
     ]);
   });
 });

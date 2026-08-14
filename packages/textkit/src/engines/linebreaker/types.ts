@@ -7,6 +7,7 @@ export type PenaltyNode = {
   width: number;
   penalty: number;
   flagged?: number;
+  hyphen?: '-';
 };
 
 export type BoxNode = {

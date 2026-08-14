@@ -376,11 +376,13 @@ linebreak.penalty = (
   width: number,
   penalty: number,
   flagged: number,
+  hyphen?: '-',
 ): PenaltyNode => ({
   type: 'penalty',
   width,
   penalty,
   flagged,
+  hyphen,
 });
 
 export default linebreak;

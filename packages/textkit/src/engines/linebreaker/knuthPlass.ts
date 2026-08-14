@@ -276,11 +276,13 @@ const linebreak = (
 
         // Stop iterating through active nodes to insert new candidate active nodes in the active list
         // before moving on to the active nodes for the next line.
-        // TODO: The Knuth and Plass paper suggests a conditional for currentLine < j0. This means paragraphs
-        // with identical line lengths will not be sorted by line number. Find out if that is a desirable outcome.
-        // For now I left this out, as it only adds minimal overhead to the algorithm and keeping the active node
-        // list sorted has a higher priority.
-        if (active !== null && active.data.line >= currentLine) {
+        // Line numbers are equivalent once the last distinct line length is reached.
+        // Grouping them allows dominated candidates to be discarded together.
+        if (
+          active !== null &&
+          active.data.line >= currentLine &&
+          currentLine < lineLengths.length
+        ) {
           break;
         }
       }

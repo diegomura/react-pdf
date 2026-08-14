@@ -1,5 +1,11 @@
 # @react-pdf/textkit
 
+## 6.4.1
+
+### Patch Changes
+
+- [#3489](https://github.com/diegomura/react-pdf/pull/3489) [`6f94a82ea4306b0fd9c7c161f9c44609be7f6f39`](https://github.com/diegomura/react-pdf/commit/6f94a82ea4306b0fd9c7c161f9c44609be7f6f39) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Improve Knuth-Plass line breaking performance for long paragraphs.
+
 ## 6.4.0
 
 ### Minor Changes
@@ -58,7 +64,7 @@
   This allows you to break correctly on normal hyphens or other special characters in your text. For example, to use the default english-language syllable breaking built into react-pdf, but also break after hyphens naturally occurring in your text (such as is often present in hyperlinks), you could use the following hyphenation callback:
 
   ```js
-  import { Font } from "@react-pdf/renderer";
+  import { Font } from '@react-pdf/renderer';
 
   Font.registerHyphenationCallback((word, originalHyphenationCallback) => {
     return originalHyphenationCallback(word).flatMap((w) => w.split(/(?<=-)/));

@@ -1,5 +1,21 @@
 # @react-pdf/pdfkit
 
+## 6.0.1
+
+### Patch Changes
+
+- [#3486](https://github.com/diegomura/react-pdf/pull/3486) [`71fc26e8f18a8f3d3edd64b0a1b38c138deb593c`](https://github.com/diegomura/react-pdf/commit/71fc26e8f18a8f3d3edd64b0a1b38c138deb593c) Thanks [@diegomura](https://github.com/diegomura)! - Align `font/afm.js` WinAnsi encoding table with upstream pdfkit, restoring `hyphen` at code point 0xAD as specified by the PDF spec
+
+- [#3488](https://github.com/diegomura/react-pdf/pull/3488) [`dee75f98e51198766a37addc9d0bdaa4dd5dbb3b`](https://github.com/diegomura/react-pdf/commit/dee75f98e51198766a37addc9d0bdaa4dd5dbb3b) Thanks [@diegomura](https://github.com/diegomura)! - Align embedded font with upstream: subset tags are now derived from the font id instead of `Math.random()`, so font objects are reproducible across runs; spaces in PostScript names are escaped; the ToUnicode CMap is written as `bfrange` instead of `bfchar`; and a `CIDSet` is emitted for PDF/A-1 and PDF/UA
+
+- [#3482](https://github.com/diegomura/react-pdf/pull/3482) [`ded9cdcf0d120911c0339c91519b41204acbd7d3`](https://github.com/diegomura/react-pdf/commit/ded9cdcf0d120911c0339c91519b41204acbd7d3) Thanks [@diegomura](https://github.com/diegomura)! - Align `object.js`, `outline.js` and `reference.js` with upstream pdfkit, fixing `PDFNumberTree` being serialized as a plain dictionary
+
+- [#3485](https://github.com/diegomura/react-pdf/pull/3485) [`105bdd20e8865bf92e0275e66001a1dbd06d5bf6`](https://github.com/diegomura/react-pdf/commit/105bdd20e8865bf92e0275e66001a1dbd06d5bf6) Thanks [@diegomura](https://github.com/diegomura)! - Use fflate instead of browserify-zlib and pako in the browser build
+
+- [#3487](https://github.com/diegomura/react-pdf/pull/3487) [`1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e`](https://github.com/diegomura/react-pdf/commit/1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e) Thanks [@diegomura](https://github.com/diegomura)! - Replace Node Buffer usage with Uint8Array. `image()` and `file()` now accept any Uint8Array, not just Buffers
+
+- [#3481](https://github.com/diegomura/react-pdf/pull/3481) [`563d74e0364c80d8e6094777aa66879803786e44`](https://github.com/diegomura/react-pdf/commit/563d74e0364c80d8e6094777aa66879803786e44) Thanks [@diegomura](https://github.com/diegomura)! - Sync pdfkit acroform mixin with upstream. Form field dictionaries no longer leak internal options like `fontSize` into the PDF.
+
 ## 6.0.0
 
 ### Major Changes
@@ -71,7 +87,7 @@
   This allows you to break correctly on normal hyphens or other special characters in your text. For example, to use the default english-language syllable breaking built into react-pdf, but also break after hyphens naturally occurring in your text (such as is often present in hyperlinks), you could use the following hyphenation callback:
 
   ```js
-  import { Font } from "@react-pdf/renderer";
+  import { Font } from '@react-pdf/renderer';
 
   Font.registerHyphenationCallback((word, originalHyphenationCallback) => {
     return originalHyphenationCallback(word).flatMap((w) => w.split(/(?<=-)/));

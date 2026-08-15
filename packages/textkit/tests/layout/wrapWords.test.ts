@@ -156,4 +156,121 @@ describe('wrapWords', () => {
       expect(result.runs[1]).toHaveProperty('end', 11);
     });
   });
+
+  describe('word-break option', () => {
+    test('should split CJK characters individually with wordBreak: normal (default)', () => {
+      const instance = wrapWords({}, {});
+      const result = instance({
+        string: '本当に長いテキスト',
+        runs: [{ start: 0, end: 9, attributes: {} }],
+      });
+
+      // CJK characters should be split individually
+      expect(result.syllables).toEqual([
+        '本',
+        '当',
+        'に',
+        '長',
+        'い',
+        'テ',
+        'キ',
+        'ス',
+        'ト',
+      ]);
+    });
+
+    test('should split CJK characters individually with wordBreak: normal (explicit)', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: '本当に長いテキスト',
+        runs: [{ start: 0, end: 9, attributes: {} }],
+      });
+
+      expect(result.syllables).toEqual([
+        '本',
+        '当',
+        'に',
+        '長',
+        'い',
+        'テ',
+        'キ',
+        'ス',
+        'ト',
+      ]);
+    });
+
+    test('should not split Latin characters with wordBreak: normal', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: 'Hello world',
+        runs: [{ start: 0, end: 11, attributes: {} }],
+      });
+
+      // Latin characters should stay grouped
+      expect(result.syllables).toEqual(['Hello', ' ', 'world']);
+    });
+
+    test('should split mixed CJK and Latin with wordBreak: normal', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: 'Hello世界',
+        runs: [{ start: 0, end: 7, attributes: {} }],
+      });
+
+      // Latin stays grouped, CJK splits
+      expect(result.syllables).toEqual(['Hello', '世', '界']);
+    });
+
+    test('should split all characters with wordBreak: break-all', () => {
+      const instance = wrapWords({}, { wordBreak: 'break-all' });
+      const result = instance({
+        string: 'Hello',
+        runs: [{ start: 0, end: 5, attributes: {} }],
+      });
+
+      // All characters should be split
+      expect(result.syllables).toEqual(['H', 'e', 'l', 'l', 'o']);
+    });
+
+    test('should not split CJK characters with wordBreak: keep-all', () => {
+      const instance = wrapWords({}, { wordBreak: 'keep-all' });
+      const result = instance({
+        string: '本当に長いテキスト',
+        runs: [{ start: 0, end: 9, attributes: {} }],
+      });
+
+      // CJK characters should stay grouped (not split)
+      expect(result.syllables).toEqual(['本当に長いテキスト']);
+    });
+
+    test('should handle Hiragana correctly', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: 'あいうえお',
+        runs: [{ start: 0, end: 5, attributes: {} }],
+      });
+
+      expect(result.syllables).toEqual(['あ', 'い', 'う', 'え', 'お']);
+    });
+
+    test('should handle Katakana correctly', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: 'アイウエオ',
+        runs: [{ start: 0, end: 5, attributes: {} }],
+      });
+
+      expect(result.syllables).toEqual(['ア', 'イ', 'ウ', 'エ', 'オ']);
+    });
+
+    test('should handle Korean correctly', () => {
+      const instance = wrapWords({}, { wordBreak: 'normal' });
+      const result = instance({
+        string: '한글테스트',
+        runs: [{ start: 0, end: 5, attributes: {} }],
+      });
+
+      expect(result.syllables).toEqual(['한', '글', '테', '스', '트']);
+    });
+  });
 });

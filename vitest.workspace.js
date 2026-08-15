@@ -15,4 +15,5 @@ export default [
   'packages/math',
   'packages/mermaid',
   'packages/pdfkit',
+  'packages/paginate',
 ];

@@ -1,4 +1,14 @@
-import { createCanvas } from '@napi-rs/canvas';
+import path from 'path';
+import url from 'url';
+import { createCanvas, GlobalFonts } from '@napi-rs/canvas';
+
+// Text must rasterize identically on every platform or the image snapshots
+// drift; register a bundled font instead of resolving a system one.
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+GlobalFonts.registerFromPath(
+  path.join(__dirname, 'assets', 'font.ttf'),
+  'SnapshotFont',
+);
 
 const PALETTE = [
   '#fde68a',
@@ -118,7 +128,7 @@ const drawOverflowStripes = (ctx, x, y, w, h) => {
 
 const drawLabel = (ctx, labelX, labelY, text, scale) => {
   ctx.fillStyle = LABEL_COLOR;
-  ctx.font = `bold ${5 * scale}px monospace`;
+  ctx.font = `bold ${5 * scale}px SnapshotFont`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.fillText(text, labelX, labelY);
@@ -260,7 +270,7 @@ const renderPagesToPNG = (pages, region, opts = {}) => {
     const regionH = region.height * scale;
 
     ctx.fillStyle = PAGE_TAG_COLOR;
-    ctx.font = `${12 * scale}px monospace`;
+    ctx.font = `${12 * scale}px SnapshotFont`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(

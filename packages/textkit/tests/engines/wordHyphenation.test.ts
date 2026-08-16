@@ -1,97 +1,58 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
-const hyphenator = vi.fn((v) => {
-  if (v === '') return '';
-  if (v === 'something') return 'some\u00adthing';
-  if (v === 'neumonia') return 'neu\u00admo\u00adnia';
-  if (v === 'programming') return 'pro\u00adgram\u00adming';
-
-  return v;
-});
-
-vi.mock('hyphen', () => ({ default: () => hyphenator }));
-
-const wordHyphenation = (await import('../../src/engines/wordHyphenation'))
-  .default;
+import wordHyphenation from '../../src/engines/wordHyphenation';
 
 const instance = wordHyphenation();
 
 describe('wordHyphenation', () => {
-  beforeEach(() => {
-    hyphenator.mockClear();
-  });
-
   test('should return empty array if null param', () => {
     expect(instance(null)).toEqual([]);
-    expect(hyphenator.mock.calls).toHaveLength(0);
   });
 
   test('should return empty part for empty string', () => {
     expect(instance('')).toEqual(['']);
-    expect(hyphenator.mock.calls).toHaveLength(1);
   });
 
   test('should hyphenate word', () => {
-    const word = 'something';
-    const parts = instance(word);
-
-    expect(parts).toHaveLength(2);
-    expect(parts[0]).toEqual('some');
-    expect(parts[1]).toEqual('thing');
-    expect(hyphenator.mock.calls).toHaveLength(1);
+    expect(instance('something')).toEqual(['some', 'thing']);
   });
 
   test('should hyphenate word in many parts', () => {
-    const word = 'neumonia';
-    const parts = instance(word);
+    expect(instance('neumonia')).toEqual(['neu', 'mo', 'nia']);
+  });
 
-    expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('neu');
-    expect(parts[1]).toEqual('mo');
-    expect(parts[2]).toEqual('nia');
-    expect(hyphenator.mock.calls).toHaveLength(1);
+  test('should not hyphenate words below the minimum length', () => {
+    expect(instance('cat')).toEqual(['cat']);
+    expect(instance('fino')).toEqual(['fino']);
+  });
+
+  test('should never leave less than two characters on a line', () => {
+    for (const parts of [instance('ability'), instance('idea')]) {
+      expect(parts[0].length).toBeGreaterThan(1);
+      expect(parts[parts.length - 1].length).toBeGreaterThan(1);
+    }
+  });
+
+  test('should keep punctuation attached to the word', () => {
+    expect(instance('viernes,')).toEqual(['viernes,']);
+    expect(instance('something.')).toEqual(['some', 'thing.']);
+  });
+
+  test('should break repeated syllables', () => {
+    expect(instance('possesses')).toEqual(['pos', 'sess', 'es']);
+    expect(instance('alababa')).toEqual(['al', 'aba', 'ba']);
   });
 
   test('should hyphenate word with soft hyphen', () => {
-    const word = 'so\u00admething';
-    const parts = instance(word);
-
-    expect(parts).toHaveLength(2);
-    expect(parts[0]).toEqual('so');
-    expect(parts[1]).toEqual('mething');
-    expect(hyphenator.mock.calls).toHaveLength(0);
+    expect(instance('so­mething')).toEqual(['so', 'mething']);
   });
 
   test('should hyphenate word with many soft hyphen', () => {
-    const word = 'so\u00adme\u00adthing';
-    const parts = instance(word);
-
-    expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('so');
-    expect(parts[1]).toEqual('me');
-    expect(parts[2]).toEqual('thing');
-    expect(hyphenator.mock.calls).toHaveLength(0);
+    expect(instance('so­me­thing')).toEqual(['so', 'me', 'thing']);
   });
 
   test('should get previously hyphenated word from cache', () => {
-    const word = 'programming';
-
-    // Hyphen not called yet
-    expect(hyphenator.mock.calls).toHaveLength(0);
-
-    instance(word);
-
-    // Hyphen called once for word
-    expect(hyphenator.mock.calls).toHaveLength(1);
-
-    const parts = instance(word);
-
-    expect(parts).toHaveLength(3);
-    expect(parts[0]).toEqual('pro');
-    expect(parts[1]).toEqual('gram');
-    expect(parts[2]).toEqual('ming');
-
-    // Hyphen not called again. Got value from cache
-    expect(hyphenator.mock.calls).toHaveLength(1);
+    expect(instance('programming')).toEqual(['pro', 'gram', 'ming']);
+    expect(instance('programming')).toBe(instance('programming'));
   });
 });

@@ -9,6 +9,7 @@ const fit = (state: State, fragment: Fragment): StepResult => {
   state.placed.push({
     item,
     y: state.usedHeight,
+    height: item.height,
     part: { isFirst: fragment.isFirst, isLast: true },
   });
 

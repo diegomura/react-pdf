@@ -2,6 +2,8 @@ import isRow from '../item/isRow';
 import isColumn from '../item/isColumn';
 import isLeaf from '../item/isLeaf';
 import fill from '../fill/fill';
+import fragmentHeight from '../fragment/height';
+import reach from '../fragment/reach';
 import {
   FillResult,
   Fragment,
@@ -40,6 +42,7 @@ export const place = (
       placed.push({
         item: child,
         y: 0,
+        height: broke ? height : reach(inner.placed),
         part: { isFirst, isLast: !broke },
         children: inner.placed,
       });
@@ -65,6 +68,7 @@ export const place = (
       placed.push({
         item: split.current,
         y: 0,
+        height,
         part: { isFirst, isLast: false },
       });
       remaining.push({ item: split.next, isFirst: false, children: [] });
@@ -72,7 +76,12 @@ export const place = (
       continue;
     }
 
-    placed.push({ item: child, y: 0, part: { isFirst, isLast: true } });
+    placed.push({
+      item: child,
+      y: 0,
+      height: fragmentHeight({ item: child, isFirst, children: [] }),
+      part: { isFirst, isLast: true },
+    });
   }
 
   return { placed, remaining };
@@ -98,6 +107,9 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
   state.placed.push({
     item,
     y: state.usedHeight,
+    height: broke
+      ? availableHeight
+      : inner.placed.reduce((acc, child) => Math.max(acc, child.height), 0),
     part: { isFirst, isLast: !broke },
     children: inner.placed,
   });

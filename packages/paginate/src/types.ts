@@ -2,6 +2,7 @@ export interface LeafItem {
   kind: 'leaf';
   height: number;
   id?: string;
+  data?: unknown;
   split?: (availHeight: number) => { current: LeafItem; next: LeafItem } | null;
 }
 
@@ -11,6 +12,7 @@ export interface SpacerItem {
   kind: 'spacer';
   height: number;
   id?: string;
+  data?: unknown;
   split?: (
     availHeight: number,
   ) => { current: SpacerItem; next: SpacerItem } | null;
@@ -19,23 +21,28 @@ export interface SpacerItem {
 export interface ColumnItem {
   kind: 'column';
   id?: string;
+  data?: unknown;
   children: Item[];
 }
 
 export interface RowItem {
   kind: 'row';
   id?: string;
+  data?: unknown;
   children: Item[];
 }
 
 export interface PenaltyItem {
   kind: 'penalty';
   type: 'forbid' | 'force';
+  id?: string;
+  data?: unknown;
 }
 
 export interface LazyItem {
   kind: 'lazy';
   id?: string;
+  data?: unknown;
   materialize: (ctx: Ctx) => Item[];
 }
 
@@ -49,12 +56,12 @@ export type Item =
 
 export interface Ctx {
   pageNumber: number;
-  totalPages?: number;
 }
 
 export interface PlacedItem {
   item: Item;
   y: number;
+  height: number;
   part: { isFirst: boolean; isLast: boolean };
   children?: PlacedItem[];
 }
@@ -99,7 +106,6 @@ export interface State {
   bestBreak: BestBreak | null;
   pendingLazy: PendingLazy | null;
   pageNumber: number;
-  totalPages?: number;
   height: number;
   canForce: boolean;
 }

@@ -1040,6 +1040,38 @@ describe('paginate', () => {
     });
   });
 
+  describe('item data payload', () => {
+    test('data rides through placement untouched, including splits', () => {
+      const first = { tag: 'first' };
+      const rest = { tag: 'rest' };
+
+      const splitting: LeafItem = {
+        kind: 'leaf',
+        height: 40,
+        data: first,
+        split: (avail) => ({
+          current: { kind: 'leaf', height: avail, data: first },
+          next: { kind: 'leaf', height: 40 - avail, data: rest },
+        }),
+      };
+
+      const root: Item = {
+        kind: 'column',
+        data: rest,
+        children: [leaf(10, 'a'), splitting],
+      };
+
+      const pages = paginate(root, 30);
+
+      expect(pages).toHaveLength(2);
+      expect(pages[0][0].item.data).toBe(rest);
+      expect(pages[0][0].children?.[1].item.data).toBe(first);
+      expect(pages[1][0].children?.[0].item.data).toBe(rest);
+
+      snapshotPages(pages, region(30), 'data-passthrough');
+    });
+  });
+
   describe('lazy items', () => {
     test('ctx type surfaces through public API (compile-time smoke)', () => {
       // Just a type-level check: LazyItem and Ctx are exported.
@@ -1047,7 +1079,6 @@ describe('paginate', () => {
       const lazy: LazyItem = {
         kind: 'lazy',
         materialize: (ctx: Ctx) => {
-          // ctx.pageNumber exists; ctx.totalPages is optional
           readCtx(ctx);
           return [];
         },

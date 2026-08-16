@@ -60,6 +60,11 @@ The paginator guards against infinite loops with a `MAX_PAGES = 10_000` cap.
 
 The root is a single `Item`, and the tree hangs off it. Page padding belongs in `height`, since it applies to every page.
 
+Every item also accepts `id?: string` (a label surfaced in warnings) and
+`data?: unknown` — an opaque payload the engine never reads and hands back on
+the corresponding `PlacedItem`, so a consumer can recover whatever the item
+stood for without keeping side maps.
+
 An item is one of five kinds:
 
 ### `LeafItem`
@@ -161,7 +166,7 @@ An item whose contents depend on the page number. `materialize(ctx)` is called w
 {
   kind: 'lazy';
   id?: string;
-  materialize: (ctx: { pageNumber: number; totalPages?: number }) => Item[];
+  materialize: (ctx: { pageNumber: number }) => Item[];
 }
 ```
 

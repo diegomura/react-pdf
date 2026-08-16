@@ -1,4 +1,5 @@
 import fill from '../fill/fill';
+import reach from '../fragment/reach';
 import { CONTINUE, DECLINE, DONE } from '../step';
 import { ColumnItem, Fragment, State, StepResult } from '../types';
 
@@ -42,6 +43,7 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
   state.placed.push({
     item,
     y: state.usedHeight,
+    height: broke ? availableHeight : reach(inner.placed),
     part: { isFirst, isLast: !broke },
     children: inner.placed,
   });

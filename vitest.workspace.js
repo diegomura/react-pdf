@@ -16,4 +16,5 @@ export default [
   'packages/mermaid',
   'packages/pdfkit',
   'packages/paginate',
+  'packages/hyphenate',
 ];

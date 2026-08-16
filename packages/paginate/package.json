@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/paginate",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Standalone pagination engine for react-pdf",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

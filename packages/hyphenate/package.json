@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/hyphenate",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Fast Liang hyphenation with language scoped exports",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",

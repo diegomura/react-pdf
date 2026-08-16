@@ -15,6 +15,7 @@ const trySplitLeaf = (
   state.placed.push({
     item: result.current,
     y: state.usedHeight,
+    height: result.current.height,
     part: { isFirst, isLast: false },
   });
 

@@ -31,14 +31,20 @@ const spillOntoOwnPage = (
       placeRow(fragment, height, state.pageNumber, true)?.placed ?? [];
 
     const placed = [
-      { item, y: 0, part: { isFirst, isLast: true }, children: placedChildren },
+      {
+        item,
+        y: 0,
+        height,
+        part: { isFirst, isLast: true },
+        children: placedChildren,
+      },
     ];
 
     return DONE({ placed, remaining: state.fragments.slice(i + 1) });
   }
 
   return DONE({
-    placed: [{ item, y: 0, part: { isFirst, isLast: true } }],
+    placed: [{ item, y: 0, height, part: { isFirst, isLast: true } }],
     remaining: state.fragments.slice(i + 1),
   });
 };

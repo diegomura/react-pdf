@@ -28,7 +28,7 @@ Prior art: InDesign parent pages with a primary text frame, QuestPDF's header/co
 - **Per-page layout variants** (`layout` receiving `{ pageNumber }` for first/odd/even pages — the Word feature). The v1 signature is `{ children }` only; extra named props can arrive later without breaking.
 - **Marks / running headers** (chrome reading strings from placed content — TeX `\mark`, CSS `string-set`). Needs only an adapter walk over placed output plus a running state in the sequential loop; designed later.
 - **Table of contents.** A document-global fixpoint generalizing the existing totals round (collect anchor→page, re-run until stable, capped). Pairs with marks, not with this feature.
-- **Footnotes.** A page-local budget fixpoint with a known oscillation hazard (TeX's insertions problem). The layout API only leaves room for a future footnote area; it does not attempt one.
+- **Footnotes.** A page-local budget fixpoint with a known oscillation hazard (TeX's insertions problem). Not attempted — but the design contemplates it: the future mechanism is per-page retry (snapshot paginator state → fill → measure footnotes for what landed → restore and refill at the reduced height, capped against oscillation), which requires the paginator-state invariant in §5.3. The footnote *area* fits the template model as a future marker element or the slot's bottom edge — deliberately undecided here.
 - **Multi-slot pages** (columns, regions). Exactly one slot in v1; the validation error keeps the door visible.
 - **Varying slot width.** Explicitly rejected (§5.4).
 
@@ -59,7 +59,8 @@ const PageLayout = ({ children }) => (
 
 - The template repeats on every page the `Page` produces. Repetition is definitional — no `fixed` needed inside a template, and `fixed` inside a template is ignored.
 - `children` must be rendered exactly once. Zero or multiple slots is a layout-time error naming the component.
-- Dynamic chrome uses the existing render-prop channel. The `layout` component itself is instantiated per pagination round, not per page; per-page work happens in its dynamic nodes. This keeps static templates measured once (memoized via `hasDynamic`) and localizes per-page cost to the nodes that need it.
+- Dynamic chrome uses the existing render-prop channel. The `layout` component itself is instantiated per pagination round, not per page; per-page work happens in its dynamic nodes. This keeps static templates measured once — dynamism stays opt-in and *detectable* (`hasDynamic`); passing page props to the component would make every template per-page-dynamic by signature, killing the static fast path.
+- When template-level page props do land (first/odd/even variants, §3), they arrive as extra named props on the same object — non-breaking — and per-page cost is controlled by memoizing on structural equality of the produced chrome tree: re-render each page, reuse the previous measurement when the tree is identical.
 - Absolutely-positioned template elements repeat like everything else — full-page backgrounds and watermarks are the intended use, and get documented as such.
 - `wrap={false}`: single page, slot without a height ceiling; chrome unaffected.
 - Duplicate-sensitive props in chrome (`bookmark`, link `id`s) are stripped on repetitions, same policy as continuation pages.
@@ -100,6 +101,7 @@ p.done;         // true when the stream is exhausted
 ```
 
 - Internal state (fragments, lazy bookkeeping, page numbering) stays sealed — no `Fragment` exposure, no caller mutation of in-flight state.
+- **Invariant: paginator state is cheaply snapshotable.** Fragment wrappers must be shallow-cloneable with items shared immutably — in particular, lazy materialization may not make un-cloneable in-place mutations the only record of progress. This is what keeps a future `tryNext(height)` / snapshot-restore API (the footnote fixpoint hook, §3) an additive change instead of a redesign.
 - `paginate(root, height)` remains as the loop wrapper and keeps its `MAX_PAGES` backstop; iterator callers own their own termination.
 - Everything below `fill` — `repeat` prefixes, progress guard, lazy `origin` re-materialization — is untouched and composes unchanged.
 

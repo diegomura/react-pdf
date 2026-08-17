@@ -1729,6 +1729,31 @@ describe('paginate', () => {
       ]);
       snapshotPages(paginate(column(items), 50), region(50), 'repeat-basic');
     });
+
+    test('a repeat child of a column inside a row re-emits on the row continuation', () => {
+      const items: Item[] = [
+        row([
+          column(
+            [repeatLeaf(10, 'h'), leaf(30, 'a'), leaf(30, 'b'), leaf(30, 'c')],
+            'cell',
+          ),
+        ]),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      const cell = (i: number) =>
+        pages[i][0].children?.[0].children?.map((c) => c.item.id);
+
+      expect(pages).toHaveLength(3);
+      expect(cell(0)).toEqual(['h', 'a']);
+      expect(cell(1)).toEqual(['h', 'b']);
+      expect(cell(2)).toEqual(['h', 'c']);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-row-nested',
+      );
+    });
   });
 
   describe('kitchen sink', () => {

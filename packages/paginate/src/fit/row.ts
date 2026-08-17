@@ -4,6 +4,7 @@ import isLeaf from '../item/isLeaf';
 import fill from '../fill/fill';
 import fragmentHeight from '../fragment/height';
 import reach from '../fragment/reach';
+import repeatPrefix from '../fragment/repeatPrefix';
 import {
   FillResult,
   Fragment,
@@ -51,7 +52,7 @@ export const place = (
         remaining.push({
           item: child,
           isFirst: false,
-          children: inner.remaining,
+          children: [...repeatPrefix(childFragment, inner), ...inner.remaining],
         });
       }
 

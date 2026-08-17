@@ -56,6 +56,30 @@ Each `PlacedItem` carries a `y` coordinate local to its parent and a `part: { is
 
 The paginator guards against infinite loops with a `MAX_PAGES = 10_000` cap.
 
+### `createPaginator(root)`
+
+Stepwise pagination: fills one page per call, so each page can have its own
+height — the hook for page templates whose chrome varies per page.
+
+```js
+import { createPaginator } from '@react-pdf/paginate';
+
+const paginator = createPaginator(root);
+const pages = [];
+
+while (!paginator.done) {
+  pages.push(paginator.next(heightForPage(pages.length + 1)));
+}
+```
+
+- `next(height)` packs exactly one page against `height` and returns its
+  `PlacedItem[]`. Calling it after `done` throws.
+- `done` is `true` once the content stream is exhausted.
+- Internal state is sealed — there is no way to modify the in-flight stream
+  between pages, by design.
+- `paginate(root, height)` is this loop with a constant height and the
+  `MAX_PAGES` safety cap; iterator callers own their own termination.
+
 ## Items
 
 The root is a single `Item`, and the tree hangs off it. Page padding belongs in `height`, since it applies to every page.

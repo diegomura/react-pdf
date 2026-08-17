@@ -1,17 +1,15 @@
-import fill from './fill/fill';
-import toFragments from './fragment/toFragments';
+import createPaginator from './paginator';
 import { Page, Item } from './types';
 
 const MAX_PAGES = 10_000;
 
 export const paginate = (root: Item, height: number): Page[] => {
   const pages: Page[] = [];
+  const paginator = createPaginator(root);
 
   let safety = 0;
-  let pageNumber = 1;
-  let fragments = toFragments([root]);
 
-  while (fragments.length > 0) {
+  while (!paginator.done) {
     safety += 1;
 
     if (safety > MAX_PAGES) {
@@ -20,19 +18,14 @@ export const paginate = (root: Item, height: number): Page[] => {
       );
     }
 
-    // canForce: true. If something doesn't fit even at the top of an empty
-    // page, moving it to the next page won't help — place it anyway.
-    const result = fill(fragments, height, pageNumber, true);
-
-    pages.push(result.placed);
-
-    pageNumber += 1;
-
-    fragments = result.remaining;
+    pages.push(paginator.next(height));
   }
 
   return pages;
 };
+
+export { default as createPaginator } from './paginator';
+export type { Paginator } from './paginator';
 
 export type {
   Item,

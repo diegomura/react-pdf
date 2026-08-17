@@ -30,10 +30,10 @@
 ### 4.1 The flag
 
 ```ts
-{ kind: 'leaf' | 'spacer' | 'column' | 'row' | 'lazy', repeat?: true, ... }
+{ kind: 'leaf' | 'column' | 'row' | 'lazy', repeat?: true, ... }
 ```
 
-Valid on every placeable item kind. Not valid on `penalty`.
+Valid on content-bearing item kinds. Not valid on `penalty` or `spacer` — spacers are derived spacing (edges, gaps), and a bare repeating space has no use case of its own; whatever spacing a repeated item needs travels inside it (its own edges) or is re-derived by the adapter.
 
 ### 4.2 Rules
 
@@ -50,7 +50,7 @@ The rule composes by locality: a `repeat` child of an inner column repeats on th
 
 ## 5. Engine changes (`@react-pdf/paginate`)
 
-- `types.ts`: add `repeat?: boolean` to `LeafItem`, `SpacerItem`, `ColumnItem`, `RowItem`, `LazyItem`.
+- `types.ts`: add `repeat?: boolean` to `LeafItem`, `ColumnItem`, `RowItem`, `LazyItem` (not `SpacerItem` or `PenaltyItem`).
 - **Single choke point**: continuation construction in `fit/column.ts` (both `DONE` paths — the forced-break-before-anything path and the normal broke path). When building `{ item, isFirst: false, children }`:
   1. Determine the column's completed `repeat` children: repeat-flagged direct children whose fragments are fully placed (present in neither `inner.remaining` nor as its partially-placed head).
   2. Build fresh fragments for them via `toFragments` and prepend to `inner.remaining`, subject to the progress guard (4.2.5).
@@ -75,7 +75,7 @@ The guard is evaluated where the prefix is built (`fit/column`), against the ful
 | Repeat item taller than the page | Progress guard drops the prefix on continuations; the item's original placement may still split normally. |
 | Repeat + `FORCE_BREAK` in parent | Forced break creates a continuation → prefix applies. |
 | Repeat item is `lazy` | Re-materializes per repetition with the landing `pageNumber`. |
-| Repeat on a `penalty` | Type error (flag not present on `PenaltyItem`). |
+| Repeat on a `penalty` or `spacer` | Type error (flag not present on those kinds). |
 | Repeat on a row's child | Ignored (rows don't fragment vertically per child). |
 | Multiple repeat children | All completed ones re-emit, original order, before remaining content. |
 | `wrap={false}` page (`height = Infinity`) | One page, no continuations, flag inert. |
@@ -91,7 +91,7 @@ Engine (`packages/paginate/tests/`):
 - Progress guard: repeat prefix ≥ page height → continuations proceed without prefix.
 - Lazy repeat: materializer sees the correct `pageNumber` on each page.
 - Nested: inner column's repeat child stops repeating once the inner column completes.
-- All paginate tests end with visual snapshots (`snapshotPages(...)`) per repo convention.
+- Every case above ends with a visual snapshot (`snapshotPages(...)`) per repo convention — snapshots are the primary assertion for repeat placement; structural checks alone don't catch visually wrong repetition.
 
 Layout (`packages/layout/tests/paginate/`):
 

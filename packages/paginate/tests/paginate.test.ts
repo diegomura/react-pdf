@@ -1754,6 +1754,90 @@ describe('paginate', () => {
         'repeat-row-nested',
       );
     });
+
+    test('a repeat item does not appear before its flow position', () => {
+      const items: Item[] = [
+        leaf(40, 'a'),
+        leaf(40, 'b'),
+        repeatLeaf(10, 'h'),
+        leaf(40, 'c'),
+        leaf(40, 'd'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['b', 'h'],
+        ['h', 'c'],
+        ['h', 'd'],
+      ]);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-placed-once',
+      );
+    });
+
+    test('multiple repeat items re-emit in original order', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h1'),
+        repeatLeaf(10, 'h2'),
+        leaf(25, 'a'),
+        leaf(25, 'b'),
+        leaf(25, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h1', 'h2', 'a'],
+        ['h1', 'h2', 'b'],
+        ['h1', 'h2', 'c'],
+      ]);
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-order');
+    });
+
+    test('repeats re-emit after a forced break', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h'),
+        leaf(20, 'a'),
+        FORCE_BREAK,
+        leaf(20, 'b'),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h', 'a'],
+        ['h', 'b'],
+      ]);
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'repeat-force-break',
+      );
+    });
+
+    test('repetition ends with the parent container', () => {
+      const table = column(
+        [repeatLeaf(10, 'th'), leaf(25, 'r1'), leaf(25, 'r2')],
+        'table',
+      );
+      const items: Item[] = [table, leaf(40, 'after1'), leaf(40, 'after2')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['table'],
+        ['table'],
+        ['after1'],
+        ['after2'],
+      ]);
+      expect(pages[0][0].children?.map((c) => c.item.id)).toEqual(['th', 'r1']);
+      expect(pages[1][0].children?.map((c) => c.item.id)).toEqual(['th', 'r2']);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-nested-lifetime',
+      );
+    });
   });
 
   describe('kitchen sink', () => {

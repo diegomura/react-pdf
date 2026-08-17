@@ -1727,6 +1727,7 @@ describe('paginate', () => {
         ['h', 'b'],
         ['h', 'c'],
       ]);
+
       snapshotPages(paginate(column(items), 50), region(50), 'repeat-basic');
     });
 
@@ -1748,6 +1749,7 @@ describe('paginate', () => {
       expect(cell(0)).toEqual(['h', 'a']);
       expect(cell(1)).toEqual(['h', 'b']);
       expect(cell(2)).toEqual(['h', 'c']);
+
       snapshotPages(
         paginate(column(items), 50),
         region(50),
@@ -1866,6 +1868,24 @@ describe('paginate', () => {
         paginate(column(items), 50),
         region(50),
         'repeat-oversized',
+      );
+    });
+
+    test('a splitting repeat item continues its remainder without a fresh copy', () => {
+      const items: Item[] = [
+        { ...splittable(80, 'h'), repeat: true },
+        leaf(15, 'a'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h/1'],
+        ['h/2', 'a'],
+      ]);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-mid-split',
       );
     });
   });

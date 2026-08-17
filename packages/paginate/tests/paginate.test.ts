@@ -27,7 +27,7 @@ const region = (height: number, width = 100) => ({ width, height });
 
 const snapshotPages = (
   pages: ReturnType<typeof paginate>,
-  r: ReturnType<typeof region>,
+  r: ReturnType<typeof region> | ReturnType<typeof region>[],
   name: string,
 ) => {
   if (pages.length === 0) return;
@@ -1961,7 +1961,11 @@ describe('paginate', () => {
         ['b'],
         ['c'],
       ]);
-      snapshotPages(pages, region(50), 'paginator-heights');
+      snapshotPages(
+        pages,
+        [region(50), region(30), region(50)],
+        'paginator-heights',
+      );
     });
 
     test('done flips after the last page and next() then throws', () => {

@@ -1773,6 +1773,7 @@ describe('paginate', () => {
         ['h', 'c'],
         ['h', 'd'],
       ]);
+
       snapshotPages(
         paginate(column(items), 50),
         region(50),
@@ -1887,6 +1888,28 @@ describe('paginate', () => {
         region(50),
         'repeat-mid-split',
       );
+    });
+
+    test('a repeat lazy re-materializes with the page it lands on', () => {
+      const header: LazyItem = {
+        kind: 'lazy',
+        repeat: true,
+        materialize: (ctx) => [leaf(10, `h${ctx.pageNumber}`)],
+      };
+      const items: Item[] = [
+        header,
+        leaf(30, 'a'),
+        leaf(30, 'b'),
+        leaf(30, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h1', 'a'],
+        ['h2', 'b'],
+        ['h3', 'c'],
+      ]);
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-lazy');
     });
   });
 

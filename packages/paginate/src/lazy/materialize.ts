@@ -1,4 +1,5 @@
 import toFragments from '../fragment/toFragments';
+import isRepeat from '../item/isRepeat';
 import { Fragment, LazyItem, State, StepResult } from '../types';
 import { REWIND } from '../step';
 
@@ -12,6 +13,12 @@ const materialize = (
   const item = fragment.item as LazyItem;
   const produced = item.materialize({ pageNumber: state.pageNumber });
   const materialized = toFragments(produced);
+
+  if (isRepeat(item)) {
+    materialized.forEach((f) => {
+      f.origin = item;
+    });
+  }
 
   state.fragments.splice(index, 1, ...materialized);
 

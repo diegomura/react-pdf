@@ -76,6 +76,7 @@ export interface Fragment {
   item: Item;
   isFirst: boolean;
   children: Fragment[];
+  origin?: LazyItem;
 }
 
 export interface FillResult {

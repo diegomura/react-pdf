@@ -61,7 +61,7 @@ const PageLayout = ({ children, pageNumber }) => (
 - The template repeats on every page the `Page` produces. Repetition is definitional — no `fixed` needed inside a template, and `fixed` inside a template is ignored.
 - `children` must be rendered exactly once. Zero or multiple slots is a layout-time error naming the component.
 - The layout component receives `{ children, pageNumber, totalPages, subPageNumber }` (`totalPages` is `undefined` in round 1, like render props). This supports first-page and odd/even variants from v1: different chrome per page, including mirrored sidebars — legal because the §5.4 invariant constrains slot *width*, not position.
-- Per-page cost is controlled by **structural-equality memoization**: the template is instantiated per page, and the measurement is reused whenever the produced chrome tree is structurally identical to the previous page's. A template that ignores its page props produces identical trees and is measured once. Function-valued props (render props) compare by reference and defeat equality — which is correct, since those templates need per-page measurement anyway.
+- v1 measures the template per page, unconditionally. This is affordable because the measure is a chrome-only pass and every built page runs a full relayout (chrome + content) regardless — the pre-measure is a fraction of per-page work. If profiling ever shows it mattering, the optimization is **structural-equality memoization** (reuse the measurement when the produced chrome tree is identical to the previous page's — a cheap short-circuiting JS walk versus a style+Yoga+text-shaping pass, so the compare always costs less than what it saves). An optimization door, not a v1 requirement.
 - Docs guidance: render props inside the template for text-level dynamism (page-number footers); component params for structural variation (cover chrome, odd/even).
 - Absolutely-positioned template elements repeat like everything else — full-page backgrounds and watermarks are the intended use, and get documented as such.
 - `wrap={false}`: single page, slot without a height ceiling; chrome unaffected.
@@ -82,7 +82,7 @@ n = 1
 paginator = createPaginator(content)
 while not paginator.done:
   chrome_n = layout(props(n))                                  # per page
-  slot_n   = measure(chrome_n at real page size, slot empty)   # reused if chrome_n ≡ chrome_{n-1} (§4.2)
+  slot_n   = measure(chrome_n at real page size, slot empty)   # chrome-only pass; memoizable later (§4.2)
   fragment = paginator.next(slot_n.height)
   pages.push(build(chrome_n, fragment))
   n += 1
@@ -129,7 +129,7 @@ Pages without a `layout` prop keep the existing template path (prefix band + abs
 
 ## 7. Release shape
 
-Everything ships together in the pagination-rewrite major: `layout`, `createPaginator`, the width/slot validations, and the suffix-`fixed` dev warning. Users migrate once, with the replacement available the whole time. The suffix-`fixed` error lands in the major after.
+The engine change (`createPaginator`) ships independently, whenever ready — `@react-pdf/paginate` has no released consumer yet, so it's purely additive. The user-facing surface ships together in the pagination-rewrite major: `layout`, the width/slot validations, and the suffix-`fixed` dev warning. Users migrate once, with the replacement available the whole time. The suffix-`fixed` error lands in the major after.
 
 ## 8. Edge cases
 
@@ -149,7 +149,7 @@ Everything ships together in the pagination-rewrite major: `layout`, `createPagi
 ## 9. Testing
 
 - **Engine** (`packages/paginate/tests/`, all ending in `snapshotPages(...)`): `createPaginator` parity with `paginate` (same input → same pages); varying heights per page (e.g. 50/30/50) placing content correctly; `done` semantics; `repeat` items across `next()` calls.
-- **Layout** (`packages/layout/tests/paginate/`): band template (header+footer) reserving space on every page; aside template (slot narrower than page, content measured at slot width); dynamic footer height shrinking a page's slot; first-page variant (taller cover chrome on page 1 only); odd/even mirrored aside (same slot width, moving position); memoization (a template ignoring its page props is measured once — assert via a measure spy); slot validation errors (0, 2 slots; slot ≤ 0); width-variance error; suffix-fixed warning fires; no-layout pages byte-identical to today (parity suite).
+- **Layout** (`packages/layout/tests/paginate/`): band template (header+footer) reserving space on every page; aside template (slot narrower than page, content measured at slot width); dynamic footer height shrinking a page's slot; first-page variant (taller cover chrome on page 1 only); odd/even mirrored aside (same slot width, moving position); slot validation errors (0, 2 slots; slot ≤ 0); width-variance error; suffix-fixed warning fires; no-layout pages byte-identical to today (parity suite).
 - **Renderer**: one end-to-end template document with visual snapshot.
 
 ## 10. Future unification (noted, not scheduled)

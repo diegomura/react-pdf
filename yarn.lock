@@ -5999,11 +5999,6 @@ hyphen@~1.6.4:
   resolved "https://registry.yarnpkg.com/hyphen/-/hyphen-1.6.6.tgz#970678bb5182e9ee957f1a76ba109849d16dcc04"
   integrity sha512-XtqmnT+b9n5MX+MsqluFAVTIenbtC25iskW0Z+jLd+awfhA+ZbWKWQMIvLJccGoa2bM1R6juWJ27cZxIFOmkWw==
 
-hyphen@~1.6.4:
-  version "1.6.6"
-  resolved "https://registry.yarnpkg.com/hyphen/-/hyphen-1.6.6.tgz#970678bb5182e9ee957f1a76ba109849d16dcc04"
-  integrity sha512-XtqmnT+b9n5MX+MsqluFAVTIenbtC25iskW0Z+jLd+awfhA+ZbWKWQMIvLJccGoa2bM1R6juWJ27cZxIFOmkWw==
-
 iconv-lite@0.6.3, iconv-lite@^0.6.2:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
@@ -7232,10 +7227,10 @@ mdn-data@2.0.30:
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.30.tgz#ce4df6f80af6cfbe218ecd5c552ba13c4dfa08cc"
   integrity sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==
 
-media-engine@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/media-engine/-/media-engine-1.0.3.tgz#be3188f6cd243ea2a40804a35de5a5b032f58dad"
-  integrity sha1-vjGI9s0kPqKkCASjXeWlsDL1ja0=
+media-engine@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/media-engine/-/media-engine-2.0.0.tgz#8d35dbb74d8986f297e839d2c56ff5f8cd01d841"
+  integrity sha512-FqNmlXKYrp5d3g7xEOMJb+6gXZE0fTssdyIQqYR4LbkifbNbS0hDylhNDOh8r6tCgLboHd8+mwgH2njgSYDpnQ==
 
 meow@^8.1.2:
   version "8.1.2"

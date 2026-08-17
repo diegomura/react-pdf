@@ -29,7 +29,11 @@ const repeatFragments = (fragment: Fragment, inner: FillResult): Fragment[] => {
       const output = fragment.children.filter((f) => f.origin === origin);
       if (output.every((f) => fullyPlaced(inner.placed, f.item)))
         sources.push(origin);
-    } else if (isRepeat(child.item) && fullyPlaced(inner.placed, child.item)) {
+
+      continue;
+    }
+
+    if (isRepeat(child.item) && fullyPlaced(inner.placed, child.item)) {
       sources.push(child.item);
     }
   }

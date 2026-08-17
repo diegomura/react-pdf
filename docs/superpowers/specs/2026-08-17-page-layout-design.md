@@ -37,6 +37,8 @@ Prior art: InDesign parent pages with a primary text frame, QuestPDF's header/co
 
 ### 4.1 Usage
 
+Naming: `layout` was chosen over `template` — the Next.js layout precedent transfers users' intuition exactly (same concept, same `{ children }` signature), outweighing the overlap with react-pdf's internal "layout step" vocabulary. Decided 2026-08-18; don't reopen in PR review.
+
 ```jsx
 const PageLayout = ({ children, pageNumber }) => (
   <>

@@ -46,6 +46,13 @@ const leaf = (height: number, id?: string): LeafItem => ({
   ...(id !== undefined ? { id } : {}),
 });
 
+const repeatLeaf = (height: number, id: string): LeafItem => ({
+  kind: 'leaf',
+  height,
+  id,
+  repeat: true,
+});
+
 // Parts are numbered from the first slice: an item that never splits keeps its
 // plain id, one that splits reads b/1, b/2, b/3…
 const splittable = (height: number, id: string, part = 1): LeafItem => ({
@@ -1702,6 +1709,25 @@ describe('paginate', () => {
       expect(colOnPage2?.children?.map((c) => c.item.id)).toEqual(['c3']);
 
       snapshotPages(pages, region(100), 'row-with-column-child-split');
+    });
+  });
+
+  describe('repeat', () => {
+    test('a repeat leaf re-emits at the top of every continuation', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h'),
+        leaf(30, 'a'),
+        leaf(30, 'b'),
+        leaf(30, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h', 'a'],
+        ['h', 'b'],
+        ['h', 'c'],
+      ]);
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-basic');
     });
   });
 

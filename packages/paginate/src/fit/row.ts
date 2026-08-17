@@ -49,10 +49,12 @@ export const place = (
       });
 
       if (broke) {
+        const repeats = repeatPrefix(childFragment, inner);
+
         remaining.push({
           item: child,
           isFirst: false,
-          children: [...repeatPrefix(childFragment, inner), ...inner.remaining],
+          children: [...repeats, ...inner.remaining],
         });
       }
 

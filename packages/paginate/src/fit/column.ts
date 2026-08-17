@@ -51,10 +51,12 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
 
   if (!broke) return CONTINUE();
 
+  const repeats = repeatPrefix(fragment, inner);
+
   const continuation: Fragment = {
     item,
     isFirst: false,
-    children: [...repeatPrefix(fragment, inner), ...inner.remaining],
+    children: [...repeats, ...inner.remaining],
   };
 
   return DONE({

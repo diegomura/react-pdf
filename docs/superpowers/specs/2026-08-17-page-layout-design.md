@@ -19,13 +19,14 @@ Prior art: InDesign parent pages with a primary text frame, QuestPDF's header/co
 
 - `<Page layout={PageLayout}>` where `PageLayout` is an ordinary component receiving `{ children }`; where it renders `children` is where page content flows. Chrome repeats on every page and reserves its space by construction.
 - Dynamic chrome (`<Text render={({ pageNumber }) => ...} />` inside the template), including chrome whose **height varies per page** — the flow region is measured just-in-time for each page.
+- Per-page structural variants from v1: the layout component receives page props, so "different first page" and odd/even mirroring work out of the box.
 - `@react-pdf/paginate` gains a sealed stepwise API (`createPaginator`) so the adapter can pass a different height per page.
 - `fixed` becomes prefix-only; `layout` is the suffix/chrome story. One breaking major, one migration.
 - Delete the `flowTop` band arithmetic for pages that use `layout`.
 
 ## 3. Non-goals (explicit doors, not walls)
 
-- **Per-page layout variants** (`layout` receiving `{ pageNumber }` for first/odd/even pages — the Word feature). The v1 signature is `{ children }` only; extra named props can arrive later without breaking.
+- **Footnote slot** (`layout` receiving `{ footnotes }` as a second slot, placed like `children`; absent → notes default to the slot's bottom edge; margin placement gives sidenotes and needs no retry since it doesn't steal slot height). Sketched here so the future API is contemplated; not built in v1.
 - **Marks / running headers** (chrome reading strings from placed content — TeX `\mark`, CSS `string-set`). Needs only an adapter walk over placed output plus a running state in the sequential loop; designed later.
 - **Table of contents.** A document-global fixpoint generalizing the existing totals round (collect anchor→page, re-run until stable, capped). Pairs with marks, not with this feature.
 - **Footnotes.** A page-local budget fixpoint with a known oscillation hazard (TeX's insertions problem). Not attempted — but the design contemplates it: the future mechanism is per-page retry (snapshot paginator state → fill → measure footnotes for what landed → restore and refill at the reduced height, capped against oscillation), which requires the paginator-state invariant in §5.3. The footnote *area* fits the template model as a future marker element or the slot's bottom edge — deliberately undecided here.
@@ -37,9 +38,9 @@ Prior art: InDesign parent pages with a primary text frame, QuestPDF's header/co
 ### 4.1 Usage
 
 ```jsx
-const PageLayout = ({ children }) => (
+const PageLayout = ({ children, pageNumber }) => (
   <>
-    <Header />
+    <Header title={pageNumber === 1 ? 'Report' : 'Report (cont.)'} />
     <View style={{ flexDirection: 'row', flexGrow: 1 }}>
       <Aside />
       {children}
@@ -59,8 +60,9 @@ const PageLayout = ({ children }) => (
 
 - The template repeats on every page the `Page` produces. Repetition is definitional — no `fixed` needed inside a template, and `fixed` inside a template is ignored.
 - `children` must be rendered exactly once. Zero or multiple slots is a layout-time error naming the component.
-- Dynamic chrome uses the existing render-prop channel. The `layout` component itself is instantiated per pagination round, not per page; per-page work happens in its dynamic nodes. This keeps static templates measured once — dynamism stays opt-in and *detectable* (`hasDynamic`); passing page props to the component would make every template per-page-dynamic by signature, killing the static fast path.
-- When template-level page props do land (first/odd/even variants, §3), they arrive as extra named props on the same object — non-breaking — and per-page cost is controlled by memoizing on structural equality of the produced chrome tree: re-render each page, reuse the previous measurement when the tree is identical.
+- The layout component receives `{ children, pageNumber, totalPages, subPageNumber }` (`totalPages` is `undefined` in round 1, like render props). This supports first-page and odd/even variants from v1: different chrome per page, including mirrored sidebars — legal because the §5.4 invariant constrains slot *width*, not position.
+- Per-page cost is controlled by **structural-equality memoization**: the template is instantiated per page, and the measurement is reused whenever the produced chrome tree is structurally identical to the previous page's. A template that ignores its page props produces identical trees and is measured once. Function-valued props (render props) compare by reference and defeat equality — which is correct, since those templates need per-page measurement anyway.
+- Docs guidance: render props inside the template for text-level dynamism (page-number footers); component params for structural variation (cover chrome, odd/even).
 - Absolutely-positioned template elements repeat like everything else — full-page backgrounds and watermarks are the intended use, and get documented as such.
 - `wrap={false}`: single page, slot without a height ceiling; chrome unaffected.
 - Duplicate-sensitive props in chrome (`bookmark`, link `id`s) are stripped on repetitions, same policy as continuation pages.
@@ -79,8 +81,8 @@ Pagination is sequential, so before filling page *n*, `props(n)` (`pageNumber`, 
 n = 1
 paginator = createPaginator(content)
 while not paginator.done:
-  chrome_n = render template's dynamic nodes with props(n)   # skipped if static
-  slot_n   = measure(chrome_n at real page size, slot empty)  # memoized if static
+  chrome_n = layout(props(n))                                  # per page
+  slot_n   = measure(chrome_n at real page size, slot empty)   # reused if chrome_n ≡ chrome_{n-1} (§4.2)
   fragment = paginator.next(slot_n.height)
   pages.push(build(chrome_n, fragment))
   n += 1
@@ -139,6 +141,7 @@ Everything ships together in the pagination-rewrite major: `layout`, `createPagi
 | Template taller than the page (slot ≤ 0) | Layout-time error |
 | Slot width differs across pages | Error naming the page (§5.4) |
 | Dynamic chrome height varies per page | Supported; that page's slot height shrinks/grows (§5.1) |
+| First-page / odd-even chrome variants | Supported via page props; slot position may move, width may not (§5.4) |
 | `totalPages` chrome changes page count | Bounded re-run until stable (§5.2) |
 | `wrap={false}` | One page, slot height unconstrained |
 | `bookmark` / link ids in chrome | Stripped on repetitions |
@@ -146,7 +149,7 @@ Everything ships together in the pagination-rewrite major: `layout`, `createPagi
 ## 9. Testing
 
 - **Engine** (`packages/paginate/tests/`, all ending in `snapshotPages(...)`): `createPaginator` parity with `paginate` (same input → same pages); varying heights per page (e.g. 50/30/50) placing content correctly; `done` semantics; `repeat` items across `next()` calls.
-- **Layout** (`packages/layout/tests/paginate/`): band template (header+footer) reserving space on every page; aside template (slot narrower than page, content measured at slot width); dynamic footer height shrinking a page's slot; slot validation errors (0, 2 slots; slot ≤ 0); width-variance error; suffix-fixed warning fires; no-layout pages byte-identical to today (parity suite).
+- **Layout** (`packages/layout/tests/paginate/`): band template (header+footer) reserving space on every page; aside template (slot narrower than page, content measured at slot width); dynamic footer height shrinking a page's slot; first-page variant (taller cover chrome on page 1 only); odd/even mirrored aside (same slot width, moving position); memoization (a template ignoring its page props is measured once — assert via a measure spy); slot validation errors (0, 2 slots; slot ≤ 0); width-variance error; suffix-fixed warning fires; no-layout pages byte-identical to today (parity suite).
 - **Renderer**: one end-to-end template document with visual snapshot.
 
 ## 10. Future unification (noted, not scheduled)

@@ -1,5 +1,14 @@
 # @react-pdf/stylesheet
 
+## 6.2.4
+
+### Patch Changes
+
+- [#3496](https://github.com/diegomura/react-pdf/pull/3496) [`d38d17759b3856ab64c69101bd359aace4b532fc`](https://github.com/diegomura/react-pdf/commit/d38d17759b3856ab64c69101bd359aace4b532fc) Thanks [@diegomura](https://github.com/diegomura)! - Bump media-engine to v2.0.0
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.4
+
 ## 6.2.3
 
 ### Patch Changes

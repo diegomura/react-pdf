@@ -21,9 +21,9 @@
 ## 3. Non-goals
 
 - **Page-level header band.** Direct `fixed` children of a `Page` keep the current template treatment in `splitPage` (`flowTop` band subtraction + rebuild slot). Migrating the band onto `repeat` is a possible later cleanup, not part of this change.
-- **Repetition inside rows.** Rows lay children side by side; repetition is a vertical-flow concept. `repeat` on a row's *children* is ignored. `repeat` on a row itself (as a column child) is the table-header case and is supported.
+- **Repetition inside rows.** Rows lay children side by side; repetition is a vertical-flow concept. `repeat` on a row's _children_ is ignored. `repeat` on a row itself (as a column child) is the table-header case and is supported.
 - **Bottom-anchored repetition (footers).** Footers live in page padding today and keep working that way. A `repeatAfter`/footer band is out of scope.
-- **Legacy's early appearance.** Legacy pulled upcoming fixed siblings onto pages *before* the flow reached them (`futureFixedNodes`). This was a quirk, not a behavior to preserve.
+- **Legacy's early appearance.** Legacy pulled upcoming fixed siblings onto pages _before_ the flow reached them (`futureFixedNodes`). This was a quirk, not a behavior to preserve.
 
 ## 4. Semantics
 
@@ -38,10 +38,10 @@ Valid on content-bearing item kinds. Not valid on `penalty` or `spacer` — spac
 ### 4.2 Rules
 
 1. **Scope.** Repetition is relative to the item's immediate parent column. When that column produces a continuation fragment (page break or forced break inside it), the continuation's children begin with fresh copies of the column's completed `repeat` children, in their original relative order, followed by the column's remaining content.
-2. **Placed-once.** An item re-emits only on continuations created *after* it has fully placed (its last fragment committed). Before the flow reaches it, it does not appear early. While it is itself mid-split, the continuation carries its own remainder — not an additional fresh copy.
+2. **Placed-once.** An item re-emits only on continuations created _after_ it has fully placed (its last fragment committed). Before the flow reaches it, it does not appear early. While it is itself mid-split, the continuation carries its own remainder — not an additional fresh copy. A split consumes the item's identity: once split, it does not re-emit on later continuations.
 3. **Fresh copies.** Each repetition is a new fragment of the original item: it carries its own `part` flags, may split like any item, and a `lazy` repetition re-materializes with the page number it lands on.
 4. **Lifetime.** Repetition ends with the parent: once the column's last fragment is placed, no continuation exists and nothing re-emits.
-5. **Progress guard.** If the repeat prefix alone fills or exceeds the available height at the top of a continuation, the prefix is dropped for that page and content proceeds without it. A page must always be able to place at least one non-repeat fragment; this keeps `repeat` from wedging the paginator (with `MAX_PAGES` remaining as the backstop).
+5. **Progress guard.** The prefix is dropped when the page it is built from placed nothing but repeat items (or repeat-lazy output) — a page must place at least one non-repeat fragment for repetition to continue, so `repeat` can never wedge the paginator (`MAX_PAGES` remains the backstop). Once dropped, the items are gone from the continuation and repetition ends for that container.
 6. **Output.** Repetitions appear in `Page[]` as ordinary `PlacedItem`s. No new output fields.
 
 ### 4.3 Nesting
@@ -51,34 +51,34 @@ The rule composes by locality: a `repeat` child of an inner column repeats on th
 ## 5. Engine changes (`@react-pdf/paginate`)
 
 - `types.ts`: add `repeat?: boolean` to `LeafItem`, `ColumnItem`, `RowItem`, `LazyItem` (not `SpacerItem` or `PenaltyItem`).
-- **Single choke point**: continuation construction in `fit/column.ts` (both `DONE` paths — the forced-break-before-anything path and the normal broke path). When building `{ item, isFirst: false, children }`:
-  1. Determine the column's completed `repeat` children: repeat-flagged direct children whose fragments are fully placed (present in neither `inner.remaining` nor as its partially-placed head).
+- **Two choke points**, both calling the shared `fragment/repeatPrefix.ts`: continuation construction in `fit/column.ts` (both `DONE` paths — the forced-break-before-anything path and the normal broke path), and `fit/row.ts`'s `place()`, which also builds continuations inline for column children of a row. At each site, when building `{ item, isFirst: false, children }`:
+  1. Determine the completed `repeat` children: repeat-flagged direct children whose fragments are fully placed (present in neither `inner.remaining` nor as its partially-placed head).
   2. Build fresh fragments for them via `toFragments` and prepend to `inner.remaining`, subject to the progress guard (4.2.5).
 - The root column's continuation is built by the same code path (the outer `fill` runs `fit/column` on the root fragment), so no changes to `index.ts`'s page loop.
-- Overflow paths (`deferToNextPage`, `spillOntoOwnPage`, `rewindToBestBreak`, `trySplitLeaf`) construct remaining lists *within* a level; they bubble up through `fit/column`'s continuation and need no changes.
+- Overflow paths (`deferToNextPage`, `spillOntoOwnPage`, `rewindToBestBreak`, `trySplitLeaf`) construct remaining lists _within_ a level; they bubble up through the continuation-building sites above and need no changes of their own.
 - `README.md`: document the flag alongside the other item behaviors.
 
 ### Progress guard placement
 
-The guard is evaluated where the prefix is built (`fit/column`), against the full page height (`state.height`), not the current page's leftover: the prefix is consumed at the *top of the next page*, where the full height is available. Prefix height is the sum of the repeat items' heights; if it is `>= state.height`, prepend nothing.
+The guard is evaluated where the prefix is built (`fragment/repeatPrefix.ts`): if every placement on the just-filled page is a repeat item or repeat-lazy output, the prefix is omitted. A height-based check (prefix ≥ page height) proved unnecessary during implementation — items that completed on a page alongside any content necessarily sum to less than the page height, and an oversized force-placed repeat yields a repeats-only page, which this rule already catches.
 
 ## 6. Adapter changes (`@react-pdf/layout`)
 
-- `toItems.ts`: `flowChildren` currently filters `isFixed` at every depth. Change: at *nested* levels (not direct page children), a `fixed` in-flow node stays in the flow and maps to its item with `repeat: true`. Direct page children keep the existing template treatment in `splitPage`.
+- `toItems.ts`: `flowChildren` currently filters `isFixed` at every depth. Change: at _nested_ levels (not direct page children), a `fixed` in-flow node stays in the flow and maps to its item with `repeat: true`. Direct page children keep the existing template treatment in `splitPage`.
 - `fromPage.ts`: no changes — repetitions arrive as ordinary placements carrying their node in `data`.
 - Duplicate-sensitive props on repeated nodes (`bookmark`, `id` link destinations) are stripped on repetitions the same way `splitPage` strips `bookmark` from continuation pages. If this proves insufficient it is an adapter follow-up, not an engine concern.
 
 ## 7. Edge cases
 
-| Case | Behavior |
-|---|---|
-| Repeat item taller than the page | Progress guard drops the prefix on continuations; the item's original placement may still split normally. |
-| Repeat + `FORCE_BREAK` in parent | Forced break creates a continuation → prefix applies. |
-| Repeat item is `lazy` | Re-materializes per repetition with the landing `pageNumber`. |
-| Repeat on a `penalty` or `spacer` | Type error (flag not present on those kinds). |
-| Repeat on a row's child | Ignored (rows don't fragment vertically per child). |
-| Multiple repeat children | All completed ones re-emit, original order, before remaining content. |
-| `wrap={false}` page (`height = Infinity`) | One page, no continuations, flag inert. |
+| Case                                      | Behavior                                                                                                                      |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Repeat item taller than the page          | Force-places alone at the top of a page; that page holds only repeats, so the guard ends the repetition and content proceeds. |
+| Repeat + `FORCE_BREAK` in parent          | Forced break creates a continuation → prefix applies.                                                                         |
+| Repeat item is `lazy`                     | Re-materializes per repetition with the landing `pageNumber`.                                                                 |
+| Repeat on a `penalty` or `spacer`         | Type error (flag not present on those kinds).                                                                                 |
+| Repeat on a row's child                   | Ignored (rows don't fragment vertically per child).                                                                           |
+| Multiple repeat children                  | All completed ones re-emit, original order, before remaining content.                                                         |
+| `wrap={false}` page (`height = Infinity`) | One page, no continuations, flag inert.                                                                                       |
 
 ## 8. Testing
 

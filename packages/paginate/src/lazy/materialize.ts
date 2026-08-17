@@ -14,11 +14,7 @@ const materialize = (
   const produced = item.materialize({ pageNumber: state.pageNumber });
   const materialized = toFragments(produced);
 
-  if (isRepeat(item)) {
-    materialized.forEach((f) => {
-      f.origin = item;
-    });
-  }
+  if (isRepeat(item)) for (const f of materialized) f.origin = item;
 
   state.fragments.splice(index, 1, ...materialized);
 

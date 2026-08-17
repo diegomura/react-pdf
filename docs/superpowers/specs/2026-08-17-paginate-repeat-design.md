@@ -51,7 +51,7 @@ The rule composes by locality: a `repeat` child of an inner column repeats on th
 ## 5. Engine changes (`@react-pdf/paginate`)
 
 - `types.ts`: add `repeat?: boolean` to `LeafItem`, `ColumnItem`, `RowItem`, `LazyItem` (not `SpacerItem` or `PenaltyItem`).
-- **Two choke points**, both calling the shared `fragment/repeatPrefix.ts`: continuation construction in `fit/column.ts` (both `DONE` paths — the forced-break-before-anything path and the normal broke path), and `fit/row.ts`'s `place()`, which also builds continuations inline for column children of a row. At each site, when building `{ item, isFirst: false, children }`:
+- **Two choke points**, both calling the shared `fragment/repeatFragments.ts`: continuation construction in `fit/column.ts` (both `DONE` paths — the forced-break-before-anything path and the normal broke path), and `fit/row.ts`'s `place()`, which also builds continuations inline for column children of a row. At each site, when building `{ item, isFirst: false, children }`:
   1. Determine the completed `repeat` children: repeat-flagged direct children whose fragments are fully placed (present in neither `inner.remaining` nor as its partially-placed head).
   2. Build fresh fragments for them via `toFragments` and prepend to `inner.remaining`, subject to the progress guard (4.2.5).
 - The root column's continuation is built by the same code path (the outer `fill` runs `fit/column` on the root fragment), so no changes to `index.ts`'s page loop.
@@ -60,7 +60,7 @@ The rule composes by locality: a `repeat` child of an inner column repeats on th
 
 ### Progress guard placement
 
-The guard is evaluated where the prefix is built (`fragment/repeatPrefix.ts`): if every placement on the just-filled page is a repeat item or repeat-lazy output, the prefix is omitted. A height-based check (prefix ≥ page height) proved unnecessary during implementation — items that completed on a page alongside any content necessarily sum to less than the page height, and an oversized force-placed repeat yields a repeats-only page, which this rule already catches.
+The guard is evaluated where the prefix is built (`fragment/repeatFragments.ts`): if every placement on the just-filled page is a repeat item or repeat-lazy output, the prefix is omitted. A height-based check (prefix ≥ page height) proved unnecessary during implementation — items that completed on a page alongside any content necessarily sum to less than the page height, and an oversized force-placed repeat yields a repeats-only page, which this rule already catches.
 
 ## 6. Adapter changes (`@react-pdf/layout`)
 

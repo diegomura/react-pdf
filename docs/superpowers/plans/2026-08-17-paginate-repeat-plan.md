@@ -4,7 +4,7 @@
 
 **Goal:** An item flagged `repeat: true` re-emits at the head of every continuation of its parent column, and `@react-pdf/layout` maps nested in-flow `fixed` nodes onto it.
 
-**Architecture:** One new pure function (`fragment/repeatPrefix.ts`) computes the fresh fragments to prepend when `fit/column` builds a continuation. Detection is per-page and self-sustaining: a repeat item that fully places on a page is prepended to the next page's children, where the same detection sees it again. Repeat-flagged lazy items propagate through an `origin` tag on their materialized fragments. The layout adapter stops filtering nested `fixed` nodes out of the flow and marks their items `repeat: true` instead.
+**Architecture:** One new pure function (`fragment/repeatFragments.ts`) computes the fresh fragments to prepend when `fit/column` builds a continuation. Detection is per-page and self-sustaining: a repeat item that fully places on a page is prepended to the next page's children, where the same detection sees it again. Repeat-flagged lazy items propagate through an `origin` tag on their materialized fragments. The layout adapter stops filtering nested `fixed` nodes out of the flow and marks their items `repeat: true` instead.
 
 **Tech Stack:** TypeScript, Vitest, jest-image-snapshot (`snapshotPages` helper renders pages to PNG). Spec: `docs/superpowers/specs/2026-08-17-paginate-repeat-design.md`.
 
@@ -21,7 +21,7 @@ Run vitest only via `yarn vitest run <path>` (never `npx vitest` — it resolves
 ## File Structure
 
 - Create: `packages/paginate/src/item/isRepeat.ts` — repeat-flag guard, matching the `item/isLeaf.ts` one-function pattern
-- Create: `packages/paginate/src/fragment/repeatPrefix.ts` — computes continuation prefix fragments (detection + progress guard + lazy origins)
+- Create: `packages/paginate/src/fragment/repeatFragments.ts` — computes continuation prefix fragments (detection + progress guard + lazy origins)
 - Modify: `packages/paginate/src/types.ts` — `repeat?: boolean` on `LeafItem`/`ColumnItem`/`RowItem`/`LazyItem`; `origin?: LazyItem` on `Fragment`
 - Modify: `packages/paginate/src/fit/column.ts` — prepend prefix when building the continuation
 - Modify: `packages/paginate/src/lazy/materialize.ts` — tag materialized fragments of a repeat lazy with their `origin`
@@ -38,7 +38,7 @@ Run vitest only via `yarn vitest run <path>` (never `npx vitest` — it resolves
 **Files:**
 - Modify: `packages/paginate/src/types.ts`
 - Create: `packages/paginate/src/item/isRepeat.ts`
-- Create: `packages/paginate/src/fragment/repeatPrefix.ts`
+- Create: `packages/paginate/src/fragment/repeatFragments.ts`
 - Modify: `packages/paginate/src/fit/column.ts`
 - Test: `packages/paginate/tests/paginate.test.ts`
 
@@ -118,7 +118,7 @@ export default isRepeat;
 
 - [ ] **Step 5: Create the prefix builder**
 
-Create `packages/paginate/src/fragment/repeatPrefix.ts`:
+Create `packages/paginate/src/fragment/repeatFragments.ts`:
 
 ```ts
 import toFragments from './toFragments';
@@ -132,7 +132,7 @@ const fullyPlaced = (placed: PlacedItem[], item: Item) =>
 // its continuation. Only an item that fully placed on this page re-emits: a
 // mid-split item continues its own remainder instead, and an unplaced one is
 // still in `remaining` and needs no copy.
-const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
+const repeatFragments = (fragment: Fragment, inner: FillResult): Fragment[] => {
   const completed = fragment.children
     .map((child) => child.item)
     .filter((item) => isRepeat(item) && fullyPlaced(inner.placed, item));
@@ -140,7 +140,7 @@ const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
   return toFragments(completed);
 };
 
-export default repeatPrefix;
+export default repeatFragments;
 ```
 
 Why identity (`p.item === item`) works: a partially-placed child's continuation fragment keeps the same `item` reference but its placement carries `part.isLast: false`; a split leaf's remainder is a *different* item entirely. Both correctly fail the `fullyPlaced` check.
@@ -150,7 +150,7 @@ Why identity (`p.item === item`) works: a partially-placed child's continuation 
 In `packages/paginate/src/fit/column.ts`, add the import:
 
 ```ts
-import repeatPrefix from '../fragment/repeatPrefix';
+import repeatFragments from '../fragment/repeatFragments';
 ```
 
 and change the continuation construction (currently `children: inner.remaining`):
@@ -159,7 +159,7 @@ and change the continuation construction (currently `children: inner.remaining`)
   const continuation: Fragment = {
     item,
     isFirst: false,
-    children: [...repeatPrefix(fragment, inner), ...inner.remaining],
+    children: [...repeatFragments(fragment, inner), ...inner.remaining],
   };
 ```
 
@@ -194,7 +194,7 @@ git commit -m "feat(paginate): repeat flag re-emits items on parent continuation
 
 ### Task 2: Rule verification — placed-once, order, forced breaks, lifetime
 
-These behaviors should already hold from Task 1's design. Write the tests; if any fails, the bug is in `repeatPrefix`/`fit/column`, not the tests — the expected page shapes below are derived from the spec.
+These behaviors should already hold from Task 1's design. Write the tests; if any fails, the bug is in `repeatFragments`/`fit/column`, not the tests — the expected page shapes below are derived from the spec.
 
 **Files:**
 - Test: `packages/paginate/tests/paginate.test.ts` (inside `describe('repeat')`)
@@ -283,7 +283,7 @@ Derivations: *placed-once* — `h` sits after `b`, so page 1 is `a` alone (40+40
 yarn vitest run --project @react-pdf/paginate packages/paginate/tests/paginate.test.ts -t 'repeat'
 ```
 
-Expected: PASS (4 new snapshots written). If a test fails, compare the actual page arrays against the derivations above and fix `repeatPrefix` — do not adjust the expectations.
+Expected: PASS (4 new snapshots written). If a test fails, compare the actual page arrays against the derivations above and fix `repeatFragments` — do not adjust the expectations.
 
 - [ ] **Step 3: Commit**
 
@@ -301,7 +301,7 @@ A page that placed nothing but repeat items made no progress; repeating onto the
 Note: the spec (§4.2.5/§5) also describes a height-based guard (`prefix >= page height`). Analysis during planning showed it is unreachable — items that completed on a page necessarily sum to less than the page height, and oversized force-placed repeats are caught by the placed-only-repeats rule below. Implement only this rule; Task 7 aligns the spec wording.
 
 **Files:**
-- Modify: `packages/paginate/src/fragment/repeatPrefix.ts`
+- Modify: `packages/paginate/src/fragment/repeatFragments.ts`
 - Test: `packages/paginate/tests/paginate.test.ts` (inside `describe('repeat')`)
 
 - [ ] **Step 1: Write the failing test**
@@ -340,7 +340,7 @@ Expected: FAIL with the `[paginate] Exceeded 10000 pages` error (the infinite-lo
 
 - [ ] **Step 3: Add the guard**
 
-In `packages/paginate/src/fragment/repeatPrefix.ts`, insert at the top of `repeatPrefix`, before `completed` is computed:
+In `packages/paginate/src/fragment/repeatFragments.ts`, insert at the top of `repeatFragments`, before `completed` is computed:
 
 ```ts
   // A page that placed nothing but repeats made no progress — stop repeating
@@ -361,7 +361,7 @@ Expected: PASS (all repeat tests, one new snapshot).
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packages/paginate/src/fragment/repeatPrefix.ts packages/paginate/tests
+git add packages/paginate/src/fragment/repeatFragments.ts packages/paginate/tests
 git commit -m "feat(paginate): drop repeat prefix when a page makes no progress"
 ```
 
@@ -418,7 +418,7 @@ git commit -m "test(paginate): splitting repeat item does not duplicate"
 **Files:**
 - Modify: `packages/paginate/src/types.ts` (Fragment)
 - Modify: `packages/paginate/src/lazy/materialize.ts`
-- Modify: `packages/paginate/src/fragment/repeatPrefix.ts`
+- Modify: `packages/paginate/src/fragment/repeatFragments.ts`
 - Test: `packages/paginate/tests/paginate.test.ts` (inside `describe('repeat')`)
 
 - [ ] **Step 1: Write the failing test**
@@ -477,9 +477,9 @@ and after `const materialized = toFragments(produced);` add:
   if (isRepeat(item)) materialized.forEach((f) => (f.origin = item));
 ```
 
-- [ ] **Step 5: Teach `repeatPrefix` about origins**
+- [ ] **Step 5: Teach `repeatFragments` about origins**
 
-Replace the body of `packages/paginate/src/fragment/repeatPrefix.ts` with:
+Replace the body of `packages/paginate/src/fragment/repeatFragments.ts` with:
 
 ```ts
 import toFragments from './toFragments';
@@ -495,7 +495,7 @@ const fullyPlaced = (placed: PlacedItem[], item: Item) =>
 // still in `remaining` and needs no copy. A materialized fragment re-emits
 // its source lazy instead of its own item, so the lazy re-materializes next
 // page with a fresh page number.
-const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
+const repeatFragments = (fragment: Fragment, inner: FillResult): Fragment[] => {
   // A page that placed nothing but repeats made no progress — stop repeating
   // so content can advance (MAX_PAGES remains the backstop). Once dropped,
   // the items are gone from children and repetition ends for this container.
@@ -524,10 +524,10 @@ const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
   return toFragments(sources);
 };
 
-export default repeatPrefix;
+export default repeatFragments;
 ```
 
-Why this sees the materialized fragments at all: `fill` assigns the passed array to `state.fragments` without copying, and `materialize` splices into it — so by the time `fit/column` calls `repeatPrefix`, `fragment.children` already holds the lazy's tagged output in the lazy's old position (preserving prefix order).
+Why this sees the materialized fragments at all: `fill` assigns the passed array to `state.fragments` without copying, and `materialize` splices into it — so by the time `fit/column` calls `repeatFragments`, `fragment.children` already holds the lazy's tagged output in the lazy's old position (preserving prefix order).
 
 - [ ] **Step 6: Run the test to verify it passes, then the full engine suite**
 
@@ -725,7 +725,7 @@ Replace the "### Progress guard placement" paragraph in §5 with:
 ```markdown
 ### Progress guard placement
 
-The guard is evaluated where the prefix is built (`fragment/repeatPrefix.ts`, called from `fit/column`): if every placement on the just-filled page is a repeat item or repeat-lazy output, the prefix is omitted. A height-based check (prefix ≥ page height) proved unnecessary during implementation — items that completed on a page alongside any content necessarily sum to less than the page height, and an oversized force-placed repeat yields a repeats-only page, which this rule already catches.
+The guard is evaluated where the prefix is built (`fragment/repeatFragments.ts`, called from `fit/column`): if every placement on the just-filled page is a repeat item or repeat-lazy output, the prefix is omitted. A height-based check (prefix ≥ page height) proved unnecessary during implementation — items that completed on a page alongside any content necessarily sum to less than the page height, and an oversized force-placed repeat yields a repeats-only page, which this rule already catches.
 ```
 
 In the §7 table, replace the "Repeat item taller than the page" row with:

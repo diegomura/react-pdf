@@ -6,7 +6,7 @@
 
 **Architecture:** The engine is already internally stepwise — `paginate`'s while-loop calls `fill(fragments, height, pageNumber, canForce)` once per page. This plan lifts that loop body into a sealed iterator object (fragments, page numbering stay private; no `Fragment` exposure) and rebuilds `paginate` on top of it. Spec: `docs/superpowers/specs/2026-08-17-page-layout-design.md` §5.3.
 
-**Explicitly out of scope:** `tryNext`/snapshot-restore (the footnote hook). Do NOT add defensive copies of fragment arrays: `repeatPrefix`'s lazy-origin detection depends on `materialize` splicing into the live `fragment.children` (see Task 5 of the repeat plan) — a copy would silently break repeat-lazy. The snapshot invariant is satisfied later by cloning wrappers at snapshot time, not by changing fill semantics now.
+**Explicitly out of scope:** `tryNext`/snapshot-restore (the footnote hook). Do NOT add defensive copies of fragment arrays: `repeatFragments`'s lazy-origin detection depends on `materialize` splicing into the live `fragment.children` (see Task 5 of the repeat plan) — a copy would silently break repeat-lazy. The snapshot invariant is satisfied later by cloning wrappers at snapshot time, not by changing fill semantics now.
 
 **Tech Stack:** TypeScript, Vitest, image snapshots via the existing `snapshotPages` helper.
 

@@ -65,7 +65,12 @@ describe('createPaginator', () => {
       pages.push(paginator.next(50));
     }
 
-    expect(pages).toEqual(paginate(root, 50));
+    // Split remainders carry fresh `split` closures per run; a JSON
+    // round-trip drops functions so the comparison sees only structure.
+    const shape = (result: ReturnType<typeof paginate>) =>
+      JSON.parse(JSON.stringify(result));
+
+    expect(shape(pages)).toEqual(shape(paginate(root, 50)));
     snapshotPages(pages, region(50), 'paginator-parity');
   });
 });

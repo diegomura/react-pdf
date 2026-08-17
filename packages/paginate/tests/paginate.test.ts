@@ -1838,6 +1838,36 @@ describe('paginate', () => {
         'repeat-nested-lifetime',
       );
     });
+
+    test('repeats stop when a page places nothing but repeats', () => {
+      const items: Item[] = [repeatLeaf(45, 'h'), leaf(30, 'a'), leaf(30, 'b')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h'],
+        ['a'],
+        ['b'],
+      ]);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-progress-guard',
+      );
+    });
+
+    test('an oversized repeat force-places once and does not wedge', () => {
+      silenceWarnings();
+
+      const items: Item[] = [repeatLeaf(60, 'h'), leaf(30, 'a')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([['h'], ['a']]);
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-oversized',
+      );
+    });
   });
 
   describe('kitchen sink', () => {

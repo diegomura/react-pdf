@@ -10,6 +10,12 @@ const fullyPlaced = (placed: PlacedItem[], item: Item) =>
 // mid-split item continues its own remainder instead, and an unplaced one is
 // still in `remaining` and needs no copy.
 const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
+  // A page that placed nothing but repeats made no progress — stop repeating
+  // so content can advance (MAX_PAGES remains the backstop). Once dropped,
+  // the items are gone from children and repetition ends for this container.
+  if (inner.placed.length > 0 && inner.placed.every((p) => isRepeat(p.item)))
+    return [];
+
   const completed = fragment.children
     .map((child) => child.item)
     .filter((item) => isRepeat(item) && fullyPlaced(inner.placed, item));

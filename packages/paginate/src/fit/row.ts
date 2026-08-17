@@ -4,7 +4,7 @@ import isLeaf from '../item/isLeaf';
 import fill from '../fill/fill';
 import fragmentHeight from '../fragment/height';
 import reach from '../fragment/reach';
-import repeatPrefix from '../fragment/repeatPrefix';
+import repeatFragments from '../fragment/repeatFragments';
 import {
   FillResult,
   Fragment,
@@ -49,7 +49,7 @@ export const place = (
       });
 
       if (broke) {
-        const repeats = repeatPrefix(childFragment, inner);
+        const repeats = repeatFragments(childFragment, inner);
 
         remaining.push({
           item: child,

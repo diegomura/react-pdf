@@ -11,7 +11,7 @@ const fullyPlaced = (placed: PlacedItem[], item: Item) =>
 // still in `remaining` and needs no copy. A materialized fragment re-emits
 // its source lazy instead of its own item, so the lazy re-materializes next
 // page with a fresh page number.
-const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
+const repeatFragments = (fragment: Fragment, inner: FillResult): Fragment[] => {
   // A page that placed nothing but repeats made no progress — stop repeating
   // so content can advance (MAX_PAGES remains the backstop). Once dropped,
   // the items are gone from children and repetition ends for this container.
@@ -40,4 +40,4 @@ const repeatPrefix = (fragment: Fragment, inner: FillResult): Fragment[] => {
   return toFragments(sources);
 };
 
-export default repeatPrefix;
+export default repeatFragments;

@@ -1,5 +1,6 @@
 import fill from '../fill/fill';
 import reach from '../fragment/reach';
+import repeatFragments from '../fragment/repeatFragments';
 import { CONTINUE, DECLINE, DONE } from '../step';
 import { ColumnItem, Fragment, State, StepResult } from '../types';
 
@@ -50,10 +51,12 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
 
   if (!broke) return CONTINUE();
 
+  const repeats = repeatFragments(fragment, inner);
+
   const continuation: Fragment = {
     item,
     isFirst: false,
-    children: inner.remaining,
+    children: [...repeats, ...inner.remaining],
   };
 
   return DONE({

@@ -2,6 +2,7 @@ export interface LeafItem {
   kind: 'leaf';
   height: number;
   id?: string;
+  repeat?: boolean;
   data?: unknown;
   split?: (availHeight: number) => { current: LeafItem; next: LeafItem } | null;
 }
@@ -21,6 +22,7 @@ export interface SpacerItem {
 export interface ColumnItem {
   kind: 'column';
   id?: string;
+  repeat?: boolean;
   data?: unknown;
   children: Item[];
 }
@@ -28,6 +30,7 @@ export interface ColumnItem {
 export interface RowItem {
   kind: 'row';
   id?: string;
+  repeat?: boolean;
   data?: unknown;
   children: Item[];
 }
@@ -42,6 +45,7 @@ export interface PenaltyItem {
 export interface LazyItem {
   kind: 'lazy';
   id?: string;
+  repeat?: boolean;
   data?: unknown;
   materialize: (ctx: Ctx) => Item[];
 }
@@ -72,6 +76,7 @@ export interface Fragment {
   item: Item;
   isFirst: boolean;
   children: Fragment[];
+  origin?: LazyItem;
 }
 
 export interface FillResult {

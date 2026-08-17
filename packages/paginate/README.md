@@ -56,6 +56,30 @@ Each `PlacedItem` carries a `y` coordinate local to its parent and a `part: { is
 
 The paginator guards against infinite loops with a `MAX_PAGES = 10_000` cap.
 
+### `createPaginator(root)`
+
+Stepwise pagination: fills one page per call, so each page can have its own
+height — the hook for page templates whose chrome varies per page.
+
+```js
+import { createPaginator } from '@react-pdf/paginate';
+
+const paginator = createPaginator(root);
+const pages = [];
+
+while (!paginator.done) {
+  pages.push(paginator.next(heightForPage(pages.length + 1)));
+}
+```
+
+- `next(height)` packs exactly one page against `height` and returns its
+  `PlacedItem[]`. Calling it after `done` throws.
+- `done` is `true` once the content stream is exhausted.
+- Internal state is sealed — there is no way to modify the in-flight stream
+  between pages, by design.
+- `paginate(root, height)` is this loop with a constant height and the
+  `MAX_PAGES` safety cap; iterator callers own their own termination.
+
 ## Items
 
 The root is a single `Item`, and the tree hangs off it. Page padding belongs in `height`, since it applies to every page.
@@ -171,6 +195,33 @@ An item whose contents depend on the page number. `materialize(ctx)` is called w
 ```
 
 If a lazy item commits (any materialized child lands on the current page), it stays committed. If nothing from it fits, the lazy is restored and re-materializes on the next page with the updated `pageNumber` — so page-number labels, running headers, and the like stay accurate across re-flow.
+
+## Repeating items
+
+Any content-bearing item (`leaf`, `column`, `row`, `lazy` — not `spacer` or
+`penalty`) may carry `repeat: true`. When its parent column breaks, a fresh
+copy re-emits at the head of every continuation — the way a table header
+repeats on each page the table spans.
+
+```js
+const table = {
+  kind: 'column',
+  children: [{ kind: 'row', repeat: true, children: headerCells }, ...bodyRows],
+};
+```
+
+Rules:
+
+- An item re-emits only on continuations created after it fully placed. It
+  never appears before the flow reaches it, and a mid-split item continues
+  its own remainder instead of adding a copy. A split consumes the item's
+  identity: once split, it stops repeating.
+- Repetition is scoped to the immediate parent and ends with it — a table's
+  header stops repeating after the table's last fragment.
+- Each repetition is a fresh copy with its own `part` flags. A `repeat` lazy
+  re-materializes on every page it lands on, with that page's number.
+- A page that places nothing but repeats stops the repetition, so content
+  always advances.
 
 ## License
 

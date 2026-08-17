@@ -239,17 +239,22 @@ const drawPlacement = (
   }
 };
 
+// `region` is one {width, height} for every page, or an array with one
+// region per page — stepwise pagination gives each page its own height.
 const renderPagesToPNG = (pages, region, opts = {}) => {
   const scale = opts.scale ?? 3;
   const gap = opts.gap ?? 32;
   const margin = opts.margin ?? 24;
   const pageLabelHeight = 20;
 
+  const regions = Array.isArray(region) ? region : pages.map(() => region);
+
   const stackHeight =
-    pages.length * (region.height + pageLabelHeight) +
+    regions.reduce((acc, r) => acc + r.height + pageLabelHeight, 0) +
     Math.max(0, pages.length - 1) * gap;
 
-  const canvasW = (region.width + margin * 2) * scale;
+  const maxWidth = Math.max(...regions.map((r) => r.width));
+  const canvasW = (maxWidth + margin * 2) * scale;
   const canvasH = (stackHeight + margin * 2) * scale;
 
   const canvas = createCanvas(canvasW, canvasH);
@@ -263,18 +268,19 @@ const renderPagesToPNG = (pages, region, opts = {}) => {
   const colorFor = makeColorPicker();
 
   pages.forEach((page, pageIndex) => {
+    const pageRegion = regions[pageIndex];
     const pageX = margin * scale;
     const labelY = cursor * scale;
     const pageY = (cursor + pageLabelHeight) * scale;
-    const regionW = region.width * scale;
-    const regionH = region.height * scale;
+    const regionW = pageRegion.width * scale;
+    const regionH = pageRegion.height * scale;
 
     ctx.fillStyle = PAGE_TAG_COLOR;
     ctx.font = `${12 * scale}px SnapshotFont`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(
-      `page ${pageIndex + 1}  ·  ${region.width} × ${region.height}`,
+      `page ${pageIndex + 1}  ·  ${pageRegion.width} × ${pageRegion.height}`,
       pageX,
       labelY,
     );
@@ -296,7 +302,7 @@ const renderPagesToPNG = (pages, region, opts = {}) => {
         pageY,
         pageY + regionH,
         scale,
-        region.width,
+        pageRegion.width,
         counterRef,
         [],
       );
@@ -309,7 +315,7 @@ const renderPagesToPNG = (pages, region, opts = {}) => {
     ctx.lineWidth = 2;
     ctx.strokeRect(pageX, pageY, regionW, regionH);
 
-    cursor += pageLabelHeight + region.height + gap;
+    cursor += pageLabelHeight + pageRegion.height + gap;
   });
 
   return canvas.toBuffer('image/png');

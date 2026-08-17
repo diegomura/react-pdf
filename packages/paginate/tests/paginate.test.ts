@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import renderPagesToPNG from './renderCanvas.js';
-import { paginate } from '../src';
+import { paginate, createPaginator } from '../src';
 import {
   ColumnItem,
   Ctx,
@@ -27,7 +27,7 @@ const region = (height: number, width = 100) => ({ width, height });
 
 const snapshotPages = (
   pages: ReturnType<typeof paginate>,
-  r: ReturnType<typeof region>,
+  r: ReturnType<typeof region> | ReturnType<typeof region>[],
   name: string,
 ) => {
   if (pages.length === 0) return;
@@ -44,6 +44,13 @@ const leaf = (height: number, id?: string): LeafItem => ({
   kind: 'leaf',
   height,
   ...(id !== undefined ? { id } : {}),
+});
+
+const repeatLeaf = (height: number, id: string): LeafItem => ({
+  kind: 'leaf',
+  height,
+  id,
+  repeat: true,
 });
 
 // Parts are numbered from the first slice: an item that never splits keeps its
@@ -1702,6 +1709,310 @@ describe('paginate', () => {
       expect(colOnPage2?.children?.map((c) => c.item.id)).toEqual(['c3']);
 
       snapshotPages(pages, region(100), 'row-with-column-child-split');
+    });
+  });
+
+  describe('repeat', () => {
+    test('a repeat leaf re-emits at the top of every continuation', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h'),
+        leaf(30, 'a'),
+        leaf(30, 'b'),
+        leaf(30, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h', 'a'],
+        ['h', 'b'],
+        ['h', 'c'],
+      ]);
+
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-basic');
+    });
+
+    test('a repeat child of a column inside a row re-emits on the row continuation', () => {
+      const items: Item[] = [
+        row([
+          column(
+            [repeatLeaf(10, 'h'), leaf(30, 'a'), leaf(30, 'b'), leaf(30, 'c')],
+            'cell',
+          ),
+        ]),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      const cell = (i: number) =>
+        pages[i][0].children?.[0].children?.map((c) => c.item.id);
+
+      expect(pages).toHaveLength(3);
+      expect(cell(0)).toEqual(['h', 'a']);
+      expect(cell(1)).toEqual(['h', 'b']);
+      expect(cell(2)).toEqual(['h', 'c']);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-row-nested',
+      );
+    });
+
+    test('a repeat item does not appear before its flow position', () => {
+      const items: Item[] = [
+        leaf(40, 'a'),
+        leaf(40, 'b'),
+        repeatLeaf(10, 'h'),
+        leaf(40, 'c'),
+        leaf(40, 'd'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['b', 'h'],
+        ['h', 'c'],
+        ['h', 'd'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-placed-once',
+      );
+    });
+
+    test('multiple repeat items re-emit in original order', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h1'),
+        repeatLeaf(10, 'h2'),
+        leaf(25, 'a'),
+        leaf(25, 'b'),
+        leaf(25, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h1', 'h2', 'a'],
+        ['h1', 'h2', 'b'],
+        ['h1', 'h2', 'c'],
+      ]);
+
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-order');
+    });
+
+    test('repeats re-emit after a forced break', () => {
+      const items: Item[] = [
+        repeatLeaf(10, 'h'),
+        leaf(20, 'a'),
+        FORCE_BREAK,
+        leaf(20, 'b'),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h', 'a'],
+        ['h', 'b'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'repeat-force-break',
+      );
+    });
+
+    test('repetition ends with the parent container', () => {
+      const table = column(
+        [repeatLeaf(10, 'th'), leaf(25, 'r1'), leaf(25, 'r2')],
+        'table',
+      );
+      const items: Item[] = [table, leaf(40, 'after1'), leaf(40, 'after2')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['table'],
+        ['table'],
+        ['after1'],
+        ['after2'],
+      ]);
+      expect(pages[0][0].children?.map((c) => c.item.id)).toEqual(['th', 'r1']);
+      expect(pages[1][0].children?.map((c) => c.item.id)).toEqual(['th', 'r2']);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-nested-lifetime',
+      );
+    });
+
+    test('repeats stop when a page places nothing but repeats', () => {
+      const items: Item[] = [repeatLeaf(45, 'h'), leaf(30, 'a'), leaf(30, 'b')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h'],
+        ['a'],
+        ['b'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-progress-guard',
+      );
+    });
+
+    test('an oversized repeat force-places once and does not wedge', () => {
+      silenceWarnings();
+
+      const items: Item[] = [repeatLeaf(60, 'h'), leaf(30, 'a')];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([['h'], ['a']]);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-oversized',
+      );
+    });
+
+    test('a splitting repeat item continues its remainder without a fresh copy', () => {
+      const items: Item[] = [
+        { ...splittable(80, 'h'), repeat: true },
+        leaf(15, 'a'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h/1'],
+        ['h/2', 'a'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-mid-split',
+      );
+    });
+
+    test('a repeat lazy re-materializes with the page it lands on', () => {
+      const header: LazyItem = {
+        kind: 'lazy',
+        repeat: true,
+        materialize: (ctx) => [leaf(10, `h${ctx.pageNumber}`)],
+      };
+      const items: Item[] = [
+        header,
+        leaf(30, 'a'),
+        leaf(30, 'b'),
+        leaf(30, 'c'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['h1', 'a'],
+        ['h2', 'b'],
+        ['h3', 'c'],
+      ]);
+
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-lazy');
+    });
+  });
+
+  describe('createPaginator', () => {
+    test('iterating next(height) matches paginate exactly', () => {
+      const root = column([
+        leaf(40, 'a'),
+        splittable(80, 'b'),
+        spacer(10, 'gap'),
+        leaf(30, 'c'),
+      ]);
+
+      const paginator = createPaginator(root);
+      const pages: ReturnType<typeof paginate> = [];
+
+      while (!paginator.done) {
+        pages.push(paginator.next(50));
+      }
+
+      // Split remainders carry fresh `split` closures per run; a JSON
+      // round-trip drops functions so the comparison sees only structure.
+      const shape = (result: ReturnType<typeof paginate>) =>
+        JSON.parse(JSON.stringify(result));
+
+      expect(shape(pages)).toEqual(shape(paginate(root, 50)));
+      snapshotPages(pages, region(50), 'paginator-parity');
+    });
+
+    test('each page can have its own height', () => {
+      const root = column([leaf(40, 'a'), leaf(25, 'b'), leaf(45, 'c')]);
+      const paginator = createPaginator(root);
+
+      const pages = [
+        paginator.next(50),
+        paginator.next(30),
+        paginator.next(50),
+      ];
+
+      expect(paginator.done).toBe(true);
+      expect(pages.map((p) => p[0]?.children?.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['b'],
+        ['c'],
+      ]);
+      snapshotPages(
+        pages,
+        [region(50), region(30), region(50)],
+        'paginator-heights',
+      );
+    });
+
+    test('done flips after the last page and next() then throws', () => {
+      const paginator = createPaginator(column([leaf(10, 'a')]));
+
+      expect(paginator.done).toBe(false);
+      paginator.next(50);
+      expect(paginator.done).toBe(true);
+      expect(() => paginator.next(50)).toThrow('after done');
+    });
+
+    test('repeat items re-emit across next() calls', () => {
+      const root = column([
+        repeatLeaf(10, 'h'),
+        leaf(30, 'a'),
+        leaf(30, 'b'),
+        leaf(30, 'c'),
+      ]);
+      const paginator = createPaginator(root);
+      const pages: ReturnType<typeof paginate> = [];
+
+      while (!paginator.done) pages.push(paginator.next(50));
+
+      expect(pages.map((p) => p[0]?.children?.map((c) => c.item.id))).toEqual([
+        ['h', 'a'],
+        ['h', 'b'],
+        ['h', 'c'],
+      ]);
+      snapshotPages(pages, region(50), 'paginator-repeat');
+    });
+
+    test('lazy items see the page number the iterator tracks', () => {
+      const seen: number[] = [];
+      const header: LazyItem = {
+        kind: 'lazy',
+        repeat: true,
+        materialize: (ctx) => {
+          seen.push(ctx.pageNumber);
+          return [leaf(10, `h${ctx.pageNumber}`)];
+        },
+      };
+      const root = column([header, leaf(30, 'a'), leaf(30, 'b')]);
+      const paginator = createPaginator(root);
+
+      while (!paginator.done) paginator.next(50);
+
+      expect(seen).toEqual([1, 2]);
     });
   });
 

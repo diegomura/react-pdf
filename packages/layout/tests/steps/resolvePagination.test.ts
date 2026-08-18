@@ -4,6 +4,8 @@ import FontStore from '@react-pdf/font';
 import { loadYoga } from '../../src/yoga';
 import resolvePagination from '../../src/steps/resolvePagination';
 import resolveDimensions from '../../src/steps/resolveDimensions';
+import resolveStyles from '../../src/steps/resolveStyles';
+import resolvePagePaddings from '../../src/steps/resolvePagePaddings';
 import { SafeDocumentNode } from '../../src/types';
 
 const fontStore = new FontStore();
@@ -457,5 +459,218 @@ describe('pagination step', () => {
     expect(subChapter2page2.props!.bookmark).toEqual(null);
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
+  });
+});
+
+/**
+ * Regression: content overlapping itself at a page break (issue #3449).
+ *
+ * A `wrap={false}` subtree that is the ONLY child of its container and lands
+ * near the bottom of a page used to be force-fit into the little space left
+ * (because `splitNodes` treated "this container has no current children" as
+ * "the page is empty") instead of moving to the next page. Yoga then compressed
+ * every line on top of the next — the reported "overlapping at the page break".
+ *
+ * The fix only keeps such a node on the current page when it genuinely cannot
+ * fit on a page by itself; otherwise it moves to the next page.
+ */
+describe('pagination overflow regression (#3449)', () => {
+  const resolveFull = (node: SafeDocumentNode) =>
+    resolvePagination(
+      resolveDimensions(resolvePagePaddings(resolveStyles(node)), fontStore),
+      fontStore,
+    );
+
+  const text = (value: string, style: any = {}) => ({
+    type: 'TEXT',
+    style,
+    props: {},
+    children: [{ type: 'TEXT_INSTANCE', value }],
+  });
+  const view = (style: any, children: any[], props: any = {}) => ({
+    type: 'VIEW',
+    style,
+    props,
+    children,
+  });
+
+  // A two-column "itinerary entry": short left column + taller right column,
+  // kept together with wrap={false}.
+  const entry = (time: string, title: string, blocks: string[][]) =>
+    view({}, [
+      view(
+        {
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          paddingTop: 8,
+          paddingBottom: 8,
+        },
+        [
+          view({ width: 130, marginLeft: 20 }, [
+            text(time, { fontSize: 11, marginBottom: 5 }),
+            text('PENDING', { fontSize: 7 }),
+          ]),
+          view({ flex: 1, marginRight: 20 }, [
+            text(title, { fontSize: 10 }),
+            text('2 Adults', { fontSize: 8, marginTop: 5 }),
+            ...blocks.map(([label, value]) =>
+              view({ fontSize: 8, marginTop: 5 }, [
+                text(label, { fontWeight: 700 }),
+                text(value),
+              ]),
+            ),
+          ]),
+        ],
+        { wrap: false },
+      ),
+    ]);
+
+  // A "day": a date header + first entry kept together, then the remaining
+  // entries in a sibling container (so a later entry is the sole child of it).
+  const day = (name: string, first: any, rest: any[]) =>
+    view({}, [
+      view({ minPresenceAhead: 100 }, [
+        view({ marginTop: 10, marginBottom: 8 }, [
+          text(name, { fontSize: 9, fontWeight: 700 }),
+        ]),
+        first,
+      ]),
+      view({}, rest),
+    ]);
+
+  // Count text spans that vertically overlap another span in the same column.
+  const countOverlaps = (layout: any) => {
+    let overlaps = 0;
+    layout.children.forEach((page: any) => {
+      const spans: { top: number; bottom: number; left: number }[] = [];
+      const walk = (node: any, top: number, left: number) => {
+        const t = top + (node.box?.top || 0);
+        const l = left + (node.box?.left || 0);
+        if (node.type === 'TEXT' && (node.lines || []).length) {
+          const h = node.lines.reduce(
+            (acc: number, line: any) => acc + line.box.height,
+            0,
+          );
+          spans.push({ top: t, bottom: t + h, left: l });
+        }
+        (node.children || []).forEach((c: any) => walk(c, t, l));
+      };
+      walk(page, 0, 0);
+
+      const columns: Record<number, typeof spans> = {};
+      spans.forEach((s) => {
+        const key = Math.round(s.left / 10);
+        (columns[key] ||= []).push(s);
+      });
+      Object.values(columns).forEach((col) => {
+        col.sort((a, b) => a.top - b.top);
+        for (let i = 1; i < col.length; i += 1) {
+          if (col[i].top < col[i - 1].bottom - 1) overlaps += 1;
+        }
+      });
+    });
+    return overlaps;
+  };
+
+  const buildDoc = (yoga: any, pageHeight: number): SafeDocumentNode =>
+    ({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: {
+            width: 595.28,
+            height: pageHeight,
+            paddingTop: 40,
+            paddingBottom: 90,
+            paddingHorizontal: 40,
+            flexDirection: 'column',
+          },
+          children: [
+            view({}, [text('Daily Itinerary', { fontSize: 22 })], {
+              fixed: true,
+            }),
+            view({ flex: 1 }, [
+              day(
+                'TUESDAY, APR 7',
+                entry('12:25 AM', 'Juvia', [
+                  ['Address', '1111 Lincoln Road, Miami Beach, Florida, 33139'],
+                  ['Website', 'http://www.juviamiami.com/'],
+                  ['Phone', '+1 305-763-8272'],
+                  [
+                    'Cancellation Policy',
+                    'A $50.00 cancellation fee will be charged for each person on the reservation, to the credit card on file if not cancelled by 3:00 PM.',
+                  ],
+                ]),
+                [
+                  entry('01:05 AM', 'Miami Beach Golf Club', [
+                    ['Address', '2301 Alton Road, Miami Beach, Florida, 33140'],
+                    ['Website', 'http://www.miamibeachgolfclub.com/'],
+                    ['Phone', '+1 305-532-3350'],
+                  ]),
+                ],
+              ),
+            ]),
+            view(
+              {
+                position: 'absolute',
+                bottom: 0,
+                left: 40,
+                right: 40,
+                height: 50,
+              },
+              [text('FOOTER', { fontSize: 8 })],
+              { fixed: true },
+            ),
+          ],
+        },
+      ],
+    }) as any;
+
+  // Sweep a range of page heights so the second entry lands at different
+  // offsets from the page bottom; none of them may overlap.
+  for (const pageHeight of [520, 560, 600, 640]) {
+    test(`no text overlaps at the page break (page height ${pageHeight})`, async () => {
+      const yoga = await loadYoga();
+      const layout = resolveFull(buildDoc(yoga, pageHeight));
+      expect(countOverlaps(layout)).toBe(0);
+    });
+  }
+
+  // Guard the fix against an infinite page loop: a node that fits the content
+  // area but never fits the space left under a tall fixed header must NOT be
+  // moved forever — when the page is empty above it, it stays (and overflows),
+  // which is what keeps pagination terminating.
+  test('does not loop when a sole child never fits under a tall fixed header', async () => {
+    const yoga = await loadYoga();
+    const layout = resolveFull({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: {
+            width: 200,
+            height: 200,
+            padding: 20,
+            flexDirection: 'column',
+          },
+          children: [
+            view({ height: 150 }, [], { fixed: true }),
+            view({ flex: 1 }, [
+              view({}, [view({ height: 100 }, [], { wrap: false })]),
+            ]),
+          ],
+        },
+      ],
+    } as any);
+
+    // Terminates with a small number of pages instead of looping forever.
+    expect(layout.children.length).toBeLessThan(20);
   });
 });

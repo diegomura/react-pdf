@@ -1,5 +1,6 @@
 import { Run } from '../types';
 import scale from './scale';
+import resolveTypoMetrics from './typoMetrics';
 
 /**
  * Get run descent
@@ -9,7 +10,8 @@ import scale from './scale';
  */
 const descent = (run: Run) => {
   const font = run.attributes?.font;
-  const fontDescent = typeof font === 'string' ? 0 : font?.[0]?.descent || 0;
+  const fontDescent =
+    typeof font === 'string' ? 0 : resolveTypoMetrics(font?.[0]).descent;
 
   return scale(run) * fontDescent;
 };

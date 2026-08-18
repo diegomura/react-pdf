@@ -1,8 +1,9 @@
 import * as P from '@react-pdf/primitives';
 import FontStore from '@react-pdf/font';
+import { Rect } from '@react-pdf/textkit';
 
 import layoutText from '../text/layoutText';
-import { SafeNode, SafeSvgNode, SafeTextNode } from '../types';
+import { FloatSibling, SafeNode, SafeSvgNode, SafeTextNode } from '../types';
 
 const isSvg = (node: SafeNode): node is SafeSvgNode => node.type === P.Svg;
 
@@ -10,8 +11,41 @@ const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
 
 const shouldIterate = (node: SafeNode) => !isSvg(node) && !isText(node);
 
+/**
+ * Check if text node needs layout.
+ * Re-layout is needed if no lines calculated yet or has float siblings.
+ */
 const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
-  isText(node) && !node.lines;
+  isText(node) && (!node.lines || (node.__floatSiblings__?.length ?? 0) > 0);
+
+/**
+ * Generate exclude rects from float elements for textkit.
+ * The rects are in coordinates relative to the text container.
+ */
+const generateExcludeRects = (
+  floats: FloatSibling[],
+  textOffsetY: number = 0,
+): Rect[] => {
+  const excludeRects: Rect[] = [];
+
+  for (const float of floats) {
+    const rectX = float.x - (float.float === 'right' ? float.marginLeft : 0);
+    const rectY = float.y - textOffsetY;
+    const rectWidth =
+      float.width +
+      (float.float === 'left' ? float.marginRight : float.marginLeft);
+    const rectHeight = float.height + float.marginBottom;
+
+    excludeRects.push({
+      x: rectX,
+      y: rectY,
+      width: rectWidth,
+      height: rectHeight,
+    });
+  }
+
+  return excludeRects;
+};
 
 /**
  * Performs text layout on text node if wasn't calculated before.
@@ -23,12 +57,23 @@ const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
  */
 const resolveTextLayout = (node: SafeNode, fontStore: FontStore): SafeNode => {
   if (shouldLayoutText(node)) {
-    const width =
-      node.box.width - (node.box.paddingRight + node.box.paddingLeft);
-    const height =
-      node.box.height - (node.box.paddingTop + node.box.paddingBottom);
+    const width = node.box.width - node.box.paddingRight - node.box.paddingLeft;
+    const originalHeight =
+      node.box.height - node.box.paddingTop - node.box.paddingBottom;
+    const floatSiblings = node.__floatSiblings__ || [];
 
-    node.lines = layoutText(node, width, height, fontStore);
+    let excludeRects: Rect[];
+    let height = originalHeight;
+
+    if (floatSiblings.length > 0) {
+      // Allow text to expand vertically when wrapping around floats
+      height = Infinity;
+
+      const textOffsetY = node.box.top + node.box.paddingTop;
+      excludeRects = generateExcludeRects(floatSiblings, textOffsetY);
+    }
+
+    node.lines = layoutText(node, width, height, fontStore, excludeRects);
   }
 
   if (shouldIterate(node)) {

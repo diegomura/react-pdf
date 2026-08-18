@@ -391,8 +391,8 @@ const resolveSvgRoot = (node: SafeSvgNode, fontStore: FontStore) => {
     parseText(fontStore),
     parseSvgProps,
     pickStyleProps,
-    inheritProps,
     resolveChildren(container),
+    inheritProps,
     resolveXLinks,
   )(node);
 };

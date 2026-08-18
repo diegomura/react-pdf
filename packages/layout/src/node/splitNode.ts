@@ -28,15 +28,17 @@ const splitNode = (node: SafeNode, height: number) => {
 
   current.style.height = height - nodeTop;
 
-  const nextHeight = hasFixedHeight(node)
-    ? node.box.height - (height - nodeTop)
-    : null;
+  const nextBoxHeight = node.box.height - (height - nodeTop);
+
+  const nextHeight = hasFixedHeight(node) ? nextBoxHeight : null;
 
   const next: SafeNode = Object.assign({}, node, {
     box: {
       ...node.box,
       top: 0,
+      marginTop: 0,
       borderTopWidth: 0,
+      height: nextBoxHeight,
     },
     style: {
       ...node.style,
@@ -52,7 +54,7 @@ const splitNode = (node: SafeNode, height: number) => {
     },
   });
 
-  if (nextHeight) {
+  if (nextHeight !== null) {
     next.style.height = nextHeight;
   }
 

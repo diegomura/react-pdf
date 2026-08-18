@@ -22,42 +22,61 @@ const getEndOfMinPresenceAhead = (child: SafeNode) => {
   );
 };
 
-const getEndOfPresence = (child: SafeNode, futureElements: SafeNode[]) => {
+/**
+ * Determines whether a node should break to the next page.
+ * Accepts pre-computed values to avoid O(N) array scans per call.
+ *
+ * @param child - The node to evaluate
+ * @param furthestEndOfNonFixedFuture - Pre-computed max(top+height) of future non-fixed siblings, or null if none
+ * @param height - Available page height
+ * @param hasNonFixedPrevious - Whether any non-fixed sibling precedes this node
+ */
+export const shouldBreakOptimized = (
+  child: SafeNode,
+  furthestEndOfNonFixedFuture: number | null,
+  height: number,
+  hasNonFixedPrevious: boolean,
+) => {
+  if (isFixed(child)) return false;
+
+  const shouldSplit = height < child.box.top + child.box.height;
+  const canWrap = getWrap(child);
+
   const afterMinPresenceAhead = getEndOfMinPresenceAhead(child);
-  const nonFixedFuture = futureElements.filter(
-    (node) => !('fixed' in node.props),
+  const endOfPresence =
+    furthestEndOfNonFixedFuture === null
+      ? afterMinPresenceAhead
+      : Math.min(afterMinPresenceAhead, furthestEndOfNonFixedFuture);
+
+  return (
+    getBreak(child) ||
+    (shouldSplit && !canWrap) ||
+    (!shouldSplit && endOfPresence > height && hasNonFixedPrevious)
   );
-  const endOfFurthestFutureElement = getFurthestEnd(nonFixedFuture);
-
-  // When there are no future non-fixed siblings, use only minPresenceAhead
-  if (endOfFurthestFutureElement === null) return afterMinPresenceAhead;
-
-  return Math.min(afterMinPresenceAhead, endOfFurthestFutureElement);
 };
 
+/**
+ * Array-based wrapper around shouldBreakOptimized.
+ * Computes the pre-computed values from raw arrays for convenience in tests.
+ */
 const shouldBreak = (
   child: SafeNode,
   futureElements: SafeNode[],
   height: number,
   previousElements: SafeNode[],
 ) => {
-  if ('fixed' in child.props) return false;
-
-  const shouldSplit = height < child.box.top + child.box.height;
-  const canWrap = getWrap(child);
-
-  // Calculate the y coordinate where the desired presence of the child ends
-  const endOfPresence = getEndOfPresence(child, futureElements);
-
-  // If the child is already at the top of the page, breaking won't improve its presence
-  // (as long as react-pdf does not support breaking into differently sized containers)
-  const breakingImprovesPresence =
+  const nonFixedFuture = futureElements.filter(
+    (node) => !('fixed' in node.props),
+  );
+  const furthestEndOfNonFixedFuture = getFurthestEnd(nonFixedFuture);
+  const hasNonFixedPrevious =
     previousElements.filter((node: SafeNode) => !isFixed(node)).length > 0;
 
-  return (
-    getBreak(child) ||
-    (shouldSplit && !canWrap) ||
-    (!shouldSplit && endOfPresence > height && breakingImprovesPresence)
+  return shouldBreakOptimized(
+    child,
+    furthestEndOfNonFixedFuture,
+    height,
+    hasNonFixedPrevious,
   );
 };
 

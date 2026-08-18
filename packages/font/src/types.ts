@@ -40,8 +40,12 @@ export type FontSourceOptions = {
   postscriptName?: string;
 } & RemoteOptions;
 
+export type BufferFontSource = {
+  buffer: Buffer;
+};
+
 export type FontSource = {
-  src: string;
+  src: string | BufferFontSource;
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
 } & FontSourceOptions;

@@ -73,6 +73,39 @@ const layoutLines = (
 
 type layoutParagraphEngines = Pick<Engines, 'linebreaker'>;
 
+// Mirror Firefox's `text-wrap: balance` cap. Above this, the spec lets us fall
+// back to plain wrap to avoid pathological binary-search cost on body copy.
+const BALANCE_LINE_LIMIT = 10;
+// Width precision (pt) for the balance binary search.
+const BALANCE_PRECISION = 1;
+
+/**
+ * Find the smallest container width that still yields the same number of
+ * wrapped lines as the natural width. Equalizes line lengths for
+ * `text-wrap: balance` (titles, short headings).
+ */
+const computeBalancedWidth = (
+  linebreak: ReturnType<Engines['linebreaker']>,
+  paragraph: AttributedString,
+  width: number,
+  naturalLineCount: number,
+): number => {
+  let lo = 0;
+  let hi = width;
+
+  while (hi - lo > BALANCE_PRECISION) {
+    const mid = (lo + hi) / 2;
+    const lines = linebreak(paragraph, [mid]);
+    if (lines.length === naturalLineCount) {
+      hi = mid;
+    } else {
+      lo = mid;
+    }
+  }
+
+  return hi;
+};
+
 /**
  * Performs line breaking and layout
  *
@@ -92,11 +125,37 @@ const layoutParagraph = (
     const height = stringHeight(paragraph);
     const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
     const rects = generateLineRects(container, height);
+    const linebreak = engines.linebreaker(options);
 
-    const availableWidths = rects.map((r) => r.width);
-    availableWidths.unshift(availableWidths[0] - indent);
+    let availableWidths: number[];
 
-    const lines = engines.linebreaker(options)(paragraph, availableWidths);
+    if (options.textWrap === 'nowrap') {
+      availableWidths = [Infinity];
+    } else if (options.textWrap === 'balance') {
+      const naturalWidths = rects.map((r) => r.width);
+      const naturalLines = linebreak(paragraph, naturalWidths);
+
+      if (
+        naturalLines.length > 1 &&
+        naturalLines.length <= BALANCE_LINE_LIMIT
+      ) {
+        const balanced = computeBalancedWidth(
+          linebreak,
+          paragraph,
+          naturalWidths[0],
+          naturalLines.length,
+        );
+        availableWidths = [balanced];
+      } else {
+        availableWidths = naturalWidths;
+        availableWidths.unshift(availableWidths[0] - indent);
+      }
+    } else {
+      availableWidths = rects.map((r) => r.width);
+      availableWidths.unshift(availableWidths[0] - indent);
+    }
+
+    const lines = linebreak(paragraph, availableWidths);
 
     return layoutLines(rects, lines, indent);
   };

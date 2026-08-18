@@ -175,4 +175,8 @@ describe('layout resolveInheritance', () => {
   test('Should inherit textAlign value', shouldInherit('textAlign'));
   test('Should inherit visibility value', shouldInherit('visibility'));
   test('Should inherit wordSpacing value', shouldInherit('wordSpacing'));
+  test(
+    'Should inherit fontFeatureSettings value',
+    shouldInherit('fontFeatureSettings'),
+  );
 });

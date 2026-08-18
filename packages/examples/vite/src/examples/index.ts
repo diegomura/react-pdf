@@ -3,6 +3,7 @@ import duplicatedImages from './duplicated-images';
 import ellipsis from './ellipsis';
 import emoji from './emoji';
 import fontFamilyFallback from './font-family-fallback';
+import fontFeatureSettings from './font-feature-settings';
 import fontWeight from './font-weight';
 import goTo from './go-to';
 import imageBackground from './image-background';
@@ -34,6 +35,7 @@ const EXAMPLES = [
   emoji,
   fontFamilyFallback,
   fontWeight,
+  fontFeatureSettings,
   goTo,
   JpgOrientation,
   knobs,

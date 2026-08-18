@@ -51,7 +51,7 @@ export type Attributes = {
   characterSpacing?: number;
   color?: string;
   direction?: 'rtl' | 'ltr';
-  features?: unknown[];
+  features?: string[] | Record<string, boolean>;
   fill?: boolean;
   font?: Font[];
   fontSize?: number;

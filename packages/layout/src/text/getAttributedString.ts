@@ -1,6 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { Fragment, fromFragments } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
+import { parseFloat } from '@react-pdf/fns';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
@@ -82,7 +83,7 @@ const getFragments = (
     color,
     opacity,
     fontSize,
-    lineHeight,
+    lineHeight: parseFloat(lineHeight),
     direction,
     verticalAlign,
     backgroundColor,

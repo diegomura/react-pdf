@@ -346,7 +346,7 @@ export type TextSafeStyle = TextExpandedStyle & {
   fontSize?: number;
   fontWeight?: number;
   letterSpacing?: number;
-  lineHeight?: number;
+  lineHeight?: number | string;
 };
 
 // Margins

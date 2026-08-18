@@ -238,6 +238,83 @@ describe('pagination step', () => {
     expect(page2.children![0].box!.height).toBe(40);
   });
 
+  test('should move breakWhenNeeded containers to the next page before splitting them', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: {
+            width: 5,
+            height: 60,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: {
+                width: 5,
+                height: 20,
+              },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: {
+                width: 5,
+              },
+              props: {
+                breakWhenNeeded: true,
+              },
+              children: [
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+    const page3 = layout.children[2];
+
+    expect(layout.children).toHaveLength(3);
+    expect(page1.children).toHaveLength(1);
+    expect(page2.children).toHaveLength(1);
+    expect(page3.children).toHaveLength(1);
+    expect(page2.children![0].children).toHaveLength(2);
+    expect(page3.children![0].children).toHaveLength(1);
+  });
+
   test('should not infinitely loop when splitting pages', async () => {
     const yoga = await loadYoga();
 

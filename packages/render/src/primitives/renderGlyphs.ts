@@ -5,11 +5,9 @@ import { Context } from '../types';
 import encodeGlyphs from '../operations/encodeGlyphs';
 
 const number = (n: number) => {
-  if (n > -1e21 && n < 1e21) {
-    return Math.round(n * 1e6) / 1e6;
-  }
-
-  throw new Error(`unsupported number: ${n}`);
+  // Clamp to valid PDF number range to prevent errors with extreme values
+  const clamped = Math.max(-1e21 + 1, Math.min(1e21 - 1, n));
+  return Math.round(clamped * 1e6) / 1e6;
 };
 
 const _renderGlyphs = (

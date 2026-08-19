@@ -3,32 +3,6 @@ import { findSlot, instantiateTemplate, slotInstance } from '../page/template';
 
 const isAbsolute = (node: any) => node.style?.position === 'absolute';
 
-// In-flow fixed repeats like the pagination engine sees it: at the top of
-// pages, from where the flow reaches it. Declared after content it never
-// becomes a footer — the layout prop is the way to say that.
-let warnedSuffixFixed = false;
-
-const warnSuffixFixed = (children: any[]) => {
-  if (warnedSuffixFixed) return;
-
-  const flow = children.findIndex(
-    (child) => !isAbsolute(child) && !isFixed(child),
-  );
-  const suffix =
-    flow !== -1 &&
-    children.some(
-      (child, at) => at > flow && isFixed(child) && !isAbsolute(child),
-    );
-
-  if (!suffix) return;
-
-  warnedSuffixFixed = true;
-  console.warn(
-    '[layout] In-flow fixed elements placed after content only repeat at ' +
-      'the top of later pages. For footers, use the Page `layout` prop.',
-  );
-};
-
 // The slot is the flow container now, so the page's flow styles move with
 // the content or they'd apply to a single slot child and do nothing.
 const FLOW_STYLES = [
@@ -51,8 +25,6 @@ const flowStyles = (style: any = {}) =>
 // and anchor to the page (the pagination step keeps plain ones to page 1).
 const synthesize = (page: any) => {
   const children = page.children || [];
-
-  warnSuffixFixed(children);
 
   const flow = children.filter((child: any) => !isAbsolute(child));
   const slotAt = children.findIndex((child: any) => !isAbsolute(child));

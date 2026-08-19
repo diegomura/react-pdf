@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
@@ -342,15 +342,4 @@ describe('in-flow fixed', () => {
     ]);
   });
 
-  test('fixed after content warns towards the layout prop', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-    await run({ width: 100, height: 100 }, [
-      instance({ height: 40 }),
-      { ...instance({ height: 10 }), props: { fixed: true } },
-    ]);
-
-    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/layout` prop/));
-    warn.mockRestore();
-  });
 });

@@ -123,13 +123,13 @@ Also validated: a template whose slot measures to height ≤ 0 (chrome ate the p
 | --- | --- |
 | Absolute fixed (e.g. `position: 'absolute', bottom: 5` page numbers) | per-page chrome: repeats anchored to the page, anywhere in the children list |
 | In-flow fixed before content (header) | repeats at the top of every page, consuming stream budget — visually the reserved band, with no band arithmetic |
-| In-flow fixed after content | engine-honest behavior: places once when reached, repeats only at later tops — **not a footer**. Dev warning pointing at `layout`; error in the next major |
+| In-flow fixed after content | engine-honest behavior: places once when reached, repeats only at later tops — **not a footer**. Documented; footers are `layout`'s job |
 
 Footers are `layout`'s job. The rule stays: **`fixed` is prefix chrome; suffix chrome is `layout`'s.**
 
 ## 7. Release shape
 
-The engine change (`createPaginator`) shipped independently (paginate 0.1.0). The user-facing surface ships together in the pagination-rewrite major: `layout`, the width/slot validations, and the suffix-`fixed` dev warning. The suffix-`fixed` error lands in the major after.
+The engine change (`createPaginator`) shipped independently (paginate 0.1.0). The user-facing surface ships together in the pagination-rewrite major: `layout` and the width/slot validations. No `fixed` warning or staged error: in-flow fixed simply has one documented semantic everywhere.
 
 ## 8. Edge cases
 

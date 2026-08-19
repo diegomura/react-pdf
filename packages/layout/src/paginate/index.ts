@@ -319,8 +319,11 @@ const resolvePagination = (
   const ctx = { totals: null, fontStore, yoga: root.yoga };
   const round1 = paginateDocument(root, ctx);
 
-  const dynamic = root.children.some((page) =>
-    hasDynamic(page as unknown as SafeNode),
+  // A layout component may read totalPages from its params without any
+  // render prop in its output, so template pages always take the totals round.
+  const dynamic = root.children.some(
+    (page) =>
+      hasDynamic(page as unknown as SafeNode) || (page.props as any)?.layout,
   );
 
   if (!dynamic) return round1.root;

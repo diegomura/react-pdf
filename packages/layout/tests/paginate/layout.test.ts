@@ -49,18 +49,20 @@ const run = async (pageStyle: any, children: any[], pageProps = {}) => {
   return resolvePagination(laid, fontStore).children as SafePageNode[];
 };
 
-const walk = (node: SafeNode, offset = 0, out: any[] = []) => {
+const walk = (node: SafeNode, offset = 0, offsetLeft = 0, out: any[] = []) => {
   const top = offset + (node.box?.top || 0);
+  const left = offsetLeft + (node.box?.left || 0);
 
   out.push({
     type: node.type,
     top,
+    left,
     height: node.box?.height || 0,
     width: node.box?.width || 0,
   });
 
   ((node.children || []) as SafeNode[]).forEach((child) =>
-    walk(child, top, out),
+    walk(child, top, left, out),
   );
 
   return out;
@@ -216,5 +218,106 @@ describe('template pages', () => {
 
     expect(footerWidths(pages[0])).toContain(10);
     expect(footerWidths(pages[1])).toContain(20);
+  });
+
+  test('first-page variant chrome shrinks only page 1 flow', async () => {
+    const cover = ({ children, pageNumber }: any) => [
+      view({ height: pageNumber === 1 ? 40 : 10 }),
+      children,
+    ];
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [instance({ height: 60 }), instance({ height: 60 })],
+      { layout: cover },
+    );
+
+    expect(pages).toHaveLength(2);
+    expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
+      [0, 40], // tall cover header
+      [40, 60], // slot: 100 − 40
+      [40, 60], // first block fits exactly
+    ]);
+    expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
+      [0, 10], // regular header
+      [10, 90],
+      [10, 60],
+    ]);
+  });
+
+  test('odd/even mirrored aside keeps slot width and flips position', async () => {
+    const mirrored = ({ children, pageNumber }: any) =>
+      view(
+        { flexDirection: 'row', flexGrow: 1 },
+        pageNumber % 2
+          ? [view({ width: 40 }), children]
+          : [children, view({ width: 40 })],
+      );
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [instance({ height: 60 }), instance({ height: 60 })],
+      { layout: mirrored },
+    );
+
+    expect(pages).toHaveLength(2);
+
+    const slotOf = (page: SafePageNode) =>
+      boxes(page).find((b) => b.width === 60 && b.height === 100);
+
+    expect(slotOf(pages[0])?.left).toBe(40); // aside on the left
+    expect(slotOf(pages[1])?.left).toBe(0); // aside flipped right
+  });
+
+  test('width-changing chrome fails loudly with the page number', async () => {
+    const drifting = ({ children, pageNumber }: any) =>
+      view({ flexDirection: 'row', flexGrow: 1 }, [
+        view({ width: pageNumber * 10 }),
+        children,
+      ]);
+
+    await expect(
+      run(
+        { width: 100, height: 100 },
+        [instance({ height: 60 }), instance({ height: 60 })],
+        { layout: drifting },
+      ),
+    ).rejects.toThrow(/content width on page 2/);
+  });
+
+  test('wrap={false} template page has no ceiling', async () => {
+    const band = ({ children }: any) => [view({ height: 20 }), children];
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [instance({ height: 300 })],
+      { layout: band, wrap: false },
+    );
+
+    expect(pages).toHaveLength(1);
+  });
+
+  test('layout receives totalPages in the totals round', async () => {
+    const counted = ({ children, totalPages }: any) => [
+      children,
+      view({ height: 5, width: (totalPages ?? 1) * 10 }),
+    ];
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [instance({ height: 90 }), instance({ height: 90 })],
+      { layout: counted },
+    );
+
+    expect(pages).toHaveLength(2);
+
+    const heights5 = (page: SafePageNode) =>
+      boxes(page)
+        .filter((b) => b.height === 5)
+        .map((b) => b.width);
+
+    expect(heights5(pages[0])).toContain(20); // totalPages = 2
+    expect(heights5(pages[0])).not.toContain(10); // round-1 chrome replaced
+    expect(heights5(pages[1])).toContain(20);
   });
 });

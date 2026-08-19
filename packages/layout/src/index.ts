@@ -13,15 +13,26 @@ import resolveDimensions from './steps/resolveDimensions';
 import resolveTextLayout from './steps/resolveTextLayout';
 import resolveInheritance from './steps/resolveInheritance';
 import resolvePagePaddings from './steps/resolvePagePaddings';
+import resolvePageTemplates from './steps/resolvePageTemplates';
 import resolvePercentRadius from './steps/resolvePercentRadius';
 import resolvePercentHeight from './steps/resolvePercentHeight';
 import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
+import resolvePaginationNext from './paginate';
+import { SafeDocumentNode } from './types';
+
+// The relayout-free pagination engine. Flip to false for the legacy step.
+const NEXT_PAGINATION: boolean = true;
+
+const paginationStep = (root: SafeDocumentNode, fontStore) =>
+  NEXT_PAGINATION
+    ? resolvePaginationNext(root, fontStore)
+    : resolvePagination(root, fontStore);
 
 const layout = asyncCompose(
   resolveZIndex,
   resolveOrigins,
   resolveAssets,
-  resolvePagination,
+  paginationStep,
   resolveTextLayout,
   resolvePercentRadius,
   resolveDimensions,
@@ -33,6 +44,7 @@ const layout = asyncCompose(
   resolveStyles,
   resolveLinkSubstitution,
   resolveBookmarks,
+  resolvePageTemplates,
   resolvePageSizes,
   resolveYoga,
 );

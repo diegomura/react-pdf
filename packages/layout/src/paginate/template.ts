@@ -15,12 +15,13 @@ export type PageLayout = (props: {
 
 // The slot is a plain flex-grown View: it claims leftover space in a column
 // and width in a row, so bands and asides both work without users thinking
-// about flexbox.
-const slotElement = (children: unknown) =>
+// about flexbox. It renders empty — the page's existing instance nodes are
+// grafted in afterwards, since they already passed through createInstances
+// and must not go through it again.
+const slotElement = () =>
   React.createElement('VIEW' as any, {
     [SLOT_PROP]: true,
     style: { flexGrow: 1, flexShrink: 1 },
-    children,
   });
 
 export const findSlot = (node: SafeNode): SafeNode | null => {
@@ -47,12 +48,11 @@ const countSlots = (nodes: any[]): number =>
 // executes function components), so like render props it supports no hooks.
 export const instantiateTemplate = (
   layout: PageLayout,
-  children: unknown,
   props: Partial<DynamicPageProps>,
 ) => {
   const element = React.createElement(layout as any, {
     ...props,
-    children: slotElement(children),
+    children: slotElement(),
   });
 
   const nodes = createInstances(element);

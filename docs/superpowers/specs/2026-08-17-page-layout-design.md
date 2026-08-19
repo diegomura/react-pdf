@@ -1,7 +1,7 @@
 # Page Layout (`layout` prop) — Design Spec
 
 **Date**: 2026-08-17
-**Status**: Design approved; pending implementation plan
+**Status**: Implemented (2026-08-19) — see `docs/superpowers/plans/2026-08-19-page-layout-plan.md`
 **Scope**: A master-page API for react-pdf — `<Page layout={Component}>` renders repeating page chrome around a content slot. Ships with: a stepwise pagination API in `@react-pdf/paginate` (`createPaginator`), per-page chrome measurement, and the restriction of `fixed` to prefix position. All of it lands in the pagination-rewrite major as one migration event.
 
 ---
@@ -71,7 +71,7 @@ const PageLayout = ({ children, pageNumber }) => (
 
 ### 4.3 Internals
 
-`Page` becomes a thin composite in the renderer: with a `layout` prop it renders `layout({ children: <View __slot>{children}</View> })` under the host PAGE node. The slot marker is a plain View carrying an internal prop and a `flexGrow: 1` default — no new primitive, nothing for the render package to draw, and slot width follows from the template's flex layout (which is how sidebars work without users thinking about it).
+*(Superseded during implementation — recon found a simpler shape.)* No composite `Page`: the `'PAGE'` host primitive passes `layout` through the reconciler as a plain prop, and the **layout package** owns instantiation via the render-prop machinery (`createInstances` executes function components). A new early pipeline step (`resolvePageTemplates`) splices the instantiated template around each page's content before the first pass, so content measures at slot width; `splitPage` re-instantiates chrome per page. The slot marker is a plain View with an internal prop and `flexGrow: 1` defaults. Consequence shared with render props: **no hooks inside layout components**.
 
 ## 5. The pagination loop
 

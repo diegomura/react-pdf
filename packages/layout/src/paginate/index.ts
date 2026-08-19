@@ -13,8 +13,10 @@ import toItems from './toItems';
 import {
   PageLayout,
   findSlot,
+  forwardFlowStyles,
+  identityLayout,
   instantiateTemplate,
-  isSlot,
+  isPageAbsolute,
 } from '../page/template';
 import {
   DynamicPageProps,
@@ -118,7 +120,7 @@ const splitPage = (
   props: DynamicEnv['props'],
   { fontStore, yoga }: Ctx,
 ): SafePageNode[] => {
-  const layout = (page.props as any)?.layout as PageLayout | undefined;
+  const template: PageLayout = (page.props as any)?.layout || identityLayout;
   const children = (page.children || []) as SafeNode[];
 
   const env: DynamicEnv = {
@@ -135,26 +137,36 @@ const splitPage = (
 
   const box = { ...page.box, height: page.style.height as number };
 
-  // A user layout re-instantiates with the page's props; synthesized chrome
-  // re-renders its dynamic nodes. Fixed chrome repeats on every page,
-  // absolutes belong to the first.
+  // The template re-instantiates with the page's props (the identity one
+  // for plain pages). Page absolutes keep their source positions beside it:
+  // fixed ones on every page, plain ones on the first.
   const chromeFor = (
     pageProps: DynamicPageProps,
     index: number,
   ): SafeNode[] => {
-    if (layout) {
-      return instantiateTemplate(layout, pageProps).map((node) =>
-        renderDynamic(pageProps, node as SafeNode),
-      ) as SafeNode[];
-    }
+    const nodes = instantiateTemplate(template, pageProps).map((node) =>
+      renderDynamic(pageProps, node as SafeNode),
+    ) as SafeNode[];
 
-    return children
-      .filter((child) => isSlot(child) || isFixed(child) || index === 0)
-      .map((child) =>
-        isSlot(child)
-          ? ({ ...child, children: [] } as SafeNode)
-          : renderDynamic(pageProps, child),
-      );
+    forwardFlowStyles(
+      findSlot({ type: 'PAGE', children: nodes } as any)!,
+      page.style,
+    );
+
+    let placed = false;
+
+    return children.flatMap((child): SafeNode[] => {
+      if (isPageAbsolute(child)) {
+        return isFixed(child) || index === 0
+          ? [renderDynamic(pageProps, child)]
+          : [];
+      }
+
+      if (placed) return [];
+      placed = true;
+
+      return nodes;
+    });
   };
 
   const measureChrome = (pageNumber: number) => {
@@ -196,20 +208,10 @@ const splitPage = (
     }
 
     const placed = paginator.next(height(slotBox, pageNumber));
-    const flowNodes = fromPage(placed[0]?.children || [], 0);
 
-    // Absolute content children never enter the flow: fixed ones repeat on
-    // every page, plain ones belong to the first. In-flow fixed already
-    // travels through the stream as repeat items.
+    slot.children = fromPage(placed[0]?.children || [], 0) as any;
+
     const index = pageNumber - 1;
-    const outOfFlow = layout
-      ? content.filter(
-          (child) => isAbsolute(child) && (isFixed(child) || index === 0),
-        )
-      : [];
-
-    slot.children = [...flowNodes, ...outOfFlow] as any;
-
     const built = {
       ...laid,
       props: index === 0 ? page.props : omit('bookmark', page.props),

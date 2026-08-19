@@ -24,6 +24,41 @@ const slotElement = () =>
 export const isSlot = (node: SafeNode): boolean =>
   !!node.props && SLOT_PROP in node.props;
 
+// A page without a layout gets this one: nothing but the slot.
+export const identityLayout: PageLayout = ({ children }) => children;
+
+// Page-level absolutes keep their place beside the template so paint order
+// survives — a watermark declared before content stays behind it.
+const PAGE_ABSOLUTE = '__pageAbsolute';
+
+export const pageAbsolute = (node: SafeNode): SafeNode =>
+  ({ ...node, props: { ...node.props, [PAGE_ABSOLUTE]: true } }) as SafeNode;
+
+export const isPageAbsolute = (node: SafeNode): boolean =>
+  !!node.props && PAGE_ABSOLUTE in node.props;
+
+// The slot is the flow container, so the page's flow styles move onto it —
+// left on the page they'd apply to a single slot child and do nothing.
+const FLOW_STYLES = [
+  'justifyContent',
+  'alignItems',
+  'alignContent',
+  'gap',
+  'rowGap',
+  'columnGap',
+];
+
+export const forwardFlowStyles = (slot: SafeNode, pageStyle: any = {}) => {
+  const forwarded = Object.fromEntries(
+    FLOW_STYLES.filter((key) => key in pageStyle).map((key) => [
+      key,
+      pageStyle[key],
+    ]),
+  );
+
+  slot.style = { ...slot.style, ...forwarded };
+};
+
 // Instance-shaped slot, for pages without a layout component: their chrome
 // is synthesized from existing instance nodes, so the slot must be one too.
 export const slotInstance = (children: SafeNode[] = []): SafeNode =>

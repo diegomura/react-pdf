@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
@@ -319,5 +319,19 @@ describe('template pages', () => {
     expect(heights5(pages[0])).toContain(20); // totalPages = 2
     expect(heights5(pages[0])).not.toContain(10); // round-1 chrome replaced
     expect(heights5(pages[1])).toContain(20);
+  });
+});
+
+describe('suffix fixed deprecation', () => {
+  test('in-flow fixed after content warns towards the layout prop', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    await run({ width: 100, height: 100 }, [
+      instance({ height: 40 }),
+      { ...instance({ height: 10 }), props: { fixed: true } },
+    ]);
+
+    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/layout` prop/));
+    warn.mockRestore();
   });
 });

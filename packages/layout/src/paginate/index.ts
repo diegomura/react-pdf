@@ -201,6 +201,27 @@ const splitTemplatePage = (
   return pages;
 };
 
+// In-flow suffix fixed repeats without reserved space — content packs
+// against the full area and the chrome squeezes in on relayout. Deprecated
+// in favor of the layout prop; becomes an error in the next major.
+let warnedSuffixFixed = false;
+
+const warnSuffixFixed = (children: SafeNode[], slot: number) => {
+  if (warnedSuffixFixed || slot === -1) return;
+
+  const suffix = children.some(
+    (child, at) => at > slot && isFixed(child) && !isAbsolute(child),
+  );
+
+  if (!suffix) return;
+
+  warnedSuffixFixed = true;
+  console.warn(
+    '[layout] In-flow fixed elements placed after content are deprecated: ' +
+      'their space is not reserved. Move page chrome to the Page `layout` prop.',
+  );
+};
+
 const splitPage = (
   page: SafePageNode,
   props: DynamicEnv['props'],
@@ -231,6 +252,8 @@ const splitPage = (
     slot === -1
       ? contentTop(page)
       : Math.max(outerTop(children[slot]), contentTop(page));
+
+  warnSuffixFixed(children, slot);
 
   const height =
     page.props?.wrap === false

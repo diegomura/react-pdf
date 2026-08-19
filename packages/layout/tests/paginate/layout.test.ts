@@ -330,11 +330,13 @@ describe('fixed chrome', () => {
 
     expect(pages).toHaveLength(2);
     expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
+      [0, 90], // slot: the footer's space is reserved
       [0, 60],
-      [60, 30], // split against the 90pt slot the footer left free
+      [60, 30], // split against the 90pt slot
       [90, 10], // footer
     ]);
     expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
+      [0, 90],
       [0, 30], // remainder of the split block
       [90, 10], // footer again, same anchor
     ]);

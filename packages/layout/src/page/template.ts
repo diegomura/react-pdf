@@ -3,7 +3,7 @@ import React from 'react';
 import createInstances from '../node/createInstances';
 import { DynamicPageProps, SafeNode } from '../types';
 
-export const SLOT_PROP = '__slot';
+const SLOT_PROP = '__slot';
 
 export type PageLayout = (props: {
   children: React.ReactNode;
@@ -13,11 +13,8 @@ export type PageLayout = (props: {
   subPageTotalPages?: number;
 }) => React.ReactNode;
 
-// The slot is a plain flex-grown View: it claims leftover space in a column
-// and width in a row, so bands and asides both work without users thinking
-// about flexbox. It renders empty — the page's existing instance nodes are
-// grafted in afterwards, since they already passed through createInstances
-// and must not go through it again.
+// The slot grows to claim whatever space the chrome leaves. It renders
+// empty; the page's content is grafted in later.
 const slotElement = () =>
   React.createElement('VIEW' as any, {
     [SLOT_PROP]: true,
@@ -44,21 +41,15 @@ const countSlots = (nodes: any[]): number =>
     0,
   );
 
-// Runs the user's layout through the render-prop machinery (createInstances
-// executes function components), so like render props it supports no hooks.
-// Called twice per page life: once at splice time so the first pass measures
-// content at slot width (chrome geometry is meaningless there — height is
-// unconstrained), and once per page with real props and an empty slot, the
-// only configuration where the slot's box is the page's true flow region.
+// Renders the user's layout the same way render props run, so no hooks.
+// Called once up front so content measures at slot width, and once per
+// page to find that page's flow region.
 export const instantiateTemplate = (
   layout: PageLayout,
   props: Partial<DynamicPageProps>,
 ) => {
-  const element = React.createElement(layout as any, {
-    ...props,
-    children: slotElement(),
-  });
-
+  const children = slotElement();
+  const element = React.createElement(layout as any, props, children);
   const nodes = createInstances(element);
   const slots = countSlots(nodes);
 

@@ -46,6 +46,10 @@ const countSlots = (nodes: any[]): number =>
 
 // Runs the user's layout through the render-prop machinery (createInstances
 // executes function components), so like render props it supports no hooks.
+// Called twice per page life: once at splice time so the first pass measures
+// content at slot width (chrome geometry is meaningless there — height is
+// unconstrained), and once per page with real props and an empty slot, the
+// only configuration where the slot's box is the page's true flow region.
 export const instantiateTemplate = (
   layout: PageLayout,
   props: Partial<DynamicPageProps>,

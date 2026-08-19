@@ -1,6 +1,5 @@
 import { isNil, matchPercent } from '@react-pdf/fns';
 
-import { isSlot } from '../page/template';
 import { SafeDocumentNode, SafeNode, SafePageNode } from '../types';
 
 /**
@@ -58,19 +57,8 @@ const resolveNodePercentHeight = (
 const resolvePagePercentHeight = (page: SafePageNode) => {
   if (!page.children) return page;
 
-  // The slot is invisible plumbing between the page and its content, so
-  // percentages reach through it and keep resolving against the page area.
-  const resolveChild = (child: SafeNode): SafeNode => {
-    if (isSlot(child)) {
-      return Object.assign({}, child, {
-        children: ((child.children || []) as SafeNode[]).map((inner) =>
-          resolveNodePercentHeight(page, inner),
-        ),
-      });
-    }
-
-    return resolveNodePercentHeight(page, child);
-  };
+  const resolveChild = (child: SafeNode) =>
+    resolveNodePercentHeight(page, child);
 
   const children = page.children.map(resolveChild);
 

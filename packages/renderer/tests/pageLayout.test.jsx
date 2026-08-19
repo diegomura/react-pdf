@@ -13,7 +13,7 @@ const PageLayout = ({ children, pageNumber }) => (
     />
     <View style={{ flexDirection: 'row', flexGrow: 1 }}>
       <View style={{ width: 120, backgroundColor: '#bae6fd' }} />
-      {children}
+      <View style={{ flexGrow: 1, flexShrink: 1 }}>{children}</View>
     </View>
     <View
       style={{
@@ -23,7 +23,9 @@ const PageLayout = ({ children, pageNumber }) => (
         justifyContent: 'center',
       }}
     >
-      <Text render={({ pageNumber: n, totalPages }) => `${n} / ${totalPages}`} />
+      <Text
+        render={({ pageNumber: n, totalPages }) => `${n} / ${totalPages}`}
+      />
     </View>
   </>
 );

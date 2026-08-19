@@ -10,6 +10,14 @@ const isBoolean = (value) => typeof value === 'boolean';
 const isReactFragment = (value) =>
   value && value.type === Symbol.for('react.fragment');
 
+// Wraps an already-created instance so it can travel through a React tree
+// (e.g. as a page layout's children) and come out untouched — instances
+// carry style/children at the top level and must not be re-destructured.
+export const INSTANCE_PASSTHROUGH = 'INSTANCE_PASSTHROUGH';
+
+export const passthrough = (node: Node): React.ReactElement =>
+  React.createElement(INSTANCE_PASSTHROUGH as any, { node });
+
 /**
  * Transforms a react element instance to internal element format.
  *
@@ -35,6 +43,10 @@ const createInstances = (element) => {
 
   if (isReactFragment(element)) {
     return createInstances(element.props.children);
+  }
+
+  if ((element as any).type === INSTANCE_PASSTHROUGH) {
+    return [(element as any).props.node];
   }
 
   if (!isString(element.type)) {

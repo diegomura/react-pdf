@@ -12,11 +12,11 @@ import fromPage from './fromPage';
 import toItems from './toItems';
 import {
   PageLayout,
-  findSlot,
-  forwardFlowStyles,
+  collectContent,
+  findProbe,
   identityLayout,
   instantiateTemplate,
-  isPageAbsolute,
+  probeElement,
 } from '../page/template';
 import {
   DynamicPageProps,
@@ -110,18 +110,16 @@ const absoluteBox = (
   return null;
 };
 
-// Every page is a template with one slot (resolvePageTemplates guarantees
-// it), so pagination has a single path: measure the chrome per page, pack
-// content against the slot's height, and fill the slot with each page's
-// fragment. Chrome height may vary per page; width may not, since content
-// was measured once at slot width.
+// Every page is a template instantiated per output page. The payload rides
+// through as the layout's children: a probe when measuring the flow region,
+// the page's fragments when building. Region height may vary per page;
+// width may not, since content was measured once at that width.
 const splitPage = (
   page: SafePageNode,
   props: DynamicEnv['props'],
   { fontStore, yoga }: Ctx,
 ): SafePageNode[] => {
   const template: PageLayout = (page.props as any)?.layout || identityLayout;
-  const children = (page.children || []) as SafeNode[];
 
   const env: DynamicEnv = {
     props,
@@ -129,92 +127,87 @@ const splitPage = (
       measureDynamic(page, node, nodeProps, fontStore, yoga),
   };
 
-  const contentSlot = findSlot(page)!;
-  const content = (contentSlot.children || []) as SafeNode[];
+  // Content sits inline wherever the template rendered it, tagged by the
+  // splice step; tree order is source order.
+  const content = collectContent(page as unknown as SafeNode);
+  const inFlow = content.filter((child) => !isAbsolute(child));
 
-  const root: Item = { kind: 'column', children: toItems(content, env) };
+  const root: Item = { kind: 'column', children: toItems(inFlow, env) };
   const paginator = createPaginator(root);
 
   const box = { ...page.box, height: page.style.height as number };
 
-  // The template re-instantiates with the page's props (the identity one
-  // for plain pages). Page absolutes keep their source positions beside it:
-  // fixed ones on every page, plain ones on the first.
-  const chromeFor = (
-    pageProps: DynamicPageProps,
-    index: number,
-  ): SafeNode[] => {
-    const nodes = instantiateTemplate(template, pageProps).map((node) =>
-      renderDynamic(pageProps, node as SafeNode),
-    ) as SafeNode[];
-
-    forwardFlowStyles(
-      findSlot({ type: 'PAGE', children: nodes } as any)!,
-      page.style,
+  const instantiate = (pageProps: DynamicPageProps, payload: SafeNode[]) =>
+    instantiateTemplate(template, pageProps, payload).map((node) =>
+      renderDynamic(pageProps, node),
     );
 
+  const measureRegion = (pageNumber: number) => {
+    const nodes = instantiate(props(pageNumber), [probeElement() as any]);
+    const fake = { ...page, box, children: nodes };
+    const laid = relayoutPage(fake as any, fontStore, yoga) as SafePageNode;
+    const probe = findProbe(laid)!;
+
+    return absoluteBox(laid, probe)!;
+  };
+
+  // The page's fragments take the in-flow content's place; absolutes keep
+  // their source positions — fixed ones on every page, plain ones on the
+  // first — and anchor to whatever parent the template gave them.
+  const payloadFor = (fragments: SafeNode[], index: number): SafeNode[] => {
     let placed = false;
 
-    return children.flatMap((child): SafeNode[] => {
-      if (isPageAbsolute(child)) {
-        return isFixed(child) || index === 0
-          ? [renderDynamic(pageProps, child)]
-          : [];
+    return content.flatMap((child): SafeNode[] => {
+      if (isAbsolute(child)) {
+        return isFixed(child) || index === 0 ? [child] : [];
       }
 
       if (placed) return [];
       placed = true;
 
-      return nodes;
+      return fragments;
     });
   };
 
-  const measureChrome = (pageNumber: number) => {
-    const pageProps = props(pageNumber);
-    const nodes = chromeFor(pageProps, pageNumber - 1);
-
-    const fake = { ...page, box, children: nodes };
-    const laid = relayoutPage(fake as any, fontStore, yoga) as SafePageNode;
-    const slot = findSlot(laid)!;
-    const slotBox = absoluteBox(laid, slot)!;
-
-    return { laid, slot, slotBox };
-  };
-
-  const referenceWidth = absoluteBox(page, contentSlot)!.width;
-  const height = (slotBox: { height: number }, pageNumber: number) => {
+  const regionHeight = (region: { height: number }, pageNumber: number) => {
     if (page.props?.wrap === false) return Infinity;
 
-    if (slotBox.height <= 0) {
+    if (region.height <= 0) {
       throw new Error(
         `[layout] The page layout leaves no room for content on page ${pageNumber}.`,
       );
     }
 
-    return slotBox.height;
+    return region.height;
   };
 
   const pages: SafePageNode[] = [];
+  let referenceWidth: number | null = null;
   let pageNumber = 1;
 
   while (!paginator.done) {
-    const { laid, slot, slotBox } = measureChrome(pageNumber);
+    const region = measureRegion(pageNumber);
 
-    if (Math.abs(slotBox.width - referenceWidth) > 0.001) {
+    referenceWidth = referenceWidth ?? region.width;
+
+    if (Math.abs(region.width - referenceWidth) > 0.001) {
       throw new Error(
         `[layout] The page layout changes the content width on page ${pageNumber} ` +
-          `(${slotBox.width} vs ${referenceWidth}). Chrome may vary in height per page, not width.`,
+          `(${region.width} vs ${referenceWidth}). Chrome may vary in height per page, not width.`,
       );
     }
 
-    const placed = paginator.next(height(slotBox, pageNumber));
-
-    slot.children = fromPage(placed[0]?.children || [], 0) as any;
+    const placed = paginator.next(regionHeight(region, pageNumber));
+    const fragments = fromPage(placed[0]?.children || [], 0) as SafeNode[];
 
     const index = pageNumber - 1;
+    const nodes = instantiate(props(pageNumber), payloadFor(fragments, index));
+
     const built = {
-      ...laid,
+      ...page,
+      box,
       props: index === 0 ? page.props : omit('bookmark', page.props),
+      children: nodes,
     } as SafePageNode;
 
     pages.push(relayoutPage(built as any, fontStore, yoga) as SafePageNode);

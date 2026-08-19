@@ -1,40 +1,26 @@
 import {
   PageLayout,
-  findSlot,
-  forwardFlowStyles,
   identityLayout,
   instantiateTemplate,
-  pageAbsolute,
+  tagContent,
+  validateTemplate,
 } from '../page/template';
 
-const isAbsolute = (node: any) => node.style?.position === 'absolute';
-
-// Every page becomes a template with one slot; a page without a layout gets
-// the identity one. In-flow children graft into the slot (fixed ones repeat
-// through the stream), absolutes stay beside it in their source positions:
-// they never enter the flow and must keep anchoring to the page —
-// `bottom: 30` inside the page padding is how footers reach the margin.
+// Every page instantiates its template — the identity one when no layout
+// prop is given — with the page's own children as the payload. Content
+// lands inline wherever the layout renders `children`, tagged so the
+// pagination step can tell it apart from the chrome around it. For plain
+// pages this is a true noop: the spliced tree is the original tree.
 const resolvePageTemplates = (root: any) => {
   const children = (root.children || []).map((page: any) => {
     const layout: PageLayout = page.props?.layout || identityLayout;
-    const pageChildren = page.children || [];
 
-    const nodes = instantiateTemplate(layout, { pageNumber: 1 });
-    const slot = findSlot({ type: 'PAGE', children: nodes } as any)!;
+    validateTemplate(layout);
 
-    slot.children = pageChildren.filter((child: any) => !isAbsolute(child));
-    forwardFlowStyles(slot, page.style);
+    const content = (page.children || []).map(tagContent);
+    const nodes = instantiateTemplate(layout, { pageNumber: 1 }, content);
 
-    const slotAt = pageChildren.findIndex((child: any) => !isAbsolute(child));
-    const spliced =
-      slotAt === -1
-        ? [...pageChildren.map(pageAbsolute), ...nodes]
-        : pageChildren.flatMap((child: any, at: number) => {
-            if (at === slotAt) return nodes;
-            return isAbsolute(child) ? [pageAbsolute(child)] : [];
-          });
-
-    return { ...page, children: spliced };
+    return { ...page, children: nodes };
   });
 
   return { ...root, children };

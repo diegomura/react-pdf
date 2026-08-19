@@ -1,9 +1,10 @@
 import React from 'react';
 
-import createInstances from '../node/createInstances';
+import createInstances, { passthrough } from '../node/createInstances';
 import { DynamicPageProps, SafeNode } from '../types';
 
-const SLOT_PROP = '__slot';
+const PROBE_PROP = '__probe';
+const CONTENT_PROP = '__content';
 
 export type PageLayout = (props: {
   children: React.ReactNode;
@@ -13,99 +14,86 @@ export type PageLayout = (props: {
   subPageTotalPages?: number;
 }) => React.ReactNode;
 
-// The slot grows to claim whatever space the chrome leaves. It renders
-// empty; the page's content is grafted in later.
-const slotElement = () =>
-  React.createElement('VIEW' as any, {
-    [SLOT_PROP]: true,
-    style: { flexGrow: 1, flexShrink: 1, alignSelf: 'stretch' },
-  });
-
-export const isSlot = (node: SafeNode): boolean =>
-  !!node.props && SLOT_PROP in node.props;
-
-// A page without a layout gets this one: nothing but the slot.
+// A page without a layout gets this one: children are the whole template.
 export const identityLayout: PageLayout = ({ children }) => children;
 
-// Page-level absolutes keep their place beside the template so paint order
-// survives — a watermark declared before content stays behind it.
-const PAGE_ABSOLUTE = '__pageAbsolute';
-
-export const pageAbsolute = (node: SafeNode): SafeNode =>
-  ({ ...node, props: { ...node.props, [PAGE_ABSOLUTE]: true } }) as SafeNode;
-
-export const isPageAbsolute = (node: SafeNode): boolean =>
-  !!node.props && PAGE_ABSOLUTE in node.props;
-
-// The slot is the flow container, so the page's flow styles move onto it —
-// left on the page they'd apply to a single slot child and do nothing.
-const FLOW_STYLES = [
-  'justifyContent',
-  'alignItems',
-  'alignContent',
-  'gap',
-  'rowGap',
-  'columnGap',
-];
-
-export const forwardFlowStyles = (slot: SafeNode, pageStyle: any = {}) => {
-  const forwarded = Object.fromEntries(
-    FLOW_STYLES.filter((key) => key in pageStyle).map((key) => [
-      key,
-      pageStyle[key],
-    ]),
-  );
-
-  slot.style = { ...slot.style, ...forwarded };
-};
-
-// Instance-shaped slot, for pages without a layout component: their chrome
-// is synthesized from existing instance nodes, so the slot must be one too.
-export const slotInstance = (children: SafeNode[] = []): SafeNode =>
+// A grown, stretched stand-in for the content: instantiated in place of
+// `children`, its measured box is the flow region for one page. Shaped as
+// an instance, like every payload node, so it rides the pass-through.
+export const probeElement = (): SafeNode =>
   ({
     type: 'VIEW',
-    props: { [SLOT_PROP]: true },
+    props: { [PROBE_PROP]: true },
     style: { flexGrow: 1, flexShrink: 1, alignSelf: 'stretch' },
-    children,
+    children: [],
   }) as any;
 
-export const findSlot = (node: SafeNode): SafeNode | null => {
-  if (isSlot(node)) return node;
+export const isProbe = (node: SafeNode): boolean =>
+  !!node.props && PROBE_PROP in node.props;
+
+export const findProbe = (node: SafeNode): SafeNode | null => {
+  if (isProbe(node)) return node;
 
   for (const child of (node.children || []) as SafeNode[]) {
-    const found = findSlot(child);
+    const found = findProbe(child);
     if (found) return found;
   }
 
   return null;
 };
 
-const countSlots = (nodes: any[]): number =>
-  nodes.reduce(
-    (acc, node) =>
-      acc +
-      (node?.props && SLOT_PROP in node.props ? 1 : 0) +
-      countSlots(node?.children || []),
-    0,
-  );
+// Content nodes are tagged so pagination can tell them apart from the
+// chrome they sit between once the template has been instantiated.
+export const tagContent = (node: SafeNode): SafeNode =>
+  ({ ...node, props: { ...node.props, [CONTENT_PROP]: true } }) as SafeNode;
 
-// Renders the user's layout the same way render props run, so no hooks.
-// Called once up front so content measures at slot width, and once per
-// page to find that page's flow region.
+export const isContent = (node: SafeNode): boolean =>
+  !!node.props && CONTENT_PROP in node.props;
+
+export const collectContent = (node: SafeNode, out: SafeNode[] = []) => {
+  for (const child of (node.children || []) as SafeNode[]) {
+    if (isContent(child)) out.push(child);
+    else collectContent(child, out);
+  }
+
+  return out;
+};
+
+// Runs the user's layout through the render-prop machinery (createInstances
+// executes function components), so like render props it supports no hooks.
+// The payload rides through as `children`: whatever the layout renders them
+// as, they land untouched — content on the first pass, a probe when
+// measuring, the page's fragments when building.
 export const instantiateTemplate = (
   layout: PageLayout,
   props: Partial<DynamicPageProps>,
+  payload: SafeNode[],
 ) => {
-  const children = slotElement();
-  const element = React.createElement(layout as any, props, children);
-  const nodes = createInstances(element);
-  const slots = countSlots(nodes);
+  const children = payload.map((node) => passthrough(node as any));
+  const element = React.createElement(layout as any, { ...props, children });
 
-  if (slots !== 1) {
+  return createInstances(element) as unknown as SafeNode[];
+};
+
+// The probe doubles as the render-once validator: a layout that drops or
+// duplicates its children is caught before any content is entrusted to it.
+export const validateTemplate = (layout: PageLayout) => {
+  const nodes = instantiateTemplate(layout, { pageNumber: 1 }, [
+    probeElement() as any,
+  ]);
+
+  const probes = nodes.reduce((acc, node) => acc + countProbes(node), 0);
+
+  if (probes !== 1) {
     throw new Error(
-      `[layout] A page layout must render its children exactly once (found ${slots} slots).`,
+      `[layout] A page layout must render its children exactly once (found ${probes}).`,
     );
   }
-
-  return nodes;
 };
+
+const countProbes = (node: SafeNode): number =>
+  (isProbe(node) ? 1 : 0) +
+  ((node.children || []) as SafeNode[]).reduce(
+    (acc, child) => acc + countProbes(child),
+    0,
+  );

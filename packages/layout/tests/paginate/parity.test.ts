@@ -8,7 +8,6 @@ import resolveInheritance from '../../src/steps/resolveInheritance';
 import legacyPagination from '../../src/steps/resolvePagination';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import nextPagination from '../../src/paginate';
-import { isSlot } from '../../src/page/template';
 import { SafeDocumentNode, SafeNode } from '../../src/types';
 
 const fontStore = new FontStore();
@@ -43,14 +42,10 @@ const doc = async (pageStyle, children): Promise<SafeDocumentNode> => ({
 
 const round = (value: number) => Math.round(value * 100) / 100;
 
-// The slot wrapper is invisible chrome plumbing — skip its entry but keep
-// walking through it so absolute positions still line up with legacy's.
 const walk = (node: SafeNode, offset = 0, out: string[] = []) => {
   const top = offset + (node.box?.top || 0);
 
-  if (!isSlot(node)) {
-    out.push(`${node.type} ${round(top)} ${round(node.box?.height || 0)}`);
-  }
+  out.push(`${node.type} ${round(top)} ${round(node.box?.height || 0)}`);
 
   ((node.children || []) as SafeNode[]).forEach((child) =>
     walk(child, top, out),

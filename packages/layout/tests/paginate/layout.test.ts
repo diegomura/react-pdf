@@ -5,7 +5,11 @@ import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import resolvePagination from '../../src/paginate';
-import { findSlot, instantiateTemplate } from '../../src/page/template';
+import {
+  instantiateTemplate,
+  isContent,
+  validateTemplate,
+} from '../../src/page/template';
 import { SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
@@ -28,6 +32,11 @@ const instance = (style = {}, children: any[] = []): any => ({
   props: {},
   children,
 });
+
+// The region container templates wrap `children` in whenever geometry
+// matters — asides, or chrome that must stay below the content.
+const region = (children: any): any =>
+  view({ flexGrow: 1, flexShrink: 1 }, [children]);
 
 const doc = async (pageStyle: any, children: any[], pageProps = {}) => ({
   type: 'DOCUMENT',
@@ -67,16 +76,26 @@ const walk = (node: SafeNode, offset = 0, offsetLeft = 0, out: any[] = []) => {
 const boxes = (page: SafePageNode) =>
   ((page.children || []) as SafeNode[]).flatMap((child) => walk(child));
 
+const findTagged = (node: SafeNode): SafeNode | null => {
+  if (isContent(node)) return node;
+
+  for (const child of (node.children || []) as SafeNode[]) {
+    const found = findTagged(child);
+    if (found) return found;
+  }
+
+  return null;
+};
+
 describe('template', () => {
-  test('instantiates the layout with an empty slot', () => {
+  test('the payload lands where the layout renders children, untouched', () => {
     const layout = ({ children }: any) =>
       view({ flexDirection: 'row' }, [children]);
 
-    const nodes = instantiateTemplate(layout, { pageNumber: 1 });
-    const slot = findSlot({ type: 'PAGE', children: nodes } as any);
+    const payload = [instance({ height: 10 })];
+    const nodes = instantiateTemplate(layout, { pageNumber: 1 }, payload);
 
-    expect(slot).toBeTruthy();
-    expect((slot as any).children ?? []).toHaveLength(0);
+    expect((nodes[0] as any).children[0]).toBe(payload[0]);
   });
 
   test('the layout receives its page props', () => {
@@ -86,7 +105,7 @@ describe('template', () => {
       return view({}, [children]);
     };
 
-    instantiateTemplate(layout, { pageNumber: 3, totalPages: 7 });
+    instantiateTemplate(layout, { pageNumber: 3, totalPages: 7 }, []);
 
     expect(seen).toEqual([{ pageNumber: 3, totalPages: 7 }]);
   });
@@ -95,63 +114,43 @@ describe('template', () => {
     const twice = ({ children }: any) => view({}, [children, children]);
     const never = () => view({}, []);
 
-    expect(() => instantiateTemplate(twice, { pageNumber: 1 })).toThrow(
-      /exactly once/,
-    );
-    expect(() => instantiateTemplate(never, { pageNumber: 1 })).toThrow(
-      /exactly once/,
-    );
+    expect(() => validateTemplate(twice)).toThrow(/exactly once/);
+    expect(() => validateTemplate(never)).toThrow(/exactly once/);
   });
 });
 
 describe('resolvePageTemplates', () => {
-  test('grafts the page content into the slot, styles intact', async () => {
-    const layout = ({ children }: any) =>
-      view({ flexDirection: 'row' }, [view({ width: 40 }), children]);
-
-    const content = [instance({ height: 10 })];
-    const root = resolvePageTemplates(
-      await doc({ width: 100, height: 100 }, content, { layout }),
-    );
-
-    const page = root.children[0];
-    const slot = findSlot(page as SafeNode)!;
-
-    expect(slot.children).toHaveLength(1);
-    expect((slot.children![0] as any).style).toEqual({ height: 10 });
-  });
-
-  test('pages without a layout get a synthesized slot', async () => {
+  test('a plain page splices to itself, styles intact', async () => {
     const content = [instance({ height: 10 })];
     const root = resolvePageTemplates(
       await doc({ width: 100, height: 100 }, content),
     );
 
-    const slot = findSlot(root.children[0] as SafeNode)!;
+    const children = root.children[0].children;
 
-    expect(slot).toBeTruthy();
-    expect(slot.children).toEqual(content);
+    expect(children).toHaveLength(1);
+    expect(children[0].style).toEqual({ height: 10 });
+    expect(isContent(children[0])).toBe(true);
   });
 
-  test('first pass measures content at slot width', async () => {
-    const layout = ({ children }: any) =>
+  test('first pass measures content at the region width', async () => {
+    const aside = ({ children }: any) =>
       view({ flexDirection: 'row', flexGrow: 1 }, [
         view({ width: 40 }),
-        children,
+        region(children),
       ]);
 
     const content = [instance({ height: 10 })];
     const laid = resolveDimensions(
       resolvePageTemplates(
-        await doc({ width: 100, height: 100 }, content, { layout }),
+        await doc({ width: 100, height: 100 }, content, { layout: aside }),
       ) as any,
       fontStore,
     );
 
-    const slot = findSlot(laid.children[0] as unknown as SafeNode)!;
+    const tagged = findTagged(laid.children[0] as unknown as SafeNode)!;
 
-    expect(slot.box?.width).toBe(60);
-    expect((slot.children![0] as SafeNode).box?.width).toBe(60);
+    expect(tagged.box?.width).toBe(60);
   });
 });
 
@@ -159,7 +158,7 @@ describe('template pages', () => {
   test('band template reserves header and footer space on every page', async () => {
     const band = ({ children }: any) => [
       view({ height: 20 }),
-      children,
+      region(children),
       view({ height: 10 }),
     ];
 
@@ -173,9 +172,9 @@ describe('template pages', () => {
 
     expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
       [0, 20], // header
-      [20, 70], // slot: 100 − 20 − 10
+      [20, 70], // the template's own region container
       [20, 60], // first block
-      [80, 10], // split head of the second block fills the region
+      [80, 10], // split head of the second block
       [90, 10], // footer
     ]);
 
@@ -183,7 +182,7 @@ describe('template pages', () => {
       [0, 20], // header again
       [20, 70],
       [20, 50], // remainder of the split block
-      [90, 10], // footer again
+      [90, 10], // footer again, pinned by the growing region
     ]);
   });
 
@@ -233,23 +232,21 @@ describe('template pages', () => {
     expect(pages).toHaveLength(2);
     expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
       [0, 40], // tall cover header
-      [40, 60], // slot: 100 − 40
       [40, 60], // first block fits exactly
     ]);
     expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
       [0, 10], // regular header
-      [10, 90],
       [10, 60],
     ]);
   });
 
-  test('odd/even mirrored aside keeps slot width and flips position', async () => {
+  test('odd/even mirrored aside keeps region width and flips position', async () => {
     const mirrored = ({ children, pageNumber }: any) =>
       view(
         { flexDirection: 'row', flexGrow: 1 },
         pageNumber % 2
-          ? [view({ width: 40 }), children]
-          : [children, view({ width: 40 })],
+          ? [view({ width: 40 }), region(children)]
+          : [region(children), view({ width: 40 })],
       );
 
     const pages = await run(
@@ -260,18 +257,18 @@ describe('template pages', () => {
 
     expect(pages).toHaveLength(2);
 
-    const slotOf = (page: SafePageNode) =>
+    const regionOf = (page: SafePageNode) =>
       boxes(page).find((b) => b.width === 60 && b.height === 100);
 
-    expect(slotOf(pages[0])?.left).toBe(40); // aside on the left
-    expect(slotOf(pages[1])?.left).toBe(0); // aside flipped right
+    expect(regionOf(pages[0])?.left).toBe(40); // aside on the left
+    expect(regionOf(pages[1])?.left).toBe(0); // aside flipped right
   });
 
   test('width-changing chrome fails loudly with the page number', async () => {
     const drifting = ({ children, pageNumber }: any) =>
       view({ flexDirection: 'row', flexGrow: 1 }, [
         view({ width: pageNumber * 10 }),
-        children,
+        region(children),
       ]);
 
     await expect(
@@ -330,16 +327,13 @@ describe('in-flow fixed', () => {
 
     expect(pages).toHaveLength(2);
     expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
-      [0, 100], // slot spans the page; the header consumes stream budget
       [0, 20], // fixed header
       [20, 60],
       [80, 20], // split head of the second block
     ]);
     expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
-      [0, 100],
       [0, 20], // fresh copy of the header
       [20, 40], // remainder of the split block
     ]);
   });
-
 });

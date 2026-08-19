@@ -11,7 +11,7 @@ import renderDynamic from '../node/renderDynamic';
 import relayoutPage from '../steps/relayoutPage';
 import fromPage from './fromPage';
 import toItems from './toItems';
-import { PageLayout, findSlot, instantiateTemplate } from './template';
+import { PageLayout, findSlot, instantiateTemplate } from '../page/template';
 import {
   DynamicPageProps,
   SafeDocumentNode,

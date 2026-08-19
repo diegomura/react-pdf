@@ -1,4 +1,4 @@
-import { findSlot, instantiateTemplate } from '../paginate/template';
+import { findSlot, instantiateTemplate } from '../page/template';
 
 // Pages with a `layout` prop swap their children for the instantiated
 // template, with the original content grafted into the slot — so the first

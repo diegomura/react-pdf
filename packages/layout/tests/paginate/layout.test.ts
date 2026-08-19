@@ -9,7 +9,7 @@ import {
   SLOT_PROP,
   findSlot,
   instantiateTemplate,
-} from '../../src/paginate/template';
+} from '../../src/page/template';
 import { SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();

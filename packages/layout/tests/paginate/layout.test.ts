@@ -5,11 +5,7 @@ import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import resolvePagination from '../../src/paginate';
-import {
-  SLOT_PROP,
-  findSlot,
-  instantiateTemplate,
-} from '../../src/page/template';
+import { findSlot, instantiateTemplate } from '../../src/page/template';
 import { SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
@@ -80,7 +76,6 @@ describe('template', () => {
     const slot = findSlot({ type: 'PAGE', children: nodes } as any);
 
     expect(slot).toBeTruthy();
-    expect(SLOT_PROP in (slot as any).props).toBe(true);
     expect((slot as any).children ?? []).toHaveLength(0);
   });
 

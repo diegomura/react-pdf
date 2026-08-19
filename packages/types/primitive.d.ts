@@ -23,6 +23,7 @@ export enum Primitive {
   Polyline = P.Polyline,
   ClipPath = P.ClipPath,
   TextInstance = P.TextInstance,
+  Fragment = P.Fragment,
   LinearGradient = P.LinearGradient,
   RadialGradient = P.RadialGradient,
 }

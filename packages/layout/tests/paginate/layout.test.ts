@@ -4,18 +4,25 @@ import FontStore from '@react-pdf/font';
 import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
+import resolvePagination from '../../src/paginate';
 import {
   SLOT_PROP,
   findSlot,
   instantiateTemplate,
 } from '../../src/paginate/template';
-import { SafeNode } from '../../src/types';
+import { SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
 
+// Element-shaped node, as layout components return them (style inside props)
 const view = (style = {}, children: any[] = []): any => ({
   type: 'VIEW',
   props: { style, children },
+});
+
+const dynamicView = (render: any, style = {}): any => ({
+  type: 'VIEW',
+  props: { render, style, children: [] },
 });
 
 // Instance-shaped node, as the reconciler produces them (style at top level)
@@ -32,6 +39,35 @@ const doc = async (pageStyle: any, children: any[], pageProps = {}) => ({
   props: {},
   children: [{ type: 'PAGE', props: pageProps, style: pageStyle, children }],
 });
+
+const run = async (pageStyle: any, children: any[], pageProps = {}) => {
+  const spliced = resolvePageTemplates(
+    await doc(pageStyle, children, pageProps),
+  );
+  const laid = resolveDimensions(spliced as any, fontStore);
+
+  return resolvePagination(laid, fontStore).children as SafePageNode[];
+};
+
+const walk = (node: SafeNode, offset = 0, out: any[] = []) => {
+  const top = offset + (node.box?.top || 0);
+
+  out.push({
+    type: node.type,
+    top,
+    height: node.box?.height || 0,
+    width: node.box?.width || 0,
+  });
+
+  ((node.children || []) as SafeNode[]).forEach((child) =>
+    walk(child, top, out),
+  );
+
+  return out;
+};
+
+const boxes = (page: SafePageNode) =>
+  ((page.children || []) as SafeNode[]).flatMap((child) => walk(child));
 
 describe('template', () => {
   test('instantiates the layout with an empty slot', () => {
@@ -116,5 +152,69 @@ describe('resolvePageTemplates', () => {
 
     expect(slot.box?.width).toBe(60);
     expect((slot.children![0] as SafeNode).box?.width).toBe(60);
+  });
+});
+
+describe('template pages', () => {
+  test('band template reserves header and footer space on every page', async () => {
+    const band = ({ children }: any) => [
+      view({ height: 20 }),
+      children,
+      view({ height: 10 }),
+    ];
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [instance({ height: 60 }), instance({ height: 60 })],
+      { layout: band },
+    );
+
+    expect(pages).toHaveLength(2);
+
+    expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
+      [0, 20], // header
+      [20, 70], // slot: 100 − 20 − 10
+      [20, 60], // first block
+      [80, 10], // split head of the second block fills the region
+      [90, 10], // footer
+    ]);
+
+    expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
+      [0, 20], // header again
+      [20, 70],
+      [20, 50], // remainder of the split block
+      [90, 10], // footer again
+    ]);
+  });
+
+  test('chrome render props resolve with each page number', async () => {
+    const numbered = ({ children }: any) => [
+      children,
+      view({ height: 10 }, [
+        dynamicView(({ pageNumber }: any) => [
+          view({ height: 5, width: pageNumber * 10 }),
+        ]),
+      ]),
+    ];
+
+    const pages = await run(
+      { width: 100, height: 100 },
+      [
+        instance({ height: 60 }),
+        instance({ height: 60 }),
+        instance({ height: 60 }),
+      ],
+      { layout: numbered },
+    );
+
+    expect(pages).toHaveLength(2);
+
+    const footerWidths = (page: SafePageNode) =>
+      boxes(page)
+        .filter((b) => b.height === 5)
+        .map((b) => b.width);
+
+    expect(footerWidths(pages[0])).toContain(10);
+    expect(footerWidths(pages[1])).toContain(20);
   });
 });

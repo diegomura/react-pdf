@@ -417,7 +417,7 @@ describe('paginate', () => {
       expect(pages).toHaveLength(2);
 
       pages.forEach((page) => {
-        const [fixed, content] = page.children as SafeNode[];
+        const [fixed, content] = findSlot(page as any)!.children as SafeNode[];
         expect(fixed.box?.top).toBe(0);
         // flow starts below header + its margin on both pages
         expect(content.box?.top).toBe(30);

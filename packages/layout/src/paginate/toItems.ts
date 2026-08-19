@@ -213,13 +213,12 @@ const toItem = (node: SafeNode, env: DynamicEnv): Item => {
 };
 
 const toItems = (nodes: SafeNode[], env: DynamicEnv): Item[] => {
-  const children = nodes.filter(
-    (node) => !isAbsolute(node) && !isFixed(node),
-  ) as SafeNode[];
+  const children = nodes.filter((node) => !isAbsolute(node)) as SafeNode[];
 
   return children.flatMap((child, index) => {
     const before = gapBefore(children, index);
-    const item = toItem(child, env);
+    const base = toItem(child, env);
+    const item = isFixed(child) ? ({ ...base, repeat: true } as Item) : base;
     const shouldBreak = 'break' in child.props && child.props.break;
     const lead = before > 0 ? [space(before, true)] : [];
 

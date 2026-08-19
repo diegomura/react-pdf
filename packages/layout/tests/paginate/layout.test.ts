@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
@@ -320,25 +320,37 @@ describe('template pages', () => {
   });
 });
 
-describe('fixed chrome', () => {
-  test('an in-flow fixed footer reserves space and repeats', async () => {
+describe('in-flow fixed', () => {
+  test('a fixed header repeats at the top of every page through the stream', async () => {
     const pages = await run({ width: 100, height: 100 }, [
+      { ...instance({ height: 20 }), props: { fixed: true } },
       instance({ height: 60 }),
       instance({ height: 60 }),
-      { ...instance({ height: 10 }), props: { fixed: true } },
     ]);
 
     expect(pages).toHaveLength(2);
     expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
-      [0, 90], // slot: the footer's space is reserved
-      [0, 60],
-      [60, 30], // split against the 90pt slot
-      [90, 10], // footer
+      [0, 100], // slot spans the page; the header consumes stream budget
+      [0, 20], // fixed header
+      [20, 60],
+      [80, 20], // split head of the second block
     ]);
     expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
-      [0, 90],
-      [0, 30], // remainder of the split block
-      [90, 10], // footer again, same anchor
+      [0, 100],
+      [0, 20], // fresh copy of the header
+      [20, 40], // remainder of the split block
     ]);
+  });
+
+  test('fixed after content warns towards the layout prop', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    await run({ width: 100, height: 100 }, [
+      instance({ height: 40 }),
+      { ...instance({ height: 10 }), props: { fixed: true } },
+    ]);
+
+    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/layout` prop/));
+    warn.mockRestore();
   });
 });

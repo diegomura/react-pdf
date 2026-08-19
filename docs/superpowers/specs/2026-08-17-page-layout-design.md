@@ -115,21 +115,21 @@ p.done;         // true when the stream is exhausted
 
 Also validated: a template whose slot measures to height ≤ 0 (chrome ate the page) is an error, not an infinite loop.
 
-## 6. `fixed` policy
+## 6. `fixed` policy — one semantic everywhere
 
-*(Rewritten after the §10 unification landed early — the prefix-only restriction and its deprecation became unnecessary.)* Every page is a template: pages without a `layout` get one synthesized from their own children, where in-flow `fixed` nodes — prefix **and** suffix — become chrome around the slot. Consequences:
+*(Restated after the §10 unification landed early.)* In-flow `fixed` means one thing at every depth: the engine's `repeat` semantics — re-emit at the **top** of continuations, from where the flow reaches it, no future lookup. Page-level in-flow fixed is not special: the synthesized template keeps it *inside* the slot as a stream repeat item, exactly like nested fixed. Only absolutes live outside the slot, since they never enter the flow and anchor to the page.
 
 | Case | Behavior |
 | --- | --- |
-| Absolute fixed (e.g. `position: 'absolute', bottom: 5` page numbers) | repeats, anchored to the page, anywhere in the children list |
-| In-flow prefix fixed (header band) | repeats with space reserved — now via the measured slot, not `flowTop` |
-| In-flow suffix fixed (footer band) | repeats **with space reserved** — an upgrade over legacy, whose footers squeezed content via relayout |
+| Absolute fixed (e.g. `position: 'absolute', bottom: 5` page numbers) | per-page chrome: repeats anchored to the page, anywhere in the children list |
+| In-flow fixed before content (header) | repeats at the top of every page, consuming stream budget — visually the reserved band, with no band arithmetic |
+| In-flow fixed after content | engine-honest behavior: places once when reached, repeats only at later tops — **not a footer**. Dev warning pointing at `layout`; error in the next major |
 
-No deprecation, no breaking change: `fixed` is the lightweight way to declare band chrome, `layout` the structured way, and both compile to the same template model. Nested `fixed` keeps its `repeat` mapping (placed-once, prefix-semantic).
+Footers are `layout`'s job. The rule stays: **`fixed` is prefix chrome; suffix chrome is `layout`'s.**
 
 ## 7. Release shape
 
-The engine change (`createPaginator`) shipped independently (paginate 0.1.0). The user-facing surface ships together in the pagination-rewrite major: `layout` and the width/slot validations. With the unified template model there is no `fixed` deprecation to stage — suffix `fixed` simply starts behaving correctly (space reserved).
+The engine change (`createPaginator`) shipped independently (paginate 0.1.0). The user-facing surface ships together in the pagination-rewrite major: `layout`, the width/slot validations, and the suffix-`fixed` dev warning. The suffix-`fixed` error lands in the major after.
 
 ## 8. Edge cases
 

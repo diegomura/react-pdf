@@ -41,8 +41,6 @@ type Ctx = {
 
 const isAbsolute = (node: SafeNode) => node.style?.position === 'absolute';
 
-const isOutOfFlow = (node: SafeNode) => isFixed(node) || isAbsolute(node);
-
 const numeric = (value: unknown): number =>
   typeof value === 'number' ? value : 0;
 
@@ -200,13 +198,13 @@ const splitPage = (
     const placed = paginator.next(height(slotBox, pageNumber));
     const flowNodes = fromPage(placed[0]?.children || [], 0);
 
-    // Out-of-flow children inside a user layout's content follow the same
-    // rules as chrome: fixed repeats, absolutes belong to the first page.
-    // Synthesized pages already carry theirs in the chrome.
+    // Absolute content children never enter the flow: fixed ones repeat on
+    // every page, plain ones belong to the first. In-flow fixed already
+    // travels through the stream as repeat items.
     const index = pageNumber - 1;
     const outOfFlow = layout
       ? content.filter(
-          (child) => isOutOfFlow(child) && (isFixed(child) || index === 0),
+          (child) => isAbsolute(child) && (isFixed(child) || index === 0),
         )
       : [];
 

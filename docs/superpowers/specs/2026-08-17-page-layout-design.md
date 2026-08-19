@@ -115,23 +115,21 @@ p.done;         // true when the stream is exhausted
 
 Also validated: a template whose slot measures to height ≤ 0 (chrome ate the page) is an error, not an infinite loop.
 
-## 6. `fixed` policy — prefix-only
+## 6. `fixed` policy
 
-Usage splits three ways, and only one breaks:
+*(Rewritten after the §10 unification landed early — the prefix-only restriction and its deprecation became unnecessary.)* Every page is a template: pages without a `layout` get one synthesized from their own children, where in-flow `fixed` nodes — prefix **and** suffix — become chrome around the slot. Consequences:
 
-| Case | Today | After |
-| --- | --- | --- |
-| Absolute fixed (e.g. `position: 'absolute', bottom: 5` page numbers) | repeats, no flow participation | **unchanged** — works anywhere in the children list |
-| In-flow prefix fixed (header band above first flow child) | repeats, space reserved via `flowTop` | **unchanged** — the API that makes sense |
-| In-flow suffix or sandwiched fixed | repeats, space *not* reserved; squeezes content via relayout | **dev-mode warning in this major** pointing at `layout`; **error in the next major** |
+| Case | Behavior |
+| --- | --- |
+| Absolute fixed (e.g. `position: 'absolute', bottom: 5` page numbers) | repeats, anchored to the page, anywhere in the children list |
+| In-flow prefix fixed (header band) | repeats with space reserved — now via the measured slot, not `flowTop` |
+| In-flow suffix fixed (footer band) | repeats **with space reserved** — an upgrade over legacy, whose footers squeezed content via relayout |
 
-Nested `fixed` (mapped to engine `repeat`) is already prefix-semantic via the placed-once rule, so page level and nested level now state one rule: **`fixed` is prefix chrome; suffix chrome is `layout`'s job.**
-
-Pages without a `layout` prop keep the existing template path (prefix band + absolute repeats). End state after the following major: `splitPage` is "prefix band + absolute repeats + slot", and the squeeze path is deleted.
+No deprecation, no breaking change: `fixed` is the lightweight way to declare band chrome, `layout` the structured way, and both compile to the same template model. Nested `fixed` keeps its `repeat` mapping (placed-once, prefix-semantic).
 
 ## 7. Release shape
 
-The engine change (`createPaginator`) ships independently, whenever ready — `@react-pdf/paginate` has no released consumer yet, so it's purely additive. The user-facing surface ships together in the pagination-rewrite major: `layout`, the width/slot validations, and the suffix-`fixed` dev warning. Users migrate once, with the replacement available the whole time. The suffix-`fixed` error lands in the major after.
+The engine change (`createPaginator`) shipped independently (paginate 0.1.0). The user-facing surface ships together in the pagination-rewrite major: `layout` and the width/slot validations. With the unified template model there is no `fixed` deprecation to stage — suffix `fixed` simply starts behaving correctly (space reserved).
 
 ## 8. Edge cases
 

@@ -5,29 +5,6 @@ const isAbsolute = (node: any) => node.style?.position === 'absolute';
 
 const isOutOfFlow = (node: any) => isFixed(node) || isAbsolute(node);
 
-// Fixed content after the flow is chrome declared in the wrong place; the
-// layout prop is the supported way to say it.
-let warnedSuffixFixed = false;
-
-const warnSuffixFixed = (children: any[]) => {
-  if (warnedSuffixFixed) return;
-
-  const flow = children.findIndex((child) => !isOutOfFlow(child));
-  const suffix =
-    flow !== -1 &&
-    children.some(
-      (child, at) => at > flow && isFixed(child) && !isAbsolute(child),
-    );
-
-  if (!suffix) return;
-
-  warnedSuffixFixed = true;
-  console.warn(
-    '[layout] In-flow fixed elements placed after content are deprecated. ' +
-      'Move page chrome to the Page `layout` prop.',
-  );
-};
-
 // The slot is the flow container now, so the page's flow styles move with
 // the content or they'd apply to a single slot child and do nothing.
 const FLOW_STYLES = [
@@ -49,8 +26,6 @@ const flowStyles = (style: any = {}) =>
 // and absolutes ride along (the pagination step keeps them to page 1).
 const synthesize = (page: any) => {
   const children = page.children || [];
-
-  warnSuffixFixed(children);
 
   const flow = children.filter((child: any) => !isOutOfFlow(child));
   const slotAt = children.findIndex((child: any) => !isOutOfFlow(child));

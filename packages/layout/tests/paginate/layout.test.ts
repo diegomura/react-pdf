@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
@@ -320,16 +320,23 @@ describe('template pages', () => {
   });
 });
 
-describe('suffix fixed deprecation', () => {
-  test('in-flow fixed after content warns towards the layout prop', async () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-    await run({ width: 100, height: 100 }, [
-      instance({ height: 40 }),
+describe('fixed chrome', () => {
+  test('an in-flow fixed footer reserves space and repeats', async () => {
+    const pages = await run({ width: 100, height: 100 }, [
+      instance({ height: 60 }),
+      instance({ height: 60 }),
       { ...instance({ height: 10 }), props: { fixed: true } },
     ]);
 
-    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/layout` prop/));
-    warn.mockRestore();
+    expect(pages).toHaveLength(2);
+    expect(boxes(pages[0]).map((b) => [b.top, b.height])).toEqual([
+      [0, 60],
+      [60, 30], // split against the 90pt slot the footer left free
+      [90, 10], // footer
+    ]);
+    expect(boxes(pages[1]).map((b) => [b.top, b.height])).toEqual([
+      [0, 30], // remainder of the split block
+      [90, 10], // footer again, same anchor
+    ]);
   });
 });

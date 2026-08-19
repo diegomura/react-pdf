@@ -21,9 +21,11 @@ const flowStyles = (style: any = {}) =>
     FLOW_STYLES.filter((key) => key in style).map((key) => [key, style[key]]),
   );
 
-// A page without a layout gets one synthesized from its own children:
-// fixed nodes stay as chrome around the slot, flow content goes inside it,
-// and absolutes ride along (the pagination step keeps them to page 1).
+// A page without a layout gets one synthesized from its own children. The
+// slot boundary is what implements `fixed`: chrome outside it repeats on
+// every page and reserves its space, content inside flows once. So fixed
+// nodes go outside, flow content inside, and absolutes ride along (the
+// pagination step keeps them to page 1).
 const synthesize = (page: any) => {
   const children = page.children || [];
 

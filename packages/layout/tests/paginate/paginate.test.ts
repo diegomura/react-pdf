@@ -3,7 +3,9 @@ import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
+import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import resolvePagination from '../../src/paginate';
+import { findSlot, isSlot } from '../../src/page/template';
 import { SafeDocumentNode, SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
@@ -55,18 +57,24 @@ const doc = async (
 
 const run = async (pageStyle, children, pageProps = {}) => {
   const layout = resolvePagination(
-    resolveDimensions(await doc(pageStyle, children, pageProps), fontStore),
+    resolveDimensions(
+      resolvePageTemplates(await doc(pageStyle, children, pageProps)) as any,
+      fontStore,
+    ),
     fontStore,
   );
 
   return layout.children as SafePageNode[];
 };
 
-// Absolute top of every node, so overflow is checked against the real page
+// Absolute top of every node, so overflow is checked against the real page.
+// The slot wrapper is invisible plumbing: skipped, but walked through.
 const walk = (node: SafeNode, offset = 0, out: any[] = []) => {
   const top = offset + (node.box?.top || 0);
 
-  out.push({ type: node.type, top, height: node.box?.height || 0 });
+  if (!isSlot(node)) {
+    out.push({ type: node.type, top, height: node.box?.height || 0 });
+  }
 
   ((node.children || []) as SafeNode[]).forEach((child) =>
     walk(child, top, out),
@@ -78,11 +86,17 @@ const walk = (node: SafeNode, offset = 0, out: any[] = []) => {
 const boxes = (page: SafePageNode) =>
   ((page.children || []) as SafeNode[]).flatMap((child) => walk(child));
 
+// Top-level flow entries, as they were before the slot wrapper existed:
+// slot children surface with the slot's own offset folded in.
 const tops = (page: SafePageNode) =>
-  ((page.children || []) as SafeNode[]).map((child) => [
-    child.box?.top,
-    child.box?.height,
-  ]);
+  ((page.children || []) as SafeNode[]).flatMap((child) =>
+    isSlot(child)
+      ? ((child.children || []) as SafeNode[]).map((inner) => [
+          (inner.box?.top || 0) + (child.box?.top || 0),
+          inner.box?.height,
+        ])
+      : [[child.box?.top, child.box?.height]],
+  );
 
 describe('paginate', () => {
   test('stacks blocks and wraps onto a second page', async () => {
@@ -143,12 +157,14 @@ describe('paginate', () => {
     expect(outer.top).toBe(0);
     expect(inner.top).toBe(12);
     expect(outer.top + outer.height).toBeLessThanOrEqual(100);
-    expect(pages[0].children![0].style.borderBottomWidth).toBe(0);
+    const first = findSlot(pages[0] as any)!.children![0] as SafeNode;
+    expect(first.style.borderBottomWidth).toBe(0);
 
     const [nextOuter, nextInner] = boxes(pages[1]);
     expect(nextOuter.top).toBe(0);
     expect(nextInner.top).toBe(0);
-    expect(pages[1].children![0].style.borderTopWidth).toBe(0);
+    const next = findSlot(pages[1] as any)!.children![0] as SafeNode;
+    expect(next.style.borderTopWidth).toBe(0);
   });
 
   test('overflowing bottom edge distributes across the break', async () => {
@@ -252,7 +268,7 @@ describe('paginate', () => {
       ]);
 
       expect(pages).toHaveLength(1);
-      const children = pages[0].children as SafeNode[];
+      const children = findSlot(pages[0] as any)!.children as SafeNode[];
       expect(children).toHaveLength(3);
       expect(children[1].children).toHaveLength(2);
       // dynamic content is 50 tall, so the trailing view sits below it
@@ -354,7 +370,9 @@ describe('paginate', () => {
       ]);
 
       expect(pages).toHaveLength(2);
-      expect(labels).toEqual(['1/2', '2/2']);
+      // Chrome resolves in both rounds now, like content render props:
+      // round 1 with pending totals, round 2 with the real count.
+      expect(labels).toEqual(['1/undefined', '2/undefined', '1/2', '2/2']);
 
       // bottom: 20 anchors against the real page height: top = 100 - 20 - 10
       pages.forEach((page) => {

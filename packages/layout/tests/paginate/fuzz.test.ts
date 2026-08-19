@@ -5,6 +5,7 @@ import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolveStyles from '../../src/steps/resolveStyles';
 import resolveInheritance from '../../src/steps/resolveInheritance';
+import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import nextPagination from '../../src/paginate';
 import { SafeDocumentNode, SafeNode } from '../../src/types';
 
@@ -105,7 +106,7 @@ const laidOut = async (seed: number) => {
   const rand = rng(seed);
   const styled = resolveInheritance(resolveStyles(await document(rand)) as any);
 
-  return resolveDimensions(styled as any, fontStore);
+  return resolveDimensions(resolvePageTemplates(styled) as any, fontStore);
 };
 
 const boxes = (

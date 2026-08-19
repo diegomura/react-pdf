@@ -121,13 +121,16 @@ describe('resolvePageTemplates', () => {
     expect((slot.children![0] as any).style).toEqual({ height: 10 });
   });
 
-  test('pages without a layout pass through untouched', async () => {
+  test('pages without a layout get a synthesized slot', async () => {
     const content = [instance({ height: 10 })];
     const root = resolvePageTemplates(
       await doc({ width: 100, height: 100 }, content),
     );
 
-    expect(root.children[0].children).toBe(content);
+    const slot = findSlot(root.children[0] as SafeNode)!;
+
+    expect(slot).toBeTruthy();
+    expect(slot.children).toEqual(content);
   });
 
   test('first pass measures content at slot width', async () => {

@@ -1,17 +1,21 @@
 import * as P from '@react-pdf/primitives';
 import { omit } from '@react-pdf/fns';
-import { createPaginator, paginate } from '@react-pdf/paginate';
+import { createPaginator } from '@react-pdf/paginate';
 import type { Item } from '@react-pdf/paginate';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
 import hasDynamic from '../node/hasDynamic';
-import getContentArea from '../page/getContentArea';
 import renderDynamic from '../node/renderDynamic';
 import relayoutPage from '../steps/relayoutPage';
 import fromPage from './fromPage';
 import toItems from './toItems';
-import { PageLayout, findSlot, instantiateTemplate } from '../page/template';
+import {
+  PageLayout,
+  findSlot,
+  instantiateTemplate,
+  isSlot,
+} from '../page/template';
 import {
   DynamicPageProps,
   SafeDocumentNode,
@@ -39,14 +43,8 @@ const isAbsolute = (node: SafeNode) => node.style?.position === 'absolute';
 
 const isOutOfFlow = (node: SafeNode) => isFixed(node) || isAbsolute(node);
 
-const contentTop = (page: SafePageNode) =>
-  (page.box?.borderTopWidth || 0) + (page.box?.paddingTop || 0);
-
 const numeric = (value: unknown): number =>
   typeof value === 'number' ? value : 0;
-
-const outerTop = (node: SafeNode) =>
-  (node.box?.top || 0) - numeric(node.box?.marginTop);
 
 // Re-render a dynamic subtree and measure it at the width the first pass gave
 // it. A throwaway page runs the subtree through the standard style and yoga
@@ -112,16 +110,18 @@ const absoluteBox = (
   return null;
 };
 
-// A page with a `layout` prop: chrome repeats by definition, the slot's
-// measured box is the flow region, and each page's chrome is instantiated
-// with that page's props — so its height may vary per page. Width may not:
-// content was measured once at slot width.
-const splitTemplatePage = (
+// Every page is a template with one slot (resolvePageTemplates guarantees
+// it), so pagination has a single path: measure the chrome per page, pack
+// content against the slot's height, and fill the slot with each page's
+// fragment. Chrome height may vary per page; width may not, since content
+// was measured once at slot width.
+const splitPage = (
   page: SafePageNode,
   props: DynamicEnv['props'],
   { fontStore, yoga }: Ctx,
 ): SafePageNode[] => {
-  const layout = (page.props as any).layout as PageLayout;
+  const layout = (page.props as any)?.layout as PageLayout | undefined;
+  const children = (page.children || []) as SafeNode[];
 
   const env: DynamicEnv = {
     props,
@@ -137,11 +137,31 @@ const splitTemplatePage = (
 
   const box = { ...page.box, height: page.style.height as number };
 
+  // A user layout re-instantiates with the page's props; synthesized chrome
+  // re-renders its dynamic nodes. Fixed chrome repeats on every page,
+  // absolutes belong to the first.
+  const chromeFor = (
+    pageProps: DynamicPageProps,
+    index: number,
+  ): SafeNode[] => {
+    if (layout) {
+      return instantiateTemplate(layout, pageProps).map((node) =>
+        renderDynamic(pageProps, node as SafeNode),
+      ) as SafeNode[];
+    }
+
+    return children
+      .filter((child) => isSlot(child) || isFixed(child) || index === 0)
+      .map((child) =>
+        isSlot(child)
+          ? ({ ...child, children: [] } as SafeNode)
+          : renderDynamic(pageProps, child),
+      );
+  };
+
   const measureChrome = (pageNumber: number) => {
     const pageProps = props(pageNumber);
-    const nodes = instantiateTemplate(layout, pageProps).map((node) =>
-      renderDynamic(pageProps, node as SafeNode),
-    );
+    const nodes = chromeFor(pageProps, pageNumber - 1);
 
     const fake = { ...page, box, children: nodes };
     const laid = relayoutPage(fake as any, fontStore, yoga) as SafePageNode;
@@ -180,12 +200,15 @@ const splitTemplatePage = (
     const placed = paginator.next(height(slotBox, pageNumber));
     const flowNodes = fromPage(placed[0]?.children || [], 0);
 
-    // Out-of-flow content children follow the standard page rules: fixed
-    // repeats on every page, absolutes belong to the first.
+    // Out-of-flow children inside a user layout's content follow the same
+    // rules as chrome: fixed repeats, absolutes belong to the first page.
+    // Synthesized pages already carry theirs in the chrome.
     const index = pageNumber - 1;
-    const outOfFlow = content.filter(
-      (child) => isOutOfFlow(child) && (isFixed(child) || index === 0),
-    );
+    const outOfFlow = layout
+      ? content.filter(
+          (child) => isOutOfFlow(child) && (isFixed(child) || index === 0),
+        )
+      : [];
 
     slot.children = [...flowNodes, ...outOfFlow] as any;
 
@@ -199,103 +222,6 @@ const splitTemplatePage = (
   }
 
   return pages;
-};
-
-// In-flow suffix fixed repeats without reserved space — content packs
-// against the full area and the chrome squeezes in on relayout. Deprecated
-// in favor of the layout prop; becomes an error in the next major.
-let warnedSuffixFixed = false;
-
-const warnSuffixFixed = (children: SafeNode[], slot: number) => {
-  if (warnedSuffixFixed || slot === -1) return;
-
-  const suffix = children.some(
-    (child, at) => at > slot && isFixed(child) && !isAbsolute(child),
-  );
-
-  if (!suffix) return;
-
-  warnedSuffixFixed = true;
-  console.warn(
-    '[layout] In-flow fixed elements placed after content are deprecated: ' +
-      'their space is not reserved. Move page chrome to the Page `layout` prop.',
-  );
-};
-
-const splitPage = (
-  page: SafePageNode,
-  props: DynamicEnv['props'],
-  { totals, fontStore, yoga }: Ctx,
-): SafePageNode[] => {
-  if ((page.props as any)?.layout) {
-    return splitTemplatePage(page, props, { totals, fontStore, yoga });
-  }
-
-  const children = (page.children || []) as SafeNode[];
-
-  const env: DynamicEnv = {
-    props,
-    measure: (node, nodeProps) =>
-      measureDynamic(page, node, nodeProps, fontStore, yoga),
-  };
-
-  // Page padding comes off the height rather than entering the flow as
-  // spacers, since it applies to every page.
-  const root: Item = { kind: 'column', children: toItems(children, env) };
-
-  // The engine can't take the content area directly: in-flow fixed nodes (a
-  // repeating header) occupy the band above the first flow child on every
-  // page, so flow content only gets the content area below that band. A page
-  // that refuses to wrap is the same thing with no ceiling.
-  const slot = children.findIndex((child) => !isOutOfFlow(child));
-  const flowTop =
-    slot === -1
-      ? contentTop(page)
-      : Math.max(outerTop(children[slot]), contentTop(page));
-
-  warnSuffixFixed(children, slot);
-
-  const height =
-    page.props?.wrap === false
-      ? Infinity
-      : contentTop(page) + getContentArea(page) - flowTop;
-
-  const pages = paginate(root, height);
-
-  const box = { ...page.box, height: page.style.height as number };
-
-  return pages.map((placed, index) => {
-    const flowNodes = fromPage(placed[0]?.children || [], flowTop);
-
-    // The page is a template with one flow slot: fixed nodes repeat on every
-    // page, a page-level absolute belongs to the page it was written on, and
-    // the flow children collapse into the slot, which holds whatever landed
-    // on the page being built. Dynamic out-of-flow content resolves against
-    // the page number it ends up on.
-    const rebuilt = children.flatMap((child, at): SafeNode[] => {
-      if (!isOutOfFlow(child)) return at === slot ? flowNodes : [];
-      if (!isFixed(child) && index > 0) return [];
-
-      return [
-        totals && hasDynamic(child)
-          ? env.measure(child, props(index + 1))
-          : child,
-      ];
-    });
-
-    const built = {
-      ...page,
-      box,
-      props: index === 0 ? page.props : omit('bookmark', page.props),
-      children: rebuilt,
-    } as SafePageNode;
-
-    // The partition is settled and every fragment carries its decided height
-    // in style, so re-laying the finished page at its real height can only do
-    // what the unconstrained first pass could not: anchor absolutes against
-    // the page bottom and hand out the leftover space.
-    return relayoutPage(built as any, fontStore, yoga) as SafePageNode;
-  }) as SafePageNode[];
 };
 
 const paginateDocument = (root: SafeDocumentNode, ctx: Ctx) => {

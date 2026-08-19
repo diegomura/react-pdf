@@ -18,11 +18,24 @@ export type PageLayout = (props: {
 const slotElement = () =>
   React.createElement('VIEW' as any, {
     [SLOT_PROP]: true,
-    style: { flexGrow: 1, flexShrink: 1 },
+    style: { flexGrow: 1, flexShrink: 1, alignSelf: 'stretch' },
   });
 
+export const isSlot = (node: SafeNode): boolean =>
+  !!node.props && SLOT_PROP in node.props;
+
+// Instance-shaped slot, for pages without a layout component: their chrome
+// is synthesized from existing instance nodes, so the slot must be one too.
+export const slotInstance = (children: SafeNode[] = []): SafeNode =>
+  ({
+    type: 'VIEW',
+    props: { [SLOT_PROP]: true },
+    style: { flexGrow: 1, flexShrink: 1, alignSelf: 'stretch' },
+    children,
+  }) as any;
+
 export const findSlot = (node: SafeNode): SafeNode | null => {
-  if (node.props && SLOT_PROP in node.props) return node;
+  if (isSlot(node)) return node;
 
   for (const child of (node.children || []) as SafeNode[]) {
     const found = findSlot(child);

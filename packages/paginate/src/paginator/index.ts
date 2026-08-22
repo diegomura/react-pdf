@@ -1,25 +1,28 @@
-import fill from './fill/fill';
-import toFragments from './fragment/toFragments';
-import { Item, Page } from './types';
+import fill from '../fill/fill';
+import toFragments from '../fragment/toFragments';
+import toItems from './toItems';
+import toPlaced from './toPlaced';
+import { FlowNode, PlacedNode } from './types';
 
 export interface Paginator {
   readonly done: boolean;
-  next(height: number): Page;
+  next(height: number): PlacedNode[];
 }
 
 // Stepwise pagination: each next(height) fills exactly one page, so callers
 // can pass a different height per page (a template whose chrome varies).
-// Fragments and page numbering stay sealed inside; callers own termination.
-const createPaginator = (root: Item): Paginator => {
+// Page numbering stays sealed inside; callers own termination. The stream
+// is a vertical flow by definition — rows live inside it as containers.
+const createPaginator = (nodes: FlowNode[]): Paginator => {
   let pageNumber = 1;
-  let fragments = toFragments([root]);
+  let fragments = toFragments([toItems(nodes)]);
 
   return {
     get done() {
       return fragments.length === 0;
     },
 
-    next(height: number): Page {
+    next(height: number): PlacedNode[] {
       if (fragments.length === 0) {
         throw new Error('[paginate] next() called after done');
       }
@@ -31,7 +34,7 @@ const createPaginator = (root: Item): Paginator => {
       pageNumber += 1;
       fragments = result.remaining;
 
-      return result.placed;
+      return toPlaced(result.placed);
     },
   };
 };

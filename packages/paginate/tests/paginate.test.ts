@@ -1,17 +1,69 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 
 import renderPagesToPNG from './renderCanvas.js';
-import { paginate, createPaginator } from '../src';
+import fill from '../src/fill/fill';
+import toFragments from '../src/fragment/toFragments';
 import {
   ColumnItem,
   Ctx,
   Item,
   LazyItem,
   LeafItem,
+  Page,
   PenaltyItem,
   RowItem,
   SpacerItem,
 } from '../src/types';
+
+// Item-level stepper: the public paginator speaks flow nodes, so the engine
+// tests drive the fill loop directly.
+const createPaginator = (root: Item) => {
+  let pageNumber = 1;
+  let fragments = toFragments([root]);
+
+  return {
+    get done() {
+      return fragments.length === 0;
+    },
+
+    next(height: number): Page {
+      if (fragments.length === 0) {
+        throw new Error('[paginate] next() called after done');
+      }
+
+      const result = fill(fragments, height, pageNumber, true);
+
+      pageNumber += 1;
+      fragments = result.remaining;
+
+      return result.placed;
+    },
+  };
+};
+
+const MAX_PAGES = 10_000;
+
+// Constant-height convenience loop over the stepwise paginator.
+const paginate = (root: Item, height: number): Page[] => {
+  const pages: Page[] = [];
+  const paginator = createPaginator(root);
+
+  let safety = 0;
+
+  while (!paginator.done) {
+    safety += 1;
+
+    if (safety > MAX_PAGES) {
+      throw new Error(
+        `[paginate] Exceeded ${MAX_PAGES} pages; likely an infinite loop.`,
+      );
+    }
+
+    pages.push(paginator.next(height));
+  }
+
+  return pages;
+};
 
 const FORBID_BREAK: PenaltyItem = Object.freeze({
   kind: 'penalty',

@@ -1,16 +1,13 @@
 import { castArray } from '@react-pdf/fns';
 import * as P from '@react-pdf/primitives';
-import React from 'react';
 
-import { Node } from '../types';
+const isString = (value) => typeof value === 'string';
 
-const isString = (value: any): value is string => typeof value === 'string';
+const isNumber = (value) => typeof value === 'number';
 
-const isNumber = (value: any): value is number => typeof value === 'number';
+const isBoolean = (value) => typeof value === 'boolean';
 
-const isBoolean = (value: any): value is boolean => typeof value === 'boolean';
-
-const isFragment = (value: any): value is React.ReactFragment =>
+const isReactFragment = (value) =>
   value && value.type === Symbol.for('react.fragment');
 
 /**
@@ -21,7 +18,7 @@ const isFragment = (value: any): value is React.ReactFragment =>
  * @param element - React element
  * @returns Parsed React elements
  */
-const createInstances = (element: React.ReactNode): Node[] => {
+const createInstances = (element) => {
   if (!element) return [];
 
   if (Array.isArray(element)) {
@@ -36,13 +33,17 @@ const createInstances = (element: React.ReactNode): Node[] => {
     return [{ type: P.TextInstance, value: `${element}` }];
   }
 
-  if (isFragment(element)) {
-    // @ts-expect-error figure out why this is complains
+  if (isReactFragment(element)) {
     return createInstances(element.props.children);
   }
 
+  // Already-created instances ride through untouched — they carry
+  // style/children at the top level and must not be re-destructured.
+  if (element.type === P.Fragment) {
+    return [element.props.node];
+  }
+
   if (!isString(element.type)) {
-    // @ts-expect-error figure out why this is complains
     return createInstances(element.type(element.props));
   }
 
@@ -63,7 +64,7 @@ const createInstances = (element: React.ReactNode): Node[] => {
       props,
       children: nextChildren,
     },
-  ] as Node[];
+  ];
 };
 
 export default createInstances;

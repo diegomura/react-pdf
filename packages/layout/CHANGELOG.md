@@ -1,5 +1,58 @@
 # @react-pdf/layout
 
+## 5.0.0
+
+### Major Changes
+
+- [#3500](https://github.com/diegomura/react-pdf/pull/3500) [`572cedc23493e4a3085e259bf129ceec458418bd`](https://github.com/diegomura/react-pdf/commit/572cedc23493e4a3085e259bf129ceec458418bd) Thanks [@diegomura](https://github.com/diegomura)! - Move render-prop element conversion from layout to the renderer
+
+  Render props are now wrapped at the reconciler boundary: by the time layout
+  calls them they return internal instances, not React elements. Layout's
+  `createInstances` is deleted and `resolvePagination` consumes instances
+  directly.
+
+  **Breaking (layout):** anyone calling `@react-pdf/layout` directly with
+  trees whose render props return React elements must convert the result
+  before handing it to layout — the contract is now instance arrays. Users of
+  `@react-pdf/renderer` are unaffected: the renderer performs the conversion.
+
+### Minor Changes
+
+- [#3505](https://github.com/diegomura/react-pdf/pull/3505) [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae) Thanks [@diegomura](https://github.com/diegomura)! - Experimental pagination engine, opt-in per page
+
+  A new pagination engine ships alongside the current one: content is
+  measured once and packed into pages instead of relayouting on every split,
+  making long documents paginate orders of magnitude faster (a 300-page
+  document drops from ~40s to ~200ms).
+
+  Opt in with `<Page experimentalPagination>` — any page opting in switches
+  the whole document. The default behavior is unchanged.
+
+  Under the new engine:
+
+  - `<Page layout={Layout}>` renders per-page chrome (headers, footers,
+    sidebars) around the content. The layout component receives
+    `{ pageNumber, totalPages, subPageNumber, subPageTotalPages }` and the
+    page content as `children`, and runs once per output page. Using `layout`
+    implies `experimentalPagination`.
+  - One `fixed` semantic: in-flow fixed elements repeat at the top of every
+    page they span; footers are the layout's job.
+  - `minPresenceAhead` is supported, with one refinement: a trailing element
+    with nothing after it stays in place instead of moving to its own page.
+
+  The current engine remains the default until the next major, when the new
+  engine takes over.
+
+### Patch Changes
+
+- Updated dependencies [[`d38d17759b3856ab64c69101bd359aace4b532fc`](https://github.com/diegomura/react-pdf/commit/d38d17759b3856ab64c69101bd359aace4b532fc), [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae), [`482d7cd600ffa28c60b5db46e7eb1466398feb7b`](https://github.com/diegomura/react-pdf/commit/482d7cd600ffa28c60b5db46e7eb1466398feb7b), [`cb445c063adf87c2f250d11f7c36a71c7695bc61`](https://github.com/diegomura/react-pdf/commit/cb445c063adf87c2f250d11f7c36a71c7695bc61), [`cf1348df7bfbc8091ff495320a3ae798569ccc4e`](https://github.com/diegomura/react-pdf/commit/cf1348df7bfbc8091ff495320a3ae798569ccc4e)]:
+  - @react-pdf/stylesheet@6.2.4
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/types@2.12.0
+  - @react-pdf/paginate@1.0.0
+  - @react-pdf/textkit@6.4.2
+  - @react-pdf/image@3.1.2
+
 ## 4.7.1
 
 ### Patch Changes

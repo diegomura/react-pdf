@@ -1,5 +1,11 @@
 # @react-pdf/textkit
 
+## 6.4.2
+
+### Patch Changes
+
+- [#3495](https://github.com/diegomura/react-pdf/pull/3495) [`cb445c063adf87c2f250d11f7c36a71c7695bc61`](https://github.com/diegomura/react-pdf/commit/cb445c063adf87c2f250d11f7c36a71c7695bc61) Thanks [@diegomura](https://github.com/diegomura)! - Use @react-pdf/hyphenate for text layout, and skip whitespace when splitting words into syllables.
+
 ## 6.4.1
 
 ### Patch Changes

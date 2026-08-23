@@ -53,8 +53,10 @@ const processFontWeight = <K extends StyleKey>(key: K, value: Style[K]) => {
 };
 
 const transformFontFeatureSettings = (
-  value: FontFeatureSettings,
-): SafeFontFeatureSettings => {
+  value?: FontFeatureSettings,
+): SafeFontFeatureSettings | undefined => {
+  if (!value) return undefined;
+
   if (Array.isArray(value)) {
     return Object.fromEntries(value.map((tag) => [tag, true]));
   }
@@ -68,7 +70,9 @@ const processFontFeatureSettings = <K extends StyleKey>(
   key: K,
   value: Style[K],
 ) => {
-  return { [key]: transformFontFeatureSettings(value as FontFeatureSettings) };
+  return {
+    [key]: transformFontFeatureSettings(value as FontFeatureSettings),
+  };
 };
 
 const transformLineHeight = (

@@ -24,6 +24,7 @@ const exampleNames = [
   'ellipsis',
   'emoji',
   'font-family-fallback',
+  'font-feature-settings',
   'font-weight',
   'go-to',
   'image-background',

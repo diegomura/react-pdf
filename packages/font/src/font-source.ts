@@ -2,7 +2,7 @@ import isUrl from 'is-url';
 import * as fontkit from 'fontkit';
 
 import {
-  BufferFontSource,
+  Uint8ArrayFontSource,
   Font,
   FontSourceOptions,
   FontStyle,
@@ -36,7 +36,7 @@ const isDataUrl = (dataUrl: string) => {
 };
 
 class FontSource {
-  src: string | BufferFontSource;
+  src: string | Uint8ArrayFontSource;
   fontFamily: string;
   fontStyle: FontStyle;
   fontWeight: number;
@@ -45,7 +45,7 @@ class FontSource {
   loadResultPromise: Promise<void> | null;
 
   constructor(
-    src: string | BufferFontSource,
+    src: string | Uint8ArrayFontSource,
     fontFamily: string,
     fontStyle?: FontStyle,
     fontWeight?: number,

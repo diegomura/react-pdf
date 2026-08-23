@@ -161,18 +161,20 @@ const FloatExample = () => (
             all: a drop cap. The lines beside it shorten to make room and return
             to the full width of the card once past its bottom edge. Nothing
             else is needed — the letter is floated, the paragraph is set, and
-            the wrapping takes care of itself.
+            the wrapping takes care of itself. Drop caps are the classic opening
+            move of book and magazine design, and here they cost nothing more
+            than a float and a large font size.
           </Text>
         </View>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.label}>float: right — image</Text>
-        <View style={{ minHeight: 145 }}>
-          <View style={{ float: 'right', width: 150, marginLeft: 10 }}>
+        <View style={{ minHeight: 150 }}>
+          <View style={{ float: 'right', width: 130, marginLeft: 10 }}>
             <Image
               src={Quijote2}
-              style={[styles.image, { width: 150, height: 108 }]}
+              style={[styles.image, { width: 130, height: 94 }]}
             />
             <Text style={styles.caption}>Floated to the right edge</Text>
           </View>
@@ -185,13 +187,17 @@ const FloatExample = () => (
             edge of the image, the lines recover the entire width and flow on as
             though nothing had interrupted them. This is the most common float
             pattern, used for figures and callouts in article-style layouts.
+            Wrapping is resolved line by line: every line checks which floats
+            overlap its vertical span and shortens itself accordingly, which is
+            why these closing sentences, set below the image, stretch across the
+            full card again.
           </Text>
         </View>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.label}>float: left — pull quote</Text>
-        <View style={{ minHeight: 78 }}>
+        <View style={{ minHeight: 102 }}>
           <View
             style={{
               float: 'left',
@@ -213,14 +219,17 @@ const FloatExample = () => (
             the quote persists the lines start further to the right; once it has
             been passed they stretch back to the left margin. Any View can be
             floated this way: quotes, sidebars, stat blocks or small tables all
-            behave exactly like a floated image.
+            behave exactly like a floated image. The wider the floated block,
+            the narrower the remaining column, so pull quotes are usually kept
+            to about a third of the measure — enough to stand out without
+            squeezing the text beside them.
           </Text>
         </View>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.label}>multiple floats</Text>
-        <View style={{ minHeight: 100 }}>
+        <View style={{ minHeight: 132 }}>
           <View style={{ float: 'left', width: 120, marginRight: 10 }}>
             <Image
               src={Landscape1}
@@ -238,14 +247,17 @@ const FloatExample = () => (
             the channel left between them. While both images persist the column
             is pinched to this narrow middle passage; where they end, the
             measure springs back to the full width of the card in a single step,
-            which makes the earlier confinement easy to see.
+            which makes the earlier confinement easy to see. Nothing requires
+            the two sides to match, either: floats of different heights simply
+            carve their own spans, and every line adapts to whichever of them it
+            happens to run beside.
           </Text>
         </View>
       </View>
 
       <View break style={styles.card}>
         <Text style={styles.label}>float across a page break</Text>
-        <View style={{ minHeight: 80 }}>
+        <View style={{ minHeight: 106 }}>
           <View style={{ float: 'left', width: 150, marginRight: 10 }}>
             <Image
               src={Quijote1}
@@ -257,14 +269,17 @@ const FloatExample = () => (
             float of its own along with it. Pagination and floating are
             independent: a new page simply offers a new flow, and a block
             floated within it wraps its neighbouring text exactly as it would
-            have done on the previous page.
+            have done on the previous page. Keeping a figure and the paragraph
+            that discusses it together is one of the main reasons to float
+            rather than position absolutely — the pair moves through pagination
+            as a unit, and the wrapping re-resolves wherever it lands.
           </Text>
         </View>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.label}>centered float</Text>
-        <View style={{ minHeight: 80 }}>
+        <View style={{ minHeight: 106 }}>
           <View
             style={{
               float: 'left',

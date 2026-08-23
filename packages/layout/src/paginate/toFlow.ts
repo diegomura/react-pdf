@@ -157,18 +157,13 @@ const withFlags = (child: SafeNode, node: FlowNode): FlowNode => {
   };
 };
 
-// Absolute children (including floats) ride along as markers so a split
-// container keeps them; the engine leaves them out of its gap math.
 const containerOf = (node: SafeNode, ctx: PageCtx): FlowNode => ({
   box: boxOf(node),
   id: node.type,
   data: node,
   direction: isRow(node) ? 'row' : 'column',
   children: (node.children || []).map((child) =>
-    withFlags(
-      child,
-      isAbsolute(child) ? absoluteOf(child, ctx) : toItem(child, ctx),
-    ),
+    withFlags(child, toItem(child, ctx)),
   ),
 });
 
@@ -186,6 +181,10 @@ const kindOf = (node: SafeNode, children: SafeNode[]): NodeKind => {
 };
 
 const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
+  // Absolutes (including floats) ride along as markers so a split container
+  // keeps them; the engine leaves them out of its gap math.
+  if (isAbsolute(node)) return absoluteOf(node, ctx);
+
   const children = flowChildren(node);
 
   switch (kindOf(node, children)) {
@@ -202,8 +201,6 @@ const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
 // props mapped to flags, splitting and dynamic re-rendering left as closures.
 const toFlow = (nodes: SafeNode[], ctx: PageCtx): FlowNode[] =>
   nodes.map((child) => {
-    if (isAbsolute(child)) return withFlags(child, absoluteOf(child, ctx));
-
     const node = withFlags(child, toItem(child, ctx));
     const shouldBreak = 'break' in child.props && child.props.break;
 

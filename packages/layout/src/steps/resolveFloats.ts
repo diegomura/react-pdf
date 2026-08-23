@@ -163,13 +163,14 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
         processedFloats.push(createFloatSibling(processedChild));
       }
     } else {
-      const additionalOffset = applyClear(child, processedFloats);
+      processedChild = applyClearOffset(processedChild, clearOffset);
+
+      const additionalOffset = applyClear(processedChild, processedFloats);
 
       if (additionalOffset > 0) {
-        clearOffset = additionalOffset;
+        clearOffset += additionalOffset;
+        processedChild = applyClearOffset(processedChild, additionalOffset);
       }
-
-      processedChild = applyClearOffset(processedChild, clearOffset);
 
       if (isText(processedChild)) {
         processedChild = attachFloatSiblings(processedChild, processedFloats);

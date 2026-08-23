@@ -122,6 +122,7 @@ export type PageNode = {
 
 export type SafePageNode = Omit<PageNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

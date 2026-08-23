@@ -16,12 +16,14 @@ const splitBox = (node: SafeNode, height: number): [SafeNode, SafeNode] => {
     ...node,
     box: { ...node.box, height, ...ZERO_BOTTOM_BOX },
     style: { ...node.style, height, ...ZERO_BOTTOM_STYLE },
+    wasSplit: true,
   } as SafeNode;
 
   const next = {
     ...node,
     box: { ...node.box, top: 0, height: nextHeight, ...ZERO_TOP_BOX },
     style: { ...node.style, height: nextHeight, ...ZERO_TOP_STYLE },
+    wasSplit: true,
   } as SafeNode;
 
   return [current, next];

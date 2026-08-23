@@ -25,4 +25,5 @@ export type CanvasNode = {
 
 export type SafeCanvasNode = Omit<CanvasNode, 'style'> & {
   style: SafeStyle;
+  wasSplit: boolean;
 };

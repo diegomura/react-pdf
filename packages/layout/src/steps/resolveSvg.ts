@@ -194,6 +194,7 @@ const wrapBetweenTspan = (node: SafeTextInstanceNode): SafeTspanNode => ({
   type: P.Tspan,
   props: {},
   style: {},
+  wasSplit: false,
   children: [node],
 });
 
@@ -432,6 +433,7 @@ function convertToSvgNode(imageNode: SafeImageNode): SafeSvgNode {
     box: imageNode.box,
     origin: imageNode.origin,
     yogaNode: imageNode.yogaNode,
+    wasSplit: false,
     children: image.data.children.map(convertParsedNode),
   };
 }

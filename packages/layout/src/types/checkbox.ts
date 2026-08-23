@@ -25,4 +25,5 @@ export type CheckboxNode = {
 
 export type SafeCheckboxNode = Omit<CheckboxNode, 'style'> & {
   style: SafeStyle;
+  wasSplit: boolean;
 };

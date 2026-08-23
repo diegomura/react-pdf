@@ -93,8 +93,17 @@ const layoutParagraph = (
     const indent = paragraph.runs?.[0]?.attributes?.indent || 0;
     const rects = generateLineRects(container, height);
 
+    /* A single rect is a uniform measure: prepend the indented first-line
+       width and the linebreaker repeats the last entry for the rest. With
+       exclusions each rect already maps to one line, so widths must stay
+       1:1 with rects — only the first one shrinks by the indent. */
     const availableWidths = rects.map((r) => r.width);
-    availableWidths.unshift(availableWidths[0] - indent);
+
+    if (rects.length === 1) {
+      availableWidths.unshift(availableWidths[0] - indent);
+    } else {
+      availableWidths[0] -= indent;
+    }
 
     const lines = engines.linebreaker(options)(paragraph, availableWidths);
 

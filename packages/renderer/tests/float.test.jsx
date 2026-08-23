@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { Document, Page, View, Text } from '@react-pdf/renderer';
+import { Document, Page, View, Text, Svg, Polygon } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
 
 const text =
@@ -100,6 +100,48 @@ const splitWrappedText = (pageProps) =>
     pageProps,
   );
 
+const circleShapeOutside = (pageProps) =>
+  mount(
+    <View>
+      <View
+        style={{
+          float: 'left',
+          width: 100,
+          height: 100,
+          shapeOutside: 'circle(50%)',
+          borderRadius: 50,
+          backgroundColor: 'red',
+        }}
+      />
+      <Text style={{ fontSize: 10 }}>
+        {text} {text}
+      </Text>
+    </View>,
+    pageProps,
+  );
+
+const polygonShapeOutside = (pageProps) =>
+  mount(
+    <View>
+      <View
+        style={{
+          float: 'right',
+          width: 100,
+          height: 100,
+          shapeOutside: 'polygon(100% 0%, 100% 100%, 0% 100%)',
+        }}
+      >
+        <Svg width={100} height={100} viewBox="0 0 100 100">
+          <Polygon points="100,0 100,100 0,100" fill="blue" />
+        </Svg>
+      </View>
+      <Text style={{ fontSize: 10 }}>
+        {text} {text}
+      </Text>
+    </View>,
+    pageProps,
+  );
+
 const clearElements = (pageProps) =>
   mount(
     <View>
@@ -152,6 +194,14 @@ describe('float (legacy engine)', () => {
   test('should position clear elements below floats', async () => {
     expect(await clearElements({})).toMatchImageSnapshot();
   });
+
+  test('should wrap text around circle shape-outside', async () => {
+    expect(await circleShapeOutside({})).toMatchImageSnapshot();
+  });
+
+  test('should wrap text around polygon shape-outside', async () => {
+    expect(await polygonShapeOutside({})).toMatchImageSnapshot();
+  });
 });
 
 describe('float (next engine)', () => {
@@ -182,6 +232,18 @@ describe('float (next engine)', () => {
   test('should position clear elements below floats', async () => {
     expect(
       await clearElements({ experimentalPagination: true }),
+    ).toMatchImageSnapshot();
+  });
+
+  test('should wrap text around circle shape-outside', async () => {
+    expect(
+      await circleShapeOutside({ experimentalPagination: true }),
+    ).toMatchImageSnapshot();
+  });
+
+  test('should wrap text around polygon shape-outside', async () => {
+    expect(
+      await polygonShapeOutside({ experimentalPagination: true }),
     ).toMatchImageSnapshot();
   });
 });

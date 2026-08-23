@@ -222,6 +222,28 @@ export type Float = 'left' | 'right' | 'none';
 
 export type Clear = Float | 'both';
 
+export type ShapeScalar = number | Percentage;
+
+export type ShapeRadius = ShapeScalar | 'closest-side' | 'farthest-side';
+
+export type ShapeOutside =
+  | { type: 'circle'; cx: ShapeScalar; cy: ShapeScalar; r: ShapeRadius }
+  | {
+      type: 'ellipse';
+      cx: ShapeScalar;
+      cy: ShapeScalar;
+      rx: ShapeRadius;
+      ry: ShapeRadius;
+    }
+  | { type: 'polygon'; points: { x: ShapeScalar; y: ShapeScalar }[] }
+  | {
+      type: 'inset';
+      top: ShapeScalar;
+      right: ShapeScalar;
+      bottom: ShapeScalar;
+      left: ShapeScalar;
+    };
+
 export type LayoutStyle = {
   aspectRatio?: number | string;
   bottom?: number | string;
@@ -231,6 +253,7 @@ export type LayoutStyle = {
   left?: number | string;
   position?: Position;
   right?: number | string;
+  shapeOutside?: string | ShapeOutside;
   top?: number | string;
   overflow?: 'hidden';
   zIndex?: number | string;
@@ -245,6 +268,7 @@ export type LayoutSafeStyle = LayoutExpandedStyle & {
   float?: Float;
   left?: number;
   right?: number;
+  shapeOutside?: ShapeOutside;
   top?: number;
   zIndex?: number;
 };

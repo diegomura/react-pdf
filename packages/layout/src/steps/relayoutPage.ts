@@ -1,6 +1,7 @@
 import { compose } from '@react-pdf/fns';
 
 import resolveTextLayout from './resolveTextLayout';
+import resolveFloats from './resolveFloats';
 import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
 import { resolvePageStyles } from './resolveStyles';
@@ -10,6 +11,7 @@ import { resolvePageStyles } from './resolveStyles';
 // finished page being given its real height.
 const relayoutPage = compose(
   resolveTextLayout,
+  resolveFloats,
   resolvePageDimensions,
   resolveInheritance,
   resolvePageStyles,

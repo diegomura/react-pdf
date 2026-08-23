@@ -10,8 +10,12 @@ const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
 
 const shouldIterate = (node: SafeNode) => !isSvg(node) && !isText(node);
 
+/**
+ * Check if text node needs layout.
+ * Re-layout is needed if no lines calculated yet or has exclusions.
+ */
 const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
-  isText(node) && !node.lines;
+  isText(node) && (!node.lines || (node.exclusions?.length ?? 0) > 0);
 
 /**
  * Performs text layout on text node if wasn't calculated before.
@@ -23,10 +27,11 @@ const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
  */
 const resolveTextLayout = (node: SafeNode, fontStore: FontStore): SafeNode => {
   if (shouldLayoutText(node)) {
-    const width =
-      node.box.width - (node.box.paddingRight + node.box.paddingLeft);
-    const height =
-      node.box.height - (node.box.paddingTop + node.box.paddingBottom);
+    const width = node.box.width - node.box.paddingRight - node.box.paddingLeft;
+    // Text expands vertically when flowing around exclusions
+    const height = node.exclusions?.length
+      ? Infinity
+      : node.box.height - node.box.paddingTop - node.box.paddingBottom;
 
     node.lines = layoutText(node, width, height, fontStore);
   }

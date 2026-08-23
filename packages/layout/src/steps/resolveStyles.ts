@@ -28,7 +28,14 @@ const computeStyle = (container: Container, node: Node) => {
     ? [DEFAULT_LINK_STYLES, node.style]
     : node.style;
 
-  return stylesheet(container, baseStyle);
+  const style = stylesheet(container, baseStyle);
+
+  // Floats are out of flow; flipping to absolute here keeps yoga and pagination float-unaware
+  if (style.float === 'left' || style.float === 'right') {
+    style.position = 'absolute';
+  }
+
+  return style;
 };
 
 /**

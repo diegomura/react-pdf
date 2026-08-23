@@ -6,6 +6,7 @@ import layoutEngine, {
   wordHyphenation,
   textDecoration,
   fontSubstitution,
+  Rect,
 } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
 
@@ -29,6 +30,25 @@ const getMaxLines = (node) => node.style?.maxLines;
 const getTextOverflow = (node) => node.style?.textOverflow;
 
 /**
+ * Generate exclude rects from node exclusions for textkit,
+ * in coordinates relative to the text container.
+ */
+const getExcludeRects = (node: SafeTextNode): Rect[] | undefined => {
+  const exclusions = node.exclusions;
+
+  if (!exclusions || exclusions.length === 0) return undefined;
+
+  const offsetY = (node.box?.top ?? 0) + (node.box?.paddingTop ?? 0);
+
+  return exclusions.map((exclusion) => ({
+    x: exclusion.x,
+    y: exclusion.y - offsetY,
+    width: exclusion.width,
+    height: exclusion.height,
+  }));
+};
+
+/**
  * Get layout container for specific text node
  *
  * @param {number} width
@@ -36,7 +56,7 @@ const getTextOverflow = (node) => node.style?.textOverflow;
  * @param {Object} node
  * @returns {Object} layout container
  */
-const getContainer = (width, height, node) => {
+const getContainer = (width: number, height: number, node: SafeTextNode) => {
   const maxLines = getMaxLines(node);
   const textOverflow = getTextOverflow(node);
 
@@ -47,6 +67,7 @@ const getContainer = (width, height, node) => {
     maxLines,
     height: height || Infinity,
     truncateMode: textOverflow,
+    excludeRects: getExcludeRects(node),
   };
 };
 

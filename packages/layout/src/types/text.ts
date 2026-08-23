@@ -9,6 +9,17 @@ import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
 import { ImageNode, SafeImageNode } from './image';
 import { SafeTspanNode, TspanNode } from './tspan';
 
+/** Geometry text must flow around. `float` is set when it comes from a
+ * floated sibling — clear only consults float-originated exclusions. */
+export type Exclusion = {
+  type: 'rect';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  float?: 'left' | 'right';
+};
+
 interface TextProps extends NodeProps {
   /**
    * Enable/disable page wrapping for element.
@@ -63,4 +74,6 @@ export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
     | SafeImageNode
     | SafeTspanNode
   )[];
+  /** Exclusion geometry attached by resolveFloats for text wrapping */
+  exclusions?: Exclusion[];
 };

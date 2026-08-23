@@ -359,4 +359,66 @@ describe('row cells offset by alignment', () => {
       ['VIEW 0 60', 'VIEW 0 60', 'VIEW 40 20'],
     ]);
   });
+
+  describe('minPresenceAhead', () => {
+    const presenceView = (style: any, minPresenceAhead: number): any => ({
+      type: 'VIEW',
+      props: { minPresenceAhead },
+      style,
+      children: [],
+    });
+
+    test('moves a block when too little follows on the page', async () => {
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        view({ height: 60 }),
+        presenceView({ height: 30 }, 50),
+        view({ height: 40 }),
+      ]);
+
+      expect(next).toEqual(legacy);
+    });
+
+    test('stays put when enough of what follows fits', async () => {
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        view({ height: 20 }),
+        presenceView({ height: 30 }, 50),
+        view({ height: 40 }),
+      ]);
+
+      expect(next).toEqual(legacy);
+    });
+
+    test('inert when the block is first on its page', async () => {
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        presenceView({ height: 30 }, 200),
+        view({ height: 90 }),
+      ]);
+
+      expect(next).toEqual(legacy);
+    });
+
+    test('a trailing window relaxes — deliberate divergence from legacy', async () => {
+      // Legacy skips the future-content clamp when nothing follows and moves
+      // the element anyway, reserving presence for content that doesn't
+      // exist. The new engine only constrains actual breaks, so a window at
+      // the end of the flow is inert.
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        view({ height: 60 }),
+        presenceView({ height: 30 }, 500),
+      ]);
+
+      expect(legacy).toEqual([['VIEW 0 60'], ['VIEW 0 30']]);
+      expect(next).toEqual([['VIEW 0 60', 'VIEW 60 30']]);
+    });
+
+    test('window spans margins and gaps', async () => {
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        view({ height: 55 }),
+        presenceView({ height: 25, marginBottom: 10 }, 30),
+        view({ height: 40 }),
+      ]);
+
+      expect(next).toEqual(legacy);
+    });
+  });
 });

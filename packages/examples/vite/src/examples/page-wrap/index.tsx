@@ -46,8 +46,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   body: {
-    paddingTop: 50,
-    paddingBottom: 65,
+    paddingVertical: 50,
     paddingHorizontal: 65,
   },
   header: {
@@ -56,6 +55,7 @@ const styles = StyleSheet.create({
     color: '#999',
     letterSpacing: 3,
     textTransform: 'uppercase',
+    marginBottom: 24,
   },
   chapterHeading: {
     alignItems: 'center',
@@ -116,7 +116,7 @@ interface BookLayoutProps {
 const BookLayout = ({ pageNumber, totalPages, children }: BookLayoutProps) => (
   <>
     <Text style={styles.header}>Don Quijote de la Mancha</Text>
-    {children}
+    <View style={{ flexGrow: 1, flexBasis: 0 }}>{children}</View>
     <Text style={styles.pageNumber}>{`${pageNumber} / ${totalPages}`}</Text>
   </>
 );
@@ -139,7 +139,7 @@ const PageWrap = () => (
         <Text style={styles.author}>Miguel de Cervantes</Text>
       </View>
 
-      {chapters.slice(0, 4).map((chapter, index) => (
+      {chapters.map((chapter, index) => (
         <React.Fragment key={chapter.number}>
           <ChapterHeading number={chapter.number} break={index > 0}>
             {chapter.title}

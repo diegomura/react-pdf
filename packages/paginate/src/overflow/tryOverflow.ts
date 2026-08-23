@@ -20,7 +20,8 @@ const tryOverflow = (
   fragment: Fragment,
   i: number,
 ): StepResult => {
-  if (canSplit(fragment.item)) {
+  // A split is a break at the page bottom — not allowed inside a window.
+  if (state.height >= state.forbidUntil && canSplit(fragment.item)) {
     const split = trySplitLeaf(state, i, fragment.item, fragment.isFirst);
     if (split !== null) return split;
   }

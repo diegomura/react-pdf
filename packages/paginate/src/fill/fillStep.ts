@@ -17,6 +17,12 @@ const fillStep = (state: State, index: number): StepResult => {
   }
 
   if (isForbidPenalty(fragment.item)) {
+    // A window only arms when a break exists before the preceding item —
+    // with nowhere to rewind to, moving it wouldn't improve its presence.
+    const { ahead } = fragment.item;
+    if (ahead && state.bestBreak !== null) {
+      state.forbidUntil = Math.max(state.forbidUntil, state.usedHeight + ahead);
+    }
     return CONTINUE();
   }
 

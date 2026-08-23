@@ -143,8 +143,19 @@ const absoluteOf = (node: SafeNode, ctx: PageCtx): FlowNode => {
   return { box: boxOf(node), id: node.type, data: node, absolute: true };
 };
 
-const withRepeat = (child: SafeNode, node: FlowNode): FlowNode =>
-  isFixed(child) ? { ...node, repeat: true } : node;
+// Flags apply where a node enters a flow, never on split or materialized
+// fragments.
+const withFlags = (child: SafeNode, node: FlowNode): FlowNode => {
+  const presence = (child.props as any).minPresenceAhead;
+
+  return {
+    ...node,
+    ...(isFixed(child) ? { repeat: true } : {}),
+    ...(typeof presence === 'number' && presence > 0
+      ? { minPresenceAhead: presence }
+      : {}),
+  };
+};
 
 const containerOf = (
   node: SafeNode,
@@ -155,7 +166,7 @@ const containerOf = (
   id: node.type,
   data: node,
   direction: isRow(node) ? 'row' : 'column',
-  children: children.map((child) => withRepeat(child, toItem(child, ctx))),
+  children: children.map((child) => withFlags(child, toItem(child, ctx))),
 });
 
 type NodeKind = 'lazy' | 'leaf' | 'container';
@@ -188,9 +199,9 @@ const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
 // props mapped to flags, splitting and dynamic re-rendering left as closures.
 const toFlow = (nodes: SafeNode[], ctx: PageCtx): FlowNode[] =>
   nodes.map((child) => {
-    if (isAbsolute(child)) return withRepeat(child, absoluteOf(child, ctx));
+    if (isAbsolute(child)) return withFlags(child, absoluteOf(child, ctx));
 
-    const node = withRepeat(child, toItem(child, ctx));
+    const node = withFlags(child, toItem(child, ctx));
     const shouldBreak = 'break' in child.props && child.props.break;
 
     return shouldBreak ? { ...node, break: true } : node;

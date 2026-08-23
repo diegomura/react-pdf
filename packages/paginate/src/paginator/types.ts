@@ -25,6 +25,7 @@ export interface LeafNode {
   absolute?: boolean;
   repeat?: boolean;
   break?: boolean;
+  minPresenceAhead?: number;
   data?: unknown;
   id?: string;
 }
@@ -35,6 +36,7 @@ export interface ContainerNode {
   direction: 'row' | 'column';
   repeat?: boolean;
   break?: boolean;
+  minPresenceAhead?: number;
   data?: unknown;
   id?: string;
 }
@@ -47,6 +49,7 @@ export interface LazyNode {
   materialize: (ctx: { pageNumber: number }) => FlowNode;
   repeat?: boolean;
   break?: boolean;
+  minPresenceAhead?: number;
   id?: string;
 }
 

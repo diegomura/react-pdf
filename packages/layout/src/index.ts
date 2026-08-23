@@ -21,7 +21,7 @@ import resolvePaginationNext from './paginate';
 import { SafeDocumentNode } from './types';
 
 // The new pagination engine, shipped dark: flip to true to enable.
-const NEXT_PAGINATION: boolean = false;
+const NEXT_PAGINATION: boolean = true;
 
 const paginationStep = (root: SafeDocumentNode, fontStore) =>
   NEXT_PAGINATION

@@ -7,6 +7,10 @@ import {
   Image,
   Font,
   StyleSheet,
+  Svg,
+  Circle,
+  Ellipse,
+  Polygon,
 } from '@react-pdf/renderer';
 
 import RobotoRegular from '../../../public/Roboto-Regular.ttf';
@@ -336,6 +340,146 @@ const FloatExample = () => (
             figure straddling the midline of a spread. Wherever the block lands,
             the text simply flows around whatever room is left, on both sides at
             once if it has to.
+          </Text>
+        </View>
+      </View>
+    </Page>
+
+    <Page size="A4" style={styles.page} experimentalPagination>
+      <Text style={styles.title}>Shape Outside</Text>
+      <Text style={styles.subtitle}>
+        shape-outside replaces a float's rectangular exclusion with a basic
+        shape — circle, ellipse, polygon or inset — and text wraps along it
+      </Text>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>shape-outside: circle(50%)</Text>
+        <View style={{ minHeight: 112 }}>
+          <View
+            style={{
+              float: 'left',
+              width: 104,
+              height: 104,
+              shapeOutside: 'circle(50%)',
+            }}
+          >
+            <Svg width={104} height={104}>
+              <Circle cx={52} cy={52} r={46} fill={BLUE} />
+            </Svg>
+          </View>
+          <Text style={styles.text}>
+            Without a shape, this float would push the text away along its whole
+            square box. With shape-outside set to a circle, the lines instead
+            creep in toward the disc: short where the circle is widest, longer
+            near its top and bottom where the curve falls away. The drawn circle
+            is a few points smaller than the declared shape, which is the
+            simplest way to keep a little breathing room between ink and text.
+            Below the circle's lowest point the lines return to the full width
+            of the card, exactly as they would past any rectangular float,
+            because a shape only changes the outline of the exclusion — never
+            its participation in the flow. These closing sentences have already
+            escaped it: they run from edge to edge beneath the disc, and the
+            only trace of the circle is the round bite taken out of the
+            paragraph above them.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>shape-outside: ellipse(50% 50%)</Text>
+        <View style={{ minHeight: 104 }}>
+          <View
+            style={{
+              float: 'right',
+              width: 150,
+              height: 90,
+              shapeOutside: 'ellipse(50% 50%)',
+            }}
+          >
+            <Svg width={150} height={90}>
+              <Ellipse cx={75} cy={45} rx={69} ry={39} fill={RED} />
+            </Svg>
+          </View>
+          <Text style={styles.text}>
+            An ellipse works the same way with two radii instead of one, which
+            suits the wide, flat figures that turn up far more often than
+            perfect circles — badges, plates, portrait vignettes. Floated to the
+            right, the curve faces the text on its left, and each line ends a
+            little earlier or later depending on where it crosses the arc. The
+            gentle stair-step of line endings beside the ellipse is the whole
+            effect: subtle on any single line, unmistakable across the
+            paragraph. Once past the shape the measure snaps back to the full
+            card width and the closing sentences run flat and even.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>shape-outside: polygon — diagonal wrap</Text>
+        <View style={{ minHeight: 140 }}>
+          <View
+            style={{
+              float: 'left',
+              width: 120,
+              height: 100,
+              shapeOutside: 'polygon(0% 0%, 100% 100%, 0% 100%)',
+            }}
+          >
+            <Svg width={120} height={100}>
+              <Polygon points="0,4 112,100 0,100" fill={GREEN} />
+            </Svg>
+          </View>
+          <Text style={styles.text}>
+            A polygon takes any outline you can describe as points — here a
+            right triangle whose hypotenuse runs from the top-left corner down
+            to the bottom-right. The text follows that diagonal: the first lines
+            start almost at the left margin, and each one after begins a little
+            further in as the triangle widens beneath it, producing a staircase
+            of indents that no rectangular float could make. This is the tool
+            for angled figures, arrows, and cut-corner callouts. Below the
+            triangle's base the staircase ends at once, and the paragraph
+            finishes with ordinary full-width lines as if the slope had never
+            been there — these last sentences run past the base to prove it,
+            reaching the left margin that the diagonal kept pushing the earlier
+            lines away from. By the time the paragraph gets this deep the
+            exclusion is exhausted, and the closing lines stretch across the
+            entire card, flat and unbroken, which is the plainest proof of where
+            the shape stops. Nothing about the triangle is special, either: any
+            polygon of three or more points, convex or not, wraps the same way.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>shape-outside: inset(10 18)</Text>
+        <View style={{ minHeight: 88 }}>
+          <View
+            style={{
+              float: 'right',
+              width: 150,
+              height: 84,
+              shapeOutside: 'inset(10 18)',
+              borderWidth: 1,
+              borderStyle: 'dashed',
+              borderColor: '#bbbbbb',
+              borderRadius: 4,
+              paddingVertical: 10,
+              paddingHorizontal: 18,
+            }}
+          >
+            <View
+              style={{ flex: 1, backgroundColor: GREEN, borderRadius: 3 }}
+            />
+          </View>
+          <Text style={styles.text}>
+            Inset goes the other way: instead of carving a curve it shrinks the
+            exclusion inside the float's own box. The dashed outline marks the
+            real border box; the solid block is the inset shape the text
+            actually respects. The lines beside it run 18 points into the dashed
+            frame before stopping at the solid edge — the float's box no longer
+            keeps text out, only the shape does. This is how a figure with
+            generous built-in padding lets text sit close to its ink rather than
+            its box, without touching margins at all.
           </Text>
         </View>
       </View>

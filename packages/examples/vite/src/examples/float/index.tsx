@@ -329,7 +329,13 @@ const FloatExample = () => (
             page. Below the image the two channels merge back into a single
             stream of full-width lines — the same recovery every other card
             shows, just starting from a stranger shape — and the paragraph
-            carries on as if it had never been split at all.
+            carries on as if it had never been split at all. Layouts like this
+            are rare in running text, but the same computed-margin technique
+            places floats at any horizontal position: a chart offset toward one
+            column of a report, a stamp pinned near the fold of a letter, or a
+            figure straddling the midline of a spread. Wherever the block lands,
+            the text simply flows around whatever room is left, on both sides at
+            once if it has to.
           </Text>
         </View>
       </View>

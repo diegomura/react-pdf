@@ -20,7 +20,6 @@ const ignoreConfig = {
     '**/dist',
     '**/lib',
     '**/node_modules',
-    '**/packages/pdfkit/**',
     '**/packages/yoga/**',
     '**/packages/examples/**',
   ],

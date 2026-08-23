@@ -10,7 +10,7 @@ const input = './src/index.ts';
 
 const external = [
   ...Object.keys(pkg.dependencies),
-  /^@react-pdf\/pdfkit\/standard-fonts\//,
+  /^pdfkit\/standard-fonts\//,
 ];
 
 const getPlugins = ({ browser }) => [
@@ -31,8 +31,7 @@ const serverConfig = {
   // pdfkit's node build registers the standard fonts itself, so drop the
   // side-effect-only imports rollup would otherwise keep for externals
   treeshake: {
-    moduleSideEffects: (id) =>
-      !id.startsWith('@react-pdf/pdfkit/standard-fonts/'),
+    moduleSideEffects: (id) => !id.startsWith('pdfkit/standard-fonts/'),
   },
 };
 

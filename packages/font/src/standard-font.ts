@@ -1,19 +1,19 @@
 // @ts-expect-error ts being silly
-import PDFDocument, { registerStdFonts } from '@react-pdf/pdfkit';
-import Courier from '@react-pdf/pdfkit/standard-fonts/Courier';
-import CourierBold from '@react-pdf/pdfkit/standard-fonts/CourierBold';
-import CourierBoldOblique from '@react-pdf/pdfkit/standard-fonts/CourierBoldOblique';
-import CourierOblique from '@react-pdf/pdfkit/standard-fonts/CourierOblique';
-import Helvetica from '@react-pdf/pdfkit/standard-fonts/Helvetica';
-import HelveticaBold from '@react-pdf/pdfkit/standard-fonts/HelveticaBold';
-import HelveticaBoldOblique from '@react-pdf/pdfkit/standard-fonts/HelveticaBoldOblique';
-import HelveticaOblique from '@react-pdf/pdfkit/standard-fonts/HelveticaOblique';
-import SymbolFont from '@react-pdf/pdfkit/standard-fonts/Symbol';
-import TimesBold from '@react-pdf/pdfkit/standard-fonts/TimesBold';
-import TimesBoldItalic from '@react-pdf/pdfkit/standard-fonts/TimesBoldItalic';
-import TimesItalic from '@react-pdf/pdfkit/standard-fonts/TimesItalic';
-import TimesRoman from '@react-pdf/pdfkit/standard-fonts/TimesRoman';
-import ZapfDingbats from '@react-pdf/pdfkit/standard-fonts/ZapfDingbats';
+import PDFDocument, { registerStdFonts } from 'pdfkit';
+import Courier from 'pdfkit/standard-fonts/Courier';
+import CourierBold from 'pdfkit/standard-fonts/CourierBold';
+import CourierBoldOblique from 'pdfkit/standard-fonts/CourierBoldOblique';
+import CourierOblique from 'pdfkit/standard-fonts/CourierOblique';
+import Helvetica from 'pdfkit/standard-fonts/Helvetica';
+import HelveticaBold from 'pdfkit/standard-fonts/HelveticaBold';
+import HelveticaBoldOblique from 'pdfkit/standard-fonts/HelveticaBoldOblique';
+import HelveticaOblique from 'pdfkit/standard-fonts/HelveticaOblique';
+import SymbolFont from 'pdfkit/standard-fonts/Symbol';
+import TimesBold from 'pdfkit/standard-fonts/TimesBold';
+import TimesBoldItalic from 'pdfkit/standard-fonts/TimesBoldItalic';
+import TimesItalic from 'pdfkit/standard-fonts/TimesItalic';
+import TimesRoman from 'pdfkit/standard-fonts/TimesRoman';
+import ZapfDingbats from 'pdfkit/standard-fonts/ZapfDingbats';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
 

@@ -17,16 +17,6 @@ const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
 
 const isAbsolute = (node: SafeNode) => node.style?.position === 'absolute';
 
-// Floats are absolutely positioned by yoga, so their boxes overlap the text
-// that wraps them; kept in the flow they'd make any container read as
-// unbreakable to the wrapped-column check.
-const isFloat = (node: SafeNode) => {
-  const float = node.style?.float;
-  return float === 'left' || float === 'right';
-};
-
-const isOutOfFlow = (node: SafeNode) => isAbsolute(node) || isFloat(node);
-
 const isRow = (node: SafeNode) => {
   const direction = node.style?.flexDirection;
   return direction === 'row' || direction === 'row-reverse';
@@ -51,7 +41,7 @@ const boxOf = (node: SafeNode): FlowNode['box'] => ({
 });
 
 const flowChildren = (node: SafeNode): SafeNode[] =>
-  (node.children || []).filter((child) => !isOutOfFlow(child));
+  (node.children || []).filter((child) => !isAbsolute(child));
 
 // Split closures receive available content height (margins already handled
 // by the engine) and return the fragment that fits plus the remainder.
@@ -167,8 +157,8 @@ const withFlags = (child: SafeNode, node: FlowNode): FlowNode => {
   };
 };
 
-// Out-of-flow children ride along as absolute markers so a split container
-// keeps them; the engine leaves them out of its gap math.
+// Absolute children (including floats) ride along as markers so a split
+// container keeps them; the engine leaves them out of its gap math.
 const containerOf = (node: SafeNode, ctx: PageCtx): FlowNode => ({
   box: boxOf(node),
   id: node.type,
@@ -177,7 +167,7 @@ const containerOf = (node: SafeNode, ctx: PageCtx): FlowNode => ({
   children: (node.children || []).map((child) =>
     withFlags(
       child,
-      isOutOfFlow(child) ? absoluteOf(child, ctx) : toItem(child, ctx),
+      isAbsolute(child) ? absoluteOf(child, ctx) : toItem(child, ctx),
     ),
   ),
 });
@@ -212,7 +202,7 @@ const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
 // props mapped to flags, splitting and dynamic re-rendering left as closures.
 const toFlow = (nodes: SafeNode[], ctx: PageCtx): FlowNode[] =>
   nodes.map((child) => {
-    if (isOutOfFlow(child)) return withFlags(child, absoluteOf(child, ctx));
+    if (isAbsolute(child)) return withFlags(child, absoluteOf(child, ctx));
 
     const node = withFlags(child, toItem(child, ctx));
     const shouldBreak = 'break' in child.props && child.props.break;

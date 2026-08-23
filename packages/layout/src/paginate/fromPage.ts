@@ -26,14 +26,9 @@ const rebuild = (placed: PlacedNode): SafeNode[] => {
 
   if (!node) return (placed.children || []).flatMap(rebuild);
 
-  // An absolute (or float — same out-of-flow treatment) rode the stream as a
-  // zero-height marker: its box carries page coordinates, not a flow
-  // position, and passes through untouched.
-  if (
-    node.style?.position === 'absolute' ||
-    node.style?.float === 'left' ||
-    node.style?.float === 'right'
-  ) {
+  // An absolute rode the stream as a zero-height marker: its box carries
+  // page coordinates, not a flow position, and passes through untouched.
+  if (node.style?.position === 'absolute') {
     return [{ ...node } as SafeNode];
   }
 

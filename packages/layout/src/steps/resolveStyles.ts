@@ -28,7 +28,16 @@ const computeStyle = (container: Container, node: Node) => {
     ? [DEFAULT_LINK_STYLES, node.style]
     : node.style;
 
-  return stylesheet(container, baseStyle);
+  const style = stylesheet(container, baseStyle);
+
+  // Floats are out of the normal flow: yoga lays them out as absolutes and
+  // resolveFloats positions them. Flipping here keeps every downstream
+  // position reader (yoga, pagination) float-unaware.
+  if (style.float === 'left' || style.float === 'right') {
+    style.position = 'absolute';
+  }
+
+  return style;
 };
 
 /**

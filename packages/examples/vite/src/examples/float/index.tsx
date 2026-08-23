@@ -5,81 +5,113 @@ import {
   View,
   Text,
   Image,
+  Font,
   StyleSheet,
 } from '@react-pdf/renderer';
 
+import RobotoRegular from '../../../public/Roboto-Regular.ttf';
+import RobotoBold from '../../../public/Roboto-Bold.ttf';
 import Quijote from '../../../public/quijote1.jpg';
+
+Font.register({
+  family: 'Roboto',
+  fonts: [
+    { src: RobotoRegular, fontWeight: 400 },
+    { src: RobotoBold, fontWeight: 700 },
+  ],
+});
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
+    backgroundColor: '#fafafa',
+    fontFamily: 'Roboto',
   },
-  section: {
-    marginBottom: 25,
-    backgroundColor: '#f5f5f5',
-    padding: 10,
+  title: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: '#1a1a1a',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 9,
+    color: '#888888',
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 11,
+    fontWeight: 700,
+    color: '#1a1a1a',
     marginBottom: 10,
-    color: '#333',
+    marginTop: 12,
   },
-  content: {
-    backgroundColor: '#fff',
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#e8e8e8',
+    marginBottom: 8,
+  },
+  label: {
+    fontSize: 8,
+    color: '#999999',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 6,
+  },
+  text: {
+    fontSize: 10,
+    color: '#333333',
+  },
+  floatBox: {
+    width: 80,
+    height: 80,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   floatLeft: {
     float: 'left',
-    width: 80,
-    height: 80,
-    backgroundColor: '#3498db',
+    backgroundColor: '#4069b4',
     marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: 4,
   },
   floatRight: {
     float: 'right',
-    width: 80,
-    height: 80,
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#c25b56',
     marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: 4,
   },
-  floatText: {
-    color: 'white',
-    fontSize: 18,
-  },
-  text: {
-    fontSize: 12,
-    color: '#333',
-  },
-  note: {
+  floatBoxText: {
     fontSize: 8,
-    color: '#666',
-    marginTop: 20,
-  },
-  clearLeft: {
-    clear: 'left',
-  },
-  clearRight: {
-    clear: 'right',
-  },
-  clearBoth: {
-    clear: 'both',
+    fontWeight: 700,
+    color: '#ffffff',
+    letterSpacing: 0.5,
+    textAlign: 'center',
   },
   clearIndicator: {
-    backgroundColor: '#2ecc71',
-    padding: 5,
-    marginTop: 5,
+    backgroundColor: '#55987a',
+    borderRadius: 3,
+    padding: 6,
+    marginTop: 6,
+    marginBottom: 6,
   },
   clearText: {
-    fontSize: 10,
-    color: '#fff',
+    fontSize: 8,
+    color: '#ffffff',
+  },
+  /* Floats and cleared content don't grow their parent, so reserve room to
+     keep the card border around the demo */
+  floatDemo: {
+    minHeight: 90,
+  },
+  clearDemo: {
+    minHeight: 165,
   },
 });
 
-const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.`;
+const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 
 const articleText = `The quick brown fox jumps over the lazy dog. This pangram contains every letter of the alphabet at least once. Typography and typesetting have long used this sentence to display fonts and test equipment. The phrase has been used since at least the late 19th century.
 
@@ -93,152 +125,165 @@ Professional publications often employ multiple float patterns within a single a
 
 const FloatExample = () => (
   <Document>
-    {/* Magazine-style layout with left and right floats */}
-    <Page size="A4" style={{ padding: 30 }} experimentalPagination>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 15 }}>
-        Magazine Article Layout
+    <Page size="A4" style={styles.page} experimentalPagination>
+      <Text style={styles.title}>Float — Magazine Layout</Text>
+      <Text style={styles.subtitle}>
+        A single text flowing around a left image, a right callout box and a
+        centered block
       </Text>
 
       <View>
-        {/* Left float - header image */}
-        <Image
-          src={Quijote}
-          style={{
-            float: 'left',
-            width: 240,
-            height: 160,
-            marginRight: 10,
-          }}
-        />
-
-        {/* Right float - callout box */}
-        <View
-          style={{
-            float: 'right',
-            width: 200,
-            backgroundColor: '#e74c3c',
-            padding: 20,
-            marginTop: 300,
-            marginLeft: 10,
-          }}
-        >
-          <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#fff' }}>
-            Key Points
-          </Text>
-          <Text style={{ fontSize: 12, color: '#fff', marginTop: 8 }}>
-            • Left float{'\n'}• Right float{'\n'}• Center float
-          </Text>
-        </View>
-
-        {/* Centered float - text flows on both sides */}
-        {/* Content width = 535pt, element 200px, margin = (535-200)/2 ≈ 167 */}
-        <View
-          style={{
-            float: 'left',
-            width: 200,
-            height: 160,
-            marginLeft: 167,
-            marginRight: 10,
-            marginTop: 560,
-            backgroundColor: '#9b59b6',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 14, color: '#fff' }}>Centered</Text>
-        </View>
-
-        {/* Single long text that wraps around both floats */}
-        <Text style={{ fontSize: 15 }}>
-          {articleText}
-          {articleText}
-        </Text>
-      </View>
-
-      {/* New section with float - will appear on page 2 after pagination */}
-      <View style={{ marginTop: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
-          Continued Article
-        </Text>
         <View>
+          <Image
+            src={Quijote}
+            style={{
+              float: 'left',
+              width: 220,
+              height: 150,
+              borderRadius: 4,
+              marginRight: 12,
+              marginBottom: 4,
+            }}
+          />
+
+          <View
+            style={{
+              float: 'right',
+              width: 170,
+              backgroundColor: '#c25b56',
+              borderRadius: 4,
+              padding: 14,
+              marginTop: 266,
+              marginLeft: 12,
+            }}
+          >
+            <Text style={{ fontSize: 11, fontWeight: 700, color: '#ffffff' }}>
+              Key Points
+            </Text>
+            <Text
+              style={{
+                fontSize: 9,
+                color: '#ffffff',
+                marginTop: 6,
+                lineHeight: 1.5,
+              }}
+            >
+              • Left float{'\n'}• Right float{'\n'}• Centered float
+            </Text>
+          </View>
+
+          {/* Content width ≈ 515pt, element 170pt wide → marginLeft (515-170)/2 ≈ 172 */}
           <View
             style={{
               float: 'left',
-              width: 120,
-              height: 100,
-              backgroundColor: '#27ae60',
+              width: 170,
+              height: 130,
+              marginLeft: 172,
               marginRight: 10,
+              marginTop: 320,
+              backgroundColor: '#8a63b3',
+              borderRadius: 4,
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Text style={{ fontSize: 12, color: '#fff', textAlign: 'center' }}>
-              NEW{'\n'}FLOAT
+            <Text style={styles.floatBoxText}>CENTERED</Text>
+          </View>
+
+          <Text style={styles.text}>
+            {articleText}
+            {articleText}
+          </Text>
+        </View>
+      </View>
+
+      <View break>
+        <Text style={styles.sectionTitle}>Continued Article</Text>
+        <View style={styles.card}>
+          <View>
+            <View
+              style={[
+                styles.floatBox,
+                styles.floatLeft,
+                { width: 110, height: 90, backgroundColor: '#55987a' },
+              ]}
+            >
+              <Text style={styles.floatBoxText}>NEW{'\n'}FLOAT</Text>
+            </View>
+            <Text style={styles.text}>
+              This section appears after the page break with a new float
+              element. The text wraps around the green float box on the left.{' '}
+              {articleText}
             </Text>
           </View>
-          <Text style={{ fontSize: 15 }}>
-            This section appears after the page break with a new float element.
-            The text wraps around the green float box on the left. {articleText}
-          </Text>
         </View>
       </View>
     </Page>
 
     <Page size="A4" style={styles.page} experimentalPagination>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Left Float</Text>
-        <View style={styles.content}>
-          <View style={styles.floatLeft}>
-            <Text style={styles.floatText}>FLOAT</Text>
-            <Text style={styles.floatText}>LEFT</Text>
+      <Text style={styles.title}>Float Basics</Text>
+      <Text style={styles.subtitle}>
+        Elements positioned to the left or right with text wrapping around them,
+        similar to CSS float behavior
+      </Text>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>float: left</Text>
+        <View style={styles.floatDemo}>
+          <View style={[styles.floatBox, styles.floatLeft]}>
+            <Text style={styles.floatBoxText}>FLOAT{'\n'}LEFT</Text>
           </View>
-          <Text style={styles.text}>
-            {longText}
-            {longText}
-          </Text>
+          <Text style={styles.text}>{longText}</Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Right Float</Text>
-        <View style={styles.content}>
-          <View style={styles.floatRight}>
-            <Text style={styles.floatText}>FLOAT</Text>
-            <Text style={styles.floatText}>RIGHT</Text>
+      <View style={styles.card}>
+        <Text style={styles.label}>float: right</Text>
+        <View style={styles.floatDemo}>
+          <View style={[styles.floatBox, styles.floatRight]}>
+            <Text style={styles.floatBoxText}>FLOAT{'\n'}RIGHT</Text>
           </View>
-          <Text style={styles.text}>
-            {longText}
-            {longText}
-          </Text>
+          <Text style={styles.text}>{longText}</Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Multiple Floats</Text>
-        <View style={styles.content}>
-          <View style={[styles.floatLeft, { width: 60, height: 60 }]}>
-            <Text style={styles.floatText}>L</Text>
+      <View style={styles.card}>
+        <Text style={styles.label}>Multiple floats</Text>
+        <View>
+          <View
+            style={[
+              styles.floatBox,
+              styles.floatLeft,
+              { width: 60, height: 60 },
+            ]}
+          >
+            <Text style={styles.floatBoxText}>L</Text>
           </View>
-          <View style={[styles.floatRight, { width: 60, height: 60 }]}>
-            <Text style={styles.floatText}>R</Text>
+          <View
+            style={[
+              styles.floatBox,
+              styles.floatRight,
+              { width: 60, height: 60 },
+            ]}
+          >
+            <Text style={styles.floatBoxText}>R</Text>
           </View>
-          <Text style={styles.text}>
-            {longText}
-            {longText}
-          </Text>
+          <Text style={styles.text}>{longText}</Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Image Float</Text>
-        <View style={styles.content}>
+      <View style={styles.card}>
+        <Text style={styles.label}>Image float</Text>
+        <View>
           <Image
             src={Quijote}
             style={{
               float: 'left',
               width: 100,
               height: 100,
+              borderRadius: 4,
               marginRight: 10,
+              marginBottom: 4,
             }}
           />
           <Text style={styles.text}>
@@ -248,97 +293,90 @@ const FloatExample = () => (
           </Text>
         </View>
       </View>
-
-      <Text style={styles.note}>
-        Float property allows elements to be positioned to the left or right,
-        with text wrapping around them. This is similar to CSS float behavior.
-      </Text>
     </Page>
 
     <Page size="A4" style={styles.page} experimentalPagination>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Clear: left (Left is taller)</Text>
-        <View style={styles.content}>
-          <View style={[styles.floatLeft, { height: 100 }]}>
-            <Text style={styles.floatText}>LEFT</Text>
-            <Text style={styles.floatText}>100px</Text>
+      <Text style={styles.title}>Clear</Text>
+      <Text style={styles.subtitle}>
+        The clear property moves an element below preceding floats on the given
+        side
+      </Text>
+
+      <View style={styles.card} wrap={false}>
+        <Text style={styles.label}>clear: left — left float is taller</Text>
+        <View style={styles.clearDemo}>
+          <View style={[styles.floatBox, styles.floatLeft, { height: 100 }]}>
+            <Text style={styles.floatBoxText}>LEFT{'\n'}100PT</Text>
           </View>
-          <View style={[styles.floatRight, { height: 50 }]}>
-            <Text style={styles.floatText}>RIGHT</Text>
-            <Text style={styles.floatText}>50px</Text>
+          <View style={[styles.floatBox, styles.floatRight, { height: 50 }]}>
+            <Text style={styles.floatBoxText}>RIGHT{'\n'}50PT</Text>
           </View>
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is 100px tall and
-            the right float is only 50px tall.
+            This text wraps around both floats. The left float is 100pt tall and
+            the right float is only 50pt tall.
           </Text>
           <View style={[styles.clearIndicator, { clear: 'left' }]}>
             <Text style={styles.clearText}>
-              clear: left - This green box should be below the TALL left float
-              (at 100px position)
+              clear: left — this box sits below the tall left float, at the
+              100pt mark
             </Text>
           </View>
           <Text style={styles.text}>
-            This text comes after clear:left. It should start below the left
-            float (100px). Since the right float was only 50px, it ended above
-            this position.
+            This text comes after clear: left. It starts below the left float.
+            Since the right float was only 50pt, it ended above this position.
           </Text>
         </View>
       </View>
 
-      <View style={{ ...styles.section, marginTop: 80 }}>
-        <Text style={styles.sectionTitle}>Clear: right (Right is taller)</Text>
-        <View style={styles.content}>
-          <View style={[styles.floatLeft, { height: 50 }]}>
-            <Text style={styles.floatText}>LEFT</Text>
-            <Text style={styles.floatText}>50px</Text>
+      <View style={styles.card} wrap={false}>
+        <Text style={styles.label}>clear: right — right float is taller</Text>
+        <View style={styles.clearDemo}>
+          <View style={[styles.floatBox, styles.floatLeft, { height: 50 }]}>
+            <Text style={styles.floatBoxText}>LEFT{'\n'}50PT</Text>
           </View>
-          <View style={[styles.floatRight, { height: 100 }]}>
-            <Text style={styles.floatText}>RIGHT</Text>
-            <Text style={styles.floatText}>100px</Text>
+          <View style={[styles.floatBox, styles.floatRight, { height: 100 }]}>
+            <Text style={styles.floatBoxText}>RIGHT{'\n'}100PT</Text>
           </View>
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is only 50px tall
-            and the right float is 100px tall.
+            This text wraps around both floats. The left float is only 50pt tall
+            and the right float is 100pt tall.
           </Text>
           <View style={[styles.clearIndicator, { clear: 'right' }]}>
             <Text style={styles.clearText}>
-              clear: right - This green box should be below the TALL right float
-              (at 100px position)
+              clear: right — this box sits below the tall right float, at the
+              100pt mark
             </Text>
           </View>
           <Text style={styles.text}>
-            This text comes after clear:right. It should start below the right
-            float (100px). Since the left float was only 50px, it ended above
-            this position.
+            This text comes after clear: right. It starts below the right float.
+            Since the left float was only 50pt, it ended above this position.
           </Text>
         </View>
       </View>
 
-      <View style={{ ...styles.section, marginTop: 80 }}>
-        <Text style={styles.sectionTitle}>Clear: both</Text>
-        <View style={styles.content}>
-          <View style={[styles.floatLeft, { height: 60 }]}>
-            <Text style={styles.floatText}>LEFT</Text>
-            <Text style={styles.floatText}>60px</Text>
+      <View style={styles.card} wrap={false}>
+        <Text style={styles.label}>clear: both</Text>
+        <View style={styles.clearDemo}>
+          <View style={[styles.floatBox, styles.floatLeft, { height: 60 }]}>
+            <Text style={styles.floatBoxText}>LEFT{'\n'}60PT</Text>
           </View>
-          <View style={[styles.floatRight, { height: 90 }]}>
-            <Text style={styles.floatText}>RIGHT</Text>
-            <Text style={styles.floatText}>90px</Text>
+          <View style={[styles.floatBox, styles.floatRight, { height: 90 }]}>
+            <Text style={styles.floatBoxText}>RIGHT{'\n'}90PT</Text>
           </View>
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is 60px and the
-            right float is 90px tall.
+            This text wraps around both floats. The left float is 60pt and the
+            right float is 90pt tall.
           </Text>
           <View style={[styles.clearIndicator, { clear: 'both' }]}>
             <Text style={styles.clearText}>
-              clear: both - This green box should be below BOTH floats (at 90px,
-              the taller one)
+              clear: both — this box sits below both floats, at the 90pt mark of
+              the taller one
             </Text>
           </View>
           <Text style={styles.text}>
-            This text comes after clear:both. It should start below whichever
-            float is taller (the right one at 90px in this case). Both floats
-            have ended above this position.
+            This text comes after clear: both. It starts below whichever float
+            is taller — the right one at 90pt in this case. Both floats have
+            ended above this position.
           </Text>
         </View>
       </View>

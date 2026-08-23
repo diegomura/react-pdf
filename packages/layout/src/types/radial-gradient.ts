@@ -44,5 +44,6 @@ export type SafeRadialGradientNode = Omit<
   'props' | 'children'
 > & {
   props: SafeRadialGradientProps;
+  wasSplit: boolean;
   children?: SafeStopNode[];
 };

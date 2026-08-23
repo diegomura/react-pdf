@@ -42,11 +42,16 @@ const resolveNodeStyles =
   (node: Node): SafeNode => {
     const style = computeStyle(container, node);
 
-    if (!node.children) return Object.assign({}, node, { style }) as SafeNode;
+    // Split fragments re-enter through page relayout; keep their mark.
+    const wasSplit = (node as SafeNode).wasSplit ?? false;
+
+    if (!node.children) {
+      return Object.assign({}, node, { style, wasSplit }) as SafeNode;
+    }
 
     const children = node.children.map(resolveNodeStyles(container));
 
-    return Object.assign({}, node, { style, children }) as SafeNode;
+    return Object.assign({}, node, { style, wasSplit, children }) as SafeNode;
   };
 
 /**
@@ -74,11 +79,18 @@ export const resolvePageStyles = (page: PageNode) => {
  * @returns Document root with resolved styles
  */
 const resolveStyles = (root: DocumentNode): SafeDocumentNode => {
-  if (!root.children) return root as SafeDocumentNode;
+  if (!root.children) {
+    return Object.assign({}, root, {
+      wasSplit: false,
+    }) as unknown as SafeDocumentNode;
+  }
 
   const children = root.children.map(resolvePageStyles);
 
-  return Object.assign({}, root, { children }) as SafeDocumentNode;
+  return Object.assign({}, root, {
+    wasSplit: false,
+    children,
+  }) as SafeDocumentNode;
 };
 
 export default resolveStyles;

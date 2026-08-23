@@ -14,6 +14,7 @@ describe('layout resolveSvg', () => {
   describe('resolve xlinks', () => {
     test('should replace xlinkHref with the correct node', () => {
       const node: SafeSvgNode = {
+        wasSplit: false,
         type: 'SVG',
         props: {},
         style: {},
@@ -57,6 +58,7 @@ describe('layout resolveSvg', () => {
 
     test('should not replace xlinkHref if node does not exist', () => {
       const node: SafeSvgNode = {
+        wasSplit: false,
         type: 'SVG',
         props: {},
         style: {},
@@ -165,6 +167,7 @@ describe('layout resolveSvg', () => {
 
     test('Should not modify non-SVG ImageNodes', () => {
       const imageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.png' },
         style: {},
@@ -195,6 +198,7 @@ describe('layout resolveSvg', () => {
       const svgImage = createMockSvgImage();
       const imageNode = createMockImageNode(svgImage);
       const viewNode: SafeNode = {
+        wasSplit: false,
         type: P.View,
         props: {},
         style: {},
@@ -213,6 +217,7 @@ describe('layout resolveSvg', () => {
       const svgImage = createMockSvgImage();
       const svgImageNode = createMockImageNode(svgImage);
       const pngImageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.png' },
         style: {},
@@ -235,6 +240,7 @@ describe('layout resolveSvg', () => {
     test('Should use SVG dimensions when style dimensions not specified', () => {
       const svgImage = createMockSvgImage();
       const imageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.svg' },
         style: {},

@@ -56,6 +56,7 @@ export type TextNode = {
 
 export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeTextNode
     | SafeTextInstanceNode

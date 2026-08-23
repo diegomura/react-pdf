@@ -8,7 +8,12 @@ const TEST_LINES = Array(10).fill(TEST_LINE);
 
 describe('text lineIndexAtHeight', () => {
   test('Should return 0 if no lines present', () => {
-    const node: SafeTextNode = { type: 'TEXT', props: {}, style: {} };
+    const node: SafeTextNode = {
+      type: 'TEXT',
+      props: {},
+      style: {},
+      wasSplit: false,
+    };
     const result = lineIndexAtHeight(node, 5);
 
     expect(result).toBe(0);
@@ -16,6 +21,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return 0 for height lower than first line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},
@@ -29,6 +35,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return 1 for height higher than first line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},
@@ -42,6 +49,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return correct line index for intermediate line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},
@@ -55,6 +63,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return penultimate line index for height lower than last line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},
@@ -68,6 +77,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return correct line index for last line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},
@@ -81,6 +91,7 @@ describe('text lineIndexAtHeight', () => {
 
   test('Should return correct line index for height higher than last line', () => {
     const node: SafeTextNode = {
+      wasSplit: false,
       type: 'TEXT',
       props: {},
       style: {},

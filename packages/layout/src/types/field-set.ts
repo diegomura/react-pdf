@@ -23,5 +23,6 @@ export type FieldSetNode = {
 
 export type SafeFieldSetNode = Omit<FieldSetNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (SafeTextNode | SafeViewNode | SafeTextInputNode)[];
 };

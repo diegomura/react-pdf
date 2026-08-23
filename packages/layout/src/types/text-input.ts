@@ -58,4 +58,5 @@ export type TextInputNode = {
 
 export type SafeTextInputNode = Omit<TextInputNode, 'style'> & {
   style: SafeStyle;
+  wasSplit: boolean;
 };

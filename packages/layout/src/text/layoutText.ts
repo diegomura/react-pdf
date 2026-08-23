@@ -30,10 +30,10 @@ const getMaxLines = (node) => node.style?.maxLines;
 const getTextOverflow = (node) => node.style?.textOverflow;
 
 /**
- * Generate exclude rects from node exclusions for textkit,
+ * Generate exclusion shapes from node exclusions for textkit,
  * in coordinates relative to the text container.
  */
-const getExcludeRects = (node: SafeTextNode): Rect[] | undefined => {
+const getExclusions = (node: SafeTextNode): Rect[] | undefined => {
   const exclusions = node.exclusions;
 
   if (!exclusions || exclusions.length === 0) return undefined;
@@ -67,7 +67,7 @@ const getContainer = (width: number, height: number, node: SafeTextNode) => {
     maxLines,
     height: height || Infinity,
     truncateMode: textOverflow,
-    excludeRects: getExcludeRects(node),
+    exclusions: getExclusions(node),
   };
 };
 

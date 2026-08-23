@@ -14,10 +14,35 @@ export type Rect = {
   height: number;
 };
 
+export type ExclusionRect = Rect & {
+  type?: 'rect';
+  extend?: 'left' | 'right';
+};
+
+export type ExclusionEllipse = {
+  type: 'ellipse';
+  extend?: 'left' | 'right';
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+};
+
+export type ExclusionPolygon = {
+  type: 'polygon';
+  extend?: 'left' | 'right';
+  points: Coordinate[];
+};
+
+export type ExclusionShape =
+  | ExclusionRect
+  | ExclusionEllipse
+  | ExclusionPolygon;
+
 export type Container = Rect & {
   truncateMode?: 'ellipsis';
   maxLines?: number;
-  excludeRects?: Rect[];
+  exclusions?: ExclusionShape[];
 };
 
 export type Glyph = FontkitGlyph;

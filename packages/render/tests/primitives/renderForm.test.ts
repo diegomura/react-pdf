@@ -82,7 +82,6 @@ describe('primitive renderCheckbox', () => {
     const ctx = createCTX();
     ctx._acroform = { fonts: {} };
     ctx.ref = vi.fn(() => ({
-      initDeflate: vi.fn(),
       write: vi.fn(),
       end: vi.fn(),
     }));

@@ -11,7 +11,10 @@ import {
 
 import RobotoRegular from '../../../public/Roboto-Regular.ttf';
 import RobotoBold from '../../../public/Roboto-Bold.ttf';
-import Quijote from '../../../public/quijote1.jpg';
+import Quijote1 from '../../../public/quijote1.jpg';
+import Quijote2 from '../../../public/quijote2.png';
+import Landscape1 from '../../../public/landscape1.jpg';
+import Landscape2 from '../../../public/landscape2.jpg';
 
 Font.register({
   family: 'Roboto',
@@ -21,9 +24,21 @@ Font.register({
   ],
 });
 
+const BLUE = '#4069b4';
+const RED = '#c25b56';
+const GREEN = '#55987a';
+
+const PAGE_WIDTH = 595.28;
+const PAGE_PADDING = 40;
+const CARD_INNER_WIDTH = PAGE_WIDTH - 2 * PAGE_PADDING - 2 * 12 - 2;
+
+/* Two engine constraints shape this file: an explicit lineHeight disables
+   wrapping, and Yoga measures text without exclusions, so a wrapping demo
+   ends up taller than its box — each card reserves the real height via
+   minHeight to keep the following card from overlapping. */
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
+    padding: PAGE_PADDING,
     backgroundColor: '#fafafa',
     fontFamily: 'Roboto',
   },
@@ -37,13 +52,6 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#888888',
     marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 11,
-    fontWeight: 700,
-    color: '#1a1a1a',
-    marginBottom: 10,
-    marginTop: 12,
   },
   card: {
     backgroundColor: '#ffffff',
@@ -64,24 +72,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#333333',
   },
+  image: {
+    borderRadius: 4,
+  },
+  caption: {
+    fontSize: 7,
+    color: '#999999',
+    textAlign: 'center',
+    marginTop: 4,
+  },
   floatBox: {
     width: 80,
-    height: 80,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  floatLeft: {
-    float: 'left',
-    backgroundColor: '#4069b4',
-    marginRight: 10,
-    marginBottom: 4,
-  },
-  floatRight: {
-    float: 'right',
-    backgroundColor: '#c25b56',
-    marginLeft: 10,
-    marginBottom: 4,
   },
   floatBoxText: {
     fontSize: 8,
@@ -90,206 +94,248 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     textAlign: 'center',
   },
-  clearIndicator: {
-    backgroundColor: '#55987a',
+  clearBar: {
+    backgroundColor: GREEN,
     borderRadius: 3,
     padding: 6,
-    marginTop: 6,
-    marginBottom: 6,
   },
-  clearText: {
+  clearBarText: {
     fontSize: 8,
     color: '#ffffff',
   },
-  /* Floats and cleared content don't grow their parent, so reserve room to
-     keep the card border around the demo */
-  floatDemo: {
-    minHeight: 90,
-  },
-  clearDemo: {
-    minHeight: 165,
-  },
 });
 
-const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+const FloatBox = ({
+  side,
+  height,
+  color,
+}: {
+  side: 'left' | 'right';
+  height: number;
+  color: string;
+}) => (
+  <View
+    style={[
+      styles.floatBox,
+      {
+        float: side,
+        height,
+        backgroundColor: color,
+        [side === 'left' ? 'marginRight' : 'marginLeft']: 10,
+        marginBottom: 4,
+      },
+    ]}
+  >
+    <Text style={styles.floatBoxText}>
+      {side.toUpperCase()}
+      {'\n'}
+      {height}PT
+    </Text>
+  </View>
+);
 
-const articleText = `The quick brown fox jumps over the lazy dog. This pangram contains every letter of the alphabet at least once. Typography and typesetting have long used this sentence to display fonts and test equipment. The phrase has been used since at least the late 19th century.
-
-In the world of digital design, layout and composition remain fundamental skills. Understanding how text flows around images and other elements is crucial for creating professional documents. The float property, borrowed from CSS, allows designers to position elements while maintaining readable text flow.
-
-Modern document generation requires flexibility in positioning elements. Whether creating reports, magazines, or books, the ability to wrap text around images and other content blocks enables rich, engaging layouts that capture readers' attention.
-
-The art of typography extends beyond mere font selection. Line length, spacing, and the relationship between text and images all contribute to readability. When text wraps around floated elements, maintaining consistent line lengths becomes a consideration for optimal reading experience.
-
-Professional publications often employ multiple float patterns within a single article. Left-aligned images might introduce a topic, while right-aligned callout boxes highlight key points. Center-aligned layouts with elements on both sides create visual interest and break up long passages of text.`;
+const IMAGE_WIDTH = 168;
+const IMAGE_CENTER_MARGIN = (CARD_INNER_WIDTH - IMAGE_WIDTH) / 2;
 
 const FloatExample = () => (
   <Document>
     <Page size="A4" style={styles.page} experimentalPagination>
-      <Text style={styles.title}>Float — Magazine Layout</Text>
+      <Text style={styles.title}>Float — Text Wrapping</Text>
       <Text style={styles.subtitle}>
-        A single text flowing around a left image, a right callout box and a
-        centered block
+        Elements taken out of the flow and pushed to one side, with text
+        wrapping around them, similar to CSS float behavior
       </Text>
 
-      <View>
-        <View>
-          <Image
-            src={Quijote}
-            style={{
-              float: 'left',
-              width: 220,
-              height: 150,
-              borderRadius: 4,
-              marginRight: 12,
-              marginBottom: 4,
-            }}
-          />
-
-          <View
-            style={{
-              float: 'right',
-              width: 170,
-              backgroundColor: '#c25b56',
-              borderRadius: 4,
-              padding: 14,
-              marginTop: 266,
-              marginLeft: 12,
-            }}
-          >
-            <Text style={{ fontSize: 11, fontWeight: 700, color: '#ffffff' }}>
-              Key Points
-            </Text>
-            <Text
-              style={{
-                fontSize: 9,
-                color: '#ffffff',
-                marginTop: 6,
-                lineHeight: 1.5,
-              }}
-            >
-              • Left float{'\n'}• Right float{'\n'}• Centered float
+      <View style={styles.card}>
+        <Text style={styles.label}>float: left — drop cap</Text>
+        <View style={{ minHeight: 58 }}>
+          <View style={{ float: 'left', marginRight: 6 }}>
+            <Text style={{ fontSize: 42, fontWeight: 700, color: BLUE }}>
+              A
             </Text>
           </View>
-
-          {/* Content width ≈ 515pt, element 170pt wide → marginLeft (515-170)/2 ≈ 172 */}
-          <View
-            style={{
-              float: 'left',
-              width: 170,
-              height: 130,
-              marginLeft: 172,
-              marginRight: 10,
-              marginTop: 320,
-              backgroundColor: '#8a63b3',
-              borderRadius: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.floatBoxText}>CENTERED</Text>
-          </View>
-
           <Text style={styles.text}>
-            {articleText}
-            {articleText}
+            float is a block taken out of the normal flow and pinned to one side
+            of its container, with the surrounding text wrapping around it. The
+            oversized letter that opens this paragraph is the oldest float of
+            all: a drop cap. The lines beside it shorten to make room and return
+            to the full width of the card once past its bottom edge. Nothing
+            else is needed — the letter is floated, the paragraph is set, and
+            the wrapping takes care of itself. Drop caps are the classic opening
+            move of book and magazine design, and here they cost nothing more
+            than a float and a large font size. Because a float only affects the
+            lines that overlap it vertically, everything from this point on is
+            laid out as if the letter never existed: full-width line after
+            full-width line, with no trace of the interruption above. The longer
+            the paragraph runs, the clearer the contrast becomes between the
+            handful of shortened lines at the top and the plain column of text
+            that follows them.
           </Text>
         </View>
       </View>
 
-      <View break>
-        <Text style={styles.sectionTitle}>Continued Article</Text>
-        <View style={styles.card}>
-          <View>
-            <View
-              style={[
-                styles.floatBox,
-                styles.floatLeft,
-                { width: 110, height: 90, backgroundColor: '#55987a' },
-              ]}
-            >
-              <Text style={styles.floatBoxText}>NEW{'\n'}FLOAT</Text>
-            </View>
-            <Text style={styles.text}>
-              This section appears after the page break with a new float
-              element. The text wraps around the green float box on the left.{' '}
-              {articleText}
-            </Text>
-          </View>
-        </View>
-      </View>
-    </Page>
-
-    <Page size="A4" style={styles.page} experimentalPagination>
-      <Text style={styles.title}>Float Basics</Text>
-      <Text style={styles.subtitle}>
-        Elements positioned to the left or right with text wrapping around them,
-        similar to CSS float behavior
-      </Text>
-
       <View style={styles.card}>
-        <Text style={styles.label}>float: left</Text>
-        <View style={styles.floatDemo}>
-          <View style={[styles.floatBox, styles.floatLeft]}>
-            <Text style={styles.floatBoxText}>FLOAT{'\n'}LEFT</Text>
+        <Text style={styles.label}>float: right — image</Text>
+        <View style={{ minHeight: 150 }}>
+          <View style={{ float: 'right', width: 130, marginLeft: 10 }}>
+            <Image
+              src={Quijote2}
+              style={[styles.image, { width: 130, height: 94 }]}
+            />
+            <Text style={styles.caption}>Floated to the right edge</Text>
           </View>
-          <Text style={styles.text}>{longText}</Text>
+          <Text style={styles.text}>
+            This image is floated to the right edge of the card, and the
+            paragraph wraps along its left side. Each line still begins at the
+            left margin but gives up whatever width the image occupies. Anything
+            placed inside the floated block — the caption, for instance —
+            travels with it and takes no part in the wrapping. Past the bottom
+            edge of the image, the lines recover the entire width and flow on as
+            though nothing had interrupted them. This is the most common float
+            pattern, used for figures and callouts in article-style layouts.
+            Wrapping is resolved line by line: every line checks which floats
+            overlap its vertical span and shortens itself accordingly, which is
+            why these closing sentences, set below the image, stretch across the
+            full card again. Nothing about the wrapping is precomputed — it is
+            resolved from the float's box at layout time, so changing the
+            image's size or margins reflows the paragraph automatically. If the
+            text grows, new lines simply keep flowing at full width below the
+            image; if it shrinks, the image still holds its corner and the text
+            wraps as far as it reaches. That makes floated figures safe to use
+            with dynamic content, where the length of the copy is not known
+            until the document is rendered.
+          </Text>
         </View>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.label}>float: right</Text>
-        <View style={styles.floatDemo}>
-          <View style={[styles.floatBox, styles.floatRight]}>
-            <Text style={styles.floatBoxText}>FLOAT{'\n'}RIGHT</Text>
-          </View>
-          <Text style={styles.text}>{longText}</Text>
-        </View>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Multiple floats</Text>
-        <View>
+        <Text style={styles.label}>float: left — pull quote</Text>
+        <View style={{ minHeight: 102 }}>
           <View
-            style={[
-              styles.floatBox,
-              styles.floatLeft,
-              { width: 60, height: 60 },
-            ]}
-          >
-            <Text style={styles.floatBoxText}>L</Text>
-          </View>
-          <View
-            style={[
-              styles.floatBox,
-              styles.floatRight,
-              { width: 60, height: 60 },
-            ]}
-          >
-            <Text style={styles.floatBoxText}>R</Text>
-          </View>
-          <Text style={styles.text}>{longText}</Text>
-        </View>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Image float</Text>
-        <View>
-          <Image
-            src={Quijote}
             style={{
               float: 'left',
-              width: 100,
-              height: 100,
-              borderRadius: 4,
+              width: 140,
               marginRight: 10,
-              marginBottom: 4,
+              borderLeftWidth: 2,
+              borderColor: BLUE,
+              paddingLeft: 8,
             }}
-          />
+          >
+            <Text style={{ fontSize: 11, fontWeight: 700, color: BLUE }}>
+              A float doesn't need to be an image — any block can be lifted from
+              the flow.
+            </Text>
+          </View>
           <Text style={styles.text}>
-            This example shows an image floated to the left with text wrapping
-            around it. This is a common pattern for magazine-style layouts where
-            images are placed alongside article text. {longText}
+            Here a pull quote sits against the left margin and the paragraph
+            wraps along its right-hand side, mirroring the previous card. While
+            the quote persists the lines start further to the right; once it has
+            been passed they stretch back to the left margin. Any View can be
+            floated this way: quotes, sidebars, stat blocks or small tables all
+            behave exactly like a floated image. The wider the floated block,
+            the narrower the remaining column, so pull quotes are usually kept
+            to about a third of the measure — enough to stand out without
+            squeezing the text beside them. Because the quote is an ordinary
+            View it can carry its own padding, borders and nested children, and
+            the wrapping text never intrudes into its box. These extra sentences
+            exist mostly to push the paragraph well past the quote's bottom
+            edge: the first lines are indented around it, and everything after
+            this point runs from margin to margin, which is exactly the shape a
+            long article paragraph would take around a short editorial aside.
+          </Text>
+        </View>
+      </View>
+
+      <View break style={styles.card}>
+        <Text style={styles.label}>float across a page break</Text>
+        <View style={{ minHeight: 130 }}>
+          <View style={{ float: 'left', width: 150, marginRight: 10 }}>
+            <Image
+              src={Quijote1}
+              style={[styles.image, { width: 150, height: 62 }]}
+            />
+          </View>
+          <Text style={styles.text}>
+            This card was pushed onto a fresh page with a break, and it brings a
+            float of its own along with it. Pagination and floating are
+            independent: a new page simply offers a new flow, and a block
+            floated within it wraps its neighbouring text exactly as it would
+            have done on the previous page. Keeping a figure and the paragraph
+            that discusses it together is one of the main reasons to float
+            rather than position absolutely — the pair moves through pagination
+            as a unit, and the wrapping re-resolves wherever it lands.
+            Everything demonstrated on the first page holds here without change:
+            the float carves its exclusion, the paragraph bends around it, and
+            once past the image's bottom edge these final sentences run the full
+            width of the card again, one after another, exactly as they would in
+            the middle of a long report.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>multiple floats</Text>
+        <View style={{ minHeight: 150 }}>
+          <View style={{ float: 'left', width: 120, marginRight: 10 }}>
+            <Image
+              src={Landscape1}
+              style={[styles.image, { width: 120, height: 60 }]}
+            />
+          </View>
+          <View style={{ float: 'right', width: 120, marginLeft: 10 }}>
+            <Image
+              src={Landscape2}
+              style={[styles.image, { width: 120, height: 60 }]}
+            />
+          </View>
+          <Text style={styles.text}>
+            Floats can be set on both sides at once, forcing the text to thread
+            the channel left between them. While both images persist the column
+            is pinched to this narrow middle passage; where they end, the
+            measure springs back to the full width of the card in a single step,
+            which makes the earlier confinement easy to see. Nothing requires
+            the two sides to match, either: floats of different heights simply
+            carve their own spans, and every line adapts to whichever of them it
+            happens to run beside. From this point on the paragraph is free of
+            both images and a long tail makes the contrast obvious — a few
+            pinched lines threading the middle of the card, followed by
+            comfortable long ones that reach from border to border with nothing
+            standing in their way.
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>centered float</Text>
+        <View style={{ minHeight: 106 }}>
+          <View
+            style={{
+              float: 'left',
+              width: IMAGE_WIDTH,
+              marginLeft: IMAGE_CENTER_MARGIN,
+              marginRight: 10,
+            }}
+          >
+            <Image
+              src={Quijote1}
+              style={[styles.image, { width: IMAGE_WIDTH, height: 70 }]}
+            />
+          </View>
+          <Text style={styles.text}>
+            A left float pushed inward by a computed margin comes to rest in the
+            middle of the card, splitting the text into two narrow channels that
+            are read line by line across the gap. The wrapping follows the
+            float's geometry wherever it stands, not just at the edges of the
+            page. Below the image the two channels merge back into a single
+            stream of full-width lines — the same recovery every other card
+            shows, just starting from a stranger shape — and the paragraph
+            carries on as if it had never been split at all. Layouts like this
+            are rare in running text, but the same computed-margin technique
+            places floats at any horizontal position: a chart offset toward one
+            column of a report, a stamp pinned near the fold of a letter, or a
+            figure straddling the midline of a spread. Wherever the block lands,
+            the text simply flows around whatever room is left, on both sides at
+            once if it has to.
           </Text>
         </View>
       </View>
@@ -302,81 +348,70 @@ const FloatExample = () => (
         side
       </Text>
 
-      <View style={styles.card} wrap={false}>
+      <View style={styles.card}>
         <Text style={styles.label}>clear: left — left float is taller</Text>
-        <View style={styles.clearDemo}>
-          <View style={[styles.floatBox, styles.floatLeft, { height: 100 }]}>
-            <Text style={styles.floatBoxText}>LEFT{'\n'}100PT</Text>
-          </View>
-          <View style={[styles.floatBox, styles.floatRight, { height: 50 }]}>
-            <Text style={styles.floatBoxText}>RIGHT{'\n'}50PT</Text>
-          </View>
+        <View style={{ minHeight: 140 }}>
+          <FloatBox side="left" height={80} color={BLUE} />
+          <FloatBox side="right" height={40} color={RED} />
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is 100pt tall and
-            the right float is only 50pt tall.
+            The blue float is 80pt tall, the red one only 40pt. The green bar
+            below carries clear: left, so it must drop beneath the taller left
+            float before it can begin.
           </Text>
-          <View style={[styles.clearIndicator, { clear: 'left' }]}>
-            <Text style={styles.clearText}>
-              clear: left — this box sits below the tall left float, at the
-              100pt mark
+          <View style={[styles.clearBar, { clear: 'left', marginTop: 6 }]}>
+            <Text style={styles.clearBarText}>
+              clear: left — this bar sits below the left float, at the 80pt mark
             </Text>
           </View>
-          <Text style={styles.text}>
-            This text comes after clear: left. It starts below the left float.
-            Since the right float was only 50pt, it ended above this position.
+          <Text style={[styles.text, { marginTop: 6 }]}>
+            Text after the bar starts here, below the left float. The right
+            float ended at 40pt, well above this point, so it plays no part.
           </Text>
         </View>
       </View>
 
-      <View style={styles.card} wrap={false}>
+      <View style={styles.card}>
         <Text style={styles.label}>clear: right — right float is taller</Text>
-        <View style={styles.clearDemo}>
-          <View style={[styles.floatBox, styles.floatLeft, { height: 50 }]}>
-            <Text style={styles.floatBoxText}>LEFT{'\n'}50PT</Text>
-          </View>
-          <View style={[styles.floatBox, styles.floatRight, { height: 100 }]}>
-            <Text style={styles.floatBoxText}>RIGHT{'\n'}100PT</Text>
-          </View>
+        <View style={{ minHeight: 140 }}>
+          <FloatBox side="left" height={40} color={BLUE} />
+          <FloatBox side="right" height={80} color={RED} />
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is only 50pt tall
-            and the right float is 100pt tall.
+            The arrangement is reversed: the short float keeps the left margin
+            and the tall one the right. A bar carrying clear: right ignores the
+            left float entirely and waits only for the right one.
           </Text>
-          <View style={[styles.clearIndicator, { clear: 'right' }]}>
-            <Text style={styles.clearText}>
-              clear: right — this box sits below the tall right float, at the
-              100pt mark
+          <View style={[styles.clearBar, { clear: 'right', marginTop: 6 }]}>
+            <Text style={styles.clearBarText}>
+              clear: right — this bar sits below the right float, at the 80pt
+              mark
             </Text>
           </View>
-          <Text style={styles.text}>
-            This text comes after clear: right. It starts below the right float.
-            Since the left float was only 50pt, it ended above this position.
+          <Text style={[styles.text, { marginTop: 6 }]}>
+            Clearing is a directed instruction: each side keeps its own account
+            of floats, and a cleared element consults only the side it was told
+            to.
           </Text>
         </View>
       </View>
 
-      <View style={styles.card} wrap={false}>
+      <View style={styles.card}>
         <Text style={styles.label}>clear: both</Text>
-        <View style={styles.clearDemo}>
-          <View style={[styles.floatBox, styles.floatLeft, { height: 60 }]}>
-            <Text style={styles.floatBoxText}>LEFT{'\n'}60PT</Text>
-          </View>
-          <View style={[styles.floatBox, styles.floatRight, { height: 90 }]}>
-            <Text style={styles.floatBoxText}>RIGHT{'\n'}90PT</Text>
-          </View>
+        <View style={{ minHeight: 130 }}>
+          <FloatBox side="left" height={50} color={BLUE} />
+          <FloatBox side="right" height={70} color={RED} />
           <Text style={styles.text}>
-            This text wraps around both floats. The left float is 60pt and the
-            right float is 90pt tall.
+            Lastly, clear: both defers to every float in sight and descends
+            below whichever of them reaches lowest — the red one here, at 70pt.
           </Text>
-          <View style={[styles.clearIndicator, { clear: 'both' }]}>
-            <Text style={styles.clearText}>
-              clear: both — this box sits below both floats, at the 90pt mark of
+          <View style={[styles.clearBar, { clear: 'both', marginTop: 6 }]}>
+            <Text style={styles.clearBarText}>
+              clear: both — this bar sits below both floats, at the 70pt mark of
               the taller one
             </Text>
           </View>
-          <Text style={styles.text}>
-            This text comes after clear: both. It starts below whichever float
-            is taller — the right one at 90pt in this case. Both floats have
-            ended above this position.
+          <Text style={[styles.text, { marginTop: 6 }]}>
+            With both sides cleared no floats remain, and the card closes with
+            plain full-width lines.
           </Text>
         </View>
       </View>

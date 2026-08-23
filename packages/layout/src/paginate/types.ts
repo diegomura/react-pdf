@@ -1,15 +1,13 @@
-import type { PenaltyItem } from '@react-pdf/paginate';
+import FontStore from '@react-pdf/font';
 
-import { DynamicPageProps, SafeNode } from '../types';
+import { DynamicPageProps, SafePageNode, YogaInstance } from '../types';
 
-export const FORCE_BREAK: PenaltyItem = { kind: 'penalty', type: 'force' };
-
-export const FORBID_BREAK: PenaltyItem = { kind: 'penalty', type: 'forbid' };
-
-// How dynamic (render prop) nodes materialize: `props` maps an engine page
-// number to the render props for that page, `measure` renders and measures a
-// dynamic subtree with those props.
-export type DynamicEnv = {
+// Per-page pagination context: `props` maps an engine page number to the
+// render props for that page, and the rest lets dynamic nodes re-measure
+// themselves against the page they render on.
+export type PageCtx = {
   props: (enginePageNumber: number) => DynamicPageProps;
-  measure: (node: SafeNode, props: DynamicPageProps) => SafeNode;
+  page: SafePageNode;
+  fontStore: FontStore;
+  yoga: YogaInstance;
 };

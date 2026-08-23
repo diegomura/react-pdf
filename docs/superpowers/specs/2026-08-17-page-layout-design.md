@@ -1,7 +1,7 @@
 # Page Layout (`layout` prop) — Design Spec
 
 **Date**: 2026-08-17
-**Status**: Implemented (2026-08-19) — see `docs/superpowers/plans/2026-08-19-page-layout-plan.md`
+**Status**: Implemented (2026-08-19)
 **Scope**: A master-page API for react-pdf — `<Page layout={Component}>` renders repeating page chrome around a content slot. Ships with: a stepwise pagination API in `@react-pdf/paginate` (`createPaginator`), per-page chrome measurement, and the restriction of `fixed` to prefix position. All of it lands in the pagination-rewrite major as one migration event.
 
 ---

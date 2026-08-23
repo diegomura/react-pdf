@@ -190,33 +190,6 @@ Spacing and synthetic wrappers dissolve into positions on the way out: the
 output contains only nodes you put in (or that your `split`/`materialize`
 closures returned).
 
-## Repeating items
-
-Any content-bearing item (`leaf`, `column`, `row`, `lazy` — not `spacer` or
-`penalty`) may carry `repeat: true`. When its parent column breaks, a fresh
-copy re-emits at the head of every continuation — the way a table header
-repeats on each page the table spans.
-
-```js
-const table = {
-  kind: 'column',
-  children: [{ kind: 'row', repeat: true, children: headerCells }, ...bodyRows],
-};
-```
-
-Rules:
-
-- An item re-emits only on continuations created after it fully placed. It
-  never appears before the flow reaches it, and a mid-split item continues
-  its own remainder instead of adding a copy. A split consumes the item's
-  identity: once split, it stops repeating.
-- Repetition is scoped to the immediate parent and ends with it — a table's
-  header stops repeating after the table's last fragment.
-- Each repetition is a fresh copy with its own `part` flags. A `repeat` lazy
-  re-materializes on every page it lands on, with that page's number.
-- A page that places nothing but repeats stops the repetition, so content
-  always advances.
-
 ## License
 
 MIT

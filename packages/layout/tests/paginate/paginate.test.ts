@@ -9,10 +9,12 @@ import { SafeDocumentNode, SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
 
-// Shapes mimicking React elements, as render props return them
+// Instances, as the pre-wrapped render props return them
 const el = (type: string, style = {}, children: any[] = []) => ({
   type,
-  props: { style, children },
+  style,
+  props: {},
+  children,
 });
 
 const view = (style, children = []): any => ({
@@ -312,7 +314,9 @@ describe('paginate', () => {
           return [
             {
               type: 'VIEW',
-              props: { wrap: false, style: { height: 50 }, children: [] },
+              style: { height: 50 },
+              props: { wrap: false },
+              children: [],
             },
           ];
         }),
@@ -327,9 +331,7 @@ describe('paginate', () => {
     test('nested render props resolve recursively', async () => {
       const inner = vi.fn().mockReturnValue([el('VIEW', { height: 10 })]);
       const pages = await run({ width: 100, height: 200 }, [
-        dynamicView(() => [
-          { type: 'VIEW', props: { render: inner, style: {}, children: [] } },
-        ]),
+        dynamicView(() => [dynamicView(inner)]),
       ]);
 
       expect(inner).toHaveBeenCalledTimes(2);

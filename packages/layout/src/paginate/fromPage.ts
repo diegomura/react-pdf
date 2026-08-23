@@ -1,4 +1,4 @@
-import type { PlacedItem } from '@react-pdf/paginate';
+import type { PlacedNode } from '@react-pdf/paginate';
 
 import {
   ZERO_BOTTOM_BOX,
@@ -18,26 +18,25 @@ const marginBottom = (node: SafeNode) => numeric(node.box?.marginBottom);
 // A container that starts and ends here keeps its subtree untouched: the yoga
 // boxes below it are still valid, and out-of-flow children the engine never
 // saw stay where they are.
-const isWhole = (placed: PlacedItem) =>
+const isWhole = (placed: PlacedNode) =>
   placed.part.isFirst && placed.part.isLast;
 
-// `origin` maps a placement's y into the coordinate space of the enclosing
-// node's border box.
-const rebuild = (placed: PlacedItem, origin: number): SafeNode[] => {
-  const node = placed.item.data as SafeNode | undefined;
-  const top = origin + placed.y;
+const rebuild = (placed: PlacedNode): SafeNode[] => {
+  const node = placed.data as SafeNode | undefined;
 
-  // Structural items produce no output: a spacer's space is already in the
-  // flow, and a synthetic wrapper flattens into its parent.
-  if (!node) {
-    return (placed.children || []).flatMap((child) => rebuild(child, top));
+  if (!node) return (placed.children || []).flatMap(rebuild);
+
+  // An absolute rode the stream as a zero-height marker: its box carries
+  // page coordinates, not a flow position, and passes through untouched.
+  if (node.style?.position === 'absolute') {
+    return [{ ...node } as SafeNode];
   }
 
   const { isFirst, isLast } = placed.part;
 
-  // Items are margin boxes; the node's own box starts below its top margin.
+  // Placed tops are margin-box tops; the node's border box starts below.
   const lead = isFirst ? marginTop(node) : 0;
-  const borderTop = top + lead;
+  const borderTop = placed.box.top + lead;
 
   if (!placed.children || isWhole(placed)) {
     return [{ ...node, box: { ...node.box, top: borderTop } } as SafeNode];
@@ -46,7 +45,7 @@ const rebuild = (placed: PlacedItem, origin: number): SafeNode[] => {
   // The engine reports what the fragment occupied, and a fragment that
   // continues occupied the rest of the page — so a split container's
   // background and border run to the page edge for free.
-  const height = placed.height - lead - (isLast ? marginBottom(node) : 0);
+  const height = placed.box.height - lead - (isLast ? marginBottom(node) : 0);
 
   return [
     {
@@ -68,12 +67,11 @@ const rebuild = (placed: PlacedItem, origin: number): SafeNode[] => {
         ...(isLast ? {} : ZERO_BOTTOM_STYLE),
       },
       ...(isFirst ? {} : { props: { ...node.props, bookmark: null } }),
-      children: placed.children.flatMap((child) => rebuild(child, -lead)),
+      children: placed.children.flatMap(rebuild),
     } as SafeNode,
   ];
 };
 
-const fromPage = (placed: PlacedItem[], contentTop: number): SafeNode[] =>
-  placed.flatMap((item) => rebuild(item, contentTop));
+const fromPage = (placed: PlacedNode[]): SafeNode[] => placed.flatMap(rebuild);
 
 export default fromPage;

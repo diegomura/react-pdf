@@ -1,25 +1,20 @@
-import React from 'react';
+import { castArray } from '@react-pdf/fns';
 
-import createInstances, { passthrough } from '../node/createInstances';
 import { DynamicPageProps, SafeNode } from '../types';
 
 const PROBE_PROP = '__probe';
 const CONTENT_PROP = '__content';
 
-export type PageLayout = (props: {
-  children: React.ReactNode;
-  pageNumber?: number;
-  totalPages?: number;
-  subPageNumber?: number;
-  subPageTotalPages?: number;
-}) => React.ReactNode;
-
-// A page without a layout gets this one: children are the whole template.
-export const identityLayout: PageLayout = ({ children }) => children;
+// Page layouts arrive pre-wrapped by the reconciler host config: the user's
+// React component is already reduced to a plain function over instances, so
+// like render props it supports no hooks.
+export type PageLayout = (
+  props: Partial<DynamicPageProps>,
+  children: SafeNode[],
+) => SafeNode | SafeNode[];
 
 // A grown, stretched stand-in for the content: instantiated in place of
-// `children`, its measured box is the flow region for one page. Shaped as
-// an instance, like every payload node, so it rides the pass-through.
+// `children`, its measured box is the flow region for one page.
 export const probeElement = (): SafeNode =>
   ({
     type: 'VIEW',
@@ -34,7 +29,7 @@ export const isProbe = (node: SafeNode): boolean =>
 export const findProbe = (node: SafeNode): SafeNode | null => {
   if (isProbe(node)) return node;
 
-  for (const child of (node.children || []) as SafeNode[]) {
+  for (const child of node.children || []) {
     const found = findProbe(child);
     if (found) return found;
   }
@@ -51,7 +46,7 @@ export const isContent = (node: SafeNode): boolean =>
   !!node.props && CONTENT_PROP in node.props;
 
 export const collectContent = (node: SafeNode, out: SafeNode[] = []) => {
-  for (const child of (node.children || []) as SafeNode[]) {
+  for (const child of node.children || []) {
     if (isContent(child)) out.push(child);
     else collectContent(child, out);
   }
@@ -59,41 +54,14 @@ export const collectContent = (node: SafeNode, out: SafeNode[] = []) => {
   return out;
 };
 
-// Runs the user's layout through the render-prop machinery (createInstances
-// executes function components), so like render props it supports no hooks.
-// The payload rides through as `children`: whatever the layout renders them
-// as, they land untouched — content on the first pass, a probe when
-// measuring, the page's fragments when building.
+// A page without a layout gets this one: children are the whole template.
+const identityLayout: PageLayout = (_, children) => children;
+
+// The payload rides through as `children`: wherever the layout renders them,
+// they land untouched — content on the first pass, a probe when measuring,
+// the page's fragments when building.
 export const instantiateTemplate = (
-  layout: PageLayout,
+  layout: PageLayout = identityLayout,
   props: Partial<DynamicPageProps>,
   payload: SafeNode[],
-) => {
-  const children = payload.map((node) => passthrough(node as any));
-  const element = React.createElement(layout as any, { ...props, children });
-
-  return createInstances(element) as unknown as SafeNode[];
-};
-
-// The probe doubles as the render-once validator: a layout that drops or
-// duplicates its children is caught before any content is entrusted to it.
-export const validateTemplate = (layout: PageLayout) => {
-  const nodes = instantiateTemplate(layout, { pageNumber: 1 }, [
-    probeElement() as any,
-  ]);
-
-  const probes = nodes.reduce((acc, node) => acc + countProbes(node), 0);
-
-  if (probes !== 1) {
-    throw new Error(
-      `[layout] A page layout must render its children exactly once (found ${probes}).`,
-    );
-  }
-};
-
-const countProbes = (node: SafeNode): number =>
-  (isProbe(node) ? 1 : 0) +
-  ((node.children || []) as SafeNode[]).reduce(
-    (acc, child) => acc + countProbes(child),
-    0,
-  );
+): SafeNode[] => castArray(layout(props, payload)).filter(Boolean);

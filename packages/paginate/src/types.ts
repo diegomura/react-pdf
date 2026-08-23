@@ -76,9 +76,6 @@ export interface Fragment {
   item: Item;
   isFirst: boolean;
   children: Fragment[];
-  // Set on the output of a repeat lazy. Materializing replaces the lazy with
-  // its output, so this back-pointer is how repeatFragments re-emits the lazy
-  // (not its stale output) on the next page.
   origin?: LazyItem;
 }
 

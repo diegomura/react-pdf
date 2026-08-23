@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { omit } from '@react-pdf/fns';
+import { castArray, omit } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
@@ -8,7 +8,6 @@ import splitNode from '../node/splitNode';
 import canNodeWrap from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
-import createInstances from '../node/createInstances';
 import shouldNodeBreak from '../node/shouldBreak';
 import relayoutPage from './relayoutPage';
 import {
@@ -168,12 +167,9 @@ const resolveDynamicNodes = (props: DynamicPageProps, node: SafeNode) => {
   const resolveChildren = (children = []) => {
     if (isNodeDynamic) {
       const res = node.props.render(props);
-      return (
-        createInstances(res)
-          .filter(Boolean)
-          // @ts-expect-error rework dynamic nodes. conflicting types
-          .map((n) => resolveDynamicNodes(props, n))
-      );
+      return castArray(res)
+        .filter(Boolean)
+        .map((n) => resolveDynamicNodes(props, n));
     }
 
     return children.map((c) => resolveDynamicNodes(props, c));

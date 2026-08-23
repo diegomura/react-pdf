@@ -1,20 +1,16 @@
-import * as P from '@react-pdf/primitives';
 import { omit } from '@react-pdf/fns';
 import { createPaginator } from '@react-pdf/paginate';
-import type { Item } from '@react-pdf/paginate';
 import FontStore from '@react-pdf/font';
 
-import isFixed from '../node/isFixed';
 import hasDynamic from '../node/hasDynamic';
 import renderDynamic from '../node/renderDynamic';
 import relayoutPage from '../steps/relayoutPage';
 import fromPage from './fromPage';
-import toItems from './toItems';
+import toFlow from './toFlow';
 import {
   PageLayout,
   collectContent,
   findProbe,
-  identityLayout,
   instantiateTemplate,
   probeElement,
 } from '../page/template';
@@ -25,7 +21,7 @@ import {
   SafePageNode,
   YogaInstance,
 } from '../types';
-import { DynamicEnv } from './types';
+import { PageCtx } from './types';
 
 // Page totals only exist once every page is counted, so documents with
 // dynamic nodes paginate twice: round one with just the running pageNumber,
@@ -39,47 +35,6 @@ type Ctx = {
   totals: Totals;
   fontStore: FontStore;
   yoga: YogaInstance;
-};
-
-const isAbsolute = (node: SafeNode) => node.style?.position === 'absolute';
-
-const numeric = (value: unknown): number =>
-  typeof value === 'number' ? value : 0;
-
-// Re-render a dynamic subtree and measure it at the width the first pass gave
-// it. A throwaway page runs the subtree through the standard style and yoga
-// steps; like the first pass, it has no height constraint so content can be
-// any length.
-const measureDynamic = (
-  page: SafePageNode,
-  node: SafeNode,
-  props: DynamicPageProps,
-  fontStore: FontStore,
-  yoga: YogaInstance,
-): SafeNode => {
-  const rendered = renderDynamic(props, node);
-
-  const width =
-    (node.box?.width || page.box?.width || 0) +
-    numeric(node.box?.marginLeft) +
-    numeric(node.box?.marginRight);
-
-  const fake = {
-    type: P.Page,
-    props: { dpi: (page.props as any)?.dpi },
-    style: {
-      width,
-      height: page.style?.height,
-      fontSize: page.style?.fontSize,
-    },
-    box: { width },
-    children: [rendered],
-  };
-
-  const laid = relayoutPage(fake as any, fontStore, yoga) as SafePageNode;
-  const measured = laid.children![0] as SafeNode;
-
-  return { ...measured, box: { ...measured.box, top: 0 } } as SafeNode;
 };
 
 // Walk from `root` to `target` accumulating parent-relative tops and lefts
@@ -102,12 +57,35 @@ const absoluteBox = (
     };
   }
 
-  for (const child of (root.children || []) as SafeNode[]) {
+  for (const child of root.children || []) {
     const found = absoluteBox(child, target, boxTop, boxLeft);
     if (found) return found;
   }
 
   return null;
+};
+
+// Chrome may vary in height per page, never in width: content was measured
+// once at the region's width. A region with no height means the chrome ate
+// the page (legal only when the page has no ceiling).
+const validateRegion = (
+  region: { width: number; height: number },
+  referenceWidth: number,
+  pageNumber: number,
+  wrap: boolean,
+) => {
+  if (Math.abs(region.width - referenceWidth) > 0.001) {
+    throw new Error(
+      `[layout] The page layout changes the content width on page ${pageNumber} ` +
+        `(${region.width} vs ${referenceWidth}). Chrome may vary in height per page, not width.`,
+    );
+  }
+
+  if (wrap && region.height <= 0) {
+    throw new Error(
+      `[layout] The page layout leaves no room for content on page ${pageNumber}.`,
+    );
+  }
 };
 
 // Every page is a template instantiated per output page. The payload rides
@@ -116,26 +94,16 @@ const absoluteBox = (
 // width may not, since content was measured once at that width.
 const splitPage = (
   page: SafePageNode,
-  props: DynamicEnv['props'],
+  props: PageCtx['props'],
   { fontStore, yoga }: Ctx,
 ): SafePageNode[] => {
-  const template: PageLayout = (page.props as any)?.layout || identityLayout;
-
-  const env: DynamicEnv = {
-    props,
-    measure: (node, nodeProps) =>
-      measureDynamic(page, node, nodeProps, fontStore, yoga),
-  };
-
-  // Content sits inline wherever the template rendered it, tagged by the
-  // splice step; tree order is source order.
-  const content = collectContent(page as unknown as SafeNode);
-  const inFlow = content.filter((child) => !isAbsolute(child));
-
-  const root: Item = { kind: 'column', children: toItems(inFlow, env) };
-  const paginator = createPaginator(root);
-
+  const template: PageLayout | undefined = (page.props as any)?.layout;
   const box = { ...page.box, height: page.style.height as number };
+
+  const pageCtx: PageCtx = { props, page, fontStore, yoga };
+  const content = collectContent(page as unknown as SafeNode);
+
+  const paginator = createPaginator(toFlow(content, pageCtx));
 
   const instantiate = (pageProps: DynamicPageProps, payload: SafeNode[]) =>
     instantiateTemplate(template, pageProps, payload).map((node) =>
@@ -151,37 +119,10 @@ const splitPage = (
     return absoluteBox(laid, probe)!;
   };
 
-  // The page's fragments take the in-flow content's place; absolutes keep
-  // their source positions — fixed ones on every page, plain ones on the
-  // first — and anchor to whatever parent the template gave them.
-  const payloadFor = (fragments: SafeNode[], index: number): SafeNode[] => {
-    let placed = false;
-
-    return content.flatMap((child): SafeNode[] => {
-      if (isAbsolute(child)) {
-        return isFixed(child) || index === 0 ? [child] : [];
-      }
-
-      if (placed) return [];
-      placed = true;
-
-      return fragments;
-    });
-  };
-
-  const regionHeight = (region: { height: number }, pageNumber: number) => {
-    if (page.props?.wrap === false) return Infinity;
-
-    if (region.height <= 0) {
-      throw new Error(
-        `[layout] The page layout leaves no room for content on page ${pageNumber}.`,
-      );
-    }
-
-    return region.height;
-  };
+  const wrap = page.props?.wrap !== false;
 
   const pages: SafePageNode[] = [];
+
   let referenceWidth: number | null = null;
   let pageNumber = 1;
 
@@ -190,18 +131,14 @@ const splitPage = (
 
     referenceWidth = referenceWidth ?? region.width;
 
-    if (Math.abs(region.width - referenceWidth) > 0.001) {
-      throw new Error(
-        `[layout] The page layout changes the content width on page ${pageNumber} ` +
-          `(${region.width} vs ${referenceWidth}). Chrome may vary in height per page, not width.`,
-      );
-    }
+    validateRegion(region, referenceWidth, pageNumber, wrap);
 
-    const placed = paginator.next(regionHeight(region, pageNumber));
-    const fragments = fromPage(placed[0]?.children || [], 0) as SafeNode[];
+    const height = wrap ? region.height : Infinity;
+    const placed = paginator.next(height);
+    const fragments = fromPage(placed);
 
     const index = pageNumber - 1;
-    const nodes = instantiate(props(pageNumber), payloadFor(fragments, index));
+    const nodes = instantiate(props(pageNumber), fragments);
 
     const built = {
       ...page,
@@ -246,36 +183,41 @@ const paginateDocument = (root: SafeDocumentNode, ctx: Ctx) => {
   return { root: { ...root, children } as SafeDocumentNode, subTotals };
 };
 
+// A totals round is only needed when something can read totalPages: any
+// render prop in the tree, or a layout component's params — layouts may
+// read them without leaving any render prop behind.
+const needsTotalsRound = (root: SafeDocumentNode) =>
+  root.children.some(
+    (page) =>
+      hasDynamic(page as unknown as SafeNode) || (page.props as any)?.layout,
+  );
+
 /**
- * Pagination without a second layout pass: paginate decides the partition and
- * the adapter derives every box from the first Yoga run.
+ * Splits every page into output pages: content keeps its first-pass
+ * measurements, the engine packs it into each page's flow region, and each
+ * output page renders its layout around the fragments that landed on it.
+ * Runs a second round when something reads totalPages.
  *
  * @param root - Document node
  * @param fontStore - Font store
- * @returns Layout node
+ * @returns Document with paginated pages
  */
 const resolvePagination = (
   root: SafeDocumentNode,
   fontStore: FontStore,
 ): SafeDocumentNode => {
-  const ctx = { totals: null, fontStore, yoga: root.yoga };
-  const round1 = paginateDocument(root, ctx);
+  const ctx1 = { totals: null, fontStore, yoga: root.yoga };
+  const round1 = paginateDocument(root, ctx1);
 
-  // A layout component may read totalPages from its params without any
-  // render prop in its output, so template pages always take the totals round.
-  const dynamic = root.children.some(
-    (page) =>
-      hasDynamic(page as unknown as SafeNode) || (page.props as any)?.layout,
-  );
-
-  if (!dynamic) return round1.root;
+  if (!needsTotalsRound(root)) return round1.root;
 
   const totals: Totals = {
     totalPages: round1.root.children.length,
     subTotals: round1.subTotals,
   };
 
-  return paginateDocument(root, { ...ctx, totals }).root;
+  const ctx2 = { ...ctx1, totals };
+  return paginateDocument(root, ctx2).root;
 };
 
 export default resolvePagination;

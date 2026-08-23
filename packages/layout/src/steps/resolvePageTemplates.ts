@@ -1,22 +1,44 @@
 import {
   PageLayout,
-  identityLayout,
   instantiateTemplate,
+  isProbe,
+  probeElement,
   tagContent,
-  validateTemplate,
 } from '../page/template';
+import { SafeNode } from '../types';
 
-// Every page instantiates its template — the identity one when no layout
-// prop is given — with the page's own children as the payload. Content
-// lands inline wherever the layout renders `children`, tagged so the
-// pagination step can tell it apart from the chrome around it. For plain
-// pages this is a true noop: the spliced tree is the original tree.
+const countProbes = (node: SafeNode): number =>
+  (isProbe(node) ? 1 : 0) +
+  (node.children || []).reduce((acc, child) => acc + countProbes(child), 0);
+
+// The probe doubles as the render-once validator: a layout that drops or
+// duplicates its children is caught before any content is entrusted to it.
+const validateTemplate = (layout: PageLayout) => {
+  const children = [probeElement() as any];
+  const nodes = instantiateTemplate(layout, { pageNumber: 1 }, children);
+  const probes = nodes.reduce((acc, node) => acc + countProbes(node), 0);
+
+  if (probes !== 1) {
+    throw new Error(
+      `[layout] A page layout must render its children exactly once (found ${probes}).`,
+    );
+  }
+};
+
+// Render each page's layout with the page content as children, tagged so
+// pagination can tell content from chrome. Pages without a layout come out
+// unchanged.
 const resolvePageTemplates = (root: any) => {
   const children = (root.children || []).map((page: any) => {
-    const layout: PageLayout = page.props?.layout || identityLayout;
+    const layout: PageLayout | undefined = page.props?.layout;
+    if (layout) validateTemplate(layout);
 
-    validateTemplate(layout);
-
+    // TODO: content identity could be structural instead of tag-based — a
+    // single P.Fragment node holding the page content, made transparent to
+    // layout (display: contents semantics: no yoga node, no box, children
+    // hoisted to the parent). Requires teaching yoga mapping, resolvers,
+    // fromPage and render about a boxless node. Worth it if content ever
+    // needs richer identity (marks, named regions, TOC anchors).
     const content = (page.children || []).map(tagContent);
     const nodes = instantiateTemplate(layout, { pageNumber: 1 }, content);
 

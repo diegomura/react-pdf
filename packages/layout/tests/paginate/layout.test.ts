@@ -5,38 +5,33 @@ import { loadYoga } from '../../src/yoga';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import resolvePagination from '../../src/paginate';
-import {
-  instantiateTemplate,
-  isContent,
-  validateTemplate,
-} from '../../src/page/template';
+import { instantiateTemplate, isContent } from '../../src/page/template';
 import { SafeNode, SafePageNode } from '../../src/types';
 
 const fontStore = new FontStore();
 
-// Element-shaped node, as layout components return them (style inside props)
+// Instance-shaped nodes throughout: the reconciler host config wraps user
+// layouts and render props, so layout only ever sees instances.
 const view = (style = {}, children: any[] = []): any => ({
-  type: 'VIEW',
-  props: { style, children },
-});
-
-const dynamicView = (render: any, style = {}): any => ({
-  type: 'VIEW',
-  props: { render, style, children: [] },
-});
-
-// Instance-shaped node, as the reconciler produces them (style at top level)
-const instance = (style = {}, children: any[] = []): any => ({
   type: 'VIEW',
   style,
   props: {},
   children,
 });
 
+const dynamicView = (render: any, style = {}): any => ({
+  type: 'VIEW',
+  style,
+  props: { render },
+  children: [],
+});
+
+const instance = view;
+
 // The region container templates wrap `children` in whenever geometry
 // matters — asides, or chrome that must stay below the content.
-const region = (children: any): any =>
-  view({ flexGrow: 1, flexShrink: 1 }, [children]);
+const region = (children: any[]): any =>
+  view({ flexGrow: 1, flexShrink: 1 }, children);
 
 const doc = async (pageStyle: any, children: any[], pageProps = {}) => ({
   type: 'DOCUMENT',
@@ -89,8 +84,8 @@ const findTagged = (node: SafeNode): SafeNode | null => {
 
 describe('template', () => {
   test('the payload lands where the layout renders children, untouched', () => {
-    const layout = ({ children }: any) =>
-      view({ flexDirection: 'row' }, [children]);
+    const layout = (_: any, children: any[]) =>
+      view({ flexDirection: 'row' }, children);
 
     const payload = [instance({ height: 10 })];
     const nodes = instantiateTemplate(layout, { pageNumber: 1 }, payload);
@@ -100,9 +95,9 @@ describe('template', () => {
 
   test('the layout receives its page props', () => {
     const seen: any[] = [];
-    const layout = ({ children, ...props }: any) => {
+    const layout = (props: any, children: any[]) => {
       seen.push(props);
-      return view({}, [children]);
+      return view({}, children);
     };
 
     instantiateTemplate(layout, { pageNumber: 3, totalPages: 7 }, []);
@@ -110,12 +105,17 @@ describe('template', () => {
     expect(seen).toEqual([{ pageNumber: 3, totalPages: 7 }]);
   });
 
-  test('throws when the layout renders children twice or never', () => {
-    const twice = ({ children }: any) => view({}, [children, children]);
+  test('throws when the layout renders children twice or never', async () => {
+    const twice = (_: any, children: any[]) =>
+      view({}, [...children, ...children]);
     const never = () => view({}, []);
 
-    expect(() => validateTemplate(twice)).toThrow(/exactly once/);
-    expect(() => validateTemplate(never)).toThrow(/exactly once/);
+    const style = { width: 100, height: 100 };
+    const badTwice = await doc(style, [], { layout: twice });
+    const badNever = await doc(style, [], { layout: never });
+
+    expect(() => resolvePageTemplates(badTwice)).toThrow(/exactly once/);
+    expect(() => resolvePageTemplates(badNever)).toThrow(/exactly once/);
   });
 });
 
@@ -134,7 +134,7 @@ describe('resolvePageTemplates', () => {
   });
 
   test('first pass measures content at the region width', async () => {
-    const aside = ({ children }: any) =>
+    const aside = (_: any, children: any[]) =>
       view({ flexDirection: 'row', flexGrow: 1 }, [
         view({ width: 40 }),
         region(children),
@@ -156,7 +156,7 @@ describe('resolvePageTemplates', () => {
 
 describe('template pages', () => {
   test('band template reserves header and footer space on every page', async () => {
-    const band = ({ children }: any) => [
+    const band = (_: any, children: any[]) => [
       view({ height: 20 }),
       region(children),
       view({ height: 10 }),
@@ -187,8 +187,8 @@ describe('template pages', () => {
   });
 
   test('chrome render props resolve with each page number', async () => {
-    const numbered = ({ children }: any) => [
-      children,
+    const numbered = (_: any, children: any[]) => [
+      ...children,
       view({ height: 10 }, [
         dynamicView(({ pageNumber }: any) => [
           view({ height: 5, width: pageNumber * 10 }),
@@ -218,9 +218,9 @@ describe('template pages', () => {
   });
 
   test('first-page variant chrome shrinks only page 1 flow', async () => {
-    const cover = ({ children, pageNumber }: any) => [
+    const cover = ({ pageNumber }: any, children: any[]) => [
       view({ height: pageNumber === 1 ? 40 : 10 }),
-      children,
+      ...children,
     ];
 
     const pages = await run(
@@ -241,7 +241,7 @@ describe('template pages', () => {
   });
 
   test('odd/even mirrored aside keeps region width and flips position', async () => {
-    const mirrored = ({ children, pageNumber }: any) =>
+    const mirrored = ({ pageNumber }: any, children: any[]) =>
       view(
         { flexDirection: 'row', flexGrow: 1 },
         pageNumber % 2
@@ -265,7 +265,7 @@ describe('template pages', () => {
   });
 
   test('width-changing chrome fails loudly with the page number', async () => {
-    const drifting = ({ children, pageNumber }: any) =>
+    const drifting = ({ pageNumber }: any, children: any[]) =>
       view({ flexDirection: 'row', flexGrow: 1 }, [
         view({ width: pageNumber * 10 }),
         region(children),
@@ -281,7 +281,10 @@ describe('template pages', () => {
   });
 
   test('wrap={false} template page has no ceiling', async () => {
-    const band = ({ children }: any) => [view({ height: 20 }), children];
+    const band = (_: any, children: any[]) => [
+      view({ height: 20 }),
+      ...children,
+    ];
 
     const pages = await run(
       { width: 100, height: 100 },
@@ -293,8 +296,8 @@ describe('template pages', () => {
   });
 
   test('layout receives totalPages in the totals round', async () => {
-    const counted = ({ children, totalPages }: any) => [
-      children,
+    const counted = ({ totalPages }: any, children: any[]) => [
+      ...children,
       view({ height: 5, width: (totalPages ?? 1) * 10 }),
     ];
 

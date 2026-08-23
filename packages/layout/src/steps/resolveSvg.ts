@@ -221,8 +221,6 @@ const parseText =
     return Object.assign({}, node, { children });
   };
 
-// pickStyleProps runs last so style copies parsed values. Before, it copied raw
-// strings and only pagination's relayout reparsed them into style.
 const resolveSvgNode = (container: Container) =>
   compose(
     pickStyleProps,

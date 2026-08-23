@@ -37,8 +37,10 @@ const createInstances = (element) => {
     return createInstances(element.props.children);
   }
 
-  if ((element as any).type === P.Fragment) {
-    return [(element as any).props.node];
+  // Already-created instances ride through untouched — they carry
+  // style/children at the top level and must not be re-destructured.
+  if (element.type === P.Fragment) {
+    return [element.props.node];
   }
 
   if (!isString(element.type)) {

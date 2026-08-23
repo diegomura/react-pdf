@@ -7,7 +7,7 @@ import resolveTextLayout, {
   generateExcludeRects,
 } from '../../src/steps/resolveTextLayout';
 import resolveDimensions from '../../src/steps/resolveDimensions';
-import { FloatSibling, SafeDocumentNode } from '../../src/types';
+import { Exclusion, SafeDocumentNode } from '../../src/types';
 
 const fontStore = new FontStore();
 
@@ -74,7 +74,7 @@ describe('text layout step', () => {
 
 describe('generateExcludeRects', () => {
   test('should pass rect geometry through with text offset applied', () => {
-    const float: FloatSibling = {
+    const exclusion: Exclusion = {
       float: 'left',
       type: 'rect',
       x: 0,
@@ -83,7 +83,7 @@ describe('generateExcludeRects', () => {
       height: 43,
     };
 
-    expect(generateExcludeRects([float], 10)).toEqual([
+    expect(generateExcludeRects([exclusion], 10)).toEqual([
       { x: 0, y: -10, width: 45, height: 43 },
     ]);
   });

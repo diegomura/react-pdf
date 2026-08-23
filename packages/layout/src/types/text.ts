@@ -9,12 +9,15 @@ import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
 import { ImageNode, SafeImageNode } from './image';
 import { SafeTspanNode, TspanNode } from './tspan';
 
-export type FloatSibling = { float: 'left' | 'right' } & {
+/** Geometry text must flow around. `float` is set when it comes from a
+ * floated sibling — clear only consults float-originated exclusions. */
+export type Exclusion = {
   type: 'rect';
   x: number;
   y: number;
   width: number;
   height: number;
+  float?: 'left' | 'right';
 };
 
 interface TextProps extends NodeProps {
@@ -71,6 +74,6 @@ export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
     | SafeImageNode
     | SafeTspanNode
   )[];
-  /** Float siblings attached by resolveFloats for text wrapping */
-  floatSiblings?: FloatSibling[];
+  /** Exclusion geometry attached by resolveFloats for text wrapping */
+  exclusions?: Exclusion[];
 };

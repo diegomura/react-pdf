@@ -6,7 +6,7 @@ import {
   SafeNode,
   SafePageNode,
   SafeTextNode,
-  FloatSibling,
+  Exclusion,
 } from '../types';
 
 const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
@@ -28,7 +28,7 @@ const hasFloats = (children: SafeNode[] | undefined): boolean => {
 /**
  * Calculate the minimum Y position that clears the specified float elements
  */
-const getClearY = (floats: FloatSibling[], clearType: Clear): number => {
+const getClearY = (floats: Exclusion[], clearType: Clear): number => {
   if (clearType === 'none' || floats.length === 0) return 0;
 
   let maxY = 0;
@@ -45,7 +45,7 @@ const getClearY = (floats: FloatSibling[], clearType: Clear): number => {
 /**
  * Calculate the Y offset adjustment needed to clear float siblings
  */
-const applyClear = (node: SafeNode, floats: FloatSibling[]): number => {
+const applyClear = (node: SafeNode, floats: Exclusion[]): number => {
   const clearType = node.style?.clear;
 
   if (!clearType || clearType === 'none') return 0;
@@ -92,12 +92,12 @@ const positionFloatElement = <T extends SafeNode>(
 };
 
 /**
- * Create FloatSibling from a positioned node.
+ * Create Exclusion from a positioned node.
  * Note: box.top already includes marginTop adjustment from positionFloatElement.
  * Margins are folded into the rect: the text-facing side margin widens it and
  * marginBottom extends it, so exclusion and clear read the geometry directly.
  */
-const createFloatSibling = (node: SafeNode): FloatSibling => {
+const createExclusion = (node: SafeNode): Exclusion => {
   const { box, style } = node;
   const float = style?.float as 'left' | 'right';
   const marginRight = getNumericMargin(style?.marginRight);
@@ -124,16 +124,16 @@ const applyClearOffset = (node: SafeNode, offset: number): SafeNode => {
 };
 
 /**
- * Attach float siblings to a text node for excludeRects generation.
+ * Attach exclusion geometry to a text node for excludeRects generation.
  * Skip if no floats or if text was split during pagination.
  */
-const attachFloatSiblings = (
+const attachExclusions = (
   node: SafeTextNode,
-  floats: FloatSibling[],
+  floats: Exclusion[],
 ): SafeTextNode => {
   if (floats.length === 0 || node.wasSplit) return node;
 
-  return Object.assign({}, node, { floatSiblings: floats });
+  return Object.assign({}, node, { exclusions: floats });
 };
 
 /**
@@ -150,7 +150,7 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
   }
 
   const parentWidth = node.box?.width ?? 0;
-  const processedFloats: FloatSibling[] = [];
+  const processedFloats: Exclusion[] = [];
   const children: SafeNode[] = [];
   let clearOffset = 0;
 
@@ -161,7 +161,7 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
       processedChild = positionFloatElement(child, parentWidth);
 
       if (processedChild.box) {
-        processedFloats.push(createFloatSibling(processedChild));
+        processedFloats.push(createExclusion(processedChild));
       }
     } else {
       processedChild = applyClearOffset(processedChild, clearOffset);
@@ -174,7 +174,7 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
       }
 
       if (isText(processedChild)) {
-        processedChild = attachFloatSiblings(processedChild, processedFloats);
+        processedChild = attachExclusions(processedChild, processedFloats);
       }
     }
 

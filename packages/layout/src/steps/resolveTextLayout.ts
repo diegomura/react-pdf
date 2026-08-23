@@ -3,7 +3,7 @@ import FontStore from '@react-pdf/font';
 import { Rect } from '@react-pdf/textkit';
 
 import layoutText from '../text/layoutText';
-import { FloatSibling, SafeNode, SafeSvgNode, SafeTextNode } from '../types';
+import { Exclusion, SafeNode, SafeSvgNode, SafeTextNode } from '../types';
 
 const isSvg = (node: SafeNode): node is SafeSvgNode => node.type === P.Svg;
 
@@ -13,24 +13,23 @@ const shouldIterate = (node: SafeNode) => !isSvg(node) && !isText(node);
 
 /**
  * Check if text node needs layout.
- * Re-layout is needed if no lines calculated yet or has float siblings.
+ * Re-layout is needed if no lines calculated yet or has exclusions.
  */
 const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
-  isText(node) && (!node.lines || (node.floatSiblings?.length ?? 0) > 0);
+  isText(node) && (!node.lines || (node.exclusions?.length ?? 0) > 0);
 
 /**
- * Generate exclude rects from float elements for textkit.
- * The rects are in coordinates relative to the text container.
+ * Generate exclude rects for textkit, relative to the text container.
  */
 export const generateExcludeRects = (
-  floats: FloatSibling[],
+  exclusions: Exclusion[],
   textOffsetY: number = 0,
 ): Rect[] =>
-  floats.map((float) => ({
-    x: float.x,
-    y: float.y - textOffsetY,
-    width: float.width,
-    height: float.height,
+  exclusions.map((exclusion) => ({
+    x: exclusion.x,
+    y: exclusion.y - textOffsetY,
+    width: exclusion.width,
+    height: exclusion.height,
   }));
 
 /**
@@ -46,17 +45,17 @@ const resolveTextLayout = (node: SafeNode, fontStore: FontStore): SafeNode => {
     const width = node.box.width - node.box.paddingRight - node.box.paddingLeft;
     const originalHeight =
       node.box.height - node.box.paddingTop - node.box.paddingBottom;
-    const floatSiblings = node.floatSiblings || [];
+    const exclusions = node.exclusions || [];
 
     let excludeRects: Rect[];
     let height = originalHeight;
 
-    if (floatSiblings.length > 0) {
+    if (exclusions.length > 0) {
       // Allow text to expand vertically when wrapping around floats
       height = Infinity;
 
       const textOffsetY = node.box.top + node.box.paddingTop;
-      excludeRects = generateExcludeRects(floatSiblings, textOffsetY);
+      excludeRects = generateExcludeRects(exclusions, textOffsetY);
     }
 
     node.lines = layoutText(node, width, height, fontStore, excludeRects);

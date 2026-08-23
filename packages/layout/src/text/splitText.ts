@@ -53,7 +53,7 @@ const splitText = (node: SafeTextNode, height: number) => {
       borderBottomRightRadius: 0,
     },
     lines: node.lines.slice(0, slicedLineIndex),
-    floatSiblings: undefined,
+    exclusions: undefined,
     wasSplit: true,
   });
 
@@ -73,7 +73,7 @@ const splitText = (node: SafeTextNode, height: number) => {
       borderTopRightRadius: 0,
     },
     lines: node.lines.slice(slicedLineIndex),
-    floatSiblings: undefined,
+    exclusions: undefined,
     wasSplit: true,
   });
 

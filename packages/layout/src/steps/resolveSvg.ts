@@ -223,9 +223,9 @@ const parseText =
 
 const resolveSvgNode = (container: Container) =>
   compose(
-    parseProps(container),
-    resolveRectRadius,
     pickStyleProps,
+    resolveRectRadius,
+    parseProps(container),
     addMissingTspan,
     removeNoneValues,
     mergeStyles,

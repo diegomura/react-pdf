@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { castArray, omit, compose } from '@react-pdf/fns';
+import { castArray, omit } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
@@ -9,10 +9,7 @@ import canNodeWrap from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
 import shouldNodeBreak from '../node/shouldBreak';
-import resolveTextLayout from './resolveTextLayout';
-import resolveInheritance from './resolveInheritance';
-import { resolvePageDimensions } from './resolveDimensions';
-import { resolvePageStyles } from './resolveStyles';
+import relayoutPage from './relayoutPage';
 import {
   DynamicPageProps,
   SafeDocumentNode,
@@ -40,13 +37,6 @@ const isDynamic = (
   node: SafeNode,
 ): node is SafeLinkNode | SafeTextNode | SafeViewNode =>
   node.props && 'render' in node.props;
-
-const relayoutPage = compose(
-  resolveTextLayout,
-  resolvePageDimensions,
-  resolveInheritance,
-  resolvePageStyles,
-);
 
 const warnUnavailableSpace = (node: SafeNode) => {
   console.warn(
@@ -173,18 +163,13 @@ const shouldResolveDynamicNodes = (node: SafeNode) => {
 const resolveDynamicNodes = (props: DynamicPageProps, node: SafeNode) => {
   const isNodeDynamic = isDynamic(node);
 
-  // Call render prop on dynamic nodes and append result to children. Render
-  // props arrive pre-wrapped by the reconciler host config, so they return
-  // instances, not React elements.
+  // Call render prop on dynamic nodes and append result to children
   const resolveChildren = (children = []) => {
     if (isNodeDynamic) {
       const res = node.props.render(props);
-      return (
-        castArray(res)
-          .filter(Boolean)
-          // @ts-expect-error rework dynamic nodes. conflicting types
-          .map((n) => resolveDynamicNodes(props, n))
-      );
+      return castArray(res)
+        .filter(Boolean)
+        .map((n) => resolveDynamicNodes(props, n));
     }
 
     return children.map((c) => resolveDynamicNodes(props, c));

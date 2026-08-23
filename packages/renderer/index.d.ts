@@ -94,12 +94,27 @@ declare namespace ReactPDF {
     minPresenceAhead?: number;
   }
 
+  interface PageLayoutProps {
+    children: React.ReactNode;
+    pageNumber?: number;
+    totalPages?: number;
+    subPageNumber?: number;
+    subPageTotalPages?: number;
+  }
+
   interface PageProps extends NodeProps {
     /**
      * Enable page wrapping for this page.
      * @see https://react-pdf.org/components#page-wrapping
      */
     wrap?: boolean;
+    /**
+     * A template component rendered around every page this Page produces.
+     * Where it renders `children` is where page content flows; everything
+     * else repeats as page chrome with its space reserved. Like render
+     * props, layout components may not use hooks.
+     */
+    layout?: (props: PageLayoutProps) => React.ReactNode;
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging

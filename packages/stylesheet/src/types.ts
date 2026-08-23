@@ -385,7 +385,9 @@ export type FontFeatureSetting =
 
 export type FontFeatureSettings =
   | FontFeatureSetting[]
-  | Partial<Record<FontFeatureSetting, number>>;
+  | Partial<Record<FontFeatureSetting, number | boolean>>;
+
+export type SafeFontFeatureSettings = Record<string, boolean>;
 
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
@@ -412,6 +414,7 @@ export type TextExpandedStyle = TextStyle;
 export type TextSafeStyle = TextExpandedStyle & {
   fontSize?: number;
   fontWeight?: number;
+  fontFeatureSettings?: SafeFontFeatureSettings;
   letterSpacing?: number;
   lineHeight?: number;
 };

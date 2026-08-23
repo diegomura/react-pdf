@@ -1,7 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import { Fragment, fromFragments } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
-import type { FontFeatureSettings } from '@react-pdf/stylesheet';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
@@ -24,20 +23,6 @@ const isRasterImage = (node: SafeImageNode): boolean =>
 
 const isTextInstance = (node: SafeNode): node is SafeTextInstanceNode =>
   node.type === P.TextInstance;
-
-const transformFontFeatureSettings = (
-  fontFeatureSettings?: FontFeatureSettings,
-): string[] | Record<string, boolean> | undefined => {
-  if (!fontFeatureSettings) return undefined;
-  if (Array.isArray(fontFeatureSettings)) return fontFeatureSettings;
-
-  return Object.fromEntries(
-    Object.entries(fontFeatureSettings).map(([key, value]) => [
-      key,
-      value !== 0,
-    ]),
-  );
-};
 
 /**
  * Get textkit fragments of given node object
@@ -119,7 +104,7 @@ const getFragments = (
     // @ts-expect-error allow this props access
     link: parentLink || instance.props?.src || instance.props?.href,
     align: textAlign || (direction === 'rtl' ? 'right' : 'left'),
-    features: transformFontFeatureSettings(fontFeatureSettings),
+    features: fontFeatureSettings,
   };
 
   for (let i = 0; i < instance.children.length; i += 1) {

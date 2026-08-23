@@ -408,4 +408,30 @@ describe('resolve stylesheet text', () => {
 
     expect(styles).toEqual({ verticalAlign: 'super' });
   });
+
+  test('should resolve font feature settings array', () => {
+    const styles = resolveStyle({ fontFeatureSettings: ['tnum', 'smcp'] });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { tnum: true, smcp: true },
+    });
+  });
+
+  test('should resolve numeric font feature settings', () => {
+    const styles = resolveStyle({ fontFeatureSettings: { liga: 0, kern: 1 } });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { liga: false, kern: true },
+    });
+  });
+
+  test('should resolve boolean font feature settings', () => {
+    const styles = resolveStyle({
+      fontFeatureSettings: { liga: false, tnum: true },
+    });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { liga: false, tnum: true },
+    });
+  });
 });

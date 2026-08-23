@@ -1099,6 +1099,85 @@ describe('paginate', () => {
     });
   });
 
+  describe('minPresenceAhead windows', () => {
+    const window = (ahead: number): PenaltyItem => ({
+      kind: 'penalty',
+      type: 'forbid',
+      ahead,
+    });
+
+    test('moves the preceding item when too little follows on the page', () => {
+      const items: Item[] = [
+        leaf(60, 'a'),
+        leaf(30, 'x'),
+        window(50),
+        leaf(40, 'y'),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['x', 'y'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'min-presence-moves',
+      );
+    });
+
+    test('stays put when enough of what follows fits', () => {
+      const items: Item[] = [
+        leaf(20, 'a'),
+        leaf(30, 'x'),
+        window(50),
+        leaf(40, 'y'),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a', 'x', 'y'],
+      ]);
+    });
+
+    test('inert at the top of a page, where moving would not help', () => {
+      const items: Item[] = [leaf(30, 'x'), window(200), leaf(90, 'y')];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([['x'], ['y']]);
+    });
+
+    test('forbids splitting inside the window', () => {
+      const items: Item[] = [
+        leaf(60, 'a'),
+        leaf(20, 'x'),
+        window(60),
+        splittable(100, 'b'),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['x', 'b/1'],
+        ['b/2'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'min-presence-no-split',
+      );
+    });
+
+    test('relaxes when nothing follows', () => {
+      const items: Item[] = [leaf(60, 'a'), leaf(30, 'x'), window(50)];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([['a', 'x']]);
+    });
+  });
+
   describe('item data payload', () => {
     test('data rides through placement untouched, including splits', () => {
       const first = { tag: 'first' };

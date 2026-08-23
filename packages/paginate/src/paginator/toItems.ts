@@ -5,6 +5,13 @@ const FORCE_BREAK: Item = { kind: 'penalty', type: 'force' };
 
 const FORBID_BREAK: Item = { kind: 'penalty', type: 'forbid' };
 
+// No page break may land within `ahead` of this point.
+const presenceWindow = (ahead: number): Item => ({
+  kind: 'penalty',
+  type: 'forbid',
+  ahead,
+});
+
 const isContainer = (node: FlowNode): node is ContainerNode =>
   'children' in node;
 
@@ -129,7 +136,8 @@ const withFlags = (node: FlowNode, item: Item): Item => ({
 
 // Children in flow order: absolutes become zero-height leaves where they
 // stand but stay out of the gap math — their tops aren't flow positions.
-// A break turns into a force penalty before its node.
+// A break turns into a force penalty before its node; minPresenceAhead into
+// a forbid window after it.
 const itemsOf = (children: FlowNode[]): Item[] => {
   const flow = children.filter((child) => !isAbsolute(child));
 
@@ -142,8 +150,11 @@ const itemsOf = (children: FlowNode[]): Item[] => {
 
     const breaker = child.break && index > 0 ? FORCE_BREAK : null;
     const lead = before > 0 ? space(before, true) : null;
+    const window = child.minPresenceAhead
+      ? presenceWindow(child.minPresenceAhead)
+      : null;
 
-    return [breaker, lead, item].filter(Boolean) as Item[];
+    return [breaker, lead, item, window].filter(Boolean) as Item[];
   });
 };
 

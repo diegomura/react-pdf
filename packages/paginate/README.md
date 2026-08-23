@@ -155,6 +155,10 @@ re-flow.
 
 - `break: true` ends the current page before the node (ignored on a
   container's first child).
+- `minPresenceAhead: number` keeps the node company: no page break may land
+  within that many points after it, so either that much of what follows
+  shares its page or the node moves to the next one. Inert when the node is
+  first on its page (moving it wouldn't help) and when nothing follows.
 - `repeat: true` re-emits a fresh copy of the node at the head of every
   continuation its parent column creates — the way a table header repeats on
   each page the table spans. Rules:

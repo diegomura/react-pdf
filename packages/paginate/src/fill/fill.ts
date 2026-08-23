@@ -16,6 +16,7 @@ const fill = (
     pendingLazy: null,
     pageNumber,
     canForce,
+    forbidUntil: 0,
   };
 
   for (let i = 0; i < state.fragments.length; i += 1) {

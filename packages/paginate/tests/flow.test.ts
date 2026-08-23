@@ -68,6 +68,19 @@ describe('flow to items', () => {
     ]);
   });
 
+  test('minPresenceAhead becomes a forbid window after the node', () => {
+    const first = leaf(0, 100, { minPresenceAhead: 50 });
+    const second = leaf(100, 80);
+
+    const items = toItems([first, second]).children;
+
+    expect(items).toMatchObject([
+      { kind: 'leaf' },
+      { kind: 'penalty', type: 'forbid', ahead: 50 },
+      { kind: 'leaf' },
+    ]);
+  });
+
   test('repeat rides onto the item', () => {
     const [item] = toItems([leaf(0, 100, { repeat: true })]).children;
 

@@ -38,6 +38,7 @@ export interface RowItem {
 export interface PenaltyItem {
   kind: 'penalty';
   type: 'forbid' | 'force';
+  ahead?: number;
   id?: string;
   data?: unknown;
 }
@@ -113,6 +114,7 @@ export interface State {
   pageNumber: number;
   height: number;
   canForce: boolean;
+  forbidUntil: number;
 }
 
 export type StepResult =

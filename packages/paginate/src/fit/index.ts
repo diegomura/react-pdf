@@ -27,7 +27,8 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
   state.usedHeight += fragmentHeight(fragment);
 
   const next = state.fragments[index + 1];
-  if (next === undefined || !isForbidPenalty(next.item)) {
+  const insideWindow = state.usedHeight < state.forbidUntil;
+  if ((next === undefined || !isForbidPenalty(next.item)) && !insideWindow) {
     state.bestBreak = {
       remainingIndex: index + 1,
       placedCount: state.placed.length,

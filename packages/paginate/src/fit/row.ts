@@ -107,6 +107,9 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
 
   const broke = inner.remaining.length > 0;
 
+  // A row slice is a break at the page bottom — not allowed inside a window.
+  if (broke && state.height < state.forbidUntil) return DECLINE();
+
   state.placed.push({
     item,
     y: state.usedHeight,

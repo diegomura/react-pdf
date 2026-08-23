@@ -94,7 +94,7 @@ Professional publications often employ multiple float patterns within a single a
 const FloatExample = () => (
   <Document>
     {/* Magazine-style layout with left and right floats */}
-    <Page size="A4" style={{ padding: 30 }}>
+    <Page size="A4" style={{ padding: 30 }} experimentalPagination>
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 15 }}>
         Magazine Article Layout
       </Text>
@@ -184,7 +184,7 @@ const FloatExample = () => (
       </View>
     </Page>
 
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={styles.page} experimentalPagination>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Left Float</Text>
         <View style={styles.content}>
@@ -255,7 +255,7 @@ const FloatExample = () => (
       </Text>
     </Page>
 
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={styles.page} experimentalPagination>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Clear: left (Left is taller)</Text>
         <View style={styles.content}>

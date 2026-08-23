@@ -9,7 +9,14 @@ import { matchPercent } from '@react-pdf/fns';
 
 import castInt from '../utils/castInt';
 import transformUnit from '../utils/units';
-import { Container, FontWeight, Style, StyleKey } from '../types';
+import {
+  Container,
+  FontFeatureSettings,
+  FontWeight,
+  SafeFontFeatureSettings,
+  Style,
+  StyleKey,
+} from '../types';
 
 const DEFAULT_FONT_SIZE = 18;
 
@@ -43,6 +50,25 @@ const transformFontWeight = (value: FontWeight): number => {
 
 const processFontWeight = <K extends StyleKey>(key: K, value: Style[K]) => {
   return { [key]: transformFontWeight(value as FontWeight) };
+};
+
+const transformFontFeatureSettings = (
+  value: FontFeatureSettings,
+): SafeFontFeatureSettings => {
+  if (Array.isArray(value)) {
+    return Object.fromEntries(value.map((tag) => [tag, true]));
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([tag, enabled]) => [tag, Boolean(enabled)]),
+  );
+};
+
+const processFontFeatureSettings = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+) => {
+  return { [key]: transformFontFeatureSettings(value as FontFeatureSettings) };
 };
 
 const transformLineHeight = (
@@ -83,6 +109,7 @@ const handlers = {
   fontSize: processUnitValue<'fontSize'>,
   fontStyle: processNoopValue<'fontStyle'>,
   fontWeight: processFontWeight<'fontWeight'>,
+  fontFeatureSettings: processFontFeatureSettings<'fontFeatureSettings'>,
   letterSpacing: processUnitValue<'letterSpacing'>,
   lineHeight: processLineHeight<'lineHeight'>,
   maxLines: processNumberValue<'maxLines'>,

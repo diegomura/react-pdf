@@ -163,7 +163,13 @@ const FloatExample = () => (
             else is needed — the letter is floated, the paragraph is set, and
             the wrapping takes care of itself. Drop caps are the classic opening
             move of book and magazine design, and here they cost nothing more
-            than a float and a large font size.
+            than a float and a large font size. Because a float only affects the
+            lines that overlap it vertically, everything from this point on is
+            laid out as if the letter never existed: full-width line after
+            full-width line, with no trace of the interruption above. The longer
+            the paragraph runs, the clearer the contrast becomes between the
+            handful of shortened lines at the top and the plain column of text
+            that follows them.
           </Text>
         </View>
       </View>
@@ -190,7 +196,14 @@ const FloatExample = () => (
             Wrapping is resolved line by line: every line checks which floats
             overlap its vertical span and shortens itself accordingly, which is
             why these closing sentences, set below the image, stretch across the
-            full card again.
+            full card again. Nothing about the wrapping is precomputed — it is
+            resolved from the float's box at layout time, so changing the
+            image's size or margins reflows the paragraph automatically. If the
+            text grows, new lines simply keep flowing at full width below the
+            image; if it shrinks, the image still holds its corner and the text
+            wraps as far as it reaches. That makes floated figures safe to use
+            with dynamic content, where the length of the copy is not known
+            until the document is rendered.
           </Text>
         </View>
       </View>
@@ -222,14 +235,47 @@ const FloatExample = () => (
             behave exactly like a floated image. The wider the floated block,
             the narrower the remaining column, so pull quotes are usually kept
             to about a third of the measure — enough to stand out without
-            squeezing the text beside them.
+            squeezing the text beside them. Because the quote is an ordinary
+            View it can carry its own padding, borders and nested children, and
+            the wrapping text never intrudes into its box. These extra sentences
+            exist mostly to push the paragraph well past the quote's bottom
+            edge: the first lines are indented around it, and everything after
+            this point runs from margin to margin, which is exactly the shape a
+            long article paragraph would take around a short editorial aside.
+          </Text>
+        </View>
+      </View>
+
+      <View break style={styles.card}>
+        <Text style={styles.label}>float across a page break</Text>
+        <View style={{ minHeight: 130 }}>
+          <View style={{ float: 'left', width: 150, marginRight: 10 }}>
+            <Image
+              src={Quijote1}
+              style={[styles.image, { width: 150, height: 62 }]}
+            />
+          </View>
+          <Text style={styles.text}>
+            This card was pushed onto a fresh page with a break, and it brings a
+            float of its own along with it. Pagination and floating are
+            independent: a new page simply offers a new flow, and a block
+            floated within it wraps its neighbouring text exactly as it would
+            have done on the previous page. Keeping a figure and the paragraph
+            that discusses it together is one of the main reasons to float
+            rather than position absolutely — the pair moves through pagination
+            as a unit, and the wrapping re-resolves wherever it lands.
+            Everything demonstrated on the first page holds here without change:
+            the float carves its exclusion, the paragraph bends around it, and
+            once past the image's bottom edge these final sentences run the full
+            width of the card again, one after another, exactly as they would in
+            the middle of a long report.
           </Text>
         </View>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.label}>multiple floats</Text>
-        <View style={{ minHeight: 132 }}>
+        <View style={{ minHeight: 150 }}>
           <View style={{ float: 'left', width: 120, marginRight: 10 }}>
             <Image
               src={Landscape1}
@@ -250,29 +296,11 @@ const FloatExample = () => (
             which makes the earlier confinement easy to see. Nothing requires
             the two sides to match, either: floats of different heights simply
             carve their own spans, and every line adapts to whichever of them it
-            happens to run beside.
-          </Text>
-        </View>
-      </View>
-
-      <View break style={styles.card}>
-        <Text style={styles.label}>float across a page break</Text>
-        <View style={{ minHeight: 106 }}>
-          <View style={{ float: 'left', width: 150, marginRight: 10 }}>
-            <Image
-              src={Quijote1}
-              style={[styles.image, { width: 150, height: 62 }]}
-            />
-          </View>
-          <Text style={styles.text}>
-            This card was pushed onto a fresh page with a break, and it brings a
-            float of its own along with it. Pagination and floating are
-            independent: a new page simply offers a new flow, and a block
-            floated within it wraps its neighbouring text exactly as it would
-            have done on the previous page. Keeping a figure and the paragraph
-            that discusses it together is one of the main reasons to float
-            rather than position absolutely — the pair moves through pagination
-            as a unit, and the wrapping re-resolves wherever it lands.
+            happens to run beside. From this point on the paragraph is free of
+            both images and a long tail makes the contrast obvious — a few
+            pinched lines threading the middle of the card, followed by
+            comfortable long ones that reach from border to border with nothing
+            standing in their way.
           </Text>
         </View>
       </View>
@@ -298,7 +326,10 @@ const FloatExample = () => (
             middle of the card, splitting the text into two narrow channels that
             are read line by line across the gap. The wrapping follows the
             float's geometry wherever it stands, not just at the edges of the
-            page.
+            page. Below the image the two channels merge back into a single
+            stream of full-width lines — the same recovery every other card
+            shows, just starting from a stranger shape — and the paragraph
+            carries on as if it had never been split at all.
           </Text>
         </View>
       </View>

@@ -379,11 +379,15 @@ export type FontFeatureSetting =
   | 'isol'
   | 'fina'
   | 'mark'
-  | 'mkmk';
+  | 'mkmk'
+  // fonts may expose any OpenType feature tag; the list above is for autocomplete
+  | (string & {});
 
 export type FontFeatureSettings =
   | FontFeatureSetting[]
-  | Partial<Record<FontFeatureSetting, number>>;
+  | Partial<Record<FontFeatureSetting, number | boolean>>;
+
+export type SafeFontFeatureSettings = Record<string, boolean>;
 
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
@@ -410,6 +414,7 @@ export type TextExpandedStyle = TextStyle;
 export type TextSafeStyle = TextExpandedStyle & {
   fontSize?: number;
   fontWeight?: number;
+  fontFeatureSettings?: SafeFontFeatureSettings;
   letterSpacing?: number;
   lineHeight?: number;
 };

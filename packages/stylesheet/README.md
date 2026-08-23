@@ -590,12 +590,18 @@ type FontFeatureSetting =
   | 'isol'
   | 'fina'
   | 'mark'
-  | 'mkmk';
+  | 'mkmk'
+  // fonts may expose any OpenType feature tag; the list above is for autocomplete
+  | (string & {});
 
 type FontFeatureSettings =
   | FontFeatureSetting[]
-  | Partial<Record<FontFeatureSetting, number>>;
+  | Partial<Record<FontFeatureSetting, number | boolean>>;
 ```
+
+Resolved styles normalize `fontFeatureSettings` to a single canonical shape,
+`Record<string, boolean>`: array entries become `true`, and numeric values
+follow CSS semantics (`0` disables, any other number enables).
 
 ## License
 

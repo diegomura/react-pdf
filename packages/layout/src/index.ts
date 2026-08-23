@@ -20,11 +20,18 @@ import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
 import resolvePaginationNext from './paginate';
 import { SafeDocumentNode } from './types';
 
-// The new pagination engine, shipped dark: flip to true to enable.
-const NEXT_PAGINATION: boolean = true;
+// The new engine is opt-in until the cutover major. Engines work on whole
+// documents, so any page asking for it — or using `layout`, which requires
+// it — switches the document.
+const wantsNextPagination = (root: SafeDocumentNode) =>
+  root.children.some(
+    (page) =>
+      (page.props as any)?.experimentalPagination ||
+      (page.props as any)?.layout,
+  );
 
 const paginationStep = (root: SafeDocumentNode, fontStore) =>
-  NEXT_PAGINATION
+  wantsNextPagination(root)
     ? resolvePaginationNext(root, fontStore)
     : resolvePagination(root, fontStore);
 

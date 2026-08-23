@@ -112,9 +112,16 @@ declare namespace ReactPDF {
      * A template component rendered around every page this Page produces.
      * Where it renders `children` is where page content flows; everything
      * else repeats as page chrome with its space reserved. Like render
-     * props, layout components may not use hooks.
+     * props, layout components may not use hooks. Implies
+     * `experimentalPagination`.
      */
     layout?: (props: PageLayoutProps) => React.ReactNode;
+    /**
+     * Opt the document into the new pagination engine: content is measured
+     * once and packed into pages, dramatically faster on long documents.
+     * Any page opting in switches the whole document. Implied by `layout`.
+     */
+    experimentalPagination?: boolean;
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging

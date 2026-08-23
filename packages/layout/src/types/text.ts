@@ -2,23 +2,12 @@ import * as P from '@react-pdf/primitives';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { HyphenationCallback } from '@react-pdf/font';
 import { YogaNode } from 'yoga-layout/load';
-import { Paragraph } from '@react-pdf/textkit';
+import { ExclusionShape, Paragraph } from '@react-pdf/textkit';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
 import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
 import { ImageNode, SafeImageNode } from './image';
 import { SafeTspanNode, TspanNode } from './tspan';
-
-/** Geometry text must flow around. `float` is set when it comes from a
- * floated sibling — clear only consults float-originated exclusions. */
-export type Exclusion = {
-  type: 'rect';
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  float?: 'left' | 'right';
-};
 
 interface TextProps extends NodeProps {
   /**
@@ -75,5 +64,5 @@ export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
     | SafeTspanNode
   )[];
   /** Exclusion geometry attached by resolveFloats for text wrapping */
-  exclusions?: Exclusion[];
+  exclusions?: ExclusionShape[];
 };

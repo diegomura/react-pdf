@@ -23,10 +23,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-pdf/pdfkit": "^6.0.1",
     "@react-pdf/types": "^2.12.0",
     "fontkit": "^2.0.2",
-    "is-url": "^1.2.4"
+    "is-url": "^1.2.4",
+    "pdfkit": "0.20.1"
   },
   "files": [
     "lib"

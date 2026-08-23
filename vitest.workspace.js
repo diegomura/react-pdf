@@ -14,7 +14,6 @@ export default [
   'packages/svg',
   'packages/math',
   'packages/mermaid',
-  'packages/pdfkit',
   'packages/paginate',
   'packages/hyphenate',
 ];

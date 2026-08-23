@@ -36,7 +36,7 @@ The library works as a pipeline: React components → reconciler → layout → 
   │     ├── @react-pdf/image       → PNG/JPEG image fetching and parsing
   │     └── @react-pdf/font        → Font loading, registration, emoji support
   ├── @react-pdf/render        → Renders resolved layout tree to PDF drawing operations
-  │     └── @react-pdf/pdfkit      → Low-level PDF generation (fork of pdfkit)
+  │     └── pdfkit                 → Low-level PDF generation
   └── @react-pdf/primitives    → Shared component type constants
 ```
 
@@ -61,7 +61,7 @@ When making changes, always include tests. Add tests in the same location where 
 ### Code Style
 
 - ESLint 9 with TypeScript parser, Prettier (single quotes), enforced via Husky pre-commit hooks
-- Packages `pdfkit`, `yoga`, and `examples` are excluded from linting
+- Packages `yoga` and `examples` are excluded from linting
 
 ## Previewing PDFs
 

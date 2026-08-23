@@ -1,4 +1,4 @@
-declare module '@react-pdf/pdfkit/standard-fonts/*' {
+declare module 'pdfkit/standard-fonts/*' {
   const fontData: unknown;
   export default fontData;
 }

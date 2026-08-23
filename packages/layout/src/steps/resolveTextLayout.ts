@@ -16,36 +16,22 @@ const shouldIterate = (node: SafeNode) => !isSvg(node) && !isText(node);
  * Re-layout is needed if no lines calculated yet or has float siblings.
  */
 const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
-  isText(node) && (!node.lines || (node.__floatSiblings__?.length ?? 0) > 0);
+  isText(node) && (!node.lines || (node.floatSiblings?.length ?? 0) > 0);
 
 /**
  * Generate exclude rects from float elements for textkit.
  * The rects are in coordinates relative to the text container.
  */
-const generateExcludeRects = (
+export const generateExcludeRects = (
   floats: FloatSibling[],
   textOffsetY: number = 0,
-): Rect[] => {
-  const excludeRects: Rect[] = [];
-
-  for (const float of floats) {
-    const rectX = float.x - (float.float === 'right' ? float.marginLeft : 0);
-    const rectY = float.y - textOffsetY;
-    const rectWidth =
-      float.width +
-      (float.float === 'left' ? float.marginRight : float.marginLeft);
-    const rectHeight = float.height + float.marginBottom;
-
-    excludeRects.push({
-      x: rectX,
-      y: rectY,
-      width: rectWidth,
-      height: rectHeight,
-    });
-  }
-
-  return excludeRects;
-};
+): Rect[] =>
+  floats.map((float) => ({
+    x: float.x,
+    y: float.y - textOffsetY,
+    width: float.width,
+    height: float.height,
+  }));
 
 /**
  * Performs text layout on text node if wasn't calculated before.
@@ -60,7 +46,7 @@ const resolveTextLayout = (node: SafeNode, fontStore: FontStore): SafeNode => {
     const width = node.box.width - node.box.paddingRight - node.box.paddingLeft;
     const originalHeight =
       node.box.height - node.box.paddingTop - node.box.paddingBottom;
-    const floatSiblings = node.__floatSiblings__ || [];
+    const floatSiblings = node.floatSiblings || [];
 
     let excludeRects: Rect[];
     let height = originalHeight;

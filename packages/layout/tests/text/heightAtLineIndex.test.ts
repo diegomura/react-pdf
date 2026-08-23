@@ -3,8 +3,9 @@ import { describe, expect, test } from 'vitest';
 import heightAtLineIndex from '../../src/text/heightAtLineIndex';
 import { SafeTextNode } from '../../src/types';
 
-const TEST_LINE = { box: { height: 25 } };
-const TEST_LINES = Array(10).fill(TEST_LINE);
+const TEST_LINES = Array.from({ length: 10 }, (_, index) => ({
+  box: { y: index * 25, height: 25 },
+}));
 
 describe('text heightAtLineIndex', () => {
   test('Should return 0 if no lines present', () => {

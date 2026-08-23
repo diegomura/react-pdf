@@ -3,9 +3,11 @@ import FontStore from '@react-pdf/font';
 
 import { loadYoga } from '../../src/yoga';
 
-import resolveTextLayout from '../../src/steps/resolveTextLayout';
+import resolveTextLayout, {
+  generateExcludeRects,
+} from '../../src/steps/resolveTextLayout';
 import resolveDimensions from '../../src/steps/resolveDimensions';
-import { SafeDocumentNode } from '../../src/types';
+import { FloatSibling, SafeDocumentNode } from '../../src/types';
 
 const fontStore = new FontStore();
 
@@ -67,5 +69,22 @@ describe('text layout step', () => {
     const dimensions = resolveDimensions(root, fontStore);
 
     expect(getText(dimensions).lines).toBeDefined();
+  });
+});
+
+describe('generateExcludeRects', () => {
+  test('should pass rect geometry through with text offset applied', () => {
+    const float: FloatSibling = {
+      float: 'left',
+      type: 'rect',
+      x: 0,
+      y: 0,
+      width: 45,
+      height: 43,
+    };
+
+    expect(generateExcludeRects([float], 10)).toEqual([
+      { x: 0, y: -10, width: 45, height: 43 },
+    ]);
   });
 });

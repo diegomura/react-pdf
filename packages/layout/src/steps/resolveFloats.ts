@@ -35,8 +35,7 @@ const getClearY = (floats: FloatSibling[], clearType: Clear): number => {
 
   for (const float of floats) {
     if (clearType === 'both' || clearType === float.float) {
-      const floatBottom = float.y + float.height + float.marginBottom;
-      maxY = Math.max(maxY, floatBottom);
+      maxY = Math.max(maxY, float.y + float.height);
     }
   }
 
@@ -93,22 +92,24 @@ const positionFloatElement = <T extends SafeNode>(
 };
 
 /**
- * Create FloatSibling from a positioned node
- * Note: box.top already includes marginTop adjustment from positionFloatElement
+ * Create FloatSibling from a positioned node.
+ * Note: box.top already includes marginTop adjustment from positionFloatElement.
+ * Margins are folded into the rect: the text-facing side margin widens it and
+ * marginBottom extends it, so exclusion and clear read the geometry directly.
  */
 const createFloatSibling = (node: SafeNode): FloatSibling => {
   const { box, style } = node;
+  const float = style?.float as 'left' | 'right';
+  const marginRight = getNumericMargin(style?.marginRight);
+  const marginLeft = getNumericMargin(style?.marginLeft);
 
   return {
-    float: style?.float as 'left' | 'right',
-    x: box!.left,
+    float,
+    type: 'rect',
+    x: box!.left - (float === 'right' ? marginLeft : 0),
     y: box!.top,
-    width: box!.width,
-    height: box!.height,
-    marginTop: getNumericMargin(style?.marginTop),
-    marginRight: getNumericMargin(style?.marginRight),
-    marginBottom: getNumericMargin(style?.marginBottom),
-    marginLeft: getNumericMargin(style?.marginLeft),
+    width: box!.width + (float === 'left' ? marginRight : marginLeft),
+    height: box!.height + getNumericMargin(style?.marginBottom),
   };
 };
 
@@ -130,9 +131,9 @@ const attachFloatSiblings = (
   node: SafeTextNode,
   floats: FloatSibling[],
 ): SafeTextNode => {
-  if (floats.length === 0 || node.__wasSplit__) return node;
+  if (floats.length === 0 || node.wasSplit) return node;
 
-  return Object.assign({}, node, { __floatSiblings__: floats });
+  return Object.assign({}, node, { floatSiblings: floats });
 };
 
 /**

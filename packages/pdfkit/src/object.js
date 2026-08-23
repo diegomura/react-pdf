@@ -101,9 +101,12 @@ class PDFObject {
       // Byte arrays are converted to PDF hex strings
     } else if (object instanceof Uint8Array) {
       return `<${bytesToHex(object)}>`;
+    } else if (object instanceof PDFTree) {
+      // Name trees hold PDF strings as keys, which have to be encrypted like
+      // any other string in the document
+      return object.toString(encryptFn);
     } else if (
       object instanceof PDFAbstractReference ||
-      object instanceof PDFTree ||
       object instanceof SpotColor
     ) {
       return object.toString();

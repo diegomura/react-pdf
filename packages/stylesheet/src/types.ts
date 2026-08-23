@@ -379,7 +379,9 @@ export type FontFeatureSetting =
   | 'isol'
   | 'fina'
   | 'mark'
-  | 'mkmk';
+  | 'mkmk'
+  // fonts may expose any OpenType feature tag; the list above is for autocomplete
+  | (string & {});
 
 export type FontFeatureSettings =
   | FontFeatureSetting[]

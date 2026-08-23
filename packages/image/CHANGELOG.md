@@ -1,5 +1,12 @@
 # @react-pdf/image
 
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/svg@1.1.1
+
 ## 3.1.1
 
 ### Patch Changes

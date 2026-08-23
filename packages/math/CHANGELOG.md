@@ -1,5 +1,14 @@
 # @react-pdf/math
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae), [`572cedc23493e4a3085e259bf129ceec458418bd`](https://github.com/diegomura/react-pdf/commit/572cedc23493e4a3085e259bf129ceec458418bd)]:
+  - @react-pdf/renderer@4.7.0
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/svg@1.1.1
+
 ## 3.0.1
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @react-pdf/types
 
+## 2.13.0
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/stylesheet@6.3.0
+  - @react-pdf/font@4.1.0
+
 ## 2.12.0
 
 ### Minor Changes

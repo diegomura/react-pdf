@@ -1,5 +1,20 @@
 # @react-pdf/stylesheet
 
+## 6.3.0
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+- [#3514](https://github.com/diegomura/react-pdf/pull/3514) [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09) Thanks [@diegomura](https://github.com/diegomura)! - feat: shape-outside support for floats (circle, ellipse, polygon, inset)
+
+- [#3286](https://github.com/diegomura/react-pdf/pull/3286) [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1) Thanks [@exoego](https://github.com/exoego)! - feat: wrapping text around image and view (float)
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/types@2.13.0
+
 ## 6.2.4
 
 ### Patch Changes

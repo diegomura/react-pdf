@@ -1,5 +1,19 @@
 # @react-pdf/renderer
 
+## 4.8.0
+
+### Minor Changes
+
+- [#3509](https://github.com/diegomura/react-pdf/pull/3509) [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd) Thanks [@diegomura](https://github.com/diegomura)! - Replace the @react-pdf/pdfkit fork with upstream pdfkit (v0.20.1)
+
+### Patch Changes
+
+- Updated dependencies [[`1606f73d1073b9885a922abdc245a233d49ab25d`](https://github.com/diegomura/react-pdf/commit/1606f73d1073b9885a922abdc245a233d49ab25d), [`cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa`](https://github.com/diegomura/react-pdf/commit/cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd), [`a738f01e6fe976e30b1c835e23dad4d9afc4f7d3`](https://github.com/diegomura/react-pdf/commit/a738f01e6fe976e30b1c835e23dad4d9afc4f7d3), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/layout@5.1.0
+  - @react-pdf/render@4.6.3
+  - @react-pdf/types@2.13.0
+  - @react-pdf/font@4.1.0
+
 ## 4.7.0
 
 ### Minor Changes

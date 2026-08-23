@@ -1,5 +1,19 @@
 # @react-pdf/textkit
 
+## 7.0.0
+
+### Major Changes
+
+- [#3511](https://github.com/diegomura/react-pdf/pull/3511) [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52) Thanks [@diegomura](https://github.com/diegomura)! - Support ellipse and polygon exclusion shapes for text wrapping, groundwork for CSS `shape-outside`. Breaking: the `Container.excludeRects` prop is renamed to `exclusions` and now accepts `ExclusionShape[]` (rect, ellipse, or polygon, each with an optional `extend` side)
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+### Patch Changes
+
+- [#3513](https://github.com/diegomura/react-pdf/pull/3513) [`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db) Thanks [@diegomura](https://github.com/diegomura)! - fix: line widths misaligned with line rects when exclusions are present, causing the first line after a float to break at the previous line's width
+
 ## 6.4.2
 
 ### Patch Changes

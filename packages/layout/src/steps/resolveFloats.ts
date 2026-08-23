@@ -112,7 +112,7 @@ const applyClearOffset = (node: SafeNode, offset: number): SafeNode => {
 };
 
 /**
- * Attach exclusion geometry to a text node for excludeRects generation.
+ * Attach exclusion geometry to a text node for text wrapping.
  * Skip if no floats or if text was split during pagination.
  */
 const attachExclusions = (

@@ -1,30 +1,32 @@
-import intersects from '../rect/intersects';
+import bandInterval from '../shape/bandInterval';
+import shapeMaxY from '../shape/maxY';
 import partition from '../rect/partition';
-import { Container, Rect } from '../types';
+import { Container, ExclusionShape, Rect } from '../types';
 
-const getLineFragment = (lineRect: Rect, excludeRect: Rect): Rect[] => {
-  if (!intersects(excludeRect, lineRect)) return [lineRect];
-
-  const eStart = excludeRect.x;
-  const eEnd = excludeRect.x + excludeRect.width;
-  const lStart = lineRect.x;
-  const lEnd = lineRect.x + lineRect.width;
-
-  const a = Object.assign({}, lineRect, { width: eStart - lStart });
-  const b = Object.assign({}, lineRect, { x: eEnd, width: lEnd - eEnd });
-
-  return [a, b].filter((r) => r.width > 0);
-};
-
-const getLineFragments = (rect: Rect, excludeRects: Rect[]) => {
+const getLineFragments = (rect: Rect, shapes: ExclusionShape[]) => {
   let fragments = [rect];
 
-  for (let i = 0; i < excludeRects.length; i += 1) {
-    const excludeRect = excludeRects[i];
+  for (let i = 0; i < shapes.length; i += 1) {
+    const shape = shapes[i];
+    const interval = bandInterval(shape, rect.y, rect.y + rect.height);
 
-    fragments = fragments.reduce((acc, fragment) => {
-      const pieces = getLineFragment(fragment, excludeRect);
-      return acc.concat(pieces);
+    if (!interval) continue;
+
+    // extend stretches the exclusion to the line edge on the float side,
+    // so text never lands between a floated shape and its own margin edge
+    const x0 = shape.extend === 'left' ? -Infinity : interval.x0;
+    const x1 = shape.extend === 'right' ? Infinity : interval.x1;
+
+    fragments = fragments.reduce((acc: Rect[], fragment) => {
+      const fStart = fragment.x;
+      const fEnd = fragment.x + fragment.width;
+
+      if (x1 <= fStart || x0 >= fEnd) return acc.concat(fragment);
+
+      const a = Object.assign({}, fragment, { width: x0 - fStart });
+      const b = Object.assign({}, fragment, { x: x1, width: fEnd - x1 });
+
+      return acc.concat([a, b].filter((r) => r.width > 0));
     }, []);
   }
 
@@ -32,18 +34,18 @@ const getLineFragments = (rect: Rect, excludeRects: Rect[]) => {
 };
 
 const generateLineRects = (container: Container, height: number) => {
-  const { excludeRects, ...rect } = container;
+  const { exclusions, ...rect } = container;
 
-  if (!excludeRects) return [rect];
+  if (!exclusions || exclusions.length === 0) return [rect];
 
   const lineRects: Rect[] = [];
-  const maxY = Math.max(...excludeRects.map((r) => r.y + r.height));
+  const maxY = Math.max(...exclusions.map(shapeMaxY));
 
   let currentRect = rect;
 
   while (currentRect.y < maxY) {
     const [lineRect, rest] = partition(currentRect, height);
-    const lineRectFragments = getLineFragments(lineRect, excludeRects);
+    const lineRectFragments = getLineFragments(lineRect, exclusions);
 
     currentRect = rest;
     lineRects.push(...lineRectFragments);

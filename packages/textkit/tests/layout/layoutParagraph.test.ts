@@ -9,7 +9,7 @@ describe('layoutParagraph', () => {
     const layout = layoutParagraph({ linebreaker }!);
 
     const container = {
-      excludeRects: [],
+      exclusions: [],
       x: 2,
       y: 4,
       width: 20,

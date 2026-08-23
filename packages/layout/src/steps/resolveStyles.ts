@@ -30,9 +30,7 @@ const computeStyle = (container: Container, node: Node) => {
 
   const style = stylesheet(container, baseStyle);
 
-  // Floats are out of the normal flow: yoga lays them out as absolutes and
-  // resolveFloats positions them. Flipping here keeps every downstream
-  // position reader (yoga, pagination) float-unaware.
+  // Floats are out of flow; flipping to absolute here keeps yoga and pagination float-unaware
   if (style.float === 'left' || style.float === 'right') {
     style.position = 'absolute';
   }

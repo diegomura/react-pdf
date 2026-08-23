@@ -1,13 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { Clear } from '@react-pdf/stylesheet';
 
-import {
-  SafeDocumentNode,
-  SafeNode,
-  SafePageNode,
-  SafeTextNode,
-  Exclusion,
-} from '../types';
+import { SafeNode, SafeTextNode, Exclusion } from '../types';
 
 const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
 
@@ -18,11 +12,6 @@ const getNumericMargin = (value: number | string | undefined): number => {
 const isFloated = (node: SafeNode): boolean => {
   const float = node.style?.float;
   return float === 'left' || float === 'right';
-};
-
-const hasFloats = (children: SafeNode[] | undefined): boolean => {
-  if (!children) return false;
-  return children.some(isFloated);
 };
 
 /**
@@ -76,17 +65,16 @@ const getFloatLeft = (node: SafeNode, parentWidth: number): number => {
 };
 
 /**
- * Position float element to the left or right edge of parent
- * Note: Yoga already applies marginTop to box.top for absolute positioned elements
+ * Position float element to the left or right edge of parent.
+ * Note: Yoga already applies marginTop to box.top for absolute positioned elements.
+ * Callers guarantee node.box — resolveFloats skips boxless children.
  */
 const positionFloatElement = <T extends SafeNode>(
   node: T,
   parentWidth: number,
 ): T => {
-  if (!node.box) return node;
-
   const newLeft = getFloatLeft(node, parentWidth);
-  const newBox = Object.assign({}, node.box, { left: newLeft });
+  const newBox = Object.assign({}, node.box!, { left: newLeft });
 
   return Object.assign({}, node, { box: newBox }) as T;
 };
@@ -137,49 +125,46 @@ const attachExclusions = (
 };
 
 /**
- * Apply float resolution to a container node (View, Page, etc.)
+ * Resolve floats recursively for any node (document, page, view, etc.).
+ * Runs on the document after resolveDimensions, and per page in relayoutPage.
  */
-const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
+const resolveFloats = <T extends SafeNode>(node: T): T => {
   if (!node.children || node.children.length === 0) return node;
 
   const nodeChildren = node.children as SafeNode[];
-
-  if (!hasFloats(nodeChildren)) {
-    const children = nodeChildren.map(resolveFloatsInContainer);
-    return Object.assign({}, node, { children }) as T;
-  }
-
   const parentWidth = node.box?.width ?? 0;
   const processedFloats: Exclusion[] = [];
   const children: SafeNode[] = [];
+
   let clearOffset = 0;
 
   for (const child of nodeChildren) {
-    let processedChild: SafeNode = child;
-
-    if (isFloated(child)) {
-      processedChild = positionFloatElement(child, parentWidth);
-
-      if (processedChild.box) {
-        processedFloats.push(createExclusion(processedChild));
-      }
-    } else {
-      processedChild = applyClearOffset(processedChild, clearOffset);
-
-      const additionalOffset = applyClear(processedChild, processedFloats);
-
-      if (additionalOffset > 0) {
-        clearOffset += additionalOffset;
-        processedChild = applyClearOffset(processedChild, additionalOffset);
-      }
-
-      if (isText(processedChild)) {
-        processedChild = attachExclusions(processedChild, processedFloats);
-      }
+    if (!child.box) {
+      children.push(resolveFloats(child));
+      continue;
     }
 
-    processedChild = resolveFloatsInContainer(processedChild);
-    children.push(processedChild);
+    if (isFloated(child)) {
+      const positioned = positionFloatElement(child, parentWidth);
+      processedFloats.push(createExclusion(positioned));
+      children.push(resolveFloats(positioned));
+      continue;
+    }
+
+    let processedChild = applyClearOffset(child, clearOffset);
+
+    const additionalOffset = applyClear(processedChild, processedFloats);
+
+    if (additionalOffset > 0) {
+      clearOffset += additionalOffset;
+      processedChild = applyClearOffset(processedChild, additionalOffset);
+    }
+
+    if (isText(processedChild)) {
+      processedChild = attachExclusions(processedChild, processedFloats);
+    }
+
+    children.push(resolveFloats(processedChild));
   }
 
   // Clearance moved in-flow children down after yoga ran; grow the container
@@ -190,24 +175,6 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
       : node.box;
 
   return Object.assign({}, node, { box, children }) as T;
-};
-
-/**
- * Resolve floats for a page (exported for use in relayoutPage during pagination)
- */
-export const resolvePageFloats = (page: SafePageNode): SafePageNode => {
-  return resolveFloatsInContainer(page) as SafePageNode;
-};
-
-/**
- * Resolve floats in the document (should be called after resolveDimensions)
- */
-const resolveFloats = (node: SafeDocumentNode): SafeDocumentNode => {
-  if (!node.children) return node;
-
-  const children = node.children.map(resolvePageFloats);
-
-  return Object.assign({}, node, { children });
 };
 
 export default resolveFloats;

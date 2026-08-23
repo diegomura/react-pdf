@@ -30,20 +30,33 @@ const getMaxLines = (node) => node.style?.maxLines;
 const getTextOverflow = (node) => node.style?.textOverflow;
 
 /**
+ * Generate exclude rects from node exclusions for textkit,
+ * in coordinates relative to the text container.
+ */
+const getExcludeRects = (node: SafeTextNode): Rect[] | undefined => {
+  const exclusions = node.exclusions;
+
+  if (!exclusions || exclusions.length === 0) return undefined;
+
+  const offsetY = (node.box?.top ?? 0) + (node.box?.paddingTop ?? 0);
+
+  return exclusions.map((exclusion) => ({
+    x: exclusion.x,
+    y: exclusion.y - offsetY,
+    width: exclusion.width,
+    height: exclusion.height,
+  }));
+};
+
+/**
  * Get layout container for specific text node
  *
  * @param {number} width
  * @param {number} height
  * @param {Object} node
- * @param {Rect[]} excludeRects - Areas to exclude from text layout (for float)
  * @returns {Object} layout container
  */
-const getContainer = (
-  width: number,
-  height: number,
-  node: SafeTextNode,
-  excludeRects?: Rect[],
-) => {
+const getContainer = (width: number, height: number, node: SafeTextNode) => {
   const maxLines = getMaxLines(node);
   const textOverflow = getTextOverflow(node);
 
@@ -54,7 +67,7 @@ const getContainer = (
     maxLines,
     height: height || Infinity,
     truncateMode: textOverflow,
-    excludeRects,
+    excludeRects: getExcludeRects(node),
   };
 };
 
@@ -80,7 +93,6 @@ const getLayoutOptions = (fontStore, node) => ({
  * @param width - Container width
  * @param height - Container height
  * @param fontStore - Font store
- * @param excludeRects - Areas to exclude from text layout (for float)
  * @returns Layout lines
  */
 const layoutText = (
@@ -88,10 +100,9 @@ const layoutText = (
   width: number,
   height: number,
   fontStore: FontStore,
-  excludeRects?: Rect[],
 ) => {
   const attributedString = getAttributedString(fontStore, node);
-  const container = getContainer(width, height, node, excludeRects);
+  const container = getContainer(width, height, node);
   const options = getLayoutOptions(fontStore, node);
   const lines = engine(attributedString, container, options);
 

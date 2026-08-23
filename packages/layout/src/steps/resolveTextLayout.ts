@@ -1,9 +1,8 @@
 import * as P from '@react-pdf/primitives';
 import FontStore from '@react-pdf/font';
-import { Rect } from '@react-pdf/textkit';
 
 import layoutText from '../text/layoutText';
-import { Exclusion, SafeNode, SafeSvgNode, SafeTextNode } from '../types';
+import { SafeNode, SafeSvgNode, SafeTextNode } from '../types';
 
 const isSvg = (node: SafeNode): node is SafeSvgNode => node.type === P.Svg;
 
@@ -19,20 +18,6 @@ const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
   isText(node) && (!node.lines || (node.exclusions?.length ?? 0) > 0);
 
 /**
- * Generate exclude rects for textkit, relative to the text container.
- */
-export const generateExcludeRects = (
-  exclusions: Exclusion[],
-  textOffsetY: number = 0,
-): Rect[] =>
-  exclusions.map((exclusion) => ({
-    x: exclusion.x,
-    y: exclusion.y - textOffsetY,
-    width: exclusion.width,
-    height: exclusion.height,
-  }));
-
-/**
  * Performs text layout on text node if wasn't calculated before.
  * Text layout is usually performed on Yoga's layout process (via setMeasureFunc),
  * but we need to layout those nodes with fixed width and height.
@@ -43,22 +28,12 @@ export const generateExcludeRects = (
 const resolveTextLayout = (node: SafeNode, fontStore: FontStore): SafeNode => {
   if (shouldLayoutText(node)) {
     const width = node.box.width - node.box.paddingRight - node.box.paddingLeft;
-    const originalHeight =
-      node.box.height - node.box.paddingTop - node.box.paddingBottom;
-    const exclusions = node.exclusions || [];
+    // Text expands vertically when flowing around exclusions
+    const height = node.exclusions?.length
+      ? Infinity
+      : node.box.height - node.box.paddingTop - node.box.paddingBottom;
 
-    let excludeRects: Rect[];
-    let height = originalHeight;
-
-    if (exclusions.length > 0) {
-      // Allow text to expand vertically when wrapping around floats
-      height = Infinity;
-
-      const textOffsetY = node.box.top + node.box.paddingTop;
-      excludeRects = generateExcludeRects(exclusions, textOffsetY);
-    }
-
-    node.lines = layoutText(node, width, height, fontStore, excludeRects);
+    node.lines = layoutText(node, width, height, fontStore);
   }
 
   if (shouldIterate(node)) {

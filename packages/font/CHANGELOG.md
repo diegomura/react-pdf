@@ -1,5 +1,16 @@
 # @react-pdf/font
 
+## 4.1.0
+
+### Minor Changes
+
+- [#3509](https://github.com/diegomura/react-pdf/pull/3509) [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd) Thanks [@diegomura](https://github.com/diegomura)! - Replace the @react-pdf/pdfkit fork with upstream pdfkit (v0.20.1)
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/types@2.13.0
+
 ## 4.0.11
 
 ### Patch Changes

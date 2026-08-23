@@ -1,5 +1,11 @@
 # @react-pdf/paginate
 
+## 1.0.1
+
+### Patch Changes
+
+- [#3516](https://github.com/diegomura/react-pdf/pull/3516) [`76620f6208365e0e0863787e06bbd78f61c8e1fb`](https://github.com/diegomura/react-pdf/commit/76620f6208365e0e0863787e06bbd78f61c8e1fb) Thanks [@diegomura](https://github.com/diegomura)! - Repeat a fixed element that placed alone in a page-bottom sliver instead of dropping it, while still stopping repeats that would recur without progress
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,27 @@
 # @react-pdf/layout
 
+## 5.1.0
+
+### Minor Changes
+
+- [#3506](https://github.com/diegomura/react-pdf/pull/3506) [`1606f73d1073b9885a922abdc245a233d49ab25d`](https://github.com/diegomura/react-pdf/commit/1606f73d1073b9885a922abdc245a233d49ab25d) Thanks [@diegomura](https://github.com/diegomura)! - Mark pagination split fragments with a required `wasSplit` flag on node types
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+- [#3514](https://github.com/diegomura/react-pdf/pull/3514) [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09) Thanks [@diegomura](https://github.com/diegomura)! - feat: shape-outside support for floats (circle, ellipse, polygon, inset)
+
+- [#3286](https://github.com/diegomura/react-pdf/pull/3286) [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1) Thanks [@exoego](https://github.com/exoego)! - feat: wrapping text around image and view (float)
+
+### Patch Changes
+
+- [#3511](https://github.com/diegomura/react-pdf/pull/3511) [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52) Thanks [@diegomura](https://github.com/diegomura)! - Support ellipse and polygon exclusion shapes for text wrapping, groundwork for CSS `shape-outside`. Breaking: the `Container.excludeRects` prop is renamed to `exclusions` and now accepts `ExclusionShape[]` (rect, ellipse, or polygon, each with an optional `extend` side)
+
+- Updated dependencies [[`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db), [`76620f6208365e0e0863787e06bbd78f61c8e1fb`](https://github.com/diegomura/react-pdf/commit/76620f6208365e0e0863787e06bbd78f61c8e1fb), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/textkit@7.0.0
+  - @react-pdf/paginate@1.0.1
+  - @react-pdf/stylesheet@6.3.0
+  - @react-pdf/types@2.13.0
+
 ## 5.0.0
 
 ### Major Changes

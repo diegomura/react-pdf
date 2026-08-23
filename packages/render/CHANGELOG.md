@@ -1,5 +1,17 @@
 # @react-pdf/render
 
+## 4.6.3
+
+### Patch Changes
+
+- [#3518](https://github.com/diegomura/react-pdf/pull/3518) [`cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa`](https://github.com/diegomura/react-pdf/commit/cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa) Thanks [@diegomura](https://github.com/diegomura)! - Fix `appearance.initDeflate is not a function` when rendering checkboxes with upstream pdfkit
+
+- [#3519](https://github.com/diegomura/react-pdf/pull/3519) [`a738f01e6fe976e30b1c835e23dad4d9afc4f7d3`](https://github.com/diegomura/react-pdf/commit/a738f01e6fe976e30b1c835e23dad4d9afc4f7d3) Thanks [@diegomura](https://github.com/diegomura)! - Fix deformed SVG paths with chained smooth quadratic (T) commands by expanding them to explicit Q commands before handing them to pdfkit
+
+- Updated dependencies [[`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/textkit@7.0.0
+  - @react-pdf/types@2.13.0
+
 ## 4.6.2
 
 ### Patch Changes

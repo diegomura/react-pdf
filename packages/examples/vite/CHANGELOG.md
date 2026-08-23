@@ -1,5 +1,18 @@
 # @react-pdf/examples
 
+## 3.6.0
+
+### Minor Changes
+
+- [#3286](https://github.com/diegomura/react-pdf/pull/3286) [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1) Thanks [@exoego](https://github.com/exoego)! - feat: wrapping text around image and view (float)
+
+### Patch Changes
+
+- Updated dependencies [[`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd)]:
+  - @react-pdf/renderer@4.8.0
+  - @react-pdf/math@5.0.0
+  - @react-pdf/mermaid@5.0.0
+
 ## 3.5.4
 
 ### Patch Changes

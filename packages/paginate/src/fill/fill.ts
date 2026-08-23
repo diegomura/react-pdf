@@ -6,6 +6,7 @@ const fill = (
   height: number,
   pageNumber: number,
   canForce = false,
+  contentAbove = false,
 ): FillResult => {
   const state: State = {
     fragments,
@@ -16,6 +17,7 @@ const fill = (
     pendingLazy: null,
     pageNumber,
     canForce,
+    contentAbove,
     forbidUntil: 0,
   };
 

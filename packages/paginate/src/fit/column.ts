@@ -1,6 +1,7 @@
 import fill from '../fill/fill';
 import reach from '../fragment/reach';
 import repeatFragments from '../fragment/repeatFragments';
+import hasContentAbove from '../fill/hasContentAbove';
 import { CONTINUE, DECLINE, DONE } from '../step';
 import { ColumnItem, Fragment, State, StepResult } from '../types';
 
@@ -18,11 +19,14 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
   // page; anywhere else, moving to the next page is still an option.
   const canForce = state.canForce && state.placed.length === 0;
 
+  const contentAbove = hasContentAbove(state);
+
   const inner = fill(
     fragment.children,
     availableHeight,
     state.pageNumber,
     canForce,
+    contentAbove,
   );
 
   const broke = inner.remaining.length > 0;
@@ -51,7 +55,7 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
 
   if (!broke) return CONTINUE();
 
-  const repeats = repeatFragments(fragment, inner);
+  const repeats = repeatFragments(fragment, inner, contentAbove);
 
   const continuation: Fragment = {
     item,

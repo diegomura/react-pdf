@@ -114,6 +114,7 @@ export interface State {
   pageNumber: number;
   height: number;
   canForce: boolean;
+  contentAbove: boolean;
   forbidUntil: number;
 }
 

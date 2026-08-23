@@ -91,6 +91,31 @@ describe.each([
     expect(image).toMatchImageSnapshot();
   });
 
+  test('should split wrapped text across pages instead of moving it whole', async () => {
+    const image = await mount(
+      <>
+        <Text style={{ fontSize: 14, marginBottom: 10 }}>Title</Text>
+        <View>
+          <View
+            style={{
+              float: 'left',
+              width: 60,
+              height: 60,
+              marginRight: 8,
+              backgroundColor: 'red',
+            }}
+          />
+          <Text style={{ fontSize: 12 }}>
+            {text} {text} {text} {text} {text} {text}
+          </Text>
+        </View>
+      </>,
+      pageProps,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
   test('should position clear elements below floats', async () => {
     const image = await mount(
       <View>

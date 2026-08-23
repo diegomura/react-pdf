@@ -181,7 +181,14 @@ const resolveFloatsInContainer = <T extends SafeNode>(node: T): T => {
     children.push(processedChild);
   }
 
-  return Object.assign({}, node, { children }) as T;
+  // Clearance moved in-flow children down after yoga ran; grow the container
+  // to keep containing them, like CSS clearance does.
+  const box =
+    clearOffset > 0 && node.box
+      ? Object.assign({}, node.box, { height: node.box.height + clearOffset })
+      : node.box;
+
+  return Object.assign({}, node, { box, children }) as T;
 };
 
 /**

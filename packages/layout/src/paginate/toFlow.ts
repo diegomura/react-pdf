@@ -181,8 +181,6 @@ const kindOf = (node: SafeNode, children: SafeNode[]): NodeKind => {
 };
 
 const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
-  // Absolutes (including floats) ride along as markers so a split container
-  // keeps them; the engine leaves them out of its gap math.
   if (isAbsolute(node)) return absoluteOf(node, ctx);
 
   const children = flowChildren(node);

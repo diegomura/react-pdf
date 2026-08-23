@@ -1,6 +1,7 @@
 import isRow from '../item/isRow';
 import isColumn from '../item/isColumn';
 import isLeaf from '../item/isLeaf';
+import hasContentAbove from '../fill/hasContentAbove';
 import fill from '../fill/fill';
 import fragmentHeight from '../fragment/height';
 import reach from '../fragment/reach';
@@ -24,6 +25,7 @@ export const place = (
   height: number,
   pageNumber: number,
   canForce = false,
+  contentAbove = false,
 ): FillResult | null => {
   const placed: PlacedItem[] = [];
   const remaining: Fragment[] = [];
@@ -33,7 +35,13 @@ export const place = (
     const { isFirst } = childFragment;
 
     if (isRow(child) || isColumn(child)) {
-      const inner = fill(childFragment.children, height, pageNumber, canForce);
+      const inner = fill(
+        childFragment.children,
+        height,
+        pageNumber,
+        canForce,
+        contentAbove,
+      );
       const broke = inner.remaining.length > 0;
 
       // Children sit side by side, so one contributing nothing can't be
@@ -49,7 +57,7 @@ export const place = (
       });
 
       if (broke) {
-        const repeats = repeatFragments(childFragment, inner);
+        const repeats = repeatFragments(childFragment, inner, contentAbove);
 
         remaining.push({
           item: child,
@@ -101,7 +109,14 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
   if (availableHeight <= 0) return DECLINE();
 
   const canForce = state.canForce && state.placed.length === 0;
-  const inner = place(fragment, availableHeight, state.pageNumber, canForce);
+  const contentAbove = hasContentAbove(state);
+  const inner = place(
+    fragment,
+    availableHeight,
+    state.pageNumber,
+    canForce,
+    contentAbove,
+  );
 
   if (inner === null) return DECLINE();
 

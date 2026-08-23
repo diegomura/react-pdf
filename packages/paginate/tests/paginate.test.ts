@@ -1993,6 +1993,75 @@ describe('paginate', () => {
       );
     });
 
+    test('a repeat alone in a page-bottom sliver still repeats', () => {
+      const table = column(
+        [repeatLeaf(10, 'h'), leaf(30, 'a'), leaf(30, 'b')],
+        'table',
+      );
+      const items: Item[] = [leaf(85, 'body'), table];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['body', 'table'],
+        ['table'],
+      ]);
+      expect(pages[0][1].children?.map((c) => c.item.id)).toEqual(['h']);
+      expect(pages[1][0].children?.map((c) => c.item.id)).toEqual([
+        'h',
+        'a',
+        'b',
+      ]);
+
+      snapshotPages(paginate(column(items), 100), region(100), 'repeat-sliver');
+    });
+
+    // The sliver above comes from finite content, so repeating converges. When
+    // the sliver comes from repeats, the same layout would recur every page —
+    // the progress guard must still fire.
+    test('a repeat squeezed only by other repeats stops instead of looping', () => {
+      const table = column([repeatLeaf(20, 'h'), leaf(70, 'row')], 'table');
+      const items: Item[] = [repeatLeaf(20, 'banner'), table];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['banner', 'table'],
+        ['banner', 'table'],
+      ]);
+      expect(pages[0][1].children?.map((c) => c.item.id)).toEqual(['h']);
+      expect(pages[1][1].children?.map((c) => c.item.id)).toEqual(['row']);
+
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'repeat-wedge-guard',
+      );
+    });
+
+    // Same wedge, but the repeat above is a lazy: its materialized placements
+    // lose the repeat flag and must be matched through their origin fragments.
+    test('a repeat squeezed only by a repeating lazy stops instead of looping', () => {
+      const banner: Item = {
+        kind: 'lazy',
+        id: 'banner',
+        repeat: true,
+        materialize: () => [leaf(20, 'banner-content')],
+      };
+      const table = column([repeatLeaf(20, 'h'), leaf(70, 'row')], 'table');
+      const pages = paginateFlow([banner, table], 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['banner-content', 'table'],
+        ['banner-content', 'table'],
+      ]);
+      expect(pages[1][1].children?.map((c) => c.item.id)).toEqual(['row']);
+
+      snapshotPages(
+        paginate(column([banner, table]), 100),
+        region(100),
+        'repeat-lazy-wedge-guard',
+      );
+    });
+
     test('an oversized repeat force-places once and does not wedge', () => {
       silenceWarnings();
 

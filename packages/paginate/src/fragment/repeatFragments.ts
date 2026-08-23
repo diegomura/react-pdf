@@ -5,18 +5,26 @@ import { FillResult, Fragment, Item, PlacedItem } from '../types';
 const fullyPlaced = (placed: PlacedItem[], item: Item) =>
   placed.some((p) => p.item === item && p.part.isLast);
 
-// Fresh fragments of the repeat children that fully placed on this page,
-// for the head of the continuation. Mid-split and unplaced items already
-// carry over on their own. Materialized fragments re-emit their source
-// lazy, so it materializes again with the next page number.
-const repeatFragments = (fragment: Fragment, inner: FillResult): Fragment[] => {
-  // A page holding only repeats made no progress — stop repeating so
-  // content can advance.
+// Fresh copies of the repeat children that fully placed on this page, to
+// head the continuation. Mid-split and unplaced items carry over on their
+// own; materialized ones re-emit their source lazy for the next page.
+const repeatFragments = (
+  fragment: Fragment,
+  inner: FillResult,
+  contentAbove: boolean,
+): Fragment[] => {
+  // A fill that placed only repeats, with nothing but repeats above it,
+  // would recur identically forever — stop repeating so content can advance.
+  // Below real content the page was just nearly full; keep repeating.
   const isRepeatPlacement = (p: PlacedItem) =>
     isRepeat(p.item) ||
     fragment.children.some((f) => f.origin !== undefined && f.item === p.item);
 
-  if (inner.placed.length > 0 && inner.placed.every(isRepeatPlacement))
+  if (
+    !contentAbove &&
+    inner.placed.length > 0 &&
+    inner.placed.every(isRepeatPlacement)
+  )
     return [];
 
   const sources: Item[] = [];

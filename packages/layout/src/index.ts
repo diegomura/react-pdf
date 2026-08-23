@@ -20,8 +20,8 @@ import resolveLinkSubstitution from './steps/resolveLinkSubstitution';
 import resolvePaginationNext from './paginate';
 import { SafeDocumentNode } from './types';
 
-// The relayout-free pagination engine. Flip to false for the legacy step.
-const NEXT_PAGINATION: boolean = true;
+// The new pagination engine, shipped dark: flip to true to enable.
+const NEXT_PAGINATION: boolean = false;
 
 const paginationStep = (root: SafeDocumentNode, fontStore) =>
   NEXT_PAGINATION

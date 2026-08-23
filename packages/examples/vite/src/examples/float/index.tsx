@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     color: '#333333',
+    textAlign: 'justify',
   },
   image: {
     borderRadius: 4,
@@ -153,8 +154,15 @@ const FloatExample = () => (
       <View style={styles.card}>
         <Text style={styles.label}>float: left — drop cap</Text>
         <View style={{ minHeight: 58 }}>
-          <View style={{ float: 'left', marginRight: 6 }}>
-            <Text style={{ fontSize: 42, fontWeight: 700, color: BLUE }}>
+          <View style={{ float: 'left', marginRight: 6, marginTop: -10 }}>
+            <Text
+              style={{
+                fontSize: 42,
+                lineHeight: 1,
+                fontWeight: 700,
+                color: BLUE,
+              }}
+            >
               A
             </Text>
           </View>

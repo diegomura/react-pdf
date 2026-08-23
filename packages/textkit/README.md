@@ -6,7 +6,7 @@
 
 > An advanced text layout framework
 
-A comprehensive text layout engine for react-pdf. Handles complex text rendering including bidirectional text, line breaking, hyphenation, justification, font substitution, and text decoration.
+A comprehensive text layout engine for react-pdf. Handles complex text rendering including bidirectional text, line breaking, hyphenation, justification, font substitution, OpenType font features, and text decoration.
 
 ## Acknowledges
 
@@ -46,7 +46,14 @@ const engines = {
 // Create attributed string from fragments
 const attributedString = fromFragments([
   { string: 'Hello ', attributes: { fontSize: 12, font: [myFont] } },
-  { string: 'World!', attributes: { fontSize: 12, font: [myFont] } },
+  {
+    string: "012'345'678'901",
+    attributes: {
+      fontSize: 12,
+      font: [myFont],
+      features: ['tnum'],
+    },
+  },
 ]);
 
 // Define container
@@ -70,7 +77,7 @@ The layout engine processes text through the following steps:
 2. Get bidi runs and paragraph direction
 3. Font substitution - map to resolved font runs
 4. Script itemization
-5. Font shaping - text to glyphs
+5. Font shaping - text to glyphs, applying optional OpenType font features
 6. Line breaking
 7. Bidi reordering
 8. Justification
@@ -234,7 +241,7 @@ type Attributes = {
   characterSpacing?: number;
   color?: string;
   direction?: 'rtl' | 'ltr';
-  features?: unknown[];
+  features?: string[] | Record<string, boolean>;
   fill?: boolean;
   font?: Font[];
   fontSize?: number;

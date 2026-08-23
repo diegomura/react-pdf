@@ -4,6 +4,7 @@ import ellipsis from './ellipsis';
 import emoji from './emoji';
 import float from './float';
 import fontFamilyFallback from './font-family-fallback';
+import fontFeatureSettings from './font-feature-settings';
 import fontWeight from './font-weight';
 import goTo from './go-to';
 import imageBackground from './image-background';
@@ -36,6 +37,7 @@ const EXAMPLES = [
   float,
   fontFamilyFallback,
   fontWeight,
+  fontFeatureSettings,
   goTo,
   JpgOrientation,
   knobs,

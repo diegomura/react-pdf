@@ -1,4 +1,4 @@
-import { Font } from '@react-pdf/textkit';
+import { Font, Glyph, Position } from '@react-pdf/textkit';
 import PDFKitDocument from 'pdfkit';
 import PDFKitReference from 'pdfkit/js/reference';
 
@@ -17,6 +17,14 @@ export type Context = typeof PDFKitDocument & {
   translate(x: number, y: number, options: any): Context;
   font(src: PDFFontSource, size?: number): Context;
   font(src: PDFFontSource, family: string, size?: number): Context;
+
+  /** SVG-backend capability: receives raw textkit glyphs instead of PDF operators */
+  glyphs?: (
+    glyphs: Glyph[],
+    positions: Position[],
+    x: number,
+    y: number,
+  ) => unknown;
 
   /** @internal pdfkit acroform internals */
   _fieldDict: (name: string, type: string, options: any) => any;

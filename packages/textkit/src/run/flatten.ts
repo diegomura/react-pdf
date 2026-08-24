@@ -19,12 +19,15 @@ const sortPoints = (a: Point, b: Point) => {
  * @returns Points
  */
 const generatePoints = (runs: Run[]) => {
-  const result: Point[] = runs.reduce((acc, run, i) => {
-    return acc.concat([
+  const result: Point[] = [];
+
+  for (let i = 0; i < runs.length; i += 1) {
+    const run = runs[i];
+    result.push(
       ['start', run.start, run.attributes, i],
       ['end', run.end, run.attributes, i],
-    ]);
-  }, []);
+    );
+  }
 
   return result.sort(sortPoints);
 };

@@ -6,6 +6,7 @@ import {
   setAttribute,
 } from './element';
 import SVGGradient from './gradient';
+import { imageDimensions, toHref } from './image';
 import serialize from './serialize';
 
 export type SVGDocumentOptions = {
@@ -46,6 +47,22 @@ type PageInfo = {
   height: number;
   annotations: unknown[];
   fonts: Record<string, unknown>;
+};
+
+type EmbeddedImage = {
+  width: number;
+  height: number;
+  src: unknown;
+  obj: unknown;
+  embed: (ctx: SVGDocument) => void;
+};
+
+type ImageOptions = {
+  width?: number;
+  height?: number;
+  fit?: number[];
+  align?: string;
+  valign?: string;
 };
 
 // pdfkit exposes a document outline API; render never populates it for SVG
@@ -161,6 +178,75 @@ class SVGDocument {
       cy,
       r,
     });
+  }
+
+  openImage(src: unknown): EmbeddedImage {
+    const { width = 0, height = 0 } = imageDimensions(src) ?? {};
+    return { width, height, src, obj: null, embed: () => {} };
+  }
+
+  image(src: unknown, x: number, y: number, options: ImageOptions = {}) {
+    const source = this.resolveImageSource(src);
+    const intrinsic =
+      source.width && source.height
+        ? { width: source.width, height: source.height }
+        : imageDimensions(source.data);
+
+    let width = options.width ?? intrinsic?.width ?? 0;
+    let height = options.height ?? intrinsic?.height ?? 0;
+    let posX = x;
+    let posY = y;
+
+    if (options.fit && intrinsic) {
+      const scale = Math.min(
+        options.fit[0] / intrinsic.width,
+        options.fit[1] / intrinsic.height,
+      );
+      width = intrinsic.width * scale;
+      height = intrinsic.height * scale;
+      if (options.align === 'center') posX += (options.fit[0] - width) / 2;
+      else if (options.align === 'right') posX += options.fit[0] - width;
+      if (options.valign === 'center') posY += (options.fit[1] - height) / 2;
+      else if (options.valign === 'bottom') posY += options.fit[1] - height;
+    }
+
+    const el = createElement('image');
+    setAttribute(el, 'x', fmt(posX));
+    setAttribute(el, 'y', fmt(posY));
+    setAttribute(el, 'width', fmt(width));
+    setAttribute(el, 'height', fmt(height));
+    setAttribute(el, 'preserveAspectRatio', 'none');
+    setAttribute(el, 'href', toHref(source.data));
+    const imageOpacity = this.style.fillOpacity * this.style.opacity;
+    if (imageOpacity !== 1) setAttribute(el, 'opacity', fmt(imageOpacity));
+    appendChild(this.container, el);
+    return this;
+  }
+
+  protected resolveImageSource(src: unknown): {
+    data: unknown;
+    width: number;
+    height: number;
+  } {
+    if (src != null && typeof src === 'object') {
+      if ('src' in src) {
+        const wrapped = src as EmbeddedImage;
+        return {
+          data: wrapped.src,
+          width: wrapped.width,
+          height: wrapped.height,
+        };
+      }
+      if ('data' in src) {
+        const image = src as { data: unknown; width?: number; height?: number };
+        return {
+          data: image.data,
+          width: image.width ?? 0,
+          height: image.height ?? 0,
+        };
+      }
+    }
+    return { data: src, width: 0, height: 0 };
   }
 
   transform(a: number, b: number, c: number, d: number, e: number, f: number) {

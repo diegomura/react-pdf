@@ -610,7 +610,7 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-0.1.100.tgz#1e52883f8784ffdbe52dc2d47b05a0886aa6e9cf"
   integrity sha512-MyT1j3mHC2+Lu4pBi9mKyMJhtP6U7k7EldY7sj/uS5gJA65gTXt8MefJQXLJo5d/vZbuWmfxzkEUNc/urV3pHA==
 
-"@napi-rs/canvas@^0.1.100", "@napi-rs/canvas@^0.1.80":
+"@napi-rs/canvas@^0.1.80":
   version "0.1.100"
   resolved "https://registry.yarnpkg.com/@napi-rs/canvas/-/canvas-0.1.100.tgz#2c89a15c28a62e1372be23fd474762ae1a8b16b7"
   integrity sha512-xglYA6q3XO5P3BNJYxVZ1IV7DLVjp1Py6nwag88YntrS+3vKHyYcMqXVS4ZztJmwz2uGvz1FWhI/4LgbR5uQDA==
@@ -3374,13 +3374,6 @@ pdfjs-dist@5.4.296:
   integrity sha512-DlOzet0HO7OEnmUmB6wWGJrrdvbyJKftI1bhMitK7O2N8W2gc757yyYBbINy9IDafXAV9wmKr9t7xsTaNKRG5Q==
   optionalDependencies:
     "@napi-rs/canvas" "^0.1.80"
-
-pdfjs-dist@^5.4.296:
-  version "5.7.284"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-5.7.284.tgz#01d9ff1d7ccd15245bdec8524a6770feb77fbb23"
-  integrity sha512-h4EdYQczmGhbOlqc3PPZwxevn7ApdWPbovAuWXOB/DjIyigSnwfy2oze7c6mRcSr9XgLp3eN3EeL4DyySTPMFw==
-  optionalDependencies:
-    "@napi-rs/canvas" "^0.1.100"
 
 pdfkit@0.20.1:
   version "0.20.1"

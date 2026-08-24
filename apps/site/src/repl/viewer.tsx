@@ -55,7 +55,12 @@ export function Viewer({
                 setPageNumber((p) => Math.min(Math.max(p, 1), n));
               }}
               loading={null}
-              error={null}
+              error={
+                <div className="rounded border border-fd-border bg-fd-background p-4 text-sm text-fd-muted-foreground">
+                  Failed to display the PDF — the viewer could not load this
+                  document.
+                </div>
+              }
             >
               <Page
                 pageNumber={pageNumber}

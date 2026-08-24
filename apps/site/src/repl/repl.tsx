@@ -17,7 +17,7 @@ const EXAMPLE_NAMES = Object.keys(examples).sort();
 // Only the lazy @react-pdf/math chunk load; other fetch failures (fonts,
 // images) carry their own useful message.
 const friendlyError = (message: string) =>
-  /dynamically imported module|Importing a module script failed|@react-pdf\/math/i.test(
+  /dynamically imported module|Importing a module script failed|Failed to load chunk|@react-pdf\/math/i.test(
     message,
   )
     ? 'Failed to load @react-pdf/math — check your connection and retry'

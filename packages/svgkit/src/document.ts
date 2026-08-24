@@ -664,6 +664,94 @@ class SVGDocument {
     appendChild(this.container, el);
     return this;
   }
+
+  protected hitRect(x: number, y: number, width: number, height: number) {
+    const rect = createElement('rect');
+    setAttribute(rect, 'x', fmt(x));
+    setAttribute(rect, 'y', fmt(y));
+    setAttribute(rect, 'width', fmt(width));
+    setAttribute(rect, 'height', fmt(height));
+    setAttribute(rect, 'fill', 'black');
+    setAttribute(rect, 'fill-opacity', 0);
+    return rect;
+  }
+
+  link(x: number, y: number, width: number, height: number, url: string) {
+    const anchor = createElement('a');
+    setAttribute(anchor, 'href', url);
+    appendChild(anchor, this.hitRect(x, y, width, height));
+    appendChild(this.container, anchor);
+    return this;
+  }
+
+  goTo(x: number, y: number, width: number, height: number, name: string) {
+    const anchor = createElement('a');
+    setAttribute(anchor, 'href', `#${this.idPrefix}dest-${name}`);
+    appendChild(anchor, this.hitRect(x, y, width, height));
+    appendChild(this.container, anchor);
+    return this;
+  }
+
+  addNamedDestination(name: string) {
+    const marker = createElement('g');
+    setAttribute(marker, 'id', `${this.idPrefix}dest-${name}`);
+    appendChild(this.container, marker);
+    return this;
+  }
+
+  // Silent no-ops: PDF-only features with no SVG equivalent. Documented in
+  // the README as the parity exception with pdf output.
+  registerFont() {
+    return this;
+  }
+
+  note() {
+    return this;
+  }
+
+  annotate() {
+    return this;
+  }
+
+  addContent() {
+    return this;
+  }
+
+  initForm() {
+    return this;
+  }
+
+  formField() {
+    return {};
+  }
+
+  formText() {
+    return this;
+  }
+
+  formCombo() {
+    return this;
+  }
+
+  formList() {
+    return this;
+  }
+
+  textInput() {
+    return this;
+  }
+
+  ref() {
+    return {};
+  }
+
+  _fieldDict() {
+    return {};
+  }
+
+  _addToParent() {
+    return this;
+  }
 }
 
 export default SVGDocument;

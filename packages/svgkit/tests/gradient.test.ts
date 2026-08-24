@@ -41,4 +41,22 @@ describe('gradients', () => {
 
     expect(doc.pages[0].match(/<linearGradient/g)).toHaveLength(1);
   });
+
+  test('setTransform emits gradientTransform', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    const grad = doc.linearGradient(0, 0, 1, 0);
+    grad.stop(0, 'red').setTransform(2, 0, 0, 2, 5, 6);
+    doc.rect(0, 0, 1, 1).fill(grad);
+    doc.end();
+    expect(doc.pages[0]).toContain('gradientTransform="matrix(2 0 0 2 5 6)"');
+  });
+
+  test('identity setTransform is omitted', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    const grad = doc.linearGradient(0, 0, 1, 0);
+    grad.stop(0, 'red').setTransform(1, 0, 0, 1, 0, 0);
+    doc.rect(0, 0, 1, 1).fill(grad);
+    doc.end();
+    expect(doc.pages[0]).not.toContain('gradientTransform');
+  });
 });

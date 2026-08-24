@@ -8,6 +8,8 @@ import {
 
 type Stop = { offset: number; color: string; opacity: number };
 
+const IDENTITY = [1, 0, 0, 1, 0, 0];
+
 class SVGGradient {
   id: string;
   emitted = false;
@@ -15,6 +17,8 @@ class SVGGradient {
   private kind: 'linearGradient' | 'radialGradient';
   private attributes: Record<string, number>;
   private stops: Stop[] = [];
+  private matrix: [number, number, number, number, number, number] | null =
+    null;
 
   constructor(
     id: string,
@@ -31,10 +35,29 @@ class SVGGradient {
     return this;
   }
 
+  setTransform(
+    m11: number,
+    m12: number,
+    m21: number,
+    m22: number,
+    dx: number,
+    dy: number,
+  ) {
+    this.matrix = [m11, m12, m21, m22, dx, dy];
+    return this;
+  }
+
   toElement(): SVGElementNode {
     const el = createElement(this.kind);
     setAttribute(el, 'id', this.id);
     setAttribute(el, 'gradientUnits', 'userSpaceOnUse');
+    if (this.matrix && this.matrix.some((v, i) => v !== IDENTITY[i])) {
+      setAttribute(
+        el,
+        'gradientTransform',
+        `matrix(${this.matrix.map(fmt).join(' ')})`,
+      );
+    }
     Object.entries(this.attributes).forEach(([name, value]) =>
       setAttribute(el, name, fmt(value)),
     );

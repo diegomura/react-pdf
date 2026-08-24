@@ -8,7 +8,7 @@ import { evaluateDocument, MissingModuleError } from './evaluate';
 export type ReplRequest = { id: number; code: string };
 
 export type ReplResponse =
-  { id: number; url: string } | { id: number; error: string; line?: number };
+  { id: number; blob: Blob } | { id: number; error: string; line?: number };
 
 // mathjax is heavy, so @react-pdf/math is only pulled in once an example
 // actually imports it.
@@ -43,12 +43,11 @@ self.onmessage = async (event: MessageEvent<ReplRequest>) => {
     const element = (await evaluate(
       transpile(code),
     )) as React.ReactElement<DocumentProps>;
+    // The blob (not an object URL) crosses the boundary: URLs created here die
+    // with the worker, and the worker is restarted on every example switch.
     const blob = await pdf(element).toBlob();
 
-    self.postMessage({
-      id,
-      url: URL.createObjectURL(blob),
-    } satisfies ReplResponse);
+    self.postMessage({ id, blob } satisfies ReplResponse);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const line = (error as { loc?: { line?: number } })?.loc?.line;

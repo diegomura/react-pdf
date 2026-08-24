@@ -26,7 +26,8 @@ export function useRepl(code: string, resetKey?: unknown) {
     workerRef.current = worker;
 
     return () => {
-      worker.terminate();
+      // onerror may have swapped in a replacement; terminate whichever is live.
+      workerRef.current?.terminate();
       workerRef.current = null;
     };
   }, [resetKey]);
@@ -57,10 +58,10 @@ export function useRepl(code: string, resetKey?: unknown) {
         if (event.data.id !== requestId.current) return;
         setRendering(false);
 
-        if ('url' in event.data) {
+        if ('blob' in event.data) {
           if (urlRef.current) URL.revokeObjectURL(urlRef.current);
-          urlRef.current = event.data.url;
-          setUrl(event.data.url);
+          urlRef.current = URL.createObjectURL(event.data.blob);
+          setUrl(urlRef.current);
           setError(null);
         } else {
           setError({ message: event.data.error, line: event.data.line });

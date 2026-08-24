@@ -59,9 +59,7 @@ export function Viewer({
             >
               <Page
                 pageNumber={pageNumber}
-                width={
-                  width ? Math.min(width - 32, MAX_PAGE_WIDTH) : MAX_PAGE_WIDTH
-                }
+                width={width ? Math.min(width, MAX_PAGE_WIDTH) : MAX_PAGE_WIDTH}
                 className="shadow-2xl"
               />
             </Document>

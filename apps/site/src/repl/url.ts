@@ -3,13 +3,18 @@ import { examples } from './examples';
 
 export const DEFAULT_EXAMPLE = 'page-wrap';
 
-export function initialCode(params: URLSearchParams): string {
+// An empty example name means the code came from `?code=`.
+export function initialState(params: URLSearchParams): {
+  code: string;
+  example: string;
+} {
   const encoded = params.get('code');
-  if (encoded) {
-    const decoded = decompress(encoded);
-    if (decoded) return decoded;
-  }
+  const decoded = encoded ? decompress(encoded) : '';
+  if (decoded) return { code: decoded, example: '' };
 
-  const example = params.get('example');
-  return examples[example ?? DEFAULT_EXAMPLE] ?? examples[DEFAULT_EXAMPLE];
+  const name = params.get('example');
+  const example =
+    name && Object.hasOwn(examples, name) ? name : DEFAULT_EXAMPLE;
+
+  return { code: examples[example], example };
 }

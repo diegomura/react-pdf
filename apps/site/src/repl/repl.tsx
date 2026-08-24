@@ -2,20 +2,22 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Group, Panel, Separator } from 'react-resizable-panels';
 
 import { compress } from './compress';
 import { Editor } from './editor';
 import { examples } from './examples';
-import { initialCode, DEFAULT_EXAMPLE } from './url';
+import { initialState } from './url';
 import { useRepl } from './use-repl';
 import { Viewer } from './viewer';
 
 const EXAMPLE_NAMES = Object.keys(examples).sort();
 
+// Only the lazy @react-pdf/math chunk load; other fetch failures (fonts,
+// images) carry their own useful message.
 const friendlyError = (message: string) =>
-  /dynamically imported module|Importing a module script failed|Failed to fetch|error loading dynamically/i.test(
+  /dynamically imported module|Importing a module script failed|@react-pdf\/math/i.test(
     message,
   )
     ? 'Failed to load @react-pdf/math — check your connection and retry'
@@ -24,36 +26,29 @@ const friendlyError = (message: string) =>
 const buttonClass =
   'rounded border border-fd-border px-2 py-1 text-sm hover:bg-fd-accent disabled:opacity-40';
 
-const DESKTOP = '(min-width: 768px)';
+let desktopQuery: MediaQueryList | undefined;
+const query = () => (desktopQuery ??= matchMedia('(min-width: 768px)'));
 
 const subscribe = (onChange: () => void) => {
-  const query = matchMedia(DESKTOP);
-  query.addEventListener('change', onChange);
-  return () => query.removeEventListener('change', onChange);
+  query().addEventListener('change', onChange);
+  return () => query().removeEventListener('change', onChange);
 };
 
 const useIsDesktop = () =>
   useSyncExternalStore(
     subscribe,
-    () => matchMedia(DESKTOP).matches,
+    () => query().matches,
     () => true,
   );
 
 export function Repl() {
   const params = useSearchParams();
-  const [code, setCode] = useState(() =>
-    initialCode(params as URLSearchParams),
-  );
-  const [example, setExample] = useState(() =>
-    params.get('code')
-      ? ''
-      : (params.get('example') ?? DEFAULT_EXAMPLE) in examples
-        ? (params.get('example') ?? DEFAULT_EXAMPLE)
-        : DEFAULT_EXAMPLE,
-  );
+  const [initial] = useState(() => initialState(params as URLSearchParams));
+  const [code, setCode] = useState(initial.code);
+  const [example, setExample] = useState(initial.example);
   const [resetKey, setResetKey] = useState(0);
   const [tab, setTab] = useState<'code' | 'pdf'>('code');
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<'ok' | 'failed' | null>(null);
   const isDesktop = useIsDesktop();
 
   const { url, error, rendering } = useRepl(code, resetKey);
@@ -65,21 +60,20 @@ export function Repl() {
     history.replaceState(null, '', `/repl?example=${name}`);
   };
 
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(
-      `${location.origin}/repl?code=${compress(code)}`,
-    );
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copyLink = () => {
+    navigator.clipboard
+      .writeText(`${location.origin}/repl?code=${compress(code)}`)
+      .then(
+        () => setCopied('ok'),
+        () => setCopied('failed'),
+      )
+      .finally(() => setTimeout(() => setCopied(null), 1500));
   };
 
-  const editor = useMemo(
-    () => (
-      <div className="h-full overflow-auto">
-        <Editor value={code} onChange={setCode} />
-      </div>
-    ),
-    [code],
+  const editor = (
+    <div className="h-full overflow-auto">
+      <Editor value={code} onChange={setCode} />
+    </div>
   );
 
   const preview = (
@@ -138,7 +132,11 @@ export function Repl() {
 
         <div className="ml-auto flex items-center gap-2">
           <button type="button" className={buttonClass} onClick={copyLink}>
-            {copied ? 'Copied ✓' : 'Copy link'}
+            {copied === 'ok'
+              ? 'Copied ✓'
+              : copied === 'failed'
+                ? 'Copy failed'
+                : 'Copy link'}
           </button>
           {url && (
             <a href={url} download="document.pdf" className={buttonClass}>

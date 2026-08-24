@@ -1,5 +1,15 @@
 # @react-pdf/textkit
 
+## 7.0.1
+
+### Patch Changes
+
+- [#3524](https://github.com/diegomura/react-pdf/pull/3524) [`df39d4cf2f18ee234b4f6c7674d94bdfc4742489`](https://github.com/diegomura/react-pdf/commit/df39d4cf2f18ee234b4f6c7674d94bdfc4742489) Thanks [@diegomura](https://github.com/diegomura)! - perf: merge run attributes lazily in flatten, only when a segment is emitted
+
+- [#3527](https://github.com/diegomura/react-pdf/pull/3527) [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61) Thanks [@diegomura](https://github.com/diegomura)! - perf: drop the omit('font') preprocessing pass, skip attachment purging when no attachment is set, reduce allocations in the Knuth-Plass main loop, and cache standard font AFM glyph-name lookups
+
+- [#3523](https://github.com/diegomura/react-pdf/pull/3523) [`a291d4fb45b6260861868b973b24e9a49915f6a0`](https://github.com/diegomura/react-pdf/commit/a291d4fb45b6260861868b973b24e9a49915f6a0) Thanks [@diegomura](https://github.com/diegomura)! - perf: reduce allocation churn in text layout hot paths (~15% faster layout of text-heavy documents)
+
 ## 7.0.0
 
 ### Major Changes

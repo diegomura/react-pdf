@@ -1,5 +1,15 @@
 # @react-pdf/renderer
 
+## 4.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61)]:
+  - @react-pdf/font@4.1.1
+  - @react-pdf/layout@5.1.1
+  - @react-pdf/render@4.6.4
+  - @react-pdf/types@2.13.1
+
 ## 4.8.0
 
 ### Minor Changes

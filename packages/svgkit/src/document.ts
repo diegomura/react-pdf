@@ -597,10 +597,7 @@ class SVGDocument {
 
     const scale = fontSize / unitsPerEmOf(this._font);
     const group = createElement('g');
-    setAttribute(group, 'fill', this.resolvePaint(this.style.fillColor));
-    const fillOpacity = this.style.fillOpacity * this.style.opacity;
-    if (fillOpacity !== 1)
-      setAttribute(group, 'fill-opacity', fmt(fillOpacity));
+    this.applyFillStyle(group);
 
     let pen = x;
     for (let i = 0; i < glyphs.length; i += 1) {
@@ -649,9 +646,7 @@ class SVGDocument {
     setAttribute(el, 'x', xs.join(' '));
     setAttribute(el, 'y', fmt(y));
     this.applyTextFont(el);
-    setAttribute(el, 'fill', this.resolvePaint(this.style.fillColor));
-    const fillOpacity = this.style.fillOpacity * this.style.opacity;
-    if (fillOpacity !== 1) setAttribute(el, 'fill-opacity', fmt(fillOpacity));
+    this.applyFillStyle(el);
     setAttribute(el, 'xml:space', 'preserve');
     appendChild(el, text);
     appendChild(this.container, el);
@@ -663,7 +658,7 @@ class SVGDocument {
     setAttribute(el, 'x', fmt(x));
     setAttribute(el, 'y', fmt(y));
     this.applyTextFont(el);
-    setAttribute(el, 'fill', this.resolvePaint(this.style.fillColor));
+    this.applyFillStyle(el);
     setAttribute(el, 'xml:space', 'preserve');
     appendChild(el, value);
     appendChild(this.container, el);

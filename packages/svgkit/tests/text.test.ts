@@ -70,6 +70,13 @@ describe('glyphs — embedded fonts', () => {
     expect(content.match(/<path/g)).toHaveLength(1);
     expect(content).toContain('translate(8 0)');
   });
+
+  test('outline glyphs honor fill opacity', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font({ unitsPerEm: 1000 }, 10).fillOpacity(0.5);
+    doc.glyphs([outlineGlyph('M0 0Z', 65)], [position(10)], 0, 0);
+    expect(pageContent(doc)).toContain('fill-opacity="0.5"');
+  });
 });
 
 describe('glyphs — standard fonts', () => {
@@ -98,6 +105,15 @@ describe('glyphs — standard fonts', () => {
     );
     expect(content).toContain('font-style="italic"');
   });
+
+  test('honors fill opacity', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font('Helvetica', 12).fillOpacity(0.5);
+    doc.glyphs([standardGlyph(72)], [position(7)], 0, 0);
+    const content = pageContent(doc);
+    expect(content).toContain('<text ');
+    expect(content).toContain('fill-opacity="0.5"');
+  });
 });
 
 describe('canvas text()', () => {
@@ -108,5 +124,12 @@ describe('canvas text()', () => {
     expect(pageContent(doc)).toContain(
       '<text x="5" y="10" font-family="&quot;Times New Roman&quot;, Times, serif" font-size="14"',
     );
+  });
+
+  test('honors fill opacity', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font('Times-Roman').fontSize(14).fillOpacity(0.5);
+    doc.text('hi', 0, 0);
+    expect(pageContent(doc)).toContain('fill-opacity="0.5"');
   });
 });

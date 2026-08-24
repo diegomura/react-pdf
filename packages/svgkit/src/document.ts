@@ -5,6 +5,7 @@ import {
   fmt,
   setAttribute,
 } from './element';
+import SVGGradient from './gradient';
 import serialize from './serialize';
 
 export type SVGDocumentOptions = {
@@ -13,8 +14,8 @@ export type SVGDocumentOptions = {
 };
 
 type Style = {
-  fillColor: string;
-  strokeColor: string;
+  fillColor: string | SVGGradient;
+  strokeColor: string | SVGGradient;
   fillOpacity: number;
   strokeOpacity: number;
   opacity: number;
@@ -134,6 +135,32 @@ class SVGDocument {
   protected nextId(kind: string) {
     this.idCounter += 1;
     return `${this.idPrefix}${kind}-${this.idCounter}`;
+  }
+
+  linearGradient(x1: number, y1: number, x2: number, y2: number) {
+    return new SVGGradient(this.nextId('grad'), 'linearGradient', {
+      x1,
+      y1,
+      x2,
+      y2,
+    });
+  }
+
+  radialGradient(
+    fx: number,
+    fy: number,
+    _r1: number,
+    cx: number,
+    cy: number,
+    r: number,
+  ) {
+    return new SVGGradient(this.nextId('grad'), 'radialGradient', {
+      fx,
+      fy,
+      cx,
+      cy,
+      r,
+    });
   }
 
   transform(a: number, b: number, c: number, d: number, e: number, f: number) {
@@ -256,13 +283,17 @@ class SVGDocument {
     return this;
   }
 
-  fillColor(color: string) {
-    if (color != null) this.style.fillColor = String(color);
+  fillColor(color: string | SVGGradient) {
+    if (color != null)
+      this.style.fillColor =
+        color instanceof SVGGradient ? color : String(color);
     return this;
   }
 
-  strokeColor(color: string) {
-    if (color != null) this.style.strokeColor = String(color);
+  strokeColor(color: string | SVGGradient) {
+    if (color != null)
+      this.style.strokeColor =
+        color instanceof SVGGradient ? color : String(color);
     return this;
   }
 
@@ -325,7 +356,7 @@ class SVGDocument {
   }
 
   protected applyStrokeStyle(el: SVGElementNode) {
-    setAttribute(el, 'stroke', this.style.strokeColor);
+    setAttribute(el, 'stroke', this.resolvePaint(this.style.strokeColor));
     const strokeOpacity = this.style.strokeOpacity * this.style.opacity;
     if (strokeOpacity !== 1)
       setAttribute(el, 'stroke-opacity', fmt(strokeOpacity));
@@ -348,8 +379,14 @@ class SVGDocument {
     if (fillOpacity !== 1) setAttribute(el, 'fill-opacity', fmt(fillOpacity));
   }
 
-  // Extended in Task 5 to resolve gradients into defs
-  protected resolvePaint(paint: string): string {
+  protected resolvePaint(paint: string | SVGGradient): string {
+    if (paint instanceof SVGGradient) {
+      if (!paint.emitted) {
+        appendChild(this.defs, paint.toElement());
+        paint.emitted = true;
+      }
+      return `url(#${paint.id})`;
+    }
     return String(paint);
   }
 
@@ -374,10 +411,11 @@ class SVGDocument {
 
     if (this.isWindingRule(arg)) rule = this.normalizeRule(arg);
     else if (arg != null && mode === 'fillAndStroke') {
-      this.fillColor(arg as string);
-      this.strokeColor(arg as string);
-    } else if (arg != null && mode !== 'stroke') this.fillColor(arg as string);
-    else if (arg != null) this.strokeColor(arg as string);
+      this.fillColor(arg as string | SVGGradient);
+      this.strokeColor(arg as string | SVGGradient);
+    } else if (arg != null && mode !== 'stroke')
+      this.fillColor(arg as string | SVGGradient);
+    else if (arg != null) this.strokeColor(arg as string | SVGGradient);
 
     const d = this.takePath();
     if (!d) return this;

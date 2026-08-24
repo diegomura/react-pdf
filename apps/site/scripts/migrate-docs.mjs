@@ -188,7 +188,9 @@ const slugsOf = new Map(pages.map((p) => [p.newPath, headingSlugs(p.body)]));
 const resolveAnchor = (page, anchor) => {
   const slugs = slugsOf.get(page.newPath);
   if (slugs.has(anchor)) return anchor;
-  const near = [...slugs].filter((s) => s.startsWith(`${anchor}-`));
+  const cased = slugify(anchor);
+  if (slugs.has(cased)) return cased;
+  const near = [...slugs].filter((s) => s.startsWith(`${cased}-`));
   if (near.length === 1) return near[0];
   console.warn(`warn: unresolved anchor #${anchor} on ${page.newPath}`);
   return anchor;

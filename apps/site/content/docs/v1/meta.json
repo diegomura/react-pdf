@@ -1,0 +1,12 @@
+{
+  "title": "v1",
+  "root": true,
+  "pages": [
+    "index",
+    "rendering-process",
+    "components",
+    "styling",
+    "fonts",
+    "advanced"
+  ]
+}

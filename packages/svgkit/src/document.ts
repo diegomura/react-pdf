@@ -744,7 +744,8 @@ class SVGDocument {
   }
 
   ref() {
-    return {};
+    // parseFormOptions calls .write(...)/.end(...) on ctx.ref(...) unconditionally
+    return { write: () => {}, end: () => {} };
   }
 
   _fieldDict() {

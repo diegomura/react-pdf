@@ -77,6 +77,9 @@ describe('ctx surface', () => {
     expect(doc.outline.addItem('title', {}).addItem('nested', {})).toBe(
       doc.outline,
     );
+    const ref = (doc as any).ref({});
+    expect(typeof ref.write).toBe('function');
+    expect(typeof ref.end).toBe('function');
   });
 
   test('stubs are chainable', () => {

@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
+    "generate:examples": "node scripts/generate-examples.mjs /tmp/react-pdf-site/examples src/repl/examples",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {

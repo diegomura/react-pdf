@@ -49,7 +49,8 @@ export const evaluateDocument = (
       name.startsWith('@react-pdf/renderer/')
     )
       return ReactPDF;
-    if (extraModules && name in extraModules) return extraModules[name];
+    if (extraModules && Object.hasOwn(extraModules, name))
+      return extraModules[name];
     throw new MissingModuleError(name);
   };
 

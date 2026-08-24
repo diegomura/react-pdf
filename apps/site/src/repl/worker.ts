@@ -25,7 +25,12 @@ const evaluate = async (compiledCode: string) => {
     } catch (error) {
       const name =
         error instanceof MissingModuleError ? error.moduleName : undefined;
-      if (!name || !lazyModules[name] || name in loaded) throw error;
+      if (
+        !name ||
+        !Object.hasOwn(lazyModules, name) ||
+        Object.hasOwn(loaded, name)
+      )
+        throw error;
       loaded[name] = await lazyModules[name]();
     }
   }

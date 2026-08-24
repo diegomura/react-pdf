@@ -53,7 +53,9 @@ test('the math example renders with the real lazy-loaded package', async () => {
     '@react-pdf/math': math,
   }) as React.ReactElement<DocumentProps>;
 
-  await expect(renderToBuffer(element)).resolves.toBeTruthy();
+  const buffer = await renderToBuffer(element);
+  // a stub Math component yields ~5KB; the real package renders ~22KB
+  expect(buffer.length).toBeGreaterThan(10_000);
 });
 
 // Runs last: examples mutate Font's global registry (hyphenation-callback

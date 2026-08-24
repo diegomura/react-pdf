@@ -109,8 +109,12 @@ describe('ctx surface', () => {
     });
     doc.addNamedDestination('chapter', 'XYZ', 0, 0, null);
     doc.goTo(0, 0, 10, 10, 'chapter');
+    doc.addNamedDestination('section', 'XYZ', 12, 34, null);
     doc.end();
     expect(doc.pages[0]).toContain('<g id="p1-dest-chapter"/>');
     expect(doc.pages[0]).toContain('<a href="#p1-dest-chapter">');
+    expect(doc.pages[0]).toContain(
+      '<g id="p1-dest-section" transform="translate(12 34)"/>',
+    );
   });
 });

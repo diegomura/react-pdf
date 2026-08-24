@@ -694,15 +694,17 @@ class SVGDocument {
     return this;
   }
 
-  addNamedDestination(name: string) {
+  addNamedDestination(name: string, _fit?: string, x = 0, y = 0) {
     const marker = createElement('g');
     setAttribute(marker, 'id', `${this.idPrefix}dest-${name}`);
+    if (x !== 0 || y !== 0)
+      setAttribute(marker, 'transform', `translate(${fmt(x)} ${fmt(y)})`);
     appendChild(this.container, marker);
     return this;
   }
 
-  // Silent no-ops: PDF-only features with no SVG equivalent. Documented in
-  // the README as the parity exception with pdf output.
+  // Silent no-ops: PDF-only features with no SVG equivalent, the parity
+  // exception with pdf output.
   registerFont() {
     return this;
   }
@@ -748,10 +750,12 @@ class SVGDocument {
     return { write: () => {}, end: () => {} };
   }
 
+  // addFormAnnotation builds the field dict via ctx._fieldDict(name, type, options)
   _fieldDict() {
     return {};
   }
 
+  // addFormAnnotation calls ctx._addToParent(ctx.page.annotations.at(-1)) unconditionally
   _addToParent() {
     return this;
   }

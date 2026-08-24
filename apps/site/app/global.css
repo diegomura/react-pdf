@@ -1,3 +1,52 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --color-fd-background: hsl(0, 0%, 100%);
+  --color-fd-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-muted: hsl(0, 0%, 97.3%);
+  --color-fd-muted-foreground: hsl(0, 0%, 43.1%);
+  --color-fd-popover: hsl(0, 0%, 100%);
+  --color-fd-popover-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-card: hsl(0, 0%, 100%);
+  --color-fd-card-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-border: hsl(0, 0%, 91%);
+  --color-fd-primary: hsl(8.7, 100%, 45.5%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  --color-fd-secondary: hsl(0, 0%, 94.5%);
+  --color-fd-secondary-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-accent: hsl(0, 0%, 94.5%);
+  --color-fd-accent-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-ring: hsl(8.7, 100%, 45.5%);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+}
+
+.dark {
+  --color-fd-background: hsl(216, 18.5%, 5.3%);
+  --color-fd-foreground: hsl(216, 20%, 94%);
+  --color-fd-muted: hsl(217, 15%, 10.6%);
+  --color-fd-muted-foreground: hsl(217, 8.3%, 57.6%);
+  --color-fd-popover: hsl(217, 16%, 10%);
+  --color-fd-popover-foreground: hsl(216, 20%, 94%);
+  --color-fd-card: hsl(217, 16%, 8.5%);
+  --color-fd-card-foreground: hsl(216, 20%, 94%);
+  --color-fd-border: hsl(218, 14%, 15.5%);
+  --color-fd-primary: hsl(8, 80%, 55%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  --color-fd-secondary: hsl(217, 15%, 12%);
+  --color-fd-secondary-foreground: hsl(216, 20%, 94%);
+  --color-fd-accent: hsl(217, 15%, 14%);
+  --color-fd-accent-foreground: hsl(216, 20%, 92%);
+  --color-fd-ring: hsl(8, 80%, 55%);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.4);
+}
+
+.dark #nd-sidebar {
+  --color-fd-muted: hsl(217, 15%, 8%);
+  --color-fd-secondary: hsl(217, 15%, 12%);
+  --color-fd-muted-foreground: hsl(217, 8.3%, 57.6%);
+}

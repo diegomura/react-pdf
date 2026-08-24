@@ -1,9 +1,4 @@
-class SVGDocument {
-  pages: string[] = [];
+import SVGDocument from './document';
 
-  end() {
-    return this;
-  }
-}
-
+export type { SVGDocumentOptions } from './document';
 export default SVGDocument;

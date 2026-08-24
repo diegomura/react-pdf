@@ -59,6 +59,7 @@ const decomposeUnicode = () => {
   return (attributedString: AttributedString): AttributedString => {
     let string = '';
     let offset = 0;
+    let changed = false;
 
     const runs: Run[] = [];
 
@@ -68,6 +69,8 @@ const decomposeUnicode = () => {
       const rawString = attributedString.string.slice(run.start, run.end);
 
       const runString = isCustomFont(run) ? selectiveNFD(rawString) : rawString;
+
+      if (runString !== rawString || run.start !== offset) changed = true;
 
       const fragmentLength = runString.length;
 
@@ -81,6 +84,8 @@ const decomposeUnicode = () => {
 
       string += runString;
     }
+
+    if (!changed) return attributedString;
 
     return { ...attributedString, string, runs };
   };

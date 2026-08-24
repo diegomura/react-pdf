@@ -22,12 +22,13 @@ const scalePositions = (run: Run, positions: Position[]): Position[] => {
     const isLast = i === positions.length;
     const xSpacing = isLast ? 0 : characterSpacing;
 
-    return Object.assign({}, position, {
+    return {
       xAdvance: position.xAdvance * runScale + xSpacing,
       yAdvance: position.yAdvance * runScale,
       xOffset: position.xOffset * runScale,
       yOffset: position.yOffset * runScale,
-    });
+      advanceWidth: position.advanceWidth,
+    };
   });
 };
 

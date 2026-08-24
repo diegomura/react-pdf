@@ -50,6 +50,12 @@ describe('transforms', () => {
     expect(pageContent(doc)).toBe('<g transform="matrix(1 0 0 -1 0 100)"/>');
   });
 
+  test('identity transforms do not open groups', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.translate(0, 0).rotate(0).scale(1).transform(1, 0, 0, 1, 0, 0);
+    expect(pageContent(doc)).toBe('');
+  });
+
   test('restore recovers style state', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.fillColor('red');

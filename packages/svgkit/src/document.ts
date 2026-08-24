@@ -71,6 +71,7 @@ class SVGDocument {
   protected idCounter = 0;
   protected roots: SVGElementNode[] = [];
   protected container!: SVGElementNode;
+  protected defs!: SVGElementNode;
   protected style: Style = defaultStyle();
   protected stack: { container: SVGElementNode; style: Style }[] = [];
   protected currentPath = '';
@@ -88,8 +89,8 @@ class SVGDocument {
     setAttribute(svg, 'width', fmt(width));
     setAttribute(svg, 'height', fmt(height));
 
-    const defs = createElement('defs');
-    appendChild(svg, defs);
+    this.defs = createElement('defs');
+    appendChild(svg, this.defs);
 
     this.roots.push(svg);
     this.container = svg;
@@ -136,16 +137,21 @@ class SVGDocument {
   }
 
   transform(a: number, b: number, c: number, d: number, e: number, f: number) {
+    if (a === 1 && b === 0 && c === 0 && d === 1 && e === 0 && f === 0) {
+      return this;
+    }
     return this.openGroup({
       transform: `matrix(${fmt(a)} ${fmt(b)} ${fmt(c)} ${fmt(d)} ${fmt(e)} ${fmt(f)})`,
     });
   }
 
   translate(x: number, y: number) {
+    if (x === 0 && y === 0) return this;
     return this.openGroup({ transform: `translate(${fmt(x)} ${fmt(y)})` });
   }
 
   rotate(angle: number, options: { origin?: number[] } = {}) {
+    if (angle === 0) return this;
     const origin = options.origin
       ? ` ${fmt(options.origin[0])} ${fmt(options.origin[1])}`
       : '';
@@ -162,6 +168,8 @@ class SVGDocument {
     const opts = hasYFactor
       ? options
       : (yFactorOrOptions as { origin?: number[] } | undefined) ?? {};
+
+    if (xFactor === 1 && yFactor === 1) return this;
 
     const scale = `scale(${fmt(xFactor)} ${fmt(yFactor)})`;
     const transform = opts.origin

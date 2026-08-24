@@ -129,6 +129,23 @@ describe('evaluateDocument', () => {
     expect(element.props.children).toBe(1);
   });
 
+  it('lets user declarations shadow injected globals', () => {
+    // resume.txt declares `const List`, knobs.txt declares `const Select` —
+    // both collide with injected renderer exports unless the compiled body
+    // gets its own block scope.
+    const element = evaluateDocument(
+      transpile(`
+        const List = ({ children }) => children;
+        const Select = (props) => props.value;
+        class Text { }
+        let Page = 1;
+        ReactPDF.render(<Document>{List({ children: Select({ value: Page }) })}</Document>);
+      `),
+    ) as React.ReactElement<{ children: unknown }>;
+
+    expect(element.props.children).toBe(1);
+  });
+
   it('isolates captured elements between evaluations', () => {
     const first = evaluateDocument(transpile(LEGACY_STYLES));
     const second = evaluateDocument(transpile(SAMPLE));

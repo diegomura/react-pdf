@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import LZString from 'lz-string';
 
 import { compress, decompress } from '../src/repl/compress';
 
@@ -32,19 +31,7 @@ describe('legacy ?code= compatibility', () => {
     expect(decompress(LEGACY_HEX)).toBe(LEGACY_SOURCE);
   });
 
-  it('encodes byte-for-byte like the legacy encoder', () => {
-    const decimalToHex = (d: number) => {
-      let hex = Number(d).toString(16);
-      while (hex.length < 2) hex = `0${hex}`;
-      return hex;
-    };
-    const legacyCompress = (str: string) =>
-      LZString.compressToUint8Array(str).reduce(
-        (acc, value) => `${acc}${decimalToHex(value)}`,
-        '',
-      );
-
+  it('encodes byte-for-byte like the legacy REPL', () => {
     expect(compress(LEGACY_SOURCE)).toBe(LEGACY_HEX);
-    expect(compress(LEGACY_SOURCE)).toBe(legacyCompress(LEGACY_SOURCE));
   });
 });

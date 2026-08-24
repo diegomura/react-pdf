@@ -1,6 +1,26 @@
 import React from 'react';
 import * as renderer from '@react-pdf/renderer';
 
+const isValidParamName = (name: string) => {
+  // Shadowing built-in Math would break `Math.floor` in legacy examples, the
+  // way the old buble REPL did by injecting @react-pdf/math's Math component.
+  if (name === 'Math') return false;
+
+  try {
+    new Function(name, '');
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Legacy examples have no import statements and expect React, ReactPDF and
+// every renderer export to be in scope, the way the old buble REPL injected
+// them. Renderer exports are static, so resolve the parameter list once.
+const GLOBAL_NAMES = ['React', 'ReactPDF', ...Object.keys(renderer)].filter(
+  isValidParamName,
+);
+
 export const evaluateDocument = (compiledCode: string): React.ReactElement => {
   let captured: React.ReactElement | null = null;
 
@@ -22,20 +42,25 @@ export const evaluateDocument = (compiledCode: string): React.ReactElement => {
     throw new Error(`Cannot import '${name}' in the REPL`);
   };
 
-  // Legacy examples have no import statements and expect React, ReactPDF and
-  // every renderer export to be in scope, the way the old buble REPL injected
-  // them. `default` is a reserved word, so it can never be a parameter name.
   const scope: Record<string, unknown> = { ...ReactPDF, React, ReactPDF };
-  delete scope.default;
-
   const module = { exports: {} };
-  const names = Object.keys(scope);
 
-  new Function('module', 'exports', 'require', ...names, compiledCode)(
+  // The body runs in its own block so that top-level `const`/`let`/`class`
+  // shadow the injected parameters instead of colliding with them. Legacy
+  // buble downleveled these to `var`, which redeclared params legally; sucrase
+  // preserves them, and resume.txt (`const List`) or any shared URL naming a
+  // renderer export would throw "Identifier has already been declared".
+  new Function(
+    'module',
+    'exports',
+    'require',
+    ...GLOBAL_NAMES,
+    `{${compiledCode}\n}`,
+  )(
     module,
     module.exports,
     require,
-    ...names.map((name) => scope[name]),
+    ...GLOBAL_NAMES.map((name) => scope[name]),
   );
 
   if (!captured)

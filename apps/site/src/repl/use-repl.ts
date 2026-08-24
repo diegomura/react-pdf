@@ -31,7 +31,12 @@ export function useRepl(code: string) {
   }, []);
 
   useEffect(() => {
-    if (!code) return;
+    if (!code) {
+      // Bump the id so an in-flight response for older code is ignored.
+      requestId.current += 1;
+      setRendering(false);
+      return;
+    }
 
     const id = ++requestId.current;
     setRendering(true);
@@ -45,12 +50,9 @@ export function useRepl(code: string) {
         setRendering(false);
 
         if ('url' in event.data) {
-          const next = event.data.url;
-          urlRef.current = next;
-          setUrl((prev) => {
-            if (prev) URL.revokeObjectURL(prev);
-            return next;
-          });
+          if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+          urlRef.current = event.data.url;
+          setUrl(event.data.url);
           setError(null);
         } else {
           setError({ message: event.data.error, line: event.data.line });

@@ -69,6 +69,7 @@ const openStandardFont = (src: string) => {
 class StandardFont implements Font {
   name: string;
   src: any;
+  glyphNames = new Map<number, string>();
   fullName: string;
   familyName: string;
   subfamilyName: string;
@@ -155,12 +156,23 @@ class StandardFont implements Font {
     return glyph;
   }
 
+  glyphName(id: number) {
+    let name = this.glyphNames.get(id);
+
+    if (name === undefined) {
+      name = this.src.font.characterToGlyph(id) as string;
+      this.glyphNames.set(id, name);
+    }
+
+    return name;
+  }
+
   getGlyph(id: number): fontkit.Glyph {
     return {
       id,
       codePoints: [id],
       isLigature: false,
-      name: this.src.font.characterToGlyph(id),
+      name: this.glyphName(id),
       _font: this.src,
       // @ts-expect-error assign proper value
       advanceWidth: undefined,
@@ -168,7 +180,7 @@ class StandardFont implements Font {
   }
 
   hasGlyphForCodePoint(codePoint: number) {
-    return this.src.font.characterToGlyph(codePoint) !== '.notdef';
+    return this.glyphName(codePoint) !== '.notdef';
   }
 
   // Based on empirical observation

@@ -8,25 +8,25 @@ Starting with react-pdf is extremely simple.
 
 ### Using npm
 
-```
+```bash
 npm install @react-pdf/renderer --save
 ```
 
 ### Using Yarn
 
-```
+```bash
 yarn add @react-pdf/renderer
 ```
 
 ### Using pnpm
 
-```
+```bash
 pnpm add @react-pdf/renderer
 ```
 
 ### Using Bun
 
-```
+```bash
 bun add @react-pdf/renderer
 ```
 
@@ -38,7 +38,7 @@ This is where things start getting interesting. React-pdf exports a set of React
 
 Let's make the code speak for itself:
 
-```
+```jsx
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
@@ -78,7 +78,7 @@ React-pdf enables you to render the document in two different environments: **we
 
 ### Save in a file
 
-```
+```jsx
 import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
@@ -86,7 +86,7 @@ ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 
 ### Render to a stream
 
-```
+```jsx
 import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.renderToStream(<MyDocument />);
@@ -94,7 +94,7 @@ ReactPDF.renderToStream(<MyDocument />);
 
 ### Render in DOM
 
-```
+```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { PDFViewer } from '@react-pdf/renderer';

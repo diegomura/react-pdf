@@ -1,5 +1,4 @@
 const BLACK = '#3E3E3E';
-const RED = '#F22300';
 
 const STEPS = [
   'Internal structures creation',
@@ -10,66 +9,23 @@ const STEPS = [
   'Rendering',
 ];
 
-function TimelineItem({
-  step,
-  position,
-  children,
-}: {
-  step: number;
-  position: 'top' | 'bottom';
-  children: string;
-}) {
-  const top = position === 'bottom';
+function TimelineItem({ step, label }: { step: number; label: string }) {
+  const below = step % 2 === 0;
   return (
-    <li
-      style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
-    >
+    <li className="relative flex flex-1 items-center justify-center">
       <span
-        style={{
-          width: 0,
-          height: 60,
-          display: 'block',
-          position: 'absolute',
-          border: `1px dashed ${BLACK}`,
-          top: top ? 20 : undefined,
-          bottom: top ? undefined : 20,
-        }}
+        className={`absolute block h-[50px] w-0 border border-dashed border-[#3E3E3E] sm:h-[60px] ${
+          below ? 'top-5' : 'bottom-5'
+        }`}
       />
       <p
-        style={{
-          width: '125%',
-          padding: 8,
-          margin: 0,
-          position: 'absolute',
-          textAlign: 'center',
-          borderRadius: 6,
-          color: 'white',
-          background: BLACK,
-          top: top ? 60 : undefined,
-          bottom: top ? undefined : 60,
-        }}
+        className={`absolute m-0 w-[175%] rounded-md bg-[#3E3E3E] p-2 text-center text-xs text-white sm:w-[150%] sm:text-[15px] md:w-[125%] md:text-base ${
+          below ? 'top-[50px] sm:top-[60px]' : 'bottom-[50px] sm:bottom-[60px]'
+        }`}
       >
-        {children}
+        {label}
       </p>
-      <div
-        style={{
-          width: 45,
-          height: 45,
-          color: 'white',
-          zIndex: 100,
-          display: 'flex',
-          borderRadius: '50%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: RED,
-        }}
-      >
+      <div className="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#F22300] text-white sm:h-[45px] sm:w-[45px]">
         {step}
       </div>
     </li>
@@ -79,38 +35,27 @@ function TimelineItem({
 export function OverviewTimeline() {
   return (
     <ol
-      style={{
-        height: 4,
-        display: 'flex',
-        position: 'relative',
-        margin: '184px 0px',
-        padding: 0,
-        listStyle: 'none',
-        background: BLACK,
-      }}
+      aria-hidden="true"
+      className="relative my-[184px] flex h-1 list-none bg-[#3E3E3E] px-5 md:px-0"
     >
+      {/* ponytail: CSS-triangle arrowhead stays inline — Tailwind's border
+          shorthands fight over width vs colour here, and it has no breakpoints */}
       <span
         style={{
-          right: -4,
-          border: '10px solid transparent',
-          borderRadius: 3,
-          borderRight: 0,
-          borderLeft: `20px solid ${BLACK}`,
           position: 'absolute',
           top: -8,
+          right: -4,
           width: 0,
           height: 0,
           display: 'block',
+          borderRadius: 3,
+          border: '10px solid transparent',
+          borderRight: 0,
+          borderLeft: `20px solid ${BLACK}`,
         }}
       />
       {STEPS.map((label, i) => (
-        <TimelineItem
-          key={label}
-          step={i + 1}
-          position={i % 2 === 0 ? 'top' : 'bottom'}
-        >
-          {label}
-        </TimelineItem>
+        <TimelineItem key={label} step={i + 1} label={label} />
       ))}
     </ol>
   );

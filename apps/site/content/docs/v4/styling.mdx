@@ -12,7 +12,7 @@ React-pdf also sticks with the primitives specs when it comes to styling.
 
 Create a stylesheet. This method expects a valid JS object as only argument (containing as much css definitions as you want) and returns an object that you can pass down to components via the `style` prop
 
-```
+```jsx
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
@@ -40,7 +40,7 @@ ReactPDF.render(doc);
 
 There's no need to call `StyleSheet.create` in order to style components. You can also just pass a plain JS object to the `style` prop and react-pdf will get the job done.
 
-```
+```jsx
 import React from 'react';
 import { Page, Text, View, Document } from '@react-pdf/renderer';
 
@@ -61,7 +61,7 @@ const MyDocument = () => (
 
 The `style` prop also accepts an Array as value, containing any possible combination of the last two alternatives
 
-```
+```jsx
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
@@ -91,7 +91,7 @@ const MyDocument = () => (
 
 There may be times in which you'll need to apply different styles based on the document context. For that, we provide media-queries support (just as you would do it for the web!). You can query based on both `width` and `height` (min and max), and also `orientation`:
 
-```
+```jsx
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 

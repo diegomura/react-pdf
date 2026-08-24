@@ -12,8 +12,13 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/lint": "^6.9.7",
     "@react-pdf/math": "^5.0.1",
     "@react-pdf/renderer": "^4.8.0",
+    "@uiw/react-codemirror": "^4.25.11",
+    "codemirror": "^6.0.2",
     "fumadocs-core": "^16.15.1",
     "fumadocs-mdx": "^15.3.1",
     "fumadocs-ui": "^16.15.1",
@@ -21,6 +26,8 @@
     "next": "^16.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-pdf": "^10.5.0",
+    "react-resizable-panels": "^4.12.3",
     "sucrase": "^3.35.1",
     "zod": "^4.0.0"
   },

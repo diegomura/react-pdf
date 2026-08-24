@@ -9,7 +9,9 @@ const DEBOUNCE_MS = 500;
 const createWorker = () =>
   new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
-export function useRepl(code: string) {
+// Examples like font-register mutate the renderer's global Font registry, so
+// switching examples restarts the worker to drop that state.
+export function useRepl(code: string, resetKey?: unknown) {
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<{ message: string; line?: number } | null>(
     null,
@@ -26,9 +28,15 @@ export function useRepl(code: string) {
     return () => {
       worker.terminate();
       workerRef.current = null;
-      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     };
-  }, []);
+  }, [resetKey]);
+
+  useEffect(
+    () => () => {
+      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!code) {

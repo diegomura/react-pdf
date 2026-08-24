@@ -39,6 +39,7 @@ const pdf = (initialValue) => {
     const props = container.document.props || {};
     const {
       pdfVersion,
+      conformance,
       language,
       pageLayout,
       pageMode,
@@ -55,9 +56,17 @@ const pdf = (initialValue) => {
       permissions,
     } = props;
 
+    // PDF/A-1 requires PDF 1.4; PDF/A-2/3 require PDF 1.7. pdfkit defaults
+    // to 1.3, which skips writing the metadata that marks the file as PDF/A.
+    const conformancePdfVersion = conformance?.startsWith('PDF/A-1')
+      ? '1.4'
+      : '1.7';
+
     const ctx = new PDFDocument({
       compress,
-      pdfVersion,
+      subset: conformance,
+      pdfVersion:
+        pdfVersion || (conformance ? conformancePdfVersion : undefined),
       lang: language,
       displayTitle: true,
       autoFirstPage: false,

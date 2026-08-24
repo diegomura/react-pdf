@@ -7,6 +7,7 @@ import {
   PageSize,
   FontStore,
   PDFVersion,
+  PDFConformance,
   Orientation,
   SourceObject,
   SrcSet,
@@ -55,6 +56,7 @@ declare namespace ReactPDF {
     creationDate?: Date;
     modificationDate?: Date;
     pdfVersion?: PDFVersion;
+    conformance?: PDFConformance;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
     ownerPassword?: string;

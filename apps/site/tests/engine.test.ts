@@ -2,7 +2,7 @@ import type React from 'react';
 import { describe, it, expect } from 'vitest';
 
 import { transpile } from '../src/repl/transpile';
-import { evaluateDocument } from '../src/repl/evaluate';
+import { evaluateDocument, MissingModuleError } from '../src/repl/evaluate';
 
 const SAMPLE = `
 import React from 'react';
@@ -104,6 +104,34 @@ describe('evaluateDocument', () => {
   it('rejects unknown imports', () => {
     const code = transpile(`import fs from 'fs'; ReactPDF.render(null);`);
     expect(() => evaluateDocument(code)).toThrow(/Cannot import 'fs'/);
+  });
+
+  it('names the missing module so the worker can lazy-load it', () => {
+    const code = transpile(
+      `import { Math } from '@react-pdf/math'; ReactPDF.render(<Math />);`,
+    );
+
+    try {
+      evaluateDocument(code);
+      expect.unreachable();
+    } catch (error) {
+      expect(error).toBeInstanceOf(MissingModuleError);
+      expect((error as MissingModuleError).moduleName).toBe('@react-pdf/math');
+    }
+  });
+
+  it('resolves imports served by extraModules', () => {
+    const Math = ({ children }: { children: unknown }) => children;
+    const code = transpile(
+      `import { Math } from '@react-pdf/math';
+       ReactPDF.render(<Document><Math>{'E = mc^2'}</Math></Document>);`,
+    );
+
+    const element = evaluateDocument(code, {
+      '@react-pdf/math': { Math },
+    }) as React.ReactElement<{ children: React.ReactElement }>;
+
+    expect(element.props.children.type).toBe(Math);
   });
 
   it('throws when no document is rendered', () => {

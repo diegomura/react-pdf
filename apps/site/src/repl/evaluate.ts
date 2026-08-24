@@ -21,7 +21,17 @@ const GLOBAL_NAMES = ['React', 'ReactPDF', ...Object.keys(renderer)].filter(
   isValidParamName,
 );
 
-export const evaluateDocument = (compiledCode: string): React.ReactElement => {
+export class MissingModuleError extends Error {
+  constructor(readonly moduleName: string) {
+    super(`Cannot import '${moduleName}' in the REPL`);
+    this.name = 'MissingModuleError';
+  }
+}
+
+export const evaluateDocument = (
+  compiledCode: string,
+  extraModules?: Record<string, unknown>,
+): React.ReactElement => {
   let captured: React.ReactElement | null = null;
 
   const ReactPDF: Record<string, unknown> = {
@@ -39,7 +49,8 @@ export const evaluateDocument = (compiledCode: string): React.ReactElement => {
       name.startsWith('@react-pdf/renderer/')
     )
       return ReactPDF;
-    throw new Error(`Cannot import '${name}' in the REPL`);
+    if (extraModules && name in extraModules) return extraModules[name];
+    throw new MissingModuleError(name);
   };
 
   const scope: Record<string, unknown> = { ...ReactPDF, React, ReactPDF };

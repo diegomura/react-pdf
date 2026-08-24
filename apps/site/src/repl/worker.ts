@@ -3,20 +3,41 @@ import type { DocumentProps } from '@react-pdf/renderer';
 import { pdf } from '@react-pdf/renderer';
 
 import { transpile } from './transpile';
-import { evaluateDocument } from './evaluate';
+import { evaluateDocument, MissingModuleError } from './evaluate';
 
 export type ReplRequest = { id: number; code: string };
 
 export type ReplResponse =
   { id: number; url: string } | { id: number; error: string; line?: number };
 
+// mathjax is heavy, so @react-pdf/math is only pulled in once an example
+// actually imports it.
+const lazyModules: Record<string, () => Promise<unknown>> = {
+  '@react-pdf/math': () => import('@react-pdf/math'),
+};
+
+const loaded: Record<string, unknown> = {};
+
+const evaluate = async (compiledCode: string) => {
+  for (;;) {
+    try {
+      return evaluateDocument(compiledCode, loaded);
+    } catch (error) {
+      const name =
+        error instanceof MissingModuleError ? error.moduleName : undefined;
+      if (!name || !lazyModules[name] || name in loaded) throw error;
+      loaded[name] = await lazyModules[name]();
+    }
+  }
+};
+
 self.onmessage = async (event: MessageEvent<ReplRequest>) => {
   const { id, code } = event.data;
 
   try {
-    const element = evaluateDocument(
+    const element = (await evaluate(
       transpile(code),
-    ) as React.ReactElement<DocumentProps>;
+    )) as React.ReactElement<DocumentProps>;
     const blob = await pdf(element).toBlob();
 
     self.postMessage({

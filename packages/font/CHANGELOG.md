@@ -1,5 +1,14 @@
 # @react-pdf/font
 
+## 4.1.1
+
+### Patch Changes
+
+- [#3527](https://github.com/diegomura/react-pdf/pull/3527) [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61) Thanks [@diegomura](https://github.com/diegomura)! - perf: drop the omit('font') preprocessing pass, skip attachment purging when no attachment is set, reduce allocations in the Knuth-Plass main loop, and cache standard font AFM glyph-name lookups
+
+- Updated dependencies []:
+  - @react-pdf/types@2.13.1
+
 ## 4.1.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @react-pdf/render
 
+## 4.6.4
+
+### Patch Changes
+
+- Updated dependencies [[`df39d4cf2f18ee234b4f6c7674d94bdfc4742489`](https://github.com/diegomura/react-pdf/commit/df39d4cf2f18ee234b4f6c7674d94bdfc4742489), [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61), [`a291d4fb45b6260861868b973b24e9a49915f6a0`](https://github.com/diegomura/react-pdf/commit/a291d4fb45b6260861868b973b24e9a49915f6a0)]:
+  - @react-pdf/textkit@7.0.1
+  - @react-pdf/types@2.13.1
+
 ## 4.6.3
 
 ### Patch Changes

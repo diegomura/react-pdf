@@ -12,7 +12,7 @@
   --color-fd-muted-foreground: hsl(0, 0%, 43.1%);
   --color-fd-popover: hsl(0, 0%, 100%);
   --color-fd-popover-foreground: hsl(0, 0%, 24.3%);
-  --color-fd-card: hsl(0, 0%, 100%);
+  --color-fd-card: hsl(0, 0%, 98%);
   --color-fd-card-foreground: hsl(0, 0%, 24.3%);
   --color-fd-border: hsl(0, 0%, 91%);
   --color-fd-primary: hsl(8.7, 100%, 45.5%);
@@ -47,6 +47,4 @@
 
 .dark #nd-sidebar {
   --color-fd-muted: hsl(217, 15%, 8%);
-  --color-fd-secondary: hsl(217, 15%, 12%);
-  --color-fd-muted-foreground: hsl(217, 8.3%, 57.6%);
 }

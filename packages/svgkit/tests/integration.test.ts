@@ -37,6 +37,41 @@ const text = (value: string, style: any = {}): any => ({
   children: [{ type: 'TEXT_INSTANCE', value, props: {}, style: {} }],
 });
 
+const svgWithGradientPath = (): any => ({
+  type: 'SVG',
+  props: { width: 100, height: 100 },
+  style: { width: 100, height: 100 },
+  box: {},
+  children: [
+    {
+      type: 'DEFS',
+      props: {},
+      box: {},
+      children: [
+        {
+          type: 'LINEAR_GRADIENT',
+          props: { id: 'grad1' },
+          box: {},
+          children: [
+            { type: 'STOP', props: { offset: 0, stopColor: 'red' }, box: {} },
+            {
+              type: 'STOP',
+              props: { offset: 1, stopColor: 'blue' },
+              box: {},
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'PATH',
+      props: { d: 'M0 0L50 0L50 50L0 50Z', fill: 'url(#grad1)' },
+      style: {},
+      box: {},
+    },
+  ],
+});
+
 const renderToSvg = async (tree: any) => {
   const resolved = await layout(tree, fontStore);
   const ctx = new SVGDocument();
@@ -60,7 +95,30 @@ describe('svgkit integration', () => {
     );
 
     expect(pages).toHaveLength(1);
+    expect(pages[0]).toContain('#FF6347');
+    expect(pages[0]).toContain('stroke="#000000"');
     expect(pages[0]).toMatchSnapshot();
+  });
+
+  test('renders SVG path with linear gradient fill', async () => {
+    const pages = await renderToSvg(doc([svgWithGradientPath()]));
+
+    expect(pages[0]).toContain('<linearGradient');
+    expect(pages[0]).toContain('fill="url(#');
+    expect(pages[0]).toMatchSnapshot();
+  });
+
+  test('clips overflow-hidden views', async () => {
+    const pages = await renderToSvg(
+      doc([
+        view({ width: 20, height: 20, overflow: 'hidden' }, [
+          view({ width: 200, height: 200, backgroundColor: 'green' }),
+        ]),
+      ]),
+    );
+
+    expect(pages[0]).toContain('<clipPath');
+    expect(pages[0]).toContain('clip-path="url(#');
   });
 
   test('renders default-font text as positioned <text>', async () => {

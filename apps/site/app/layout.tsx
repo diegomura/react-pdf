@@ -23,7 +23,12 @@ export default function Layout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans">
-        <RootProvider theme={{ defaultTheme: 'dark' }}>{children}</RootProvider>
+        <RootProvider
+          theme={{ defaultTheme: 'dark' }}
+          search={{ enabled: false }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

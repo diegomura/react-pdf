@@ -8,6 +8,9 @@ import {
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import Link from 'next/link';
+import { GoToExample } from '@/components/go-to-example';
+import { DebugSample } from '@/components/debug-sample';
+import { OverviewTimeline } from '@/components/overview-timeline';
 
 const LATEST = 'v4';
 
@@ -19,8 +22,7 @@ export default async function Page(props: {
   if (!page) notFound();
 
   const version = params.slug?.[0];
-  const isOld =
-    version !== undefined && version !== LATEST && /^v\d+$/.test(version);
+  const isOld = version !== LATEST && /^v\d+$/.test(version ?? '');
   const MDX = page.data.body;
 
   return (
@@ -37,7 +39,14 @@ export default async function Page(props: {
         </div>
       )}
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX
+          components={{
+            ...defaultMdxComponents,
+            GoToExample,
+            DebugSample,
+            OverviewTimeline,
+          }}
+        />
       </DocsBody>
     </DocsPage>
   );

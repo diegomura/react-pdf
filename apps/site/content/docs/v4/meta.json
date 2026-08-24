@@ -1,1 +1,17 @@
-{ "title": "v4", "root": true, "pages": ["index"] }
+{
+  "title": "v4",
+  "root": true,
+  "pages": [
+    "index",
+    "compatibility",
+    "rendering-process",
+    "components",
+    "svg",
+    "form",
+    "hooks",
+    "styling",
+    "fonts",
+    "node",
+    "advanced"
+  ]
+}

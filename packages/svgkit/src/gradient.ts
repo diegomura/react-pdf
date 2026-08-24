@@ -12,6 +12,9 @@ const IDENTITY = [1, 0, 0, 1, 0, 0];
 
 class SVGGradient {
   id: string;
+  // Safe to track per-instance because render always constructs a fresh
+  // gradient per fill; reusing one across pages would dangle, since each
+  // page's <defs> is rebuilt from scratch.
   emitted = false;
 
   private kind: 'linearGradient' | 'radialGradient';

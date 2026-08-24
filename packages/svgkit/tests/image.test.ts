@@ -11,13 +11,58 @@ const PNG = Uint8Array.from(
   (c) => c.charCodeAt(0),
 );
 
+// Minimal hand-crafted JPEG: SOI + APP0 (JFIF stub) + SOF0 declaring 8x4
+const JPEG = Uint8Array.from([
+  0xff,
+  0xd8, // SOI
+  0xff,
+  0xe0,
+  0x00,
+  0x10,
+  0x4a,
+  0x46,
+  0x49,
+  0x46,
+  0x00,
+  0x01,
+  0x01,
+  0x00,
+  0x00,
+  0x01,
+  0x00,
+  0x01,
+  0x00,
+  0x00, // APP0 (JFIF)
+  0xff,
+  0xc0,
+  0x00,
+  0x0b,
+  0x08,
+  0x00,
+  0x04,
+  0x00,
+  0x08,
+  0x01,
+  0x01,
+  0x11,
+  0x00, // SOF0: precision 8, height 4, width 8
+]);
+
 describe('image helpers', () => {
   test('sniffs png dimensions', () => {
     expect(imageDimensions(PNG)).toEqual({ width: 1, height: 1 });
   });
 
+  test('sniffs jpeg dimensions from the SOF0 marker', () => {
+    expect(imageDimensions(JPEG)).toEqual({ width: 8, height: 4 });
+  });
+
   test('builds a data url from bytes', () => {
     expect(toHref(PNG)).toMatch(/^data:image\/png;base64,iVBOR/);
+  });
+
+  test('builds a data url for jpeg bytes', () => {
+    expect(toHref(JPEG)).toMatch(/^data:image\/jpeg;base64,/);
   });
 
   test('passes string sources through', () => {
@@ -25,6 +70,10 @@ describe('image helpers', () => {
       'data:image/png;base64,abc',
     );
     expect(toHref('https://x.test/a.png')).toBe('https://x.test/a.png');
+  });
+
+  test('returns empty string for unrecognized bytes', () => {
+    expect(toHref(new Uint8Array([1, 2, 3]))).toBe('');
   });
 });
 

@@ -1,7 +1,7 @@
 const BASE64_CHARS =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-const toBase64 = (bytes: Uint8Array) => {
+const toBase64Manual = (bytes: Uint8Array) => {
   let out = '';
   for (let i = 0; i < bytes.length; i += 3) {
     const a = bytes[i];
@@ -16,6 +16,14 @@ const toBase64 = (bytes: Uint8Array) => {
   return out;
 };
 
+// Buffer is a Node global, not a dependency; browser builds fall back to the manual loop
+const toBase64 = (bytes: Uint8Array) =>
+  typeof Buffer !== 'undefined'
+    ? Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString(
+        'base64',
+      )
+    : toBase64Manual(bytes);
+
 const asBytes = (data: unknown): Uint8Array | null => {
   if (data instanceof Uint8Array) return data;
   if (data instanceof ArrayBuffer) return new Uint8Array(data);
@@ -27,12 +35,24 @@ const isPng = (bytes: Uint8Array) =>
 
 const isJpeg = (bytes: Uint8Array) => bytes[0] === 0xff && bytes[1] === 0xd8;
 
+// Keyed on the source bytes object so a logo repeated across pages/attachments
+// (which never goes through render's imageCache) is only base64-encoded once.
+const hrefCache = new WeakMap<object, string>();
+
 export const toHref = (data: unknown): string => {
   if (typeof data === 'string') return data;
   const bytes = asBytes(data);
   if (!bytes) return '';
-  const mime = isPng(bytes) ? 'image/png' : 'image/jpeg';
-  return `data:${mime};base64,${toBase64(bytes)}`;
+
+  // Cache on the original object (data), not the derived `bytes` view: an
+  // ArrayBuffer source gets a fresh Uint8Array wrapper on every call.
+  const cacheKey = data as object;
+  if (hrefCache.has(cacheKey)) return hrefCache.get(cacheKey)!;
+
+  const mime = isPng(bytes) ? 'image/png' : isJpeg(bytes) ? 'image/jpeg' : null;
+  const href = mime ? `data:${mime};base64,${toBase64(bytes)}` : '';
+  hrefCache.set(cacheKey, href);
+  return href;
 };
 
 const readUInt32BE = (bytes: Uint8Array, offset: number) =>

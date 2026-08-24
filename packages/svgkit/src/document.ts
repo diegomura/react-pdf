@@ -180,6 +180,9 @@ class SVGDocument {
     });
   }
 
+  // `obj: null` + a no-op `embed` satisfy drawImage.ts's pdfkit embedding
+  // protocol (it calls `.embed(ctx)` when `.obj` is falsy) without doing any
+  // work here — the actual SVG <image> element is only built in `image()`.
   openImage(src: unknown): EmbeddedImage {
     const { width = 0, height = 0 } = imageDimensions(src) ?? {};
     return { width, height, src, obj: null, embed: () => {} };
@@ -197,7 +200,12 @@ class SVGDocument {
     let posX = x;
     let posY = y;
 
-    if (options.fit && intrinsic) {
+    if (
+      options.fit &&
+      intrinsic &&
+      intrinsic.width > 0 &&
+      intrinsic.height > 0
+    ) {
       const scale = Math.min(
         options.fit[0] / intrinsic.width,
         options.fit[1] / intrinsic.height,

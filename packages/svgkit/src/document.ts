@@ -8,6 +8,12 @@ import {
 import SVGGradient from './gradient';
 import { imageDimensions, toHref } from './image';
 import serialize from './serialize';
+import {
+  SVGGlyph,
+  SVGGlyphPosition,
+  resolveFontFace,
+  unitsPerEmOf,
+} from './text';
 
 export type SVGDocumentOptions = {
   /** Prepended to generated ids so multiple documents can coexist in one DOM */
@@ -552,6 +558,116 @@ class SVGDocument {
     appendChild(clipPath, pathEl);
     appendChild(this.defs, clipPath);
     return this.openGroup({ 'clip-path': `url(#${id})` });
+  }
+
+  font(src: unknown, size?: number) {
+    this._font = src;
+    if (typeof size === 'number') this._fontSize = size;
+    return this;
+  }
+
+  fontSize(size: number) {
+    this._fontSize = size;
+    return this;
+  }
+
+  protected applyTextFont(el: SVGElementNode) {
+    const face = resolveFontFace(this._font);
+    setAttribute(el, 'font-family', face.family);
+    setAttribute(el, 'font-size', fmt(this._fontSize));
+    if (face.bold) setAttribute(el, 'font-weight', 'bold');
+    if (face.italic) setAttribute(el, 'font-style', 'italic');
+  }
+
+  glyphs(
+    glyphs: SVGGlyph[],
+    positions: SVGGlyphPosition[],
+    x: number,
+    y: number,
+  ) {
+    if (glyphs.length === 0) return this;
+
+    const fontSize = this._fontSize;
+    // Matches the offset scaling renderGlyphs.ts applies on the PDF side
+    // (a quirk of that path, kept here so SVG output lines up with PDF output).
+    const offsetScale = fontSize / 1000;
+
+    if (!glyphs[0].path)
+      return this.glyphsAsText(glyphs, positions, x, y, offsetScale);
+
+    const scale = fontSize / unitsPerEmOf(this._font);
+    const group = createElement('g');
+    setAttribute(group, 'fill', this.resolvePaint(this.style.fillColor));
+    const fillOpacity = this.style.fillOpacity * this.style.opacity;
+    if (fillOpacity !== 1)
+      setAttribute(group, 'fill-opacity', fmt(fillOpacity));
+
+    let pen = x;
+    for (let i = 0; i < glyphs.length; i += 1) {
+      const pos = positions[i];
+      const d = glyphs[i].path?.toSVG();
+      if (d) {
+        const gx = pen + (pos.xOffset || 0) * offsetScale;
+        const gy = y - (pos.yOffset || 0) * offsetScale;
+        const el = createElement('path');
+        setAttribute(el, 'd', d);
+        setAttribute(
+          el,
+          'transform',
+          `translate(${fmt(gx)} ${fmt(gy)}) scale(${fmt(scale)} ${fmt(-scale)})`,
+        );
+        appendChild(group, el);
+      }
+      pen += pos.xAdvance || 0;
+    }
+
+    appendChild(this.container, group);
+    return this;
+  }
+
+  protected glyphsAsText(
+    glyphs: SVGGlyph[],
+    positions: SVGGlyphPosition[],
+    x: number,
+    y: number,
+    offsetScale: number,
+  ) {
+    const xs: (string | number)[] = [];
+    let text = '';
+    let pen = x;
+
+    for (let i = 0; i < glyphs.length; i += 1) {
+      const codePoints = glyphs[i].codePoints ?? [];
+      // Multi-codepoint glyphs share one x; only matters past the standard 14.
+      text += String.fromCodePoint(...codePoints);
+      const gx = pen + (positions[i].xOffset || 0) * offsetScale;
+      codePoints.forEach(() => xs.push(fmt(gx)));
+      pen += positions[i].xAdvance || 0;
+    }
+
+    const el = createElement('text');
+    setAttribute(el, 'x', xs.join(' '));
+    setAttribute(el, 'y', fmt(y));
+    this.applyTextFont(el);
+    setAttribute(el, 'fill', this.resolvePaint(this.style.fillColor));
+    const fillOpacity = this.style.fillOpacity * this.style.opacity;
+    if (fillOpacity !== 1) setAttribute(el, 'fill-opacity', fmt(fillOpacity));
+    setAttribute(el, 'xml:space', 'preserve');
+    appendChild(el, text);
+    appendChild(this.container, el);
+    return this;
+  }
+
+  text(value: string, x = 0, y = 0) {
+    const el = createElement('text');
+    setAttribute(el, 'x', fmt(x));
+    setAttribute(el, 'y', fmt(y));
+    this.applyTextFont(el);
+    setAttribute(el, 'fill', this.resolvePaint(this.style.fillColor));
+    setAttribute(el, 'xml:space', 'preserve');
+    appendChild(el, value);
+    appendChild(this.container, el);
+    return this;
   }
 }
 

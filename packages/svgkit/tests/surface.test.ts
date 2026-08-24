@@ -65,13 +65,15 @@ describe('ctx surface', () => {
   test('implements every method render can call', () => {
     const doc: any = new SVGDocument();
     CTX_METHODS.forEach((method) => {
-      expect(typeof doc[method]).toBe('function');
+      // eslint-disable-next-line vitest/valid-expect -- message arg identifies the failing method in CI output
+      expect(typeof doc[method], method).toBe('function');
     });
     expect(typeof doc._fieldDict).toBe('function');
     expect(typeof doc._addToParent).toBe('function');
     expect(doc.info).toEqual({});
     expect(doc._root.data).toEqual({});
     expect(doc._imageRegistry).toEqual({});
+    expect(doc._acroform.fonts).toEqual({});
     expect(doc.outline.addItem('title', {}).addItem('nested', {})).toBe(
       doc.outline,
     );

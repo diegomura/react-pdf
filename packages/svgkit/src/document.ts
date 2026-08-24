@@ -88,6 +88,8 @@ class SVGDocument {
   // render checks ctx._root.data.AcroForm before drawing form fields
   _root = { data: {} as Record<string, unknown> };
   _imageRegistry: Record<string, unknown> = {};
+  // parseFormOptions reads/writes ctx._acroform.fonts.ZaDi unconditionally for Checkbox nodes
+  _acroform: { fonts: Record<string, unknown> } = { fonts: {} };
   _font: unknown = null;
   _fontSize = 12;
 

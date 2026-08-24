@@ -373,7 +373,10 @@ class SVGDocument {
     let rule: string | null = null;
 
     if (this.isWindingRule(arg)) rule = this.normalizeRule(arg);
-    else if (arg != null && mode !== 'stroke') this.fillColor(arg as string);
+    else if (arg != null && mode === 'fillAndStroke') {
+      this.fillColor(arg as string);
+      this.strokeColor(arg as string);
+    } else if (arg != null && mode !== 'stroke') this.fillColor(arg as string);
     else if (arg != null) this.strokeColor(arg as string);
 
     const d = this.takePath();

@@ -62,6 +62,14 @@ describe('paths', () => {
     );
   });
 
+  test('fillAndStroke with a color paints both sides', () => {
+    const doc = makeDoc();
+    doc.rect(0, 0, 1, 1).fillAndStroke('#123456');
+    const content = pageContent(doc);
+    expect(content).toContain('fill="#123456"');
+    expect(content).toContain('stroke="#123456"');
+  });
+
   test('undash clears the dash pattern', () => {
     const doc = makeDoc();
     doc.dash([1, 2]).undash();

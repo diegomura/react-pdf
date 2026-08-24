@@ -18,7 +18,9 @@ describe('legacy redirects', () => {
   it('maps every legacy top-level docs URL to /docs/v4', async () => {
     const redirects = await config.redirects!();
     for (const slug of LEGACY) {
-      const r = redirects.find((x: { source: string }) => x.source === `/${slug}`);
+      const r = redirects.find(
+        (x: { source: string }) => x.source === `/${slug}`,
+      );
       expect(r, `missing redirect for /${slug}`).toBeDefined();
       expect(r!.destination).toBe(`/docs/v4/${slug}`);
       expect(r!.permanent).toBe(true);

@@ -23,7 +23,11 @@ const purgeAttachments = (line: AttributedString) => {
 
   if (!shouldPurge) return line;
 
-  const runs = line.runs.map((run) => omit('attachment', run));
+  // applyDefaultStyles materializes `attachment: null` on every run, so only
+  // pay for the omit copy when an attachment is actually set.
+  const runs = line.runs.map((run) =>
+    run.attributes?.attachment ? omit('attachment', run) : run,
+  );
 
   return Object.assign({}, line, { runs });
 };

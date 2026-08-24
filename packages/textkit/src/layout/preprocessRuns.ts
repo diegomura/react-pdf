@@ -1,20 +1,9 @@
 import { isNil } from '@react-pdf/fns';
 
-import omit from '../run/omit';
 import flatten from '../run/flatten';
 import empty from '../attributedString/empty';
 import { AttributedString } from '../types';
 import type { Engines } from '../engines';
-
-/**
- *
- * @param attributedString
- * @returns Attributed string without font
- */
-const omitFont = (attributedString: AttributedString): AttributedString => {
-  const runs = attributedString.runs.map((run) => omit('font', run));
-  return Object.assign({}, attributedString, { runs });
-};
 
 type ProcessRunsEngines = Pick<
   Engines,
@@ -37,15 +26,18 @@ const preprocessRuns = (engines: ProcessRunsEngines) => {
     const { string } = attributedString;
     const { fontSubstitution, scriptItemizer, bidi } = engines;
 
-    const { runs: omittedFontRuns } = omitFont(attributedString);
     const { runs: itemizationRuns } = scriptItemizer()(attributedString);
     const { runs: substitutedRuns } = fontSubstitution()(attributedString);
     const { runs: bidiRuns } = bidi()(attributedString);
 
-    const runs = bidiRuns
-      .concat(substitutedRuns)
+    // In flatten, later runs win the attribute merge. Substituted runs go
+    // last so their resolved font (and scale) override the base runs' font
+    // descriptors, which lets us keep the base runs as-is instead of
+    // stripping `font` from every one of them.
+    const runs = attributedString.runs
+      .concat(bidiRuns)
       .concat(itemizationRuns)
-      .concat(omittedFontRuns);
+      .concat(substitutedRuns);
 
     return { string, runs: flatten(runs) } as AttributedString;
   };

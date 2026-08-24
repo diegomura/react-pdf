@@ -14,5 +14,7 @@ describe('renderGlyphs ctx.glyphs seam', () => {
 
     expect(ctx.glyphs).toHaveBeenCalledWith(glyphs, positions, 5, 6);
     expect(ctx.addContent).not.toHaveBeenCalled();
+    expect(ctx.glyphs.mock.calls[0][0]).toBe(glyphs);
+    expect(ctx.glyphs.mock.calls[0][1]).toBe(positions);
   });
 });

@@ -18,7 +18,7 @@ export type Context = typeof PDFKitDocument & {
   font(src: PDFFontSource, size?: number): Context;
   font(src: PDFFontSource, family: string, size?: number): Context;
 
-  /** SVG-backend capability: receives raw textkit glyphs instead of PDF operators */
+  /** SVG-backend capability: receives raw textkit glyphs instead of PDF operators. Implemented by @react-pdf/svgkit's SVGDocument; when unset, the pdfkit glyph-encoding path runs. */
   glyphs?: (
     glyphs: Glyph[],
     positions: Position[],

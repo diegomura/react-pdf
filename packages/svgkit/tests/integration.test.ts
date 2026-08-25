@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 import layout from '@react-pdf/layout';
@@ -5,7 +7,15 @@ import render from '@react-pdf/render';
 
 import SVGDocument from '../src/index';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const fontStore = new FontStore();
+
+fontStore.register({
+  family: 'TestFont',
+  src: path.join(__dirname, './assets/font.ttf'),
+});
 
 const doc = (children: any[], pageProps: any = {}): any => ({
   type: 'DOCUMENT',
@@ -130,6 +140,16 @@ describe('svgkit integration', () => {
     expect(pages[0]).toContain('Hello World');
     expect(pages[0]).toContain('font-family="Helvetica, Arial, sans-serif"');
     expect(pages[0]).toMatchSnapshot();
+  });
+
+  test('renders registered-font text as glyph outline paths', async () => {
+    const pages = await renderToSvg(
+      doc([text('Hi', { fontSize: 14, fontFamily: 'TestFont' })]),
+    );
+
+    expect(pages[0]).toContain('<path');
+    expect(pages[0]).toMatch(/transform="translate\([^)]+\) scale\([^)]+\)"/);
+    expect(pages[0]).not.toContain('<text');
   });
 
   test('renders multiple pages to multiple svgs', async () => {

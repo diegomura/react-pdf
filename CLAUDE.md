@@ -36,7 +36,8 @@ The library works as a pipeline: React components → reconciler → layout → 
   │     ├── @react-pdf/image       → PNG/JPEG image fetching and parsing
   │     └── @react-pdf/font        → Font loading, registration, emoji support
   ├── @react-pdf/render        → Renders resolved layout tree to PDF drawing operations
-  │     └── pdfkit                 → Low-level PDF generation
+  │     ├── pdfkit                 → Low-level PDF generation
+  │     └── @react-pdf/svgkit      → (consumer-supplied ctx) renders the same tree to SVG strings
   └── @react-pdf/primitives    → Shared component type constants
 ```
 

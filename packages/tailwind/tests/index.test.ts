@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { createTw } from '../src';
-import { rem } from '../src/utils';
+import { rem, round } from '../src/utils';
 
 const colors = [
   ['inherit', 'inherit'],
@@ -172,6 +172,43 @@ describe('Layout', () => {
     test.each([['absolute'], ['relative']])('%s', (value) => {
       expect(tw(value)).toEqual({
         position: value,
+      });
+    });
+  });
+
+  describe('aspect-ratio', () => {
+    test.each([
+      ['square', 1],
+      ['video', 16 / 9],
+      ['[4/3]', 4 / 3],
+      ['[16/10]', 1.6],
+      ['[2]', 2],
+      ['3/2', 1.5],
+    ])('%s', (key, value) => {
+      expect(tw(`aspect-${key}`)).toEqual({
+        aspectRatio: round(value as number),
+      });
+    });
+
+    // react-pdf has no style value meaning "no aspect ratio"; omitting the
+    // property is the reset.
+    test('auto is unsupported', () => {
+      expect(tw('aspect-auto')).toEqual({});
+    });
+  });
+
+  describe('float', () => {
+    test.each([['left'], ['right'], ['none']])('%s', (value) => {
+      expect(tw(`float-${value}`)).toEqual({
+        float: value,
+      });
+    });
+  });
+
+  describe('clear', () => {
+    test.each([['left'], ['right'], ['both'], ['none']])('%s', (value) => {
+      expect(tw(`clear-${value}`)).toEqual({
+        clear: value,
       });
     });
   });
@@ -620,6 +657,22 @@ describe('Sizing', () => {
       });
     });
   });
+
+  describe('size', () => {
+    test.each([
+      ['0', 0],
+      ['px', 1],
+      ['4', rem(1)],
+      ['1/2', '50%'],
+      ['full', '100%'],
+      ['[3rem]', rem(3)],
+    ])('%s', (key, value) => {
+      expect(tw(`size-${key}`)).toEqual({
+        width: value,
+        height: value,
+      });
+    });
+  });
 });
 
 describe('Typography', () => {
@@ -838,6 +891,48 @@ describe('Typography', () => {
     ])('%s', (key, value) => {
       expect(tw(key)).toEqual({
         textTransform: value,
+      });
+    });
+  });
+
+  describe('line-clamp', () => {
+    test.each([
+      ['1', 1],
+      ['3', 3],
+      ['6', 6],
+      ['[10]', 10],
+    ])('%s', (key, value) => {
+      expect(tw(`line-clamp-${key}`)).toEqual({
+        maxLines: value,
+      });
+    });
+
+    // textkit treats only a nil maxLines as unlimited, so 0 would clamp to
+    // zero lines rather than reset.
+    test('none is unsupported', () => {
+      expect(tw('line-clamp-none')).toEqual({});
+    });
+  });
+
+  describe('font-variant-numeric', () => {
+    test.each([
+      ['ordinal', 'ordn'],
+      ['slashed-zero', 'zero'],
+      ['lining-nums', 'lnum'],
+      ['oldstyle-nums', 'onum'],
+      ['proportional-nums', 'pnum'],
+      ['tabular-nums', 'tnum'],
+      ['diagonal-fractions', 'frac'],
+      ['stacked-fractions', 'afrc'],
+    ])('%s', (key, value) => {
+      expect(tw(key)).toEqual({
+        fontFeatureSettings: [value],
+      });
+    });
+
+    test('stacks tags', () => {
+      expect(tw('tabular-nums slashed-zero ordinal')).toEqual({
+        fontFeatureSettings: ['tnum', 'zero', 'ordn'],
       });
     });
   });
@@ -1180,6 +1275,44 @@ describe('Transforms', () => {
     });
   });
 
+  describe('skew', () => {
+    const scale = [
+      [0, '0deg'],
+      [1, '1deg'],
+      [2, '2deg'],
+      [3, '3deg'],
+      [6, '6deg'],
+      [12, '12deg'],
+      ['[7deg]', '7deg'],
+    ];
+
+    // Both axes, spelled with two args because react-pdf reads skew's y from
+    // the second one instead of defaulting it to x.
+    test.each(scale)('%s', (key, value) => {
+      expect(tw(`skew-${key}`)).toEqual({
+        transform: `skew(${value}, ${value})`,
+      });
+    });
+
+    test.each(scale)('x-%s', (key, value) => {
+      expect(tw(`skew-x-${key}`)).toEqual({
+        transform: `skewX(${value})`,
+      });
+    });
+
+    test.each(scale)('y-%s', (key, value) => {
+      expect(tw(`skew-y-${key}`)).toEqual({
+        transform: `skewY(${value})`,
+      });
+    });
+
+    test('negative', () => {
+      expect(tw('-skew-x-3')).toEqual({
+        transform: 'skewX(-3deg)',
+      });
+    });
+  });
+
   describe('translate', () => {
     const scale = [
       ['1/2', '50%'],
@@ -1264,6 +1397,12 @@ describe('Combinations', () => {
       transform: `translate(${rem(-0.25)}) scale(-0.5) rotate(-45deg)`,
       order: -1,
       margin: rem(-0.5),
+    });
+  });
+
+  test('Transform chain', () => {
+    expect(tw('rotate-45 skew-x-3 scale-50')).toEqual({
+      transform: 'rotate(45deg) skewX(3deg) scale(0.5)',
     });
   });
 });

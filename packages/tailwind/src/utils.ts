@@ -31,3 +31,24 @@ export function rem(value: number, ptPerRem: number = PT_PER_REM) {
 export function px(value: number) {
   return round(PT_PER_PX * value);
 }
+
+// react-pdf resolves aspectRatio with parseFloat, so "16 / 9" has to be
+// collapsed to a single number here rather than passed through.
+export function parseRatio(value: unknown) {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : undefined;
+  }
+
+  if (typeof value !== 'string') return undefined;
+
+  const parts = value.split('/').map((part) => Number(part.trim()));
+  const width = parts[0];
+  const height = parts[1];
+
+  if (width === undefined || !Number.isFinite(width)) return undefined;
+  if (height === undefined) return width;
+
+  return Number.isFinite(height) && height !== 0
+    ? round(width / height)
+    : undefined;
+}

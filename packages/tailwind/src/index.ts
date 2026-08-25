@@ -7,7 +7,14 @@ import {
   isScaledProperty,
   utilityPatterns,
 } from './properties';
-import { capitalize, ExtendableDeepPartial, isNumeric, px, rem } from './utils';
+import {
+  capitalize,
+  ExtendableDeepPartial,
+  isNumeric,
+  parseRatio,
+  px,
+  rem,
+} from './utils';
 
 type DefaultTheme = typeof defaultTheme;
 
@@ -493,6 +500,42 @@ export function createTw(
         };
       }
 
+      case 'skew': {
+        const direction = ['x', 'y'].find((i) => i === utilityParts[1]);
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
+        const { value } = parseValue(valueStr, 'skew', isNegative);
+        switch (direction) {
+          case 'x':
+            return {
+              transform: `skewX(${value})`,
+            };
+          case 'y':
+            return {
+              transform: `skewY(${value})`,
+            };
+          default:
+            // Bare `skew-*` skews both axes. Spelled with two args because
+            // react-pdf reads skew's y from the second one rather than
+            // defaulting it to x.
+            return {
+              transform: `skew(${value}, ${value})`,
+            };
+        }
+      }
+
+      case 'aspect': {
+        const valueStr = utilityParts.slice(1).join('-');
+        const themeRatio = theme.aspectRatio as
+          | Record<string, unknown>
+          | undefined;
+        // Falling through to valueStr covers bare fractions like `aspect-3/2`,
+        // which the theme doesn't enumerate.
+        const ratio = parseRatio(
+          getCustomValue(valueStr) ?? themeRatio?.[valueStr] ?? valueStr,
+        );
+        return ratio === undefined ? undefined : { aspectRatio: ratio };
+      }
+
       case 'translate': {
         const direction = ['x', 'y'].find((i) => i === utilityParts[1]);
         const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
@@ -552,6 +595,22 @@ export function createTw(
             ...(transform
               ? { transform: [acc.transform ?? '', transform].join(' ').trim() }
               : null),
+            ...rest,
+          };
+        }
+        // font-variant-numeric utilities stack in Tailwind, so their tags
+        // accumulate rather than the last class winning.
+        if ('fontFeatureSettings' in val) {
+          const { fontFeatureSettings, ...rest } = val;
+          const previous = acc.fontFeatureSettings;
+          const tags = Array.isArray(fontFeatureSettings)
+            ? fontFeatureSettings
+            : [];
+          return {
+            ...acc,
+            fontFeatureSettings: Array.isArray(previous)
+              ? [...previous, ...tags]
+              : tags,
             ...rest,
           };
         }

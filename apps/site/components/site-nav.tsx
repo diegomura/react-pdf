@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import logo from '@/public/logo.png';
 import { ChevronDown, Moon, Search, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
@@ -16,9 +18,10 @@ export function Wordmark({ href = '/' }: React.ComponentProps<'a'>) {
   return (
     <Link
       href={href}
-      className="text-fd-foreground text-[0.9375rem] font-semibold tracking-tight"
+      className="text-fd-foreground flex items-center gap-2 text-[0.9375rem] font-semibold tracking-tight"
     >
-      react<span className="text-fd-primary">-</span>pdf
+      <Image src={logo} alt="" width={22} height={20} priority />
+      react-pdf
     </Link>
   );
 }

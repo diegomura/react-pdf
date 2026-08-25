@@ -17,6 +17,14 @@ export const metadata = {
   },
   description:
     'React renderer for creating PDF files on the browser and server.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -28,7 +36,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     >
       <body className="flex min-h-screen flex-col font-sans">
         <RootProvider
-          theme={{ defaultTheme: 'dark' }}
+          theme={{ defaultTheme: 'light' }}
           search={{ SearchDialog: VersionedSearchDialog }}
         >
           {children}

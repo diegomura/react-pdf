@@ -36,24 +36,31 @@ export async function Usage({
   });
 
   return (
-    <details className="group my-6">
-      <summary className="text-fd-muted-foreground hover:text-fd-foreground focus-visible:ring-fd-ring inline-flex cursor-pointer list-none items-center gap-1.5 rounded-sm text-[0.8125rem] transition-colors outline-none focus-visible:ring-2 [&::-webkit-details-marker]:hidden">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden
-          className="size-3.5 shrink-0 transition-transform group-open:rotate-180"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-        <span className="group-open:hidden">View code</span>
-        <span className="hidden group-open:inline">Hide code</span>
+    <details className="group border-fd-border my-6 overflow-hidden rounded-xl border">
+      <summary className="text-fd-muted-foreground hover:text-fd-foreground bg-fd-card focus-visible:ring-fd-ring flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 text-[0.8125rem] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-inset [&::-webkit-details-marker]:hidden">
+        <span className="font-medium">Usage</span>
+
+        <span className="inline-flex items-center gap-1.5">
+          <span className="group-open:hidden">Show code</span>
+          <span className="hidden group-open:inline">Hide code</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            className="size-3.5 shrink-0 transition-transform group-open:rotate-180"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
       </summary>
-      {highlighted}
+
+      <div className="rp-example-code border-fd-border border-t">
+        {highlighted}
+      </div>
     </details>
   );
 }

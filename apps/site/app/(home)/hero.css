@@ -1,11 +1,9 @@
 /* Hero-only atmosphere. Kept out of global.css so the landing page owns it. */
 
-/* The backdrop is a printed page, not a graph: warm stock, a grain, and one
-   set of hairline rings sweeping out of the corner — the same gesture the
-   example poster makes. Every layer dies out before it reaches the panel. */
-
-/* Legacy corner-graphics palette, dialled well down: the original was a narrow
-   strip at full saturation, this spans the viewport. */
+/* The page keeps the plain site background; the only decoration is the legacy
+   corner-graphics motif, dialled well down — the original was a narrow strip
+   at full saturation and this spans the viewport. It fades out well before it
+   reaches the panel. */
 .hero-shards {
   --shard-red: color-mix(in srgb, #f22300 32%, transparent);
   --shard-deep: color-mix(in srgb, #8d1602 30%, transparent);
@@ -24,25 +22,6 @@
 /* the left cluster is a quieter echo, so the corners don't read as a matched pair */
 .hero-shard-left {
   opacity: 0.5;
-}
-
-.hero-veil {
-  background-color: color-mix(in srgb, #c98a5e 8%, transparent);
-  mask-image: linear-gradient(to bottom, #000 52%, transparent);
-}
-
-.dark .hero-veil {
-  background-color: color-mix(in srgb, #c98a5e 5%, transparent);
-}
-
-.hero-grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.055;
-  mask-image: linear-gradient(to bottom, #000 60%, transparent);
-}
-
-.dark .hero-grain {
-  opacity: 0.05;
 }
 
 .hero-arcs {

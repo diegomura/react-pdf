@@ -20,8 +20,6 @@ const FEATURES = [
 const buttonBase =
   'inline-flex h-9 items-center justify-center rounded-md px-4 text-[0.8125rem] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:ring-offset-2 focus-visible:ring-offset-fd-background';
 
-const layer = 'pointer-events-none absolute inset-x-0 top-0 -z-10 h-[44rem]';
-
 /**
  * The legacy react-pdf.org corner decoration — angular shards radiating from
  * the top corners — redrawn as vectors. The original ran full-strength red in
@@ -41,10 +39,22 @@ function Shards() {
       <g className="hero-shard-right">
         <polygon points="1440,0 1198,0 1440,330" fill="var(--shard-red)" />
         <polygon points="1440,0 1310,0 1440,120" fill="var(--shard-deep)" />
-        <polygon points="1268,0 1198,0 1440,330 1440,392" fill="var(--shard-deep)" />
-        <polygon points="1198,0 1156,0 1416,412 1440,392" fill="var(--shard-pale)" />
-        <polygon points="1156,0 1120,0 1392,470 1416,412" fill="var(--shard-warm)" />
-        <polygon points="1120,0 1094,0 1370,544 1392,470" fill="var(--shard-pale)" />
+        <polygon
+          points="1268,0 1198,0 1440,330 1440,392"
+          fill="var(--shard-deep)"
+        />
+        <polygon
+          points="1198,0 1156,0 1416,412 1440,392"
+          fill="var(--shard-pale)"
+        />
+        <polygon
+          points="1156,0 1120,0 1392,470 1416,412"
+          fill="var(--shard-warm)"
+        />
+        <polygon
+          points="1120,0 1094,0 1370,544 1392,470"
+          fill="var(--shard-pale)"
+        />
       </g>
       <g className="hero-shard-left">
         <polygon points="0,0 214,0 0,262" fill="var(--shard-red)" />
@@ -57,13 +67,7 @@ function Shards() {
 }
 
 function Backdrop() {
-  return (
-    <>
-      <div aria-hidden className={`hero-veil ${layer}`} />
-      <Shards />
-      <div aria-hidden className={`hero-grain ${layer}`} />
-    </>
-  );
+  return <Shards />;
 }
 
 export default function HomePage() {

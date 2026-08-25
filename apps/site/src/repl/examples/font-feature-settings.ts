@@ -2,7 +2,7 @@ const font_feature_settings = `Font.register({
   family: 'Inter',
   fonts: [
     {
-      src: \`fonts/Inter-Regular.ttf\`
+      src: \`/fonts/Inter-Regular.ttf\`
     }
   ]
 })

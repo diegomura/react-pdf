@@ -4,16 +4,16 @@ const picker_formlist = `const Combos = () => {
   
   return (
     <View>
-      <Text style={styles.break}>Country-Picker:</Text>
-      <Picker
+      <Text style={styles.break}>Country-Select:</Text>
+      <Select
         name="countries"
         select={['Choose a country', ...countries]}
         value="Choose a country"
         defaultValue="Choose a country"
         style={[styles.picker, styles.break]}
         />
-      <Text style={styles.break}>Country-FormList:</Text>
-      <FormList
+      <Text style={styles.break}>Country-List:</Text>
+      <List
         name="countries"
         select={countries}
         style={[styles.formlist, styles.break]}

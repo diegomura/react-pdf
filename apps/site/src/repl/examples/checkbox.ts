@@ -17,23 +17,23 @@ const checkbox = `const Multichoice = () => {
       </Question>
       
       <FreeSpace free={250}/>
-      <FormField style={[styles.inlineFlex, styles.break]} name="read">
+      <FieldSet style={[styles.inlineFlex, styles.break]} name="read">
           <Text>I have read all the questions above: </Text>
           <Checkbox checked required style={styles.checkbox} />
-      </FormField>
-      <FormField style={[styles.inlineFlex, styles.break]} name="knowledge">
+      </FieldSet>
+      <FieldSet style={[styles.inlineFlex, styles.break]} name="knowledge">
           <Text>I only used my own knowledge to answer the questions: </Text>
           <Checkbox required style={styles.checkbox} />
-      </FormField>
+      </FieldSet>
     </View>
   )
 };
 
 const Question = (props) => (
-  <FormField name={props.name} style={styles.break}>
+  <FieldSet name={props.name} style={styles.break}>
     <Text style={[styles.question, styles.break]}>{props.children}</Text>
   	<Answers choices={props.answers}/>
-  </FormField>
+  </FieldSet>
 )
 
 const Answers = (props) => (

@@ -10,6 +10,7 @@ import { transpile } from '../src/repl/transpile';
 import { evaluateDocument } from '../src/repl/evaluate';
 
 const DOCS = path.join(import.meta.dirname, '../content/docs');
+const PUBLIC = path.join(import.meta.dirname, '../public');
 
 const walk = (dir: string): string[] =>
   fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
@@ -17,6 +18,16 @@ const walk = (dir: string): string[] =>
     if (e.isDirectory()) return walk(p);
     return e.name.endsWith('.mdx') ? [p] : [];
   });
+
+// The worker resolves these against the site origin at runtime; Node has no
+// origin, so point them at the public/ directory on disk for a node-side
+// check. Anchored to a quote so it doesn't also rewrite a `/fonts/` or
+// `/images/` segment inside an unrelated remote URL.
+const toFsPaths = (source: string) =>
+  source.replace(
+    /(["'`])\/(images|fonts)\//g,
+    (_, quote, dir) => `${quote}${PUBLIC}/${dir}/`,
+  );
 
 // mathjax is lazy-loaded in the worker, so the sweep resolves it with a stub.
 const stubModules = { '@react-pdf/math': { Math: () => null } };
@@ -45,6 +56,72 @@ test('every named GoToExample in the docs resolves to an example', () => {
   }
 
   expect([...missing]).toEqual([]);
+});
+
+test('every /images and /fonts path referenced by an example exists in public/', () => {
+  const missing: string[] = [];
+
+  for (const [name, source] of Object.entries(examples)) {
+    for (const [, assetPath] of source.matchAll(
+      /["'`](\/(?:images|fonts)\/[^"'`]+)["'`]/g,
+    )) {
+      if (!fs.existsSync(path.join(PUBLIC, assetPath)))
+        missing.push(`${name}: ${assetPath}`);
+    }
+  }
+
+  expect(missing).toEqual([]);
+});
+
+// These 6 examples 404'd or hard-errored on a cold /repl visit before the
+// public/ assets and PATCHES renames landed. Render for real (not just
+// evaluate) so a broken asset path or stale component name shows up here
+// instead of in the browser.
+test('previously-broken examples render to a real PDF', async () => {
+  const names = [
+    'page-wrap',
+    'page-breaks',
+    'breakable-unbreakable',
+    'images',
+    'font-register',
+    'font-feature-settings',
+    'checkbox',
+    'formfield',
+    'picker-formlist',
+  ];
+  const failures: string[] = [];
+
+  for (const name of names) {
+    try {
+      const element = evaluateDocument(
+        transpile(toFsPaths(examples[name])),
+      ) as React.ReactElement<DocumentProps>;
+      const buffer = await renderToBuffer(element);
+      if (buffer.length < 500) failures.push(`${name}: suspiciously small`);
+    } catch (error) {
+      failures.push(`${name}: ${(error as Error).message}`);
+    }
+  }
+
+  expect(failures).toEqual([]);
+});
+
+// `resume` is fixed as far as example content goes (Lato is registered, the
+// dead remote photo is swapped for a local one via PATCHES), but it still
+// crashes: @react-pdf/layout loses a Text node's wrapper when pagination
+// strands it alone as a trailing page's only content, producing a bare
+// TEXT_INSTANCE with no `.box`. Reproducible independent of font/image
+// content — see the PR description for the minimal repro. This is a
+// genuine upstream bug, not an example-content problem, so it's tracked
+// here instead of silently passing.
+test('resume still fails on a genuine @react-pdf/layout pagination bug', async () => {
+  const element = evaluateDocument(
+    transpile(toFsPaths(examples['resume'])),
+  ) as React.ReactElement<DocumentProps>;
+
+  await expect(renderToBuffer(element)).rejects.toThrow(
+    "Cannot read properties of undefined (reading 'height')",
+  );
 });
 
 test('the math example renders with the real lazy-loaded package', async () => {

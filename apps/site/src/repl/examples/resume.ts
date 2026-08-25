@@ -1,4 +1,6 @@
-const resume = `const styles = StyleSheet.create({
+const resume = `Font.register({ family: 'Lato', src: 'https://raw.githubusercontent.com/google/fonts/main/ofl/lato/Lato-Regular.ttf' });
+
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     '@media max-width: 400': {
@@ -307,7 +309,7 @@ const resume = (
     <View style={styles.container}>
       <View style={styles.leftColumn}>
         <Image
-          src="https://images.gr-assets.com/characters/1264613782p8/1783.jpg"
+          src="/images/luke.jpg"
           style={styles.image}
         />
         <Education />

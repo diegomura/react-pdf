@@ -1,5 +1,5 @@
 const formfield = `const Address = (props) => (
-  <FormField name={props.name.toLowerCase()}>
+  <FieldSet name={props.name.toLowerCase()}>
     <Text style={styles.heading}>{props.name}</Text>
     <Text>Street</Text>
     <TextInput
@@ -31,7 +31,7 @@ const formfield = `const Address = (props) => (
       noSpell
       required={props.required}
       style={styles.textinput}/>
-  </FormField>
+  </FieldSet>
 )
 
 const Invoice = () => (

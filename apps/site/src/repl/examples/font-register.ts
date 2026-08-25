@@ -2,19 +2,19 @@ const font_register = `Font.register({
   family: 'Roboto',
   fonts: [
     {
-      src: \`fonts/Roboto-Regular.ttf\`
+      src: \`/fonts/Roboto-Regular.ttf\`
     },
     {
-      src: \`fonts/Roboto-Bold.ttf\`,
+      src: \`/fonts/Roboto-Bold.ttf\`,
       fontWeight: 'bold'
     },
     {
-      src: \`fonts/Roboto-Italic.ttf\`,
+      src: \`/fonts/Roboto-Italic.ttf\`,
       fontWeight: 'normal',
       fontStyle: 'italic'
     },
     {
-      src: \`fonts/Roboto-BoldItalic.ttf\`,
+      src: \`/fonts/Roboto-BoldItalic.ttf\`,
       fontWeight: 'bold',
       fontStyle: 'italic'
     }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { OverviewTimeline } from '@/components/overview-timeline';
+import { PostCover } from '@/components/post-cover';
 import { blogSource } from '@/lib/blog-source';
 
 const formatDate = (value: string) =>
@@ -27,14 +28,14 @@ export default async function BlogPost(props: {
       id="nd-page"
       className="mx-auto w-full max-w-[46rem] flex-1 px-4 py-16"
     >
-      <header className="mb-8">
+      <header className="mb-9">
         <Link
           href="/blog"
           className="text-fd-muted-foreground hover:text-fd-foreground text-[0.8125rem] transition-colors"
         >
           ← Blog
         </Link>
-        <h1 className="mt-6 mb-3 font-semibold tracking-[-0.02em]">
+        <h1 className="mt-6 mb-3 font-semibold tracking-[-0.02em] text-balance">
           {page.data.title}
         </h1>
         <time
@@ -43,6 +44,9 @@ export default async function BlogPost(props: {
         >
           {formatDate(date)}
         </time>
+        <div className="border-fd-border bg-fd-muted mt-8 aspect-[2.4/1] overflow-hidden rounded-xl border">
+          <PostCover seed={page.url} className="h-full w-full" />
+        </div>
       </header>
 
       <article className="prose">

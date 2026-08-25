@@ -166,6 +166,7 @@ rect. Attributes with no value for a given field are omitted:
 | `data-rpdf-field-checked`   | `"true"` / `"false"`                              | checkbox only       |
 | `data-rpdf-field-options`   | JSON array of choices                             | combo, list         |
 | `data-rpdf-field-multiline` | `"true"` when set                                 | text only           |
+| `data-rpdf-field-password`  | `"true"` when set                                 | text only           |
 | `data-rpdf-field-readonly`  | `"true"` when set                                 | any, when read-only |
 
 ```xml

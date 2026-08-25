@@ -134,6 +134,18 @@ describe('annotate: text-valued fields', () => {
     expect(content).not.toContain('secret');
   });
 
+  test('password fields carry data-rpdf-field-password="true"; plain text fields omit it', () => {
+    const passwordDoc = makeDoc();
+    passwordDoc.annotate(0, 0, 100, 20, { value: 'secret', password: true });
+    expect(pageContent(passwordDoc)).toContain(
+      'data-rpdf-field-password="true"',
+    );
+
+    const textDoc = makeDoc();
+    textDoc.annotate(0, 0, 100, 20, { value: 'Hello' });
+    expect(pageContent(textDoc)).not.toContain('data-rpdf-field-password');
+  });
+
   test('align center centres the text and anchors on it', () => {
     const doc = makeDoc();
     doc.annotate(0, 0, 100, 20, { value: 'X', align: 'center' });

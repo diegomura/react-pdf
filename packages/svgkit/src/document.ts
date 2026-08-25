@@ -1087,6 +1087,9 @@ class SVGDocument {
     if (type === 'text' && dict.multiline) {
       attrs['data-rpdf-field-multiline'] = 'true';
     }
+    if (type === 'text' && dict.password) {
+      attrs['data-rpdf-field-password'] = 'true';
+    }
     if ((type === 'combo' || type === 'list') && Array.isArray(dict.select)) {
       attrs['data-rpdf-field-options'] = JSON.stringify(dict.select);
     }

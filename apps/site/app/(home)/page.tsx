@@ -55,10 +55,6 @@ export default function HomePage() {
         <div className="border-fd-border bg-fd-background relative mt-8 h-[34rem] overflow-hidden rounded-xl border shadow-[0_1px_2px_rgba(0,0,0,0.03),0_16px_40px_-24px_rgba(0,0,0,0.18)] sm:mt-14 md:h-[29rem] dark:shadow-none">
           <HeroRepl />
         </div>
-
-        <p className="text-fd-muted-foreground mt-3 text-center text-[0.75rem]">
-          This panel is editable.
-        </p>
       </section>
 
       <section className="border-fd-border border-t">

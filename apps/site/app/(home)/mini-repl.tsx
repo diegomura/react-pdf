@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 
 import { compress } from '@/src/repl/compress';
 import { Editor } from '@/src/repl/editor';
-import { Status } from '@/src/repl/status';
 import { useRepl } from '@/src/repl/use-repl';
 import { Viewer } from '@/src/repl/viewer';
 
@@ -74,17 +73,14 @@ export function MiniRepl() {
         <div className={`${stripClass} justify-between px-3.5`}>
           <span className="font-mono text-[0.6875rem]">document.pdf</span>
 
-          <div className="flex items-center gap-3.5">
-            <a
-              href={playgroundHref}
-              title="Open this example in the playground"
-              className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 text-[0.6875rem] transition-colors max-md:hidden"
-            >
-              Open in Playground
-              <ArrowUpRight className="size-3 shrink-0" />
-            </a>
-            <Status rendering={rendering} failed={failed} />
-          </div>
+          <a
+            href={playgroundHref}
+            title="Open this example in the playground"
+            className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 text-[0.6875rem] transition-colors max-md:hidden"
+          >
+            Open in Playground
+            <ArrowUpRight className="size-3 shrink-0" />
+          </a>
         </div>
 
         <div className="relative flex min-h-0 flex-1 justify-center">

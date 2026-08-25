@@ -41,7 +41,8 @@ describe('legacy redirects', () => {
       if (!r.destination.startsWith('/docs/v4/')) continue;
       const slug = r.destination.replace('/docs/v4/', '');
       expect(
-        fs.existsSync(`content/docs/v4/${slug}.mdx`),
+        fs.existsSync(`content/docs/v4/${slug}.mdx`) ||
+          fs.existsSync(`content/docs/v4/${slug}/index.mdx`),
         `${r.destination} has no content file`,
       ).toBe(true);
     }

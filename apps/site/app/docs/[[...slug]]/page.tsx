@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { GoToExample } from '@/components/go-to-example';
 import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
+import { SectionIndex } from '@/components/section-index';
+import { DocsFooter } from '@/components/docs-footer';
 
 const LATEST = 'v4';
 
@@ -26,7 +28,11 @@ export default async function Page(props: {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc.filter((item) => item.depth <= 2)}
+      full={page.data.full}
+      slots={{ footer: DocsFooter }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       {isOld && (
@@ -45,6 +51,7 @@ export default async function Page(props: {
             GoToExample,
             DebugSample,
             OverviewTimeline,
+            SectionIndex,
           }}
         />
       </DocsBody>

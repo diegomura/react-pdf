@@ -53,11 +53,18 @@ test('every internal docs link resolves to a page and heading', () => {
 
   for (const file of files) {
     const body = fs.readFileSync(file, 'utf8');
+    const route = `/docs/${path
+      .relative(ROOT, file)
+      .replace(/\.mdx$/, '')
+      .replace(/\/?index$/, '')}`.replace(/\/$/, '');
+
     for (const [, target, anchor] of body.matchAll(
-      /\]\((\/docs\/[^)#\s]*)(#[^)\s]+)?\)/g,
+      /\]\((\/docs\/[^)#\s]*|)(#[^)\s]+)?\)/g,
     )) {
-      const slugs = pages.get(target.replace(/\/$/, ''));
-      const where = `${path.basename(file)}: ${target}${anchor ?? ''}`;
+      if (!target && !anchor) continue;
+      const page = target ? target.replace(/\/$/, '') : route;
+      const slugs = pages.get(page);
+      const where = `${path.relative(ROOT, file)}: ${target}${anchor ?? ''}`;
       if (!slugs) broken.push(`${where} (no such page)`);
       else if (anchor && !slugs.has(anchor.slice(1)))
         broken.push(`${where} (no such heading)`);

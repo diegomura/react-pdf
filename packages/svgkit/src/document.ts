@@ -119,6 +119,12 @@ class SVGDocument {
   protected stack: { container: SVGElementNode; style: Style }[] = [];
   protected currentPath = '';
   protected outlineRoot: OutlineEntry[] = [];
+  // link()/goTo() defer appending so their anchor paints after the content
+  // it overlaps (SVG hit-testing follows paint order); flushed in end().
+  protected pendingLinks: {
+    parent: SVGElementNode;
+    element: SVGElementNode;
+  }[] = [];
 
   constructor(options: SVGDocumentOptions = {}) {
     this.idPrefix = options.idPrefix ?? '';
@@ -148,6 +154,10 @@ class SVGDocument {
   }
 
   end() {
+    this.pendingLinks.forEach(({ parent, element }) =>
+      appendChild(parent, element),
+    );
+    this.pendingLinks = [];
     this.roots.forEach((root, pageNumber) =>
       this.prependPageMetadata(root, pageNumber),
     );
@@ -881,7 +891,7 @@ class SVGDocument {
     const anchor = createElement('a');
     setAttribute(anchor, 'href', url);
     appendChild(anchor, this.hitRect(x, y, width, height));
-    appendChild(this.container, anchor);
+    this.pendingLinks.push({ parent: this.container, element: anchor });
     return this;
   }
 
@@ -889,7 +899,7 @@ class SVGDocument {
     const anchor = createElement('a');
     setAttribute(anchor, 'href', `#${this.idPrefix}dest-${name}`);
     appendChild(anchor, this.hitRect(x, y, width, height));
-    appendChild(this.container, anchor);
+    this.pendingLinks.push({ parent: this.container, element: anchor });
     return this;
   }
 

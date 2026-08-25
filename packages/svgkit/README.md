@@ -110,6 +110,10 @@ or is one of the standard 14 PDF fonts:
   x positions and a CSS font-family fallback (e.g. `Helvetica, Arial,
   sans-serif`). The text is selectable, but its exact shape depends on
   whichever matching font the viewer has installed.
+- Link anchors paint above the content they cover so they stay clickable
+  (SVG hit-testing follows paint order), which means dragging to select text
+  *inside* a link's box may be blocked in some browsers, the same trade-off
+  pdf.js makes with its annotation layer above its text layer.
 
 ## Parity with PDF output
 

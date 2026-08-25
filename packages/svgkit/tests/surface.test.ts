@@ -118,4 +118,46 @@ describe('ctx surface', () => {
       '<g id="p1-dest-section" transform="translate(12 34)"/>',
     );
   });
+
+  test('link paints after content emitted before it in the same container', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.link(0, 0, 50, 10, 'https://react-pdf.org');
+    doc.rect(0, 0, 10, 10).fill();
+    doc.end();
+    expect(doc.pages[0]).toBe(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><path d="M0 0H10V10H0Z" fill="black"/><a href="https://react-pdf.org"><rect x="0" y="0" width="50" height="10" fill="black" fill-opacity="0"/></a></svg>',
+    );
+  });
+
+  test('goTo paints after content emitted before it in the same container', () => {
+    const doc = new SVGDocument({ idPrefix: 'p1-' }).addPage({
+      size: [100, 100],
+    });
+    doc.goTo(0, 0, 50, 10, 'chapter');
+    doc.rect(0, 0, 10, 10).fill();
+    doc.end();
+    expect(doc.pages[0]).toBe(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><path d="M0 0H10V10H0Z" fill="black"/><a href="#p1-dest-chapter"><rect x="0" y="0" width="50" height="10" fill="black" fill-opacity="0"/></a></svg>',
+    );
+  });
+
+  test('link inside a nested transform group lands in that group, not hoisted to the page root', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.translate(10, 20);
+    doc.link(0, 0, 5, 5, 'https://example.com');
+    doc.end();
+    expect(doc.pages[0]).toContain(
+      '<g transform="translate(10 20)"><a href="https://example.com"><rect x="0" y="0" width="5" height="5" fill="black" fill-opacity="0"/></a></g>',
+    );
+  });
+
+  test('calling end() twice does not duplicate anchors', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.link(0, 0, 10, 10, 'https://react-pdf.org');
+    doc.end();
+    const first = doc.pages[0];
+    doc.end();
+    expect(doc.pages[0]).toBe(first);
+    expect(doc.pages[0].match(/<a /g)).toHaveLength(1);
+  });
 });

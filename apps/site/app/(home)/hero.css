@@ -1,46 +1,70 @@
 /* Hero-only atmosphere. Kept out of global.css so the landing page owns it. */
 
-/* A ruled field, not decoration for its own sake: the pitch is flexbox layout
-   on a page, so the backdrop is a layout grid fading into the paper. */
-.hero-grid {
-  --hero-rule: color-mix(in srgb, var(--color-fd-foreground) 10%, transparent);
-  background-image:
-    linear-gradient(to right, var(--hero-rule) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hero-rule) 1px, transparent 1px);
-  background-size: 48px 48px;
-  background-position: center top;
-  mask-image: radial-gradient(
-    ellipse 90% 70% at 50% 6%,
-    #000 0%,
-    #000 22%,
-    transparent 82%
-  );
-}
+/* The backdrop is a printed page, not a graph: warm stock, a grain, and one
+   set of hairline rings sweeping out of the corner — the same gesture the
+   example poster makes. Every layer dies out before it reaches the panel. */
 
-/* the red sits low and wide, under the type rather than over the grid */
-.hero-wash {
+.hero-bloom {
   background: radial-gradient(
-    ellipse 45% 55% at 50% -12%,
-    color-mix(in srgb, var(--color-fd-primary) 11%, transparent),
-    transparent 72%
+    ellipse 58% 46% at 50% -6%,
+    color-mix(in srgb, var(--color-fd-primary) 13%, transparent),
+    transparent 70%
   );
 }
 
-/* a phone can only show part of a file, and part of the tab row: fade both cut
-   edges so they read as "keep going" instead of a clipped glyph */
+.dark .hero-bloom {
+  background: radial-gradient(
+    ellipse 58% 46% at 50% -6%,
+    color-mix(in srgb, var(--color-fd-primary) 24%, transparent),
+    transparent 70%
+  );
+}
+
+.hero-veil {
+  background-color: color-mix(in srgb, #c98a5e 8%, transparent);
+  mask-image: linear-gradient(to bottom, #000 52%, transparent);
+}
+
+.dark .hero-veil {
+  background-color: color-mix(in srgb, #c98a5e 5%, transparent);
+}
+
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.055;
+  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+}
+
+.dark .hero-grain {
+  opacity: 0.05;
+}
+
+.hero-arcs {
+  --hero-arc: color-mix(in srgb, var(--color-fd-foreground) 16%, transparent);
+  background: repeating-radial-gradient(
+    circle at 100% 0,
+    transparent 0 87px,
+    var(--hero-arc) 87px 88px
+  );
+  mask-image: radial-gradient(circle at 100% 0, #000 14%, transparent 76%);
+}
+
+.dark .hero-arcs {
+  --hero-arc: color-mix(in srgb, var(--color-fd-foreground) 12%, transparent);
+}
+
+/* the tab row scrolls once the pane is narrow enough: fade the cut edge so it
+   reads as "keep going" instead of a clipped glyph */
+.hero-tabs {
+  mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+}
+
+/* a phone can only show part of a file — same treatment on the bottom edge */
 @media (width < 48rem) {
   .hero-editor {
     mask-image: linear-gradient(
       to bottom,
       #000 calc(100% - 1.75rem),
-      transparent
-    );
-  }
-
-  .hero-tabs {
-    mask-image: linear-gradient(
-      to right,
-      #000 calc(100% - 1.5rem),
       transparent
     );
   }

@@ -35,8 +35,19 @@ test('the entry file stays short enough to read at a glance', () => {
   const [entry] = HERO_FILES;
   const lines = entry.code.split('\n');
 
-  expect(entry.name).toBe('Invoice.jsx');
+  expect(entry.name).toBe('Poster.jsx');
   expect(lines.length).toBeLessThanOrEqual(20);
+});
+
+// The poster is a single sheet: an overflow would render a blank second page.
+test('the hero document fits on exactly one page', async () => {
+  const element = evaluateDocument(
+    transpile(concatenated()),
+  ) as React.ReactElement<DocumentProps>;
+
+  const pdf = await renderToBuffer(element);
+
+  expect(pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g)).toHaveLength(1);
 });
 
 // The hero editor does not wrap, so long lines would scroll sideways.

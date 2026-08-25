@@ -20,13 +20,20 @@ const FEATURES = [
 const buttonBase =
   'inline-flex h-9 items-center justify-center rounded-md px-4 text-[0.8125rem] font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-fd-ring focus-visible:ring-offset-2 focus-visible:ring-offset-fd-background';
 
-/** Sheets peeking out behind the panel — a document sitting on a small stack. */
-function PaperStack() {
+const layer = 'pointer-events-none absolute inset-x-0 top-0 -z-10 h-[44rem]';
+
+/** Warm paper, a grain, and hairline rings sweeping out of the top corner. */
+function Backdrop() {
   return (
-    <div aria-hidden className="pointer-events-none max-md:hidden">
-      <div className="border-fd-border/60 bg-fd-card absolute inset-x-14 -top-[13px] h-12 rounded-t-[10px] border border-b-0" />
-      <div className="border-fd-border bg-fd-card absolute inset-x-7 -top-[6px] h-12 rounded-t-[10px] border border-b-0" />
-    </div>
+    <>
+      <div aria-hidden className={`hero-veil ${layer}`} />
+      <div aria-hidden className={`hero-arcs ${layer}`} />
+      <div aria-hidden className={`hero-grain ${layer}`} />
+      <div
+        aria-hidden
+        className="hero-bloom pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem]"
+      />
+    </>
   );
 }
 
@@ -34,14 +41,7 @@ export default function HomePage() {
   return (
     <main className="flex-1">
       <section className="relative isolate overflow-hidden">
-        <div
-          aria-hidden
-          className="hero-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[44rem]"
-        />
-        <div
-          aria-hidden
-          className="hero-wash pointer-events-none absolute inset-x-0 top-0 -z-10 h-[30rem]"
-        />
+        <Backdrop />
 
         <div className="mx-auto w-full max-w-[68rem] px-5 pt-12 pb-16 sm:px-6 sm:pt-20 md:pb-24">
           <div className="mx-auto max-w-[38rem] text-center">
@@ -84,24 +84,6 @@ export default function HomePage() {
                 Open the playground
               </Link>
             </div>
-
-            {/* the README's "Lost?" note — the disambiguation people arrive needing */}
-            <p
-              className="hero-rise text-fd-muted-foreground/80 mx-auto mt-6 max-w-[26rem] text-[0.75rem] leading-relaxed text-balance"
-              style={{ animationDelay: '200ms' }}
-            >
-              This package is used to <em>create</em> PDFs using React. To{' '}
-              <em>display</em> existing ones, you may be looking for{' '}
-              <a
-                href="https://github.com/wojtekmaj/react-pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-fd-foreground underline decoration-dotted underline-offset-2 transition-colors"
-              >
-                react-pdf by wojtekmaj
-              </a>
-              .
-            </p>
           </div>
 
           <div
@@ -118,7 +100,6 @@ export default function HomePage() {
             className="hero-rise relative mt-6"
             style={{ animationDelay: '280ms' }}
           >
-            <PaperStack />
             <div className="border-fd-border bg-fd-background relative h-[41rem] overflow-hidden rounded-xl border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_56px_-32px_rgba(0,0,0,0.28)] md:h-[32rem] dark:shadow-none">
               <HeroRepl />
             </div>

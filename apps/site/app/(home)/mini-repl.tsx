@@ -58,15 +58,6 @@ export function MiniRepl() {
               </button>
             ))}
           </div>
-
-          <a
-            href={playgroundHref}
-            title="Open this example in the playground"
-            className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 pe-3 ps-2 text-[0.6875rem] transition-colors max-md:hidden"
-          >
-            Open in Playground
-            <ArrowUpRight className="size-3 shrink-0" />
-          </a>
         </div>
 
         <div className="hero-editor min-h-0 flex-1">
@@ -82,7 +73,18 @@ export function MiniRepl() {
       <div className="bg-fd-muted flex min-h-0 flex-col">
         <div className={`${stripClass} justify-between px-3.5`}>
           <span className="font-mono text-[0.6875rem]">document.pdf</span>
-          <Status rendering={rendering} failed={failed} />
+
+          <div className="flex items-center gap-3.5">
+            <a
+              href={playgroundHref}
+              title="Open this example in the playground"
+              className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 text-[0.6875rem] transition-colors max-md:hidden"
+            >
+              Open in Playground
+              <ArrowUpRight className="size-3 shrink-0" />
+            </a>
+            <Status rendering={rendering} failed={failed} />
+          </div>
         </div>
 
         <div className="relative flex min-h-0 flex-1 justify-center">

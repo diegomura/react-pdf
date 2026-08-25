@@ -95,13 +95,14 @@ describe('ctx surface', () => {
     ).toBe(doc);
   });
 
-  test('link wraps a transparent hit rect in an anchor', () => {
+  test('link emits an inert annotation rect, not an anchor', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.link(0, -10, 50, 10, 'https://react-pdf.org');
     doc.end();
     expect(doc.pages[0]).toContain(
-      '<a href="https://react-pdf.org"><rect x="0" y="-10" width="50" height="10" fill="black" fill-opacity="0"/></a>',
+      '<rect x="0" y="-10" width="50" height="10" fill="none" pointer-events="none" data-rpdf-link="https://react-pdf.org"/>',
     );
+    expect(doc.pages[0]).not.toContain('<a ');
   });
 
   test('goTo and addNamedDestination pair through fragment ids', () => {
@@ -112,24 +113,28 @@ describe('ctx surface', () => {
     doc.goTo(0, 0, 10, 10, 'chapter');
     doc.addNamedDestination('section', 'XYZ', 12, 34, null);
     doc.end();
-    expect(doc.pages[0]).toContain('<g id="p1-dest-chapter"/>');
-    expect(doc.pages[0]).toContain('<a href="#p1-dest-chapter">');
     expect(doc.pages[0]).toContain(
-      '<g id="p1-dest-section" transform="translate(12 34)"/>',
+      '<g id="p1-dest-chapter" data-rpdf-dest="chapter"/>',
+    );
+    expect(doc.pages[0]).toContain(
+      '<rect x="0" y="0" width="10" height="10" fill="none" pointer-events="none" data-rpdf-link="#p1-dest-chapter"/>',
+    );
+    expect(doc.pages[0]).toContain(
+      '<g id="p1-dest-section" data-rpdf-dest="section" transform="translate(12 34)"/>',
     );
   });
 
-  test('link paints after content emitted before it in the same container', () => {
+  test('link annotation appears in document order, not hoisted after content', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.link(0, 0, 50, 10, 'https://react-pdf.org');
     doc.rect(0, 0, 10, 10).fill();
     doc.end();
     expect(doc.pages[0]).toBe(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><path d="M0 0H10V10H0Z" fill="black"/><a href="https://react-pdf.org"><rect x="0" y="0" width="50" height="10" fill="black" fill-opacity="0"/></a></svg>',
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><rect x="0" y="0" width="50" height="10" fill="none" pointer-events="none" data-rpdf-link="https://react-pdf.org"/><path d="M0 0H10V10H0Z" fill="black"/></svg>',
     );
   });
 
-  test('goTo paints after content emitted before it in the same container', () => {
+  test('goTo annotation appears in document order, not hoisted after content', () => {
     const doc = new SVGDocument({ idPrefix: 'p1-' }).addPage({
       size: [100, 100],
     });
@@ -137,27 +142,27 @@ describe('ctx surface', () => {
     doc.rect(0, 0, 10, 10).fill();
     doc.end();
     expect(doc.pages[0]).toBe(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><path d="M0 0H10V10H0Z" fill="black"/><a href="#p1-dest-chapter"><rect x="0" y="0" width="50" height="10" fill="black" fill-opacity="0"/></a></svg>',
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><defs/><rect x="0" y="0" width="50" height="10" fill="none" pointer-events="none" data-rpdf-link="#p1-dest-chapter"/><path d="M0 0H10V10H0Z" fill="black"/></svg>',
     );
   });
 
-  test('link inside a nested transform group lands in that group, not hoisted to the page root', () => {
+  test('link inside a nested transform group lands in that group', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.translate(10, 20);
     doc.link(0, 0, 5, 5, 'https://example.com');
     doc.end();
     expect(doc.pages[0]).toContain(
-      '<g transform="translate(10 20)"><a href="https://example.com"><rect x="0" y="0" width="5" height="5" fill="black" fill-opacity="0"/></a></g>',
+      '<g transform="translate(10 20)"><rect x="0" y="0" width="5" height="5" fill="none" pointer-events="none" data-rpdf-link="https://example.com"/></g>',
     );
   });
 
-  test('calling end() twice does not duplicate anchors', () => {
+  test('calling end() twice does not duplicate annotations', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.link(0, 0, 10, 10, 'https://react-pdf.org');
     doc.end();
     const first = doc.pages[0];
     doc.end();
     expect(doc.pages[0]).toBe(first);
-    expect(doc.pages[0].match(/<a /g)).toHaveLength(1);
+    expect(doc.pages[0].match(/data-rpdf-link/g)).toHaveLength(1);
   });
 });

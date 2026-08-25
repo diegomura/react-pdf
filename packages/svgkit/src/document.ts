@@ -119,12 +119,6 @@ class SVGDocument {
   protected stack: { container: SVGElementNode; style: Style }[] = [];
   protected currentPath = '';
   protected outlineRoot: OutlineEntry[] = [];
-  // link()/goTo() defer appending so their anchor paints after the content
-  // it overlaps (SVG hit-testing follows paint order); flushed in end().
-  protected pendingLinks: {
-    parent: SVGElementNode;
-    element: SVGElementNode;
-  }[] = [];
 
   constructor(options: SVGDocumentOptions = {}) {
     this.idPrefix = options.idPrefix ?? '';
@@ -154,10 +148,6 @@ class SVGDocument {
   }
 
   end() {
-    this.pendingLinks.forEach(({ parent, element }) =>
-      appendChild(parent, element),
-    );
-    this.pendingLinks = [];
     this.roots.forEach((root, pageNumber) =>
       this.prependPageMetadata(root, pageNumber),
     );
@@ -876,36 +866,44 @@ class SVGDocument {
     return this;
   }
 
-  protected hitRect(x: number, y: number, width: number, height: number) {
+  // Inert: paints nothing and never intercepts pointer events or text
+  // selection. Hosts read its geometry and data-rpdf-link to implement their
+  // own link behaviour (see README).
+  protected linkAnnotation(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    href: string,
+  ) {
     const rect = createElement('rect');
     setAttribute(rect, 'x', fmt(x));
     setAttribute(rect, 'y', fmt(y));
     setAttribute(rect, 'width', fmt(width));
     setAttribute(rect, 'height', fmt(height));
-    setAttribute(rect, 'fill', 'black');
-    setAttribute(rect, 'fill-opacity', 0);
+    setAttribute(rect, 'fill', 'none');
+    setAttribute(rect, 'pointer-events', 'none');
+    setAttribute(rect, 'data-rpdf-link', href);
     return rect;
   }
 
   link(x: number, y: number, width: number, height: number, url: string) {
-    const anchor = createElement('a');
-    setAttribute(anchor, 'href', url);
-    appendChild(anchor, this.hitRect(x, y, width, height));
-    this.pendingLinks.push({ parent: this.container, element: anchor });
+    appendChild(this.container, this.linkAnnotation(x, y, width, height, url));
     return this;
   }
 
   goTo(x: number, y: number, width: number, height: number, name: string) {
-    const anchor = createElement('a');
-    setAttribute(anchor, 'href', `#${this.idPrefix}dest-${name}`);
-    appendChild(anchor, this.hitRect(x, y, width, height));
-    this.pendingLinks.push({ parent: this.container, element: anchor });
+    appendChild(
+      this.container,
+      this.linkAnnotation(x, y, width, height, `#${this.idPrefix}dest-${name}`),
+    );
     return this;
   }
 
   addNamedDestination(name: string, _fit?: string, x = 0, y = 0) {
     const marker = createElement('g');
     setAttribute(marker, 'id', `${this.idPrefix}dest-${name}`);
+    setAttribute(marker, 'data-rpdf-dest', name);
     if (x !== 0 || y !== 0)
       setAttribute(marker, 'transform', `translate(${fmt(x)} ${fmt(y)})`);
     appendChild(this.container, marker);

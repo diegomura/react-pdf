@@ -110,17 +110,58 @@ or is one of the standard 14 PDF fonts:
   x positions and a CSS font-family fallback (e.g. `Helvetica, Arial,
   sans-serif`). The text is selectable, but its exact shape depends on
   whichever matching font the viewer has installed.
-- Link anchors paint above the content they cover so they stay clickable
-  (SVG hit-testing follows paint order), which means dragging to select text
-  *inside* a link's box may be blocked in some browsers, the same trade-off
-  pdf.js makes with its annotation layer above its text layer.
+
+## Links
+
+svgkit doesn't emit navigable `<a>` elements. Instead, `link()`/`goTo()` each
+render an inert annotation: a `pointer-events: none`, unpainted `<rect>`
+marking where a link target is and what it points at.
+
+```xml
+<rect x="0" y="-10" width="50" height="10" fill="none" pointer-events="none" data-rpdf-link="https://react-pdf.org"/>
+```
+
+- External links carry the URL as given in `data-rpdf-link`.
+- Internal links (`goTo`) carry a fragment, e.g. `data-rpdf-link="#doc1-dest-chapter"`,
+  which resolves directly via `document.querySelector(...)` to the matching
+  destination marker — the `<g>` that `addNamedDestination` emits, tagged
+  with both `id` and `data-rpdf-dest`:
+
+  ```xml
+  <g id="doc1-dest-chapter" data-rpdf-dest="chapter"/>
+  ```
+
+Because the rect is unpainted and ignores pointer events, it never blocks
+clicks or text selection underneath it — a host queries it purely for
+geometry and target, then implements its own click behaviour:
+
+```js
+document.querySelectorAll('[data-rpdf-link]').forEach((el) => {
+  const target = el.dataset.rpdfLink;
+  const box = el.getBoundingClientRect(); // position an overlay here
+  overlay.addEventListener('click', () => {
+    if (target.startsWith('#')) {
+      document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.open(target, '_blank', 'noopener');
+    }
+  });
+});
+```
+
+This keeps navigation policy (same-tab vs. new-tab, how an internal jump
+scrolls, links vs. text selection) in the host's hands rather than baked
+into svgkit. A standalone `.svg` file opened directly (e.g. double-clicked in
+a file browser) has no clickable links by design — annotations only become
+interactive once a host implements the pattern above.
 
 ## Parity with PDF output
 
 Supported and matching PDF output:
 
 - Fills, strokes, clips, gradients, transforms, images
-- Links (`src`) and internal destinations (`id` / `#dest`)
+- Links (`src`) and internal destinations (`id` / `#dest`) — geometry and
+  targets match; navigation itself is up to the host (see [Links](#links))
 - `TextInput`, `Select`, `List`, `Checkbox` and `Note` render a static,
   non-interactive approximation of what a PDF viewer shows: the field's
   value (masked for `password`, falling back to the first `select` option

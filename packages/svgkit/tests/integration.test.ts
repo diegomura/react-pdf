@@ -213,7 +213,7 @@ describe('svgkit integration', () => {
     expect(pages[1]).toContain('#0000FF');
   });
 
-  test('links become anchors', async () => {
+  test('links become inert annotations', async () => {
     const linkNode: any = {
       type: 'LINK',
       props: { src: 'https://react-pdf.org' },
@@ -225,7 +225,8 @@ describe('svgkit integration', () => {
     };
 
     const pages = await renderToSvg(doc([linkNode]));
-    expect(pages[0]).toContain('<a href="https://react-pdf.org">');
+    expect(pages[0]).toContain('data-rpdf-link="https://react-pdf.org"');
+    expect(pages[0]).not.toContain('<a ');
   });
 
   test('renders static form fields and a note', async () => {

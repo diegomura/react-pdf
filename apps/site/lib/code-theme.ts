@@ -7,7 +7,7 @@ import type { ThemeRegistration } from 'shiki';
  * background, so the light variant darkens each one to stay legible on paper
  * while keeping the same identity.
  */
-type Palette = {
+export type Palette = {
   fg: string;
   comment: string;
   keyword: string;
@@ -39,6 +39,9 @@ const light: Palette = {
   tag: '#3e3e3e',
   accent: '#b0560f',
 };
+
+/** Shared with the CodeMirror theme so the REPL editor and the docs agree. */
+export const codePalette = { light, dark };
 
 const build = (p: Palette): ThemeRegistration['settings'] => [
   { settings: { foreground: p.fg } },

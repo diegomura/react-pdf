@@ -5,7 +5,9 @@ import { javascript } from '@codemirror/lang-javascript';
 import { linter, type Diagnostic } from '@codemirror/lint';
 import CodeMirror from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
 
+import { cmThemeDark, cmThemeLight } from './cm-theme';
 import { reactPdfCompletions } from './completions';
 import { transpile } from './transpile';
 
@@ -24,7 +26,7 @@ const syntaxLinter = linter((view): Diagnostic[] => {
   }
 });
 
-const extensions = [
+const base = [
   javascript({ jsx: true }),
   autocompletion({ override: [reactPdfCompletions] }),
   syntaxLinter,
@@ -40,14 +42,18 @@ export function Editor({
   basicSetup?: React.ComponentProps<typeof CodeMirror>['basicSetup'];
 }) {
   const { resolvedTheme } = useTheme();
+  const extensions = useMemo(
+    () => [...base, resolvedTheme === 'dark' ? cmThemeDark : cmThemeLight],
+    [resolvedTheme],
+  );
 
   return (
     <CodeMirror
       value={value}
       onChange={onChange}
       height="100%"
-      theme={resolvedTheme === 'light' ? 'light' : 'dark'}
-      style={{ height: '100%', fontSize: 13 }}
+      theme="none"
+      style={{ height: '100%' }}
       extensions={extensions}
       basicSetup={basicSetup}
     />

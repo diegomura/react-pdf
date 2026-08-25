@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { Editor } from '@/src/repl/editor';
+import { Status } from '@/src/repl/status';
 import { useRepl } from '@/src/repl/use-repl';
 import { Viewer } from '@/src/repl/viewer';
 
@@ -13,31 +14,6 @@ const EDITOR_CHROME = {
   highlightActiveLineGutter: false,
   foldGutter: false,
 };
-
-function Status({
-  rendering,
-  failed,
-}: {
-  rendering: boolean;
-  failed: boolean;
-}) {
-  const label = failed ? 'Preview off' : rendering ? 'Rendering' : 'Live';
-
-  return (
-    <span className="text-fd-muted-foreground flex items-center gap-1.5 text-[0.6875rem] tracking-wide">
-      <span
-        className={`size-1.5 rounded-full ${
-          failed
-            ? 'bg-fd-muted-foreground/50'
-            : rendering
-              ? 'bg-fd-primary animate-pulse'
-              : 'bg-emerald-500'
-        }`}
-      />
-      {label}
-    </span>
-  );
-}
 
 export function MiniRepl() {
   const [code, setCode] = useState(SNIPPET);
@@ -53,7 +29,7 @@ export function MiniRepl() {
       </div>
 
       <div className="grid min-h-0 flex-1 grid-rows-[14rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
-        <div className="border-fd-border min-h-0 overflow-auto border-b md:border-e md:border-b-0">
+        <div className="border-fd-border min-h-0 overflow-hidden border-b md:border-e md:border-b-0">
           <Editor value={code} onChange={setCode} basicSetup={EDITOR_CHROME} />
         </div>
 

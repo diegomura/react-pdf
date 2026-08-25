@@ -14,7 +14,10 @@
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/language": "^6.0.0",
     "@codemirror/lint": "^6.9.7",
+    "@codemirror/view": "^6.0.0",
+    "@lezer/highlight": "^1.0.0",
     "@modelcontextprotocol/server": "^2.0.0",
     "@react-pdf/math": "^5.0.1",
     "@react-pdf/renderer": "^4.8.0",

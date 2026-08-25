@@ -59,6 +59,38 @@ export function isScaledProperty(key: unknown): key is ScaledProperty {
   return typeof key === 'string' && scaledProperties.includes(key as any);
 }
 
+// Properties whose values reach Yoga, which throws on anything it can't read as
+// a length. Keywords Tailwind emits for them (fit-content, none, 65ch) have no
+// react-pdf equivalent, so they're reported as unsupported instead of crashing
+// the document.
+const dimensionProperties = [
+  'flexBasis',
+  'gap',
+  'height',
+  'inset',
+  'margin',
+  'maxHeight',
+  'maxWidth',
+  'minHeight',
+  'minWidth',
+  'padding',
+  'size',
+  'width',
+] as const;
+
+export function isDimensionProperty(
+  key: unknown,
+): key is (typeof dimensionProperties)[number] {
+  return typeof key === 'string' && dimensionProperties.includes(key as any);
+}
+
+// Mirrors the units @react-pdf/stylesheet parses, plus percentages and `auto`.
+const RENDERABLE_LENGTH = /^-?\d*\.?\d+(in|mm|cm|pt|vh|vw|px|rem|%)?$/;
+
+export function isRenderableLength(value: string) {
+  return value === 'auto' || RENDERABLE_LENGTH.test(value);
+}
+
 export const exactUtilities: Record<string, Style> = {
   // Layout
   flex: { display: 'flex' },

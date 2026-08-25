@@ -84,6 +84,7 @@ The returned `tw` function takes a space-separated class string and returns a re
 - react-pdf uses [Yoga](https://yogalayout.dev/) for layout, so some defaults differ from the web — `flex-direction` defaults to `column`, for example. Add `flex-row` where you need it.
 - Line heights are emitted unitless, since react-pdf only supports unitless `lineHeight`.
 - `aspect-auto` and `line-clamp-none` warn as unsupported. react-pdf has no style value meaning "no aspect ratio" or "no clamp" — leaving the utility off is the reset.
+- Intrinsic sizing (`w-fit`, `h-min`, `max-w-max`, …), `max-w-none` / `max-h-none`, and lengths in units react-pdf can't parse (`max-w-prose` is `65ch`) warn as unsupported. Yoga has no equivalent, and passing the value through would throw while laying out the document.
 - `float-*` and `clear-*` map to react-pdf's float support, which is newer and has rough edges: setting `lineHeight` on floated content breaks text wrap, and parents don't grow to contain their floats.
 - Modifiers such as breakpoints and pseudo states aren't evaluated. The variant is dropped and the base utility applied unconditionally, so `hover:bg-red-500` paints the background red in the output and `lg:p-8` always pads. Leave them off class strings meant for PDFs.
 

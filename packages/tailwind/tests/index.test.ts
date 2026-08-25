@@ -1471,6 +1471,50 @@ describe('Modifiers', () => {
   });
 });
 
+describe('Unsupported lengths', () => {
+  // These reach Yoga, which throws on a value it can't read as a length, so
+  // emitting them would crash the whole document rather than one element.
+  test('intrinsic sizing keywords are reported, not emitted', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(tw('w-fit')).toEqual({});
+    expect(tw('w-min')).toEqual({});
+    expect(tw('h-max')).toEqual({});
+    expect(tw('min-w-fit')).toEqual({});
+    expect(tw('max-w-max')).toEqual({});
+    expect(tw('size-fit')).toEqual({});
+    warn.mockRestore();
+  });
+
+  test('"none" maxima are reported, not emitted', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(tw('max-w-none')).toEqual({});
+    expect(tw('max-h-none')).toEqual({});
+    warn.mockRestore();
+  });
+
+  // react-pdf has no ch unit, so this used to resolve to a bare 65pt.
+  test('units react-pdf cannot parse are reported, not coerced', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(tw('max-w-prose')).toEqual({});
+    warn.mockRestore();
+  });
+
+  test('lengths react-pdf does understand still pass through', () => {
+    expect(tw('w-24')).toEqual({ width: rem(6) });
+    expect(tw('w-1/2')).toEqual({ width: '50%' });
+    expect(tw('w-full')).toEqual({ width: '100%' });
+    expect(tw('w-screen')).toEqual({ width: '100vw' });
+    expect(tw('h-screen')).toEqual({ height: '100vh' });
+    expect(tw('w-auto')).toEqual({ width: 'auto' });
+    expect(tw('w-px')).toEqual({ width: 1 });
+    expect(tw('m-auto')).toEqual({ margin: 'auto' });
+    expect(tw('max-w-3xl')).toEqual({ maxWidth: rem(48) });
+  });
+});
+
 describe('Unsupported classes', () => {
   test('warn once, however many times they are used', () => {
     const scoped = createTw({});

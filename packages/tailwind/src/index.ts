@@ -3,7 +3,9 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import { tailwindColors } from './colors';
 import {
   exactUtilities,
+  isDimensionProperty,
   isNegativeProperty,
+  isRenderableLength,
   isScaledProperty,
   utilityPatterns,
 } from './properties';
@@ -114,6 +116,9 @@ export function createTw(
         }
         if (isNumeric(value)) {
           return sign * Number(value);
+        }
+        if (isDimensionProperty(property) && !isRenderableLength(value)) {
+          return undefined;
         }
         return value;
       }

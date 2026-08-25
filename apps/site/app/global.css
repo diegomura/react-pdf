@@ -6,20 +6,22 @@
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --color-fd-background: hsl(0, 0%, 100%);
+  /* the page sits a hair off white so cards, popovers and the PDF page can be
+     pure white and read as lifted off it */
+  --color-fd-background: hsl(36, 14%, 98%);
   --color-fd-foreground: hsl(0, 0%, 24.3%);
-  --color-fd-muted: hsl(0, 0%, 97.3%);
+  --color-fd-muted: hsl(36, 11%, 95.7%);
   --color-fd-muted-foreground: hsl(0, 0%, 43.1%);
   --color-fd-popover: hsl(0, 0%, 100%);
   --color-fd-popover-foreground: hsl(0, 0%, 24.3%);
-  --color-fd-card: hsl(0, 0%, 98%);
+  --color-fd-card: hsl(0, 0%, 100%);
   --color-fd-card-foreground: hsl(0, 0%, 24.3%);
-  --color-fd-border: hsl(0, 0%, 91%);
+  --color-fd-border: hsl(36, 9%, 90.5%);
   --color-fd-primary: hsl(8.7, 100%, 45.5%);
   --color-fd-primary-foreground: hsl(0, 0%, 100%);
-  --color-fd-secondary: hsl(0, 0%, 94.5%);
+  --color-fd-secondary: hsl(36, 10%, 94%);
   --color-fd-secondary-foreground: hsl(0, 0%, 24.3%);
-  --color-fd-accent: hsl(0, 0%, 94.5%);
+  --color-fd-accent: hsl(36, 10%, 94%);
   --color-fd-accent-foreground: hsl(0, 0%, 24.3%);
   --color-fd-ring: hsl(8.7, 100%, 45.5%);
   --color-fd-overlay: hsla(0, 0%, 0%, 0.2);

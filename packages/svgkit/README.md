@@ -108,7 +108,7 @@ or is one of the standard 14 PDF fonts:
 - **Standard fonts** (Helvetica, Times, Courier and their variants) have no
   embedded outline data, so they render as `<text>` elements with per-glyph
   x positions and a CSS font-family fallback (e.g. `Helvetica, Arial,
-  sans-serif`). The text is selectable, but its exact shape depends on
+sans-serif`). The text is selectable, but its exact shape depends on
   whichever matching font the viewer has installed.
 
 ## Annotations
@@ -216,29 +216,6 @@ browser) has no interactivity by design — annotations only become
 interactive once a host implements the pattern above. See
 `packages/examples/vite/src/svg-viewer.tsx` for a full implementation that
 overlays real `<input>`/`<select>`/`<textarea>` controls and note popups.
-
-## Parity with PDF output
-
-Supported and matching PDF output:
-
-- Fills, strokes, clips, gradients, transforms, images
-- Links (`src`) and internal destinations (`id` / `#dest`) — geometry and
-  targets match; navigation itself is up to the host (see
-  [Annotations](#annotations))
-- `TextInput`, `Select`, `List`, `Checkbox` and `Note` render a static,
-  non-interactive approximation of what a PDF viewer shows (see
-  [Annotations](#annotations) for the form-fields and notes case): the
-  field's value (masked for `password`, falling back to the first `select`
-  option for `Select`/`List`), a check mark for a checked `Checkbox`, and a
-  fixed comment-bubble icon carrying the note text as a native `<title>`
-  tooltip. There's no typing, no toggling and no popups baked into the
-  drawing itself — a host wires those up via the annotations — and long
-  field values are clipped to the box rather than shrunk to fit, since
-  svgkit has no font metrics to size against.
-- Bookmarks / outlines (see [Bookmarks](#bookmarks)) and document info (see
-  [Document info](#document-info)) — SVG has no native outline pane or info
-  dictionary, so both come through as structured markup rather than viewer
-  chrome.
 
 ## License
 

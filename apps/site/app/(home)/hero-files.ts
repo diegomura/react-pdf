@@ -11,222 +11,209 @@
  */
 export const HERO_FILES: { name: string; code: string }[] = [
   {
-    name: 'Poster.jsx',
-    code: `const Poster = () => (
-  <Document title="Nocturne Festival">
+    name: 'Specimen.jsx',
+    code: `const Specimen = () => (
+  <Document title="Helvetica specimen">
     <Page size="A6" style={styles.page}>
-      <Artwork />
-      <Lineup />
-      <Stub />
+      <PressMarks />
+
+      <View style={styles.sheet}>
+        <Header />
+        <Waterfall />
+        <Text style={styles.charset}>{charset}</Text>
+        <Meta />
+        <ColourBar />
+      </View>
     </Page>
   </Document>
 );
 
-ReactPDF.render(<Poster />);`,
+ReactPDF.render(<Specimen />);`,
   },
   {
-    name: 'Artwork.jsx',
-    code: `// Concentric quarter-discs, drawn as arcs. No image file and
-// no canvas — vectors go into the PDF as vectors.
-const Rings = () => (
-  <Svg viewBox="0 0 298 176" style={styles.fill}>
-    <Rect width={298} height={176} fill={ink} />
-    {rings.map((r, i) => (
-      <Path key={r} d={quarter(r)} fill={i % 2 ? red : paper} />
+    name: 'PressMarks.jsx',
+    code: `// Crop marks and a registration target, drawn onto the trim
+// itself. The page is the artwork.
+const PressMarks = () => (
+  <Svg viewBox="0 0 298 420" style={styles.marks}>
+    {corners.map(([x, y, dx, dy]) => (
+      <Path
+        key={\`\${x}-\${y}\`}
+        d={\`M\${x} \${y}h\${dx}M\${x} \${y}v\${dy}\`}
+        stroke={ink}
+        strokeWidth={0.5}
+      />
     ))}
+
+    <Circle cx={149} cy={12} r={5} fill="none"
+      stroke={ink} strokeWidth={0.5} />
+    <Path d="M149 5v14M142 12h14"
+      stroke={ink} strokeWidth={0.5} />
   </Svg>
 );
 
-const Artwork = () => (
-  <View style={styles.art}>
-    <Rings />
-
-    <View style={styles.artType}>
-      <Text style={styles.kicker}>THREE NIGHTS BY THE SEA</Text>
-      <Text style={styles.title}>NOCTURNE</Text>
-      <Text style={[styles.title, styles.red]}>FESTIVAL</Text>
+const Header = () => (
+  <View style={styles.header}>
+    <View>
+      <Text style={styles.title}>Helvetica</Text>
+      <Text style={styles.sub}>
+        SPECIMEN SHEET / BASE 14 / NO EMBEDDING
+      </Text>
     </View>
+
+    <Text style={styles.folio}>A6</Text>
   </View>
 );`,
   },
   {
-    name: 'Lineup.jsx',
-    code: `const Night = ({ night }) => (
-  <View style={styles.night}>
-    <Text style={styles.day}>{night.day}</Text>
-
-    <View style={styles.acts}>
-      {night.acts.map((act, i) => (
-        <Text key={act} style={i ? styles.act : styles.head}>
-          {act}
-        </Text>
-      ))}
-    </View>
-
-    <Text style={styles.stage}>{night.stage}</Text>
+    name: 'Waterfall.jsx',
+    code: `// The same word at five sizes, with the tracking tightening
+// as it grows — the way a real specimen sheet sets it.
+const Line = ({ size }) => (
+  <View style={styles.line}>
+    <Text style={styles.size}>{size}</Text>
+    <Text style={{ fontSize: size, letterSpacing: -size / 40 }}>
+      Handgloves
+    </Text>
   </View>
 );
 
-const Lineup = () => (
-  <View style={styles.lineup}>
-    <View style={styles.marquee}>
-      <Text>12–14 SEP</Text>
-      <Text>PUERTO SUR, MONTEVIDEO</Text>
-    </View>
-
-    {nights.map((night) => (
-      <Night key={night.day} night={night} />
+const Waterfall = () => (
+  <View style={styles.waterfall}>
+    {sizes.map((size) => (
+      <Line key={size} size={size} />
     ))}
   </View>
 );`,
   },
   {
-    name: 'Stub.jsx',
-    code: `const Barcode = () => (
-  <Svg width={86} height={26} viewBox="0 0 86 26">
-    {bars.map((bar) => (
-      <Rect key={bar.x} {...bar} height={26} fill={ink} />
-    ))}
-  </Svg>
-);
-
-const Field = ({ label, value }) => (
-  <View style={{ marginRight: 14 }}>
-    <Text style={styles.tiny}>{label}</Text>
-    <Text style={styles.mono}>{value}</Text>
-  </View>
-);
-
-const Stub = () => (
-  <View style={styles.stub}>
-    <View style={styles.perforation} />
-
-    <View style={styles.stubRow}>
-      <View>
-        <Text style={styles.tiny}>ADMIT ONE / 3 NIGHTS</Text>
-
-        <View style={styles.fields}>
-          {fields.map((field) => (
-            <Field key={field.label} {...field} />
-          ))}
-        </View>
+    name: 'Meta.jsx',
+    code: `const Meta = () => (
+  <View style={styles.meta}>
+    {specs.map(([label, value]) => (
+      <View key={label} style={styles.metaRow}>
+        <Text style={styles.metaLabel}>{label}</Text>
+        <Text style={styles.metaValue}>{value}</Text>
       </View>
+    ))}
+  </View>
+);
 
-      <Barcode />
-    </View>
+const ColourBar = () => (
+  <View style={styles.bar}>
+    {swatches.map((hex) => (
+      <View key={hex} style={styles.swatchBox}>
+        <View
+          style={[styles.swatch, { backgroundColor: hex }]}
+        />
+        <Text style={styles.hex}>{hex.toUpperCase()}</Text>
+      </View>
+    ))}
   </View>
 );`,
   },
   {
     name: 'styles.js',
-    code: `const red = '#e8290b';
-const ink = '#111114';
-const paper = '#f4f1e9';
-const mute = '#6a6a72';
+    code: `const red = '#e82200';
+const ink = '#1c1b1a';
+const paper = '#faf7f2';
+const mute = '#8a8580';
+const rule = '#ddd7cd';
 
-const rings = [230, 184, 138, 92, 46];
+const sizes = [9, 13, 18, 25, 35];
 
-// a quarter disc pinned to the top-right corner of the page
-const quarter = (r) =>
-  \`M298 0v\${r}a\${r} \${r} 0 0 0 -\${r} -\${r}z\`;
-
-const nights = [
-  {
-    day: 'FRI',
-    stage: 'HARBOUR',
-    acts: ['SUNSET DIVISION', 'Kite Parade', 'Marisol'],
-  },
-  {
-    day: 'SAT',
-    stage: 'DRY DOCK',
-    acts: ['THE LONG NOW', 'Halogen Choir', 'Perro Azul'],
-  },
-  {
-    day: 'SUN',
-    stage: 'LIGHTHOUSE',
-    acts: ['ATLAS IN BLOOM', 'Nite Ferry', 'Cassette'],
-  },
+const specs = [
+  ['TRIM', '105 × 148 MM'],
+  ['MEDIA BOX', '297.64 × 419.53 PT'],
+  ['FONTS', 'HELVETICA, COURIER'],
+  ['DRAWN BY', '@REACT-PDF/RENDERER'],
 ];
 
-const fields = [
-  { label: 'GATE', value: 'C' },
-  { label: 'ROW', value: '14' },
-  { label: 'SEAT', value: '008' },
-  { label: 'ORDER', value: 'RP-0042' },
-];
+const swatches = [red, '#8d1602', '#3e3e3e', '#c9c2b6'];
 
-const bars = 'NOCTURNE-MVD-2025'.split('').map((c, i) => ({
-  x: i * 5,
-  width: (c.charCodeAt(0) % 3) + 1,
-}));
+const charset =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ ' +
+  'abcdefghijklmnopqrstuvwxyz 0123456789 ' +
+  '& @ % # ? ! × § ¶';
+
+// x, y, then the horizontal and vertical tick lengths
+const corners = [
+  [13, 13, -9, -9],
+  [285, 13, 9, -9],
+  [13, 407, -9, 9],
+  [285, 407, 9, 9],
+];
 
 const styles = StyleSheet.create({
   page: { backgroundColor: paper, color: ink },
-  fill: { position: 'absolute', inset: 0 },
-  art: { height: 176, justifyContent: 'flex-end', padding: 18 },
-  artType: { marginBottom: -3 },
-  kicker: {
-    fontSize: 6.5,
-    letterSpacing: 1.6,
-    color: '#8f8b84',
-    marginBottom: 7,
+  marks: { position: 'absolute', inset: 0 },
+  sheet: {
+    flex: 1,
+    paddingHorizontal: 26,
+    paddingTop: 32,
+    paddingBottom: 24,
   },
-  title: {
-    fontSize: 36,
-    fontFamily: 'Helvetica-Bold',
-    letterSpacing: -1.4,
-    lineHeight: 0.96,
-    color: paper,
-  },
-  red: { color: red },
-  lineup: { flex: 1 },
-  marquee: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: red,
-    color: paper,
-    fontSize: 7,
-    letterSpacing: 1.2,
-    paddingVertical: 4.5,
-    paddingHorizontal: 18,
+    borderBottomWidth: 1,
+    borderColor: ink,
+    paddingBottom: 8,
   },
-  night: {
+  title: { fontSize: 24, letterSpacing: -1 },
+  sub: { fontSize: 5.5, letterSpacing: 1.4, color: mute },
+  folio: {
+    fontFamily: 'Courier-Bold',
+    fontSize: 10,
+    color: red,
+  },
+  waterfall: { marginTop: 6 },
+  line: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    borderBottomWidth: 0.75,
-    borderColor: ink,
-    marginHorizontal: 18,
-    paddingVertical: 6,
+    borderBottomWidth: 0.4,
+    borderColor: rule,
+    paddingVertical: 5.5,
   },
-  day: {
-    width: 26,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-    letterSpacing: 0.6,
+  size: {
+    fontFamily: 'Courier',
+    fontSize: 6.5,
+    color: red,
+    width: 24,
   },
-  acts: { flex: 1 },
-  head: {
-    fontSize: 13.5,
-    fontFamily: 'Helvetica-Bold',
-    letterSpacing: -0.4,
+  charset: {
+    fontSize: 7,
+    lineHeight: 1.9,
+    letterSpacing: 0.4,
+    color: mute,
+    marginTop: 10,
   },
-  act: { fontSize: 8.5, color: mute, lineHeight: 1.45 },
-  stage: { fontSize: 6, letterSpacing: 1.2, color: mute },
-  stub: { paddingHorizontal: 18, paddingBottom: 14 },
-  perforation: {
-    borderTopWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: '#c9c5ba',
-    marginBottom: 12,
+  meta: {
+    marginTop: 12,
+    borderTopWidth: 0.4,
+    borderColor: rule,
   },
-  stubRow: {
+  metaRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
     justifyContent: 'space-between',
+    borderBottomWidth: 0.4,
+    borderColor: rule,
+    paddingVertical: 4,
   },
-  fields: { flexDirection: 'row', marginTop: 6 },
-  tiny: { fontSize: 6, letterSpacing: 1.2, color: mute },
-  mono: { fontFamily: 'Courier-Bold', fontSize: 10 },
+  metaLabel: {
+    fontFamily: 'Courier',
+    fontSize: 6,
+    color: mute,
+  },
+  metaValue: {
+    fontFamily: 'Courier-Bold',
+    fontSize: 6,
+    color: ink,
+  },
+  bar: { flexDirection: 'row', marginTop: 'auto' },
+  swatchBox: { flex: 1, marginRight: 4 },
+  swatch: { height: 22, borderWidth: 0.4, borderColor: rule },
+  hex: { fontFamily: 'Courier', fontSize: 5, color: mute },
 });`,
   },
 ];

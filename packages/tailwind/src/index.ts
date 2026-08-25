@@ -1,24 +1,24 @@
-import { Style } from "@react-pdf/types";
-import defaultTheme from "tailwindcss/defaultTheme";
-import { tailwindColors } from "./colors";
+import { Style } from '@react-pdf/types';
+import defaultTheme from 'tailwindcss/defaultTheme';
+import { tailwindColors } from './colors';
 import {
   exactUtilities,
   isNegativeProperty,
   isScaledProperty,
   utilityPatterns,
-} from "./properties";
-import { capitalize, ExtendableDeepPartial, isNumeric, px, rem } from "./utils";
+} from './properties';
+import { capitalize, ExtendableDeepPartial, isNumeric, px, rem } from './utils';
 
 type DefaultTheme = typeof defaultTheme;
 
 type ThemeBaseConfig = Omit<
   ExtendableDeepPartial<typeof defaultTheme>,
-  "colors" | "fontFamily"
+  'colors' | 'fontFamily'
 >;
 
 type ThemeConfig = ThemeBaseConfig & {
   colors?: Record<string, string | Record<number, string>>;
-  fontFamily?: Partial<DefaultTheme["fontFamily"]> & {
+  fontFamily?: Partial<DefaultTheme['fontFamily']> & {
     [key: string]: string | string[];
   };
 };
@@ -31,7 +31,12 @@ function themeResolver(name: string) {
   return defaultTheme[name as keyof typeof defaultTheme] ?? {};
 }
 
-export function createTw(config: ThemeConfig, options?: Options) {
+// Explicit return type keeps `Style` in the emitted .d.ts — TS elides the
+// import when it only surfaces through inference.
+export function createTw(
+  config: ThemeConfig,
+  options?: Options,
+): (input: string) => Style {
   const theme = { ...defaultTheme, ...config };
 
   // Default colors are in OKLCH from v4 onwards, so we use the hex versions here for compatibility
@@ -42,53 +47,53 @@ export function createTw(config: ThemeConfig, options?: Options) {
   function transformValue(
     value: string | number | undefined,
     property?: string,
-    isNegative?: boolean
+    isNegative?: boolean,
   ) {
     if (value === undefined) {
       return undefined;
     }
 
-    if (typeof value !== "string" && typeof value !== "number") {
+    if (typeof value !== 'string' && typeof value !== 'number') {
       console.warn(
-        "Invalid value type passed to transformValue",
+        'Invalid value type passed to transformValue',
         value,
-        property
+        property,
       );
       return undefined;
     }
 
     const sign = isNegative ? -1 : 1;
 
-    if (typeof value === "number") {
+    if (typeof value === 'number') {
       return sign * value;
     }
 
     switch (property) {
-      case "lineHeight":
+      case 'lineHeight':
         // react-pdf only supports unitless line-heights
         // https://github.com/diegomura/react-pdf/issues/912
-        if (value.endsWith("rem")) {
-          return sign * Number(value.replace("rem", ""));
+        if (value.endsWith('rem')) {
+          return sign * Number(value.replace('rem', ''));
         }
         return sign * Number(value);
 
       default:
-        if (value.endsWith("px")) {
-          return px(sign * Number(value.replace("px", "")));
+        if (value.endsWith('px')) {
+          return px(sign * Number(value.replace('px', '')));
         }
-        if (value.endsWith("rem")) {
+        if (value.endsWith('rem')) {
           return rem(
-            sign * Number(value.replace("rem", "")),
-            options?.ptPerRem
+            sign * Number(value.replace('rem', '')),
+            options?.ptPerRem,
           );
         }
-        if (value.endsWith("em")) {
-          return rem(sign * Number(value.replace("em", "")), options?.ptPerRem);
+        if (value.endsWith('em')) {
+          return rem(sign * Number(value.replace('em', '')), options?.ptPerRem);
         }
         if (isNegative && property && isNegativeProperty(property)) {
-          const suffix = ["deg", "%"].find((i) => value.endsWith(i));
+          const suffix = ['deg', '%'].find((i) => value.endsWith(i));
           if (suffix) {
-            return `${sign * Number(value.replace(suffix, ""))}${suffix}`;
+            return `${sign * Number(value.replace(suffix, ''))}${suffix}`;
           }
         }
         if (isNumeric(value)) {
@@ -99,8 +104,8 @@ export function createTw(config: ThemeConfig, options?: Options) {
   }
 
   function getCustomValue(value: string) {
-    if (value.startsWith("[") && value.endsWith("]")) {
-      return value.slice(1, value.length - 1).replaceAll("_", " ");
+    if (value.startsWith('[') && value.endsWith(']')) {
+      return value.slice(1, value.length - 1).replaceAll('_', ' ');
     }
     return undefined;
   }
@@ -108,7 +113,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
   // Example: text-2xl => ["1.5rem", { lineHeight: "2rem"}]
   type MultiProperty = [
     string,
-    string | Record<string, string | number | undefined>
+    string | Record<string, string | number | undefined>,
   ];
 
   function isMultiProperty(value: unknown): value is MultiProperty {
@@ -117,7 +122,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
 
   interface Value {
     value: string | number | undefined;
-    type?: "color" | "unit" | "numeric" | "other";
+    type?: 'color' | 'unit' | 'numeric' | 'other';
     isCustom?: boolean;
     additionalProperties?: MergedStyle;
   }
@@ -125,52 +130,52 @@ export function createTw(config: ThemeConfig, options?: Options) {
   function parseValue(
     value: string,
     property?: string,
-    isNegative?: boolean
+    isNegative?: boolean,
   ): Value {
-    const valueParts = value.split("-");
+    const valueParts = value.split('-');
 
     // Custom value
     const customValue = getCustomValue(value);
     if (customValue) {
       // Color
       if (
-        ["#", "rgb", "hsl"].some((prefix) => customValue.startsWith(prefix))
+        ['#', 'rgb', 'hsl'].some((prefix) => customValue.startsWith(prefix))
       ) {
         return {
           value: customValue,
-          type: "color",
+          type: 'color',
           isCustom: true,
         };
       }
       // Unit
-      if (["px", "rem"].some((suffix) => customValue.endsWith(suffix))) {
+      if (['px', 'rem'].some((suffix) => customValue.endsWith(suffix))) {
         return {
           value: transformValue(customValue, property, isNegative),
-          type: "unit",
+          type: 'unit',
           isCustom: true,
         };
       }
       // Other
       return {
         value: transformValue(customValue, property, isNegative),
-        type: "other",
+        type: 'other',
         isCustom: true,
       };
     }
 
     // Color
     // Exception for "font-weight: black" (not a color)
-    if (valueParts[0] && valueParts[0] in colors && property !== "fontWeight") {
+    if (valueParts[0] && valueParts[0] in colors && property !== 'fontWeight') {
       // TODO alpha colors like gray-500/50 etc
       const color = colors[valueParts[0] as keyof typeof colors];
       return {
         value:
-          typeof color === "string"
+          typeof color === 'string'
             ? color
-            : valueParts[1] && typeof valueParts[1] === "string"
-            ? color?.[valueParts[1] as unknown as keyof typeof color]
-            : undefined,
-        type: "color" as const,
+            : valueParts[1] && typeof valueParts[1] === 'string'
+              ? color?.[valueParts[1] as unknown as keyof typeof color]
+              : undefined,
+        type: 'color' as const,
         isCustom: false,
         additionalProperties: undefined,
       };
@@ -183,10 +188,10 @@ export function createTw(config: ThemeConfig, options?: Options) {
     }
 
     // Scaled properties
-    const maybeScaledProperty = ["top", "right", "bottom", "left"].includes(
-      property
+    const maybeScaledProperty = ['top', 'right', 'bottom', 'left'].includes(
+      property,
     )
-      ? "inset"
+      ? 'inset'
       : property;
 
     if (isScaledProperty(maybeScaledProperty)) {
@@ -195,7 +200,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
       const themeProp = theme[key];
       let result: string | number | undefined;
 
-      if (typeof themeProp === "function") {
+      if (typeof themeProp === 'function') {
         // Here the theme value expects a function that resolves values within the theme object
         result = (themeProp as any)({ theme: themeResolver })?.[value];
       } else if (themeProp && value in themeProp) {
@@ -210,18 +215,18 @@ export function createTw(config: ThemeConfig, options?: Options) {
       // Some utilities may set multiple properties (eg. text-* sets both fontSize and lineHeight)
       if (isMultiProperty(result)) {
         const additionalProperties =
-          result[1] && result[1] !== null && typeof result[1] === "object"
+          result[1] && result[1] !== null && typeof result[1] === 'object'
             ? Object.fromEntries(
                 Object.entries(result[1]).map(([key, value]) => [
                   key,
                   transformValue(value, key),
-                ])
+                ]),
               )
             : null;
 
         return {
           value: transformValue(result[0], property, isNegative),
-          type: "unit",
+          type: 'unit',
           isCustom: false,
           ...(additionalProperties ? { additionalProperties } : null),
         };
@@ -229,7 +234,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
 
       return {
         value: transformValue(result, property, isNegative),
-        type: "unit",
+        type: 'unit',
         isCustom: false,
       };
     }
@@ -246,7 +251,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
     | undefined;
 
   function parseUtility(className: string): MergedStyle {
-    const modifierParts = className.split(":");
+    const modifierParts = className.split(':');
     const utilityStr = modifierParts[modifierParts.length - 1];
 
     // Exact utilities
@@ -255,17 +260,17 @@ export function createTw(config: ThemeConfig, options?: Options) {
     }
 
     // Utility patterns
-    const isNegative = utilityStr ? utilityStr.startsWith("-") : false;
+    const isNegative = utilityStr ? utilityStr.startsWith('-') : false;
     const utilityParts = utilityStr
-      ? utilityStr.slice(isNegative ? 1 : 0).split("-")
+      ? utilityStr.slice(isNegative ? 1 : 0).split('-')
       : [];
 
     const matchingUtilityPatternKey = Object.keys(utilityPatterns).find(
       (key) => {
-        const keyParts = key.split("-");
-        const comparisonKey = utilityParts.slice(0, keyParts.length).join("-");
+        const keyParts = key.split('-');
+        const comparisonKey = utilityParts.slice(0, keyParts.length).join('-');
         return key === comparisonKey;
-      }
+      },
     );
 
     if (matchingUtilityPatternKey) {
@@ -285,7 +290,7 @@ export function createTw(config: ThemeConfig, options?: Options) {
       const { value, additionalProperties } = parseValue(
         rawValue,
         property,
-        isNegative
+        isNegative,
       );
 
       return {
@@ -296,17 +301,17 @@ export function createTw(config: ThemeConfig, options?: Options) {
 
     // Special utilities
     switch (utilityParts[0]) {
-      case "inset": {
-        const direction = ["x", "y"].find((i) => i === utilityParts[1]);
-        const valueStr = utilityParts.slice(direction ? 2 : 1).join("-");
-        const { value } = parseValue(valueStr, "inset", isNegative);
+      case 'inset': {
+        const direction = ['x', 'y'].find((i) => i === utilityParts[1]);
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
+        const { value } = parseValue(valueStr, 'inset', isNegative);
         switch (direction) {
-          case "x":
+          case 'x':
             return {
               left: value,
               right: value,
             };
-          case "y":
+          case 'y':
             return {
               top: value,
               bottom: value,
@@ -321,13 +326,13 @@ export function createTw(config: ThemeConfig, options?: Options) {
         }
       }
 
-      case "font": {
-        const valueStr = utilityParts.slice(1).join("-");
+      case 'font': {
+        const valueStr = utilityParts.slice(1).join('-');
         const customValue = getCustomValue(valueStr);
         if (customValue) {
           if (isNumeric(customValue)) {
             return {
-              fontWeight: parseInt(customValue),
+              fontWeight: parseInt(customValue, 10),
             };
           }
           return {
@@ -335,33 +340,33 @@ export function createTw(config: ThemeConfig, options?: Options) {
           };
         }
         if (theme.fontFamily && valueStr in theme.fontFamily) {
-          const { value } = parseValue(valueStr, "fontFamily");
+          const { value } = parseValue(valueStr, 'fontFamily');
           return {
             fontFamily: value,
           };
         }
-        const { value } = parseValue(valueStr, "fontWeight");
+        const { value } = parseValue(valueStr, 'fontWeight');
         return {
           fontWeight: value,
         };
       }
 
-      case "text": {
-        const valueStr = utilityParts.slice(1).join("-");
+      case 'text': {
+        const valueStr = utilityParts.slice(1).join('-');
         const { value, additionalProperties, type } = parseValue(
           valueStr,
-          "fontSize"
+          'fontSize',
         );
-        if (type === "color") {
+        if (type === 'color') {
           return { color: value };
         }
         return { fontSize: value, ...additionalProperties };
       }
 
-      case "decoration": {
-        const valueStr = utilityParts.slice(1).join("-");
-        const { value, type } = parseValue(valueStr, "textDecorationColor");
-        if (type === "color") {
+      case 'decoration': {
+        const valueStr = utilityParts.slice(1).join('-');
+        const { value, type } = parseValue(valueStr, 'textDecorationColor');
+        if (type === 'color') {
           return {
             textDecorationColor: value,
           };
@@ -370,46 +375,46 @@ export function createTw(config: ThemeConfig, options?: Options) {
         return undefined;
       }
 
-      case "rounded": {
-        const direction = ["t", "r", "b", "l", "tl", "tr", "br", "bl"].find(
-          (i) => i === utilityParts[1]
+      case 'rounded': {
+        const direction = ['t', 'r', 'b', 'l', 'tl', 'tr', 'br', 'bl'].find(
+          (i) => i === utilityParts[1],
         );
-        const valueStr = utilityParts.slice(direction ? 2 : 1).join("-");
-        const { value } = parseValue(valueStr || "DEFAULT", "borderRadius");
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
+        const { value } = parseValue(valueStr || 'DEFAULT', 'borderRadius');
         switch (direction) {
-          case "t":
+          case 't':
             return {
               borderTopLeftRadius: value,
               borderTopRightRadius: value,
             };
-          case "r":
+          case 'r':
             return {
               borderTopRightRadius: value,
               borderBottomRightRadius: value,
             };
-          case "b":
+          case 'b':
             return {
               borderBottomRightRadius: value,
               borderBottomLeftRadius: value,
             };
-          case "l":
+          case 'l':
             return {
               borderBottomLeftRadius: value,
               borderTopLeftRadius: value,
             };
-          case "tl":
+          case 'tl':
             return {
               borderTopLeftRadius: value,
             };
-          case "tr":
+          case 'tr':
             return {
               borderTopRightRadius: value,
             };
-          case "br":
+          case 'br':
             return {
               borderBottomRightRadius: value,
             };
-          case "bl":
+          case 'bl':
             return {
               borderBottomLeftRadius: value,
             };
@@ -420,35 +425,35 @@ export function createTw(config: ThemeConfig, options?: Options) {
         }
       }
 
-      case "border": {
+      case 'border': {
         // Border width or color
-        const direction = ["x", "y", "t", "r", "b", "l"].find(
-          (i) => i === utilityParts[1]
+        const direction = ['x', 'y', 't', 'r', 'b', 'l'].find(
+          (i) => i === utilityParts[1],
         );
-        const valueStr = utilityParts.slice(direction ? 2 : 1).join("-");
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
         const { value, type } = parseValue(
-          valueStr || "DEFAULT",
-          "borderWidth"
+          valueStr || 'DEFAULT',
+          'borderWidth',
         );
-        const propertySuffix = capitalize(type === "color" ? "color" : "width");
+        const propertySuffix = capitalize(type === 'color' ? 'color' : 'width');
         switch (direction) {
-          case "x":
+          case 'x':
             return {
               [`borderLeft${propertySuffix}`]: value,
               [`borderRight${propertySuffix}`]: value,
             };
-          case "y":
+          case 'y':
             return {
               [`borderTop${propertySuffix}`]: value,
               [`borderBottom${propertySuffix}`]: value,
             };
-          case "t":
+          case 't':
             return { [`borderTop${propertySuffix}`]: value };
-          case "r":
+          case 'r':
             return { [`borderRight${propertySuffix}`]: value };
-          case "b":
+          case 'b':
             return { [`borderBottom${propertySuffix}`]: value };
-          case "l":
+          case 'l':
             return { [`borderLeft${propertySuffix}`]: value };
           default:
             return {
@@ -457,16 +462,16 @@ export function createTw(config: ThemeConfig, options?: Options) {
         }
       }
 
-      case "scale": {
-        const direction = ["x", "y"].find((i) => i === utilityParts[1]);
-        const valueStr = utilityParts.slice(direction ? 2 : 1).join("-");
-        const { value } = parseValue(valueStr, "scale", isNegative);
+      case 'scale': {
+        const direction = ['x', 'y'].find((i) => i === utilityParts[1]);
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
+        const { value } = parseValue(valueStr, 'scale', isNegative);
         switch (direction) {
-          case "x":
+          case 'x':
             return {
               transform: `scaleX(${value})`,
             };
-          case "y":
+          case 'y':
             return {
               transform: `scaleY(${value})`,
             };
@@ -477,27 +482,27 @@ export function createTw(config: ThemeConfig, options?: Options) {
         }
       }
 
-      case "rotate": {
+      case 'rotate': {
         const { value } = parseValue(
-          utilityParts.slice(1).join("-"),
-          "rotate",
-          isNegative
+          utilityParts.slice(1).join('-'),
+          'rotate',
+          isNegative,
         );
         return {
           transform: `rotate(${value})`,
         };
       }
 
-      case "translate": {
-        const direction = ["x", "y"].find((i) => i === utilityParts[1]);
-        const valueStr = utilityParts.slice(direction ? 2 : 1).join("-");
-        const { value } = parseValue(valueStr, "translate", isNegative);
+      case 'translate': {
+        const direction = ['x', 'y'].find((i) => i === utilityParts[1]);
+        const valueStr = utilityParts.slice(direction ? 2 : 1).join('-');
+        const { value } = parseValue(valueStr, 'translate', isNegative);
         switch (direction) {
-          case "x":
+          case 'x':
             return {
               transform: `translateX(${value})`,
             };
-          case "y":
+          case 'y':
             return {
               transform: `translateY(${value})`,
             };
@@ -507,18 +512,19 @@ export function createTw(config: ThemeConfig, options?: Options) {
             };
         }
       }
-    }
 
-    // No match
-    return undefined;
+      // No match
+      default:
+        return undefined;
+    }
   }
 
   function handleInvalidClassName(className: string) {
-    console.warn(`react-pdf-tailwind: Invalid class "${className}"`);
+    console.warn(`@react-pdf/tailwind: Invalid class "${className}"`);
   }
 
   return function (input: string) {
-    const classNames = input.split(" ").map((i) => i.trim());
+    const classNames = input.split(' ').map((i) => i.trim());
     return classNames
       .map((className) => {
         if (className in cache) {
@@ -527,25 +533,24 @@ export function createTw(config: ThemeConfig, options?: Options) {
         const parsed = parseUtility(className);
         if (
           parsed &&
-          Object.values(parsed).every((v) => typeof v !== "undefined")
+          Object.values(parsed).every((v) => typeof v !== 'undefined')
         ) {
           cache[className] = parsed;
           return parsed;
-        } else {
-          handleInvalidClassName(className);
         }
+        handleInvalidClassName(className);
         return undefined;
       })
       .reduce<Style>((acc, val) => {
         if (!val) {
           return acc;
         }
-        if ("transform" in val) {
+        if ('transform' in val) {
           const { transform, ...rest } = val;
           return {
             ...acc,
             ...(transform
-              ? { transform: [acc.transform ?? "", transform].join(" ").trim() }
+              ? { transform: [acc.transform ?? '', transform].join(' ').trim() }
               : null),
             ...rest,
           };

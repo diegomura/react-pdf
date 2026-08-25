@@ -14,7 +14,7 @@ export function round(value: number) {
 }
 
 export function isNumeric(value: string) {
-  if (value.startsWith(".")) {
+  if (value.startsWith('.')) {
     value = `0${value}`;
   }
   return Number(value).toString() === value;

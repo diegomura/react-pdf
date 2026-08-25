@@ -6,6 +6,7 @@ export default [
   'packages/layout',
   'packages/svg',
   'packages/svgkit',
+  'packages/tailwind',
   'packages/textkit',
   'packages/renderer/vitest.config.js',
   'packages/renderer/vitest.browser.config.js',

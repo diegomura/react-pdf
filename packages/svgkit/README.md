@@ -73,9 +73,10 @@ Supported and matching PDF output:
 
 - Fills, strokes, clips, gradients, transforms, images
 - Links (`src`) and internal destinations (`id` / `#dest`)
-- `TextInput`, `Checkbox` and `Note` render a static, non-interactive
-  approximation of what a PDF viewer shows: the field's value (masked for
-  `password`), a check mark for a checked `Checkbox`, and a fixed
+- `TextInput`, `Select`, `List`, `Checkbox` and `Note` render a static,
+  non-interactive approximation of what a PDF viewer shows: the field's
+  value (masked for `password`, falling back to the first `select` option
+  for `Select`/`List`), a check mark for a checked `Checkbox`, and a fixed
   comment-bubble icon carrying the note text as a native `<title>` tooltip.
   There's no typing, no toggling and no popups, and long field values are
   clipped to the box rather than shrunk to fit, since svgkit has no font
@@ -83,8 +84,6 @@ Supported and matching PDF output:
 
 Silent no-ops — these draw nothing in SVG output, unlike the PDF renderer:
 
-- `Select` and `List` selected-option text (the box, background and border
-  still render like any other node; only the value text is missing)
 - Bookmarks / outlines
 
 ## License

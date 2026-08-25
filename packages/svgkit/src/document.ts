@@ -725,11 +725,35 @@ class SVGDocument {
     return this;
   }
 
-  formCombo() {
+  // renderSelect/renderList call formCombo/formList directly (not
+  // addFormAnnotation → annotate), but options carry the same
+  // value/select shape as a text-valued field, so the same drawing rules
+  // apply: value wins, falling back to select[0], no password handling.
+  formCombo(
+    _name: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    options: Record<string, any> = {},
+  ) {
+    this.drawFieldValue(x, y, width, height, options);
     return this;
   }
 
-  formList() {
+  // ponytail: for a List whose value isn't the first option, poppler
+  // renders the first option (a known poppler quirk); we render the
+  // selected value instead, which matches full-featured viewers and is
+  // more useful in a preview.
+  formList(
+    _name: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    options: Record<string, any> = {},
+  ) {
+    this.drawFieldValue(x, y, width, height, options);
     return this;
   }
 

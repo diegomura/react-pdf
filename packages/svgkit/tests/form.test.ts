@@ -114,6 +114,48 @@ describe('annotate: safe no-op', () => {
   });
 });
 
+describe('formCombo', () => {
+  test('renders the selected value', () => {
+    const doc = makeDoc();
+    expect(doc.formCombo('sel', 0, 0, 100, 20, { value: 'Beta' })).toBe(doc);
+    expect(pageContent(doc)).toContain('>Beta</text>');
+  });
+
+  test('falls back to the first select option when there is no value', () => {
+    const doc = makeDoc();
+    doc.formCombo('sel', 0, 0, 100, 20, { select: ['Alpha', 'Beta'] });
+    expect(pageContent(doc)).toContain('>Alpha</text>');
+  });
+
+  test('draws nothing when neither value nor select yield text', () => {
+    const doc = makeDoc();
+    doc.formCombo('sel', 0, 0, 100, 20, {});
+    expect(pageContent(doc)).toBe('<defs/>');
+  });
+});
+
+describe('formList', () => {
+  test('renders the selected value', () => {
+    const doc = makeDoc();
+    expect(doc.formList('list', 0, 0, 100, 44, { value: 'Two' })).toBe(doc);
+    expect(pageContent(doc)).toContain('>Two</text>');
+  });
+
+  test('falls back to the first select option when there is no value', () => {
+    const doc = makeDoc();
+    doc.formList('list', 0, 0, 100, 44, {
+      select: ['One', 'Two', 'Three'],
+    });
+    expect(pageContent(doc)).toContain('>One</text>');
+  });
+
+  test('draws nothing when neither value nor select yield text', () => {
+    const doc = makeDoc();
+    doc.formList('list', 0, 0, 100, 44, {});
+    expect(pageContent(doc)).toBe('<defs/>');
+  });
+});
+
 describe('note', () => {
   test('draws a fixed comment-bubble icon with a title tooltip', () => {
     const doc = makeDoc();

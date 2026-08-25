@@ -63,6 +63,14 @@ const checkbox = (props: any = {}, style: any = {}): any => ({
   children: [],
 });
 
+const select = (props: any = {}, style: any = {}): any => ({
+  type: 'SELECT',
+  props,
+  style,
+  box: {},
+  children: [],
+});
+
 const note = (value: string, style: any = {}): any => ({
   type: 'NOTE',
   props: {},
@@ -228,11 +236,16 @@ describe('svgkit integration', () => {
           { width: 120, height: 20 },
         ),
         checkbox({ name: 'field2', checked: true }, { width: 20, height: 20 }),
+        select(
+          { name: 'field3', select: ['Alpha', 'Beta'], value: 'Beta' },
+          { width: 120, height: 20 },
+        ),
         note('a helpful comment', { backgroundColor: 'yellow' }),
       ]),
     );
 
     expect(pages[0]).toContain('Jane Doe');
+    expect(pages[0]).toContain('Beta');
     expect(pages[0]).toMatch(/<path[^>]*stroke="[^"]+"[^>]*\/>/);
     expect(pages[0]).toContain('<title>a helpful comment</title>');
   });

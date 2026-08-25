@@ -21,6 +21,7 @@ export const HERO_FILES: { name: string; code: string }[] = [
       </View>
 
       <Kpis />
+      <Summary />
       <Bars />
       <Split />
       <Table />
@@ -49,6 +50,21 @@ const Kpis = () => (
       <Kpi key={kpi.label} {...kpi} />
     ))}
   </View>
+);`,
+  },
+  {
+    name: 'Summary.jsx',
+    code: `// Justified body copy: react-pdf breaks and spaces the lines
+// itself, the same way a typesetter would.
+const Summary = () => (
+  <Section title="SUMMARY">
+    <Text style={styles.body}>
+      Revenue closed the quarter at $4.2M, up 12% on Q2 and
+      ahead of plan for the third quarter running. Growth came
+      almost entirely from organic search, while churn fell to
+      its lowest point since the March pricing change.
+    </Text>
+  </Section>
 );`,
   },
   {
@@ -81,7 +97,7 @@ const Kpis = () => (
 // A donut is one stroked arc per slice — no chart library
 // involved, just a little trigonometry.
 const Donut = () => (
-  <Svg width={78} height={78} viewBox="0 0 86 86">
+  <Svg width={64} height={64} viewBox="0 0 86 86">
     {slices.map((slice) => (
       <Path
         key={slice.label}
@@ -144,9 +160,9 @@ const Table = () => (
     name: 'styles.js',
     code: `const red = '#e82200';
 const ink = '#3e3e3e';
-const paper = '#faf7f2';
-const mute = '#8a8580';
-const rule = '#ddd7cd';
+const paper = '#ffffff';
+const mute = '#8a8a87';
+const rule = '#e5e5e3';
 
 const kpis = [
   { label: 'REVENUE', value: '$4.2M', delta: 12 },
@@ -211,7 +227,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   tiny: { fontSize: 5.5, letterSpacing: 1.3, color: mute },
-  kpis: { flexDirection: 'row', marginTop: 10 },
+  kpis: { flexDirection: 'row', marginTop: 7 },
   kpi: { flex: 1 },
   kpiValue: {
     fontFamily: 'Helvetica-Bold',
@@ -220,17 +236,22 @@ const styles = StyleSheet.create({
   },
   up: { fontSize: 8, color: '#1f7a4d' },
   down: { fontSize: 8, color: red },
-  section: { marginTop: 11 },
+  section: { marginTop: 9 },
   sectionTitle: {
     fontSize: 5.5,
     letterSpacing: 1.6,
     color: mute,
     borderBottomWidth: 0.5,
     borderColor: rule,
-    paddingBottom: 4,
-    marginBottom: 8,
+    paddingBottom: 3,
+    marginBottom: 6,
   },
-  chart: { height: 72 },
+  chart: { height: 54 },
+  body: {
+    fontSize: 6.5,
+    lineHeight: 1.5,
+    textAlign: 'justify',
+  },
   axis: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -248,7 +269,7 @@ const styles = StyleSheet.create({
   legendRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 4,
+    paddingVertical: 2.5,
   },
   swatch: { width: 7, height: 7, marginRight: 7 },
   legendLabel: { flex: 1, fontSize: 9 },
@@ -264,7 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 0.5,
     borderColor: rule,
-    paddingVertical: 4.5,
+    paddingVertical: 3.5,
   },
   cell: { flex: 1, fontSize: 9 },
 });`,

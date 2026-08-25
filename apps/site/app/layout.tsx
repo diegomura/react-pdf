@@ -2,6 +2,7 @@ import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
+import VersionedSearchDialog from '@/components/search-dialog';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const mono = JetBrains_Mono({
@@ -28,7 +29,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <body className="flex min-h-screen flex-col font-sans">
         <RootProvider
           theme={{ defaultTheme: 'dark' }}
-          search={{ enabled: false }}
+          search={{ SearchDialog: VersionedSearchDialog }}
         >
           {children}
         </RootProvider>

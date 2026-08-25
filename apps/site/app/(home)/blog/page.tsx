@@ -9,20 +9,24 @@ export default function BlogIndex() {
     .sort((a, b) => String(b.data.date).localeCompare(String(a.data.date)));
 
   return (
-    <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16">
-      <h1 className="mb-8 text-3xl font-bold">Blog</h1>
-      {posts.map((post) => (
-        <Link
-          key={post.url}
-          href={post.url}
-          className="block rounded-lg p-4 hover:bg-fd-accent"
-        >
-          <div className="font-semibold">{post.data.title}</div>
-          <div className="text-sm text-fd-muted-foreground">
-            {String(post.data.date)}
-          </div>
-        </Link>
-      ))}
+    <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-12">
+      <h1 className="mb-6 text-[1.75rem] font-semibold tracking-tight">Blog</h1>
+      <div className="divide-fd-border divide-y border-y">
+        {posts.map((post) => (
+          <Link
+            key={post.url}
+            href={post.url}
+            className="hover:bg-fd-accent/50 group flex items-baseline justify-between gap-4 px-2 py-3 transition-colors"
+          >
+            <span className="text-[0.9375rem] font-medium">
+              {post.data.title}
+            </span>
+            <span className="text-fd-muted-foreground shrink-0 text-[0.8125rem] tabular-nums">
+              {String(post.data.date)}
+            </span>
+          </Link>
+        ))}
+      </div>
     </main>
   );
 }

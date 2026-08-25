@@ -48,3 +48,148 @@
 .dark #nd-sidebar {
   --color-fd-muted: hsl(217, 15%, 8%);
 }
+
+/* ---------- Navbar ---------- */
+
+#nd-nav,
+#nd-subnav {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  #nd-nav > div,
+  #nd-subnav[data-transparent='false'] {
+    background-color: color-mix(
+      in srgb,
+      var(--color-fd-background) 65%,
+      transparent
+    );
+  }
+}
+
+/* ---------- Sidebar ---------- */
+
+#nd-sidebar {
+  border-inline-end: 1px solid var(--color-fd-border);
+  font-size: 0.8125rem;
+}
+
+#nd-sidebar a,
+#nd-sidebar button {
+  padding-block: 0.3125rem;
+}
+
+#nd-sidebar [data-active='true'],
+#nd-sidebar-mobile [data-active='true'] {
+  background-color: var(--color-fd-accent);
+  color: var(--color-fd-foreground);
+  font-weight: 500;
+}
+
+#nd-sidebar [data-active='true']::before,
+#nd-sidebar-mobile [data-active='true']::before {
+  background-color: var(--color-fd-primary);
+}
+
+/* section separators (meta.json `---Label---`) */
+#nd-sidebar p:not(:has(a)) {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+}
+
+/* ---------- Page ---------- */
+
+#nd-page > * {
+  max-width: 46rem;
+}
+
+#nd-page h1 {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+#nd-page > p:first-of-type {
+  margin-bottom: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+#nd-page .prose {
+  --tw-prose-size: 0.9375;
+  line-height: 1.65;
+}
+
+#nd-page .prose h2 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+#nd-page .prose h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#nd-page .prose h4 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+#nd-page .prose figure.shiki,
+#nd-page .prose > pre {
+  margin-block: 0.875rem;
+}
+
+#nd-page .prose pre {
+  padding-block: 0.625rem;
+  line-height: 1.6;
+}
+
+#nd-page .prose :not(pre) > code {
+  font-size: 0.8125rem;
+}
+
+#nd-page .prose table {
+  font-size: 0.8125rem;
+}
+
+#nd-page .prose th,
+#nd-page .prose td {
+  padding-block: 0.5rem;
+  border-inline-start: none;
+  text-align: start !important;
+}
+
+#nd-page .prose th {
+  background: transparent;
+  font-weight: 500;
+  color: var(--color-fd-muted-foreground);
+}
+
+/* ---------- Table of contents ---------- */
+
+#nd-toc {
+  padding-top: 2rem;
+}
+
+#toc-title {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#toc-title svg {
+  display: none;
+}
+
+#nd-toc a {
+  font-size: 0.8125rem;
+}

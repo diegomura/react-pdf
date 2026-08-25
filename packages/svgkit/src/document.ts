@@ -709,14 +709,6 @@ class SVGDocument {
     return this;
   }
 
-  note() {
-    return this;
-  }
-
-  annotate() {
-    return this;
-  }
-
   addContent() {
     return this;
   }
@@ -751,12 +743,151 @@ class SVGDocument {
   }
 
   // addFormAnnotation builds the field dict via ctx._fieldDict(name, type, options)
-  _fieldDict() {
-    return {};
+  // and then mutates the result (Subtype/F/AP/AS/MaxLen), so this must return
+  // a fresh, plain, writable object rather than a fixed stub.
+  _fieldDict(_name: string, _type: string, options: Record<string, any>) {
+    return { ...options };
   }
 
   // addFormAnnotation calls ctx._addToParent(ctx.page.annotations.at(-1)) unconditionally
   _addToParent() {
+    return this;
+  }
+
+  // Static, non-interactive approximation of what a PDF viewer shows for a
+  // form widget: a checkbox's check mark, or a text/select field's value.
+  // dict.AP is only ever set by parseCheckboxOptions, so its presence is the
+  // signal that this is a checkbox rather than a text-valued field.
+  annotate(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    dict: Record<string, any> = {},
+  ) {
+    if (dict.AP) this.drawCheckboxMark(x, y, width, height, dict);
+    else this.drawFieldValue(x, y, width, height, dict);
+    return this;
+  }
+
+  protected drawCheckboxMark(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    dict: Record<string, any>,
+  ) {
+    const onOption = Object.keys(dict.AP?.N ?? {})[0];
+    if (dict.AS !== onOption) return;
+
+    const padX = width * 0.2;
+    const padY = height * 0.2;
+    const el = createElement('path');
+    setAttribute(
+      el,
+      'd',
+      `M${fmt(x + padX)} ${fmt(y + height * 0.55)}` +
+        `L${fmt(x + width * 0.42)} ${fmt(y + height - padY)}` +
+        `L${fmt(x + width - padX)} ${fmt(y + padY)}`,
+    );
+    setAttribute(el, 'fill', 'none');
+    setAttribute(el, 'stroke', this.resolvePaint(this.style.strokeColor));
+    setAttribute(el, 'stroke-width', fmt(height / 8));
+    setAttribute(el, 'stroke-linecap', 'round');
+    setAttribute(el, 'stroke-linejoin', 'round');
+    appendChild(this.container, el);
+  }
+
+  protected drawFieldValue(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    dict: Record<string, any>,
+  ) {
+    let value = dict.value;
+    if (!value && Array.isArray(dict.select) && dict.select.length > 0) {
+      [value] = dict.select;
+    }
+    if (!value) return;
+    if (dict.password) value = '*'.repeat(String(value).length);
+
+    // ponytail: svgkit has no font metrics to shrink-to-fit like a PDF
+    // viewer does, so long values are clipped to the box instead. Upgrade
+    // to real fit-to-width sizing if that approximation proves too coarse.
+    const size = dict.fontSize || height * 0.8;
+
+    let textX = x + 2;
+    let anchor: string | null = null;
+    if (dict.align === 'center') {
+      textX = x + width / 2;
+      anchor = 'middle';
+    } else if (dict.align === 'right') {
+      textX = x + width - 2;
+      anchor = 'end';
+    }
+    const textY = y + (height + size * 0.7) / 2;
+
+    this.save();
+    this.rect(x, y, width, height);
+    this.clip();
+
+    const el = createElement('text');
+    setAttribute(el, 'x', fmt(textX));
+    setAttribute(el, 'y', fmt(textY));
+    if (anchor) setAttribute(el, 'text-anchor', anchor);
+    this.applyTextFont(el);
+    setAttribute(el, 'font-size', fmt(size));
+    this.applyFillStyle(el);
+    setAttribute(el, 'xml:space', 'preserve');
+    appendChild(el, String(value));
+    appendChild(this.container, el);
+
+    this.restore();
+  }
+
+  // Fixed-size comment-bubble icon: notes have a zero-size box (render always
+  // calls note(x, y, 0, 0, ...)), so width/height carry no useful size here.
+  note(
+    x: number,
+    y: number,
+    _width: number,
+    _height: number,
+    contents: string,
+    options: { color?: string } = {},
+  ) {
+    const size = 20;
+    const group = createElement('g');
+
+    const bg = createElement('rect');
+    setAttribute(bg, 'x', fmt(x));
+    setAttribute(bg, 'y', fmt(y));
+    setAttribute(bg, 'width', size);
+    setAttribute(bg, 'height', size);
+    setAttribute(bg, 'rx', 4);
+    setAttribute(bg, 'fill', this.resolvePaint(options.color ?? '#ffcc00'));
+    appendChild(group, bg);
+
+    const bubble = createElement('path');
+    setAttribute(
+      bubble,
+      'd',
+      `M${fmt(x + 4)} ${fmt(y + 4)}` +
+        `H${fmt(x + size - 4)}` +
+        `V${fmt(y + size - 8)}` +
+        `H${fmt(x + 10)}` +
+        `L${fmt(x + 6)} ${fmt(y + size - 3)}` +
+        `V${fmt(y + size - 8)}` +
+        `H${fmt(x + 4)}Z`,
+    );
+    setAttribute(bubble, 'fill', '#ffffff');
+    appendChild(group, bubble);
+
+    const title = createElement('title');
+    appendChild(title, contents);
+    appendChild(group, title);
+
+    appendChild(this.container, group);
     return this;
   }
 }

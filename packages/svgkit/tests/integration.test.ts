@@ -47,6 +47,30 @@ const text = (value: string, style: any = {}): any => ({
   children: [{ type: 'TEXT_INSTANCE', value, props: {}, style: {} }],
 });
 
+const textInput = (props: any = {}, style: any = {}): any => ({
+  type: 'TEXT_INPUT',
+  props,
+  style,
+  box: {},
+  children: [],
+});
+
+const checkbox = (props: any = {}, style: any = {}): any => ({
+  type: 'CHECKBOX',
+  props,
+  style,
+  box: {},
+  children: [],
+});
+
+const note = (value: string, style: any = {}): any => ({
+  type: 'NOTE',
+  props: {},
+  style,
+  box: {},
+  children: [{ type: 'TEXT_INSTANCE', value, props: {}, style: {} }],
+});
+
 const svgWithGradientPath = (): any => ({
   type: 'SVG',
   props: { width: 100, height: 100 },
@@ -194,5 +218,22 @@ describe('svgkit integration', () => {
 
     const pages = await renderToSvg(doc([linkNode]));
     expect(pages[0]).toContain('<a href="https://react-pdf.org">');
+  });
+
+  test('renders static form fields and a note', async () => {
+    const pages = await renderToSvg(
+      doc([
+        textInput(
+          { name: 'field1', value: 'Jane Doe' },
+          { width: 120, height: 20 },
+        ),
+        checkbox({ name: 'field2', checked: true }, { width: 20, height: 20 }),
+        note('a helpful comment', { backgroundColor: 'yellow' }),
+      ]),
+    );
+
+    expect(pages[0]).toContain('Jane Doe');
+    expect(pages[0]).toMatch(/<path[^>]*stroke="[^"]+"[^>]*\/>/);
+    expect(pages[0]).toContain('<title>a helpful comment</title>');
   });
 });

@@ -4,6 +4,21 @@ title: "View"
 
 The most fundamental component for building a UI and is designed to be nested inside other views and can have 0 to many children.
 
+<Usage
+  code={`import { View, Text } from '@react-pdf/renderer';
+
+const Row = () => (
+  <View style={{ flexDirection: 'row', gap: 10 }}>
+    <View style={{ flex: 1, backgroundColor: '#eee', padding: 8 }}>
+      <Text>Sidebar</Text>
+    </View>
+    <View style={{ flex: 2, padding: 8 }}>
+      <Text>Content</Text>
+    </View>
+  </View>
+);`}
+/>
+
 ## Valid props
 
 | Prop name |                                  Description                                   |                                            Type |     Default |

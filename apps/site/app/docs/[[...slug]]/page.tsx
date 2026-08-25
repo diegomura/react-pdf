@@ -13,6 +13,7 @@ import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { SectionIndex } from '@/components/section-index';
 import { DocsFooter, DocsHeader } from '@/components/docs-pager';
+import { Usage } from '@/components/usage';
 
 const LATEST = 'v4';
 
@@ -52,6 +53,7 @@ export default async function Page(props: {
             DebugSample,
             OverviewTimeline,
             SectionIndex,
+            Usage,
           }}
         />
       </DocsBody>

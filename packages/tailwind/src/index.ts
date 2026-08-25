@@ -49,7 +49,7 @@ export function createTw(
   // Default colors are in OKLCH from v4 onwards, so we use the hex versions here for compatibility
   const colors = { ...tailwindColors, ...(config.colors ?? {}) };
 
-  const cache: Record<string, MergedStyle> = {};
+  const cache = new Map<string, MergedStyle>();
 
   function transformValue(
     value: string | number | undefined,
@@ -570,19 +570,21 @@ export function createTw(
     const classNames = input.split(' ').map((i) => i.trim());
     return classNames
       .map((className) => {
-        if (className in cache) {
-          return cache[className];
+        if (cache.has(className)) {
+          return cache.get(className);
         }
         const parsed = parseUtility(className);
-        if (
-          parsed &&
-          Object.values(parsed).every((v) => typeof v !== 'undefined')
-        ) {
-          cache[className] = parsed;
-          return parsed;
-        }
-        handleInvalidClassName(className);
-        return undefined;
+        const resolved =
+          parsed && Object.values(parsed).every((v) => typeof v !== 'undefined')
+            ? parsed
+            : undefined;
+
+        // Misses are cached too: react-pdf calls tw() once per element, and an
+        // unsupported class would otherwise re-parse and re-warn every render.
+        cache.set(className, resolved);
+        if (!resolved) handleInvalidClassName(className);
+
+        return resolved;
       })
       .reduce<Style>((acc, val) => {
         if (!val) {

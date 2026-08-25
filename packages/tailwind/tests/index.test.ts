@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { createTw } from '../src';
 import { rem, round } from '../src/utils';
 
@@ -1404,5 +1404,19 @@ describe('Combinations', () => {
     expect(tw('rotate-45 skew-x-3 scale-50')).toEqual({
       transform: 'rotate(45deg) skewX(3deg) scale(0.5)',
     });
+  });
+});
+
+describe('Unsupported classes', () => {
+  test('warn once, however many times they are used', () => {
+    const scoped = createTw({});
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    for (let i = 0; i < 10; i += 1) {
+      expect(scoped('p-4 shadow-lg')).toEqual({ padding: rem(1) });
+    }
+
+    expect(warn).toHaveBeenCalledTimes(1);
+    warn.mockRestore();
   });
 });

@@ -22,8 +22,14 @@ export function useRepl(code: string, resetKey?: unknown) {
   const requestId = useRef(0);
 
   useEffect(() => {
-    const worker = createWorker();
-    workerRef.current = worker;
+    try {
+      workerRef.current = createWorker();
+    } catch {
+      setError({
+        message:
+          'Live preview unavailable — this browser blocked the renderer worker.',
+      });
+    }
 
     return () => {
       // onerror may have swapped in a replacement; terminate whichever is live.
@@ -52,7 +58,10 @@ export function useRepl(code: string, resetKey?: unknown) {
 
     const timeout = setTimeout(() => {
       const worker = workerRef.current;
-      if (!worker) return;
+      if (!worker) {
+        setRendering(false);
+        return;
+      }
 
       worker.onmessage = (event: MessageEvent<ReplResponse>) => {
         if (event.data.id !== requestId.current) return;

@@ -33,9 +33,11 @@ const extensions = [
 export function Editor({
   value,
   onChange,
+  basicSetup,
 }: {
   value: string;
   onChange: (v: string) => void;
+  basicSetup?: React.ComponentProps<typeof CodeMirror>['basicSetup'];
 }) {
   const { resolvedTheme } = useTheme();
 
@@ -47,6 +49,7 @@ export function Editor({
       theme={resolvedTheme === 'light' ? 'light' : 'dark'}
       style={{ height: '100%', fontSize: 13 }}
       extensions={extensions}
+      basicSetup={basicSetup}
     />
   );
 }

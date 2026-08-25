@@ -1,0 +1,98 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+import { Check, Copy } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+
+export const INSTALL_COMMAND = 'npm install @react-pdf/renderer';
+
+export function CopyCommand() {
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(INSTALL_COMMAND).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1600);
+      },
+      () => {},
+    );
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      aria-label={`Copy "${INSTALL_COMMAND}" to clipboard`}
+      className="border-fd-border bg-fd-muted/50 hover:bg-fd-accent focus-visible:ring-fd-ring focus-visible:ring-offset-fd-background group inline-flex h-9 items-center gap-2.5 rounded-md border ps-3 pe-2.5 font-mono text-[0.8125rem] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+    >
+      <span className="text-fd-muted-foreground/70 select-none">$</span>
+      <span className="truncate">{INSTALL_COMMAND}</span>
+      {copied ? (
+        <Check className="size-3.5 shrink-0 text-emerald-500" />
+      ) : (
+        <Copy className="text-fd-muted-foreground group-hover:text-fd-foreground size-3.5 shrink-0 transition-colors" />
+      )}
+    </button>
+  );
+}
+
+function Skeleton() {
+  const widths = ['62%', '84%', '48%', '73%', '38%', '80%', '56%'];
+
+  return (
+    <div className="flex h-full animate-pulse flex-col">
+      <div className="border-fd-border h-9 shrink-0 border-b" />
+      <div className="grid min-h-0 flex-1 grid-rows-[14rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
+        <div className="border-fd-border flex flex-col gap-2.5 border-b p-4 md:border-e md:border-b-0">
+          {widths.map((width, i) => (
+            <div
+              key={i}
+              className="bg-fd-muted-foreground/12 h-2 rounded-full"
+              style={{ width }}
+            />
+          ))}
+        </div>
+        <div className="bg-fd-muted flex justify-center p-4">
+          <div className="bg-fd-background/70 aspect-[210/297] h-full rounded-xs" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const MiniRepl = dynamic(() => import('./mini-repl').then((m) => m.MiniRepl), {
+  ssr: false,
+  loading: () => <Skeleton />,
+});
+
+export function HeroRepl() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setVisible(true);
+        observer.disconnect();
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="h-full">
+      {visible ? <MiniRepl /> : <Skeleton />}
+    </div>
+  );
+}

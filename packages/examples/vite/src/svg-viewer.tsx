@@ -66,6 +66,7 @@ const useAnnotationOverlays = (
             rpdfFieldChecked,
             rpdfFieldOptions,
             rpdfFieldMultiline,
+            rpdfFieldPassword,
             rpdfFieldReadonly,
           } = field.dataset;
           const box = field.getBoundingClientRect();
@@ -96,7 +97,7 @@ const useAnnotationOverlays = (
             control.value = value || '';
           } else {
             control = document.createElement('input');
-            control.type = 'text';
+            control.type = rpdfFieldPassword === 'true' ? 'password' : 'text';
             control.value = value || '';
           }
 

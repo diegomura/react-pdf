@@ -1,19 +1,19 @@
 import { Suspense } from 'react';
 
-import { ReplClient } from './repl-client';
+import { PlaygroundClient } from './playground-client';
 
-export const metadata = { title: 'REPL' };
+export const metadata = { title: 'Playground' };
 
-export default function ReplPage() {
+export default function PlaygroundPage() {
   return (
     <Suspense
       fallback={
         <div className="flex h-dvh items-center justify-center text-fd-muted-foreground">
-          Loading REPL…
+          Loading playground…
         </div>
       }
     >
-      <ReplClient />
+      <PlaygroundClient />
     </Suspense>
   );
 }

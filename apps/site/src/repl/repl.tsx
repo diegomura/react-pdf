@@ -66,12 +66,12 @@ export function Repl() {
     setExample(name);
     setCode(examples[name]);
     setResetKey((key) => key + 1);
-    history.replaceState(null, '', `/repl?example=${name}`);
+    history.replaceState(null, '', `/playground?example=${name}`);
   };
 
   const copyLink = () => {
     navigator.clipboard
-      .writeText(`${location.origin}/repl?code=${compress(code)}`)
+      .writeText(`${location.origin}/playground?code=${compress(code)}`)
       .then(
         () => setCopied('ok'),
         () => setCopied('failed'),

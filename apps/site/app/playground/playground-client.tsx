@@ -6,11 +6,11 @@ const Repl = dynamic(() => import('@/src/repl/repl').then((m) => m.Repl), {
   ssr: false,
   loading: () => (
     <div className="flex h-dvh items-center justify-center text-fd-muted-foreground">
-      Loading REPL…
+      Loading playground…
     </div>
   ),
 });
 
-export function ReplClient() {
+export function PlaygroundClient() {
   return <Repl />;
 }

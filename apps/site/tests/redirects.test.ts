@@ -27,11 +27,20 @@ describe('legacy redirects', () => {
     }
   });
 
-  it('leaves /repl untouched', async () => {
+  it('sends the old /repl route to /playground with the shared query intact', async () => {
+    const fs = await import('node:fs');
     const redirects = await config.redirects!();
+    const r = redirects.find((x: { source: string }) => x.source === '/repl');
+    expect(r, 'missing redirect for /repl').toBeDefined();
+    expect(r!.destination).toBe('/playground');
+    expect(r!.permanent).toBe(true);
+    // Next forwards the incoming query only when the destination has none, and
+    // thousands of shared links are /repl?code=…
+    expect(r!.destination).not.toContain('?');
     expect(
-      redirects.find((x: { source: string }) => x.source === '/repl'),
-    ).toBeUndefined();
+      fs.existsSync('app/repl'),
+      'a real /repl route would shadow the redirect',
+    ).toBe(false);
   });
 
   it('every redirect destination is a real content page', async () => {

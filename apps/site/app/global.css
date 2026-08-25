@@ -117,6 +117,13 @@
   --fd-layout-width: 100vw;
 }
 
+/* fumadocs ships 16px gutters on both headers; the bar reads cramped against
+   the wordmark and the actions cluster, so both get a touch more */
+#nd-nav > div > nav,
+#nd-subnav [data-header-body] {
+  padding-inline: 1.25rem;
+}
+
 /* ---------- Sidebar ---------- */
 
 #nd-sidebar {

@@ -14,6 +14,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 // wide panes otherwise blow the page up past comfortable reading size
 const MAX_PAGE_WIDTH = 760;
 
+// A4 portrait, so the first paint is already fitted for the common case and
+// only unusual page sizes reflow once `onLoadSuccess` reports the real ratio.
+const A4_RATIO = 1 / Math.SQRT2;
+
+// the floating pager overlaps the surface; keep the page clear of it
+const PAGER_HEIGHT = 36;
+
 const stepClass =
   'text-fd-muted-foreground hover:text-fd-foreground inline-flex size-6 items-center justify-center rounded-full transition-colors disabled:opacity-30 disabled:hover:text-fd-muted-foreground';
 
@@ -28,7 +35,8 @@ export function Viewer({
 }) {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [width, setWidth] = useState(0);
+  const [box, setBox] = useState({ width: 0, height: 0 });
+  const [ratio, setRatio] = useState(A4_RATIO);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,12 +44,28 @@ export function Viewer({
     if (!container) return;
 
     const observer = new ResizeObserver(([entry]) => {
-      setWidth(entry.contentRect.width);
+      const { width, height } = entry.contentRect;
+      setBox((prev) =>
+        prev.width === width && prev.height === height
+          ? prev
+          : { width, height },
+      );
     });
     observer.observe(container);
 
     return () => observer.disconnect();
   }, []);
+
+  // fit-to-page: the whole page has to be visible without scrolling, so the
+  // pane's height drives the width unless the pane is the narrower constraint
+  const available = box.height - (numPages > 1 ? PAGER_HEIGHT : 0);
+  const pageWidth = Math.floor(
+    Math.min(
+      box.width || MAX_PAGE_WIDTH,
+      available > 0 ? available * ratio : MAX_PAGE_WIDTH,
+      MAX_PAGE_WIDTH,
+    ),
+  );
 
   // `my-auto` on the page wrapper centres a short document without clipping a
   // tall one the way `justify-center` would inside a scroll container.
@@ -73,7 +97,11 @@ export function Viewer({
             >
               <Page
                 pageNumber={pageNumber}
-                width={width ? Math.min(width, MAX_PAGE_WIDTH) : MAX_PAGE_WIDTH}
+                width={pageWidth}
+                onLoadSuccess={(page) => {
+                  const view = page.getViewport({ scale: 1 });
+                  setRatio(view.width / view.height);
+                }}
                 className="rounded-[2px] shadow-[0_1px_2px_rgba(0,0,0,0.08),0_12px_32px_-12px_rgba(0,0,0,0.28)]"
               />
             </Document>

@@ -78,10 +78,10 @@ export default function HomePage() {
                 Get started
               </Link>
               <Link
-                href="/repl"
+                href="/playground"
                 className={`${buttonBase} border-fd-border hover:bg-fd-accent border`}
               >
-                Open the REPL
+                Open the playground
               </Link>
             </div>
 

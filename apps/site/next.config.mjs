@@ -19,6 +19,8 @@ const config = {
       'svg',
     ];
     return [
+      // thousands of shared links are /repl?code=… — Next forwards the query
+      { source: '/repl', destination: '/playground', permanent: true },
       ...docs.map((slug) => ({
         source: `/${slug}`,
         destination: `/docs/v4/${slug}`,

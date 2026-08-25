@@ -30,7 +30,10 @@ export function MiniRepl() {
   const code = useMemo(() => [...sources].reverse().join('\n\n'), [sources]);
   const { url, error, rendering } = useRepl(code);
 
-  const replHref = useMemo(() => `/repl?code=${compress(code)}`, [code]);
+  const playgroundHref = useMemo(
+    () => `/playground?code=${compress(code)}`,
+    [code],
+  );
 
   const edit = (value: string) =>
     setSources((prev) => prev.map((s, i) => (i === active ? value : s)));
@@ -57,11 +60,11 @@ export function MiniRepl() {
           </div>
 
           <a
-            href={replHref}
-            title="Open this example in the REPL"
+            href={playgroundHref}
+            title="Open this example in the playground"
             className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 pe-3 ps-2 text-[0.6875rem] transition-colors max-md:hidden"
           >
-            Open in REPL
+            Open in Playground
             <ArrowUpRight className="size-3 shrink-0" />
           </a>
         </div>

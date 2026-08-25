@@ -28,7 +28,14 @@ const highlight = (p: Palette) =>
       color: p.keyword,
     },
     {
-      tag: [t.string, t.special(t.string), t.character, t.inserted],
+      tag: [
+        t.string,
+        t.special(t.string),
+        t.character,
+        t.inserted,
+        // JSX string props are `attributeValue`, not `string`
+        t.attributeValue,
+      ],
       color: p.string,
     },
     {
@@ -40,6 +47,9 @@ const highlight = (p: Palette) =>
       ],
       color: p.fn,
     },
+    // `=>` is `storage.type.function.arrow` in the Shiki grammar, so it reads
+    // as a keyword in the docs; lezer tags it as function(punctuation)
+    { tag: t.function(t.punctuation), color: p.keyword },
     {
       tag: [
         t.punctuation,
@@ -52,12 +62,16 @@ const highlight = (p: Palette) =>
       ],
       color: p.punctuation,
     },
-    { tag: [t.tagName, t.angleBracket], color: p.tag },
+    // lezer tags lowercase intrinsics as standard(tagName) and capitalised
+    // components as plain tagName — Shiki splits them the same way
+    // (`entity.name.tag` vs `support.class.component`)
+    { tag: [t.standard(t.tagName), t.angleBracket], color: p.tag },
     {
       tag: [
         t.operator,
         t.variableName,
         t.propertyName,
+        t.tagName,
         t.typeName,
         t.className,
         t.number,
@@ -107,8 +121,11 @@ const surface = (p: Palette, dark: boolean) =>
           'color-mix(in srgb, var(--color-fd-muted-foreground) 8%, transparent)',
       },
       '.cm-activeLine': { backgroundColor: 'transparent' },
+      // opaque and above the content: the gutter is sticky, so horizontally
+      // scrolled code slides underneath it
       '.cm-gutters': {
-        backgroundColor: 'transparent',
+        backgroundColor: 'var(--color-fd-background)',
+        zIndex: '1',
         border: 'none',
         color:
           'color-mix(in srgb, var(--color-fd-muted-foreground) 55%, transparent)',

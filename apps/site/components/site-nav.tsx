@@ -12,7 +12,7 @@ export const DONATE_URL = 'https://opencollective.com/react-pdf';
 
 const LINKS = [
   { text: 'Docs', url: '/docs/v4', match: '/docs' },
-  { text: 'REPL', url: '/repl', match: '/repl' },
+  { text: 'Playground', url: '/playground', match: '/playground' },
   { text: 'Changelog', url: '/changelog', match: '/changelog' },
   { text: 'Blog', url: '/blog', match: '/blog' },
 ];
@@ -33,7 +33,7 @@ export function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <nav className="ms-6 flex items-center gap-5 text-[0.8125rem] max-lg:hidden">
+    <nav className="ms-7 flex items-center gap-6 text-[0.8125rem] max-lg:hidden">
       {LINKS.map((link) => (
         <Link
           key={link.url}

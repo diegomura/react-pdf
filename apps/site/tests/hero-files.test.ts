@@ -35,7 +35,7 @@ test('the entry file stays short enough to read at a glance', () => {
   const [entry] = HERO_FILES;
   const lines = entry.code.split('\n');
 
-  expect(entry.name).toBe('Specimen.jsx');
+  expect(entry.name).toBe('Report.jsx');
   expect(lines.length).toBeLessThanOrEqual(20);
 });
 

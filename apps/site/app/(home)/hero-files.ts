@@ -11,209 +11,262 @@
  */
 export const HERO_FILES: { name: string; code: string }[] = [
   {
-    name: 'Specimen.jsx',
-    code: `const Specimen = () => (
-  <Document title="Helvetica specimen">
+    name: 'Report.jsx',
+    code: `const Report = () => (
+  <Document title="Q3 report">
     <Page size="A6" style={styles.page}>
-      <PressMarks />
-
-      <View style={styles.sheet}>
-        <Header />
-        <Waterfall />
-        <Text style={styles.charset}>{charset}</Text>
-        <Meta />
-        <ColourBar />
+      <View style={styles.header}>
+        <Text style={styles.title}>Q3 REPORT</Text>
+        <Text style={styles.tiny}>ACME / JUL-SEP 2025</Text>
       </View>
+
+      <Kpis />
+      <Bars />
+      <Split />
+      <Table />
     </Page>
   </Document>
 );
 
-ReactPDF.render(<Specimen />);`,
+ReactPDF.render(<Report />);`,
   },
   {
-    name: 'PressMarks.jsx',
-    code: `// Crop marks and a registration target, drawn onto the trim
-// itself. The page is the artwork.
-const PressMarks = () => (
-  <Svg viewBox="0 0 298 420" style={styles.marks}>
-    {corners.map(([x, y, dx, dy]) => (
-      <Path
-        key={\`\${x}-\${y}\`}
-        d={\`M\${x} \${y}h\${dx}M\${x} \${y}v\${dy}\`}
-        stroke={ink}
-        strokeWidth={0.5}
-      />
-    ))}
-
-    <Circle cx={149} cy={12} r={5} fill="none"
-      stroke={ink} strokeWidth={0.5} />
-    <Path d="M149 5v14M142 12h14"
-      stroke={ink} strokeWidth={0.5} />
-  </Svg>
-);
-
-const Header = () => (
-  <View style={styles.header}>
-    <View>
-      <Text style={styles.title}>Helvetica</Text>
-      <Text style={styles.sub}>
-        SPECIMEN SHEET / BASE 14 / NO EMBEDDING
-      </Text>
-    </View>
-
-    <Text style={styles.folio}>A6</Text>
-  </View>
-);`,
-  },
-  {
-    name: 'Waterfall.jsx',
-    code: `// The same word at five sizes, with the tracking tightening
-// as it grows — the way a real specimen sheet sets it.
-const Line = ({ size }) => (
-  <View style={styles.line}>
-    <Text style={styles.size}>{size}</Text>
-    <Text style={{ fontSize: size, letterSpacing: -size / 40 }}>
-      Handgloves
+    name: 'Kpis.jsx',
+    code: `const Kpi = ({ label, value, delta }) => (
+  <View style={styles.kpi}>
+    <Text style={styles.tiny}>{label}</Text>
+    <Text style={styles.kpiValue}>{value}</Text>
+    <Text style={delta > 0 ? styles.up : styles.down}>
+      {delta > 0 ? '+' : ''}
+      {delta}%
     </Text>
   </View>
 );
 
-const Waterfall = () => (
-  <View style={styles.waterfall}>
-    {sizes.map((size) => (
-      <Line key={size} size={size} />
+const Kpis = () => (
+  <View style={styles.kpis}>
+    {kpis.map((kpi) => (
+      <Kpi key={kpi.label} {...kpi} />
     ))}
   </View>
 );`,
   },
   {
-    name: 'Meta.jsx',
-    code: `const Meta = () => (
-  <View style={styles.meta}>
-    {specs.map(([label, value]) => (
-      <View key={label} style={styles.metaRow}>
-        <Text style={styles.metaLabel}>{label}</Text>
-        <Text style={styles.metaValue}>{value}</Text>
-      </View>
+    name: 'Charts.jsx',
+    code: `const Bars = () => (
+  <Section title="REVENUE BY MONTH">
+    <Svg viewBox="0 0 258 72" style={styles.chart}>
+      {months.map((month, i) => (
+        <Rect
+          key={month.name}
+          x={i * 43 + 8}
+          y={72 - month.value * 0.6}
+          width={27}
+          height={month.value * 0.6}
+          fill={i === months.length - 1 ? red : ink}
+        />
+      ))}
+    </Svg>
+
+    <View style={styles.axis}>
+      {months.map((month) => (
+        <Text key={month.name} style={styles.axisLabel}>
+          {month.name}
+        </Text>
+      ))}
+    </View>
+  </Section>
+);
+
+// A donut is one stroked arc per slice — no chart library
+// involved, just a little trigonometry.
+const Donut = () => (
+  <Svg width={78} height={78} viewBox="0 0 86 86">
+    {slices.map((slice) => (
+      <Path
+        key={slice.label}
+        d={arc(slice.start, slice.end)}
+        stroke={slice.color}
+        strokeWidth={15}
+        fill="none"
+      />
     ))}
+  </Svg>
+);
+
+const Split = () => (
+  <Section title="TRAFFIC SPLIT">
+    <View style={styles.split}>
+      <Donut />
+
+      <View style={styles.legend}>
+        {slices.map((slice) => (
+          <View key={slice.label} style={styles.legendRow}>
+            <View
+              style={[
+                styles.swatch,
+                { backgroundColor: slice.color },
+              ]}
+            />
+            <Text style={styles.legendLabel}>
+              {slice.label}
+            </Text>
+            <Text style={styles.mono}>{slice.value}%</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  </Section>
+);`,
+  },
+  {
+    name: 'Table.jsx',
+    code: `const Section = ({ title, children }) => (
+  <View style={styles.section}>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    {children}
   </View>
 );
 
-const ColourBar = () => (
-  <View style={styles.bar}>
-    {swatches.map((hex) => (
-      <View key={hex} style={styles.swatchBox}>
-        <View
-          style={[styles.swatch, { backgroundColor: hex }]}
-        />
-        <Text style={styles.hex}>{hex.toUpperCase()}</Text>
+const Table = () => (
+  <Section title="TOP REGIONS">
+    {regions.map(([name, amount, delta]) => (
+      <View key={name} style={styles.row}>
+        <Text style={styles.cell}>{name}</Text>
+        <Text style={styles.amount}>{amount}</Text>
+        <Text style={[styles.up, styles.delta]}>{delta}</Text>
       </View>
     ))}
-  </View>
+  </Section>
 );`,
   },
   {
     name: 'styles.js',
     code: `const red = '#e82200';
-const ink = '#1c1b1a';
+const ink = '#3e3e3e';
 const paper = '#faf7f2';
 const mute = '#8a8580';
 const rule = '#ddd7cd';
 
-const sizes = [9, 13, 18, 25, 35];
-
-const specs = [
-  ['TRIM', '105 × 148 MM'],
-  ['MEDIA BOX', '297.64 × 419.53 PT'],
-  ['FONTS', 'HELVETICA, COURIER'],
-  ['DRAWN BY', '@REACT-PDF/RENDERER'],
+const kpis = [
+  { label: 'REVENUE', value: '$4.2M', delta: 12 },
+  { label: 'CHURN', value: '1.8%', delta: -4 },
+  { label: 'NPS', value: '61', delta: 9 },
 ];
 
-const swatches = [red, '#8d1602', '#3e3e3e', '#c9c2b6'];
-
-const charset =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ ' +
-  'abcdefghijklmnopqrstuvwxyz 0123456789 ' +
-  '& @ % # ? ! × § ¶';
-
-// x, y, then the horizontal and vertical tick lengths
-const corners = [
-  [13, 13, -9, -9],
-  [285, 13, 9, -9],
-  [13, 407, -9, 9],
-  [285, 407, 9, 9],
+const months = [
+  { name: 'APR', value: 68 },
+  { name: 'MAY', value: 81 },
+  { name: 'JUN', value: 54 },
+  { name: 'JUL', value: 92 },
+  { name: 'AUG', value: 74 },
+  { name: 'SEP', value: 118 },
 ];
+
+const regions = [
+  ['South America', '$1.61M', '+18%'],
+  ['Europe', '$1.24M', '+7%'],
+  ['North America', '$0.92M', '+3%'],
+];
+
+const traffic = [
+  { label: 'Organic', value: 46, color: red },
+  { label: 'Referral', value: 29, color: '#f0865f' },
+  { label: 'Direct', value: 25, color: ink },
+];
+
+// turn percentages into start/end angles, clockwise from 12
+let angle = -Math.PI / 2;
+const slices = traffic.map((slice) => {
+  const start = angle;
+  angle += (slice.value / 100) * 2 * Math.PI;
+  return { ...slice, start, end: angle };
+});
+
+const point = (a) => [
+  43 + 33 * Math.cos(a),
+  43 + 33 * Math.sin(a),
+];
+
+const arc = (start, end) => {
+  const [x1, y1] = point(start);
+  const [x2, y2] = point(end - 0.04);
+  const wide = end - start > Math.PI ? 1 : 0;
+  return \`M\${x1} \${y1}A33 33 0 \${wide} 1 \${x2} \${y2}\`;
+};
 
 const styles = StyleSheet.create({
-  page: { backgroundColor: paper, color: ink },
-  marks: { position: 'absolute', inset: 0 },
-  sheet: {
-    flex: 1,
-    paddingHorizontal: 26,
-    paddingTop: 32,
-    paddingBottom: 24,
-  },
+  page: { backgroundColor: paper, color: ink, padding: 18 },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: ink,
-    paddingBottom: 8,
-  },
-  title: { fontSize: 24, letterSpacing: -1 },
-  sub: { fontSize: 5.5, letterSpacing: 1.4, color: mute },
-  folio: {
-    fontFamily: 'Courier-Bold',
-    fontSize: 10,
-    color: red,
-  },
-  waterfall: { marginTop: 6 },
-  line: {
-    flexDirection: 'row',
     alignItems: 'baseline',
-    borderBottomWidth: 0.4,
-    borderColor: rule,
-    paddingVertical: 5.5,
+    justifyContent: 'space-between',
+    borderBottomWidth: 2,
+    borderColor: red,
+    paddingBottom: 6,
   },
-  size: {
-    fontFamily: 'Courier',
-    fontSize: 6.5,
-    color: red,
-    width: 24,
+  title: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 17,
+    letterSpacing: -0.5,
   },
-  charset: {
-    fontSize: 7,
-    lineHeight: 1.9,
-    letterSpacing: 0.4,
+  tiny: { fontSize: 5.5, letterSpacing: 1.3, color: mute },
+  kpis: { flexDirection: 'row', marginTop: 10 },
+  kpi: { flex: 1 },
+  kpiValue: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 18,
+    marginTop: 3,
+  },
+  up: { fontSize: 8, color: '#1f7a4d' },
+  down: { fontSize: 8, color: red },
+  section: { marginTop: 11 },
+  sectionTitle: {
+    fontSize: 5.5,
+    letterSpacing: 1.6,
     color: mute,
-    marginTop: 10,
-  },
-  meta: {
-    marginTop: 12,
-    borderTopWidth: 0.4,
+    borderBottomWidth: 0.5,
     borderColor: rule,
+    paddingBottom: 4,
+    marginBottom: 8,
   },
-  metaRow: {
+  chart: { height: 72 },
+  axis: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 0.4,
-    borderColor: rule,
+    marginTop: 4,
+  },
+  axisLabel: {
+    flex: 1,
+    fontSize: 5.5,
+    letterSpacing: 1,
+    color: mute,
+    textAlign: 'center',
+  },
+  split: { flexDirection: 'row', alignItems: 'center' },
+  legend: { flex: 1, marginLeft: 18 },
+  legendRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 4,
   },
-  metaLabel: {
-    fontFamily: 'Courier',
-    fontSize: 6,
-    color: mute,
-  },
-  metaValue: {
+  swatch: { width: 7, height: 7, marginRight: 7 },
+  legendLabel: { flex: 1, fontSize: 9 },
+  mono: { fontFamily: 'Courier-Bold', fontSize: 9 },
+  amount: {
     fontFamily: 'Courier-Bold',
-    fontSize: 6,
-    color: ink,
+    fontSize: 9,
+    width: 52,
   },
-  bar: { flexDirection: 'row', marginTop: 'auto' },
-  swatchBox: { flex: 1, marginRight: 4 },
-  swatch: { height: 22, borderWidth: 0.4, borderColor: rule },
-  hex: { fontFamily: 'Courier', fontSize: 5, color: mute },
+  delta: { width: 34, textAlign: 'right' },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 0.5,
+    borderColor: rule,
+    paddingVertical: 4.5,
+  },
+  cell: { flex: 1, fontSize: 9 },
 });`,
   },
 ];

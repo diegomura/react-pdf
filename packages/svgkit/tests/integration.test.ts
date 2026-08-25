@@ -251,6 +251,40 @@ describe('svgkit integration', () => {
     expect(pages[0]).toContain('<title>a helpful comment</title>');
   });
 
+  test('form fields and a note also carry annotations for host interactivity', async () => {
+    const pages = await renderToSvg(
+      doc([
+        textInput(
+          { name: 'field1', value: 'Jane Doe' },
+          { width: 120, height: 20 },
+        ),
+        checkbox({ name: 'field2', checked: true }, { width: 20, height: 20 }),
+        select(
+          { name: 'field3', select: ['Alpha', 'Beta'], value: 'Beta' },
+          { width: 120, height: 20 },
+        ),
+        note('a helpful comment', { backgroundColor: 'yellow' }),
+      ]),
+    );
+
+    expect(pages[0]).toContain('data-rpdf-field="text"');
+    expect(pages[0]).toContain('data-rpdf-field-name="field1"');
+    expect(pages[0]).toContain('data-rpdf-field-value="Jane Doe"');
+
+    expect(pages[0]).toContain('data-rpdf-field="checkbox"');
+    expect(pages[0]).toContain('data-rpdf-field-name="field2"');
+    expect(pages[0]).toContain('data-rpdf-field-checked="true"');
+
+    expect(pages[0]).toContain('data-rpdf-field="combo"');
+    expect(pages[0]).toContain('data-rpdf-field-name="field3"');
+    expect(pages[0]).toContain('data-rpdf-field-value="Beta"');
+    expect(pages[0]).toContain(
+      'data-rpdf-field-options="[&quot;Alpha&quot;,&quot;Beta&quot;]"',
+    );
+
+    expect(pages[0]).toContain('data-rpdf-note="a helpful comment"');
+  });
+
   test('bookmarks and info flow through to outline XML and Dublin Core metadata', async () => {
     const chapter: any = {
       type: 'VIEW',

@@ -111,11 +111,19 @@ or is one of the standard 14 PDF fonts:
   sans-serif`). The text is selectable, but its exact shape depends on
   whichever matching font the viewer has installed.
 
-## Links
+## Annotations
 
-svgkit doesn't emit navigable `<a>` elements. Instead, `link()`/`goTo()` each
-render an inert annotation: a `pointer-events: none`, unpainted `<rect>`
-marking where a link target is and what it points at.
+svgkit doesn't emit navigable `<a>` elements or interactive form widgets.
+Instead, links, notes and form fields each render an inert annotation
+alongside their visible output: a `pointer-events: none`, unpainted `<rect>`
+(or, for notes, a `data-rpdf-note` attribute on the icon's own `<g>`) marking
+where the thing is and carrying enough data for a host to build the real
+interaction. The visible rendering described below is always emitted too —
+annotations are additive, never a replacement for it.
+
+### Links
+
+`link()`/`goTo()` render:
 
 ```xml
 <rect x="0" y="-10" width="50" height="10" fill="none" pointer-events="none" data-rpdf-link="https://react-pdf.org"/>
@@ -131,11 +139,61 @@ marking where a link target is and what it points at.
   <g id="doc1-dest-chapter" data-rpdf-dest="chapter"/>
   ```
 
-Because the rect is unpainted and ignores pointer events, it never blocks
-clicks or text selection underneath it — a host queries it purely for
-geometry and target, then implements its own click behaviour:
+### Notes
+
+`Note` still draws its fixed comment-bubble icon and `<title>` tooltip; the
+icon's `<g>` additionally carries the note's contents:
+
+```xml
+<g data-rpdf-note="Please review before signing"><rect .../><path .../><title>Please review before signing</title></g>
+```
+
+### Form fields
+
+`TextInput`, `Select`, `List` and `Checkbox` still draw their static
+approximation of what a PDF viewer shows (the field's value, masked for
+`password` and falling back to the first `select` option for `Select`/`List`;
+a check mark for a checked `Checkbox`) — an overlaid control naturally covers
+this baked-in drawing, the same way pdf.js's form layer covers its own static
+appearance streams. Alongside that drawing, each field gets one annotation
+rect. Attributes with no value for a given field are omitted:
+
+| Attribute                   | Meaning                                           | Present on          |
+| --------------------------- | ------------------------------------------------- | ------------------- |
+| `data-rpdf-field`           | Field type: `text`, `checkbox`, `combo` or `list` | all                 |
+| `data-rpdf-field-name`      | Field name                                        | all, when named     |
+| `data-rpdf-field-value`     | Current value (masked for `password`)             | text, combo, list   |
+| `data-rpdf-field-checked`   | `"true"` / `"false"`                              | checkbox only       |
+| `data-rpdf-field-options`   | JSON array of choices                             | combo, list         |
+| `data-rpdf-field-multiline` | `"true"` when set                                 | text only           |
+| `data-rpdf-field-readonly`  | `"true"` when set                                 | any, when read-only |
+
+```xml
+<rect x="40" y="80" width="120" height="20" fill="none" pointer-events="none" data-rpdf-field="text" data-rpdf-field-name="email" data-rpdf-field-value="jane@example.com"/>
+```
+
+Because every annotation rect is unpainted and ignores pointer events, none
+of them block clicks, typing or text selection underneath — a host queries
+them purely for geometry and data, then builds its own interaction:
 
 ```js
+document.querySelectorAll('[data-rpdf-field]').forEach((el) => {
+  const box = el.getBoundingClientRect(); // position a real control here
+  const {
+    rpdfField: type,
+    rpdfFieldValue,
+    rpdfFieldChecked,
+    rpdfFieldReadonly,
+  } = el.dataset;
+
+  const input = document.createElement(type === 'text' ? 'input' : 'select');
+  if (type === 'checkbox') input.checked = rpdfFieldChecked === 'true';
+  else input.value = rpdfFieldValue || '';
+  input.disabled = rpdfFieldReadonly === 'true';
+  // position `input` over `box` and append it — it now covers the
+  // baked-in drawing and is the thing the user actually interacts with
+});
+
 document.querySelectorAll('[data-rpdf-link]').forEach((el) => {
   const target = el.dataset.rpdfLink;
   const box = el.getBoundingClientRect(); // position an overlay here
@@ -149,11 +207,14 @@ document.querySelectorAll('[data-rpdf-link]').forEach((el) => {
 });
 ```
 
-This keeps navigation policy (same-tab vs. new-tab, how an internal jump
-scrolls, links vs. text selection) in the host's hands rather than baked
-into svgkit. A standalone `.svg` file opened directly (e.g. double-clicked in
-a file browser) has no clickable links by design — annotations only become
-interactive once a host implements the pattern above.
+This keeps interaction policy (same-tab vs. new-tab navigation, how an
+internal jump scrolls, what widget renders a field, whether a note pops up
+inline or as an alert) in the host's hands rather than baked into svgkit. A
+standalone `.svg` file opened directly (e.g. double-clicked in a file
+browser) has no interactivity by design — annotations only become
+interactive once a host implements the pattern above. See
+`packages/examples/vite/src/svg-viewer.tsx` for a full implementation that
+overlays real `<input>`/`<select>`/`<textarea>` controls and note popups.
 
 ## Parity with PDF output
 
@@ -161,15 +222,18 @@ Supported and matching PDF output:
 
 - Fills, strokes, clips, gradients, transforms, images
 - Links (`src`) and internal destinations (`id` / `#dest`) — geometry and
-  targets match; navigation itself is up to the host (see [Links](#links))
+  targets match; navigation itself is up to the host (see
+  [Annotations](#annotations))
 - `TextInput`, `Select`, `List`, `Checkbox` and `Note` render a static,
-  non-interactive approximation of what a PDF viewer shows: the field's
-  value (masked for `password`, falling back to the first `select` option
-  for `Select`/`List`), a check mark for a checked `Checkbox`, and a fixed
-  comment-bubble icon carrying the note text as a native `<title>` tooltip.
-  There's no typing, no toggling and no popups, and long field values are
-  clipped to the box rather than shrunk to fit, since svgkit has no font
-  metrics to size against.
+  non-interactive approximation of what a PDF viewer shows (see
+  [Annotations](#annotations) for the form-fields and notes case): the
+  field's value (masked for `password`, falling back to the first `select`
+  option for `Select`/`List`), a check mark for a checked `Checkbox`, and a
+  fixed comment-bubble icon carrying the note text as a native `<title>`
+  tooltip. There's no typing, no toggling and no popups baked into the
+  drawing itself — a host wires those up via the annotations — and long
+  field values are clipped to the box rather than shrunk to fit, since
+  svgkit has no font metrics to size against.
 - Bookmarks / outlines (see [Bookmarks](#bookmarks)) and document info (see
   [Document info](#document-info)) — SVG has no native outline pane or info
   dictionary, so both come through as structured markup rather than viewer

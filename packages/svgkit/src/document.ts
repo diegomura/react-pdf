@@ -937,7 +937,7 @@ class SVGDocument {
   // value/select shape as a text-valued field, so the same drawing rules
   // apply: value wins, falling back to select[0], no password handling.
   formCombo(
-    _name: string,
+    name: string,
     x: number,
     y: number,
     width: number,
@@ -945,6 +945,7 @@ class SVGDocument {
     options: Record<string, any> = {},
   ) {
     this.drawFieldValue(x, y, width, height, options);
+    this.appendFieldAnnotation(x, y, width, height, 'combo', name, options);
     return this;
   }
 
@@ -953,7 +954,7 @@ class SVGDocument {
   // selected value instead, which matches full-featured viewers and is
   // more useful in a preview.
   formList(
-    _name: string,
+    name: string,
     x: number,
     y: number,
     width: number,
@@ -961,6 +962,7 @@ class SVGDocument {
     options: Record<string, any> = {},
   ) {
     this.drawFieldValue(x, y, width, height, options);
+    this.appendFieldAnnotation(x, y, width, height, 'list', name, options);
     return this;
   }
 
@@ -975,9 +977,10 @@ class SVGDocument {
 
   // addFormAnnotation builds the field dict via ctx._fieldDict(name, type, options)
   // and then mutates the result (Subtype/F/AP/AS/MaxLen), so this must return
-  // a fresh, plain, writable object rather than a fixed stub.
-  _fieldDict(_name: string, _type: string, options: Record<string, any>) {
-    return { ...options };
+  // a fresh, plain, writable object rather than a fixed stub. name/type are
+  // included so annotate() can read them back for its own annotation.
+  _fieldDict(name: string, type: string, options: Record<string, any>) {
+    return { ...options, name, type };
   }
 
   // addFormAnnotation calls ctx._addToParent(ctx.page.annotations.at(-1)) unconditionally
@@ -998,7 +1001,14 @@ class SVGDocument {
   ) {
     if (dict.AP) this.drawCheckboxMark(x, y, width, height, dict);
     else this.drawFieldValue(x, y, width, height, dict);
+
+    const type = dict.AP ? 'checkbox' : dict.type || 'text';
+    this.appendFieldAnnotation(x, y, width, height, type, dict.name, dict);
     return this;
+  }
+
+  protected isCheckboxChecked(dict: Record<string, any>) {
+    return dict.AS === Object.keys(dict.AP?.N ?? {})[0];
   }
 
   protected drawCheckboxMark(
@@ -1008,8 +1018,7 @@ class SVGDocument {
     height: number,
     dict: Record<string, any>,
   ) {
-    const onOption = Object.keys(dict.AP?.N ?? {})[0];
-    if (dict.AS !== onOption) return;
+    if (!this.isCheckboxChecked(dict)) return;
 
     // The mark keeps square proportions and centers in the box, the way a
     // viewer draws the ZapfDingbats glyph, so a wide field can't stretch it.
@@ -1034,6 +1043,81 @@ class SVGDocument {
     appendChild(this.container, el);
   }
 
+  protected resolveFieldValue(dict: Record<string, any>) {
+    let value = dict.value;
+    if (!value && Array.isArray(dict.select) && dict.select.length > 0) {
+      [value] = dict.select;
+    }
+    return value;
+  }
+
+  // Masking happens here (not just in the drawn glyphs) so a password
+  // field's annotation carries the same masked value it renders, rather
+  // than leaking the real value into a data attribute.
+  protected displayFieldValue(dict: Record<string, any>) {
+    let value = this.resolveFieldValue(dict);
+    if (value && dict.password) value = '*'.repeat(String(value).length);
+    return value;
+  }
+
+  // One inert rect per field, appended after the visible drawing (see
+  // linkAnnotation for the same pattern). Attributes with no value are
+  // omitted so simple fields stay compact.
+  protected appendFieldAnnotation(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    type: string,
+    name: string | undefined,
+    dict: Record<string, any>,
+  ) {
+    const attrs: Record<string, string | undefined> = {
+      'data-rpdf-field': type,
+      'data-rpdf-field-name': name || undefined,
+    };
+
+    if (type === 'checkbox') {
+      attrs['data-rpdf-field-checked'] = String(this.isCheckboxChecked(dict));
+    } else {
+      const value = this.displayFieldValue(dict);
+      if (value) attrs['data-rpdf-field-value'] = String(value);
+    }
+
+    if (type === 'text' && dict.multiline) {
+      attrs['data-rpdf-field-multiline'] = 'true';
+    }
+    if ((type === 'combo' || type === 'list') && Array.isArray(dict.select)) {
+      attrs['data-rpdf-field-options'] = JSON.stringify(dict.select);
+    }
+    if (dict.readOnly) attrs['data-rpdf-field-readonly'] = 'true';
+
+    appendChild(
+      this.container,
+      this.fieldAnnotation(x, y, width, height, attrs),
+    );
+  }
+
+  protected fieldAnnotation(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    attrs: Record<string, string | undefined>,
+  ) {
+    const rect = createElement('rect');
+    setAttribute(rect, 'x', fmt(x));
+    setAttribute(rect, 'y', fmt(y));
+    setAttribute(rect, 'width', fmt(width));
+    setAttribute(rect, 'height', fmt(height));
+    setAttribute(rect, 'fill', 'none');
+    setAttribute(rect, 'pointer-events', 'none');
+    Object.entries(attrs).forEach(([name, value]) => {
+      if (value !== undefined) setAttribute(rect, name, value);
+    });
+    return rect;
+  }
+
   protected drawFieldValue(
     x: number,
     y: number,
@@ -1041,12 +1125,8 @@ class SVGDocument {
     height: number,
     dict: Record<string, any>,
   ) {
-    let value = dict.value;
-    if (!value && Array.isArray(dict.select) && dict.select.length > 0) {
-      [value] = dict.select;
-    }
+    const value = this.displayFieldValue(dict);
     if (!value) return;
-    if (dict.password) value = '*'.repeat(String(value).length);
 
     // ponytail: svgkit has no font metrics to shrink-to-fit like a PDF
     // viewer does, so long values are clipped to the box instead. Upgrade
@@ -1102,6 +1182,7 @@ class SVGDocument {
   ) {
     const size = 20;
     const group = createElement('g');
+    setAttribute(group, 'data-rpdf-note', contents);
 
     const bg = createElement('rect');
     setAttribute(bg, 'x', fmt(x));

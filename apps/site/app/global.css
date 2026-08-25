@@ -3,8 +3,8 @@
 @import 'fumadocs-ui/css/preset.css';
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --color-fd-background: hsl(0, 0%, 100%);
   --color-fd-foreground: hsl(0, 0%, 24.3%);
@@ -25,7 +25,33 @@
   --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
 }
 
+/* legacy react-pdf.org accents: code stays on a dark surface in both themes,
+   tables keep the red-tinted header that gave the old docs their character */
+:root {
+  --rp-code-bg: #3e3e3e;
+  --rp-code-border: rgba(255, 255, 255, 0.11);
+  --rp-code-fg: #cdd3de;
+  --rp-code-muted: #a3a3a3;
+
+  --rp-table-head-bg: #fcd3cc;
+  --rp-table-head-fg: #8d1602;
+  --rp-table-head-border: rgba(141, 22, 2, 0.2);
+  --rp-table-border: rgba(166, 166, 166, 0.24);
+  --rp-table-row-odd: #fbfbfb;
+  --rp-table-shadow: 0 18px 38px -22px rgba(62, 62, 62, 0.45);
+}
+
 .dark {
+  --rp-code-bg: #22262b;
+  --rp-code-border: hsla(0, 0%, 100%, 0.08);
+
+  --rp-table-head-bg: hsl(8, 34%, 15%);
+  --rp-table-head-fg: hsl(8, 72%, 78%);
+  --rp-table-head-border: hsla(8, 60%, 60%, 0.22);
+  --rp-table-border: hsla(0, 0%, 100%, 0.08);
+  --rp-table-row-odd: hsla(0, 0%, 100%, 0.02);
+  --rp-table-shadow: none;
+
   --color-fd-background: hsl(216, 18.5%, 5.3%);
   --color-fd-foreground: hsl(216, 20%, 94%);
   --color-fd-muted: hsl(217, 15%, 10.6%);
@@ -68,6 +94,18 @@
   }
 }
 
+/* no hard rule under the nav — the blurred pane is the separation */
+#nd-nav > div,
+#nd-subnav [data-header-body] {
+  border-bottom: none;
+}
+
+/* the home shell is capped at 1400px by default, which makes the navbar sit on
+   a different gutter than the full-bleed docs one */
+#nd-home-layout {
+  --fd-layout-width: 100vw;
+}
+
 /* ---------- Sidebar ---------- */
 
 #nd-sidebar {
@@ -80,10 +118,35 @@
   padding-block: 0.3125rem;
 }
 
+/* the scroll viewport ships a 12px fade; make it read at a glance */
+#nd-sidebar .size-full {
+  --fd-fade: 36px;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--fd-fade),
+    #000 calc(100% - var(--fd-fade)),
+    transparent
+  );
+}
+
+#nd-sidebar a:not([data-active='true']),
+#nd-sidebar-mobile a:not([data-active='true']) {
+  color: color-mix(
+    in srgb,
+    var(--color-fd-muted-foreground) 82%,
+    var(--color-fd-background)
+  );
+}
+
 #nd-sidebar [data-active='true'],
 #nd-sidebar-mobile [data-active='true'] {
-  background-color: var(--color-fd-accent);
-  color: var(--color-fd-foreground);
+  background-color: color-mix(
+    in srgb,
+    var(--color-fd-primary) 10%,
+    transparent
+  );
+  color: var(--color-fd-primary);
   font-weight: 500;
 }
 
@@ -92,13 +155,14 @@
   background-color: var(--color-fd-primary);
 }
 
-/* section separators (meta.json `---Label---`) */
-#nd-sidebar p:not(:has(a)) {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-fd-muted-foreground);
+/* section separators (meta.json `---Label---`) — a distinctly stronger tier
+   than the links beneath them */
+#nd-sidebar p:not(:has(a)),
+#nd-sidebar-mobile p:not(:has(a)) {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--color-fd-foreground);
 }
 
 /* ---------- Page ---------- */
@@ -113,6 +177,7 @@
    the children — margin-inline:auto would shrink them to fit their text */
 #nd-page {
   align-items: center;
+  padding-block-start: 1.75rem;
 }
 
 #nd-page > * {
@@ -169,21 +234,79 @@
   font-size: 0.8125rem;
 }
 
+/* ---------- Tables (legacy react-pdf.org palette) ---------- */
+
+#nd-page .prose > div:has(> table) {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: var(--rp-table-shadow);
+}
+
 #nd-page .prose table {
   font-size: 0.8125rem;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 #nd-page .prose th,
 #nd-page .prose td {
-  padding-block: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--rp-table-border);
   border-inline-start: none;
   text-align: start !important;
 }
 
+#nd-page .prose th:first-child,
+#nd-page .prose td:first-child {
+  border-inline-start: 1px solid var(--rp-table-border);
+}
+
 #nd-page .prose th {
-  background: transparent;
-  font-weight: 500;
-  color: var(--color-fd-muted-foreground);
+  border-color: var(--rp-table-head-border);
+  background: var(--rp-table-head-bg);
+  color: var(--rp-table-head-fg);
+  font-weight: 600;
+}
+
+#nd-page .prose th:first-child {
+  border-inline-start-color: var(--rp-table-head-border);
+  border-start-start-radius: 0.5rem;
+}
+
+#nd-page .prose th:last-child {
+  border-start-end-radius: 0.5rem;
+}
+
+#nd-page .prose tbody tr:nth-child(odd) {
+  background: var(--rp-table-row-odd);
+}
+
+#nd-page .prose tbody tr:last-child td:first-child {
+  border-end-start-radius: 0.5rem;
+}
+
+#nd-page .prose tbody tr:last-child td:last-child {
+  border-end-end-radius: 0.5rem;
+}
+
+#nd-page .prose td code {
+  white-space: nowrap;
+}
+
+/* ---------- Code blocks (legacy react-pdf.org palette) ----------
+   dark surface in both themes; the fd-* overrides retint the title bar,
+   copy button and scrollbar that fumadocs renders inside the block */
+
+#nd-page .prose figure.shiki,
+#nd-page .prose pre.shiki {
+  --color-fd-card: var(--rp-code-bg);
+  --color-fd-secondary: color-mix(in srgb, var(--rp-code-bg) 85%, white);
+  --color-fd-secondary-foreground: var(--rp-code-fg);
+  --color-fd-border: var(--rp-code-border);
+  --color-fd-muted-foreground: var(--rp-code-muted);
+  --color-fd-accent: hsla(0, 0%, 100%, 0.1);
+  --color-fd-accent-foreground: #e7e7e7;
+  border-color: var(--rp-code-border);
 }
 
 /* ---------- Table of contents ---------- */

@@ -12,7 +12,7 @@ import { GoToExample } from '@/components/go-to-example';
 import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { SectionIndex } from '@/components/section-index';
-import { DocsFooter } from '@/components/docs-footer';
+import { DocsFooter, DocsHeader } from '@/components/docs-pager';
 import { CopyMarkdown } from '@/components/copy-markdown';
 
 const LATEST = 'v4';
@@ -32,7 +32,7 @@ export default async function Page(props: {
     <DocsPage
       toc={page.data.toc.filter((item) => item.depth <= 2)}
       full={page.data.full}
-      slots={{ footer: DocsFooter }}
+      slots={{ breadcrumb: DocsHeader, footer: DocsFooter }}
     >
       <div className="flex items-center justify-between gap-4">
         <DocsTitle>{page.data.title}</DocsTitle>

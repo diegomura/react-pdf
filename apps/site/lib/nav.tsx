@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { SearchTrigger } from 'fumadocs-ui/layouts/shared/slots/search-trigger';
 import {
+  DONATE_URL,
   NavLinks,
   NavSearchTrigger,
   NoSearchTrigger,
@@ -40,6 +41,7 @@ export const homeNav = {
     { text: 'Changelog', url: '/changelog', on: 'menu' },
     { text: 'Blog', url: '/blog', on: 'menu' },
     { text: 'GitHub', url: GITHUB_URL, external: true, on: 'menu' },
+    { text: 'Donate', url: DONATE_URL, external: true, on: 'menu' },
     {
       type: 'custom',
       on: 'menu',

@@ -4,9 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import logo from '@/public/logo.png';
-import { ChevronDown, Moon, Search, Sun } from 'lucide-react';
+import { ChevronDown, Heart, Moon, Search, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
+
+export const DONATE_URL = 'https://opencollective.com/react-pdf';
 
 const LINKS = [
   { text: 'Docs', url: '/docs/v4', match: '/docs' },
@@ -19,9 +21,9 @@ export function Wordmark({ href = '/' }: React.ComponentProps<'a'>) {
   return (
     <Link
       href={href}
-      className="text-fd-foreground flex items-center gap-2 text-[0.9375rem] font-semibold tracking-tight"
+      className="text-fd-foreground flex items-center gap-2 text-[1rem] font-semibold tracking-tight"
     >
-      <Image src={logo} alt="" width={22} height={20} priority />
+      <Image src={logo} alt="" width={29} height={26} priority />
       react-pdf
     </Link>
   );
@@ -42,6 +44,15 @@ export function NavLinks() {
           {link.text}
         </Link>
       ))}
+      <a
+        href={DONATE_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="text-fd-muted-foreground hover:text-fd-primary inline-flex items-center gap-1.5 transition-colors"
+      >
+        <Heart className="size-3.5" />
+        Donate
+      </a>
     </nav>
   );
 }

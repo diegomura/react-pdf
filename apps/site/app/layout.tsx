@@ -1,13 +1,13 @@
 import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 import VersionedSearchDialog from '@/components/search-dialog';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const mono = JetBrains_Mono({
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
+const mono = Geist_Mono({
   subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
+  variable: '--font-geist-mono',
 });
 
 export const metadata = {
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${mono.variable}`}
+      className={`${geist.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans">

@@ -22,7 +22,7 @@ const buttonBase =
 export default function HomePage() {
   return (
     <main className="flex-1">
-      <section className="mx-auto w-full max-w-[56rem] px-5 pt-10 pb-14 sm:px-6 sm:pt-16 md:pb-20">
+      <section className="mx-auto w-full max-w-[64rem] px-5 pt-10 pb-14 sm:px-6 sm:pt-16 md:pb-20">
         <div className="mx-auto max-w-[36rem] text-center">
           <h1 className="text-[2.125rem] leading-[1.08] font-semibold tracking-[-0.03em] text-balance sm:text-[2.625rem] lg:text-[2.875rem]">
             PDFs, made with <span className="text-fd-primary">React</span>
@@ -58,7 +58,7 @@ export default function HomePage() {
       </section>
 
       <section className="border-fd-border border-t">
-        <div className="mx-auto grid w-full max-w-[56rem] gap-8 px-5 py-12 sm:grid-cols-3 sm:gap-10 sm:px-6">
+        <div className="mx-auto grid w-full max-w-[64rem] gap-8 px-5 py-12 sm:grid-cols-3 sm:gap-10 sm:px-6">
           {FEATURES.map((feature) => (
             <div key={feature.title}>
               <h2 className="text-[0.875rem] font-medium tracking-[-0.01em]">

@@ -18,6 +18,8 @@ import {
 export type SVGDocumentOptions = {
   /** Prepended to generated ids so multiple documents can coexist in one DOM */
   idPrefix?: string;
+  /** pdfkit-style document info (Title, Author, Subject, Keywords, ...) */
+  info?: Record<string, unknown>;
 };
 
 type Style = {
@@ -71,20 +73,35 @@ type ImageOptions = {
   valign?: string;
 };
 
-// pdfkit exposes a document outline API; render never populates it for SVG
-// output but may call it, so it needs to be a harmless no-op chain.
-const makeOutline = (): { addItem: () => unknown } => {
-  const outline = {
-    addItem: () => outline,
-  };
-  return outline;
+type OutlineItemOptions = {
+  pageNumber?: number;
+  expanded?: boolean;
+  top?: number;
+  left?: number;
+  zoom?: number;
+  fit?: boolean;
+};
+
+type OutlineEntry = {
+  title: string;
+  pageNumber: number;
+  expanded: boolean;
+  href: string;
+  children: OutlineEntry[];
+};
+
+type OutlineHandle = {
+  addItem: (title: string, options?: OutlineItemOptions) => OutlineHandle;
 };
 
 class SVGDocument {
   pages: string[] = [];
   page: PageInfo = { width: 0, height: 0, annotations: [], fonts: {} };
   info: Record<string, unknown> = {};
-  outline = makeOutline();
+  outline: OutlineHandle = {
+    addItem: (title, options = {}) =>
+      this.addOutlineItem(this.outlineRoot, title, options),
+  };
   // render checks ctx._root.data.AcroForm before drawing form fields
   _root = { data: {} as Record<string, unknown> };
   _imageRegistry: Record<string, unknown> = {};
@@ -101,9 +118,11 @@ class SVGDocument {
   protected style: Style = defaultStyle();
   protected stack: { container: SVGElementNode; style: Style }[] = [];
   protected currentPath = '';
+  protected outlineRoot: OutlineEntry[] = [];
 
   constructor(options: SVGDocumentOptions = {}) {
     this.idPrefix = options.idPrefix ?? '';
+    if (options.info) Object.assign(this.info, options.info);
   }
 
   addPage(options: { size?: number[] } = {}) {
@@ -129,8 +148,153 @@ class SVGDocument {
   }
 
   end() {
+    this.roots.forEach((root, pageNumber) =>
+      this.prependPageMetadata(root, pageNumber),
+    );
     this.pages = this.roots.map(serialize);
     return this;
+  }
+
+  protected addOutlineItem(
+    siblings: OutlineEntry[],
+    title: string,
+    options: OutlineItemOptions,
+  ): OutlineHandle {
+    const href = this.nextId('bookmark');
+    const entry: OutlineEntry = {
+      title,
+      pageNumber: options.pageNumber ?? 0,
+      expanded: !!options.expanded,
+      href,
+      children: [],
+    };
+    siblings.push(entry);
+    this.placeBookmarkMarker(
+      href,
+      entry.pageNumber,
+      options.left ?? 0,
+      options.top ?? 0,
+    );
+
+    return {
+      addItem: (childTitle, childOptions = {}) =>
+        this.addOutlineItem(entry.children, childTitle, childOptions),
+    };
+  }
+
+  protected placeBookmarkMarker(
+    id: string,
+    pageNumber: number,
+    left: number,
+    top: number,
+  ) {
+    const root = this.roots[pageNumber];
+    if (!root) return;
+
+    const marker = createElement('g');
+    setAttribute(marker, 'id', id);
+    if (left !== 0 || top !== 0)
+      setAttribute(marker, 'transform', `translate(${fmt(left)} ${fmt(top)})`);
+    appendChild(root, marker);
+  }
+
+  protected buildOutlineItemElement(entry: OutlineEntry): SVGElementNode {
+    const item = createElement('rpdf:item');
+    setAttribute(item, 'title', entry.title);
+    setAttribute(item, 'page', entry.pageNumber);
+    setAttribute(item, 'href', `#${entry.href}`);
+    if (entry.expanded) setAttribute(item, 'expanded', 'true');
+    entry.children.forEach((child) =>
+      appendChild(item, this.buildOutlineItemElement(child)),
+    );
+    return item;
+  }
+
+  protected buildOutlineMetadata(): SVGElementNode | null {
+    if (this.outlineRoot.length === 0) return null;
+
+    const outline = createElement('rpdf:outline');
+    setAttribute(outline, 'xmlns:rpdf', 'https://react-pdf.org/ns');
+    this.outlineRoot.forEach((entry) =>
+      appendChild(outline, this.buildOutlineItemElement(entry)),
+    );
+
+    const metadata = createElement('metadata');
+    appendChild(metadata, outline);
+    return metadata;
+  }
+
+  protected formatInfoDate(value: unknown): string | null {
+    if (value instanceof Date) return value.toISOString();
+    if (typeof value === 'string' && value) return value;
+    return null;
+  }
+
+  protected buildDublinCoreMetadata(): SVGElementNode | null {
+    const terms: [string, string | null][] = [
+      ['dc:title', this.infoString('Title')],
+      ['dc:creator', this.infoString('Author')],
+      ['dc:subject', this.infoString('Keywords')],
+      ['dc:description', this.infoString('Subject')],
+      ['dc:date', this.formatInfoDate(this.info.CreationDate)],
+    ];
+    const present = terms.filter(
+      (entry): entry is [string, string] => entry[1] != null,
+    );
+    if (present.length === 0) return null;
+
+    const description = createElement('rdf:Description');
+    present.forEach(([name, value]) => {
+      const el = createElement(name);
+      appendChild(el, value);
+      appendChild(description, el);
+    });
+
+    const rdf = createElement('rdf:RDF');
+    setAttribute(
+      rdf,
+      'xmlns:rdf',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    );
+    setAttribute(rdf, 'xmlns:dc', 'http://purl.org/dc/elements/1.1/');
+    appendChild(rdf, description);
+
+    const metadata = createElement('metadata');
+    appendChild(metadata, rdf);
+    return metadata;
+  }
+
+  protected infoString(key: string): string | null {
+    const value = this.info[key];
+    return typeof value === 'string' && value ? value : null;
+  }
+
+  protected prependPageMetadata(root: SVGElementNode, pageNumber: number) {
+    const prefix: SVGElementNode[] = [];
+
+    const title = this.infoString('Title');
+    if (title) {
+      const el = createElement('title');
+      appendChild(el, title);
+      prefix.push(el);
+    }
+
+    const subject = this.infoString('Subject');
+    if (subject) {
+      const el = createElement('desc');
+      appendChild(el, subject);
+      prefix.push(el);
+    }
+
+    const dcMetadata = this.buildDublinCoreMetadata();
+    if (dcMetadata) prefix.push(dcMetadata);
+
+    if (pageNumber === 0) {
+      const outlineMetadata = this.buildOutlineMetadata();
+      if (outlineMetadata) prefix.push(outlineMetadata);
+    }
+
+    if (prefix.length > 0) root.children.unshift(...prefix);
   }
 
   save() {

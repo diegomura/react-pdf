@@ -52,6 +52,48 @@ documents' SVG output in the same DOM so none of these ids collide:
 const ctx = new SVGDocument({ idPrefix: 'doc2-' });
 ```
 
+### Document info
+
+Pass `info` (or set `ctx.info` directly before calling `render()`) to embed
+document metadata. It accepts the same keys pdfkit does — `Title`, `Author`,
+`Subject`, `Keywords`, `Creator`, `Producer`, `CreationDate`,
+`ModificationDate` — and `Title`/`Subject` land as native `<title>`/`<desc>`
+elements, with `Title`, `Author`, `Keywords`, `Subject` and `CreationDate`
+also emitted as Dublin Core RDF inside a `<metadata>` element (the same
+convention Inkscape and Illustrator use), one per page:
+
+```js
+const ctx = new SVGDocument({
+  info: { Title: 'Invoice #42', Author: 'Acme Inc.' },
+});
+```
+
+Any key left unset is simply omitted — an empty `info` produces no extra
+markup at all.
+
+## Bookmarks
+
+Bookmarked elements (`<View bookmark="Chapter 1">` and friends) don't have a
+native SVG outline to render into, so they render as an empty, positioned
+`<g id="...">` marker on their page plus a machine-readable outline tree in a
+`<metadata>` element on the first page:
+
+```xml
+<metadata>
+  <rpdf:outline xmlns:rpdf="https://react-pdf.org/ns">
+    <rpdf:item title="Chapter 1" page="0" href="#bookmark-1">
+      <rpdf:item title="Section 1.1" page="0" href="#bookmark-2"/>
+    </rpdf:item>
+  </rpdf:outline>
+</metadata>
+```
+
+A consumer builds a sidebar by `DOMParser`-parsing that fragment, walking the
+`rpdf:item` elements for `title`/`page`/`expanded`, and using `href` to jump
+to the matching marker (e.g. `document.getElementById(...)` or
+`location.hash`) — on the page indicated by `page`, not necessarily the one
+the outline metadata itself lives on.
+
 ## Text
 
 How text is rendered depends on whether the font was registered (embedded)
@@ -83,10 +125,10 @@ Supported and matching PDF output:
   There's no typing, no toggling and no popups, and long field values are
   clipped to the box rather than shrunk to fit, since svgkit has no font
   metrics to size against.
-
-Silent no-ops — these draw nothing in SVG output, unlike the PDF renderer:
-
-- Bookmarks / outlines
+- Bookmarks / outlines (see [Bookmarks](#bookmarks)) and document info (see
+  [Document info](#document-info)) — SVG has no native outline pane or info
+  dictionary, so both come through as structured markup rather than viewer
+  chrome.
 
 ## License
 

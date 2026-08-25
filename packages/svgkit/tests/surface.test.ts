@@ -74,9 +74,10 @@ describe('ctx surface', () => {
     expect(doc._root.data).toEqual({});
     expect(doc._imageRegistry).toEqual({});
     expect(doc._acroform.fonts).toEqual({});
-    expect(doc.outline.addItem('title', {}).addItem('nested', {})).toBe(
-      doc.outline,
-    );
+    const chapter = doc.outline.addItem('title', {});
+    const section = chapter.addItem('nested', {});
+    expect(typeof chapter.addItem).toBe('function');
+    expect(typeof section.addItem).toBe('function');
     const ref = (doc as any).ref({});
     expect(typeof ref.write).toBe('function');
     expect(typeof ref.end).toBe('function');

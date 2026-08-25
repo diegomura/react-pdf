@@ -249,4 +249,51 @@ describe('svgkit integration', () => {
     expect(pages[0]).toMatch(/<path[^>]*stroke="[^"]+"[^>]*\/>/);
     expect(pages[0]).toContain('<title>a helpful comment</title>');
   });
+
+  test('bookmarks and info flow through to outline XML and Dublin Core metadata', async () => {
+    const chapter: any = {
+      type: 'VIEW',
+      props: { bookmark: 'Chapter 1' },
+      style: { width: 100, height: 50 },
+      box: {},
+      children: [
+        {
+          type: 'VIEW',
+          props: { bookmark: 'Section 1.1' },
+          style: { width: 50, height: 20 },
+          box: {},
+          children: [],
+        },
+      ],
+    };
+
+    const resolved = await layout(doc([chapter]), fontStore);
+    const ctx = new SVGDocument();
+    ctx.info.Title = 'My Document';
+    ctx.info.Author = 'Jane Doe';
+    render(ctx as any, resolved);
+
+    const [page] = ctx.pages;
+
+    expect(page).toContain('<title>My Document</title>');
+    expect(page).toContain(
+      '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">',
+    );
+    expect(page).toContain('<dc:title>My Document</dc:title>');
+    expect(page).toContain('<dc:creator>Jane Doe</dc:creator>');
+
+    const chapterMatch = page.match(
+      /<rpdf:item title="Chapter 1" page="0" href="#([^"]+)">(.*)<\/rpdf:item><\/rpdf:outline>/,
+    );
+    expect(chapterMatch).not.toBeNull();
+    const [, chapterHref, chapterInner] = chapterMatch!;
+    expect(chapterInner).toContain('<rpdf:item title="Section 1.1"');
+
+    const sectionMatch = chapterInner.match(/href="#([^"]+)"/);
+    expect(sectionMatch).not.toBeNull();
+    const sectionHref = sectionMatch![1];
+
+    expect(page).toContain(`<g id="${chapterHref}"`);
+    expect(page).toContain(`<g id="${sectionHref}"`);
+  });
 });

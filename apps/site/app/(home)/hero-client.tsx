@@ -37,14 +37,15 @@ export function CopyCommand() {
   );
 }
 
+/** Mirrors MiniRepl's grid exactly so the swap costs no layout shift. */
 function Skeleton() {
-  const widths = ['62%', '84%', '48%', '73%', '38%', '80%', '56%'];
+  const widths = ['62%', '84%', '48%', '73%', '38%', '80%'];
 
   return (
-    <div className="flex h-full animate-pulse flex-col">
-      <div className="border-fd-border h-9 shrink-0 border-b" />
-      <div className="grid min-h-0 flex-1 grid-rows-[14rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
-        <div className="border-fd-border flex flex-col gap-2.5 border-b p-4 md:border-e md:border-b-0">
+    <div className="grid h-full animate-pulse grid-rows-[12rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
+      <div className="border-fd-border flex min-h-0 flex-col border-b md:border-e md:border-b-0">
+        <div className="border-fd-border h-9 shrink-0 border-b" />
+        <div className="flex flex-col gap-2.5 p-4">
           {widths.map((width, i) => (
             <div
               key={i}
@@ -53,8 +54,13 @@ function Skeleton() {
             />
           ))}
         </div>
-        <div className="bg-fd-muted flex justify-center p-4">
-          <div className="bg-fd-background/70 aspect-[210/297] h-full rounded-xs" />
+      </div>
+      <div className="bg-fd-muted flex min-h-0 flex-col">
+        <div className="border-fd-border h-9 shrink-0 border-b" />
+        <div className="flex min-h-0 flex-1 justify-center">
+          <div className="aspect-[105/148] h-full p-2.5 md:p-4">
+            <div className="bg-fd-background/70 size-full rounded-xs" />
+          </div>
         </div>
       </div>
     </div>

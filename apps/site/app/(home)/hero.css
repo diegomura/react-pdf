@@ -1,0 +1,68 @@
+/* Hero-only atmosphere. Kept out of global.css so the landing page owns it. */
+
+/* A ruled field, not decoration for its own sake: the pitch is flexbox layout
+   on a page, so the backdrop is a layout grid fading into the paper. */
+.hero-grid {
+  --hero-rule: color-mix(in srgb, var(--color-fd-foreground) 10%, transparent);
+  background-image:
+    linear-gradient(to right, var(--hero-rule) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hero-rule) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+  mask-image: radial-gradient(
+    ellipse 90% 70% at 50% 6%,
+    #000 0%,
+    #000 22%,
+    transparent 82%
+  );
+}
+
+/* the red sits low and wide, under the type rather than over the grid */
+.hero-wash {
+  background: radial-gradient(
+    ellipse 45% 55% at 50% -12%,
+    color-mix(in srgb, var(--color-fd-primary) 11%, transparent),
+    transparent 72%
+  );
+}
+
+/* a phone can only show part of a file, and part of the tab row: fade both cut
+   edges so they read as "keep going" instead of a clipped glyph */
+@media (width < 48rem) {
+  .hero-editor {
+    mask-image: linear-gradient(
+      to bottom,
+      #000 calc(100% - 1.75rem),
+      transparent
+    );
+  }
+
+  .hero-tabs {
+    mask-image: linear-gradient(
+      to right,
+      #000 calc(100% - 1.5rem),
+      transparent
+    );
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}

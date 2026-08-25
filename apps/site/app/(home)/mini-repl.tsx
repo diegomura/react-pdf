@@ -1,53 +1,106 @@
 'use client';
 
-import { useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
+import { compress } from '@/src/repl/compress';
 import { Editor } from '@/src/repl/editor';
 import { Status } from '@/src/repl/status';
 import { useRepl } from '@/src/repl/use-repl';
 import { Viewer } from '@/src/repl/viewer';
 
-import { SNIPPET } from './hero-snippet';
+import { HERO_FILES } from './hero-files';
 
 const EDITOR_CHROME = {
   highlightActiveLine: false,
   highlightActiveLineGutter: false,
   foldGutter: false,
+  lineNumbers: false,
 };
 
+export const stripClass =
+  'border-fd-border text-fd-muted-foreground flex h-9 shrink-0 items-center border-b';
+
 export function MiniRepl() {
-  const [code, setCode] = useState(SNIPPET);
+  const [sources, setSources] = useState(() => HERO_FILES.map((f) => f.code));
+  const [active, setActive] = useState(0);
+
+  // HERO_FILES reads entry-first; the worker evaluates one module, so the
+  // sources go in reverse — leaf declarations land before the entry uses them.
+  const code = useMemo(() => [...sources].reverse().join('\n\n'), [sources]);
   const { url, error, rendering } = useRepl(code);
+
+  const replHref = useMemo(() => `/repl?code=${compress(code)}`, [code]);
+
+  const edit = (value: string) =>
+    setSources((prev) => prev.map((s, i) => (i === active ? value : s)));
 
   const failed = Boolean(error) && !url;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="border-fd-border text-fd-muted-foreground flex h-9 shrink-0 items-center justify-between border-b px-3.5">
-        <span className="font-mono text-[0.6875rem]">hello.jsx</span>
-        <Status rendering={rendering} failed={failed} />
-      </div>
+    <div className="grid h-full grid-rows-[12rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
+      <div className="border-fd-border flex min-h-0 min-w-0 flex-col border-b md:border-e md:border-b-0">
+        <div className={stripClass}>
+          <div className="hero-tabs flex h-full min-w-0 flex-1 items-stretch overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {HERO_FILES.map((file, i) => (
+              <button
+                key={file.name}
+                type="button"
+                onClick={() => setActive(i)}
+                data-active={i === active}
+                aria-pressed={i === active}
+                className="data-[active=true]:text-fd-foreground hover:text-fd-foreground data-[active=true]:after:bg-fd-primary relative shrink-0 px-3 font-mono text-[0.6875rem] whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:content-['']"
+              >
+                {file.name}
+              </button>
+            ))}
+          </div>
 
-      <div className="grid min-h-0 flex-1 grid-rows-[14rem_1fr] md:grid-cols-[1.2fr_1fr] md:grid-rows-1">
-        <div className="border-fd-border min-h-0 overflow-hidden border-b md:border-e md:border-b-0">
-          <Editor value={code} onChange={setCode} basicSetup={EDITOR_CHROME} />
+          <a
+            href={replHref}
+            title="Open this example in the REPL"
+            className="hover:text-fd-foreground inline-flex shrink-0 items-center gap-1 pe-3 ps-2 text-[0.6875rem] transition-colors max-md:hidden"
+          >
+            Open in REPL
+            <ArrowUpRight className="size-3 shrink-0" />
+          </a>
         </div>
 
-        <div className="bg-fd-muted relative flex min-h-0 justify-center">
+        <div className="hero-editor min-h-0 flex-1">
+          <Editor
+            key={active}
+            value={sources[active]}
+            onChange={edit}
+            basicSetup={EDITOR_CHROME}
+          />
+        </div>
+      </div>
+
+      <div className="bg-fd-muted flex min-h-0 flex-col">
+        <div className={`${stripClass} justify-between px-3.5`}>
+          <span className="font-mono text-[0.6875rem]">document.pdf</span>
+          <Status rendering={rendering} failed={failed} />
+        </div>
+
+        <div className="relative flex min-h-0 flex-1 justify-center">
           {failed ? (
             <p className="text-fd-muted-foreground max-w-[22rem] self-center px-6 text-center text-[0.8125rem] leading-relaxed">
               {error?.message}
             </p>
           ) : (
-            <div className="aspect-[210/297] h-full">
-              <Viewer url={url} rendering={rendering} />
+            <div className="aspect-[105/148] h-full">
+              <Viewer
+                url={url}
+                rendering={rendering}
+                surfaceClass="bg-transparent p-2.5 md:p-4"
+              />
             </div>
           )}
 
+          {/* no line number: it would point into the concatenated source */}
           {error && url && (
             <p className="text-fd-primary bg-fd-background/85 border-fd-primary/25 absolute inset-x-0 bottom-0 max-h-1/2 overflow-auto border-t px-3.5 py-2 font-mono text-[0.6875rem] leading-relaxed whitespace-pre-wrap backdrop-blur">
               {error.message}
-              {error.line ? ` (line ${error.line})` : ''}
             </p>
           )}
         </div>

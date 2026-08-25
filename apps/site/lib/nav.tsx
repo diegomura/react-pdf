@@ -15,7 +15,12 @@ import { GithubLink, GithubStars, REPO } from '@/components/github-stars';
 const GITHUB_URL = `https://github.com/${REPO}`;
 
 export const homeNav = {
-  nav: { title: Wordmark, children: <NavLinks key="nav-links" /> },
+  // transparent while the hero backdrop is behind it, tinted once you scroll
+  nav: {
+    title: Wordmark,
+    children: <NavLinks key="nav-links" />,
+    transparentMode: 'top',
+  },
   slots: { searchTrigger: { sm: SearchTrigger, full: NoSearchTrigger } },
   // the layouts place their own theme switch inconsistently between home/docs,
   // so it lives inside the actions cluster instead

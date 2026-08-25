@@ -94,8 +94,10 @@
   -webkit-backdrop-filter: blur(12px) saturate(180%);
 }
 
+/* The home header runs `transparentMode: 'top'`, so fumadocs adds its own
+   background only once you scroll — leave that alone or the hero backdrop gets
+   a white band across it. The docs subnav has no hero to sit over. */
 @supports (backdrop-filter: blur(1px)) {
-  #nd-nav > div,
   #nd-subnav[data-transparent='false'] {
     background-color: color-mix(
       in srgb,

@@ -4,12 +4,12 @@ import './hero.css';
 
 const FEATURES = [
   {
-    title: 'Web',
-    body: 'Render in the DOM with PDFViewer, or hand the browser a blob it can download.',
+    title: 'Browser and server',
+    body: 'The same document renders to a file, a stream or a blob — in Node or straight in the client.',
   },
   {
-    title: 'Node',
-    body: 'One call to ReactPDF.render writes the very same document straight to a file.',
+    title: 'Layout you already know',
+    body: 'Yoga brings flexbox to the page: rows, columns, wrapping and absolute positioning.',
   },
   {
     title: 'Beyond text',
@@ -22,17 +22,46 @@ const buttonBase =
 
 const layer = 'pointer-events-none absolute inset-x-0 top-0 -z-10 h-[44rem]';
 
-/** Warm paper, a grain, and hairline rings sweeping out of the top corner. */
+/**
+ * The legacy react-pdf.org corner decoration — angular shards radiating from
+ * the top corners — redrawn as vectors. The original ran full-strength red in
+ * a narrow column; this covers the whole hero, so the reds are pulled back and
+ * the whole thing fades out before it reaches the panel.
+ */
+function Shards() {
+  return (
+    <svg
+      aria-hidden
+      className="hero-shards pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] w-full"
+      viewBox="0 0 1440 544"
+      preserveAspectRatio="xMidYMin slice"
+    >
+      {/* thin overlapping slivers, alternating red / deep / pale — the pale
+          gaps between the reds are what make it read as folded paper */}
+      <g className="hero-shard-right">
+        <polygon points="1440,0 1198,0 1440,330" fill="var(--shard-red)" />
+        <polygon points="1440,0 1310,0 1440,120" fill="var(--shard-deep)" />
+        <polygon points="1268,0 1198,0 1440,330 1440,392" fill="var(--shard-deep)" />
+        <polygon points="1198,0 1156,0 1416,412 1440,392" fill="var(--shard-pale)" />
+        <polygon points="1156,0 1120,0 1392,470 1416,412" fill="var(--shard-warm)" />
+        <polygon points="1120,0 1094,0 1370,544 1392,470" fill="var(--shard-pale)" />
+      </g>
+      <g className="hero-shard-left">
+        <polygon points="0,0 214,0 0,262" fill="var(--shard-red)" />
+        <polygon points="0,0 112,0 0,118" fill="var(--shard-deep)" />
+        <polygon points="214,0 252,0 0,318 0,262" fill="var(--shard-pale)" />
+        <polygon points="252,0 286,0 0,362 0,318" fill="var(--shard-warm)" />
+      </g>
+    </svg>
+  );
+}
+
 function Backdrop() {
   return (
     <>
       <div aria-hidden className={`hero-veil ${layer}`} />
-      <div aria-hidden className={`hero-arcs ${layer}`} />
+      <Shards />
       <div aria-hidden className={`hero-grain ${layer}`} />
-      <div
-        aria-hidden
-        className="hero-bloom pointer-events-none absolute inset-x-0 top-0 -z-10 h-[32rem]"
-      />
     </>
   );
 }

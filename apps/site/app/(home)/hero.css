@@ -4,20 +4,26 @@
    set of hairline rings sweeping out of the corner — the same gesture the
    example poster makes. Every layer dies out before it reaches the panel. */
 
-.hero-bloom {
-  background: radial-gradient(
-    ellipse 58% 46% at 50% -6%,
-    color-mix(in srgb, var(--color-fd-primary) 13%, transparent),
-    transparent 70%
-  );
+/* Legacy corner-graphics palette, dialled well down: the original was a narrow
+   strip at full saturation, this spans the viewport. */
+.hero-shards {
+  --shard-red: color-mix(in srgb, #f22300 32%, transparent);
+  --shard-deep: color-mix(in srgb, #8d1602 30%, transparent);
+  --shard-warm: color-mix(in srgb, #c98a5e 20%, transparent);
+  --shard-pale: color-mix(in srgb, #ffffff 78%, transparent);
+  mask-image: linear-gradient(to bottom, #000 26%, transparent 82%);
 }
 
-.dark .hero-bloom {
-  background: radial-gradient(
-    ellipse 58% 46% at 50% -6%,
-    color-mix(in srgb, var(--color-fd-primary) 24%, transparent),
-    transparent 70%
-  );
+.dark .hero-shards {
+  --shard-red: color-mix(in srgb, #f22300 34%, transparent);
+  --shard-deep: color-mix(in srgb, #8d1602 44%, transparent);
+  --shard-warm: color-mix(in srgb, #c98a5e 12%, transparent);
+  --shard-pale: color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+/* the left cluster is a quieter echo, so the corners don't read as a matched pair */
+.hero-shard-left {
+  opacity: 0.5;
 }
 
 .hero-veil {

@@ -103,7 +103,20 @@
 
 /* ---------- Page ---------- */
 
+/* span the viewport instead of fumadocs' 97rem cap, and center the prose
+   column in whatever space is left between sidebar and TOC */
+#nd-notebook-layout {
+  --fd-layout-width: 100vw;
+}
+
+/* the article is a flex column, so centering is align-items + width:100% on
+   the children — margin-inline:auto would shrink them to fit their text */
+#nd-page {
+  align-items: center;
+}
+
 #nd-page > * {
+  width: 100%;
   max-width: 46rem;
 }
 

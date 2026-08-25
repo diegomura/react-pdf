@@ -10,6 +10,7 @@ import {
   TextInput,
   Select,
   List,
+  Note,
   StyleSheet,
 } from '@react-pdf/renderer';
 
@@ -168,6 +169,13 @@ const MyDoc = () => {
             checked
             style={styles.checkbox}
           />
+        </View>
+
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Note</Text>
+          <Note style={{ backgroundColor: '#ffcc00' }}>
+            This field requires manager approval.
+          </Note>
         </View>
       </View>
     </Page>

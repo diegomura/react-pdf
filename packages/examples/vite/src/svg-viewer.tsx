@@ -6,13 +6,24 @@ type Props = {
   Document: React.ComponentType;
 };
 
-// svgkit renders link targets as inert, unpainted, pointer-events:none
-// `[data-rpdf-link]` rects (see @react-pdf/svgkit's README) rather than
-// clickable anchors: navigation policy is left to the host. This viewer
-// implements that policy the way pdf.js does for its annotation layer —
-// reading each rect's geometry and stacking a small absolutely-positioned,
-// clickable overlay on top of it, since the rect itself can't be clicked.
-const useLinkOverlays = (
+// svgkit renders links, form fields and notes as inert, unpainted,
+// pointer-events:none annotations — `[data-rpdf-link]`, `[data-rpdf-field]`,
+// `[data-rpdf-note]` (see @react-pdf/svgkit's README) — rather than native
+// interactive elements: policy is left to the host. This viewer implements
+// that policy the way pdf.js does for its annotation layer — reading each
+// annotation's geometry and stacking a small absolutely-positioned element
+// on top of it, since the underlying SVG node itself can't be interacted with.
+const placeOverlay = (el: HTMLElement, box: DOMRect, pageBox: DOMRect) => {
+  el.style.position = 'absolute';
+  el.style.left = `${box.left - pageBox.left}px`;
+  el.style.top = `${box.top - pageBox.top}px`;
+  el.style.width = `${box.width}px`;
+  el.style.height = `${box.height}px`;
+  el.style.boxSizing = 'border-box';
+  el.style.margin = '0';
+};
+
+const useAnnotationOverlays = (
   rootRef: React.RefObject<HTMLDivElement>,
   pages: string[] | null,
 ) => {
@@ -30,7 +41,8 @@ const useLinkOverlays = (
         const box = link.getBoundingClientRect();
 
         const overlay = document.createElement('div');
-        overlay.style.cssText = `position:absolute; left:${box.left - pageBox.left}px; top:${box.top - pageBox.top}px; width:${box.width}px; height:${box.height}px; cursor:pointer;`;
+        placeOverlay(overlay, box, pageBox);
+        overlay.style.cursor = 'pointer';
         overlay.addEventListener('click', () => {
           if (target.startsWith('#')) {
             root
@@ -43,6 +55,70 @@ const useLinkOverlays = (
 
         page.appendChild(overlay);
         overlays.push(overlay);
+      });
+
+      page
+        .querySelectorAll<SVGElement>('[data-rpdf-field]')
+        .forEach((field) => {
+          const {
+            rpdfField: type,
+            rpdfFieldValue: value,
+            rpdfFieldChecked,
+            rpdfFieldOptions,
+            rpdfFieldMultiline,
+            rpdfFieldReadonly,
+          } = field.dataset;
+          const box = field.getBoundingClientRect();
+
+          let control:
+            | HTMLInputElement
+            | HTMLSelectElement
+            | HTMLTextAreaElement;
+
+          if (type === 'checkbox') {
+            control = document.createElement('input');
+            control.type = 'checkbox';
+            control.checked = rpdfFieldChecked === 'true';
+          } else if (type === 'combo' || type === 'list') {
+            control = document.createElement('select');
+            const options: string[] = rpdfFieldOptions
+              ? JSON.parse(rpdfFieldOptions)
+              : [];
+            options.forEach((option) => {
+              const optionEl = document.createElement('option');
+              optionEl.value = option;
+              optionEl.textContent = option;
+              optionEl.selected = option === value;
+              control.appendChild(optionEl);
+            });
+          } else if (rpdfFieldMultiline === 'true') {
+            control = document.createElement('textarea');
+            control.value = value || '';
+          } else {
+            control = document.createElement('input');
+            control.type = 'text';
+            control.value = value || '';
+          }
+
+          control.disabled = rpdfFieldReadonly === 'true';
+          placeOverlay(control, box, pageBox);
+
+          page.appendChild(control);
+          overlays.push(control);
+        });
+
+      page.querySelectorAll<SVGElement>('[data-rpdf-note]').forEach((note) => {
+        const contents = note.dataset.rpdfNote as string;
+        const box = note.getBoundingClientRect();
+
+        const marker = document.createElement('div');
+        placeOverlay(marker, box, pageBox);
+        marker.style.cursor = 'pointer';
+        marker.title = contents;
+        marker.addEventListener('click', () => window.alert(contents));
+
+        page.appendChild(marker);
+        overlays.push(marker);
       });
     });
 
@@ -75,7 +151,7 @@ const SVGViewer = ({ Document }: Props) => {
     };
   }, [Document]);
 
-  useLinkOverlays(rootRef, pages);
+  useAnnotationOverlays(rootRef, pages);
 
   return (
     <div ref={rootRef} className="size-full overflow-auto bg-slate-200">

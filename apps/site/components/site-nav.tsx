@@ -11,6 +11,7 @@ import { useSearchContext } from 'fumadocs-ui/contexts/search';
 const LINKS = [
   { text: 'Docs', url: '/docs/v4', match: '/docs' },
   { text: 'REPL', url: '/repl', match: '/repl' },
+  { text: 'Changelog', url: '/changelog', match: '/changelog' },
   { text: 'Blog', url: '/blog', match: '/blog' },
 ];
 

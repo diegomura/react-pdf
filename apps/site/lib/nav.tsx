@@ -37,6 +37,7 @@ export const homeNav = {
     },
     { text: 'Docs', url: '/docs/v4', on: 'menu' },
     { text: 'REPL', url: '/repl', on: 'menu' },
+    { text: 'Changelog', url: '/changelog', on: 'menu' },
     { text: 'Blog', url: '/blog', on: 'menu' },
     { text: 'GitHub', url: GITHUB_URL, external: true, on: 'menu' },
     {

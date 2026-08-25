@@ -1,7 +1,18 @@
 import Link from 'next/link';
 import { blogSource } from '@/lib/blog-source';
 
-export const metadata = { title: 'Blog' };
+export const metadata = {
+  title: 'Blog',
+  description: 'Notes and announcements from the react-pdf project.',
+};
+
+const formatDate = (value: string) =>
+  new Date(value).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
 
 export default function BlogIndex() {
   const posts = blogSource
@@ -9,22 +20,36 @@ export default function BlogIndex() {
     .sort((a, b) => String(b.data.date).localeCompare(String(a.data.date)));
 
   return (
-    <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-12">
-      <h1 className="mb-6 text-[1.75rem] font-semibold tracking-tight">Blog</h1>
-      <div className="divide-fd-border divide-y border-y">
+    <main className="mx-auto w-full max-w-[46rem] flex-1 px-4 py-16">
+      <header className="mb-12">
+        <h1 className="text-[1.75rem] font-semibold tracking-[-0.02em]">
+          Blog
+        </h1>
+        <p className="text-fd-muted-foreground mt-2 text-[0.9375rem]">
+          Releases, design notes and announcements from the react-pdf project.
+        </p>
+      </header>
+
+      <div className="divide-fd-border border-fd-border divide-y border-y">
         {posts.map((post) => (
-          <Link
-            key={post.url}
-            href={post.url}
-            className="hover:bg-fd-accent/50 group flex items-baseline justify-between gap-4 px-2 py-3 transition-colors"
-          >
-            <span className="text-[0.9375rem] font-medium">
-              {post.data.title}
-            </span>
-            <span className="text-fd-muted-foreground shrink-0 text-[0.8125rem] tabular-nums">
-              {String(post.data.date)}
-            </span>
-          </Link>
+          <article key={post.url}>
+            <Link href={post.url} className="group block py-8">
+              <time
+                dateTime={String(post.data.date)}
+                className="text-fd-muted-foreground text-[0.75rem] tracking-wide uppercase"
+              >
+                {formatDate(String(post.data.date))}
+              </time>
+              <h2 className="group-hover:text-fd-primary mt-2 text-[1.1875rem] font-semibold tracking-[-0.01em] transition-colors">
+                {post.data.title}
+              </h2>
+              {post.data.description && (
+                <p className="text-fd-muted-foreground mt-2 text-[0.9375rem] leading-relaxed">
+                  {post.data.description}
+                </p>
+              )}
+            </Link>
+          </article>
         ))}
       </div>
     </main>

@@ -5,8 +5,21 @@
  * of indentation from a multi-line template literal in a JSX attribute, which
  * silently flattened the nesting in every snippet.
  */
-export const COMPONENT_USAGE: Record<string, string> = {
-  document: `import { Document, Page, Text } from '@react-pdf/renderer';
+export type ComponentUsage = {
+  /** The snippet shown on the page. Most are fragments, not whole documents. */
+  code: string;
+  /**
+   * Appended to `code` to make it runnable in the preview REPL, which requires
+   * a `ReactPDF.render(...)` call. `Document`, `Page` and `ReactPDF` come from
+   * the evaluator's globals, so no imports are needed here. Omitted where the
+   * component is browser-only and has no page of its own to show.
+   */
+  mount?: string;
+};
+
+export const COMPONENT_USAGE: Record<string, ComponentUsage> = {
+  document: {
+    code: `import { Document, Page, Text } from '@react-pdf/renderer';
 
 const MyDocument = () => (
   <Document title="Invoice" author="Acme Inc.">
@@ -18,7 +31,10 @@ const MyDocument = () => (
     </Page>
   </Document>
 );`,
-  page: `import { Document, Page, Text } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(<MyDocument />);`,
+  },
+  page: {
+    code: `import { Document, Page, Text } from '@react-pdf/renderer';
 
 const MyDocument = () => (
   <Document>
@@ -27,7 +43,10 @@ const MyDocument = () => (
     </Page>
   </Document>
 );`,
-  view: `import { View, Text } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(<MyDocument />);`,
+  },
+  view: {
+    code: `import { View, Text } from '@react-pdf/renderer';
 
 const Row = () => (
   <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -39,21 +58,48 @@ const Row = () => (
     </View>
   </View>
 );`,
-  text: `import { Text } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Row />
+    </Page>
+  </Document>
+);`,
+  },
+  text: {
+    code: `import { Text } from '@react-pdf/renderer';
 
 const Heading = () => (
   <Text style={{ fontSize: 18, marginBottom: 6 }}>
     Hello <Text style={{ color: 'tomato' }}>world</Text>
   </Text>
 );`,
-  link: `import { Text, Link } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Heading />
+    </Page>
+  </Document>
+);`,
+  },
+  link: {
+    code: `import { Text, Link } from '@react-pdf/renderer';
 
 const Footer = () => (
   <Text style={{ fontSize: 10 }}>
     Built with <Link src="https://react-pdf.org">react-pdf</Link>
   </Text>
 );`,
-  image: `import { Image } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Footer />
+    </Page>
+  </Document>
+);`,
+  },
+  image: {
+    code: `import { Image } from '@react-pdf/renderer';
 
 const Logo = () => (
   <Image
@@ -61,7 +107,16 @@ const Logo = () => (
     style={{ width: 120, height: 120 }}
   />
 );`,
-  'image-background': `import { ImageBackground, Text } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Logo />
+    </Page>
+  </Document>
+);`,
+  },
+  'image-background': {
+    code: `import { ImageBackground, Text } from '@react-pdf/renderer';
 
 const Cover = () => (
   <ImageBackground
@@ -71,14 +126,28 @@ const Cover = () => (
     <Text style={{ color: 'white', fontSize: 24 }}>Annual report</Text>
   </ImageBackground>
 );`,
-  note: `import { View, Note } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Cover />
+    </Page>
+  </Document>
+);`,
+  },
+  // A note is an annotation, not page content: the page renders blank and the
+  // viewer's annotation layer draws the sticky-note icon as a broken image,
+  // because pdf.js looks for it under an `imageResourcesPath` we do not serve.
+  note: {
+    code: `import { View, Note } from '@react-pdf/renderer';
 
 const Reviewed = () => (
   <View>
     <Note>Checked against the Q3 ledger.</Note>
   </View>
 );`,
-  canvas: `import { Canvas } from '@react-pdf/renderer';
+  },
+  canvas: {
+    code: `import { Canvas } from '@react-pdf/renderer';
 
 const Bar = () => (
   <Canvas
@@ -90,7 +159,18 @@ const Bar = () => (
     }
   />
 );`,
-  'pdf-viewer': `import { PDFViewer, Document, Page, Text } from '@react-pdf/renderer';
+    mount: `ReactPDF.render(
+  <Document>
+    <Page size="A6" style={{ padding: 16 }}>
+      <Bar />
+    </Page>
+  </Document>
+);`,
+  },
+  // The three below render React to the DOM rather than to a page, so there is
+  // no PDF for the preview to show — hence no `mount`.
+  'pdf-viewer': {
+    code: `import { PDFViewer, Document, Page, Text } from '@react-pdf/renderer';
 
 const App = () => (
   <PDFViewer style={{ width: '100%', height: '90vh' }}>
@@ -101,7 +181,9 @@ const App = () => (
     </Document>
   </PDFViewer>
 );`,
-  'pdf-download-link': `import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
+  },
+  'pdf-download-link': {
+    code: `import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
 
 const invoice = (
   <Document>
@@ -116,7 +198,9 @@ const App = () => (
     {({ loading }) => (loading ? 'Preparing document...' : 'Download')}
   </PDFDownloadLink>
 );`,
-  'blob-provider': `import { BlobProvider, Document, Page, Text } from '@react-pdf/renderer';
+  },
+  'blob-provider': {
+    code: `import { BlobProvider, Document, Page, Text } from '@react-pdf/renderer';
 
 const invoice = (
   <Document>
@@ -133,4 +217,9 @@ const App = () => (
     }
   </BlobProvider>
 );`,
+  },
 };
+
+/** The preview source for a slug, or `null` where there is nothing to preview. */
+export const previewSource = (usage: ComponentUsage) =>
+  usage.mount ? `${usage.code}\n\n${usage.mount}` : null;

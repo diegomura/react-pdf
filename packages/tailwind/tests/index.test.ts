@@ -676,6 +676,14 @@ describe('Sizing', () => {
 });
 
 describe('Typography', () => {
+  // "-apple-system" ends in "em", which a suffix check reads as a length.
+  test('font stacks are not mistaken for lengths', () => {
+    const scoped = createTw({});
+
+    expect(scoped('font-sans')).toEqual({ fontFamily: '-apple-system' });
+    expect(scoped('font-serif')).toEqual({ fontFamily: 'ui-serif' });
+  });
+
   test('font-family', () => {
     expect(tw('font-sans')).toEqual({
       fontFamily: 'Papyrus',
@@ -1404,6 +1412,62 @@ describe('Combinations', () => {
     expect(tw('rotate-45 skew-x-3 scale-50')).toEqual({
       transform: 'rotate(45deg) skewX(3deg) scale(0.5)',
     });
+  });
+});
+
+describe('Theme config', () => {
+  test('overriding a spacing key reaches the scales derived from it', () => {
+    const scoped = createTw({ spacing: { 4: '100rem' } });
+
+    expect(scoped('p-4')).toEqual({ padding: rem(100) });
+    expect(scoped('m-4')).toEqual({ margin: rem(100) });
+    expect(scoped('gap-4')).toEqual({ gap: rem(100) });
+    expect(scoped('w-4')).toEqual({ width: rem(100) });
+  });
+
+  test('overriding a spacing key keeps the rest of the scale', () => {
+    const scoped = createTw({ spacing: { 4: '100rem', verybig: '999rem' } });
+
+    expect(scoped('p-8')).toEqual({ padding: rem(2) });
+    expect(scoped('p-96')).toEqual({ padding: rem(24) });
+    expect(scoped('p-verybig')).toEqual({ padding: rem(999) });
+  });
+
+  test('overriding one shade keeps the rest of the ramp', () => {
+    const scoped = createTw({ colors: { gray: { 500: '#ffffff' } } });
+
+    expect(scoped('bg-gray-500')).toEqual({ backgroundColor: '#ffffff' });
+    expect(scoped('bg-gray-100')).toEqual({ backgroundColor: '#f3f4f6' });
+    expect(scoped('bg-red-500')).toEqual({ backgroundColor: '#ef4444' });
+  });
+
+  test('a whole-ramp override replaces it', () => {
+    const scoped = createTw({ colors: { gray: '#bada55' } });
+
+    expect(scoped('bg-gray')).toEqual({ backgroundColor: '#bada55' });
+  });
+
+  // react-pdf can only draw registered fonts, so a fontFamily config hides the
+  // default stacks rather than merging with them.
+  test('fontFamily replaces rather than merges', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const scoped = createTw({ fontFamily: { sans: ['Papyrus'] } });
+
+    expect(scoped('font-sans')).toEqual({ fontFamily: 'Papyrus' });
+    expect(scoped('font-mono')).toEqual({});
+    warn.mockRestore();
+  });
+});
+
+describe('Modifiers', () => {
+  // The variant is dropped and the base utility applied; what matters here is
+  // that it happens consistently, whatever the variant is spelled like.
+  test('are stripped uniformly, including hyphenated ones', () => {
+    expect(tw('hover:p-4')).toEqual({ padding: rem(1) });
+    expect(tw('peer-focus:p-4')).toEqual({ padding: rem(1) });
+    expect(tw('group-hover:p-4')).toEqual({ padding: rem(1) });
+    expect(tw('max-lg:p-4')).toEqual({ padding: rem(1) });
+    expect(tw('lg:-mt-4')).toEqual({ marginTop: rem(-1) });
   });
 });
 

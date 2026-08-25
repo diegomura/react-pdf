@@ -13,6 +13,31 @@ export function round(value: number) {
   return Math.round(value * 1e6) / 1e6;
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+// Scales merge one level deep so a config that overrides a single key
+// (spacing.4, colors.gray.500) keeps the rest of the default scale. Arrays and
+// functions are values, not scales, so they replace rather than merge.
+export function mergeScales(
+  base: Record<string, unknown>,
+  overrides: Record<string, unknown>,
+) {
+  const merged: Record<string, unknown> = { ...base };
+
+  for (const [key, value] of Object.entries(overrides)) {
+    const baseValue = base[key];
+
+    merged[key] =
+      isPlainObject(baseValue) && isPlainObject(value)
+        ? { ...baseValue, ...value }
+        : value;
+  }
+
+  return merged;
+}
+
 export function isNumeric(value: string) {
   if (value.startsWith('.')) {
     value = `0${value}`;

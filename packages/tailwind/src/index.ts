@@ -11,6 +11,7 @@ import {
   capitalize,
   ExtendableDeepPartial,
   isNumeric,
+  mergeScales,
   parseRatio,
   px,
   rem,
@@ -34,9 +35,7 @@ type Options = {
   ptPerRem?: number;
 };
 
-function themeResolver(name: string) {
-  return defaultTheme[name as keyof typeof defaultTheme] ?? {};
-}
+const UNIT_VALUE = /^(-?(?:\d+\.?\d*|\.\d+))(px|rem|em)$/;
 
 // Explicit return type keeps `Style` in the emitted .d.ts — TS elides the
 // import when it only surfaces through inference.
@@ -44,10 +43,25 @@ export function createTw(
   config: ThemeConfig,
   options?: Options,
 ): (input: string) => Style {
-  const theme = { ...defaultTheme, ...config };
+  const theme = {
+    ...(mergeScales(defaultTheme, config) as typeof defaultTheme),
+    // fontFamily replaces rather than merges: react-pdf can only draw
+    // registered fonts, so exposing the leftover default stacks would hand
+    // back families the document has no way to render.
+    ...(config.fontFamily ? { fontFamily: config.fontFamily } : null),
+  };
 
   // Default colors are in OKLCH from v4 onwards, so we use the hex versions here for compatibility
-  const colors = { ...tailwindColors, ...(config.colors ?? {}) };
+  const colors = mergeScales(
+    tailwindColors,
+    config.colors ?? {},
+  ) as typeof tailwindColors;
+
+  // Resolves against the merged theme, so a config that overrides part of a
+  // scale reaches the theme functions that derive from it (padding <- spacing).
+  function themeResolver(name: string) {
+    return theme[name as keyof typeof theme] ?? {};
+  }
 
   const cache = new Map<string, MergedStyle>();
 
@@ -84,18 +98,13 @@ export function createTw(
         }
         return sign * Number(value);
 
-      default:
-        if (value.endsWith('px')) {
-          return px(sign * Number(value.replace('px', '')));
-        }
-        if (value.endsWith('rem')) {
-          return rem(
-            sign * Number(value.replace('rem', '')),
-            options?.ptPerRem,
-          );
-        }
-        if (value.endsWith('em')) {
-          return rem(sign * Number(value.replace('em', '')), options?.ptPerRem);
+      default: {
+        // Matched as a whole rather than by suffix, so font stacks like
+        // "-apple-system" aren't read as a length in em.
+        const unit = UNIT_VALUE.exec(value);
+        if (unit) {
+          const amount = sign * Number(unit[1]);
+          return unit[2] === 'px' ? px(amount) : rem(amount, options?.ptPerRem);
         }
         if (isNegative && property && isNegativeProperty(property)) {
           const suffix = ['deg', '%'].find((i) => value.endsWith(i));
@@ -107,6 +116,7 @@ export function createTw(
           return sign * Number(value);
         }
         return value;
+      }
     }
   }
 
@@ -281,7 +291,12 @@ export function createTw(
     );
 
     if (matchingUtilityPatternKey) {
-      const rawValue = className.split(`${matchingUtilityPatternKey}-`)[1];
+      // Taken from the already modifier- and sign-stripped parts rather than
+      // splitting the raw class on the key, which mismatches when the key also
+      // appears earlier in the string ("grou|p-|hover:p-4").
+      const rawValue = utilityParts
+        .slice(matchingUtilityPatternKey.split('-').length)
+        .join('-');
       const pattern = utilityPatterns[matchingUtilityPatternKey];
       const property = Array.isArray(pattern) ? pattern[0] : pattern;
       const mappedProperties = Array.isArray(pattern)

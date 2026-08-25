@@ -70,7 +70,11 @@ const tw = createTw(
 );
 ```
 
-The returned `tw` function takes a space-separated class string and returns a react-pdf `Style` object. Unknown classes are skipped with a console warning.
+Scales merge one level deep, so overriding a single key keeps the rest of the default scale — `spacing: { 4: '2rem' }` changes `p-4` while leaving `p-8` alone, and `colors: { gray: { 500: '#fff' } }` leaves the other grays intact. Replace a whole scale by overriding it with a non-object value.
+
+`fontFamily` is the exception: it replaces rather than merges, because react-pdf can only draw [fonts you have registered](https://react-pdf.org/fonts) and the leftover default stacks would name families the document can't render.
+
+The returned `tw` function takes a space-separated class string and returns a react-pdf `Style` object. Unknown classes are skipped with a console warning, emitted once per distinct class.
 
 ## Notes
 
@@ -81,7 +85,7 @@ The returned `tw` function takes a space-separated class string and returns a re
 - Line heights are emitted unitless, since react-pdf only supports unitless `lineHeight`.
 - `aspect-auto` and `line-clamp-none` warn as unsupported. react-pdf has no style value meaning "no aspect ratio" or "no clamp" — leaving the utility off is the reset.
 - `float-*` and `clear-*` map to react-pdf's float support, which is newer and has rough edges: setting `lineHeight` on floated content breaks text wrap, and parents don't grow to contain their floats.
-- Modifiers such as breakpoints and pseudo states aren't supported.
+- Modifiers such as breakpoints and pseudo states aren't evaluated. The variant is dropped and the base utility applied unconditionally, so `hover:bg-red-500` paints the background red in the output and `lg:p-8` always pads. Leave them off class strings meant for PDFs.
 
 ## License
 

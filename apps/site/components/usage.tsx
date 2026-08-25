@@ -2,6 +2,7 @@ import { highlight } from 'fumadocs-core/highlight';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 
 import { codeThemeDark, codeThemeLight } from '@/lib/code-theme';
+import { COMPONENT_USAGE } from '@/lib/component-usage';
 
 /**
  * Native `<details>` rather than a client toggle: the docs pages are otherwise
@@ -9,12 +10,15 @@ import { codeThemeDark, codeThemeLight } from '@/lib/code-theme';
  * screen-reader accessible without any of it being written here.
  */
 export async function Usage({
-  code,
+  name,
   lang = 'jsx',
 }: {
-  code: string;
+  name: string;
   lang?: string;
 }) {
+  const code = COMPONENT_USAGE[name];
+  if (!code) return null;
+
   const highlighted = await highlight(code, {
     lang,
     themes: { light: codeThemeLight, dark: codeThemeDark },

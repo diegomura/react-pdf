@@ -6,23 +6,7 @@ description: "Web only"
 Anchor tag to enable generate and download PDF documents on the fly.
 Refer to [on the fly rendering](/docs/v4/advanced/on-the-fly-rendering) for more information.
 
-<Usage
-  code={`import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
-
-const invoice = (
-  <Document>
-    <Page size="A4">
-      <Text>Invoice #42</Text>
-    </Page>
-  </Document>
-);
-
-const App = () => (
-  <PDFDownloadLink document={invoice} fileName="invoice.pdf">
-    {({ loading }) => (loading ? 'Preparing document...' : 'Download')}
-  </PDFDownloadLink>
-);`}
-/>
+<Usage name="pdf-download-link" />
 
 ## Valid props
 

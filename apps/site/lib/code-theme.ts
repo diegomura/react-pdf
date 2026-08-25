@@ -1,18 +1,50 @@
 import type { ThemeRegistration } from 'shiki';
 
 /**
- * Port of the legacy react-pdf.org Prism theme (public/styles/prism.css) to a
- * TextMate theme. It is dark-only by design: code blocks stay on the same dark
- * surface in both site themes, which is how the legacy site read.
+ * Syntax colours ported from the legacy react-pdf.org Prism theme
+ * (public/styles/prism.css). Only the token hues carry over — the surface is
+ * whatever the site theme provides. The legacy hues are tuned for a dark
+ * background, so the light variant darkens each one to stay legible on paper
+ * while keeping the same identity.
  */
-const FG = '#CDD3DE';
-const BG = '#3E3E3E';
+type Palette = {
+  fg: string;
+  comment: string;
+  keyword: string;
+  string: string;
+  fn: string;
+  punctuation: string;
+  tag: string;
+  accent: string;
+};
 
-const settings: ThemeRegistration['settings'] = [
-  { settings: { foreground: FG, background: BG } },
+const dark: Palette = {
+  fg: '#CDD3DE',
+  comment: '#7a7a7a',
+  keyword: '#FF6666',
+  string: '#7AECD9',
+  fn: '#72B2FF',
+  punctuation: '#9f68c4',
+  tag: '#e7e7e7',
+  accent: '#F99157',
+};
+
+const light: Palette = {
+  fg: '#3e3e3e',
+  comment: '#7a7a7a',
+  keyword: '#d1372a',
+  string: '#0e7a6b',
+  fn: '#2166c4',
+  punctuation: '#7b4bb0',
+  tag: '#3e3e3e',
+  accent: '#b0560f',
+};
+
+const build = (p: Palette): ThemeRegistration['settings'] => [
+  { settings: { foreground: p.fg } },
   {
     scope: ['comment', 'punctuation.definition.comment'],
-    settings: { foreground: '#7a7a7a', fontStyle: 'italic' },
+    settings: { foreground: p.comment, fontStyle: 'italic' },
   },
   {
     scope: [
@@ -27,7 +59,7 @@ const settings: ThemeRegistration['settings'] = [
       'entity.name.tag.css',
       'keyword.control.at-rule',
     ],
-    settings: { foreground: '#FF6666' },
+    settings: { foreground: p.keyword },
   },
   {
     scope: [
@@ -39,7 +71,7 @@ const settings: ThemeRegistration['settings'] = [
       'meta.attribute-selector',
       'markup.inserted',
     ],
-    settings: { foreground: '#7AECD9' },
+    settings: { foreground: p.string },
   },
   {
     scope: [
@@ -49,7 +81,7 @@ const settings: ThemeRegistration['settings'] = [
       'variable.function',
       'entity.name.label',
     ],
-    settings: { foreground: '#72B2FF' },
+    settings: { foreground: p.fn },
   },
   {
     scope: [
@@ -59,11 +91,11 @@ const settings: ThemeRegistration['settings'] = [
       'punctuation.accessor',
       'meta.brace',
     ],
-    settings: { foreground: '#9f68c4' },
+    settings: { foreground: p.punctuation },
   },
   {
     scope: ['keyword.operator', 'markup.link', 'variable.other.constant'],
-    settings: { foreground: FG },
+    settings: { foreground: p.fg },
   },
   {
     scope: [
@@ -72,7 +104,7 @@ const settings: ThemeRegistration['settings'] = [
       'punctuation.definition.tag.begin',
       'punctuation.definition.tag.end',
     ],
-    settings: { foreground: '#e7e7e7' },
+    settings: { foreground: p.tag },
   },
   {
     scope: [
@@ -90,7 +122,7 @@ const settings: ThemeRegistration['settings'] = [
       'meta.object-literal.key',
       'support.type.property-name',
     ],
-    settings: { foreground: FG },
+    settings: { foreground: p.fg },
   },
   {
     scope: [
@@ -101,25 +133,20 @@ const settings: ThemeRegistration['settings'] = [
       'markup.bold',
       'markup.deleted',
     ],
-    settings: { foreground: '#F99157' },
+    settings: { foreground: p.accent },
   },
 ];
 
-const colors = {
-  'editor.background': BG,
-  'editor.foreground': FG,
-};
-
 export const codeThemeLight: ThemeRegistration = {
   name: 'react-pdf-legacy-light',
-  type: 'dark',
-  colors,
-  settings,
+  type: 'light',
+  colors: { 'editor.foreground': light.fg },
+  settings: build(light),
 };
 
 export const codeThemeDark: ThemeRegistration = {
   name: 'react-pdf-legacy-dark',
   type: 'dark',
-  colors,
-  settings,
+  colors: { 'editor.foreground': dark.fg },
+  settings: build(dark),
 };

@@ -29,7 +29,7 @@ export function DocsHeader() {
   if (!previous && !next) return null;
 
   return (
-    <div className="sticky top-(--fd-docs-row-2) z-10 -mt-2 -mb-2 flex items-center gap-3 bg-linear-to-b from-(--color-fd-background) from-80% to-transparent pt-2 pb-4">
+    <div className="mb-2 flex items-center gap-3">
       <PageBreadcrumb
         includeSeparator
         includePage

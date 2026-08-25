@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import logo from '@/public/logo.png';
-import { ChevronDown, Heart, Moon, Search, Sun } from 'lucide-react';
+import { ChevronDown, Moon, Search, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
 
@@ -48,9 +48,8 @@ export function NavLinks() {
         href={DONATE_URL}
         target="_blank"
         rel="noreferrer"
-        className="text-fd-muted-foreground hover:text-fd-primary inline-flex items-center gap-1.5 transition-colors"
+        className="text-fd-muted-foreground hover:text-fd-primary transition-colors"
       >
-        <Heart className="size-3.5" />
         Donate
       </a>
     </nav>

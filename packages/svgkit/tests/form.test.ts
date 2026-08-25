@@ -38,6 +38,14 @@ describe('annotate: checkbox', () => {
     doc.annotate(0, 0, 20, 20, checkboxDict('Off'));
     expect(pageContent(doc)).toBe('<defs/>');
   });
+
+  test('a wide checkbox keeps the mark square and centred', () => {
+    const doc = makeDoc();
+    doc.annotate(0, 0, 100, 20, checkboxDict('Yes'));
+    expect(pageContent(doc)).toBe(
+      '<defs/><path d="M44 11L48.4 16L56 4" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>',
+    );
+  });
 });
 
 describe('annotate: text-valued fields', () => {
@@ -50,6 +58,24 @@ describe('annotate: text-valued fields', () => {
         '<text x="2" y="15.6" font-family="sans-serif" font-size="16" fill="black" xml:space="preserve">Hello</text>' +
         '</g>',
     );
+  });
+
+  test('multiline holds a flowing size and starts at the top of the box', () => {
+    const doc = makeDoc();
+    doc.annotate(0, 0, 100, 60, { value: 'Hello', multiline: true });
+    const content = pageContent(doc);
+    expect(content).toContain('font-size="12"');
+    expect(content).toContain('y="10.4"');
+  });
+
+  test('multiline still honours an explicit fontSize', () => {
+    const doc = makeDoc();
+    doc.annotate(0, 0, 100, 60, {
+      value: 'Hello',
+      multiline: true,
+      fontSize: 8,
+    });
+    expect(pageContent(doc)).toContain('font-size="8"');
   });
 
   test('defaultValue alone renders nothing (not a display value in PDF)', () => {

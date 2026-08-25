@@ -804,19 +804,24 @@ class SVGDocument {
     const onOption = Object.keys(dict.AP?.N ?? {})[0];
     if (dict.AS !== onOption) return;
 
-    const padX = width * 0.2;
-    const padY = height * 0.2;
+    // The mark keeps square proportions and centers in the box, the way a
+    // viewer draws the ZapfDingbats glyph, so a wide field can't stretch it.
+    const size = Math.min(width, height);
+    const left = x + (width - size) / 2;
+    const top = y + (height - size) / 2;
+    const pad = size * 0.2;
+
     const el = createElement('path');
     setAttribute(
       el,
       'd',
-      `M${fmt(x + padX)} ${fmt(y + height * 0.55)}` +
-        `L${fmt(x + width * 0.42)} ${fmt(y + height - padY)}` +
-        `L${fmt(x + width - padX)} ${fmt(y + padY)}`,
+      `M${fmt(left + pad)} ${fmt(top + size * 0.55)}` +
+        `L${fmt(left + size * 0.42)} ${fmt(top + size - pad)}` +
+        `L${fmt(left + size - pad)} ${fmt(top + pad)}`,
     );
     setAttribute(el, 'fill', 'none');
     setAttribute(el, 'stroke', this.resolvePaint(this.style.strokeColor));
-    setAttribute(el, 'stroke-width', fmt(height / 8));
+    setAttribute(el, 'stroke-width', fmt(size / 8));
     setAttribute(el, 'stroke-linecap', 'round');
     setAttribute(el, 'stroke-linejoin', 'round');
     appendChild(this.container, el);
@@ -839,7 +844,13 @@ class SVGDocument {
     // ponytail: svgkit has no font metrics to shrink-to-fit like a PDF
     // viewer does, so long values are clipped to the box instead. Upgrade
     // to real fit-to-width sizing if that approximation proves too coarse.
-    const size = dict.fontSize || height * 0.8;
+    //
+    // Single-line fields auto-size to the box the way viewers do; multiline
+    // fields hold a flowing size instead, since scaling those to the box
+    // would turn a tall textarea into one giant line. Viewers disagree on the
+    // exact auto size here (poppler lands near 20pt), so we take the 12pt
+    // convention.
+    const size = dict.fontSize || (dict.multiline ? 12 : height * 0.8);
 
     let textX = x + 2;
     let anchor: string | null = null;
@@ -850,7 +861,9 @@ class SVGDocument {
       textX = x + width - 2;
       anchor = 'end';
     }
-    const textY = y + (height + size * 0.7) / 2;
+    const textY = dict.multiline
+      ? y + 2 + size * 0.7
+      : y + (height + size * 0.7) / 2;
 
     this.save();
     this.rect(x, y, width, height);

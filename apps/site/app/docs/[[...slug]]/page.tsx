@@ -13,7 +13,6 @@ import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { SectionIndex } from '@/components/section-index';
 import { DocsFooter, DocsHeader } from '@/components/docs-pager';
-import { CopyMarkdown } from '@/components/copy-markdown';
 
 const LATEST = 'v4';
 
@@ -34,10 +33,7 @@ export default async function Page(props: {
       full={page.data.full}
       slots={{ breadcrumb: DocsHeader, footer: DocsFooter }}
     >
-      <div className="flex items-center justify-between gap-4">
-        <DocsTitle>{page.data.title}</DocsTitle>
-        <CopyMarkdown url={page.url} />
-      </div>
+      <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       {isOld && (
         <div className="rounded-lg border border-fd-primary/50 bg-fd-primary/10 p-3 text-sm">

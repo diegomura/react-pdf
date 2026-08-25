@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { DocumentProps } from '@react-pdf/renderer';
-import { pdf } from '@react-pdf/renderer';
+import { Font, pdf } from '@react-pdf/renderer';
 
 import { transpile } from './transpile';
 import { evaluateDocument, MissingModuleError } from './evaluate';
@@ -36,10 +36,24 @@ const evaluate = async (compiledCode: string) => {
   }
 };
 
+// Examples flip global knobs on the shared Font store, and the docs previews
+// run several of them through one worker. Both reset to null; Font.clear()
+// would also drop the built-in Helvetica/Courier/Times families.
+const resetFontGlobals = () => {
+  const store = Font as unknown as {
+    registerHyphenationCallback: (value: null) => void;
+    registerEmojiSource: (value: null) => void;
+  };
+  store.registerHyphenationCallback(null);
+  store.registerEmojiSource(null);
+};
+
 self.onmessage = async (event: MessageEvent<ReplRequest>) => {
   const { id, code } = event.data;
 
   try {
+    resetFontGlobals();
+
     const element = (await evaluate(
       transpile(code),
     )) as React.ReactElement<DocumentProps>;

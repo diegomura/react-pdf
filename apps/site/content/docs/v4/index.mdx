@@ -6,29 +6,48 @@ title: "Quick start guide"
 
 Starting with react-pdf is extremely simple.
 
-### Using npm
+<CodeBlockTabs defaultValue="npm">
+
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="npm">
 
 ```bash
 npm install @react-pdf/renderer --save
 ```
 
-### Using Yarn
+</CodeBlockTab>
+
+<CodeBlockTab value="yarn">
 
 ```bash
 yarn add @react-pdf/renderer
 ```
 
-### Using pnpm
+</CodeBlockTab>
+
+<CodeBlockTab value="pnpm">
 
 ```bash
 pnpm add @react-pdf/renderer
 ```
 
-### Using Bun
+</CodeBlockTab>
+
+<CodeBlockTab value="bun">
 
 ```bash
 bun add @react-pdf/renderer
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Since a renderer simply implements _how elements render into something_, you still need to have React to make it work (and react-dom for client-side document generation). You can find instructions on how to do that [here](https://react.dev/learn/add-react-to-an-existing-project).
 

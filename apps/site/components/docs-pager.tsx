@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
+import { useState } from 'react';
 import { useFooterItems } from 'fumadocs-ui/utils/use-footer-items';
 import { PageBreadcrumb } from 'fumadocs-ui/layouts/notebook/page';
 
@@ -17,16 +18,54 @@ function usePrevNext() {
   };
 }
 
-const arrow =
-  'text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground inline-flex size-7 items-center justify-center rounded-md border transition-colors';
+const control =
+  'text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:ring-fd-ring inline-flex h-7 items-center justify-center rounded-md border transition-colors outline-none focus-visible:ring-2';
+
+const arrow = `${control} w-7`;
+
+function CopyMarkdown() {
+  const pathname = usePathname();
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    fetch(`${pathname}.mdx`)
+      .then((response) => response.text())
+      .then((text) => navigator.clipboard.writeText(text))
+      .then(
+        () => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1600);
+        },
+        () => {},
+      );
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      title="Copy this page as Markdown"
+      aria-label="Copy this page as Markdown"
+      className={`${control} gap-1.5 px-2 text-[0.8125rem]`}
+    >
+      {copied ? (
+        <Check className="size-3.5 shrink-0 text-emerald-500" />
+      ) : (
+        <Copy className="size-3.5 shrink-0" />
+      )}
+      <span className="max-sm:hidden">
+        {copied ? 'Copied' : 'Copy Markdown'}
+      </span>
+    </button>
+  );
+}
 
 /**
- * Sticky content header: breadcrumb on the left, shadcn-style prev/next arrows
- * on the right. Sticks under the navbar so the current page stays visible.
+ * Sticky content header: breadcrumb on the left, then the page actions —
+ * copy-as-markdown next to the shadcn-style prev/next arrows.
  */
 export function DocsHeader() {
   const { previous, next } = usePrevNext();
-  if (!previous && !next) return null;
 
   return (
     <div className="mb-2 flex items-center gap-3">
@@ -36,6 +75,7 @@ export function DocsHeader() {
         className="min-w-0 flex-1 text-[0.8125rem]"
       />
       <div className="flex shrink-0 items-center gap-1.5">
+        <CopyMarkdown />
         {previous ? (
           <Link
             href={previous.url}

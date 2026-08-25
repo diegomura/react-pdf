@@ -45,8 +45,35 @@ describe('glyphs — embedded fonts', () => {
       '<g fill="#112233">' +
         '<path d="M0 0L1 1Z" transform="translate(5 50) scale(0.02 -0.02)"/>' +
         '<path d="M2 2L3 3Z" transform="translate(15 50) scale(0.02 -0.02)"/>' +
-        '</g>',
+        '</g>' +
+        '<text x="5 15" y="50" font-family="sans-serif" font-size="20" fill-opacity="0" xml:space="preserve">AB</text>',
     );
+  });
+
+  test('emits a selectable overlay <text> after the outline group', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font({ unitsPerEm: 1000 }, 20);
+    doc.glyphs(
+      [outlineGlyph('M0 0Z', 65), outlineGlyph('M1 1Z', 66)],
+      [position(10), position(12)],
+      0,
+      0,
+    );
+    const content = pageContent(doc);
+    expect(content).toMatch(
+      /<g[^>]*>.*<\/g><text[^>]*fill-opacity="0"[^>]*>AB<\/text>$/,
+    );
+  });
+
+  test('overlay carries font size and xml:space, invisible via fill-opacity', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font({ unitsPerEm: 1000 }, 24);
+    doc.glyphs([outlineGlyph('M0 0Z', 65)], [position(10)], 0, 0);
+    const content = pageContent(doc);
+    expect(content).toContain('font-size="24"');
+    expect(content).toContain('xml:space="preserve"');
+    expect(content).toContain('fill-opacity="0"');
+    expect(content).not.toContain('fill="none"');
   });
 
   test('replicates PDF offset math', () => {
@@ -113,6 +140,28 @@ describe('glyphs — standard fonts', () => {
     const content = pageContent(doc);
     expect(content).toContain('<text ');
     expect(content).toContain('fill-opacity="0.5"');
+  });
+
+  test('emits exactly one <text> element, no extra overlay', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font('Helvetica', 12);
+    doc.glyphs(
+      [standardGlyph(72), standardGlyph(105)],
+      [position(7), position(3)],
+      0,
+      0,
+    );
+    const content = pageContent(doc);
+    expect(content.match(/<text/g)).toHaveLength(1);
+  });
+});
+
+describe('glyphs — empty runs', () => {
+  test('emits nothing for an empty glyph list', () => {
+    const doc = new SVGDocument().addPage({ size: [100, 100] });
+    doc.font('Helvetica', 12);
+    doc.glyphs([], [], 0, 0);
+    expect(pageContent(doc)).toBe('');
   });
 });
 

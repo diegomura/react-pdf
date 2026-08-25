@@ -59,8 +59,10 @@ or is one of the standard 14 PDF fonts:
 
 - **Registered fonts** render as glyph-outline `<path>` elements, one per
   glyph, positioned using the same shaping output the PDF renderer uses.
-  This is pixel-faithful to the PDF output, but the text is not selectable
-  or searchable in the SVG.
+  This is pixel-faithful to the PDF output. An invisible `<text>` run
+  (`fill-opacity="0"`) is layered on top of the outlines, pdf.js-style, so
+  the text stays selectable, copyable, searchable, and accessible to screen
+  readers even though the visible glyphs are vector art.
 - **Standard fonts** (Helvetica, Times, Courier and their variants) have no
   embedded outline data, so they render as `<text>` elements with per-glyph
   x positions and a CSS font-family fallback (e.g. `Helvetica, Arial,

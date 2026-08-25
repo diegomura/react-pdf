@@ -174,14 +174,14 @@ describe('svgkit integration', () => {
     expect(pages[0]).toMatchSnapshot();
   });
 
-  test('renders registered-font text as glyph outline paths', async () => {
+  test('renders registered-font text as outline paths plus a selectable overlay', async () => {
     const pages = await renderToSvg(
       doc([text('Hi', { fontSize: 14, fontFamily: 'TestFont' })]),
     );
 
     expect(pages[0]).toContain('<path');
     expect(pages[0]).toMatch(/transform="translate\([^)]+\) scale\([^)]+\)"/);
-    expect(pages[0]).not.toContain('<text');
+    expect(pages[0]).toMatch(/<text[^>]*fill-opacity="0"[^>]*>Hi<\/text>/);
   });
 
   test('renders multiple pages to multiple svgs', async () => {

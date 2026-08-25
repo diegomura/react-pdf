@@ -621,14 +621,16 @@ class SVGDocument {
     }
 
     appendChild(this.container, group);
+    // Outline paths are unselectable vector art, so a transparent <text> run
+    // rides on top (pdf.js-style) purely for selection/search/a11y.
+    this.appendSelectableOverlay(glyphs, positions, x, y, offsetScale);
     return this;
   }
 
-  protected glyphsAsText(
+  protected buildGlyphRun(
     glyphs: SVGGlyph[],
     positions: SVGGlyphPosition[],
     x: number,
-    y: number,
     offsetScale: number,
   ) {
     const xs: (string | number)[] = [];
@@ -644,6 +646,18 @@ class SVGDocument {
       pen += positions[i].xAdvance || 0;
     }
 
+    return { xs, text };
+  }
+
+  protected glyphsAsText(
+    glyphs: SVGGlyph[],
+    positions: SVGGlyphPosition[],
+    x: number,
+    y: number,
+    offsetScale: number,
+  ) {
+    const { xs, text } = this.buildGlyphRun(glyphs, positions, x, offsetScale);
+
     const el = createElement('text');
     setAttribute(el, 'x', xs.join(' '));
     setAttribute(el, 'y', fmt(y));
@@ -653,6 +667,27 @@ class SVGDocument {
     appendChild(el, text);
     appendChild(this.container, el);
     return this;
+  }
+
+  // fill-opacity="0" (not fill="none"/visibility/display) keeps the run
+  // hit-testable and selectable while contributing zero visible pixels.
+  protected appendSelectableOverlay(
+    glyphs: SVGGlyph[],
+    positions: SVGGlyphPosition[],
+    x: number,
+    y: number,
+    offsetScale: number,
+  ) {
+    const { xs, text } = this.buildGlyphRun(glyphs, positions, x, offsetScale);
+
+    const el = createElement('text');
+    setAttribute(el, 'x', xs.join(' '));
+    setAttribute(el, 'y', fmt(y));
+    this.applyTextFont(el);
+    setAttribute(el, 'fill-opacity', 0);
+    setAttribute(el, 'xml:space', 'preserve');
+    appendChild(el, text);
+    appendChild(this.container, el);
   }
 
   text(value: string, x = 0, y = 0) {

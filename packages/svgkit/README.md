@@ -43,10 +43,10 @@ one serialized `<svg>` string per page.
 
 ### idPrefix
 
-Ids for clip paths, gradients, and named destinations are generated
-sequentially per document (`clip-1`, `grad-1`, `dest-foo`, ...). Pass
-`idPrefix` when embedding several documents' SVG output in the same DOM so
-their ids don't collide:
+Clip path and gradient ids are generated sequentially per document
+(`clip-1`, `grad-1`, ...). Destination ids are derived from the document's
+own `id` props (`dest-<id>`). Pass `idPrefix` when embedding several
+documents' SVG output in the same DOM so none of these ids collide:
 
 ```js
 const ctx = new SVGDocument({ idPrefix: 'doc2-' });

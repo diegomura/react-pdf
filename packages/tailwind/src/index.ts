@@ -14,9 +14,12 @@ import {
   ExtendableDeepPartial,
   isNumeric,
   mergeScales,
+  NAMED_COLORS,
   parseRatio,
   px,
   rem,
+  splitAlpha,
+  withAlpha,
 } from './utils';
 
 type DefaultTheme = typeof defaultTheme;
@@ -156,6 +159,34 @@ export function createTw(
     property?: string,
     isNegative?: boolean,
   ): Value {
+    const direct = parseBaseValue(value, property, isNegative);
+
+    // Only reached when the plain reading found nothing, so `w-1/2` keeps its
+    // fraction and `bg-red-500/50` gets a second pass as colour + opacity.
+    if (direct.value !== undefined) return direct;
+
+    const { base, alpha } = splitAlpha(value);
+
+    if (alpha === undefined) return direct;
+
+    const named = NAMED_COLORS[base];
+
+    if (named) {
+      return { value: withAlpha(named, alpha), type: 'color', isCustom: false };
+    }
+
+    const resolved = parseBaseValue(base, property, isNegative);
+
+    if (resolved.type !== 'color') return direct;
+
+    return { ...resolved, value: withAlpha(resolved.value, alpha) };
+  }
+
+  function parseBaseValue(
+    value: string,
+    property?: string,
+    isNegative?: boolean,
+  ): Value {
     const valueParts = value.split('-');
 
     // Custom value
@@ -197,7 +228,6 @@ export function createTw(
       property !== 'fontWeight' &&
       !isDimensionProperty(property)
     ) {
-      // TODO alpha colors like gray-500/50 etc
       const color = colors[valueParts[0] as keyof typeof colors];
       return {
         value:

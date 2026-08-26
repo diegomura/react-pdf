@@ -74,6 +74,18 @@ Scales merge one level deep, so overriding a single key keeps the rest of the de
 
 `fontFamily` is the exception: it comes from your config alone, neither merging with Tailwind's defaults nor falling back to them. react-pdf can only draw [fonts you have registered](https://react-pdf.org/fonts), and Tailwind's stacks name web families like `-apple-system`, so resolving `font-sans` against them would throw at render time. Register a font, map it in the config, and `font-<key>` works; without a config, `font-sans` / `font-serif` / `font-mono` warn as unsupported while `font-bold` and friends still resolve.
 
+### Color opacity
+
+`bg-red-500/50` and friends work anywhere a colour does — `bg-`, `text-`, `border-`, `decoration-` — including black, white, custom and arbitrary colours:
+
+```js
+tw('bg-red-500/50'); // { backgroundColor: '#ef444480' }
+tw('text-black/25'); // { color: '#00000040' }
+tw('bg-[#bada55]/60'); // { backgroundColor: '#bada5599' }
+```
+
+A bare suffix is a percentage; a bracketed one is `0`–`1` unless it carries a `%`, so `/[0.55]` and `/[55%]` agree. `transparent`, `currentColor` and `inherit` name no channel to modulate and reject the suffix.
+
 ### Variants
 
 Breakpoint and orientation variants become react-pdf media queries, which resolve against the **page box** rather than a viewport:

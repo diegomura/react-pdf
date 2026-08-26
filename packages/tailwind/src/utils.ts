@@ -59,6 +59,75 @@ export function px(value: number) {
 
 // react-pdf resolves aspectRatio with parseFloat, so "16 / 9" has to be
 // collapsed to a single number here rather than passed through.
+/**
+ * Splits Tailwind's colour opacity suffix: `red-500/50`, `[#bada55]/[0.55]`.
+ * A bare number is a percentage; a bracketed one is already 0-1 unless it
+ * carries a `%`. Callers must try the plain reading first — `w-1/2` and
+ * `translate-x-1/2` spell fractions with the same character.
+ */
+export function splitAlpha(value: string) {
+  const slash = value.lastIndexOf('/');
+
+  if (slash === -1) return { base: value, alpha: undefined };
+
+  const base = value.slice(0, slash);
+  const raw = value.slice(slash + 1);
+  const bracketed = raw.startsWith('[') && raw.endsWith(']');
+  const inner = bracketed ? raw.slice(1, -1) : raw;
+  const percent = inner.endsWith('%');
+  const amount = Number(percent ? inner.slice(0, -1) : inner);
+
+  if (inner === '' || !Number.isFinite(amount)) {
+    return { base, alpha: undefined };
+  }
+
+  const alpha = bracketed && !percent ? amount : amount / 100;
+
+  return { base, alpha: Math.min(Math.max(alpha, 0), 1) };
+}
+
+const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+const COLOR_FN = /^(rgb|hsl)\(([^)]*)\)$/i;
+
+export const NAMED_COLORS: Record<string, string> = {
+  black: '#000000',
+  white: '#ffffff',
+};
+
+/**
+ * Adds an alpha channel to a resolved colour. react-pdf reads 8-digit hex as
+ * well as rgba()/hsla(), so hex grows a byte and the functional forms grow an
+ * argument. Keywords like `transparent` and `currentColor` have no channel to
+ * modulate and return undefined, which reports the class as unsupported.
+ */
+export function withAlpha(color: string | number | undefined, alpha: number) {
+  if (typeof color !== 'string') return undefined;
+
+  const value = NAMED_COLORS[color] ?? color;
+
+  if (HEX.test(value)) {
+    const full =
+      value.length === 4
+        ? `#${value
+            .slice(1)
+            .split('')
+            .map((channel) => channel + channel)
+            .join('')}`
+        : value;
+    const byte = Math.round(alpha * 255)
+      .toString(16)
+      .padStart(2, '0');
+
+    return `${full}${byte}`;
+  }
+
+  const [, name, args] = COLOR_FN.exec(value) ?? [];
+
+  if (name) return `${name.toLowerCase()}a(${args}, ${alpha})`;
+
+  return undefined;
+}
+
 export function parseRatio(value: unknown) {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : undefined;

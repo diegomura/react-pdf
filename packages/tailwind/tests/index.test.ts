@@ -1592,6 +1592,66 @@ describe('Modifiers', () => {
   });
 });
 
+describe('Color opacity', () => {
+  test('a bare suffix is a percentage', () => {
+    expect(tw('bg-red-500/50')).toEqual({ backgroundColor: '#ef444480' });
+    expect(tw('bg-red-500/25')).toEqual({ backgroundColor: '#ef444440' });
+    expect(tw('bg-red-500/100')).toEqual({ backgroundColor: '#ef4444ff' });
+    expect(tw('bg-red-500/0')).toEqual({ backgroundColor: '#ef444400' });
+  });
+
+  test('a bracketed suffix is 0-1, or a percentage when marked', () => {
+    expect(tw('bg-red-500/[0.55]')).toEqual({ backgroundColor: '#ef44448c' });
+    expect(tw('bg-red-500/[55%]')).toEqual({ backgroundColor: '#ef44448c' });
+  });
+
+  test('applies to every utility that takes a colour', () => {
+    expect(tw('text-red-500/50')).toEqual({ color: '#ef444480' });
+    expect(tw('border-red-500/50')).toEqual({ borderColor: '#ef444480' });
+    expect(tw('decoration-red-500/50')).toEqual({
+      textDecorationColor: '#ef444480',
+    });
+  });
+
+  test('applies to black, white and custom colours', () => {
+    expect(tw('bg-black/50')).toEqual({ backgroundColor: '#00000080' });
+    expect(tw('bg-white/25')).toEqual({ backgroundColor: '#ffffff40' });
+    expect(tw('bg-badass/40')).toEqual({ backgroundColor: '#bada5566' });
+  });
+
+  test('applies to arbitrary colours', () => {
+    expect(tw('bg-[#bada55]/50')).toEqual({ backgroundColor: '#bada5580' });
+    expect(tw('bg-[#bad]/50')).toEqual({ backgroundColor: '#bbaadd80' });
+    expect(tw('bg-[rgb(1,2,3)]/50')).toEqual({
+      backgroundColor: 'rgba(1,2,3, 0.5)',
+    });
+  });
+
+  // These name no channel to modulate, so there is nothing to apply.
+  test('keyword colours reject an opacity suffix', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(tw('bg-transparent/50')).toEqual({});
+    expect(tw('bg-current/50')).toEqual({});
+    expect(tw('bg-inherit/50')).toEqual({});
+    warn.mockRestore();
+  });
+
+  // Fractions are spelled with the same character, and are read first.
+  test('fractional utilities keep their meaning', () => {
+    expect(tw('w-1/2')).toEqual({ width: '50%' });
+    expect(tw('basis-1/4')).toEqual({ flexBasis: '25%' });
+    expect(tw('inset-1/3')).toEqual({
+      top: '33.333333%',
+      right: '33.333333%',
+      bottom: '33.333333%',
+      left: '33.333333%',
+    });
+    expect(tw('translate-x-1/2')).toEqual({ transform: 'translateX(50%)' });
+    expect(tw('aspect-3/2')).toEqual({ aspectRatio: 1.5 });
+  });
+});
+
 describe('Unsupported lengths', () => {
   // These reach Yoga, which throws on a value it can't read as a length, so
   // emitting them would crash the whole document rather than one element.

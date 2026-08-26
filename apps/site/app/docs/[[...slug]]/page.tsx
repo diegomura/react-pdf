@@ -12,6 +12,8 @@ import { GoToExample } from '@/components/go-to-example';
 import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { SectionIndex } from '@/components/section-index';
+import { PainterMethods } from '@/components/painter-methods';
+import { StyleProps } from '@/components/style-props';
 import { DocsFooter, DocsHeader } from '@/components/docs-pager';
 import { Usage } from '@/components/usage';
 
@@ -53,6 +55,8 @@ export default async function Page(props: {
             DebugSample,
             OverviewTimeline,
             SectionIndex,
+            PainterMethods,
+            StyleProps,
             Usage,
           }}
         />

@@ -218,9 +218,22 @@ read them back in their `Status` component.
 
 ## Site migration
 
-Sequenced after the first publish. `apps/site` is not a root workspace and
-installs standalone, so it consumes `@react-pdf/ui` from npm the same way it
-already consumes `@react-pdf/renderer`.
+`apps/site` is not a root workspace and installs standalone, so it cannot
+reference `packages/ui` through the workspace protocol. It takes a
+`"@react-pdf/ui": "link:../../packages/ui"` dependency instead, which works
+because the package ships a built `lib/` like every other one, and swaps to a
+real version range at the first publish. No CI, Vercel or hoisting change is
+needed.
+
+Folding `apps/` into the root workspace is a separate decision and not a
+prerequisite. It would require a root `resolutions` entry pinning
+`@types/react` and `@types/react-dom` to 19 (root currently hoists 18.2.8 via
+`@testing-library/react`, which is what the `paths` hack in
+`apps/site/tsconfig.json` works around), a rewrite of `site.yml` from a
+site-local install to a root install plus a package build, and a Vercel Root
+Directory change. Its real consequence is that the site would build against
+local `packages/*` rather than npm, since `packages/renderer` at 4.8.1 satisfies
+the site's `^4.8.0`. That is a dogfooding decision, not a packaging one.
 
 | Today | After |
 | --- | --- |

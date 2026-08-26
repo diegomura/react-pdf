@@ -52,8 +52,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Typecheck
-        run: npx tsc --noEmit
-
+      # next build typechecks too, and it is the step that writes the
+      # gitignored next-env.d.ts a standalone tsc run needs
       - name: Build
         run: yarn build

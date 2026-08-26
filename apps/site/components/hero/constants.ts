@@ -1,13 +1,13 @@
 /**
  * The hero example, split across faux files for the tab bar.
  *
- * Files are listed entry-first for reading; the worker evaluates a single
- * module, so `mini-repl` concatenates them in REVERSE — every declaration
- * lands before its use. Keep that order true when editing this list.
+ * Files are concatenated in array order into one module, so the list reads
+ * entry-first (the tab bar opens on the first one) while the `ReactPDF.render`
+ * call lives at the end of the last file, after every component exists.
  *
  * A6 keeps the type legible at hero scale: an A4 would render at half this
  * size inside the panel. Lines stay short so the editor pane never scrolls
- * sideways (see tests/hero-files.test.ts).
+ * sideways.
  */
 export const HERO_FILES: { name: string; code: string }[] = [
   {
@@ -27,9 +27,7 @@ export const HERO_FILES: { name: string; code: string }[] = [
       <Table />
     </Page>
   </Document>
-);
-
-ReactPDF.render(<Report />);`,
+);`,
   },
   {
     name: 'Kpis.jsx',
@@ -288,6 +286,8 @@ const styles = StyleSheet.create({
     paddingVertical: 3.5,
   },
   cell: { flex: 1, fontSize: 9 },
-});`,
+});
+
+ReactPDF.render(<Report />);`,
   },
 ];

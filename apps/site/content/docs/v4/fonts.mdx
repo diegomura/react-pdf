@@ -70,7 +70,7 @@ fontkit.openSync('Inter-Regular.ttf').availableFeatures;
 // ['aalt', 'calt', 'case', 'ccmp', 'dlig', 'frac', 'ss01', …, 'tnum', 'zero', 'kern']
 ```
 
-<GoToExample name="font-feature-settings" />
+<Example name="font-feature-settings" />
 
 ---
 
@@ -136,7 +136,7 @@ Specifies the registered font weight.
 
 When the exact font weight is not registered for a given text, react-pdf will fallback to the nearest registered weight in the same way browsers do. More information [here](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights)
 
-<GoToExample name="font-register" />
+<Example name="font-register" />
 
 ### fonts
 
@@ -178,7 +178,7 @@ import { syllables } from '@react-pdf/hyphenate/de';
 Font.registerHyphenationCallback(syllables);
 ```
 
-<GoToExample name="hyphenation-callback" />
+<Example name="hyphenation-callback" />
 
 ### Disabling hyphenation
 
@@ -188,7 +188,7 @@ You can easily disable word hyphenation by just returning the same word as it is
 Font.registerHyphenationCallback((word) => [word]);
 ```
 
-<GoToExample name="disable-hyphenation" />
+<Example name="disable-hyphenation" />
 
 ---
 
@@ -231,4 +231,4 @@ Font.registerEmojiSource({
 
 > **Protip:** react-pdf will need a internet connection to download emoji's images at render time, so bare that in mind when choosing to use this API
 
-<GoToExample name="emoji" />
+<Example name="emoji" />

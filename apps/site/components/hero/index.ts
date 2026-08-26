@@ -1,1 +1,1 @@
-export { CopyCommand, HeroRepl } from './hero-client';
+export { CopyCommand, HeroPlayground } from './hero';

@@ -8,8 +8,7 @@ import {
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Mdx } from '@/components/mdx';
-import { GoToExample } from '@/components/go-to-example';
-import { DebugSample } from '@/components/debug-sample';
+import { Example } from '@/components/example';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { SectionIndex } from '@/components/section-index';
 import { PainterMethods } from '@/components/painter-methods';
@@ -38,9 +37,11 @@ export default async function Page(props: {
       <DocsTitle className="text-[1.75rem] tracking-[-0.02em]">
         {page.data.title}
       </DocsTitle>
+
       <DocsDescription className="mb-6 text-[0.9375rem]">
         {page.data.description}
       </DocsDescription>
+
       {isOld && (
         <div className="rounded-lg border border-fd-primary/50 bg-fd-primary/10 p-3 text-sm">
           You are viewing docs for {version}, which is no longer maintained.{' '}
@@ -50,12 +51,12 @@ export default async function Page(props: {
           .
         </div>
       )}
+
       <DocsBody>
         <Mdx
           body={page.data.body}
           components={{
-            GoToExample,
-            DebugSample,
+            Example,
             OverviewTimeline,
             SectionIndex,
             PainterMethods,

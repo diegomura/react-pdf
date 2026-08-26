@@ -1,1 +1,1 @@
-export { styleGroupsMarkdown } from './style-props';
+export { styleGroups, styleGroupsMarkdown } from './style-props';

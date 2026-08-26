@@ -4,22 +4,18 @@ import { ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-/** Fixed on the container, so swapping skeleton → PDF costs no layout shift. */
-const PREVIEW_HEIGHT = 'h-[19rem] sm:h-[26rem]';
-
-/** A blank page on the preview surface — same box the rendered PDF lands in. */
+// same box PdfPreviewPane renders into, so the swap costs no layout shift
 function Skeleton() {
   return (
-    <div className="flex h-full items-center justify-center p-5">
+    <div className="bg-fd-muted flex h-[19rem] items-center justify-center p-5 sm:h-[26rem]">
       <div className="bg-fd-background/70 h-full animate-pulse rounded-[2px] shadow-sm [aspect-ratio:1/1.4142]" />
     </div>
   );
 }
 
-const ExamplePreview = dynamic(
-  () =>
-    import('@/components/repl/example-preview').then((m) => m.ExamplePreview),
-  { ssr: false, loading: () => <Skeleton /> },
+const PdfPreview = dynamic(
+  () => import('@/components/pdf-preview').then((m) => m.PdfPreview),
+  { ssr: false, loading: Skeleton },
 );
 
 export interface UsagePreviewProps {
@@ -51,10 +47,8 @@ export function UsagePreview({ code }: UsagePreviewProps) {
         <span className="hidden group-open:inline">Hide preview</span>
       </summary>
 
-      <div
-        className={`bg-fd-muted border-fd-border border-t ${PREVIEW_HEIGHT}`}
-      >
-        {booted ? <ExamplePreview code={code} /> : <Skeleton />}
+      <div className="border-fd-border border-t">
+        {booted ? <PdfPreview code={code} /> : <Skeleton />}
       </div>
     </details>
   );

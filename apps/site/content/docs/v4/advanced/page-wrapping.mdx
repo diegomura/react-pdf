@@ -16,7 +16,7 @@ const doc = () => (
 );
 ```
 
-<GoToExample name="page-wrap" />
+<Example name="page-wrap" />
 
 ## Breakable vs. unbreakable components
 
@@ -25,7 +25,7 @@ We can identify two different types of components based on how they wrap:
 - `Breakable components` try to fill up the remaining space before jumping into a new page. By default, this group is composed by _View_, _Text_ and _Link_ components
 - `Unbreakable components` are indivisible, therefore if there isn't enough space for them they just get rendered in the following page. This group is composed by _Image_, _Svg_, _Canvas_ and _Note_.
 
-<GoToExample name="breakable-unbreakable" />
+<Example name="breakable-unbreakable" />
 
 ## Disabling component wrapping
 
@@ -47,7 +47,7 @@ const doc = () => (
 
 Now, if the `<View />` component happens to be at the bottom of the page without enough space, it will be rendered in a new page as it would be _unbreakable_.
 
-<GoToExample name="disable-wrapping" />
+<Example name="disable-wrapping" />
 
 ## Page breaks
 
@@ -69,7 +69,7 @@ const doc = () => (
 );
 ```
 
-<GoToExample name="page-breaks" />
+<Example name="page-breaks" />
 
 ## Fixed components
 
@@ -93,4 +93,4 @@ Just by that, the `<View />` component will be placed repeatedly throughout all 
 
 > **Protip:** This feature can be very handy for creating nice headers, footers or page numbers, among other use cases. You can even absolutely position fixed elements on your page to create more complex layouts!
 
-<GoToExample name="fixed-components" />
+<Example name="fixed-components" />

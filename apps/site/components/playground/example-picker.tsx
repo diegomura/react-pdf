@@ -3,7 +3,7 @@
 import { Check, ChevronsUpDown, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { groupedExamples } from './example-groups';
+import { groupedExamples } from '@/lib/examples';
 
 export interface ExamplePickerProps {
   value: string;

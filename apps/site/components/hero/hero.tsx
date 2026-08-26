@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { Check, Copy } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 const INSTALL_COMMAND = 'npm install @react-pdf/renderer';
 
@@ -37,7 +37,7 @@ export function CopyCommand() {
   );
 }
 
-/** Mirrors MiniRepl's grid exactly so the swap costs no layout shift. */
+/** Mirrors MiniPlayground's grid exactly so the swap costs no layout shift. */
 function Skeleton() {
   const widths = ['62%', '84%', '48%', '73%', '38%', '80%'];
 
@@ -57,48 +57,19 @@ function Skeleton() {
       </div>
       <div className="bg-fd-muted flex min-h-0 flex-col">
         <div className="border-fd-border h-9 shrink-0 border-b" />
-        <div className="flex min-h-0 flex-1 justify-center">
-          <div className="aspect-[105/148] h-full p-2.5 md:p-4">
-            <div className="bg-fd-background/70 size-full rounded-xs" />
-          </div>
+        {/* same box the viewer fits its page into, so the page does not move in */}
+        <div className="flex min-h-0 flex-1 justify-center p-2.5 md:p-4">
+          <div className="aspect-[1/1.4142] h-full rounded-[2px] bg-white" />
         </div>
       </div>
     </div>
   );
 }
 
-const MiniRepl = dynamic(() => import('./mini-repl').then((m) => m.MiniRepl), {
-  ssr: false,
-  loading: () => <Skeleton />,
-});
-
-export function HeroRepl() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === 'undefined') {
-      setVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setVisible(true);
-        observer.disconnect();
-      },
-      { rootMargin: '300px' },
-    );
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={ref} className="h-full">
-      {visible ? <MiniRepl /> : <Skeleton />}
-    </div>
-  );
-}
+export const HeroPlayground = dynamic(
+  () => import('./mini-playground').then((m) => m.MiniPlayground),
+  {
+    ssr: false,
+    loading: () => <Skeleton />,
+  },
+);

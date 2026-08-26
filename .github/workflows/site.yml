@@ -49,6 +49,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      # The site takes @react-pdf/ui as `file:../../packages/ui`, and yarn packs
+      # it at install time from its `files` list, so lib/ has to exist first.
+      # Drops away once the package is published and this becomes a version range.
+      - name: Build @react-pdf/ui
+        working-directory: .
+        run: |
+          yarn install --frozen-lockfile
+          yarn --cwd packages/ui run build
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 

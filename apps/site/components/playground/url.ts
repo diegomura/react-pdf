@@ -1,5 +1,5 @@
-import { decompress } from './compress';
-import { examples } from './examples';
+import { decompress } from '@/lib/compress';
+import { examples } from '@/lib/examples';
 
 export const DEFAULT_EXAMPLE = 'page-wrap';
 

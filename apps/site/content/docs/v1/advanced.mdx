@@ -18,7 +18,7 @@ const doc = () => (
 );
 ```
 
-<GoToExample name="page-wrap" />
+<Example name="page-wrap" />
 
 ### Breakable vs. unbreakable components
 
@@ -27,7 +27,7 @@ We can identify two different types of components based on how they wrap:
 - `Breakable components` try to fill up the remaining space before jumping into a new page. By default, this group is composed by _View_, _Text_ and _Link_ components
 - `Unbreakable components` are indivisible, therefore if there isn't enough space for them they just get rendered in the following page. In this group by default we only find _Image_.
 
-<GoToExample name="breakable-unbreakable" />
+<Example name="breakable-unbreakable" />
 
 ### Disabling component wrapping
 
@@ -49,7 +49,7 @@ const doc = () => (
 
 Now, if the `<View />` component happens to be at the bottom of the page without enough space, it will be rendered in a new page as it would be _unbreakable_.
 
-<GoToExample name="disable-wrapping" />
+<Example name="disable-wrapping" />
 
 ### Page breaks
 
@@ -71,7 +71,7 @@ const doc = () => (
 );
 ```
 
-<GoToExample name="page-breaks" />
+<Example name="page-breaks" />
 
 ### Fixed components
 
@@ -95,7 +95,7 @@ Just by that, the `<View />` component will be placed repeatedly throughout all 
 
 > **Protip:** This feature can be very handy for creating nice headers, footers or page numbers, among other use cases. You can even absolutely position fixed elements on your page to create more complex layouts!
 
-<GoToExample />
+<Example />
 
 ---
 ## On the fly rendering `Web only`
@@ -186,7 +186,7 @@ But react-pdf does not reserve this protection just for text. You can adjust thi
 
 > **Protip:** You can use this API to ensure that headings do not get rendered at the bottom of a page
 
-<GoToExample />
+<Example />
 
 ---
 ## Dynamic content
@@ -226,16 +226,14 @@ Bare in mind that the `render` function is called twice for `<Text />` elements:
 
 > **Protip:** Use this API in conjunction with fixed elements to render page number indicators
 
-<GoToExample name="page-numbers" />
+<Example name="page-numbers" />
 
 ---
 ## Debugging
 
 React-pdf ships a built-in debugging system you can use whenever you have doubts about how elements are being laid out on the page. All you have to do is to set the `debug` prop to `true` on any valid primitive (except _Document_) and re-render the document to see the result on the screen.
 
-<DebugSample />
-
-<GoToExample />
+<Example />
 
 ---
 ## Hyphenation
@@ -260,7 +258,7 @@ You can use the [default hyphenation callback](https://github.com/diegomura/reac
 
 > **Protip:** If you don't want to hyphenate words at all, just provide a callback that returns the same words it receives. More information [here](/docs/v1/fonts#registerhyphenationcallback)
 
-<GoToExample name="hyphenation-callback" />
+<Example name="hyphenation-callback" />
 ## Webpack config `web only`
 
 React-pdf is built on top of [PDFKit](http://pdfkit.org/), which for browser usage requires a couple of node.js API shims.

@@ -13,7 +13,11 @@
     "incremental": true,
     "noEmit": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      // the monorepo root hoists @types/react 18 for the React 18 packages, and
+      // fumadocs' .d.ts files walk up to it — two ReactNode types that never
+      // match. Pin every 'react' resolution to the site's own React 19 types.
+      "react": ["./node_modules/@types/react"]
     },
     "plugins": [
       {

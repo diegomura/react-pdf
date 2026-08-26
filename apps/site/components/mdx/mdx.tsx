@@ -51,6 +51,9 @@ const components: MDXComponents = {
 
   table: Table,
 
+  // fumadocs has the surfaces backwards: the tab strip gets fd-card and the code
+  // panel under it fd-secondary, so tabbed snippets sat darker than every other
+  // one. Swapped — the strip is the darker chrome, the code matches plain snippets.
   pre: (props) => (
     <CodeBlock {...props} className="bg-fd-card">
       <Pre className="py-2.5 leading-[1.6]">{props.children}</Pre>

@@ -40,7 +40,7 @@ const light: Palette = {
   accent: '#b0560f',
 };
 
-/** Shared with the CodeMirror theme so the REPL editor and the docs agree. */
+/** Shared with the CodeMirror theme so the playground editor and the docs agree. */
 export const codePalette = { light, dark };
 
 const build = (p: Palette): ThemeRegistration['settings'] => [

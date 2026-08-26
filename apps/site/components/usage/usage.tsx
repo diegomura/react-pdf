@@ -16,7 +16,7 @@ import { UsagePreview } from './usage-preview';
  *
  * The file is the whole runnable program. Everything up to its trailing
  * `ReactPDF.render(...)` call is what the page shows; the call itself is what
- * the preview REPL needs, and pages whose component is browser-only omit it and
+ * the preview playground needs, and pages whose component is browser-only omit it and
  * get no preview.
  */
 export interface UsageProps {

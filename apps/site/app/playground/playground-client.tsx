@@ -2,8 +2,8 @@
 
 import dynamic from 'next/dynamic';
 
-const Repl = dynamic(
-  () => import('@/components/repl/repl').then((m) => m.Repl),
+const Playground = dynamic(
+  () => import('@/components/playground').then((m) => m.Playground),
   {
     ssr: false,
     loading: () => (
@@ -15,5 +15,5 @@ const Repl = dynamic(
 );
 
 export function PlaygroundClient() {
-  return <Repl />;
+  return <Playground />;
 }

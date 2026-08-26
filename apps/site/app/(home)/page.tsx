@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CopyCommand, HeroRepl } from '@/components/hero';
+import { CopyCommand, HeroPlayground } from '@/components/hero';
 import './hero.css';
 
 const FEATURES = [
@@ -136,7 +136,7 @@ export default function HomePage() {
             style={{ animationDelay: '280ms' }}
           >
             <div className="border-fd-border bg-fd-background relative h-[41rem] overflow-hidden rounded-xl border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_56px_-32px_rgba(0,0,0,0.28)] md:h-[32rem] dark:shadow-none">
-              <HeroRepl />
+              <HeroPlayground />
             </div>
           </div>
         </div>

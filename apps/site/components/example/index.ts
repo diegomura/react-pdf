@@ -1,1 +1,1 @@
-export { GoToExample, playgroundHref } from './go-to-example';
+export { Example } from './example';

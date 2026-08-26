@@ -14,7 +14,6 @@ const config = {
       'form',
       'hooks',
       'node',
-      'rendering-process',
       'styling',
       'svg',
     ];
@@ -28,10 +27,30 @@ const config = {
       })),
       { source: '/docs', destination: '/docs/v4', permanent: false },
       { source: '/docs/v4/index', destination: '/docs/v4', permanent: true },
+      {
+        source: '/rendering-process',
+        destination: '/blog/rendering-process',
+        permanent: true,
+      },
+      {
+        source: '/docs/v4/rendering-process',
+        destination: '/blog/rendering-process',
+        permanent: true,
+      },
+      {
+        source: '/docs/v4/advanced/large-documents',
+        destination: '/blog',
+        permanent: true,
+      },
     ];
   },
   async rewrites() {
-    return [{ source: '/docs/:path*.mdx', destination: '/api/raw/:path*' }];
+    return [
+      { source: '/docs/:path*.mdx', destination: '/api/raw/:path*' },
+      // The handler's own route is /api/mcp/<transport>; this is the address
+      // people paste into a client.
+      { source: '/mcp', destination: '/api/mcp/mcp' },
+    ];
   },
 };
 

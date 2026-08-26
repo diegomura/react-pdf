@@ -12,7 +12,7 @@ react-pdf.org hosts an [MCP](https://modelcontextprotocol.io) server so coding a
 Claude Code:
 
 ```bash
-claude mcp add --transport http react-pdf https://react-pdf.org/api/mcp/mcp
+claude mcp add --transport http react-pdf https://react-pdf.org/mcp
 ```
 
 Cursor, in `.cursor/mcp.json`:
@@ -21,13 +21,13 @@ Cursor, in `.cursor/mcp.json`:
 {
   "mcpServers": {
     "react-pdf": {
-      "url": "https://react-pdf.org/api/mcp/mcp"
+      "url": "https://react-pdf.org/mcp"
     }
   }
 }
 ```
 
-Any other MCP client works the same way: point it at `https://react-pdf.org/api/mcp/mcp` over streamable HTTP.
+Any other MCP client works the same way: point it at `https://react-pdf.org/mcp` over streamable HTTP.
 
 ## Without MCP
 

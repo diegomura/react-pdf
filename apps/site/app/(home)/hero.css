@@ -2,14 +2,12 @@
 
 /* The page keeps the plain site background; the only decoration is the legacy
    corner-graphics motif, dialled well down — the original was a narrow strip
-   at full saturation and this spans the viewport. It fades out well before it
-   reaches the panel. */
+   at full saturation and this spans the viewport. */
 .hero-shards {
   --shard-red: color-mix(in srgb, #f22300 32%, transparent);
   --shard-deep: color-mix(in srgb, #8d1602 30%, transparent);
   --shard-warm: color-mix(in srgb, #c98a5e 20%, transparent);
   --shard-pale: color-mix(in srgb, #ffffff 78%, transparent);
-  mask-image: linear-gradient(to bottom, #000 26%, transparent 82%);
 }
 
 .dark .hero-shards {
@@ -17,42 +15,6 @@
   --shard-deep: color-mix(in srgb, #8d1602 44%, transparent);
   --shard-warm: color-mix(in srgb, #c98a5e 12%, transparent);
   --shard-pale: color-mix(in srgb, #ffffff 7%, transparent);
-}
-
-/* the left cluster is a quieter echo, so the corners don't read as a matched pair */
-.hero-shard-left {
-  opacity: 0.5;
-}
-
-.hero-arcs {
-  --hero-arc: color-mix(in srgb, var(--color-fd-foreground) 16%, transparent);
-  background: repeating-radial-gradient(
-    circle at 100% 0,
-    transparent 0 87px,
-    var(--hero-arc) 87px 88px
-  );
-  mask-image: radial-gradient(circle at 100% 0, #000 14%, transparent 76%);
-}
-
-.dark .hero-arcs {
-  --hero-arc: color-mix(in srgb, var(--color-fd-foreground) 12%, transparent);
-}
-
-/* the tab row scrolls once the pane is narrow enough: fade the cut edge so it
-   reads as "keep going" instead of a clipped glyph */
-.hero-tabs {
-  mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
-}
-
-/* a phone can only show part of a file — same treatment on the bottom edge */
-@media (width < 48rem) {
-  .hero-editor {
-    mask-image: linear-gradient(
-      to bottom,
-      #000 calc(100% - 1.75rem),
-      transparent
-    );
-  }
 }
 
 @keyframes hero-rise {

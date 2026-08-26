@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { Mdx } from '@/components/mdx';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { PostCover } from '@/components/post-cover';
 import { blogSource } from '@/lib/blog-source';
@@ -18,16 +18,13 @@ export default async function BlogPost(props: {
 }) {
   const params = await props.params;
   const page = blogSource.getPage([params.slug]);
+
   if (!page) notFound();
-  const MDX = page.data.body;
+
   const date = String(page.data.date);
 
-  // ponytail: reuses the docs page typography, which global.css scopes to #nd-page
   return (
-    <main
-      id="nd-page"
-      className="mx-auto w-full max-w-[46rem] flex-1 px-4 py-16"
-    >
+    <main className="mx-auto w-full max-w-[46rem] flex-1 px-4 py-16">
       <header className="mb-9">
         <Link
           href="/blog"
@@ -35,7 +32,7 @@ export default async function BlogPost(props: {
         >
           ← Blog
         </Link>
-        <h1 className="mt-6 mb-3 font-semibold tracking-[-0.02em] text-balance">
+        <h1 className="mt-6 mb-3 text-[1.75rem] font-semibold tracking-[-0.02em] text-balance">
           {page.data.title}
         </h1>
         <time
@@ -50,7 +47,7 @@ export default async function BlogPost(props: {
       </header>
 
       <article className="prose">
-        <MDX components={{ ...defaultMdxComponents, OverviewTimeline }} />
+        <Mdx body={page.data.body} components={{ OverviewTimeline }} />
       </article>
     </main>
   );

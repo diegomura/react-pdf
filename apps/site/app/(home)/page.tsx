@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CopyCommand, HeroRepl } from './hero-client';
+import { CopyCommand, HeroRepl } from '@/components/hero';
 import './hero.css';
 
 const FEATURES = [
@@ -30,13 +30,13 @@ function Shards() {
   return (
     <svg
       aria-hidden
-      className="hero-shards pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] w-full"
+      className="hero-shards pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] w-full mask-b-from-26% mask-b-to-82%"
       viewBox="0 0 1440 544"
       preserveAspectRatio="xMidYMin slice"
     >
       {/* thin overlapping slivers, alternating red / deep / pale — the pale
           gaps between the reds are what make it read as folded paper */}
-      <g className="hero-shard-right">
+      <g>
         <polygon points="1440,0 1198,0 1440,330" fill="var(--shard-red)" />
         <polygon points="1440,0 1310,0 1440,120" fill="var(--shard-deep)" />
         <polygon
@@ -56,7 +56,9 @@ function Shards() {
           fill="var(--shard-pale)"
         />
       </g>
-      <g className="hero-shard-left">
+      {/* the left cluster is a quieter echo, so the corners don't read as a
+          matched pair */}
+      <g className="opacity-50">
         <polygon points="0,0 214,0 0,262" fill="var(--shard-red)" />
         <polygon points="0,0 112,0 0,118" fill="var(--shard-deep)" />
         <polygon points="214,0 252,0 0,318 0,262" fill="var(--shard-pale)" />

@@ -31,6 +31,7 @@ PDFs are different. When anything inside the document changes, we need to recomp
 Previous react-pdf versions dealt with this by keeping class instances in memory that knew how to clone themselves in some very complex ways, so each successive render could be "independent" from the previous one but also share these instances. Working with this, however, had become increasingly hard and was the cause of many bugs that were very difficult to track down.
 
 Under this perspective, immutability is a must have. If I could find a way of making the renderer work with immutable structures, it would not only make bugs easier to find, but also make each render truly independent from the previous or future ones.
+
 ### 3. Performance Boost
 
 I believe react-pdf could be much much faster than what the v1 currently is. Although it's already faster than other solutions out there, such as HTML-to-PDF for most use cases, my goal is to keep pushing this to the limit.

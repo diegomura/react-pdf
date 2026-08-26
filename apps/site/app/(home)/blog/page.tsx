@@ -7,11 +7,23 @@ export const metadata = {
   description: 'Notes and announcements from the react-pdf project.',
 };
 
+const EXTERNAL = [
+  {
+    title: 'Creating PDF Files Without Slowing Down Your App',
+    date: '2023-02-19',
+    description:
+      'Simon Hessel on running react-pdf inside a web worker, so generating a large document stops blocking the UI.',
+    href: 'https://dev.to/simonhessel/creating-pdf-files-without-slowing-down-your-app-a42',
+    source: 'dev.to',
+  },
+];
+
 type Post = {
   href: string;
   title: string;
   date: string;
   description?: string;
+  source: string | null;
 };
 
 const formatDate = (value: string) =>
@@ -26,6 +38,11 @@ function Meta({ post }: { post: Post }) {
   return (
     <div className="text-fd-muted-foreground flex items-center gap-2 text-[0.75rem] tracking-wide uppercase">
       <time dateTime={post.date}>{formatDate(post.date)}</time>
+      {post.source && (
+        <span className="border-fd-border rounded border px-1.5 py-px text-[0.625rem] normal-case">
+          {post.source}
+        </span>
+      )}
     </div>
   );
 }
@@ -46,6 +63,8 @@ function Featured({ post }: { post: Post }) {
     <article className="group">
       <Link
         href={post.href}
+        target={post.source ? '_blank' : undefined}
+        rel={post.source ? 'noreferrer' : undefined}
         className="grid items-center gap-6 md:grid-cols-[1.15fr_1fr] md:gap-10"
       >
         <Cover post={post} />
@@ -53,6 +72,7 @@ function Featured({ post }: { post: Post }) {
           <Meta post={post} />
           <h2 className="group-hover:text-fd-primary mt-2.5 text-[1.375rem] leading-snug font-semibold tracking-[-0.02em] text-balance transition-colors">
             {post.title}
+            {post.source && <span aria-hidden> ↗</span>}
           </h2>
           {post.description && (
             <p className="text-fd-muted-foreground mt-2.5 text-[0.9375rem] leading-relaxed">
@@ -74,12 +94,18 @@ function Featured({ post }: { post: Post }) {
 function Card({ post }: { post: Post }) {
   return (
     <article className="group">
-      <Link href={post.href} className="block">
+      <Link
+        href={post.href}
+        target={post.source ? '_blank' : undefined}
+        rel={post.source ? 'noreferrer' : undefined}
+        className="block"
+      >
         <Cover post={post} />
         <div className="mt-4">
           <Meta post={post} />
           <h2 className="group-hover:text-fd-primary mt-2 text-[0.9375rem] leading-snug font-semibold tracking-[-0.01em] transition-colors">
             {post.title}
+            {post.source && <span aria-hidden> ↗</span>}
           </h2>
           {post.description && (
             <p className="text-fd-muted-foreground mt-1.5 line-clamp-2 text-[0.8125rem] leading-relaxed">
@@ -92,17 +118,18 @@ function Card({ post }: { post: Post }) {
   );
 }
 
-export default function BlogIndex() {
-  const posts: Post[] = blogSource
-    .getPages()
-    .map((page) => ({
-      href: page.url,
-      title: String(page.data.title),
-      date: String(page.data.date),
-      description: page.data.description,
-    }))
-    .sort((a, b) => b.date.localeCompare(a.date));
+const posts: Post[] = [
+  ...blogSource.getPages().map((page) => ({
+    href: page.url,
+    title: String(page.data.title),
+    date: String(page.data.date),
+    description: page.data.description,
+    source: null,
+  })),
+  ...EXTERNAL,
+].sort((a, b) => b.date.localeCompare(a.date));
 
+export default function BlogIndex() {
   const [featured, ...rest] = posts;
 
   return (

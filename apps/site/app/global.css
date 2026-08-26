@@ -26,44 +26,17 @@
   --color-fd-ring: hsl(8.7, 100%, 45.5%);
   --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
 
-  --animate-step-in: step-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-rail-draw: rail-draw 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
-
-  @keyframes step-in {
-    from {
-      opacity: 0;
-      transform: translateY(10px) scale(0.85);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @keyframes rail-draw {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
-}
-
-/* legacy react-pdf.org accents: code stays on a dark surface in both themes,
-   tables keep the red-tinted header that gave the old docs their character */
-:root {
-  --rp-table-head-bg: #fcd3cc;
-  --rp-table-head-fg: #8d1602;
-  --rp-table-head-border: rgba(141, 22, 2, 0.2);
-  --rp-table-border: rgba(166, 166, 166, 0.24);
+  /* legacy react-pdf.org accent: tables keep the red-tinted header that gave
+     the old docs their character */
+  --color-rp-table: rgba(166, 166, 166, 0.24);
+  --color-rp-table-head: #fcd3cc;
+  --color-rp-table-head-foreground: #8d1602;
 }
 
 .dark {
-  --rp-table-head-bg: hsl(8, 34%, 15%);
-  --rp-table-head-fg: hsl(8, 72%, 78%);
-  --rp-table-head-border: hsla(8, 60%, 60%, 0.22);
-  --rp-table-border: hsla(0, 0%, 100%, 0.08);
+  --color-rp-table: hsla(0, 0%, 100%, 0.08);
+  --color-rp-table-head: hsl(8, 34%, 15%);
+  --color-rp-table-head-foreground: hsl(8, 72%, 78%);
 
   --color-fd-background: hsl(216, 18.5%, 5.3%);
   --color-fd-foreground: hsl(216, 20%, 94%);
@@ -121,6 +94,20 @@
   --fd-layout-width: 100vw;
 }
 
+/* the notebook header pads to 24px at md+ while the home one stays at 16px, so
+   the wordmark shifted on every docs<->site navigation. 16px also lines it up
+   with the sidebar below, which is p-4 */
+#nd-subnav [data-header-body] {
+  padding-inline: 1rem;
+}
+
+/* it also ships a trailing slot we never fill, and the actions row's gap still
+   reserves space for it, shifting the cluster 8px off the home one. Scoped to
+   div so it can't touch the empty shape elements inside icon svgs */
+#nd-subnav [data-header-body] div:empty {
+  display: none;
+}
+
 /* fumadocs ships 16px gutters on both headers; the bar reads cramped against
    the wordmark and the actions cluster, so both get a touch more */
 /* the home header's row is a grandchild of the blurred pane, the docs one is
@@ -141,7 +128,7 @@
   background-image: linear-gradient(
     to bottom,
     transparent,
-    var(--color-fd-border) 36px,
+    var(--color-fd-border) 180px,
     var(--color-fd-border) 55%,
     transparent
   );
@@ -238,120 +225,43 @@
   max-width: 46rem;
 }
 
-#nd-page h1 {
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
-}
+/* ---------- Prose ---------- */
 
-#nd-page > p:first-of-type {
-  margin-bottom: 1.5rem;
-  font-size: 0.9375rem;
-}
+/* everything below is on `.prose`, not `#nd-page`, so the blog article picks up
+   the same typography without borrowing the docs page id. Element-level styling
+   lives in `components/mdx` — what's left is either about the prose container
+   itself or needs a descendant selector no className can express. */
 
-#nd-page .prose {
+.prose {
   --tw-prose-size: 0.9375;
   line-height: 1.65;
 }
 
-#nd-page .prose h2 {
-  margin-top: 2.25rem;
-  margin-bottom: 0.75rem;
-  font-size: 1.1875rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-#nd-page .prose h3 {
-  margin-top: 1.75rem;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-#nd-page .prose h4 {
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-#nd-page .prose figure.shiki,
-#nd-page .prose > pre {
+.prose figure.shiki {
   margin-block: 0.875rem;
 }
 
 /* a code block framed by something else — a tab panel, an example block — is
-   flush with that frame instead of carrying its own spacing and border */
-#nd-page .prose [role='tabpanel'] figure.shiki {
+   flush with that frame instead of carrying its own spacing */
+.prose [role='tabpanel'] figure.shiki {
   margin-block: 0 -1px;
 }
 
-#nd-page .prose .rp-example-code figure.shiki {
+.prose :not(pre) > code {
+  font-size: 0.8125rem;
+}
+
+.rp-example-code figure.shiki {
   margin-block: 0;
   border: none;
   border-radius: 0;
   box-shadow: none;
 }
 
-#nd-page .prose pre {
-  padding-block: 0.625rem;
-  line-height: 1.6;
-}
-
-#nd-page .prose :not(pre) > code {
-  font-size: 0.8125rem;
-}
-
-/* the package-manager tabs ship at 14px with a red active label; the underline
-   alone carries the state, in line with the rest of the docs chrome */
-#nd-page .prose [role='tablist'] button {
-  font-size: 0.8125rem;
-}
-
-#nd-page .prose [role='tablist'] button[data-state='active'] {
-  color: var(--color-fd-foreground);
-}
-
-/* ---------- Tables (legacy react-pdf.org palette) ---------- */
-
-/* legacy kept the red header; the grid of cell borders and the drop shadow are
-   what dated it, so rows are separated by hairlines only */
-#nd-page .prose > div:has(> table) {
-  border: 1px solid var(--rp-table-border);
-  border-radius: 0.625rem;
-  box-shadow: none;
-  overflow-x: auto;
-}
-
-#nd-page .prose table {
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-#nd-page .prose th,
-#nd-page .prose td {
-  padding: 0.4375rem 0.75rem;
-  border: none;
-  text-align: start !important;
-}
-
-#nd-page .prose tbody td {
-  border-top: 1px solid var(--rp-table-border);
-}
-
-#nd-page .prose th {
-  background: var(--rp-table-head-bg);
-  color: var(--rp-table-head-fg);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-
-/* nowrap keeps short type names like `Boolean` from breaking, but the long
-   source-object examples were demanding the whole table width and squeezing
-   the description column to one word per line */
-#nd-page .prose td code {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+/* the code grows with the page instead of becoming a second scroll surface the
+   reader has to hand off to mid-scroll */
+.rp-example-code .fd-scroll-container {
+  max-height: none;
 }
 
 /* ---------- Table of contents ---------- */

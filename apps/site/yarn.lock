@@ -1083,6 +1083,15 @@
     "@react-pdf/svg" "^1.1.1"
     mathjax-full "^3.2.2"
 
+"@react-pdf/mermaid@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@react-pdf/mermaid/-/mermaid-5.0.1.tgz#949a0d4c493a286001d18fe74cca3d07b3508a23"
+  integrity sha512-XMWUiPzeWJ1oE0As8oRIzqJVANCu+DRN19WRzvihk5ztsdhK0O3cI2KscQzJdb0fFduLn0KmzzX7DofsFPs6BA==
+  dependencies:
+    "@react-pdf/primitives" "^4.4.0"
+    "@react-pdf/svg" "^1.1.1"
+    beautiful-mermaid "^1.1.3"
+
 "@react-pdf/paginate@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@react-pdf/paginate/-/paginate-1.0.1.tgz#9b270c747d5092be69ea1f1babee5b673a622442"
@@ -1789,6 +1798,14 @@ baseline-browser-mapping@^2.9.19:
   resolved "https://registry.yarnpkg.com/baseline-browser-mapping/-/baseline-browser-mapping-2.11.19.tgz#4711abac48b88ccb56b5817e86f1b3a9a0764276"
   integrity sha512-Grytf1xOxOEMTGRwx6rLGKkTabd4vMg3VrKdj/7joCmV0qgh4QwMMO6xh34YEXQqirAuUdgQGa5orJQQ+69RBw==
 
+beautiful-mermaid@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/beautiful-mermaid/-/beautiful-mermaid-1.1.3.tgz#33622aacd24f3cf37d61a1912673a4710ed90461"
+  integrity sha512-TItrtrAyHp1vwFfFVYauWGrquouk/6SS21Aq3RsxindSYZODcN4xYrPZD6BiZRU+o5mKJzDPz9MUSMvELdylyg==
+  dependencies:
+    elkjs "^0.11.0"
+    entities "^7.0.1"
+
 bidi-js@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/bidi-js/-/bidi-js-1.0.3.tgz#6f8bcf3c877c4d9220ddf49b9bb6930c88f877d2"
@@ -1994,6 +2011,11 @@ dfa@^1.2.0:
   resolved "https://registry.yarnpkg.com/dfa/-/dfa-1.2.0.tgz#96ac3204e2d29c49ea5b57af8d92c2ae12790657"
   integrity sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q==
 
+elkjs@^0.11.0:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/elkjs/-/elkjs-0.11.1.tgz#d27fcdbbf5a8aeeff80420d17d1666f78cfc8544"
+  integrity sha512-zxxR9k+rx5ktMwT/FwyLdPCrq7xN6e4VGGHH8hA01vVYKjTFik7nHOxBnAYtrgYUB1RpAiLvA1/U2YraWxyKKg==
+
 emoji-regex-xs@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex-xs/-/emoji-regex-xs-1.0.0.tgz#e8af22e5d9dbd7f7f22d280af3d19d2aab5b0724"
@@ -2011,6 +2033,11 @@ entities@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-6.0.1.tgz#c28c34a43379ca7f61d074130b2f5f7020a30694"
   integrity sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==
+
+entities@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-7.0.1.tgz#26e8a88889db63417dcb9a1e79a3f1bc92b5976b"
+  integrity sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==
 
 es-module-lexer@^1.7.0:
   version "1.7.0"

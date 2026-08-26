@@ -4,7 +4,11 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 import VersionedSearchDialog from '@/components/search-dialog';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist',
+});
+
 const mono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',

@@ -6,8 +6,8 @@ import {
   DocsDescription,
 } from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
 import Link from 'next/link';
+import { Mdx } from '@/components/mdx';
 import { GoToExample } from '@/components/go-to-example';
 import { DebugSample } from '@/components/debug-sample';
 import { OverviewTimeline } from '@/components/overview-timeline';
@@ -28,7 +28,6 @@ export default async function Page(props: {
 
   const version = params.slug?.[0];
   const isOld = version !== LATEST && /^v\d+$/.test(version ?? '');
-  const MDX = page.data.body;
 
   return (
     <DocsPage
@@ -36,8 +35,12 @@ export default async function Page(props: {
       full={page.data.full}
       slots={{ breadcrumb: DocsHeader, footer: DocsFooter }}
     >
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
+      <DocsTitle className="text-[1.75rem] tracking-[-0.02em]">
+        {page.data.title}
+      </DocsTitle>
+      <DocsDescription className="mb-6 text-[0.9375rem]">
+        {page.data.description}
+      </DocsDescription>
       {isOld && (
         <div className="rounded-lg border border-fd-primary/50 bg-fd-primary/10 p-3 text-sm">
           You are viewing docs for {version}, which is no longer maintained.{' '}
@@ -48,16 +51,18 @@ export default async function Page(props: {
         </div>
       )}
       <DocsBody>
-        <MDX
+        <Mdx
+          body={page.data.body}
           components={{
-            ...defaultMdxComponents,
             GoToExample,
             DebugSample,
             OverviewTimeline,
             SectionIndex,
             PainterMethods,
             StyleProps,
-            Usage,
+            Usage: (props: { lang?: string }) => (
+              <Usage page={page.path} {...props} />
+            ),
           }}
         />
       </DocsBody>

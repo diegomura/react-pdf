@@ -186,8 +186,15 @@ export function createTw(
     }
 
     // Color
-    // Exception for "font-weight: black" (not a color)
-    if (valueParts[0] && valueParts[0] in colors && property !== 'fontWeight') {
+    // Exception for "font-weight: black" (not a color), and for dimensions,
+    // which can never hold one -- a theme colour sharing a name with a spacing
+    // key would otherwise win and put a hex value into `padding`.
+    if (
+      valueParts[0] &&
+      valueParts[0] in colors &&
+      property !== 'fontWeight' &&
+      !isDimensionProperty(property)
+    ) {
       // TODO alpha colors like gray-500/50 etc
       const color = colors[valueParts[0] as keyof typeof colors];
       return {

@@ -1453,6 +1453,34 @@ describe('Theme config', () => {
     expect(scoped('bg-gray')).toEqual({ backgroundColor: '#bada55' });
   });
 
+  // The colour lookup runs ahead of the scale lookup so `border-red-500` can be
+  // told from `border-2`. A dimension can never hold a colour, though, so one
+  // sharing a name with a scale key must not win there.
+  test('a colour sharing a scale key name loses on dimensions', () => {
+    const scoped = createTw({
+      colors: { card: '#ffffff' },
+      spacing: { card: 12 },
+      borderRadius: { card: 5 },
+    });
+
+    expect(scoped('p-card')).toEqual({ padding: 12 });
+    expect(scoped('mt-card')).toEqual({ marginTop: 12 });
+    expect(scoped('w-card')).toEqual({ width: 12 });
+    expect(scoped('gap-card')).toEqual({ gap: 12 });
+    expect(scoped('rounded-card')).toEqual({ borderRadius: 5 });
+  });
+
+  test('and still wins where a colour is plausible', () => {
+    const scoped = createTw({
+      colors: { card: '#ffffff' },
+      spacing: { card: 12 },
+    });
+
+    expect(scoped('bg-card')).toEqual({ backgroundColor: '#ffffff' });
+    expect(scoped('text-card')).toEqual({ color: '#ffffff' });
+    expect(scoped('border-card')).toEqual({ borderColor: '#ffffff' });
+  });
+
   // react-pdf can only draw registered fonts, so a fontFamily config hides the
   // default stacks rather than merging with them.
   test('fontFamily replaces rather than merges', () => {

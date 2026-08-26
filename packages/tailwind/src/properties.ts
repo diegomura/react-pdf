@@ -64,6 +64,9 @@ export function isScaledProperty(key: unknown): key is ScaledProperty {
 // react-pdf equivalent, so they're reported as unsupported instead of crashing
 // the document.
 const dimensionProperties = [
+  // Not borderWidth or fontSize: `border-*` and `text-*` share their namespace
+  // with colours and rely on the colour lookup to tell the two apart.
+  'borderRadius',
   'flexBasis',
   'gap',
   'height',

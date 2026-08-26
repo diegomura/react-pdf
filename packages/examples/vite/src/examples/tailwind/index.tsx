@@ -22,15 +22,28 @@ Font.register({
    visible to do -- Roboto's are already tabular. */
 Font.register({ family: 'Rubik', fonts: [{ src: RubikRegular }] });
 
-/* `brand` is a new colour, and `slate.500` overrides a single shade of a
-   built-in ramp -- the other slates below it still come from Tailwind. */
+/* The palette and metrics the other examples use, named as theme keys so the
+   class strings below stay readable. Scales merge one level deep, so stock
+   Tailwind values survive alongside these: `slate` overrides a single shade
+   and keeps the rest of the ramp, which the last card shows. */
 const tw = createTw({
   fontFamily: { sans: ['Roboto'], rubik: ['Rubik'] },
   colors: {
-    brand: '#4069b4',
+    page: '#fafafa',
+    card: '#ffffff',
+    line: '#e8e8e8',
+    ink: '#1a1a1a',
+    body: '#333333',
+    muted: '#666666',
+    faint: '#999999',
+    subtle: '#888888',
+    accent: '#4069b4',
     slate: { 500: '#5b7db1' },
   },
-  spacing: { gutter: '1.5rem' },
+  spacing: { page: 40, card: 12, gutter: 8 },
+  borderRadius: { card: 5 },
+  fontSize: { title: 18, sub: 9, label: 8, code: 8, sample: 11 },
+  letterSpacing: { label: 0.5 },
 });
 
 const LOREM =
@@ -38,26 +51,26 @@ const LOREM =
   'pagination and text measurement all behave exactly as they would with a ' +
   'hand-written StyleSheet. Nothing here is special-cased by the renderer.';
 
-const Section = ({
-  title,
-  hint,
+const Card = ({
+  label,
   children,
 }: {
-  title: string;
-  hint?: string;
+  label: string;
   children: React.ReactNode;
 }) => (
-  <View style={tw('mb-gutter')} wrap={false}>
-    <View style={tw('flex-row items-baseline gap-2 mb-2')}>
-      <Text style={tw('text-xs font-medium text-slate-800 uppercase')}>
-        {title}
-      </Text>
-      {hint ? (
-        <Text style={tw('text-[8px] text-slate-400')}>{hint}</Text>
-      ) : null}
-    </View>
+  <View
+    style={tw('bg-card rounded-card p-card border border-line mb-gutter')}
+    wrap={false}
+  >
+    <Text style={tw('text-label text-faint uppercase tracking-label mb-2')}>
+      {label}
+    </Text>
     {children}
   </View>
+);
+
+const Caption = ({ children }: { children: React.ReactNode }) => (
+  <Text style={tw('text-code text-muted')}>{children}</Text>
 );
 
 /* The shape sits in a fixed-height box so a transformed one can overflow its
@@ -65,7 +78,7 @@ const Section = ({
 const Swatch = ({
   label,
   className,
-  box = 'h-14',
+  box = 'h-12',
 }: {
   label: string;
   className: string;
@@ -75,45 +88,39 @@ const Swatch = ({
     <View style={tw(`${box} justify-center items-center`)}>
       <View style={tw(className)} />
     </View>
-    <Text style={tw('mt-1 text-[7px] text-slate-400')}>{label}</Text>
+    <View style={tw('mt-1')}>
+      <Caption>{label}</Caption>
+    </View>
   </View>
 );
 
 const Tailwind = () => (
   <Document>
-    <Page size="A4" style={tw('bg-white px-12 py-10 font-sans text-slate-800')}>
-      <View style={tw('mb-gutter pb-4 border-b border-slate-200')}>
-        <Text style={tw('text-2xl font-bold text-brand')}>
-          Tailwind in react-pdf
-        </Text>
-        <Text style={tw('mt-1 text-[9px] text-slate-500')}>
-          Every style on this page comes from a Tailwind class string passed
-          through createTw.
-        </Text>
-      </View>
+    <Page size="A4" style={tw('bg-page p-page font-sans text-body')}>
+      <Text style={tw('text-title font-bold text-ink mb-1')}>Tailwind</Text>
+      <Text style={tw('text-sub text-subtle mb-5')}>
+        Tailwind utility classes converted to react-pdf styles through createTw
+        — every style on this page comes from a class string
+      </Text>
 
-      <Section title="Layout" hint="flex · gap · padding · radius · border">
+      <Card label="layout">
         <View style={tw('flex-row gap-2')}>
-          <View style={tw('flex-1 p-3 bg-slate-100 rounded-lg')}>
-            <Text style={tw('text-[9px]')}>flex-1</Text>
+          <View style={tw('flex-1 p-2 bg-page rounded border border-line')}>
+            <Caption>flex-1</Caption>
           </View>
-          <View
-            style={tw(
-              'flex-1 p-3 bg-brand rounded-lg border-2 border-slate-800',
-            )}
-          >
-            <Text style={tw('text-[9px] text-white')}>border-2</Text>
+          <View style={tw('flex-1 p-2 bg-accent rounded')}>
+            <Text style={tw('text-code text-card')}>bg-accent</Text>
           </View>
-          <View style={tw('p-3 bg-slate-500 rounded-full')}>
-            <Text style={tw('text-[9px] text-white')}>rounded-full</Text>
+          <View style={tw('p-2 px-3 bg-ink rounded-full')}>
+            <Text style={tw('text-code text-card')}>rounded-full</Text>
           </View>
         </View>
-      </Section>
+      </Card>
 
-      <Section title="Sizing" hint="size-* · aspect-*">
+      <Card label="sizing · aspect ratio">
         <View style={tw('flex-row')}>
-          <Swatch label="size-8" className="size-8 bg-brand rounded" />
-          <Swatch label="size-12" className="size-12 bg-brand rounded" />
+          <Swatch label="size-8" className="size-8 bg-accent rounded" />
+          <Swatch label="size-12" className="size-12 bg-accent rounded" />
           <Swatch
             label="w-20 aspect-video"
             className="w-20 aspect-video bg-slate-500 rounded"
@@ -125,107 +132,103 @@ const Tailwind = () => (
         </View>
         {/* Fractional widths resolve against the parent, so these need a
             full-width row rather than a shrink-to-fit swatch. */}
-        <View style={tw('mt-1 gap-1')}>
-          <View style={tw('w-1/4 h-3 bg-slate-300 rounded-sm')} />
-          <View style={tw('w-1/2 h-3 bg-slate-300 rounded-sm')} />
-          <View style={tw('w-full h-3 bg-slate-300 rounded-sm')} />
-          <Text style={tw('text-[7px] text-slate-400')}>
-            w-1/4 · w-1/2 · w-full
-          </Text>
+        <View style={tw('mt-2 gap-1')}>
+          <View style={tw('w-1/4 h-2 bg-line rounded-sm')} />
+          <View style={tw('w-1/2 h-2 bg-line rounded-sm')} />
+          <View style={tw('w-full h-2 bg-line rounded-sm')} />
+          <Caption>w-1/4 · w-1/2 · w-full</Caption>
         </View>
-      </Section>
+      </Card>
 
-      <Section title="Transforms" hint="rotate · skew · scale, chained">
+      <Card label="transforms">
         <View style={tw('flex-row')}>
-          <Swatch label="rotate-12" className="size-10 bg-brand rotate-12" />
-          <Swatch label="skew-x-12" className="size-10 bg-brand skew-x-12" />
-          <Swatch label="-skew-y-6" className="size-10 bg-brand -skew-y-6" />
-          <Swatch label="scale-75" className="size-10 bg-brand scale-75" />
+          <Swatch label="rotate-12" className="size-9 bg-accent rotate-12" />
+          <Swatch label="skew-x-12" className="size-9 bg-accent skew-x-12" />
+          <Swatch label="-skew-y-6" className="size-9 bg-accent -skew-y-6" />
+          <Swatch label="scale-75" className="size-9 bg-accent scale-75" />
           <Swatch
             label="rotate-45 skew-x-6"
-            className="size-10 bg-slate-500 rotate-45 skew-x-6"
+            className="size-9 bg-slate-500 rotate-45 skew-x-6"
           />
         </View>
-      </Section>
+      </Card>
 
-      <Section title="Typography" hint="size · weight · tracking · numerics">
-        <View style={tw('gap-1')}>
-          <Text style={tw('text-lg font-bold')}>text-lg font-bold</Text>
-          <Text style={tw('text-sm text-slate-500 tracking-wide')}>
-            text-sm tracking-wide
-          </Text>
-          <Text style={tw('text-xs italic underline text-brand')}>
-            italic underline
-          </Text>
-          <View style={tw('flex-row gap-8 mt-1')}>
-            <View>
-              <Text style={tw('text-[7px] text-slate-400')}>font-rubik</Text>
-              <Text style={tw('text-xs font-rubik')}>10,984.00</Text>
-              <Text style={tw('text-xs font-rubik')}>11,111.00</Text>
-            </View>
-            <View>
-              <Text style={tw('text-[7px] text-slate-400')}>
-                font-rubik tabular-nums
-              </Text>
-              <Text style={tw('text-xs font-rubik tabular-nums')}>
-                10,984.00
-              </Text>
-              <Text style={tw('text-xs font-rubik tabular-nums')}>
-                11,111.00
-              </Text>
-            </View>
+      <Card label="typography">
+        <Text style={tw('text-sample font-bold text-ink')}>
+          text-sample font-bold
+        </Text>
+        <Text style={tw('mt-1 text-sub text-muted tracking-wide')}>
+          text-sub tracking-wide
+        </Text>
+        <Text style={tw('mt-1 text-sub italic underline text-accent')}>
+          italic underline
+        </Text>
+        <View style={tw('flex-row gap-8 mt-2')}>
+          <View>
+            <Caption>font-rubik</Caption>
+            <Text style={tw('text-sample font-rubik')}>10,984.00</Text>
+            <Text style={tw('text-sample font-rubik')}>11,111.00</Text>
           </View>
-        </View>
-      </Section>
-
-      <Section title="line-clamp" hint="maps to maxLines">
-        <View style={tw('flex-row gap-4')}>
-          <View style={tw('flex-1 p-2 bg-slate-100 rounded')}>
-            <Text style={tw('text-[8px] text-slate-400 mb-1')}>no clamp</Text>
-            <Text style={tw('text-[9px]')}>{LOREM}</Text>
-          </View>
-          <View style={tw('flex-1 p-2 bg-slate-100 rounded')}>
-            <Text style={tw('text-[8px] text-slate-400 mb-1')}>
-              line-clamp-2
+          <View>
+            <Caption>font-rubik tabular-nums</Caption>
+            <Text style={tw('text-sample font-rubik tabular-nums')}>
+              10,984.00
             </Text>
-            <Text style={tw('text-[9px] line-clamp-2')}>{LOREM}</Text>
+            <Text style={tw('text-sample font-rubik tabular-nums')}>
+              11,111.00
+            </Text>
           </View>
         </View>
-      </Section>
+      </Card>
 
-      {/* No lineHeight on the wrapping text: an explicit one disables float wrap. */}
-      <Section title="float" hint="float-left · clear-both">
-        <View style={tw('p-3 bg-slate-100 rounded')}>
-          <View style={tw('float-left size-10 mr-2 mb-1 bg-brand rounded')} />
-          <Text style={tw('text-[9px]')}>{LOREM}</Text>
+      <Card label="line-clamp">
+        <View style={tw('flex-row gap-3')}>
+          <View style={tw('flex-1')}>
+            <Caption>no clamp</Caption>
+            <Text style={tw('mt-1 text-sub')}>{LOREM}</Text>
+          </View>
+          <View style={tw('flex-1')}>
+            <Caption>line-clamp-2</Caption>
+            <Text style={tw('mt-1 text-sub line-clamp-2')}>{LOREM}</Text>
+          </View>
+        </View>
+      </Card>
+
+      {/* Floats are out of flow, so they need their own containing block --
+          dropped straight into the card they'd land on top of its label. And
+          no lineHeight on the wrapping text: an explicit one disables wrap. */}
+      <Card label="float">
+        <View style={tw('relative')}>
+          <View style={tw('float-left size-10 mr-2 mb-1 bg-accent rounded')} />
+          <Text style={tw('text-sub')}>{LOREM}</Text>
           <View style={tw('clear-both')} />
         </View>
-      </Section>
+      </Card>
 
-      <Section title="Theme config" hint="merges one level deep">
+      <Card label="theme config">
         <View style={tw('flex-row')}>
           <Swatch
-            label="brand (new)"
-            className="size-8 bg-brand rounded"
-            box="h-10"
+            label="accent (added)"
+            className="size-8 bg-accent rounded"
+            box="h-9"
           />
           <Swatch
             label="slate-500 (custom)"
             className="size-8 bg-slate-500 rounded"
-            box="h-10"
+            box="h-9"
           />
           <Swatch
             label="slate-300 (stock)"
             className="size-8 bg-slate-300 rounded"
-            box="h-10"
+            box="h-9"
           />
           <Swatch
             label="slate-700 (stock)"
             className="size-8 bg-slate-700 rounded"
-            box="h-10"
+            box="h-9"
           />
         </View>
-      </Section>
+      </Card>
     </Page>
   </Document>
 );

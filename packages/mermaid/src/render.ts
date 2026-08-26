@@ -17,13 +17,11 @@ export function themeColors(theme?: string): MermaidRenderOptions {
 }
 
 /**
- * The layout engine behind mermaid, elkjs, reads its own globals to decide what
- * it is: `self` defined and no `document` means "I am the elk worker script", so
- * it hijacks `self.onmessage` and exports no in-process worker. Inside a Web
- * Worker that describes the host, not elk, and rendering throws — taking the
- * host's own message handling with it. A stub `document` sends elk down its
- * library branch, and an own writable `self` absorbs the restore beautiful-
- * mermaid does on the way out (a worker's `self` is getter-only).
+ * With `self` but no `document`, elkjs assumes it is running as its own worker
+ * script and takes over `onmessage` instead of laying out the diagram. A fake
+ * `document` keeps it in library mode. `self` is redefined as writable because
+ * beautiful-mermaid assigns to it on the way out, and in a real worker `self`
+ * is read-only.
  */
 function inWorkerScope<T>(fn: () => T): T {
   const scope = globalThis as { document?: unknown; self?: unknown };

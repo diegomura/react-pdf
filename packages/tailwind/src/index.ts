@@ -281,10 +281,62 @@ export function createTw(
     | Record<string, string | number | undefined>
     | undefined;
 
+  function screenSize(key: string) {
+    const screens = theme.screens as Record<string, unknown> | undefined;
+    const size = transformValue(
+      (getCustomValue(key) ?? screens?.[key]) as string | undefined,
+      'width',
+    );
+
+    return typeof size === 'number' ? size : undefined;
+  }
+
+  /**
+   * Maps a Tailwind variant onto a media-engine condition. react-pdf resolves
+   * media queries against the page box, so breakpoints and orientation carry
+   * over; state variants like `hover:` describe something a PDF never enters
+   * and return undefined, which reports the class as unsupported.
+   */
+  function resolveModifier(modifier: string) {
+    if (modifier === 'portrait' || modifier === 'landscape') {
+      return `orientation: ${modifier}`;
+    }
+
+    const isMax = modifier.startsWith('max-');
+    const isMin = modifier.startsWith('min-');
+    const size = screenSize(isMax || isMin ? modifier.slice(4) : modifier);
+
+    if (size === undefined) return undefined;
+
+    return `${isMax ? 'max-width' : 'min-width'}: ${size}`;
+  }
+
+  function resolveModifiers(modifiers: string[]) {
+    if (modifiers.length === 0) return null;
+
+    const conditions = modifiers.map(resolveModifier);
+
+    if (conditions.some((condition) => condition === undefined)) {
+      return undefined;
+    }
+
+    return conditions.join(' and ');
+  }
+
   function parseUtility(className: string): MergedStyle {
     const modifierParts = className.split(':');
-    const utilityStr = modifierParts[modifierParts.length - 1];
+    const query = resolveModifiers(modifierParts.slice(0, -1));
 
+    if (query === undefined) return undefined;
+
+    const style = parseBaseUtility(modifierParts[modifierParts.length - 1]);
+
+    if (!query || !style) return style;
+
+    return { [`@media ${query}`]: style } as MergedStyle;
+  }
+
+  function parseBaseUtility(utilityStr: string | undefined): MergedStyle {
     // Exact utilities
     if (utilityStr && utilityStr in exactUtilities) {
       return exactUtilities[utilityStr];
@@ -615,37 +667,47 @@ export function createTw(
 
         return resolved;
       })
-      .reduce<Style>((acc, val) => {
-        if (!val) {
-          return acc;
-        }
-        if ('transform' in val) {
-          const { transform, ...rest } = val;
-          return {
-            ...acc,
-            ...(transform
-              ? { transform: [acc.transform ?? '', transform].join(' ').trim() }
-              : null),
-            ...rest,
-          };
-        }
-        // font-variant-numeric utilities stack in Tailwind, so their tags
-        // accumulate rather than the last class winning.
-        if ('fontFeatureSettings' in val) {
-          const { fontFeatureSettings, ...rest } = val;
-          const previous = acc.fontFeatureSettings;
-          const tags = Array.isArray(fontFeatureSettings)
-            ? fontFeatureSettings
-            : [];
-          return {
-            ...acc,
-            fontFeatureSettings: Array.isArray(previous)
-              ? [...previous, ...tags]
-              : tags,
-            ...rest,
-          };
-        }
-        return { ...acc, ...val };
-      }, {});
+      .reduce<Style>(mergeStyle, {});
   };
+}
+
+type Merged = Record<string, unknown>;
+
+/**
+ * Folds one utility's style into the accumulator. Most properties simply
+ * overwrite, but transforms and font feature tags compose, and `@media` blocks
+ * merge by the same rules a level down so `lg:rotate-45 lg:scale-50` lands as
+ * one block holding both.
+ */
+function mergeStyle(acc: Style, val: unknown): Style {
+  if (!val || typeof val !== 'object') return acc;
+
+  const next = { ...acc } as Merged;
+
+  for (const [key, value] of Object.entries(val as Merged)) {
+    if (key.startsWith('@media')) {
+      next[key] = mergeStyle((next[key] ?? {}) as Style, value);
+      continue;
+    }
+
+    if (key === 'transform') {
+      if (value) {
+        next.transform = [next.transform ?? '', value].join(' ').trim();
+      }
+      continue;
+    }
+
+    if (key === 'fontFeatureSettings') {
+      const previous = next.fontFeatureSettings;
+      const tags = Array.isArray(value) ? value : [];
+      next.fontFeatureSettings = Array.isArray(previous)
+        ? [...previous, ...tags]
+        : tags;
+      continue;
+    }
+
+    next[key] = value;
+  }
+
+  return next as Style;
 }

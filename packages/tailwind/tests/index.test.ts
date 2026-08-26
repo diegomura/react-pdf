@@ -1513,14 +1513,82 @@ describe('Theme config', () => {
 });
 
 describe('Modifiers', () => {
-  // The variant is dropped and the base utility applied; what matters here is
-  // that it happens consistently, whatever the variant is spelled like.
-  test('are stripped uniformly, including hyphenated ones', () => {
-    expect(tw('hover:p-4')).toEqual({ padding: rem(1) });
-    expect(tw('peer-focus:p-4')).toEqual({ padding: rem(1) });
-    expect(tw('group-hover:p-4')).toEqual({ padding: rem(1) });
-    expect(tw('max-lg:p-4')).toEqual({ padding: rem(1) });
-    expect(tw('lg:-mt-4')).toEqual({ marginTop: rem(-1) });
+  // Tailwind v4 states its breakpoints in rem, so at the default 12pt/rem
+  // these land at page scale: sm 480pt, md 576pt, lg 768pt.
+  test('breakpoints become min-width queries', () => {
+    expect(tw('sm:p-4')).toEqual({ '@media min-width: 480': { padding: 12 } });
+    expect(tw('md:p-4')).toEqual({ '@media min-width: 576': { padding: 12 } });
+    expect(tw('lg:p-4')).toEqual({ '@media min-width: 768': { padding: 12 } });
+  });
+
+  test('max-* becomes a max-width query', () => {
+    expect(tw('max-lg:p-4')).toEqual({
+      '@media max-width: 768': { padding: 12 },
+    });
+  });
+
+  test('arbitrary breakpoints are honoured', () => {
+    expect(tw('min-[600px]:p-4')).toEqual({
+      '@media min-width: 600': { padding: 12 },
+    });
+    expect(tw('max-[40rem]:p-4')).toEqual({
+      '@media max-width: 480': { padding: 12 },
+    });
+  });
+
+  test('orientation variants map to the page orientation', () => {
+    expect(tw('portrait:p-4')).toEqual({
+      '@media orientation: portrait': { padding: 12 },
+    });
+    expect(tw('landscape:p-4')).toEqual({
+      '@media orientation: landscape': { padding: 12 },
+    });
+  });
+
+  test('stacked variants combine with and', () => {
+    expect(tw('lg:portrait:p-4')).toEqual({
+      '@media min-width: 768 and orientation: portrait': { padding: 12 },
+    });
+  });
+
+  test('negative utilities keep working behind a variant', () => {
+    expect(tw('lg:-mt-4')).toEqual({
+      '@media min-width: 768': { marginTop: rem(-1) },
+    });
+  });
+
+  // A PDF has no pointer and no colour scheme, so these describe a state the
+  // document never enters. Applying the base utility would bake the hover
+  // style into the output.
+  test('state variants are reported, not applied', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(tw('hover:bg-red-500')).toEqual({});
+    expect(tw('focus:p-4')).toEqual({});
+    expect(tw('dark:text-white')).toEqual({});
+    expect(tw('group-hover:p-4')).toEqual({});
+    expect(tw('peer-focus:p-4')).toEqual({});
+    warn.mockRestore();
+  });
+
+  test('classes sharing a query merge into one block', () => {
+    expect(tw('lg:p-4 lg:mt-2')).toEqual({
+      '@media min-width: 768': { padding: 12, marginTop: 6 },
+    });
+  });
+
+  test('transforms compose inside a query', () => {
+    expect(tw('lg:rotate-45 lg:scale-50')).toEqual({
+      '@media min-width: 768': { transform: 'rotate(45deg) scale(0.5)' },
+    });
+  });
+
+  test('unprefixed utilities sit alongside their variants', () => {
+    expect(tw('p-2 lg:p-4 landscape:p-6')).toEqual({
+      padding: 6,
+      '@media min-width: 768': { padding: 12 },
+      '@media orientation: landscape': { padding: 18 },
+    });
   });
 });
 

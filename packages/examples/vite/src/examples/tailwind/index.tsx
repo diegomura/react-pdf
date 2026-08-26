@@ -94,6 +94,53 @@ const Swatch = ({
   </View>
 );
 
+/* Breakpoint and orientation variants become react-pdf media queries, which
+   resolve against the page box rather than a viewport. This renders identically
+   on both pages below, so the only thing that differs is the page itself. */
+const Variants = () => (
+  <Card label="variants">
+    <View style={tw('flex-row gap-3')}>
+      <View style={tw('flex-1')}>
+        <View
+          style={tw('h-7 rounded bg-slate-300 md:bg-slate-500 lg:bg-accent')}
+        />
+        <View style={tw('mt-1')}>
+          <Caption>md:bg-slate-500 lg:bg-accent</Caption>
+        </View>
+      </View>
+      <View style={tw('flex-1')}>
+        <View style={tw('h-7 rounded bg-slate-300 landscape:bg-accent')} />
+        <View style={tw('mt-1')}>
+          <Caption>landscape:bg-accent</Caption>
+        </View>
+      </View>
+    </View>
+  </Card>
+);
+
+/* Rendered twice, portrait and landscape, so the only thing that differs
+   between the two pages is the geometry the queries resolve against. */
+const VariantsPage = ({ orientation }: { orientation?: 'landscape' }) => (
+  <Page
+    size="A4"
+    orientation={orientation}
+    style={tw('bg-page p-page font-sans text-body')}
+  >
+    <Text style={tw('text-title font-bold text-ink mb-1')}>
+      Variants · {orientation ?? 'portrait'} page
+    </Text>
+    <Text style={tw('text-sub text-subtle mb-5')}>
+      Breakpoints and orientation become react-pdf media queries, resolved
+      against the page box rather than a viewport. Tailwind v4 states
+      breakpoints in rem, so at 12pt/rem md is 576pt and lg is 768pt — A4 is
+      595pt wide upright and 842pt on its side, so lg and landscape match only
+      on the second of these two pages
+    </Text>
+
+    <Variants />
+  </Page>
+);
+
 const Tailwind = () => (
   <Document>
     <Page size="A4" style={tw('bg-page p-page font-sans text-body')}>
@@ -230,6 +277,9 @@ const Tailwind = () => (
         </View>
       </Card>
     </Page>
+
+    <VariantsPage />
+    <VariantsPage orientation="landscape" />
   </Document>
 );
 

@@ -74,6 +74,31 @@ Scales merge one level deep, so overriding a single key keeps the rest of the de
 
 `fontFamily` is the exception: it comes from your config alone, neither merging with Tailwind's defaults nor falling back to them. react-pdf can only draw [fonts you have registered](https://react-pdf.org/fonts), and Tailwind's stacks name web families like `-apple-system`, so resolving `font-sans` against them would throw at render time. Register a font, map it in the config, and `font-<key>` works; without a config, `font-sans` / `font-serif` / `font-mono` warn as unsupported while `font-bold` and friends still resolve.
 
+### Variants
+
+Breakpoint and orientation variants become react-pdf media queries, which resolve against the **page box** rather than a viewport:
+
+```js
+tw('p-2 lg:p-4 landscape:p-6');
+// {
+//   padding: 6,
+//   '@media min-width: 768': { padding: 12 },
+//   '@media orientation: landscape': { padding: 18 },
+// }
+```
+
+| Variant                        | Becomes                 |
+| ------------------------------ | ----------------------- |
+| `sm:` `md:` `lg:` `xl:` `2xl:` | `@media min-width: N`   |
+| `max-sm:` … `max-2xl:`         | `@media max-width: N`   |
+| `min-[600px]:` `max-[40rem]:`  | the width you give it   |
+| `portrait:` `landscape:`       | `@media orientation: …` |
+| stacked, e.g. `lg:portrait:`   | both, joined with `and` |
+
+Tailwind v4 states its breakpoints in rem, so at the default `1rem = 12pt` they land at page scale: `sm` is 480pt, `md` 576pt, `lg` 768pt, `xl` 960pt. An A4 page is 595pt wide upright and 842pt on its side, so `md` matches portrait and `lg` matches landscape. Set `screens` in the config to choose your own.
+
+State variants — `hover:`, `focus:`, `dark:`, `group-*`, `peer-*` — describe something a printed page never enters, and are reported as unsupported rather than applied. Applying them would bake the hover style into the output.
+
 The returned `tw` function takes a space-separated class string and returns a react-pdf `Style` object. Unknown classes are skipped with a console warning, emitted once per distinct class.
 
 ## Notes
@@ -85,7 +110,6 @@ The returned `tw` function takes a space-separated class string and returns a re
 - `aspect-auto` and `line-clamp-none` warn as unsupported. react-pdf has no style value meaning "no aspect ratio" or "no clamp" — leaving the utility off is the reset.
 - Intrinsic sizing (`w-fit`, `h-min`, `max-w-max`, …), `max-w-none` / `max-h-none`, and lengths in units react-pdf can't parse (`max-w-prose` is `65ch`) warn as unsupported. Yoga has no equivalent, and passing the value through would throw while laying out the document.
 - `float-*` and `clear-*` map to react-pdf's float support, which is newer and has rough edges: setting `lineHeight` on floated content breaks text wrap, and parents don't grow to contain their floats.
-- Modifiers such as breakpoints and pseudo states aren't evaluated. The variant is dropped and the base utility applied unconditionally, so `hover:bg-red-500` paints the background red in the output and `lg:p-8` always pads. Leave them off class strings meant for PDFs.
 
 ## License
 

@@ -123,7 +123,10 @@
 
 /* fumadocs ships 16px gutters on both headers; the bar reads cramped against
    the wordmark and the actions cluster, so both get a touch more */
-#nd-nav > div > nav,
+/* the home header's row is a grandchild of the blurred pane, the docs one is
+   [data-header-body]; both need the same gutter or the wordmark shifts 4px on
+   every docs <-> site navigation */
+#nd-nav > div > div > nav,
 #nd-subnav [data-header-body] {
   padding-inline: 1.25rem;
 }

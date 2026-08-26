@@ -1,5 +1,11 @@
 import { describe, expect, test, vi } from 'vitest';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import { createTw } from '../src';
+import {
+  exactUtilities,
+  isRenderableLength,
+  utilityPatterns,
+} from '../src/properties';
 import { rem, round } from '../src/utils';
 
 const colors = [
@@ -1526,5 +1532,109 @@ describe('Unsupported classes', () => {
 
     expect(warn).toHaveBeenCalledTimes(1);
     warn.mockRestore();
+  });
+});
+
+/* The narrow tests above name the classes that were found to crash. This one
+   holds the invariant behind them across the whole utility surface, so a new
+   utility or a Tailwind theme bump can't reintroduce a value Yoga rejects.
+   The predicate itself was checked against @react-pdf/renderer by rendering
+   each emitted style; see the "don't emit lengths that crash layout" commit. */
+describe('Every utility', () => {
+  const YOGA_PROPS = new Set([
+    'width',
+    'height',
+    'minWidth',
+    'minHeight',
+    'maxWidth',
+    'maxHeight',
+    'flexBasis',
+    'top',
+    'right',
+    'bottom',
+    'left',
+    'margin',
+    'marginTop',
+    'marginRight',
+    'marginBottom',
+    'marginLeft',
+    'padding',
+    'paddingTop',
+    'paddingRight',
+    'paddingBottom',
+    'paddingLeft',
+    'gap',
+    'rowGap',
+    'columnGap',
+  ]);
+
+  const everyClassName = () => {
+    const names = new Set<string>(Object.keys(exactUtilities));
+    const values = new Set<string>();
+
+    for (const scale of Object.keys(defaultTheme)) {
+      const entry = (defaultTheme as Record<string, unknown>)[scale];
+      const resolved =
+        typeof entry === 'function'
+          ? entry({
+              theme: (n: string) =>
+                (defaultTheme as Record<string, unknown>)[n] ?? {},
+            })
+          : entry;
+      if (
+        resolved &&
+        typeof resolved === 'object' &&
+        !Array.isArray(resolved)
+      ) {
+        for (const key of Object.keys(resolved)) values.add(key);
+      }
+    }
+
+    const families = [
+      ...Object.keys(utilityPatterns),
+      'inset',
+      'inset-x',
+      'inset-y',
+      'text',
+      'rounded',
+      'rounded-t',
+      'border',
+      'border-x',
+      'scale',
+      'scale-x',
+      'rotate',
+      'translate',
+      'translate-x',
+      'skew',
+      'skew-x',
+      'aspect',
+      'bg',
+      'size',
+      'line-clamp',
+    ];
+
+    for (const family of families) {
+      for (const value of values) names.add(`${family}-${value}`);
+    }
+
+    return names;
+  };
+
+  test('emits only lengths react-pdf can lay out', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const offenders: string[] = [];
+
+    for (const className of everyClassName()) {
+      for (const [prop, value] of Object.entries(tw(className))) {
+        if (!YOGA_PROPS.has(prop)) continue;
+        if (typeof value !== 'string') continue;
+        if (!isRenderableLength(value)) {
+          offenders.push(`${className} -> ${prop}: ${value}`);
+        }
+      }
+    }
+
+    warn.mockRestore();
+    expect(offenders).toEqual([]);
   });
 });

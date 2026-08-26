@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import type React from 'react';
 import { expect, test } from 'vitest';
 import { renderToBuffer } from '@react-pdf/renderer';
@@ -9,29 +10,79 @@ import { COMPONENT_USAGE, previewSource } from '../lib/component-usage';
 import { evaluateDocument } from '../src/repl/evaluate';
 import { transpile } from '../src/repl/transpile';
 
-const DIR = path.join(import.meta.dirname, '../content/docs/v4/components');
+const V4 = path.join(import.meta.dirname, '../content/docs/v4');
 
-const pages = fs
-  .readdirSync(DIR)
-  .filter((file) => file.endsWith('.mdx') && file !== 'index.mdx');
+/**
+ * Pages that document an element, so should show one. Index pages list their
+ * section, and `svg/select-and-list-attributes` only names props the Select
+ * and List pages already demonstrate one click away.
+ */
+const NO_ELEMENT = ['index.mdx', 'select-and-list-attributes.mdx'];
 
-const referenced = (file: string) =>
-  /<Usage\s+name="([^"]+)"\s*\/>/.exec(
-    fs.readFileSync(path.join(DIR, file), 'utf8'),
-  )?.[1];
+const source = (group: string, file: string) =>
+  fs.readFileSync(path.join(V4, group, file), 'utf8');
+
+const pagesIn = (group: string) =>
+  fs
+    .readdirSync(path.join(V4, group))
+    .filter((file) => file.endsWith('.mdx') && !NO_ELEMENT.includes(file))
+    .map((file) => [group, file] as const);
+
+const pages = [...pagesIn('components'), ...pagesIn('svg'), ...pagesIn('form')];
+
+const referenced = (group: string, file: string) =>
+  /<Usage\s+name="([^"]+)"\s*\/>/.exec(source(group, file))?.[1];
 
 const previewable = Object.entries(COMPONENT_USAGE).flatMap(([name, usage]) => {
-  const source = previewSource(usage);
-  return source ? [[name, source] as const] : [];
+  const src = previewSource(usage);
+  return src ? [[name, src] as const] : [];
 });
+
+const render = async (src: string) =>
+  renderToBuffer(
+    evaluateDocument(transpile(src)) as React.ReactElement<DocumentProps>,
+  );
+
+const isText = (chunk: string) => /^[\t\n\r\x20-\x7e]*$/.test(chunk);
+
+/**
+ * The PDF's content streams, which is where the drawing lives. Font and image
+ * streams inflate to binary and are dropped, so what is left is only the
+ * operators a viewer would run.
+ */
+const contentOf = (pdf: Buffer) =>
+  [...pdf.toString('latin1').matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/g)]
+    .map(([, body]) => {
+      try {
+        return zlib.inflateSync(Buffer.from(body, 'latin1')).toString('latin1');
+      } catch {
+        return body;
+      }
+    })
+    .filter(isText)
+    .join('\n');
+
+/** Fill, stroke, text, shading and XObject operators: the page paints. */
+const DRAWS = /(^|\s)(f|f\*|S|s|B|B\*|Tj|TJ|sh|Do)(\s|$)/;
 
 test('every component page shows how the component is used', () => {
   expect(pages.length).toBeGreaterThan(0);
 
-  for (const file of pages) {
-    const name = referenced(file);
-    expect(name, file).toBeTruthy();
-    expect(COMPONENT_USAGE[name!]?.code, file).toBeTruthy();
+  for (const [group, file] of pages) {
+    const name = referenced(group, file);
+    expect(name, `${group}/${file}`).toBeTruthy();
+    expect(COMPONENT_USAGE[name!]?.code, `${group}/${file}`).toBeTruthy();
+  }
+});
+
+// The SVG and form pages used to carry a registry-driven example at the very
+// bottom, below the props table. They now open with a Usage block like every
+// other reference page.
+test('no v4 reference page still trails a GoToExample', () => {
+  for (const [group, file] of pages) {
+    expect(source(group, file), `${group}/${file}`).not.toContain(
+      '<GoToExample',
+    );
   }
 });
 
@@ -73,17 +124,24 @@ test('Note offers no preview', () => {
   expect(COMPONENT_USAGE.note.mount).toBeUndefined();
 });
 
-test('every previewable snippet renders a real PDF', async () => {
+// A preview that opens on an empty page is worse than no preview, so the check
+// is that the viewer has something to paint, not that bytes came back.
+test('every previewable snippet renders a page with something on it', async () => {
   expect(previewable.length).toBeGreaterThan(0);
 
-  for (const [name, source] of previewable) {
-    const element = evaluateDocument(
-      transpile(source),
-    ) as React.ReactElement<DocumentProps>;
-
-    const buffer = await renderToBuffer(element);
+  for (const [name, src] of previewable) {
+    const buffer = await render(src);
 
     expect(buffer.subarray(0, 5).toString(), name).toBe('%PDF-');
-    expect(buffer.length, name).toBeGreaterThan(1000);
+    expect(contentOf(buffer), name).toMatch(DRAWS);
   }
-}, 60_000);
+}, 120_000);
+
+// Without this the check above would pass on anything that is a PDF at all.
+test('an empty page paints nothing', async () => {
+  const blank = await render(
+    'ReactPDF.render(<Document><Page size="A6" /></Document>);',
+  );
+
+  expect(contentOf(blank)).not.toMatch(DRAWS);
+}, 30_000);

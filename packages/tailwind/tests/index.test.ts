@@ -683,11 +683,30 @@ describe('Sizing', () => {
 
 describe('Typography', () => {
   // "-apple-system" ends in "em", which a suffix check reads as a length.
+  // "-apple-system" ends in "em", which a suffix check reads as a length.
   test('font stacks are not mistaken for lengths', () => {
+    const scoped = createTw({ fontFamily: { brand: ['-apple-system'] } });
+
+    expect(scoped('font-brand')).toEqual({ fontFamily: '-apple-system' });
+  });
+
+  // Tailwind's stacks name web families react-pdf has no way to draw, so
+  // resolving these would throw "Font family not registered" at render time.
+  test('default font families are not resolved', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const scoped = createTw({});
 
-    expect(scoped('font-sans')).toEqual({ fontFamily: '-apple-system' });
-    expect(scoped('font-serif')).toEqual({ fontFamily: 'ui-serif' });
+    expect(scoped('font-sans')).toEqual({});
+    expect(scoped('font-serif')).toEqual({});
+    expect(scoped('font-mono')).toEqual({});
+    warn.mockRestore();
+  });
+
+  test('font weights still resolve without a font config', () => {
+    const scoped = createTw({});
+
+    expect(scoped('font-bold')).toEqual({ fontWeight: 700 });
+    expect(scoped('font-thin')).toEqual({ fontWeight: 100 });
   });
 
   test('font-family', () => {

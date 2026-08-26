@@ -72,14 +72,13 @@ const tw = createTw(
 
 Scales merge one level deep, so overriding a single key keeps the rest of the default scale — `spacing: { 4: '2rem' }` changes `p-4` while leaving `p-8` alone, and `colors: { gray: { 500: '#fff' } }` leaves the other grays intact. Replace a whole scale by overriding it with a non-object value.
 
-`fontFamily` is the exception: it replaces rather than merges, because react-pdf can only draw [fonts you have registered](https://react-pdf.org/fonts) and the leftover default stacks would name families the document can't render.
+`fontFamily` is the exception: it comes from your config alone, neither merging with Tailwind's defaults nor falling back to them. react-pdf can only draw [fonts you have registered](https://react-pdf.org/fonts), and Tailwind's stacks name web families like `-apple-system`, so resolving `font-sans` against them would throw at render time. Register a font, map it in the config, and `font-<key>` works; without a config, `font-sans` / `font-serif` / `font-mono` warn as unsupported while `font-bold` and friends still resolve.
 
 The returned `tw` function takes a space-separated class string and returns a react-pdf `Style` object. Unknown classes are skipped with a console warning, emitted once per distinct class.
 
 ## Notes
 
 - Supports the CSS properties that make sense in a PDF context and are supported by react-pdf — see [valid CSS properties](https://react-pdf.org/styling#valid-css-properties).
-- Default font family classes are excluded, since you have to [register your own fonts](https://react-pdf.org/fonts) anyway.
 - Uses `pt` as the internal unit ([valid units](https://react-pdf.org/styling#valid-units)), with `1rem = 12pt` by default. Change it with `ptPerRem`.
 - react-pdf uses [Yoga](https://yogalayout.dev/) for layout, so some defaults differ from the web — `flex-direction` defaults to `column`, for example. Add `flex-row` where you need it.
 - Line heights are emitted unitless, since react-pdf only supports unitless `lineHeight`.

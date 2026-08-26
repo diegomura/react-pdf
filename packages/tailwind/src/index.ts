@@ -47,10 +47,12 @@ export function createTw(
 ): (input: string) => Style {
   const theme = {
     ...(mergeScales(defaultTheme, config) as typeof defaultTheme),
-    // fontFamily replaces rather than merges: react-pdf can only draw
-    // registered fonts, so exposing the leftover default stacks would hand
-    // back families the document has no way to render.
-    ...(config.fontFamily ? { fontFamily: config.fontFamily } : null),
+    // fontFamily comes from the config alone -- it neither merges with the
+    // defaults nor falls back to them. react-pdf can only draw registered
+    // fonts, and Tailwind's stacks name web families like `-apple-system`, so
+    // resolving `font-sans` against them throws "Font family not registered"
+    // at render time.
+    fontFamily: (config.fontFamily ?? {}) as typeof defaultTheme.fontFamily,
   };
 
   // Default colors are in OKLCH from v4 onwards, so we use the hex versions here for compatibility

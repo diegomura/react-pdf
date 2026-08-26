@@ -315,6 +315,7 @@
   border: 1px solid var(--rp-table-border);
   border-radius: 0.625rem;
   box-shadow: none;
+  overflow-x: auto;
 }
 
 #nd-page .prose table {
@@ -342,8 +343,12 @@
   letter-spacing: 0.01em;
 }
 
+/* nowrap keeps short type names like `Boolean` from breaking, but the long
+   source-object examples were demanding the whole table width and squeezing
+   the description column to one word per line */
 #nd-page .prose td code {
-  white-space: nowrap;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* ---------- Table of contents ---------- */

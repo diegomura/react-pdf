@@ -17,9 +17,8 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-// Scales merge one level deep so a config that overrides a single key
-// (spacing.4, colors.gray.500) keeps the rest of the default scale. Arrays and
-// functions are values, not scales, so they replace rather than merge.
+// One level deep: overriding a key keeps the rest of the scale. Arrays and
+// functions are values, not scales, so they replace.
 export function mergeScales(
   base: Record<string, unknown>,
   overrides: Record<string, unknown>,
@@ -57,14 +56,8 @@ export function px(value: number) {
   return round(PT_PER_PX * value);
 }
 
-// react-pdf resolves aspectRatio with parseFloat, so "16 / 9" has to be
-// collapsed to a single number here rather than passed through.
-/**
- * Splits Tailwind's colour opacity suffix: `red-500/50`, `[#bada55]/[0.55]`.
- * A bare number is a percentage; a bracketed one is already 0-1 unless it
- * carries a `%`. Callers must try the plain reading first — `w-1/2` and
- * `translate-x-1/2` spell fractions with the same character.
- */
+// Bare suffix is a percentage, bracketed is 0-1 unless it carries a `%`.
+// Callers must try the plain reading first: `w-1/2` spells a fraction the same.
 export function splitAlpha(value: string) {
   const slash = value.lastIndexOf('/');
 
@@ -94,12 +87,8 @@ export const NAMED_COLORS: Record<string, string> = {
   white: '#ffffff',
 };
 
-/**
- * Adds an alpha channel to a resolved colour. react-pdf reads 8-digit hex as
- * well as rgba()/hsla(), so hex grows a byte and the functional forms grow an
- * argument. Keywords like `transparent` and `currentColor` have no channel to
- * modulate and return undefined, which reports the class as unsupported.
- */
+// react-pdf reads 8-digit hex and rgba()/hsla(). Keywords like `transparent`
+// have no channel to modulate, so they return undefined and the class warns.
 export function withAlpha(color: string | number | undefined, alpha: number) {
   if (typeof color !== 'string') return undefined;
 
@@ -128,6 +117,7 @@ export function withAlpha(color: string | number | undefined, alpha: number) {
   return undefined;
 }
 
+// react-pdf parseFloats aspectRatio, so "16 / 9" has to collapse to a number.
 export function parseRatio(value: unknown) {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : undefined;

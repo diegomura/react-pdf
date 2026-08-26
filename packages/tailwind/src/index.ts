@@ -42,19 +42,14 @@ type Options = {
 
 const UNIT_VALUE = /^(-?(?:\d+\.?\d*|\.\d+))(px|rem|em)$/;
 
-// Explicit return type keeps `Style` in the emitted .d.ts — TS elides the
-// import when it only surfaces through inference.
+// Explicit return type: TS elides the `Style` import otherwise.
 export function createTw(
   config: ThemeConfig,
   options?: Options,
 ): (input: string) => Style {
   const theme = {
     ...(mergeScales(defaultTheme, config) as typeof defaultTheme),
-    // fontFamily comes from the config alone -- it neither merges with the
-    // defaults nor falls back to them. react-pdf can only draw registered
-    // fonts, and Tailwind's stacks name web families like `-apple-system`, so
-    // resolving `font-sans` against them throws "Font family not registered"
-    // at render time.
+    // Config only: Tailwind's stacks name fonts react-pdf can't draw.
     fontFamily: (config.fontFamily ?? {}) as typeof defaultTheme.fontFamily,
   };
 
@@ -64,8 +59,7 @@ export function createTw(
     config.colors ?? {},
   ) as typeof tailwindColors;
 
-  // Resolves against the merged theme, so a config that overrides part of a
-  // scale reaches the theme functions that derive from it (padding <- spacing).
+  // Merged, so config reaches the scales derived from it (padding <- spacing).
   function themeResolver(name: string) {
     return theme[name as keyof typeof theme] ?? {};
   }
@@ -106,8 +100,7 @@ export function createTw(
         return sign * Number(value);
 
       default: {
-        // Matched as a whole rather than by suffix, so font stacks like
-        // "-apple-system" aren't read as a length in em.
+        // Whole match, not a suffix: "-apple-system" ends in "em".
         const unit = UNIT_VALUE.exec(value);
         if (unit) {
           const amount = sign * Number(unit[1]);
@@ -161,8 +154,7 @@ export function createTw(
   ): Value {
     const direct = parseBaseValue(value, property, isNegative);
 
-    // Only reached when the plain reading found nothing, so `w-1/2` keeps its
-    // fraction and `bg-red-500/50` gets a second pass as colour + opacity.
+    // Plain reading first, so `w-1/2` stays a fraction.
     if (direct.value !== undefined) return direct;
 
     const { base, alpha } = splitAlpha(value);
@@ -219,9 +211,8 @@ export function createTw(
     }
 
     // Color
-    // Exception for "font-weight: black" (not a color), and for dimensions,
-    // which can never hold one -- a theme colour sharing a name with a spacing
-    // key would otherwise win and put a hex value into `padding`.
+    // Exceptions: "font-weight: black" isn't a colour, and a dimension can't
+    // hold one -- a colour named like a spacing key would win and break it.
     if (
       valueParts[0] &&
       valueParts[0] in colors &&
@@ -321,12 +312,8 @@ export function createTw(
     return typeof size === 'number' ? size : undefined;
   }
 
-  /**
-   * Maps a Tailwind variant onto a media-engine condition. react-pdf resolves
-   * media queries against the page box, so breakpoints and orientation carry
-   * over; state variants like `hover:` describe something a PDF never enters
-   * and return undefined, which reports the class as unsupported.
-   */
+  // Media queries resolve against the page box, so breakpoints and orientation
+  // carry over. State variants describe something a PDF never enters.
   function resolveModifier(modifier: string) {
     if (modifier === 'portrait' || modifier === 'landscape') {
       return `orientation: ${modifier}`;
@@ -387,9 +374,7 @@ export function createTw(
     );
 
     if (matchingUtilityPatternKey) {
-      // Taken from the already modifier- and sign-stripped parts rather than
-      // splitting the raw class on the key, which mismatches when the key also
-      // appears earlier in the string ("grou|p-|hover:p-4").
+      // From the stripped parts: "grou|p-|hover:p-4" mis-splits the raw name.
       const rawValue = utilityParts
         .slice(matchingUtilityPatternKey.split('-').length)
         .join('-');
@@ -625,9 +610,7 @@ export function createTw(
               transform: `skewY(${value})`,
             };
           default:
-            // Bare `skew-*` skews both axes. Spelled with two args because
-            // react-pdf reads skew's y from the second one rather than
-            // defaulting it to x.
+            // Both axes, spelled out: react-pdf reads y from the second arg.
             return {
               transform: `skew(${value}, ${value})`,
             };
@@ -639,8 +622,7 @@ export function createTw(
         const themeRatio = theme.aspectRatio as
           | Record<string, unknown>
           | undefined;
-        // Falling through to valueStr covers bare fractions like `aspect-3/2`,
-        // which the theme doesn't enumerate.
+        // The valueStr fallback covers bare fractions like `aspect-3/2`.
         const ratio = parseRatio(
           getCustomValue(valueStr) ?? themeRatio?.[valueStr] ?? valueStr,
         );
@@ -690,8 +672,7 @@ export function createTw(
             ? parsed
             : undefined;
 
-        // Misses are cached too: react-pdf calls tw() once per element, and an
-        // unsupported class would otherwise re-parse and re-warn every render.
+        // Misses cached too: tw() runs per element, so this would re-warn each time.
         cache.set(className, resolved);
         if (!resolved) handleInvalidClassName(className);
 
@@ -703,12 +684,7 @@ export function createTw(
 
 type Merged = Record<string, unknown>;
 
-/**
- * Folds one utility's style into the accumulator. Most properties simply
- * overwrite, but transforms and font feature tags compose, and `@media` blocks
- * merge by the same rules a level down so `lg:rotate-45 lg:scale-50` lands as
- * one block holding both.
- */
+// Transforms and feature tags compose; `@media` blocks merge a level down.
 function mergeStyle(acc: Style, val: unknown): Style {
   if (!val || typeof val !== 'object') return acc;
 

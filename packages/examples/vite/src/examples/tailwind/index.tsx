@@ -18,14 +18,11 @@ Font.register({
   ],
 });
 
-/* Rubik's default figures are proportional, so tabular-nums has something
-   visible to do -- Roboto's are already tabular. */
+// Rubik's figures are proportional; Roboto's are already tabular.
 Font.register({ family: 'Rubik', fonts: [{ src: RubikRegular }] });
 
-/* The palette and metrics the other examples use, named as theme keys so the
-   class strings below stay readable. Scales merge one level deep, so stock
-   Tailwind values survive alongside these: `slate` overrides a single shade
-   and keeps the rest of the ramp, which the last card shows. */
+// The palette the other examples use, named as theme keys. Scales merge one
+// level deep, so `slate` keeps every shade it doesn't override.
 const tw = createTw({
   fontFamily: { sans: ['Roboto'], rubik: ['Rubik'] },
   colors: {
@@ -73,8 +70,7 @@ const Caption = ({ children }: { children: React.ReactNode }) => (
   <Text style={tw('text-code text-muted')}>{children}</Text>
 );
 
-/* The shape sits in a fixed-height box so a transformed one can overflow its
-   own bounds without landing on the caption. */
+// Fixed-height box so a transformed shape can't land on the caption.
 const Swatch = ({
   label,
   className,
@@ -94,9 +90,7 @@ const Swatch = ({
   </View>
 );
 
-/* Breakpoint and orientation variants become react-pdf media queries, which
-   resolve against the page box rather than a viewport. This renders identically
-   on both pages below, so the only thing that differs is the page itself. */
+// Identical on both pages; only the geometry the queries see differs.
 const Variants = () => (
   <Card label="variants">
     <View style={tw('flex-row gap-3')}>
@@ -118,8 +112,6 @@ const Variants = () => (
   </Card>
 );
 
-/* Rendered twice, portrait and landscape, so the only thing that differs
-   between the two pages is the geometry the queries resolve against. */
 const VariantsPage = ({ orientation }: { orientation?: 'landscape' }) => (
   <Page
     size="A4"
@@ -177,8 +169,7 @@ const Tailwind = () => (
             className="w-12 aspect-square bg-slate-500 rounded"
           />
         </View>
-        {/* Fractional widths resolve against the parent, so these need a
-            full-width row rather than a shrink-to-fit swatch. */}
+        {/* Fractional widths need a full-width row, not a shrink-to-fit swatch. */}
         <View style={tw('mt-2 gap-1')}>
           <View style={tw('w-1/4 h-2 bg-line rounded-sm')} />
           <View style={tw('w-1/2 h-2 bg-line rounded-sm')} />
@@ -241,9 +232,8 @@ const Tailwind = () => (
         </View>
       </Card>
 
-      {/* Floats are out of flow, so they need their own containing block --
-          dropped straight into the card they'd land on top of its label. And
-          no lineHeight on the wrapping text: an explicit one disables wrap. */}
+      {/* Floats are out of flow and need their own block, or they land on the
+          card label. No lineHeight on the text either: it disables wrap. */}
       <Card label="float">
         <View style={tw('relative')}>
           <View style={tw('float-left size-10 mr-2 mb-1 bg-accent rounded')} />

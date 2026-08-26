@@ -59,13 +59,9 @@ export function isScaledProperty(key: unknown): key is ScaledProperty {
   return typeof key === 'string' && scaledProperties.includes(key as any);
 }
 
-// Properties whose values reach Yoga, which throws on anything it can't read as
-// a length. Keywords Tailwind emits for them (fit-content, none, 65ch) have no
-// react-pdf equivalent, so they're reported as unsupported instead of crashing
-// the document.
+// Reach Yoga, which throws on anything it can't read as a length.
 const dimensionProperties = [
-  // Not borderWidth or fontSize: `border-*` and `text-*` share their namespace
-  // with colours and rely on the colour lookup to tell the two apart.
+  // Not borderWidth/fontSize: `border-*` and `text-*` disambiguate by colour.
   'borderRadius',
   'flexBasis',
   'gap',

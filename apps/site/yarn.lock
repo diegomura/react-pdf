@@ -1169,6 +1169,14 @@
     bidi-js "^1.0.2"
     unicode-properties "^1.4.1"
 
+"@react-pdf/tailwind@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/tailwind/-/tailwind-0.1.0.tgz#51a7aa4439b46826fd92912bbc7c1a457c2d734e"
+  integrity sha512-GUDesmIu+h4ZVQ21C1aXLjCFhpAzh/oFZy8OUUyddwlJnfD8oDoBaeALbWITLRk3vaxLxHP+cxdi2j21PEKDKw==
+  dependencies:
+    "@react-pdf/types" "^2.13.1"
+    tailwindcss "^4.1.12"
+
 "@react-pdf/types@^2.13.1":
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/@react-pdf/types/-/types-2.13.1.tgz#d753d54ce53824ca137582544d2ec0b6c2f61961"
@@ -3606,7 +3614,7 @@ svg-arc-to-cubic-bezier@^3.0.0, svg-arc-to-cubic-bezier@^3.2.0:
   resolved "https://registry.yarnpkg.com/svg-arc-to-cubic-bezier/-/svg-arc-to-cubic-bezier-3.2.0.tgz#390c450035ae1c4a0104d90650304c3bc814abe6"
   integrity sha512-djbJ/vZKZO+gPoSDThGNpKDO+o+bAeA4XQKovvkNCqnIS2t+S4qnLAGQhyyrulhCFRl1WWzAp0wUDV8PpTVU3g==
 
-tailwindcss@4.3.3, tailwindcss@^4.0.0:
+tailwindcss@4.3.3, tailwindcss@^4.0.0, tailwindcss@^4.1.12:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.3.3.tgz#c006861611c213c1877893ab5b23daa16be2bb55"
   integrity sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==

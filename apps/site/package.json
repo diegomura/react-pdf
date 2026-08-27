@@ -20,6 +20,7 @@
     "@react-pdf/math": "^5.0.1",
     "@react-pdf/mermaid": "^5.0.1",
     "@react-pdf/renderer": "^4.8.0",
+    "@react-pdf/tailwind": "^0.1.0",
     "@react-pdf/ui": "^0.1.0",
     "@uiw/react-codemirror": "^4.25.11",
     "codemirror": "^6.0.2",

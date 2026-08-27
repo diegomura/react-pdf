@@ -23,6 +23,7 @@ const joinFiles = (files: PlaygroundFile[]) =>
 const lazyModules: Record<string, () => Promise<unknown>> = {
   '@react-pdf/math': () => import('@react-pdf/math'),
   '@react-pdf/mermaid': () => import('@react-pdf/mermaid'),
+  '@react-pdf/tailwind': () => import('@react-pdf/tailwind'),
 };
 
 const loaded: Record<string, unknown> = {};

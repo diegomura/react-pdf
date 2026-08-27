@@ -15,6 +15,8 @@ A React component for displaying text. Text supports nesting of other Text or Li
 | style               |                        Defines view styles. [See more](/docs/v4/styling)                        |                               _Object_, _Array_ | _undefined_ |
 | debug               |        Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)         |                                       _Boolean_ |     _false_ |
 | fixed               |       Renders component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping)       |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
 | hyphenationCallback | Specify hyphenation callback at a text level. See [hypthenation](/docs/v4/advanced/hyphenation) |                                      _Function_ | _undefined_ |
 | hyphenationPenalty  |    Specify at what level words are hyphenated. [See more](/docs/v4/fonts#hyphenationpenalty)    |                                        _Number_ | _undefined_ |
 | id                  |           Destination ID to be linked to. [See more](/docs/v4/advanced/document-navigation#destinations-v200)            |                                        _String_ | _undefined_ |

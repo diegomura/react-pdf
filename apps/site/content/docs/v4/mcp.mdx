@@ -1,0 +1,38 @@
+---
+title: 'MCP server'
+---
+
+react-pdf.org hosts an [MCP](https://modelcontextprotocol.io) server so coding agents can search and read these docs instead of guessing from memory. It is public, needs no key, and exposes two tools:
+
+- `search_docs({ query })` — returns the best matching pages as `[{ url, title }]`
+- `read_doc({ url })` — returns one page as Markdown
+
+## Connect
+
+Claude Code:
+
+```bash
+claude mcp add --transport http react-pdf https://react-pdf.org/mcp
+```
+
+Cursor, in `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "react-pdf": {
+      "url": "https://react-pdf.org/mcp"
+    }
+  }
+}
+```
+
+Any other MCP client works the same way: point it at `https://react-pdf.org/mcp` over streamable HTTP.
+
+## Without MCP
+
+The docs are also plain Markdown over HTTP, which is enough for most tools:
+
+- Append `.mdx` to any docs URL — `react-pdf.org/docs/v4/components/text.mdx` — to get that page's source. The **Copy Markdown** button next to every page title does the same thing.
+- [/llms.txt](/llms.txt) lists every page of the current version.
+- [/llms-full.txt](/llms-full.txt) is the whole documentation in a single file.

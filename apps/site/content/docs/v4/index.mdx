@@ -1,0 +1,102 @@
+---
+title: "Quick start guide"
+---
+
+## 1. Install React and react-pdf
+
+Starting with react-pdf is extremely simple.
+
+<CodeBlockTabs defaultValue="npm">
+
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="npm">npm</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="yarn">yarn</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="pnpm">pnpm</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="bun">bun</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="npm">
+
+```bash
+npm install @react-pdf/renderer --save
+```
+
+</CodeBlockTab>
+
+<CodeBlockTab value="yarn">
+
+```bash
+yarn add @react-pdf/renderer
+```
+
+</CodeBlockTab>
+
+<CodeBlockTab value="pnpm">
+
+```bash
+pnpm add @react-pdf/renderer
+```
+
+</CodeBlockTab>
+
+<CodeBlockTab value="bun">
+
+```bash
+bun add @react-pdf/renderer
+```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+Since a renderer simply implements _how elements render into something_, you still need to have React to make it work (and react-dom for client-side document generation). You can find instructions on how to do that [here](https://react.dev/learn/add-react-to-an-existing-project).
+
+## 2. Create your PDF document
+
+This is where things start getting interesting. React-pdf exports a set of React primitives that enable you to render things into your document very easily. It also has an API for styling them, using CSS properties and Flexbox layout.
+
+Let's make the code speak for itself:
+
+<Example name="quick-start" defaultOpen />
+
+That's a single page holding a header row, a title and some copy, laid out with flexbox and styled with plain style objects. `Document`, `Page`, `View` and `Text` are not the only primitives you can use. Please refer to the Components or Examples sections for more information.
+
+## 3. Choose where to render the document
+
+React-pdf enables you to render the document in two different environments: **web** and **server**. The process is essentially the same, but catered to needs of each environment.
+
+### Save in a file
+
+```jsx
+import ReactPDF from '@react-pdf/renderer';
+
+ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
+```
+
+### Render to a stream
+
+```jsx
+import ReactPDF from '@react-pdf/renderer';
+
+ReactPDF.renderToStream(<MyDocument />);
+```
+
+### Render in DOM
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { PDFViewer } from '@react-pdf/renderer';
+
+const App = () => (
+  <PDFViewer>
+    <MyDocument />
+  </PDFViewer>
+);
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
+
+## 4. Have fun!
+
+Maybe the most important step — make use of all react-pdf capabilities to create beautiful and awesome documents!

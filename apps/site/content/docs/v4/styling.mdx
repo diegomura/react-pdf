@@ -1,0 +1,88 @@
+---
+title: 'Styling'
+---
+
+Because a document without styles would be very boring, react-pdf ships a powerful styling solution using CSS and Flexbox.
+
+## StyleSheet API
+
+React-pdf also sticks with the primitives specs when it comes to styling.
+
+### StyleSheet.create()
+
+Creates a stylesheet from a plain object of CSS definitions. Each key becomes a style you can hand to a component through its `style` prop.
+
+```jsx
+import { StyleSheet, Page, Text } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  page: { padding: 40 },
+  title: { fontSize: 18, marginBottom: 12 },
+});
+
+const Report = () => (
+  <Page style={styles.page}>
+    <Text style={styles.title}>Quarterly report</Text>
+  </Page>
+);
+```
+
+### Inline styling
+
+There's no need to call `StyleSheet.create` in order to style components. A plain JS object works just as well.
+
+```jsx
+<Text style={{ fontSize: 18, marginBottom: 12 }}>Quarterly report</Text>
+```
+
+### Mixing both solutions
+
+The `style` prop also accepts an array. Entries are merged left to right, and falsy ones are skipped, which is what you want for styles that depend on props.
+
+```jsx
+const Badge = ({ overdue }) => (
+  <Text style={[styles.badge, overdue && { color: 'tomato' }]}>
+    {overdue ? 'Overdue' : 'Paid'}
+  </Text>
+);
+```
+
+---
+
+## Media queries
+
+There may be times in which you'll need to apply different styles based on the document context. For that, we provide media-queries support (just as you would do it for the web!). You can query based on both `width` and `height` (min and max), and also `orientation`:
+
+```jsx
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    '@media max-width: 400': { flexDirection: 'column' },
+    '@media orientation: landscape': { gap: 20 },
+  },
+});
+```
+
+The example below renders the same component on a 500pt page and a 300pt one:
+
+<Example name="media-queries" />
+
+---
+
+## Valid units
+
+| Unit | Meaning                                               |
+| ---- | ----------------------------------------------------- |
+| `pt` | Points. The default, based on the 72 dpi PDF document |
+| `in` | Inches                                                |
+| `mm` | Millimeters                                           |
+| `cm` | Centimeters                                           |
+| `%`  | Percentage of the parent                              |
+| `vw` | Percentage of the page width                          |
+| `vh` | Percentage of the page height                         |
+
+---
+
+## Valid CSS properties
+
+<StyleProps />

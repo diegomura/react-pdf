@@ -15,12 +15,22 @@ const mono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://react-pdf.org'),
   title: {
     template: '%s | react-pdf',
     default: 'react-pdf — PDFs, made with React',
   },
   description:
     'React renderer for creating PDF files on the browser and server.',
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'react-pdf',
+    title: 'react-pdf — PDFs, made with React',
+    description:
+      'React renderer for creating PDF files on the browser and server.',
+  },
+  twitter: { card: 'summary_large_image' },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

@@ -54,7 +54,12 @@ const edit = async (store: ReturnType<typeof createStore>, code: string) => {
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
-  doRender.mockReset();
+  // A bare vi.fn() returns undefined, which the pipeline stores as "resolved
+  // with no document". Always leave a usable implementation in place.
+  doRender.mockReset().mockImplementation(async () => ({
+    blob: new Blob(['pdf']),
+    numPages: 1,
+  }));
 });
 
 afterEach(() => {

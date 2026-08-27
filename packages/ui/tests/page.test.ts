@@ -49,7 +49,9 @@ const reload = async (
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
-  doRender.mockReset();
+  // A bare vi.fn() returns undefined, which the pipeline stores as "resolved
+  // with no document". Always leave a usable implementation in place.
+  doRender.mockReset().mockImplementation(renders(1));
 });
 
 afterEach(() => {

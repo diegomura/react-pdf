@@ -46,6 +46,27 @@ const edit = (store: ReturnType<typeof createStore>, code: string) => {
   return vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
 };
 
+// jsdom implements neither method, so they are added rather than spied on.
+// Only these two are replaced: swapping the whole `URL` global takes the
+// constructor with it, which other machinery still needs.
+const patchUrl = () => {
+  Object.defineProperty(URL, 'createObjectURL', {
+    value: createObjectURL,
+    configurable: true,
+    writable: true,
+  });
+  Object.defineProperty(URL, 'revokeObjectURL', {
+    value: revokeObjectURL,
+    configurable: true,
+    writable: true,
+  });
+};
+
+const unpatchUrl = () => {
+  delete (URL as Partial<typeof URL>).createObjectURL;
+  delete (URL as Partial<typeof URL>).revokeObjectURL;
+};
+
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
   let next = 0;
@@ -55,12 +76,12 @@ beforeEach(() => {
   });
   revokeObjectURL.mockReset();
   doRender.mockReset().mockImplementation(async () => result());
-  vi.stubGlobal('URL', { createObjectURL, revokeObjectURL });
+  patchUrl();
 });
 
 afterEach(() => {
   vi.useRealTimers();
-  vi.unstubAllGlobals();
+  unpatchUrl();
 });
 
 describe('object url', () => {

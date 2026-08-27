@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/ui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "Headless React primitives for building PDF preview and editor interfaces",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -27,14 +27,14 @@
     "sucrase": "^3.35.1"
   },
   "peerDependencies": {
-    "@react-pdf/renderer": ">=4.8.0",
+    "@react-pdf/renderer": ">=4.9.0",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
-    "@react-pdf/math": ">=5.0.0",
-    "@react-pdf/mermaid": ">=5.0.0",
-    "@react-pdf/tailwind": ">=0.1.0"
+    "@react-pdf/math": ">=6.0.0",
+    "@react-pdf/mermaid": ">=6.0.0",
+    "@react-pdf/tailwind": ">=0.2.0"
   },
   "devDependencies": {
-    "@react-pdf/renderer": "^4.8.1"
+    "@react-pdf/renderer": "^4.9.0"
   },
   "peerDependenciesMeta": {
     "@react-pdf/math": {

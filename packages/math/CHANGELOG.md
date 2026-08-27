@@ -1,5 +1,12 @@
 # @react-pdf/math
 
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/renderer@4.9.0
+
 ## 5.0.1
 
 ### Patch Changes

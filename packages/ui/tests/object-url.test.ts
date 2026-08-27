@@ -7,6 +7,7 @@ vi.mock('../src/render/render', () => ({
 }));
 
 import filesAtom from '../src/atoms/files';
+import statusAtom from '../src/atoms/status';
 import urlAtom from '../src/atoms/url';
 import type { RenderFn, RenderResult } from '../src/types';
 
@@ -20,12 +21,16 @@ const DEBOUNCE_MS = 250;
 const createObjectURL = vi.fn();
 const revokeObjectURL = vi.fn();
 
-const flush = async () => {
-  for (let i = 0; i < 20; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await Promise.resolve();
-  }
-};
+/**
+ * Waits for the pipeline to settle. Polling rather than draining a fixed
+ * number of microtasks: how many promise hops a render takes is an
+ * implementation detail, and hard-coding it makes the test fail on a slower
+ * machine long before anything is actually wrong.
+ */
+const until = (predicate: () => boolean) =>
+  vi.waitFor(() => {
+    if (!predicate()) throw new Error('pipeline has not settled');
+  });
 
 const mount = (render: RenderFn) => {
   doRender.mockImplementation(render);
@@ -34,6 +39,11 @@ const mount = (render: RenderFn) => {
   const unmount = store.sub(urlAtom, () => {});
   store.get(urlAtom);
   return { store, unmount };
+};
+
+const edit = (store: ReturnType<typeof createStore>, code: string) => {
+  store.set(filesAtom, [{ name: 'a.jsx', code }]);
+  return vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
 };
 
 beforeEach(() => {
@@ -56,26 +66,26 @@ afterEach(() => {
 describe('object url', () => {
   it('publishes a url for the rendered blob', async () => {
     const { store } = mount(async () => result());
-    await flush();
+
+    await until(() => createObjectURL.mock.calls.length > 0);
 
     expect(store.get(urlAtom)).toBe('blob:1');
   });
 
   it('revokes the previous url when a new blob arrives', async () => {
     const { store } = mount(async () => result());
-    await flush();
+    await until(() => store.get(urlAtom) === 'blob:1');
 
-    store.set(filesAtom, [{ name: 'a.jsx', code: 'B' }]);
-    await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
-    await flush();
+    await edit(store, 'B');
+    await until(() => store.get(urlAtom) === 'blob:2');
 
     expect(revokeObjectURL).toHaveBeenCalledWith('blob:1');
-    expect(store.get(urlAtom)).toBe('blob:2');
   });
 
   it('revokes the outstanding url on unmount', async () => {
-    const { unmount } = mount(async () => result());
-    await flush();
+    const { store, unmount } = mount(async () => result());
+    await until(() => store.get(urlAtom) === 'blob:1');
+
     unmount();
 
     expect(revokeObjectURL).toHaveBeenCalledWith('blob:1');
@@ -90,11 +100,10 @@ describe('object url', () => {
       });
 
     const { store } = mount(render);
-    await flush();
+    await until(() => store.get(urlAtom) === 'blob:1');
 
-    store.set(filesAtom, [{ name: 'a.jsx', code: 'B' }]);
-    await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
-    await flush();
+    await edit(store, 'B');
+    await until(() => store.get(statusAtom) === 'error');
 
     expect(store.get(urlAtom)).toBe('blob:1');
     expect(revokeObjectURL).not.toHaveBeenCalled();
@@ -104,7 +113,8 @@ describe('object url', () => {
     const store = createStore();
     store.set(filesAtom, []);
     store.sub(urlAtom, () => {});
-    await flush();
+
+    await until(() => store.get(statusAtom) === 'idle');
 
     expect(createObjectURL).not.toHaveBeenCalled();
     expect(store.get(urlAtom)).toBeNull();

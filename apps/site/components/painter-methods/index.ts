@@ -1,1 +1,1 @@
-export { PainterMethods } from './painter-methods';
+export { PainterMethods, painterMethodsMarkdown } from './painter-methods';

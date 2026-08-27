@@ -314,3 +314,9 @@ export const splits = {
   string,
   { pages: { slug: string; title: string }[]; hashes: Record<string, string> }
 >;
+
+/** Same list, as links, for the machine-readable docs. */
+export const sectionIndexMarkdown = (group: SplitGroup) =>
+  splits[group].pages
+    .map((page) => `- [${page.title}](/docs/v4/${group}/${page.slug})`)
+    .join('\n');

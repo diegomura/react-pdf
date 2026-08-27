@@ -29,7 +29,12 @@ function CopyMarkdown() {
 
   const copy = () => {
     fetch(`${pathname}.mdx`)
-      .then((response) => response.text())
+      .then((response) => {
+        // Without this an error page is copied to the clipboard as if it were
+        // the document.
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.text();
+      })
       .then((text) => navigator.clipboard.writeText(text))
       .then(
         () => {

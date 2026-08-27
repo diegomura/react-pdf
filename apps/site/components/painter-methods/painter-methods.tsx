@@ -48,6 +48,16 @@ const painterGroups: { name: string; methods: string[] }[] = [
   },
 ];
 
+/** Same groups, flattened for the machine-readable docs. */
+export const painterMethodsMarkdown = () =>
+  painterGroups
+    .map(
+      ({ name, methods }) =>
+        `### ${name}\n\n` +
+        methods.map((method) => `- \`${method}\``).join('\n'),
+    )
+    .join('\n\n');
+
 export function PainterMethods() {
   return (
     <div className="not-prose border-fd-border divide-fd-border my-8 divide-y border-y">

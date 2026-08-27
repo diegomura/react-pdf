@@ -95,8 +95,8 @@ const RULES: [string, RegExp][] = [
     /^(svg|svgtext|circle|ellipse|line|path|polygon|polyline|rect|g|clippath|lineargradient|radialgradient|fractals)$/,
   ],
   ['Forms', /checkbox|formfield|picker|textinput/],
-  ['Text & fonts', /text|font|hyphenation|emoji|wrapping/],
-  ['Layout & pagination', /page|break|orphans|widows|fixed|float|shape/],
+  ['Text & fonts', /text|font|hyphenation|emoji/],
+  ['Layout & pagination', /page|break|orphans|widows|fixed|float|shape|wrap/],
   ['Images', /image/],
   ['Advanced', /math|resume|knobs/],
 ];

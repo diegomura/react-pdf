@@ -118,6 +118,11 @@ export function ExamplePicker({ value, onSelect }: ExamplePickerProps) {
                     aria-selected={name === value}
                     data-active={name === activeName}
                     onMouseMove={() => setActive(flat.indexOf(name))}
+                    // Safari and Firefox do not focus a button on mousedown, so
+                    // relatedTarget would be null and the blur below would close
+                    // the popover before this click landed. Keeping focus put
+                    // means no blur fires at all.
+                    onMouseDown={(event) => event.preventDefault()}
                     onClick={() => choose(name)}
                     className="data-[active=true]:bg-fd-accent data-[active=true]:text-fd-accent-foreground flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start font-mono text-[0.75rem]"
                   >

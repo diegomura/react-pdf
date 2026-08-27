@@ -41,14 +41,14 @@ yarn install
 yarn build
 
 # Start the dev server
-cd packages/examples/vite
+cd apps/examples
 yarn dev
 ```
 
 ## Regenerating PDFs
 
 ```bash
-cd packages/examples/vite
+cd apps/examples
 node generate-pdfs.mjs
 ```
 

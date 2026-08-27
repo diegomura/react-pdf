@@ -21,7 +21,7 @@ const ignoreConfig = {
     '**/lib',
     '**/node_modules',
     '**/packages/yoga/**',
-    '**/packages/examples/**',
+    '**/apps/**',
   ],
 };
 

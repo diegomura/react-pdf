@@ -214,7 +214,7 @@ inline or as an alert) in the host's hands rather than baked into svgkit. A
 standalone `.svg` file opened directly (e.g. double-clicked in a file
 browser) has no interactivity by design — annotations only become
 interactive once a host implements the pattern above. See
-`packages/examples/vite/src/svg-viewer.tsx` for a full implementation that
+`apps/examples/src/svg-viewer.tsx` for a full implementation that
 overlays real `<input>`/`<select>`/`<textarea>` controls and note popups.
 
 ## License

@@ -76,7 +76,25 @@ describe('diagnostics', () => {
       setTimeout(resolve, 500);
     });
 
-    log('doRender calls', doRender.mock.calls.length);
+    log('files length seen by store', store.get(filesAtom).length);
+    log('doRender calls via urlAtom', doRender.mock.calls.length);
+
+    // bypass urlAtom: subscribe to the result directly
+    const direct = createStore();
+    direct.set(filesAtom, [{ name: 'b.jsx', code: 'B' }]);
+    const unsubDirect = direct.sub(resultAtom, () => {});
+    direct.get(resultAtom);
+    await new Promise((r) => {
+      setTimeout(r, 500);
+    });
+    log('doRender calls after direct result sub', doRender.mock.calls.length);
+    log('direct result', JSON.stringify({
+      pending: direct.get(resultAtom).pending,
+      hasData: Boolean(direct.get(resultAtom).data),
+      error: String(direct.get(resultAtom).error),
+    }));
+    log('direct status', direct.get(statusAtom));
+    unsubDirect();
     log('status', store.get(statusAtom));
     log('result', JSON.stringify({
       pending: store.get(resultAtom).pending,

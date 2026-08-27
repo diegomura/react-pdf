@@ -11,6 +11,8 @@ import { unwrap } from 'jotai/utils';
 import { withAtomEffect } from 'jotai-effect';
 
 import blobAtom from '../src/atoms/blob';
+import { render as renderFromModule } from '../src/render/render';
+import { swr } from '../src/utils/swr';
 import startedAtom from '../src/atoms/started';
 import filesAtom from '../src/atoms/files';
 import resultAtom from '../src/atoms/result';
@@ -88,6 +90,37 @@ describe('diagnostics', () => {
       log('inline later', JSON.stringify(st2.get(inlineResult)));
       log('inline srcRuns', srcRuns, 'filesSeen', filesSeen, 'startedSeen', startedSeen);
       unsub2();
+    }
+
+    // is vi.mock actually applied here?
+    const before = doRender.mock.calls.length;
+    try {
+      await (renderFromModule as unknown as (...a: unknown[]) => Promise<unknown>)(
+        [{ name: 'z.jsx', code: 'Z' }],
+        { signal: new AbortController().signal },
+      );
+    } catch (error) {
+      log('render module threw', String(error).slice(0, 80));
+    }
+    log('mock applied?', doRender.mock.calls.length > before);
+
+    // does the real swr work?
+    {
+      let runs = 0;
+      const realSwr = swr(
+        atom(async () => {
+          runs += 1;
+          return 'hello';
+        }),
+      );
+      const s3 = createStore();
+      const u3 = s3.sub(realSwr, () => {});
+      log('real swr immediate', JSON.stringify(s3.get(realSwr)));
+      await new Promise((r) => {
+        setTimeout(r, 300);
+      });
+      log('real swr later', JSON.stringify(s3.get(realSwr)), 'runs', runs);
+      u3();
     }
 
     log('NODE_ENV', JSON.stringify(process.env.NODE_ENV));

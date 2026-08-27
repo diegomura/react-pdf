@@ -6,6 +6,9 @@ vi.mock('../src/render/render', () => ({
   render: (...args: unknown[]) => doRender(...(args as [])),
 }));
 
+import { atom } from 'jotai';
+import { withAtomEffect } from 'jotai-effect';
+
 import blobAtom from '../src/atoms/blob';
 import filesAtom from '../src/atoms/files';
 import resultAtom from '../src/atoms/result';
@@ -19,6 +22,22 @@ describe('diagnostics', () => {
       // eslint-disable-next-line no-console
       console.log('DIAG', ...args);
     };
+
+    // does jotai-effect run its effect at all here?
+    let effectRuns = 0;
+    const plain = atom(0);
+    const probe = withAtomEffect(plain, () => {
+      effectRuns += 1;
+    });
+    const probeStore = createStore();
+    const unsubProbe = probeStore.sub(probe, () => {});
+    probeStore.get(probe);
+    await new Promise((r) => {
+      setTimeout(r, 50);
+    });
+    log('withAtomEffect runs', effectRuns);
+    log('jotai version', String((await import('jotai/package.json', { with: { type: 'json' } }).catch(() => ({ default: {} }))).default?.version));
+    unsubProbe();
 
     log('NODE_ENV', JSON.stringify(process.env.NODE_ENV));
     log('REACT_VERSION', JSON.stringify(process.env.REACT_VERSION));

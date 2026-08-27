@@ -15,7 +15,7 @@ const DEBOUNCE_MS = 250;
 const flush = async () => {
   for (let i = 0; i < 20; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await vi.advanceTimersByTimeAsync(0);
+    await Promise.resolve();
   }
 };
 
@@ -24,15 +24,12 @@ const renders = (numPages: number) => async () => ({
   numPages,
 });
 
-/** Torn down in afterEach: a live pipeline would call the next test's mock. */
-const mounted: Array<() => void> = [];
-
 /** Renders a document of `numPages` pages and mounts the pipeline. */
 const seed = async (numPages: number) => {
   doRender.mockImplementation(renders(numPages));
   const store = createStore();
   store.set(filesAtom, [{ name: 'a.jsx', code: 'A' }]);
-  mounted.push(store.sub(numPagesAtom, () => {}));
+  store.sub(numPagesAtom, () => {});
   await flush();
   return store;
 };
@@ -49,13 +46,10 @@ const reload = async (
 
 beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
-  // A bare vi.fn() returns undefined, which the pipeline stores as "resolved
-  // with no document". Always leave a usable implementation in place.
-  doRender.mockReset().mockImplementation(renders(1));
+  doRender.mockReset();
 });
 
 afterEach(() => {
-  mounted.splice(0).forEach((unmount) => unmount());
   vi.useRealTimers();
 });
 

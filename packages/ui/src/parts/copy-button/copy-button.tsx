@@ -1,38 +1,46 @@
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useCallback } from 'react';
+import { useAtomCallback } from 'jotai/utils';
+import { useCallback, useEffect, useState } from 'react';
 
 import activeFileAtom from '../../atoms/active-file';
-import copyStateAtom, { copyAtom } from '../../atoms/copy-state';
 import type { CopyState, PartProps } from '../../types';
+
+const RESET_MS = 1500;
 
 export interface CopyButtonComponentProps {
   onPress: () => void;
   state: CopyState;
 }
 
-export type CopyButtonProps = PartProps<CopyButtonComponentProps> & {
-  /** Defaults to the active file's source. */
-  value?: string;
-};
+function CopyButton({
+  Component,
+  className,
+  style,
+}: PartProps<CopyButtonComponentProps>) {
+  const [state, setState] = useState<CopyState>('idle');
 
-function CopyButton({ Component, value, className, style }: CopyButtonProps) {
-  const file = useAtomValue(activeFileAtom);
-  const state = useAtomValue(copyStateAtom);
-  const copy = useSetAtom(copyAtom);
+  const onPress = useAtomCallback(
+    useCallback((get) => {
+      navigator.clipboard.writeText(get(activeFileAtom)?.code ?? '').then(
+        () => setState('copied'),
+        () => setState('failed'),
+      );
+    }, []),
+  );
 
-  const text = value ?? file?.code ?? '';
+  useEffect(() => {
+    if (state === 'idle') return undefined;
 
-  // copy() never rejects; it resolves to 'copied' or 'failed' either way
-  const onPress = useCallback(() => {
-    copy(text);
-  }, [copy, text]);
+    const timer = setTimeout(() => setState('idle'), RESET_MS);
+
+    return () => clearTimeout(timer);
+  }, [state]);
 
   return (
     <Component
-      onPress={onPress}
       state={state}
       className={className}
       style={style}
+      onPress={onPress}
     />
   );
 }

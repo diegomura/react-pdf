@@ -17,7 +17,7 @@ Object.assign(Root, {
   Status,
 });
 
-const Repl = Root as typeof Root & {
+const Playground = Root as typeof Root & {
   CopyButton: typeof CopyButton;
   Document: typeof Document;
   DownloadButton: typeof DownloadButton;
@@ -27,19 +27,11 @@ const Repl = Root as typeof Root & {
   Status: typeof Status;
 };
 
-export default Repl;
-export { Repl };
-
-export { default as filesAtom } from './atoms/files';
-export { default as activeFileAtom } from './atoms/active-file';
-export { default as statusAtom } from './atoms/status';
-export { default as blobAtom } from './atoms/blob';
+export default Playground;
+export { Playground };
 
 export type { RootProps } from './parts/root/root';
-export type {
-  CopyButtonComponentProps,
-  CopyButtonProps,
-} from './parts/copy-button/copy-button';
+export type { CopyButtonComponentProps } from './parts/copy-button/copy-button';
 export type { DocumentComponentProps } from './parts/document/document';
 export type { DownloadButtonComponentProps } from './parts/download-button/download-button';
 export type { EditorComponentProps } from './parts/editor/editor';

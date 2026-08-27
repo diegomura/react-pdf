@@ -20,10 +20,11 @@ function DownloadButton({
   const url = useAtomValue(urlAtom);
   const filename = useAtomValue(filenameAtom);
 
-  // Both handles, so `<a download href>` works as well as `<button onClick>`.
   const onPress = useCallback(() => {
     if (!url) return;
+
     const anchor = document.createElement('a');
+
     anchor.href = url;
     anchor.download = filename;
     anchor.click();

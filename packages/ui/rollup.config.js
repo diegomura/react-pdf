@@ -8,7 +8,7 @@ const config = {
     dir: 'lib',
     format: 'es',
   },
-  external: [/^react/, /^jotai/],
+  external: [/^react/, /^jotai/, /^@react-pdf/, /^sucrase/],
   plugins: [typescript()],
 };
 

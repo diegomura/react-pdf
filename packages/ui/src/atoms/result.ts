@@ -23,11 +23,7 @@ const delay = (ms: number, signal: AbortSignal) =>
 
 const sourceAtom = atom(
   async (get, { signal }): Promise<RenderResult | null> => {
-    // eslint-disable-next-line no-console
-    console.log('DIAG2 sourceAtom enter, render is', typeof render);
     const files = get(filesAtom);
-    // eslint-disable-next-line no-console
-    console.log('DIAG2 files', files.length);
 
     // A mutable per-store box, never `set`, so reading it subscribes to nothing.
     const started = get(startedAtom);
@@ -39,12 +35,7 @@ const sourceAtom = atom(
     if (started.value) await delay(DEBOUNCE_MS, signal);
     started.value = true;
 
-    // eslint-disable-next-line no-console
-    console.log('DIAG2 calling render');
-    const out = await render(files, { signal });
-    // eslint-disable-next-line no-console
-    console.log('DIAG2 render returned', typeof out, JSON.stringify(out === undefined));
-    return out;
+    return render(files, { signal });
   },
 );
 

@@ -39,11 +39,15 @@ const flush = async () => {
  * Subscribing to statusAtom mounts the whole pipeline, the same way Root's
  * object-url effect does in the real tree.
  */
+/** Torn down in afterEach: a live pipeline would call the next test's mock. */
+const mounted: Array<() => void> = [];
+
 const mount = (render: RenderFn, files = FILES) => {
   doRender.mockImplementation(render);
   const store = createStore();
   store.set(filesAtom, files);
   const unmount = store.sub(statusAtom, () => {});
+  mounted.push(unmount);
   store.get(statusAtom);
   return { store, unmount };
 };
@@ -60,6 +64,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  mounted.splice(0).forEach((unmount) => unmount());
   vi.useRealTimers();
 });
 

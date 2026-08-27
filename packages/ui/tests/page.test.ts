@@ -30,12 +30,15 @@ const renders = (numPages: number) => async () => ({
   numPages,
 });
 
+/** Torn down in afterEach: a live pipeline would call the next test's mock. */
+const mounted: Array<() => void> = [];
+
 /** Renders a document of `numPages` pages and mounts the pipeline. */
 const seed = async (numPages: number) => {
   doRender.mockImplementation(renders(numPages));
   const store = createStore();
   store.set(filesAtom, [{ name: 'a.jsx', code: 'A' }]);
-  store.sub(numPagesAtom, () => {});
+  mounted.push(store.sub(numPagesAtom, () => {}));
   await flush();
   return store;
 };
@@ -56,6 +59,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  mounted.splice(0).forEach((unmount) => unmount());
   vi.useRealTimers();
 });
 

@@ -32,11 +32,19 @@ const until = (predicate: () => boolean) =>
     if (!predicate()) throw new Error('pipeline has not settled');
   });
 
+/**
+ * Every subscription is torn down in afterEach. A store left mounted keeps its
+ * render pipeline alive into the next test, where it calls a mock whose
+ * implementation has just been reset and gets `undefined` back.
+ */
+const mounted: Array<() => void> = [];
+
 const mount = (render: RenderFn) => {
   doRender.mockImplementation(render);
   const store = createStore();
   store.set(filesAtom, [{ name: 'a.jsx', code: 'A' }]);
   const unmount = store.sub(urlAtom, () => {});
+  mounted.push(unmount);
   store.get(urlAtom);
   return { store, unmount };
 };
@@ -80,6 +88,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  mounted.splice(0).forEach((unmount) => unmount());
   vi.useRealTimers();
   unpatchUrl();
 });
@@ -133,7 +142,7 @@ describe('object url', () => {
   it('creates nothing while there is nothing to render', async () => {
     const store = createStore();
     store.set(filesAtom, []);
-    store.sub(urlAtom, () => {});
+    mounted.push(store.sub(urlAtom, () => {}));
 
     await until(() => store.get(statusAtom) === 'idle');
 

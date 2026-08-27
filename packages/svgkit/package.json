@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/svgkit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "pdfkit-compatible drawing context that renders react-pdf documents to SVG",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -26,8 +26,8 @@
     "lib"
   ],
   "devDependencies": {
-    "@react-pdf/font": "^4.1.1",
-    "@react-pdf/layout": "^5.1.1",
-    "@react-pdf/render": "^4.6.4"
+    "@react-pdf/font": "^4.1.2",
+    "@react-pdf/layout": "^5.2.0",
+    "@react-pdf/render": "^4.7.0"
   }
 }

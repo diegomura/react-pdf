@@ -1,5 +1,16 @@
 # @react-pdf/mermaid
 
+## 6.0.0
+
+### Patch Changes
+
+- [#3534](https://github.com/diegomura/react-pdf/pull/3534) [`049168536480c4216c0a8c4832cf9230feef12e9`](https://github.com/diegomura/react-pdf/commit/049168536480c4216c0a8c4832cf9230feef12e9) Thanks [@diegomura](https://github.com/diegomura)! - Fix diagrams failing to render inside a Web Worker.
+
+  Fix the `theme` prop being ignored.
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/renderer@4.9.0
+
 ## 5.0.1
 
 ### Patch Changes

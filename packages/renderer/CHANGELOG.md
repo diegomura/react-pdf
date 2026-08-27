@@ -1,5 +1,21 @@
 # @react-pdf/renderer
 
+## 4.9.0
+
+### Minor Changes
+
+- [#3529](https://github.com/diegomura/react-pdf/pull/3529) [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb) Thanks [@diegomura](https://github.com/diegomura)! - feat: add `conformance` Document prop for PDF/A output
+
+  Produces PDF/A-1/2/3 (b-level) output with XMP conformance metadata and an sRGB OutputIntent. `pdfVersion` defaults to what the chosen level requires. Fonts must be registered (not the built-in standard 14) to fully validate.
+
+### Patch Changes
+
+- Updated dependencies [[`b768f01e862cd56987f046c117919191ef810646`](https://github.com/diegomura/react-pdf/commit/b768f01e862cd56987f046c117919191ef810646), [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/render@4.7.0
+  - @react-pdf/types@2.14.0
+  - @react-pdf/layout@5.2.0
+  - @react-pdf/font@4.1.2
+
 ## 4.8.1
 
 ### Patch Changes

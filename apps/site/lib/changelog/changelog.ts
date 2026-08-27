@@ -1,8 +1,9 @@
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-
 export const CHANGELOG_URL =
   'https://github.com/diegomura/react-pdf/blob/master/packages/renderer/CHANGELOG.md';
+
+/** Fetched rather than read off disk: Vercel builds this app from apps/site alone. */
+const CHANGELOG_RAW_URL =
+  'https://raw.githubusercontent.com/diegomura/react-pdf/master/packages/renderer/CHANGELOG.md';
 
 /** Releases shown on the page; older ones live in the full changelog on GitHub. */
 export const RELEASE_LIMIT = 30;
@@ -88,10 +89,9 @@ async function fetchReleaseDates(): Promise<Record<string, string>> {
 }
 
 export async function getReleases(): Promise<Release[]> {
-  const markdown = readFileSync(
-    path.join(process.cwd(), '../../packages/renderer/CHANGELOG.md'),
-    'utf8',
-  );
+  const res = await fetch(CHANGELOG_RAW_URL, { next: { revalidate: 86400 } });
+  if (!res.ok) throw new Error(`Changelog fetch failed: ${res.status}`);
+  const markdown = await res.text();
   const dates = await fetchReleaseDates();
 
   return parseChangelog(markdown)

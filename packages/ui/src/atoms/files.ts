@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 
-import type { ReplFile } from '../types';
+import type { PlaygroundFile } from '../types';
 
-const filesAtom = atom<ReplFile[]>([]);
+const filesAtom = atom<PlaygroundFile[]>([]);
 
 export default filesAtom;

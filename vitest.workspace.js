@@ -17,5 +17,5 @@ export default [
   'packages/mermaid',
   'packages/paginate',
   'packages/hyphenate',
-  'packages/ui/vitest.config.js',
+  'packages/ui',
 ];

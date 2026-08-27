@@ -2,11 +2,11 @@ import { useAtomValue } from 'jotai';
 
 import errorAtom from '../../atoms/error';
 import statusAtom from '../../atoms/status';
-import type { PartProps, ReplStatus } from '../../types';
+import type { PartProps, PlaygroundError, PlaygroundStatus } from '../../types';
 
 export interface StatusComponentProps {
-  status: ReplStatus;
-  error: Error | null;
+  status: PlaygroundStatus;
+  error: PlaygroundError | null;
 }
 
 function Status({

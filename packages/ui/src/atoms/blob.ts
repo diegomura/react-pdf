@@ -1,5 +1,7 @@
 import { atom } from 'jotai';
 
-const blobAtom = atom<Blob | null>(null);
+import resultAtom from './result';
+
+const blobAtom = atom((get) => get(resultAtom).data?.blob ?? null);
 
 export default blobAtom;

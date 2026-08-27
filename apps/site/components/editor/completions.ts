@@ -2,6 +2,7 @@ import type {
   CompletionContext,
   CompletionResult,
 } from '@codemirror/autocomplete';
+import { syntaxTree } from '@codemirror/language';
 
 const COMPONENTS = [
   'Document',
@@ -174,8 +175,34 @@ const STYLE_KEYS = [
   'zIndex',
 ];
 
-const toOptions = (words: string[], type: string) =>
-  words.map((label) => ({ label, type }));
+type Node = ReturnType<ReturnType<typeof syntaxTree>['resolveInner']>;
+
+const isObject = (node: Node) =>
+  node.name === 'ObjectExpression' || node.name === 'ObjectPattern';
+
+const isTag = (node: Node | null) =>
+  !!node && /^JSX(SelfClosing|Open|Close)Tag$/.test(node.name);
+
+// Incomplete objects parse as ObjectPattern, so both shapes count as one level.
+// `style={{ ... }}` puts style keys one object deep, StyleSheet.create two.
+const inStyleObject = (context: CompletionContext, node: Node) => {
+  const text = (n: Node | null) =>
+    n ? context.state.sliceDoc(n.from, n.to) : '';
+
+  let depth = 0;
+  for (let n: Node | null = node; n; n = n.parent) {
+    if (isObject(n)) depth += 1;
+    if (n.name === 'JSXAttribute') return depth >= 1 && /^style/.test(text(n));
+    if (n.name === 'CallExpression')
+      return depth >= 2 && /StyleSheet\s*\.\s*create$/.test(text(n.firstChild));
+  }
+  return false;
+};
+
+const toOptions = (
+  words: string[],
+  type: string,
+): CompletionResult['options'] => words.map((label) => ({ label, type }));
 
 export function reactPdfCompletions(
   context: CompletionContext,
@@ -183,19 +210,25 @@ export function reactPdfCompletions(
   const word = context.matchBefore(/[\w-]*/);
   if (!word || (word.from === word.to && !context.explicit)) return null;
 
-  const before = context.state.sliceDoc(Math.max(0, word.from - 30), word.from);
-  const inJsxTag = /<\/?\s*$/.test(before);
-  const inStyleObject =
-    /[{,]\s*$/.test(before) &&
-    /style|Style/.test(
-      context.state.sliceDoc(Math.max(0, word.from - 200), word.from),
-    );
+  const done = (options: CompletionResult['options']) => ({
+    from: word.from,
+    options,
+    validFor: /^[\w-]*$/,
+  });
 
-  const options = inJsxTag
-    ? toOptions(COMPONENTS, 'class')
-    : inStyleObject
-      ? toOptions(STYLE_KEYS, 'property')
-      : [...toOptions(COMPONENTS, 'class'), ...toOptions(PROPS, 'property')];
+  const node = syntaxTree(context.state).resolveInner(word.from, -1);
+  const jsxName = node.name === 'JSXIdentifier';
 
-  return { from: word.from, options, validFor: /^[\w-]*$/ };
+  // `</Foo` doesn't parse as JSX until the tag closes.
+  if ((jsxName && isTag(node.parent)) || context.matchBefore(/<\/?\s*[\w-]*$/))
+    return done(toOptions(COMPONENTS, 'class'));
+
+  if ((jsxName && node.parent?.name === 'JSXAttribute') || isTag(node))
+    return done(toOptions(PROPS, 'property'));
+
+  const onValueSide = context.matchBefore(/:[\s'"`]*[\w-]*$/);
+  if (!onValueSide && inStyleObject(context, node))
+    return done(toOptions(STYLE_KEYS, 'property'));
+
+  return null;
 }

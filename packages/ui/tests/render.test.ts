@@ -22,12 +22,6 @@ const FILES = [{ name: 'a.jsx', code: 'A' }];
 const DEBOUNCE_MS = 250;
 
 /** Drains the promise chain. Microtask based; fake timers replace setImmediate. */
-/**
- * Drains the render pipeline. Advancing timers flushes microtasks to
- * completion between runs, so this does not depend on how many promise hops a
- * render happens to take -- counting those is what made these tests fail on
- * slower machines.
- */
 const flush = async () => {
   for (let i = 0; i < 20; i += 1) {
     // eslint-disable-next-line no-await-in-loop

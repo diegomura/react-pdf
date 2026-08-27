@@ -3,6 +3,12 @@ import { notFound } from 'next/navigation';
 import { Mdx } from '@/components/mdx';
 import { OverviewTimeline } from '@/components/overview-timeline';
 import { PostCover } from '@/components/post-cover';
+import {
+  GlyphLab,
+  LineBoxLab,
+  LineBreakLab,
+  RunsStrip,
+} from '@/components/text-lab';
 import { blogSource } from '@/lib/blog-source';
 
 const formatDate = (value: string) =>
@@ -47,7 +53,16 @@ export default async function BlogPost(props: {
       </header>
 
       <article className="prose">
-        <Mdx body={page.data.body} components={{ OverviewTimeline }} />
+        <Mdx
+          body={page.data.body}
+          components={{
+            OverviewTimeline,
+            RunsStrip,
+            GlyphLab,
+            LineBreakLab,
+            LineBoxLab,
+          }}
+        />
       </article>
     </main>
   );

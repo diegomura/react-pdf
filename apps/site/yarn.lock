@@ -1178,8 +1178,10 @@
     "@react-pdf/primitives" "^4.4.0"
     "@react-pdf/stylesheet" "^6.3.1"
 
-"@react-pdf/ui@file:../../packages/ui":
+"@react-pdf/ui@^0.1.0":
   version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@react-pdf/ui/-/ui-0.1.0.tgz#a9361e7d995bfdfa5bbae543eae98a4b7da69486"
+  integrity sha512-DFpUIIpn2VTIzYzFx78l8YtbkHpTNdyz/ZxHrkQAPM4zb4pvfkcYH4siwwGtv7DZtXq7i+kH8xgHJX+NGDEkLg==
   dependencies:
     jotai "^2.12.5"
     jotai-effect "^2.0.4"

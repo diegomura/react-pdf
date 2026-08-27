@@ -7,6 +7,7 @@ vi.mock('../src/render/render', () => ({
 }));
 
 import { atom } from 'jotai';
+import { unwrap } from 'jotai/utils';
 import { withAtomEffect } from 'jotai-effect';
 
 import blobAtom from '../src/atoms/blob';
@@ -38,6 +39,23 @@ describe('diagnostics', () => {
     log('withAtomEffect runs', effectRuns);
     log('jotai version', String((await import('jotai/package.json', { with: { type: 'json' } }).catch(() => ({ default: {} }))).default?.version));
     unsubProbe();
+
+    // does unwrap honour the fallback, and does it pull the source atom?
+    const PENDING = Symbol('pending');
+    let sourceRuns = 0;
+    const src = atom(async () => {
+      sourceRuns += 1;
+      return 42;
+    });
+    const un = unwrap(src, () => PENDING);
+    const us = createStore();
+    const unsubUn = us.sub(un, () => {});
+    log('unwrap immediate', String(us.get(un)), 'sourceRuns', sourceRuns);
+    await new Promise((r) => {
+      setTimeout(r, 300);
+    });
+    log('unwrap later', String(us.get(un)), 'sourceRuns', sourceRuns);
+    unsubUn();
 
     log('NODE_ENV', JSON.stringify(process.env.NODE_ENV));
     log('REACT_VERSION', JSON.stringify(process.env.REACT_VERSION));

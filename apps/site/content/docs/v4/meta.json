@@ -40,6 +40,7 @@
     "svg/stop",
     "svg/defs",
     "svg/clip-path",
+    "svg/marker",
     "svg/linear-gradient",
     "svg/radial-gradient",
     "svg/presentation-attributes",

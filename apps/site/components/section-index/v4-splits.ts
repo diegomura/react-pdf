@@ -146,6 +146,10 @@ export const splits = {
         title: 'ClipPath',
       },
       {
+        slug: 'marker',
+        title: 'Marker',
+      },
+      {
         slug: 'linear-gradient',
         title: 'LinearGradient',
       },

@@ -3,12 +3,15 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 
-// same box PdfPreviewPane renders into, so the swap costs no layout shift
+import { PdfPreviewSkeleton } from '@/components/pdf-preview/skeleton';
+
+// the pane, plus the bar the loaded block puts under it
 function Skeleton() {
   return (
-    <div className="bg-fd-muted flex h-[19rem] items-center justify-center p-5 sm:h-[26rem]">
-      <div className="bg-fd-background/70 h-full animate-pulse rounded-[2px] shadow-sm [aspect-ratio:1/1.4142]" />
-    </div>
+    <>
+      <PdfPreviewSkeleton />
+      <div className="border-fd-border bg-fd-card h-9 border-t" />
+    </>
   );
 }
 

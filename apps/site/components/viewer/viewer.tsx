@@ -1,7 +1,7 @@
 'use client';
 
 import PlaygroundUI, { type DocumentComponentProps } from '@react-pdf/ui';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -20,7 +20,9 @@ const MAX_PAGE_WIDTH = 760;
 // only unusual page sizes reflow once `onLoadSuccess` reports the real ratio.
 const A4_RATIO = 1 / Math.SQRT2;
 
-// the floating pager overlaps the surface; keep the page clear of it
+// the floating pager overlaps the surface; keep the page clear of it. Always
+// reserved, even for a single page: the count only arrives with the document,
+// and giving the space back then resizes the page under the reader's eyes.
 const PAGER_HEIGHT = 36;
 
 export type ViewerProps = DocumentComponentProps & { className?: string };
@@ -33,7 +35,6 @@ export type ViewerProps = DocumentComponentProps & { className?: string };
 export function Viewer({
   url,
   page,
-  numPages,
   rendering,
   className = 'bg-fd-muted p-4',
 }: ViewerProps) {
@@ -41,9 +42,24 @@ export function Viewer({
   const [ratio, setRatio] = useState(A4_RATIO);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // Layout effect, and measured once by hand: a ResizeObserver only delivers
+  // its first entry after the browser has painted, and that paint would show
+  // the pane empty for a frame right as the block swaps in.
+  useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    const style = getComputedStyle(container);
+    setBox({
+      width:
+        container.clientWidth -
+        parseFloat(style.paddingLeft) -
+        parseFloat(style.paddingRight),
+      height:
+        container.clientHeight -
+        parseFloat(style.paddingTop) -
+        parseFloat(style.paddingBottom),
+    });
 
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
@@ -60,9 +76,10 @@ export function Viewer({
 
   // fit-to-page: the whole page has to be visible without scrolling, so the
   // pane's height drives the width unless the pane is the narrower constraint.
-  // Zero until the observer has measured — rendering a page at a guessed size
-  // only to resize it a frame later is the one thing the eye does catch.
-  const available = box.height - (numPages > 1 ? PAGER_HEIGHT : 0);
+  // Zero only before the pane has been measured, which is never a painted
+  // state: a page drawn at a guessed size and resized a frame later is the one
+  // thing the eye does catch.
+  const available = box.height - PAGER_HEIGHT;
   const pageWidth = Math.floor(
     Math.max(Math.min(box.width, available * ratio, MAX_PAGE_WIDTH), 0),
   );
@@ -99,6 +116,7 @@ export function Viewer({
                 <Page
                   pageNumber={page}
                   width={pageWidth}
+                  renderForms
                   onLoadSuccess={(loaded) => {
                     const view = loaded.getViewport({ scale: 1 });
                     setRatio(view.width / view.height);

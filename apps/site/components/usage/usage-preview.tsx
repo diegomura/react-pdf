@@ -4,18 +4,11 @@ import { ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-// same box PdfPreviewPane renders into, so the swap costs no layout shift
-function Skeleton() {
-  return (
-    <div className="bg-fd-muted flex h-[19rem] items-center justify-center p-5 sm:h-[26rem]">
-      <div className="bg-fd-background/70 h-full animate-pulse rounded-[2px] shadow-sm [aspect-ratio:1/1.4142]" />
-    </div>
-  );
-}
+import { PdfPreviewSkeleton } from '@/components/pdf-preview/skeleton';
 
 const PdfPreview = dynamic(
   () => import('@/components/pdf-preview').then((m) => m.PdfPreview),
-  { ssr: false, loading: Skeleton },
+  { ssr: false, loading: PdfPreviewSkeleton },
 );
 
 export interface UsagePreviewProps {
@@ -48,7 +41,7 @@ export function UsagePreview({ code }: UsagePreviewProps) {
       </summary>
 
       <div className="border-fd-border border-t">
-        {booted ? <PdfPreview code={code} /> : <Skeleton />}
+        {booted ? <PdfPreview code={code} /> : <PdfPreviewSkeleton />}
       </div>
     </details>
   );

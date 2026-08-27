@@ -12,7 +12,7 @@ const orphans_and_widows = `const styles = StyleSheet.create({
 
 const doc = (
   <Document>
-    <Page style={styles.page} size="A4" debug>
+    <Page style={styles.page} size="A4">
       <Text style={{ marginTop: 450 }}>Widows example. Try changing prop value</Text>
       <Text style={styles.text} widows={4}>
         En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha

@@ -51,7 +51,7 @@ export function ExampleBody({
     <PlaygroundUI files={[{ name: 'example.jsx', code }]}>
       <PdfPreviewPane />
 
-      <div className="border-fd-border bg-fd-card flex items-center justify-between gap-3 border-t px-3.5 py-2">
+      <div className="border-fd-border bg-fd-card flex h-9 items-center justify-between gap-3 border-t px-3.5">
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}

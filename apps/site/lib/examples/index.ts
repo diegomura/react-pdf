@@ -39,6 +39,7 @@ import shape_outside from './shape-outside';
 import styles from './styles';
 import svg from './svg';
 import svgtext from './svgtext';
+import tailwind from './tailwind';
 import text from './text';
 import textinput from './textinput';
 
@@ -84,6 +85,7 @@ export const examples: Record<string, string> = {
   styles: styles,
   svg: svg,
   svgtext: svgtext,
+  tailwind: tailwind,
   text: text,
   textinput: textinput,
 };
@@ -98,7 +100,7 @@ const RULES: [string, RegExp][] = [
   ['Text & fonts', /text|font|hyphenation|emoji/],
   ['Layout & pagination', /page|break|orphans|widows|fixed|float|shape|wrap/],
   ['Images', /image/],
-  ['Advanced', /math|resume|knobs/],
+  ['Advanced', /math|resume|knobs|tailwind/],
 ];
 
 const FALLBACK = 'Essentials';

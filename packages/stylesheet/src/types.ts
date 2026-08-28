@@ -416,7 +416,7 @@ export type TextSafeStyle = TextExpandedStyle & {
   fontWeight?: number;
   fontFeatureSettings?: SafeFontFeatureSettings;
   letterSpacing?: number;
-  lineHeight?: number;
+  lineHeight?: number | string;
 };
 
 // Margins

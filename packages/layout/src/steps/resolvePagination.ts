@@ -44,7 +44,16 @@ const warnUnavailableSpace = (node: SafeNode) => {
   );
 };
 
-const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
+const splitNodes = (
+  height: number,
+  contentArea: number,
+  nodes: SafeNode[],
+  // Whether the current page has no laid-out (non-fixed) content above these
+  // nodes yet. Threaded through the recursion so the "keep an un-splittable
+  // node on the current page" decision reflects the *page*, not just the local
+  // container. See https://github.com/diegomura/react-pdf/issues/3449
+  pageEmpty = true,
+) => {
   const currentChildren: SafeNode[] = [];
   const nextChildren: SafeNode[] = [];
 
@@ -52,6 +61,11 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     const child = nodes[i];
     const futureNodes = nodes.slice(i + 1);
     const futureFixedNodes = futureNodes.filter(isFixed);
+
+    // The page is empty above this node only when it was empty entering this
+    // container and nothing non-fixed has been placed before it here.
+    const emptyAbove =
+      pageEmpty && !currentChildren.some((node) => !isFixed(node));
 
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
@@ -100,12 +114,24 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     }
 
     if (shouldSplit) {
-      const [currentChild, nextChild] = split(child, height, contentArea);
+      const [currentChild, nextChild] = split(
+        child,
+        height,
+        contentArea,
+        emptyAbove,
+      );
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        // But if the current page is empty then we can just include the parent on the current page
-        if (currentChildren.length === 0) {
+        // Keep the (now empty) parent on the current page only when the page is
+        // empty above it — otherwise there is nothing to gain and we would just
+        // squash an oversized subtree into the little space left here, drawing
+        // its lines on top of each other. When the page already has content, we
+        // move the whole node to the next page instead. Using page emptiness
+        // (not the local `currentChildren.length === 0`) is what prevents both
+        // the overlap and an infinite page loop.
+        // See https://github.com/diegomura/react-pdf/issues/3449
+        if (emptyAbove) {
           currentChildren.push(child, ...futureFixedNodes);
           nextChildren.push(...futureNodes);
         } else {
@@ -132,18 +158,29 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
   return [currentChildren, nextChildren];
 };
 
-const splitChildren = (height: number, contentArea: number, node: SafeNode) => {
+const splitChildren = (
+  height: number,
+  contentArea: number,
+  node: SafeNode,
+  pageEmpty: boolean,
+) => {
   const children = node.children || [];
   const availableHeight = height - getTop(node);
-  return splitNodes(availableHeight, contentArea, children);
+  return splitNodes(availableHeight, contentArea, children, pageEmpty);
 };
 
-const splitView = (node: SafeNode, height: number, contentArea: number) => {
+const splitView = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  pageEmpty: boolean,
+) => {
   const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
     node,
+    pageEmpty,
   );
 
   return [
@@ -152,8 +189,15 @@ const splitView = (node: SafeNode, height: number, contentArea: number) => {
   ];
 };
 
-const split = (node: SafeNode, height: number, contentArea: number) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  pageEmpty: boolean,
+) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, pageEmpty);
 
 const shouldResolveDynamicNodes = (node: SafeNode) => {
   const children = node.children || [];

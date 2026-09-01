@@ -33,7 +33,7 @@
     "@react-pdf/types": "^2.14.0",
     "events": "^3.3.0",
     "object-assign": "^4.1.1",
-    "pdfkit": "0.20.1",
+    "pdfkit": "0.20.2",
     "prop-types": "^15.6.2",
     "queue": "^6.0.1"
   },

@@ -20,6 +20,7 @@ import pageWrap from './page-wrap';
 import resume from './resume';
 import svg from './svg';
 import svgImage from './svg-image';
+import webpImage from './webp-image';
 import svgTransform from './svg-transform';
 import transformOrigin from './transform-origin';
 import forms from './forms';
@@ -51,6 +52,7 @@ const EXAMPLES = [
   resume,
   svg,
   svgImage,
+  webpImage,
   svgTransform,
   transformOrigin,
   imageBackground,

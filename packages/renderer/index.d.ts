@@ -19,6 +19,7 @@ import {
   PageMode,
   HitSlop,
 } from '@react-pdf/types';
+import { WebpTranscoder } from '@react-pdf/image';
 
 declare class ReactPDF {
   static default: typeof ReactPDF;
@@ -776,6 +777,15 @@ declare namespace ReactPDF {
   export const StyleSheet: {
     create: <T extends Styles>(styles: T) => T;
   };
+
+  /**
+   * Teach the renderer how to transcode WebP images to PNG. PDF cannot embed WebP, and Node
+   * ships no image decoder, so this is required to render `.webp` images outside the browser.
+   * @platform node
+   */
+  export const registerWebpTranscoder: (
+    transcoder: WebpTranscoder | null,
+  ) => void;
 
   export const version: any;
 

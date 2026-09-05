@@ -2,7 +2,7 @@
 title: "Image"
 ---
 
-A React component for displaying network or local (Node only) JPG or PNG images, as well as base64 encoded image strings.
+A React component for displaying network or local (Node only) JPG, PNG or WebP images, as well as base64 encoded image strings.
 
 <Usage />
 
@@ -30,6 +30,27 @@ Defines the source of an image. Can be in any of these four valid forms:
 |-------------|:-----------------------------------------------------------------------------------------------------------------------------------:|------------------------------------------------------------|
 | String      |                                           Valid image URL or filesystem path (Node only)                                            | `www.react-pdf.org/test.jpg`                               |
 | URL object  |                                       Enables to pass extra parameters on how to fetch images                                       | `{ uri: valid-url, method: 'GET', headers: {}, body: '', credentials: 'include' }` |
-| Buffer      |                   Renders image directly from Buffer. Image format (png or jpg) will be guessed based on Buffer.                    | `Buffer`                                                   |
-| Data buffer | Renders buffer image via the _data_ key. It's also recommended to provide the image _format_ so the engine knows how to proccess it | `{ data: Buffer, format: 'png' \| 'jpg' }`                 |
+| Buffer      |               Renders image directly from Buffer. Image format (png, jpg or webp) will be guessed based on Buffer.                | `Buffer`                                                   |
+| Data buffer | Renders buffer image via the _data_ key. It's also recommended to provide the image _format_ so the engine knows how to proccess it | `{ data: Buffer, format: 'png' \| 'jpg' \| 'webp' }`       |
 | Function    |                    A function that returns (can also return a promise that resolves to) any of the above formats                    | `() => String \| Promise<String>`                          |
+
+## WebP images
+
+A PDF image can carry JPEG (`DCTDecode`) or raw pixels (`FlateDecode`, which is what a PNG
+decodes into). There is no PDF filter for a VP8/VP8L bitstream, so WebP cannot be embedded
+as-is — react-pdf decodes it and re-encodes it to PNG while resolving the image.
+
+In the browser this happens automatically, using the WebP decoder the browser already ships.
+
+Node has no image decoder, so you have to supply one. Without it, rendering a WebP image throws
+rather than silently leaving a blank space:
+
+```jsx
+import sharp from 'sharp';
+import { registerWebpTranscoder } from '@react-pdf/renderer';
+
+registerWebpTranscoder((data) => sharp(data).png().toBuffer());
+```
+
+The function receives the original WebP bytes and returns PNG or JPEG bytes — a `Buffer`, or a
+promise of one. Any decoder works; `sharp` is only an example.

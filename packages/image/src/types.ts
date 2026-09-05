@@ -1,5 +1,9 @@
 import type { SvgNode } from '@react-pdf/svg';
 
+/**
+ * The bytes handed to pdfkit. WebP never appears here: PDF cannot embed it, so it is
+ * transcoded to PNG while the image is resolved (see `webp.ts`).
+ */
 export interface RasterImage {
   width: number;
   height: number;
@@ -18,7 +22,10 @@ export interface SvgImage {
 
 export type Image = RasterImage | SvgImage;
 
-export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
+export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg' | 'webp';
+
+/** Turns WebP bytes into bytes a PDF can embed — PNG or JPEG. */
+export type WebpTranscoder = (data: Buffer) => Promise<Buffer> | Buffer;
 
 export type Viewbox = {
   minX: number;

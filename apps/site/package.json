@@ -24,6 +24,7 @@
     "@react-pdf/textkit": "^7.0.1",
     "@react-pdf/ui": "^0.1.0",
     "@uiw/react-codemirror": "^4.25.11",
+    "@vercel/analytics": "^2.0.1",
     "codemirror": "^6.0.2",
     "fontkit": "^2.0.4",
     "fumadocs-core": "^16.15.1",

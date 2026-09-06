@@ -4,7 +4,13 @@ import usePDF from './usePDF';
 import PDFViewer from './PDFViewer';
 import BlobProvider from './BlobProvider';
 import PDFDownloadLink from './PDFDownloadLink';
-import { pdf, version, Font, StyleSheet } from '../index';
+import {
+  pdf,
+  version,
+  Font,
+  StyleSheet,
+  registerWebpTranscoder,
+} from '../index';
 
 const throwEnvironmentError = (name) => {
   throw new Error(
@@ -51,6 +57,7 @@ export default {
   Font,
   version,
   StyleSheet,
+  registerWebpTranscoder,
   PDFViewer,
   BlobProvider,
   PDFDownloadLink,

@@ -54,4 +54,27 @@ describe('run lineGap operator', () => {
 
     expect(lineGap(run)).toBe((10 * 12) / 2);
   });
+
+  test('should prefer OS/2 typoLineGap over hhea lineGap', () => {
+    const run = {
+      start: 0,
+      end: 0,
+      attributes: {
+        fontSize: 12,
+        font: [
+          {
+            lineGap: 200,
+            unitsPerEm: 1000,
+            'OS/2': {
+              typoAscender: 800,
+              typoDescender: -200,
+              typoLineGap: 0,
+            },
+          } as unknown as Font,
+        ],
+      },
+    };
+
+    expect(lineGap(run)).toBe(0);
+  });
 });

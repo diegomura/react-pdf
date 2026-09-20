@@ -1,6 +1,5 @@
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
-import { YogaNode } from 'yoga-layout/load';
 
 import {
   Box,
@@ -64,7 +63,7 @@ export type SvgNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: (
     | LineNode
     | PolylineNode

@@ -30,7 +30,7 @@ export type LinearGradientNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: StopNode[];
 };
 

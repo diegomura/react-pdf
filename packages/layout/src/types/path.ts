@@ -22,7 +22,7 @@ export type PathNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 

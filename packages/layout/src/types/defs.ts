@@ -10,7 +10,7 @@ export type DefsNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | ClipPathNode
     | LinearGradientNode

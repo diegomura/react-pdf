@@ -19,7 +19,7 @@ const shouldLayoutText = (node: SafeNode): node is SafeTextNode =>
 
 /**
  * Performs text layout on text node if wasn't calculated before.
- * Text layout is usually performed on Yoga's layout process (via setMeasureFunc),
+ * Text layout is usually performed during Taffy's layout process (via the measure function),
  * but we need to layout those nodes with fixed width and height.
  *
  * @param node

@@ -1,7 +1,7 @@
 import { SafeTextNode } from '../types';
 import getLineTop from './getLineTop';
 
-// Yoga computes in float32, line boxes are float64. Don't let that difference
+// Taffy computes in float32, line boxes are float64. Don't let that difference
 // push a line that fits exactly to the next page. Same value pagination uses to
 // decide if a node needs splitting.
 const SAFETY_THRESHOLD = 0.001;

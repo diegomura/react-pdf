@@ -24,7 +24,7 @@ export type TspanNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   lines?: Paragraph;
   children?: TextInstanceNode[];
 };

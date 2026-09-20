@@ -1,6 +1,5 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
-import { YogaNode } from 'yoga-layout/load';
 
 import { Box, FormCommonProps, Origin } from './base';
 
@@ -52,7 +51,7 @@ export type TextInputNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: never[];
 };
 

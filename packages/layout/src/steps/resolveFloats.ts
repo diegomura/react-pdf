@@ -76,7 +76,7 @@ const getFloatLeft = (node: SafeNode, parentWidth: number): number => {
 
 /**
  * Position float element to the left or right edge of parent.
- * Note: Yoga already applies marginTop to box.top for absolute positioned elements.
+ * Note: The layout engine already applies marginTop to box.top for absolute positioned elements.
  * Callers guarantee node.box — resolveFloats skips boxless children.
  */
 const positionFloatElement = <T extends SafeNode>(
@@ -290,7 +290,7 @@ const resolveFloats = <T extends SafeNode>(node: T): T => {
     children.push(resolveFloats(processedChild));
   }
 
-  // Clearance moved in-flow children down after yoga ran; grow the container
+  // Clearance moved in-flow children down after layout ran; grow the container
   // to keep containing them, like CSS clearance does.
   const box =
     clearOffset > 0 && node.box

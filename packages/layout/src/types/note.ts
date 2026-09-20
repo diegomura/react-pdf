@@ -10,7 +10,7 @@ export type NoteNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: TextInstanceNode[];
 };
 

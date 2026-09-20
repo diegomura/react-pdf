@@ -432,7 +432,6 @@ function convertToSvgNode(imageNode: SafeImageNode): SafeSvgNode {
     style: { ...imageNode.style, width, height },
     box: imageNode.box,
     origin: imageNode.origin,
-    yogaNode: imageNode.yogaNode,
     wasSplit: false,
     children: image.data.children.map(convertParsedNode),
   };

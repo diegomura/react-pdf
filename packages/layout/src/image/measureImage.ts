@@ -72,6 +72,20 @@ const measureImage =
       };
     }
 
+    // Unconstrained width (Taffy asks for the max-content size when sizing
+    // flex items in rows): use the image's intrinsic size, clamped by the
+    // available height. Yoga never asked; it offered the container width.
+    if (widthMode === MeasureMode.Undefined) {
+      const intrinsicWidth = width === 0 ? 0 : node.image.width;
+      const maxHeight =
+        heightMode === MeasureMode.AtMost
+          ? Math.min(height, pageArea)
+          : pageArea;
+      const scaledHeight = Math.min(intrinsicWidth / imageRatio, maxHeight);
+
+      return { width: scaledHeight * imageRatio, height: scaledHeight };
+    }
+
     return { height, width };
   };
 

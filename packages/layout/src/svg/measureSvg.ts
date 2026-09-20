@@ -29,6 +29,18 @@ const measureCanvas =
       return { width: height * aspectRatio };
     }
 
+    // Unconstrained width (max-content): the viewBox is the intrinsic size
+    const viewBox = node.props.viewBox;
+    if (
+      widthMode === MeasureMode.Undefined &&
+      width !== 0 &&
+      viewBox &&
+      typeof viewBox !== 'string'
+    ) {
+      const intrinsicWidth = viewBox.maxX - viewBox.minX;
+      return { width: intrinsicWidth, height: intrinsicWidth / aspectRatio };
+    }
+
     return {};
   };
 

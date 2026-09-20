@@ -9,7 +9,7 @@ const FEATURES = [
   },
   {
     title: 'Layout you already know',
-    body: 'Yoga brings flexbox to the page: rows, columns, wrapping and absolute positioning.',
+    body: 'Taffy brings flexbox to the page: rows, columns, wrapping and absolute positioning.',
   },
   {
     title: 'Beyond text',

@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout/load';
+import { MeasureFunction, MeasureMode } from '../taffy/measure';
 
 import { SafePageNode, SafeSvgNode, Viewbox } from '../types';
 
@@ -10,25 +10,22 @@ const getAspectRatio = (viewbox: string | Viewbox) => {
 };
 
 /**
- * Yoga svg measure function
+ * Svg measure function
  *
  * @param page
  * @param node
  * @returns Measure svg
  */
 const measureCanvas =
-  (page: SafePageNode, node: SafeSvgNode): Yoga.MeasureFunction =>
+  (page: SafePageNode, node: SafeSvgNode): MeasureFunction =>
   (width, widthMode, height, heightMode) => {
     const aspectRatio = getAspectRatio(node.props.viewBox) || 1;
 
-    if (
-      widthMode === Yoga.MeasureMode.Exactly ||
-      widthMode === Yoga.MeasureMode.AtMost
-    ) {
+    if (widthMode === MeasureMode.Exactly || widthMode === MeasureMode.AtMost) {
       return { width, height: width / aspectRatio };
     }
 
-    if (heightMode === Yoga.MeasureMode.Exactly) {
+    if (heightMode === MeasureMode.Exactly) {
       return { width: height * aspectRatio };
     }
 

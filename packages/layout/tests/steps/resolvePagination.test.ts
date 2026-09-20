@@ -1,10 +1,12 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 import resolvePagination from '../../src/steps/resolvePagination';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import { SafeDocumentNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -14,11 +16,8 @@ const calcLayout = (node: SafeDocumentNode) =>
 
 describe('pagination step', () => {
   test('should stretch absolute block to full page size', async () => {
-    const yoga = await loadYoga();
-
     const layout = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -64,11 +63,8 @@ describe('pagination step', () => {
   });
 
   test('should force new height for split nodes', async () => {
-    const yoga = await loadYoga();
-
     const layout = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -110,11 +106,8 @@ describe('pagination step', () => {
   });
 
   test('should force new height for split nodes with fixed height', async () => {
-    const yoga = await loadYoga();
-
     const layout = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -147,11 +140,8 @@ describe('pagination step', () => {
   });
 
   test('should not wrap page with false wrap prop', async () => {
-    const yoga = await loadYoga();
-
     const layout = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -179,11 +169,8 @@ describe('pagination step', () => {
   });
 
   test('should break on a container whose children can not fit on a page', async () => {
-    const yoga = await loadYoga();
-
     const layout = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -239,11 +226,8 @@ describe('pagination step', () => {
   });
 
   test('should not infinitely loop when splitting pages', async () => {
-    const yoga = await loadYoga();
-
     calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       children: [
         {
@@ -277,11 +261,8 @@ describe('pagination step', () => {
   });
 
   test('should take padding into account when splitting pages', async () => {
-    const yoga = await loadYoga();
-
     const root = {
       type: 'DOCUMENT' as const,
-      yoga,
       props: {},
       style: {},
       children: [
@@ -340,8 +321,6 @@ describe('pagination step', () => {
   });
 
   test('should not duplicate bookmarks', async () => {
-    const yoga = await loadYoga();
-
     const bookmarkChapter1 = {
       ref: 0,
       title: 'chapter 1',
@@ -378,7 +357,6 @@ describe('pagination step', () => {
 
     const result = calcLayout({
       type: 'DOCUMENT',
-      yoga,
       props: {},
       style: {},
       children: [

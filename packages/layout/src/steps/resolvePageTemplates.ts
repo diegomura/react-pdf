@@ -35,8 +35,8 @@ const resolvePageTemplates = (root: any) => {
 
     // TODO: content identity could be structural instead of tag-based — a
     // single P.Fragment node holding the page content, made transparent to
-    // layout (display: contents semantics: no yoga node, no box, children
-    // hoisted to the parent). Requires teaching yoga mapping, resolvers,
+    // layout (display: contents semantics: no layout node, no box, children
+    // hoisted to the parent). Requires teaching the style mapping, resolvers,
     // fromPage and render about a boxless node. Worth it if content ever
     // needs richer identity (marks, named regions, TOC anchors).
     const content = (page.children || []).map(tagContent);

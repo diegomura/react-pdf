@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolveStyles from '../../src/steps/resolveStyles';
 import resolveInheritance from '../../src/steps/resolveInheritance';
@@ -9,6 +9,8 @@ import legacyPagination from '../../src/steps/resolvePagination';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import nextPagination from '../../src/paginate';
 import { SafeDocumentNode, SafeNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -35,7 +37,6 @@ const text = (value: string, style = {}): any => ({
 
 const doc = async (pageStyle, children): Promise<SafeDocumentNode> => ({
   type: 'DOCUMENT',
-  yoga: await loadYoga(),
   props: {},
   children: [{ type: 'PAGE', props: {}, style: pageStyle, children }],
 });
@@ -185,7 +186,7 @@ describe('paginate adapter parity with resolvePagination', () => {
 });
 
 // Free space is whatever the page has left once its content is placed. The
-// first pass runs pages unconstrained, so yoga never distributes it; these
+// first pass runs pages unconstrained, so the layout engine never distributes it; these
 // pin the two ways it comes back — a relayout for growth, arithmetic for
 // justifyContent.
 describe('free space left at the bottom of a page', () => {

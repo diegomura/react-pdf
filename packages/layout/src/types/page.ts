@@ -1,6 +1,5 @@
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
-import { YogaNode } from 'yoga-layout/load';
 
 import type { Box, NodeProps, Origin } from './base';
 import { ImageNode, SafeImageNode } from './image';
@@ -103,7 +102,7 @@ export type PageNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: (
     | ViewNode
     | ImageNode

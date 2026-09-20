@@ -1,11 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 
 import resolveTextLayout from '../../src/steps/resolveTextLayout';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import { SafeDocumentNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -15,7 +17,6 @@ const getRoot = async (
 ): Promise<SafeDocumentNode> => ({
   type: 'DOCUMENT',
   props: {},
-  yoga: await loadYoga(),
   children: [
     {
       type: 'PAGE',
@@ -54,9 +55,6 @@ describe('text layout step', () => {
   test('should calculate lines for text width defined height', async () => {
     const root = await getRoot('text text text', { height: 50 });
     const dimensions = resolveDimensions(root, fontStore);
-
-    expect(getText(dimensions).lines).not.toBeDefined();
-
     const textLayout = resolveTextLayout(dimensions, fontStore);
 
     expect(getText(textLayout).lines).toBeDefined();

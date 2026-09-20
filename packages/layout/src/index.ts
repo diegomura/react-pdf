@@ -1,7 +1,7 @@
 import { asyncCompose } from '@react-pdf/fns';
 
 import resolveSvg from './steps/resolveSvg';
-import resolveYoga from './steps/resolveYoga';
+import resolveTaffy from './steps/resolveTaffy';
 import resolveZIndex from './steps/resolveZIndex';
 import resolveAssets from './steps/resolveAssets';
 import resolveStyles from './steps/resolveStyles';
@@ -55,7 +55,7 @@ const layout = asyncCompose(
   resolveBookmarks,
   resolvePageTemplates,
   resolvePageSizes,
-  resolveYoga,
+  resolveTaffy,
 );
 
 export * from './types';

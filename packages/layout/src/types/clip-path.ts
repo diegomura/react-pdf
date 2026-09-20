@@ -18,7 +18,7 @@ export type ClipPathNode = {
   style: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | LineNode
     | PolylineNode

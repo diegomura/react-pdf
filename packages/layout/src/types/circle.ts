@@ -27,7 +27,7 @@ export type CircleNode = {
   style?: StyleProp;
   box?: never;
   origin?: Origin;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 

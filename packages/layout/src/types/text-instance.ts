@@ -7,7 +7,7 @@ export type TextInstanceNode = {
   box?: never;
   origin?: never;
   children?: never[];
-  yogaNode?: never;
+  taffyNode?: never;
   value: string;
 };
 

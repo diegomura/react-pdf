@@ -1,68 +1,30 @@
 import * as P from '@react-pdf/primitives';
-import { isNil, compose } from '@react-pdf/fns';
+import { isNil } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
+import { Style, TaffyTree } from 'taffy-layout';
 
+import toTaffyStyle from '../node/toTaffyStyle';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
-import getPosition from '../node/getPosition';
-import getDimension from '../node/getDimension';
-import getBorderWidth from '../node/getBorderWidth';
-import setDisplay from '../node/setDisplay';
-import setOverflow from '../node/setOverflow';
-import setFlexWrap from '../node/setFlexWrap';
-import setFlexGrow from '../node/setFlexGrow';
-import setFlexBasis from '../node/setFlexBasis';
-import setAlignSelf from '../node/setAlignSelf';
-import setAlignItems from '../node/setAlignItems';
-import setFlexShrink from '../node/setFlexShrink';
-import setAspectRatio from '../node/setAspectRatio';
-import setAlignContent from '../node/setAlignContent';
-import setPositionType from '../node/setPositionType';
-import setFlexDirection from '../node/setFlexDirection';
-import setJustifyContent from '../node/setJustifyContent';
-import {
-  setMarginTop,
-  setMarginRight,
-  setMarginBottom,
-  setMarginLeft,
-} from '../node/setMargin';
-import {
-  setPaddingTop,
-  setPaddingRight,
-  setPaddingBottom,
-  setPaddingLeft,
-} from '../node/setPadding';
-import {
-  setBorderTop,
-  setBorderRight,
-  setBorderBottom,
-  setBorderLeft,
-} from '../node/setBorderWidth';
-import {
-  setPositionTop,
-  setPositionRight,
-  setPositionBottom,
-  setPositionLeft,
-} from '../node/setPosition';
-import {
-  setWidth,
-  setHeight,
-  setMinWidth,
-  setMaxWidth,
-  setMinHeight,
-  setMaxHeight,
-} from '../node/setDimension';
-import { setRowGap, setColumnGap } from '../node/setGap';
 import measureSvg from '../svg/measureSvg';
 import measureText from '../text/measureText';
+import { getLinesLayoutWidth } from '../text/layoutText';
 import measureImage from '../image/measureImage';
 import measureCanvas from '../canvas/measureCanvas';
 import {
+  createMeasureDispatch,
+  MeasureFunction,
+  toNodeMeasure,
+} from '../taffy/measure';
+import {
   Box,
+  SafeCanvasNode,
   SafeDocumentNode,
+  SafeImageNode,
   SafeNode,
   SafePageNode,
-  YogaInstance,
+  SafeSvgNode,
+  SafeTextNode,
 } from '../types';
 
 const isType = (type) => (node) => node.type === type;
@@ -70,226 +32,191 @@ const isType = (type) => (node) => node.type === type;
 const isSvg = isType(P.Svg);
 const isText = isType(P.Text);
 const isNote = isType(P.Note);
-const isPage = isType(P.Page);
 const isImage = isType(P.Image);
 const isCanvas = isType(P.Canvas);
 const isTextInstance = isType(P.TextInstance);
 
-const setNodeHeight = (node: SafeNode) => {
-  const value = isPage(node) ? node.box?.height : node.style?.height;
-  return setHeight(value);
-};
+const MAX_CONTENT = { width: 'max-content', height: 'max-content' } as const;
 
-/**
- * Set styles valeus into yoga node before layout calculation
- *
- * @param node
- */
-const setYogaValues = (node: SafeNode) => {
-  compose(
-    setNodeHeight(node),
-    setWidth(node.style.width),
-    setMinWidth(node.style.minWidth),
-    setMaxWidth(node.style.maxWidth),
-    setMinHeight(node.style.minHeight),
-    setMaxHeight(node.style.maxHeight),
-    setMarginTop(node.style.marginTop),
-    setMarginRight(node.style.marginRight),
-    setMarginBottom(node.style.marginBottom),
-    setMarginLeft(node.style.marginLeft),
-    setPaddingTop(node.style.paddingTop),
-    setPaddingRight(node.style.paddingRight),
-    setPaddingBottom(node.style.paddingBottom),
-    setPaddingLeft(node.style.paddingLeft),
-    setPositionType(node.style.position),
-    setPositionTop(node.style.top),
-    setPositionRight(node.style.right),
-    setPositionBottom(node.style.bottom),
-    setPositionLeft(node.style.left),
-    setBorderTop(node.style.borderTopWidth),
-    setBorderRight(node.style.borderRightWidth),
-    setBorderBottom(node.style.borderBottomWidth),
-    setBorderLeft(node.style.borderLeftWidth),
-    setDisplay(node.style.display),
-    setFlexDirection(node.style.flexDirection),
-    setAlignSelf(node.style.alignSelf),
-    setAlignContent(node.style.alignContent),
-    setAlignItems(node.style.alignItems),
-    setJustifyContent(node.style.justifyContent),
-    setFlexWrap(node.style.flexWrap),
-    setOverflow(node.style.overflow),
-    setAspectRatio(node.style.aspectRatio),
-    setFlexBasis(node.style.flexBasis),
-    setFlexGrow(node.style.flexGrow),
-    setFlexShrink(node.style.flexShrink),
-    setRowGap(node.style.rowGap),
-    setColumnGap(node.style.columnGap),
-  )(node);
-};
+const ALIGNMENT_FACTORS = { center: 0.5, right: 1 };
 
-/**
- * Inserts child into parent' yoga node
- *
- * @param parent parent
- * @returns Insert yoga nodes
- */
-const insertYogaNodes = (parent) => (child) => {
-  parent.insertChild(child.yogaNode, parent.getChildCount());
-  return child;
-};
-
-const setMeasureFunc = (node, page, fontStore) => {
-  const { yogaNode } = node;
-
-  if (isText(node)) {
-    yogaNode.setMeasureFunc(measureText(page, node, fontStore));
-  }
-
-  if (isImage(node)) {
-    yogaNode.setMeasureFunc(measureImage(page, node));
-  }
-
-  if (isCanvas(node)) {
-    yogaNode.setMeasureFunc(measureCanvas(page, node));
-  }
-
-  if (isSvg(node)) {
-    yogaNode.setMeasureFunc(measureSvg(page, node));
-  }
-
-  return node;
-};
-
-const isLayoutElement = (node) =>
+const isLayoutElement = (node: SafeNode) =>
   !isText(node) && !isNote(node) && !isSvg(node);
 
-/**
- * @typedef {Function} CreateYogaNodes
- * @param {Object} node
- * @returns {Object} node with appended yoga node
- */
+const getMeasureFunc = (
+  node: SafeNode,
+  page: SafePageNode,
+  fontStore: FontStore,
+): MeasureFunction | undefined => {
+  if (isText(node)) return measureText(page, node as SafeTextNode, fontStore);
+  if (isImage(node)) return measureImage(page, node as SafeImageNode);
+  if (isCanvas(node)) return measureCanvas(page, node as SafeCanvasNode);
+  if (isSvg(node)) return measureSvg(page, node as SafeSvgNode);
+  return undefined;
+};
 
 /**
- * Creates and add yoga node to document tree
- * Handles measure function for text and image nodes
- *
- * @returns Create yoga nodes
+ * Creates a Taffy node for every layout node of the page subtree, storing
+ * the id on `taffyNode`. Text, image, canvas and svg nodes carry their
+ * measure function as node context.
  */
-const createYogaNodes =
-  (page: SafePageNode, fontStore: FontStore, yoga: YogaInstance) =>
-  (node: SafeNode) => {
-    const yogaNode = yoga.node.create();
+const createTaffyNodes =
+  (tree: TaffyTree, page: SafePageNode, fontStore: FontStore) =>
+  (node: SafeNode): SafeNode => {
+    const result: SafeNode = Object.assign({}, node);
+    const style = new Style(toTaffyStyle(result));
+    const measure = getMeasureFunc(result, page, fontStore);
 
-    const result = Object.assign({}, node, { yogaNode });
+    const taffyNode = measure
+      ? tree.newLeafWithContext(style, toNodeMeasure(measure))
+      : tree.newLeaf(style);
 
-    setYogaValues(result);
+    style.free();
+    result.taffyNode = taffyNode;
 
     if (isLayoutElement(node) && node.children) {
-      const resolveChild = compose(
-        insertYogaNodes(yogaNode),
-        createYogaNodes(page, fontStore, yoga),
-      );
+      const create = createTaffyNodes(tree, page, fontStore);
 
-      result.children = node.children.map(resolveChild);
+      result.children = (node.children as SafeNode[]).map((child) => {
+        const resolved = create(child);
+        tree.addChild(taffyNode, resolved.taffyNode!);
+        return resolved;
+      }) as any;
     }
-
-    setMeasureFunc(result, page, fontStore);
 
     return result;
   };
 
 /**
- * Performs yoga calculation
- *
- * @param page - Page node
- * @returns Page node
+ * Text lines are broken against the width Taffy offered while measuring,
+ * but the node's box may end up narrower (shrink-wrapped). textkit already
+ * aligned the lines inside the wider container, so the renderer shifts them
+ * back by the difference.
  */
-const calculateLayout = (page: SafePageNode) => {
-  page.yogaNode.calculateLayout();
-  return page;
+const getAlignOffset = (node: SafeTextNode, box: Box) => {
+  if (!node.lines?.length || node.exclusions?.length) return 0;
+
+  const factor = ALIGNMENT_FACTORS[node.style?.textAlign] || 0;
+  if (!factor) return 0;
+
+  const layoutWidth = getLinesLayoutWidth(node.lines);
+  if (layoutWidth === undefined) return 0;
+
+  const contentWidth = box.width - box.paddingLeft - box.paddingRight;
+
+  return Math.max(0, layoutWidth - contentWidth) * factor;
 };
 
 /**
- * Saves Yoga layout result into 'box' attribute of node
+ * Saves Taffy layout result into 'box' attribute of node and drops the
+ * Taffy node id.
  *
- * @param node
+ * @param tree - Taffy tree
+ * @param node - Node
+ * @param parent - Parent box size, for the right/bottom offsets
  * @returns Node with box data
  */
-const persistDimensions = (node: SafeNode) => {
+const persistDimensions = (
+  tree: TaffyTree,
+  node: SafeNode,
+  parent?: { width: number; height: number },
+): SafeNode => {
   if (isTextInstance(node)) return node;
 
-  const box: Box = Object.assign(
-    getPadding(node),
-    getMargin(node),
-    getBorderWidth(node),
-    getPosition(node),
-    getDimension(node),
+  // Descendants of text and svg nodes have no layout node of their own
+  if (isNil(node.taffyNode)) {
+    const box = Object.assign(
+      { width: 0, height: 0, top: 0, left: 0, right: 0, bottom: 0 },
+      getPadding(node),
+      getMargin(node),
+    ) as Box;
+    const newNode: SafeNode = Object.assign({}, node, { box });
+
+    if (!node.children) return newNode;
+
+    const children = node.children.map((child) =>
+      persistDimensions(tree, child),
+    );
+
+    return Object.assign({}, newNode, { children });
+  }
+
+  const layout = tree.getLayout(node.taffyNode);
+
+  const box: Box = {
+    width: layout.width,
+    height: layout.height,
+    top: layout.y,
+    left: layout.x,
+    right: parent ? parent.width - layout.x - layout.width : 0,
+    bottom: parent ? parent.height - layout.y - layout.height : 0,
+    marginTop: layout.marginTop,
+    marginRight: layout.marginRight,
+    marginBottom: layout.marginBottom,
+    marginLeft: layout.marginLeft,
+    paddingTop: layout.paddingTop,
+    paddingRight: layout.paddingRight,
+    paddingBottom: layout.paddingBottom,
+    paddingLeft: layout.paddingLeft,
+    borderTopWidth: layout.borderTop,
+    borderRightWidth: layout.borderRight,
+    borderBottomWidth: layout.borderBottom,
+    borderLeftWidth: layout.borderLeft,
+  };
+
+  layout.free();
+
+  const newNode: SafeNode = Object.assign({}, node, { box });
+  delete newNode.taffyNode;
+
+  if (isText(newNode)) {
+    (newNode as SafeTextNode).alignOffset = getAlignOffset(
+      newNode as SafeTextNode,
+      box,
+    );
+  }
+
+  if (!node.children) return newNode;
+
+  const children = node.children.map((child) =>
+    persistDimensions(tree, child, box),
   );
 
-  const newNode = Object.assign({}, node, { box });
-
-  if (!node.children) return newNode;
-
-  const children = node.children.map(persistDimensions);
-
   return Object.assign({}, newNode, { children });
 };
 
 /**
- * Removes yoga node from document tree
- *
- * @param node
- * @returns Node without yoga node
- */
-const destroyYogaNodes = (node: SafeNode): SafeNode => {
-  const newNode = Object.assign({}, node);
-
-  delete newNode.yogaNode;
-
-  if (!node.children) return newNode;
-
-  const children = node.children.map(destroyYogaNodes);
-
-  return Object.assign({}, newNode, { children });
-};
-
-/**
- * Free yoga node from document tree
- *
- * @param node
- * @returns Node without yoga node
- */
-const freeYogaNodes = (node: SafeNode) => {
-  if (node.yogaNode) node.yogaNode.freeRecursive();
-  return node;
-};
-
-/**
- * Calculates page object layout using Yoga.
+ * Calculates page object layout using Taffy.
  * Takes node values from 'box' and 'style' attributes, and persist them back into 'box'
- * Destroy yoga values at the end.
  *
  * @param page - Object
+ * @param fontStore - Font store
  * @returns Page object with correct 'box' layout attributes
  */
 export const resolvePageDimensions = (
   page: SafePageNode,
   fontStore: FontStore,
-  yoga: YogaInstance,
 ) => {
   if (isNil(page)) return null;
 
-  return compose(
-    destroyYogaNodes,
-    freeYogaNodes,
-    persistDimensions,
-    calculateLayout,
-    createYogaNodes(page, fontStore, yoga),
-  )(page);
+  const tree = new TaffyTree();
+  tree.disableRounding();
+
+  try {
+    const withNodes = createTaffyNodes(tree, page, fontStore)(page);
+    const { dispatch, rethrow } = createMeasureDispatch();
+
+    tree.computeLayoutWithMeasure(withNodes.taffyNode!, MAX_CONTENT, dispatch);
+    rethrow();
+
+    return persistDimensions(tree, withNodes) as SafePageNode;
+  } finally {
+    tree.free();
+  }
 };
 
 /**
- * Calculates root object layout using Yoga.
+ * Calculates root object layout using Taffy.
  *
  * @param node - Root object
  * @param fontStore - Font store
@@ -299,7 +226,7 @@ const resolveDimensions = (node: SafeDocumentNode, fontStore: FontStore) => {
   if (!node.children) return node;
 
   const resolveChild = (child: SafePageNode) =>
-    resolvePageDimensions(child, fontStore, node.yoga);
+    resolvePageDimensions(child, fontStore);
 
   const children = node.children.map(resolveChild);
 

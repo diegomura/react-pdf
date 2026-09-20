@@ -1,6 +1,5 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
-import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
 import { SafeTextNode, TextNode } from './text';
@@ -17,7 +16,7 @@ export type FieldSetNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: (TextNode | ViewNode | TextInputNode)[];
 };
 

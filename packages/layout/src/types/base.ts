@@ -1,14 +1,9 @@
 import { Transform } from '@react-pdf/stylesheet';
-import { YogaNode } from 'yoga-layout/load';
 import type { SafeNode } from './node';
 import { SafeClipPathNode } from './clip-path';
 import { SafeLinearGradientNode } from './linear-gradient';
 import { SafeMarkerNode } from './marker';
 import { SafeRadialGradientNode } from './radial-gradient';
-
-export type YogaInstance = {
-  node: { create: () => YogaNode };
-};
 
 export type Box = {
   width: number;

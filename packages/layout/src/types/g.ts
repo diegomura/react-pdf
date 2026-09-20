@@ -30,7 +30,7 @@ export type GNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | LineNode
     | PolylineNode

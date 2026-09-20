@@ -1,13 +1,15 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolveStyles from '../../src/steps/resolveStyles';
 import resolveInheritance from '../../src/steps/resolveInheritance';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import nextPagination from '../../src/paginate';
 import { SafeDocumentNode, SafeNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -81,7 +83,6 @@ const node = (rand: () => number, depth: number): any => {
 
 const document = async (rand: () => number): Promise<SafeDocumentNode> => ({
   type: 'DOCUMENT',
-  yoga: await loadYoga(),
   props: {},
   children: [
     {

@@ -30,7 +30,7 @@ const computeStyle = (container: Container, node: Node) => {
 
   const style = stylesheet(container, baseStyle);
 
-  // Floats are out of flow; flipping to absolute here keeps yoga and pagination float-unaware
+  // Floats are out of flow; flipping to absolute here keeps layout and pagination float-unaware
   if (style.float === 'left' || style.float === 'right') {
     style.position = 'absolute';
   }

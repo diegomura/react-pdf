@@ -47,18 +47,33 @@ const computeStyle = (container: Container, node: Node) => {
 const resolveNodeStyles =
   (container: Container) =>
   (node: Node): SafeNode => {
-    const style = computeStyle(container, node);
+    // Page relayout runs this step again over already resolved nodes (only
+    // freshly rendered dynamic nodes are new). Resolving twice is not safe:
+    // a unitless lineHeight is multiplied by the font size on every pass.
+    const stylesResolved = (node as SafeNode).stylesResolved ?? false;
+    const style = stylesResolved
+      ? (node.style as SafeNode['style'])
+      : computeStyle(container, node);
 
     // Split fragments re-enter through page relayout; keep their mark.
     const wasSplit = (node as SafeNode).wasSplit ?? false;
 
     if (!node.children) {
-      return Object.assign({}, node, { style, wasSplit }) as SafeNode;
+      return Object.assign({}, node, {
+        style,
+        wasSplit,
+        stylesResolved: true,
+      }) as SafeNode;
     }
 
     const children = node.children.map(resolveNodeStyles(container));
 
-    return Object.assign({}, node, { style, wasSplit, children }) as SafeNode;
+    return Object.assign({}, node, {
+      style,
+      wasSplit,
+      stylesResolved: true,
+      children,
+    }) as SafeNode;
   };
 
 /**

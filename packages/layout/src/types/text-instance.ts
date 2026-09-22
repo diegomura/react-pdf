@@ -11,4 +11,7 @@ export type TextInstanceNode = {
   value: string;
 };
 
-export type SafeTextInstanceNode = TextInstanceNode & { wasSplit: boolean };
+export type SafeTextInstanceNode = TextInstanceNode & {
+  wasSplit: boolean;
+  stylesResolved?: boolean;
+};

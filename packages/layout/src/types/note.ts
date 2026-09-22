@@ -17,5 +17,6 @@ export type NoteNode = {
 export type SafeNoteNode = Omit<NoteNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeTextInstanceNode[];
 };

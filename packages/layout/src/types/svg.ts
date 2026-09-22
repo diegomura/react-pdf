@@ -84,6 +84,7 @@ export type SafeSvgNode = Omit<SvgNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
   props: SvgSafeProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

@@ -24,6 +24,7 @@ export type SelectNode = {
 export type SafeSelectNode = Omit<SelectNode, 'style'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };
 
 export type ListNode = {
@@ -39,4 +40,5 @@ export type ListNode = {
 export type SafeListNode = Omit<ListNode, 'style'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

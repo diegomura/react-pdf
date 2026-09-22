@@ -50,6 +50,7 @@ export type SafeGNode = Omit<GNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
   props: SafeGProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

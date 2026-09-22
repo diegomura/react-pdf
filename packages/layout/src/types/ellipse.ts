@@ -36,4 +36,5 @@ export type SafeEllipseNode = Omit<EllipseNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeEllipseProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

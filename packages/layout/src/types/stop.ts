@@ -25,4 +25,5 @@ export type StopNode = {
 export type SafeStopNode = Omit<StopNode, 'props'> & {
   props: StopSafeProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

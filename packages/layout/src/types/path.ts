@@ -30,4 +30,5 @@ export type SafePathNode = Omit<PathNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePathProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

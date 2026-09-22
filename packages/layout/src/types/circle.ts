@@ -35,4 +35,5 @@ export type SafeCircleNode = Omit<CircleNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeCircleProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

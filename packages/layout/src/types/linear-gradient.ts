@@ -40,5 +40,6 @@ export type SafeLinearGradientNode = Omit<
 > & {
   props: SafeLinearGradientProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeStopNode[];
 };

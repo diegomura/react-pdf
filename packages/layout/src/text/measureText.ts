@@ -35,6 +35,9 @@ const fits = (node: SafeTextNode, width: number) => {
   // text children; laying it out again would resurrect the whole text.
   if (node.wasSplit) return true;
 
+  // An intermediate measure at a tiny size can truncate every line away
+  if (!node.lines.length) return false;
+
   const laidOutAt = getLinesLayoutWidth(node.lines);
 
   if (laidOutAt === undefined) return true;
@@ -96,9 +99,15 @@ const measureText =
     if (width <= 0) return { width: 0, height: 0 };
 
     if (!fits(node, width)) {
-      // Widths arrive f32-rounded from Taffy; the tolerance keeps a line that
-      // measured as fitting from being broken again for a rounding error.
-      node.lines = layoutText(node, width + EPSILON, height, fontStore);
+      // Sizes arrive f32-rounded from Taffy; the tolerance keeps a line that
+      // measured as fitting from being broken again, or truncated away, for
+      // a rounding error.
+      node.lines = layoutText(
+        node,
+        width + EPSILON,
+        height + EPSILON,
+        fontStore,
+      );
     }
 
     return {

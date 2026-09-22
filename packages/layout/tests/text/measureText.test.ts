@@ -127,6 +127,19 @@ describe('measureText', () => {
       expect(node.lines).toBeUndefined();
     });
 
+    test('should recover from an intermediate measure that truncated every line', async () => {
+      const node = createTextNode('Titel');
+      const measureFunc = measureText(page, node, fontStore);
+
+      const first = measureFunc(300, MeasureMode.Exactly, Infinity);
+      // padding-only width with the previous line height: nothing fits
+      measureFunc(5, MeasureMode.Exactly, first.height!);
+      const size = measureFunc(300, MeasureMode.Exactly, first.height!);
+
+      expect(node.lines).toHaveLength(1);
+      expect(size.height).toBeGreaterThan(0);
+    });
+
     test('should never re-layout a page-split fragment', async () => {
       const node = createTextNode(TEXT);
       const measureFunc = measureText(page, node, fontStore);

@@ -106,6 +106,44 @@ describe('measureText', () => {
       expect(node.lines).toBe(lines);
     });
 
+    test('should re-layout when the box is wider than the lines were broken for', async () => {
+      const node = createTextNode(TEXT);
+      const measureFunc = measureText(page, node, fontStore);
+
+      measureFunc(50, MeasureMode.Exactly, Infinity);
+      const narrow = node.lines!.length;
+      measureFunc(300, MeasureMode.Exactly, Infinity);
+
+      expect(node.lines!.length).toBeLessThan(narrow);
+    });
+
+    test('should not lay out text at a zero width', async () => {
+      const node = createTextNode(TEXT);
+      const measureFunc = measureText(page, node, fontStore);
+
+      const size = measureFunc(0, MeasureMode.Exactly, Infinity);
+
+      expect(size).toEqual({ width: 0, height: 0 });
+      expect(node.lines).toBeUndefined();
+    });
+
+    test('should never re-layout a page-split fragment', async () => {
+      const node = createTextNode(TEXT);
+      const measureFunc = measureText(page, node, fontStore);
+
+      measureFunc(100, MeasureMode.Exactly, 50);
+      const fragment = Object.assign({}, node, {
+        lines: node.lines!.slice(0, 1),
+        wasSplit: true,
+      });
+      const fragmentMeasure = measureText(page, fragment, fontStore);
+
+      fragmentMeasure(0, MeasureMode.Exactly, 50);
+      fragmentMeasure(300, MeasureMode.Exactly, 50);
+
+      expect(fragment.lines).toHaveLength(1);
+    });
+
     test('should re-layout when lines do not fit', async () => {
       const node = createTextNode(TEXT);
       const measureFunc = measureText(page, node, fontStore);

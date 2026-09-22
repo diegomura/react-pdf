@@ -26,7 +26,7 @@
     "@react-pdf/types": "^2.14.0",
     "fontkit": "^2.0.2",
     "is-url": "^1.2.4",
-    "pdfkit": "0.20.1"
+    "pdfkit": "0.20.2"
   },
   "files": [
     "lib"

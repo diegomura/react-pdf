@@ -136,7 +136,7 @@ describe('randomly generated documents', () => {
 
     documents.forEach((laid, index) => {
       const seed = SEEDS[index];
-      const root = nextPagination(laid);
+      const root = nextPagination(laid, fontStore);
 
       root.children.forEach((page, pageIndex) => {
         boxes(page as unknown as SafeNode).forEach(([child, top]) => {
@@ -173,8 +173,8 @@ describe('randomly generated documents', () => {
     );
 
     pairs.forEach(([seed, a, b]) => {
-      const first = nextPagination(a);
-      const second = nextPagination(b);
+      const first = nextPagination(a, fontStore);
+      const second = nextPagination(b, fontStore);
 
       const shape = (root: SafeDocumentNode) =>
         root.children.map((page) =>

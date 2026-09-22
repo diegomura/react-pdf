@@ -14,23 +14,29 @@ const MAX_CONTENT_WIDTH = 1e6;
 // textkit produced; a hundredth of a point is far below anything visible.
 const EPSILON = 0.01;
 
+// A box that ends up a hair narrower than the text it holds (flex shrink
+// resolving in f32) keeps its lines rather than re-breaking a line that
+// visually fits; this much overflow is invisible.
+const OVERFLOW_TOLERANCE = 1;
+
 /**
  * Whether the lines laid out so far can be reused for a container of
- * `width`. Lines broken against a definite width are always kept, even if
- * the box has since become narrower (flex shrink) or wider (a split stripped
- * padding): re-breaking text is not stable (Knuth-Plass) and pagination
- * relies on lines surviving relayouts, which is also how the Yoga-based
- * layout behaved. Only lines broken against an unconstrained width are
- * re-broken, when they overflow. Lines of unknown origin are trusted.
+ * `width`: they were broken against this very width, or against a wider
+ * container and still fit. Re-breaking text at exactly its own width is not
+ * stable (Knuth-Plass), so fitting lines are preferred over a fresh layout.
+ * Lines broken against a narrower container are always re-broken: Taffy
+ * measures flex items at intermediate (even zero) sizes before their final
+ * one. Lines of unknown origin are trusted.
  */
 const fits = (node: SafeTextNode, width: number) => {
   if (!node.lines) return false;
 
   const laidOutAt = getLinesLayoutWidth(node.lines);
 
-  if (laidOutAt !== MAX_CONTENT_WIDTH) return true;
+  if (laidOutAt === undefined) return true;
+  if (Math.abs(laidOutAt - width) <= EPSILON) return true;
 
-  return linesWidth(node) <= width + EPSILON;
+  return laidOutAt >= width && linesWidth(node) <= width + OVERFLOW_TOLERANCE;
 };
 
 /**

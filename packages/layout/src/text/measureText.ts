@@ -31,6 +31,10 @@ const OVERFLOW_TOLERANCE = 1;
 const fits = (node: SafeTextNode, width: number) => {
   if (!node.lines) return false;
 
+  // A page-split fragment owns a slice of the lines but still all of the
+  // text children; laying it out again would resurrect the whole text.
+  if (node.wasSplit) return true;
+
   const laidOutAt = getLinesLayoutWidth(node.lines);
 
   if (laidOutAt === undefined) return true;
@@ -86,6 +90,12 @@ const measureText =
 
       return { width: linesWidth(measured), height: linesHeight(measured) };
     }
+
+    // Taffy sizes flex-basis: 0 items at a zero main size before their final
+    // one; breaking the text word by word there is expensive and never shown.
+    // Text that fits anyway (e.g. a zero-width joiner used as a baseline
+    // strut) keeps its height.
+    if (width <= 0 && !fits(node, width)) return { width: 0, height: 0 };
 
     if (!fits(node, width)) {
       // Widths arrive f32-rounded from Taffy; the tolerance keeps a line that

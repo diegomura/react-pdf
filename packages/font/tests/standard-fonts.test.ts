@@ -267,10 +267,11 @@ describe('standard fonts', () => {
     expect(font.src).toBe('Helvetica-BoldOblique');
   });
 
-  it('should resolve advanceWidth of soft hyphen to be zero', () => {
+  it('should resolve advanceWidth of soft hyphen to be zero', async () => {
     const SOFT_HYPHEN = '\u00AD';
     const fontStore = new FontStore();
 
+    await fontStore.load({ fontFamily: 'Helvetica' });
     const font = fontStore.getFont({ fontFamily: 'Helvetica' });
 
     expect(font.data!.encode!(SOFT_HYPHEN)[1][0].advanceWidth).toBe(0);

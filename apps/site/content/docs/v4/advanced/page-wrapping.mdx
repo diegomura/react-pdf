@@ -49,6 +49,8 @@ Now, if the `<View />` component happens to be at the bottom of the page without
 
 <Example name="disable-wrapping" />
 
+> **Warning:** `wrap={false}` only works for content that fits on a single page. If the element is taller than the available page height, react-pdf logs a warning and does not continue it on the next page: its contents get squeezed into the space that is left, overlapping each other, and can disappear from the document entirely. Keep it for short blocks such as a table row or a card. To keep a heading together with the content below it, use [`minPresenceAhead`](/docs/v4/advanced/orphans-and-widows) on the heading instead of wrapping both in a `wrap={false}` view.
+
 ## Page breaks
 
 Page breaks are useful for separating concerns inside the document, or ensuring that a certain element will always show up on the top of the page.

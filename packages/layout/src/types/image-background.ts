@@ -67,6 +67,7 @@ export type SafeImageBackgroundNode = Omit<
 > & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

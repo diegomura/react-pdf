@@ -23,6 +23,7 @@ export type Defs = Record<string, DefsNode['children'][number]>;
 
 export type SafeDefsNode = Omit<DefsNode, 'children'> & {
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeClipPathNode
     | SafeLinearGradientNode

@@ -77,5 +77,6 @@ export type DocumentNode = {
 export type SafeDocumentNode = Omit<DocumentNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children: SafePageNode[];
 };

@@ -30,4 +30,5 @@ export type SafePolygonNode = Omit<PolygonNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePolygonProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

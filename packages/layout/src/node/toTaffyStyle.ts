@@ -88,7 +88,6 @@ const FLEX_WRAP: Record<string, FlexWrap> = {
 
 const OVERFLOW: Record<string, Overflow> = {
   hidden: Overflow.Hidden,
-  scroll: Overflow.Scroll,
 };
 
 /**

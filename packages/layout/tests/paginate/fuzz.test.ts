@@ -1,13 +1,15 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolveStyles from '../../src/steps/resolveStyles';
 import resolveInheritance from '../../src/steps/resolveInheritance';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import nextPagination from '../../src/paginate';
 import { SafeDocumentNode, SafeNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -81,7 +83,6 @@ const node = (rand: () => number, depth: number): any => {
 
 const document = async (rand: () => number): Promise<SafeDocumentNode> => ({
   type: 'DOCUMENT',
-  yoga: await loadYoga(),
   props: {},
   children: [
     {
@@ -135,7 +136,7 @@ describe('randomly generated documents', () => {
 
     documents.forEach((laid, index) => {
       const seed = SEEDS[index];
-      const root = nextPagination(laid);
+      const root = nextPagination(laid, fontStore);
 
       root.children.forEach((page, pageIndex) => {
         boxes(page as unknown as SafeNode).forEach(([child, top]) => {
@@ -172,8 +173,8 @@ describe('randomly generated documents', () => {
     );
 
     pairs.forEach(([seed, a, b]) => {
-      const first = nextPagination(a);
-      const second = nextPagination(b);
+      const first = nextPagination(a, fontStore);
+      const second = nextPagination(b, fontStore);
 
       const shape = (root: SafeDocumentNode) =>
         root.children.map((page) =>

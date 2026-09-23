@@ -35,7 +35,7 @@ export type RadialGradientNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: StopNode[];
 };
 
@@ -45,5 +45,6 @@ export type SafeRadialGradientNode = Omit<
 > & {
   props: SafeRadialGradientProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeStopNode[];
 };

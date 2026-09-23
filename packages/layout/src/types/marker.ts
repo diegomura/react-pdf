@@ -40,7 +40,7 @@ export type MarkerNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | LineNode
     | PolylineNode
@@ -56,6 +56,7 @@ export type MarkerNode = {
 export type SafeMarkerNode = Omit<MarkerNode, 'props' | 'children'> & {
   props: SafeMarkerProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

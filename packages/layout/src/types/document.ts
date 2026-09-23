@@ -1,7 +1,6 @@
 import * as P from '@react-pdf/primitives';
 
 import { PageNode, SafePageNode } from './page';
-import { YogaInstance } from './base';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 export type PDFVersion = '1.3' | '1.4' | '1.5' | '1.6' | '1.7' | '1.7ext3';
@@ -71,13 +70,13 @@ export type DocumentNode = {
   box?: never;
   origin?: never;
   style?: StyleProp;
-  yoga?: YogaInstance;
-  yogaNode?: never;
+  taffyNode?: never;
   children: PageNode[];
 };
 
 export type SafeDocumentNode = Omit<DocumentNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children: SafePageNode[];
 };

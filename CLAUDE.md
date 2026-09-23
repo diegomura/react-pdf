@@ -62,7 +62,7 @@ When making changes, always include tests. Add tests in the same location where 
 ### Code Style
 
 - ESLint 9 with TypeScript parser, Prettier (single quotes), enforced via Husky pre-commit hooks
-- Packages `yoga` and everything under `apps` are excluded from linting
+- Everything under `apps` is excluded from linting
 
 ## Previewing PDFs
 

@@ -1,14 +1,8 @@
-import * as Yoga from 'yoga-layout/load';
-
 import { SafeNode } from '../types';
 
-const getComputedMargin = (node: SafeNode, edge: Yoga.Edge) => {
-  const { yogaNode } = node;
-  return yogaNode ? yogaNode.getComputedMargin(edge) : null;
-};
-
 /**
- * Get Yoga computed magins. Zero otherwise
+ * Get node margins from its box, falling back to style values. Zero otherwise.
+ * Used while measuring, before the layout engine has produced a box.
  *
  * @param node
  * @returns Margins
@@ -16,29 +10,10 @@ const getComputedMargin = (node: SafeNode, edge: Yoga.Edge) => {
 const getMargin = (node: SafeNode) => {
   const { style, box } = node;
 
-  const marginTop =
-    getComputedMargin(node, Yoga.Edge.Top) ||
-    box?.marginTop ||
-    style?.marginTop ||
-    0;
-
-  const marginRight =
-    getComputedMargin(node, Yoga.Edge.Right) ||
-    box?.marginRight ||
-    style?.marginRight ||
-    0;
-
-  const marginBottom =
-    getComputedMargin(node, Yoga.Edge.Bottom) ||
-    box?.marginBottom ||
-    style?.marginBottom ||
-    0;
-
-  const marginLeft =
-    getComputedMargin(node, Yoga.Edge.Left) ||
-    box?.marginLeft ||
-    style?.marginLeft ||
-    0;
+  const marginTop = box?.marginTop || style?.marginTop || 0;
+  const marginRight = box?.marginRight || style?.marginRight || 0;
+  const marginBottom = box?.marginBottom || style?.marginBottom || 0;
+  const marginLeft = box?.marginLeft || style?.marginLeft || 0;
 
   return { marginTop, marginRight, marginBottom, marginLeft };
 };

@@ -30,7 +30,7 @@ export type LinearGradientNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: StopNode[];
 };
 
@@ -40,5 +40,6 @@ export type SafeLinearGradientNode = Omit<
 > & {
   props: SafeLinearGradientProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeStopNode[];
 };

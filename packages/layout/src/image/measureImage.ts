@@ -1,4 +1,4 @@
-import * as Yoga from 'yoga-layout/load';
+import { MeasureFunction, MeasureMode } from '../taffy/measure';
 
 import getRatio from './getRatio';
 import getMargin from '../node/getMargin';
@@ -9,14 +9,14 @@ import { SafeImageNode, SafePageNode } from '../types';
 const SAFETY_HEIGHT = 10;
 
 /**
- * Yoga image measure function
+ * Image measure function
  *
  * @param page - Page
  * @param node - Node
  * @returns Measure image
  */
 const measureImage =
-  (page: SafePageNode, node: SafeImageNode): Yoga.MeasureFunction =>
+  (page: SafePageNode, node: SafeImageNode): MeasureFunction =>
   (width, widthMode, height, heightMode) => {
     const imageRatio = getRatio(node);
     const imageMargin = getMargin(node);
@@ -36,33 +36,29 @@ const measureImage =
     if (!node.image) return { width: 0, height: 0 };
 
     if (
-      widthMode === Yoga.MeasureMode.Exactly &&
-      heightMode === Yoga.MeasureMode.Undefined
+      widthMode === MeasureMode.Exactly &&
+      heightMode === MeasureMode.Undefined
     ) {
       const scaledHeight = width / imageRatio;
       return { height: Math.min(pageArea, scaledHeight) };
     }
 
     if (
-      heightMode === Yoga.MeasureMode.Exactly &&
-      (widthMode === Yoga.MeasureMode.AtMost ||
-        widthMode === Yoga.MeasureMode.Undefined)
+      heightMode === MeasureMode.Exactly &&
+      (widthMode === MeasureMode.AtMost || widthMode === MeasureMode.Undefined)
     ) {
       return { width: Math.min(height * imageRatio, width) };
     }
 
     if (
-      widthMode === Yoga.MeasureMode.Exactly &&
-      heightMode === Yoga.MeasureMode.AtMost
+      widthMode === MeasureMode.Exactly &&
+      heightMode === MeasureMode.AtMost
     ) {
       const scaledHeight = width / imageRatio;
       return { height: Math.min(height, pageArea, scaledHeight) };
     }
 
-    if (
-      widthMode === Yoga.MeasureMode.AtMost &&
-      heightMode === Yoga.MeasureMode.AtMost
-    ) {
+    if (widthMode === MeasureMode.AtMost && heightMode === MeasureMode.AtMost) {
       if (imageRatio > 1) {
         return {
           width,
@@ -74,6 +70,20 @@ const measureImage =
         height,
         width: Math.min(height * imageRatio, width),
       };
+    }
+
+    // Unconstrained width (Taffy asks for the max-content size when sizing
+    // flex items in rows): use the image's intrinsic size, clamped by the
+    // available height. Yoga never asked; it offered the container width.
+    if (widthMode === MeasureMode.Undefined) {
+      const intrinsicWidth = width === 0 ? 0 : node.image.width;
+      const maxHeight =
+        heightMode === MeasureMode.AtMost
+          ? Math.min(height, pageArea)
+          : pageArea;
+      const scaledHeight = Math.min(intrinsicWidth / imageRatio, maxHeight);
+
+      return { width: scaledHeight * imageRatio, height: scaledHeight };
     }
 
     return { height, width };

@@ -85,7 +85,7 @@ const leafOf = (node: SafeNode): LeafNode => ({
 });
 
 // Re-render a dynamic subtree and measure it at the width the first pass
-// gave it. A throwaway page runs it through the standard style and yoga
+// gave it. A throwaway page runs it through the standard style and layout
 // steps; like the first pass, it has no height constraint so content can
 // be any length.
 const measure = (
@@ -113,11 +113,7 @@ const measure = (
     children: [rendered],
   };
 
-  const laid = relayoutPage(
-    fake as any,
-    ctx.fontStore,
-    ctx.yoga,
-  ) as SafePageNode;
+  const laid = relayoutPage(fake as any, ctx.fontStore) as SafePageNode;
   const measured = laid.children![0] as SafeNode;
 
   return { ...measured, box: { ...measured.box, top: 0 } } as SafeNode;
@@ -195,7 +191,7 @@ const toItem = (node: SafeNode, ctx: PageCtx): FlowNode => {
   }
 };
 
-// Page content as public flow nodes: geometry copied from yoga boxes, react-pdf
+// Page content as public flow nodes: geometry copied from layout boxes, react-pdf
 // props mapped to flags, splitting and dynamic re-rendering left as closures.
 const toFlow = (nodes: SafeNode[], ctx: PageCtx): FlowNode[] =>
   nodes.map((child) => {

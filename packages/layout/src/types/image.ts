@@ -2,7 +2,6 @@ import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { SrcSet, Sizes } from '@react-pdf/types';
 import * as P from '@react-pdf/primitives';
 import { Image } from '@react-pdf/image';
-import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
 
@@ -71,11 +70,12 @@ export type ImageNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: never[];
 };
 
 export type SafeImageNode = Omit<ImageNode, 'style'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

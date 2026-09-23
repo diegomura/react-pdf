@@ -24,7 +24,7 @@ export type TspanNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   lines?: Paragraph;
   children?: TextInstanceNode[];
 };
@@ -33,5 +33,6 @@ export type SafeTspanNode = Omit<TspanNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
   props: SafeTspanProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeTextInstanceNode[];
 };

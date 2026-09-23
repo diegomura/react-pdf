@@ -18,11 +18,12 @@ export type StopNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
 export type SafeStopNode = Omit<StopNode, 'props'> & {
   props: StopSafeProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

@@ -25,6 +25,20 @@ const engines = {
 
 const engine = layoutEngine(engines);
 
+// Container width each line was broken against. Keyed by line object so it
+// survives `splitText` slicing the lines array; textkit's `line.box.width`
+// cannot be used because it grows with trailing whitespace.
+const layoutWidths = new WeakMap<object, number>();
+
+/**
+ * Width the given lines were laid out against, if `layoutText` produced them
+ *
+ * @param lines - Lines
+ * @returns Container width, or undefined if unknown
+ */
+export const getLinesLayoutWidth = (lines?: object[]) =>
+  lines?.length ? layoutWidths.get(lines[0]) : undefined;
+
 const getMaxLines = (node) => node.style?.maxLines;
 
 const getTextOverflow = (node) => node.style?.textOverflow;
@@ -113,8 +127,11 @@ const layoutText = (
   const container = getContainer(width, height, node);
   const options = getLayoutOptions(fontStore, node);
   const lines = engine(attributedString, container, options);
+  const flat = lines.reduce((acc, line) => [...acc, ...line], []);
 
-  return lines.reduce((acc, line) => [...acc, ...line], []);
+  flat.forEach((line) => layoutWidths.set(line, width));
+
+  return flat;
 };
 
 export default layoutText;

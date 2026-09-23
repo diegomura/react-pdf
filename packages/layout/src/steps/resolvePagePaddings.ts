@@ -53,7 +53,7 @@ const resolvePagePaddings = (page: SafePageNode): SafePageNode => {
 
 /**
  * Translates all pages percentage paddings in fixed ones
- * This has to be computed from pages calculated size and not by Yoga
+ * This has to be computed from pages calculated size and not by the layout engine
  * because at this point we didn't performed pagination yet.
  *
  * @param root - Document root

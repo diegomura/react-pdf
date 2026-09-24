@@ -214,4 +214,40 @@ describe('layout resolveBookmarks', () => {
       zoom: 5,
     });
   });
+
+  test('should preserve breadth-first bookmark order in wide trees', () => {
+    const result = resolveBookmarks({
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          children: Array.from({ length: 100 }, (_, index) => ({
+            type: 'VIEW' as const,
+            props: { bookmark: `chapter ${index}` },
+            children: [
+              {
+                type: 'VIEW' as const,
+                props: { bookmark: `section ${index}` },
+              },
+            ],
+          })),
+        },
+      ],
+    });
+
+    const chapters = result.children[0].children!;
+
+    expect(chapters[0].props!.bookmark).toMatchObject({ ref: 0 });
+    expect(chapters[99].props!.bookmark).toMatchObject({ ref: 99 });
+    expect(chapters[0].children![0].props!.bookmark).toMatchObject({
+      ref: 100,
+      parent: 0,
+    });
+    expect(chapters[99].children![0].props!.bookmark).toMatchObject({
+      ref: 199,
+      parent: 99,
+    });
+  });
 });

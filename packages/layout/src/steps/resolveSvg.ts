@@ -346,8 +346,8 @@ const buildXLinksIndex = (node: SafeSvgNode) => {
   const idIndex: Record<string, SafeNode> = {};
   const listToExplore: SafeNode[] = node.children?.slice(0) || [];
 
-  while (listToExplore.length > 0) {
-    const child = listToExplore.shift();
+  for (let index = 0; index < listToExplore.length; index += 1) {
+    const child = listToExplore[index];
 
     if (child.props && 'id' in child.props) {
       idIndex[child.props.id] = child;

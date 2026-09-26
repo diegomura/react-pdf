@@ -1,5 +1,13 @@
 import resolveImage from './resolve';
 
-export type { Image, ImageSrc, SvgImage, RasterImage } from './types';
+export { registerWebpTranscoder } from './webp';
+
+export type {
+  Image,
+  ImageSrc,
+  SvgImage,
+  RasterImage,
+  WebpTranscoder,
+} from './types';
 
 export default resolveImage;

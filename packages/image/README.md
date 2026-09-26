@@ -4,7 +4,7 @@
 
 # @react-pdf/image
 
-Image parsing and resolution library for react-pdf. Handles PNG and JPEG images from various sources including local files, remote URLs, base64 data URIs, buffers, and blobs.
+Image parsing and resolution library for react-pdf. Handles PNG, JPEG and WebP images from various sources including local files, remote URLs, base64 data URIs, buffers, and blobs.
 
 ## Installation
 
@@ -89,7 +89,7 @@ const image = await resolveImage(blob);
 ```js
 const image = await resolveImage({
   data: imageBuffer,
-  format: 'png', // 'png', 'jpg', or 'jpeg'
+  format: 'png', // 'png', 'jpg', 'jpeg', 'svg', or 'webp'
 });
 ```
 
@@ -134,19 +134,19 @@ type ImageSrc =
 
 type DataImageSrc = {
   data: Buffer;
-  format: 'jpg' | 'jpeg' | 'png';
+  format: 'jpg' | 'jpeg' | 'png' | 'svg' | 'webp';
 };
 
 type LocalImageSrc = {
   uri: string;
-  format?: 'jpg' | 'jpeg' | 'png';
+  format?: 'jpg' | 'jpeg' | 'png' | 'svg' | 'webp';
 };
 
 type RemoteImageSrc = {
   uri: string;
   method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
-  format?: 'jpg' | 'jpeg' | 'png';
+  format?: 'jpg' | 'jpeg' | 'png' | 'svg' | 'webp';
   body?: any;
   credentials?: 'omit' | 'same-origin' | 'include';
 };
@@ -160,8 +160,34 @@ type Base64ImageSrc = {
 
 - **PNG** - Portable Network Graphics
 - **JPEG/JPG** - Joint Photographic Experts Group
+- **SVG** - Scalable Vector Graphics
+- **WebP** - transcoded to PNG, see below
 
 JPEG images with EXIF orientation data are automatically handled, with width and height adjusted accordingly.
+
+### WebP
+
+A PDF image can carry JPEG (`DCTDecode`) or raw pixels (`FlateDecode`, what a PNG decodes
+into) — the format has no filter for a VP8/VP8L bitstream. WebP therefore cannot be embedded
+as-is: it is decoded and re-encoded to PNG while the image is resolved, and the resolved
+`image.format` is `'png'`.
+
+In the **browser** this is free and automatic — `createImageBitmap` plus a canvas do the work
+with the libwebp the browser already ships.
+
+**Node** has no image decoder at all, so you have to supply one. Nothing is guessed: without a
+transcoder, resolving a WebP throws instead of silently dropping the image.
+
+```js
+import sharp from 'sharp';
+import { registerWebpTranscoder } from '@react-pdf/image';
+
+registerWebpTranscoder((data) => sharp(data).png().toBuffer());
+```
+
+The transcoder receives the original WebP bytes and returns PNG or JPEG bytes (a `Buffer`, or a
+promise of one). Registering one also overrides the browser's built-in path — pass `null` to
+remove it.
 
 ## License
 

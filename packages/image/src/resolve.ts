@@ -5,6 +5,7 @@ import path from 'path';
 import PNG from './png';
 import JPEG from './jpeg';
 import SVG from './svg';
+import WEBP from './webp';
 import createCache from './cache.js';
 import {
   Image,
@@ -107,7 +108,8 @@ const isValidFormat = (format: string): format is ImageFormat => {
     lower === 'jpeg' ||
     lower === 'png' ||
     lower === 'svg' ||
-    lower === 'svg+xml'
+    lower === 'svg+xml' ||
+    lower === 'webp'
   );
 };
 
@@ -120,12 +122,14 @@ const getImageFormat = (buffer: Buffer) => {
     format = 'png' as const;
   } else if (SVG.isValid(buffer)) {
     format = 'svg' as const;
+  } else if (WEBP.isValid(buffer)) {
+    format = 'webp' as const;
   }
 
   return format;
 };
 
-function getImage(body: Buffer, format: string): Image | null {
+async function getImage(body: Buffer, format: string): Promise<Image | null> {
   switch (format.toLowerCase()) {
     case 'jpg':
     case 'jpeg':
@@ -135,6 +139,19 @@ function getImage(body: Buffer, format: string): Image | null {
     case 'svg':
     case 'svg+xml':
       return new SVG(body);
+    // PDF has no WebP format: embed the transcoded image instead of the WebP itself
+    case 'webp': {
+      const transcoded = await WEBP.transcode(body);
+      const transcodedFormat = getImageFormat(transcoded);
+
+      if (transcodedFormat !== 'png' && transcodedFormat !== 'jpg') {
+        throw new Error(
+          'WebP transcoder must return png or jpeg bytes, which are the only raster formats a PDF can embed',
+        );
+      }
+
+      return getImage(transcoded, transcodedFormat);
+    }
     default:
       return null;
   }

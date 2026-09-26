@@ -51,7 +51,11 @@ describe('measureText', () => {
 
       const dimensions = measureFunc(100, 2 /*Yoga.MeasureMode.AtMost*/, 50);
 
-      expect(dimensions.width).toStrictEqual(100);
+      // "At most 100", and the text really needs 92.52 of it. It used to fill
+      // the 100 exactly, because a word was cut at the line end to fill it -
+      // which no longer happens for a word that fits on a line of its own. The
+      // height is unchanged, so the text still takes the same four lines.
+      expect(dimensions.width).toStrictEqual(92.52);
       expect(dimensions.height).toBe(39.599999999999994);
     });
   });

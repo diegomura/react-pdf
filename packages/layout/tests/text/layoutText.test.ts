@@ -104,20 +104,45 @@ describe('text layoutText', () => {
     );
   });
 
-  test('should suppress hyphenation when `hyphenationPenalty` is set to `Infinity`', () => {
+  test('should not hyphenate a word that fits on a line of its own', () => {
     const text = 'Lorem ipsum dolor sit amet consectetur adipiscing elit';
 
-    // Using `justify` text uses a hyphenation penalty of 100 by default.
-    // This produces at least one line break with a trailing hyphen.
-    const defaultLines = layoutText(
+    // 180 is wide enough for every word in the text, so none of them may be
+    // split: a word that fits moves down whole instead. Hyphenating one only to
+    // fill the line above it is harder to read, and it happens whatever the
+    // hyphenation penalty says - the penalty only weighs a break that is
+    // allowed in the first place.
+    const lines = layoutText(
       createTextNode(text, { textAlign: 'justify' }),
       180,
       200,
       fontStore,
     );
-    expect(defaultLines[0].string).toEqual('Lorem ipsum dolor sit ');
-    expect(defaultLines[1].string).toEqual('amet consectetur adip-');
-    expect(defaultLines[2].string).toEqual('iscing elit');
+
+    expect(lines.map((line) => line.string)).toEqual([
+      'Lorem ipsum dolor ',
+      'sit amet consectetur ',
+      'adipiscing elit',
+    ]);
+  });
+
+  test('should suppress hyphenation when `hyphenationPenalty` is set to `Infinity`', () => {
+    const text = 'Lorem ipsum dolor sit amet consectetur adipiscing elit';
+
+    // 60 is narrower than several of the words, so those have nowhere to go
+    // and the line breaker is allowed to split them. That is the only case
+    // hyphenation applies to, so it is the only case this option can be tested
+    // on.
+    const defaultLines = layoutText(
+      createTextNode(text, { textAlign: 'justify' }),
+      60,
+      200,
+      fontStore,
+    );
+
+    expect(defaultLines.some((line) => line.string.trimEnd().endsWith('-'))).toBe(
+      true,
+    );
 
     // Setting a hyphenation penalty of `Infinity` makes hyphenation nearly
     // impossible, so lines break only at word boundaries.
@@ -127,12 +152,22 @@ describe('text layoutText', () => {
         { textAlign: 'justify' },
         { hyphenationPenalty: Infinity },
       ),
-      180,
+      60,
       200,
       fontStore,
     );
-    expect(noHyphenLines[0].string).toEqual('Lorem ipsum dolor ');
-    expect(noHyphenLines[1].string).toEqual('sit amet consectetur ');
-    expect(noHyphenLines[2].string).toEqual('adipiscing elit');
+
+    expect(
+      noHyphenLines.some((line) => line.string.trimEnd().endsWith('-')),
+    ).toBe(false);
+
+    // And nothing of the text is lost either way.
+    expect(
+      noHyphenLines
+        .map((line) => line.string)
+        .join('')
+        .replace(/\s+/g, ' ')
+        .trim(),
+    ).toEqual(text);
   });
 });

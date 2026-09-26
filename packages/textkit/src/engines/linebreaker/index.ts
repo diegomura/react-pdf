@@ -76,9 +76,8 @@ const getNodes = (
   attributedString: AttributedString,
   { align }: Attributes,
   options: LayoutOptions,
+  availableWidths: number[] = [],
 ): Node[] => {
-  let start = 0;
-
   const hyphenWidth = 5;
 
   const { syllables } = attributedString;
@@ -86,37 +85,98 @@ const getNodes = (
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
 
-  const result = syllables.reduce((acc: Node[], s: string, index: number) => {
-    const width = advanceWidthBetween(
-      start,
-      start + s.length,
-      attributedString,
-    );
+  const hyphenationAllowed = Number.isFinite(hyphenPenalty);
 
-    if (s.trim() === '') {
+  // Where every syllable sits and how wide it is, measured once.
+  let cursor = 0;
+  const parts = syllables.map((s: string) => {
+    const start = cursor;
+    const end = start + s.length;
+    const width = advanceWidthBetween(start, end, attributedString);
+
+    cursor = end;
+
+    return { s, start, end, width, isSpace: s.trim() === '' };
+  });
+
+  // The width of the WHOLE word each syllable belongs to.
+  //
+  // A word is only allowed to be hyphenated when it cannot fit on a line of
+  // its own. Otherwise it moves down whole, which is what a reader expects:
+  // breaking "Unternehmenswebsite" into "Un-" plus the rest only to fill the
+  // line above it is harder to read than a slightly shorter line.
+  const wordWidths: number[] = new Array(parts.length).fill(0);
+
+  for (let i = 0; i < parts.length; ) {
+    if (parts[i].isSpace) {
+      i += 1;
+      continue;
+    }
+
+    let end = i;
+    let total = 0;
+
+    while (end < parts.length && !parts[end].isSpace) {
+      total += parts[end].width;
+      end += 1;
+    }
+
+    for (let k = i; k < end; k += 1) wordWidths[k] = total;
+
+    i = end;
+  }
+
+  // The NARROWEST line this paragraph can be laid out on.
+  //
+  // The narrowest and not the widest: the widths differ when text flows around
+  // something, and the algorithm is free to put the word on any of those lines.
+  // A word that fits on the widest one but not on the line it actually lands on
+  // would have no way out - it could not be hyphenated and would be broken
+  // without one. Measuring against the narrowest keeps the hyphenation point
+  // available in exactly those cases, and changes nothing for a plain
+  // paragraph, where every line is the same width.
+  const narrowestLine = availableWidths.length
+    ? Math.min(...availableWidths)
+    : Infinity;
+
+  const result = parts.reduce((acc: Node[], part, index: number) => {
+    const { start, end, width } = part;
+
+    if (part.isSpace) {
       const stretch = (width * opts.width) / opts.stretch;
       const shrink = (width * opts.width) / opts.shrink;
-      const end = start + s.length;
 
       // Add glue node. Glue nodes are used to fill the space between words.
       acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
     } else {
       const hyphenated = syllables[index + 1] !== ' ';
-      const end = start + s.length;
 
       // Add box node. Box nodes are used to represent words.
       acc.push(knuthPlass.box(width, start, end, hyphenated));
 
-      if (syllables[index + 1] && hyphenated) {
-        // Add penalty node. Penalty nodes are used to represent hyphenation points.
+      // Add penalty node. Penalty nodes are used to represent hyphenation
+      // points - and this is the only place one is offered, so a word that
+      // fits on a line has none and cannot be broken.
+      //
+      // An infinite hyphenationPenalty means "never hyphenate", and it has to
+      // be answered by leaving the point out rather than by weighing it: a word
+      // that fits nowhere makes Knuth & Plass fail, and the best-fit fallback
+      // that takes over does not weigh penalties at all - it would hyphenate
+      // exactly where the option asked it not to.
+      if (
+        syllables[index + 1] &&
+        hyphenated &&
+        hyphenationAllowed &&
+        wordWidths[index] > narrowestLine
+      ) {
         acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
       }
     }
 
-    start += s.length;
-
     return acc;
   }, []);
+
+  const start = cursor;
 
   // Add mandatory final glue
   result.push(knuthPlass.glue(0, start, start, knuthPlass.infinity, 0));
@@ -149,7 +209,7 @@ const linebreaker = (options: LayoutOptions) => {
     let tolerance = options.tolerance || 4;
 
     const attributes = getAttributes(attributedString);
-    const nodes = getNodes(attributedString, attributes, options);
+    const nodes = getNodes(attributedString, attributes, options, availableWidths);
 
     let breaks = knuthPlass(nodes, availableWidths, tolerance);
 

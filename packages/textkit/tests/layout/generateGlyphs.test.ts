@@ -336,4 +336,63 @@ describe('generateGlyphs', () => {
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([105]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([8]);
   });
+
+  test('gives a cached glyph the code points it was asked for', () => {
+    // fontkit keeps ONE glyph object per glyph id and the first caller decides
+    // what it knows. Subsetting a composite glyph asks for its components by id
+    // alone, so "O" is cached without a code point - and the font outlives the
+    // document, so every later one gets that empty glyph.
+    //
+    // Two things break at once when it does: glyphIndices counts characters by
+    // code points, so the mapping stops advancing and every line break after it
+    // sits a letter off, and the glyph reaches the ToUnicode map with nothing
+    // behind it, which makes the text impossible to copy or search.
+    const cache = new Map();
+
+    const getGlyph = (id, codePoints = []) => {
+      if (!cache.has(id)) cache.set(id, { id, codePoints, advanceWidth: 8 });
+      return cache.get(id);
+    };
+
+    // layout() goes through the font's own getGlyph, the way fontkit does -
+    // that is what lets the cache be repaired from the outside.
+    const cachingFont = {
+      ...font,
+      getGlyph,
+      layout(string: string) {
+        return {
+          ...font.layout(string),
+          glyphs: Array.from(string, (character) => {
+            const codePoint = character.codePointAt(0)!;
+            return this.getGlyph(codePoint, [codePoint]);
+          }),
+        };
+      },
+    };
+
+    // What the subsetter does: ask for "o" by id, without saying which
+    // character it stands for.
+    getGlyph('o'.codePointAt(0)!);
+
+    const result = instance({
+      string: 'Lorem',
+      runs: [
+        {
+          start: 0,
+          end: 5,
+          attributes: { font: [cachingFont], fontSize: 2 },
+        },
+      ],
+    });
+
+    // One glyph per character, and every one of them still knows its character.
+    expect(result.runs[0].glyphIndices).toEqual([0, 1, 2, 3, 4]);
+    expect(result.runs[0].glyphs!.map((glyph) => glyph.codePoints)).toEqual([
+      ['L'.codePointAt(0)],
+      ['o'.codePointAt(0)],
+      ['r'.codePointAt(0)],
+      ['e'.codePointAt(0)],
+      ['m'.codePointAt(0)],
+    ]);
+  });
 });

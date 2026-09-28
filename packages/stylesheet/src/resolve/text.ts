@@ -90,10 +90,17 @@ const transformLineHeight = (
 
   // Percent values: use this number multiplied by the element's font size
   const { percent } = matchPercent(lineHeight) || {};
-  if (percent) return percent * fontSize;
+  if (percent) return `${percent * fontSize}pt`;
 
-  // Unitless values: use this number multiplied by the element's font size
-  return isNaN(Number(value)) ? lineHeight : lineHeight * fontSize;
+  // Values with units (e.g. '20px') are already absolute. Non-numeric keyword
+  // strings (e.g. 'normal') pass through transformUnit unchanged and should
+  // not have 'pt' appended.
+  // Note that renderer doesn't support keywords, so this is purely defensive.
+  if (isNaN(Number(value))) {
+    return typeof lineHeight === 'number' ? `${lineHeight}pt` : lineHeight;
+  }
+
+  return `${lineHeight * fontSize}pt`;
 };
 
 const processLineHeight = <K extends StyleKey>(

@@ -11,7 +11,8 @@ import lineGap from './lineGap';
  */
 const height = (run: Run) => {
   const lineHeight = run.attributes?.lineHeight;
-  return lineHeight || lineGap(run) + ascent(run) - descent(run);
+  const intrinsic = lineGap(run) + ascent(run) - descent(run);
+  return Math.max(lineHeight || 0, intrinsic);
 };
 
 export default height;

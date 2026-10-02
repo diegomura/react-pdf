@@ -52,4 +52,23 @@ describe('run descent operator', () => {
 
     expect(descent(run)).toBe(-(10 * 12) / 2);
   });
+
+  test('should prefer OS/2 typoDescender over hhea descent', () => {
+    const run = {
+      start: 0,
+      end: 0,
+      attributes: {
+        fontSize: 12,
+        font: [
+          {
+            descent: -288,
+            unitsPerEm: 1000,
+            'OS/2': { typoAscender: 880, typoDescender: -120 },
+          } as unknown as Font,
+        ],
+      },
+    };
+
+    expect(descent(run)).toBe((-120 * 12) / 1000);
+  });
 });

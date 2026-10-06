@@ -7,6 +7,35 @@ import normalize from '../utils/normalize';
 import { Glyph, Position, Run } from '../types';
 
 /**
+ * Return the first glyph index that maps to the given string index.
+ *
+ * `glyphIndexAt` returns the last glyph of a group of glyphs sharing the same
+ * string index, which is right for the end boundary of a slice. At the start
+ * boundary it would drop the leading glyphs of a decomposed character, such as
+ * the base letterform of an Arabic letter shaped as base + dot mark.
+ *
+ * @param index - String index
+ * @param run - Run
+ * @returns Glyph index
+ */
+const firstGlyphIndexAt = (index: number, run: Run) => {
+  const glyphIndices = run.glyphIndices;
+  let result = glyphIndexAt(index, run);
+
+  if (!glyphIndices) return result;
+
+  while (
+    result > 0 &&
+    result < glyphIndices.length &&
+    glyphIndices[result - 1] === glyphIndices[result]
+  ) {
+    result -= 1;
+  }
+
+  return result;
+};
+
+/**
  * Slice run between string indices range
  *
  * @param start - String index
@@ -19,7 +48,7 @@ const slice = (start: number, end: number, run: Run): Run => {
   const font = getFont(run);
 
   // Get glyph start and end indices
-  const startIndex = glyphIndexAt(start, run);
+  const startIndex = firstGlyphIndexAt(start, run);
   const endIndex = glyphIndexAt(end - 1, run);
 
   // Get start and end glyph

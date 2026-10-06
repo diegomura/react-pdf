@@ -475,8 +475,8 @@ describe('run slice operator', () => {
       };
       const sliced = slice(3, 5, composedRun);
 
-      expect(sliced.glyphs).toHaveLength(2);
-      expect(pluck('id', sliced.glyphs!)).toEqual([0, 109]);
+      expect(sliced.glyphs).toHaveLength(3);
+      expect(pluck('id', sliced.glyphs!)).toEqual([3635, 0, 109]);
     });
 
     test('should correctly slice glyphs ending before composed character', () => {
@@ -809,7 +809,7 @@ describe('run slice operator', () => {
         glyphIndices: [0, 1, 2, 3, 3, 4],
       });
 
-      expect(pluck('xAdvance', sliced.positions!)).toEqual([4, 3]);
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([5, 4, 3]);
     });
 
     test('should correctly slice positions ending before composed character', () => {
@@ -1047,7 +1047,7 @@ describe('run slice operator', () => {
       const sliced = slice(3, 5, composedRun);
 
       expect(sliced.stringIndices).toEqual([0, 2]);
-      expect(sliced.glyphIndices).toEqual([0, 1]);
+      expect(sliced.glyphIndices).toEqual([0, 0, 1]);
     });
 
     test('should correctly slice indices ending before composed character', () => {
@@ -1076,6 +1076,59 @@ describe('run slice operator', () => {
 
       expect(sliced.stringIndices).toEqual([0, 1, 2, 3]);
       expect(sliced.glyphIndices).toEqual([0, 1, 2, 3, 3]);
+    });
+  });
+
+  describe('slice decomposed Arabic letters', () => {
+    // "بابا" shaped with Noto Sans Arabic: each ب is a dotless base glyph
+    // carrying the code point, followed by a zero-advance dot mark with none.
+    const arabicRun = () => ({
+      start: 0,
+      end: 4,
+      attributes: {},
+      glyphs: [
+        { id: 19, advanceWidth: 269, codePoints: [0x628] }, // uni066E.init (ب)
+        { id: 316, advanceWidth: 0, codePoints: [] }, // dotbelowar
+        { id: 9, advanceWidth: 291, codePoints: [0x627] }, // uni0627.fina (ا)
+        { id: 19, advanceWidth: 269, codePoints: [0x628] }, // uni066E.init (ب)
+        { id: 316, advanceWidth: 0, codePoints: [] }, // dotbelowar
+        { id: 9, advanceWidth: 291, codePoints: [0x627] }, // uni0627.fina (ا)
+      ] as Glyph[],
+      positions: [
+        { xAdvance: 269, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 291, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 269, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 291, yAdvance: 0, xOffset: 0, yOffset: 0 },
+      ],
+      stringIndices: [0, 2, 3, 5],
+      glyphIndices: [0, 0, 1, 2, 2, 3],
+    });
+
+    test('should keep base letterform on exact slice', () => {
+      const sliced = slice(0, 4, arabicRun());
+
+      expect(pluck('id', sliced.glyphs!)).toEqual([19, 316, 9, 19, 316, 9]);
+      expect(sliced.glyphIndices).toEqual([0, 0, 1, 2, 2, 3]);
+    });
+
+    test('should keep base letterform when slicing from run start', () => {
+      const sliced = slice(0, 2, arabicRun());
+
+      expect(pluck('id', sliced.glyphs!)).toEqual([19, 316, 9]);
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([269, 0, 291]);
+      expect(sliced.stringIndices).toEqual([0, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 0, 1]);
+    });
+
+    test('should keep base letterform when slicing from the middle', () => {
+      const sliced = slice(2, 4, arabicRun());
+
+      expect(pluck('id', sliced.glyphs!)).toEqual([19, 316, 9]);
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([269, 0, 291]);
+      expect(sliced.stringIndices).toEqual([0, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 0, 1]);
     });
   });
 });

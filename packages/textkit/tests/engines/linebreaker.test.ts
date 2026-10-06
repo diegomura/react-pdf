@@ -86,6 +86,41 @@ describe('linebreaker', () => {
     ]);
   });
 
+  test('should add hyphens only at hyphenation breaks', () => {
+    const attributedString = createAttributedString('left', [
+      'state-',
+      'of-',
+      'really',
+      'long',
+    ]);
+
+    const result = linebreaker(
+      {
+        ...attributedString,
+        syllableBreaks: ['soft', 'soft', 'hyphen', 'soft'],
+      },
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual([
+      'state-',
+      'of-',
+      'really-',
+      'long',
+    ]);
+  });
+
+  test('should use the hyphenate character at hyphenation breaks', () => {
+    const attributedString = createAttributedString('left', ['really', 'long']);
+
+    const result = linebreakerFactory({ hyphenateCharacter: '~' })(
+      { ...attributedString, syllableBreaks: ['hyphen', 'soft'] },
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(['really~', 'long']);
+  });
+
   test('should preserve breaks with constant line widths', () => {
     const syllables =
       'alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu'

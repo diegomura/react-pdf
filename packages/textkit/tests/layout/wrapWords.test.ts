@@ -273,4 +273,130 @@ describe('wrapWords', () => {
       expect(result.syllables).toEqual(['한', '글', '테', '스', '트']);
     });
   });
+  describe('break kinds', () => {
+    const run = (string: string) => ({
+      string,
+      runs: [{ start: 0, end: string.length, attributes: {} }],
+    });
+
+    const splitter = vi.fn((word: string) =>
+      word === 'reallylong' ? ['really', 'long'] : [word],
+    );
+
+    test('should mark hyphenation points as hyphen breaks', () => {
+      const instance = wrapWords({ wordHyphenation: () => splitter }, {});
+      const result = instance(run('reallylong'));
+
+      expect(result.syllables).toEqual(['really', 'long']);
+      expect(result.syllableBreaks).toEqual(['hyphen', 'soft']);
+    });
+
+    test('should mark breaks after a hyphen-minus as soft breaks', () => {
+      const instance = wrapWords({}, {});
+      const result = instance(run('state-of-the-art'));
+
+      expect(result.syllables).toEqual(['state-', 'of-', 'the-', 'art']);
+      expect(result.syllableBreaks).toEqual(['soft', 'soft', 'soft', 'soft']);
+    });
+
+    test('should not hyphenate with hyphens: none, even at soft hyphens', () => {
+      const instance = wrapWords(
+        { wordHyphenation: () => splitter },
+        { hyphens: 'none' },
+      );
+      const result = instance(run('really\u00adlong'));
+
+      expect(result.string).toEqual('reallylong');
+      expect(result.syllables).toEqual(['reallylong']);
+    });
+
+    test('should hyphenate only at soft hyphens with hyphens: manual', () => {
+      const instance = wrapWords(
+        { wordHyphenation: () => (word: string) => [...word] },
+        { hyphens: 'manual' },
+      );
+      const result = instance(run('really\u00adlong'));
+
+      expect(result.syllables).toEqual(['really', 'long']);
+      expect(result.syllableBreaks).toEqual(['hyphen', 'soft']);
+    });
+
+    test('should not hyphenate with wordBreak: break-all', () => {
+      const hyphenate = vi.fn((word: string) => [word]);
+      const instance = wrapWords(
+        { wordHyphenation: () => hyphenate },
+        { wordBreak: 'break-all' },
+      );
+      const result = instance(run('12345'));
+
+      expect(hyphenate).not.toHaveBeenCalled();
+      expect(result.syllables).toEqual(['1', '2', '3', '4', '5']);
+      expect(result.syllableBreaks).toEqual([
+        'soft',
+        'soft',
+        'soft',
+        'soft',
+        'soft',
+      ]);
+    });
+
+    test('should keep punctuation and combining marks attached with wordBreak: break-all', () => {
+      const instance = wrapWords({}, { wordBreak: 'break-all' });
+
+      expect(instance(run('(ab).')).syllables).toEqual(['(a', 'b).']);
+      expect(instance(run('e\u0301e\u0301')).syllables).toEqual([
+        'e\u0301',
+        'e\u0301',
+      ]);
+    });
+
+    test('should break after punctuation with wordBreak: keep-all', () => {
+      const instance = wrapWords({}, { wordBreak: 'keep-all' });
+      const result = instance(run('日本語、テスト'));
+
+      expect(result.syllables).toEqual(['日本語、', 'テスト']);
+    });
+
+    test('should drop hyphenation points that UAX #14 forbids', () => {
+      const instance = wrapWords(
+        { wordHyphenation: () => (word: string) => [...word] },
+        {},
+      );
+      const result = instance(run('あ、い'));
+
+      expect(result.syllables).toEqual(['あ、', 'い']);
+      expect(result.syllableBreaks).toEqual(['soft', 'soft']);
+    });
+
+    test('should break between runs only where UAX #14 allows', () => {
+      const instance = wrapWords({}, {});
+      const result = instance({
+        string: 'word.日本',
+        runs: [
+          { start: 0, end: 4, attributes: {} },
+          { start: 4, end: 5, attributes: {} },
+          { start: 5, end: 6, attributes: {} },
+          { start: 6, end: 7, attributes: {} },
+        ],
+      });
+
+      expect(result.syllables).toEqual(['word.', '日', '本']);
+      expect(result.syllableBreaks).toEqual(['soft', 'soft', 'soft']);
+    });
+
+    test('should not break between CJK runs with wordBreak: keep-all', () => {
+      const instance = wrapWords({}, { wordBreak: 'keep-all' });
+      const result = instance({
+        string: '句読点の後ろ',
+        runs: [
+          { start: 0, end: 3, attributes: {} },
+          { start: 3, end: 4, attributes: {} },
+          { start: 4, end: 5, attributes: {} },
+          { start: 5, end: 6, attributes: {} },
+        ],
+      });
+
+      expect(result.syllables).toEqual(['句読点の後ろ']);
+    });
+  });
 });

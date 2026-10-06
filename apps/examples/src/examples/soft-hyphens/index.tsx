@@ -242,7 +242,7 @@ const SoftHyphens = () => (
           </View>
 
           <View style={styles.smallBox}>
-            <Text style={styles.label}>hyphens: none</Text>
+            <Text style={styles.label}>hyphens: none (overflows)</Text>
             <Text style={[styles.englishText, { hyphens: 'none' }]}>
               Potentieelbroeikasgasemissierapport
             </Text>
@@ -260,20 +260,14 @@ const SoftHyphens = () => (
       <View style={styles.controlSection}>
         <Text style={styles.sectionTitle}>2. CJK Text — wordBreak</Text>
         <Text style={styles.sectionSubtitleJP}>
-          Problem: &quot;グレートブリテン&quot; alone on a line due to
-          script-based run splitting
+          keep-all breaks only at spaces and punctuation
         </Text>
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.smallBox}>
-            <Text style={styles.label}>wordBreak: keep-all (problem)</Text>
-            <Text
-              style={[
-                styles.japaneseText,
-                { wordBreak: 'keep-all', hyphens: 'none' },
-              ]}
-            >
-              グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+            <Text style={styles.label}>wordBreak: keep-all</Text>
+            <Text style={[styles.japaneseText, { wordBreak: 'keep-all' }]}>
+              グレートブリテン および 北アイルランド 連合王国、という言葉
             </Text>
           </View>
 
@@ -282,7 +276,7 @@ const SoftHyphens = () => (
               wordBreak: normal (CJK breaks anywhere)
             </Text>
             <Text style={[styles.japaneseText, { wordBreak: 'normal' }]}>
-              グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+              グレートブリテン および 北アイルランド 連合王国、という言葉
             </Text>
           </View>
         </View>
@@ -322,27 +316,20 @@ const SoftHyphens = () => (
       <View style={styles.controlSection}>
         <Text style={styles.sectionTitle}>4. Long URLs</Text>
         <Text style={styles.sectionSubtitle}>
-          break-all allows URLs to wrap at any character
+          normal wraps after slashes, break-all wraps at any letter
         </Text>
 
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.wideBox}>
-            <Text style={styles.label}>wordBreak: normal (overflow)</Text>
+            <Text style={styles.label}>wordBreak: normal</Text>
             <Text style={[styles.englishText, { wordBreak: 'normal' }]}>
               https://example.com/very/very/loooong/path/to/resource
             </Text>
           </View>
 
           <View style={styles.wideBox}>
-            <Text style={styles.label}>
-              wordBreak: break-all, hyphens: none
-            </Text>
-            <Text
-              style={[
-                styles.englishText,
-                { wordBreak: 'break-all', hyphens: 'none' },
-              ]}
-            >
+            <Text style={styles.label}>wordBreak: break-all</Text>
+            <Text style={[styles.englishText, { wordBreak: 'break-all' }]}>
               https://example.com/very/very/loooong/path/to/resource
             </Text>
           </View>

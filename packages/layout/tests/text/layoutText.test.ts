@@ -104,9 +104,9 @@ describe('text layoutText', () => {
     );
   });
 
-  test('should not add hyphens when hyphens style is "none"', async () => {
-    const text = 'reallylongtext';
-    const hyphens = ['really­', 'long', 'text'];
+  test('should not hyphenate when hyphens style is "none"', async () => {
+    const text = 'really\u00adlongtext';
+    const hyphens = ['really', 'long', 'text'];
     const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
 
     const node = createTextNode(
@@ -116,9 +116,24 @@ describe('text layoutText', () => {
     );
     const lines = layoutText(node, 50, 100, fontStore);
 
-    expect(lines[0].string).toEqual('really');
-    expect(lines[1].string).toEqual('long');
-    expect(lines[2].string).toEqual('text');
+    expect(hyphenationCallback).not.toHaveBeenCalled();
+    expect(lines.map((line) => line.string)).toEqual(['reallylongtext']);
+  });
+
+  test('should hyphenate only at soft hyphens when hyphens style is "manual"', async () => {
+    const text = 'really\u00adlongtext';
+    const hyphens = ['really', 'long', 'text'];
+    const hyphenationCallback = vi.fn().mockReturnValue(hyphens);
+
+    const node = createTextNode(
+      text,
+      { hyphens: 'manual' },
+      { hyphenationCallback },
+    );
+    const lines = layoutText(node, 50, 100, fontStore);
+
+    expect(hyphenationCallback).not.toHaveBeenCalled();
+    expect(lines.map((line) => line.string)).toEqual(['really-', 'longtext']);
   });
 
   test('should use custom hyphenate character when hyphenateCharacter is set', async () => {
@@ -172,10 +187,7 @@ describe('text layoutText', () => {
 
   test('should break all characters with wordBreak: break-all', async () => {
     const text = 'Hello';
-    const node = createTextNode(text, {
-      wordBreak: 'break-all',
-      hyphens: 'none',
-    });
+    const node = createTextNode(text, { wordBreak: 'break-all' });
     const lines = layoutText(node, 15, 100, fontStore);
 
     expect(lines.length).toBeGreaterThan(1);

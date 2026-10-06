@@ -219,7 +219,7 @@ describe('text', () => {
   });
 
   test('should keep CJK words together with wordBreak keep-all', async () => {
-    const text = 'グレートブリテンおよび北アイルランド連合王国';
+    const text = 'グレートブリテン および 北アイルランド 連合王国';
 
     const style = {
       fontFamily: 'NotoSansJP',
@@ -256,9 +256,7 @@ describe('text', () => {
       <Document>
         <Page size={[180, 140]} style={{ padding: 10 }}>
           <Text style={style}>{url}</Text>
-          <Text style={{ ...style, wordBreak: 'break-all', hyphens: 'none' }}>
-            {url}
-          </Text>
+          <Text style={{ ...style, wordBreak: 'break-all' }}>{url}</Text>
         </Page>
       </Document>,
     );

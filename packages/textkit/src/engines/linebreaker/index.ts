@@ -1,5 +1,3 @@
-import unicode from 'unicode-properties';
-
 import bestFit from './bestFit';
 import knuthPlass from './knuthPlass';
 import slice from '../../attributedString/slice';
@@ -7,17 +5,6 @@ import insertGlyph from '../../attributedString/insertGlyph';
 import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
-
-/**
- * Check if a character is East Asian Wide or Fullwidth.
- * These characters don't need hyphens when wrapping.
- */
-const isEastAsianWide = (char: string): boolean => {
-  const codePoint = char.codePointAt(0);
-  if (codePoint === undefined) return false;
-  const eaw = unicode.getEastAsianWidth(codePoint);
-  return eaw === 'W' || eaw === 'F';
-};
 
 const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
@@ -63,30 +50,6 @@ const getHyphenCodePoints = (options: LayoutOptions): number[] | null => {
 };
 
 /**
- * Check if a hyphen should be inserted at the end of a line.
- * CJK characters don't need hyphens when wrapping.
- *
- * @param line - Line attributed string
- * @param hyphenCodePoints - Hyphen code points to use
- * @returns True if hyphen should be inserted
- */
-const shouldInsertHyphen = (
-  line: AttributedString,
-  hyphenCodePoints: number[] | null,
-): boolean => {
-  if (hyphenCodePoints === null) return false;
-
-  // Get the last character of the line
-  const lastChar = line.string.slice(-1);
-  if (!lastChar) return false;
-
-  // Don't insert hyphen after East Asian Wide characters (CJK, etc.)
-  if (isEastAsianWide(lastChar)) return false;
-
-  return true;
-};
-
-/**
  * Slice attributed string to many lines
  *
  * @param attributedString - Attributed string
@@ -122,9 +85,9 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      // Insert hyphen character(s) if configured and appropriate
-      if (shouldInsertHyphen(line, hyphenCodePoints)) {
-        for (const codePoint of hyphenCodePoints!) {
+      // Only hyphenation breaks are flagged; soft wrap breaks show nothing.
+      if (node.flagged && hyphenCodePoints !== null) {
+        for (const codePoint of hyphenCodePoints) {
           line = insertGlyph(line.string.length, codePoint, line);
         }
       }
@@ -160,12 +123,10 @@ const getNodes = (
 
   const hyphenWidth = getHyphenCodePoints(options) === null ? 0 : 5;
 
-  const { syllables } = attributedString;
+  const { syllables, syllableBreaks } = attributedString;
 
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
-
-  const allowCJKBreak = options.wordBreak !== 'keep-all';
 
   const result = syllables.reduce((acc: Node[], s: string, index: number) => {
     const width = advanceWidthBetween(
@@ -182,20 +143,21 @@ const getNodes = (
       // Add glue node. Glue nodes are used to fill the space between words.
       acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
     } else {
-      const hyphenated = syllables[index + 1] !== ' ';
+      const next = syllables[index + 1];
+      const breakable = next !== undefined && next.trim() !== '';
+      const hyphenated =
+        breakable && (syllableBreaks?.[index] ?? 'hyphen') === 'hyphen';
       const end = start + s.length;
 
       // Add box node. Box nodes are used to represent words.
       acc.push(knuthPlass.box(width, start, end, hyphenated));
 
-      if (syllables[index + 1] && hyphenated) {
-        // CJK boundaries are soft wrap opportunities (penalty 0, no hyphen width)
-        // unless keep-all is set, which suppresses CJK breaks
-        const isSoftWrap = allowCJKBreak && isEastAsianWide(s.slice(-1));
-        const penaltyValue = isSoftWrap ? 0 : hyphenPenalty;
-        const penaltyWidth = isSoftWrap ? 0 : hyphenWidth;
-
-        acc.push(knuthPlass.penalty(penaltyWidth, penaltyValue, 1));
+      // Add penalty node. Penalty nodes are used to represent breaks inside
+      // words. Only hyphenation breaks cost a hyphen.
+      if (hyphenated) {
+        acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
+      } else if (breakable) {
+        acc.push(knuthPlass.penalty(0, 0, 0));
       }
     }
 

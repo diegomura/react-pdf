@@ -192,4 +192,77 @@ describe('text', () => {
 
     expect(image).toMatchImageSnapshot();
   });
+
+  test('should control hyphens and hyphenateCharacter', async () => {
+    const shy = '­';
+    const word = `Potentieel broeikas${shy}gas${shy}emissie${shy}rapport`;
+
+    const style = {
+      fontFamily: 'Oswald',
+      fontSize: 16,
+      width: 90,
+      marginBottom: 10,
+      border: '1px solid red',
+    };
+
+    const image = await renderToImage(
+      <Document>
+        <Page size={[130, 320]} style={{ padding: 10 }}>
+          <Text style={style}>{word}</Text>
+          <Text style={{ ...style, hyphens: 'none' }}>{word}</Text>
+          <Text style={{ ...style, hyphenateCharacter: '~' }}>{word}</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should keep CJK words together with wordBreak keep-all', async () => {
+    const text = 'グレートブリテンおよび北アイルランド連合王国';
+
+    const style = {
+      fontFamily: 'NotoSansJP',
+      fontSize: 12,
+      width: 100,
+      marginBottom: 10,
+      border: '1px solid #ccc',
+    };
+
+    const image = await renderToImage(
+      <Document>
+        <Page size={[130, 200]} style={{ padding: 10 }}>
+          <Text style={style}>{text}</Text>
+          <Text style={{ ...style, wordBreak: 'keep-all' }}>{text}</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should break anywhere with wordBreak break-all', async () => {
+    const url = 'https://example.com/very/very/loooong/path/to/resource';
+
+    const style = {
+      fontFamily: 'Oswald',
+      fontSize: 12,
+      width: 150,
+      marginBottom: 10,
+      border: '1px solid red',
+    };
+
+    const image = await renderToImage(
+      <Document>
+        <Page size={[180, 140]} style={{ padding: 10 }}>
+          <Text style={style}>{url}</Text>
+          <Text style={{ ...style, wordBreak: 'break-all', hyphens: 'none' }}>
+            {url}
+          </Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
 });

@@ -6,6 +6,10 @@ import renderToImage from './renderComponent';
 const text =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
 
+// Two pages of unembedded Helvetica rasterize differently on macOS and Linux
+// (~5.4%), so allow more than the default 5%.
+const splitWrappedTextSnapshot = { failureThreshold: 0.08 };
+
 const mount = async (children, pageProps = {}) => {
   const image = await renderToImage(
     <Document>
@@ -188,7 +192,9 @@ describe('float (legacy engine)', () => {
   });
 
   test('should split wrapped text across pages instead of moving it whole', async () => {
-    expect(await splitWrappedText({})).toMatchImageSnapshot();
+    expect(await splitWrappedText({})).toMatchImageSnapshot(
+      splitWrappedTextSnapshot,
+    );
   });
 
   test('should position clear elements below floats', async () => {
@@ -226,7 +232,7 @@ describe('float (next engine)', () => {
   test('should split wrapped text across pages instead of moving it whole', async () => {
     expect(
       await splitWrappedText({ experimentalPagination: true }),
-    ).toMatchImageSnapshot();
+    ).toMatchImageSnapshot(splitWrappedTextSnapshot);
   });
 
   test('should position clear elements below floats', async () => {

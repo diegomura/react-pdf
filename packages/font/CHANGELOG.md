@@ -1,5 +1,57 @@
 # @react-pdf/font
 
+## 4.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/types@2.14.0
+
+## 4.1.1
+
+### Patch Changes
+
+- [#3527](https://github.com/diegomura/react-pdf/pull/3527) [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61) Thanks [@diegomura](https://github.com/diegomura)! - perf: drop the omit('font') preprocessing pass, skip attachment purging when no attachment is set, reduce allocations in the Knuth-Plass main loop, and cache standard font AFM glyph-name lookups
+
+- Updated dependencies []:
+  - @react-pdf/types@2.13.1
+
+## 4.1.0
+
+### Minor Changes
+
+- [#3509](https://github.com/diegomura/react-pdf/pull/3509) [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd) Thanks [@diegomura](https://github.com/diegomura)! - Replace the @react-pdf/pdfkit fork with upstream pdfkit (v0.20.1)
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/types@2.13.0
+
+## 4.0.11
+
+### Patch Changes
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae)]:
+  - @react-pdf/types@2.12.0
+
+## 4.0.10
+
+### Patch Changes
+
+- Updated dependencies [[`71fc26e8f18a8f3d3edd64b0a1b38c138deb593c`](https://github.com/diegomura/react-pdf/commit/71fc26e8f18a8f3d3edd64b0a1b38c138deb593c), [`dee75f98e51198766a37addc9d0bdaa4dd5dbb3b`](https://github.com/diegomura/react-pdf/commit/dee75f98e51198766a37addc9d0bdaa4dd5dbb3b), [`ded9cdcf0d120911c0339c91519b41204acbd7d3`](https://github.com/diegomura/react-pdf/commit/ded9cdcf0d120911c0339c91519b41204acbd7d3), [`105bdd20e8865bf92e0275e66001a1dbd06d5bf6`](https://github.com/diegomura/react-pdf/commit/105bdd20e8865bf92e0275e66001a1dbd06d5bf6), [`1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e`](https://github.com/diegomura/react-pdf/commit/1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e), [`563d74e0364c80d8e6094777aa66879803786e44`](https://github.com/diegomura/react-pdf/commit/563d74e0364c80d8e6094777aa66879803786e44)]:
+  - @react-pdf/pdfkit@6.0.1
+  - @react-pdf/types@2.11.3
+
+## 4.0.9
+
+### Patch Changes
+
+- [#3474](https://github.com/diegomura/react-pdf/pull/3474) [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75) Thanks [@diegomura](https://github.com/diegomura)! - Use generated AFM font data instead of parsing raw font definitions, and split the node and browser entry points, aligning with upstream pdfkit
+
+- Updated dependencies [[`62c97745`](https://github.com/diegomura/react-pdf/commit/62c97745c5cd4fc36234de7a112d1023c49658ab), [`78ca6aa8`](https://github.com/diegomura/react-pdf/commit/78ca6aa855e0a3294c892e8857147026d2b53936), [`6098e648`](https://github.com/diegomura/react-pdf/commit/6098e6486c425db153518fd422be84bb16e84ab6), [`59aa9aea`](https://github.com/diegomura/react-pdf/commit/59aa9aea2c1a4f081654ed5877405be6c776f041), [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75), [`d41a8207`](https://github.com/diegomura/react-pdf/commit/d41a8207fb06a56e60fcb53ac0e18ce27e7d32d6), [`87911560`](https://github.com/diegomura/react-pdf/commit/87911560a5f87c82c4642db198a86b277126a26b), [`b2acd72b`](https://github.com/diegomura/react-pdf/commit/b2acd72bc90886f5486071bbe15d0a721c3b7f59), [`c2da5098`](https://github.com/diegomura/react-pdf/commit/c2da5098ccf0b7ec298fd3a8d57e6ba849e51fa3), [`30dc2a47`](https://github.com/diegomura/react-pdf/commit/30dc2a475a731e9a976533d9024e1e72d885c7f4), [`6e0102db`](https://github.com/diegomura/react-pdf/commit/6e0102db791e801c0b5aac76d77d5456f33298f6)]:
+  - @react-pdf/pdfkit@6.0.0
+  - @react-pdf/types@2.11.2
+
 ## 4.0.8
 
 ### Patch Changes

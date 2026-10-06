@@ -1,0 +1,301 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* the page sits a hair off white so cards, popovers and the PDF page can be
+     pure white and read as lifted off it */
+  --color-fd-background: hsl(36, 14%, 98%);
+  --color-fd-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-muted: hsl(36, 11%, 95.7%);
+  --color-fd-muted-foreground: hsl(0, 0%, 43.1%);
+  --color-fd-popover: hsl(0, 0%, 100%);
+  --color-fd-popover-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-card: hsl(0, 0%, 100%);
+  --color-fd-card-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-border: hsl(36, 9%, 90.5%);
+  --color-fd-primary: hsl(8.7, 100%, 45.5%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  --color-fd-secondary: hsl(36, 10%, 94%);
+  --color-fd-secondary-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-accent: hsl(36, 10%, 94%);
+  --color-fd-accent-foreground: hsl(0, 0%, 24.3%);
+  --color-fd-ring: hsl(8.7, 100%, 45.5%);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.2);
+
+  /* legacy react-pdf.org accent: tables keep the red-tinted header that gave
+     the old docs their character */
+  --color-rp-table: rgba(166, 166, 166, 0.24);
+  --color-rp-table-head: #fcd3cc;
+  --color-rp-table-head-foreground: #8d1602;
+}
+
+.dark {
+  --color-rp-table: hsla(0, 0%, 100%, 0.08);
+  --color-rp-table-head: hsl(8, 34%, 15%);
+  --color-rp-table-head-foreground: hsl(8, 72%, 78%);
+
+  --color-fd-background: hsl(216, 18.5%, 5.3%);
+  --color-fd-foreground: hsl(216, 20%, 94%);
+  --color-fd-muted: hsl(217, 15%, 10.6%);
+  --color-fd-muted-foreground: hsl(217, 8.3%, 57.6%);
+  --color-fd-popover: hsl(217, 16%, 10%);
+  --color-fd-popover-foreground: hsl(216, 20%, 94%);
+  --color-fd-card: hsl(217, 16%, 8.5%);
+  --color-fd-card-foreground: hsl(216, 20%, 94%);
+  --color-fd-border: hsl(218, 14%, 15.5%);
+  --color-fd-primary: hsl(8, 80%, 55%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  --color-fd-secondary: hsl(217, 15%, 12%);
+  --color-fd-secondary-foreground: hsl(216, 20%, 94%);
+  --color-fd-accent: hsl(217, 15%, 14%);
+  --color-fd-accent-foreground: hsl(216, 20%, 92%);
+  --color-fd-ring: hsl(8, 80%, 55%);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.4);
+}
+
+.dark #nd-sidebar {
+  --color-fd-muted: hsl(217, 15%, 8%);
+}
+
+/* ---------- Navbar ---------- */
+
+#nd-nav,
+#nd-subnav {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* The home header runs `transparentMode: 'top'`, so fumadocs adds its own
+   background only once you scroll — leave that alone or the hero backdrop gets
+   a white band across it. The docs subnav has no hero to sit over. */
+@supports (backdrop-filter: blur(1px)) {
+  #nd-subnav[data-transparent='false'] {
+    background-color: color-mix(
+      in srgb,
+      var(--color-fd-background) 65%,
+      transparent
+    );
+  }
+}
+
+/* no hard rule under the nav — the blurred pane is the separation */
+#nd-nav > div,
+#nd-subnav [data-header-body] {
+  border-bottom: none;
+}
+
+/* the home shell is capped at 1400px by default, which makes the navbar sit on
+   a different gutter than the full-bleed docs one */
+#nd-home-layout {
+  --fd-layout-width: 100vw;
+}
+
+/* the notebook header pads to 24px at md+ while the home one stays at 16px, so
+   the wordmark shifted on every docs<->site navigation. 16px also lines it up
+   with the sidebar below, which is p-4 */
+#nd-subnav [data-header-body] {
+  padding-inline: 1rem;
+}
+
+/* it also ships a trailing slot we never fill, and the actions row's gap still
+   reserves space for it, shifting the cluster 8px off the home one. Scoped to
+   div so it can't touch the empty shape elements inside icon svgs */
+#nd-subnav [data-header-body] div:empty {
+  display: none;
+}
+
+/* fumadocs ships 16px gutters on both headers; the bar reads cramped against
+   the wordmark and the actions cluster, so both get a touch more */
+/* the home header's row is a grandchild of the blurred pane, the docs one is
+   [data-header-body]; both need the same gutter or the wordmark shifts 4px on
+   every docs <-> site navigation */
+#nd-nav > div > div > nav,
+#nd-subnav [data-header-body] {
+  padding-inline: 1.25rem;
+}
+
+/* ---------- Sidebar ---------- */
+
+/* the rule is painted as a 1px-wide background so it can carry the same fade as
+   the content mask below — a hard edge-to-edge border reads heavier than the
+   list it separates */
+#nd-sidebar {
+  border-inline-end: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-fd-border) 180px,
+    var(--color-fd-border) 55%,
+    transparent
+  );
+  background-repeat: no-repeat;
+  background-size: 1px 100%;
+  background-position: right 0;
+  font-size: 0.8125rem;
+}
+
+/* fumadocs paints its own scrollbar next to the native one; both go, and the
+   faded rule above is what marks the edge instead */
+#nd-sidebar,
+#nd-sidebar * {
+  scrollbar-width: none;
+}
+
+#nd-sidebar ::-webkit-scrollbar {
+  display: none;
+}
+
+#nd-sidebar [data-orientation][data-state] {
+  display: none;
+}
+
+#nd-sidebar a,
+#nd-sidebar button {
+  padding-block: 0.3125rem;
+}
+
+/* the scroll viewport ships a 12px fade; make it read at a glance */
+#nd-sidebar .size-full {
+  --fd-fade: 36px;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--fd-fade),
+    #000 calc(100% - var(--fd-fade)),
+    transparent
+  );
+}
+
+#nd-sidebar a:not([data-active='true']),
+#nd-sidebar-mobile a:not([data-active='true']) {
+  color: color-mix(
+    in srgb,
+    var(--color-fd-muted-foreground) 82%,
+    var(--color-fd-background)
+  );
+}
+
+#nd-sidebar [data-active='true'],
+#nd-sidebar-mobile [data-active='true'] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-fd-primary) 10%,
+    transparent
+  );
+  color: var(--color-fd-primary);
+  font-weight: 500;
+}
+
+#nd-sidebar [data-active='true']::before,
+#nd-sidebar-mobile [data-active='true']::before {
+  background-color: var(--color-fd-primary);
+}
+
+/* section separators (meta.json `---Label---`) — a distinctly stronger tier
+   than the links beneath them */
+#nd-sidebar p:not(:has(a)),
+#nd-sidebar-mobile p:not(:has(a)) {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--color-fd-foreground);
+}
+
+/* ---------- Page ---------- */
+
+/* span the viewport instead of fumadocs' 97rem cap, and center the prose
+   column in whatever space is left between sidebar and TOC */
+#nd-notebook-layout {
+  --fd-layout-width: 100vw;
+}
+
+/* the article is a flex column, so centering is align-items + width:100% on
+   the children — margin-inline:auto would shrink them to fit their text */
+#nd-page {
+  align-items: center;
+  padding-block-start: 1.75rem;
+}
+
+#nd-page > * {
+  width: 100%;
+  max-width: 46rem;
+}
+
+/* ---------- Prose ---------- */
+
+/* everything below is on `.prose`, not `#nd-page`, so the blog article picks up
+   the same typography without borrowing the docs page id. Element-level styling
+   lives in `components/mdx` — what's left is either about the prose container
+   itself or needs a descendant selector no className can express. */
+
+.prose {
+  --tw-prose-size: 0.9375;
+  line-height: 1.65;
+}
+
+.prose figure.shiki {
+  margin-block: 0.875rem;
+}
+
+/* a code block framed by something else — a tab panel, an example block — is
+   flush with that frame instead of carrying its own spacing */
+.prose [role='tabpanel'] figure.shiki {
+  margin-block: 0 -1px;
+}
+
+.prose :not(pre) > code {
+  font-size: 0.8125rem;
+}
+
+.rp-example-code figure.shiki {
+  margin-block: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* the code grows with the page instead of becoming a second scroll surface the
+   reader has to hand off to mid-scroll */
+.rp-example-code .fd-scroll-container {
+  max-height: none;
+}
+
+/* ---------- Table of contents ---------- */
+
+#nd-toc {
+  padding-top: 2rem;
+}
+
+#toc-title {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#toc-title svg {
+  display: none;
+}
+
+#nd-toc a {
+  font-size: 0.8125rem;
+}
+
+/* the TOC is orientation, not a call to action — red is reserved for links and
+   primary buttons, so the active row and its rail read as plain foreground */
+#nd-toc a[data-active='true'] {
+  color: var(--color-fd-foreground);
+  font-weight: 500;
+}
+
+#nd-toc .stroke-fd-primary {
+  stroke: color-mix(in srgb, var(--color-fd-foreground) 45%, transparent);
+}
+
+#nd-toc .bg-fd-primary {
+  background-color: var(--color-fd-foreground);
+}

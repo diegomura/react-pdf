@@ -9,7 +9,7 @@
   "repository": "git@github.com:diegomura/react-pdf.git",
   "workspaces": [
     "packages/*",
-    "packages/examples/*"
+    "apps/examples"
   ],
   "scripts": {
     "prepare": "husky",
@@ -19,7 +19,7 @@
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "vitest",
-    "dev": "lerna run dev --scope @react-pdf/examples --",
+    "dev": "yarn workspace @react-pdf/examples dev",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"
@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.0",
+    "@changesets/cli": "^2.31.1",
     "@napi-rs/canvas": "^0.1.97",
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-babel": "^6.0.0",
@@ -96,5 +96,6 @@
     "url": "https://opencollective.com/react-pdf",
     "logo": "https://opencollective.com/opencollective/logo.txt"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "dependencies": {}
 }

@@ -75,8 +75,6 @@ const getAppearance = (
     },
   });
 
-  appearance.initDeflate();
-
   appearance.write(
     `/Tx BMC\nq\n/ZaDi ${height * 0.8} Tf\nBT\n${width * 0.45} ${
       height / 4

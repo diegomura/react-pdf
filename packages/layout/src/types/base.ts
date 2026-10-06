@@ -1,6 +1,6 @@
 import { Transform } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
-import * as React from 'react';
+import type { SafeNode } from './node';
 import { SafeClipPathNode } from './clip-path';
 import { SafeLinearGradientNode } from './linear-gradient';
 import { SafeMarkerNode } from './marker';
@@ -57,9 +57,11 @@ export type DynamicPageProps = {
   subPageTotalPages?: number;
 };
 
+// Pre-wrapped by the reconciler host config: returns node instances, never
+// React elements. The user-facing React signature lives in @react-pdf/types.
 export type RenderProp = (
   props: DynamicPageProps,
-) => React.ReactNode | null | undefined;
+) => SafeNode | SafeNode[] | null | undefined;
 
 export type NodeProps = {
   id?: string;

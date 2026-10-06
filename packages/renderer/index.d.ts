@@ -7,6 +7,7 @@ import {
   PageSize,
   FontStore,
   PDFVersion,
+  PDFConformance,
   Orientation,
   SourceObject,
   SrcSet,
@@ -55,6 +56,7 @@ declare namespace ReactPDF {
     creationDate?: Date;
     modificationDate?: Date;
     pdfVersion?: PDFVersion;
+    conformance?: PDFConformance;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
     ownerPassword?: string;
@@ -94,12 +96,34 @@ declare namespace ReactPDF {
     minPresenceAhead?: number;
   }
 
+  interface PageLayoutProps {
+    children: React.ReactNode;
+    pageNumber?: number;
+    totalPages?: number;
+    subPageNumber?: number;
+    subPageTotalPages?: number;
+  }
+
   interface PageProps extends NodeProps {
     /**
      * Enable page wrapping for this page.
      * @see https://react-pdf.org/components#page-wrapping
      */
     wrap?: boolean;
+    /**
+     * A template component rendered around every page this Page produces.
+     * Where it renders `children` is where page content flows; everything
+     * else repeats as page chrome with its space reserved. Like render
+     * props, layout components may not use hooks. Implies
+     * `experimentalPagination`.
+     */
+    layout?: (props: PageLayoutProps) => React.ReactNode;
+    /**
+     * Opt the document into the new pagination engine: content is measured
+     * once and packed into pages, dramatically faster on long documents.
+     * Any page opting in switches the whole document. Implied by `layout`.
+     */
+    experimentalPagination?: boolean;
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging

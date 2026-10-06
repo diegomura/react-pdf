@@ -29,4 +29,5 @@ export type PolylineNode = {
 export type SafePolylineNode = Omit<PolylineNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePolylineProps;
+  wasSplit: boolean;
 };

@@ -8,6 +8,8 @@ import { Attributes, Run } from '../types';
  * @returns Run without ommited attribute
  */
 const omit = (value: keyof Attributes, run: Run): Run => {
+  if (!run.attributes || !(value in run.attributes)) return run;
+
   const attributes = Object.assign({}, run.attributes);
 
   delete attributes[value];

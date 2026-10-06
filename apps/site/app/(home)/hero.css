@@ -1,0 +1,39 @@
+/* Hero-only atmosphere. Kept out of global.css so the landing page owns it. */
+
+/* The page keeps the plain site background; the only decoration is the legacy
+   corner-graphics motif, dialled well down — the original was a narrow strip
+   at full saturation and this spans the viewport. */
+.hero-shards {
+  --shard-red: color-mix(in srgb, #f22300 32%, transparent);
+  --shard-deep: color-mix(in srgb, #8d1602 30%, transparent);
+  --shard-warm: color-mix(in srgb, #c98a5e 20%, transparent);
+  --shard-pale: color-mix(in srgb, #ffffff 78%, transparent);
+}
+
+.dark .hero-shards {
+  --shard-red: color-mix(in srgb, #f22300 34%, transparent);
+  --shard-deep: color-mix(in srgb, #8d1602 44%, transparent);
+  --shard-warm: color-mix(in srgb, #c98a5e 12%, transparent);
+  --shard-pale: color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}

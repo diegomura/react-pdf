@@ -52,6 +52,7 @@ export type ViewNode = {
 
 export type SafeViewNode = Omit<ViewNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

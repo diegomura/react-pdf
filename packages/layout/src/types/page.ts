@@ -88,6 +88,10 @@ interface PageProps extends NodeProps {
    * @see https://react-pdf.org/components#page-wrapping
    */
   wrap?: boolean;
+  /**
+   * Opt the document into the new pagination engine. Implied by `layout`.
+   */
+  experimentalPagination?: boolean;
   size?: PageSize;
   orientation?: Orientation;
   dpi?: number;
@@ -118,6 +122,7 @@ export type PageNode = {
 
 export type SafePageNode = Omit<PageNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

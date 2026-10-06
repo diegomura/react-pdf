@@ -1,0 +1,50 @@
+{
+  "name": "@react-pdf/ui",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Headless React primitives for building PDF preview and editor interfaces",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/ui"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "jotai": "^2.12.5",
+    "jotai-effect": "^2.0.4",
+    "sucrase": "^3.35.1"
+  },
+  "peerDependencies": {
+    "@react-pdf/renderer": ">=4.9.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "@react-pdf/math": ">=6.0.0",
+    "@react-pdf/mermaid": ">=6.0.0",
+    "@react-pdf/tailwind": ">=0.2.0"
+  },
+  "devDependencies": {
+    "@react-pdf/renderer": "^4.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@react-pdf/math": {
+      "optional": true
+    },
+    "@react-pdf/mermaid": {
+      "optional": true
+    },
+    "@react-pdf/tailwind": {
+      "optional": true
+    }
+  }
+}

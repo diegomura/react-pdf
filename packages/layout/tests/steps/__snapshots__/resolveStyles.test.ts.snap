@@ -20,15 +20,18 @@ exports[`layout resolveStyles > Should overide default link styles 1`] = `
             "textDecoration": "none",
           },
           "type": "LINK",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -52,15 +55,18 @@ exports[`layout resolveStyles > Should overide default link styles with array 1`
             "textDecoration": "none",
           },
           "type": "LINK",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -84,15 +90,18 @@ exports[`layout resolveStyles > Should resolve default link styles 1`] = `
             "textDecoration": "underline",
           },
           "type": "LINK",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -131,15 +140,18 @@ exports[`layout resolveStyles > Should resolve nested node styles 1`] = `
             "paddingTop": 28.34645669291339,
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -178,15 +190,18 @@ exports[`layout resolveStyles > Should resolve nested node styles array 1`] = `
             "paddingTop": 28.34645669291339,
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -209,6 +224,7 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
             "backgroundColor": "green",
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
         {
           "props": {},
@@ -216,15 +232,18 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
             "backgroundColor": "red",
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
       ],
       "props": {},
       "style": {},
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -239,6 +258,7 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
             "backgroundColor": "green",
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
         {
           "props": {},
@@ -246,6 +266,7 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
             "backgroundColor": "red",
           },
           "type": "VIEW",
+          "wasSplit": false,
         },
       ],
       "props": {},
@@ -254,10 +275,12 @@ exports[`layout resolveStyles > Should resolve nested node styles media queries 
         "width": 100,
       },
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -286,10 +309,12 @@ exports[`layout resolveStyles > Should resolve page styles 1`] = `
         "paddingTop": 28.34645669291339,
       },
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -318,10 +343,12 @@ exports[`layout resolveStyles > Should resolve page styles array 1`] = `
         "paddingTop": 28.34645669291339,
       },
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;
 
@@ -340,6 +367,7 @@ exports[`layout resolveStyles > Should resolve several pages styles 1`] = `
         "paddingTop": 28.34645669291339,
       },
       "type": "PAGE",
+      "wasSplit": false,
     },
     {
       "props": {},
@@ -360,9 +388,11 @@ exports[`layout resolveStyles > Should resolve several pages styles 1`] = `
         "fontWeight": 700,
       },
       "type": "PAGE",
+      "wasSplit": false,
     },
   ],
   "props": {},
   "type": "DOCUMENT",
+  "wasSplit": false,
 }
 `;

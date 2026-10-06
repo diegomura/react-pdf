@@ -39,4 +39,5 @@ export type RectNode = {
 export type SafeRectNode = Omit<RectNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeRectProps;
+  wasSplit: boolean;
 };

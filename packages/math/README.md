@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
+</p>
+
 # @react-pdf/math
 
 Render LaTeX math expressions in [react-pdf](https://github.com/diegomura/react-pdf) documents.
@@ -7,15 +11,13 @@ Uses [MathJax](https://www.mathjax.org/) to convert LaTeX into SVG paths, then m
 ## Installation
 
 ```bash
-npm install @react-pdf/math
-# or
 yarn add @react-pdf/math
 ```
 
 Peer dependencies:
 
 ```bash
-npm install @react-pdf/renderer react
+yarn add @react-pdf/renderer react
 ```
 
 ## Usage

@@ -1,5 +1,126 @@
 # @react-pdf/layout
 
+## 5.2.0
+
+### Minor Changes
+
+- [#3529](https://github.com/diegomura/react-pdf/pull/3529) [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb) Thanks [@diegomura](https://github.com/diegomura)! - feat: add `conformance` Document prop for PDF/A output
+
+  Produces PDF/A-1/2/3 (b-level) output with XMP conformance metadata and an sRGB OutputIntent. `pdfVersion` defaults to what the chosen level requires. Fonts must be registered (not the built-in standard 14) to fully validate.
+
+### Patch Changes
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/types@2.14.0
+  - @react-pdf/stylesheet@6.3.2
+
+## 5.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`df39d4cf2f18ee234b4f6c7674d94bdfc4742489`](https://github.com/diegomura/react-pdf/commit/df39d4cf2f18ee234b4f6c7674d94bdfc4742489), [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61), [`a291d4fb45b6260861868b973b24e9a49915f6a0`](https://github.com/diegomura/react-pdf/commit/a291d4fb45b6260861868b973b24e9a49915f6a0)]:
+  - @react-pdf/textkit@7.0.1
+  - @react-pdf/types@2.13.1
+  - @react-pdf/stylesheet@6.3.1
+
+## 5.1.0
+
+### Minor Changes
+
+- [#3506](https://github.com/diegomura/react-pdf/pull/3506) [`1606f73d1073b9885a922abdc245a233d49ab25d`](https://github.com/diegomura/react-pdf/commit/1606f73d1073b9885a922abdc245a233d49ab25d) Thanks [@diegomura](https://github.com/diegomura)! - Mark pagination split fragments with a required `wasSplit` flag on node types
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+- [#3514](https://github.com/diegomura/react-pdf/pull/3514) [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09) Thanks [@diegomura](https://github.com/diegomura)! - feat: shape-outside support for floats (circle, ellipse, polygon, inset)
+
+- [#3286](https://github.com/diegomura/react-pdf/pull/3286) [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1) Thanks [@exoego](https://github.com/exoego)! - feat: wrapping text around image and view (float)
+
+### Patch Changes
+
+- [#3511](https://github.com/diegomura/react-pdf/pull/3511) [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52) Thanks [@diegomura](https://github.com/diegomura)! - Support ellipse and polygon exclusion shapes for text wrapping, groundwork for CSS `shape-outside`. Breaking: the `Container.excludeRects` prop is renamed to `exclusions` and now accepts `ExclusionShape[]` (rect, ellipse, or polygon, each with an optional `extend` side)
+
+- Updated dependencies [[`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db), [`76620f6208365e0e0863787e06bbd78f61c8e1fb`](https://github.com/diegomura/react-pdf/commit/76620f6208365e0e0863787e06bbd78f61c8e1fb), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/textkit@7.0.0
+  - @react-pdf/paginate@1.0.1
+  - @react-pdf/stylesheet@6.3.0
+  - @react-pdf/types@2.13.0
+
+## 5.0.0
+
+### Major Changes
+
+- [#3500](https://github.com/diegomura/react-pdf/pull/3500) [`572cedc23493e4a3085e259bf129ceec458418bd`](https://github.com/diegomura/react-pdf/commit/572cedc23493e4a3085e259bf129ceec458418bd) Thanks [@diegomura](https://github.com/diegomura)! - Move render-prop element conversion from layout to the renderer
+
+  Render props are now wrapped at the reconciler boundary: by the time layout
+  calls them they return internal instances, not React elements. Layout's
+  `createInstances` is deleted and `resolvePagination` consumes instances
+  directly.
+
+  **Breaking (layout):** anyone calling `@react-pdf/layout` directly with
+  trees whose render props return React elements must convert the result
+  before handing it to layout — the contract is now instance arrays. Users of
+  `@react-pdf/renderer` are unaffected: the renderer performs the conversion.
+
+### Minor Changes
+
+- [#3505](https://github.com/diegomura/react-pdf/pull/3505) [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae) Thanks [@diegomura](https://github.com/diegomura)! - Experimental pagination engine, opt-in per page
+
+  A new pagination engine ships alongside the current one: content is
+  measured once and packed into pages instead of relayouting on every split,
+  making long documents paginate orders of magnitude faster (a 300-page
+  document drops from ~40s to ~200ms).
+
+  Opt in with `<Page experimentalPagination>` — any page opting in switches
+  the whole document. The default behavior is unchanged.
+
+  Under the new engine:
+
+  - `<Page layout={Layout}>` renders per-page chrome (headers, footers,
+    sidebars) around the content. The layout component receives
+    `{ pageNumber, totalPages, subPageNumber, subPageTotalPages }` and the
+    page content as `children`, and runs once per output page. Using `layout`
+    implies `experimentalPagination`.
+  - One `fixed` semantic: in-flow fixed elements repeat at the top of every
+    page they span; footers are the layout's job.
+  - `minPresenceAhead` is supported, with one refinement: a trailing element
+    with nothing after it stays in place instead of moving to its own page.
+
+  The current engine remains the default until the next major, when the new
+  engine takes over.
+
+### Patch Changes
+
+- Updated dependencies [[`d38d17759b3856ab64c69101bd359aace4b532fc`](https://github.com/diegomura/react-pdf/commit/d38d17759b3856ab64c69101bd359aace4b532fc), [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae), [`482d7cd600ffa28c60b5db46e7eb1466398feb7b`](https://github.com/diegomura/react-pdf/commit/482d7cd600ffa28c60b5db46e7eb1466398feb7b), [`cb445c063adf87c2f250d11f7c36a71c7695bc61`](https://github.com/diegomura/react-pdf/commit/cb445c063adf87c2f250d11f7c36a71c7695bc61), [`cf1348df7bfbc8091ff495320a3ae798569ccc4e`](https://github.com/diegomura/react-pdf/commit/cf1348df7bfbc8091ff495320a3ae798569ccc4e)]:
+  - @react-pdf/stylesheet@6.2.4
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/types@2.12.0
+  - @react-pdf/paginate@1.0.0
+  - @react-pdf/textkit@6.4.2
+  - @react-pdf/image@3.1.2
+
+## 4.7.1
+
+### Patch Changes
+
+- Updated dependencies [[`6f94a82ea4306b0fd9c7c161f9c44609be7f6f39`](https://github.com/diegomura/react-pdf/commit/6f94a82ea4306b0fd9c7c161f9c44609be7f6f39)]:
+  - @react-pdf/textkit@6.4.1
+  - @react-pdf/types@2.11.3
+  - @react-pdf/stylesheet@6.2.3
+
+## 4.7.0
+
+### Minor Changes
+
+- [#3458](https://github.com/diegomura/react-pdf/pull/3458) [`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6) Thanks [@Codex-](https://github.com/Codex-)! - feat: expose `hyphenationPenalty` on `Text` props
+
+### Patch Changes
+
+- Updated dependencies [[`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee), [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427), [`6d7c2b79`](https://github.com/diegomura/react-pdf/commit/6d7c2b79187a85d0da7e3b45bd65373fdd7e928e), [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d), [`86c9fd88`](https://github.com/diegomura/react-pdf/commit/86c9fd8867b694eb607d8ae7df9145e86d8c8465)]:
+  - @react-pdf/textkit@6.4.0
+  - @react-pdf/image@3.1.1
+  - @react-pdf/types@2.11.2
+  - @react-pdf/stylesheet@6.2.2
+
 ## 4.6.1
 
 ### Patch Changes

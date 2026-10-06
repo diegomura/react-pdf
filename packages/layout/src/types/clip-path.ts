@@ -31,6 +31,7 @@ export type ClipPathNode = {
 };
 
 export type SafeClipPathNode = Omit<ClipPathNode, 'children'> & {
+  wasSplit: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

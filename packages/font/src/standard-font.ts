@@ -1,7 +1,43 @@
 // @ts-expect-error ts being silly
-import PDFDocument from '@react-pdf/pdfkit';
+import PDFDocument, { registerStdFonts } from 'pdfkit';
+import Courier from 'pdfkit/standard-fonts/Courier';
+import CourierBold from 'pdfkit/standard-fonts/CourierBold';
+import CourierBoldOblique from 'pdfkit/standard-fonts/CourierBoldOblique';
+import CourierOblique from 'pdfkit/standard-fonts/CourierOblique';
+import Helvetica from 'pdfkit/standard-fonts/Helvetica';
+import HelveticaBold from 'pdfkit/standard-fonts/HelveticaBold';
+import HelveticaBoldOblique from 'pdfkit/standard-fonts/HelveticaBoldOblique';
+import HelveticaOblique from 'pdfkit/standard-fonts/HelveticaOblique';
+import SymbolFont from 'pdfkit/standard-fonts/Symbol';
+import TimesBold from 'pdfkit/standard-fonts/TimesBold';
+import TimesBoldItalic from 'pdfkit/standard-fonts/TimesBoldItalic';
+import TimesItalic from 'pdfkit/standard-fonts/TimesItalic';
+import TimesRoman from 'pdfkit/standard-fonts/TimesRoman';
+import ZapfDingbats from 'pdfkit/standard-fonts/ZapfDingbats';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
+
+// The browser build of pdfkit ships without font metrics so consumers can pick
+// what they bundle. react-pdf resolves standard fonts by name at render time,
+// so it needs all of them. The node build registers them itself.
+if (BROWSER) {
+  registerStdFonts(
+    Courier,
+    CourierBold,
+    CourierBoldOblique,
+    CourierOblique,
+    Helvetica,
+    HelveticaBold,
+    HelveticaBoldOblique,
+    HelveticaOblique,
+    SymbolFont,
+    TimesBold,
+    TimesBoldItalic,
+    TimesItalic,
+    TimesRoman,
+    ZapfDingbats,
+  );
+}
 
 export const STANDARD_FONTS = [
   'Courier',
@@ -33,6 +69,7 @@ const openStandardFont = (src: string) => {
 class StandardFont implements Font {
   name: string;
   src: any;
+  glyphNames = new Map<number, string>();
   fullName: string;
   familyName: string;
   subfamilyName: string;
@@ -119,12 +156,23 @@ class StandardFont implements Font {
     return glyph;
   }
 
+  glyphName(id: number) {
+    let name = this.glyphNames.get(id);
+
+    if (name === undefined) {
+      name = this.src.font.characterToGlyph(id) as string;
+      this.glyphNames.set(id, name);
+    }
+
+    return name;
+  }
+
   getGlyph(id: number): fontkit.Glyph {
     return {
       id,
       codePoints: [id],
       isLigature: false,
-      name: this.src.font.characterToGlyph(id),
+      name: this.glyphName(id),
       _font: this.src,
       // @ts-expect-error assign proper value
       advanceWidth: undefined,
@@ -132,7 +180,7 @@ class StandardFont implements Font {
   }
 
   hasGlyphForCodePoint(codePoint: number) {
-    return this.src.font.characterToGlyph(codePoint) !== '.notdef';
+    return this.glyphName(codePoint) !== '.notdef';
   }
 
   // Based on empirical observation

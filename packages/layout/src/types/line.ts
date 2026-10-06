@@ -35,4 +35,5 @@ export type LineNode = {
 export type SafeLineNode = Omit<LineNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeLineProps;
+  wasSplit: boolean;
 };

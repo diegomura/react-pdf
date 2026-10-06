@@ -1,0 +1,15 @@
+{
+  "title": "v2",
+  "root": true,
+  "pages": [
+    "index",
+    "rendering-process",
+    "components",
+    "svg",
+    "hooks",
+    "styling",
+    "fonts",
+    "node",
+    "advanced"
+  ]
+}

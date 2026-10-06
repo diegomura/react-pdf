@@ -77,4 +77,5 @@ export type ImageNode = {
 
 export type SafeImageNode = Omit<ImageNode, 'style'> & {
   style: SafeStyle;
+  wasSplit: boolean;
 };

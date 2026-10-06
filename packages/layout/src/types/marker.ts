@@ -55,6 +55,7 @@ export type MarkerNode = {
 
 export type SafeMarkerNode = Omit<MarkerNode, 'props' | 'children'> & {
   props: SafeMarkerProps;
+  wasSplit: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

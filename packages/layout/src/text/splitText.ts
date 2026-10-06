@@ -53,6 +53,8 @@ const splitText = (node: SafeTextNode, height: number) => {
       borderBottomRightRadius: 0,
     },
     lines: node.lines.slice(0, slicedLineIndex),
+    exclusions: undefined,
+    wasSplit: true,
   });
 
   const next: SafeTextNode = Object.assign({}, node, {
@@ -71,6 +73,8 @@ const splitText = (node: SafeTextNode, height: number) => {
       borderTopRightRadius: 0,
     },
     lines: node.lines.slice(slicedLineIndex),
+    exclusions: undefined,
+    wasSplit: true,
   });
 
   return [current, next];

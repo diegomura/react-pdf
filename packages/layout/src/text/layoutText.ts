@@ -6,6 +6,7 @@ import layoutEngine, {
   wordHyphenation,
   textDecoration,
   fontSubstitution,
+  ExclusionShape,
 } from '@react-pdf/textkit';
 import FontStore from '@react-pdf/font';
 
@@ -29,6 +30,33 @@ const getMaxLines = (node) => node.style?.maxLines;
 const getTextOverflow = (node) => node.style?.textOverflow;
 
 /**
+ * Generate exclusion shapes from node exclusions for textkit,
+ * in coordinates relative to the text container.
+ */
+const getExclusions = (node: SafeTextNode): ExclusionShape[] | undefined => {
+  const exclusions = node.exclusions;
+
+  if (!exclusions || exclusions.length === 0) return undefined;
+
+  const offsetY = (node.box?.top ?? 0) + (node.box?.paddingTop ?? 0);
+
+  return exclusions.map((exclusion) => {
+    if (exclusion.type === 'ellipse') {
+      return { ...exclusion, cy: exclusion.cy - offsetY };
+    }
+
+    if (exclusion.type === 'polygon') {
+      return {
+        ...exclusion,
+        points: exclusion.points.map((p) => ({ x: p.x, y: p.y - offsetY })),
+      };
+    }
+
+    return { ...exclusion, y: exclusion.y - offsetY };
+  });
+};
+
+/**
  * Get layout container for specific text node
  *
  * @param {number} width
@@ -36,7 +64,7 @@ const getTextOverflow = (node) => node.style?.textOverflow;
  * @param {Object} node
  * @returns {Object} layout container
  */
-const getContainer = (width, height, node) => {
+const getContainer = (width: number, height: number, node: SafeTextNode) => {
   const maxLines = getMaxLines(node);
   const textOverflow = getTextOverflow(node);
 
@@ -47,6 +75,7 @@ const getContainer = (width, height, node) => {
     maxLines,
     height: height || Infinity,
     truncateMode: textOverflow,
+    exclusions: getExclusions(node),
   };
 };
 

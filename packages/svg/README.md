@@ -1,23 +1,5 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/5600341/27505816-c8bc37aa-587f-11e7-9a86-08a2d081a8b9.png" height="280px">
-  <p align="center">React renderer for creating PDF files on the browser and server<p>
-  <p align="center">
-    <a href="https://www.npmjs.com/package/@react-pdf/renderer">
-      <img src="https://img.shields.io/npm/v/@react-pdf/renderer?style=flat&colorA=000000&colorB=000000" />
-    </a>
-     <a href="https://opencollective.com/react-pdf">
-      <img src="https://img.shields.io/opencollective/all/react-pdf?style=flat&colorA=000000&colorB=000000" />
-    </a>
-    <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/diegomura/react-pdf?style=flat&colorA=000000&colorB=000000" />
-    </a>
-    <a href="https://blockchain.com/btc/address/bc1qj223udztpmt5dck46dw0yap08yum63ht56h90v">
-      <img src="https://img.shields.io/badge/BTC-f5f5f5?style=flat&colorA=000000&colorB=000000" />
-    </a>
-     <a href="https://blockchain.com/eth/address/0x4e1DB76bA0858BbCAa4DD804418D0D9EcF77B1cC">
-      <img src="https://img.shields.io/badge/ETH-f5f5f5?style=flat&colorA=000000&colorB=000000" />
-    </a>
-  </p>
 </p>
 
 # @react-pdf/svg
@@ -29,8 +11,6 @@ Parses SVG markup into a tree of nodes compatible with react-pdf's SVG primitive
 ## Installation
 
 ```bash
-npm install @react-pdf/svg
-# or
 yarn add @react-pdf/svg
 ```
 

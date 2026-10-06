@@ -7,8 +7,8 @@
   "homepage": "https://github.com/diegomura/react-pdf#readme",
   "repository": "git@github.com:diegomura/react-pdf.git",
   "scripts": {
-    "dev": "vite --open",
-    "build:site": "vite build"
+    "dev": "node init && vite --open",
+    "build:site": "node init && vite build"
   },
   "dependencies": {
     "@react-pdf/layout": "^5.2.0",

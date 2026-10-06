@@ -13,13 +13,13 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "build": "lerna run build",
+    "build": "node init && lerna run build",
     "watch": "lerna run watch --parallel",
     "typecheck": "lerna run typecheck --parallel",
     "prepublish": "lerna run build",
     "lint": "eslint packages",
     "test": "vitest",
-    "dev": "yarn workspace @react-pdf/examples dev",
+    "dev": "node init && yarn workspace @react-pdf/examples dev",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish"

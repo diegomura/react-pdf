@@ -14,7 +14,7 @@
     "directory": "packages/reconciler"
   },
   "scripts": {
-    "build": "rimraf ./lib && rollup -c",
+    "build": "node init && rimraf ./lib && rollup -c",
     "watch": "rimraf ./lib && rollup -c -w",
     "size": "size-limit",
     "lint": "eslint src",

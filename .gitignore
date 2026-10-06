@@ -8,3 +8,4 @@ coverage
 .cache
 .parcel-cache
 .claude
+config.bat

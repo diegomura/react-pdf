@@ -31,7 +31,7 @@
     "directory": "packages/hyphenate"
   },
   "scripts": {
-    "build": "rollup -c && node scripts/generate-languages.mjs",
+    "build": "node init && rollup -c && node scripts/generate-languages.mjs",
     "watch": "rollup -c -w",
     "typecheck": "tsc --noEmit",
     "test": "vitest"

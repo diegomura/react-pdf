@@ -241,6 +241,24 @@ describe('resolve stylesheet text', () => {
     expect(styles).toEqual({ textTransform: 'capitalize' });
   });
 
+  test('should resolve text wrap', () => {
+    const styles = resolveStyle({ textWrap: 'pretty' });
+
+    expect(styles).toEqual({ textWrap: 'pretty' });
+  });
+
+  test('should resolve text wrap nowrap', () => {
+    const styles = resolveStyle({ textWrap: 'nowrap' });
+
+    expect(styles).toEqual({ textWrap: 'nowrap' });
+  });
+
+  test('should resolve text wrap balance', () => {
+    const styles = resolveStyle({ textWrap: 'balance' });
+
+    expect(styles).toEqual({ textWrap: 'balance' });
+  });
+
   test('should resolve text vertical align', () => {
     const styles = resolveStyle({ verticalAlign: 'sub' });
 

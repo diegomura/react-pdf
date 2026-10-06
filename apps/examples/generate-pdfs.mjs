@@ -44,6 +44,7 @@ const exampleNames = [
   'soft-hyphens',
   'svg',
   'svg-transform',
+  'text-wrap',
   'transform-origin',
 ];
 

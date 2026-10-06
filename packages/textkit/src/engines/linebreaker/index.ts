@@ -17,20 +17,57 @@ const opts = {
 };
 
 /**
+ * Get the hyphen character code point(s) based on options
+ *
+ * @param options - Layout options
+ * @returns Array of code points for the hyphen character, or null if no hyphen should be inserted
+ */
+const getHyphenCodePoints = (options: LayoutOptions): number[] | null => {
+  // If hyphens is 'none', don't insert any hyphen character
+  if (options.hyphens === 'none') {
+    return null;
+  }
+
+  // If hyphenateCharacter is explicitly set
+  if (options.hyphenateCharacter !== undefined) {
+    // Empty string means no hyphen
+    if (options.hyphenateCharacter === '') {
+      return null;
+    }
+    // Convert custom character to code points
+    const codePoints: number[] = [];
+    for (const char of options.hyphenateCharacter) {
+      const codePoint = char.codePointAt(0);
+      if (codePoint !== undefined) {
+        codePoints.push(codePoint);
+      }
+    }
+    return codePoints.length > 0 ? codePoints : null;
+  }
+
+  // Default: use standard hyphen
+  return [HYPHEN];
+};
+
+/**
  * Slice attributed string to many lines
  *
  * @param attributedString - Attributed string
  * @param nodes
  * @param breaks
+ * @param options - Layout options
  * @returns Attributed strings
  */
 const breakLines = (
   attributedString: AttributedString,
   nodes: Node[],
   breaks: number[],
+  options: LayoutOptions,
 ) => {
   let start = 0;
   let end = null;
+
+  const hyphenCodePoints = getHyphenCodePoints(options);
 
   const lines: AttributedString[] = [];
 
@@ -48,7 +85,12 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      line = insertGlyph(line.string.length, HYPHEN, line);
+      // Only hyphenation breaks are flagged; soft wrap breaks show nothing.
+      if (node.flagged && hyphenCodePoints !== null) {
+        for (const codePoint of hyphenCodePoints) {
+          line = insertGlyph(line.string.length, codePoint, line);
+        }
+      }
     } else {
       end = node.end;
       line = slice(start, end, attributedString);
@@ -79,9 +121,9 @@ const getNodes = (
 ): Node[] => {
   let start = 0;
 
-  const hyphenWidth = 5;
+  const hyphenWidth = getHyphenCodePoints(options) === null ? 0 : 5;
 
-  const { syllables } = attributedString;
+  const { syllables, syllableBreaks } = attributedString;
 
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
@@ -101,15 +143,21 @@ const getNodes = (
       // Add glue node. Glue nodes are used to fill the space between words.
       acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
     } else {
-      const hyphenated = syllables[index + 1] !== ' ';
+      const next = syllables[index + 1];
+      const breakable = next !== undefined && next.trim() !== '';
+      const hyphenated =
+        breakable && (syllableBreaks?.[index] ?? 'hyphen') === 'hyphen';
       const end = start + s.length;
 
       // Add box node. Box nodes are used to represent words.
       acc.push(knuthPlass.box(width, start, end, hyphenated));
 
-      if (syllables[index + 1] && hyphenated) {
-        // Add penalty node. Penalty nodes are used to represent hyphenation points.
+      // Add penalty node. Penalty nodes are used to represent breaks inside
+      // words. Only hyphenation breaks cost a hyphen.
+      if (hyphenated) {
         acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
+      } else if (breakable) {
+        acc.push(knuthPlass.penalty(0, 0, 0));
       }
     }
 
@@ -163,7 +211,7 @@ const linebreaker = (options: LayoutOptions) => {
       breaks = bestFit(nodes, availableWidths);
     }
 
-    return breakLines(attributedString, nodes, breaks.slice(1));
+    return breakLines(attributedString, nodes, breaks.slice(1), options);
   };
 };
 

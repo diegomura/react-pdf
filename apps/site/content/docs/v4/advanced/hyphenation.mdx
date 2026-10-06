@@ -1,0 +1,38 @@
+---
+title: "Hyphenation"
+---
+
+Hyphenation refers to the automated process of breaking words between lines to create a better visual consistency across a text block. This is a complex problem. It involves knowing about the language of the text, available space, ligatures, among other things.
+
+React-pdf internally implements the [Knuth and Plass line breaking algorithm](http://www.eprg.org/G53DOC/pdfs/knuth-plass-breaking.pdf) that produces the minimum amount of lines without compromising text legibility. By default it's setup to hyphenate english words.
+
+## Other languages
+
+Words are split with [@react-pdf/hyphenate](https://github.com/diegomura/react-pdf/tree/master/packages/hyphenate), a fast Liang hyphenation engine with an entry point per language, `en-us` being the default. To hyphenate another language, register its `syllables` function:
+
+```jsx
+import { Font } from '@react-pdf/renderer';
+import { syllables } from '@react-pdf/hyphenate/de';
+
+Font.registerHyphenationCallback(syllables);
+```
+
+Every language shipped by [hyphen](https://github.com/ytiurin/hyphen) is available under the same name (`de`, `es`, `fr`, `ru`, `zh-latn-pinyin`, and 80+ more). Each language is its own entry point, so bundlers only include the patterns you actually import.
+
+## Custom callback
+
+If you need more fine-grained control over how words break, you can pass your own callback and handle all that logic by yourself:
+
+```jsx
+import { Font } from '@react-pdf/renderer'
+
+const hyphenationCallback = (word) => {
+  // Return word syllables in an array
+}
+
+Font.registerHyphenationCallback(hyphenationCallback);
+```
+
+> **Protip:** If you don't want to hyphenate words at all, just provide a callback that returns the same words it receives. More information [here](/docs/v4/fonts#registerhyphenationcallback)
+
+<Example name="hyphenation-callback" />

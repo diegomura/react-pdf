@@ -23,7 +23,11 @@ const purgeAttachments = (line: AttributedString) => {
 
   if (!shouldPurge) return line;
 
-  const runs = line.runs.map((run) => omit('attachment', run));
+  // applyDefaultStyles materializes `attachment: null` on every run, so only
+  // pay for the omit copy when an attachment is actually set.
+  const runs = line.runs.map((run) =>
+    run.attributes?.attachment ? omit('attachment', run) : run,
+  );
 
   return Object.assign({}, line, { runs });
 };
@@ -127,13 +131,22 @@ const layoutParagraph = (
     const rects = generateLineRects(container, height);
     const linebreak = engines.linebreaker(options);
 
-    let availableWidths: number[];
+    /* A single rect is a uniform measure: prepend the indented first-line
+       width and the linebreaker repeats the last entry for the rest. With
+       exclusions each rect already maps to one line, so widths must stay
+       1:1 with rects — only the first one shrinks by the indent. */
+    let availableWidths = rects.map((r) => r.width);
+
+    if (rects.length === 1) {
+      availableWidths.unshift(availableWidths[0] - indent);
+    } else {
+      availableWidths[0] -= indent;
+    }
 
     if (options.textWrap === 'nowrap') {
       availableWidths = [Infinity];
-    } else if (options.textWrap === 'balance') {
-      const naturalWidths = rects.map((r) => r.width);
-      const naturalLines = linebreak(paragraph, naturalWidths);
+    } else if (options.textWrap === 'balance' && rects.length === 1) {
+      const naturalLines = linebreak(paragraph, availableWidths);
 
       if (
         naturalLines.length > 1 &&
@@ -142,17 +155,11 @@ const layoutParagraph = (
         const balanced = computeBalancedWidth(
           linebreak,
           paragraph,
-          naturalWidths[0],
+          rects[0].width,
           naturalLines.length,
         );
         availableWidths = [balanced];
-      } else {
-        availableWidths = naturalWidths;
-        availableWidths.unshift(availableWidths[0] - indent);
       }
-    } else {
-      availableWidths = rects.map((r) => r.width);
-      availableWidths.unshift(availableWidths[0] - indent);
     }
 
     const lines = linebreak(paragraph, availableWidths);

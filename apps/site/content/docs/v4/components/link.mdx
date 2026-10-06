@@ -1,0 +1,22 @@
+---
+title: "Link"
+---
+
+A React component for displaying an hyperlink. Link’s can be nested inside a Text component, or being inside any other valid primitive.
+
+<Usage />
+
+## Valid props
+
+| Prop name |                                          Description                                          |                                            Type |     Default |
+|-----------|:---------------------------------------------------------------------------------------------:|------------------------------------------------:|------------:|
+| src       | Valid URL or destination ID. ID must be prefixed with `#`. [See more](/docs/v4/advanced/document-navigation#destinations-v200) |                                        _String_ | _undefined_ |
+| href      | Alias of _src_. Valid URL for external links                                                  |                                        _String_ | _undefined_ |
+| wrap      |         Enable/disable page wrapping for element. [See more](/docs/v4/advanced/page-wrapping)         |                                       _Boolean_ |      _true_ |
+| style     |                           Defines view styles. [See more](/docs/v4/styling)                           |                               _Object_, _Array_ | _undefined_ |
+| debug     |           Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)            |                                       _Boolean_ |     _false_ |
+| fixed     |          Render component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping)           |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
+| hitSlop   | Expands the clickable area beyond the visible bounds of the link | _Number_ or _Object_ `{ top, bottom, left, right }` | _undefined_ |
+| bookmark  |                  Attach bookmark to element. [See more](/docs/v4/advanced/document-navigation#bookmarks-v220)                  | _String_ or [Bookmark](/docs/v4/advanced/document-navigation#bookmark-type) | _undefined_ |

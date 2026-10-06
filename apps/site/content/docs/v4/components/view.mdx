@@ -1,0 +1,21 @@
+---
+title: "View"
+---
+
+The most fundamental component for building a UI and is designed to be nested inside other views and can have 0 to many children.
+
+<Usage />
+
+## Valid props
+
+| Prop name |                                  Description                                   |                                            Type |     Default |
+|-----------|:------------------------------------------------------------------------------:|------------------------------------------------:|------------:|
+| wrap      | Enable/disable page wrapping for element. [See more](/docs/v4/advanced/page-wrapping)  |                                       _Boolean_ |      _true_ |
+| style     |                   Defines view styles. [See more](/docs/v4/styling)                    |                               _Object_, _Array_ | _undefined_ |
+| render    | Render dynamic content based on context. [See more](/docs/v4/advanced/dynamic-content) |                                      _Function_ | _undefined_ |
+| debug     |    Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)    |                                       _Boolean_ |     _false_ |
+| fixed     |   Render component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping)   |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
+| id        |       Destination ID to be linked to. [See more](/docs/v4/advanced/document-navigation#destinations-v200)       |                                        _String_ | _undefined_ |
+| bookmark  |          Attach bookmark to element. [See more](/docs/v4/advanced/document-navigation#bookmarks-v220)           | _String_ or [Bookmark](/docs/v4/advanced/document-navigation#bookmark-type) | _undefined_ |

@@ -1,0 +1,30 @@
+{
+  "name": "@react-pdf/paginate",
+  "version": "1.0.1",
+  "license": "MIT",
+  "description": "Standalone pagination engine for react-pdf",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/paginate"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.97",
+    "jest-image-snapshot": "^6.1.0",
+    "vitest": "^1.2.0"
+  }
+}

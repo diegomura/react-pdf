@@ -1,5 +1,91 @@
 # @react-pdf/types
 
+## 2.14.0
+
+### Minor Changes
+
+- [#3529](https://github.com/diegomura/react-pdf/pull/3529) [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb) Thanks [@diegomura](https://github.com/diegomura)! - feat: add `conformance` Document prop for PDF/A output
+
+  Produces PDF/A-1/2/3 (b-level) output with XMP conformance metadata and an sRGB OutputIntent. `pdfVersion` defaults to what the chosen level requires. Fonts must be registered (not the built-in standard 14) to fully validate.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/font@4.1.2
+  - @react-pdf/stylesheet@6.3.2
+
+## 2.13.1
+
+### Patch Changes
+
+- Updated dependencies [[`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61)]:
+  - @react-pdf/font@4.1.1
+  - @react-pdf/stylesheet@6.3.1
+
+## 2.13.0
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/stylesheet@6.3.0
+  - @react-pdf/font@4.1.0
+
+## 2.12.0
+
+### Minor Changes
+
+- [#3505](https://github.com/diegomura/react-pdf/pull/3505) [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae) Thanks [@diegomura](https://github.com/diegomura)! - Experimental pagination engine, opt-in per page
+
+  A new pagination engine ships alongside the current one: content is
+  measured once and packed into pages instead of relayouting on every split,
+  making long documents paginate orders of magnitude faster (a 300-page
+  document drops from ~40s to ~200ms).
+
+  Opt in with `<Page experimentalPagination>` — any page opting in switches
+  the whole document. The default behavior is unchanged.
+
+  Under the new engine:
+
+  - `<Page layout={Layout}>` renders per-page chrome (headers, footers,
+    sidebars) around the content. The layout component receives
+    `{ pageNumber, totalPages, subPageNumber, subPageTotalPages }` and the
+    page content as `children`, and runs once per output page. Using `layout`
+    implies `experimentalPagination`.
+  - One `fixed` semantic: in-flow fixed elements repeat at the top of every
+    page they span; footers are the layout's job.
+  - `minPresenceAhead` is supported, with one refinement: a trailing element
+    with nothing after it stays in place instead of moving to its own page.
+
+  The current engine remains the default until the next major, when the new
+  engine takes over.
+
+### Patch Changes
+
+- Updated dependencies [[`d38d17759b3856ab64c69101bd359aace4b532fc`](https://github.com/diegomura/react-pdf/commit/d38d17759b3856ab64c69101bd359aace4b532fc), [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae)]:
+  - @react-pdf/stylesheet@6.2.4
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/font@4.0.11
+
+## 2.11.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/font@4.0.10
+  - @react-pdf/stylesheet@6.2.3
+
+## 2.11.2
+
+### Patch Changes
+
+- Updated dependencies [[`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75)]:
+  - @react-pdf/font@4.0.9
+  - @react-pdf/stylesheet@6.2.2
+
 ## 2.11.1
 
 ### Patch Changes

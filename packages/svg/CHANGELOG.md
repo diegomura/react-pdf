@@ -1,5 +1,12 @@
 # @react-pdf/svg
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae)]:
+  - @react-pdf/primitives@4.4.0
+
 ## 1.1.0
 
 ### Minor Changes

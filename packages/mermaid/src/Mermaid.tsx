@@ -1,6 +1,6 @@
 import { parseSvg } from '@react-pdf/svg';
 
-import { mermaidToSvg } from './render';
+import { mermaidToSvg, themeColors } from './render';
 import { preprocessSvg } from './preprocessSvg';
 import { mapSvgNode } from './mapSvg';
 import type { MermaidRenderOptions } from './render';
@@ -101,7 +101,7 @@ const Mermaid = ({
   theme,
   debug = false,
 }: MermaidProps) => {
-  const renderOptions: MermaidRenderOptions = {};
+  const renderOptions: MermaidRenderOptions = themeColors(theme);
 
   if (color) renderOptions.fg = color;
   if (bg) renderOptions.bg = bg;
@@ -111,19 +111,10 @@ const Mermaid = ({
   if (surface) renderOptions.surface = surface;
   if (border) renderOptions.border = border;
   if (transparent) renderOptions.transparent = transparent;
-  if (theme) renderOptions.theme = theme;
 
   const rawSvg = mermaidToSvg(children, renderOptions);
 
-  const svgString = preprocessSvg(rawSvg, {
-    fg: color,
-    bg,
-    accent,
-    line,
-    muted,
-    surface,
-    border,
-  });
+  const svgString = preprocessSvg(rawSvg, renderOptions);
 
   const svgTree = parseSvg(svgString);
 
@@ -135,7 +126,7 @@ const Mermaid = ({
   return mapSvgNode(svgTree, 'mermaid', {
     width: svgWidth ? Number(svgWidth) : undefined,
     height: svgHeight ? Number(svgHeight) : undefined,
-    color: color || 'black',
+    color: renderOptions.fg || 'black',
     debug,
   });
 };

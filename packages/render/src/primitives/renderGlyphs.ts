@@ -118,6 +118,8 @@ const renderGlyphs = (
   x: number,
   y: number,
 ) => {
+  if (ctx.glyphs) return ctx.glyphs(glyphs, positions, x, y);
+
   const scale = 1000 / ctx._fontSize;
   const unitsPerEm = ctx._font.font.unitsPerEm || 1000;
   const advanceWidthScale = 1000 / unitsPerEm;

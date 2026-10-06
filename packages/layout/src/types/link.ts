@@ -33,6 +33,7 @@ export type LinkNode = {
 
 export type SafeLinkNode = Omit<LinkNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

@@ -32,5 +32,6 @@ export type TspanNode = {
 export type SafeTspanNode = Omit<TspanNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
   props: SafeTspanProps;
+  wasSplit: boolean;
   children?: SafeTextInstanceNode[];
 };

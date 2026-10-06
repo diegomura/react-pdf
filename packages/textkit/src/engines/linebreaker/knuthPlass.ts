@@ -166,6 +166,15 @@ const linebreak = (
     new LinkedList.Node(breakpoint(0, 0, 0, 0, undefined, null)),
   );
 
+  // Candidates for each fitness class, reset per active-node group. Reused
+  // across iterations to avoid allocating in the algorithm's hottest loop.
+  const candidates = [
+    { active: undefined, demerits: Infinity },
+    { active: undefined, demerits: Infinity },
+    { active: undefined, demerits: Infinity },
+    { active: undefined, demerits: Infinity },
+  ];
+
   // The main loop of the algorithm
   function mainLoop(node: Node, index: number, nodes: Node[]) {
     let active = activeNodes.first();
@@ -177,13 +186,10 @@ const linebreak = (
     while (active !== null) {
       let currentLine = 0;
 
-      // Candidates fo each fitness class
-      const candidates = [
-        { active: undefined, demerits: Infinity },
-        { active: undefined, demerits: Infinity },
-        { active: undefined, demerits: Infinity },
-        { active: undefined, demerits: Infinity },
-      ];
+      for (let i = 0; i < candidates.length; i += 1) {
+        candidates[i].active = undefined;
+        candidates[i].demerits = Infinity;
+      }
 
       // Iterate through the linked list of active nodes to find new potential active nodes and deactivate current active nodes.
       while (active !== null) {
@@ -213,26 +219,21 @@ const linebreak = (
         // If the ratio is within the valid range of -1 <= ratio <= tolerance calculate the
         // total demerits and record a candidate active node.
         if (ratio >= -1 && ratio <= options.tolerance) {
-          const badness = 100 * Math.pow(Math.abs(ratio), 3);
+          const absRatio = Math.abs(ratio);
+          const badness = 100 * absRatio * absRatio * absRatio;
+          const lineDemerits = options.demerits.line + badness;
 
-          let demerits = 0;
+          let demerits = lineDemerits * lineDemerits;
 
           // Positive penalty
           if (node.type === 'penalty' && node.penalty >= 0) {
-            demerits =
-              Math.pow(options.demerits.line + badness, 2) +
-              Math.pow(node.penalty, 2);
+            demerits += node.penalty * node.penalty;
             // Negative penalty but not a forced break
           } else if (
             node.type === 'penalty' &&
             node.penalty !== -linebreak.infinity
           ) {
-            demerits =
-              Math.pow(options.demerits.line + badness, 2) -
-              Math.pow(node.penalty, 2);
-            // All other cases
-          } else {
-            demerits = Math.pow(options.demerits.line + badness, 2);
+            demerits -= node.penalty * node.penalty;
           }
 
           if (
@@ -268,7 +269,8 @@ const linebreak = (
 
           // Only store the best candidate for each fitness class
           if (demerits < candidates[currentClass].demerits) {
-            candidates[currentClass] = { active, demerits };
+            candidates[currentClass].active = active;
+            candidates[currentClass].demerits = demerits;
           }
         }
 
@@ -276,11 +278,13 @@ const linebreak = (
 
         // Stop iterating through active nodes to insert new candidate active nodes in the active list
         // before moving on to the active nodes for the next line.
-        // TODO: The Knuth and Plass paper suggests a conditional for currentLine < j0. This means paragraphs
-        // with identical line lengths will not be sorted by line number. Find out if that is a desirable outcome.
-        // For now I left this out, as it only adds minimal overhead to the algorithm and keeping the active node
-        // list sorted has a higher priority.
-        if (active !== null && active.data.line >= currentLine) {
+        // Line numbers are equivalent once the last distinct line length is reached.
+        // Grouping them allows dominated candidates to be discarded together.
+        if (
+          active !== null &&
+          active.data.line >= currentLine &&
+          currentLine < lineLengths.length
+        ) {
           break;
         }
       }
@@ -315,27 +319,22 @@ const linebreak = (
     }
   }
 
-  nodes.forEach((node, index, nodes) => {
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+
     if (node.type === 'box') {
       sum.width += node.width;
-      return;
-    }
-
-    if (node.type === 'glue') {
+    } else if (node.type === 'glue') {
       const precedesBox = index > 0 && nodes[index - 1].type === 'box';
       if (precedesBox) mainLoop(node, index, nodes);
 
       sum.width += node.width;
       sum.stretch += node.stretch;
       sum.shrink += node.shrink;
-
-      return;
-    }
-
-    if (node.type === 'penalty' && node.penalty !== linebreak.infinity) {
+    } else if (node.type === 'penalty' && node.penalty !== linebreak.infinity) {
       mainLoop(node, index, nodes);
     }
-  });
+  }
 
   return findBestBreakpoints(activeNodes);
 };

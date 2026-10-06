@@ -1,5 +1,5 @@
 {
   "version": "independent",
-  "packages": ["packages/*", "packages/examples/*"],
+  "packages": ["packages/*"],
   "npmClient": "yarn"
 }

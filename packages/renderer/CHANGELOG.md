@@ -1,5 +1,121 @@
 # @react-pdf/renderer
 
+## 4.9.0
+
+### Minor Changes
+
+- [#3529](https://github.com/diegomura/react-pdf/pull/3529) [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb) Thanks [@diegomura](https://github.com/diegomura)! - feat: add `conformance` Document prop for PDF/A output
+
+  Produces PDF/A-1/2/3 (b-level) output with XMP conformance metadata and an sRGB OutputIntent. `pdfVersion` defaults to what the chosen level requires. Fonts must be registered (not the built-in standard 14) to fully validate.
+
+### Patch Changes
+
+- Updated dependencies [[`b768f01e862cd56987f046c117919191ef810646`](https://github.com/diegomura/react-pdf/commit/b768f01e862cd56987f046c117919191ef810646), [`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/render@4.7.0
+  - @react-pdf/types@2.14.0
+  - @react-pdf/layout@5.2.0
+  - @react-pdf/font@4.1.2
+
+## 4.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61)]:
+  - @react-pdf/font@4.1.1
+  - @react-pdf/layout@5.1.1
+  - @react-pdf/render@4.6.4
+  - @react-pdf/types@2.13.1
+
+## 4.8.0
+
+### Minor Changes
+
+- [#3509](https://github.com/diegomura/react-pdf/pull/3509) [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd) Thanks [@diegomura](https://github.com/diegomura)! - Replace the @react-pdf/pdfkit fork with upstream pdfkit (v0.20.1)
+
+### Patch Changes
+
+- Updated dependencies [[`1606f73d1073b9885a922abdc245a233d49ab25d`](https://github.com/diegomura/react-pdf/commit/1606f73d1073b9885a922abdc245a233d49ab25d), [`cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa`](https://github.com/diegomura/react-pdf/commit/cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea), [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09), [`37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd`](https://github.com/diegomura/react-pdf/commit/37a7a9fac92d670dd13fd9e88f9a4d9c21efdefd), [`a738f01e6fe976e30b1c835e23dad4d9afc4f7d3`](https://github.com/diegomura/react-pdf/commit/a738f01e6fe976e30b1c835e23dad4d9afc4f7d3), [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1)]:
+  - @react-pdf/layout@5.1.0
+  - @react-pdf/render@4.6.3
+  - @react-pdf/types@2.13.0
+  - @react-pdf/font@4.1.0
+
+## 4.7.0
+
+### Minor Changes
+
+- [#3505](https://github.com/diegomura/react-pdf/pull/3505) [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae) Thanks [@diegomura](https://github.com/diegomura)! - Experimental pagination engine, opt-in per page
+
+  A new pagination engine ships alongside the current one: content is
+  measured once and packed into pages instead of relayouting on every split,
+  making long documents paginate orders of magnitude faster (a 300-page
+  document drops from ~40s to ~200ms).
+
+  Opt in with `<Page experimentalPagination>` — any page opting in switches
+  the whole document. The default behavior is unchanged.
+
+  Under the new engine:
+
+  - `<Page layout={Layout}>` renders per-page chrome (headers, footers,
+    sidebars) around the content. The layout component receives
+    `{ pageNumber, totalPages, subPageNumber, subPageTotalPages }` and the
+    page content as `children`, and runs once per output page. Using `layout`
+    implies `experimentalPagination`.
+  - One `fixed` semantic: in-flow fixed elements repeat at the top of every
+    page they span; footers are the layout's job.
+  - `minPresenceAhead` is supported, with one refinement: a trailing element
+    with nothing after it stays in place instead of moving to its own page.
+
+  The current engine remains the default until the next major, when the new
+  engine takes over.
+
+- [#3500](https://github.com/diegomura/react-pdf/pull/3500) [`572cedc23493e4a3085e259bf129ceec458418bd`](https://github.com/diegomura/react-pdf/commit/572cedc23493e4a3085e259bf129ceec458418bd) Thanks [@diegomura](https://github.com/diegomura)! - Move render-prop element conversion from layout to the renderer
+
+  Render props are now wrapped at the reconciler boundary: by the time layout
+  calls them they return internal instances, not React elements. Layout's
+  `createInstances` is deleted and `resolvePagination` consumes instances
+  directly.
+
+  **Breaking (layout):** anyone calling `@react-pdf/layout` directly with
+  trees whose render props return React elements must convert the result
+  before handing it to layout — the contract is now instance arrays. Users of
+  `@react-pdf/renderer` are unaffected: the renderer performs the conversion.
+
+### Patch Changes
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae), [`572cedc23493e4a3085e259bf129ceec458418bd`](https://github.com/diegomura/react-pdf/commit/572cedc23493e4a3085e259bf129ceec458418bd)]:
+  - @react-pdf/layout@5.0.0
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/types@2.12.0
+  - @react-pdf/render@4.6.2
+  - @react-pdf/font@4.0.11
+
+## 4.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`71fc26e8f18a8f3d3edd64b0a1b38c138deb593c`](https://github.com/diegomura/react-pdf/commit/71fc26e8f18a8f3d3edd64b0a1b38c138deb593c), [`dee75f98e51198766a37addc9d0bdaa4dd5dbb3b`](https://github.com/diegomura/react-pdf/commit/dee75f98e51198766a37addc9d0bdaa4dd5dbb3b), [`ded9cdcf0d120911c0339c91519b41204acbd7d3`](https://github.com/diegomura/react-pdf/commit/ded9cdcf0d120911c0339c91519b41204acbd7d3), [`105bdd20e8865bf92e0275e66001a1dbd06d5bf6`](https://github.com/diegomura/react-pdf/commit/105bdd20e8865bf92e0275e66001a1dbd06d5bf6), [`1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e`](https://github.com/diegomura/react-pdf/commit/1da12f2b2fc018ce6af5c5f6e04fda3016a8d39e), [`563d74e0364c80d8e6094777aa66879803786e44`](https://github.com/diegomura/react-pdf/commit/563d74e0364c80d8e6094777aa66879803786e44)]:
+  - @react-pdf/pdfkit@6.0.1
+  - @react-pdf/render@4.6.1
+  - @react-pdf/font@4.0.10
+  - @react-pdf/layout@4.7.1
+  - @react-pdf/types@2.11.3
+
+## 4.6.0
+
+### Minor Changes
+
+- [#3458](https://github.com/diegomura/react-pdf/pull/3458) [`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6) Thanks [@Codex-](https://github.com/Codex-)! - feat: expose `hyphenationPenalty` on `Text` props
+
+### Patch Changes
+
+- Updated dependencies [[`62c97745`](https://github.com/diegomura/react-pdf/commit/62c97745c5cd4fc36234de7a112d1023c49658ab), [`78ca6aa8`](https://github.com/diegomura/react-pdf/commit/78ca6aa855e0a3294c892e8857147026d2b53936), [`6098e648`](https://github.com/diegomura/react-pdf/commit/6098e6486c425db153518fd422be84bb16e84ab6), [`627acbe0`](https://github.com/diegomura/react-pdf/commit/627acbe082414a7d7e0f9bf0cba8c3a8be8fa8d6), [`db681b16`](https://github.com/diegomura/react-pdf/commit/db681b1679d3850e0cb3f5a210aa075d56e98fcb), [`59aa9aea`](https://github.com/diegomura/react-pdf/commit/59aa9aea2c1a4f081654ed5877405be6c776f041), [`4c4e7a1a`](https://github.com/diegomura/react-pdf/commit/4c4e7a1a49ed8fa20e33d2750517265f4cad8c75), [`d41a8207`](https://github.com/diegomura/react-pdf/commit/d41a8207fb06a56e60fcb53ac0e18ce27e7d32d6), [`2dcdb262`](https://github.com/diegomura/react-pdf/commit/2dcdb262e2590873875f3074524842ae2a73454c), [`87911560`](https://github.com/diegomura/react-pdf/commit/87911560a5f87c82c4642db198a86b277126a26b), [`b2acd72b`](https://github.com/diegomura/react-pdf/commit/b2acd72bc90886f5486071bbe15d0a721c3b7f59), [`c2da5098`](https://github.com/diegomura/react-pdf/commit/c2da5098ccf0b7ec298fd3a8d57e6ba849e51fa3), [`30dc2a47`](https://github.com/diegomura/react-pdf/commit/30dc2a475a731e9a976533d9024e1e72d885c7f4), [`6e0102db`](https://github.com/diegomura/react-pdf/commit/6e0102db791e801c0b5aac76d77d5456f33298f6)]:
+  - @react-pdf/pdfkit@6.0.0
+  - @react-pdf/layout@4.7.0
+  - @react-pdf/render@4.6.0
+  - @react-pdf/font@4.0.9
+  - @react-pdf/types@2.11.2
+
 ## 4.5.1
 
 ### Patch Changes

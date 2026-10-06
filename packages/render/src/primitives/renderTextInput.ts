@@ -2,6 +2,7 @@ import { SafeTextInputNode } from '@react-pdf/layout';
 
 import { Context, RenderOptions } from '../types';
 import { parseTextInputOptions } from '../utils/parseFormOptions';
+import addFormAnnotation from '../utils/addFormAnnotation';
 
 const renderTextInput = (
   ctx: Context,
@@ -9,8 +10,6 @@ const renderTextInput = (
   options: RenderOptions,
 ) => {
   if (!node.box) return;
-
-  const { top, left, width, height } = node.box;
 
   // Element's name
   const name = node.props?.name || '';
@@ -20,14 +19,12 @@ const renderTextInput = (
     ctx.initForm();
   }
 
-  ctx.formText(
-    name,
-    left,
-    top,
-    width,
-    height,
-    parseTextInputOptions(node, fieldSetOptions),
+  const { MaxLen, ...fieldOptions } = parseTextInputOptions(
+    node,
+    fieldSetOptions,
   );
+
+  addFormAnnotation(ctx, name, 'text', node.box, fieldOptions, { MaxLen });
 };
 
 export default renderTextInput;

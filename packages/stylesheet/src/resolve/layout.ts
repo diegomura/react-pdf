@@ -7,7 +7,9 @@ import {
 const handlers = {
   aspectRatio: processNumberValue<'aspectRatio'>,
   bottom: processUnitValue<'bottom'>,
+  clear: processNoopValue<'clear'>,
   display: processNoopValue<'display'>,
+  float: processNoopValue<'float'>,
   left: processUnitValue<'left'>,
   position: processNoopValue<'position'>,
   right: processUnitValue<'right'>,

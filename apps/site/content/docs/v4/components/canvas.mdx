@@ -1,0 +1,35 @@
+---
+title: "Canvas"
+---
+
+A React component for freely drawing any content on the page.
+
+<Usage />
+
+## Valid props
+
+| Prop name |                                 Description                                 |                                            Type |     Default |
+|-----------|:---------------------------------------------------------------------------:|------------------------------------------------:|------------:|
+| style     |                  Defines view styles. [See more](/docs/v4/styling)                  |                               _Object_, _Array_ | _undefined_ |
+| paint     |                              Painter function                               |                                      _Function_ | _undefined_ |
+| debug     |  Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)   |                                       _Boolean_ |     _false_ |
+| fixed     | Renders component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping) |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
+| bookmark  |         Attach bookmark to element. [See more](/docs/v4/advanced/document-navigation#bookmarks-v220)         | _String_ or [Bookmark](/docs/v4/advanced/document-navigation#bookmark-type) | _undefined_ |
+
+React-pdf does not check how much space your drawing takes, so make sure you always define a `width` and `height` on the `style` prop.
+
+### Painter function
+
+Prop used to perform drawings inside the Canvas. It takes 3 arguments:
+
+- `Painter object`: Wrapper around _pdfkit_ drawing methods. Use this to draw inside the Canvas
+- `availableWidth`: Width of the Canvas element.
+- `availableHeight`: Height of the Canvas element.
+
+### Painter object
+
+Wrapper around _pdfkit_ methods you can use to draw inside the Canvas. All operations are chainable. For more information about how these methods work, please refer to [pdfkit documentation](http://pdfkit.org/).
+
+<PainterMethods />

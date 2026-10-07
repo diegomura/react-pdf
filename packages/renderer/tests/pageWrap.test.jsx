@@ -5,6 +5,7 @@ import {
   Font,
   Page,
   Text,
+  View,
   Image,
   StyleSheet,
 } from '@react-pdf/renderer';
@@ -261,4 +262,39 @@ describe('pageWrap', () => {
 
     expect(image).toMatchImageSnapshot();
   }, 30_000);
+});
+
+const ROW_HEIGHTS = [60.096, 47.064, 117.16];
+const ROW_COLORS = ['#a6cee3', '#fdbf6f', '#b2df8a'];
+
+// Past 2 ** 15 pt yoga's float32 positions round enough for adjacent rows to
+// overlap. The auto margin is a gap that collapses at the page break, so the
+// rows get that far down in a few pages.
+const FarDownRows = (pageProps) => (
+  <Document>
+    <Page size={[200, 200]} {...pageProps}>
+      <View style={{ height: 33_500 }}>
+        <View style={{ height: 20, backgroundColor: '#e31a1c' }} />
+        {ROW_HEIGHTS.concat(ROW_HEIGHTS).map((height, index) => (
+          <View
+            key={index}
+            style={{
+              height,
+              marginTop: index === 0 ? 'auto' : 0,
+              backgroundColor: ROW_COLORS[index % 3],
+              borderBottom: '1pt solid black',
+            }}
+          />
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
+
+describe('pageWrap (next engine)', () => {
+  test('should split a view whose rows lie past 2^15 pt', async () => {
+    expect(
+      await renderToImage(<FarDownRows experimentalPagination />),
+    ).toMatchImageSnapshot();
+  });
 });

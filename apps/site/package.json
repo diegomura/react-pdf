@@ -16,7 +16,7 @@
     "@codemirror/lint": "^6.9.7",
     "@codemirror/view": "^6.0.0",
     "@lezer/highlight": "^1.0.0",
-    "@modelcontextprotocol/server": "^2.0.0",
+    "@modelcontextprotocol/server": "^2.3.0",
     "@react-pdf/math": "^5.0.1",
     "@react-pdf/mermaid": "^5.0.1",
     "@react-pdf/renderer": "^4.8.0",

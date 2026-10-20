@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest run --root .",
+    "test": "vitest run --config vitest.config.ts",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {

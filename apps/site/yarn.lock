@@ -555,19 +555,19 @@
     unist-util-visit "^5.0.0"
     vfile "^6.0.0"
 
-"@modelcontextprotocol/core@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/core/-/core-2.0.0.tgz#c918a4c6aef22a7c59dfb0aabc2a82c187cce157"
-  integrity sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==
+"@modelcontextprotocol/core@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/core/-/core-2.3.0.tgz#e16da853964147db06c34e12fab7269a07e10ed6"
+  integrity sha512-09BHFaNVBe5pB2AhzCfLj0cqmsKLERvZQ4FblzP90UMGLaXVqdZPByFjURwsUYCmxonUW2yAwgTTvle+8O2/8w==
   dependencies:
     zod "^4.2.0"
 
-"@modelcontextprotocol/server@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/server/-/server-2.0.0.tgz#4fae5ccb8f7925ed9a6bf6595bb3b58617063ffd"
-  integrity sha512-YhHWdHfpFMQfd0prsEnxKeS3Qz3ytIGmsS0sth4KDjnacIT7hxk6hXHkJ9KysxlkvTM+WZAtQbbcUhdoP4Hvtw==
+"@modelcontextprotocol/server@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/server/-/server-2.3.0.tgz#02a721e2614482af6fc94b6ee0083cff13cc18f5"
+  integrity sha512-+6b0LdsQLmHsvS7J6sQJ4weTpzUn61fU1JKS+321/+IyDYoHW5CR2Tgqcs6GgAAQvlesCo6yX3xttgmx+XGtJw==
   dependencies:
-    "@modelcontextprotocol/core" "2.0.0"
+    "@modelcontextprotocol/core" "2.3.0"
     zod "^4.2.0"
 
 "@napi-rs/canvas-android-arm64@0.1.100":

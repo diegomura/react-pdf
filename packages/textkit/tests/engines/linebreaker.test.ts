@@ -403,6 +403,44 @@ describe('linebreaker', () => {
       'supercalifragilisticexpialidocious',
     ]);
   });
+
+  test('moves a word that fits on a line down whole instead of hyphenating it', () => {
+    // A character is 6 wide and a space 3, so "browser" is 42 and the line is
+    // 50: it does not fit behind "the" but it fits on a line of its own, and
+    // splitting it there would only be harder to read.
+    const attributedString = createAttributedString('left', [
+      'the',
+      ' ',
+      'brow',
+      'ser',
+    ]);
+
+    const result = linebreaker(attributedString, [width]);
+
+    expect(result.map((line) => line.string)).toEqual(['the ', 'browser']);
+  });
+
+  test('hyphenates a word only once it fits on no line at all', () => {
+    // "extraordinary" is 78 wide, so no line can hold it: now it may be broken,
+    // and the break has to carry a hyphen.
+    const attributedString = createAttributedString('left', [
+      'the',
+      ' ',
+      'extra',
+      'ordi',
+      'nary',
+    ]);
+
+    const result = linebreaker(attributedString, [width]);
+
+    // "the " plus "extra" would be 51 on a 50 wide line, so the word starts on
+    // the second line and is broken there.
+    expect(result.map((line) => line.string)).toEqual([
+      'the ',
+      'extra-',
+      'ordinary',
+    ]);
+  });
 });
 
 describe('bestFit', () => {
@@ -638,4 +676,5 @@ describe('knuthPlass', () => {
     expect(breakpoints.length).toBe(3);
     expect(breakpoints).toEqual([0, 7, 12]);
   });
+
 });

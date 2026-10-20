@@ -6,6 +6,11 @@ const renderImage = (ctx: Context, node: SafeImageNode) => {
   if (!node.box) return;
   if (!node.image?.data) return;
 
+  // An SVG source resolves to a node tree rather than raster bytes, and
+  // ctx.image only takes the latter.
+  const data = node.image.data;
+  if (!Buffer.isBuffer(data)) return;
+
   const { x = 0, y = 0 } = node.props;
   const { width, height, opacity } = node.style;
   const paddingTop = node.box.paddingLeft || 0;
@@ -31,12 +36,10 @@ const renderImage = (ctx: Context, node: SafeImageNode) => {
 
   ctx.save();
 
-  ctx
-    .fillOpacity(opacity || 1)
-    .image(node.image.data, x + paddingLeft, y + paddingTop, {
-      width,
-      height,
-    });
+  ctx.fillOpacity(opacity || 1).image(data, x + paddingLeft, y + paddingTop, {
+    width,
+    height,
+  });
 
   ctx.restore();
 };

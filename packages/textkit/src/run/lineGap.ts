@@ -1,5 +1,6 @@
 import { Run } from '../types';
 import scale from './scale';
+import resolveTypoMetrics from './typoMetrics';
 
 /**
  * Get run lineGap
@@ -9,8 +10,9 @@ import scale from './scale';
  */
 const lineGap = (run: Run) => {
   const font = run.attributes?.font;
-  const lineGap = typeof font === 'string' ? 0 : font?.[0]?.lineGap || 0;
-  return lineGap * scale(run);
+  const fontLineGap =
+    typeof font === 'string' ? 0 : resolveTypoMetrics(font?.[0]).lineGap;
+  return fontLineGap * scale(run);
 };
 
 export default lineGap;

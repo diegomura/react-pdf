@@ -28,11 +28,6 @@ const serverConfig = {
   output: { format: 'es', file: 'lib/index.js' },
   external,
   plugins: getPlugins({ browser: false }),
-  // pdfkit's node build registers the standard fonts itself, so drop the
-  // side-effect-only imports rollup would otherwise keep for externals
-  treeshake: {
-    moduleSideEffects: (id) => !id.startsWith('pdfkit/standard-fonts/'),
-  },
 };
 
 const browserConfig = {

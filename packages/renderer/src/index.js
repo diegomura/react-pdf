@@ -62,6 +62,10 @@ const pdf = (initialValue) => {
       ? '1.4'
       : '1.7';
 
+    // pdfkit opens Helvetica while constructing a document, and the font
+    // store loads standard fonts lazily, so wait for it before creating one.
+    await fontStore.load({ fontFamily: 'Helvetica' });
+
     const ctx = new PDFDocument({
       compress,
       subset: conformance,

@@ -22,7 +22,7 @@ export type PathNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -30,4 +30,5 @@ export type SafePathNode = Omit<PathNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePathProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

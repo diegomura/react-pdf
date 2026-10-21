@@ -6,7 +6,7 @@ import resolveInheritance from './resolveInheritance';
 import { resolvePageDimensions } from './resolveDimensions';
 import { resolvePageStyles } from './resolveStyles';
 
-// Run a page back through the style and yoga steps. Used wherever a page's
+// Run a page back through the style and layout steps. Used wherever a page's
 // contents changed after the first pass: dynamic content that rendered, or a
 // finished page being given its real height.
 const relayoutPage = compose(

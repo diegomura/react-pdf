@@ -28,7 +28,7 @@ export type EllipseNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -36,4 +36,5 @@ export type SafeEllipseNode = Omit<EllipseNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeEllipseProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

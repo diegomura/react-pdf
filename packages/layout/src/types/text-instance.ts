@@ -7,8 +7,11 @@ export type TextInstanceNode = {
   box?: never;
   origin?: never;
   children?: never[];
-  yogaNode?: never;
+  taffyNode?: never;
   value: string;
 };
 
-export type SafeTextInstanceNode = TextInstanceNode & { wasSplit: boolean };
+export type SafeTextInstanceNode = TextInstanceNode & {
+  wasSplit: boolean;
+  stylesResolved?: boolean;
+};

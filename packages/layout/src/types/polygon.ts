@@ -22,7 +22,7 @@ export type PolygonNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -30,4 +30,5 @@ export type SafePolygonNode = Omit<PolygonNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePolygonProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

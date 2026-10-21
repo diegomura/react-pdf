@@ -10,12 +10,13 @@ export type NoteNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: TextInstanceNode[];
 };
 
 export type SafeNoteNode = Omit<NoteNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: SafeTextInstanceNode[];
 };

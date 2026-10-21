@@ -30,7 +30,7 @@ export type GNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | LineNode
     | PolylineNode
@@ -50,6 +50,7 @@ export type SafeGNode = Omit<GNode, 'style' | 'props' | 'children'> & {
   style: SafeStyle;
   props: SafeGProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

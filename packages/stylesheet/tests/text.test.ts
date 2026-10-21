@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { parseFloat } from '@react-pdf/fns';
 
 import resolve from '../src/resolve';
 
@@ -130,49 +131,49 @@ describe('resolve stylesheet text', () => {
   test('should resolve line height number', () => {
     const styles = resolveStyle({ lineHeight: 2 });
 
-    expect(styles.lineHeight).toBe(18 * 2);
+    expect(styles.lineHeight).toBe(`${18 * 2}pt`);
   });
 
   test('should resolve number line height with font size', () => {
     const styles = resolveStyle({ lineHeight: 2, fontSize: 10 });
 
-    expect(styles.lineHeight).toBe(10 * 2);
+    expect(styles.lineHeight).toBe(`${10 * 2}pt`);
   });
 
   test('should resolve string line height', () => {
     const styles = resolveStyle({ lineHeight: '2' });
 
-    expect(styles.lineHeight).toBe(18 * 2);
+    expect(styles.lineHeight).toBe(`${18 * 2}pt`);
   });
 
   test('should resolve string line height  with font-size', () => {
     const styles = resolveStyle({ lineHeight: '2', fontSize: 10 });
 
-    expect(styles.lineHeight).toBe(10 * 2);
+    expect(styles.lineHeight).toBe(`${10 * 2}pt`);
   });
 
   test('should resolve percentage line height', () => {
     const styles = resolveStyle({ lineHeight: '200%' });
 
-    expect(styles.lineHeight).toBe(18 * 2);
+    expect(styles.lineHeight).toBe(`${18 * 2}pt`);
   });
 
   test('should resolve percentage line height with font-size', () => {
     const styles = resolveStyle({ lineHeight: '200%', fontSize: 10 });
 
-    expect(styles.lineHeight).toBe(10 * 2);
+    expect(styles.lineHeight).toBe(`${10 * 2}pt`);
   });
 
   test('should resolve px line height', () => {
     const styles = resolveStyle({ lineHeight: '20px' });
 
-    expect(styles.lineHeight).toBe(20);
+    expect(styles.lineHeight).toBe(`${20}pt`);
   });
 
   test('should resolve mm line height', () => {
     const styles = resolveStyle({ lineHeight: '20mm' });
 
-    expect(styles.lineHeight).toBeCloseTo(56.69, 1);
+    expect(parseFloat(styles.lineHeight)).toBeCloseTo(56.69, 1);
   });
 
   test('should resolve font family', () => {
@@ -328,13 +329,13 @@ describe('resolve stylesheet text', () => {
   test('should resolve line height rem units', () => {
     const styles = resolveStyle({ lineHeight: '2rem' });
 
-    expect(styles).toEqual({ lineHeight: 20 });
+    expect(styles).toEqual({ lineHeight: '20pt' });
   });
 
   test('should resolve line height in units', () => {
     const styles = resolveStyle({ lineHeight: '0.5in' });
 
-    expect(styles).toEqual({ lineHeight: 36 });
+    expect(styles).toEqual({ lineHeight: '36pt' });
   });
 
   test('should resolve string max lines', () => {

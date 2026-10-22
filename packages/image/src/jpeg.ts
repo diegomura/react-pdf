@@ -18,7 +18,10 @@ class JPEG implements RasterImage {
       throw new Error('SOI not found in JPEG');
     }
 
-    const markers = _JPEG.decode(this.data);
+    // jay-peg reverses the tag bytes of little-endian EXIF data in place. Decode
+    // a copy, so the orientation tag stays readable for pdfkit and for later
+    // renders of the same cached image.
+    const markers = _JPEG.decode(Buffer.from(this.data));
 
     let orientation;
 

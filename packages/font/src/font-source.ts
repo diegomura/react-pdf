@@ -29,6 +29,31 @@ const isDataUrl = (dataUrl: string) => {
   return hasDataPrefix && hasBase64Prefix;
 };
 
+/**
+ * fontkit caches glyphs by id together with the code points of their first
+ * lookup. Lookups by id alone, like the ones made for the components of
+ * composite glyphs when a PDF font subset is embedded, leave those glyphs with
+ * empty code points for every later layout of the same font instance. textkit
+ * maps glyphs back to the string through their code points, so text rendered
+ * in later documents would lose glyphs. Restore them on the next lookup that
+ * knows them.
+ *
+ * @param font - fontkit font
+ */
+const keepGlyphCodePoints = (font: fontkit.Font) => {
+  const getGlyph = font.getGlyph.bind(font);
+
+  font.getGlyph = (id: number, codePoints: number[] = []) => {
+    const glyph = getGlyph(id, codePoints);
+
+    if (glyph && glyph.codePoints.length === 0 && codePoints.length > 0) {
+      glyph.codePoints = codePoints;
+    }
+
+    return glyph;
+  };
+};
+
 class FontSource {
   src: string;
   fontFamily: string;
@@ -81,6 +106,8 @@ class FontSource {
     if (data && 'fonts' in data) {
       throw new Error('Font collection is not supported');
     }
+
+    if (data && !(data instanceof StandardFont)) keepGlyphCodePoints(data);
 
     this.data = data;
   }

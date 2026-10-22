@@ -35,11 +35,9 @@ const resolveBookmarks = (node: DocumentNode) => {
     parent: null,
   }));
 
-  while (listToExplore.length > 0) {
-    const element = listToExplore.shift();
-
-    if (!element) break;
-
+  // Index instead of shift() to keep the traversal linear on large trees
+  for (let i = 0; i < listToExplore.length; i += 1) {
+    const element = listToExplore[i];
     const child = element.value;
 
     let parent = element.parent;

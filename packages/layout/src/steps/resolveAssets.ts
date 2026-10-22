@@ -34,8 +34,8 @@ const fetchAssets = (
   const listToExplore = [node];
   const emojiSource = fontStore ? fontStore.getEmojiSource() : null;
 
-  while (listToExplore.length > 0) {
-    const n = listToExplore.shift();
+  for (let index = 0; index < listToExplore.length; index += 1) {
+    const n = listToExplore[index];
 
     if (isImage(n) || isImageBackground(n)) {
       promises.push(fetchImage(n, pageWidth));

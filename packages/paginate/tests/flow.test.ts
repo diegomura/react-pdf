@@ -173,6 +173,35 @@ describe('flow to items', () => {
     expect(item.split).toBeUndefined();
   });
 
+  test('float32 rounding past 2^15 pt does not count as overlap', () => {
+    const first = leaf(32_928.015625, Math.fround(47.064));
+    const second = leaf(Math.fround(32_928.015625 + 47.064), 60);
+
+    expect(second.box.top).toBeLessThan(first.box.top + first.box.height);
+
+    const container: ContainerNode = {
+      box: box(32_900, 200),
+      direction: 'column',
+      children: [first, second],
+    };
+
+    const [item] = toItems([container]).children;
+
+    expect(item.kind).toBe('column');
+  });
+
+  test('a column wrapped past 2^15 pt still demotes to a leaf', () => {
+    const container: ContainerNode = {
+      box: box(32_900, 100),
+      direction: 'column',
+      children: [leaf(32_900, 80), leaf(32_930, 80)],
+    };
+
+    const [item] = toItems([container]).children;
+
+    expect(item.kind).toBe('leaf');
+  });
+
   test('lazy materializes into converted items', () => {
     const node: LazyNode = {
       box: box(0, 100),

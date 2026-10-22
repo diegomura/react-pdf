@@ -14,7 +14,7 @@ type SourceBuffer = Buffer;
 
 type SourceBlob = Blob;
 
-type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' };
+type SourceDataBuffer = { data: Buffer; format: 'png' | 'jpg' | 'webp' };
 
 type SourceURLObject = {
   uri: string;

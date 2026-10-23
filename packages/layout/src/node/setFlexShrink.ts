@@ -8,7 +8,7 @@ import setYogaValue from './setYogaValue';
  * @returns Node instance wrapper
  */
 const setFlexShrink = (value?: string | number | null) => (node: SafeNode) => {
-  return setYogaValue('flexShrink')(value || 1)(node);
+  return setYogaValue('flexShrink')(value ?? 1)(node);
 };
 
 export default setFlexShrink;

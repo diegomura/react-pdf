@@ -45,4 +45,12 @@ describe('node setFlexShrink', () => {
     expect(mock.mock.calls[0][0]).toBe(2);
     expect(result).toBe(node);
   });
+
+  test('Should set zero', () => {
+    const result = setFlexShrink(0)(node);
+
+    expect(mock.mock.calls).toHaveLength(1);
+    expect(mock.mock.calls[0][0]).toBe(0);
+    expect(result).toBe(node);
+  });
 });

@@ -529,4 +529,169 @@ describe('resolve stylesheet borders', () => {
       borderBottomWidth: 2,
     });
   });
+
+  test('should resolve border shorthand in any order', () => {
+    const expected = {
+      borderTopStyle: 'dashed',
+      borderLeftStyle: 'dashed',
+      borderRightStyle: 'dashed',
+      borderBottomStyle: 'dashed',
+      borderTopColor: 'red',
+      borderLeftColor: 'red',
+      borderRightColor: 'red',
+      borderBottomColor: 'red',
+      borderTopWidth: 2,
+      borderLeftWidth: 2,
+      borderRightWidth: 2,
+      borderBottomWidth: 2,
+    };
+
+    expect(resolveStyle({ border: 'dashed 2px red' })).toEqual(expected);
+    expect(resolveStyle({ border: 'red dashed 2px' })).toEqual(expected);
+    expect(resolveStyle({ border: '2px red dashed' })).toEqual(expected);
+  });
+
+  test('should resolve border side shorthand in any order', () => {
+    const styles = resolveStyle({ borderTop: '1px rgb(255, 0, 0) dotted' });
+
+    expect(styles).toEqual({
+      borderTopWidth: 1,
+      borderTopStyle: 'dotted',
+      borderTopColor: '#FF0000',
+    });
+  });
+
+  test('should resolve border shorthand with omitted parts', () => {
+    expect(resolveStyle({ border: '1px solid' })).toEqual({
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopWidth: 1,
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderBottomWidth: 1,
+    });
+
+    expect(resolveStyle({ borderLeft: 'dashed blue' })).toEqual({
+      borderLeftStyle: 'dashed',
+      borderLeftColor: 'blue',
+    });
+  });
+
+  test('should resolve numeric border shorthand as width', () => {
+    expect(resolveStyle({ border: 2 })).toEqual({
+      borderTopWidth: 2,
+      borderLeftWidth: 2,
+      borderRightWidth: 2,
+      borderBottomWidth: 2,
+    });
+
+    expect(resolveStyle({ borderBottom: 2 })).toEqual({
+      borderBottomWidth: 2,
+    });
+  });
+
+  test('should keep border color regardless of side shorthand order', () => {
+    const expected = {
+      borderTopColor: '#15803d',
+      borderRightColor: '#15803d',
+      borderBottomColor: '#15803d',
+      borderLeftColor: '#15803d',
+      borderBottomWidth: 2,
+    };
+
+    expect(resolveStyle({ borderColor: '#15803d', borderBottom: 2 })).toEqual(
+      expected,
+    );
+    expect(resolveStyle({ borderBottom: 2, borderColor: '#15803d' })).toEqual(
+      expected,
+    );
+  });
+
+  test('should resolve border none as zero width', () => {
+    expect(resolveStyle({ border: 'none' })).toEqual({
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      borderBottomWidth: 0,
+    });
+
+    expect(resolveStyle({ borderTop: 'none' })).toEqual({
+      borderTopWidth: 0,
+    });
+  });
+
+  test('should resolve any CSS border style keyword in shorthand', () => {
+    expect(resolveStyle({ borderTop: '1px DASHED red' })).toEqual({
+      borderTopWidth: 1,
+      borderTopStyle: 'dashed',
+      borderTopColor: 'red',
+    });
+
+    // Unsupported styles render as solid
+    expect(resolveStyle({ borderTop: 'double 1px red' })).toEqual({
+      borderTopWidth: 1,
+      borderTopStyle: 'solid',
+      borderTopColor: 'red',
+    });
+
+    expect(resolveStyle({ borderTop: 'red groove' })).toEqual({
+      borderTopStyle: 'solid',
+      borderTopColor: 'red',
+    });
+  });
+
+  test('should resolve none and hidden styles in shorthand as zero width', () => {
+    expect(resolveStyle({ borderTop: '1px none' })).toEqual({
+      borderTopWidth: 0,
+    });
+
+    expect(resolveStyle({ borderTop: 'NONE' })).toEqual({
+      borderTopWidth: 0,
+    });
+
+    expect(resolveStyle({ borderTop: 'hidden red' })).toEqual({
+      borderTopWidth: 0,
+      borderTopColor: 'red',
+    });
+  });
+
+  test('should resolve full border shorthand passed to a single-value border prop', () => {
+    const expected = {
+      borderTopStyle: 'solid',
+      borderLeftStyle: 'solid',
+      borderRightStyle: 'solid',
+      borderBottomStyle: 'solid',
+      borderTopColor: 'red',
+      borderLeftColor: 'red',
+      borderRightColor: 'red',
+      borderBottomColor: 'red',
+      borderTopWidth: 1,
+      borderLeftWidth: 1,
+      borderRightWidth: 1,
+      borderBottomWidth: 1,
+    };
+
+    expect(resolveStyle({ borderWidth: '1px solid red' })).toEqual(expected);
+    expect(resolveStyle({ borderColor: '1px solid red' })).toEqual(expected);
+  });
+
+  test('should resolve border shorthand with leading-dot width', () => {
+    expect(resolveStyle({ borderTop: 'solid .5pt red' })).toEqual({
+      borderTopWidth: 0.5,
+      borderTopStyle: 'solid',
+      borderTopColor: 'red',
+    });
+  });
+
+  test('should leave border shorthand with repeated parts unresolved', () => {
+    expect(resolveStyle({ border: '1px 2px solid' })).toEqual({
+      border: '1px 2px solid',
+    });
+
+    expect(resolveStyle({ borderTop: 'solid dashed red' })).toEqual({
+      borderTop: 'solid dashed red',
+    });
+  });
 });

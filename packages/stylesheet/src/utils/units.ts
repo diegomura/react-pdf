@@ -6,7 +6,7 @@ type ParsedValue =
   | { value: number; unit: Unit }
   | { value: number | string; unit: undefined };
 
-const VALUE_REGEX = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px|rem)?$/;
+export const VALUE_REGEX = /^(-?\d*\.?\d+)(in|mm|cm|pt|vh|vw|px|rem)?$/;
 
 const DEFAULT_DPI = 72;
 const DEFAULT_REM_BASE = 18;

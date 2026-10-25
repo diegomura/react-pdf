@@ -104,8 +104,9 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        // But if the current page is empty then we can just include the parent on the current page
-        if (currentChildren.length === 0) {
+        // But if the current page is empty then we can just include the parent on the current page.
+        // Fixed nodes don't count: they come back on every page, so moving the parent would repeat forever
+        if (allFixed(currentChildren)) {
           currentChildren.push(child, ...futureFixedNodes);
           nextChildren.push(...futureNodes);
         } else {

@@ -238,6 +238,60 @@ describe('pagination step', () => {
     expect(page2.children![0].box!.height).toBe(40);
   });
 
+  test('should not infinitely loop on a break after a fixed node', async () => {
+    const yoga = await loadYoga();
+
+    // The fixed node comes back on every page, so it can't make the page
+    // count as non-empty: the wrapper has nowhere better to go.
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 10 },
+              props: { fixed: true },
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { width: 50 },
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { height: 20 },
+                  props: { break: true },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 60 },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 60 },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children.length).toBe(1);
+  });
+
   test('should not infinitely loop when splitting pages', async () => {
     const yoga = await loadYoga();
 

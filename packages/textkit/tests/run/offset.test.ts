@@ -4,7 +4,7 @@ import offset from '../../src/run/offset';
 import { Glyph } from '../../src/types';
 
 describe('run offset operator', () => {
-  test('should return always 0 if no glyphIndices present', () => {
+  test('should return always 0 if no stringIndices present', () => {
     const run = {
       start: 0,
       end: 5,
@@ -37,6 +37,7 @@ describe('run offset operator', () => {
         { id: 105, advanceWidth: 10, codePoints: [105] }, // i
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
     };
 
@@ -58,7 +59,8 @@ describe('run offset operator', () => {
         { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
-      glyphIndices: [0, 1, 2, 2, 3],
+      stringIndices: [0, 1, 2, 2, 3],
+      glyphIndices: [0, 1, 2, 4],
     };
 
     expect(offset(0, run)).toBe(0);
@@ -78,7 +80,8 @@ describe('run offset operator', () => {
         { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
         { id: 109, advanceWidth: 10, codePoints: [109] }, // m
       ] as Glyph[],
-      glyphIndices: [0, 1, 1, 1, 2],
+      stringIndices: [0, 1, 1, 1, 2],
+      glyphIndices: [0, 1, 4],
     };
 
     expect(offset(0, run)).toBe(0);

@@ -6,9 +6,9 @@
 
 > React-pdf render engine
 
-## How to install
+## Installation
 
-```sh
+```bash
 yarn add @react-pdf/render
 ```
 
@@ -142,4 +142,4 @@ ctx.pipe(stream);
 
 ## License
 
-MIT © [Diego Muracciole](http://github.com/diegomura)
+MIT

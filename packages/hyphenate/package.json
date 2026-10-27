@@ -1,0 +1,48 @@
+{
+  "name": "@react-pdf/hyphenate",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Fast Liang hyphenation with language scoped exports",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "import": "./lib/*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/*"
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/hyphenate"
+  },
+  "scripts": {
+    "build": "rollup -c && node scripts/generate-languages.mjs",
+    "watch": "rollup -c -w",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "hyphen": "~1.6.4"
+  },
+  "devDependencies": {
+    "vitest": "^1.2.0"
+  }
+}

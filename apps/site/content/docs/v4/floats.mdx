@@ -1,0 +1,75 @@
+---
+title: 'Floats'
+---
+
+react-pdf supports CSS floats. A floated element is taken out of the normal flow and pinned to one side of its container, with the surrounding text wrapping around it. This is the tool for drop caps, figures with captions, pull quotes and other article-style layouts.
+
+Set `float` to `left` or `right` on any View or Image, and place the wrapping text as its sibling:
+
+```jsx
+import React from 'react';
+import { Page, Text, View, Image, Document } from '@react-pdf/renderer';
+
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={{ padding: 40, fontSize: 12 }}>
+      <View style={{ float: 'right', width: 150, marginLeft: 10 }}>
+        <Image src="/my-image.jpg" style={{ width: 150 }} />
+      </View>
+      <Text>
+        This text wraps along the left side of the image, and recovers the full
+        width of the page once past its bottom edge...
+      </Text>
+    </Page>
+  </Document>
+);
+```
+
+A float only affects the lines that overlap it vertically, and margins on the floated element define the gap between it and the text. Anything nested inside the floated element (a caption, for instance) travels with it and takes no part in the wrapping.
+
+> **Protip:** Text wrapping is resolved at layout time, so react-pdf may measure a wrapping paragraph shorter than it ends up being. If content below overlaps it, reserve the real height on the wrapping container with `minHeight`
+
+## Clear
+
+The `clear` property moves an element below preceding floats, just like in CSS. Valid values are `left`, `right`, `both` and `none` _(default)_:
+
+```jsx
+<View style={{ float: 'left', width: 80, height: 80 }} />
+<Text>This text wraps around the float</Text>
+<Text style={{ clear: 'left' }}>This text starts below it</Text>
+```
+
+<Example name="float" />
+
+## Shape outside
+
+By default text wraps around the float's rectangular box. The `shapeOutside` property replaces that rectangle with a CSS basic shape, and every line is measured against the shape's real edge instead:
+
+| Shape                          | Example                                      |
+| ------------------------------ | -------------------------------------------- |
+| `circle(radius at position)`   | `circle(50%)`, `circle(40pt at left center)` |
+| `ellipse(rx ry at position)`   | `ellipse(50% 40% at center)`                 |
+| `polygon(x y, x y, ...)`       | `polygon(100% 0, 100% 100%, 0 100%)`         |
+| `inset(top right bottom left)` | `inset(0 20pt 0 0)`                          |
+
+Radii, coordinates and offsets take the same lengths, percentages and keywords as CSS (`closest-side` and `farthest-side` included), all resolved against the float's box, and a bare number means points. Anything react-pdf can't parse, `url()` among them, drops the property and leaves the plain box exclusion in place.
+
+```jsx
+<View
+  style={{
+    float: 'left',
+    width: 130,
+    height: 130,
+    shapeOutside: 'circle(50%)',
+  }}
+>
+  <Svg width={130} height={130}>
+    <Circle cx={65} cy={65} r={50} fill="tomato" />
+  </Svg>
+</View>
+<Text>This text creeps in toward the circle, line by line...</Text>
+```
+
+> **Protip:** there is no `shapeMargin`, and side margins stop widening the exclusion once a shape is set. To leave a gap between the artwork and the text, draw the shape smaller than the float box. The 130pt box around that 100pt circle is what keeps the lines 15pt clear of it
+
+<Example name="shape-outside" />

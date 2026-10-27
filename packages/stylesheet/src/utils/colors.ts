@@ -13,7 +13,7 @@ const isHsl = (value: string) => /^hsla?\(/i.test(value);
 const parseRgb = (value: string) => {
   const rgb = colorString.get.rgb(value);
   if (!rgb) return value;
-  return colorString.to.hex(rgb);
+  return colorString.to.hex(rgb[0], rgb[1], rgb[2], rgb[3]);
 };
 
 /**
@@ -48,10 +48,12 @@ const parseHsl = (value: string) => {
  * @returns Transformed value
  */
 const transformColor = (value: string): string => {
-  if (isRgb(value)) return parseRgb(value);
-  if (isHsl(value)) return parseHsl(value);
+  const trimmed = value?.trim();
 
-  return value;
+  if (isRgb(trimmed)) return parseRgb(trimmed);
+  if (isHsl(trimmed)) return parseHsl(trimmed);
+
+  return trimmed;
 };
 
 export default transformColor;

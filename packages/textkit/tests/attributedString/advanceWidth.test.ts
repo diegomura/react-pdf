@@ -35,6 +35,7 @@ describe('attributeString advanceWidth operator', () => {
         {
           start: 0,
           end: 2,
+          stringIndices: [],
           glyphIndices: [],
           glyphs: [],
           positions: [
@@ -61,6 +62,7 @@ describe('attributeString advanceWidth operator', () => {
         {
           start: 2,
           end: 4,
+          stringIndices: [],
           glyphIndices: [],
           glyphs: [],
           positions: [
@@ -80,6 +82,7 @@ describe('attributeString advanceWidth operator', () => {
       {
         start: 2,
         end: 4,
+        stringIndices: [],
         glyphIndices: [],
         glyphs: [],
         positions: [
@@ -101,6 +104,7 @@ describe('attributeString advanceWidth operator', () => {
       {
         start: 4,
         end: 6,
+        stringIndices: [],
         glyphIndices: [],
         glyphs: [],
         positions: [

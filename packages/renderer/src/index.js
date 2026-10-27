@@ -1,6 +1,6 @@
 import FontStore from '@react-pdf/font';
 import renderPDF from '@react-pdf/render';
-import PDFDocument from '@react-pdf/pdfkit';
+import PDFDocument from 'pdfkit';
 import layoutDocument from '@react-pdf/layout';
 import { upperFirst } from '@react-pdf/fns';
 
@@ -39,40 +39,52 @@ const pdf = (initialValue) => {
     const props = container.document.props || {};
     const {
       pdfVersion,
+      conformance,
       language,
       pageLayout,
       pageMode,
       title,
       author,
       subject,
-      keyboards,
+      keywords,
       creator = 'react-pdf',
       producer = 'react-pdf',
       creationDate = new Date(),
       modificationDate,
+      ownerPassword,
+      userPassword,
+      permissions,
     } = props;
+
+    // PDF/A-1 requires PDF 1.4; PDF/A-2/3 require PDF 1.7. pdfkit defaults
+    // to 1.3, which skips writing the metadata that marks the file as PDF/A.
+    const conformancePdfVersion = conformance?.startsWith('PDF/A-1')
+      ? '1.4'
+      : '1.7';
 
     const ctx = new PDFDocument({
       compress,
-      pdfVersion,
+      subset: conformance,
+      pdfVersion:
+        pdfVersion || (conformance ? conformancePdfVersion : undefined),
       lang: language,
       displayTitle: true,
       autoFirstPage: false,
+      ownerPassword,
+      userPassword,
+      permissions,
+      pageLayout,
       info: omitNils({
         Title: title,
         Author: author,
         Subject: subject,
-        Keywords: keyboards,
+        Keywords: keywords,
         Creator: creator,
         Producer: producer,
         CreationDate: creationDate,
         ModificationDate: modificationDate,
       }),
     });
-
-    if (pageLayout) {
-      ctx._root.data.PageLayout = upperFirst(pageLayout);
-    }
 
     if (pageMode) {
       ctx._root.data.PageMode = upperFirst(pageMode);

@@ -1,0 +1,65 @@
+---
+title: "Math"
+---
+
+React-pdf supports rendering LaTeX mathematical expressions via the `@react-pdf/math` package. It converts LaTeX notation into vector graphics (SVG paths), so all glyphs are fully embedded in the PDF without external fonts or assets.
+
+## Installation
+
+```bash
+npm install @react-pdf/math
+```
+
+## Usage
+
+```jsx
+import { Document, Page, Text, View } from '@react-pdf/renderer';
+import { Math } from '@react-pdf/math';
+
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={{ padding: 40 }}>
+      <Math>{"x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}"}</Math>
+    </Page>
+  </Document>
+);
+```
+
+## Inline mode
+
+By default, expressions render in display mode (centered, larger). Set `inline` to render compact equations suitable for embedding alongside text:
+
+```jsx
+<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+  <Text>The equation </Text>
+  <Math inline height={12}>{"E = mc^2"}</Math>
+  <Text> is famous.</Text>
+</View>
+```
+
+<Example name="math" />
+
+## Valid props
+
+| Prop name |                                 Description                                 |               Type |     Default |
+|-----------|:---------------------------------------------------------------------------:|-------------------:|------------:|
+| children  |                   LaTeX math expression to render                           |           _String_ | _undefined_ |
+| inline    | Inline mode (compact) vs display mode (centered, larger)                    |          _Boolean_ |     _false_ |
+| width     | Width of the rendered expression. Auto-calculated from aspect ratio if omitted | _Number_, _String_ | _undefined_ |
+| height    | Height of the rendered expression. Defaults to 22 if omitted                | _Number_, _String_ |        _22_ |
+| color     |                   Color of the math expression                              |           _String_ |   _"black"_ |
+| debug     | Enables debug mode showing a border around the expression                   |          _Boolean_ |     _false_ |
+
+## Supported LaTeX features
+
+All standard LaTeX math features supported by MathJax are available, including:
+
+- Fractions, roots, and arithmetic operators
+- Greek and Hebrew letters
+- Summations, products, and integrals
+- Limits and derivatives
+- Matrices and arrays
+- Binomial coefficients
+- Trigonometric functions
+- Accents and decorations
+- Piecewise functions and aligned equations

@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 import {
   Origin,
@@ -24,7 +24,7 @@ interface SafeCircleProps extends SafeSVGPresentationAttributes {
 export type CircleNode = {
   type: typeof P.Circle;
   props: CircleProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: never;
   origin?: Origin;
   yogaNode?: never;
@@ -34,4 +34,5 @@ export type CircleNode = {
 export type SafeCircleNode = Omit<CircleNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeCircleProps;
+  wasSplit: boolean;
 };

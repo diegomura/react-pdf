@@ -1,8 +1,9 @@
 import { Transform } from '@react-pdf/stylesheet';
 import { YogaNode } from 'yoga-layout/load';
-import * as React from 'react';
+import type { SafeNode } from './node';
 import { SafeClipPathNode } from './clip-path';
 import { SafeLinearGradientNode } from './linear-gradient';
+import { SafeMarkerNode } from './marker';
 import { SafeRadialGradientNode } from './radial-gradient';
 
 export type YogaInstance = {
@@ -56,9 +57,11 @@ export type DynamicPageProps = {
   subPageTotalPages?: number;
 };
 
+// Pre-wrapped by the reconciler host config: returns node instances, never
+// React elements. The user-facing React signature lives in @react-pdf/types.
 export type RenderProp = (
   props: DynamicPageProps,
-) => React.ReactNode | null | undefined;
+) => SafeNode | SafeNode[] | null | undefined;
 
 export type NodeProps = {
   id?: string;
@@ -83,7 +86,11 @@ export type NodeProps = {
    * @see https://react-pdf.org/advanced#debugging
    */
   debug?: boolean;
-  bookmark?: Bookmark;
+  /**
+   * Bookmark for the element.
+   * @see https://react-pdf.org/advanced#bookmarks
+   */
+  bookmark?: string | Bookmark;
 };
 
 export type FillRule = 'nonzero' | 'evenodd';
@@ -122,6 +129,9 @@ export type SVGPresentationAttributes = {
   visibility?: Visibility;
   clipPath?: string;
   dominantBaseline?: DominantBaseline;
+  markerStart?: string;
+  markerMid?: string;
+  markerEnd?: string;
 };
 
 export type SafeSVGPresentationAttributes = {
@@ -141,6 +151,9 @@ export type SafeSVGPresentationAttributes = {
   visibility?: Visibility;
   clipPath?: SafeClipPathNode;
   dominantBaseline?: DominantBaseline;
+  markerStart?: SafeMarkerNode;
+  markerMid?: SafeMarkerNode;
+  markerEnd?: SafeMarkerNode;
 };
 
 export interface FormCommonProps extends NodeProps {

@@ -1,0 +1,96 @@
+---
+title: "Mermaid"
+---
+
+React-pdf renders [Mermaid](https://mermaid.js.org/) diagrams via the `@react-pdf/mermaid` package. Definitions are turned into vector graphics at layout time, so flowcharts, sequence diagrams and the rest are drawn as real PDF shapes and text rather than embedded as a bitmap.
+
+## Installation
+
+```bash
+npm install @react-pdf/mermaid
+```
+
+## Usage
+
+```jsx
+import { Document, Page, View } from '@react-pdf/renderer';
+import { Mermaid } from '@react-pdf/mermaid';
+
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={{ padding: 40 }}>
+      <View>
+        <Mermaid width={400}>
+          {`graph TD
+            A[Start] --> B{Decision}
+            B -->|Yes| C[Ship it]
+            B -->|No| D[Back to the drawing board]`}
+        </Mermaid>
+      </View>
+    </Page>
+  </Document>
+);
+```
+
+Both `width` and `height` are optional. Left out, the diagram takes the size of its own viewBox; given one of the two, the other follows the aspect ratio.
+
+## Supported diagrams
+
+| Diagram | Keyword |
+|---------|---------|
+| Flowchart | `graph TD`, `graph LR` |
+| Sequence | `sequenceDiagram` |
+| State | `stateDiagram-v2` |
+| Class | `classDiagram` |
+| Entity relationship | `erDiagram` |
+| XY chart | `xychart-beta` |
+
+```jsx
+<Mermaid width={420}>
+  {`classDiagram
+    Document <|-- Page
+    Page <|-- View
+    View <|-- Text`}
+</Mermaid>
+```
+
+## Colors
+
+Colors can be set one by one, or picked up from a built-in theme:
+
+```jsx
+<Mermaid theme="nord" width={400}>
+  {`graph LR
+    A --> B --> C`}
+</Mermaid>
+```
+
+Individual color props override the theme, so a theme can be used as a starting
+point and adjusted from there:
+
+```jsx
+<Mermaid theme="nord" accent="#bf616a" width={400}>
+  {`graph LR
+    A --> B --> C`}
+</Mermaid>
+```
+
+Available themes are `tokyo-night`, `tokyo-night-storm`, `tokyo-night-light`, `catppuccin-mocha`, `catppuccin-latte`, `nord`, `nord-light`, `dracula`, `github-dark`, `github-light`, `solarized-dark`, `solarized-light`, `one-dark`, `zinc-dark` and `zinc-light`.
+
+## Valid props
+
+| Prop name |                                Description                                 |               Type |     Default |
+|-----------|:--------------------------------------------------------------------------:|-------------------:|------------:|
+| children  |                       Mermaid diagram definition                           |           _String_ | _undefined_ |
+| width     | Width of the rendered diagram. Derived from the viewBox aspect ratio if omitted | _Number_, _String_ | _undefined_ |
+| height    | Height of the rendered diagram. Derived from the viewBox aspect ratio if omitted | _Number_, _String_ | _undefined_ |
+| theme     |                          Built-in theme name                               |           _String_ | _undefined_ |
+| color     |                        Foreground and text color                           |           _String_ |   _"black"_ |
+| bg        |                       Background color of the diagram                      |           _String_ | _undefined_ |
+| accent    |                  Accent color for arrowheads and highlights                |           _String_ | _undefined_ |
+| line      |                       Edge and connector stroke color                      |           _String_ | _undefined_ |
+| muted     |                     Secondary text and label color                         |           _String_ | _undefined_ |
+| surface   |                            Node fill color                                 |           _String_ | _undefined_ |
+| border    |                           Node stroke color                                |           _String_ | _undefined_ |
+| transparent |                        Use a transparent background                      |          _Boolean_ |     _false_ |
+| debug     |          Enables debug mode showing a border around the diagram            |          _Boolean_ |     _false_ |

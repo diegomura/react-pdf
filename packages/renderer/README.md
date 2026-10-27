@@ -3,19 +3,19 @@
   <p align="center">React renderer for creating PDF files on the browser and server<p>
   <p align="center">
     <a href="https://www.npmjs.com/package/@react-pdf/renderer">
-      <img src="https://img.shields.io/npm/v/@react-pdf/renderer.svg" />
+      <img src="https://img.shields.io/npm/v/@react-pdf/renderer?style=flat&colorA=000000&colorB=000000" />
     </a>
-    <a href="https://travis-ci.org/diegomura/react-pdf">
-      <img src="https://img.shields.io/travis/diegomura/react-pdf.svg" />
+     <a href="https://opencollective.com/react-pdf">
+      <img src="https://img.shields.io/opencollective/all/react-pdf?style=flat&colorA=000000&colorB=000000" />
     </a>
     <a href="https://github.com/diegomura/react-pdf/blob/master/LICENSE">
-      <img src="https://img.shields.io/github/license/diegomura/react-pdf.svg" />
+      <img src="https://img.shields.io/github/license/diegomura/react-pdf?style=flat&colorA=000000&colorB=000000" />
     </a>
-    <a href="https://spectrum.chat/react-pdf">
-      <img src="https://withspectrum.github.io/badge/badge.svg" />
+    <a href="https://blockchain.com/btc/address/bc1qj223udztpmt5dck46dw0yap08yum63ht56h90v">
+      <img src="https://img.shields.io/badge/BTC-f5f5f5?style=flat&colorA=000000&colorB=000000" />
     </a>
-    <a href="https://github.com/prettier/prettier">
-      <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" />
+     <a href="https://blockchain.com/eth/address/0x4e1DB76bA0858BbCAa4DD804418D0D9EcF77B1cC">
+      <img src="https://img.shields.io/badge/ETH-f5f5f5?style=flat&colorA=000000&colorB=000000" />
     </a>
   </p>
 </p>
@@ -29,6 +29,7 @@ yarn add @react-pdf/renderer
 ## How it works
 
 ```jsx
+import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 // Create styles
@@ -62,6 +63,7 @@ const MyDocument = () => (
 ### `Web.` Render in DOM
 
 ```jsx
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { PDFViewer } from '@react-pdf/renderer';
 
@@ -77,67 +79,17 @@ ReactDOM.render(<App />, document.getElementById('root'));
 ### `Node.` Save in a file
 
 ```jsx
+import React from 'react';
 import ReactPDF from '@react-pdf/renderer';
 
 ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
 ```
 
-## Examples
-
-For each example, try opening `output.pdf` to see the result.
-
-<table>
-	<tbody>
-		<tr>
-			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/text/thumb.png?raw=true">
-				</a>
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/text/">Text</a>
-			</td>
-			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/resume/thumb.png?raw=true">
-				</a>
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/resume/">Resume</a>
-			</td>
-			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/fractals/thumb.png?raw=true">
-				</a>
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/fractals/">Fractals</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<table>
-	<tbody>
-		<tr>
-			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/knobs/thumb.png?raw=true">
-				</a>
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/knobs/">Knobs</a>
-			</td>
-			<td align="center" valign="top">
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">
-					<img width="150" height="150" src="https://github.com/diegomura/react-pdf/blob/master/packages/examples/src/pageWrap/thumb.png?raw=true">
-				</a>
-				<br>
-				<a href="https://github.com/diegomura/react-pdf/tree/master/packages/examples/src/pageWrap/">Page wrap</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
-<a href="https://github.com/diegomura/react-pdf/graphs/contributors"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
+This project exists thanks to all the people who contribute. Looking to contribute? Please check our [[contribute]](https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md) document for more details about how to setup a development environment and submitting code.
+
+<a href="https://github.com/diegomura/react-pdf/blob/master/.github/CONTRIBUTING.md"><img src="https://opencollective.com/react-pdf/contributors.svg?width=890" /></a>
 
 ## Sponsors
 
@@ -155,8 +107,6 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/reac
 
 MIT © [Diego Muracciole](http://github.com/diegomura)
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftaylorudell%2Freact-pdf?ref=badge_large)
-
 ---
 
-![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)
+[![](https://img.shields.io/npm/dt/@react-pdf/renderer.svg?style=flat)](https://www.npmjs.com/package/@react-pdf/renderer)

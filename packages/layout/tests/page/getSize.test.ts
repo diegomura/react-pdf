@@ -130,4 +130,86 @@ describe('page getSize', () => {
     expect(size).toHaveProperty('width', 100);
     expect(size).toHaveProperty('height', 100);
   });
+
+  test('should accept mm units', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: ['25.4mm', '50.8mm'] },
+    });
+
+    expect(size.width).toBeCloseTo(72);
+    expect(size.height).toBeCloseTo(144);
+  });
+
+  test('should accept cm units', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: ['2.54cm', '5.08cm'] },
+    });
+
+    expect(size.width).toBeCloseTo(72);
+    expect(size.height).toBeCloseTo(144);
+  });
+
+  test('should accept explicit pt units', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: ['100pt', '200pt'] },
+    });
+
+    expect(size).toHaveProperty('width', 100);
+    expect(size).toHaveProperty('height', 200);
+  });
+
+  test('should respect custom dpi for px values', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: ['144px', '288px'], dpi: 144 },
+    });
+
+    expect(size).toHaveProperty('width', 72);
+    expect(size).toHaveProperty('height', 144);
+  });
+
+  test('should throw for invalid size unit', () => {
+    expect(() =>
+      getSize({
+        type: 'PAGE',
+        props: { size: { width: '100vw', height: '200px' } },
+      }),
+    ).toThrow('Invalid page size');
+  });
+
+  test('should accept single element array with auto height', () => {
+    const size = getSize({ type: 'PAGE', props: { size: [595.28] } });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
+  test('should accept size object with no height', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: { width: 595.28 } },
+    });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
+  test('should accept size object with auto height', () => {
+    const size = getSize({
+      type: 'PAGE',
+      props: { size: { width: 595.28, height: 'auto' } },
+    });
+
+    expect(size).toHaveProperty('width', 595.28);
+    expect(size.height).toBeUndefined();
+  });
+
+  test('should throw for unknown string size name', () => {
+    expect(() =>
+      getSize({ type: 'PAGE', props: { size: 'UNKNOWN' as any } }),
+    ).toThrow();
+  });
 });

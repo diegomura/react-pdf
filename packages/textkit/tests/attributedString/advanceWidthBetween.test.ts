@@ -228,4 +228,55 @@ describe('attributeString advanceWidthBetween operator', () => {
 
     expect(advanceWidthBetween(1, 2, string)).toBe(10);
   });
+
+  test('should return correct per-character width for CJK runs split by script', () => {
+    // Simulates scriptItemizer splitting "本当にテキスト" into:
+    //   run 0: "本当" (Han)
+    //   run 1: "に"   (Hiragana)
+    //   run 2: "テキスト" (Katakana)
+    const pos = (w: number) => ({
+      xAdvance: w,
+      yAdvance: 0,
+      xOffset: 0,
+      yOffset: 0,
+    });
+    const string = {
+      string: '本当にテキスト',
+      runs: [
+        {
+          start: 0,
+          end: 2,
+          attributes: {},
+          glyphIndices: [0, 1],
+          positions: [pos(12), pos(12)],
+        },
+        {
+          start: 2,
+          end: 3,
+          attributes: {},
+          glyphIndices: [0],
+          positions: [pos(12)],
+        },
+        {
+          start: 3,
+          end: 7,
+          attributes: {},
+          glyphIndices: [0, 1, 2, 3],
+          positions: [pos(12), pos(11), pos(12), pos(12)],
+        },
+      ],
+    };
+
+    // Each character should return its own width, not 0
+    expect(advanceWidthBetween(0, 1, string)).toBe(12); // 本
+    expect(advanceWidthBetween(1, 2, string)).toBe(12); // 当
+    expect(advanceWidthBetween(2, 3, string)).toBe(12); // に
+    expect(advanceWidthBetween(3, 4, string)).toBe(12); // テ
+    expect(advanceWidthBetween(4, 5, string)).toBe(11); // キ
+    expect(advanceWidthBetween(5, 6, string)).toBe(12); // ス
+    expect(advanceWidthBetween(6, 7, string)).toBe(12); // ト
+
+    // Cross-run range
+    expect(advanceWidthBetween(0, 7, string)).toBe(83);
+  });
 });

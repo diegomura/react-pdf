@@ -48,4 +48,24 @@ describe('evolve', () => {
 
     expect(evolve(transf, object)).toEqual({ a: 2, b: 4 });
   });
+
+  test('should not be vulnerable to prototype pollution via __proto__', () => {
+    const obj = JSON.parse('{"__proto__": {"polluted": "yes"}, "a": 1}');
+    const result = evolve({}, obj);
+
+    expect(result.a).toBe(1);
+    expect(({} as any).polluted).toBeUndefined();
+  });
+
+  test('should skip constructor and prototype keys', () => {
+    const obj = JSON.parse(
+      '{"constructor": {"polluted": "yes"}, "prototype": {"polluted": "yes"}, "a": 1}',
+    );
+
+    const result = evolve({}, obj);
+
+    expect(result.a).toBe(1);
+    expect(result).not.toHaveProperty('constructor');
+    expect(result).not.toHaveProperty('prototype');
+  });
 });

@@ -6,6 +6,7 @@ import renderText from './renderText';
 import renderPage from './renderPage';
 import renderNote from './renderNote';
 import renderImage from './renderImage';
+import renderImageBackground from './renderImageBackground';
 import renderDebug from './renderDebug';
 import renderCanvas from './renderCanvas';
 import renderBorders from './renderBorders';
@@ -50,6 +51,7 @@ const renderFns: Partial<Record<Primitives, any>> = {
   [P.Text]: renderText,
   [P.Note]: renderNote,
   [P.Image]: renderImage,
+  [P.ImageBackground]: renderImageBackground,
   [P.FieldSet]: renderFieldSet,
   [P.TextInput]: renderTextInput,
   [P.Select]: renderSelect,

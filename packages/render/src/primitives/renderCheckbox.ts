@@ -1,6 +1,7 @@
 import { SafeCheckboxNode } from '@react-pdf/layout';
 import { Context, RenderOptions } from '../types';
 import { parseCheckboxOptions } from '../utils/parseFormOptions';
+import addFormAnnotation from '../utils/addFormAnnotation';
 
 const renderCheckbox = (
   ctx: Context,
@@ -8,8 +9,6 @@ const renderCheckbox = (
   options: RenderOptions,
 ) => {
   if (!node.box) return;
-
-  const { top, left, width, height } = node.box;
 
   // Element's name
   const name = node.props?.name || '';
@@ -19,14 +18,13 @@ const renderCheckbox = (
     ctx.initForm();
   }
 
-  ctx.formCheckbox(
-    name,
-    left,
-    top,
-    width,
-    height,
-    parseCheckboxOptions(ctx, node, fieldSetOptions),
+  const { AP, AS, ...fieldOptions } = parseCheckboxOptions(
+    ctx,
+    node,
+    fieldSetOptions,
   );
+
+  addFormAnnotation(ctx, name, 'checkbox', node.box, fieldOptions, { AP, AS });
 };
 
 export default renderCheckbox;

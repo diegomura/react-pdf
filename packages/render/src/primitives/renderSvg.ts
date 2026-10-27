@@ -21,6 +21,7 @@ import renderSvgImage from './renderSvgImage';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
+import renderMarkers from '../svg/renderMarker';
 import { Context } from '../types';
 
 type Primitives = (typeof P)[keyof typeof P];
@@ -145,7 +146,17 @@ const transformGradient = (
         const value = transform.value;
         const cos = Math.cos(value[0]);
         const sin = Math.sin(value[0]);
-        return [cos, sin, -sin, cos, 0, 0];
+        const cx = value[1] || 0;
+        const cy = value[2] || 0;
+
+        return [
+          cos,
+          sin,
+          -sin,
+          cos,
+          cx * (1 - cos) + cy * sin,
+          cy * (1 - cos) - cx * sin,
+        ];
       }
       case 'skew': {
         const value = transform.value;
@@ -353,6 +364,7 @@ const drawChildren = (ctx: Context, node: SafeNode) => {
 
     clipPath(ctx, child);
     drawNode(ctx, child);
+    renderMarkers(ctx, child, drawNode);
     drawChildren(ctx, child);
 
     ctx.restore();

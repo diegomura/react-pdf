@@ -1,4 +1,6 @@
-export interface Image {
+import type { SvgNode } from '@react-pdf/svg';
+
+export interface RasterImage {
   width: number;
   height: number;
   data: Buffer;
@@ -6,7 +8,24 @@ export interface Image {
   key?: string;
 }
 
-export type ImageFormat = 'jpg' | 'jpeg' | 'png';
+export interface SvgImage {
+  width: number;
+  height: number;
+  data: SvgNode;
+  format: 'svg';
+  key?: string;
+}
+
+export type Image = RasterImage | SvgImage;
+
+export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
+
+export type Viewbox = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+};
 
 export type DataImageSrc = {
   data: Buffer;

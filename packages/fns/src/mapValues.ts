@@ -19,6 +19,11 @@ const mapValues = (
 
   for (let i = 0; i < entries.length; i += 1) {
     const [key, value] = entries[i];
+
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      continue;
+    }
+
     result[key] = fn(value, key, i);
   }
 

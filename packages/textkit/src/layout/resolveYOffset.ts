@@ -11,9 +11,14 @@ const resolveRunYOffset = (run: Run) => {
 
   const unitsPerEm = run.attributes?.font?.[0]?.unitsPerEm || 0;
   const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
-  const positions = run.positions.map((p) => Object.assign({}, p, { yOffset }));
 
-  return Object.assign({}, run, { positions });
+  // Positions are created fresh by generateGlyphs earlier in this same
+  // pipeline (and justification mutates them later), so in-place is safe.
+  for (let i = 0; i < run.positions.length; i += 1) {
+    run.positions[i].yOffset = yOffset;
+  }
+
+  return run;
 };
 
 /**

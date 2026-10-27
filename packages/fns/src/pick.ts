@@ -18,6 +18,10 @@ const pick = (
   for (let i = 0; i < keys.length; i += 1) {
     const key = keys[i];
 
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      continue;
+    }
+
     if (key in object) result[key] = object[key];
   }
 

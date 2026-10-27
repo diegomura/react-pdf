@@ -1,9 +1,13 @@
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { YogaNode } from 'yoga-layout/load';
 
 import type { Box, NodeProps, Origin } from './base';
 import { ImageNode, SafeImageNode } from './image';
+import {
+  ImageBackgroundNode,
+  SafeImageBackgroundNode,
+} from './image-background';
 import { SafeViewNode, ViewNode } from './view';
 import { SafeTextNode, TextNode } from './text';
 import { LinkNode, SafeLinkNode } from './link';
@@ -84,6 +88,10 @@ interface PageProps extends NodeProps {
    * @see https://react-pdf.org/components#page-wrapping
    */
   wrap?: boolean;
+  /**
+   * Opt the document into the new pagination engine. Implied by `layout`.
+   */
+  experimentalPagination?: boolean;
   size?: PageSize;
   orientation?: Orientation;
   dpi?: number;
@@ -92,13 +100,14 @@ interface PageProps extends NodeProps {
 export type PageNode = {
   type: typeof P.Page;
   props: PageProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: Box;
   origin?: Origin;
   yogaNode?: YogaNode;
   children?: (
     | ViewNode
     | ImageNode
+    | ImageBackgroundNode
     | TextNode
     | LinkNode
     | CanvasNode
@@ -113,9 +122,11 @@ export type PageNode = {
 
 export type SafePageNode = Omit<PageNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode
+    | SafeImageBackgroundNode
     | SafeTextNode
     | SafeLinkNode
     | SafeCanvasNode

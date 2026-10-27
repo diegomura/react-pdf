@@ -1,0 +1,33 @@
+{
+  "name": "@react-pdf/svgkit",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "pdfkit-compatible drawing context that renders react-pdf documents to SVG",
+  "author": "Diego Muracciole <diegomuracciole@gmail.com>",
+  "homepage": "https://github.com/diegomura/react-pdf#readme",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "browser": {
+    "./lib/index.js": "./lib/index.browser.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegomura/react-pdf.git",
+    "directory": "packages/svgkit"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "rimraf ./lib && rollup -c",
+    "watch": "rimraf ./lib && rollup -c -w",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "@react-pdf/font": "^4.1.2",
+    "@react-pdf/layout": "^5.2.0",
+    "@react-pdf/render": "^4.7.0"
+  }
+}

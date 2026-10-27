@@ -27,4 +27,22 @@ describe('parse color util', () => {
     const color = parseColor('#FF00FF54');
     expect(color.opacity).toBe(0.32941176470588235);
   });
+
+  test('should parse HSL color', () => {
+    const color = parseColor('hsl(0, 100%, 50%)');
+    expect(color.value).toBe('#FF0000');
+    expect(color.opacity).toBe(1);
+  });
+
+  test('should parse HSLA color', () => {
+    const color = parseColor('hsla(120, 100%, 50%, 0.6)');
+    expect(color.value).toBe('#00FF00');
+    expect(color.opacity).toBe(0.6);
+  });
+
+  test('should parse HWB color', () => {
+    const color = parseColor('hwb(60, 3%, 60%)');
+    expect(color.value).toBe('#666608');
+    expect(color.opacity).toBe(1);
+  });
 });

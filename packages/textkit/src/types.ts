@@ -14,10 +14,35 @@ export type Rect = {
   height: number;
 };
 
+export type ExclusionRect = Rect & {
+  type?: 'rect';
+  extend?: 'left' | 'right';
+};
+
+export type ExclusionEllipse = {
+  type: 'ellipse';
+  extend?: 'left' | 'right';
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+};
+
+export type ExclusionPolygon = {
+  type: 'polygon';
+  extend?: 'left' | 'right';
+  points: Coordinate[];
+};
+
+export type ExclusionShape =
+  | ExclusionRect
+  | ExclusionEllipse
+  | ExclusionPolygon;
+
 export type Container = Rect & {
   truncateMode?: 'ellipsis';
   maxLines?: number;
-  excludeRects?: Rect[];
+  exclusions?: ExclusionShape[];
 };
 
 export type Glyph = FontkitGlyph;
@@ -51,7 +76,7 @@ export type Attributes = {
   characterSpacing?: number;
   color?: string;
   direction?: 'rtl' | 'ltr';
-  features?: unknown[];
+  features?: string[] | Record<string, boolean>;
   fill?: boolean;
   font?: Font[];
   fontSize?: number;
@@ -88,6 +113,9 @@ export type Run = {
   start: number;
   end: number;
   attributes: Attributes;
+  /** Maps each string codepoint index to its corresponding glyph index */
+  stringIndices?: number[];
+  /** Maps each glyph index to its corresponding string codepoint index */
   glyphIndices?: number[];
   glyphs?: Glyph[];
   positions?: Position[];

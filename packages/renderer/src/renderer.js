@@ -1,10 +1,40 @@
+import { createElement } from 'react';
 import Reconciler from '@react-pdf/reconciler';
+import * as P from '@react-pdf/primitives';
+
+import createInstances from './createInstances';
+
+// Render props and page layouts run later, during pagination, so the fiber
+// reconciler never sees the elements they return. Wrapping them here keeps
+// layout React-free: by the time layout calls them they return instances.
+const wrapFunctionProps = (props) => {
+  const next = { ...props };
+
+  if (typeof props.render === 'function') {
+    const { render } = props;
+    next.render = (renderProps) => createInstances(render(renderProps));
+  }
+
+  if (typeof props.layout === 'function') {
+    const { layout } = props;
+    next.layout = (layoutProps, payload) =>
+      createInstances(
+        createElement(
+          layout,
+          layoutProps,
+          payload.map((node) => createElement(P.Fragment, { node })),
+        ),
+      );
+  }
+
+  return next;
+};
 
 const createInstance = (type, { style, children, ...props }) => ({
   type,
   box: {},
   style: style || {},
-  props: props || {},
+  props: wrapFunctionProps(props || {}),
   children: [],
 });
 
@@ -70,7 +100,7 @@ const commitTextUpdate = (textInstance, oldText, newText) => {
 
 const commitUpdate = (instance, updatePayload, type, oldProps, newProps) => {
   const { style, ...props } = newProps;
-  instance.props = props;
+  instance.props = wrapFunctionProps(props);
   instance.style = style;
 };
 

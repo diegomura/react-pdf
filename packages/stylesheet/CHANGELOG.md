@@ -1,5 +1,94 @@
 # @react-pdf/stylesheet
 
+## 6.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/types@2.14.0
+
+## 6.3.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.13.1
+
+## 6.3.0
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+- [#3514](https://github.com/diegomura/react-pdf/pull/3514) [`ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09`](https://github.com/diegomura/react-pdf/commit/ab80c0a2e1200ac6d4fd63e911e9c676d6e22f09) Thanks [@diegomura](https://github.com/diegomura)! - feat: shape-outside support for floats (circle, ellipse, polygon, inset)
+
+- [#3286](https://github.com/diegomura/react-pdf/pull/3286) [`a56871451b3161f96c53e5ced866ac1b0a288ff1`](https://github.com/diegomura/react-pdf/commit/a56871451b3161f96c53e5ced866ac1b0a288ff1) Thanks [@exoego](https://github.com/exoego)! - feat: wrapping text around image and view (float)
+
+### Patch Changes
+
+- Updated dependencies [[`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/types@2.13.0
+
+## 6.2.4
+
+### Patch Changes
+
+- [#3496](https://github.com/diegomura/react-pdf/pull/3496) [`d38d17759b3856ab64c69101bd359aace4b532fc`](https://github.com/diegomura/react-pdf/commit/d38d17759b3856ab64c69101bd359aace4b532fc) Thanks [@diegomura](https://github.com/diegomura)! - Bump media-engine to v2.0.0
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae)]:
+  - @react-pdf/types@2.12.0
+
+## 6.2.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.3
+
+## 6.2.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.2
+
+## 6.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.11.1
+
+## 6.2.0
+
+### Minor Changes
+
+- [#3280](https://github.com/diegomura/react-pdf/pull/3280) [`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb) Thanks [@exoego](https://github.com/exoego)! - Support hsla and hwba color models
+
+### Patch Changes
+
+- Updated dependencies [[`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/types@2.11.0
+
+## 6.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/types@2.10.0
+
+## 6.1.3
+
+### Patch Changes
+
+- [#3326](https://github.com/diegomura/react-pdf/pull/3326) [`c4a9e4c0`](https://github.com/diegomura/react-pdf/commit/c4a9e4c0b7f1eb2aef885dffb4505f4204f7ce55) Thanks [@diegomura](https://github.com/diegomura)! - fix(stylesheet): trim color strings
+
+- [#3324](https://github.com/diegomura/react-pdf/pull/3324) [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2) Thanks [@diegomura](https://github.com/diegomura)! - feat: rotate explicit origin support
+
+- Updated dependencies [[`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/types@2.9.3
+
 ## 6.1.2
 
 ### Patch Changes

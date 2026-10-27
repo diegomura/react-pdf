@@ -1,0 +1,16 @@
+{
+  "title": "v3",
+  "root": true,
+  "pages": [
+    "index",
+    "compatibility",
+    "rendering-process",
+    "components",
+    "svg",
+    "hooks",
+    "styling",
+    "fonts",
+    "node",
+    "advanced"
+  ]
+}

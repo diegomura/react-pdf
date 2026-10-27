@@ -1,7 +1,7 @@
 import { compose, castArray } from '@react-pdf/fns';
 import { Style } from '../types';
 
-type StyleInput = Style | StyleInput[] | null | undefined;
+type StyleInput = Style | readonly StyleInput[] | null | undefined;
 
 /**
  * Remove nil values from array

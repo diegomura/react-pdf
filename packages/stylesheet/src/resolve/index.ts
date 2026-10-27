@@ -7,6 +7,7 @@ import layoutHandlers from './layout';
 import marginHandlers from './margins';
 import paddingHandlers from './paddings';
 import positioningHandlers from './positioning';
+import shapeOutsideHandlers from './shapeOutside';
 import textHandlers from './text';
 import transformHandlers from './transform';
 import svgHandlers from './svg';
@@ -29,6 +30,7 @@ const shorthands: Partial<Record<StyleKey, Handler>> = {
   ...marginHandlers,
   ...paddingHandlers,
   ...positioningHandlers,
+  ...shapeOutsideHandlers,
   ...textHandlers,
   ...transformHandlers,
   ...svgHandlers,

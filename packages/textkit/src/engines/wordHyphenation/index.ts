@@ -1,28 +1,7 @@
-import hyphen from 'hyphen';
-import pattern from 'hyphen/patterns/en-us.js';
+import { syllables } from '@react-pdf/hyphenate/en-us';
 import { isNil } from '@react-pdf/fns';
 
-const SOFT_HYPHEN = '\u00ad';
-const hyphenator = hyphen(pattern);
-
-/**
- * @param word
- * @returns Word parts
- */
-const splitHyphen = (word: string) => {
-  return word.split(SOFT_HYPHEN);
-};
-
-const cache: Record<string, string[]> = {};
-
-/**
- * @param word
- * @returns Word parts
- */
-const getParts = (word: string) => {
-  const base = word.includes(SOFT_HYPHEN) ? word : hyphenator(word);
-  return splitHyphen(base);
-};
+const SOFT_HYPHEN = '­';
 
 const wordHyphenation = () => {
   /**
@@ -30,14 +9,13 @@ const wordHyphenation = () => {
    * @returns Word parts
    */
   return (word: string | null) => {
-    const cacheKey = `_${word}`;
-
     if (isNil(word)) return [];
-    if (cache[cacheKey]) return cache[cacheKey];
 
-    cache[cacheKey] = getParts(word);
+    // Soft hyphens already in the word are the author's call, so they replace
+    // the pattern set rather than adding to it.
+    if (word.includes(SOFT_HYPHEN)) return word.split(SOFT_HYPHEN);
 
-    return cache[cacheKey];
+    return syllables(word);
   };
 };
 

@@ -1,5 +1,88 @@
 # @react-pdf/textkit
 
+## 7.0.1
+
+### Patch Changes
+
+- [#3524](https://github.com/diegomura/react-pdf/pull/3524) [`df39d4cf2f18ee234b4f6c7674d94bdfc4742489`](https://github.com/diegomura/react-pdf/commit/df39d4cf2f18ee234b4f6c7674d94bdfc4742489) Thanks [@diegomura](https://github.com/diegomura)! - perf: merge run attributes lazily in flatten, only when a segment is emitted
+
+- [#3527](https://github.com/diegomura/react-pdf/pull/3527) [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61) Thanks [@diegomura](https://github.com/diegomura)! - perf: drop the omit('font') preprocessing pass, skip attachment purging when no attachment is set, reduce allocations in the Knuth-Plass main loop, and cache standard font AFM glyph-name lookups
+
+- [#3523](https://github.com/diegomura/react-pdf/pull/3523) [`a291d4fb45b6260861868b973b24e9a49915f6a0`](https://github.com/diegomura/react-pdf/commit/a291d4fb45b6260861868b973b24e9a49915f6a0) Thanks [@diegomura](https://github.com/diegomura)! - perf: reduce allocation churn in text layout hot paths (~15% faster layout of text-heavy documents)
+
+## 7.0.0
+
+### Major Changes
+
+- [#3511](https://github.com/diegomura/react-pdf/pull/3511) [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52) Thanks [@diegomura](https://github.com/diegomura)! - Support ellipse and polygon exclusion shapes for text wrapping, groundwork for CSS `shape-outside`. Breaking: the `Container.excludeRects` prop is renamed to `exclusions` and now accepts `ExclusionShape[]` (rect, ellipse, or polygon, each with an optional `extend` side)
+
+### Minor Changes
+
+- [#3440](https://github.com/diegomura/react-pdf/pull/3440) [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea) Thanks [@manuelmeister](https://github.com/manuelmeister)! - Add support for fontFeatureSettings to customize ligatures, tabular number display, and other font features.
+
+### Patch Changes
+
+- [#3513](https://github.com/diegomura/react-pdf/pull/3513) [`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db) Thanks [@diegomura](https://github.com/diegomura)! - fix: line widths misaligned with line rects when exclusions are present, causing the first line after a float to break at the previous line's width
+
+## 6.4.2
+
+### Patch Changes
+
+- [#3495](https://github.com/diegomura/react-pdf/pull/3495) [`cb445c063adf87c2f250d11f7c36a71c7695bc61`](https://github.com/diegomura/react-pdf/commit/cb445c063adf87c2f250d11f7c36a71c7695bc61) Thanks [@diegomura](https://github.com/diegomura)! - Use @react-pdf/hyphenate for text layout, and skip whitespace when splitting words into syllables.
+
+## 6.4.1
+
+### Patch Changes
+
+- [#3489](https://github.com/diegomura/react-pdf/pull/3489) [`6f94a82ea4306b0fd9c7c161f9c44609be7f6f39`](https://github.com/diegomura/react-pdf/commit/6f94a82ea4306b0fd9c7c161f9c44609be7f6f39) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Improve Knuth-Plass line breaking performance for long paragraphs.
+
+## 6.4.0
+
+### Minor Changes
+
+- [#3423](https://github.com/diegomura/react-pdf/pull/3423) [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): treat surrogate pairs as single code points in font substitution
+
+### Patch Changes
+
+- [#3303](https://github.com/diegomura/react-pdf/pull/3303) [`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee) Thanks [@matangot](https://github.com/matangot)! - Preserve run attributes during bidi reordering
+
+- [#3420](https://github.com/diegomura/react-pdf/pull/3420) [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d) Thanks [@wojtekmaj](https://github.com/wojtekmaj)! - Improve text line slicing performance for long paragraphs.
+
+## 6.3.0
+
+### Minor Changes
+
+- [#3369](https://github.com/diegomura/react-pdf/pull/3369) [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63) Thanks [@exoego](https://github.com/exoego)! - fix(textkit): advanceWidthBetween regression with glyphIndices
+
+### Patch Changes
+
+- [#3384](https://github.com/diegomura/react-pdf/pull/3384) [`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae) Thanks [@diegomura](https://github.com/diegomura)! - Fix NFD decomposition breaking Latin diacritics rendering by only decomposing complex scripts (Bengali, Devanagari, etc.) that need it for glyph mapping
+
+## 6.2.0
+
+### Minor Changes
+
+- [#3358](https://github.com/diegomura/react-pdf/pull/3358) [`7b37bc8c`](https://github.com/diegomura/react-pdf/commit/7b37bc8c744d3805fd696f7d961d70cf47258dcf) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): glyph indices resolution
+
+- [#3355](https://github.com/diegomura/react-pdf/pull/3355) [`b28b61cf`](https://github.com/diegomura/react-pdf/commit/b28b61cf2ce5b1f0ae5b78551cf987d06df8c6c0) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): decompose unicode step
+
+### Patch Changes
+
+- [#3357](https://github.com/diegomura/react-pdf/pull/3357) [`f30cf001`](https://github.com/diegomura/react-pdf/commit/f30cf0013336d0f6ccfd7b103fee66a203ac6b07) Thanks [@diegomura](https://github.com/diegomura)! - fix(textkit): string indices resolution
+
+- [#3354](https://github.com/diegomura/react-pdf/pull/3354) [`7fa9c06e`](https://github.com/diegomura/react-pdf/commit/7fa9c06e65760272e0994d0a61dc4a53b081a816) Thanks [@diegomura](https://github.com/diegomura)! - refactor(textkit): rename glyphIndices to stringIndices
+
+## 6.1.1
+
+### Patch Changes
+
+- [#3273](https://github.com/diegomura/react-pdf/pull/3273) [`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343) Thanks [@diegomura](https://github.com/diegomura)! - feat(textkit): various improvements
+
+- [#3240](https://github.com/diegomura/react-pdf/pull/3240) [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212) Thanks [@Pasquale007](https://github.com/Pasquale007)! - fix: cannot read units for Em
+
+- Updated dependencies [[`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785)]:
+  - @react-pdf/fns@3.1.3
+
 ## 6.1.0
 
 ### Minor Changes
@@ -11,7 +94,7 @@
   This allows you to break correctly on normal hyphens or other special characters in your text. For example, to use the default english-language syllable breaking built into react-pdf, but also break after hyphens naturally occurring in your text (such as is often present in hyperlinks), you could use the following hyphenation callback:
 
   ```js
-  import { Font } from "@react-pdf/renderer";
+  import { Font } from '@react-pdf/renderer';
 
   Font.registerHyphenationCallback((word, originalHyphenationCallback) => {
     return originalHyphenationCallback(word).flatMap((w) => w.split(/(?<=-)/));

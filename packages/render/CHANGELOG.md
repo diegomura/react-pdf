@@ -1,5 +1,131 @@
 # @react-pdf/render
 
+## 4.7.0
+
+### Minor Changes
+
+- [#3531](https://github.com/diegomura/react-pdf/pull/3531) [`b768f01e862cd56987f046c117919191ef810646`](https://github.com/diegomura/react-pdf/commit/b768f01e862cd56987f046c117919191ef810646) Thanks [@diegomura](https://github.com/diegomura)! - Reintroduce @react-pdf/svgkit: a pdfkit-shaped drawing context that renders documents to SVG strings. @react-pdf/render gains an optional `ctx.glyphs` capability seam so non-PDF backends receive raw glyphs; pdf output is unchanged.
+
+### Patch Changes
+
+- Updated dependencies [[`10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb`](https://github.com/diegomura/react-pdf/commit/10d8365e2eb8fc3987cf94d4d61a7559f4ba1dfb)]:
+  - @react-pdf/types@2.14.0
+
+## 4.6.4
+
+### Patch Changes
+
+- Updated dependencies [[`df39d4cf2f18ee234b4f6c7674d94bdfc4742489`](https://github.com/diegomura/react-pdf/commit/df39d4cf2f18ee234b4f6c7674d94bdfc4742489), [`6dc0901c26354dc5a38ed302ef76d371d74d8d61`](https://github.com/diegomura/react-pdf/commit/6dc0901c26354dc5a38ed302ef76d371d74d8d61), [`a291d4fb45b6260861868b973b24e9a49915f6a0`](https://github.com/diegomura/react-pdf/commit/a291d4fb45b6260861868b973b24e9a49915f6a0)]:
+  - @react-pdf/textkit@7.0.1
+  - @react-pdf/types@2.13.1
+
+## 4.6.3
+
+### Patch Changes
+
+- [#3518](https://github.com/diegomura/react-pdf/pull/3518) [`cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa`](https://github.com/diegomura/react-pdf/commit/cc9746c6e5f22d2c69ee6d309f4f9badd819a8fa) Thanks [@diegomura](https://github.com/diegomura)! - Fix `appearance.initDeflate is not a function` when rendering checkboxes with upstream pdfkit
+
+- [#3519](https://github.com/diegomura/react-pdf/pull/3519) [`a738f01e6fe976e30b1c835e23dad4d9afc4f7d3`](https://github.com/diegomura/react-pdf/commit/a738f01e6fe976e30b1c835e23dad4d9afc4f7d3) Thanks [@diegomura](https://github.com/diegomura)! - Fix deformed SVG paths with chained smooth quadratic (T) commands by expanding them to explicit Q commands before handing them to pdfkit
+
+- Updated dependencies [[`533340e6ae0908732612d4e5350a69dcb70e76db`](https://github.com/diegomura/react-pdf/commit/533340e6ae0908732612d4e5350a69dcb70e76db), [`d3c4667617c1b97c638a6e89e638879e902c9c52`](https://github.com/diegomura/react-pdf/commit/d3c4667617c1b97c638a6e89e638879e902c9c52), [`06dfada8630d00005752eec711219cf290ce76ea`](https://github.com/diegomura/react-pdf/commit/06dfada8630d00005752eec711219cf290ce76ea)]:
+  - @react-pdf/textkit@7.0.0
+  - @react-pdf/types@2.13.0
+
+## 4.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae), [`cb445c063adf87c2f250d11f7c36a71c7695bc61`](https://github.com/diegomura/react-pdf/commit/cb445c063adf87c2f250d11f7c36a71c7695bc61)]:
+  - @react-pdf/primitives@4.4.0
+  - @react-pdf/types@2.12.0
+  - @react-pdf/textkit@6.4.2
+
+## 4.6.1
+
+### Patch Changes
+
+- [#3481](https://github.com/diegomura/react-pdf/pull/3481) [`563d74e0364c80d8e6094777aa66879803786e44`](https://github.com/diegomura/react-pdf/commit/563d74e0364c80d8e6094777aa66879803786e44) Thanks [@diegomura](https://github.com/diegomura)! - Sync pdfkit acroform mixin with upstream. Form field dictionaries no longer leak internal options like `fontSize` into the PDF.
+
+- Updated dependencies [[`6f94a82ea4306b0fd9c7c161f9c44609be7f6f39`](https://github.com/diegomura/react-pdf/commit/6f94a82ea4306b0fd9c7c161f9c44609be7f6f39)]:
+  - @react-pdf/textkit@6.4.1
+  - @react-pdf/types@2.11.3
+
+## 4.6.0
+
+### Minor Changes
+
+- [#3279](https://github.com/diegomura/react-pdf/pull/3279) [`db681b16`](https://github.com/diegomura/react-pdf/commit/db681b1679d3850e0cb3f5a210aa075d56e98fcb) Thanks [@exoego](https://github.com/exoego)! - fix border colors with opacity rendered incorrectly
+
+### Patch Changes
+
+- [#3460](https://github.com/diegomura/react-pdf/pull/3460) [`2dcdb262`](https://github.com/diegomura/react-pdf/commit/2dcdb262e2590873875f3074524842ae2a73454c) Thanks [@benbowler](https://github.com/benbowler)! - fix(render): specify the left coordinate in named destinations so internal links navigate in macOS Preview
+
+- Updated dependencies [[`aeaa7a76`](https://github.com/diegomura/react-pdf/commit/aeaa7a76b92e6d7b79617418e10e1ca784509cee), [`06c188bd`](https://github.com/diegomura/react-pdf/commit/06c188bd1365a85a9935597c5e4b6402584f2427), [`111503c2`](https://github.com/diegomura/react-pdf/commit/111503c244615c98d35c958351beef4c61a0244d)]:
+  - @react-pdf/textkit@6.4.0
+  - @react-pdf/types@2.11.2
+
+## 4.5.1
+
+### Patch Changes
+
+- Updated dependencies [[`143af597`](https://github.com/diegomura/react-pdf/commit/143af597ead7f59f695785a622b030749d2e8dae), [`5689bc18`](https://github.com/diegomura/react-pdf/commit/5689bc1824c760d3cee2f31c8d983d78d3067d63)]:
+  - @react-pdf/textkit@6.3.0
+  - @react-pdf/types@2.11.1
+
+## 4.5.0
+
+### Minor Changes
+
+- [#3281](https://github.com/diegomura/react-pdf/pull/3281) [`0138fddd`](https://github.com/diegomura/react-pdf/commit/0138fddd1696780774ebe322d30c3210a5924a7d) Thanks [@exoego](https://github.com/exoego)! - feat: Support loading external SVG file via <Image src="foo.svg" />
+
+- [#3280](https://github.com/diegomura/react-pdf/pull/3280) [`b01f5b72`](https://github.com/diegomura/react-pdf/commit/b01f5b72243661606238954922e74ec394ed23bb) Thanks [@exoego](https://github.com/exoego)! - Support hsla and hwba color models
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+### Patch Changes
+
+- Updated dependencies [[`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370)]:
+  - @react-pdf/primitives@4.3.0
+  - @react-pdf/types@2.11.0
+
+## 4.4.1
+
+### Patch Changes
+
+- [#3351](https://github.com/diegomura/react-pdf/pull/3351) [`e585e352`](https://github.com/diegomura/react-pdf/commit/e585e3523ecb50001cc9f47e00b139738c02b87f) Thanks [@diegomura](https://github.com/diegomura)! - fix(render): border rendering + tests
+
+- Updated dependencies [[`f30cf001`](https://github.com/diegomura/react-pdf/commit/f30cf0013336d0f6ccfd7b103fee66a203ac6b07), [`7fa9c06e`](https://github.com/diegomura/react-pdf/commit/7fa9c06e65760272e0994d0a61dc4a53b081a816), [`7b37bc8c`](https://github.com/diegomura/react-pdf/commit/7b37bc8c744d3805fd696f7d961d70cf47258dcf), [`b28b61cf`](https://github.com/diegomura/react-pdf/commit/b28b61cf2ce5b1f0ae5b78551cf987d06df8c6c0)]:
+  - @react-pdf/textkit@6.2.0
+
+## 4.4.0
+
+### Minor Changes
+
+- [#3336](https://github.com/diegomura/react-pdf/pull/3336) [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575) Thanks [@diegomura](https://github.com/diegomura)! - feat: add link hitslop
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
+### Patch Changes
+
+- [#3333](https://github.com/diegomura/react-pdf/pull/3333) [`cf366d05`](https://github.com/diegomura/react-pdf/commit/cf366d050f795cce191863564182bd6efeb791af) Thanks [@diegomura](https://github.com/diegomura)! - refactor(pdfkit): remove encode glyphs font methods
+
+- Updated dependencies [[`a70013e7`](https://github.com/diegomura/react-pdf/commit/a70013e7457a28bd4fbda53a5cecfc219da5e1ea), [`342938a4`](https://github.com/diegomura/react-pdf/commit/342938a45ede4e57f969a2861f11c64e2ca48575), [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d), [`6109b424`](https://github.com/diegomura/react-pdf/commit/6109b424a42f7e83510539592afcab1824560715)]:
+  - @react-pdf/types@2.10.0
+  - @react-pdf/primitives@4.2.0
+
+## 4.3.3
+
+### Patch Changes
+
+- [#3329](https://github.com/diegomura/react-pdf/pull/3329) [`143317f2`](https://github.com/diegomura/react-pdf/commit/143317f244377226e0aec0f5512001538188229c) Thanks [@diegomura](https://github.com/diegomura)! - fix(render): text decoration color opacity
+
+- [#3324](https://github.com/diegomura/react-pdf/pull/3324) [`01e1fbbe`](https://github.com/diegomura/react-pdf/commit/01e1fbbe5a214744b7e4607e65fa45b3554390b2) Thanks [@diegomura](https://github.com/diegomura)! - feat: rotate explicit origin support
+
+- Updated dependencies [[`16cf5bd7`](https://github.com/diegomura/react-pdf/commit/16cf5bd7006ee1f64d37d3b9ee72e576ee03e343), [`c40bfdec`](https://github.com/diegomura/react-pdf/commit/c40bfdec3485b00844d9fffeab06d173e2d14dcf), [`5b6a6a4a`](https://github.com/diegomura/react-pdf/commit/5b6a6a4a67fc5156b5d937e4a59a4ab9e5150785), [`2ca8ae83`](https://github.com/diegomura/react-pdf/commit/2ca8ae83fcc113b44b28b5397099bfda9d142212)]:
+  - @react-pdf/textkit@6.1.1
+  - @react-pdf/fns@3.1.3
+  - @react-pdf/types@2.9.3
+
 ## 4.3.2
 
 ### Patch Changes

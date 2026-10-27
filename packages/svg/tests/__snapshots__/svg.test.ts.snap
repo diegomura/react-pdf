@@ -1,0 +1,915 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`parseSvg > XML preamble and comments > should preserve CDATA sections as text 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "Some <special> text",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "props": {
+    "height": "50",
+    "width": "200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > should strip DOCTYPE 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {},
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > should strip XML declaration 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > XML preamble and comments > should strip comments 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should convert hyphenated attributes to camelCase 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fillOpacity": "0.5",
+        "strokeDasharray": "5,3",
+        "strokeLinecap": "round",
+        "strokeWidth": "2",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should decode XML entities in attribute values 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "<hello> & "world"",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should expand inline style attribute 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "opacity": "0.8",
+        "stroke": "blue",
+        "strokeWidth": "2px",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should merge direct attributes and style 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "green",
+        "height": "50",
+        "stroke": "blue",
+        "strokeWidth": "3",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > attribute handling > should parse single-quoted attributes 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should handle no dimensions and no viewBox 1`] = `
+{
+  "children": [],
+  "props": {
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse unitless width and height 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "150",
+    "width": "200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse viewbox 1`] = `
+{
+  "children": [],
+  "props": {
+    "viewBox": "10 20 300 200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in cm 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "5.08cm",
+    "width": "2.54cm",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in inches 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "2in",
+    "width": "1in",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in mm 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "50.8mm",
+    "width": "25.4mm",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in pt 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "36pt",
+    "width": "72pt",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > dimensions > should parse width and height in px 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "48px",
+    "width": "96px",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map basic shapes 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "red",
+        "height": "80",
+        "width": "80",
+        "x": "10",
+        "y": "10",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "fill": "blue",
+        "r": "25",
+      },
+      "type": "CIRCLE",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "rx": "40",
+        "ry": "20",
+      },
+      "type": "ELLIPSE",
+    },
+    {
+      "children": [],
+      "props": {
+        "stroke": "black",
+        "x1": "0",
+        "x2": "100",
+        "y1": "0",
+        "y2": "100",
+      },
+      "type": "LINE",
+    },
+    {
+      "children": [],
+      "props": {
+        "points": "0,0 50,50 100,0",
+      },
+      "type": "POLYLINE",
+    },
+    {
+      "children": [],
+      "props": {
+        "points": "50,0 100,100 0,100",
+      },
+      "type": "POLYGON",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map clipPath element 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "height": "50",
+                "width": "50",
+              },
+              "type": "RECT",
+            },
+          ],
+          "props": {
+            "id": "clip1",
+          },
+          "type": "CLIP_PATH",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map gradient definitions 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "red",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "blue",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "id": "lg1",
+            "x1": "0%",
+            "x2": "100%",
+            "y1": "0%",
+            "y2": "0%",
+          },
+          "type": "LINEAR_GRADIENT",
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "white",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "black",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "cx": "50%",
+            "cy": "50%",
+            "id": "rg1",
+            "r": "50%",
+          },
+          "type": "RADIAL_GRADIENT",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map image element 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "100",
+        "href": "photo.png",
+        "width": "100",
+        "x": "0",
+        "y": "0",
+      },
+      "type": "IMAGE",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map nested groups 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "height": "50",
+                "width": "50",
+              },
+              "type": "RECT",
+            },
+          ],
+          "props": {
+            "opacity": "0.5",
+          },
+          "type": "G",
+        },
+        {
+          "children": [],
+          "props": {
+            "cx": "75",
+            "cy": "75",
+            "r": "10",
+          },
+          "type": "CIRCLE",
+        },
+      ],
+      "props": {
+        "transform": "translate(10,10)",
+      },
+      "type": "G",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > element mapping > should map path element 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "d": "M10 10 H 90 V 90 H 10 Z",
+        "fill": "none",
+        "stroke": "black",
+      },
+      "type": "PATH",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > invalid input > should handle empty string 1`] = `
+{
+  "children": [],
+  "props": {},
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > invalid input > should handle non-svg root element 1`] = `
+{
+  "children": [],
+  "props": {},
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > invalid input > should ignore invalid viewBox 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "100",
+    "viewBox": "bad",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > invalid input > should ignore viewBox with wrong number of values 1`] = `
+{
+  "children": [],
+  "props": {
+    "height": "100",
+    "viewBox": "0 0 100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > real-world SVGs > should parse chart with styled elements 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "fill": "#f0f0f0",
+        "height": "100",
+        "width": "200",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [
+        {
+          "children": [],
+          "props": {
+            "stroke": "#ccc",
+            "x1": "0",
+            "x2": "160",
+            "y1": "0",
+            "y2": "0",
+          },
+          "type": "LINE",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#4ecdc4",
+            "height": "60",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "0",
+            "y": "-60",
+          },
+          "type": "RECT",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#ff6b6b",
+            "height": "40",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "40",
+            "y": "-40",
+          },
+          "type": "RECT",
+        },
+        {
+          "children": [],
+          "props": {
+            "fill": "#45b7d1",
+            "height": "75",
+            "opacity": "0.9",
+            "width": "30",
+            "x": "80",
+            "y": "-75",
+          },
+          "type": "RECT",
+        },
+      ],
+      "props": {
+        "transform": "translate(20,80)",
+      },
+      "type": "G",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "viewBox": "0 0 200 100",
+    "width": "200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > real-world SVGs > should parse icon with gradients and paths 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "props": {
+                "offset": "0%",
+                "stopColor": "#ff6b6b",
+              },
+              "type": "STOP",
+            },
+            {
+              "children": [],
+              "props": {
+                "offset": "100%",
+                "stopColor": "#4ecdc4",
+              },
+              "type": "STOP",
+            },
+          ],
+          "props": {
+            "id": "grad",
+            "x1": "0",
+            "x2": "1",
+            "y1": "0",
+            "y2": "1",
+          },
+          "type": "LINEAR_GRADIENT",
+        },
+      ],
+      "props": {},
+      "type": "DEFS",
+    },
+    {
+      "children": [
+        {
+          "children": [],
+          "props": {
+            "d": "M12 2L2 7l10 5 10-5-10-5z",
+          },
+          "type": "PATH",
+        },
+        {
+          "children": [],
+          "props": {
+            "d": "M2 17l10 5 10-5",
+          },
+          "type": "PATH",
+        },
+        {
+          "children": [],
+          "props": {
+            "d": "M2 12l10 5 10-5",
+          },
+          "type": "PATH",
+        },
+      ],
+      "props": {
+        "fill": "none",
+        "strokeLinecap": "round",
+        "strokeLinejoin": "round",
+        "strokeWidth": "2",
+      },
+      "type": "G",
+    },
+  ],
+  "props": {
+    "height": "24",
+    "viewBox": "0 0 24 24",
+    "width": "24",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > skipped elements > should omit script, filter, mask, and other unsupported elements 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+    {
+      "children": [],
+      "props": {
+        "cx": "50",
+        "cy": "50",
+        "r": "10",
+      },
+      "type": "CIRCLE",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > skipped elements > should silently ignore unknown elements 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {
+        "height": "50",
+        "width": "50",
+      },
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > text handling > should ignore text content in non-text elements 1`] = `
+{
+  "children": [
+    {
+      "children": [],
+      "props": {},
+      "type": "RECT",
+    },
+  ],
+  "props": {
+    "height": "100",
+    "width": "100",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > text handling > should parse text with content 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "props": {},
+          "type": "TEXT_INSTANCE",
+          "value": "Hello World",
+        },
+      ],
+      "props": {
+        "fontSize": "20",
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "props": {
+    "height": "50",
+    "width": "200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;
+
+exports[`parseSvg > text handling > should parse text with tspan children 1`] = `
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "props": {},
+              "type": "TEXT_INSTANCE",
+              "value": "Red",
+            },
+          ],
+          "props": {
+            "fill": "red",
+          },
+          "type": "TSPAN",
+        },
+        {
+          "children": [
+            {
+              "props": {},
+              "type": "TEXT_INSTANCE",
+              "value": "Blue",
+            },
+          ],
+          "props": {
+            "fill": "blue",
+          },
+          "type": "TSPAN",
+        },
+      ],
+      "props": {
+        "x": "10",
+        "y": "30",
+      },
+      "type": "TEXT",
+    },
+  ],
+  "props": {
+    "height": "50",
+    "width": "200",
+    "xmlns": "http://www.w3.org/2000/svg",
+  },
+  "type": "SVG",
+}
+`;

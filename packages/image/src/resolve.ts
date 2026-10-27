@@ -4,11 +4,12 @@ import path from 'path';
 
 import PNG from './png';
 import JPEG from './jpeg';
+import SVG from './svg';
 import createCache from './cache.js';
 import {
+  Image,
   Base64ImageSrc,
   DataImageSrc,
-  Image,
   ImageFormat,
   ImageSrc,
   LocalImageSrc,
@@ -35,22 +36,30 @@ const getAbsoluteLocalPath = (src: string) => {
     throw new Error('Cannot check local paths in client-side environment');
   }
 
-  const {
-    protocol,
-    auth,
-    host,
-    port,
-    hostname,
-    path: pathname,
-  } = url.parse(src);
+  try {
+    const parsed = new URL(src);
 
-  const absolutePath = pathname ? path.resolve(src) : undefined;
+    if (
+      parsed.protocol !== 'file:' ||
+      parsed.username ||
+      parsed.password ||
+      parsed.host
+    ) {
+      return undefined;
+    }
 
-  if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
-    return undefined;
+    return url.fileURLToPath(parsed.href);
+  } catch {
+    if (!src) {
+      return undefined;
+    }
+
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(src)) {
+      return undefined;
+    }
+
+    return path.resolve(src);
   }
-
-  return absolutePath;
 };
 
 const fetchLocalFile = (src: LocalImageSrc): Promise<Buffer> =>
@@ -93,7 +102,13 @@ const fetchRemoteFile = async (src: RemoteImageSrc) => {
 
 const isValidFormat = (format: string): format is ImageFormat => {
   const lower = format.toLowerCase();
-  return lower === 'jpg' || lower === 'jpeg' || lower === 'png';
+  return (
+    lower === 'jpg' ||
+    lower === 'jpeg' ||
+    lower === 'png' ||
+    lower === 'svg' ||
+    lower === 'svg+xml'
+  );
 };
 
 const getImageFormat = (buffer: Buffer) => {
@@ -103,6 +118,8 @@ const getImageFormat = (buffer: Buffer) => {
     format = 'jpg' as const;
   } else if (PNG.isValid(buffer)) {
     format = 'png' as const;
+  } else if (SVG.isValid(buffer)) {
+    format = 'svg' as const;
   }
 
   return format;
@@ -115,13 +132,16 @@ function getImage(body: Buffer, format: string): Image | null {
       return new JPEG(body);
     case 'png':
       return new PNG(body);
+    case 'svg':
+    case 'svg+xml':
+      return new SVG(body);
     default:
       return null;
   }
 }
 
 const resolveBase64Image = async ({ uri }: Base64ImageSrc) => {
-  const match = /^data:image\/([a-zA-Z]*);base64,([^"]*)/g.exec(uri);
+  const match = /^data:image\/([a-zA-Z+]*);base64,([^"]*)/g.exec(uri);
 
   if (!match) throw new Error(`Invalid base64 image: ${uri}`);
 

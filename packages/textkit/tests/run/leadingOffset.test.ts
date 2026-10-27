@@ -30,6 +30,7 @@ describe('run leadingOffset operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
     };
 
@@ -57,6 +58,7 @@ describe('run leadingOffset operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
     };
 
@@ -84,6 +86,7 @@ describe('run leadingOffset operator', () => {
         { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
       ],
+      stringIndices: [0, 1, 2, 3, 4],
       glyphIndices: [0, 1, 2, 3, 4],
     };
 

@@ -223,7 +223,7 @@ export function LineBreakLab() {
             >
               K&amp;P{' '}
               {justify
-                ? (knuth?.length ?? 0)
+                ? knuth?.length ?? 0
                 : Math.round(score(knuth, width)).toLocaleString('en-US')}
             </b>{' '}
             ·{' '}
@@ -234,7 +234,7 @@ export function LineBreakLab() {
             >
               greedy{' '}
               {justify
-                ? (greedy?.length ?? 0)
+                ? greedy?.length ?? 0
                 : Math.round(score(greedy, width)).toLocaleString('en-US')}
             </b>
           </span>

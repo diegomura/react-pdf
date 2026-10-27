@@ -353,6 +353,8 @@ export type TextTransform =
 
 export type VerticalAlign = 'sub' | 'super';
 
+export type TextWrap = 'wrap' | 'nowrap' | 'pretty' | 'balance';
+
 export type FontFeatureSetting =
   | 'liga'
   | 'dlig'
@@ -406,6 +408,7 @@ export type TextStyle = {
   textIndent?: any; // ?
   textOverflow?: 'ellipsis';
   textTransform?: TextTransform;
+  textWrap?: TextWrap;
   verticalAlign?: VerticalAlign;
 };
 

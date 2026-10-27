@@ -124,6 +124,7 @@ const handlers = {
   textIndent: processNoopValue<'textIndent'>,
   textOverflow: processNoopValue<'textOverflow'>,
   textTransform: processNoopValue<'textTransform'>,
+  textWrap: processNoopValue<'textWrap'>,
   verticalAlign: processNoopValue<'verticalAlign'>,
 };
 

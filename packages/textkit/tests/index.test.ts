@@ -10,7 +10,7 @@ import justification from '../src/engines/justification';
 import textDecoration from '../src/engines/textDecoration';
 import scriptItemizer from '../src/engines/scriptItemizer';
 import fontSubstitution from '../src/engines/fontSubstitution';
-import type { Font } from '../src/types';
+import type { Font, TextWrap } from '../src/types';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,9 +40,14 @@ beforeAll(async () => {
 
 const layout = (
   string: string,
-  opts: { fontSize?: number; width?: number; font?: Font } = {},
+  opts: {
+    fontSize?: number;
+    width?: number;
+    font?: Font;
+    textWrap?: TextWrap;
+  } = {},
 ) => {
-  const { fontSize = 12, width = 500, font: f } = opts;
+  const { fontSize = 12, width = 500, font: f, textWrap } = opts;
   const engine = layoutEngine(engines);
 
   const attributedString = {
@@ -58,7 +63,7 @@ const layout = (
 
   const container = { x: 0, y: 0, width, height: 1000 };
 
-  return engine(attributedString, container);
+  return engine(attributedString, container, { textWrap });
 };
 
 const getGlyphs = (paragraphs: ReturnType<typeof layout>) => {
@@ -254,4 +259,116 @@ test('should produce positive advances for all Thai glyphs', () => {
   for (const pos of positions) {
     expect(pos.xAdvance).toBeGreaterThanOrEqual(0);
   }
+});
+
+const countWords = (line: { string: string }) =>
+  line.string.trim().split(/\s+/).filter(Boolean).length;
+
+describe('text-wrap: pretty', () => {
+  // A sequence of short words that wraps over multiple lines.
+  const text = 'alpha beta gamma delta epsilon zeta eta theta iota kappa';
+
+  test('default wrap may leave a single word on the last line', () => {
+    // Pick a width tuned so K&P naturally produces a 1-word last line
+    // without orphan protection. Confirms our test setup actually exposes
+    // the orphan that `pretty` is meant to fix.
+    const result = layout(text, { width: 100 });
+    const lastParagraph = result[result.length - 1];
+    const lastLine = lastParagraph[lastParagraph.length - 1];
+
+    expect(countWords(lastLine)).toBe(1);
+  });
+
+  test('textWrap: pretty keeps at least two words on the last line', () => {
+    const result = layout(text, { width: 100, textWrap: 'pretty' });
+    const lastParagraph = result[result.length - 1];
+    const lastLine = lastParagraph[lastParagraph.length - 1];
+
+    expect(countWords(lastLine)).toBeGreaterThanOrEqual(2);
+  });
+
+  test('textWrap: pretty preserves all words across lines', () => {
+    const result = layout(text, { width: 100, textWrap: 'pretty' });
+    const flatString = result
+      .flatMap((paragraph) => paragraph.map((line) => line.string.trim()))
+      .join(' ')
+      .replace(/\s+/g, ' ');
+
+    expect(flatString).toBe(text);
+  });
+
+  test('textWrap: pretty is a no-op for single-word text', () => {
+    const result = layout('alpha', { textWrap: 'pretty' });
+
+    expect(result[0]).toHaveLength(1);
+    expect(countWords(result[0][0])).toBe(1);
+  });
+
+  test('textWrap: pretty is a no-op when text fits on one line', () => {
+    const result = layout('alpha beta', { textWrap: 'pretty' });
+
+    expect(result[0]).toHaveLength(1);
+    expect(countWords(result[0][0])).toBe(2);
+  });
+});
+
+describe('text-wrap: nowrap', () => {
+  const text = 'alpha beta gamma delta epsilon zeta eta theta iota kappa';
+
+  test('default wrap breaks at narrow widths', () => {
+    const result = layout(text, { width: 100 });
+
+    expect(result[0].length).toBeGreaterThan(1);
+  });
+
+  test('textWrap: nowrap keeps the entire paragraph on one line', () => {
+    const result = layout(text, { width: 100, textWrap: 'nowrap' });
+
+    expect(result[0]).toHaveLength(1);
+    expect(result[0][0].string.trim()).toBe(text);
+  });
+
+  test('textWrap: nowrap is a no-op for text that already fits', () => {
+    const result = layout('alpha beta', { width: 500, textWrap: 'nowrap' });
+
+    expect(result[0]).toHaveLength(1);
+    expect(result[0][0].string.trim()).toBe('alpha beta');
+  });
+});
+
+describe('text-wrap: balance', () => {
+  // A short title-like string. Balance is meant for headings/titles.
+  const text =
+    'A short headline that should balance evenly across multiple lines';
+
+  test('keeps the same line count as natural wrap', () => {
+    const natural = layout(text, { width: 220 });
+    const balanced = layout(text, { width: 220, textWrap: 'balance' });
+
+    expect(balanced[0]).toHaveLength(natural[0].length);
+  });
+
+  test('produces lines closer to equal length', () => {
+    const widthOf = (line: { string: string; xAdvance?: number }) =>
+      line.xAdvance ??
+      // Fallback: approximate by string length when xAdvance is unset.
+      line.string.length;
+
+    const variance = (lines: { string: string; xAdvance?: number }[]) => {
+      const widths = lines.map(widthOf);
+      const mean = widths.reduce((a, b) => a + b, 0) / widths.length;
+      return widths.reduce((a, w) => a + (w - mean) ** 2, 0) / widths.length;
+    };
+
+    const natural = layout(text, { width: 220 });
+    const balanced = layout(text, { width: 220, textWrap: 'balance' });
+
+    expect(variance(balanced[0])).toBeLessThanOrEqual(variance(natural[0]));
+  });
+
+  test('balance is a no-op when text fits on one line', () => {
+    const result = layout('Hello world', { width: 500, textWrap: 'balance' });
+
+    expect(result[0]).toHaveLength(1);
+  });
 });

@@ -29,6 +29,7 @@ import mermaid from './mermaid';
 import passwordProtection from './password-protection';
 import softHyphens from './soft-hyphens';
 import tailwind from './tailwind';
+import textWrap from './text-wrap';
 
 const EXAMPLES = [
   scripts,
@@ -62,6 +63,7 @@ const EXAMPLES = [
   passwordProtection,
   softHyphens,
   tailwind,
+  textWrap,
 ];
 
 export default EXAMPLES;

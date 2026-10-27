@@ -92,6 +92,9 @@ const getLayoutOptions = (fontStore, node) => ({
     node.props.hyphenationCallback ||
     fontStore?.getHyphenationCallback() ||
     null,
+  hyphens: node.style?.hyphens,
+  hyphenateCharacter: node.style?.hyphenateCharacter,
+  wordBreak: node.style?.wordBreak,
 });
 
 /**

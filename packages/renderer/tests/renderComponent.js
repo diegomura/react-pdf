@@ -1,7 +1,13 @@
 import { createCanvas } from '@napi-rs/canvas';
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
 
 import { renderToBuffer } from '@react-pdf/renderer';
+
+const require = createRequire(import.meta.url);
+// Use bundled glyphs instead of platform-dependent system font fallbacks.
+const standardFontDataUrl = `${path.dirname(require.resolve('pdfjs-dist/package.json'))}/standard_fonts/`;
 
 class CanvasFactory {
   create(width, height) {
@@ -82,6 +88,7 @@ const renderComponent = async (element) => {
     data: new Uint8Array(source),
     verbosity: 0,
     CanvasFactory,
+    standardFontDataUrl,
   }).promise;
 
   const pages = range(document.numPages).map((pageIndex) =>

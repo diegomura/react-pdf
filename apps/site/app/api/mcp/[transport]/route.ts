@@ -35,8 +35,11 @@ function searchDocs(query: string, limit = 5) {
     .map(({ url, title }) => ({ url, title }));
 }
 
-const handler = createMcpHandler(() => {
-  const server = new McpServer({ name: 'react-pdf', version: '1.0.0' });
+const createServer = () => {
+  const server = new McpServer(
+    { name: 'react-pdf', version: '1.0.0' },
+    { capabilities: { tools: { listChanged: false } } },
+  );
 
   server.registerTool(
     'search_docs',
@@ -89,7 +92,10 @@ const handler = createMcpHandler(() => {
   );
 
   return server;
-});
+};
+
+// Static docs never emit updates; subscription streams would idle until Vercel times out.
+const handler = createMcpHandler(createServer, { maxSubscriptions: 0 });
 
 const serve = (request: Request) => handler.fetch(request);
 

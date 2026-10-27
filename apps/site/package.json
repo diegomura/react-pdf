@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run --config vitest.config.ts",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -47,6 +48,7 @@
     "@types/react": "^19.0.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "vitest": "^1.6.1"
   }
 }

@@ -44,7 +44,16 @@ const warnUnavailableSpace = (node: SafeNode) => {
   );
 };
 
-const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
+// Fixed and empty siblings do not occupy the page, so a node preceded only by them is still at the page start
+const isPageStartFiller = (node: SafeNode) =>
+  isFixed(node) || !node.box?.height;
+
+const splitNodes = (
+  height: number,
+  contentArea: number,
+  nodes: SafeNode[],
+  pageStart = true,
+) => {
   const currentChildren: SafeNode[] = [];
   const nextChildren: SafeNode[] = [];
 
@@ -56,11 +65,13 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     const nodeTop = getTop(child);
     const nodeHeight = child.box.height;
     const isOutside = height <= nodeTop;
+    const atPageStart = pageStart && currentChildren.every(isPageStartFiller);
     const shouldBreak = shouldNodeBreak(
       child,
       futureNodes,
       height,
       currentChildren,
+      atPageStart,
     );
     const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
@@ -100,12 +111,17 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     }
 
     if (shouldSplit) {
-      const [currentChild, nextChild] = split(child, height, contentArea);
+      const [currentChild, nextChild] = split(
+        child,
+        height,
+        contentArea,
+        atPageStart,
+      );
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
         // But if the current page is empty then we can just include the parent on the current page
-        if (currentChildren.length === 0) {
+        if (atPageStart) {
           currentChildren.push(child, ...futureFixedNodes);
           nextChildren.push(...futureNodes);
         } else {
@@ -132,18 +148,29 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
   return [currentChildren, nextChildren];
 };
 
-const splitChildren = (height: number, contentArea: number, node: SafeNode) => {
+const splitChildren = (
+  height: number,
+  contentArea: number,
+  node: SafeNode,
+  pageStart: boolean,
+) => {
   const children = node.children || [];
   const availableHeight = height - getTop(node);
-  return splitNodes(availableHeight, contentArea, children);
+  return splitNodes(availableHeight, contentArea, children, pageStart);
 };
 
-const splitView = (node: SafeNode, height: number, contentArea: number) => {
+const splitView = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  pageStart: boolean,
+) => {
   const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
     node,
+    pageStart,
   );
 
   return [
@@ -152,8 +179,15 @@ const splitView = (node: SafeNode, height: number, contentArea: number) => {
   ];
 };
 
-const split = (node: SafeNode, height: number, contentArea: number) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  pageStart: boolean,
+) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, pageStart);
 
 const shouldResolveDynamicNodes = (node: SafeNode) => {
   const children = node.children || [];

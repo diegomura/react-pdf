@@ -458,4 +458,147 @@ describe('pagination step', () => {
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
   });
+  test('should move a nested first child that does not fit to the next page', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 30 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: {},
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: {},
+                  props: {},
+                  children: [
+                    {
+                      type: 'VIEW',
+                      style: { height: 80 },
+                      props: { wrap: false },
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    // The unwrappable view fits on a page but not under the first view, so its wrappers move with it
+    expect(layout.children.length).toBe(2);
+    expect(page1.children!.length).toBe(1);
+    expect(page2.children!.length).toBe(1);
+    expect(page2.children![0].box!.height).toBe(80);
+    expect(page2.children![0].children![0].children![0].box!.height).toBe(80);
+  });
+
+  test('should keep a nested first child on the page when it is already at the page start', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { paddingTop: 20 },
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { height: 90 },
+                  props: { wrap: false },
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    // Moving it to another page would never help, so it stays rather than looping forever
+    expect(layout.children.length).toBe(1);
+    expect(layout.children[0].children!.length).toBe(1);
+  });
+
+  test('should honour minPresenceAhead on a first child that is not at the page start', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 30 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: {},
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { height: 10 },
+                  props: { minPresenceAhead: 65 },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 70 },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+
+    // The heading-like view asks for more room than remains below it, so it leads the next page
+    expect(layout.children.length).toBe(2);
+    expect(page1.children!.length).toBe(1);
+    expect(page2.children![0].children!.length).toBe(2);
+    expect(page2.children![0].children![0].box!.height).toBe(10);
+  });
 });

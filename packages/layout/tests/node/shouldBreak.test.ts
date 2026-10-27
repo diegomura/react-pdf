@@ -445,6 +445,50 @@ describe('node shouldBreak', () => {
     expect(result).toEqual(false);
   });
 
+  test('should break due to minPresenceAhead when the node is the first child of its parent but not at the page start', () => {
+    const result = shouldBreak(
+      {
+        type: 'VIEW',
+        props: { minPresenceAhead: 400 },
+        style: {},
+        children: [],
+        box: {
+          top: 500,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: 400,
+          width: 200,
+          marginTop: 500,
+          marginBottom: 0,
+        },
+      },
+      [
+        {
+          type: 'VIEW',
+          props: {},
+          style: {},
+          children: [],
+          box: {
+            top: 900,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            height: 200,
+            width: 200,
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+      ],
+      1000,
+      [],
+      false,
+    );
+
+    expect(result).toEqual(true);
+  });
+
   test('should not break due to minPresenceAhead even when there are some previous fixed nodes on the page, to avoid infinite loops', () => {
     const result = shouldBreak(
       {

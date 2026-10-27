@@ -14,6 +14,10 @@ const jpgLogalPath = path.join(__dirname, './assets/test.jpg');
 const localJPGImage = fs.readFileSync(jpgLogalPath);
 const pngLogalPath = path.join(__dirname, './assets/test.png');
 const localPNGImage = fs.readFileSync(pngLogalPath);
+const webpImageUrl =
+  'https://file-examples.com/storage/feef2e5ab66a3b24198243b/2020/03/file_example_WEBP_50kB.webp';
+const webpLogalPath = path.join(__dirname, './assets/test.webp');
+const localWEBPImage = fs.readFileSync(webpLogalPath);
 
 describe('image resolveImage', () => {
   beforeEach(() => {
@@ -86,6 +90,52 @@ describe('image resolveImage', () => {
     fetchMock.once(localPNGImage);
 
     const image = await resolveImage({ uri: pngImageUrl });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a webp image over http', async () => {
+    fetchMock.once(localWEBPImage);
+
+    const image = await resolveImage({ uri: webpImageUrl });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a local webp image from data object', async () => {
+    const image = await resolveImage({ data: localWEBPImage, format: 'webp' });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a raw buffer webp image', async () => {
+    const image = await resolveImage(localWEBPImage);
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBeGreaterThan(0);
+    expect(image?.height).toBeGreaterThan(0);
+  });
+
+  test('Should render a base64 webp image', async () => {
+    const webpBase64 =
+      'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
+
+    const image = await resolveImage({ uri: webpBase64 });
+
+    expect(image?.data).toBeTruthy();
+    expect(image?.width).toBe(1);
+    expect(image?.height).toBe(1);
+  });
+
+  test('Should render a webp blob image', async () => {
+    const blob = new Blob([localWEBPImage], { type: 'image/webp' });
+    const image = await resolveImage(blob);
 
     expect(image?.data).toBeTruthy();
     expect(image?.width).toBeGreaterThan(0);

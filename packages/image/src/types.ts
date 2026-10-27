@@ -4,7 +4,7 @@ export interface RasterImage {
   width: number;
   height: number;
   data: Buffer;
-  format: 'jpeg' | 'png';
+  format: 'jpeg' | 'png' | 'webp';
   key?: string;
 }
 
@@ -18,7 +18,7 @@ export interface SvgImage {
 
 export type Image = RasterImage | SvgImage;
 
-export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg';
+export type ImageFormat = 'jpg' | 'jpeg' | 'png' | 'svg' | 'webp';
 
 export type Viewbox = {
   minX: number;

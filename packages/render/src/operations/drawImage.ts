@@ -3,6 +3,7 @@ import { Image } from '@react-pdf/image';
 
 import resolveObjectFit from '../utils/resolveObjectFit';
 import { Context } from '../types';
+import WebPImage from './WebPImage';
 
 type DrawImageOptions = {
   x: number;
@@ -50,11 +51,15 @@ const drawImage = (ctx: Context, options: DrawImageOptions) => {
   let embeddedImage = imageCache.get(cacheKey);
 
   if (!embeddedImage) {
-    const src = image.data;
+    if (image.format === 'webp') {
+      embeddedImage = new WebPImage(image, `I${++ctx._imageCount}`);
+    } else {
+      const src = image.data;
 
-    embeddedImage =
-      (typeof src === 'string' && ctx._imageRegistry[src]) ||
-      ctx.openImage(src);
+      embeddedImage =
+        (typeof src === 'string' && ctx._imageRegistry[src]) ||
+        ctx.openImage(src);
+    }
 
     if (!embeddedImage.obj) {
       embeddedImage.embed(ctx);

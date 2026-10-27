@@ -5,6 +5,7 @@ import path from 'path';
 import PNG from './png';
 import JPEG from './jpeg';
 import SVG from './svg';
+import WEBP from './webp';
 import createCache from './cache.js';
 import {
   Image,
@@ -107,7 +108,8 @@ const isValidFormat = (format: string): format is ImageFormat => {
     lower === 'jpeg' ||
     lower === 'png' ||
     lower === 'svg' ||
-    lower === 'svg+xml'
+    lower === 'svg+xml' ||
+    lower === 'webp'
   );
 };
 
@@ -120,12 +122,17 @@ const getImageFormat = (buffer: Buffer) => {
     format = 'png' as const;
   } else if (SVG.isValid(buffer)) {
     format = 'svg' as const;
+  } else if (WEBP.isValid(buffer)) {
+    format = 'webp' as const;
   }
 
   return format;
 };
 
-function getImage(body: Buffer, format: string): Image | null {
+function getImage(
+  body: Buffer,
+  format: string,
+): Image | Promise<Image | null> | null {
   switch (format.toLowerCase()) {
     case 'jpg':
     case 'jpeg':
@@ -135,6 +142,8 @@ function getImage(body: Buffer, format: string): Image | null {
     case 'svg':
     case 'svg+xml':
       return new SVG(body);
+    case 'webp':
+      return WEBP.create(body);
     default:
       return null;
   }

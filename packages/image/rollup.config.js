@@ -11,7 +11,8 @@ const input = './src/index.ts';
 
 const getExternal = ({ browser }) => [
   ...Object.keys(pkg.dependencies),
-  ...(browser ? [] : ['fs', 'path', 'url']),
+  '@jsquash/webp/decode',
+  ...(browser ? [] : ['fs', 'path', 'url', 'module']),
 ];
 
 const getPlugins = ({ browser }) => [
@@ -21,7 +22,10 @@ const getPlugins = ({ browser }) => [
     values: { BROWSER: JSON.stringify(browser) },
   }),
   ...(browser
-    ? [ignore(['fs', 'path', 'url']), nodePolyfills({ include: null })]
+    ? [
+        ignore(['fs', 'path', 'url', 'module']),
+        nodePolyfills({ include: null }),
+      ]
     : []),
 ];
 

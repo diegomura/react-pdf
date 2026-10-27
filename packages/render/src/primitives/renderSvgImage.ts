@@ -1,6 +1,7 @@
 import { SafeImageNode } from '@react-pdf/layout';
 
 import { Context } from '../types';
+import WebPImage from '../operations/WebPImage';
 
 const renderImage = (ctx: Context, node: SafeImageNode) => {
   if (!node.box) return;
@@ -29,11 +30,16 @@ const renderImage = (ctx: Context, node: SafeImageNode) => {
     return;
   }
 
+  const src =
+    node.image.format === 'webp'
+      ? new WebPImage(node.image, `I${++ctx._imageCount}`)
+      : node.image.data;
+
   ctx.save();
 
   ctx
     .fillOpacity(opacity || 1)
-    .image(node.image.data, x + paddingLeft, y + paddingTop, {
+    .image(src as any, x + paddingLeft, y + paddingTop, {
       width,
       height,
     });

@@ -8,6 +8,7 @@ export type Context = typeof PDFKitDocument & {
   _root: any;
   _font: any;
   _imageRegistry: any;
+  _imageCount: number;
   _acroform: any;
   _fontSize: number;
 

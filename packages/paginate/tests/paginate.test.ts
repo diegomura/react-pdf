@@ -1888,6 +1888,66 @@ describe('paginate', () => {
       );
     });
 
+    test('a fully placed repeat child of a row re-emits on the row continuation', () => {
+      const body = column(
+        [leaf(20, 'a'), leaf(20, 'b'), leaf(20, 'c'), leaf(20, 'd')],
+        'body',
+      );
+      const items: Item[] = [row([repeatLeaf(10, 'label'), body])];
+      const pages = paginateFlow(items, 50);
+
+      const cells = (i: number) => pages[i][0].children?.map((c) => c.item.id);
+      const lines = (i: number) =>
+        pages[i][0].children?.[1].children?.map((c) => c.item.id);
+
+      expect(pages).toHaveLength(2);
+      expect(cells(0)).toEqual(['label', 'body']);
+      expect(cells(1)).toEqual(['label', 'body']);
+      expect(lines(0)).toEqual(['a', 'b']);
+      expect(lines(1)).toEqual(['c', 'd']);
+
+      snapshotPages(paginate(column(items), 50), region(50), 'repeat-row');
+    });
+
+    test('a row repeat copy taller than the carried cells sets the continuation height', () => {
+      const body = column(
+        [leaf(20, 'a'), leaf(20, 'b'), leaf(20, 'c')],
+        'body',
+      );
+      const items: Item[] = [row([repeatLeaf(30, 'label'), body])];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages).toHaveLength(2);
+      expect(pages[1][0].children?.map((c) => c.item.id)).toEqual([
+        'label',
+        'body',
+      ]);
+      expect(pages[1][0].height).toBe(30);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-row-tall-copy',
+      );
+    });
+
+    test('a row that does not continue adds no repeat copies', () => {
+      const items: Item[] = [
+        row([repeatLeaf(10, 'label'), leaf(20, 'a')], 'row'),
+        leaf(40, 'next'),
+      ];
+      const pages = paginateFlow(items, 50);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['row'],
+        ['next'],
+      ]);
+      expect(pages[0][0].children?.map((c) => c.item.id)).toEqual([
+        'label',
+        'a',
+      ]);
+    });
+
     test('a repeat item does not appear before its flow position', () => {
       const items: Item[] = [
         leaf(40, 'a'),

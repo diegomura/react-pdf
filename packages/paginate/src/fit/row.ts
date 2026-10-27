@@ -1,11 +1,13 @@
 import isRow from '../item/isRow';
 import isColumn from '../item/isColumn';
 import isLeaf from '../item/isLeaf';
+import isRepeat from '../item/isRepeat';
 import hasContentAbove from '../fill/hasContentAbove';
 import fill from '../fill/fill';
 import fragmentHeight from '../fragment/height';
 import reach from '../fragment/reach';
 import repeatFragments from '../fragment/repeatFragments';
+import toFragments from '../fragment/toFragments';
 import {
   FillResult,
   Fragment,
@@ -18,7 +20,8 @@ import { CONTINUE, DECLINE, DONE } from '../step';
 
 // Place every row child side by side at y=0. A break is one horizontal cut
 // through all children at `height`: each keeps what fits above the line, and
-// only children with leftovers reappear in the continuation. Returns null
+// only children with leftovers reappear in the continuation, along with fresh
+// copies of fully placed repeat children in their original order. Returns null
 // when a child can't fit or break — the whole row moves together.
 export const place = (
   rowFragment: Fragment,
@@ -29,6 +32,7 @@ export const place = (
 ): FillResult | null => {
   const placed: PlacedItem[] = [];
   const remaining: Fragment[] = [];
+  let continues = false;
 
   for (const childFragment of rowFragment.children) {
     const child = childFragment.item;
@@ -64,6 +68,9 @@ export const place = (
           isFirst: false,
           children: [...repeats, ...inner.remaining],
         });
+        continues = true;
+      } else if (isRepeat(child)) {
+        remaining.push(...toFragments([child]));
       }
 
       continue;
@@ -83,6 +90,7 @@ export const place = (
         part: { isFirst, isLast: false },
       });
       remaining.push({ item: split.next, isFirst: false, children: [] });
+      continues = true;
 
       continue;
     }
@@ -93,9 +101,11 @@ export const place = (
       height: fragmentHeight({ item: child, isFirst, children: [] }),
       part: { isFirst, isLast: true },
     });
+
+    if (isRepeat(child)) remaining.push(...toFragments([child]));
   }
 
-  return { placed, remaining };
+  return { placed, remaining: continues ? remaining : [] };
 };
 
 // Place the row's children into the space left on the page. Declines when

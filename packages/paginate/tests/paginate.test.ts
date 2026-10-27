@@ -1170,6 +1170,36 @@ describe('paginate', () => {
       );
     });
 
+    test('forbids splitting a column inside the window', () => {
+      const items: Item[] = [
+        leaf(60, 'a'),
+        leaf(20, 'x'),
+        window(50),
+        column(
+          [
+            leaf(10, 'c1'),
+            leaf(10, 'c2'),
+            leaf(10, 'c3'),
+            leaf(10, 'c4'),
+            leaf(10, 'c5'),
+          ],
+          'C',
+        ),
+      ];
+      const pages = paginateFlow(items, 100);
+
+      expect(pages.map((p) => p.map((c) => c.item.id))).toEqual([
+        ['a'],
+        ['x', 'C'],
+      ]);
+
+      snapshotPages(
+        paginate(column(items), 100),
+        region(100),
+        'min-presence-column-no-split',
+      );
+    });
+
     test('relaxes when nothing follows', () => {
       const items: Item[] = [leaf(60, 'a'), leaf(30, 'x'), window(50)];
       const pages = paginateFlow(items, 100);

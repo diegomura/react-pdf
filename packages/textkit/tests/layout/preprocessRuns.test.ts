@@ -73,4 +73,28 @@ describe('preprocessRuns', () => {
     expect(string.runs[2].attributes).toHaveProperty('fontSize', 12);
     expect(string.runs[2].attributes).toHaveProperty('bidiLevel', 1);
   });
+
+  test('should let substituted attributes win over runs starting mid-string', () => {
+    const string = preprocessor({
+      string: 'Lorem',
+      runs: [
+        { start: 0, end: 1, attributes: { fontSize: 99 } },
+        { start: 1, end: 3, attributes: { fontSize: 99 } },
+        { start: 3, end: 5, attributes: { fontSize: 99 } },
+      ],
+    });
+
+    const fontSizes = string.runs.map((run) => [
+      run.start,
+      run.end,
+      run.attributes.fontSize,
+    ]);
+
+    expect(fontSizes).toEqual([
+      [0, 1, 10],
+      [1, 2, 10],
+      [2, 3, 12],
+      [3, 5, 12],
+    ]);
+  });
 });

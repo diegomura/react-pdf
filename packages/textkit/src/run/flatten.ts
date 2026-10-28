@@ -2,7 +2,7 @@ import sort from './sort';
 import isEmpty from './isEmpty';
 import { Attributes, Run } from '../types';
 
-type Point = ['start' | 'end', number, Attributes, number];
+type Point = ['start' | 'end', number, number];
 
 /**
  * Sort points in ascending order
@@ -11,7 +11,7 @@ type Point = ['start' | 'end', number, Attributes, number];
  * @returns Sort order
  */
 const sortPoints = (a: Point, b: Point) => {
-  return a[1] - b[1] || a[3] - b[3];
+  return a[1] - b[1] || a[2] - b[2];
 };
 
 /**
@@ -23,10 +23,7 @@ const generatePoints = (runs: Run[]) => {
 
   for (let i = 0; i < runs.length; i += 1) {
     const run = runs[i];
-    result.push(
-      ['start', run.start, run.attributes, i],
-      ['end', run.end, run.attributes, i],
-    );
+    result.push(['start', run.start, i], ['end', run.end, i]);
   }
 
   return result.sort(sortPoints);
@@ -74,19 +71,27 @@ const flattenRegularRuns = (runs: Run[]) => {
   const points = generatePoints(runs);
 
   let start = -1;
-  const stack: Attributes[] = [];
+  // Indices of the active runs, kept in input order so that later runs
+  // override earlier ones no matter where each of them starts.
+  const stack: number[] = [];
 
   for (let i = 0; i < points.length; i += 1) {
-    const [type, offset, attributes] = points[i];
+    const [type, offset, index] = points[i];
 
     // Merging the active attributes only when a segment is emitted avoids
     // rebuilding them on every point, most wastefully when several runs
     // end at the same offset and no segment follows.
     if (start !== -1 && start < offset) {
+      const attributes: Attributes = {};
+
+      for (let j = 0; j < stack.length; j += 1) {
+        Object.assign(attributes, runs[stack[j]].attributes);
+      }
+
       res.push({
         start,
         end: offset,
-        attributes: Object.assign({}, ...stack),
+        attributes,
         stringIndices: [],
         glyphIndices: [],
         glyphs: [],
@@ -95,11 +100,11 @@ const flattenRegularRuns = (runs: Run[]) => {
     }
 
     if (type === 'start') {
-      stack.push(attributes);
+      let j = stack.length;
+      while (j > 0 && stack[j - 1] > index) j -= 1;
+      stack.splice(j, 0, index);
     } else {
-      for (let j = 0; j < stack.length; j += 1) {
-        if (stack[j] === attributes) stack.splice(j--, 1);
-      }
+      stack.splice(stack.indexOf(index), 1);
     }
 
     start = offset;

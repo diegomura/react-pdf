@@ -122,4 +122,35 @@ describe('run flatten operator', () => {
     expect(runs[1]).toHaveProperty('end', 15);
     expect(runs[1].attributes).toEqual({});
   });
+
+  test('should let later runs override earlier ones regardless of start offset', () => {
+    const runs = flatten([
+      { start: 0, end: 5, attributes: { color: 'red' } },
+      { start: 5, end: 10, attributes: { color: 'blue' } },
+      { start: 0, end: 10, attributes: { color: 'green' } },
+    ]);
+
+    expect(runs).toHaveLength(2);
+
+    expect(runs[0]).toHaveProperty('start', 0);
+    expect(runs[0]).toHaveProperty('end', 5);
+    expect(runs[0].attributes).toEqual({ color: 'green' });
+
+    expect(runs[1]).toHaveProperty('start', 5);
+    expect(runs[1]).toHaveProperty('end', 10);
+    expect(runs[1].attributes).toEqual({ color: 'green' });
+  });
+
+  test('should keep runs that share an attributes object', () => {
+    const attributes = { color: 'red' };
+    const runs = flatten([
+      { start: 0, end: 5, attributes },
+      { start: 0, end: 10, attributes },
+    ]);
+
+    expect(runs).toHaveLength(2);
+    expect(runs[1]).toHaveProperty('start', 5);
+    expect(runs[1]).toHaveProperty('end', 10);
+    expect(runs[1].attributes).toEqual({ color: 'red' });
+  });
 });

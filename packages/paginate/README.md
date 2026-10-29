@@ -14,7 +14,7 @@ its page number is.
 
 The engine is independent of React and PDF rendering — it takes a vertical
 box model in and returns placed fragments out. React-PDF uses it to paginate
-Yoga layout trees, but any consumer that can describe its content as boxes
+Taffy layout trees, but any consumer that can describe its content as boxes
 with tops and heights can use it directly. Internally the tree is compiled to
 a box/glue/penalty item stream; that representation is an implementation
 detail.

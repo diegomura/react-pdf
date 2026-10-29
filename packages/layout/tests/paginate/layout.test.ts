@@ -1,12 +1,14 @@
 import { describe, expect, test } from 'vitest';
 import FontStore from '@react-pdf/font';
 
-import { loadYoga } from '../../src/yoga';
+import { loadTaffy } from '../../src/taffy';
 import resolveDimensions from '../../src/steps/resolveDimensions';
 import resolvePageTemplates from '../../src/steps/resolvePageTemplates';
 import resolvePagination from '../../src/paginate';
 import { instantiateTemplate, isContent } from '../../src/page/template';
 import { SafeNode, SafePageNode } from '../../src/types';
+
+await loadTaffy();
 
 const fontStore = new FontStore();
 
@@ -35,7 +37,6 @@ const region = (children: any[]): any =>
 
 const doc = async (pageStyle: any, children: any[], pageProps = {}) => ({
   type: 'DOCUMENT',
-  yoga: await loadYoga(),
   props: {},
   children: [{ type: 'PAGE', props: pageProps, style: pageStyle, children }],
 });

@@ -1,4 +1,4 @@
-import { MeasureFunction } from 'yoga-layout/load';
+import { MeasureFunction } from '../taffy/measure';
 import getMargin from '../node/getMargin';
 import getPadding from '../node/getPadding';
 import isHeightAuto from '../page/isHeightAuto';
@@ -103,7 +103,7 @@ const measureCtx = () => {
  */
 
 /**
- * Yoga canvas measure function
+ * Canvas measure function
  *
  * @param {Object} page
  * @param {Object} node

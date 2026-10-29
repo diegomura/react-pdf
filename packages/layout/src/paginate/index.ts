@@ -19,7 +19,6 @@ import {
   SafeDocumentNode,
   SafeNode,
   SafePageNode,
-  YogaInstance,
 } from '../types';
 import { PageCtx } from './types';
 
@@ -34,7 +33,6 @@ type Totals = { totalPages: number; subTotals: number[] } | null;
 type Ctx = {
   totals: Totals;
   fontStore: FontStore;
-  yoga: YogaInstance;
 };
 
 // Walk from `root` to `target` accumulating parent-relative tops and lefts
@@ -95,12 +93,12 @@ const validateRegion = (
 const splitPage = (
   page: SafePageNode,
   props: PageCtx['props'],
-  { fontStore, yoga }: Ctx,
+  { fontStore }: Ctx,
 ): SafePageNode[] => {
   const template: PageLayout | undefined = (page.props as any)?.layout;
   const box = { ...page.box, height: page.style.height as number };
 
-  const pageCtx: PageCtx = { props, page, fontStore, yoga };
+  const pageCtx: PageCtx = { props, page, fontStore };
   const content = collectContent(page as unknown as SafeNode);
 
   const paginator = createPaginator(toFlow(content, pageCtx));
@@ -113,7 +111,7 @@ const splitPage = (
   const measureRegion = (pageNumber: number) => {
     const nodes = instantiate(props(pageNumber), [probeElement() as any]);
     const fake = { ...page, box, children: nodes };
-    const laid = relayoutPage(fake as any, fontStore, yoga) as SafePageNode;
+    const laid = relayoutPage(fake as any, fontStore) as SafePageNode;
     const probe = findProbe(laid)!;
 
     return absoluteBox(laid, probe)!;
@@ -147,7 +145,7 @@ const splitPage = (
       children: nodes,
     } as SafePageNode;
 
-    pages.push(relayoutPage(built as any, fontStore, yoga) as SafePageNode);
+    pages.push(relayoutPage(built as any, fontStore) as SafePageNode);
     pageNumber += 1;
   }
 
@@ -206,7 +204,7 @@ const resolvePagination = (
   root: SafeDocumentNode,
   fontStore: FontStore,
 ): SafeDocumentNode => {
-  const ctx1 = { totals: null, fontStore, yoga: root.yoga };
+  const ctx1 = { totals: null, fontStore };
   const round1 = paginateDocument(root, ctx1);
 
   if (!needsTotalsRound(root)) return round1.root;

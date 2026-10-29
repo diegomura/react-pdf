@@ -1,7 +1,6 @@
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import * as P from '@react-pdf/primitives';
 import { HitSlop } from '@react-pdf/types';
-import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
 import { ImageNode, SafeImageNode } from './image';
@@ -27,13 +26,14 @@ export type LinkNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: (ViewNode | ImageNode | TextNode | TextInstanceNode)[];
 };
 
 export type SafeLinkNode = Omit<LinkNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

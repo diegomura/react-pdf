@@ -1,7 +1,6 @@
 import { SafeStyle, Style } from '@react-pdf/stylesheet';
 import { SrcSet, Sizes } from '@react-pdf/types';
 import * as P from '@react-pdf/primitives';
-import { YogaNode } from 'yoga-layout/load';
 
 import { Box, NodeProps, Origin } from './base';
 import { Image } from '@react-pdf/image';
@@ -46,7 +45,7 @@ export type ImageBackgroundNode = {
   style?: Style | Style[];
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: (
     | ViewNode
     | ImageNode
@@ -68,6 +67,7 @@ export type SafeImageBackgroundNode = Omit<
 > & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeViewNode
     | SafeImageNode

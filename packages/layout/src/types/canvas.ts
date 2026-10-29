@@ -1,8 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
-import { YogaNode } from 'yoga-layout/load';
-
 import { Box, NodeProps, Origin } from './base';
 
 interface CanvasProps extends NodeProps {
@@ -19,11 +17,12 @@ export type CanvasNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   children?: never[];
 };
 
 export type SafeCanvasNode = Omit<CanvasNode, 'style'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

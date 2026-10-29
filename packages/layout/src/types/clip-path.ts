@@ -18,7 +18,7 @@ export type ClipPathNode = {
   style: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | LineNode
     | PolylineNode
@@ -32,6 +32,7 @@ export type ClipPathNode = {
 
 export type SafeClipPathNode = Omit<ClipPathNode, 'children'> & {
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeLineNode
     | SafePolylineNode

@@ -9,18 +9,19 @@ import { AttributedString, Run } from '../types';
 const resolveRunYOffset = (run: Run) => {
   if (!run.positions) return run;
 
-  const unitsPerEm = run.attributes?.font?.[0]?.unitsPerEm || 0;
-  const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
+  const fontSize = run.attributes?.fontSize || 0;
+  // scalePositions already put GPOS xOffset/yOffset in points.
+  // Only add verticalAlign (sub/super), which is a fraction of an em.
+  const verticalAlignPoints = (run.attributes?.yOffset || 0) * fontSize;
 
-  // Positions are created fresh by generateGlyphs earlier in this same
-  // pipeline (and justification mutates them later), so in-place is safe.
   for (let i = 0; i < run.positions.length; i += 1) {
-    run.positions[i].yOffset = yOffset;
+    const position = run.positions[i];
+    position.xOffset = position.xOffset || 0;
+    position.yOffset = (position.yOffset || 0) + verticalAlignPoints;
   }
 
   return run;
 };
-
 /**
  * Resolves yOffset for multiple paragraphs
  */

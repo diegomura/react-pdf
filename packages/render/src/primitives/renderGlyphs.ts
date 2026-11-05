@@ -129,8 +129,8 @@ const renderGlyphs = (
   const encodedPositions = positions.map((pos, i) => ({
     xAdvance: pos.xAdvance * scale,
     yAdvance: pos.yAdvance * scale,
-    xOffset: pos.xOffset,
-    yOffset: pos.yOffset,
+    xOffset: (pos.xOffset || 0) * scale,
+    yOffset: (pos.yOffset || 0) * scale,
     advanceWidth: glyphs[i].advanceWidth * advanceWidthScale,
   }));
 

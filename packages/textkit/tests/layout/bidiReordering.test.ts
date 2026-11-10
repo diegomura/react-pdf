@@ -238,4 +238,76 @@ describe('bidiReordering', () => {
     expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5));
     expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
   });
+
+  describe('trailing whitespace (UAX #9 rule L1)', () => {
+    const glyphRun = (
+      string: string,
+      start: number,
+      bidiLevel: number,
+      direction: 'ltr' | 'rtl',
+    ) => {
+      const chars = Array.from(string);
+
+      return {
+        attributes: { direction, bidiLevel, font: [] },
+        start,
+        end: start + chars.length,
+        glyphs: chars.map(
+          (char, id) =>
+            ({
+              id,
+              codePoints: [char.codePointAt(0)],
+              advanceWidth: 1,
+            }) as unknown as Glyph,
+        ),
+        positions: chars.map(() => ({
+          xAdvance: 1,
+          yAdvance: 0,
+          xOffset: 0,
+          yOffset: 0,
+        })),
+        stringIndices: initializeToIndex(chars.length),
+        glyphIndices: initializeToIndex(chars.length),
+      };
+    };
+
+    test('should keep the trailing space at the end of a wrapped ltr line', () => {
+      const line = {
+        string: 'Bank (אב ',
+        runs: [glyphRun('Bank (', 0, 0, 'ltr'), glyphRun('אב ', 6, 1, 'ltr')],
+      };
+
+      const result = bidiReorderingInstance([[line]]);
+
+      expect(result[0][0].string).toBe('Bank (בא ');
+      expect(result[0][0].runs.at(-1)?.attributes.bidiLevel).toBe(0);
+    });
+
+    test('should keep the trailing space at the end of a wrapped rtl line', () => {
+      const line = {
+        string: 'אב Hello ',
+        runs: [glyphRun('אב ', 0, 1, 'rtl'), glyphRun('Hello ', 3, 2, 'rtl')],
+      };
+
+      const result = bidiReorderingInstance([[line]]);
+
+      expect(result[0][0].string).toBe(' Hello בא');
+    });
+
+    test('should not split a line whose trailing space is already at the paragraph level', () => {
+      const line = {
+        string: 'Bank אב end ',
+        runs: [
+          glyphRun('Bank ', 0, 0, 'ltr'),
+          glyphRun('אב', 5, 1, 'ltr'),
+          glyphRun(' end ', 7, 0, 'ltr'),
+        ],
+      };
+
+      const result = bidiReorderingInstance([[line]]);
+
+      expect(result[0][0].string).toBe('Bank בא end ');
+      expect(result[0][0].runs).toHaveLength(3);
+    });
+  });
 });

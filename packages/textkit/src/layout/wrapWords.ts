@@ -61,7 +61,23 @@ const wrapWords = (
         const word = words[j];
         const parts = hyphenate(word, builtinHyphenate).map(removeSoftHyphens);
 
-        syllables.push(...parts);
+        // A word that continues the previous run (e.g. a period right after a
+        // nested <Text>) is not a hyphenation point, so keep it in one syllable.
+        const previous = syllables[syllables.length - 1];
+        const continuesWord =
+          j === 0 &&
+          previous !== undefined &&
+          parts.length > 0 &&
+          !/\s$/.test(previous) &&
+          !/^\s/.test(word);
+
+        if (continuesWord) {
+          syllables[syllables.length - 1] = previous + parts[0];
+          syllables.push(...parts.slice(1));
+        } else {
+          syllables.push(...parts);
+        }
+
         string += parts.join('');
       }
 

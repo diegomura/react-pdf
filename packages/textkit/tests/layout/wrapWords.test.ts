@@ -81,6 +81,18 @@ describe('wrapWords', () => {
       expect(wordHyphenationEngine.mock.calls[2][0]).toEqual('ipsum');
     });
 
+    test('should not split a word that continues across runs', () => {
+      const result = defaultInstance({
+        string: 'See Appendix. Next',
+        runs: [
+          { start: 0, end: 12, attributes: {} },
+          { start: 12, end: 18, attributes: {} },
+        ],
+      });
+
+      expect(result.syllables).toEqual(['See', ' ', 'Appendix.', ' ', 'Next']);
+    });
+
     test('should return mutated string if engine changes string value', () => {
       const result = mutateInstance({
         string: 'Lorem ipsum',

@@ -1035,4 +1035,73 @@ describe('node shouldBreak', () => {
     // endOfPresence = 600 + 200 + 0 + 300 = 1100 > 1000
     expect(result).toEqual(true);
   });
+
+  test('honors a break when fixed is explicitly false', () => {
+    const node = {
+      type: P.View,
+      props: { fixed: false, break: true },
+      style: {},
+      children: [],
+      box: { top: 10, left: 0, right: 0, bottom: 0, width: 100, height: 20 },
+    };
+
+    expect(shouldBreak(node, [], 100, [])).toBe(true);
+  });
+
+  test('moves overflowing unwrappable content when fixed is explicitly false', () => {
+    const node = {
+      type: P.View,
+      props: { fixed: false, wrap: false },
+      style: {},
+      children: [],
+      box: { top: 80, left: 0, right: 0, bottom: 0, width: 100, height: 30 },
+    };
+
+    expect(shouldBreak(node, [], 100, [])).toBe(true);
+  });
+
+  test('honors minPresenceAhead when fixed is explicitly false', () => {
+    const node = {
+      type: P.View,
+      props: { fixed: false, minPresenceAhead: 30 },
+      style: {},
+      children: [],
+      box: {
+        top: 60,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: 100,
+        height: 20,
+        marginBottom: 0,
+      },
+    };
+
+    expect(shouldBreak(node, [], 100, [node])).toBe(true);
+  });
+
+  test('includes future siblings whose fixed flag is explicitly false', () => {
+    const node = {
+      type: P.View,
+      props: { minPresenceAhead: 80 },
+      style: {},
+      children: [],
+      box: {
+        top: 20,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: 100,
+        height: 20,
+        marginBottom: 0,
+      },
+    };
+    const future = {
+      ...node,
+      props: { fixed: false },
+      box: { ...node.box, top: 50, height: 10 },
+    };
+
+    expect(shouldBreak(node, [future], 100, [node])).toBe(false);
+  });
 });

@@ -24,9 +24,7 @@ const getEndOfMinPresenceAhead = (child: SafeNode) => {
 
 const getEndOfPresence = (child: SafeNode, futureElements: SafeNode[]) => {
   const afterMinPresenceAhead = getEndOfMinPresenceAhead(child);
-  const nonFixedFuture = futureElements.filter(
-    (node) => !('fixed' in node.props),
-  );
+  const nonFixedFuture = futureElements.filter((node) => !isFixed(node));
   const endOfFurthestFutureElement = getFurthestEnd(nonFixedFuture);
 
   // When there are no future non-fixed siblings, use only minPresenceAhead
@@ -41,7 +39,7 @@ const shouldBreak = (
   height: number,
   previousElements: SafeNode[],
 ) => {
-  if ('fixed' in child.props) return false;
+  if (isFixed(child)) return false;
 
   const shouldSplit = height < child.box.top + child.box.height;
   const canWrap = getWrap(child);

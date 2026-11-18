@@ -458,4 +458,45 @@ describe('pagination step', () => {
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
   });
+
+  test('should keep on the page the lines that fit it exactly', async () => {
+    const yoga = await loadYoga();
+    const lineHeight = 13.7;
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          // Room for exactly 6 lines. Yoga stores it as a float32, which is
+          // slightly smaller than 6 * 13.7
+          style: { width: 300, height: 6 * lineHeight },
+          children: [
+            {
+              type: 'TEXT',
+              style: { fontSize: 10, lineHeight },
+              props: {},
+              children: [
+                {
+                  type: 'TEXT_INSTANCE',
+                  value: Array.from({ length: 12 }, (_, i) => `L${i}`).join(
+                    '\n',
+                  ),
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const lines = layout.children.map(
+      (page) => (page.children![0] as any).lines.length,
+    );
+
+    expect(lines).toEqual([6, 6]);
+  });
 });

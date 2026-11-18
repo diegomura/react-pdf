@@ -103,4 +103,21 @@ describe('text lineIndexAtHeight', () => {
 
     expect(result).toBe(10);
   });
+
+  test('Should keep a line that fits exactly despite float rounding', () => {
+    const node: SafeTextNode = {
+      wasSplit: false,
+      type: 'TEXT',
+      props: {},
+      style: {},
+      lines: Array.from({ length: 10 }, (_, index) => ({
+        box: { y: index * 13.7, height: 13.7 },
+      })),
+    } as SafeTextNode;
+
+    // Yoga gives the page height as a float32, which is below 6 * 13.7
+    const result = lineIndexAtHeight(node, Math.fround(6 * 13.7));
+
+    expect(result).toBe(6);
+  });
 });

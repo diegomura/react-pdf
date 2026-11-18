@@ -175,14 +175,16 @@ const resolveDynamicNodes = (props: DynamicPageProps, node: SafeNode) => {
     return children.map((c) => resolveDynamicNodes(props, c));
   };
 
-  // We reset dynamic text box so it can be computed again later on
-  const resetHeight = isNodeDynamic && isText(node);
-  const box = resetHeight ? { ...node.box, height: 0 } : node.box;
+  // We reset dynamic text box so it can be computed again later on. A text that
+  // only contains dynamic nested texts needs it too, as its lines were measured
+  // before the nested render props ran.
+  const resetText = isText(node) && shouldResolveDynamicNodes(node);
+  const box = resetText ? { ...node.box, height: 0 } : node.box;
 
   const children = resolveChildren(node.children);
 
   // @ts-expect-error handle text here specifically
-  const lines = isNodeDynamic ? null : node.lines;
+  const lines = isNodeDynamic || resetText ? null : node.lines;
 
   return Object.assign({}, node, { box, lines, children });
 };

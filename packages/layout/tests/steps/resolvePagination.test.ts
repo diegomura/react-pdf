@@ -458,4 +458,45 @@ describe('pagination step', () => {
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
   });
+
+  test('should lay out the result of a render prop on a nested text', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 300, height: 300 },
+          children: [
+            {
+              type: 'TEXT',
+              style: { fontSize: 10 },
+              props: {},
+              children: [
+                { type: 'TEXT_INSTANCE', value: 'before ' },
+                {
+                  type: 'TEXT',
+                  style: {},
+                  props: {
+                    render: () => ({ type: 'TEXT_INSTANCE', value: 'NESTED' }),
+                  },
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const text = layout.children[0].children![0] as any;
+    const content = text.lines.map((line) => line.string).join('');
+
+    expect(content).toBe('before NESTED');
+    expect(text.box.height).toBeGreaterThan(0);
+  });
 });

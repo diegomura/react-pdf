@@ -90,12 +90,18 @@ const renderRun = (ctx: Context, run: Run) => {
 
   renderAttachments(ctx, run, glyphs);
 
-  ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
+  // A run with no glyphs draws nothing (e.g. the run left once a paragraph's
+  // trailing newline is removed). Selecting its font would still add that font
+  // to the page's resources, and for a standard font that means an unembedded
+  // font in a PDF that never uses it.
+  if (glyphs.length > 0) {
+    ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
 
-  try {
-    renderGlyphs(ctx, glyphs, run.positions!, 0, 0);
-  } catch (error) {
-    console.log(error);
+    try {
+      renderGlyphs(ctx, glyphs, run.positions!, 0, 0);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   ctx.translate(xAdvance, 0);

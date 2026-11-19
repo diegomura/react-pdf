@@ -255,4 +255,154 @@ describe('layout resolveSvg', () => {
       expect(svgNode.style.height).toBe(100);
     });
   });
+
+  describe('SVG prop inheritance', () => {
+    const createMockPageNode = (children: SafeNode[]): SafePageNode =>
+      ({
+        type: P.Page,
+        props: {},
+        style: {},
+        children,
+      }) as SafePageNode;
+
+    test('should parse inherited rgba() stroke to hex', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { stroke: 'rgba(115, 123, 117, 1)', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.Path,
+            props: { d: 'M4 21H20' },
+            style: {},
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as SafeSvgNode;
+      const path = svg.children?.[0] as SafeNode;
+
+      expect(path?.props.stroke).toBe('#737B75');
+    });
+
+    test('should parse inherited rgb() stroke to hex', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { stroke: 'rgb(255, 0, 0)', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.Path,
+            props: { d: 'M4 21H20' },
+            style: {},
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as unknown as SafeSvgNode;
+      const path = svg.children?.[0] as SafeNode;
+
+      expect(path?.props.stroke).toBe('#FF0000');
+    });
+
+    test('should parse inherited rgba() fill to hex', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { fill: 'rgba(115, 123, 117, 0.5)', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.Path,
+            props: { d: 'M4 21H20' },
+            style: {},
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as unknown as SafeSvgNode;
+      const path = svg.children?.[0] as SafeNode;
+
+      expect(path?.props.fill).toBe('#737B75');
+    });
+
+    test('should keep inherited hex stroke as-is', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { stroke: '#737B75', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.Path,
+            props: { d: 'M4 21H20' },
+            style: {},
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as unknown as SafeSvgNode;
+      const path = svg.children?.[0] as SafeNode;
+
+      expect(path?.props.stroke).toBe('#737B75');
+    });
+
+    test('child explicit stroke should override inherited stroke', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { stroke: 'rgba(115, 123, 117, 1)', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.Path,
+            props: { d: 'M4 21H20', stroke: '#FF0000' },
+            style: {},
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as unknown as SafeSvgNode;
+      const path = svg.children?.[0] as SafeNode;
+
+      expect(path?.props.stroke).toBe('#FF0000');
+    });
+
+    test('should parse inherited rgba() props through nested G element', () => {
+      const svgNode: SafeSvgNode = {
+        type: P.Svg,
+        props: { stroke: 'rgba(115, 123, 117, 1)', width: 24, height: 24 },
+        style: {},
+        children: [
+          {
+            type: P.G,
+            props: {},
+            style: {},
+            children: [
+              {
+                type: P.Path,
+                props: { d: 'M4 21H20' },
+                style: {},
+              },
+            ],
+          },
+        ],
+      };
+
+      const pageNode = createMockPageNode([svgNode]);
+      const result = resolveSvg(pageNode, null as any) as SafePageNode;
+      const svg = result.children?.[0] as unknown as SafeSvgNode;
+      const g = svg.children?.[0] as SafeNode;
+      const path = g.children?.[0] as SafeNode;
+
+      expect(path?.props.stroke).toBe('#737B75');
+    });
+  });
 });

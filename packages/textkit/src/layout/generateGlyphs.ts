@@ -1,7 +1,7 @@
 import scale from '../run/scale';
 import resolveStringIndices from '../string-indices/resolve';
 import resolveGlyphIndices from '../glyph-indices/resolve';
-import { AttributedString, Position, Run } from '../types';
+import { AttributedString, Font, Position, Run } from '../types';
 
 const getCharacterSpacing = (run: Run) => {
   return run.attributes?.characterSpacing || 0;
@@ -33,6 +33,26 @@ const scalePositions = (run: Run, positions: Position[]): Position[] => {
 };
 
 /**
+ * fontkit caches one glyph per id with the code points of its first request.
+ * Subsetting a composite glyph (e.g. "Č" = "C" + caron) for an earlier
+ * document caches its components with no code points, which would leave
+ * them out of string indices and the PDF text layer. Restore them here.
+ *
+ * @param font - Font
+ * @param string - Run string
+ */
+const restoreCodePoints = (font: Font, string: string) => {
+  if (!font.glyphForCodePoint) return;
+
+  for (const char of string) {
+    const codePoint = char.codePointAt(0)!;
+    const glyph = font.glyphForCodePoint(codePoint);
+
+    if (glyph?.codePoints?.length === 0) glyph.codePoints = [codePoint];
+  }
+};
+
+/**
  * Create glyph run
  *
  * @param string string
@@ -58,6 +78,8 @@ const layoutRun = (string: string) => {
     const runString = string.slice(start, end);
 
     if (typeof font === 'string') throw new Error('Invalid font');
+
+    restoreCodePoints(font[0], runString);
 
     // passing LTR To force fontkit to not reverse the string
     const glyphRun = font[0].layout(

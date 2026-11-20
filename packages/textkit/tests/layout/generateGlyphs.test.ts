@@ -1,8 +1,17 @@
+import * as fontkit from 'fontkit';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { describe, expect, test, vi } from 'vitest';
 
 import font from '../internal/font';
 import pluck from '../internal/pluck';
 import generateGlyphs from '../../src/layout/generateGlyphs';
+import { Font } from '../../src/types';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const LATIN_FONT_PATH = path.resolve(__dirname, '../assets/latin.ttf');
 
 const instance = generateGlyphs();
 
@@ -335,5 +344,24 @@ describe('generateGlyphs', () => {
     expect(result.runs[1].glyphIndices).toEqual([0]);
     expect(pluck('id', result.runs[1].glyphs!)).toEqual([105]);
     expect(pluck('xAdvance', result.runs[1].positions!)).toEqual([8]);
+  });
+
+  test('should keep code points of glyphs cached without them by a font subset', async () => {
+    const latin = (await fontkit.open(LATIN_FONT_PATH)) as unknown as Font;
+
+    // Embedding a composite glyph (Č = C + caron), as an earlier document
+    // rendered with the same font does, caches its base glyph with no code points
+    const subset = (latin as any).createSubset();
+    subset.includeGlyph(latin.glyphForCodePoint(0x10c).id);
+    subset.encode();
+
+    const result = instance({
+      string: 'AC',
+      runs: [{ start: 0, end: 2, attributes: { font: [latin], fontSize: 2 } }],
+    });
+
+    expect(pluck('codePoints', result.runs[0].glyphs!)).toEqual([[65], [67]]);
+    expect(result.runs[0].stringIndices).toEqual([0, 1]);
+    expect(result.runs[0].glyphIndices).toEqual([0, 1]);
   });
 });

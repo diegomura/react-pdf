@@ -18,13 +18,18 @@ const renderCheckbox = (
     ctx.initForm();
   }
 
-  const { AP, AS, ...fieldOptions } = parseCheckboxOptions(
+  const { AP, AS, V, DV, ...fieldOptions } = parseCheckboxOptions(
     ctx,
     node,
     fieldSetOptions,
   );
 
-  addFormAnnotation(ctx, name, 'checkbox', node.box, fieldOptions, { AP, AS });
+  addFormAnnotation(ctx, name, 'checkbox', node.box, fieldOptions, {
+    AP,
+    AS,
+    V,
+    DV,
+  });
 };
 
 export default renderCheckbox;

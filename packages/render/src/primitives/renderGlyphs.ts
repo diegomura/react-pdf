@@ -117,6 +117,7 @@ const renderGlyphs = (
   positions: Position[],
   x: number,
   y: number,
+  rtl = false,
 ) => {
   if (ctx.glyphs) return ctx.glyphs(glyphs, positions, x, y);
 
@@ -125,7 +126,7 @@ const renderGlyphs = (
   const advanceWidthScale = 1000 / unitsPerEm;
 
   // Glyph encoding and positioning
-  const encodedGlyphs = encodeGlyphs(ctx._font, glyphs);
+  const encodedGlyphs = encodeGlyphs(ctx._font, glyphs, rtl);
   const encodedPositions = positions.map((pos, i) => ({
     xAdvance: pos.xAdvance * scale,
     yAdvance: pos.yAdvance * scale,

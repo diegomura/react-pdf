@@ -1,6 +1,6 @@
 import { Glyph } from '@react-pdf/textkit';
 
-const encodeGlyphs = (font: any, glyphs: Glyph[]) => {
+const encodeGlyphs = (font: any, glyphs: Glyph[], rtl = false) => {
   // Embedded font path (has font subset)
   if (font.subset) {
     const res: string[] = [];
@@ -15,7 +15,12 @@ const encodeGlyphs = (font: any, glyphs: Glyph[]) => {
       }
 
       if (font.unicode[gid] == null) {
-        font.unicode[gid] = glyph.codePoints;
+        // pdf.js and similar readers reverse RTL text character by character, so
+        // multi-codepoint (ligature) glyphs drawn in visual order need a reversed mapping
+        font.unicode[gid] =
+          rtl && glyph.codePoints.length > 1
+            ? [...glyph.codePoints].reverse()
+            : glyph.codePoints;
       }
     }
 

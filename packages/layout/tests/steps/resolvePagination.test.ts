@@ -554,3 +554,114 @@ describe('pagination step', () => {
     expect(lines).toEqual([6, 6]);
   });
 });
+
+// When only the trailing space of a box (its bottom padding, or the bottom
+// margin of its last child) crosses the page edge, every child fits on the
+// page and nothing is left to carry over.
+describe('pagination step: trailing space at the page edge', () => {
+  const view = (style, children = [], props = {}): any => ({
+    type: 'VIEW',
+    props,
+    style,
+    children,
+  });
+
+  const text = (value: string, style = {}): any => ({
+    type: 'TEXT',
+    props: {},
+    style: { fontSize: 10, ...style },
+    children: [{ type: 'TEXT_INSTANCE', value }],
+  });
+
+  // The filler leaves 20pt at the bottom of the page: room for one line of
+  // text, not for 30pt of padding or margin after it.
+  const paginate = async (children: any[], pageStyle = {}) => {
+    const yoga = await loadYoga();
+
+    return calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 200, height: 100, ...pageStyle },
+          children: [view({ height: 80 }), ...children],
+        },
+      ],
+    });
+  };
+
+  test('should not add a page for the bottom padding of a view', async () => {
+    const layout = await paginate([view({ paddingBottom: 30 }, [text('End')])]);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should not add a page for the bottom margin of a last child', async () => {
+    const layout = await paginate([
+      view({}, [view({ marginBottom: 30 }, [text('End')])]),
+    ]);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should not add a page for trailing space several views deep', async () => {
+    const layout = await paginate([
+      view({ marginBottom: 10 }, [
+        view({}, [view({ paddingBottom: 30 }, [text('End')])]),
+      ]),
+    ]);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should not add a page for the bottom padding of a text', async () => {
+    const layout = await paginate([text('End', { paddingBottom: 30 })]);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should not add a page that holds only fixed nodes', async () => {
+    const layout = await paginate([
+      view({ position: 'absolute', top: 0 }, [text('Header')], { fixed: true }),
+      view({ paddingBottom: 30 }, [text('End')]),
+    ]);
+
+    expect(layout.children.length).toBe(1);
+  });
+
+  test('should still carry children that do not fit', async () => {
+    const layout = await paginate([
+      view({}, [text('First'), view({ height: 30 }), text('Last')]),
+    ]);
+
+    expect(layout.children.length).toBe(2);
+  });
+
+  test('should still carry the rest of a view with a height', async () => {
+    const layout = await paginate([view({ height: 50 }, [text('End')])]);
+
+    expect(layout.children.length).toBe(2);
+  });
+
+  test('should keep the place of a row column whose content ended', async () => {
+    // The short column ends on the first page. Its empty remainder still
+    // holds half of the row on the next page, so the long column keeps its
+    // width there and its boxes keep their size.
+    const layout = await paginate([
+      view({ flexDirection: 'row' }, [
+        view({ width: 100 }, [text('Short')]),
+        view({ flexGrow: 1 }, [view({ height: 15 }), view({ height: 40 })]),
+      ]),
+    ]);
+
+    expect(layout.children.length).toBe(2);
+
+    const row = layout.children[1].children![0] as any;
+
+    expect(row.children.length).toBe(2);
+    expect(row.children[1].box.width).toBe(100);
+  });
+});

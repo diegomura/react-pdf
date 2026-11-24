@@ -83,6 +83,95 @@ describe('layout resolveSvg', () => {
     });
   });
 
+  describe('resolve defs', () => {
+    test('should resolve references to every defs element', () => {
+      const gradient = (id: string): SafeNode =>
+        ({
+          type: 'LINEAR_GRADIENT',
+          props: { id },
+          children: [
+            { type: 'STOP', props: { offset: 0, stopColor: 'red' } },
+            { type: 'STOP', props: { offset: 1, stopColor: 'blue' } },
+          ],
+        }) as SafeNode;
+
+      const rect = (fill: string): SafeNode =>
+        ({
+          type: 'RECT',
+          props: { x: 0, y: 0, width: 10, height: 10, fill },
+          style: {},
+        }) as SafeNode;
+
+      const svg: SafeSvgNode = {
+        wasSplit: false,
+        type: P.Svg,
+        props: { width: 100, height: 100 },
+        style: {},
+        children: [
+          { type: 'DEFS', children: [gradient('a')] },
+          { type: 'DEFS', children: [gradient('b')] },
+          rect('url(#a)'),
+          rect('url(#b)'),
+        ] as SafeNode[],
+      };
+
+      const page = {
+        type: P.Page,
+        props: {},
+        style: {},
+        children: [svg],
+      } as SafePageNode;
+
+      const result = resolveSvg(page, null as any) as SafePageNode;
+      const [first, second] = (result.children![0] as SafeSvgNode).children!;
+
+      expect(first.props.fill).toMatchObject({
+        type: 'LINEAR_GRADIENT',
+        props: { id: 'a' },
+      });
+      expect(second.props.fill).toMatchObject({
+        type: 'LINEAR_GRADIENT',
+        props: { id: 'b' },
+      });
+    });
+
+    test('should use the first definition when an id is repeated', () => {
+      const svg: SafeSvgNode = {
+        wasSplit: false,
+        type: P.Svg,
+        props: { width: 100, height: 100 },
+        style: {},
+        children: [
+          {
+            type: 'DEFS',
+            children: [{ type: 'LINEAR_GRADIENT', props: { id: 'a' } }],
+          },
+          {
+            type: 'DEFS',
+            children: [{ type: 'RADIAL_GRADIENT', props: { id: 'a' } }],
+          },
+          {
+            type: 'RECT',
+            props: { x: 0, y: 0, width: 10, height: 10, fill: 'url(#a)' },
+            style: {},
+          },
+        ] as SafeNode[],
+      };
+
+      const page = {
+        type: P.Page,
+        props: {},
+        style: {},
+        children: [svg],
+      } as SafePageNode;
+
+      const result = resolveSvg(page, null as any) as SafePageNode;
+      const [rect] = (result.children![0] as SafeSvgNode).children!;
+
+      expect(rect.props.fill).toMatchObject({ type: 'LINEAR_GRADIENT' });
+    });
+  });
+
   describe('SVG image conversion', () => {
     const createMockSvgImage = (): SvgImage => ({
       format: 'svg',

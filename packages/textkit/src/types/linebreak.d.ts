@@ -4,10 +4,8 @@ declare module 'linebreak' {
     required: boolean;
   }
 
-  class LineBreaker {
+  export class LineBreaker {
     constructor(text: string);
     nextBreak(): Break | null;
   }
-
-  export = LineBreaker;
 }

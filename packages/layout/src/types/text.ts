@@ -50,6 +50,12 @@ export type TextNode = {
   origin?: Origin;
   yogaNode?: YogaNode;
   lines?: Paragraph;
+  /**
+   * The content width `lines` were laid out at. Yoga asks the measure function
+   * about a text before it knows how wide the node will be, so the answer it
+   * caches can belong to another width than the node ends up with.
+   */
+  linesLayoutWidth?: number;
   alignOffset?: number; // TODO: Remove this
   children?: (TextNode | TextInstanceNode | ImageNode | TspanNode)[];
 };

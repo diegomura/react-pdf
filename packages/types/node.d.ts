@@ -8,6 +8,7 @@ interface BaseProps {
   id?: string;
   fixed?: boolean;
   break?: boolean;
+  breakWhenNeeded?: boolean;
   debug?: boolean;
   bookmark?: Bookmark;
   minPresenceAhead?: number;

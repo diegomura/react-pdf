@@ -1,4 +1,4 @@
-import { SafeDocumentNode, SafeNode } from '@react-pdf/layout';
+import { Bookmark, SafeDocumentNode, SafeNode } from '@react-pdf/layout';
 
 import { Context } from '../types';
 
@@ -14,7 +14,10 @@ const addNodeBookmark = (
   if (!node.props) return;
 
   if ('bookmark' in node.props && node.props.bookmark) {
-    const bookmark = node.props.bookmark;
+    // resolveBookmarks expands plain string titles before rendering, but the
+    // prop type still admits one — normalize so that case stays sound here.
+    const raw = node.props.bookmark;
+    const bookmark: Bookmark = typeof raw === 'string' ? { title: raw } : raw;
     const { title, parent, expanded, zoom, fit } = bookmark;
     const outline = registry[parent!] || ctx.outline;
     const top = bookmark.top || node.box.top;

@@ -143,10 +143,25 @@ const absoluteOf = (node: SafeNode, ctx: PageCtx): FlowNode => {
   return { box: boxOf(node), id: node.type, data: node, absolute: true };
 };
 
+// This engine has no notion of "do not split on the first attempt", so
+// breakWhenNeeded cannot be honoured here. Say so once instead of silently
+// laying the node out as if the prop were absent.
+let warnedBreakWhenNeeded = false;
+
+const warnBreakWhenNeededUnsupported = () => {
+  if (warnedBreakWhenNeeded) return;
+  warnedBreakWhenNeeded = true;
+  console.warn(
+    'breakWhenNeeded is not supported by the experimental pagination engine and will be ignored; the node splits as if the prop were absent.',
+  );
+};
+
 // Flags apply where a node enters a flow, never on split or materialized
 // fragments.
 const withFlags = (child: SafeNode, node: FlowNode): FlowNode => {
   const presence = (child.props as any).minPresenceAhead;
+
+  if ((child.props as any).breakWhenNeeded) warnBreakWhenNeededUnsupported();
 
   return {
     ...node,

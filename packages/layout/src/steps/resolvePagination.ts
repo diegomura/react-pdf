@@ -44,7 +44,16 @@ const warnUnavailableSpace = (node: SafeNode) => {
   );
 };
 
-const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
+// `contentAbove` says whether anything is already placed above this group on
+// the current page. Nested groups need it: a node can be the first child of its
+// container and still gain a page by moving, when the container itself is not
+// at the top of the page.
+const splitNodes = (
+  height: number,
+  contentArea: number,
+  nodes: SafeNode[],
+  contentAbove = false,
+) => {
   const currentChildren: SafeNode[] = [];
   const nextChildren: SafeNode[] = [];
 
@@ -61,6 +70,7 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       futureNodes,
       height,
       currentChildren,
+      contentAbove,
     );
     const shouldSplit = height + SAFETY_THRESHOLD < nodeTop + nodeHeight;
     const canWrap = canNodeWrap(child);
@@ -100,12 +110,27 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
     }
 
     if (shouldSplit) {
-      const [currentChild, nextChild] = split(child, height, contentArea);
+      const [currentChild, nextChild] = split(
+        child,
+        height,
+        contentArea,
+        contentAbove || currentChildren.some((node) => !isFixed(node)),
+      );
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        // But if the current page is empty then we can just include the parent on the current page
-        if (currentChildren.length === 0) {
+        // But if the current PAGE is empty then we can just include the parent
+        // on the current page: something taller than a whole sheet has to start
+        // somewhere, and moving it again would never end.
+        //
+        // The page, not this list. splitNodes() recurses into every container,
+        // and one level down `currentChildren` only says whether anything of
+        // THAT container was kept - it is empty for the first child of every
+        // group. Read on its own it claimed an empty page while a table was
+        // sitting above, so a totals box with 8pt of room left kept all of its
+        // 158pt and ran off the sheet. contentAbove is what actually answers
+        // the question, and splitNodes() already carries it down.
+        if (currentChildren.length === 0 && !contentAbove) {
           currentChildren.push(child, ...futureFixedNodes);
           nextChildren.push(...futureNodes);
         } else {
@@ -132,18 +157,29 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
   return [currentChildren, nextChildren];
 };
 
-const splitChildren = (height: number, contentArea: number, node: SafeNode) => {
+const splitChildren = (
+  height: number,
+  contentArea: number,
+  node: SafeNode,
+  contentAbove: boolean,
+) => {
   const children = node.children || [];
   const availableHeight = height - getTop(node);
-  return splitNodes(availableHeight, contentArea, children);
+  return splitNodes(availableHeight, contentArea, children, contentAbove);
 };
 
-const splitView = (node: SafeNode, height: number, contentArea: number) => {
+const splitView = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  contentAbove: boolean,
+) => {
   const [currentNode, nextNode] = splitNode(node, height);
   const [currentChilds, nextChildren] = splitChildren(
     height,
     contentArea,
     node,
+    contentAbove,
   );
 
   return [
@@ -152,8 +188,15 @@ const splitView = (node: SafeNode, height: number, contentArea: number) => {
   ];
 };
 
-const split = (node: SafeNode, height: number, contentArea: number) =>
-  isText(node) ? splitText(node, height) : splitView(node, height, contentArea);
+const split = (
+  node: SafeNode,
+  height: number,
+  contentArea: number,
+  contentAbove: boolean,
+) =>
+  isText(node)
+    ? splitText(node, height)
+    : splitView(node, height, contentArea, contentAbove);
 
 const shouldResolveDynamicNodes = (node: SafeNode) => {
   const children = node.children || [];

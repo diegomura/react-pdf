@@ -176,7 +176,13 @@ const isLayoutElement = (node) =>
  * @returns Create yoga nodes
  */
 const createYogaNodes =
-  (page: SafePageNode, fontStore: FontStore, yoga: YogaInstance) =>
+  (
+    page: SafePageNode,
+    fontStore: FontStore,
+    yoga: YogaInstance,
+    // Whether this node hangs directly off the page.
+    aufSeite = false,
+  ) =>
   (node: SafeNode) => {
     const yogaNode = yoga.node.create();
 
@@ -184,10 +190,24 @@ const createYogaNodes =
 
     setYogaValues(result);
 
+    // A page never squeezes what stands on it.
+    //
+    // react-pdf gives every node flexShrink: 1 (see setFlexShrink), and a page
+    // has a definite height, so contents a few points taller than the content
+    // area are not pushed over the edge - yoga hands the missing space back out
+    // by compressing the blocks. Their text keeps the height it was measured
+    // at, so it is drawn through whatever comes after it, which is the squashed
+    // block at the foot of a page.
+    //
+    // What does not fit belongs on the next page, and pagination has already
+    // decided that. Whatever is still left over is cut off by the paper, which
+    // is the honest result.
+    if (aufSeite && isNil(node.style?.flexShrink)) yogaNode.setFlexShrink(0);
+
     if (isLayoutElement(node) && node.children) {
       const resolveChild = compose(
         insertYogaNodes(yogaNode),
-        createYogaNodes(page, fontStore, yoga),
+        createYogaNodes(page, fontStore, yoga, isPage(node)),
       );
 
       result.children = node.children.map(resolveChild);

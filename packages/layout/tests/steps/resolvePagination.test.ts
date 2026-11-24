@@ -238,6 +238,83 @@ describe('pagination step', () => {
     expect(page2.children![0].box!.height).toBe(40);
   });
 
+  test('should move breakWhenNeeded containers to the next page before splitting them', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: {
+            width: 5,
+            height: 60,
+          },
+          children: [
+            {
+              type: 'VIEW',
+              style: {
+                width: 5,
+                height: 20,
+              },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: {
+                width: 5,
+              },
+              props: {
+                breakWhenNeeded: true,
+              },
+              children: [
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: {
+                    height: 30,
+                  },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const page1 = layout.children[0];
+    const page2 = layout.children[1];
+    const page3 = layout.children[2];
+
+    expect(layout.children).toHaveLength(3);
+    expect(page1.children).toHaveLength(1);
+    expect(page2.children).toHaveLength(1);
+    expect(page3.children).toHaveLength(1);
+    expect(page2.children![0].children).toHaveLength(2);
+    expect(page3.children![0].children).toHaveLength(1);
+  });
+
   test('should not infinitely loop when splitting pages', async () => {
     const yoga = await loadYoga();
 
@@ -457,5 +534,151 @@ describe('pagination step', () => {
     expect(subChapter2page2.props!.bookmark).toEqual(null);
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
+  });
+
+  test('should move a nested breakWhenNeeded container that is the first child of its wrapper', async () => {
+    const yoga = await loadYoga();
+
+    // The wrapper starts 20pt down the page, so its first child has nothing
+    // above it inside the wrapper but still gains a page by moving.
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 5, height: 60 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { width: 5, height: 20 },
+              props: {},
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { width: 5 },
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { width: 5 },
+                  props: { breakWhenNeeded: true },
+                  children: [
+                    {
+                      type: 'VIEW',
+                      style: { height: 30 },
+                      props: {},
+                      children: [],
+                    },
+                    {
+                      type: 'VIEW',
+                      style: { height: 30 },
+                      props: {},
+                      children: [],
+                    },
+                    {
+                      type: 'VIEW',
+                      style: { height: 30 },
+                      props: {},
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children).toHaveLength(3);
+
+    // Page 1 keeps only the 20pt sibling: the wrapper moved whole
+    expect(layout.children[0].children).toHaveLength(1);
+
+    // The container splits from page 2 onwards, never on page 1
+    const onPage2 = layout.children[1].children![0].children![0];
+    const onPage3 = layout.children[2].children![0].children![0];
+
+    expect(onPage2.children).toHaveLength(2);
+    expect(onPage3.children).toHaveLength(1);
+  });
+
+  // A table long enough to run over five pages. The cover block above it is
+  // 60 tall on a 100 tall page, so only two rows fit in what is left of
+  // page 1; every later page holds five.
+  const LONG_TABLE_ROWS = 20;
+
+  const longTableDocument = (yoga: any, tableProps: any): any => ({
+    type: 'DOCUMENT',
+    yoga,
+    props: {},
+    children: [
+      {
+        type: 'PAGE',
+        props: {},
+        style: { width: 10, height: 100 },
+        children: [
+          {
+            type: 'VIEW',
+            style: { width: 10, height: 60 },
+            props: {},
+            children: [],
+          },
+          {
+            type: 'VIEW',
+            style: { width: 10 },
+            props: tableProps,
+            children: Array.from({ length: LONG_TABLE_ROWS }, () => ({
+              type: 'VIEW',
+              style: { height: 20 },
+              props: {},
+              children: [],
+            })),
+          },
+        ],
+      },
+    ],
+  });
+
+  // How many table rows landed on each page. The cover block has no
+  // children, so the table is the only node with any.
+  const rowsPerPage = (layout: any): number[] =>
+    layout.children.map((page: any) => {
+      const table = (page.children || []).find(
+        (child: any) => (child.children || []).length > 0,
+      );
+
+      return table ? table.children.length : 0;
+    });
+
+  test('should split a long wrapping table starting at the bottom of page 1', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout(longTableDocument(yoga, { wrap: true }));
+
+    expect(layout.children).toHaveLength(5);
+
+    // Two rows are stranded under the cover block before the first split
+    expect(rowsPerPage(layout)).toEqual([2, 5, 5, 5, 3]);
+  });
+
+  test('should move a long breakWhenNeeded table to page 2 and split it from there', async () => {
+    const yoga = await loadYoga();
+
+    const layout = calcLayout(
+      longTableDocument(yoga, { wrap: true, breakWhenNeeded: true }),
+    );
+
+    // Same row count and same page count, but page 1 keeps none of them
+    expect(layout.children).toHaveLength(5);
+    expect(rowsPerPage(layout)).toEqual([0, 5, 5, 5, 5]);
+
+    // Every row still gets rendered, just starting one page later
+    const total = rowsPerPage(layout).reduce((a, b) => a + b, 0);
+    expect(total).toBe(LONG_TABLE_ROWS);
   });
 });

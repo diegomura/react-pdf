@@ -815,6 +815,27 @@ export const Gradients = () => (
   </Svg>
 );
 
+export const GradientsMultipleDefs = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Defs>
+      <LinearGradient id="myLinearGradient">
+        <Stop offset="5%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </LinearGradient>
+    </Defs>
+
+    <Defs>
+      <RadialGradient id="myRadialGradient">
+        <Stop offset="10%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </RadialGradient>
+    </Defs>
+
+    <Circle cx="5" cy="5" r="4" fill="url('#myLinearGradient')" />
+    <Circle cx="5" cy="14" r="4" fill="url('#myRadialGradient')" />
+  </Svg>
+);
+
 export const Dasharrays = () => (
   <Svg viewBox="0 0 10 20" width="100">
     <Line

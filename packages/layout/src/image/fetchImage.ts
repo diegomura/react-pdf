@@ -32,7 +32,9 @@ const fetchImage = async (node: ImageLikeNode, pageWidth: number) => {
 
     node.image = await resolveImage(source, { cache });
 
-    if (Buffer.isBuffer(source) || source instanceof Blob) return;
+    // `instanceof Uint8Array` also matches a Node Buffer, without reading a
+    // `Buffer` global that browsers do not have
+    if (source instanceof Uint8Array || source instanceof Blob) return;
 
     node.image.key = 'data' in source ? source.data.toString() : source.uri;
   } catch (e: any) {

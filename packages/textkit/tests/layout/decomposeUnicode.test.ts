@@ -185,5 +185,36 @@ describe('decomposeUnicode', () => {
       expect(result.string).toEqual('\u0928\u093C');
       expect(result.string).toHaveLength(2);
     });
+
+    test('should decompose Thai SARA AM with custom font', () => {
+      // Thai \u0E01\u0E33 (U+0E01 U+0E33) splits SARA AM into NIKHAHIT (U+0E4D) + SARA AA (U+0E32)
+      const string = fromFragments([
+        { string: '\u0E01\u0E33', attributes: { font: [customFont] } },
+      ]);
+      const result = decomposeUnicodeInstance(string);
+
+      expect(result.string).toEqual('\u0E01\u0E4D\u0E32');
+      expect(result.runs[0]).toHaveProperty('start', 0);
+      expect(result.runs[0]).toHaveProperty('end', 3);
+    });
+
+    test('should decompose Lao AM with custom font', () => {
+      // Lao AM (U+0EB3) splits into NIGGAHITA (U+0ECD) + AA (U+0EB2)
+      const string = fromFragments([
+        { string: '\u0E81\u0EB3', attributes: { font: [customFont] } },
+      ]);
+      const result = decomposeUnicodeInstance(string);
+
+      expect(result.string).toEqual('\u0E81\u0ECD\u0EB2');
+    });
+
+    test('should not decompose Thai SARA AM with standard font', () => {
+      const string = fromFragments([
+        { string: '\u0E01\u0E33', attributes: { font: [standardFont] } },
+      ]);
+      const result = decomposeUnicodeInstance(string);
+
+      expect(result.string).toEqual('\u0E01\u0E33');
+    });
   });
 });

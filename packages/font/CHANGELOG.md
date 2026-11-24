@@ -1,5 +1,18 @@
 # @react-pdf/font
 
+## 4.1.3
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- [#3602](https://github.com/diegomura/react-pdf/pull/3602) [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: declare the packages imported by published type declarations as dependencies (`@types/fontkit` in font and textkit, `@react-pdf/font` in textkit and layout), so they type-check with `skipLibCheck: false`
+
+- [#3568](https://github.com/diegomura/react-pdf/pull/3568) [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b) Thanks [@mskec](https://github.com/mskec)! - Retry font loading after a failed fetch instead of caching the rejection forever
+
+- Updated dependencies []:
+  - @react-pdf/types@2.14.1
+
 ## 4.1.2
 
 ### Patch Changes

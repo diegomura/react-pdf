@@ -1,5 +1,13 @@
 # @react-pdf/image
 
+## 3.1.3
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- [#3603](https://github.com/diegomura/react-pdf/pull/3603) [`c987d165e1a13da7bcbd606ec0ca5bad5727ef6b`](https://github.com/diegomura/react-pdf/commit/c987d165e1a13da7bcbd606ec0ca5bad5727ef6b) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: bump jay-peg to 1.1.2 so JPEG parsing no longer mutates image data, which left the EXIF orientation unreadable for pdfkit and drew rotated photos unrotated and stretched
+
 ## 3.1.2
 
 ### Patch Changes

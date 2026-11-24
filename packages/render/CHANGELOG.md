@@ -1,5 +1,15 @@
 # @react-pdf/render
 
+## 4.7.1
+
+### Patch Changes
+
+- [#3624](https://github.com/diegomura/react-pdf/pull/3624) [`eb6884b2e0a71c29a31f90e914f5df9e993c0d5e`](https://github.com/diegomura/react-pdf/commit/eb6884b2e0a71c29a31f90e914f5df9e993c0d5e) Thanks [@cYoren](https://github.com/cYoren)! - Write checkbox `V` and `DV` as name objects instead of literal strings, so a reader that checks the field value (`pdf-lib`, mupdf, anything rebuilding appearances from `/V`) sees a checked box rather than `(/Yes)`.
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4)]:
+  - @react-pdf/textkit@7.0.2
+  - @react-pdf/types@2.14.1
+
 ## 4.7.0
 
 ### Minor Changes

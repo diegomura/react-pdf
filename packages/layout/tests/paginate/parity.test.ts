@@ -388,6 +388,22 @@ describe('row cells offset by alignment', () => {
       expect(next).toEqual(legacy);
     });
 
+    test('moves a block when a following container would split inside the window', async () => {
+      const { legacy, next } = await both({ width: 100, height: 100 }, [
+        view({ height: 60 }),
+        presenceView({ height: 20 }, 50),
+        view({}, [
+          view({ height: 10 }),
+          view({ height: 10 }),
+          view({ height: 10 }),
+          view({ height: 10 }),
+          view({ height: 10 }),
+        ]),
+      ]);
+
+      expect(next).toEqual(legacy);
+    });
+
     test('inert when the block is first on its page', async () => {
       const { legacy, next } = await both({ width: 100, height: 100 }, [
         presenceView({ height: 30 }, 200),

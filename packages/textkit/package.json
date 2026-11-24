@@ -30,6 +30,6 @@
     "@react-pdf/hyphenate": "^0.1.0",
     "@types/fontkit": "^2.0.7",
     "bidi-js": "^1.0.2",
-    "unicode-properties": "^1.4.1"
+    "unicode-properties": "^2.0.2"
   }
 }

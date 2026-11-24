@@ -3,7 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import fetchImage from '../../src/image/fetchImage';
 
 vi.mock('@react-pdf/image', () => ({
-  default: vi.fn(async () => ({ width: 10, height: 10, data: new Uint8Array() })),
+  default: vi.fn(async () => ({
+    width: 10,
+    height: 10,
+    data: new Uint8Array(),
+  })),
 }));
 
 const imageNode = (src: unknown) =>

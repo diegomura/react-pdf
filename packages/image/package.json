@@ -25,7 +25,7 @@
   "dependencies": {
     "@react-pdf/svg": "^1.1.1",
     "jay-peg": "^1.1.1",
-    "png-js": "^2.0.0"
+    "png-js": "^3.0.0"
   },
   "files": [
     "lib"

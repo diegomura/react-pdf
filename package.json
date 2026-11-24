@@ -87,7 +87,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "yarn lint",
+      "eslint --no-warn-ignored",
       "prettier --write"
     ]
   },

@@ -511,6 +511,28 @@ describe('resolve stylesheet borders', () => {
     });
   });
 
+  test('should resolve border radius shorthand with percent value', () => {
+    const styles = resolveStyle({ borderRadius: '50%' });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: '50%',
+      borderTopRightRadius: '50%',
+      borderBottomRightRadius: '50%',
+      borderBottomLeftRadius: '50%',
+    });
+  });
+
+  test('should resolve zero border radius shorthand', () => {
+    const styles = resolveStyle({ borderRadius: 0 });
+
+    expect(styles).toEqual({
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 0,
+    });
+  });
+
   test('should resolve border shorthand with multiple whitespaces', () => {
     const styles = resolveStyle({ border: '2px   solid   blue' });
 

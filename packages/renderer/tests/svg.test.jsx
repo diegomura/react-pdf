@@ -7,6 +7,7 @@ import {
   Chart,
   Chart2,
   Gradients,
+  GradientsMultipleDefs,
   Dasharrays,
   MarkerArrowLine,
   MarkerDotPolyline,
@@ -84,6 +85,18 @@ describe('Svg', () => {
       <Document>
         <Page size={[100, 200]}>
           <Gradients />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render Gradients from multiple Defs', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[100, 200]}>
+          <GradientsMultipleDefs />
         </Page>
       </Document>,
     );

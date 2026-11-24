@@ -238,6 +238,60 @@ describe('pagination step', () => {
     expect(page2.children![0].box!.height).toBe(40);
   });
 
+  test('should not infinitely loop on a break after a fixed node', async () => {
+    const yoga = await loadYoga();
+
+    // The fixed node comes back on every page, so it can't make the page
+    // count as non-empty: the wrapper has nowhere better to go.
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { width: 100, height: 100 },
+          children: [
+            {
+              type: 'VIEW',
+              style: { height: 10 },
+              props: { fixed: true },
+              children: [],
+            },
+            {
+              type: 'VIEW',
+              style: { width: 50 },
+              props: {},
+              children: [
+                {
+                  type: 'VIEW',
+                  style: { height: 20 },
+                  props: { break: true },
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 60 },
+                  props: {},
+                  children: [],
+                },
+                {
+                  type: 'VIEW',
+                  style: { height: 60 },
+                  props: {},
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(layout.children.length).toBe(1);
+  });
+
   test('should not infinitely loop when splitting pages', async () => {
     const yoga = await loadYoga();
 
@@ -457,5 +511,46 @@ describe('pagination step', () => {
     expect(subChapter2page2.props!.bookmark).toEqual(null);
 
     expect(subChapter3.props!.bookmark).toEqual(bookmarkSubChapter3);
+  });
+
+  test('should keep on the page the lines that fit it exactly', async () => {
+    const yoga = await loadYoga();
+    const lineHeight = 13.7;
+
+    const layout = calcLayout({
+      type: 'DOCUMENT',
+      yoga,
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          // Room for exactly 6 lines. Yoga stores it as a float32, which is
+          // slightly smaller than 6 * 13.7
+          style: { width: 300, height: 6 * lineHeight },
+          children: [
+            {
+              type: 'TEXT',
+              style: { fontSize: 10, lineHeight },
+              props: {},
+              children: [
+                {
+                  type: 'TEXT_INSTANCE',
+                  value: Array.from({ length: 12 }, (_, i) => `L${i}`).join(
+                    '\n',
+                  ),
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    const lines = layout.children.map(
+      (page) => (page.children![0] as any).lines.length,
+    );
+
+    expect(lines).toEqual([6, 6]);
   });
 });

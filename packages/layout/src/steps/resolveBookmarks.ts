@@ -35,10 +35,8 @@ const resolveBookmarks = (node: DocumentNode) => {
     parent: null,
   }));
 
-  while (listToExplore.length > 0) {
-    const element = listToExplore.shift();
-
-    if (!element) break;
+  for (let index = 0; index < listToExplore.length; index += 1) {
+    const element = listToExplore[index];
 
     const child = element.value;
 

@@ -194,3 +194,5 @@ const StyleSheet = {
 };
 
 export { version, Font, StyleSheet, pdf, createRenderer };
+
+export { registerWebpTranscoder } from '@react-pdf/image';

@@ -1909,6 +1909,27 @@ describe('paginate', () => {
       snapshotPages(paginate(column(items), 50), region(50), 'repeat-row');
     });
 
+    test('a repeat child of a row re-emits wherever it sits in source order', () => {
+      const body = column(
+        [leaf(20, 'a'), leaf(20, 'b'), leaf(20, 'c'), leaf(20, 'd')],
+        'body',
+      );
+      const items: Item[] = [row([body, repeatLeaf(10, 'label')])];
+      const pages = paginateFlow(items, 50);
+
+      const cells = (i: number) => pages[i][0].children?.map((c) => c.item.id);
+
+      expect(pages).toHaveLength(2);
+      expect(cells(0)).toEqual(['body', 'label']);
+      expect(cells(1)).toEqual(['body', 'label']);
+
+      snapshotPages(
+        paginate(column(items), 50),
+        region(50),
+        'repeat-row-last-cell',
+      );
+    });
+
     test('a row repeat copy taller than the carried cells sets the continuation height', () => {
       const body = column(
         [leaf(20, 'a'), leaf(20, 'b'), leaf(20, 'c')],

@@ -24,6 +24,8 @@ export interface ColumnItem {
   id?: string;
   repeat?: boolean;
   data?: unknown;
+  // Set when this column only holds a row cell behind its alignment offset.
+  offsetCell?: Item;
   children: Item[];
 }
 

@@ -11,12 +11,18 @@ import toFragments from '../fragment/toFragments';
 import {
   FillResult,
   Fragment,
+  Item,
   PlacedItem,
   RowItem,
   State,
   StepResult,
 } from '../types';
 import { CONTINUE, DECLINE, DONE } from '../step';
+
+// The alignment offset was measured against the whole row, which the
+// continuation is not, so a repeat copy starts at its top.
+const cellOf = (item: Item): Item =>
+  isColumn(item) && item.offsetCell ? item.offsetCell : item;
 
 // Place every row child side by side at y=0. A break is one horizontal cut
 // through all children at `height`: each keeps what fits above the line, and
@@ -69,8 +75,8 @@ export const place = (
           children: [...repeats, ...inner.remaining],
         });
         continues = true;
-      } else if (isRepeat(child)) {
-        remaining.push(...toFragments([child]));
+      } else if (isRepeat(cellOf(child))) {
+        remaining.push(...toFragments([cellOf(child)]));
       }
 
       continue;

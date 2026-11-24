@@ -244,3 +244,45 @@ describe('flow output', () => {
     });
   });
 });
+
+describe('repeat cells of a row', () => {
+  const rowWithLabel = (labelTop: number, height: number): ContainerNode => ({
+    box: box(0, height),
+    direction: 'row',
+    data: 'row',
+    children: [
+      leaf(labelTop, 10, { data: 'label', repeat: true }),
+      {
+        box: box(0, height),
+        direction: 'column',
+        children: Array.from({ length: height / 10 }, (_, i) =>
+          leaf(i * 10, 10),
+        ),
+      },
+    ],
+  });
+
+  const labelTops = (node: FlowNode, height: number) => {
+    const paginator = createPaginator([node]);
+    const tops: (number | null)[] = [];
+
+    while (!paginator.done) {
+      const [placed] = paginator.next(height);
+      const label = placed.children?.find((child) => child.data === 'label');
+
+      tops.push(label ? label.box.top : null);
+    }
+
+    return tops;
+  };
+
+  test('an offset repeat cell restarts at the top of each continuation', () => {
+    expect(labelTops(rowWithLabel(35, 120), 50)).toEqual([35, 0, 0]);
+  });
+
+  // The same placed-once rule as in a column: no copy before the flow
+  // reaches the cell.
+  test('a repeat cell below the cut repeats only after it is placed', () => {
+    expect(labelTops(rowWithLabel(70, 130), 50)).toEqual([null, 20, 0]);
+  });
+});

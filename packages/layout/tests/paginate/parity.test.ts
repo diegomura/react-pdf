@@ -342,6 +342,18 @@ describe('row cells offset by alignment', () => {
     expect(next).toEqual(legacy);
   });
 
+  test('centered fixed cell repeats on the row continuation', async () => {
+    const lines = Array.from({ length: 8 }, () => view({ height: 10 }));
+    const { legacy, next } = await both({ width: 100, height: 50 }, [
+      view({ flexDirection: 'row', alignItems: 'center' }, [
+        fixedView({ width: 20, height: 10 }),
+        view({ flexGrow: 1 }, lines),
+      ]),
+    ]);
+
+    expect(next).toEqual(legacy);
+  });
+
   test('flex-end row moves whole when the offset cell has nothing to give', async () => {
     // Deliberately not legacy parity: legacy force-splits every cell at the
     // cut and re-aligns the remainders, which strands the short cell flush at

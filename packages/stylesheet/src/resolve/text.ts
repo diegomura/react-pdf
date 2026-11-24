@@ -107,6 +107,36 @@ const processLineHeight = <K extends StyleKey>(
   };
 };
 
+const transformLetterSpacing = (
+  value: Style['letterSpacing'],
+  styles: Style,
+  container: Container,
+): string | number => {
+  const letterSpacing = transformUnit(container, value);
+
+  // Percent values: relative to the element's font size
+  const { percent } = matchPercent(letterSpacing) || {};
+  if (percent === undefined) return letterSpacing;
+
+  const fontSize = transformUnit(
+    container,
+    styles.fontSize || DEFAULT_FONT_SIZE,
+  ) as number;
+
+  return percent * fontSize;
+};
+
+const processLetterSpacing = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+  container: Container,
+  styles: Style,
+) => {
+  return {
+    [key]: transformLetterSpacing(value, styles, container),
+  };
+};
+
 const handlers = {
   direction: processNoopValue<'direction'>,
   fontFamily: processNoopValue<'fontFamily'>,
@@ -114,7 +144,7 @@ const handlers = {
   fontStyle: processNoopValue<'fontStyle'>,
   fontWeight: processFontWeight<'fontWeight'>,
   fontFeatureSettings: processFontFeatureSettings<'fontFeatureSettings'>,
-  letterSpacing: processUnitValue<'letterSpacing'>,
+  letterSpacing: processLetterSpacing<'letterSpacing'>,
   lineHeight: processLineHeight<'lineHeight'>,
   maxLines: processNumberValue<'maxLines'>,
   textAlign: processNoopValue<'textAlign'>,

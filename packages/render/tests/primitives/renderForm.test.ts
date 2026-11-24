@@ -104,4 +104,30 @@ describe('primitive renderCheckbox', () => {
     expect(data.AP.N).toHaveProperty('Yes');
     expect(data.AP.N).toHaveProperty('Off');
   });
+
+  test('should write V and DV as names instead of literal strings', () => {
+    const ctx = createCTX();
+    ctx._acroform = { fonts: {} };
+    ctx.ref = vi.fn(() => ({
+      write: vi.fn(),
+      end: vi.fn(),
+    }));
+
+    const box = { top: 0, left: 0, width: 20, height: 20 };
+    const node = {
+      type: P.Checkbox,
+      style: {},
+      box,
+      props: { name: 'example', checked: true },
+    } as unknown as SafeCheckboxNode;
+
+    renderCheckbox(ctx, node, { fieldSets: [], imageCache: new Map() });
+
+    // pdfkit turns value/defaultValue into string objects, so V came out as (/Yes)
+    expect(ctx._fieldDict.mock.calls[0][2]).not.toHaveProperty('value');
+    expect(ctx._fieldDict.mock.calls[0][2]).not.toHaveProperty('defaultValue');
+
+    const { data } = ctx.page.annotations.at(-1);
+    expect(data).toMatchObject({ V: 'Yes', DV: 'Yes', AS: 'Yes' });
+  });
 });

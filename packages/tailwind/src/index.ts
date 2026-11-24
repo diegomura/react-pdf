@@ -655,7 +655,19 @@ export function createTw(
     }
   }
 
+  // Tailwind draws these with box-shadow, which react-pdf can't render.
+  const BOX_SHADOW_UTILITY = /^(inset-)?(shadow|ring)(-|$)/;
+
   function handleInvalidClassName(className: string) {
+    const utility = className.slice(className.lastIndexOf(':') + 1);
+
+    if (BOX_SHADOW_UTILITY.test(utility)) {
+      console.warn(
+        `@react-pdf/tailwind: Unsupported class "${className}": react-pdf can't draw box shadows`,
+      );
+      return;
+    }
+
     console.warn(`@react-pdf/tailwind: Invalid class "${className}"`);
   }
 

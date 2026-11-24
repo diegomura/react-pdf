@@ -1,5 +1,14 @@
 # @react-pdf/tailwind
 
+## 0.2.1
+
+### Patch Changes
+
+- [#3631](https://github.com/diegomura/react-pdf/pull/3631) [`e78865a6067dafc0c9462111ac7a2640cce44a1e`](https://github.com/diegomura/react-pdf/commit/e78865a6067dafc0c9462111ac7a2640cce44a1e) Thanks [@maiconhenriquefa](https://github.com/maiconhenriquefa)! - Explain why box-shadow utilities (`shadow-*`, `ring-*`) are skipped instead of calling them invalid
+
+- Updated dependencies []:
+  - @react-pdf/types@2.14.1
+
 ## 0.2.0
 
 ### Minor Changes

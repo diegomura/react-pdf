@@ -1,5 +1,15 @@
 # @react-pdf/ui
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`e78865a6067dafc0c9462111ac7a2640cce44a1e`](https://github.com/diegomura/react-pdf/commit/e78865a6067dafc0c9462111ac7a2640cce44a1e)]:
+  - @react-pdf/renderer@4.9.1
+  - @react-pdf/tailwind@0.2.1
+  - @react-pdf/math@6.0.1
+  - @react-pdf/mermaid@6.0.1
+
 ## 1.0.0
 
 ### Minor Changes

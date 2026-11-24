@@ -1,5 +1,17 @@
 # @react-pdf/examples
 
+## 3.6.3
+
+### Patch Changes
+
+- Updated dependencies [[`50f4fb95d6c241b657b8d9db1675a76b38660f04`](https://github.com/diegomura/react-pdf/commit/50f4fb95d6c241b657b8d9db1675a76b38660f04), [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`7ca50af3fd5746955ba18cab7f815f1d62d53813`](https://github.com/diegomura/react-pdf/commit/7ca50af3fd5746955ba18cab7f815f1d62d53813), [`eb6884b2e0a71c29a31f90e914f5df9e993c0d5e`](https://github.com/diegomura/react-pdf/commit/eb6884b2e0a71c29a31f90e914f5df9e993c0d5e), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4), [`1092d61de79bcc1f43164428c75eef0584707d08`](https://github.com/diegomura/react-pdf/commit/1092d61de79bcc1f43164428c75eef0584707d08), [`18b6740a0086cae6aa8a01f0d1385c5e03276d82`](https://github.com/diegomura/react-pdf/commit/18b6740a0086cae6aa8a01f0d1385c5e03276d82), [`940747b20aedf57705a9deccb599d258aa0a3ea5`](https://github.com/diegomura/react-pdf/commit/940747b20aedf57705a9deccb599d258aa0a3ea5), [`eeae3fecfddeb680fb09264ad2bed0b1a83b6c73`](https://github.com/diegomura/react-pdf/commit/eeae3fecfddeb680fb09264ad2bed0b1a83b6c73), [`e75eb325dd759edd152dbfe7da44b43092516aab`](https://github.com/diegomura/react-pdf/commit/e75eb325dd759edd152dbfe7da44b43092516aab), [`7d86485b65aefefde1e5e811edeae135ca42c557`](https://github.com/diegomura/react-pdf/commit/7d86485b65aefefde1e5e811edeae135ca42c557), [`e78865a6067dafc0c9462111ac7a2640cce44a1e`](https://github.com/diegomura/react-pdf/commit/e78865a6067dafc0c9462111ac7a2640cce44a1e), [`eb3ec5cdeac32f080903803622a6d57de1543241`](https://github.com/diegomura/react-pdf/commit/eb3ec5cdeac32f080903803622a6d57de1543241)]:
+  - @react-pdf/layout@5.2.1
+  - @react-pdf/renderer@4.9.1
+  - @react-pdf/render@4.7.1
+  - @react-pdf/tailwind@0.2.1
+  - @react-pdf/math@6.0.1
+  - @react-pdf/mermaid@6.0.1
+
 ## 3.6.2
 
 ### Patch Changes

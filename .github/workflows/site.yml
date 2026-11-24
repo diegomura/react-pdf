@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - 'apps/site/**'
+      - 'packages/**'
       - '.github/workflows/site.yml'
   push:
     branches:
       - master
     paths:
       - 'apps/site/**'
+      - 'packages/**'
       - '.github/workflows/site.yml'
 
 concurrency:
@@ -40,7 +42,7 @@ jobs:
           cache-name: yarn-cache-site
         with:
           path: ~/.cache/yarn
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('apps/site/yarn.lock') }}
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('yarn.lock', 'apps/site/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-name }}-
 
@@ -48,6 +50,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      # The site links the workspace packages, so they have to be installed
+      # and built (by the root install's prepublish) before the site's install
+      - name: Install and build workspace packages
+        working-directory: .
+        run: yarn install --frozen-lockfile
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile

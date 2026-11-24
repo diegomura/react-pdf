@@ -1,3 +1,4 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ."
+  "installCommand": "yarn --cwd ../.. install --frozen-lockfile && yarn install --frozen-lockfile",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ../../packages"
 }

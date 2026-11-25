@@ -47,6 +47,20 @@ const reverseRun = (run: Run, string: string) => {
   const glyphs = [...(run.glyphs || [])].reverse();
   const positions = [...(run.positions || [])].reverse();
 
+  // Runs are shaped left to right, so a mark follows its base and its xOffset
+  // is measured from the pen after the base. Once reversed, the mark comes
+  // before its base, so it has to move right by the base's advance.
+  let baseAdvance = 0;
+  for (let i = positions.length - 1; i >= 0; i -= 1) {
+    const position = positions[i];
+
+    if (position.xAdvance !== 0) {
+      baseAdvance = position.xAdvance;
+    } else if (baseAdvance) {
+      positions[i] = { ...position, xOffset: position.xOffset + baseAdvance };
+    }
+  }
+
   return {
     run: {
       ...run,

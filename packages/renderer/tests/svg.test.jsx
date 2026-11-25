@@ -8,6 +8,7 @@ import {
   Chart2,
   Gradients,
   GradientsMultipleDefs,
+  StrokeGradients,
   Dasharrays,
   MarkerArrowLine,
   MarkerDotPolyline,
@@ -85,6 +86,18 @@ describe('Svg', () => {
       <Document>
         <Page size={[100, 200]}>
           <Gradients />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render Gradients on strokes', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[100, 200]}>
+          <StrokeGradients />
         </Page>
       </Document>,
     );

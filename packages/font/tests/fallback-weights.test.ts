@@ -59,6 +59,63 @@ describe('fallback weights', () => {
     expect(thin?.src).toBe('https://example.com/Roboto-thin.ttf');
   });
 
+  it('should return exact match for a weight name', () => {
+    const fontStore = new FontStore();
+
+    fontStore.register({
+      family: 'Roboto',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      src: 'https://example.com/Roboto-normal-400.ttf',
+    });
+
+    fontStore.register({
+      family: 'Roboto',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      src: 'https://example.com/Roboto-normal-700.ttf',
+    });
+
+    const font = fontStore.getFont({
+      fontFamily: 'Roboto',
+      fontWeight: 'bold',
+    });
+
+    expect(font?.src).toBe('https://example.com/Roboto-normal-700.ttf');
+  });
+
+  it('should resolve numeric weights given as strings', () => {
+    const fontStore = new FontStore();
+
+    fontStore.register({
+      family: 'Roboto',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      src: 'https://example.com/Roboto-normal-400.ttf',
+    });
+
+    fontStore.register({
+      family: 'Roboto',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      src: 'https://example.com/Roboto-normal-700.ttf',
+    });
+
+    // As SVG attributes give them, e.g. <text font-weight="700">
+    const regular = fontStore.getFont({
+      fontFamily: 'Roboto',
+      fontWeight: '400' as any,
+    });
+
+    const bold = fontStore.getFont({
+      fontFamily: 'Roboto',
+      fontWeight: '700' as any,
+    });
+
+    expect(regular?.src).toBe('https://example.com/Roboto-normal-400.ttf');
+    expect(bold?.src).toBe('https://example.com/Roboto-normal-700.ttf');
+  });
+
   it('should filter by font style', () => {
     const fontStore = new FontStore();
 

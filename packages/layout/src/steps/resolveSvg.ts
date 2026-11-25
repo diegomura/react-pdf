@@ -353,7 +353,10 @@ const buildXLinksIndex = (node: SafeSvgNode) => {
       idIndex[child.props.id] = child;
     }
 
-    if (child.children) listToExplore.push(...child.children);
+    // Not push(...children): a spread call overflows the stack on large groups
+    for (const grandchild of child.children || []) {
+      listToExplore.push(grandchild);
+    }
   }
 
   return idIndex;

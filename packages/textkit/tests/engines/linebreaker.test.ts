@@ -355,6 +355,26 @@ describe('linebreaker', () => {
     ]);
   });
 
+  test('should not squeeze left-aligned lines wider than the available width', () => {
+    // "aaaa bbbb" is 51 wide (8 chars * 6 + 1 space * 3) for a width of 50.
+    // Ragged text must wrap instead of shrinking the space to fit.
+    const syllables = ['aaaa', ' ', 'bbbb', ' ', 'cc'];
+    const attributedString = createAttributedString('left', syllables);
+
+    const result = linebreaker(attributedString, [50]);
+
+    expect(result.map((line) => line.string)).toEqual(['aaaa ', 'bbbb cc']);
+  });
+
+  test('should still shrink spaces to fit justified lines', () => {
+    const syllables = ['aaaa', ' ', 'bbbb', ' ', 'cc'];
+    const attributedString = createAttributedString('justify', syllables);
+
+    const result = linebreaker(attributedString, [50]);
+
+    expect(result.map((line) => line.string)).toEqual(['aaaa bbbb ', 'cc']);
+  });
+
   test('should preserve breaks with variable line widths', () => {
     const syllables =
       'alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu'

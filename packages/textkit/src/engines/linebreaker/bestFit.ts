@@ -23,24 +23,31 @@ const getNextBreakpoint = (
   const sum = { width: 0, stretch: 0, shrink: 0 };
   const lineLength = widths[Math.min(lineNumber, widths.length - 1)];
 
+  // A line broken at a glue node doesn't include that glue's width. This is
+  // only applied to glue that can't shrink (non-justified text), so the
+  // output for justified text is unchanged.
+  const lineWidthAt = (node: Node) =>
+    node.type === 'glue' && !node.shrink ? sum.width - node.width : sum.width;
+
   const calculateRatio = (node: Node) => {
     const stretch = 'stretch' in node ? node.stretch : null;
+    const width = lineWidthAt(node);
 
-    if (sum.width < lineLength) {
+    if (width < lineLength) {
       if (!stretch) return INFINITY;
 
       return sum.stretch - stretch > 0
-        ? (lineLength - sum.width) / sum.stretch
+        ? (lineLength - width) / sum.stretch
         : INFINITY;
     }
 
     const shrink = 'shrink' in node ? node.shrink : null;
 
-    if (sum.width > lineLength) {
+    if (width > lineLength) {
       if (!shrink) return INFINITY;
 
       return sum.shrink - shrink > 0
-        ? (lineLength - sum.width) / sum.shrink
+        ? (lineLength - width) / sum.shrink
         : INFINITY;
     }
 
@@ -66,7 +73,7 @@ const getNextBreakpoint = (
     hyphenWidth =
       potentialEndOfLine.type === 'penalty' ? potentialEndOfLine.width : 0;
 
-    if (sum.width - sum.shrink + hyphenWidth > lineLength) {
+    if (lineWidthAt(node) - sum.shrink + hyphenWidth > lineLength) {
       if (position === null) {
         let j = i === 0 ? i + 1 : i;
 

@@ -169,6 +169,8 @@ const hyphenationCallback = (word) => {
 Font.registerHyphenationCallback(hyphenationCallback);
 ```
 
+Parts can also say whether a hyphen is added when the line breaks after them. See [breaking without a hyphen](/docs/v4/advanced/hyphenation#breaking-without-a-hyphen).
+
 To hyphenate a language other than the default `en-us`, register a `syllables` function from [@react-pdf/hyphenate](https://github.com/diegomura/react-pdf/tree/master/packages/hyphenate):
 
 ```jsx

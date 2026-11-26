@@ -1,8 +1,16 @@
 import fromFragments from '../attributedString/fromFragments';
 import { Engines } from '../engines';
-import { AttributedString, LayoutOptions } from '../types';
+import {
+  AttributedString,
+  HyphenatedWord,
+  LayoutOptions,
+  HyphenatedPart,
+} from '../types';
 
 const SOFT_HYPHEN = '\u00ad';
+
+// Scripts that wrap between any two characters and never take a hyphen
+const UNHYPHENATED_SCRIPTS = ['Han', 'Hiragana', 'Katakana', 'Bopomofo'];
 
 /**
  * Default word hyphenation engine used when no one provided.
@@ -13,15 +21,58 @@ const SOFT_HYPHEN = '\u00ad';
  */
 const defaultHyphenate = (word: string) => [word];
 
+const IDEOGRAPH = UNHYPHENATED_SCRIPTS.map((s) => `\\p{sc=${s}}`).join('');
+
+// Breaks only before an ideograph, so numbers, marks and closing punctuation
+// stay attached to the ideograph they follow
+const IDEOGRAPH_SEGMENT = new RegExp(
+  `[^${IDEOGRAPH}]*[${IDEOGRAPH}][^${IDEOGRAPH}]*|[^${IDEOGRAPH}]+`,
+  'gu',
+);
+
+/**
+ * Split word into break opportunities between ideographs
+ *
+ * @param word
+ * @returns Word parts
+ */
+const splitIdeographs = (word: string) => word.match(IDEOGRAPH_SEGMENT) || [];
+
 /**
  * Remove soft hyphens from word
  *
- * @param word
  * @returns Word without soft hyphens
+ * @param part
  */
-const removeSoftHyphens = (word: string) => {
-  return word.replaceAll(SOFT_HYPHEN, '');
+const removeSoftHyphens = (part: HyphenatedPart) => {
+  part.string = part.string.replaceAll(SOFT_HYPHEN, '');
+  return part;
 };
+
+/**
+ * Coerce hyphenation callback output into parts.
+ * Whitespace and parts already ending in a hyphen don't get one, and only a
+ * dash is supported for now, so any explicit value other than null is a dash.
+ *
+ * @param hyphenatedWord
+ * @param defaultHyphen
+ */
+const normalizeHyphenatedWord = (
+  hyphenatedWord: HyphenatedWord,
+  defaultHyphen: '-' | null,
+): HyphenatedPart[] =>
+  hyphenatedWord.map((part) => {
+    const { string, hyphen } =
+      typeof part === 'string' ? { string: part, hyphen: undefined } : part;
+
+    if (string.trim() === '') return { string, hyphen: null };
+
+    if (hyphen === undefined) {
+      return { string, hyphen: string.endsWith('-') ? null : defaultHyphen };
+    }
+
+    return { string, hyphen: hyphen === null ? null : '-' };
+  });
 
 /**
  * Wrap words of attribute string
@@ -43,14 +94,19 @@ const wrapWords = (
 
     const builtinHyphenate = engines.wordHyphenation?.() || defaultHyphenate;
 
-    const hyphenate = options.hyphenationCallback || builtinHyphenate;
-
     let offset = 0;
 
     for (let i = 0; i < attributedString.runs.length; i += 1) {
       let string = '';
 
       const run = attributedString.runs[i];
+
+      const unhyphenated = UNHYPHENATED_SCRIPTS.includes(
+        run.attributes.script as string,
+      );
+
+      const fallback = unhyphenated ? splitIdeographs : builtinHyphenate;
+      const hyphenate = options.hyphenationCallback || fallback;
 
       const words = attributedString.string
         .slice(run.start, run.end)
@@ -59,10 +115,13 @@ const wrapWords = (
 
       for (let j = 0; j < words.length; j += 1) {
         const word = words[j];
-        const parts = hyphenate(word, builtinHyphenate).map(removeSoftHyphens);
+        const parts = normalizeHyphenatedWord(
+          hyphenate(word, fallback),
+          unhyphenated ? null : '-',
+        ).map(removeSoftHyphens);
 
         syllables.push(...parts);
-        string += parts.join('');
+        string += parts.map((part) => part.string).join('');
       }
 
       // Modify run start and end based on removed soft hyphens.

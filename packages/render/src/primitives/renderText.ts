@@ -92,8 +92,10 @@ const renderRun = (ctx: Context, run: Run) => {
 
   ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
 
+  const rtl = (run.attributes.bidiLevel || 0) % 2 === 1;
+
   try {
-    renderGlyphs(ctx, glyphs, run.positions!, 0, 0);
+    renderGlyphs(ctx, glyphs, run.positions!, 0, 0, rtl);
   } catch (error) {
     console.log(error);
   }

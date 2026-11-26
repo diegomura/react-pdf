@@ -104,12 +104,12 @@ describe('fallback weights', () => {
     // As SVG attributes give them, e.g. <text font-weight="700">
     const regular = fontStore.getFont({
       fontFamily: 'Roboto',
-      fontWeight: '400' as any,
+      fontWeight: '400',
     });
 
     const bold = fontStore.getFont({
       fontFamily: 'Roboto',
-      fontWeight: '700' as any,
+      fontWeight: '700',
     });
 
     expect(regular?.src).toBe('https://example.com/Roboto-normal-400.ttf');

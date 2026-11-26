@@ -1,7 +1,7 @@
 import FontSource from './font-source';
 import { FontDescriptor, FontWeight, SingleLoad } from './types';
 
-const FONT_WEIGHTS = {
+const FONT_WEIGHTS: Record<string, number> = {
   thin: 100,
   hairline: 100,
   ultralight: 200,

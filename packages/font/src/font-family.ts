@@ -18,7 +18,6 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-// SVG attributes give numeric weights as strings, e.g. font-weight="700"
 const resolveFontWeight = (value: FontWeight): number => {
   return typeof value === 'string'
     ? FONT_WEIGHTS[value] ?? Number(value)

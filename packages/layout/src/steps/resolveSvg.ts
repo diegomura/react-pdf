@@ -353,7 +353,6 @@ const buildXLinksIndex = (node: SafeSvgNode) => {
       idIndex[child.props.id] = child;
     }
 
-    // Not push(...children): a spread call overflows the stack on large groups
     for (const grandchild of child.children || []) {
       listToExplore.push(grandchild);
     }

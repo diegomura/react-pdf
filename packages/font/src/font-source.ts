@@ -61,7 +61,7 @@ class FontSource {
     let data = null;
 
     if (STANDARD_FONTS.includes(this.src)) {
-      data = new StandardFont(this.src);
+      data = await StandardFont.open(this.src);
     } else if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
       const uint8Array = new Uint8Array(

@@ -1,43 +1,15 @@
-// @ts-expect-error ts being silly
-import PDFDocument, { registerStdFonts } from 'pdfkit';
-import Courier from 'pdfkit/standard-fonts/Courier';
-import CourierBold from 'pdfkit/standard-fonts/CourierBold';
-import CourierBoldOblique from 'pdfkit/standard-fonts/CourierBoldOblique';
-import CourierOblique from 'pdfkit/standard-fonts/CourierOblique';
-import Helvetica from 'pdfkit/standard-fonts/Helvetica';
-import HelveticaBold from 'pdfkit/standard-fonts/HelveticaBold';
-import HelveticaBoldOblique from 'pdfkit/standard-fonts/HelveticaBoldOblique';
-import HelveticaOblique from 'pdfkit/standard-fonts/HelveticaOblique';
-import SymbolFont from 'pdfkit/standard-fonts/Symbol';
-import TimesBold from 'pdfkit/standard-fonts/TimesBold';
-import TimesBoldItalic from 'pdfkit/standard-fonts/TimesBoldItalic';
-import TimesItalic from 'pdfkit/standard-fonts/TimesItalic';
-import TimesRoman from 'pdfkit/standard-fonts/TimesRoman';
-import ZapfDingbats from 'pdfkit/standard-fonts/ZapfDingbats';
+import PDFDocument from 'pdfkit';
+import * as pdfkit from 'pdfkit';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
 
-// The browser build of pdfkit ships without font metrics so consumers can pick
-// what they bundle. react-pdf resolves standard fonts by name at render time,
-// so it needs all of them. The node build registers them itself.
-if (BROWSER) {
-  registerStdFonts(
-    Courier,
-    CourierBold,
-    CourierBoldOblique,
-    CourierOblique,
-    Helvetica,
-    HelveticaBold,
-    HelveticaBoldOblique,
-    HelveticaOblique,
-    SymbolFont,
-    TimesBold,
-    TimesBoldItalic,
-    TimesItalic,
-    TimesRoman,
-    ZapfDingbats,
-  );
-}
+// pdfkit's Node build exports registerStdFonts from the release that carries
+// foliojs/pdfkit#1802 on; its browser build always has. Without it, the Node
+// build reads each font's metrics from a file beside its own module on first
+// use, which works as long as pdfkit sits in its own package directory.
+const registerStdFonts = (
+  pdfkit as { registerStdFonts?: (...fonts: unknown[]) => void }
+).registerStdFonts;
 
 export const STANDARD_FONTS = [
   'Courier',
@@ -54,11 +26,64 @@ export const STANDARD_FONTS = [
   'Times-BoldItalic',
 ];
 
+// pdfkit ships its standard font metrics as separate modules. Its Node build
+// reads them from a file beside its own built module on first use, which a
+// bundler cannot follow: inlined into another file, pdfkit looks next to that
+// file and finds nothing. Its browser build ships no metrics at all. Loading
+// them here through a dynamic import with a static specifier keeps them lazy,
+// so only the faces a document uses are read, and lets a bundler carry them
+// along, in both builds alike.
+const STANDARD_FONT_LOADERS: Record<
+  string,
+  () => Promise<{ default: unknown }>
+> = {
+  Courier: () => import('pdfkit/standard-fonts/Courier'),
+  'Courier-Bold': () => import('pdfkit/standard-fonts/CourierBold'),
+  'Courier-Oblique': () => import('pdfkit/standard-fonts/CourierOblique'),
+  'Courier-BoldOblique': () =>
+    import('pdfkit/standard-fonts/CourierBoldOblique'),
+  Helvetica: () => import('pdfkit/standard-fonts/Helvetica'),
+  'Helvetica-Bold': () => import('pdfkit/standard-fonts/HelveticaBold'),
+  'Helvetica-Oblique': () => import('pdfkit/standard-fonts/HelveticaOblique'),
+  'Helvetica-BoldOblique': () =>
+    import('pdfkit/standard-fonts/HelveticaBoldOblique'),
+  'Times-Roman': () => import('pdfkit/standard-fonts/TimesRoman'),
+  'Times-Bold': () => import('pdfkit/standard-fonts/TimesBold'),
+  'Times-Italic': () => import('pdfkit/standard-fonts/TimesItalic'),
+  'Times-BoldItalic': () => import('pdfkit/standard-fonts/TimesBoldItalic'),
+};
+
+const standardFontLoads = new Map<string, Promise<void>>();
+
+const loadStandardFont = (name: string): Promise<void> => {
+  if (!registerStdFonts) return Promise.resolve();
+
+  let load = standardFontLoads.get(name);
+
+  if (!load) {
+    load = STANDARD_FONT_LOADERS[name]()
+      .then((module) => {
+        registerStdFonts(module.default);
+      })
+      .catch((error) => {
+        standardFontLoads.delete(name);
+        throw error;
+      });
+    standardFontLoads.set(name, load);
+  }
+
+  return load;
+};
+
 // Create a shared lightweight document for accessing standard font instances.
 // Standard fonts are created once and cached, so this is negligible overhead.
 let _sharedDoc: any = null;
 
-const openStandardFont = (src: string) => {
+const openStandardFont = async (src: string) => {
+  // Every pdfkit document opens Helvetica as it is created, whichever face is
+  // asked for, so it has to be registered before the shared document is.
+  await Promise.all([loadStandardFont('Helvetica'), loadStandardFont(src)]);
+
   if (!_sharedDoc) {
     _sharedDoc = new PDFDocument({ autoFirstPage: false });
   }
@@ -87,7 +112,11 @@ class StandardFont implements Font {
   availableFeatures: string[];
   type: any;
 
-  constructor(src: string) {
+  static async open(src: string): Promise<StandardFont> {
+    return new StandardFont(src, await openStandardFont(src));
+  }
+
+  constructor(src: string, font: any) {
     this.name = src;
     this.fullName = src;
     this.familyName = src;
@@ -106,7 +135,7 @@ class StandardFont implements Font {
     this.numGlyphs = 0;
     this.characterSet = [];
 
-    this.src = openStandardFont(src);
+    this.src = font;
   }
 
   encode(str: string) {

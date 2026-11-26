@@ -287,7 +287,7 @@ describe('wrapWords', () => {
   describe('with custom hyphenation callback', () => {
     const customHyphenation = (word, original) => {
       return {
-        parts: original(word).parts.flatMap((part) => part.split(/(?<=[./])/g)),
+        parts: original(word).flatMap((part) => part.split(/(?<=[./])/g)),
         hyphen: '-',
       };
     };
@@ -356,7 +356,7 @@ describe('wrapWords', () => {
 
     test('should be able to turn off hyphenation', () => {
       const hyphenationCallback = (word, original) => {
-        return { parts: original(word).parts, hyphen: null };
+        return { parts: original(word), hyphen: null };
       };
       const result = customizedInstance(hyphenationCallback)({
         string: 'Lorem ipsum',
@@ -379,7 +379,7 @@ describe('wrapWords', () => {
 
     test('should tolerate missing hyphen specification', () => {
       const hyphenationCallback = (word, original) => {
-        return { parts: original(word).parts };
+        return { parts: original(word) };
       };
       const result = customizedInstance(hyphenationCallback)({
         string: 'Lorem ipsum',
@@ -578,6 +578,80 @@ describe('wrapWords', () => {
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: null },
         { string: 'sum', hyphen: null },
+      ]);
+    });
+  });
+
+  describe('with ideographic scripts', () => {
+    const hanString = (string: string) => ({
+      string,
+      runs: [{ start: 0, end: string.length, attributes: { script: 'Han' } }],
+    });
+
+    test('should break between ideographs without hyphens by default', () => {
+      const result = builtinInstance(hanString('日本語'));
+
+      expect(result.syllables).toEqual([
+        { string: '日', hyphen: null },
+        { string: '本', hyphen: null },
+        { string: '語', hyphen: null },
+      ]);
+    });
+
+    test('should keep numbers and closing punctuation with the previous ideograph', () => {
+      const result = builtinInstance(hanString('東京。2024年'));
+
+      expect(result.syllables.map((part) => part.string)).toEqual([
+        '東',
+        '京。2024',
+        '年',
+      ]);
+    });
+
+    test('should not hyphenate plain strings from custom callbacks', () => {
+      const result = customizedInstance((word: string) => Array.from(word))(
+        hanString('日本語'),
+      );
+
+      expect(result.syllables).toEqual([
+        { string: '日', hyphen: null },
+        { string: '本', hyphen: null },
+        { string: '語', hyphen: null },
+      ]);
+    });
+
+    test('should keep explicit hyphens from custom callbacks', () => {
+      const result = customizedInstance(() => [
+        { string: '日', hyphen: '-' },
+        { string: '本', hyphen: '-' },
+      ])(hanString('日本'));
+
+      expect(result.syllables).toEqual([
+        { string: '日', hyphen: '-' },
+        { string: '本', hyphen: null },
+      ]);
+    });
+
+    test('should pass the ideograph splitter as fallback', () => {
+      const result = customizedInstance(
+        (word: string, fallback: (word: string) => string[]) => fallback(word),
+      )(hanString('日本'));
+
+      expect(result.syllables).toEqual([
+        { string: '日', hyphen: null },
+        { string: '本', hyphen: null },
+      ]);
+    });
+
+    test('should still hyphenate latin runs', () => {
+      const result = builtinInstance({
+        string: 'something',
+        runs: [{ start: 0, end: 9, attributes: { script: 'Latin' } }],
+      });
+
+      expect(result.syllables).toEqual([
+        { string: 'some', hyphen: '-' },
+        { string: 'thing', hyphen: null },
       ]);
     });
   });

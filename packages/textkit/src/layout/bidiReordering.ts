@@ -1,99 +1,89 @@
-import bidiFactory from 'bidi-js';
-import { repeat } from '@react-pdf/fns';
-
-import stringLength from '../attributedString/length';
+import resolveStringIndices from '../string-indices/resolve';
+import resolveGlyphIndices from '../glyph-indices/resolve';
 import { AttributedString, Paragraph, Run } from '../types';
 
-const bidi = bidiFactory();
+/**
+ * Order runs for visual display, applying UAX #9 rule L2: from the highest
+ * bidi level down to level 1, reverse every contiguous sequence of runs at
+ * that level or above.
+ *
+ * @param runs - Runs
+ * @returns Run indices in visual order
+ */
+const reorderRuns = (runs: Run[]) => {
+  const levels = runs.map((run) => run.attributes.bidiLevel || 0);
+  const order = runs.map((_, index) => index);
+  const maxLevel = Math.max(...levels);
 
-const getBidiLevels = (runs: Run[]) => {
-  return runs.reduce((acc, run) => {
-    const length = run.end - run.start;
-    const levels = repeat(run.attributes.bidiLevel, length);
-    return acc.concat(levels);
-  }, []);
-};
+  for (let level = maxLevel; level >= 1; level -= 1) {
+    let start = 0;
 
-const getReorderedIndices = (string: string, segments) => {
-  // Fill an array with indices
-  const indices = [];
-  for (let i = 0; i < string.length; i += 1) {
-    indices[i] = i;
-  }
-  // Reverse each segment in order
-  segments.forEach(([start, end]) => {
-    const slice = indices.slice(start, end + 1);
-    for (let i = slice.length - 1; i >= 0; i -= 1) {
-      indices[end - i] = slice[i];
-    }
-  });
-
-  return indices;
-};
-
-const getItemAtIndex = (runs: Run[], objectName: string, index: number) => {
-  for (let i = 0; i < runs.length; i += 1) {
-    const run = runs[i];
-    const updatedIndex = run.glyphIndices[index - run.start];
-    if (index >= run.start && index < run.end) {
-      return run[objectName][updatedIndex];
-    }
-  }
-
-  throw new Error(`index ${index} out of range`);
-};
-
-const reorderLine = (line: AttributedString) => {
-  const levels = getBidiLevels(line.runs);
-  const direction = line.runs[0]?.attributes.direction;
-  const level = direction === 'rtl' ? 1 : 0;
-  const end = stringLength(line) - 1;
-  const paragraphs = [{ start: 0, end, level }];
-  const embeddingLevels = { paragraphs, levels };
-
-  const segments = bidi.getReorderSegments(line.string, embeddingLevels);
-
-  // No need for bidi reordering
-  if (segments.length === 0) return line;
-
-  const indices = getReorderedIndices(line.string, segments);
-
-  const updatedString = bidi.getReorderedString(line.string, embeddingLevels);
-
-  const updatedRuns = line.runs.map((run) => {
-    const selectedIndices = indices.slice(run.start, run.end);
-    const updatedGlyphs = [];
-    const updatedPositions = [];
-
-    const addedGlyphs = new Set();
-
-    for (let i = 0; i < selectedIndices.length; i += 1) {
-      const index = selectedIndices[i];
-
-      const glyph = getItemAtIndex(line.runs, 'glyphs', index);
-
-      if (addedGlyphs.has(glyph.id)) continue;
-
-      updatedGlyphs.push(glyph);
-      updatedPositions.push(getItemAtIndex(line.runs, 'positions', index));
-
-      if (glyph.isLigature) {
-        addedGlyphs.add(glyph.id);
+    while (start < order.length) {
+      if (levels[order[start]] < level) {
+        start += 1;
+        continue;
       }
-    }
 
-    return {
-      ...run,
-      glyphs: updatedGlyphs,
-      positions: updatedPositions,
-    };
-  });
+      let end = start + 1;
+      while (end < order.length && levels[order[end]] >= level) end += 1;
+
+      order.splice(start, end - start, ...order.slice(start, end).reverse());
+      start = end;
+    }
+  }
+
+  return order;
+};
+
+/**
+ * Reverse the glyphs and characters of a right to left run. Glyphs stay inside
+ * their own run, so run attributes are never mixed between runs.
+ *
+ * @param run - Run
+ * @param string - Run substring
+ * @returns Reversed run and string
+ */
+const reverseRun = (run: Run, string: string) => {
+  const glyphs = [...(run.glyphs || [])].reverse();
+  const positions = [...(run.positions || [])].reverse();
 
   return {
-    box: line.box,
-    runs: updatedRuns,
-    string: updatedString,
-  } as AttributedString;
+    run: {
+      ...run,
+      glyphs,
+      positions,
+      stringIndices: resolveStringIndices(glyphs),
+      glyphIndices: resolveGlyphIndices(glyphs),
+    },
+    string: Array.from(string).reverse().join(''),
+  };
+};
+
+const reorderLine = (line: AttributedString): AttributedString => {
+  if (line.runs.length === 0) return line;
+
+  const levels = line.runs.map((run) => run.attributes.bidiLevel || 0);
+
+  // No need for bidi reordering
+  if (Math.max(...levels) === 0) return line;
+
+  let offset = 0;
+  let string = '';
+
+  const runs = reorderRuns(line.runs).map((index) => {
+    const run = line.runs[index];
+    const runString = line.string.slice(run.start, run.end);
+    const reversed = levels[index] % 2 === 1 && reverseRun(run, runString);
+
+    const start = offset;
+    offset += run.end - run.start;
+
+    string += reversed ? reversed.string : runString;
+
+    return { ...(reversed ? reversed.run : run), start, end: offset };
+  });
+
+  return { ...line, runs, string };
 };
 
 const reorderParagraph = (paragraph: Paragraph) => paragraph.map(reorderLine);

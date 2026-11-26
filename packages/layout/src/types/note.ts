@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 import { NodeProps } from './base';
 import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
@@ -7,7 +7,7 @@ import { SafeTextInstanceNode, TextInstanceNode } from './text-instance';
 export type NoteNode = {
   type: typeof P.Note;
   props: NodeProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: never;
   origin?: never;
   yogaNode?: never;
@@ -16,5 +16,6 @@ export type NoteNode = {
 
 export type SafeNoteNode = Omit<NoteNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children?: SafeTextInstanceNode[];
 };

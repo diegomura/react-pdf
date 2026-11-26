@@ -1,6 +1,7 @@
 import * as P from '@react-pdf/primitives';
 import { ClipPathNode, SafeClipPathNode } from './clip-path';
 import { LinearGradientNode, SafeLinearGradientNode } from './linear-gradient';
+import { MarkerNode, SafeMarkerNode } from './marker';
 import { RadialGradientNode, SafeRadialGradientNode } from './radial-gradient';
 
 export type DefsNode = {
@@ -10,16 +11,23 @@ export type DefsNode = {
   box?: never;
   origin?: never;
   yogaNode?: never;
-  children?: (ClipPathNode | LinearGradientNode | RadialGradientNode)[];
+  children?: (
+    | ClipPathNode
+    | LinearGradientNode
+    | RadialGradientNode
+    | MarkerNode
+  )[];
 };
 
 export type Defs = Record<string, DefsNode['children'][number]>;
 
 export type SafeDefsNode = Omit<DefsNode, 'children'> & {
+  wasSplit: boolean;
   children?: (
     | SafeClipPathNode
     | SafeLinearGradientNode
     | SafeRadialGradientNode
+    | SafeMarkerNode
   )[];
 };
 

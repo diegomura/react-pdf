@@ -2,6 +2,7 @@ import {
   Svg,
   G,
   Polygon,
+  Polyline,
   Rect,
   Circle,
   Path,
@@ -11,6 +12,7 @@ import {
   ClipPath,
   LinearGradient,
   RadialGradient,
+  Marker,
   Stop,
   Line,
 } from '@react-pdf/renderer';
@@ -813,6 +815,60 @@ export const Gradients = () => (
   </Svg>
 );
 
+export const StrokeGradients = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Defs>
+      <LinearGradient id="myLinearGradient">
+        <Stop offset="5%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </LinearGradient>
+
+      <RadialGradient id="myRadialGradient">
+        <Stop offset="50%" stopColor="gold" />
+        <Stop offset="100%" stopColor="red" />
+      </RadialGradient>
+    </Defs>
+
+    <Circle
+      cx="5"
+      cy="5"
+      r="3"
+      fill="none"
+      strokeWidth="2"
+      stroke="url('#myLinearGradient')"
+    />
+    <Circle
+      cx="5"
+      cy="14"
+      r="3"
+      fill="none"
+      strokeWidth="2"
+      stroke="url('#myRadialGradient')"
+    />
+  </Svg>
+);
+
+export const GradientsMultipleDefs = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Defs>
+      <LinearGradient id="myLinearGradient">
+        <Stop offset="5%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </LinearGradient>
+    </Defs>
+
+    <Defs>
+      <RadialGradient id="myRadialGradient">
+        <Stop offset="10%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </RadialGradient>
+    </Defs>
+
+    <Circle cx="5" cy="5" r="4" fill="url('#myLinearGradient')" />
+    <Circle cx="5" cy="14" r="4" fill="url('#myRadialGradient')" />
+  </Svg>
+);
+
 export const Dasharrays = () => (
   <Svg viewBox="0 0 10 20" width="100">
     <Line
@@ -831,6 +887,114 @@ export const Dasharrays = () => (
       stroke="red"
       strokeWidth="1"
       strokeDasharray="2"
+    />
+  </Svg>
+);
+
+export const MarkerArrowLine = () => (
+  <Svg width={200} height={60} viewBox="0 0 200 60">
+    <Defs>
+      <Marker
+        id="arrowhead"
+        markerWidth="10"
+        markerHeight="10"
+        refX="8"
+        refY="5"
+        orient="auto"
+        markerUnits="userSpaceOnUse"
+      >
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#333" />
+      </Marker>
+    </Defs>
+    <Line
+      x1="10"
+      y1="30"
+      x2="170"
+      y2="30"
+      stroke="#333"
+      strokeWidth="2"
+      markerEnd="url(#arrowhead)"
+    />
+  </Svg>
+);
+
+export const MarkerDotPolyline = () => (
+  <Svg width={200} height={80} viewBox="0 0 200 80">
+    <Defs>
+      <Marker
+        id="dot"
+        markerWidth="8"
+        markerHeight="8"
+        refX="4"
+        refY="4"
+        markerUnits="userSpaceOnUse"
+      >
+        <Circle cx="4" cy="4" r="3" fill="#e74c3c" />
+      </Marker>
+    </Defs>
+    <Polyline
+      points="20,60 50,20 80,50 110,15 140,45 170,10"
+      fill="none"
+      stroke="#3498db"
+      strokeWidth="2"
+      markerStart="url(#dot)"
+      markerMid="url(#dot)"
+      markerEnd="url(#dot)"
+    />
+  </Svg>
+);
+
+export const MarkerAutoPath = () => (
+  <Svg width={200} height={100} viewBox="0 0 200 100">
+    <Defs>
+      <Marker
+        id="arrow-auto"
+        markerWidth="10"
+        markerHeight="10"
+        refX="8"
+        refY="5"
+        orient="auto"
+        markerUnits="userSpaceOnUse"
+      >
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#2ecc71" />
+      </Marker>
+    </Defs>
+    <Path
+      d="M10,50 C40,10 80,90 120,50 C140,30 160,70 190,50"
+      fill="none"
+      stroke="#2ecc71"
+      strokeWidth="2"
+      markerStart="url(#arrow-auto)"
+      markerMid="url(#arrow-auto)"
+      markerEnd="url(#arrow-auto)"
+    />
+  </Svg>
+);
+
+export const MarkerDoubleArrow = () => (
+  <Svg width={200} height={60} viewBox="0 0 200 60">
+    <Defs>
+      <Marker
+        id="arrow-reverse"
+        markerWidth="10"
+        markerHeight="10"
+        refX="8"
+        refY="5"
+        orient="auto-start-reverse"
+        markerUnits="userSpaceOnUse"
+      >
+        <Path d="M0,0 L10,5 L0,10 Z" fill="#9b59b6" />
+      </Marker>
+    </Defs>
+    <Line
+      x1="20"
+      y1="30"
+      x2="180"
+      y2="30"
+      stroke="#9b59b6"
+      strokeWidth="2"
+      markerStart="url(#arrow-reverse)"
+      markerEnd="url(#arrow-reverse)"
     />
   </Svg>
 );

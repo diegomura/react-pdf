@@ -1,0 +1,415 @@
+---
+title: "Advanced"
+---
+
+## Page wrapping
+
+Semantically, the `<Page />` component represents a single page in the rendered document. However, there are scenarios in which you would expect to have page breaks whenever the page contents exceed their limits, specially when handling big chunks of text. After all, PDFs are paged documents. React-pdf has a build-in wrapping engine that is enabled by default, so you can start creating paged documents right out of the box. If that's not what you need, you can disable this very easily by doing:
+
+```jsx
+import { Document, Page } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page wrap={false}>
+      // something pretty here
+    </Page>
+  </Document>
+);
+```
+
+<Example name="page-wrap" />
+
+### Breakable vs. unbreakable components
+
+We can identify two different types of components based on how they wrap:
+
+- `Breakable components` try to fill up the remaining space before jumping into a new page. By default, this group is composed by _View_, _Text_ and _Link_ components
+- `Unbreakable components` are indivisible, therefore if there isn't enough space for them they just get rendered in the following page. In this group by default we only find _Image_.
+
+<Example name="breakable-unbreakable" />
+
+### Disabling component wrapping
+
+React-pdf also enables you to transform _breakable_ elements into their opposite, forcing them to always render in a new page. This can be done by simply setting the prop `wrap={false}` to any valid component:
+
+```jsx
+import { Document, Page, View } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page wrap>
+      <View wrap={false}>
+        // fancy things here
+      </View>
+    </Page>
+  </Document>
+);
+```
+
+Now, if the `<View />` component happens to be at the bottom of the page without enough space, it will be rendered in a new page as it would be _unbreakable_.
+
+<Example name="disable-wrapping" />
+
+### Page breaks
+
+Page breaks are useful for separating concerns inside the document, or ensuring that a certain element will always show up on the top of the page.
+
+Adding page breaks in react-pdf is very simple: all you have to do is add the `break` prop to any primitive. This will force the wrapping algorithm to start a new page when rendering that element.
+
+```jsx
+import { Document, Page, Text } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page wrap>
+      <Text break>
+        // fancy things here
+      </Text>
+    </Page>
+  </Document>
+);
+```
+
+<Example name="page-breaks" />
+
+### Fixed components
+
+There is still another scenario we didn't talk about yet: what if you want to wrap pages but also be able to render a component on _all_ pages? This is where the `fixed` prop comes into play.
+
+```jsx
+import { Document, Page, View } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page wrap>
+      <View fixed>
+        // fancy things here
+      </View>
+    </Page>
+  </Document>
+);
+```
+
+Just by that, the `<View />` component will be placed repeatedly throughout all pages.
+
+> **Protip:** This feature can be very handy for creating nice headers, footers or page numbers, among other use cases. You can even absolutely position fixed elements on your page to create more complex layouts!
+
+<Example />
+
+---
+## Bookmarks `v2.2.0`
+
+Bookmarks allow the user to navigate interactively from one part of the document to another. They form a tree-structured hierarchy of items, which serve as a visual table of contents to display the document’s structure to the user.
+
+A bookmark can be defined by the `bookmark` prop on any of the supported components ([see more](/docs/v2/components)), and can take the form of either a _String_ or a _Bookmark_ type
+
+```js
+import { Document, Page, Text } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page bookmark="Harry Potter and the Philosopher's Stone">
+     <Text bookmark={{ title: "Chapter 1: The Boy Who Lived", fit: true }}>{...}</Text>
+    </Page>
+  </Document>
+);
+```
+
+The example above will create a table of content of 2 nested items: The parent will be the book's name, and the child the chapter's name. You can nest as many bookmarks as you want.
+
+#### Bookmark type
+
+Object that matches the following schema:
+
+| Value                 |                                     Description                                     |      Type |
+| --------------------- | :---------------------------------------------------------------------------------: | --------: |
+| title                 |                                   Bookmark value                                    |  _String_ |
+| top _(Optional)_      |  Y coodinate from the document top edge where user get's redirected. Defaults to 0  |  _Number_ |
+| left _(Optional)_     |  X coodinate from the document top edge where user get's redirected. Defaults to 0  |  _Number_ |
+| zoom _(Optional)_     |                  Reader zoom value after clicking on the bookmark                   |  _Number_ |
+| fit _(Optional)_      |                       Redirect user to the start of the page                        | _Boolean_ |
+| expanded _(Optional)_ | Viewer should expand tree node in table of contents (not supported in some viewers) | _Boolean_ |
+
+---
+## On the fly rendering `Web only`
+
+There are some cases in which you may need to generate a document without showing it on screen. For those scenarios, react-pdf provides three different solutions:
+
+### Download link
+
+Is it possible that what you need is just a "Download" button. If that's the case, you can use `<PDFDownloadLink />` to easily create and download your document.
+
+```jsx
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
+
+const MyDoc = () => (
+  <Document>
+    <Page>
+      // My document data
+    </Page>
+  </Document>
+);
+
+const App = () => (
+  <div>
+    <PDFDownloadLink document={<MyDoc />} fileName="somename.pdf">
+      {({ blob, url, loading, error }) =>
+        loading ? 'Loading document...' : 'Download now!'
+      }
+    </PDFDownloadLink>
+  </div>
+);
+```
+
+> **Protip:** You still have access to blob's data if you need it.
+
+### Access blob data
+
+However, react-pdf does not stick to just download the document but also enables direct access to the document's blob data for any other possible use case. All you have to do is make use of `<BlobProvider />`.
+
+```jsx
+import { BlobProvider, Document, Page } from '@react-pdf/renderer';
+
+const MyDoc = (
+  <Document>
+    <Page>
+      // My document data
+    </Page>
+  </Document>
+);
+
+const App = () => (
+  <div>
+    <BlobProvider document={MyDoc}>
+      {({ blob, url, loading, error }) => {
+        // Do whatever you need with blob here
+        return <div>There's something going on on the fly</div>;
+      }}
+    </BlobProvider>
+  </div>
+);
+```
+
+You can also obtain the blob data imperatively, which may be useful if you are using react-pdf on a non-React frontend (web only).
+
+```jsx
+import { pdf, Document, Page } from '@react-pdf/renderer';
+
+const MyDoc = (
+  <Document>
+    <Page>
+      // My document data
+    </Page>
+  </Document>
+);
+
+const blob = pdf(MyDoc).toBlob();
+```
+
+### Using the usePDF hook
+
+React-pdf now ships a hook API that will give you direct access to the document data (such as blob or url state) as well as with an _update_ function to trigger document re-rendering. Since document re-computation can be an expensive operation, this hook is perfect solution for those cases in where you need a fine control over when this happens.
+
+```js
+import { usePDF, Document, Page } from '@react-pdf/renderer';
+
+const MyDoc = (
+  <Document>
+    <Page>
+      // My document data
+    </Page>
+  </Document>
+);
+
+const App = () => {
+  const [instance, updateInstance] = usePDF({ document: MyDoc });
+
+  if (instance.loading) return <div>Loading ...</div>;
+
+  if (instance.error) return <div>Something went wrong: {error}</div>;
+
+  return (
+    <a href={instance.url} download="test.pdf">
+      Download
+    </a>
+  );
+}
+```
+
+> **Protip:** You still have access to blob's data inside `instance.blob` if you need it
+
+---
+## Orphan & widow protection
+
+When you layout text, orphans and widows can make the difference between a _good_ document and a _great_ one. That's why react-pdf has a built-in orphan and widow protection that you can use right out of the box.
+
+But react-pdf does not reserve this protection just for text. You can adjust this protection to your convenience by just setting some props to **any react-pdf primitive**:
+
+| Prop name             |                                                     Description                                                      |      Type | Default |
+| --------------------- | :------------------------------------------------------------------------------------------------------------------: | --------: | ------: |
+| minPresenceAhead      |     Hint that no page wrapping should occur between all sibling elements following the element within _n_ points     | _Integer_ |       0 |
+| orphans _(text only)_ | Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container. | _Integer_ |       2 |
+| widows _(text only)_  |  Specifies the minimum number of lines in a text element that must be shown at the top of a page or its container.   | _Integer_ |       2 |
+
+> **Protip:** You can use this API to ensure that headings do not get rendered at the bottom of a page
+
+<Example name="orphans-and-widows" />
+
+---
+## Dynamic content
+
+With react-pdf, now it is possible to render dynamic text based on the context in which a certain element is being rendered. All you have to do is to pass a function to the `render` prop of the `<Text />` or `<View />` component. The result will be rendered inside the text block as a child.
+
+```jsx
+import { Document, Page } from '@react-pdf/renderer'
+
+const doc = () => (
+  <Document>
+    <Page wrap>
+      <Text render={({ pageNumber, totalPages }) => (
+        `${pageNumber} / ${totalPages}`
+      )} fixed />
+
+      <View render={({ pageNumber }) => (
+        pageNumber % 2 === 0 && (
+          <View style={{ background: 'red' }}>
+            <Text>I'm only visible in odd pages!</Text>
+          </View>
+        )
+      )} />
+    </Page>
+  </Document>
+);
+```
+
+### Available arguments
+
+| Name                          |                 Description                 |      Type |
+| ----------------------        | :-----------------------------------------: | --------: |
+| pageNumber                    |             Current page number             | _Integer_ |
+| totalPages `Text only`        | Total amount of pages in the final document | _Integer_ |
+| subPageNumber                 | Current subpage in the Page component       | _Integer_ |
+| subPageTotalPages `Text only` | Total amount of pages in the Page component | _Integer_ |
+
+Bear in mind that the `render` function is called twice for `<Text />` elements: once for layout on the page wrapping process, and another one after it's know how many pages the document will have.
+
+> **Protip:** Use this API in conjunction with fixed elements to render page number indicators
+
+<Example name="page-numbers" />
+
+---
+## Debugging
+
+React-pdf ships a built-in debugging system you can use whenever you have doubts about how elements are being laid out on the page. All you have to do is to set the `debug` prop to `true` on any valid primitive (except _Document_) and re-render the document to see the result on the screen.
+
+<Example />
+
+---
+## Hyphenation
+
+Hyphenation refers to the automated process of breaking words between lines to create a better visual consistency across a text block. This is a complex problem. It involves knowing about the language of the text, available space, ligatures, among other things.
+
+React-pdf internally implements the [Knuth and Plass line breaking algorithm](http://www.eprg.org/G53DOC/pdfs/knuth-plass-breaking.pdf) that produces the minimum amount of lines without compromising text legibility. By default it's setup to hyphenate english words.
+
+If you need more fine-grained control over how words break, you can pass your own callback and handle all that logic by yourself:
+
+```jsx
+import { Font } from '@react-pdf/renderer'
+
+const hyphenationCallback = (word) => {
+  // Return word syllables in an array
+}
+
+Font.registerHyphenationCallback(hyphenationCallback);
+```
+
+You can use the [default hyphenation callback](https://github.com/diegomura/react-pdf/blob/master/src/layout/linebreaker/formatter.js#L65) as a starting point.
+
+> **Protip:** If you don't want to hyphenate words at all, just provide a callback that returns the same words it receives. More information [here](/docs/v2/fonts#registerhyphenationcallback)
+
+<Example name="hyphenation-callback" />
+## Usage with Express.js `node only`
+
+```jsx
+import React from 'react';
+import ReactPDF from '@react-pdf/renderer';
+
+const pdfStream = await ReactPDF.renderToStream(<MyDocument />);
+res.setHeader('Content-Type', 'application/pdf');
+pdfStream.pipe(res);
+pdfStream.on('end', () => console.log('Done streaming, response sent.'));
+```
+## Webpack config `web only`
+
+React-pdf is built on top of [PDFKit](http://pdfkit.org/), which for browser usage requires a couple of node.js API shims.
+
+### Webpack 4
+
+If you use webpack you may need to include the following settings to your config:
+
+```json
+{
+  ...
+  node : {
+    module: 'empty',
+    dgram: 'empty',
+    dns: 'mock',
+    fs: 'empty',
+    http2: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+  }
+}
+```
+
+### Webpack 5
+
+Webpack 5 doesn't include node shims automatically anymore and we must
+opt-in to all shims we want. To do this we have to add a few
+dependencies to our project:
+
+```shell
+npm install process browserify-zlib stream-browserify util buffer assert
+
+# using yarn
+yarn add process browserify-zlib stream-browserify util buffer assert
+```
+
+after the modules are installed, we need to adjust our `webpack.config` file:
+
+```js
+const webpack = require("webpack");
+
+module.exports = {
+  resolve: {
+    fallback: {
+      module: "empty",
+      dgram: "empty",
+      dns: "mock",
+      fs: "empty",
+      http2: "empty",
+      net: "empty",
+      tls: "empty",
+      child_process: "empty",
+      process: require.resolve("process/browser"),
+      zlib: require.resolve("browserify-zlib"),
+      stream: require.resolve("stream-browserify"),
+      util: require.resolve("util"),
+      buffer: require.resolve("buffer"),
+      asset: require.resolve("assert"),
+    }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
+    }),
+  ],
+}
+```
+
+### Create React App
+
+If you are using _create-react-app_, those are already included.

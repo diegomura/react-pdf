@@ -68,4 +68,17 @@ interface EmojiSourceBuilder {
 
 export type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;
 
-export type HyphenationCallback = (word: string) => string[];
+export type HyphenatedPart = {
+  string: string;
+  hyphen?: '-' | null;
+};
+
+export type HyphenatedWord =
+  | string[]
+  | HyphenatedPart[]
+  | { parts: string[]; hyphen?: '-' | null };
+
+export type HyphenationCallback = (
+  word: string,
+  fallback: (word: string) => string[],
+) => HyphenatedWord;

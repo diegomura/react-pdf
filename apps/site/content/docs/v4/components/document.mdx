@@ -1,0 +1,84 @@
+---
+title: "Document"
+---
+
+This component represents the PDF document itself. It _must_ be the root of your tree element structure, and under no circumstances should it be used as child of another react-pdf component. In addition, it should only have children of type `<Page />`.
+
+<Usage />
+
+## Valid props
+
+| Prop name  |                               Description                               |                                      Type |       Default |
+|------------|:-----------------------------------------------------------------------:|------------------------------------------:|--------------:|
+| title      |               Sets title info on the document's metadata                |                                  _String_ |   _undefined_ |
+| author     |               Sets author info on the document's metadata               |                                  _String_ |   _undefined_ |
+| subject    |              Sets subject info on the document's metadata               |                                  _String_ |   _undefined_ |
+| keywords   |        Sets keywords associated info on the document's metadata         |                                  _String_ |   _undefined_ |
+| creator    |              Sets creator info on the document's metadata               |                                  _String_ | _"react-pdf"_ |
+| producer   |              Sets producer info on the document's metadata              |                                  _String_ | _"react-pdf"_ |
+| pdfVersion |                 Sets PDF version for generated document                 |                                  _String_ |       _"1.3"_ |
+| conformance | Produces PDF/A output with the given conformance level. [See more](/docs/v4/components/document#conformance-type) | [PDFConformance](/docs/v4/components/document#conformance-type) |   _undefined_ |
+| language   |                        Sets PDF default language                        |                                  _String_ |   _undefined_ |
+| pageMode   |       Specifying how the document should be displayed when opened       |     [PageMode](/docs/v4/components/document#pagemode-type) |     _useNone_ |
+| pageLayout |        This controls how (some) PDF viewers choose to show pages        | [PageLayout](/docs/v4/components/document#pagelayout-type) |  _singlePage_ |
+| creationDate | Sets the creation date on the document's metadata | _Date_ | _undefined_ |
+| modificationDate | Sets the modification date on the document's metadata | _Date_ | _undefined_ |
+| ownerPassword | Sets an owner password on the document. Owner password is required for setting permissions | _String_ | _undefined_ |
+| userPassword | Sets a user password on the document. When set, viewers will ask for the password before opening the file | _String_ | _undefined_ |
+| permissions | Defines document permissions. Requires `ownerPassword` to be set. [See more](/docs/v4/components/document#permissions-type) | [Permissions](/docs/v4/components/document#permissions-type) | _undefined_ |
+| onRender   | Callback after document renders. Receives document blob argument in web |                                _Function_ |   _undefined_ |
+
+### PageMode type
+
+`pageMode` prop can take one of the following values. Take into account some viewers might ignore this setting.
+
+| Value          |                                   Description                                    |
+|----------------|:--------------------------------------------------------------------------------:|
+| useNone        |             Neither document bookmarks nor thumbnail images visible              |
+| useOutlines    |                            Document bookmarks visible                            |
+| useThumbs      |                             Thumbnail images visible                             |
+| fullScreen     | Full-screen mode, with no menu bar, window controls, or any other window visible |
+| useOC          |                       Optional content group panel visible                       |
+| useAttachments |                            Attachments panel visible                             |
+
+### Conformance type
+
+`conformance` produces an archival PDF/A file: the document gets XMP conformance metadata and an sRGB OutputIntent, and `pdfVersion` defaults to what the chosen level requires (`1.4` for PDF/A-1, `1.7` for PDF/A-2 and PDF/A-3) unless you set it yourself.
+
+| Value      |               Description               |
+|------------|:---------------------------------------:|
+| PDF/A-1    |  Alias of `PDF/A-1b`, based on PDF 1.4  |
+| PDF/A-1b   |    PDF/A-1 level B conformance          |
+| PDF/A-2    |  Alias of `PDF/A-2b`, based on PDF 1.7  |
+| PDF/A-2b   |    PDF/A-2 level B conformance          |
+| PDF/A-3    |  Alias of `PDF/A-3b`, based on PDF 1.7  |
+| PDF/A-3b   |    PDF/A-3 level B conformance          |
+
+Only b-level (visual appearance) conformance is supported. PDF/A requires every font to be embedded, so register your own fonts with `Font.register` — documents using the built-in standard 14 fonts will not fully validate.
+
+### Permissions type
+
+`permissions` prop accepts an object with the following optional boolean fields. All default to `true` when an owner password is set without specifying permissions.
+
+| Value                  |                             Description                             |
+|------------------------|:-------------------------------------------------------------------:|
+| printing               |           Whether the user can print the document                   |
+| modifying              |           Whether the user can modify the document                  |
+| copying                |        Whether the user can copy text and images                    |
+| annotating             |       Whether the user can add or modify annotations                |
+| fillingForms           |           Whether the user can fill in form fields                  |
+| contentAccessibility   | Whether content can be extracted for accessibility purposes         |
+| documentAssembly       | Whether the user can assemble the document (insert, rotate, delete pages) |
+
+### PageLayout type
+
+`pageLayout` prop can take one of the following values. Take into account some viewers might ignore this setting.
+
+| Value          |                              Description                               |
+|----------------|:----------------------------------------------------------------------:|
+| singlePage     |                       Display one page at a time                       |
+| oneColumn      |                    Display the pages in one column                     |
+| twoColumnLeft  | Display the pages in two columns, with odd numbered pages on the left  |
+| twoColumnRight | Display the pages in two columns, with odd numbered pages on the right |
+| twoPageLeft    |  Display the pages two at a time, with odd-numbered pages on the left  |
+| twoPageRight   | Display the pages two at a time, with odd-numbered pages on the right  |

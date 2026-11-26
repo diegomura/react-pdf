@@ -2,17 +2,21 @@ import resolveImage from '@react-pdf/image';
 
 import getSource from './getSource';
 import resolveSource from './resolveSource';
-import { SafeImageNode } from '../types';
+import { SafeImageNode, SafeImageBackgroundNode } from '../types';
+
+type ImageLikeNode = SafeImageNode | SafeImageBackgroundNode;
 
 /**
- * Fetches image and append data to node
+ * Fetches image and appends data to node.
  * Ideally this fn should be immutable.
  *
- * @param node
+ * @param node - Image or ImageBackground node
+ * @param pageWidth - Page width for srcSet resolution
  */
-const fetchImage = async (node: SafeImageNode) => {
-  const src = getSource(node);
+const fetchImage = async (node: ImageLikeNode, pageWidth: number) => {
   const { cache } = node.props;
+
+  const src = getSource(node, pageWidth);
 
   if (!src) {
     console.warn(false, 'Image should receive either a "src" or "source" prop');
@@ -28,7 +32,9 @@ const fetchImage = async (node: SafeImageNode) => {
 
     node.image = await resolveImage(source, { cache });
 
-    if (Buffer.isBuffer(source) || source instanceof Blob) return;
+    // `instanceof Uint8Array` also matches a Node Buffer, without reading a
+    // `Buffer` global that browsers do not have
+    if (source instanceof Uint8Array || source instanceof Blob) return;
 
     node.image.key = 'data' in source ? source.data.toString() : source.uri;
   } catch (e: any) {

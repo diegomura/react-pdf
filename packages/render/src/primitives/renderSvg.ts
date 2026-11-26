@@ -21,6 +21,7 @@ import renderSvgImage from './renderSvgImage';
 import clipNode from '../operations/clipNode';
 import transform from '../operations/transform';
 import getBoundingBox from '../svg/getBoundingBox';
+import renderMarkers from '../svg/renderMarker';
 import { Context } from '../types';
 
 type Primitives = (typeof P)[keyof typeof P];
@@ -38,7 +39,10 @@ const setStrokeColor = (ctx: Context, node: SafeNode) => {
   if (!('stroke' in node.props)) return;
 
   const strokeColor = node.props.stroke;
-  if (strokeColor) ctx.strokeColor(strokeColor);
+  const gradient = createGradient(ctx, node, strokeColor);
+
+  if (gradient) ctx.strokeColor(gradient);
+  else if (strokeColor) ctx.strokeColor(strokeColor as string);
 };
 
 const setOpacity = (ctx: Context, node: SafeNode) => {
@@ -91,22 +95,6 @@ const setLineDash = (ctx: Context, node: SafeNode) => {
   if (value) ctx.dash(value.split(/[\s,]+/).map(Number));
 };
 
-const hasLinearGradientFill = (node: SafeNode) => {
-  if (!node.props) return false;
-  if (!('fill' in node.props)) return false;
-  if (typeof node.props.fill === 'string') return false;
-
-  return node.props.fill?.type === P.LinearGradient;
-};
-
-const hasRadialGradientFill = (node: SafeNode) => {
-  if (!node.props) return false;
-  if (!('fill' in node.props)) return false;
-  if (typeof node.props.fill === 'string') return false;
-
-  return node.props.fill?.type === P.RadialGradient;
-};
-
 function multiplyMatrices(m1: number[], m2: number[]) {
   const a = m1[0] * m2[0] + m1[2] * m2[1];
   const b = m1[1] * m2[0] + m1[3] * m2[1];
@@ -145,7 +133,17 @@ const transformGradient = (
         const value = transform.value;
         const cos = Math.cos(value[0]);
         const sin = Math.sin(value[0]);
-        return [cos, sin, -sin, cos, 0, 0];
+        const cx = value[1] || 0;
+        const cy = value[2] || 0;
+
+        return [
+          cos,
+          sin,
+          -sin,
+          cos,
+          cx * (1 - cos) + cy * sin,
+          cy * (1 - cos) - cx * sin,
+        ];
       }
       case 'skew': {
         const value = transform.value;
@@ -174,15 +172,12 @@ const transformGradient = (
 };
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
-const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
-  if (!node.props) return;
-  if (!('fill' in node.props)) return;
-
+const createLinearGradient = (
+  ctx: Context,
+  node: SafeNode,
+  gradient: SafeLinearGradientNode,
+) => {
   const bbox = getBoundingBox(node);
-  const gradient = node.props?.fill as SafeLinearGradientNode;
-
-  if (!gradient) return;
-
   const units = gradient.props.gradientUnits || 'objectBoundingBox';
   const transforms = gradient.props.gradientTransform || [];
 
@@ -211,19 +206,16 @@ const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
-  ctx.fill(grad);
+  return grad;
 };
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L155
-const setRadialGradientFill = (ctx: Context, node: SafeNode) => {
-  if (!node.props) return;
-  if (!('fill' in node.props)) return;
-
+const createRadialGradient = (
+  ctx: Context,
+  node: SafeNode,
+  gradient: SafeRadialGradientNode,
+) => {
   const bbox = getBoundingBox(node);
-  const gradient = node.props?.fill as SafeRadialGradientNode;
-
-  if (!gradient) return;
-
   const units = gradient.props.gradientUnits || 'objectBoundingBox';
   const transforms = gradient.props.gradientTransform || [];
 
@@ -254,7 +246,25 @@ const setRadialGradientFill = (ctx: Context, node: SafeNode) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
-  ctx.fill(grad);
+  return grad;
+};
+
+const createGradient = (
+  ctx: Context,
+  node: SafeNode,
+  paint?: string | SafeLinearGradientNode | SafeRadialGradientNode,
+) => {
+  if (!paint || typeof paint === 'string') return null;
+
+  if (paint.type === P.LinearGradient) {
+    return createLinearGradient(ctx, node, paint);
+  }
+
+  if (paint.type === P.RadialGradient) {
+    return createRadialGradient(ctx, node, paint);
+  }
+
+  return null;
 };
 
 const setFillColor = (ctx: Context, node: SafeNode) => {
@@ -267,8 +277,12 @@ const setFillColor = (ctx: Context, node: SafeNode) => {
 };
 
 const setFill = (ctx: Context, node: SafeNode) => {
-  if (hasLinearGradientFill(node)) return setLinearGradientFill(ctx, node);
-  if (hasRadialGradientFill(node)) return setRadialGradientFill(ctx, node);
+  if (!node.props) return;
+  if (!('fill' in node.props)) return;
+
+  const gradient = createGradient(ctx, node, node.props.fill);
+
+  if (gradient) return ctx.fill(gradient);
 
   return setFillColor(ctx, node);
 };
@@ -353,6 +367,7 @@ const drawChildren = (ctx: Context, node: SafeNode) => {
 
     clipPath(ctx, child);
     drawNode(ctx, child);
+    renderMarkers(ctx, child, drawNode);
     drawChildren(ctx, child);
 
     ctx.restore();

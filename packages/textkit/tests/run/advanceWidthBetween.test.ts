@@ -129,4 +129,43 @@ describe('run advanceWidthBetween operator', () => {
 
     expect(advanceWidthBetween(7, 9, run)).toBe(32);
   });
+
+  test('should return correct width for each character with glyphIndices', () => {
+    // Simulates a CJK run where scriptItemizer splits by script
+    // e.g., "本当" as a Han run with 1:1 glyph mapping
+    const run = {
+      start: 0,
+      end: 2,
+      attributes: {},
+      glyphIndices: [0, 1],
+      positions: [
+        { xAdvance: 12, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 12, yAdvance: 0, xOffset: 0, yOffset: 0 },
+      ],
+    };
+
+    expect(advanceWidthBetween(0, 1, run)).toBe(12);
+    expect(advanceWidthBetween(1, 2, run)).toBe(12);
+    expect(advanceWidthBetween(0, 2, run)).toBe(24);
+  });
+
+  test('should return correct width for last character with glyphIndices and offset start', () => {
+    // Run starting at offset, like a Katakana run after Han+Hiragana runs
+    const run = {
+      start: 3,
+      end: 7,
+      attributes: {},
+      glyphIndices: [0, 1, 2, 3],
+      positions: [
+        { xAdvance: 12, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 11, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 12, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 12, yAdvance: 0, xOffset: 0, yOffset: 0 },
+      ],
+    };
+
+    expect(advanceWidthBetween(3, 4, run)).toBe(12);
+    expect(advanceWidthBetween(6, 7, run)).toBe(12);
+    expect(advanceWidthBetween(3, 7, run)).toBe(47);
+  });
 });

@@ -175,6 +175,30 @@ describe('resolve stylesheet text', () => {
     expect(styles.lineHeight).toBeCloseTo(56.69, 1);
   });
 
+  test('should resolve number letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: 2 });
+
+    expect(styles.letterSpacing).toBe(2);
+  });
+
+  test('should resolve px letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: '2px' });
+
+    expect(styles.letterSpacing).toBe(2);
+  });
+
+  test('should resolve percentage letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: '10%' });
+
+    expect(styles.letterSpacing).toBeCloseTo(18 * 0.1);
+  });
+
+  test('should resolve percentage letter spacing with font-size', () => {
+    const styles = resolveStyle({ letterSpacing: '-1.1%', fontSize: 20 });
+
+    expect(styles.letterSpacing).toBeCloseTo(20 * -0.011);
+  });
+
   test('should resolve font family', () => {
     const styles = resolveStyle({ fontFamily: 'Helvetica' });
 
@@ -407,5 +431,31 @@ describe('resolve stylesheet text', () => {
     const styles = resolveStyle({ verticalAlign: 'super' });
 
     expect(styles).toEqual({ verticalAlign: 'super' });
+  });
+
+  test('should resolve font feature settings array', () => {
+    const styles = resolveStyle({ fontFeatureSettings: ['tnum', 'smcp'] });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { tnum: true, smcp: true },
+    });
+  });
+
+  test('should resolve numeric font feature settings', () => {
+    const styles = resolveStyle({ fontFeatureSettings: { liga: 0, kern: 1 } });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { liga: false, kern: true },
+    });
+  });
+
+  test('should resolve boolean font feature settings', () => {
+    const styles = resolveStyle({
+      fontFeatureSettings: { liga: false, tnum: true },
+    });
+
+    expect(styles).toEqual({
+      fontFeatureSettings: { liga: false, tnum: true },
+    });
   });
 });

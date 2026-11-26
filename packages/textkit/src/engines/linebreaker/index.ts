@@ -32,12 +32,14 @@ const breakLines = (
   let start = 0;
   let end = null;
 
-  const lines: AttributedString[] = breaks.reduce((acc, breakPoint) => {
+  const lines: AttributedString[] = [];
+
+  for (const breakPoint of breaks) {
     const node = nodes[breakPoint];
     const prevNode = nodes[breakPoint - 1];
 
     // Last breakpoint corresponds to K&P mandatory final glue
-    if (breakPoint === nodes.length - 1) return acc;
+    if (breakPoint === nodes.length - 1) continue;
 
     let line: AttributedString;
     if (node.type === 'penalty') {
@@ -56,8 +58,8 @@ const breakLines = (
 
     start = end;
 
-    return [...acc, line];
-  }, []);
+    lines.push(line);
+  }
 
   lines.push(slice(start, attributedString.string.length, attributedString));
 
@@ -110,7 +112,14 @@ const getNodes = (
 
         if (syllables[index + 1] && withinWord) {
           // Add penalty node. Penalty nodes are used to represent hyphenation points.
-          acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1, hyphen));
+          acc.push(
+            knuthPlass.penalty(
+              hyphen ? hyphenWidth : 0,
+              hyphenPenalty,
+              1,
+              hyphen,
+            ),
+          );
         }
       }
 

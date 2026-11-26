@@ -1,5 +1,6 @@
 import scale from '../run/scale';
-import resolveGlyphIndices from '../indices/resolve';
+import resolveStringIndices from '../string-indices/resolve';
+import resolveGlyphIndices from '../glyph-indices/resolve';
 import { AttributedString, Position, Run } from '../types';
 
 const getCharacterSpacing = (run: Run) => {
@@ -21,12 +22,13 @@ const scalePositions = (run: Run, positions: Position[]): Position[] => {
     const isLast = i === positions.length;
     const xSpacing = isLast ? 0 : characterSpacing;
 
-    return Object.assign({}, position, {
+    return {
       xAdvance: position.xAdvance * runScale + xSpacing,
       yAdvance: position.yAdvance * runScale,
       xOffset: position.xOffset * runScale,
       yOffset: position.yOffset * runScale,
-    });
+      advanceWidth: position.advanceWidth,
+    };
   });
 };
 
@@ -42,9 +44,16 @@ const layoutRun = (string: string) => {
    */
   return (run: Run) => {
     const { start, end, attributes = {} } = run;
-    const { font } = attributes;
+    const { font, features } = attributes;
 
-    if (!font) return { ...run, glyphs: [], glyphIndices: [], positions: [] };
+    if (!font)
+      return {
+        ...run,
+        glyphs: [],
+        stringIndices: [],
+        glyphIndices: [],
+        positions: [],
+      };
 
     const runString = string.slice(start, end);
 
@@ -53,18 +62,20 @@ const layoutRun = (string: string) => {
     // passing LTR To force fontkit to not reverse the string
     const glyphRun = font[0].layout(
       runString,
-      undefined,
+      features,
       undefined,
       undefined,
       'ltr',
     );
 
     const positions = scalePositions(run, glyphRun.positions);
+    const stringIndices = resolveStringIndices(glyphRun.glyphs);
     const glyphIndices = resolveGlyphIndices(glyphRun.glyphs);
 
     const result: Run = {
       ...run,
       positions,
+      stringIndices,
       glyphIndices,
       glyphs: glyphRun.glyphs,
     };

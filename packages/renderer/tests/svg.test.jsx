@@ -2,7 +2,19 @@ import { describe, expect, test } from 'vitest';
 
 import { Document, Page, Svg, Font, Text, Tspan } from '@react-pdf/renderer';
 import renderToImage from './renderComponent';
-import { Tiger, Chart, Chart2, Gradients, Dasharrays } from './svgs';
+import {
+  Tiger,
+  Chart,
+  Chart2,
+  Gradients,
+  GradientsMultipleDefs,
+  StrokeGradients,
+  Dasharrays,
+  MarkerArrowLine,
+  MarkerDotPolyline,
+  MarkerAutoPath,
+  MarkerDoubleArrow,
+} from './svgs';
 
 // pdf.js does not render default fonts in node and I use Open Sans (:
 Font.register({
@@ -81,11 +93,83 @@ describe('Svg', () => {
     expect(image).toMatchImageSnapshot();
   });
 
+  test('should render Gradients on strokes', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[100, 200]}>
+          <StrokeGradients />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render Gradients from multiple Defs', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[100, 200]}>
+          <GradientsMultipleDefs />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
   test('should render Dasharrays', async () => {
     const image = await renderToImage(
       <Document>
         <Page size={[100, 200]}>
           <Dasharrays />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render marker arrowhead on line', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 60]}>
+          <MarkerArrowLine />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render marker dots on polyline', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 80]}>
+          <MarkerDotPolyline />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render marker with orient auto on path', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 100]}>
+          <MarkerAutoPath />
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
+  test('should render double arrow with auto-start-reverse', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[200, 60]}>
+          <MarkerDoubleArrow />
         </Page>
       </Document>,
     );

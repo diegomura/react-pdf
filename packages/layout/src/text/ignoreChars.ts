@@ -3,6 +3,7 @@ import { Font, Fragment } from '@react-pdf/textkit';
 const IGNORABLE_CODEPOINTS = [
   8232, // LINE_SEPARATOR
   8233, // PARAGRAPH_SEPARATOR
+  8288, // WORD_JOINER
 ];
 
 const buildSubsetForFont = (font: Font) =>

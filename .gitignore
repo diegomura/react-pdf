@@ -7,3 +7,4 @@ coverage
 .DS_Store
 .cache
 .parcel-cache
+.claude

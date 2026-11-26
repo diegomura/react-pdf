@@ -2,19 +2,23 @@ import { GlyphRun } from 'fontkit';
 
 import { Font, Glyph } from '../../src/types';
 
-const shortLigature = { id: 64257, codePoints: [102, 105], advanceWidth: 10 };
+const shortLigature = {
+  id: 64257,
+  codePoints: [102, 105],
+  advanceWidth: 10,
+} as Glyph;
 
 const longLigature = {
   id: 64259,
   codePoints: [102, 102, 105],
   advanceWidth: 10,
-};
+} as Glyph;
 
 const glyphForCodePoint = (v: number): Glyph => {
   if (v === 64257) return shortLigature;
   if (v === 64259) return longLigature;
 
-  return { id: v, codePoints: [v], advanceWidth: 8 };
+  return { id: v, codePoints: [v], advanceWidth: 8 } as Glyph;
 };
 
 const glyphFromChar = (v) => glyphForCodePoint(v.codePointAt(0));
@@ -40,23 +44,9 @@ const layoutPositions = (positions) => {
   }));
 };
 
-const layoutStringIndices = (glyphs) => {
-  let counter = 0;
-  const stringIndices: number[] = [];
-
-  for (let i = 0; i < glyphs.length; i += 1) {
-    const glyph = glyphs[i];
-    stringIndices.push(counter);
-    counter += glyph.codePoints.length;
-  }
-
-  return stringIndices;
-};
-
 const layout = (string: string): GlyphRun => {
   const glyphs = layoutGlyphs(string);
   const positions = layoutPositions(glyphs);
-  const stringIndices = layoutStringIndices(glyphs);
 
   const advanceWidth = glyphs.reduce(
     (acc: number, glyph) => acc + glyph.advanceWidth,
@@ -79,7 +69,6 @@ const layout = (string: string): GlyphRun => {
   return {
     glyphs,
     positions,
-    stringIndices,
     script: 'latin',
     language: 'en',
     direction: 'ltr',

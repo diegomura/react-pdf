@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { omit, compose } from '@react-pdf/fns';
+import { castArray, omit } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
@@ -8,12 +8,8 @@ import splitNode from '../node/splitNode';
 import canNodeWrap from '../node/getWrap';
 import getWrapArea from '../page/getWrapArea';
 import getContentArea from '../page/getContentArea';
-import createInstances from '../node/createInstances';
 import shouldNodeBreak from '../node/shouldBreak';
-import resolveTextLayout from './resolveTextLayout';
-import resolveInheritance from './resolveInheritance';
-import { resolvePageDimensions } from './resolveDimensions';
-import { resolvePageStyles } from './resolveStyles';
+import relayoutPage from './relayoutPage';
 import {
   DynamicPageProps,
   SafeDocumentNode,
@@ -39,15 +35,9 @@ const allFixed = (nodes: SafeNode[]) => nodes.every(isFixed);
 
 const isDynamic = (
   node: SafeNode,
-): node is SafeLinkNode | SafeTextNode | SafeViewNode =>
-  node.props && 'render' in node.props;
-
-const relayoutPage = compose(
-  resolveTextLayout,
-  resolvePageDimensions,
-  resolveInheritance,
-  resolvePageStyles,
-);
+): node is SafeLinkNode | SafeTextNode | SafeViewNode => {
+  return node.props && 'render' in node.props && !!node.props.render;
+};
 
 const warnUnavailableSpace = (node: SafeNode) => {
   console.warn(
@@ -115,8 +105,9 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
 
       // All children are moved to the next page, it doesn't make sense to show the parent on the current page
       if (child.children.length > 0 && currentChild.children.length === 0) {
-        // But if the current page is empty then we can just include the parent on the current page
-        if (currentChildren.length === 0) {
+        // But if the current page is empty then we can just include the parent on the current page.
+        // Fixed nodes don't count: they come back on every page, so moving the parent would repeat forever
+        if (allFixed(currentChildren)) {
           currentChildren.push(child, ...futureFixedNodes);
           nextChildren.push(...futureNodes);
         } else {
@@ -178,12 +169,9 @@ const resolveDynamicNodes = (props: DynamicPageProps, node: SafeNode) => {
   const resolveChildren = (children = []) => {
     if (isNodeDynamic) {
       const res = node.props.render(props);
-      return (
-        createInstances(res)
-          .filter(Boolean)
-          // @ts-expect-error rework dynamic nodes. conflicting types
-          .map((n) => resolveDynamicNodes(props, n))
-      );
+      return castArray(res)
+        .filter(Boolean)
+        .map((n) => resolveDynamicNodes(props, n));
     }
 
     return children.map((c) => resolveDynamicNodes(props, c));

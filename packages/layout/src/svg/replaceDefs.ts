@@ -33,12 +33,37 @@ const parseNodeDefs =
     const fill =
       `fill` in props ? replaceDef(defs, props?.fill as any) : undefined;
 
+    const stroke =
+      `stroke` in props ? replaceDef(defs, props?.stroke as any) : undefined;
+
     const clipPath =
       `clipPath` in props
         ? replaceDef(defs, props?.clipPath as any)
         : undefined;
 
-    const newProps = Object.assign({}, node.props, { fill, clipPath });
+    const markerStart =
+      `markerStart` in props
+        ? replaceDef(defs, props?.markerStart as any)
+        : undefined;
+
+    const markerMid =
+      `markerMid` in props
+        ? replaceDef(defs, props?.markerMid as any)
+        : undefined;
+
+    const markerEnd =
+      `markerEnd` in props
+        ? replaceDef(defs, props?.markerEnd as any)
+        : undefined;
+
+    const newProps = Object.assign({}, node.props, {
+      fill,
+      stroke,
+      clipPath,
+      markerStart,
+      markerMid,
+      markerEnd,
+    });
 
     const children = node.children
       ? node.children.map(parseNodeDefs(defs))

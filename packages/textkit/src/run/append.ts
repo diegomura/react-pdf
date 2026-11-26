@@ -1,7 +1,8 @@
 import scale from './scale';
 import getFont from './getFont';
 import isNumber from '../utils/isNumber';
-import appendIndices from '../indices/append';
+import appendStringIndices from '../string-indices/append';
+import appendGlyphIndices from '../glyph-indices/append';
 import glyphFromCodePoint from '../glyph/fromCodePoint';
 import { Glyph, Run } from '../types';
 
@@ -14,12 +15,16 @@ import { Glyph, Run } from '../types';
  */
 const appendGlyph = (glyph: Glyph, run: Run): Run => {
   const glyphLength = glyph.codePoints?.length || 0;
-  const end = run.end + glyphLength;
+  const stringLength = run.stringIndices?.length || 0;
+
   const glyphs = run.glyphs.concat(glyph);
-  const glyphIndices = appendIndices(glyphLength, run.glyphIndices);
+  const stringIndices = appendStringIndices(glyphLength, run.stringIndices);
+  const glyphIndices = appendGlyphIndices(stringLength, run.glyphIndices);
+
+  const end = run.end + glyphLength;
 
   if (!run.positions)
-    return Object.assign({}, run, { end, glyphs, glyphIndices });
+    return Object.assign({}, run, { end, glyphs, stringIndices, glyphIndices });
 
   const positions = run.positions.concat({
     xAdvance: glyph.advanceWidth * scale(run),
@@ -28,7 +33,13 @@ const appendGlyph = (glyph: Glyph, run: Run): Run => {
     yOffset: 0,
   });
 
-  return Object.assign({}, run, { end, glyphs, glyphIndices, positions });
+  return Object.assign({}, run, {
+    end,
+    glyphs,
+    stringIndices,
+    glyphIndices,
+    positions,
+  });
 };
 
 /**

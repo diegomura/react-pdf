@@ -1,29 +1,8 @@
-import hyphen from 'hyphen';
-import pattern from 'hyphen/patterns/en-us.js';
+import { syllables } from '@react-pdf/hyphenate/en-us';
 import { isNil } from '@react-pdf/fns';
-import { HyphenatedWord } from '../../types';
 
-const SOFT_HYPHEN = '\u00ad';
-const hyphenator = hyphen(pattern);
-
-/**
- * @param word
- * @returns Word parts
- */
-const splitHyphen = (word: string) => {
-  return word.split(SOFT_HYPHEN).flatMap((part) => part.split(/(?<=[-])/g));
-};
-
-const cache: Record<string, HyphenatedWord> = {};
-
-/**
- * @param word
- * @returns Word parts
- */
-const getParts = (word: string) => {
-  const base = word.includes(SOFT_HYPHEN) ? word : hyphenator(word);
-  return { parts: splitHyphen(base), hyphen: '-' as const };
-};
+const SOFT_HYPHEN = '­';
+const AFTER_DASH = /(?<=[^-]-)(?=[^-])/;
 
 const wordHyphenation = () => {
   /**
@@ -31,14 +10,17 @@ const wordHyphenation = () => {
    * @returns Word parts
    */
   return (word: string | null) => {
-    const cacheKey = `_${word}`;
+    if (isNil(word)) return [];
 
-    if (isNil(word)) return { parts: [], hyphen: '-' as const };
-    if (cache[cacheKey]) return cache[cacheKey];
+    // Soft hyphens already in the word are the author's call, so they replace
+    // the pattern set rather than adding to it.
+    if (word.includes(SOFT_HYPHEN)) {
+      return word.split(SOFT_HYPHEN).flatMap((part) => part.split(AFTER_DASH));
+    }
 
-    cache[cacheKey] = getParts(word);
+    if (!AFTER_DASH.test(word)) return syllables(word);
 
-    return cache[cacheKey];
+    return word.split(AFTER_DASH).flatMap((part) => syllables(part));
   };
 };
 

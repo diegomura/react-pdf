@@ -1,0 +1,51 @@
+---
+title: "TextInput"
+---
+
+The `<TextInput />` element represents a text field for inputting single- or multiline text. 
+
+<Usage />
+
+## Valid props
+
+| Prop name |                            Description                             |                                        Type |     Default |
+| --------- | :----------------------------------------------------------------: | ------------------------------------------: | ----------: |
+| align     |                   Defines the alignment of text                    |                                    _String_ |      _left_ |
+| multiline | Defines if the user is allowed to input more than one line of text |                                   _Boolean_ |     _false_ |
+| password  |        If set to true the text will be masked with e. g. *         |                                   _Boolean_ |     _false_ |
+| noSpell   |   If set to true tells the pdf viewer to not spellcheck the text   |                                   _Boolean_ |     _false_ |
+| format    |      Defines the format the textinput should be formatted to       | [TextInputFormatting](#textinputformatting) | _undefined_ |
+| fontSize  | Defines the font size for the text input. Set to `0` for auto-size |                                   _Number_ | _undefined_ |
+| maxLength |              Defines the maximum number of characters               |                                   _Number_ | _undefined_ |
+
+See also [Common Form Attributes](/docs/v4/form/common-form-attributes)
+### TextInputFormatting
+
+`format` is a definition how the value shall be formatted by the viewer. Take into account that not all viewers support this feature because it involves javascript execution.
+
+| Prop name       |                     Description                      |                                        Type |     Default |
+| --------------- | :--------------------------------------------------: | ------------------------------------------: | ----------: |
+| type            |            Defines the alignment of text             | [TextInputFormatType](#textinputformattype) | _undefined_ |
+| param           |          Defines a format for certain types          |                                    _String_ | _undefined_ |
+| nDec            | Defines the number of places after the decimal point |                                    _Number_ | _undefined_ |
+| sepComma        |   Defines if the seperator shall be a comma or not   |                                   _Boolean_ |     _false_ |
+| negStyle        |         Defines  style for negative numbers          |                                    _String_ | _undefined_ |
+| currency        |   Defines the symbol to be placed as currency sign   |                                    _String_ | _undefined_ |
+| currencyPrepend |    If set to true the currency sign is prepended     |                                   _Boolean_ |     _false_ |
+
+### TextInputFormatType
+
+`type` prop can take one of the following values.
+
+| Value    |                             Description                             |
+| -------- | :-----------------------------------------------------------------: |
+| date     |          Expects the param prop to be a valid date format.          |
+| time     |          Expects the param prop to be a valid time format.          |
+| percent  | Uses the props nDec, sepComma, negStyle, currency, currencyPrepend. |
+| number   | Uses the props nDec, sepComma, negStyle, currency, currencyPrepend. |
+| zip      |                  Formats for the zip-code standard                  |
+| zipPlus4 |                   Formats for the zip+4 standard                    |
+| phone    |                     Formats for a phone number                      |
+| ssn      |                      Formats for a ssn number                       |
+
+For deeper knowledge into the formatting you might want to look into the [pdfkit doc](https://pdfkit.org/docs/forms.html#text_field_formatting) and into the [API Reference for Forms](https://experienceleague.adobe.com/docs/experience-manager-learn/assets/FormsAPIReference.pdf) Page 119.

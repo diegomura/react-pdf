@@ -1,5 +1,9 @@
 import type { Glyph as FontkitGlyph } from 'fontkit';
-import type { Font } from '@react-pdf/font';
+import type {
+  Font,
+  HyphenatedPart,
+  HyphenationCallback,
+} from '@react-pdf/font';
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -14,10 +18,35 @@ export type Rect = {
   height: number;
 };
 
+export type ExclusionRect = Rect & {
+  type?: 'rect';
+  extend?: 'left' | 'right';
+};
+
+export type ExclusionEllipse = {
+  type: 'ellipse';
+  extend?: 'left' | 'right';
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+};
+
+export type ExclusionPolygon = {
+  type: 'polygon';
+  extend?: 'left' | 'right';
+  points: Coordinate[];
+};
+
+export type ExclusionShape =
+  | ExclusionRect
+  | ExclusionEllipse
+  | ExclusionPolygon;
+
 export type Container = Rect & {
   truncateMode?: 'ellipsis';
   maxLines?: number;
-  excludeRects?: Rect[];
+  exclusions?: ExclusionShape[];
 };
 
 export type Glyph = FontkitGlyph;
@@ -51,7 +80,7 @@ export type Attributes = {
   characterSpacing?: number;
   color?: string;
   direction?: 'rtl' | 'ltr';
-  features?: unknown[];
+  features?: string[] | Record<string, boolean>;
   fill?: boolean;
   font?: Font[];
   fontSize?: number;
@@ -88,6 +117,9 @@ export type Run = {
   start: number;
   end: number;
   attributes: Attributes;
+  /** Maps each string codepoint index to its corresponding glyph index */
+  stringIndices?: number[];
+  /** Maps each glyph index to its corresponding string codepoint index */
   glyphIndices?: number[];
   glyphs?: Glyph[];
   positions?: Position[];
@@ -127,10 +159,7 @@ export type Fragment = {
 export type Paragraph = AttributedString[];
 
 export type LayoutOptions = {
-  hyphenationCallback?: (
-    word: string | null,
-    fallback: (word: string | null) => HyphenatedWord,
-  ) => HyphenatedWord;
+  hyphenationCallback?: HyphenationCallback;
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;
@@ -139,17 +168,9 @@ export type LayoutOptions = {
   shrinkWhitespaceFactor?: JustificationFactor;
 };
 
-export type HyphenatedPart = {
-  string: string;
-  hyphen?: '-';
-};
-
-export type HyphenatedWord =
-  | string[]
-  | {
-      parts: string[];
-      hyphen?: '-';
-    }
-  | HyphenatedPart[];
-
-export type { Font } from '@react-pdf/font';
+export type {
+  Font,
+  HyphenatedPart,
+  HyphenatedWord,
+  HyphenationCallback,
+} from '@react-pdf/font';

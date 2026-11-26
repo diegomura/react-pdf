@@ -158,6 +158,7 @@ describe('attributeString slice operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
+        stringIndices: [0, 1, 2, 3, 4],
         glyphIndices: [0, 1, 2, 3, 4],
       },
     ];
@@ -165,6 +166,7 @@ describe('attributeString slice operator', () => {
     const string = { string: 'Lorem', runs, sylables: [] };
     const sliced = slice(1, 4, string);
 
+    expect(sliced.runs[0].stringIndices).toEqual([0, 1, 2]);
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1, 2]);
     expect(pluck('id', sliced.runs[0].glyphs!)).toEqual([111, 114, 101]);
     expect(pluck('xAdvance', sliced.runs[0].positions!)).toEqual([7, 8, 9]);
@@ -186,6 +188,7 @@ describe('attributeString slice operator', () => {
           { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
+        stringIndices: [0, 1, 2],
         glyphIndices: [0, 1, 2],
       },
       {
@@ -200,16 +203,19 @@ describe('attributeString slice operator', () => {
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
+        stringIndices: [0, 1],
         glyphIndices: [0, 1],
       },
     ];
     const string = { string: 'Lorem', runs };
     const sliced = slice(1, 4, string);
 
+    expect(sliced.runs[0].stringIndices).toEqual([0, 1]);
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
     expect(pluck('id', sliced.runs[0].glyphs!)).toEqual([111, 114]);
     expect(pluck('xAdvance', sliced.runs[0].positions!)).toEqual([7, 8]);
 
+    expect(sliced.runs[1].stringIndices).toEqual([0]);
     expect(sliced.runs[1].glyphIndices).toEqual([0]);
     expect(pluck('id', sliced.runs[1].glyphs!)).toEqual([101]);
     expect(pluck('xAdvance', sliced.runs[1].positions!)).toEqual([9]);
@@ -232,7 +238,8 @@ describe('attributeString slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -241,6 +248,7 @@ describe('attributeString slice operator', () => {
     const sliced = slice(1, 3, string);
 
     expect(sliced).toHaveProperty('string', 'of');
+    expect(sliced.runs[0].stringIndices).toEqual([0, 1]);
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
     expect(pluck('id', sliced.runs[0].glyphs!)).toEqual([111, 102]);
     expect(pluck('xAdvance', sliced.runs[0].positions!)).toEqual([7, 8]);
@@ -263,7 +271,8 @@ describe('attributeString slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 },
           { xAdvance: 9, yAdvance: 0, xOffset: 0, yOffset: 0 },
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font], fontSize: 2 },
       },
     ];
@@ -272,6 +281,7 @@ describe('attributeString slice operator', () => {
     const sliced = slice(3, 5, string);
 
     expect(sliced).toHaveProperty('string', 'im');
+    expect(sliced.runs[0].stringIndices).toEqual([0, 1]);
     expect(sliced.runs[0].glyphIndices).toEqual([0, 1]);
     expect(pluck('id', sliced.runs[0].glyphs!)).toEqual([105, 109]);
     expect(pluck('xAdvance', sliced.runs[0].positions!)).toEqual([8, 9]);

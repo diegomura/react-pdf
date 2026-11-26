@@ -1,5 +1,46 @@
 # @react-pdf/primitives
 
+## 4.4.0
+
+### Minor Changes
+
+- [#3505](https://github.com/diegomura/react-pdf/pull/3505) [`ae9a9983e8bd8b63c3873000531a8307e22c7bae`](https://github.com/diegomura/react-pdf/commit/ae9a9983e8bd8b63c3873000531a8307e22c7bae) Thanks [@diegomura](https://github.com/diegomura)! - Experimental pagination engine, opt-in per page
+
+  A new pagination engine ships alongside the current one: content is
+  measured once and packed into pages instead of relayouting on every split,
+  making long documents paginate orders of magnitude faster (a 300-page
+  document drops from ~40s to ~200ms).
+
+  Opt in with `<Page experimentalPagination>` — any page opting in switches
+  the whole document. The default behavior is unchanged.
+
+  Under the new engine:
+
+  - `<Page layout={Layout}>` renders per-page chrome (headers, footers,
+    sidebars) around the content. The layout component receives
+    `{ pageNumber, totalPages, subPageNumber, subPageTotalPages }` and the
+    page content as `children`, and runs once per output page. Using `layout`
+    implies `experimentalPagination`.
+  - One `fixed` semantic: in-flow fixed elements repeat at the top of every
+    page they span; footers are the layout's job.
+  - `minPresenceAhead` is supported, with one refinement: a trailing element
+    with nothing after it stays in place instead of moving to its own page.
+
+  The current engine remains the default until the next major, when the new
+  engine takes over.
+
+## 4.3.0
+
+### Minor Changes
+
+- [#3366](https://github.com/diegomura/react-pdf/pull/3366) [`4444f355`](https://github.com/diegomura/react-pdf/commit/4444f3555e3381397b33297e3f121a81db06a370) Thanks [@diegomura](https://github.com/diegomura)! - feat: svg markers support
+
+## 4.2.0
+
+### Minor Changes
+
+- [#3342](https://github.com/diegomura/react-pdf/pull/3342) [`aa3ccf4c`](https://github.com/diegomura/react-pdf/commit/aa3ccf4c2abadb528fd6073e2dceb2a03db27c7d) Thanks [@diegomura](https://github.com/diegomura)! - feat: add image background
+
 ## 4.1.1
 
 ### Patch Changes

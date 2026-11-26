@@ -1,0 +1,35 @@
+---
+title: "Image"
+---
+
+A React component for displaying network or local (Node only) JPG or PNG images, as well as base64 encoded image strings.
+
+<Usage />
+
+## Valid props
+
+| Prop name |                                 Description                                 |                                            Type |     Default |
+|-----------|:---------------------------------------------------------------------------:|------------------------------------------------:|------------:|
+| src       |         Source of the image. [See more](/docs/v4/components/image#source-object)          |                                 _Source object_ | _undefined_ |
+| source    |            Alias of _src_. [See more](/docs/v4/components/image#source-object)            |                                 _Source object_ | _undefined_ |
+| style     |                  Defines view styles. [See more](/docs/v4/styling)                  |                               _Object_, _Array_ | _undefined_ |
+| debug     |  Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)   |                                       _Boolean_ |     _false_ |
+| fixed     | Renders component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping) |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
+| cache     |              Enables image caching between consecutive renders              |                                       _Boolean_ |      _true_ |
+| srcSet    | Responsive image sources for resolution-based selection. E.g. `"small.jpg 300w, medium.jpg 600w"` | _String_ | _undefined_ |
+| sizes     |              Display width used for `srcSet` source selection               |                            _String_, _Number_ | _undefined_ |
+| bookmark  |         Attach bookmark to element. [See more](/docs/v4/advanced/document-navigation#bookmarks-v220)         | _String_ or [Bookmark](/docs/v4/advanced/document-navigation#bookmark-type) | _undefined_ |
+
+### Source object
+
+Defines the source of an image. Can be in any of these four valid forms:
+
+| Form type   |                                                             Description                                                             | Example                                                    |
+|-------------|:-----------------------------------------------------------------------------------------------------------------------------------:|------------------------------------------------------------|
+| String      |                                           Valid image URL or filesystem path (Node only)                                            | `www.react-pdf.org/test.jpg`                               |
+| URL object  |                                       Enables to pass extra parameters on how to fetch images                                       | `{ uri: valid-url, method: 'GET', headers: {}, body: '', credentials: 'include' }` |
+| Buffer      |                   Renders image directly from Buffer. Image format (png or jpg) will be guessed based on Buffer.                    | `Buffer`                                                   |
+| Data buffer | Renders buffer image via the _data_ key. It's also recommended to provide the image _format_ so the engine knows how to proccess it | `{ data: Buffer, format: 'png' \| 'jpg' }`                 |
+| Function    |                    A function that returns (can also return a promise that resolves to) any of the above formats                    | `() => String \| Promise<String>`                          |

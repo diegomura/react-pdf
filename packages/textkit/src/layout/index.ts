@@ -1,5 +1,6 @@
 import { compose } from '@react-pdf/fns';
 
+import decomposeUnicode from './decomposeUnicode';
 import wrapWords from './wrapWords';
 import typesetter from './typesetter';
 import bidiReordering from './bidiReordering';
@@ -48,6 +49,7 @@ const layoutEngine = (engines: Engines) => {
       processParagraphs,
       splitParagraphs(),
       applyDefaultStyles(),
+      decomposeUnicode(),
     )(attributedString);
   };
 };

@@ -9,6 +9,9 @@ import {
 
 const SOFT_HYPHEN = '\u00ad';
 
+// Scripts that wrap between any two characters and never take a hyphen
+const UNHYPHENATED_SCRIPTS = ['Han', 'Hiragana', 'Katakana', 'Bopomofo'];
+
 /**
  * Default word hyphenation engine used when no one provided.
  * Does not perform word hyphenation at all
@@ -17,6 +20,23 @@ const SOFT_HYPHEN = '\u00ad';
  * @returns Same word
  */
 const defaultHyphenate = (word: string) => [word];
+
+const IDEOGRAPH = UNHYPHENATED_SCRIPTS.map((s) => `\\p{sc=${s}}`).join('');
+
+// Breaks only before an ideograph, so numbers, marks and closing punctuation
+// stay attached to the ideograph they follow
+const IDEOGRAPH_SEGMENT = new RegExp(
+  `[^${IDEOGRAPH}]*[${IDEOGRAPH}][^${IDEOGRAPH}]*|[^${IDEOGRAPH}]+`,
+  'gu',
+);
+
+/**
+ * Split word into break opportunities between ideographs
+ *
+ * @param word
+ * @returns Word parts
+ */
+const splitIdeographs = (word: string) => word.match(IDEOGRAPH_SEGMENT) || [];
 
 /**
  * Remove soft hyphens from word
@@ -30,25 +50,26 @@ const removeSoftHyphens = (part: HyphenatedPart) => {
 };
 
 /**
- * Coerce a string or HyphenatedPart to a HyphenatedPart, and optionally enforce the
- * hyphenation character.
- * If the hyphenation character is not forced, it is set to a hyphen, except if the last
- * character of the syllable is already a hyphen.
+ * Coerce a string or HyphenatedPart to a HyphenatedPart.
+ * Explicit hyphens are kept. Otherwise the default applies, except for
+ * strings already ending in a hyphen.
  *
  * @param part
- * @param forceHyphen
+ * @param defaultHyphen
  */
 const normalizeHyphenatedPart = (
   part: string | HyphenatedPart,
-  forceHyphen?: '-',
-) => {
-  const p = typeof part === 'string' ? { string: part, hyphen: '-' } : part;
-  let hyphen = p.hyphen;
-  if (hyphen !== '-' && hyphen !== null) hyphen = '-';
-  if (typeof part === 'string' && part.slice(-1) === '-') hyphen = null;
-  if (forceHyphen !== undefined) hyphen = forceHyphen;
+  defaultHyphen: '-' | null,
+): HyphenatedPart => {
+  if (typeof part === 'string') {
+    return { string: part, hyphen: part.endsWith('-') ? null : defaultHyphen };
+  }
 
-  return { string: p.string, hyphen: hyphen as '-' };
+  if (part.hyphen === undefined) {
+    return { string: part.string, hyphen: defaultHyphen };
+  }
+
+  return { string: part.string, hyphen: part.hyphen === null ? null : '-' };
 };
 
 /**
@@ -58,20 +79,25 @@ const normalizeHyphenatedPart = (
  * Also, the last syllable in a word is always forced to have no hyphen character.
  *
  * @param hyphenatedWord
+ * @param defaultHyphen
  */
-const normalizeHyphenatedWord: (HyphenatedWord) => HyphenatedPart[] = (
+const normalizeHyphenatedWord = (
   hyphenatedWord: HyphenatedWord,
+  defaultHyphen: '-' | null,
 ) => {
-  const normalized =
-    hyphenatedWord instanceof Array
-      ? hyphenatedWord.map((part) => normalizeHyphenatedPart(part))
-      : hyphenatedWord.parts.map((part) =>
-          normalizeHyphenatedPart(
-            part,
-            hyphenatedWord.hyphen === null ? null : undefined,
-          ),
-        );
+  const normalized = Array.isArray(hyphenatedWord)
+    ? hyphenatedWord.map((part: string | HyphenatedPart) =>
+        normalizeHyphenatedPart(part, defaultHyphen),
+      )
+    : hyphenatedWord.parts.map((part) =>
+        normalizeHyphenatedPart(
+          part,
+          hyphenatedWord.hyphen === null ? null : defaultHyphen,
+        ),
+      );
+
   if (normalized.length > 0) normalized[normalized.length - 1].hyphen = null;
+
   return normalized;
 };
 
@@ -95,14 +121,19 @@ const wrapWords = (
 
     const builtinHyphenate = engines.wordHyphenation?.() || defaultHyphenate;
 
-    const hyphenate = options.hyphenationCallback || builtinHyphenate;
-
     let offset = 0;
 
     for (let i = 0; i < attributedString.runs.length; i += 1) {
       let string = '';
 
       const run = attributedString.runs[i];
+
+      const unhyphenated = UNHYPHENATED_SCRIPTS.includes(
+        run.attributes.script as string,
+      );
+
+      const fallback = unhyphenated ? splitIdeographs : builtinHyphenate;
+      const hyphenate = options.hyphenationCallback || fallback;
 
       const words = attributedString.string
         .slice(run.start, run.end)
@@ -112,7 +143,8 @@ const wrapWords = (
       for (let j = 0; j < words.length; j += 1) {
         const word = words[j];
         const parts = normalizeHyphenatedWord(
-          hyphenate(word, builtinHyphenate),
+          hyphenate(word, fallback),
+          unhyphenated ? null : '-',
         ).map(removeSoftHyphens);
 
         syllables.push(...parts);

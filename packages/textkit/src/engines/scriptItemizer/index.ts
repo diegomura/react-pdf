@@ -1,4 +1,4 @@
-import unicode from 'unicode-properties';
+import { getScript } from 'unicode-properties';
 
 import empty from '../../attributedString/empty';
 import { AttributedString, Run } from '../../types';
@@ -28,7 +28,7 @@ const scriptItemizer = () => {
       const char = string[i];
 
       const codePoint = char.codePointAt(0);
-      const script = unicode.getScript(codePoint);
+      const script = getScript(codePoint);
 
       if (script !== lastScript && !ignoredScripts.includes(script)) {
         if (lastScript !== 'Unknown') {

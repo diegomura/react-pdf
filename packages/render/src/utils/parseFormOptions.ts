@@ -75,8 +75,6 @@ const getAppearance = (
     },
   });
 
-  appearance.initDeflate();
-
   appearance.write(
     `/Tx BMC\nq\n/ZaDi ${height * 0.8} Tf\nBT\n${width * 0.45} ${
       height / 4
@@ -115,14 +113,19 @@ const parseCheckboxOptions = (
     [offOption]: getAppearance(ctx, xMark ? ' ' : '8', width!, height!),
   };
 
+  const value = node.props?.checked === true ? onOption : offOption;
+
   return clean({
     ...parseCommonFormOptions(node),
     backgroundColor: node.props?.backgroundColor || undefined,
     borderColor: node.props?.borderColor || undefined,
     parent: fieldSet || undefined,
-    value: `/${node.props?.checked === true ? onOption : offOption}`,
-    defaultValue: `/${node.props?.checked === true ? onOption : offOption}`,
-    AS: node.props?.checked === true ? onOption : offOption,
+    // pdfkit maps value/defaultValue to V/DV and wraps them in a String object, which
+    // serialises as a literal: /V (/Yes). A button field's value must be a name
+    // (ISO 32000 12.7.4.2.3), so V and DV are merged into the dict as names instead.
+    V: value,
+    DV: value,
+    AS: value,
     AP: { N: normalAppearance, D: normalAppearance },
   });
 };

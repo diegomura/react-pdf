@@ -116,9 +116,15 @@ const renderBackground = (
 };
 
 const renderDecorationLine = (ctx: Context, decorationLine: DecorationLine) => {
+  const color = parseColor(decorationLine.color);
+
+  const opacity = isNil(decorationLine.opacity)
+    ? color.opacity
+    : decorationLine.opacity;
+
   ctx.save();
   ctx.lineWidth(decorationLine.rect.height);
-  ctx.strokeOpacity(decorationLine.opacity);
+  ctx.strokeOpacity(opacity);
 
   if (/dashed/.test(decorationLine.style)) {
     ctx.dash(3 * decorationLine.rect.height, {});
@@ -172,7 +178,7 @@ const renderDecorationLine = (ctx: Context, decorationLine: DecorationLine) => {
     }
   }
 
-  ctx.stroke(decorationLine.color);
+  ctx.stroke(color.value);
   ctx.restore();
 };
 

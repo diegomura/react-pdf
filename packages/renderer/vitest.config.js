@@ -25,7 +25,7 @@ export default defineConfig({
   test: {
     // Necessary to avoid "Module did not self-register" error with canvas.node
     pool: 'forks',
-    setupFiles: ['vitest.setup.js'],
+    setupFiles: ['vitest.polyfills.js', 'vitest.setup.js'],
     include: ['tests/*.{test,spec}.?(c|m)[jt]s?(x)'],
     exclude: [...defaultExclude, 'tests/{components,dom,usePDF}.test.*'],
     watch: false,

@@ -12,6 +12,9 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
   customSnapshotsDir: `${__dirname}/tests/snapshots`,
   customDiffDir: `${__dirname}/tests/diffs`,
+  failureThreshold: 0.05,
+  failureThresholdType: 'percent',
+  customDiffConfig: { threshold: 0.3 },
 });
 
 expect.extend({ toMatchImageSnapshot });

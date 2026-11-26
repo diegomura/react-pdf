@@ -1,0 +1,24 @@
+---
+title: "Marker"
+---
+
+The `<Marker />` element defines a graphic drawn on the vertices of a `<Line />`, `<Polyline />`, `<Polygon />` or `<Path />`, typically an arrowhead or a data point.
+
+Declare it inside a `<Defs />` element and reference it from the shape through the `markerStart`, `markerMid` and `markerEnd` attributes, which paint it on the first vertex, every intermediate vertex and the last vertex respectively.
+
+<Usage />
+
+## Valid props
+
+| Prop name    |                                              Description                                              |               Type |         Default |
+| ------------ | :---------------------------------------------------------------------------------------------------: | -----------------: | --------------: |
+| id           |                      Unique identifier used to reference the marker from a shape.                      |           _String_ |     _undefined_ |
+| viewBox      |             Defines the coordinate system of the marker contents, as `"minX minY maxX maxY"`.             |           _String_ |     _undefined_ |
+| markerWidth  |                  Width of the marker viewport. Only applied when `viewBox` is present.                  | _String_, _Number_ |             _3_ |
+| markerHeight |                 Height of the marker viewport. Only applied when `viewBox` is present.                 | _String_, _Number_ |             _3_ |
+| refX         |                    Position of the marker point on its x-axis, aligned to the vertex.                    | _String_, _Number_ |             _0_ |
+| refY         |                    Position of the marker point on its y-axis, aligned to the vertex.                    | _String_, _Number_ |             _0_ |
+| orient       | Rotation applied to the marker. `auto` follows the direction of the shape, `auto-start-reverse` also flips the start marker, and a number sets a fixed angle in degrees. |           _String_, _Number_ |             _0_ |
+| markerUnits  |     Coordinate system for the marker. `strokeWidth` scales it with the shape's `strokeWidth`, `userSpaceOnUse` keeps its size constant.     |           _String_ | _strokeWidth_ |
+
+See also [Presentation Attributes](/docs/v4/svg/presentation-attributes)

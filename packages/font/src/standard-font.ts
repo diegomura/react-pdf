@@ -1,7 +1,43 @@
 // @ts-expect-error ts being silly
-import { PDFFont } from '@react-pdf/pdfkit';
+import PDFDocument, { registerStdFonts } from 'pdfkit';
+import Courier from 'pdfkit/standard-fonts/Courier';
+import CourierBold from 'pdfkit/standard-fonts/CourierBold';
+import CourierBoldOblique from 'pdfkit/standard-fonts/CourierBoldOblique';
+import CourierOblique from 'pdfkit/standard-fonts/CourierOblique';
+import Helvetica from 'pdfkit/standard-fonts/Helvetica';
+import HelveticaBold from 'pdfkit/standard-fonts/HelveticaBold';
+import HelveticaBoldOblique from 'pdfkit/standard-fonts/HelveticaBoldOblique';
+import HelveticaOblique from 'pdfkit/standard-fonts/HelveticaOblique';
+import SymbolFont from 'pdfkit/standard-fonts/Symbol';
+import TimesBold from 'pdfkit/standard-fonts/TimesBold';
+import TimesBoldItalic from 'pdfkit/standard-fonts/TimesBoldItalic';
+import TimesItalic from 'pdfkit/standard-fonts/TimesItalic';
+import TimesRoman from 'pdfkit/standard-fonts/TimesRoman';
+import ZapfDingbats from 'pdfkit/standard-fonts/ZapfDingbats';
 import * as fontkit from 'fontkit';
 import { Font } from './types';
+
+// The browser build of pdfkit ships without font metrics so consumers can pick
+// what they bundle. react-pdf resolves standard fonts by name at render time,
+// so it needs all of them. The node build registers them itself.
+if (BROWSER) {
+  registerStdFonts(
+    Courier,
+    CourierBold,
+    CourierBoldOblique,
+    CourierOblique,
+    Helvetica,
+    HelveticaBold,
+    HelveticaBoldOblique,
+    HelveticaOblique,
+    SymbolFont,
+    TimesBold,
+    TimesBoldItalic,
+    TimesItalic,
+    TimesRoman,
+    ZapfDingbats,
+  );
+}
 
 export const STANDARD_FONTS = [
   'Courier',
@@ -18,9 +54,22 @@ export const STANDARD_FONTS = [
   'Times-BoldItalic',
 ];
 
+// Create a shared lightweight document for accessing standard font instances.
+// Standard fonts are created once and cached, so this is negligible overhead.
+let _sharedDoc: any = null;
+
+const openStandardFont = (src: string) => {
+  if (!_sharedDoc) {
+    _sharedDoc = new PDFDocument({ autoFirstPage: false });
+  }
+  _sharedDoc.font(src);
+  return _sharedDoc._font;
+};
+
 class StandardFont implements Font {
   name: string;
   src: any;
+  glyphNames = new Map<number, string>();
   fullName: string;
   familyName: string;
   subfamilyName: string;
@@ -57,11 +106,21 @@ class StandardFont implements Font {
     this.numGlyphs = 0;
     this.characterSet = [];
 
-    this.src = PDFFont.open(null, src);
+    this.src = openStandardFont(src);
   }
 
   encode(str: string) {
-    return this.src.encode(str);
+    const [encoded, positions] = this.src.encode(str);
+
+    // Soft hyphens (U+00AD) should have zero width for line breaking purposes.
+    // Upstream pdfkit maps them to 'hyphen' in AFM data, so we override here.
+    for (let i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) === 0x00ad) {
+        positions[i].advanceWidth = 0;
+      }
+    }
+
+    return [encoded, positions];
   }
 
   layout(str: string) {
@@ -80,7 +139,6 @@ class StandardFont implements Font {
 
     return {
       positions,
-      stringIndices: positions.map((_: any, i: any) => i),
       glyphs,
       script: 'latin',
       language: 'dflt',
@@ -98,12 +156,23 @@ class StandardFont implements Font {
     return glyph;
   }
 
+  glyphName(id: number) {
+    let name = this.glyphNames.get(id);
+
+    if (name === undefined) {
+      name = this.src.font.characterToGlyph(id) as string;
+      this.glyphNames.set(id, name);
+    }
+
+    return name;
+  }
+
   getGlyph(id: number): fontkit.Glyph {
     return {
       id,
       codePoints: [id],
       isLigature: false,
-      name: this.src.font.characterToGlyph(id),
+      name: this.glyphName(id),
       _font: this.src,
       // @ts-expect-error assign proper value
       advanceWidth: undefined,
@@ -111,7 +180,7 @@ class StandardFont implements Font {
   }
 
   hasGlyphForCodePoint(codePoint: number) {
-    return this.src.font.characterToGlyph(codePoint) !== '.notdef';
+    return this.glyphName(codePoint) !== '.notdef';
   }
 
   // Based on empirical observation

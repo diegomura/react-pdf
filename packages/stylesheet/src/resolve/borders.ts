@@ -1,3 +1,4 @@
+import { matchPercent } from '@react-pdf/fns';
 import transformColor from '../utils/colors';
 import transformUnit from '../utils/units';
 import {
@@ -5,6 +6,7 @@ import {
   BorderSafeStyle,
   BorderStyle,
   BorderStyleValue,
+  Percentage,
 } from '../types';
 import { processColorValue, processNoopValue, processUnitValue } from './utils';
 
@@ -66,9 +68,10 @@ const resolveBorderShorthand = <K extends BorderKey>(
     }
 
     if (key.match(/Radius$/)) {
-      const radius = transformUnit(container, value);
+      const radius = transformUnit(container, value) as number | Percentage;
 
-      if (typeof radius !== 'number')
+      // Percentages are resolved against the box later on, in layout
+      if (typeof radius !== 'number' && !matchPercent(radius))
         throw new Error(`Invalid border radius: ${radius}`);
 
       return {

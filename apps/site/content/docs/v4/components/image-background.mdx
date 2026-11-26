@@ -1,0 +1,24 @@
+---
+title: "ImageBackground"
+---
+
+A React component for displaying an image behind child content. It works like `Image` but acts as a container — any children are rendered on top of the image.
+
+<Usage />
+
+## Valid props
+
+| Prop name  |                                 Description                                 |                                            Type |     Default |
+|------------|:---------------------------------------------------------------------------:|------------------------------------------------:|------------:|
+| src        |         Source of the image. [See more](/docs/v4/components/image#source-object)          |                                 _Source object_ | _undefined_ |
+| source     |            Alias of _src_. [See more](/docs/v4/components/image#source-object)            |                                 _Source object_ | _undefined_ |
+| style      |                  Defines view styles. [See more](/docs/v4/styling)                  |                               _Object_, _Array_ | _undefined_ |
+| imageStyle |              Defines styles applied to the background image                 |                               _Object_, _Array_ | _undefined_ |
+| debug      |  Enables debug mode on view bounding box. [See more](/docs/v4/advanced/debugging)   |                                       _Boolean_ |     _false_ |
+| fixed      | Renders component in all wrapped pages. [See more](/docs/v4/advanced/page-wrapping) |                                       _Boolean_ |     _false_ |
+| break | Forces the wrapping algorithm to start a new page when rendering this element. [See more](/docs/v4/advanced/page-wrapping#page-breaks) | _Boolean_ | _false_ |
+| minPresenceAhead | Hint that no page wrapping should occur between all sibling elements following the element within _n_ points. [See more](/docs/v4/advanced/orphans-and-widows) | _Number_ | _0_ |
+| cache      |              Enables image caching between consecutive renders              |                                       _Boolean_ |      _true_ |
+| srcSet     | Responsive image sources for resolution-based selection                     |                                        _String_ | _undefined_ |
+| sizes      |              Display width used for `srcSet` source selection               |                            _String_, _Number_ | _undefined_ |
+| bookmark   |         Attach bookmark to element. [See more](/docs/v4/advanced/document-navigation#bookmarks-v220)         | _String_ or [Bookmark](/docs/v4/advanced/document-navigation#bookmark-type) | _undefined_ |

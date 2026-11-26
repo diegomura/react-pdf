@@ -1,0 +1,64 @@
+---
+title: Dropping the pdfkit fork
+date: '2026-08-23'
+description: React-pdf shipped its own copy of pdfkit for eight years. The story of why that happened, and how we finally got rid of it.
+---
+
+React-pdf no longer ships its own copy of pdfkit. The `@react-pdf/pdfkit` package is gone, [about 12,000 lines across 97 files deleted](https://github.com/diegomura/react-pdf/pull/3509), and both the renderer and the font package now depend on plain [`pdfkit`](https://github.com/foliojs/pdfkit) from npm like everybody else.
+
+That fork had been around since 2018. Killing it took two years of on and off work, and it's probably the most valuable thing I've done for this project in a long while, even though nobody using react-pdf will notice a single thing.
+
+## The two month detour
+
+The [very first commit](https://github.com/diegomura/react-pdf/commit/272212a6847ad737be8241c64dbca7ad5a95ae8e), back in October 2016, already had pdfkit as a dependency. I had no real idea what generating a PDF involved, and pdfkit did all the hard parts for me while I played with the reconciler.
+
+A few months later @jbovenschen opened [#24](https://github.com/diegomura/react-pdf/issues/24) with a list of ideas for the project. One of them was getting rid of pdfkit, because its own text and layout logic was in the way of doing flexbox with Yoga. It made sense to me at the time, so I did it: [#26](https://github.com/diegomura/react-pdf/pull/26) brought in Yoga as the layout engine and a hand rolled PDF writer next to it.
+
+That lasted two months. Writing the PDF bytes yourself is genuinely good fun while the only thing you support is a rectangle. Then someone asks for a JPEG. Then for an embedded font, and you find yourself reading about CMaps and glyph widths at one in the morning, slowly realising you have volunteered to reimplement a seven hundred page ISO specification in your spare time, for free, so that a `<Text>` component can be bold. In May 2017 I opened [#79](https://github.com/diegomura/react-pdf/issues/79), politely titled "Migrating back to pdfkit", and [#85](https://github.com/diegomura/react-pdf/pull/85) landed two weeks later.
+
+## Why I forked it
+
+The trouble started when react-pdf grew its own text layout engine.
+
+pdfkit has a good text API, but react-pdf can't use it. We need to know where every single line breaks before we can decide where the _page_ breaks, so text layout has to happen up front and separately, in textkit. By the time pdfkit gets involved, the only thing left to say is "draw exactly these glyphs at exactly these coordinates", and back then there was no way to say that.
+
+I did try upstream first. [foliojs/pdfkit#798](https://github.com/foliojs/pdfkit/pull/798) is my March 2018 attempt at teaching `_fragment` to render pre laid out glyph runs. It sat for a year, and was closed with "Not mergeable anymore. Also lots of unrelated changes", which by then was entirely true.
+
+So in February 2018 I clicked fork. In April `@react-pdf/pdfkit` went up on npm and react-pdf [switched over to it](https://github.com/diegomura/react-pdf/pull/219). It felt like the pragmatic call and honestly, at that moment, it was.
+
+## What it cost
+
+Every upstream release meant sitting down with a diff and deciding, file by file, what to take. This was years before you could hand a model a thousand lines of drift and ask it what changed, so the only place that knowledge existed was my head. I knew that codebase by heart. Every mixin, every file, which line in `text.js` was mine and which was Devon's, because there was no other way to get a merge done. I never wrote any of it down either, which was fine right up until it wasn't.
+
+And the changes kept coming. Some were react-pdf specific: user units on pages, page mode and layout, a different `embedImage`, all the textkit rendering work. But the ones that really pushed the fork away from upstream were about running in the browser. pdfkit assumed Node, so it wanted `fs`, `zlib`, `stream` and `Buffer`, and asking every react-pdf user to configure four polyfills in their bundler was not something I was willing to do. Each of those got ripped out and replaced. Each one made the fork harder to sync.
+
+The dumbest part is that I was solving all of this alone, in a copy of a library, for problems that were obviously not unique to react-pdf.
+
+## Getting back
+
+In February 2024 I opened [#2613](https://github.com/diegomura/react-pdf/issues/2613) as an umbrella issue: catalogue every difference between the fork and upstream, then close them one at a time. "It will be a slow path", I wrote. It was.
+
+The work went in two directions at once. Pulling upstream's changes into the fork, file by file, until the diff was small enough to reason about. And pushing react-pdf's changes into pdfkit, which is the half that actually mattered:
+
+- [Use fflate instead of zlib](https://github.com/foliojs/pdfkit/pull/1760) in the browser build
+- [Drop the `fs` dependency](https://github.com/foliojs/pdfkit/pull/1763) from browser builds
+- [Use `Uint8Array` instead of `Buffer`](https://github.com/foliojs/pdfkit/pull/1764)
+- [Drop the `stream` dependency](https://github.com/foliojs/pdfkit/pull/1766) from browser builds
+- [Accept pre-parsed fontkit `Font` instances](https://github.com/foliojs/pdfkit/pull/1776) in `doc.font()`
+- [Add a real Node ESM build](https://github.com/foliojs/pdfkit/pull/1778)
+
+Those last two were the actual blockers, and once they landed in 0.20 there was nothing left to justify the fork. Deleting it was a one line change to two `package.json` files and a very satisfying `rm -rf`.
+
+What I like about this list is that none of it is react-pdf specific. A pdfkit browser bundle with zero Node builtins in it is something plenty of people wanted and nobody had time to build. Doing it upstream means it exists for everyone, and it means I stop paying for it every release. Eight years late, but the incentives were finally pointing the same way.
+
+## What changes for you
+
+Nothing. Same API, same output, and the visual regression suite passes byte for byte.
+
+One caveat worth being honest about: `pdfkit` is pinned to exactly `0.20.1`, not a range, because our renderer still reaches into a few pdfkit internals that aren't public API. That pin is a smell and I know it. Turning those into real APIs upstream is the next chunk of this work, and when it's done the pin can relax.
+
+## Thanks
+
+To [@devongovett](https://github.com/devongovett), for pdfkit and for fontkit, which between them are most of what makes this library possible. React-pdf has been standing on that work since its first commit, including the years I was standing on a copy of it.
+
+And to the foliojs maintainers who reviewed a long string of PRs from someone showing up to remove `Buffer` from their codebase. Thanks for the patience.

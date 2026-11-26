@@ -24,15 +24,18 @@ const DEFAULT_LINK_STYLES: Style = {
  * @returns Computed styles
  */
 const computeStyle = (container: Container, node: Node) => {
-  let baseStyle: Style[] = [node.style as Style];
+  const baseStyle = isLink(node)
+    ? [DEFAULT_LINK_STYLES, node.style]
+    : node.style;
 
-  if (isLink(node)) {
-    baseStyle = Array.isArray(node.style)
-      ? [DEFAULT_LINK_STYLES, ...node.style]
-      : [DEFAULT_LINK_STYLES, node.style];
+  const style = stylesheet(container, baseStyle);
+
+  // Floats are out of flow; flipping to absolute here keeps yoga and pagination float-unaware
+  if (style.float === 'left' || style.float === 'right') {
+    style.position = 'absolute';
   }
 
-  return stylesheet(container, baseStyle);
+  return style;
 };
 
 /**
@@ -46,11 +49,16 @@ const resolveNodeStyles =
   (node: Node): SafeNode => {
     const style = computeStyle(container, node);
 
-    if (!node.children) return Object.assign({}, node, { style }) as SafeNode;
+    // Split fragments re-enter through page relayout; keep their mark.
+    const wasSplit = (node as SafeNode).wasSplit ?? false;
+
+    if (!node.children) {
+      return Object.assign({}, node, { style, wasSplit }) as SafeNode;
+    }
 
     const children = node.children.map(resolveNodeStyles(container));
 
-    return Object.assign({}, node, { style, children }) as SafeNode;
+    return Object.assign({}, node, { style, wasSplit, children }) as SafeNode;
   };
 
 /**
@@ -78,11 +86,18 @@ export const resolvePageStyles = (page: PageNode) => {
  * @returns Document root with resolved styles
  */
 const resolveStyles = (root: DocumentNode): SafeDocumentNode => {
-  if (!root.children) return root as SafeDocumentNode;
+  if (!root.children) {
+    return Object.assign({}, root, {
+      wasSplit: false,
+    }) as unknown as SafeDocumentNode;
+  }
 
   const children = root.children.map(resolvePageStyles);
 
-  return Object.assign({}, root, { children }) as SafeDocumentNode;
+  return Object.assign({}, root, {
+    wasSplit: false,
+    children,
+  }) as SafeDocumentNode;
 };
 
 export default resolveStyles;

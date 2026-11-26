@@ -129,6 +129,28 @@ describe('resolve stylesheet colors', () => {
     expect(styles.backgroundColor).toBe('#0F0F');
   });
 
+  test('should handle colors with leading whitespace', () => {
+    const styles = resolveStyle({
+      color: ' rgb(255, 255, 0)',
+      backgroundColor: '  hsl(0, 100%, 50%)',
+      textDecorationColor: ' #0000FF',
+    });
+
+    expect(styles.color).toBe('#FFFF00');
+    expect(styles.backgroundColor).toBe('#FF0000');
+    expect(styles.textDecorationColor).toBe('#0000FF');
+  });
+
+  test('should handle colors with trailing whitespace', () => {
+    const styles = resolveStyle({
+      color: 'rgb(255, 255, 0) ',
+      backgroundColor: 'hsl(0, 100%, 50%) ',
+    });
+
+    expect(styles.color).toBe('#FFFF00');
+    expect(styles.backgroundColor).toBe('#FF0000');
+  });
+
   test('should resolve full opacity', () => {
     const styles = resolveStyle({ opacity: 1 });
 

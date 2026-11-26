@@ -138,7 +138,8 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(1, 5, run);
 
@@ -158,7 +159,8 @@ describe('run slice operator', () => {
           { id: 111, advanceWidth: 10, codePoints: [111] }, // o
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 0, 1, 2, 3],
+        stringIndices: [0, 0, 1, 2, 3],
+        glyphIndices: [0, 2, 3, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
@@ -180,7 +182,8 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(2, 5, run);
 
@@ -201,7 +204,8 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(1, 4, run);
 
@@ -221,7 +225,8 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
@@ -242,7 +247,8 @@ describe('run slice operator', () => {
           { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 3, run);
@@ -262,7 +268,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(1, 5, run);
@@ -282,7 +289,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 4, run);
@@ -302,7 +310,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(2, 5, run);
@@ -322,7 +331,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(3, 5, run);
@@ -342,7 +352,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 2, run);
@@ -362,7 +373,8 @@ describe('run slice operator', () => {
           { id: 64259, advanceWidth: 10, codePoints: [102, 102, 105] }, // ffi
           { id: 109, advanceWidth: 10, codePoints: [109] }, // m
         ] as Glyph[],
-        glyphIndices: [0, 1, 1, 1, 2],
+        stringIndices: [0, 1, 1, 1, 2],
+        glyphIndices: [0, 1, 4],
         attributes: { font: [font] },
       };
       const sliced = slice(0, 3, run);
@@ -371,6 +383,146 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('end', 3);
       expect(sliced.glyphs).toHaveLength(3);
       expect(pluck('id', sliced.glyphs!)).toEqual([76, 102, 102]);
+    });
+
+    test('should exact slice return same glyphs containing composed characters', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 5, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(6);
+      expect(pluck('id', sliced.glyphs!)).toEqual([
+        76, 111, 3585, 3635, 0, 109,
+      ]);
+    });
+
+    test('should correctly slice glyphs containing composed characters', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(1, 4, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(4);
+      expect(pluck('id', sliced.glyphs!)).toEqual([111, 3585, 3635, 0]);
+    });
+
+    test('should correctly slice glyphs starting at composed character', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(2, 5, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(4);
+      expect(pluck('id', sliced.glyphs!)).toEqual([3585, 3635, 0, 109]);
+    });
+
+    test('should correctly slice glyphs starting after composed character', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(3, 5, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(2);
+      expect(pluck('id', sliced.glyphs!)).toEqual([0, 109]);
+    });
+
+    test('should correctly slice glyphs ending before composed character', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 3, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(3);
+      expect(pluck('id', sliced.glyphs!)).toEqual([76, 111, 3585]);
+    });
+
+    test('should correctly slice glyphs ending after composed character', () => {
+      // "loกำm" — 5 string chars, 6 glyphs (ำ produces an extra empty glyph)
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 4, composedRun);
+
+      expect(sliced.glyphs).toHaveLength(5);
+      expect(pluck('id', sliced.glyphs!)).toEqual([76, 111, 3585, 3635, 0]);
     });
   });
 
@@ -412,6 +564,34 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('start', 0);
       expect(sliced).toHaveProperty('end', 5);
       expect(pluck('xAdvance', sliced.positions!)).toEqual([8, 7, 10, 4]);
+    });
+
+    test('should exact slice with composed characters', () => {
+      // กำ
+      const run = {
+        start: 0,
+        end: 2,
+        attributes: {},
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+        ],
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // ก
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // ำ
+          { id: 114, advanceWidth: 10, codePoints: [] }, // <empty>
+        ] as Glyph[],
+        stringIndices: [0, 1],
+        glyphIndices: [0, 1, 1],
+      };
+      const sliced = slice(0, 3, run);
+
+      expect(sliced).toHaveProperty('start', 0);
+      expect(sliced).toHaveProperty('end', 2);
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([8, 7, 6]);
+      expect(sliced.stringIndices).toEqual([0, 1]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 1]);
     });
 
     test('should correctly slice positions', () => {
@@ -462,7 +642,8 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(2, 5, run);
 
@@ -482,7 +663,8 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(1, 4, run);
 
@@ -507,7 +689,8 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(3, 5, run);
@@ -533,7 +716,8 @@ describe('run slice operator', () => {
           { xAdvance: 10, yAdvance: 0, xOffset: 0, yOffset: 0 }, // fi
           { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
         ],
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
         attributes: { font: [font], fontSize: 2 },
       };
       const sliced = slice(1, 3, run);
@@ -542,103 +726,356 @@ describe('run slice operator', () => {
       expect(sliced).toHaveProperty('end', 3);
       expect(pluck('xAdvance', sliced.positions!)).toEqual([7, 8]);
     });
-  });
 
-  describe('slice glyph indices', () => {
-    test('should exact slice return same glyph indices', () => {
+    test('should exact slice return same positions containing composed characters', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+          { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
+        ],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 5, run);
+
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([8, 7, 6, 5, 4, 3]);
+    });
+
+    test('should correctly slice positions containing composed characters', () => {
+      const sliced = slice(1, 4, {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+          { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
+        ],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      });
+
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([7, 6, 5, 4]);
+    });
+
+    test('should correctly slice positions starting after composed character', () => {
+      const sliced = slice(3, 5, {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+          { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
+        ],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      });
+
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([4, 3]);
+    });
+
+    test('should correctly slice positions ending before composed character', () => {
+      const sliced = slice(0, 3, {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+          { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
+        ],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      });
+
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([8, 7, 6]);
+    });
+
+    test('should correctly slice positions ending after composed character', () => {
+      const sliced = slice(0, 4, {
+        start: 0,
+        end: 5,
+        attributes: {},
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 3585, advanceWidth: 10, codePoints: [3585] }, // ก
+          { id: 3635, advanceWidth: 10, codePoints: [3635] }, //  ำ
+          { id: 0, advanceWidth: 10, codePoints: [] }, // <empty>
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        positions: [
+          { xAdvance: 8, yAdvance: 0, xOffset: 0, yOffset: 0 }, // l
+          { xAdvance: 7, yAdvance: 0, xOffset: 0, yOffset: 0 }, // o
+          { xAdvance: 6, yAdvance: 0, xOffset: 0, yOffset: 0 }, // ก
+          { xAdvance: 5, yAdvance: 0, xOffset: 0, yOffset: 0 }, //  ำ
+          { xAdvance: 4, yAdvance: 0, xOffset: 0, yOffset: 0 }, // <empty>
+          { xAdvance: 3, yAdvance: 0, xOffset: 0, yOffset: 0 }, // m
+        ],
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      });
+
+      expect(pluck('xAdvance', sliced.positions!)).toEqual([8, 7, 6, 5, 4]);
+    });
+  });
+
+  describe('slice indices', () => {
+    test('should exact slice return same indices', () => {
+      const run = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 4],
         glyphIndices: [0, 1, 2, 3, 4],
       };
       const sliced = slice(0, 5, run);
 
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 3, 4]);
       expect(sliced.glyphIndices).toEqual([0, 1, 2, 3, 4]);
     });
 
-    test('should correctly slice glyph indices', () => {
+    test('should correctly slice indices', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
+        stringIndices: [0, 1, 2, 3, 4],
         glyphIndices: [0, 1, 2, 3, 4],
       };
       const sliced = slice(2, 4, run);
 
+      expect(sliced.stringIndices).toEqual([0, 1]);
       expect(sliced.glyphIndices).toEqual([0, 1]);
     });
 
-    test('should exact slice return same glyph indices when ligature', () => {
+    test('should exact slice return same indices when ligature', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(0, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 2, 2, 3]);
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 2, 3]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 2, 4]);
     });
 
-    test('should correctly slice glyph indices containing ligature', () => {
+    test('should correctly slice indices containing ligature', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(1, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 1, 2]);
+      expect(sliced.stringIndices).toEqual([0, 1, 1, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 3]);
     });
 
-    test('should correctly slice glyph indices starting in ligature', () => {
+    test('should correctly slice indices starting in ligature', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(2, 5, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 0, 1]);
+      expect(sliced.stringIndices).toEqual([0, 0, 1]);
+      expect(sliced.glyphIndices).toEqual([0, 2]);
     });
 
-    test('should correctly slice glyph indices ending in ligature', () => {
+    test('should correctly slice indices ending in ligature', () => {
       const run = {
         start: 0,
         end: 5,
         attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        stringIndices: [0, 1, 2, 2, 3],
+        glyphIndices: [0, 1, 2, 4],
       };
       const sliced = slice(1, 4, run);
 
-      expect(sliced.glyphIndices).toEqual([0, 1, 1]);
-    });
-
-    test('should correctly slice glyph indices breaking ligature at start', () => {
-      const run = {
-        start: 0,
-        end: 5,
-        attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
-      };
-      const sliced = slice(3, 5, run);
-
+      expect(sliced.stringIndices).toEqual([0, 1, 1]);
       expect(sliced.glyphIndices).toEqual([0, 1]);
     });
 
-    test('should correctly slice glyph indices breaking ligature at end', () => {
+    test('should correctly slice indices breaking ligature at start', () => {
       const run = {
         start: 0,
         end: 5,
-        attributes: {},
-        glyphIndices: [0, 1, 2, 2, 3],
+        attributes: { font: [font] },
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+        stringIndices: [0, 1, 2, 2, 3], // l o fi m
+        glyphIndices: [0, 1, 2, 4],
       };
-      const sliced = slice(1, 3, run);
+      const sliced = slice(3, 5, run); // i m
 
+      expect(sliced.stringIndices).toEqual([0, 1]);
       expect(sliced.glyphIndices).toEqual([0, 1]);
+    });
+
+    test('should correctly slice indices breaking ligature at end', () => {
+      const run = {
+        start: 0,
+        end: 5,
+        attributes: { font: [font] },
+        stringIndices: [0, 1, 2, 2, 3], // l o fi m
+        glyphIndices: [0, 1, 2, 4],
+        glyphs: [
+          { id: 76, advanceWidth: 10, codePoints: [76] }, // l
+          { id: 111, advanceWidth: 10, codePoints: [111] }, // o
+          { id: 64257, advanceWidth: 10, codePoints: [102, 105] }, // fi
+          { id: 109, advanceWidth: 10, codePoints: [109] }, // m
+        ] as Glyph[],
+      };
+      const sliced = slice(1, 3, run); // o f
+
+      expect(sliced.stringIndices).toEqual([0, 1]);
+      expect(sliced.glyphIndices).toEqual([0, 1]);
+    });
+
+    test('should exact slice return same indices containing composed characters', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 5, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 3, 5]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 2, 3, 3, 4]);
+    });
+
+    test('should correctly slice indices containing composed characters', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(1, 4, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 1, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 2, 2]);
+    });
+
+    test('should correctly slice indices starting at composed character', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(2, 5, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 1, 3]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 1, 2]);
+    });
+
+    test('should correctly slice indices starting after composed character', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(3, 5, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 1]);
+    });
+
+    test('should correctly slice indices ending before composed character', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 3, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 1, 2]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 2]);
+    });
+
+    test('should correctly slice indices ending after composed character', () => {
+      const composedRun = {
+        start: 0,
+        end: 5,
+        attributes: {},
+        stringIndices: [0, 1, 2, 3, 5],
+        glyphIndices: [0, 1, 2, 3, 3, 4],
+      };
+      const sliced = slice(0, 4, composedRun);
+
+      expect(sliced.stringIndices).toEqual([0, 1, 2, 3]);
+      expect(sliced.glyphIndices).toEqual([0, 1, 2, 3, 3]);
     });
   });
 });

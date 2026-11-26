@@ -1,30 +1,9 @@
 ---
-"@react-pdf/textkit": minor
+'@react-pdf/textkit': minor
+'@react-pdf/font': minor
+'@react-pdf/types': minor
 ---
 
-Custom hyphenation callbacks can now decide for each split point, whether
-a hyphen should be inserted at the end of the line when breaking at said
-split point.
-This change is backwards compatible. If a custom hyphenation callback
-returns an array of strings, it is assumed that all except the last part
-should get a hyphen added when breaking.
-Hyphens can be turned off for all parts of a word by returning an object
-in the format:
-`{ parts: <string array as previously>, hyphen: null }`
-This may be useful for URLs or similar technical identifiers which
-should be broken but should not be hyphenated.
-Alternatively, the hyphen can be activated or deactivated for each part
-separately, by returning an array of part objects:
+Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ parts, hyphen: null }` to break a word without hyphens, or an array of `{ string, hyphen }` parts to decide part by part. Plain string arrays keep working as before.
 
-```
-[
-  { string: 'blue', hyphen: '-' },
-  { string: 'ish-', hyphen: null },
-  { string: 'green', hyphen: null }
-]
-```
-
-For now, only a dash `'-'` or `null` are valid choices for `hyphen`.
-Also, for now, the last part of a word is always forced to `hyphen: null`.
-Finally, unless specified specifically, parts ending in a dash will not
-get an added hyphen, and the default hyphenation will split text on hyphens.
+Chinese and Japanese text now breaks between ideographs by default, without hyphens. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.

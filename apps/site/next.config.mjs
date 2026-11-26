@@ -1,10 +1,18 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
 
+// The @react-pdf packages are linked from the monorepo, so the bundler and
+// the output tracing have to reach beyond apps/site
+const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
+
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  turbopack: { root },
+  outputFileTracingRoot: root,
   async redirects() {
     const docs = [
       'advanced',

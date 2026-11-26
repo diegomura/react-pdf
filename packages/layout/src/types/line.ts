@@ -28,7 +28,7 @@ export type LineNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -36,4 +36,5 @@ export type SafeLineNode = Omit<LineNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeLineProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

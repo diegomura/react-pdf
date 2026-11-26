@@ -30,7 +30,7 @@ The library works as a pipeline: React components → reconciler → layout → 
 ```
 @react-pdf/renderer (main entry point - exports Document, Page, View, Text, etc.)
   ├── @react-pdf/reconciler    → React fiber reconciler that creates the internal element tree
-  ├── @react-pdf/layout        → Resolves layout using Yoga (flexbox), handles pagination
+  ├── @react-pdf/layout        → Resolves layout using Taffy (flexbox), handles pagination
   │     ├── @react-pdf/textkit     → Text measurement, line breaking, hyphenation
   │     ├── @react-pdf/stylesheet  → CSS-like style parsing and resolution
   │     ├── @react-pdf/image       → PNG/JPEG image fetching and parsing
@@ -62,7 +62,7 @@ When making changes, always include tests. Add tests in the same location where 
 ### Code Style
 
 - ESLint 9 with TypeScript parser, Prettier (single quotes), enforced via Husky pre-commit hooks
-- Packages `yoga` and everything under `apps` are excluded from linting
+- Everything under `apps` is excluded from linting
 
 ## Previewing PDFs
 

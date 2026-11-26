@@ -15,7 +15,7 @@ const marginTop = (node: SafeNode) => numeric(node.box?.marginTop);
 
 const marginBottom = (node: SafeNode) => numeric(node.box?.marginBottom);
 
-// A container that starts and ends here keeps its subtree untouched: the yoga
+// A container that starts and ends here keeps its subtree untouched: the layout
 // boxes below it are still valid, and out-of-flow children the engine never
 // saw stay where they are.
 const isWhole = (placed: PlacedNode) =>

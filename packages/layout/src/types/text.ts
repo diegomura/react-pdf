@@ -1,7 +1,6 @@
 import * as P from '@react-pdf/primitives';
 import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 import { HyphenationCallback } from '@react-pdf/font';
-import { YogaNode } from 'yoga-layout/load';
 import { ExclusionShape, Paragraph } from '@react-pdf/textkit';
 
 import { Box, NodeProps, Origin, RenderProp } from './base';
@@ -48,7 +47,7 @@ export type TextNode = {
   style?: StyleProp;
   box?: Box;
   origin?: Origin;
-  yogaNode?: YogaNode;
+  taffyNode?: bigint;
   lines?: Paragraph;
   alignOffset?: number; // TODO: Remove this
   children?: (TextNode | TextInstanceNode | ImageNode | TspanNode)[];
@@ -57,6 +56,7 @@ export type TextNode = {
 export type SafeTextNode = Omit<TextNode, 'style' | 'children'> & {
   style: SafeStyle;
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeTextNode
     | SafeTextInstanceNode

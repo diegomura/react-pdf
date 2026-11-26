@@ -27,7 +27,7 @@ export type CircleNode = {
   style?: StyleProp;
   box?: never;
   origin?: Origin;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -35,4 +35,5 @@ export type SafeCircleNode = Omit<CircleNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeCircleProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

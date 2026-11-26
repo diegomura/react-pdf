@@ -18,7 +18,6 @@ import {
   SafePageNode,
   SafeTextNode,
   SafeViewNode,
-  YogaInstance,
 } from '../types';
 
 const isText = (node: SafeNode): node is SafeTextNode => node.type === P.Text;
@@ -193,11 +192,10 @@ const resolveDynamicPage = (
   props: DynamicPageProps,
   page: SafePageNode,
   fontStore: FontStore,
-  yoga: YogaInstance,
 ) => {
   if (shouldResolveDynamicNodes(page)) {
     const resolvedPage = resolveDynamicNodes(props, page);
-    return relayoutPage(resolvedPage, fontStore, yoga);
+    return relayoutPage(resolvedPage, fontStore);
   }
 
   return page;
@@ -207,11 +205,10 @@ const splitPage = (
   page: SafePageNode,
   pageNumber: number,
   fontStore: FontStore,
-  yoga: YogaInstance,
 ): SafePageNode[] => {
   const wrapArea = getWrapArea(page);
   const contentArea = getContentArea(page);
-  const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore, yoga);
+  const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore);
   const height = page.style.height;
 
   const [currentChilds, nextChilds] = splitNodes(
@@ -222,7 +219,7 @@ const splitPage = (
 
   const relayout = (node: SafePageNode): SafePageNode =>
     // @ts-expect-error rework pagination
-    relayoutPage(node, fontStore, yoga) as SafePageNode;
+    relayoutPage(node, fontStore) as SafePageNode;
 
   const currentBox = { ...page.box, height };
   const currentPage = relayout(
@@ -246,7 +243,7 @@ const splitPage = (
   return [currentPage, nextPage];
 };
 
-const resolvePageIndices = (fontStore, yoga, page, pageNumber, pages) => {
+const resolvePageIndices = (fontStore, page, pageNumber, pages) => {
   const totalPages = pages.length;
 
   const props = {
@@ -256,7 +253,7 @@ const resolvePageIndices = (fontStore, yoga, page, pageNumber, pages) => {
     subPageTotalPages: page.subPageTotalPages,
   };
 
-  return resolveDynamicPage(props, page, fontStore, yoga);
+  return resolveDynamicPage(props, page, fontStore);
 };
 
 const assocSubPageData = (subpages) => {
@@ -275,24 +272,18 @@ const paginate = (
   page: SafePageNode,
   pageNumber: number,
   fontStore: FontStore,
-  yoga: YogaInstance,
 ) => {
   if (!page) return [];
 
   if (page.props?.wrap === false) return [page];
 
-  let splittedPage = splitPage(page, pageNumber, fontStore, yoga);
+  let splittedPage = splitPage(page, pageNumber, fontStore);
 
   const pages = [splittedPage[0]];
   let nextPage = splittedPage[1];
 
   while (nextPage !== null) {
-    splittedPage = splitPage(
-      nextPage,
-      pageNumber + pages.length,
-      fontStore,
-      yoga,
-    );
+    splittedPage = splitPage(nextPage, pageNumber + pages.length, fontStore);
 
     pages.push(splittedPage[0]);
     nextPage = splittedPage[1];
@@ -318,7 +309,7 @@ const resolvePagination = (
 
   for (let i = 0; i < root.children.length; i += 1) {
     const page = root.children[i];
-    let subpages = paginate(page, pageNumber, fontStore, root.yoga);
+    let subpages = paginate(page, pageNumber, fontStore);
 
     subpages = assocSubPageData(subpages);
     pageNumber += subpages.length;
@@ -326,7 +317,7 @@ const resolvePagination = (
   }
 
   pages = pages.map((...args) =>
-    dissocSubPageData(resolvePageIndices(fontStore, root.yoga, ...args)),
+    dissocSubPageData(resolvePageIndices(fontStore, ...args)),
   );
 
   return assingChildren(pages, root);

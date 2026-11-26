@@ -32,7 +32,7 @@ export type RectNode = {
   style?: StyleProp;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: never[];
 };
 
@@ -40,4 +40,5 @@ export type SafeRectNode = Omit<RectNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafeRectProps;
   wasSplit: boolean;
+  stylesResolved?: boolean;
 };

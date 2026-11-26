@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest';
 
-import resolveStyles from '../../src/steps/resolveStyles';
+import resolveStyles, {
+  resolvePageStyles,
+} from '../../src/steps/resolveStyles';
 
 describe('layout resolveStyles', () => {
   test('Should resolve page styles', () => {
@@ -233,6 +235,39 @@ describe('layout resolveStyles', () => {
     });
 
     expect(result).toMatchSnapshot();
+  });
+
+  test('Should not resolve already resolved styles again', () => {
+    const doc = {
+      type: 'DOCUMENT',
+      props: {},
+      children: [
+        {
+          type: 'PAGE',
+          props: {},
+          style: { fontSize: 10 },
+          children: [
+            {
+              type: 'TEXT',
+              props: {},
+              style: { fontSize: 10, lineHeight: 1.5 },
+              children: [{ type: 'TEXT_INSTANCE', value: 'hello' }],
+            },
+          ],
+        },
+      ],
+    };
+
+    const once = resolveStyles(doc as any);
+    const text = () => once.children[0].children[0];
+
+    expect(text().style.lineHeight).toBe(15);
+
+    // Page relayout re-runs style resolution over the resolved page
+    const twice = resolvePageStyles(once.children[0] as any);
+
+    expect(twice.children[0].style.lineHeight).toBe(15);
+    expect(twice.children[0].stylesResolved).toBe(true);
   });
 
   test('Should resolve default link styles', () => {

@@ -10,7 +10,7 @@ export type DefsNode = {
   style?: never;
   box?: never;
   origin?: never;
-  yogaNode?: never;
+  taffyNode?: never;
   children?: (
     | ClipPathNode
     | LinearGradientNode
@@ -23,6 +23,7 @@ export type Defs = Record<string, DefsNode['children'][number]>;
 
 export type SafeDefsNode = Omit<DefsNode, 'children'> & {
   wasSplit: boolean;
+  stylesResolved?: boolean;
   children?: (
     | SafeClipPathNode
     | SafeLinearGradientNode

@@ -1,5 +1,22 @@
 # @react-pdf/textkit
 
+## 7.1.0
+
+### Minor Changes
+
+- [#3268](https://github.com/diegomura/react-pdf/pull/3268) [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ string, hyphen: null }` parts instead of strings to break without a hyphen; strings and parts can be mixed. Plain string arrays keep working as before.
+
+  Chinese and Japanese text now breaks between ideographs by default, without hyphens. Breaks without a hyphen now cost the same as breaking at a space and are no longer blocked by `hyphenationPenalty`. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.
+
+### Patch Changes
+
+- [#3577](https://github.com/diegomura/react-pdf/pull/3577) [`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f) Thanks [@Louayzouaoui1](https://github.com/Louayzouaoui1)! - fix: keep the base letterform of decomposed characters (e.g. Arabic letters shaped as base + dot mark) when a run is sliced or measured at their start
+
+- [#3454](https://github.com/diegomura/react-pdf/pull/3454) [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71) Thanks [@to-na](https://github.com/to-na)! - fix(textkit): preserve variation selector font runs
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/font@4.2.0
+
 ## 7.0.2
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @react-pdf/types
 
+## 2.15.0
+
+### Minor Changes
+
+- [#3268](https://github.com/diegomura/react-pdf/pull/3268) [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ string, hyphen: null }` parts instead of strings to break without a hyphen; strings and parts can be mixed. Plain string arrays keep working as before.
+
+  Chinese and Japanese text now breaks between ideographs by default, without hyphens. Breaks without a hyphen now cost the same as breaking at a space and are no longer blocked by `hyphenationPenalty`. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/font@4.2.0
+  - @react-pdf/stylesheet@6.3.4
+
 ## 2.14.1
 
 ### Patch Changes

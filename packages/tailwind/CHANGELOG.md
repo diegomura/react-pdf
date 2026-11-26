@@ -1,5 +1,12 @@
 # @react-pdf/tailwind
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/types@2.15.0
+
 ## 0.2.1
 
 ### Patch Changes

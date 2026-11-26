@@ -22,7 +22,8 @@ export type FontWeight =
   | 'ultrabold'
   | 'extrabold'
   | 'heavy'
-  | 'black';
+  | 'black'
+  | `${number}`;
 
 export type FontDescriptor = {
   fontFamily: string;

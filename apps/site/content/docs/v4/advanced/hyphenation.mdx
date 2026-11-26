@@ -43,25 +43,25 @@ The second argument is the built-in splitter, so you can tweak its output instea
 
 By default, a hyphen is added at the end of the line whenever a word breaks between two of its parts. Parts that already end with `-` don't get a second one, so `blue-green` breaks as `blue-` / `green`.
 
-To break a word without adding a hyphen, return an object with `hyphen: null`. This is useful for URLs, file paths or long identifiers:
+To break a word without adding a hyphen, return `{ string, hyphen: null }` parts instead of strings. This is useful for URLs, file paths or long identifiers:
 
 ```jsx
 Font.registerHyphenationCallback((word, fallback) => {
   if (word.startsWith('http')) {
-    return { parts: word.split(/(?<=[/.])/), hyphen: null };
+    return word.split(/(?<=[/.])/).map((string) => ({ string, hyphen: null }));
   }
 
   return fallback(word);
 });
 ```
 
-You can also decide part by part, returning `{ string, hyphen }` objects. `hyphen` can be `'-'` or `null`:
+Strings and parts can be mixed, so you decide part by part. `hyphen` can be `'-'` or `null`:
 
 ```jsx
 const hyphenationCallback = () => [
   { string: 'blue', hyphen: '-' },
   { string: 'ish', hyphen: null },
-  { string: 'green' },
+  'green',
 ];
 ```
 

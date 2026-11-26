@@ -48,7 +48,8 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      if (node.hyphen) {
+      // Only hyphenated breaks reserve width for the hyphen
+      if (node.width > 0) {
         line = insertGlyph(line.string.length, HYPHEN, line);
       }
     } else {
@@ -111,14 +112,12 @@ const getNodes = (
         acc.push(knuthPlass.box(width, start, end, withinWord));
 
         if (syllables[index + 1] && withinWord) {
-          // Add penalty node. Penalty nodes are used to represent hyphenation points.
+          // Add penalty node. Penalty nodes are used to represent break points
+          // inside words. Breaks without a hyphen cost as little as a space.
           acc.push(
-            knuthPlass.penalty(
-              hyphen ? hyphenWidth : 0,
-              hyphenPenalty,
-              1,
-              hyphen,
-            ),
+            hyphen
+              ? knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1)
+              : knuthPlass.penalty(0, 0, 0),
           );
         }
       }
@@ -132,7 +131,7 @@ const getNodes = (
 
   // Add mandatory final glue
   result.push(knuthPlass.glue(0, start, start, knuthPlass.infinity, 0));
-  result.push(knuthPlass.penalty(0, -knuthPlass.infinity, 1, null));
+  result.push(knuthPlass.penalty(0, -knuthPlass.infinity, 1));
 
   return result;
 };

@@ -73,10 +73,7 @@ export type HyphenatedPart = {
   hyphen?: '-' | null;
 };
 
-export type HyphenatedWord =
-  | string[]
-  | HyphenatedPart[]
-  | { parts: string[]; hyphen?: '-' | null };
+export type HyphenatedWord = (string | HyphenatedPart)[];
 
 export type HyphenationCallback = (
   word: string,

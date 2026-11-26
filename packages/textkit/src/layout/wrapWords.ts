@@ -49,34 +49,16 @@ const removeSoftHyphens = (part: HyphenatedPart) => {
   return part;
 };
 
-/**
- * Coerce a string or HyphenatedPart to a HyphenatedPart.
- * Explicit hyphens are kept. Otherwise the default applies, except for
- * strings already ending in a hyphen.
- *
- * @param part
- * @param defaultHyphen
- */
-const normalizeHyphenatedPart = (
-  part: string | HyphenatedPart,
-  defaultHyphen: '-' | null,
-): HyphenatedPart => {
-  if (typeof part === 'string') {
-    return { string: part, hyphen: part.endsWith('-') ? null : defaultHyphen };
-  }
-
-  if (part.hyphen === undefined) {
-    return { string: part.string, hyphen: defaultHyphen };
-  }
-
-  return { string: part.string, hyphen: part.hyphen === null ? null : '-' };
+// Only a dash is supported for now, so any other value means a dash
+const toHyphen = (hyphen: unknown, defaultHyphen: '-' | null) => {
+  if (hyphen === undefined) return defaultHyphen;
+  return hyphen === null ? null : '-';
 };
 
 /**
- * Convert the various supported output formats of hyphenation callbacks into
- * one single format: A list of Syllables.
- * For now, only a hyphen or null are supported as hyphenation character after a Syllable.
- * Also, the last syllable in a word is always forced to have no hyphen character.
+ * Coerce hyphenation callback output into parts.
+ * Parts already ending in a hyphen don't get another one, and the last part
+ * of a word never gets one.
  *
  * @param hyphenatedWord
  * @param defaultHyphen
@@ -84,21 +66,16 @@ const normalizeHyphenatedPart = (
 const normalizeHyphenatedWord = (
   hyphenatedWord: HyphenatedWord,
   defaultHyphen: '-' | null,
-) => {
-  const normalized = Array.isArray(hyphenatedWord)
-    ? hyphenatedWord.map((part: string | HyphenatedPart) =>
-        normalizeHyphenatedPart(part, defaultHyphen),
-      )
-    : hyphenatedWord.parts.map((part) =>
-        normalizeHyphenatedPart(
-          part,
-          hyphenatedWord.hyphen === null ? null : defaultHyphen,
-        ),
-      );
+): HyphenatedPart[] => {
+  const parts = hyphenatedWord.map((part) =>
+    typeof part === 'string'
+      ? { string: part, hyphen: part.endsWith('-') ? null : defaultHyphen }
+      : { string: part.string, hyphen: toHyphen(part.hyphen, defaultHyphen) },
+  );
 
-  if (normalized.length > 0) normalized[normalized.length - 1].hyphen = null;
+  if (parts.length > 0) parts[parts.length - 1].hyphen = null;
 
-  return normalized;
+  return parts;
 };
 
 /**

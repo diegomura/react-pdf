@@ -286,10 +286,7 @@ describe('wrapWords', () => {
 
   describe('with custom hyphenation callback', () => {
     const customHyphenation = (word, original) => {
-      return {
-        parts: original(word).flatMap((part) => part.split(/(?<=[./])/g)),
-        hyphen: '-',
-      };
+      return original(word).flatMap((part) => part.split(/(?<=[./])/g));
     };
     test('should return no syllables when empty string provided', () => {
       const result = customizedInstance(customHyphenation)({
@@ -356,7 +353,7 @@ describe('wrapWords', () => {
 
     test('should be able to turn off hyphenation', () => {
       const hyphenationCallback = (word, original) => {
-        return { parts: original(word), hyphen: null };
+        return original(word).map((string) => ({ string, hyphen: null }));
       };
       const result = customizedInstance(hyphenationCallback)({
         string: 'Lorem ipsum',
@@ -379,7 +376,7 @@ describe('wrapWords', () => {
 
     test('should tolerate missing hyphen specification', () => {
       const hyphenationCallback = (word, original) => {
-        return { parts: original(word) };
+        return original(word).map((string) => ({ string }));
       };
       const result = customizedInstance(hyphenationCallback)({
         string: 'Lorem ipsum',

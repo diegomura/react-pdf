@@ -433,6 +433,29 @@ describe('linebreaker', () => {
     ]);
   });
 
+  test('should break without hyphens when hyphenation is disabled', () => {
+    const attributedString = createAttributedString('left', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    attributedString.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    const result = linebreakerFactory({ hyphenationPenalty: Infinity })(
+      attributedString,
+      [18],
+    );
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
   test('should not reserve hyphen width on hyphen-less breaks', () => {
     const syllables = ['日', '本', '語', '組'];
     const hyphenated = createAttributedString('left', syllables);

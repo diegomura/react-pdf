@@ -45,9 +45,9 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
-        { string: 'ipsum', hyphen: null },
+        { string: 'ipsum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(1);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -77,9 +77,9 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
-        { string: 'ipsum', hyphen: null },
+        { string: 'ipsum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(2);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -106,9 +106,9 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Loremo', hyphen: null },
+        { string: 'Loremo', hyphen: '-' },
         { string: ' ', hyphen: null },
-        { string: 'ipsumo', hyphen: null },
+        { string: 'ipsumo', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(1);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -142,9 +142,9 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
-        { string: 'ipsum', hyphen: null },
+        { string: 'ipsum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(1);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -169,9 +169,9 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
-        { string: 'ipsum', hyphen: null },
+        { string: 'ipsum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(2);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -202,10 +202,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(1);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -230,10 +230,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(2);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -256,7 +256,7 @@ describe('wrapWords', () => {
 
       expect(result.syllables).toEqual([
         { string: 'Lo-', hyphen: null },
-        { string: 'rem', hyphen: null },
+        { string: 'rem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
         { string: 'sum-', hyphen: null },
@@ -276,10 +276,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ips', hyphen: '-' },
-        { string: 'um', hyphen: null },
+        { string: 'um', hyphen: '-' },
       ]);
     });
   });
@@ -311,10 +311,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(1);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -339,10 +339,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
       expect(result.runs).toHaveLength(2);
       expect(result.runs[0]).toHaveProperty('start', 0);
@@ -390,10 +390,10 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
     });
 
@@ -415,11 +415,11 @@ describe('wrapWords', () => {
       expect(result.syllables).toEqual([
         { string: 'Lo', hyphen: '-' },
         { string: 're', hyphen: '-' },
-        { string: 'm', hyphen: null },
+        { string: 'm', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'i', hyphen: '-' },
         { string: 'psu', hyphen: '-' },
-        { string: 'm', hyphen: null },
+        { string: 'm', hyphen: '-' },
       ]);
     });
 
@@ -452,7 +452,7 @@ describe('wrapWords', () => {
 
       expect(result.syllables).toEqual([
         { string: 'Lor-', hyphen: '-' }, // can force adding hyphen on part ending in dash
-        { string: 'em', hyphen: null }, // last hyphen of the word is forced to null
+        { string: 'em', hyphen: '-' }, // explicit hyphens are kept on the last part too
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: null }, // can force omitting hyphen inside word
         { string: 'sum', hyphen: null },
@@ -514,10 +514,10 @@ describe('wrapWords', () => {
       expect(result.syllables).toEqual([
         { string: 'Lo.', hyphen: '-' },
         { string: 're/', hyphen: '-' },
-        { string: 'm', hyphen: null },
+        { string: 'm', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ip', hyphen: '-' },
-        { string: 'sum', hyphen: null },
+        { string: 'sum', hyphen: '-' },
       ]);
     });
 
@@ -534,11 +534,11 @@ describe('wrapWords', () => {
       });
 
       expect(result.syllables).toEqual([
-        { string: 'Lorem', hyphen: null },
+        { string: 'Lorem', hyphen: '-' },
         { string: ' ', hyphen: null },
         { string: 'ips', hyphen: '-' },
         { string: 'um.', hyphen: '-' },
-        { string: 'um', hyphen: null },
+        { string: 'um', hyphen: '-' },
       ]);
     });
 
@@ -625,7 +625,7 @@ describe('wrapWords', () => {
 
       expect(result.syllables).toEqual([
         { string: '日', hyphen: '-' },
-        { string: '本', hyphen: null },
+        { string: '本', hyphen: '-' },
       ]);
     });
 
@@ -648,7 +648,7 @@ describe('wrapWords', () => {
 
       expect(result.syllables).toEqual([
         { string: 'some', hyphen: '-' },
-        { string: 'thing', hyphen: null },
+        { string: 'thing', hyphen: '-' },
       ]);
     });
   });

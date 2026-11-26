@@ -49,16 +49,10 @@ const removeSoftHyphens = (part: HyphenatedPart) => {
   return part;
 };
 
-// Only a dash is supported for now, so any other value means a dash
-const toHyphen = (hyphen: unknown, defaultHyphen: '-' | null) => {
-  if (hyphen === undefined) return defaultHyphen;
-  return hyphen === null ? null : '-';
-};
-
 /**
  * Coerce hyphenation callback output into parts.
- * Parts already ending in a hyphen don't get another one, and the last part
- * of a word never gets one.
+ * Whitespace and parts already ending in a hyphen don't get one, and only a
+ * dash is supported for now, so any explicit value other than null is a dash.
  *
  * @param hyphenatedWord
  * @param defaultHyphen
@@ -66,17 +60,19 @@ const toHyphen = (hyphen: unknown, defaultHyphen: '-' | null) => {
 const normalizeHyphenatedWord = (
   hyphenatedWord: HyphenatedWord,
   defaultHyphen: '-' | null,
-): HyphenatedPart[] => {
-  const parts = hyphenatedWord.map((part) =>
-    typeof part === 'string'
-      ? { string: part, hyphen: part.endsWith('-') ? null : defaultHyphen }
-      : { string: part.string, hyphen: toHyphen(part.hyphen, defaultHyphen) },
-  );
+): HyphenatedPart[] =>
+  hyphenatedWord.map((part) => {
+    const { string, hyphen } =
+      typeof part === 'string' ? { string: part, hyphen: undefined } : part;
 
-  if (parts.length > 0) parts[parts.length - 1].hyphen = null;
+    if (string.trim() === '') return { string, hyphen: null };
 
-  return parts;
-};
+    if (hyphen === undefined) {
+      return { string, hyphen: string.endsWith('-') ? null : defaultHyphen };
+    }
+
+    return { string, hyphen: hyphen === null ? null : '-' };
+  });
 
 /**
  * Wrap words of attribute string

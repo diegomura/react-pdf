@@ -433,6 +433,23 @@ describe('linebreaker', () => {
     ]);
   });
 
+  test('should not break freely where runs meet inside a word', () => {
+    // 'bb' and '.' come from different runs, so the word-final 'bb' keeps
+    // the hyphenated break cost instead of breaking like a space
+    const attributedString = createAttributedString('left', [
+      'aa',
+      ' ',
+      'bb',
+      '.',
+      ' ',
+      'cc',
+    ]);
+
+    const result = linebreaker(attributedString, [30]);
+
+    expect(result.map((line) => line.string)).toEqual(['aa ', 'bb. ', 'cc']);
+  });
+
   test('should break without hyphens when hyphenation is disabled', () => {
     const attributedString = createAttributedString('left', [
       '日本語',

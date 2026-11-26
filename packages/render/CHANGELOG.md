@@ -1,5 +1,15 @@
 # @react-pdf/render
 
+## 4.7.2
+
+### Patch Changes
+
+- [#3656](https://github.com/diegomura/react-pdf/pull/3656) [`d81d40771e8bec7f7e0c70aeda7913e7ecee2f42`](https://github.com/diegomura/react-pdf/commit/d81d40771e8bec7f7e0c70aeda7913e7ecee2f42) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Draw svg strokes with a linear or radial gradient given as `stroke="url(#id)"` instead of black
+
+- Updated dependencies [[`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f), [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71), [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/textkit@7.1.0
+  - @react-pdf/types@2.15.0
+
 ## 4.7.1
 
 ### Patch Changes

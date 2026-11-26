@@ -1,5 +1,12 @@
 # @react-pdf/stylesheet
 
+## 6.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/types@2.15.0
+
 ## 6.3.3
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @react-pdf/layout
 
+## 5.2.2
+
+### Patch Changes
+
+- [#3654](https://github.com/diegomura/react-pdf/pull/3654) [`9c0d37f1b84d9398cce8ffb61b66b22df517e077`](https://github.com/diegomura/react-pdf/commit/9c0d37f1b84d9398cce8ffb61b66b22df517e077) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Render an Svg with a group of hundreds of thousands of shapes instead of throwing "Maximum call stack size exceeded"
+
+- [#3656](https://github.com/diegomura/react-pdf/pull/3656) [`d81d40771e8bec7f7e0c70aeda7913e7ecee2f42`](https://github.com/diegomura/react-pdf/commit/d81d40771e8bec7f7e0c70aeda7913e7ecee2f42) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Draw svg strokes with a linear or radial gradient given as `stroke="url(#id)"` instead of black
+
+- Updated dependencies [[`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f), [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71), [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/textkit@7.1.0
+  - @react-pdf/font@4.2.0
+  - @react-pdf/types@2.15.0
+  - @react-pdf/stylesheet@6.3.4
+
 ## 5.2.1
 
 ### Patch Changes

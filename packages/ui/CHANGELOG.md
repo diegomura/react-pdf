@@ -1,5 +1,15 @@
 # @react-pdf/ui
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@4.9.2
+  - @react-pdf/tailwind@0.2.2
+  - @react-pdf/math@6.0.2
+  - @react-pdf/mermaid@6.0.2
+
 ## 1.0.1
 
 ### Patch Changes

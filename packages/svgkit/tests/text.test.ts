@@ -76,11 +76,10 @@ describe('glyphs — embedded fonts', () => {
     expect(content).not.toContain('fill="none"');
   });
 
-  test('replicates PDF offset math', () => {
+  test('applies offsets in points, yOffset upward', () => {
     const doc = new SVGDocument().addPage({ size: [100, 100] });
     doc.font({ unitsPerEm: 1000 }, 10);
-    doc.glyphs([outlineGlyph('M0 0Z', 65)], [position(10, 100, 200)], 0, 0);
-    // xOffset 100 * 10/1000 = 1; yOffset 200 * 10/1000 = 2, upward
+    doc.glyphs([outlineGlyph('M0 0Z', 65)], [position(10, 1, 2)], 0, 0);
     expect(pageContent(doc)).toContain('translate(1 -2)');
   });
 

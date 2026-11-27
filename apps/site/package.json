@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && cp -R out/mdx-raw/. out/docs/ && rm -rf out/mdx-raw",
     "start": "next start",
     "test": "vitest run --config vitest.config.ts",
     "postinstall": "fumadocs-mdx"

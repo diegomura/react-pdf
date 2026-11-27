@@ -1,25 +1,23 @@
 import { McpServer, createMcpHandler } from '@modelcontextprotocol/server';
 import { z } from 'zod';
-import { getLLMText, latestPages } from '@/lib/llm-text';
-import { source } from '@/lib/source';
+
+type Env = { ASSETS: { fetch: (input: Request | URL) => Promise<Response> } };
+type IndexedPage = { url: string; title: string; body: string };
 
 const occurrences = (haystack: string, term: string) =>
   haystack.split(term).length - 1;
 
-function searchDocs(query: string, limit = 5) {
+function searchDocs(pages: IndexedPage[], query: string, limit = 5) {
   const terms = query
     .toLowerCase()
     .split(/[^a-z0-9]+/i)
     .filter(Boolean);
   if (terms.length === 0) return [];
 
-  return latestPages()
+  return pages
     .map((page) => {
-      const title = page.data.title.toLowerCase();
-      const body = page.data.structuredData.contents
-        .map((entry) => entry.content)
-        .join(' ')
-        .toLowerCase();
+      const title = page.title.toLowerCase();
+      const body = page.body.toLowerCase();
 
       const score = terms.reduce(
         (total, term) =>
@@ -27,7 +25,7 @@ function searchDocs(query: string, limit = 5) {
         0,
       );
 
-      return { url: page.url, title: page.data.title, score };
+      return { url: page.url, title: page.title, score };
     })
     .filter((result) => result.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -35,7 +33,9 @@ function searchDocs(query: string, limit = 5) {
     .map(({ url, title }) => ({ url, title }));
 }
 
-const createServer = () => {
+const createServer = (env: Env, origin: string) => {
+  const asset = (path: string) => env.ASSETS.fetch(new URL(path, origin));
+
   const server = new McpServer(
     { name: 'react-pdf', version: '1.0.0' },
     { capabilities: { tools: { listChanged: false } } },
@@ -56,9 +56,16 @@ const createServer = () => {
           .describe('Keywords to look for, e.g. "register custom font"'),
       },
     },
-    ({ query }) => ({
-      content: [{ type: 'text', text: JSON.stringify(searchDocs(query)) }],
-    }),
+    async ({ query }) => {
+      const pages: IndexedPage[] = await (
+        await asset('/mcp-index.json')
+      ).json();
+      return {
+        content: [
+          { type: 'text', text: JSON.stringify(searchDocs(pages, query)) },
+        ],
+      };
+    },
   );
 
   server.registerTool(
@@ -76,27 +83,29 @@ const createServer = () => {
     },
     async ({ url }) => {
       const slug = url.replace(/^\/?(docs\/)?/, '').replace(/\.mdx$/, '');
-      const page = source.getPage(slug.split('/').filter(Boolean));
+      const res = await asset(`/docs/${slug}.mdx`);
 
-      if (!page) {
+      if (!slug || !res.ok) {
         return {
           isError: true,
           content: [{ type: 'text' as const, text: `No such page: ${url}` }],
         };
       }
 
-      return {
-        content: [{ type: 'text' as const, text: await getLLMText(page) }],
-      };
+      return { content: [{ type: 'text' as const, text: await res.text() }] };
     },
   );
 
   return server;
 };
 
-// Static docs never emit updates; subscription streams would idle until Vercel times out.
-const handler = createMcpHandler(createServer, { maxSubscriptions: 0 });
-
-const serve = (request: Request) => handler.fetch(request);
-
-export { serve as GET, serve as POST, serve as DELETE };
+export default {
+  fetch(request: Request, env: Env) {
+    const origin = new URL(request.url).origin;
+    // Static docs never emit updates; subscription streams would only idle.
+    const handler = createMcpHandler(() => createServer(env, origin), {
+      maxSubscriptions: 0,
+    });
+    return handler.fetch(request);
+  },
+};

@@ -1,6 +1,5 @@
 import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider/next';
-import { Analytics } from '@vercel/analytics/next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 import VersionedSearchDialog from '@/components/search-dialog';
@@ -56,7 +55,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         >
           {children}
         </RootProvider>
-        <Analytics />
       </body>
     </html>
   );

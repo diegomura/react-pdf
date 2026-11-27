@@ -1,0 +1,15 @@
+/repl /playground 301
+/docs /docs/v4 302
+/docs/v4/index /docs/v4 301
+/rendering-process /blog/rendering-process 301
+/docs/v4/rendering-process /blog/rendering-process 301
+/docs/v4/advanced/large-documents /blog 301
+/advanced /docs/v4/advanced 301
+/compatibility /docs/v4/compatibility 301
+/components /docs/v4/components 301
+/fonts /docs/v4/fonts 301
+/form /docs/v4/form 301
+/hooks /docs/v4/hooks 301
+/node /docs/v4/node 301
+/styling /docs/v4/styling 301
+/svg /docs/v4/svg 301

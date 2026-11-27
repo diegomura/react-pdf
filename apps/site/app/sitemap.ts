@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { blogSource } from '@/lib/blog-source';
 import { latestPages } from '@/lib/llm-text';
 
+export const dynamic = 'force-static';
+
 const SITE = 'https://react-pdf.org';
 
 export default function sitemap(): MetadataRoute.Sitemap {

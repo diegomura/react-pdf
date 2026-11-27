@@ -71,8 +71,6 @@ const flattenRegularRuns = (runs: Run[]) => {
   const points = generatePoints(runs);
 
   let start = -1;
-  // Indices of the active runs, kept in input order so that later runs
-  // override earlier ones no matter where each of them starts.
   const stack: number[] = [];
 
   for (let i = 0; i < points.length; i += 1) {

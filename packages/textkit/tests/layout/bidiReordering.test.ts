@@ -238,4 +238,103 @@ describe('bidiReordering', () => {
     expect(result[0][0].runs[1].glyphs).toEqual(initializeToIndex(5));
     expect(result[0][0].runs[2].glyphs).toEqual(initializeToIndex(4).reverse());
   });
+
+  describe('marks in rtl runs', () => {
+    const glyph = (id: number, isMark: boolean) =>
+      ({ id, advanceWidth: 0, codePoints: [id], isMark }) as unknown as Glyph;
+
+    const position = (xAdvance: number, xOffset = 0) => ({
+      xAdvance,
+      yAdvance: 0,
+      xOffset,
+      yOffset: 0,
+    });
+
+    // Shaped left to right: base, its mark, base.
+    const rtlRun = (
+      positions: ReturnType<typeof position>[],
+      marks: number[],
+    ) => ({
+      string: 'abc'.slice(0, positions.length),
+      runs: [
+        {
+          attributes: { direction: 'rtl' as const, bidiLevel: 1 },
+          start: 0,
+          end: positions.length,
+          glyphs: positions.map((_, index) =>
+            glyph(index, marks.includes(index)),
+          ),
+          positions,
+          stringIndices: initializeToIndex(positions.length),
+          glyphIndices: initializeToIndex(positions.length),
+        },
+      ],
+    });
+
+    test('should keep a mark over its base after reversing', () => {
+      // The mark sits 300 units into its 500-unit base: 200 back from the pen after it.
+      const string = rtlRun(
+        [position(500), position(0, -200), position(400)],
+        [1],
+      );
+
+      const result = bidiReorderingInstance([[string]]);
+
+      // Reversed, the mark is drawn before its base, so it moves forward by the
+      // base's advance and still lands 300 units into it.
+      expect(result[0][0].runs[0].positions).toEqual([
+        position(400),
+        position(0, 300),
+        position(500),
+      ]);
+    });
+
+    test('should move every mark stacked on the same base', () => {
+      const string = rtlRun(
+        [position(500), position(0, -200), position(0, -150)],
+        [1, 2],
+      );
+
+      const result = bidiReorderingInstance([[string]]);
+
+      expect(result[0][0].runs[0].positions).toEqual([
+        position(0, 350),
+        position(0, 300),
+        position(500),
+      ]);
+    });
+
+    test('should move a mark that letter spacing gave an advance', () => {
+      const string = rtlRun([position(510), position(10, -200)], [1]);
+
+      const result = bidiReorderingInstance([[string]]);
+
+      expect(result[0][0].runs[0].positions).toEqual([
+        position(10, 310),
+        position(510),
+      ]);
+    });
+
+    test('should leave a mark with no base unchanged', () => {
+      const string = rtlRun([position(0, -200), position(500)], [0]);
+
+      const result = bidiReorderingInstance([[string]]);
+
+      expect(result[0][0].runs[0].positions).toEqual([
+        position(500),
+        position(0, -200),
+      ]);
+    });
+
+    test('should not change the original positions', () => {
+      const string = rtlRun([position(500), position(0, -200)], [1]);
+
+      bidiReorderingInstance([[string]]);
+
+      expect(string.runs[0].positions).toEqual([
+        position(500),
+        position(0, -200),
+      ]);
+    });
+  });
 });

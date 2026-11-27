@@ -492,6 +492,57 @@ describe('linebreaker', () => {
       '語組',
     ]);
   });
+
+  test('should add hyphens only at hyphenated breaks', () => {
+    const attributedString = createAttributedString('left', [
+      'state-',
+      'of-',
+      'really',
+      'long',
+    ]);
+
+    attributedString.syllables[0].hyphen = null;
+    attributedString.syllables[1].hyphen = null;
+
+    const result = linebreaker(attributedString, [40]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'state-',
+      'of-',
+      'really-',
+      'long',
+    ]);
+  });
+
+  test('should use the hyphenate character at hyphenated breaks', () => {
+    const attributedString = createAttributedString('left', ['really', 'long']);
+
+    const result = linebreakerFactory({ hyphenateCharacter: '~' })(
+      attributedString,
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(['really~', 'long']);
+  });
+
+  test('should not show a hyphen with an empty hyphenate character', () => {
+    const attributedString = createAttributedString('left', ['really', 'long']);
+
+    const result = linebreakerFactory({ hyphenateCharacter: '' })(
+      attributedString,
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(['really', 'long']);
+  });
+
+  test('should not hyphenate a word followed by several spaces', () => {
+    const attributedString = createAttributedString('left', ['aa', '  ', 'bb']);
+
+    const result = linebreaker(attributedString, [12]);
+
+    expect(result.map((line) => line.string)).toEqual(['aa  ', 'bb']);
+  });
 });
 
 describe('bestFit', () => {

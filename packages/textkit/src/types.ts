@@ -166,6 +166,28 @@ export type LayoutOptions = {
   shrinkCharFactor?: JustificationFactor;
   expandWhitespaceFactor?: JustificationFactor;
   shrinkWhitespaceFactor?: JustificationFactor;
+  /**
+   * CSS-like hyphens property.
+   * - 'none': Words are not hyphenated, even at soft hyphens
+   * - 'manual': Words are hyphenated only at soft hyphens
+   * - 'auto': Words are hyphenated by the hyphenation engine or callback (default)
+   *
+   * Unlike CSS, the default is 'auto' to keep the existing behavior.
+   */
+  hyphens?: 'none' | 'auto' | 'manual';
+  /**
+   * CSS-like hyphenate-character property.
+   * String shown at a hyphenation break. Default is '-'.
+   * An empty string hyphenates without a visible character.
+   */
+  hyphenateCharacter?: string;
+  /**
+   * CSS-like word-break property.
+   * - 'normal': Lines break at UAX #14 opportunities, e.g. between CJK characters (default)
+   * - 'break-all': Lines may also break between any letters or digits, without hyphenation
+   * - 'keep-all': Lines do not break between letters, including CJK characters
+   */
+  wordBreak?: 'normal' | 'break-all' | 'keep-all';
 };
 
 export type {

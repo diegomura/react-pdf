@@ -6,7 +6,6 @@ import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
 
-const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
 
@@ -17,20 +16,37 @@ const opts = {
 };
 
 /**
+ * @param options - Layout options
+ * @returns Code points shown at a hyphenated break
+ */
+const getHyphenCodePoints = ({
+  hyphens,
+  hyphenateCharacter = '-',
+}: LayoutOptions) => {
+  if (hyphens === 'none') return [];
+
+  return Array.from(hyphenateCharacter, (char) => char.codePointAt(0)!);
+};
+
+/**
  * Slice attributed string to many lines
  *
  * @param attributedString - Attributed string
  * @param nodes
  * @param breaks
+ * @param options - Layout options
  * @returns Attributed strings
  */
 const breakLines = (
   attributedString: AttributedString,
   nodes: Node[],
   breaks: number[],
+  options: LayoutOptions,
 ) => {
   let start = 0;
   let end = null;
+
+  const hyphenCodePoints = getHyphenCodePoints(options);
 
   const lines: AttributedString[] = [];
 
@@ -50,7 +66,9 @@ const breakLines = (
 
       // Only hyphenated breaks reserve width for the hyphen
       if (node.width > 0) {
-        line = insertGlyph(line.string.length, HYPHEN, line);
+        for (const codePoint of hyphenCodePoints) {
+          line = insertGlyph(line.string.length, codePoint, line);
+        }
       }
     } else {
       end = node.end;
@@ -82,7 +100,7 @@ const getNodes = (
 ): Node[] => {
   let start = 0;
 
-  const hyphenWidth = 5;
+  const hyphenWidth = getHyphenCodePoints(options).length > 0 ? 5 : 0;
 
   const { syllables } = attributedString;
 
@@ -105,13 +123,14 @@ const getNodes = (
         // Add glue node. Glue nodes are used to fill the space between words.
         acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
       } else {
-        const withinWord = syllables[index + 1]?.string !== ' ';
+        const next = syllables[index + 1];
+        const withinWord = next !== undefined && next.string.trim() !== '';
         const end = start + s.length;
 
         // Add box node. Box nodes are used to represent words.
         acc.push(knuthPlass.box(width, start, end, withinWord));
 
-        if (syllables[index + 1] && withinWord) {
+        if (withinWord) {
           // Add penalty node. Penalty nodes are used to represent break points
           // inside words. Breaks without a hyphen cost as little as a space.
           acc.push(
@@ -174,7 +193,7 @@ const linebreaker = (options: LayoutOptions) => {
       breaks = bestFit(nodes, availableWidths);
     }
 
-    return breakLines(attributedString, nodes, breaks.slice(1));
+    return breakLines(attributedString, nodes, breaks.slice(1), options);
   };
 };
 

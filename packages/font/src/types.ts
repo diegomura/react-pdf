@@ -41,8 +41,10 @@ export type FontSourceOptions = {
   postscriptName?: string;
 } & RemoteOptions;
 
+export type FontSourceData = Uint8Array | ArrayBuffer;
+
 export type FontSource = {
-  src: string;
+  src: string | FontSourceData;
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
 } & FontSourceOptions;

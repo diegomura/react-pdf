@@ -1,7 +1,13 @@
 import isUrl from 'is-url';
 import * as fontkit from 'fontkit';
 
-import { Font, FontSourceOptions, FontStyle, RemoteOptions } from './types';
+import {
+  Font,
+  FontSourceData,
+  FontSourceOptions,
+  FontStyle,
+  RemoteOptions,
+} from './types';
 import StandardFont, { STANDARD_FONTS } from './standard-font';
 
 const fetchFont = async (src: string, options: RemoteOptions) => {
@@ -18,6 +24,11 @@ const fetchFont = async (src: string, options: RemoteOptions) => {
   return new Uint8Array(data);
 };
 
+const toUint8Array = (data: FontSourceData) =>
+  ArrayBuffer.isView(data)
+    ? new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
+    : new Uint8Array(data);
+
 const isDataUrl = (dataUrl: string) => {
   const commaIndex = dataUrl.indexOf(',');
   if (commaIndex === -1) return false;
@@ -30,7 +41,7 @@ const isDataUrl = (dataUrl: string) => {
 };
 
 class FontSource {
-  src: string;
+  src: string | FontSourceData;
   fontFamily: string;
   fontStyle: FontStyle;
   fontWeight: number;
@@ -39,7 +50,7 @@ class FontSource {
   loadResultPromise: Promise<void> | null;
 
   constructor(
-    src: string,
+    src: string | FontSourceData,
     fontFamily: string,
     fontStyle?: FontStyle,
     fontWeight?: number,
@@ -60,7 +71,9 @@ class FontSource {
 
     let data = null;
 
-    if (STANDARD_FONTS.includes(this.src)) {
+    if (typeof this.src !== 'string') {
+      data = fontkit.create(toUint8Array(this.src), postscriptName);
+    } else if (STANDARD_FONTS.includes(this.src)) {
       data = new StandardFont(this.src);
     } else if (isDataUrl(this.src)) {
       const raw = this.src.split(',')[1];
@@ -70,7 +83,7 @@ class FontSource {
           .map((c) => c.charCodeAt(0)),
       );
       data = fontkit.create(uint8Array, postscriptName);
-    } else if (BROWSER || isUrl(this.src)) {
+    } else if (BROWSER || isUrl(this.src) || this.src.startsWith('blob:')) {
       const { headers, body, method = 'GET' } = this.options;
       const buffer = await fetchFont(this.src, { method, body, headers });
       data = fontkit.create(buffer, postscriptName);

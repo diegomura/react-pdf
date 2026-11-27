@@ -175,6 +175,30 @@ describe('resolve stylesheet text', () => {
     expect(styles.lineHeight).toBeCloseTo(56.69, 1);
   });
 
+  test('should resolve number letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: 2 });
+
+    expect(styles.letterSpacing).toBe(2);
+  });
+
+  test('should resolve px letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: '2px' });
+
+    expect(styles.letterSpacing).toBe(2);
+  });
+
+  test('should resolve percentage letter spacing', () => {
+    const styles = resolveStyle({ letterSpacing: '10%' });
+
+    expect(styles.letterSpacing).toBeCloseTo(18 * 0.1);
+  });
+
+  test('should resolve percentage letter spacing with font-size', () => {
+    const styles = resolveStyle({ letterSpacing: '-1.1%', fontSize: 20 });
+
+    expect(styles.letterSpacing).toBeCloseTo(20 * -0.011);
+  });
+
   test('should resolve font family', () => {
     const styles = resolveStyle({ fontFamily: 'Helvetica' });
 

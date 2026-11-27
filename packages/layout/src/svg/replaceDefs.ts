@@ -33,6 +33,9 @@ const parseNodeDefs =
     const fill =
       `fill` in props ? replaceDef(defs, props?.fill as any) : undefined;
 
+    const stroke =
+      `stroke` in props ? replaceDef(defs, props?.stroke as any) : undefined;
+
     const clipPath =
       `clipPath` in props
         ? replaceDef(defs, props?.clipPath as any)
@@ -55,6 +58,7 @@ const parseNodeDefs =
 
     const newProps = Object.assign({}, node.props, {
       fill,
+      stroke,
       clipPath,
       markerStart,
       markerMid,

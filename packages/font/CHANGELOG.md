@@ -1,5 +1,33 @@
 # @react-pdf/font
 
+## 4.2.0
+
+### Minor Changes
+
+- [#3268](https://github.com/diegomura/react-pdf/pull/3268) [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ string, hyphen: null }` parts instead of strings to break without a hyphen; strings and parts can be mixed. Plain string arrays keep working as before.
+
+  Chinese and Japanese text now breaks between ideographs by default, without hyphens. Breaks without a hyphen now cost the same as breaking at a space and are no longer blocked by `hyphenationPenalty`. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.
+
+### Patch Changes
+
+- [#3655](https://github.com/diegomura/react-pdf/pull/3655) [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Resolve font weights given as names or numeric strings, so svg text with `font-weight="bold"` is bold and `font-weight="700"` no longer throws
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/types@2.15.0
+
+## 4.1.3
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- [#3602](https://github.com/diegomura/react-pdf/pull/3602) [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: declare the packages imported by published type declarations as dependencies (`@types/fontkit` in font and textkit, `@react-pdf/font` in textkit and layout), so they type-check with `skipLibCheck: false`
+
+- [#3568](https://github.com/diegomura/react-pdf/pull/3568) [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b) Thanks [@mskec](https://github.com/mskec)! - Retry font loading after a failed fetch instead of caching the rejection forever
+
+- Updated dependencies []:
+  - @react-pdf/types@2.14.1
+
 ## 4.1.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/math",
-  "version": "6.0.0",
+  "version": "6.0.2",
   "license": "MIT",
   "description": "Render LaTeX math expressions in react-pdf documents",
   "author": "Diego Muracciole <diegomuracciole@gmail.com>",
@@ -14,7 +14,7 @@
     "directory": "packages/math"
   },
   "scripts": {
-    "build": "rimraf ./lib && rollup -c",
+    "build": "rimraf ./lib && rollup -c --forceExit",
     "watch": "rimraf ./lib && rollup -c -w",
     "typecheck": "tsc --noEmit",
     "test": "vitest"
@@ -28,7 +28,7 @@
     "mathjax-full": "^3.2.2"
   },
   "peerDependencies": {
-    "@react-pdf/renderer": ">=4.9.0",
+    "@react-pdf/renderer": ">=4.9.2",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "devDependencies": {

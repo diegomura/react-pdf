@@ -1,5 +1,34 @@
 # @react-pdf/textkit
 
+## 7.1.0
+
+### Minor Changes
+
+- [#3268](https://github.com/diegomura/react-pdf/pull/3268) [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ string, hyphen: null }` parts instead of strings to break without a hyphen; strings and parts can be mixed. Plain string arrays keep working as before.
+
+  Chinese and Japanese text now breaks between ideographs by default, without hyphens. Breaks without a hyphen now cost the same as breaking at a space and are no longer blocked by `hyphenationPenalty`. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.
+
+### Patch Changes
+
+- [#3577](https://github.com/diegomura/react-pdf/pull/3577) [`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f) Thanks [@Louayzouaoui1](https://github.com/Louayzouaoui1)! - fix: keep the base letterform of decomposed characters (e.g. Arabic letters shaped as base + dot mark) when a run is sliced or measured at their start
+
+- [#3454](https://github.com/diegomura/react-pdf/pull/3454) [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71) Thanks [@to-na](https://github.com/to-na)! - fix(textkit): preserve variation selector font runs
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/font@4.2.0
+
+## 7.0.2
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- [#3602](https://github.com/diegomura/react-pdf/pull/3602) [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: declare the packages imported by published type declarations as dependencies (`@types/fontkit` in font and textkit, `@react-pdf/font` in textkit and layout), so they type-check with `skipLibCheck: false`
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4), [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b), [`c809374c7150f5bd16ad14c3d54148112c820a8a`](https://github.com/diegomura/react-pdf/commit/c809374c7150f5bd16ad14c3d54148112c820a8a)]:
+  - @react-pdf/font@4.1.3
+  - @react-pdf/hyphenate@0.1.1
+
 ## 7.0.1
 
 ### Patch Changes

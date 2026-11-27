@@ -1,5 +1,27 @@
 # @react-pdf/renderer
 
+## 4.9.2
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016), [`9c0d37f1b84d9398cce8ffb61b66b22df517e077`](https://github.com/diegomura/react-pdf/commit/9c0d37f1b84d9398cce8ffb61b66b22df517e077), [`d81d40771e8bec7f7e0c70aeda7913e7ecee2f42`](https://github.com/diegomura/react-pdf/commit/d81d40771e8bec7f7e0c70aeda7913e7ecee2f42)]:
+  - @react-pdf/font@4.2.0
+  - @react-pdf/types@2.15.0
+  - @react-pdf/layout@5.2.2
+  - @react-pdf/render@4.7.2
+
+## 4.9.1
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- Updated dependencies [[`50f4fb95d6c241b657b8d9db1675a76b38660f04`](https://github.com/diegomura/react-pdf/commit/50f4fb95d6c241b657b8d9db1675a76b38660f04), [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`7ca50af3fd5746955ba18cab7f815f1d62d53813`](https://github.com/diegomura/react-pdf/commit/7ca50af3fd5746955ba18cab7f815f1d62d53813), [`eb6884b2e0a71c29a31f90e914f5df9e993c0d5e`](https://github.com/diegomura/react-pdf/commit/eb6884b2e0a71c29a31f90e914f5df9e993c0d5e), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4), [`1092d61de79bcc1f43164428c75eef0584707d08`](https://github.com/diegomura/react-pdf/commit/1092d61de79bcc1f43164428c75eef0584707d08), [`18b6740a0086cae6aa8a01f0d1385c5e03276d82`](https://github.com/diegomura/react-pdf/commit/18b6740a0086cae6aa8a01f0d1385c5e03276d82), [`940747b20aedf57705a9deccb599d258aa0a3ea5`](https://github.com/diegomura/react-pdf/commit/940747b20aedf57705a9deccb599d258aa0a3ea5), [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b), [`eeae3fecfddeb680fb09264ad2bed0b1a83b6c73`](https://github.com/diegomura/react-pdf/commit/eeae3fecfddeb680fb09264ad2bed0b1a83b6c73), [`e75eb325dd759edd152dbfe7da44b43092516aab`](https://github.com/diegomura/react-pdf/commit/e75eb325dd759edd152dbfe7da44b43092516aab), [`7d86485b65aefefde1e5e811edeae135ca42c557`](https://github.com/diegomura/react-pdf/commit/7d86485b65aefefde1e5e811edeae135ca42c557), [`eb3ec5cdeac32f080903803622a6d57de1543241`](https://github.com/diegomura/react-pdf/commit/eb3ec5cdeac32f080903803622a6d57de1543241)]:
+  - @react-pdf/layout@5.2.1
+  - @react-pdf/font@4.1.3
+  - @react-pdf/render@4.7.1
+  - @react-pdf/types@2.14.1
+
 ## 4.9.0
 
 ### Minor Changes

@@ -1,5 +1,23 @@
 # @react-pdf/stylesheet
 
+## 6.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/types@2.15.0
+
+## 6.3.3
+
+### Patch Changes
+
+- [#3609](https://github.com/diegomura/react-pdf/pull/3609) [`afb755da20838f931d826a91b1b41d48518c0439`](https://github.com/diegomura/react-pdf/commit/afb755da20838f931d826a91b1b41d48518c0439) Thanks [@Seybel](https://github.com/Seybel)! - Fix percentage `letterSpacing` (e.g. `'-1.1%'`) crashing the render with "unsupported number: NaN". Percentages are now resolved against the element's font size, the same way `lineHeight` percentages already are.
+
+- [#3605](https://github.com/diegomura/react-pdf/pull/3605) [`f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3`](https://github.com/diegomura/react-pdf/commit/f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3) Thanks [@adarshsm](https://github.com/adarshsm)! - Fix `borderRadius` shorthand rejecting percentage values (`Invalid border radius: 50%`)
+
+- Updated dependencies []:
+  - @react-pdf/types@2.14.1
+
 ## 6.3.2
 
 ### Patch Changes

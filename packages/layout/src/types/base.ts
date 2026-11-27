@@ -137,7 +137,7 @@ export type SVGPresentationAttributes = {
 export type SafeSVGPresentationAttributes = {
   fill?: string | SafeLinearGradientNode | SafeRadialGradientNode;
   color?: string;
-  stroke?: string;
+  stroke?: string | SafeLinearGradientNode | SafeRadialGradientNode;
   transform?: Transform[];
   strokeDasharray?: string;
   opacity?: number;

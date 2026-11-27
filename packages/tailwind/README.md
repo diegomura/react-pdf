@@ -121,6 +121,7 @@ The returned `tw` function takes a space-separated class string and returns a re
 - Line heights are emitted unitless, since react-pdf only supports unitless `lineHeight`.
 - `aspect-auto` and `line-clamp-none` warn as unsupported. react-pdf has no style value meaning "no aspect ratio" or "no clamp" — leaving the utility off is the reset.
 - Intrinsic sizing (`w-fit`, `h-min`, `max-w-max`, …), `max-w-none` / `max-h-none`, and lengths in units react-pdf can't parse (`max-w-prose` is `65ch`) warn as unsupported. Yoga has no equivalent, and passing the value through would throw while laying out the document.
+- Box-shadow utilities (`shadow-*`, `inset-shadow-*`, `ring-*`, `inset-ring-*`) warn as unsupported, with a message saying why. Tailwind draws them with `box-shadow`, which react-pdf can't render.
 - `float-*` and `clear-*` map to react-pdf's float support, which is newer and has rough edges: setting `lineHeight` on floated content breaks text wrap, and parents don't grow to contain their floats.
 
 ## License

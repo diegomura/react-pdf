@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "vitest",
-    "build": "rollup -c",
+    "build": "rollup -c --forceExit",
     "watch": "rollup -c -w",
     "typecheck": "tsc --noEmit"
   },

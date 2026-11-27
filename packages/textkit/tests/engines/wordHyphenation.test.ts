@@ -55,4 +55,24 @@ describe('wordHyphenation', () => {
     expect(instance('programming')).toEqual(['pro', 'gram', 'ming']);
     expect(instance('programming')).toBe(instance('programming'));
   });
+
+  test('should split after dashes', () => {
+    expect(instance('blue-green')).toEqual(['blue-', 'green']);
+    expect(instance('self-explanatory')).toEqual([
+      'self-',
+      'ex',
+      'plana',
+      'to',
+      'ry',
+    ]);
+  });
+
+  test('should not split on leading or trailing dashes', () => {
+    expect(instance('-x')).toEqual(['-x']);
+    expect(instance('re-')).toEqual(['re-']);
+  });
+
+  test('should split after dashes in word with soft hyphen', () => {
+    expect(instance('blue-gr\u00adeen')).toEqual(['blue-', 'gr', 'een']);
+  });
 });

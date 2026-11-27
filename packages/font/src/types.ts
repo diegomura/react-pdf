@@ -22,7 +22,8 @@ export type FontWeight =
   | 'ultrabold'
   | 'extrabold'
   | 'heavy'
-  | 'black';
+  | 'black'
+  | `${number}`;
 
 export type FontDescriptor = {
   fontFamily: string;
@@ -68,4 +69,14 @@ interface EmojiSourceBuilder {
 
 export type EmojiSource = EmojiSourceUrl | EmojiSourceBuilder;
 
-export type HyphenationCallback = (word: string) => string[];
+export type HyphenatedPart = {
+  string: string;
+  hyphen?: '-' | null;
+};
+
+export type HyphenatedWord = (string | HyphenatedPart)[];
+
+export type HyphenationCallback = (
+  word: string,
+  fallback: (word: string) => string[],
+) => HyphenatedWord;

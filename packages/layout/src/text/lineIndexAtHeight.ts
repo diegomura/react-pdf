@@ -1,6 +1,11 @@
 import { SafeTextNode } from '../types';
 import getLineTop from './getLineTop';
 
+// Yoga computes in float32, line boxes are float64. Don't let that difference
+// push a line that fits exactly to the next page. Same value pagination uses to
+// decide if a node needs splitting.
+const SAFETY_THRESHOLD = 0.001;
+
 /**
  * Get line index at given height.
  *
@@ -14,7 +19,7 @@ const lineIndexAtHeight = (node: SafeTextNode, height: number) => {
     const lineTop = getLineTop(node.lines, i);
     const lineBottom = lineTop + node.lines[i].box.height;
 
-    if (lineBottom > height) return i;
+    if (lineBottom > height + SAFETY_THRESHOLD) return i;
   }
 
   return node.lines.length;

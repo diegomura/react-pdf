@@ -1,6 +1,6 @@
 {
   "name": "@react-pdf/tailwind",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "license": "MIT",
   "description": "Use Tailwind CSS to style PDFs created with react-pdf",
   "author": "Andreas Anckar",
@@ -20,12 +20,12 @@
   },
   "scripts": {
     "test": "vitest",
-    "build": "rimraf ./lib && rollup -c",
+    "build": "rimraf ./lib && rollup -c --forceExit",
     "watch": "rimraf ./lib && rollup -c -w",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-pdf/types": "^2.14.0",
+    "@react-pdf/types": "^2.15.0",
     "tailwindcss": "^4.1.12"
   },
   "files": [

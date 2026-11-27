@@ -1,5 +1,25 @@
 # @react-pdf/render
 
+## 4.7.2
+
+### Patch Changes
+
+- [#3656](https://github.com/diegomura/react-pdf/pull/3656) [`d81d40771e8bec7f7e0c70aeda7913e7ecee2f42`](https://github.com/diegomura/react-pdf/commit/d81d40771e8bec7f7e0c70aeda7913e7ecee2f42) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Draw svg strokes with a linear or radial gradient given as `stroke="url(#id)"` instead of black
+
+- Updated dependencies [[`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f), [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71), [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e)]:
+  - @react-pdf/textkit@7.1.0
+  - @react-pdf/types@2.15.0
+
+## 4.7.1
+
+### Patch Changes
+
+- [#3624](https://github.com/diegomura/react-pdf/pull/3624) [`eb6884b2e0a71c29a31f90e914f5df9e993c0d5e`](https://github.com/diegomura/react-pdf/commit/eb6884b2e0a71c29a31f90e914f5df9e993c0d5e) Thanks [@cYoren](https://github.com/cYoren)! - Write checkbox `V` and `DV` as name objects instead of literal strings, so a reader that checks the field value (`pdf-lib`, mupdf, anything rebuilding appearances from `/V`) sees a checked box rather than `(/Yes)`.
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4)]:
+  - @react-pdf/textkit@7.0.2
+  - @react-pdf/types@2.14.1
+
 ## 4.7.0
 
 ### Minor Changes

@@ -1,5 +1,9 @@
 import type { Glyph as FontkitGlyph } from 'fontkit';
-import type { Font } from '@react-pdf/font';
+import type {
+  Font,
+  HyphenatedPart,
+  HyphenationCallback,
+} from '@react-pdf/font';
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -135,7 +139,7 @@ export type DecorationLine = {
 
 export type AttributedString = {
   string: string;
-  syllables?: string[];
+  syllables?: HyphenatedPart[];
   runs: Run[];
   box?: Rect;
   decorationLines?: DecorationLine[];
@@ -155,10 +159,7 @@ export type Fragment = {
 export type Paragraph = AttributedString[];
 
 export type LayoutOptions = {
-  hyphenationCallback?: (
-    word: string | null,
-    fallback: (word: string | null) => string[],
-  ) => string[];
+  hyphenationCallback?: HyphenationCallback;
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;
@@ -170,4 +171,9 @@ export type LayoutOptions = {
 
 export type TextWrap = 'wrap' | 'nowrap' | 'pretty' | 'balance';
 
-export type { Font } from '@react-pdf/font';
+export type {
+  Font,
+  HyphenatedPart,
+  HyphenatedWord,
+  HyphenationCallback,
+} from '@react-pdf/font';

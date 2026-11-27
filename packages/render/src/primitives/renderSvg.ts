@@ -39,7 +39,10 @@ const setStrokeColor = (ctx: Context, node: SafeNode) => {
   if (!('stroke' in node.props)) return;
 
   const strokeColor = node.props.stroke;
-  if (strokeColor) ctx.strokeColor(strokeColor);
+  const gradient = createGradient(ctx, node, strokeColor);
+
+  if (gradient) ctx.strokeColor(gradient);
+  else if (strokeColor) ctx.strokeColor(strokeColor as string);
 };
 
 const setOpacity = (ctx: Context, node: SafeNode) => {
@@ -90,22 +93,6 @@ const setLineDash = (ctx: Context, node: SafeNode) => {
 
   // @ts-expect-error check this works as expected
   if (value) ctx.dash(value.split(/[\s,]+/).map(Number));
-};
-
-const hasLinearGradientFill = (node: SafeNode) => {
-  if (!node.props) return false;
-  if (!('fill' in node.props)) return false;
-  if (typeof node.props.fill === 'string') return false;
-
-  return node.props.fill?.type === P.LinearGradient;
-};
-
-const hasRadialGradientFill = (node: SafeNode) => {
-  if (!node.props) return false;
-  if (!('fill' in node.props)) return false;
-  if (typeof node.props.fill === 'string') return false;
-
-  return node.props.fill?.type === P.RadialGradient;
 };
 
 function multiplyMatrices(m1: number[], m2: number[]) {
@@ -185,15 +172,12 @@ const transformGradient = (
 };
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L104
-const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
-  if (!node.props) return;
-  if (!('fill' in node.props)) return;
-
+const createLinearGradient = (
+  ctx: Context,
+  node: SafeNode,
+  gradient: SafeLinearGradientNode,
+) => {
   const bbox = getBoundingBox(node);
-  const gradient = node.props?.fill as SafeLinearGradientNode;
-
-  if (!gradient) return;
-
   const units = gradient.props.gradientUnits || 'objectBoundingBox';
   const transforms = gradient.props.gradientTransform || [];
 
@@ -222,19 +206,16 @@ const setLinearGradientFill = (ctx: Context, node: SafeNode) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
-  ctx.fill(grad);
+  return grad;
 };
 
 // Math simplified from https://github.com/devongovett/svgkit/blob/master/src/elements/SVGGradient.js#L155
-const setRadialGradientFill = (ctx: Context, node: SafeNode) => {
-  if (!node.props) return;
-  if (!('fill' in node.props)) return;
-
+const createRadialGradient = (
+  ctx: Context,
+  node: SafeNode,
+  gradient: SafeRadialGradientNode,
+) => {
   const bbox = getBoundingBox(node);
-  const gradient = node.props?.fill as SafeRadialGradientNode;
-
-  if (!gradient) return;
-
   const units = gradient.props.gradientUnits || 'objectBoundingBox';
   const transforms = gradient.props.gradientTransform || [];
 
@@ -265,7 +246,25 @@ const setRadialGradientFill = (ctx: Context, node: SafeNode) => {
     grad.stop(stop.props.offset, stop.props.stopColor, stop.props.stopOpacity);
   });
 
-  ctx.fill(grad);
+  return grad;
+};
+
+const createGradient = (
+  ctx: Context,
+  node: SafeNode,
+  paint?: string | SafeLinearGradientNode | SafeRadialGradientNode,
+) => {
+  if (!paint || typeof paint === 'string') return null;
+
+  if (paint.type === P.LinearGradient) {
+    return createLinearGradient(ctx, node, paint);
+  }
+
+  if (paint.type === P.RadialGradient) {
+    return createRadialGradient(ctx, node, paint);
+  }
+
+  return null;
 };
 
 const setFillColor = (ctx: Context, node: SafeNode) => {
@@ -278,8 +277,12 @@ const setFillColor = (ctx: Context, node: SafeNode) => {
 };
 
 const setFill = (ctx: Context, node: SafeNode) => {
-  if (hasLinearGradientFill(node)) return setLinearGradientFill(ctx, node);
-  if (hasRadialGradientFill(node)) return setRadialGradientFill(ctx, node);
+  if (!node.props) return;
+  if (!('fill' in node.props)) return;
+
+  const gradient = createGradient(ctx, node, node.props.fill);
+
+  if (gradient) return ctx.fill(gradient);
 
   return setFillColor(ctx, node);
 };

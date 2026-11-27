@@ -1,5 +1,51 @@
 # @react-pdf/layout
 
+## 5.2.2
+
+### Patch Changes
+
+- [#3654](https://github.com/diegomura/react-pdf/pull/3654) [`9c0d37f1b84d9398cce8ffb61b66b22df517e077`](https://github.com/diegomura/react-pdf/commit/9c0d37f1b84d9398cce8ffb61b66b22df517e077) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Render an Svg with a group of hundreds of thousands of shapes instead of throwing "Maximum call stack size exceeded"
+
+- [#3656](https://github.com/diegomura/react-pdf/pull/3656) [`d81d40771e8bec7f7e0c70aeda7913e7ecee2f42`](https://github.com/diegomura/react-pdf/commit/d81d40771e8bec7f7e0c70aeda7913e7ecee2f42) Thanks [@zeitderforschung](https://github.com/zeitderforschung)! - Draw svg strokes with a linear or radial gradient given as `stroke="url(#id)"` instead of black
+
+- Updated dependencies [[`890aba0f7b5c272e80700f9fb89af2274c40ab6f`](https://github.com/diegomura/react-pdf/commit/890aba0f7b5c272e80700f9fb89af2274c40ab6f), [`270f3bd214fe3da2e25e46414846e6ae268f5b71`](https://github.com/diegomura/react-pdf/commit/270f3bd214fe3da2e25e46414846e6ae268f5b71), [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/textkit@7.1.0
+  - @react-pdf/font@4.2.0
+  - @react-pdf/types@2.15.0
+  - @react-pdf/stylesheet@6.3.4
+
+## 5.2.1
+
+### Patch Changes
+
+- [#3610](https://github.com/diegomura/react-pdf/pull/3610) [`50f4fb95d6c241b657b8d9db1675a76b38660f04`](https://github.com/diegomura/react-pdf/commit/50f4fb95d6c241b657b8d9db1675a76b38660f04) Thanks [@adarshsm](https://github.com/adarshsm)! - Fix pagination looping forever when the first child of a container has `break` and the page has a `fixed` element
+
+- [#3604](https://github.com/diegomura/react-pdf/pull/3604) [`7ca50af3fd5746955ba18cab7f815f1d62d53813`](https://github.com/diegomura/react-pdf/commit/7ca50af3fd5746955ba18cab7f815f1d62d53813) Thanks [@adarshsm](https://github.com/adarshsm)! - Fix `flexShrink: 0` (and `flex: 'none'`, Tailwind `shrink-0`) being reset to `1`, so the node still shrank.
+
+- [#3602](https://github.com/diegomura/react-pdf/pull/3602) [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: declare the packages imported by published type declarations as dependencies (`@types/fontkit` in font and textkit, `@react-pdf/font` in textkit and layout), so they type-check with `skipLibCheck: false`
+
+- [#3628](https://github.com/diegomura/react-pdf/pull/3628) [`1092d61de79bcc1f43164428c75eef0584707d08`](https://github.com/diegomura/react-pdf/commit/1092d61de79bcc1f43164428c75eef0584707d08) Thanks [@peterolkhov](https://github.com/peterolkhov)! - Honor `fixed={false}` when deciding page breaks and measuring the presence of following siblings.
+
+- [#3574](https://github.com/diegomura/react-pdf/pull/3574) [`18b6740a0086cae6aa8a01f0d1385c5e03276d82`](https://github.com/diegomura/react-pdf/commit/18b6740a0086cae6aa8a01f0d1385c5e03276d82) Thanks [@philippelef](https://github.com/philippelef)! - Improve layout performance for documents with many nodes by using linear-time tree traversal queues.
+
+- [#3151](https://github.com/diegomura/react-pdf/pull/3151) [`940747b20aedf57705a9deccb599d258aa0a3ea5`](https://github.com/diegomura/react-pdf/commit/940747b20aedf57705a9deccb599d258aa0a3ea5) Thanks [@EvHaus](https://github.com/EvHaus)! - Treat an explicit `wrap={undefined}` like an omitted `wrap` prop (default `true`). `null` and `false` still disable wrapping.
+
+- [#3625](https://github.com/diegomura/react-pdf/pull/3625) [`eeae3fecfddeb680fb09264ad2bed0b1a83b6c73`](https://github.com/diegomura/react-pdf/commit/eeae3fecfddeb680fb09264ad2bed0b1a83b6c73) Thanks [@ntltd](https://github.com/ntltd)! - Fix the `Buffer is not defined` warning logged in browsers for each image: `fetchImage` no longer reads the `Buffer` global once the image is loaded, so images from a url or a data URI get their cache key again.
+
+- [#3149](https://github.com/diegomura/react-pdf/pull/3149) [`e75eb325dd759edd152dbfe7da44b43092516aab`](https://github.com/diegomura/react-pdf/commit/e75eb325dd759edd152dbfe7da44b43092516aab) Thanks [@plckr](https://github.com/plckr)! - Render prop can now be passed as undefined
+
+- [#3608](https://github.com/diegomura/react-pdf/pull/3608) [`7d86485b65aefefde1e5e811edeae135ca42c557`](https://github.com/diegomura/react-pdf/commit/7d86485b65aefefde1e5e811edeae135ca42c557) Thanks [@Seybel](https://github.com/Seybel)! - Fix SVG definitions being ignored when an `<Svg>` has more than one `<Defs>`. Gradients, clip paths and markers are now read from every top-level `<Defs>`, not just the first one. If the same id is defined more than once, the first definition is used, like in browsers.
+
+- [#3630](https://github.com/diegomura/react-pdf/pull/3630) [`eb3ec5cdeac32f080903803622a6d57de1543241`](https://github.com/diegomura/react-pdf/commit/eb3ec5cdeac32f080903803622a6d57de1543241) Thanks [@adarshsm](https://github.com/adarshsm)! - Keep the last line of a text on the page when it fits exactly, instead of moving it (or the whole text) to the next page because of float rounding
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`4d40a836ef2540b6512071fa6fb58ff5be24ea2e`](https://github.com/diegomura/react-pdf/commit/4d40a836ef2540b6512071fa6fb58ff5be24ea2e), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4), [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b), [`c987d165e1a13da7bcbd606ec0ca5bad5727ef6b`](https://github.com/diegomura/react-pdf/commit/c987d165e1a13da7bcbd606ec0ca5bad5727ef6b), [`afb755da20838f931d826a91b1b41d48518c0439`](https://github.com/diegomura/react-pdf/commit/afb755da20838f931d826a91b1b41d48518c0439), [`f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3`](https://github.com/diegomura/react-pdf/commit/f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3)]:
+  - @react-pdf/font@4.1.3
+  - @react-pdf/image@3.1.3
+  - @react-pdf/textkit@7.0.2
+  - @react-pdf/paginate@1.0.2
+  - @react-pdf/stylesheet@6.3.3
+  - @react-pdf/types@2.14.1
+
 ## 5.2.0
 
 ### Minor Changes

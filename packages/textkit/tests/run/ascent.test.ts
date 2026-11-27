@@ -80,4 +80,24 @@ describe('run ascent operator', () => {
 
     expect(ascent(run)).toBe(70);
   });
+
+  test('should prefer OS/2 typoAscender over hhea ascent', () => {
+    const run = {
+      start: 0,
+      end: 0,
+      attributes: {
+        fontSize: 12,
+        font: [
+          {
+            ascent: 1160,
+            unitsPerEm: 1000,
+            'OS/2': { typoAscender: 880, typoDescender: -120 },
+          } as unknown as Font,
+        ],
+      },
+    };
+
+    // 880 (typoAscender) * 12 / 1000, not 1160 * 12 / 1000.
+    expect(ascent(run)).toBe((880 * 12) / 1000);
+  });
 });

@@ -8,6 +8,7 @@ import relayoutPage from '../steps/relayoutPage';
 import splitBox from '../node/splitBox';
 import { ZERO_BOTTOM_BOX, ZERO_TOP_BOX } from '../node/splitEdges';
 import splitText from '../text/splitText';
+import getLineTop from '../text/getLineTop';
 import hasDynamic from '../node/hasDynamic';
 import isDynamic from '../node/isDynamic';
 import { SafeNode, SafePageNode, SafeTextNode } from '../types';
@@ -157,13 +158,33 @@ const withFlags = (child: SafeNode, node: FlowNode): FlowNode => {
   };
 };
 
+// A row stretches its cells to the tallest one, and the page relayout does it
+// again on every page. Paginating a text cell by its stretched height would
+// treat that empty space as content: a short cell could not split, so the
+// whole row was forced onto one page and clipped.
+const unstretched = (node: SafeNode): SafeNode => {
+  if (!isText(node) || node.style?.height != null) return node;
+
+  const box = node.box!;
+  const height =
+    getLineTop(node.lines, node.lines?.length ?? 0) +
+    (box.paddingTop || 0) +
+    (box.paddingBottom || 0) +
+    (box.borderTopWidth || 0) +
+    (box.borderBottomWidth || 0);
+
+  return height < box.height
+    ? ({ ...node, box: { ...box, height } } as SafeNode)
+    : node;
+};
+
 const containerOf = (node: SafeNode, ctx: PageCtx): FlowNode => ({
   box: boxOf(node),
   id: node.type,
   data: node,
   direction: isRow(node) ? 'row' : 'column',
   children: (node.children || []).map((child) =>
-    withFlags(child, toItem(child, ctx)),
+    withFlags(child, toItem(isRow(node) ? unstretched(child) : child, ctx)),
   ),
 });
 

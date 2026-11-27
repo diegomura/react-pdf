@@ -203,6 +203,81 @@ describe('paginate', () => {
     });
   });
 
+  describe('text cells in a row', () => {
+    const LONG =
+      'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua '.repeat(
+        4,
+      );
+
+    // Lines past the page bottom are kept on the node but never drawn.
+    const lineCounts = (pages: SafePageNode[]) =>
+      pages.map((page) => {
+        const row = (page.children as SafeNode[])[0];
+
+        return (row.children as any[]).map((cell) => {
+          const lines = cell.lines ?? [];
+          const top = (row.box?.top || 0) + (cell.box?.top || 0);
+
+          return lines.filter(
+            (line) =>
+              top + line.box.y - lines[0].box.y + line.box.height <=
+              (page.box?.height || 0) + 0.001,
+          ).length;
+        });
+      });
+
+    const total = (counts: number[][], cell: number) =>
+      counts.reduce((acc, page) => acc + (page[cell] ?? 0), 0);
+
+    // The same row on a page tall enough to hold it, so every line counts.
+    const unsplitLines = async (cells: any[]) => {
+      const [page] = await run({ width: 200, height: 100_000 }, [
+        view({ flexDirection: 'row' }, cells),
+      ]);
+      return lineCounts([page])[0];
+    };
+
+    const assertNothingOverflows = (pages: SafePageNode[]) =>
+      pages.forEach((page) =>
+        boxes(page).forEach((box) =>
+          expect(box.top + box.height).toBeLessThanOrEqual(60.001),
+        ),
+      );
+
+    test('splits a tall cell next to a short one', async () => {
+      const cells = () => [text(LONG, { flex: 1 }), text('short', { flex: 1 })];
+      const expected = await unsplitLines(cells());
+
+      const pages = await run({ width: 200, height: 60 }, [
+        view({ flexDirection: 'row' }, cells()),
+      ]);
+      const counts = lineCounts(pages);
+
+      expect(pages.length).toBeGreaterThan(1);
+      expect(total(counts, 0)).toBe(expected[0]);
+      expect(counts[0][1]).toBe(1);
+      expect(total(counts, 1)).toBe(1);
+      assertNothingOverflows(pages);
+    });
+
+    test('splits two tall cells that end on different pages', async () => {
+      const cells = () => [
+        text(LONG, { flex: 1 }),
+        text(LONG, { flex: 1, fontSize: 7 }),
+      ];
+      const expected = await unsplitLines(cells());
+
+      const pages = await run({ width: 200, height: 60 }, [
+        view({ flexDirection: 'row' }, cells()),
+      ]);
+      const counts = lineCounts(pages);
+
+      expect(total(counts, 0)).toBe(expected[0]);
+      expect(total(counts, 1)).toBe(expected[1]);
+      assertNothingOverflows(pages);
+    });
+  });
+
   test('nothing overflows the content area', async () => {
     const pages = await run(
       { width: 100, height: 100, paddingTop: 8, paddingBottom: 8 },

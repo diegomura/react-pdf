@@ -754,12 +754,8 @@ class SVGDocument {
     if (glyphs.length === 0) return this;
 
     const fontSize = this._fontSize;
-    // Matches the offset scaling renderGlyphs.ts applies on the PDF side
-    // (a quirk of that path, kept here so SVG output lines up with PDF output).
-    const offsetScale = fontSize / 1000;
 
-    if (!glyphs[0].path)
-      return this.glyphsAsText(glyphs, positions, x, y, offsetScale);
+    if (!glyphs[0].path) return this.glyphsAsText(glyphs, positions, x, y);
 
     const scale = fontSize / unitsPerEmOf(this._font);
     const group = createElement('g');
@@ -770,8 +766,8 @@ class SVGDocument {
       const pos = positions[i];
       const d = glyphs[i].path?.toSVG();
       if (d) {
-        const gx = pen + (pos.xOffset || 0) * offsetScale;
-        const gy = y - (pos.yOffset || 0) * offsetScale;
+        const gx = pen + (pos.xOffset || 0);
+        const gy = y - (pos.yOffset || 0);
         const el = createElement('path');
         setAttribute(el, 'd', d);
         setAttribute(
@@ -787,7 +783,7 @@ class SVGDocument {
     appendChild(this.container, group);
     // Outline paths are unselectable vector art, so a transparent <text> run
     // rides on top (pdf.js-style) purely for selection/search/a11y.
-    this.appendSelectableOverlay(glyphs, positions, x, y, offsetScale);
+    this.appendSelectableOverlay(glyphs, positions, x, y);
     return this;
   }
 
@@ -795,7 +791,6 @@ class SVGDocument {
     glyphs: SVGGlyph[],
     positions: SVGGlyphPosition[],
     x: number,
-    offsetScale: number,
   ) {
     const xs: (string | number)[] = [];
     let text = '';
@@ -805,7 +800,7 @@ class SVGDocument {
       const codePoints = glyphs[i].codePoints ?? [];
       // Multi-codepoint glyphs share one x; only matters past the standard 14.
       text += String.fromCodePoint(...codePoints);
-      const gx = pen + (positions[i].xOffset || 0) * offsetScale;
+      const gx = pen + (positions[i].xOffset || 0);
       codePoints.forEach(() => xs.push(fmt(gx)));
       pen += positions[i].xAdvance || 0;
     }
@@ -818,9 +813,8 @@ class SVGDocument {
     positions: SVGGlyphPosition[],
     x: number,
     y: number,
-    offsetScale: number,
   ) {
-    const { xs, text } = this.buildGlyphRun(glyphs, positions, x, offsetScale);
+    const { xs, text } = this.buildGlyphRun(glyphs, positions, x);
 
     const el = createElement('text');
     setAttribute(el, 'x', xs.join(' '));
@@ -840,9 +834,8 @@ class SVGDocument {
     positions: SVGGlyphPosition[],
     x: number,
     y: number,
-    offsetScale: number,
   ) {
-    const { xs, text } = this.buildGlyphRun(glyphs, positions, x, offsetScale);
+    const { xs, text } = this.buildGlyphRun(glyphs, positions, x);
 
     const el = createElement('text');
     setAttribute(el, 'x', xs.join(' '));

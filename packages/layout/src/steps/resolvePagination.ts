@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { castArray, omit } from '@react-pdf/fns';
+import { castArray, isNil, omit } from '@react-pdf/fns';
 import FontStore from '@react-pdf/font';
 
 import isFixed from '../node/isFixed';
@@ -38,6 +38,38 @@ const isDynamic = (
 ): node is SafeLinkNode | SafeTextNode | SafeViewNode => {
   return node.props && 'render' in node.props && !!node.props.render;
 };
+
+// When only the trailing space of a node crosses the page edge (its bottom
+// padding, or the bottom margin of its last child), every child stays on the
+// current page and the second half of the split has nothing left to render.
+// Carried over, it would open a page of its own that holds only the fixed
+// nodes, or nothing at all. Such a half is an empty remainder: a column drops
+// it, a row keeps it, because there it still holds the place of its column.
+// A node with a height of its own or a render prop is never one.
+const emptyRemainders = new WeakSet<SafeNode>();
+
+const isRowDirection = (node: SafeNode) => {
+  const direction = node.style?.flexDirection;
+  return direction === 'row' || direction === 'row-reverse';
+};
+
+const hasOwnHeight = (node: SafeNode) =>
+  !isNil(node.style?.height) || !isNil(node.style?.minHeight);
+
+const isEmptyRemainder = (node: SafeNode, next: SafeNode) => {
+  if (isDynamic(node) || hasOwnHeight(node)) return false;
+
+  if (isText(next)) return Array.isArray(next.lines) && next.lines.length === 0;
+
+  return ((next.children || []) as SafeNode[]).every((child) =>
+    emptyRemainders.has(child),
+  );
+};
+
+const dropEmptyRemainders = (parent: SafeNode, children: SafeNode[]) =>
+  isRowDirection(parent)
+    ? children
+    : children.filter((child) => !emptyRemainders.has(child));
 
 const warnUnavailableSpace = (node: SafeNode) => {
   console.warn(
@@ -123,7 +155,11 @@ const splitNodes = (height: number, contentArea: number, nodes: SafeNode[]) => {
       }
 
       if (currentChild) currentChildren.push(currentChild);
-      if (nextChild) nextChildren.push(nextChild);
+
+      if (nextChild) {
+        if (isEmptyRemainder(child, nextChild)) emptyRemainders.add(nextChild);
+        nextChildren.push(nextChild);
+      }
 
       continue;
     }
@@ -150,7 +186,7 @@ const splitView = (node: SafeNode, height: number, contentArea: number) => {
 
   return [
     assingChildren(currentChilds, currentNode),
-    assingChildren(nextChildren, nextNode),
+    assingChildren(dropEmptyRemainders(node, nextChildren), nextNode),
   ];
 };
 
@@ -214,11 +250,13 @@ const splitPage = (
   const dynamicPage = resolveDynamicPage({ pageNumber }, page, fontStore, yoga);
   const height = page.style.height;
 
-  const [currentChilds, nextChilds] = splitNodes(
+  const [currentChilds, splitChilds] = splitNodes(
     wrapArea,
     contentArea,
     dynamicPage.children,
   );
+
+  const nextChilds = dropEmptyRemainders(page, splitChilds);
 
   const relayout = (node: SafePageNode): SafePageNode =>
     // @ts-expect-error rework pagination

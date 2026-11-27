@@ -371,6 +371,88 @@ describe('paginate', () => {
       });
     });
 
+    test('absolute fixed node declared after content repeats on every page', async () => {
+      const footer = fixedView({
+        position: 'absolute',
+        bottom: 20,
+        height: 10,
+      });
+
+      const pages = await run({ width: 100, height: 100 }, [
+        view({ height: 90 }),
+        view({ height: 90 }),
+        view({ height: 90 }),
+        footer,
+      ]);
+
+      expect(pages).toHaveLength(3);
+
+      pages.forEach((page) => {
+        const children = page.children as SafeNode[];
+        const last = children[children.length - 1];
+
+        expect(last.props).toMatchObject({ fixed: true });
+        expect(last.box?.top).toBe(70);
+      });
+    });
+
+    test('dynamic absolute fixed node declared after content renders every page number', async () => {
+      const labels: string[] = [];
+      const footer: any = {
+        type: 'VIEW',
+        props: {
+          fixed: true,
+          render: (props) => {
+            labels.push(`${props.pageNumber}/${props.totalPages}`);
+            return [el('VIEW', { height: 10 })];
+          },
+        },
+        style: { position: 'absolute', bottom: 20 },
+        children: [],
+      };
+
+      const pages = await run({ width: 100, height: 100 }, [
+        view({ height: 90 }),
+        view({ height: 90 }),
+        footer,
+      ]);
+
+      expect(pages).toHaveLength(2);
+      expect(labels).toEqual(['1/undefined', '2/undefined', '1/2', '2/2']);
+    });
+
+    test('absolute fixed nodes keep their side of the flow', async () => {
+      const background = fixedView({ position: 'absolute', top: 0, height: 5 });
+      const footer = fixedView({ position: 'absolute', bottom: 0, height: 5 });
+
+      const pages = await run({ width: 100, height: 100 }, [
+        background,
+        view({ height: 90 }),
+        view({ height: 90 }),
+        footer,
+      ]);
+
+      expect(pages).toHaveLength(2);
+
+      pages.forEach((page) => {
+        const children = page.children as SafeNode[];
+
+        expect(children[0]).toBe(
+          children.find((c) => c.box?.top === 0 && c.box?.height === 5),
+        );
+        expect(children[children.length - 1].box?.top).toBe(95);
+      });
+    });
+
+    test('page with only an absolute fixed node still renders', async () => {
+      const pages = await run({ width: 100, height: 100 }, [
+        fixedView({ position: 'absolute', bottom: 0, height: 10 }),
+      ]);
+
+      expect(pages).toHaveLength(1);
+      expect(pages[0].children).toHaveLength(1);
+    });
+
     // A page that refuses to wrap is paginated like any other, with no ceiling,
     // so its render props run once per round like everyone else's.
     test('dynamic node on a wrap={false} page resolves with totals', async () => {

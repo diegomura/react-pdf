@@ -291,10 +291,41 @@ const FarDownRows = (pageProps) => (
   </Document>
 );
 
+const PageNumbersAfterContent = (pageProps) => (
+  <Document>
+    <Page size={[200, 200]} style={{ padding: 20 }} {...pageProps}>
+      {ROW_COLORS.concat(ROW_COLORS).map((color, index) => (
+        <View
+          key={index}
+          style={{ height: 80, marginBottom: 10, backgroundColor: color }}
+        />
+      ))}
+      <Text
+        fixed
+        style={{
+          position: 'absolute',
+          bottom: 5,
+          left: 0,
+          right: 0,
+          fontSize: 8,
+          textAlign: 'center',
+        }}
+        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+      />
+    </Page>
+  </Document>
+);
+
 describe('pageWrap (next engine)', () => {
   test('should split a view whose rows lie past 2^15 pt', async () => {
     expect(
       await renderToImage(<FarDownRows experimentalPagination />),
+    ).toMatchImageSnapshot();
+  });
+
+  test('should repeat an absolute fixed footer declared after content', async () => {
+    expect(
+      await renderToImage(<PageNumbersAfterContent experimentalPagination />),
     ).toMatchImageSnapshot();
   });
 });

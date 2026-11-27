@@ -3,6 +3,7 @@ import { createPaginator } from '@react-pdf/paginate';
 import FontStore from '@react-pdf/font';
 
 import hasDynamic from '../node/hasDynamic';
+import isFixed from '../node/isFixed';
 import renderDynamic from '../node/renderDynamic';
 import relayoutPage from '../steps/relayoutPage';
 import fromPage from './fromPage';
@@ -88,6 +89,9 @@ const validateRegion = (
   }
 };
 
+const isPageAnchored = (node: SafeNode) =>
+  isFixed(node) && node.style?.position === 'absolute';
+
 // Every page is a template instantiated per output page. The payload rides
 // through as the layout's children: a probe when measuring the flow region,
 // the page's fragments when building. Region height may vary per page;
@@ -103,7 +107,21 @@ const splitPage = (
   const pageCtx: PageCtx = { props, page, fontStore, yoga };
   const content = collectContent(page as unknown as SafeNode);
 
-  const paginator = createPaginator(toFlow(content, pageCtx));
+  // Absolute fixed children never enter the flow: they anchor to every page,
+  // wherever they are declared. They keep their side of the flow so the
+  // paint order matches the children list.
+  const flow = content.filter((node) => !isPageAnchored(node));
+  const flowStart = content.findIndex((node) => !isPageAnchored(node));
+  const anchored = (before: boolean) =>
+    content.filter(
+      (node, index) =>
+        isPageAnchored(node) &&
+        (flowStart === -1 || index < flowStart) === before,
+    );
+  const anchoredBefore = anchored(true);
+  const anchoredAfter = anchored(false);
+
+  const paginator = createPaginator(toFlow(flow, pageCtx));
 
   const instantiate = (pageProps: DynamicPageProps, payload: SafeNode[]) =>
     instantiateTemplate(template, pageProps, payload).map((node) =>
@@ -138,7 +156,11 @@ const splitPage = (
     const fragments = fromPage(placed);
 
     const index = pageNumber - 1;
-    const nodes = instantiate(props(pageNumber), fragments);
+    const nodes = instantiate(props(pageNumber), [
+      ...anchoredBefore,
+      ...fragments,
+      ...anchoredAfter,
+    ]);
 
     const built = {
       ...page,

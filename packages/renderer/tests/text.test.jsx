@@ -192,4 +192,55 @@ describe('text', () => {
 
     expect(image).toMatchImageSnapshot();
   });
+
+  describe('textWrap', () => {
+    const paragraph =
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' +
+      'Voluptatem aut cum eum id quos est.';
+
+    const noHyphenate = (word) => [word];
+
+    const style = {
+      fontSize: 11,
+      lineHeight: 1.5,
+      width: 230,
+      marginBottom: 10,
+      border: '1px solid red',
+    };
+
+    const renderTextWrap = (textWrap) =>
+      renderToImage(
+        <Document>
+          <Page size={[260, 160]} style={{ padding: 10 }}>
+            <Text style={style} hyphenationCallback={noHyphenate}>
+              {paragraph}
+            </Text>
+            <Text
+              style={{ ...style, textWrap }}
+              hyphenationCallback={noHyphenate}
+            >
+              {paragraph}
+            </Text>
+          </Page>
+        </Document>,
+      );
+
+    test('should avoid an orphan word with pretty', async () => {
+      const image = await renderTextWrap('pretty');
+
+      expect(image).toMatchImageSnapshot();
+    });
+
+    test('should balance line lengths with balance', async () => {
+      const image = await renderTextWrap('balance');
+
+      expect(image).toMatchImageSnapshot();
+    });
+
+    test('should not wrap with nowrap', async () => {
+      const image = await renderTextWrap('nowrap');
+
+      expect(image).toMatchImageSnapshot();
+    });
+  });
 });

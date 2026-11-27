@@ -29,6 +29,8 @@ const getMaxLines = (node) => node.style?.maxLines;
 
 const getTextOverflow = (node) => node.style?.textOverflow;
 
+const getTextWrap = (node) => node.style?.textWrap;
+
 /**
  * Generate exclusion shapes from node exclusions for textkit,
  * in coordinates relative to the text container.
@@ -92,6 +94,7 @@ const getLayoutOptions = (fontStore, node) => ({
     node.props.hyphenationCallback ||
     fontStore?.getHyphenationCallback() ||
     null,
+  textWrap: getTextWrap(node),
 });
 
 /**

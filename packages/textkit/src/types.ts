@@ -166,7 +166,10 @@ export type LayoutOptions = {
   shrinkCharFactor?: JustificationFactor;
   expandWhitespaceFactor?: JustificationFactor;
   shrinkWhitespaceFactor?: JustificationFactor;
+  textWrap?: TextWrap;
 };
+
+export type TextWrap = 'wrap' | 'nowrap' | 'pretty' | 'balance';
 
 export type {
   Font,

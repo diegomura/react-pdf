@@ -1,4 +1,4 @@
-import glyphIndexAt from './glyphIndexAt';
+import firstGlyphIndexAt from './firstGlyphIndexAt';
 import positionsAdvanceWidth from '../positions/advanceWidth';
 import { Run } from '../types';
 
@@ -12,8 +12,8 @@ import { Run } from '../types';
  */
 const advanceWidthBetween = (start: number, end: number, run: Run) => {
   const runStart = run.start || 0;
-  const glyphStartIndex = Math.max(0, glyphIndexAt(start - runStart, run));
-  const glyphEndIndex = Math.max(0, glyphIndexAt(end - runStart, run));
+  const glyphStartIndex = Math.max(0, firstGlyphIndexAt(start - runStart, run));
+  const glyphEndIndex = Math.max(0, firstGlyphIndexAt(end - runStart, run));
   const positions = (run.positions || []).slice(glyphStartIndex, glyphEndIndex);
 
   return positionsAdvanceWidth(positions);

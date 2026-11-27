@@ -1,0 +1,31 @@
+---
+title: "Presentation Attributes"
+---
+
+SVG presentation attributes are CSS properties that can be used as attributes on SVG elements. This means it can be passed either inside a `style` object or directly by element's props.
+
+<Usage />
+
+## Supported attributes
+
+| Prop name        |                                            Description                                             |               Type |     Default |
+| ---------------- | :------------------------------------------------------------------------------------------------: | -----------------: | ----------: |
+| color            |               Provides a potential indirect value for the fill or stroke attributes.               |           _String_ | _undefined_ |
+| dominantBaseline |            Defines the baseline used to align the box’s text and inline-level contents.            |           _String_ |      _auto_ |
+| fill             |             It defines the color of the inside of the graphical element it applies to.             |           _String_ | _undefined_ |
+| fillOpacity      |      It specifies the opacity of the color or the content the current object is filled with.       | _String_, _Number_ |         _1_ |
+| fillRule         |                It indicates how to determine what side of a path is inside a shape.                |           _String_ |   _nonzero_ |
+| opacity          |                 It specifies the transparency of an object or a group of objects.                  | _String_, _Number_ |         _1_ |
+| stroke           |                     Defines the color used to paint the outline of the shape.                      |           _String_ | _undefined_ |
+| strokeWidth      |                    Defines the width of the stroke to be applied to the shape.                     | _String_, _Number_ |         _1_ |
+| strokeOpacity    |                           Defines the opacity of the stroke of a shape.                            | _String_, _Number_ |         _1_ |
+| strokeLinecap    |          Defines the shape to be used at the end of open subpaths when they are stroked.           |           _String_ |      _butt_ |
+| strokeLinejoin   |            Defines the shape to be used at the corners of paths when they are stroked.             |           _String_ |     _miter_ |
+| strokeDasharray  |           Defines the pattern of dashes and gaps used to paint the outline of the shape.           |           _String_ | _undefined_ |
+| transform        | Defines a list of transform definitions that are applied to an element and the element's children. |           _String_ | _undefined_ |
+| textAnchor       |                       Defines the horizontal alignment of a string of text.                        |           _String_ | _undefined_ |
+| visibility       |                       Lets you control the visibility of graphical elements.                       |           _String_ |   _visible_ |
+| clipPath         |                  References a [ClipPath](/docs/v4/svg/clip-path) restricting where paint is applied.                  |           _String_ | _undefined_ |
+| markerStart      |                  References a [Marker](/docs/v4/svg/marker) drawn on the first vertex of the shape.                  |           _String_ | _undefined_ |
+| markerMid        |               References a [Marker](/docs/v4/svg/marker) drawn on every intermediate vertex of the shape.               |           _String_ | _undefined_ |
+| markerEnd        |                   References a [Marker](/docs/v4/svg/marker) drawn on the last vertex of the shape.                   |           _String_ | _undefined_ |

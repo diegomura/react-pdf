@@ -2,9 +2,17 @@ import * as P from '@react-pdf/primitives';
 
 import { PageNode, SafePageNode } from './page';
 import { YogaInstance } from './base';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 export type PDFVersion = '1.3' | '1.4' | '1.5' | '1.6' | '1.7' | '1.7ext3';
+
+export type PDFConformance =
+  | 'PDF/A-1'
+  | 'PDF/A-1b'
+  | 'PDF/A-2'
+  | 'PDF/A-2b'
+  | 'PDF/A-3'
+  | 'PDF/A-3b';
 
 export type PageLayout =
   | 'singlePage'
@@ -48,6 +56,7 @@ export type DocumentProps = {
   creationDate?: Date;
   modificationDate?: Date;
   pdfVersion?: PDFVersion;
+  conformance?: PDFConformance;
   pageMode?: PageMode;
   pageLayout?: PageLayout;
   ownerPassword?: string;
@@ -61,7 +70,7 @@ export type DocumentNode = {
   props: DocumentProps;
   box?: never;
   origin?: never;
-  style?: Style | Style[];
+  style?: StyleProp;
   yoga?: YogaInstance;
   yogaNode?: never;
   children: PageNode[];
@@ -69,5 +78,6 @@ export type DocumentNode = {
 
 export type SafeDocumentNode = Omit<DocumentNode, 'style' | 'children'> & {
   style: SafeStyle;
+  wasSplit: boolean;
   children: SafePageNode[];
 };

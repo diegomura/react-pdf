@@ -36,22 +36,30 @@ const getAbsoluteLocalPath = (src: string) => {
     throw new Error('Cannot check local paths in client-side environment');
   }
 
-  const {
-    protocol,
-    auth,
-    host,
-    port,
-    hostname,
-    path: pathname,
-  } = url.parse(src);
+  try {
+    const parsed = new URL(src);
 
-  const absolutePath = pathname ? path.resolve(src) : undefined;
+    if (
+      parsed.protocol !== 'file:' ||
+      parsed.username ||
+      parsed.password ||
+      parsed.host
+    ) {
+      return undefined;
+    }
 
-  if ((protocol && protocol !== 'file:') || auth || host || port || hostname) {
-    return undefined;
+    return url.fileURLToPath(parsed.href);
+  } catch {
+    if (!src) {
+      return undefined;
+    }
+
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(src)) {
+      return undefined;
+    }
+
+    return path.resolve(src);
   }
-
-  return absolutePath;
 };
 
 const fetchLocalFile = (src: LocalImageSrc): Promise<Buffer> =>

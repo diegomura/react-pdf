@@ -1,6 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import FontStore from '../src/index';
+
+vi.mock('fontkit', () => ({
+  create: vi.fn(() => ({ postscriptName: 'Roboto-Regular' })),
+  open: vi.fn(),
+}));
 
 describe('font store', () => {
   it('should create font store', () => {
@@ -154,5 +159,79 @@ describe('font store', () => {
     expect(fontStore.getRegisteredFontFamilies()).toHaveLength(0);
     expect(fontStore.getEmojiSource()).toBeNull();
     expect(fontStore.getHyphenationCallback()).toBeNull();
+  });
+
+  describe('load', () => {
+    const okResponse = () =>
+      ({ ok: true, arrayBuffer: async () => new ArrayBuffer(8) }) as Response;
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    const registerRoboto = () => {
+      const fontStore = new FontStore();
+
+      fontStore.register({
+        family: 'Roboto',
+        src: 'https://example.com/Roboto-Regular.ttf',
+      });
+
+      return fontStore;
+    };
+
+    it('should cache successful load', async () => {
+      const fetchMock = vi.fn(async () => okResponse());
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fontStore = registerRoboto();
+
+      await fontStore.load({ fontFamily: 'Roboto' });
+      await fontStore.load({ fontFamily: 'Roboto' });
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(fontStore.getFont({ fontFamily: 'Roboto' })?.data).toBeTruthy();
+    });
+
+    it('should retry load after a failed fetch', async () => {
+      const fetchMock = vi
+        .fn()
+        .mockRejectedValueOnce(new TypeError('fetch failed'))
+        .mockImplementation(async () => okResponse());
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fontStore = registerRoboto();
+
+      await expect(fontStore.load({ fontFamily: 'Roboto' })).rejects.toThrow(
+        'fetch failed',
+      );
+      await expect(
+        fontStore.load({ fontFamily: 'Roboto' }),
+      ).resolves.toBeUndefined();
+
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(fontStore.getFont({ fontFamily: 'Roboto' })?.data).toBeTruthy();
+    });
+
+    it('should share a single fetch between concurrent loads', async () => {
+      const fetchMock = vi
+        .fn()
+        .mockRejectedValueOnce(new TypeError('fetch failed'))
+        .mockImplementation(async () => okResponse());
+      vi.stubGlobal('fetch', fetchMock);
+
+      const fontStore = registerRoboto();
+
+      const results = await Promise.allSettled([
+        fontStore.load({ fontFamily: 'Roboto' }),
+        fontStore.load({ fontFamily: 'Roboto' }),
+      ]);
+
+      expect(results.map((result) => result.status)).toEqual([
+        'rejected',
+        'rejected',
+      ]);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
   });
 });

@@ -42,6 +42,13 @@ const selectiveNFD = (str: string): string => {
   return str.replace(COMPLEX_SCRIPT_CHARS, (match) => match.normalize('NFD'));
 };
 
+// fontkit's Thai/Lao shaper always splits SARA AM into NIKHAHIT + SARA AA,
+// a compatibility (not canonical) decomposition that NFD leaves alone.
+const SARA_AM = /[ำຳ]/g;
+
+const decomposeSaraAm = (str: string): string =>
+  str.replace(SARA_AM, (match) => match.normalize('NFKD'));
+
 const isCustomFont = (run: Run): boolean => {
   const font = run.attributes?.font?.[0];
   return !!font && font.type !== 'STANDARD';
@@ -59,6 +66,7 @@ const decomposeUnicode = () => {
   return (attributedString: AttributedString): AttributedString => {
     let string = '';
     let offset = 0;
+    let changed = false;
 
     const runs: Run[] = [];
 
@@ -67,7 +75,11 @@ const decomposeUnicode = () => {
 
       const rawString = attributedString.string.slice(run.start, run.end);
 
-      const runString = isCustomFont(run) ? selectiveNFD(rawString) : rawString;
+      const runString = isCustomFont(run)
+        ? decomposeSaraAm(selectiveNFD(rawString))
+        : rawString;
+
+      if (runString !== rawString || run.start !== offset) changed = true;
 
       const fragmentLength = runString.length;
 
@@ -81,6 +93,8 @@ const decomposeUnicode = () => {
 
       string += runString;
     }
+
+    if (!changed) return attributedString;
 
     return { ...attributedString, string, runs };
   };

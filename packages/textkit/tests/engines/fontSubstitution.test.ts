@@ -73,6 +73,38 @@ describe('FontSubstitution', () => {
       hasGlyphForCodePoint: (codePoint) => codePoint === 20320,
     };
 
+    test.each([
+      ['Mongolian free variation selector', '\u1820', '\u180B'],
+      ['Mongolian free variation selector four', '\u1820', '\u180F'],
+      ['BMP variation selector', '\u6F22', '\uFE00'],
+      ['supplementary variation selector', '\u6F22', '\u{E0100}'],
+    ])('should preserve the preceding font for a %s', (_, base, selector) => {
+      const baseCodePoint = base.codePointAt(0);
+      const baseFont = {
+        name: 'BaseFont',
+        unitsPerEm: 1000,
+        hasGlyphForCodePoint: (codePoint) => codePoint === baseCodePoint,
+      };
+      const fallbackFont = {
+        name: 'FallbackFont',
+        unitsPerEm: 1000,
+        hasGlyphForCodePoint: () => true,
+      };
+      const value = `${base}${selector}`;
+      const run = {
+        start: 0,
+        end: value.length,
+        attributes: { font: [baseFont, fallbackFont] },
+      } as any;
+
+      const result = instance({ string: value, runs: [run] });
+
+      expect(result.runs).toHaveLength(1);
+      expect(result.runs[0]).toHaveProperty('start', 0);
+      expect(result.runs[0]).toHaveProperty('end', value.length);
+      expect(result.runs[0].attributes.font).toEqual([baseFont]);
+    });
+
     test('should utilize a fallback font that supports the provided glyph', () => {
       const helvetica = fontStore.getFont({ fontFamily: 'Helvetica' }).data;
 
@@ -114,6 +146,59 @@ describe('FontSubstitution', () => {
       expect(string.runs[1]).toHaveProperty('start', 1);
       expect(string.runs[1]).toHaveProperty('end', 2);
       expect(string.runs[1].attributes.font).toEqual([SimplifiedChineseFont]);
+    });
+  });
+
+  describe('Surrogate pairs', () => {
+    // 𠮷 is U+20BB7 (SIP, beyond U+FFFF), encoded as the UTF-16 surrogate
+    // pair 𠮷 — JS string length 2.
+    const sipFont = {
+      name: 'SipFont',
+      unitsPerEm: 1000,
+      hasGlyphForCodePoint: (codePoint: number) => codePoint === 0x20bb7,
+    };
+    const noGlyphFont = {
+      name: 'NoGlyphFont',
+      unitsPerEm: 1000,
+      hasGlyphForCodePoint: () => false,
+    };
+
+    test('should treat a surrogate pair as a single code point when picking a font', () => {
+      const run = {
+        start: 0,
+        end: 2,
+        attributes: { font: [sipFont, noGlyphFont] },
+      } as any;
+
+      const string = instance({ string: '𠮷', runs: [run] });
+
+      expect(string).toHaveProperty('string', '𠮷');
+      expect(string.runs).toHaveLength(1);
+      expect(string.runs[0]).toHaveProperty('start', 0);
+      expect(string.runs[0]).toHaveProperty('end', 2);
+      expect(string.runs[0].attributes.font).toEqual([sipFont]);
+    });
+
+    test('should track UTF-16 indices correctly when mixing BMP and SIP code points', () => {
+      const run = {
+        start: 0,
+        end: 4,
+        attributes: { font: [sipFont, noGlyphFont] },
+      } as any;
+
+      const string = instance({ string: 'A𠮷B', runs: [run] });
+
+      expect(string).toHaveProperty('string', 'A𠮷B');
+      expect(string.runs).toHaveLength(3);
+      expect(string.runs[0]).toHaveProperty('start', 0);
+      expect(string.runs[0]).toHaveProperty('end', 1);
+      expect(string.runs[0].attributes.font).toEqual([noGlyphFont]);
+      expect(string.runs[1]).toHaveProperty('start', 1);
+      expect(string.runs[1]).toHaveProperty('end', 3);
+      expect(string.runs[1].attributes.font).toEqual([sipFont]);
+      expect(string.runs[2]).toHaveProperty('start', 3);
+      expect(string.runs[2]).toHaveProperty('end', 4);
+      expect(string.runs[2].attributes.font).toEqual([noGlyphFont]);
     });
   });
 });

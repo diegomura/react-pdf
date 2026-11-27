@@ -56,6 +56,13 @@ const getWhitespaceFactor = (direction: Direction, options: LayoutOptions) => {
     : Object.assign({}, SHRINK_WHITESPACE_FACTOR, shrinkWhitespaceFactor);
 };
 
+const cloneFactor = (f: Factor): Factor => ({
+  before: f.before,
+  after: f.after,
+  priority: f.priority,
+  unconstrained: f.unconstrained,
+});
+
 const factor =
   (direction: Direction, options: LayoutOptions) => (glyphs: Glyph[]) => {
     const charFactor = getCharFactor(direction, options);
@@ -67,7 +74,7 @@ const factor =
       const glyph = glyphs[index];
 
       if (isWhiteSpace(glyph)) {
-        f = Object.assign({}, whitespaceFactor);
+        f = cloneFactor(whitespaceFactor);
 
         if (index === glyphs.length - 1) {
           f.before = 0;
@@ -77,11 +84,11 @@ const factor =
           }
         }
       } else if (glyph.isMark && index > 0) {
-        f = Object.assign({}, factors[index - 1]);
+        f = cloneFactor(factors[index - 1]);
         f.before = 0;
         factors[index - 1].after = 0;
       } else {
-        f = Object.assign({}, charFactor);
+        f = cloneFactor(charFactor);
       }
 
       factors.push(f);

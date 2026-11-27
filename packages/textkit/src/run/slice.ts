@@ -3,6 +3,7 @@ import offset from './offset';
 import getFont from './getFont';
 import sliceGlyph from '../glyph/slice';
 import glyphIndexAt from './glyphIndexAt';
+import firstGlyphIndexAt from './firstGlyphIndexAt';
 import normalize from '../utils/normalize';
 import { Glyph, Position, Run } from '../types';
 
@@ -19,7 +20,7 @@ const slice = (start: number, end: number, run: Run): Run => {
   const font = getFont(run);
 
   // Get glyph start and end indices
-  const startIndex = glyphIndexAt(start, run);
+  const startIndex = firstGlyphIndexAt(start, run);
   const endIndex = glyphIndexAt(end - 1, run);
 
   // Get start and end glyph

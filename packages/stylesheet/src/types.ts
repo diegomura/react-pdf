@@ -218,13 +218,42 @@ export type Display = 'flex' | 'none';
 
 export type Position = 'absolute' | 'relative' | 'static';
 
+export type Float = 'left' | 'right' | 'none';
+
+export type Clear = Float | 'both';
+
+export type ShapeScalar = number | Percentage;
+
+export type ShapeRadius = ShapeScalar | 'closest-side' | 'farthest-side';
+
+export type ShapeOutside =
+  | { type: 'circle'; cx: ShapeScalar; cy: ShapeScalar; r: ShapeRadius }
+  | {
+      type: 'ellipse';
+      cx: ShapeScalar;
+      cy: ShapeScalar;
+      rx: ShapeRadius;
+      ry: ShapeRadius;
+    }
+  | { type: 'polygon'; points: { x: ShapeScalar; y: ShapeScalar }[] }
+  | {
+      type: 'inset';
+      top: ShapeScalar;
+      right: ShapeScalar;
+      bottom: ShapeScalar;
+      left: ShapeScalar;
+    };
+
 export type LayoutStyle = {
   aspectRatio?: number | string;
   bottom?: number | string;
+  clear?: Clear;
   display?: Display;
+  float?: Float;
   left?: number | string;
   position?: Position;
   right?: number | string;
+  shapeOutside?: string | ShapeOutside;
   top?: number | string;
   overflow?: 'hidden';
   zIndex?: number | string;
@@ -235,8 +264,11 @@ export type LayoutExpandedStyle = LayoutStyle;
 export type LayoutSafeStyle = LayoutExpandedStyle & {
   aspectRatio?: number;
   bottom?: number;
+  clear?: Clear;
+  float?: Float;
   left?: number;
   right?: number;
+  shapeOutside?: ShapeOutside;
   top?: number;
   zIndex?: number;
 };
@@ -321,12 +353,49 @@ export type TextTransform =
 
 export type VerticalAlign = 'sub' | 'super';
 
+export type FontFeatureSetting =
+  | 'liga'
+  | 'dlig'
+  | 'onum'
+  | 'lnum'
+  | 'tnum'
+  | 'zero'
+  | 'frac'
+  | 'sups'
+  | 'subs'
+  | 'smcp'
+  | 'c2sc'
+  | 'case'
+  | 'hlig'
+  | 'calt'
+  | 'swsh'
+  | 'hist'
+  | `ss${'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19' | '20'}`
+  | 'kern'
+  | 'locl'
+  | 'rlig'
+  | 'medi'
+  | 'init'
+  | 'isol'
+  | 'fina'
+  | 'mark'
+  | 'mkmk'
+  // fonts may expose any OpenType feature tag; the list above is for autocomplete
+  | (string & {});
+
+export type FontFeatureSettings =
+  | FontFeatureSetting[]
+  | Partial<Record<FontFeatureSetting, number | boolean>>;
+
+export type SafeFontFeatureSettings = Record<string, boolean>;
+
 export type TextStyle = {
   direction?: 'ltr' | 'rtl';
   fontSize?: number | string;
   fontFamily?: string | string[];
   fontStyle?: FontStyle;
   fontWeight?: FontWeight;
+  fontFeatureSettings?: FontFeatureSettings;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   maxLines?: number | string;
@@ -345,6 +414,7 @@ export type TextExpandedStyle = TextStyle;
 export type TextSafeStyle = TextExpandedStyle & {
   fontSize?: number;
   fontWeight?: number;
+  fontFeatureSettings?: SafeFontFeatureSettings;
   letterSpacing?: number;
   lineHeight?: number;
 };
@@ -450,6 +520,13 @@ type MediaQueryStyle = {
 };
 
 export type Style = BaseStyle & MediaQueryStyle;
+
+type RecursiveArray<T> = Array<T | ReadonlyArray<T> | RecursiveArray<T>>;
+
+export type StyleProp =
+  | Style
+  | Style[]
+  | RecursiveArray<Style | Style[] | undefined>;
 
 export type StyleKey = keyof BaseStyle;
 

@@ -1,1 +1,1 @@
-export { Style } from '@react-pdf/stylesheet';
+export { Style, StyleProp } from '@react-pdf/stylesheet';

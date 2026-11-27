@@ -458,6 +458,7 @@ type Style = {
   fontSize?: number | string;
   fontStyle?: 'normal' | 'italic' | 'oblique';
   fontWeight?: FontWeight;
+  fontFeatureSettings?: FontFeatureSettings;
   letterSpacing?: number | string;
   lineHeight?: number | string;
   textAlign?: 'left' | 'right' | 'center' | 'justify';
@@ -543,7 +544,7 @@ type Transform =
     };
 ```
 
-### FontWeight
+### FontWeight & FontFeatureSettings
 
 ```ts
 type FontWeight =
@@ -562,7 +563,45 @@ type FontWeight =
   | 'extrabold'
   | 'heavy'
   | 'black';
+
+type FontFeatureSetting =
+  | 'liga'
+  | 'dlig'
+  | 'onum'
+  | 'lnum'
+  | 'tnum'
+  | 'zero'
+  | 'frac'
+  | 'sups'
+  | 'subs'
+  | 'smcp'
+  | 'c2sc'
+  | 'case'
+  | 'hlig'
+  | 'calt'
+  | 'swsh'
+  | 'hist'
+  | `ss${'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19' | '20'}`
+  | 'kern'
+  | 'locl'
+  | 'rlig'
+  | 'medi'
+  | 'init'
+  | 'isol'
+  | 'fina'
+  | 'mark'
+  | 'mkmk'
+  // fonts may expose any OpenType feature tag; the list above is for autocomplete
+  | (string & {});
+
+type FontFeatureSettings =
+  | FontFeatureSetting[]
+  | Partial<Record<FontFeatureSetting, number | boolean>>;
 ```
+
+Resolved styles normalize `fontFeatureSettings` to a single canonical shape,
+`Record<string, boolean>`: array entries become `true`, and numeric values
+follow CSS semantics (`0` disables, any other number enables).
 
 ## License
 

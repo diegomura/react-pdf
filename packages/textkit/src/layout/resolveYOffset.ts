@@ -9,13 +9,17 @@ import { AttributedString, Run } from '../types';
 const resolveRunYOffset = (run: Run) => {
   if (!run.positions) return run;
 
-  const unitsPerEm = run.attributes?.font?.[0]?.unitsPerEm || 0;
-  const yOffset = (run.attributes?.yOffset || 0) * unitsPerEm;
-  const positions = run.positions.map((p) => Object.assign({}, p, { yOffset }));
+  const fontSize = run.attributes?.fontSize || 0;
+  const verticalAlignPoints = (run.attributes?.yOffset || 0) * fontSize;
 
-  return Object.assign({}, run, { positions });
+  for (let i = 0; i < run.positions.length; i += 1) {
+    const position = run.positions[i];
+    position.xOffset = position.xOffset || 0;
+    position.yOffset = (position.yOffset || 0) + verticalAlignPoints;
+  }
+
+  return run;
 };
-
 /**
  * Resolves yOffset for multiple paragraphs
  */

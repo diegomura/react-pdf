@@ -1,0 +1,67 @@
+---
+title: 'How react-pdf renders a document'
+date: '2021-04-15'
+description: There is no browser in here. A walk through the six steps that turn a React element tree into a PDF file, and why they happen in that order.
+---
+
+The most common assumption about react-pdf is that it renders HTML somewhere and prints it. It doesn't. There is no browser in here, no headless Chrome, no screenshot. A `<View>` is not a `<div>`, and nothing in the pipeline ever becomes one.
+
+Which means everything a browser would do for you, this library has to do itself: resolve the styles, download the fonts, turn characters into glyphs, decide where every line breaks, decide where every page breaks, and only then write the file. Six steps, in a fixed order, for a reason.
+
+<OverviewTimeline />
+
+## 1. Internal structures creation
+
+React hands us a tree. The reconciler turns it into plain objects: a type, some props, a style, some children. That's it.
+
+The important part is what these objects _don't_ know. They have no idea PDFs exist. No node holds a reference to a document, a page object, or anything that can write bytes. The entire middle of this pipeline operates on data that could just as easily be describing a poster or a slide deck.
+
+That's deliberate, and it was one of the main lessons of the 2.0 rewrite. When nodes knew how to draw themselves, layout and rendering were tangled together and every bug lived in the seam between them.
+
+## 2. Resolve styles
+
+Users write loose, convenient CSS. `margin: '10pt 20pt'`. `fontSize: '1.5em'`. `flex: 1`. Half of it is shorthand, some of it is relative to something else, and most properties are missing entirely because there's a sensible default.
+
+This step turns all of that into boring, fully specified values. Shorthands expand into their four sides, units get converted, inherited properties walk down the tree, percentages get a parent to measure against.
+
+It's the least glamorous step and it buys the most. Once it's done, every node has every property the rest of the pipeline needs, so nothing downstream has to guess or fall back. If you ever wonder why the layout package is one long list of small `resolveSomething` functions, this is the pattern: each one guarantees an invariant for the ones after it.
+
+## 3. Fetching assets
+
+Now we walk the tree and ask for everything it needs from the outside world: every font family, every image, every emoji. The requests go out in parallel and we wait for the whole batch.
+
+This is the step that dictates the order of all the others. You cannot measure a line of text without the font, you cannot break a paragraph into lines without measuring it, and you cannot break a page without knowing how tall the paragraphs are. Assets gate text, text gates pagination. Everything else is negotiable, that isn't.
+
+There's a wrinkle worth admitting: assets are actually resolved twice, once here and once more after pagination. Both SVG resolution and page breaking can put new content on a page that nobody has downloaded yet, so the pipeline sweeps a second time rather than pretending the first pass caught everything.
+
+## 4. Layout text
+
+First, characters become glyphs. That's fontkit's job, and it's more involved than it sounds: ligatures, kerning, bidirectional text, and font substitution when the family you asked for has no glyph for the character you used.
+
+Then those glyphs get broken into lines, and this is my favourite part of the library. React-pdf doesn't break lines greedily, filling each one until the next word doesn't fit. It runs [Knuth and Plass](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness), the same algorithm TeX uses, over the entire paragraph.
+
+The model is three kinds of node. Words are **boxes**, fixed width. Spaces are **glue**, with a natural width plus how far they're willing to stretch and shrink. Hyphenation points are **penalties**, a cost you pay for breaking there. The algorithm then finds the set of breaks with the lowest total badness for the paragraph as a whole, which is why a word on line four can change where line one breaks.
+
+If it can't find a solution inside the current tolerance, it raises the tolerance and tries again, in steps, up to a limit. If it still can't, it gives up and falls back to a plain best-fit pass, because a slightly ugly paragraph beats no paragraph. And the hyphenation penalty is deliberately much lower for justified text than for ragged text: justified lines need hyphens to avoid rivers of whitespace, ragged ones mostly don't.
+
+## 5. Wrapping pages
+
+The most expensive step, and the one that generates the most issues.
+
+[Yoga](https://yogalayout.com/) does the geometry. It's the same flexbox implementation React Native uses, compiled to WASM, and it gives us the size and position of every node.
+
+Page breaking is the hard half. It isn't a matter of cutting the document every 792 points, because content has opinions. `break` forces a new page. `wrap={false}` says this block would rather move than be split. `minPresenceAhead` says don't leave me stranded at the bottom unless there's room for what follows me.
+
+What makes it genuinely difficult is that the decisions feed back on each other. Moving a node to the next page changes what's left on this one, which changes the height of its parent, which can invalidate a break you already committed to. Getting that loop to both terminate and produce something a human would have chosen is most of the work.
+
+## 6. Rendering
+
+After all of the above, making the actual PDF is almost anticlimactic.
+
+We walk the pages, and for each node call the matching [pdfkit](https://github.com/foliojs/pdfkit) operations: draw this rectangle, fill this background, place these glyphs at these coordinates, add this link annotation. Then bookmarks, then close the stream. The top of that function is about fifteen lines, and it makes no decisions at all.
+
+That's the point. By the time we reach step six there's nothing left to figure out. Every coordinate is known, every glyph is positioned, every page boundary is settled. Rendering just types it out.
+
+It also means the tree, not the file, is the real output of this library. A PDF is one way to serialise it. It doesn't have to be the only one.
+
+One last practical note: all six steps run synchronously on whatever thread called react-pdf. In the browser that's the main one, which is fine until the document gets big enough that the freeze becomes noticeable. The fix is to render inside a web worker, and Simon Hessel wrote [a good walkthrough of doing exactly that](https://dev.to/simonhessel/creating-pdf-files-without-slowing-down-your-app-a42).

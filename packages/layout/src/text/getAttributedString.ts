@@ -50,6 +50,7 @@ const getFragments = (
     fontWeight,
     fontStyle,
     fontSize = 18,
+    fontFeatureSettings,
     textAlign,
     lineHeight,
     textDecoration,
@@ -103,6 +104,7 @@ const getFragments = (
     // @ts-expect-error allow this props access
     link: parentLink || instance.props?.src || instance.props?.href,
     align: textAlign || (direction === 'rtl' ? 'right' : 'left'),
+    features: fontFeatureSettings,
   };
 
   for (let i = 0; i < instance.children.length; i += 1) {

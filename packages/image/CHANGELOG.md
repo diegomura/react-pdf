@@ -1,5 +1,28 @@
 # @react-pdf/image
 
+## 3.1.3
+
+### Patch Changes
+
+- [#3637](https://github.com/diegomura/react-pdf/pull/3637) [`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a) Thanks [@diegomura](https://github.com/diegomura)! - Bump pdfkit to 0.21.0, fontkit to 3.0.0, png-js to 3.0.0 and unicode-properties to 2.0.2, picking up fixes for a PNG parser denial of service and several malformed font crashes. Thai and Lao SARA AM now decompose before shaping to match fontkit 3, which fixes the last glyph being dropped after it
+
+- [#3603](https://github.com/diegomura/react-pdf/pull/3603) [`c987d165e1a13da7bcbd606ec0ca5bad5727ef6b`](https://github.com/diegomura/react-pdf/commit/c987d165e1a13da7bcbd606ec0ca5bad5727ef6b) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: bump jay-peg to 1.1.2 so JPEG parsing no longer mutates image data, which left the EXIF orientation unreadable for pdfkit and drew rotated photos unrotated and stretched
+
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/svg@1.1.1
+
+## 3.1.1
+
+### Patch Changes
+
+- [#3429](https://github.com/diegomura/react-pdf/pull/3429) [`6d7c2b79`](https://github.com/diegomura/react-pdf/commit/6d7c2b79187a85d0da7e3b45bd65373fdd7e928e) Thanks [@elitan](https://github.com/elitan)! - Replace deprecated url.parse usage in local image path resolution.
+
+- [#3443](https://github.com/diegomura/react-pdf/pull/3443) [`86c9fd88`](https://github.com/diegomura/react-pdf/commit/86c9fd8867b694eb607d8ae7df9145e86d8c8465) Thanks [@CodeSmith32](https://github.com/CodeSmith32)! - Fix cloning repo in Windows
+
 ## 3.1.0
 
 ### Minor Changes

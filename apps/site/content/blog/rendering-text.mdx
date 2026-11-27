@@ -1,0 +1,129 @@
+---
+title: 'How react-pdf renders text'
+date: '2026-08-26'
+description: Six steps sit between a <Text> element and a glyph on the page, and none of them are the ones you would guess. A visual tour of the textkit pipeline.
+---
+
+The [pipeline post](/blog/rendering-process) gives text layout one paragraph out of six. That is honest as an overview and badly misleading as an estimate: text is where most of the code lives, and where most of the bug reports come from.
+
+There is no browser here, so nothing below is delegated. Six passes, in a fixed order, before a single glyph is written to the file.
+
+<OverviewTimeline
+  steps={['Flatten', 'Split', 'Shape', 'Break', 'Stack', 'Draw']}
+/>
+
+## 1. Flatten
+
+A `<Text>` can contain other `<Text>` elements, images, links. The first thing that happens is that all of it collapses into a single flat string plus a list of **runs**, where a run is a range of characters that agree on every attribute.
+
+```jsx
+<Text style={{ fontFamily: 'Roboto', fontSize: 12 }}>
+  A <Text style={{ fontWeight: 'bold' }}>run</Text> is the longest slice of the
+  string that <Link src="https://react-pdf.org">agrees on everything</Link>.
+</Text>
+```
+
+Hover the sentence below to see what that turns into.
+
+<RunsStrip />
+
+Two things worth noticing. The tree is gone: after this step there is no parent, no children, only offsets into one string. And the attributes are fully resolved, so `fontFamily: 'Roboto'` has already become a parsed font object, `textDecoration: 'underline'` has become `underline: true` plus an `underlineColor`, and anything you did not set has picked up its default. Helvetica is appended to every font list as the last resort, whether you asked for it or not.
+
+Two smaller things happen in the same pass. Text in Indic and Southeast Asian scripts is NFD decomposed, because fontkit's shaped output for those scripts only maps back onto the original string reliably in decomposed form. And the string is cut at every `\n` into separate paragraphs. Everything from here until the lines are stacked runs once per paragraph, which is why a newline is a hard break and why the line breaker never optimises across one.
+
+## 2. Split
+
+Three engines now cut those runs finer than you wrote them, and none of them are optional:
+
+- **script itemization** cuts at writing system boundaries, because a single shaping pass cannot handle Latin and Devanagari at once
+- **bidi** cuts at direction changes and stamps every piece with its embedding level
+- **font substitution** cuts wherever the current font has no glyph for the next character, and moves on to the next family in your list
+
+The three sets of boundaries are then merged, so what comes out is the finest subdivision all three agree on. A `<Text>` that drops an Arabic phrase into an English sentence leaves this step as several runs. You wrote one.
+
+One more thing happens here, and one deliberately does not. Mirrored characters, parentheses and brackets and their friends, get swapped for their mirror image inside right to left runs. But the runs are **not** reordered for display yet. Visual order depends on where each line ends, and no lines exist yet, so reordering waits until step 5.
+
+## 3. Shape
+
+First, every word goes through the hyphenation engine and comes back as a list of syllables, with soft hyphens stripped out. Nothing is hyphenated at this point. This is only the set of places where a break would be legal, and step 4 decides whether any of them is worth the cost.
+
+Then each run goes to [fontkit](https://github.com/foliojs/fontkit), which turns characters into positioned glyphs. This is the step people skip when they reason about text, and it is the step that makes the counting stop working.
+
+<GlyphLab />
+
+Type in it. Turn off the `liga` toggle and watch `ffi` fall apart into three glyphs. Turn it back on and they collapse into one, with a single id, a single outline and a single advance width, covering three characters of the string. Any code that assumes "one character, one glyph" is already wrong at `office`.
+
+Turn `kern` off and the row spreads out. Kerning does not change which glyphs you get, it changes the advance of the glyph on the left. `AV` in Roboto pulls in by 87 font units, `To` by 99. That is why the character chips along the top stay evenly spaced while the glyph boxes underneath do not line up with them.
+
+What comes out is a list of glyph ids and a list of positions: `xAdvance`, `yAdvance`, `xOffset`, `yOffset`, each scaled from font units into points by `fontSize / unitsPerEm`. From here on the string is documentation. The positions are the truth.
+
+Two small passes finish the job. `verticalAlign: 'super'` and `'sub'` shift every glyph in the run by +0.4 em and -0.2 em, without resizing anything. And an `<Image>` inside a `<Text>` becomes a single U+FFFC character carrying the picture as an attachment, so it takes up exactly one glyph slot and gets measured like one.
+
+## 4. Break
+
+Before anything breaks, textkit asks the container which rectangles a line is allowed to occupy.
+
+With no exclusions that is one rectangle, the full width, and the breaker is simply told every line may be this wide. With exclusions, which is what `float` compiles down to, the container is sliced into bands one line tall, each band is cut around the shapes that intrude into it, and the breaker is handed an array instead: one available width per line, in order. `textIndent` shrinks the first entry. That array is the only thing the line breaker ever learns about the shape of the page.
+
+Then the actual breaking, and this is my favourite part of the library. React-pdf does not fill lines greedily. It runs [Knuth and Plass](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Minimum_raggedness), the algorithm TeX uses, over the whole paragraph at once, as three kinds of node:
+
+- **boxes** are words, with a fixed width
+- **glue** is whitespace, with a natural width plus how far it will stretch and how far it will shrink
+- **penalties** are the hyphenation points from step 3, each carrying a cost for breaking there
+
+It then searches for the set of breakpoints with the lowest total badness for the paragraph as a whole, which is why a word on the last line can move where the first line breaks.
+
+<LineBreakLab />
+
+Drag the column width and watch the grey leftovers on the right. Then switch to greedy and drag it again. Greedy is not wrong, it is just local: it takes as much as it can on every line and lets the last one absorb whatever remains. Knuth and Plass will deliberately end a line early so the next three come out even, and the raggedness number in the caption is the sum of the squared leftovers, which is roughly what the algorithm is minimising.
+
+The constants explain most of the behaviour you actually see. Glue stretches by half its natural width and shrinks by a third of it. A hyphen is assumed to be 5 points wide, a hardcoded guess that does not scale with your font size, and it carries a penalty of **600** in ragged text but only **100** in justified text, because justified lines need hyphens to avoid rivers of whitespace and ragged ones mostly do not. Flip the justify toggle around a 320 point column and the paragraph rebreaks entirely: same text, same font, a different price on hyphens.
+
+Tolerance starts at 4. If no solution exists within it, react-pdf raises it by 5 and tries again, up to 50, and if it still cannot find one it gives up and runs a plain best-fit pass, because a slightly ugly paragraph beats no paragraph. If you have ever seen one paragraph in a long document break noticeably worse than its neighbours, that is what happened.
+
+## 5. Stack
+
+Each line now gets a box, and the height of that box is not the height of the letters.
+
+<LineBoxLab />
+
+With `lineHeight` unset the height is `lineGap + ascent - descent`, all three read from the font's own metrics. Roboto reports an ascent of 1900 and a descent of -500 against 2048 units per em, so its natural line height is 1.17 times the font size. Nothing in your styles produced that 17%. The font did.
+
+Set `lineHeight` and the height becomes exactly `lineHeight × fontSize`. Note where the extra space goes. The baseline stays at `ascent` below the top of the box, so everything you add lands underneath the line, not split half above and half below the way CSS does it. This is the single most common source of "why is my text sitting too high in its background colour". A line also takes the **maximum** height and ascent across all its runs, so one 24pt word both makes the whole line taller and pushes its baseline down.
+
+Stacking those boxes is the typesetter's job, and it is the first step that cares about the container rather than the text. It walks the paragraphs in order, cropping the remaining height as it goes, and stops once the next one does not fit. `maxLines` cuts it short, `textOverflow: 'ellipsis'` truncates whatever survived, and a paragraph that only partly fits is sliced at the exact height available. A line that does not fit the rectangle it was assigned moves to the next one, which is how text flows past a float.
+
+Only now that lines exist can bidi finish. Within each line the runs are reordered into visual order, highest embedding level first, and right to left runs have their glyphs reversed inside themselves.
+
+Then one last pass per line: drop a trailing newline, push leading and trailing whitespace outside the box so alignment ignores it, apply the alignment or hand the leftover width to the justification engine, compute the rectangles for underlines and strikethroughs, and record the final ascent, descent and height. That whitespace trick is why a centred line with a trailing space still looks centred, and the justification engine is why the coloured slivers appear under the spaces when you turn justify on above.
+
+## 6. Draw
+
+By the time the render package sees any of this, there is nothing left to decide. Here is a `<Text style={{ fontSize: 14 }}>To Vary</Text>` on a 200 by 100 point page, straight out of the content stream with a couple of empty save/restore pairs removed:
+
+```
+1 0 0 1 20 20 cm                  % translate to the text node's box
+q
+1 0 0 1 0 12.988281 cm            % drop to the baseline: ascent at 14pt
+/DeviceRGB cs
+0 0 0 scn
+q
+1 0 0 -1 0 100 cm                 % flip: PDF y grows upward, layout y grows down
+BT
+1 0 0 1 0 100 Tm                  % text matrix
+/F2 14 Tf                         % font and size
+[<0001> 48.339844 <000200030004> 22.460938 <00050006> -8.789062 <0007> 0] TJ
+ET
+Q
+1 0 0 1 46.819336 0 cm            % advance by the run's total width
+```
+
+The `TJ` array is the whole article in one line. `<0001>` through `<0007>` are glyph ids in the embedded subset, not characters and not the ids fontkit reported, because only the seven glyphs actually used got written into the file. The bare numbers between them are position adjustments in thousandths of an em, with the sign inverted, so a positive number moves the next glyph left.
+
+`48.339844` is the kerning between `T` and `o`. Back in step 3 that pair measured 99 font units of overlap, and 99 / 2048 × 1000 is 48.34. `22.460938` is `V` and `a`. `-8.789062` is `r` and `y`, which Roboto pushes apart rather than pulling together. The same three numbers you can read off the glyph lab above, having survived four steps unchanged, written into a file.
+
+## Why the order is fixed
+
+None of this can be reordered. You cannot measure a word without the shaped glyphs, you cannot break a line without measured words, you cannot know a paragraph's height without its lines, and pagination cannot decide anything until it knows how tall things are. Text layout is the reason the [outer pipeline](/blog/rendering-process) has the shape it has.
+
+It also explains the two pieces of advice I give most often. Register your fonts before rendering, because a missing font quietly falls back to Helvetica and every measurement downstream changes. And if your text is breaking badly, reach for `hyphenationCallback` before you reach for manual line breaks, because manual breaks are the one thing this whole machine cannot reason about.

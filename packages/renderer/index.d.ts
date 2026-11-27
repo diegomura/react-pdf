@@ -3,9 +3,11 @@
 import * as React from 'react';
 import {
   Style,
+  StyleProp,
   PageSize,
   FontStore,
   PDFVersion,
+  PDFConformance,
   Orientation,
   SourceObject,
   SrcSet,
@@ -43,7 +45,7 @@ declare namespace ReactPDF {
   }
 
   interface DocumentProps {
-    style?: Style | Style[];
+    style?: StyleProp;
     title?: string;
     author?: string;
     subject?: string;
@@ -54,6 +56,7 @@ declare namespace ReactPDF {
     creationDate?: Date;
     modificationDate?: Date;
     pdfVersion?: PDFVersion;
+    conformance?: PDFConformance;
     pageMode?: PageMode;
     pageLayout?: PageLayout;
     ownerPassword?: string;
@@ -74,7 +77,7 @@ declare namespace ReactPDF {
 
   interface NodeProps {
     id?: string;
-    style?: Style | Style[];
+    style?: StyleProp;
     /**
      * Render component in all wrapped pages.
      * @see https://react-pdf.org/advanced#fixed-components
@@ -93,12 +96,34 @@ declare namespace ReactPDF {
     minPresenceAhead?: number;
   }
 
+  interface PageLayoutProps {
+    children: React.ReactNode;
+    pageNumber?: number;
+    totalPages?: number;
+    subPageNumber?: number;
+    subPageTotalPages?: number;
+  }
+
   interface PageProps extends NodeProps {
     /**
      * Enable page wrapping for this page.
      * @see https://react-pdf.org/components#page-wrapping
      */
     wrap?: boolean;
+    /**
+     * A template component rendered around every page this Page produces.
+     * Where it renders `children` is where page content flows; everything
+     * else repeats as page chrome with its space reserved. Like render
+     * props, layout components may not use hooks. Implies
+     * `experimentalPagination`.
+     */
+    layout?: (props: PageLayoutProps) => React.ReactNode;
+    /**
+     * Opt the document into the new pagination engine: content is measured
+     * once and packed into pages, dramatically faster on long documents.
+     * Any page opting in switches the whole document. Implied by `layout`.
+     */
+    experimentalPagination?: boolean;
     /**
      * Enables debug mode on page bounding box.
      * @see https://react-pdf.org/advanced#debugging
@@ -254,6 +279,12 @@ declare namespace ReactPDF {
      * @see https://react-pdf.org/fonts#registerhyphenationcallback
      */
     hyphenationCallback?: HyphenationCallback;
+    /**
+     * Override the default hyphenation penalty
+     * Defaults to 100 for justified text and 600 otherwise.
+     * @see https://react-pdf.org/fonts#hyphenationpenalty
+     */
+    hyphenationPenalty?: number;
     /**
      * Specifies the minimum number of lines in a text element that must be shown at the bottom of a page or its container.
      * @see https://react-pdf.org/advanced#orphan-&-widow-protection
@@ -685,7 +716,7 @@ declare namespace ReactPDF {
   interface PDFViewerProps {
     width?: number | string;
     height?: number | string;
-    style?: Style | Style[];
+    style?: StyleProp;
     className?: string;
     children?: React.ReactElement<DocumentProps>;
     innerRef?: React.Ref<HTMLIFrameElement>;

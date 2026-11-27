@@ -10,6 +10,39 @@ const width = 50;
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
+  const createAttributedString = (
+    align: 'left' | 'right' | 'center' | 'justify',
+    syllables: string[],
+  ) => {
+    const string = syllables.join('');
+    const indices = Array.from({ length: string.length }, (_, index) => index);
+
+    return {
+      string,
+      syllables: syllables.map((part) => ({
+        string: part,
+        hyphen: '-' as const,
+      })),
+      runs: [
+        {
+          start: 0,
+          end: string.length,
+          attributes: { align, font: [font] },
+          stringIndices: indices,
+          glyphIndices: indices,
+          positions: Array.from(string, (character) => ({
+            xAdvance: character === ' ' ? 3 : 6,
+            yAdvance: 0,
+            xOffset: 0,
+            yOffset: 0,
+            advanceWidth: character === ' ' ? 3 : 6,
+          })),
+          glyphs: [],
+        },
+      ],
+    };
+  };
+
   test('should break lines and adds hyphens only where indicated', () => {
     const attributedString = {
       string: 'Potentieel broeikasgasemissierapport',
@@ -284,7 +317,13 @@ describe('linebreaker', () => {
           string: 'Potentieel broeikasgasemissierapport',
         },
       ],
-      syllables: ['Potentieel', ' ', 'broeikasgas', 'emissie', 'rapport'],
+      syllables: [
+        { string: 'Potentieel', hyphen: null },
+        { string: ' ', hyphen: null },
+        { string: 'broeikasgas', hyphen: '-' as const },
+        { string: 'emissie', hyphen: '-' as const },
+        { string: 'rapport', hyphen: null },
+      ],
     };
 
     const result = linebreaker(attributedString, [10]);
@@ -294,6 +333,163 @@ describe('linebreaker', () => {
       'broeikasgas-',
       'emissie-',
       'rapport',
+    ]);
+  });
+
+  test('should preserve breaks with constant line widths', () => {
+    const syllables =
+      'alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu'
+        .split(/([ ]+)/u)
+        .filter(Boolean);
+    const attributedString = createAttributedString('left', syllables);
+
+    const result = linebreaker(attributedString, [72]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'alpha beta ',
+      'gamma delta ',
+      'epsilon zeta ',
+      'eta theta ',
+      'iota kappa ',
+      'lambda mu',
+    ]);
+  });
+
+  test('should preserve breaks with variable line widths', () => {
+    const syllables =
+      'alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu'
+        .split(/([ ]+)/u)
+        .filter(Boolean);
+    const attributedString = createAttributedString('left', syllables);
+
+    const result = linebreaker(attributedString, [54, 90, 72]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'alpha ',
+      'beta gamma delta ',
+      'epsilon zeta ',
+      'eta theta ',
+      'iota kappa ',
+      'lambda mu',
+    ]);
+  });
+
+  test('should preserve hyphenation with variable line widths', () => {
+    const attributedString = createAttributedString('justify', [
+      'extra',
+      'ordi',
+      'nary',
+      ' ',
+      'typo',
+      'graphy',
+      ' ',
+      'preser',
+      'vation',
+      ' ',
+      'matters',
+    ]);
+
+    const result = linebreaker(attributedString, [54, 90, 72]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'extra-',
+      'ordinary ',
+      'typography ',
+      'preser-',
+      'vation ',
+      'matters',
+    ]);
+  });
+
+  test('should preserve the best-fit fallback for an oversized word', () => {
+    const attributedString = createAttributedString('left', [
+      'supercalifragilisticexpialidocious',
+    ]);
+
+    const result = linebreaker(attributedString, [24]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'supercalifragilisticexpialidocious',
+    ]);
+  });
+
+  test('should not add hyphens on hyphen-less breaks', () => {
+    const attributedString = createAttributedString('left', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    attributedString.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    const result = linebreaker(attributedString, [18]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
+  test('should not break freely where runs meet inside a word', () => {
+    // 'bb' and '.' come from different runs, so the word-final 'bb' keeps
+    // the hyphenated break cost instead of breaking like a space
+    const attributedString = createAttributedString('left', [
+      'aa',
+      ' ',
+      'bb',
+      '.',
+      ' ',
+      'cc',
+    ]);
+
+    const result = linebreaker(attributedString, [30]);
+
+    expect(result.map((line) => line.string)).toEqual(['aa ', 'bb. ', 'cc']);
+  });
+
+  test('should break without hyphens when hyphenation is disabled', () => {
+    const attributedString = createAttributedString('left', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    attributedString.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    const result = linebreakerFactory({ hyphenationPenalty: Infinity })(
+      attributedString,
+      [18],
+    );
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
+  test('should not reserve hyphen width on hyphen-less breaks', () => {
+    const syllables = ['日', '本', '語', '組'];
+    const hyphenated = createAttributedString('left', syllables);
+    const unhyphenated = createAttributedString('left', syllables);
+
+    unhyphenated.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    expect(linebreaker(hyphenated, [12]).map((l) => l.string)).toEqual([
+      '日-',
+      '本-',
+      '語組',
+    ]);
+    expect(linebreaker(unhyphenated, [12]).map((l) => l.string)).toEqual([
+      '日本',
+      '語組',
     ]);
   });
 });

@@ -1,0 +1,60 @@
+---
+title: 'Large documents in the browser'
+date: '2026-08-25'
+description: Why a big document locks up your UI, and how to move the whole render into a web worker so it doesn't.
+---
+
+Every so often someone opens an issue that goes roughly like this: react-pdf works beautifully in development, then a customer with a two hundred page report clicks download and the tab freezes. Sometimes Chrome offers to kill the page, which is an alarming thing for your users to be asked about an invoice.
+
+Nothing is broken. It's doing exactly what you asked, on exactly the wrong thread.
+
+## Why it happens
+
+Generating a PDF is not I/O bound work that politely yields while it waits. It's a long stretch of computation: resolving styles, turning characters into glyphs, breaking every paragraph into lines, then deciding where every page ends. I wrote about [those steps in detail](/blog/rendering-process), but the part that matters here is that all of them run synchronously on whatever thread called react-pdf.
+
+In Node that's fine. In the browser, that thread is the main one, the same thread responsible for painting, scrolling, and responding to clicks. While a document is being computed, none of that happens.
+
+For a handful of pages nobody notices. The cost scales with content, and page breaking in particular gets more expensive as there is more of it to break, so somewhere past a few dozen pages the freeze becomes long enough to be a bug report.
+
+## Move it off the main thread
+
+The fix isn't to make the render incremental or to chunk it across frames. It's to run it somewhere that isn't the main thread at all. Web workers are exactly this: a separate thread, with no access to the DOM, which is not a limitation here because react-pdf never touches the DOM anyway.
+
+The important design constraint is that you can't hand a React element to a worker. `postMessage` uses structured cloning, and functions and elements don't survive it. So the document component has to live inside the worker, and what you send across is plain data.
+
+```jsx
+// pdf.worker.jsx
+import { pdf, Font } from '@react-pdf/renderer';
+import Invoice from './Invoice';
+
+Font.register({ family: 'Roboto', src: '/fonts/roboto.ttf' });
+
+self.onmessage = async (event) => {
+  const blob = await pdf(<Invoice {...event.data} />).toBlob();
+  self.postMessage(blob);
+};
+```
+
+Note that fonts are registered inside the worker. `Font.register` populates a store in the module scope of whichever thread runs it, and the worker has its own module scope, so registering on the main thread does nothing for it.
+
+On the other side you send props and get a blob back. Blobs are structured cloneable, so nothing special is needed to return one.
+
+```js
+const worker = new Worker(new URL('./pdf.worker.jsx', import.meta.url), {
+  type: 'module',
+});
+
+worker.onmessage = (event) => {
+  setUrl(URL.createObjectURL(event.data));
+};
+
+worker.postMessage({ invoiceId: 42, lines });
+```
+
+The document takes exactly as long to generate as it did before. The difference is that your interface spends that time responding to the user instead of ignoring them, and you can show real progress rather than a spinner that has already stopped animating.
+
+Simon Hessel wrote [a fuller walkthrough of this setup](https://dev.to/simonhessel/creating-pdf-files-without-slowing-down-your-app-a42), including the bundler wiring, which varies more than the react-pdf part does.
+
+## When not to bother
+
+If your documents are small, skip all of this. A worker adds a build step, a message protocol, and a second place your document code has to be reachable from, in exchange for solving a problem you don't have. Reach for it when you can measure the freeze, not before.

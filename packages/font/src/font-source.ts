@@ -95,7 +95,10 @@ class FontSource {
 
   async load() {
     if (this.loadResultPromise === null) {
-      this.loadResultPromise = this._load();
+      this.loadResultPromise = this._load().catch((error) => {
+        this.loadResultPromise = null;
+        throw error;
+      });
     }
     return this.loadResultPromise;
   }

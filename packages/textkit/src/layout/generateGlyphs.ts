@@ -22,12 +22,13 @@ const scalePositions = (run: Run, positions: Position[]): Position[] => {
     const isLast = i === positions.length;
     const xSpacing = isLast ? 0 : characterSpacing;
 
-    return Object.assign({}, position, {
+    return {
       xAdvance: position.xAdvance * runScale + xSpacing,
       yAdvance: position.yAdvance * runScale,
       xOffset: position.xOffset * runScale,
       yOffset: position.yOffset * runScale,
-    });
+      advanceWidth: position.advanceWidth,
+    };
   });
 };
 
@@ -43,7 +44,7 @@ const layoutRun = (string: string) => {
    */
   return (run: Run) => {
     const { start, end, attributes = {} } = run;
-    const { font } = attributes;
+    const { font, features } = attributes;
 
     if (!font)
       return {
@@ -61,7 +62,7 @@ const layoutRun = (string: string) => {
     // passing LTR To force fontkit to not reverse the string
     const glyphRun = font[0].layout(
       runString,
-      undefined,
+      features,
       undefined,
       undefined,
       'ltr',

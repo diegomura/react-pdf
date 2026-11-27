@@ -194,6 +194,7 @@ const wrapBetweenTspan = (node: SafeTextInstanceNode): SafeTspanNode => ({
   type: P.Tspan,
   props: {},
   style: {},
+  wasSplit: false,
   children: [node],
 });
 
@@ -223,9 +224,9 @@ const parseText =
 
 const resolveSvgNode = (container: Container) =>
   compose(
-    parseProps(container),
-    resolveRectRadius,
     pickStyleProps,
+    resolveRectRadius,
+    parseProps(container),
     addMissingTspan,
     removeNoneValues,
     mergeStyles,
@@ -345,14 +346,16 @@ const buildXLinksIndex = (node: SafeSvgNode) => {
   const idIndex: Record<string, SafeNode> = {};
   const listToExplore: SafeNode[] = node.children?.slice(0) || [];
 
-  while (listToExplore.length > 0) {
-    const child = listToExplore.shift();
+  for (let index = 0; index < listToExplore.length; index += 1) {
+    const child = listToExplore[index];
 
     if (child.props && 'id' in child.props) {
       idIndex[child.props.id] = child;
     }
 
-    if (child.children) listToExplore.push(...child.children);
+    for (const grandchild of child.children || []) {
+      listToExplore.push(grandchild);
+    }
   }
 
   return idIndex;
@@ -432,6 +435,7 @@ function convertToSvgNode(imageNode: SafeImageNode): SafeSvgNode {
     box: imageNode.box,
     origin: imageNode.origin,
     yogaNode: imageNode.yogaNode,
+    wasSplit: false,
     children: image.data.children.map(convertParsedNode),
   };
 }

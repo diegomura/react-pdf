@@ -19,12 +19,15 @@ const sortPoints = (a: Point, b: Point) => {
  * @returns Points
  */
 const generatePoints = (runs: Run[]) => {
-  const result: Point[] = runs.reduce((acc, run, i) => {
-    return acc.concat([
+  const result: Point[] = [];
+
+  for (let i = 0; i < runs.length; i += 1) {
+    const run = runs[i];
+    result.push(
       ['start', run.start, run.attributes, i],
       ['end', run.end, run.attributes, i],
-    ]);
-  }, []);
+    );
+  }
 
   return result.sort(sortPoints);
 };
@@ -71,17 +74,19 @@ const flattenRegularRuns = (runs: Run[]) => {
   const points = generatePoints(runs);
 
   let start = -1;
-  let attrs = {};
-  const stack = [];
+  const stack: Attributes[] = [];
 
   for (let i = 0; i < points.length; i += 1) {
     const [type, offset, attributes] = points[i];
 
+    // Merging the active attributes only when a segment is emitted avoids
+    // rebuilding them on every point, most wastefully when several runs
+    // end at the same offset and no segment follows.
     if (start !== -1 && start < offset) {
       res.push({
         start,
         end: offset,
-        attributes: attrs,
+        attributes: Object.assign({}, ...stack),
         stringIndices: [],
         glyphIndices: [],
         glyphs: [],
@@ -91,16 +96,9 @@ const flattenRegularRuns = (runs: Run[]) => {
 
     if (type === 'start') {
       stack.push(attributes);
-      attrs = Object.assign({}, attrs, attributes);
     } else {
-      attrs = {};
-
       for (let j = 0; j < stack.length; j += 1) {
-        if (stack[j] === attributes) {
-          stack.splice(j--, 1);
-        } else {
-          attrs = Object.assign({}, attrs, stack[j]);
-        }
+        if (stack[j] === attributes) stack.splice(j--, 1);
       }
     }
 

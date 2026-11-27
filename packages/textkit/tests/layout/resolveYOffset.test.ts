@@ -321,7 +321,7 @@ describe('resolveYOffset', () => {
           ],
           stringIndices: [0, 1, 2, 3, 4],
           glyphIndices: [0, 1, 2, 3, 4],
-          attributes: { yOffset: 20, font: [font] },
+          attributes: { yOffset: 0.4, fontSize: 10, font: [font] },
         },
       ],
     };
@@ -336,7 +336,7 @@ describe('resolveYOffset', () => {
       8, 7, 6, 5, 4,
     ]);
     expect(pluck('yOffset', result.runs[0].positions!)).toEqual([
-      40, 40, 40, 40, 40,
-    ]); // yOffset * font.unitsPerEm
+      4, 4, 4, 4, 4,
+    ]); // yOffset * fontSize
   });
 });

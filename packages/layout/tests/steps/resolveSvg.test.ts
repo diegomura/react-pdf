@@ -14,6 +14,7 @@ describe('layout resolveSvg', () => {
   describe('resolve xlinks', () => {
     test('should replace xlinkHref with the correct node', () => {
       const node: SafeSvgNode = {
+        wasSplit: false,
         type: 'SVG',
         props: {},
         style: {},
@@ -57,6 +58,7 @@ describe('layout resolveSvg', () => {
 
     test('should not replace xlinkHref if node does not exist', () => {
       const node: SafeSvgNode = {
+        wasSplit: false,
         type: 'SVG',
         props: {},
         style: {},
@@ -78,6 +80,139 @@ describe('layout resolveSvg', () => {
       expect(result.children![0].type).toBe('DEFS');
       expect(result.children![0].children).toHaveLength(1);
       expect(result.children![0].children![0].children).toBeFalsy();
+    });
+
+    test('should resolve xlinks in an svg with a group of 500,000 shapes', () => {
+      const node: SafeSvgNode = {
+        wasSplit: false,
+        type: 'SVG',
+        props: {},
+        style: {},
+        children: [
+          {
+            type: 'DEFS',
+            children: [
+              {
+                type: 'LINEAR_GRADIENT',
+                props: { id: 'lg1' },
+                children: [
+                  { type: 'STOP', props: { offset: 0, stopColor: 'red' } },
+                ],
+              },
+              {
+                type: 'LINEAR_GRADIENT',
+                props: { id: 'lg2', x1: 10, xlinkHref: '#lg1' },
+              },
+            ],
+          },
+          {
+            type: 'G',
+            props: {},
+            children: Array.from({ length: 500_000 }, (_, i) => ({
+              type: 'CIRCLE',
+              props: { cx: i, cy: 0, r: 1 },
+            })),
+          },
+        ],
+      };
+
+      const result = resolveXLinks(node);
+
+      expect(result.children![0].children![1].props).toEqual({
+        id: 'lg2',
+        x1: 10,
+      });
+      expect(result.children![0].children![1].children).toHaveLength(1);
+      expect(result.children![1].children).toHaveLength(500_000);
+    });
+  });
+
+  describe('resolve defs', () => {
+    test('should resolve references to every defs element', () => {
+      const gradient = (id: string): SafeNode =>
+        ({
+          type: 'LINEAR_GRADIENT',
+          props: { id },
+          children: [
+            { type: 'STOP', props: { offset: 0, stopColor: 'red' } },
+            { type: 'STOP', props: { offset: 1, stopColor: 'blue' } },
+          ],
+        }) as SafeNode;
+
+      const rect = (fill: string): SafeNode =>
+        ({
+          type: 'RECT',
+          props: { x: 0, y: 0, width: 10, height: 10, fill },
+          style: {},
+        }) as SafeNode;
+
+      const svg: SafeSvgNode = {
+        wasSplit: false,
+        type: P.Svg,
+        props: { width: 100, height: 100 },
+        style: {},
+        children: [
+          { type: 'DEFS', children: [gradient('a')] },
+          { type: 'DEFS', children: [gradient('b')] },
+          rect('url(#a)'),
+          rect('url(#b)'),
+        ] as SafeNode[],
+      };
+
+      const page = {
+        type: P.Page,
+        props: {},
+        style: {},
+        children: [svg],
+      } as SafePageNode;
+
+      const result = resolveSvg(page, null as any) as SafePageNode;
+      const [first, second] = (result.children![0] as SafeSvgNode).children!;
+
+      expect(first.props.fill).toMatchObject({
+        type: 'LINEAR_GRADIENT',
+        props: { id: 'a' },
+      });
+      expect(second.props.fill).toMatchObject({
+        type: 'LINEAR_GRADIENT',
+        props: { id: 'b' },
+      });
+    });
+
+    test('should use the first definition when an id is repeated', () => {
+      const svg: SafeSvgNode = {
+        wasSplit: false,
+        type: P.Svg,
+        props: { width: 100, height: 100 },
+        style: {},
+        children: [
+          {
+            type: 'DEFS',
+            children: [{ type: 'LINEAR_GRADIENT', props: { id: 'a' } }],
+          },
+          {
+            type: 'DEFS',
+            children: [{ type: 'RADIAL_GRADIENT', props: { id: 'a' } }],
+          },
+          {
+            type: 'RECT',
+            props: { x: 0, y: 0, width: 10, height: 10, fill: 'url(#a)' },
+            style: {},
+          },
+        ] as SafeNode[],
+      };
+
+      const page = {
+        type: P.Page,
+        props: {},
+        style: {},
+        children: [svg],
+      } as SafePageNode;
+
+      const result = resolveSvg(page, null as any) as SafePageNode;
+      const [rect] = (result.children![0] as SafeSvgNode).children!;
+
+      expect(rect.props.fill).toMatchObject({ type: 'LINEAR_GRADIENT' });
     });
   });
 
@@ -165,6 +300,7 @@ describe('layout resolveSvg', () => {
 
     test('Should not modify non-SVG ImageNodes', () => {
       const imageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.png' },
         style: {},
@@ -195,6 +331,7 @@ describe('layout resolveSvg', () => {
       const svgImage = createMockSvgImage();
       const imageNode = createMockImageNode(svgImage);
       const viewNode: SafeNode = {
+        wasSplit: false,
         type: P.View,
         props: {},
         style: {},
@@ -213,6 +350,7 @@ describe('layout resolveSvg', () => {
       const svgImage = createMockSvgImage();
       const svgImageNode = createMockImageNode(svgImage);
       const pngImageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.png' },
         style: {},
@@ -235,6 +373,7 @@ describe('layout resolveSvg', () => {
     test('Should use SVG dimensions when style dimensions not specified', () => {
       const svgImage = createMockSvgImage();
       const imageNode: SafeImageNode = {
+        wasSplit: false,
         type: P.Image,
         props: { src: 'test.svg' },
         style: {},

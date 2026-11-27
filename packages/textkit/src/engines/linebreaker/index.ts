@@ -32,12 +32,14 @@ const breakLines = (
   let start = 0;
   let end = null;
 
-  const lines: AttributedString[] = breaks.reduce((acc, breakPoint) => {
+  const lines: AttributedString[] = [];
+
+  for (const breakPoint of breaks) {
     const node = nodes[breakPoint];
     const prevNode = nodes[breakPoint - 1];
 
     // Last breakpoint corresponds to K&P mandatory final glue
-    if (breakPoint === nodes.length - 1) return acc;
+    if (breakPoint === nodes.length - 1) continue;
 
     let line: AttributedString;
     if (node.type === 'penalty') {
@@ -46,7 +48,10 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      line = insertGlyph(line.string.length, HYPHEN, line);
+      // Only hyphenated breaks reserve width for the hyphen
+      if (node.width > 0) {
+        line = insertGlyph(line.string.length, HYPHEN, line);
+      }
     } else {
       end = node.end;
       line = slice(start, end, attributedString);
@@ -54,8 +59,8 @@ const breakLines = (
 
     start = end;
 
-    return [...acc, line];
-  }, []);
+    lines.push(line);
+  }
 
   lines.push(slice(start, attributedString.string.length, attributedString));
 
@@ -84,37 +89,45 @@ const getNodes = (
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
 
-  const result = syllables.reduce((acc: Node[], s: string, index: number) => {
-    const width = advanceWidthBetween(
-      start,
-      start + s.length,
-      attributedString,
-    );
+  const result = syllables.reduce(
+    (acc: Node[], { string: s, hyphen }, index: number) => {
+      const width = advanceWidthBetween(
+        start,
+        start + s.length,
+        attributedString,
+      );
 
-    if (s.trim() === '') {
-      const stretch = (width * opts.width) / opts.stretch;
-      const shrink = (width * opts.width) / opts.shrink;
-      const end = start + s.length;
+      if (s.trim() === '') {
+        const stretch = (width * opts.width) / opts.stretch;
+        const shrink = (width * opts.width) / opts.shrink;
+        const end = start + s.length;
 
-      // Add glue node. Glue nodes are used to fill the space between words.
-      acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
-    } else {
-      const hyphenated = syllables[index + 1] !== ' ';
-      const end = start + s.length;
+        // Add glue node. Glue nodes are used to fill the space between words.
+        acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
+      } else {
+        const withinWord = syllables[index + 1]?.string !== ' ';
+        const end = start + s.length;
 
-      // Add box node. Box nodes are used to represent words.
-      acc.push(knuthPlass.box(width, start, end, hyphenated));
+        // Add box node. Box nodes are used to represent words.
+        acc.push(knuthPlass.box(width, start, end, withinWord));
 
-      if (syllables[index + 1] && hyphenated) {
-        // Add penalty node. Penalty nodes are used to represent hyphenation points.
-        acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
+        if (syllables[index + 1] && withinWord) {
+          // Add penalty node. Penalty nodes are used to represent break points
+          // inside words. Breaks without a hyphen cost as little as a space.
+          acc.push(
+            hyphen
+              ? knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1)
+              : knuthPlass.penalty(0, 0, 0),
+          );
+        }
       }
-    }
 
-    start += s.length;
+      start += s.length;
 
-    return acc;
-  }, []);
+      return acc;
+    },
+    [],
+  );
 
   // Add mandatory final glue
   result.push(knuthPlass.glue(0, start, start, knuthPlass.infinity, 0));

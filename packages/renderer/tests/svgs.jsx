@@ -815,6 +815,60 @@ export const Gradients = () => (
   </Svg>
 );
 
+export const StrokeGradients = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Defs>
+      <LinearGradient id="myLinearGradient">
+        <Stop offset="5%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </LinearGradient>
+
+      <RadialGradient id="myRadialGradient">
+        <Stop offset="50%" stopColor="gold" />
+        <Stop offset="100%" stopColor="red" />
+      </RadialGradient>
+    </Defs>
+
+    <Circle
+      cx="5"
+      cy="5"
+      r="3"
+      fill="none"
+      strokeWidth="2"
+      stroke="url('#myLinearGradient')"
+    />
+    <Circle
+      cx="5"
+      cy="14"
+      r="3"
+      fill="none"
+      strokeWidth="2"
+      stroke="url('#myRadialGradient')"
+    />
+  </Svg>
+);
+
+export const GradientsMultipleDefs = () => (
+  <Svg viewBox="0 0 10 20" width="100">
+    <Defs>
+      <LinearGradient id="myLinearGradient">
+        <Stop offset="5%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </LinearGradient>
+    </Defs>
+
+    <Defs>
+      <RadialGradient id="myRadialGradient">
+        <Stop offset="10%" stopColor="gold" />
+        <Stop offset="95%" stopColor="red" />
+      </RadialGradient>
+    </Defs>
+
+    <Circle cx="5" cy="5" r="4" fill="url('#myLinearGradient')" />
+    <Circle cx="5" cy="14" r="4" fill="url('#myRadialGradient')" />
+  </Svg>
+);
+
 export const Dasharrays = () => (
   <Svg viewBox="0 0 10 20" width="100">
     <Line

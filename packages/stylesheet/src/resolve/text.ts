@@ -9,7 +9,14 @@ import { matchPercent } from '@react-pdf/fns';
 
 import castInt from '../utils/castInt';
 import transformUnit from '../utils/units';
-import { Container, FontWeight, Style, StyleKey } from '../types';
+import {
+  Container,
+  FontFeatureSettings,
+  FontWeight,
+  SafeFontFeatureSettings,
+  Style,
+  StyleKey,
+} from '../types';
 
 const DEFAULT_FONT_SIZE = 18;
 
@@ -45,6 +52,29 @@ const processFontWeight = <K extends StyleKey>(key: K, value: Style[K]) => {
   return { [key]: transformFontWeight(value as FontWeight) };
 };
 
+const transformFontFeatureSettings = (
+  value?: FontFeatureSettings,
+): SafeFontFeatureSettings | undefined => {
+  if (!value) return undefined;
+
+  if (Array.isArray(value)) {
+    return Object.fromEntries(value.map((tag) => [tag, true]));
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).map(([tag, enabled]) => [tag, Boolean(enabled)]),
+  );
+};
+
+const processFontFeatureSettings = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+) => {
+  return {
+    [key]: transformFontFeatureSettings(value as FontFeatureSettings),
+  };
+};
+
 const transformLineHeight = (
   value: Style['lineHeight'],
   styles: Style,
@@ -77,13 +107,44 @@ const processLineHeight = <K extends StyleKey>(
   };
 };
 
+const transformLetterSpacing = (
+  value: Style['letterSpacing'],
+  styles: Style,
+  container: Container,
+): string | number => {
+  const letterSpacing = transformUnit(container, value);
+
+  // Percent values: relative to the element's font size
+  const { percent } = matchPercent(letterSpacing) || {};
+  if (percent === undefined) return letterSpacing;
+
+  const fontSize = transformUnit(
+    container,
+    styles.fontSize || DEFAULT_FONT_SIZE,
+  ) as number;
+
+  return percent * fontSize;
+};
+
+const processLetterSpacing = <K extends StyleKey>(
+  key: K,
+  value: Style[K],
+  container: Container,
+  styles: Style,
+) => {
+  return {
+    [key]: transformLetterSpacing(value, styles, container),
+  };
+};
+
 const handlers = {
   direction: processNoopValue<'direction'>,
   fontFamily: processNoopValue<'fontFamily'>,
   fontSize: processUnitValue<'fontSize'>,
   fontStyle: processNoopValue<'fontStyle'>,
   fontWeight: processFontWeight<'fontWeight'>,
-  letterSpacing: processUnitValue<'letterSpacing'>,
+  fontFeatureSettings: processFontFeatureSettings<'fontFeatureSettings'>,
+  letterSpacing: processLetterSpacing<'letterSpacing'>,
   lineHeight: processLineHeight<'lineHeight'>,
   maxLines: processNumberValue<'maxLines'>,
   textAlign: processNoopValue<'textAlign'>,

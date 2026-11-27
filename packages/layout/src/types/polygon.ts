@@ -1,5 +1,5 @@
 import * as P from '@react-pdf/primitives';
-import { SafeStyle, Style } from '@react-pdf/stylesheet';
+import { SafeStyle, StyleProp } from '@react-pdf/stylesheet';
 
 import {
   SafeSVGPresentationAttributes,
@@ -19,7 +19,7 @@ interface SafePolygonProps extends SafeSVGPresentationAttributes {
 export type PolygonNode = {
   type: typeof P.Polygon;
   props: PolygonProps;
-  style?: Style | Style[];
+  style?: StyleProp;
   box?: never;
   origin?: never;
   yogaNode?: never;
@@ -29,4 +29,5 @@ export type PolygonNode = {
 export type SafePolygonNode = Omit<PolygonNode, 'style' | 'props'> & {
   style: SafeStyle;
   props: SafePolygonProps;
+  wasSplit: boolean;
 };

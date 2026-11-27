@@ -182,11 +182,18 @@ const rowOf = (node: ContainerNode): Item => {
   ]);
 };
 
+// Yoga lays out in float32, so a position is only exact to about 2^-23 of its
+// magnitude. Past 2^15 pt that exceeds 0.001 and touching siblings overlap.
+const overlapTolerance = (y: number) => Math.max(0.001, Math.abs(y) * 2 ** -22);
+
 // A column whose children overlap vertically wrapped into visual columns:
 // its boxes no longer describe a vertical flow, so there is nowhere sane to
 // break inside it. Rows are exempt — their cells share a y by design.
 const isWrapped = (flow: FlowNode[]) =>
-  flow.some((_, index) => gapBefore(flow, index) < -0.001);
+  flow.some(
+    (child, index) =>
+      gapBefore(flow, index) < -overlapTolerance(outerTop(child)),
+  );
 
 const columnOf = (node: ContainerNode): Item => {
   const flow = node.children.filter((child) => !isAbsolute(child));

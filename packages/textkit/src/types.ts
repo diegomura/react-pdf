@@ -1,5 +1,9 @@
 import type { Glyph as FontkitGlyph } from 'fontkit';
-import type { Font } from '@react-pdf/font';
+import type {
+  Font,
+  HyphenatedPart,
+  HyphenationCallback,
+} from '@react-pdf/font';
 import { Factor as JustificationFactor } from './engines/justification/types';
 
 export type Coordinate = {
@@ -133,15 +137,9 @@ export type DecorationLine = {
   style: string;
 };
 
-// A soft wrap opportunity breaks as is. A hyphenation opportunity shows the
-// hyphenate character when the line breaks there.
-export type SyllableBreak = 'soft' | 'hyphen';
-
 export type AttributedString = {
   string: string;
-  syllables?: string[];
-  /** How the line may break after each syllable. Missing means 'hyphen'. */
-  syllableBreaks?: SyllableBreak[];
+  syllables?: HyphenatedPart[];
   runs: Run[];
   box?: Rect;
   decorationLines?: DecorationLine[];
@@ -161,10 +159,7 @@ export type Fragment = {
 export type Paragraph = AttributedString[];
 
 export type LayoutOptions = {
-  hyphenationCallback?: (
-    word: string | null,
-    fallback: (word: string | null) => string[],
-  ) => string[];
+  hyphenationCallback?: HyphenationCallback;
   tolerance?: number;
   hyphenationPenalty?: number;
   expandCharFactor?: JustificationFactor;
@@ -195,4 +190,9 @@ export type LayoutOptions = {
   wordBreak?: 'normal' | 'break-all' | 'keep-all';
 };
 
-export type { Font } from '@react-pdf/font';
+export type {
+  Font,
+  HyphenatedPart,
+  HyphenatedWord,
+  HyphenationCallback,
+} from '@react-pdf/font';

@@ -1,7 +1,7 @@
 import FontSource from './font-source';
 import { FontDescriptor, FontWeight, SingleLoad } from './types';
 
-const FONT_WEIGHTS = {
+const FONT_WEIGHTS: Record<string, number> = {
   thin: 100,
   hairline: 100,
   ultralight: 200,
@@ -18,8 +18,10 @@ const FONT_WEIGHTS = {
   black: 900,
 };
 
-const resolveFontWeight = (value: FontWeight) => {
-  return typeof value === 'string' ? FONT_WEIGHTS[value] : value;
+const resolveFontWeight = (value: FontWeight): number => {
+  return typeof value === 'string'
+    ? FONT_WEIGHTS[value] ?? Number(value)
+    : value;
 };
 
 const sortByFontWeight = (a: FontSource, b: FontSource) =>
@@ -55,17 +57,18 @@ class FontFamily {
 
   resolve(descriptor: FontDescriptor) {
     const { fontWeight = 400, fontStyle = 'normal' } = descriptor;
+    const numericFontWeight = resolveFontWeight(fontWeight);
     const styleSources = this.sources.filter((s) => s.fontStyle === fontStyle);
 
-    const exactFit = styleSources.find((s) => s.fontWeight === fontWeight);
+    const exactFit = styleSources.find(
+      (s) => s.fontWeight === numericFontWeight,
+    );
 
     if (exactFit) return exactFit;
 
     // Weight resolution. https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights
 
     let font: FontSource | null = null;
-
-    const numericFontWeight = resolveFontWeight(fontWeight);
 
     if (numericFontWeight >= 400 && numericFontWeight <= 500) {
       const leftOffset = styleSources.filter(

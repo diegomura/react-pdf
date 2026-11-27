@@ -3,6 +3,13 @@ import { AttributedString, Font, Run } from '../../types';
 
 const IGNORED_CODE_POINTS = [173]; // U+00AD Soft Hyphen
 
+// Unicode Variation_Selector property ranges.
+const isVariationSelector = (codePoint: number) =>
+  (codePoint >= 0x180b && codePoint <= 0x180d) ||
+  codePoint === 0x180f ||
+  (codePoint >= 0xfe00 && codePoint <= 0xfe0f) ||
+  (codePoint >= 0xe0100 && codePoint <= 0xe01ef);
+
 const getFontSize = (run: Run) => run.attributes.fontSize || 12;
 
 const pickFontFromFontStack = (
@@ -11,6 +18,7 @@ const pickFontFromFontStack = (
   lastFont?: Font,
 ) => {
   if (IGNORED_CODE_POINTS.includes(codePoint)) return lastFont;
+  if (isVariationSelector(codePoint) && lastFont) return lastFont;
 
   const fontStackWithFallback = [...fontStack, lastFont];
 

@@ -1,5 +1,11 @@
 # @react-pdf/paginate
 
+## 1.0.2
+
+### Patch Changes
+
+- [#3581](https://github.com/diegomura/react-pdf/pull/3581) [`4d40a836ef2540b6512071fa6fb58ff5be24ea2e`](https://github.com/diegomura/react-pdf/commit/4d40a836ef2540b6512071fa6fb58ff5be24ea2e) Thanks [@exoego](https://github.com/exoego)! - Keep a column from splitting inside a minPresenceAhead window, so the node moves to the next page together with the column that follows it
+
 ## 1.0.1
 
 ### Patch Changes

@@ -7,37 +7,6 @@ import font from '../internal/font';
 
 const width = 50;
 
-const CJK_ADVANCE = 10;
-
-const makePosition = (xAdvance: number) => ({
-  xAdvance,
-  yAdvance: 0,
-  xOffset: 0,
-  yOffset: 0,
-});
-
-const makeAttributedString = (
-  str: string,
-  syllables: string[],
-  advanceWidth = CJK_ADVANCE,
-) => ({
-  string: str,
-  runs: [
-    {
-      start: 0,
-      end: str.length,
-      attributes: { font: [font] },
-      glyphIndices: Array.from({ length: str.length }, (_, i) => i),
-      positions: Array.from({ length: str.length }, () =>
-        makePosition(advanceWidth),
-      ),
-      glyphs: [],
-      string: str,
-    },
-  ],
-  syllables,
-});
-
 describe('linebreaker', () => {
   const linebreaker = linebreakerFactory({});
 
@@ -50,7 +19,10 @@ describe('linebreaker', () => {
 
     return {
       string,
-      syllables,
+      syllables: syllables.map((part) => ({
+        string: part,
+        hyphen: '-' as const,
+      })),
       runs: [
         {
           start: 0,
@@ -72,9 +44,287 @@ describe('linebreaker', () => {
   };
 
   test('should break lines and adds hyphens only where indicated', () => {
-    const str = 'Potentieel broeikasgasemissierapport';
-    const syllables = ['Potentieel', ' ', 'broeikasgas', 'emissie', 'rapport'];
-    const attributedString = makeAttributedString(str, syllables, 8);
+    const attributedString = {
+      string: 'Potentieel broeikasgasemissierapport',
+      runs: [
+        {
+          start: 0,
+          end: 36,
+          attributes: { font: [font] },
+          stringIndices: [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+          ],
+          glyphIndices: [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+          ],
+          positions: [
+            {
+              xAdvance: 11.106,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 667,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 5.004,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 278,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 5.004,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 278,
+            },
+            {
+              xAdvance: 3.9959999999999996,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 222,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 3.9959999999999996,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 222,
+            },
+            {
+              xAdvance: 5.004,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 278,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 5.994,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 333,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 3.9959999999999996,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 222,
+            },
+            {
+              xAdvance: 9,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 500,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 9,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 500,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 9,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 500,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 14.993999999999998,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 833,
+            },
+            {
+              xAdvance: 3.9959999999999996,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 222,
+            },
+            {
+              xAdvance: 9,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 500,
+            },
+            {
+              xAdvance: 9,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 500,
+            },
+            {
+              xAdvance: 3.9959999999999996,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 222,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 5.813999999999999,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 333,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 10.008,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 556,
+            },
+            {
+              xAdvance: 6.7139999999999995,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 333,
+            },
+            {
+              xAdvance: 5.004,
+              yAdvance: 0,
+              xOffset: 0,
+              yOffset: 0,
+              advanceWidth: 278,
+            },
+          ],
+          glyphs: [],
+          string: 'Potentieel broeikasgasemissierapport',
+        },
+      ],
+      syllables: [
+        { string: 'Potentieel', hyphen: null },
+        { string: ' ', hyphen: null },
+        { string: 'broeikasgas', hyphen: '-' as const },
+        { string: 'emissie', hyphen: '-' as const },
+        { string: 'rapport', hyphen: null },
+      ],
+    };
 
     const result = linebreaker(attributedString, [10]);
 
@@ -84,41 +334,6 @@ describe('linebreaker', () => {
       'emissie-',
       'rapport',
     ]);
-  });
-
-  test('should add hyphens only at hyphenation breaks', () => {
-    const attributedString = createAttributedString('left', [
-      'state-',
-      'of-',
-      'really',
-      'long',
-    ]);
-
-    const result = linebreaker(
-      {
-        ...attributedString,
-        syllableBreaks: ['soft', 'soft', 'hyphen', 'soft'],
-      },
-      [40],
-    );
-
-    expect(result.map((line) => line.string)).toEqual([
-      'state-',
-      'of-',
-      'really-',
-      'long',
-    ]);
-  });
-
-  test('should use the hyphenate character at hyphenation breaks', () => {
-    const attributedString = createAttributedString('left', ['really', 'long']);
-
-    const result = linebreakerFactory({ hyphenateCharacter: '~' })(
-      { ...attributedString, syllableBreaks: ['hyphen', 'soft'] },
-      [40],
-    );
-
-    expect(result.map((line) => line.string)).toEqual(['really~', 'long']);
   });
 
   test('should preserve breaks with constant line widths', () => {
@@ -196,6 +411,137 @@ describe('linebreaker', () => {
     expect(result.map((line) => line.string)).toEqual([
       'supercalifragilisticexpialidocious',
     ]);
+  });
+
+  test('should not add hyphens on hyphen-less breaks', () => {
+    const attributedString = createAttributedString('left', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    attributedString.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    const result = linebreaker(attributedString, [18]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
+  test('should not break freely where runs meet inside a word', () => {
+    // 'bb' and '.' come from different runs, so the word-final 'bb' keeps
+    // the hyphenated break cost instead of breaking like a space
+    const attributedString = createAttributedString('left', [
+      'aa',
+      ' ',
+      'bb',
+      '.',
+      ' ',
+      'cc',
+    ]);
+
+    const result = linebreaker(attributedString, [30]);
+
+    expect(result.map((line) => line.string)).toEqual(['aa ', 'bb. ', 'cc']);
+  });
+
+  test('should break without hyphens when hyphenation is disabled', () => {
+    const attributedString = createAttributedString('left', [
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+
+    attributedString.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    const result = linebreakerFactory({ hyphenationPenalty: Infinity })(
+      attributedString,
+      [18],
+    );
+
+    expect(result.map((line) => line.string)).toEqual([
+      '日本語',
+      '組版',
+      '処理',
+    ]);
+  });
+
+  test('should not reserve hyphen width on hyphen-less breaks', () => {
+    const syllables = ['日', '本', '語', '組'];
+    const hyphenated = createAttributedString('left', syllables);
+    const unhyphenated = createAttributedString('left', syllables);
+
+    unhyphenated.syllables.forEach((part) => {
+      part.hyphen = null;
+    });
+
+    expect(linebreaker(hyphenated, [12]).map((l) => l.string)).toEqual([
+      '日-',
+      '本-',
+      '語組',
+    ]);
+    expect(linebreaker(unhyphenated, [12]).map((l) => l.string)).toEqual([
+      '日本',
+      '語組',
+    ]);
+  });
+
+  test('should add hyphens only at hyphenated breaks', () => {
+    const attributedString = createAttributedString('left', [
+      'state-',
+      'of-',
+      'really',
+      'long',
+    ]);
+
+    attributedString.syllables[0].hyphen = null;
+    attributedString.syllables[1].hyphen = null;
+
+    const result = linebreaker(attributedString, [40]);
+
+    expect(result.map((line) => line.string)).toEqual([
+      'state-',
+      'of-',
+      'really-',
+      'long',
+    ]);
+  });
+
+  test('should use the hyphenate character at hyphenated breaks', () => {
+    const attributedString = createAttributedString('left', ['really', 'long']);
+
+    const result = linebreakerFactory({ hyphenateCharacter: '~' })(
+      attributedString,
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(['really~', 'long']);
+  });
+
+  test('should not show a hyphen with an empty hyphenate character', () => {
+    const attributedString = createAttributedString('left', ['really', 'long']);
+
+    const result = linebreakerFactory({ hyphenateCharacter: '' })(
+      attributedString,
+      [40],
+    );
+
+    expect(result.map((line) => line.string)).toEqual(['really', 'long']);
+  });
+
+  test('should not hyphenate a word followed by several spaces', () => {
+    const attributedString = createAttributedString('left', ['aa', '  ', 'bb']);
+
+    const result = linebreaker(attributedString, [12]);
+
+    expect(result.map((line) => line.string)).toEqual(['aa  ', 'bb']);
   });
 });
 

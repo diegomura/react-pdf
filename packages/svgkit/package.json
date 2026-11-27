@@ -26,8 +26,8 @@
     "lib"
   ],
   "devDependencies": {
-    "@react-pdf/font": "^4.1.2",
-    "@react-pdf/layout": "^5.2.0",
-    "@react-pdf/render": "^4.7.0"
+    "@react-pdf/font": "^4.2.0",
+    "@react-pdf/layout": "^5.2.2",
+    "@react-pdf/render": "^4.7.2"
   }
 }

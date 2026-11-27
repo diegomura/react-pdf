@@ -1,5 +1,27 @@
 # @react-pdf/types
 
+## 2.15.0
+
+### Minor Changes
+
+- [#3268](https://github.com/diegomura/react-pdf/pull/3268) [`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e) Thanks [@carlobeltrame](https://github.com/carlobeltrame)! - Hyphenation callbacks can now decide, per split point, whether a hyphen is added when a line breaks there. Return `{ string, hyphen: null }` parts instead of strings to break without a hyphen; strings and parts can be mixed. Plain string arrays keep working as before.
+
+  Chinese and Japanese text now breaks between ideographs by default, without hyphens. Breaks without a hyphen now cost the same as breaking at a space and are no longer blocked by `hyphenationPenalty`. Parts ending in `-` no longer get a second hyphen, and the built-in hyphenation can break after dashes in compound words.
+
+### Patch Changes
+
+- Updated dependencies [[`90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e`](https://github.com/diegomura/react-pdf/commit/90340c45026f1d9c6eeb9666d139b6dbe5d3fa4e), [`633a0b024cd349121a528a253a92c600b3b37016`](https://github.com/diegomura/react-pdf/commit/633a0b024cd349121a528a253a92c600b3b37016)]:
+  - @react-pdf/font@4.2.0
+  - @react-pdf/stylesheet@6.3.4
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`5dbd6d82686c8819c011a55960161fa27e4de47a`](https://github.com/diegomura/react-pdf/commit/5dbd6d82686c8819c011a55960161fa27e4de47a), [`ec92c81d74c4a24cc4f706e3cd49691252b93ef4`](https://github.com/diegomura/react-pdf/commit/ec92c81d74c4a24cc4f706e3cd49691252b93ef4), [`38b573aea445d9acb91bf64ea8b1753a9848ed0b`](https://github.com/diegomura/react-pdf/commit/38b573aea445d9acb91bf64ea8b1753a9848ed0b), [`afb755da20838f931d826a91b1b41d48518c0439`](https://github.com/diegomura/react-pdf/commit/afb755da20838f931d826a91b1b41d48518c0439), [`f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3`](https://github.com/diegomura/react-pdf/commit/f26e3187e2f4daab14f02d71e41e1eb8a2d17bc3)]:
+  - @react-pdf/font@4.1.3
+  - @react-pdf/stylesheet@6.3.3
+
 ## 2.14.0
 
 ### Minor Changes

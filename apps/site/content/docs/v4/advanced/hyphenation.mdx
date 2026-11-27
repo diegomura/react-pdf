@@ -26,13 +26,49 @@ If you need more fine-grained control over how words break, you can pass your ow
 ```jsx
 import { Font } from '@react-pdf/renderer'
 
-const hyphenationCallback = (word) => {
-  // Return word syllables in an array
+const hyphenationCallback = (word, fallback) => {
+  // Return word parts in an array
 }
 
 Font.registerHyphenationCallback(hyphenationCallback);
 ```
 
+The second argument is the built-in splitter, so you can tweak its output instead of starting from scratch.
+
 > **Protip:** If you don't want to hyphenate words at all, just provide a callback that returns the same words it receives. More information [here](/docs/v4/fonts#registerhyphenationcallback)
 
 <Example name="hyphenation-callback" />
+
+## Breaking without a hyphen
+
+By default, a hyphen is added at the end of the line whenever a word breaks between two of its parts. Parts that already end with `-` don't get a second one, so `blue-green` breaks as `blue-` / `green`.
+
+To break a word without adding a hyphen, return `{ string, hyphen: null }` parts instead of strings. This is useful for URLs, file paths or long identifiers:
+
+```jsx
+Font.registerHyphenationCallback((word, fallback) => {
+  if (word.startsWith('http')) {
+    return word.split(/(?<=[/.])/).map((string) => ({ string, hyphen: null }));
+  }
+
+  return fallback(word);
+});
+```
+
+Strings and parts can be mixed, so you decide part by part. `hyphen` can be `'-'` or `null`:
+
+```jsx
+const hyphenationCallback = () => [
+  { string: 'blue', hyphen: '-' },
+  { string: 'ish', hyphen: null },
+  'green',
+];
+```
+
+Returning a plain array of strings works as before.
+
+## Chinese, Japanese and Korean
+
+Chinese, Japanese and Korean text may break between two characters without a hyphen, even where there is no space. React-pdf breaks lines where [Unicode line breaking rules](https://www.unicode.org/reports/tr14/) allow, so closing punctuation stays with the character it follows, and lines don't start with `。` or `、`.
+
+Your custom callback also receives these words. Plain strings it returns never get a hyphen in Han, Hiragana, Katakana and Bopomofo text, unless a part explicitly sets `hyphen: '-'`.

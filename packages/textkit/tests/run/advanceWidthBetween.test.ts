@@ -168,4 +168,29 @@ describe('run advanceWidthBetween operator', () => {
     expect(advanceWidthBetween(6, 7, run)).toBe(12);
     expect(advanceWidthBetween(3, 7, run)).toBe(47);
   });
+
+  test('should include base glyph of decomposed characters', () => {
+    // "بابا" shaped with Noto Sans Arabic: each ب is a dotless base glyph
+    // followed by a zero-advance dot mark.
+    const run = {
+      start: 0,
+      end: 4,
+      attributes: {},
+      stringIndices: [0, 2, 3, 5],
+      glyphIndices: [0, 0, 1, 2, 2, 3],
+      positions: [
+        { xAdvance: 269, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 291, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 269, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 0, yAdvance: 0, xOffset: 0, yOffset: 0 },
+        { xAdvance: 291, yAdvance: 0, xOffset: 0, yOffset: 0 },
+      ],
+    };
+
+    expect(advanceWidthBetween(0, 1, run)).toBe(269);
+    expect(advanceWidthBetween(1, 2, run)).toBe(291);
+    expect(advanceWidthBetween(2, 4, run)).toBe(560);
+    expect(advanceWidthBetween(0, 4, run)).toBe(1120);
+  });
 });

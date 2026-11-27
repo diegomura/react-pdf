@@ -45,6 +45,9 @@ const fit = (state: State, fragment: Fragment, index: number): StepResult => {
     return DONE({ placed: state.placed, remaining });
   }
 
+  // A column split is a break at the page bottom — not allowed inside a window.
+  if (broke && state.height < state.forbidUntil) return DECLINE();
+
   state.placed.push({
     item,
     y: state.usedHeight,

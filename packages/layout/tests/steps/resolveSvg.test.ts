@@ -81,6 +81,50 @@ describe('layout resolveSvg', () => {
       expect(result.children![0].children).toHaveLength(1);
       expect(result.children![0].children![0].children).toBeFalsy();
     });
+
+    test('should resolve xlinks in an svg with a group of 500,000 shapes', () => {
+      const node: SafeSvgNode = {
+        wasSplit: false,
+        type: 'SVG',
+        props: {},
+        style: {},
+        children: [
+          {
+            type: 'DEFS',
+            children: [
+              {
+                type: 'LINEAR_GRADIENT',
+                props: { id: 'lg1' },
+                children: [
+                  { type: 'STOP', props: { offset: 0, stopColor: 'red' } },
+                ],
+              },
+              {
+                type: 'LINEAR_GRADIENT',
+                props: { id: 'lg2', x1: 10, xlinkHref: '#lg1' },
+              },
+            ],
+          },
+          {
+            type: 'G',
+            props: {},
+            children: Array.from({ length: 500_000 }, (_, i) => ({
+              type: 'CIRCLE',
+              props: { cx: i, cy: 0, r: 1 },
+            })),
+          },
+        ],
+      };
+
+      const result = resolveXLinks(node);
+
+      expect(result.children![0].children![1].props).toEqual({
+        id: 'lg2',
+        x1: 10,
+      });
+      expect(result.children![0].children![1].children).toHaveLength(1);
+      expect(result.children![1].children).toHaveLength(500_000);
+    });
   });
 
   describe('resolve defs', () => {

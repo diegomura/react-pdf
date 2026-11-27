@@ -1708,6 +1708,22 @@ describe('Unsupported classes', () => {
     expect(warn).toHaveBeenCalledTimes(1);
     warn.mockRestore();
   });
+
+  test('box-shadow utilities say why they are skipped', () => {
+    const scoped = createTw({});
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    expect(scoped('p-4 shadow-lg ring-2')).toEqual({ padding: rem(1) });
+
+    expect(warn).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledWith(
+      `@react-pdf/tailwind: Unsupported class "shadow-lg": react-pdf can't draw box shadows`,
+    );
+    expect(warn).toHaveBeenCalledWith(
+      `@react-pdf/tailwind: Unsupported class "ring-2": react-pdf can't draw box shadows`,
+    );
+    warn.mockRestore();
+  });
 });
 
 /* The narrow tests above name the classes that were found to crash. This one

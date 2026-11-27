@@ -6,7 +6,6 @@ import advanceWidthBetween from '../../attributedString/advanceWidthBetween';
 import { AttributedString, Attributes, LayoutOptions } from '../../types';
 import { Node } from './types';
 
-const HYPHEN = 0x002d;
 const TOLERANCE_STEPS = 5;
 const TOLERANCE_LIMIT = 50;
 
@@ -17,36 +16,16 @@ const opts = {
 };
 
 /**
- * Get the hyphen character code point(s) based on options
- *
  * @param options - Layout options
- * @returns Array of code points for the hyphen character, or null if no hyphen should be inserted
+ * @returns Code points shown at a hyphenated break
  */
-const getHyphenCodePoints = (options: LayoutOptions): number[] | null => {
-  // If hyphens is 'none', don't insert any hyphen character
-  if (options.hyphens === 'none') {
-    return null;
-  }
+const getHyphenCodePoints = ({
+  hyphens,
+  hyphenateCharacter = '-',
+}: LayoutOptions) => {
+  if (hyphens === 'none') return [];
 
-  // If hyphenateCharacter is explicitly set
-  if (options.hyphenateCharacter !== undefined) {
-    // Empty string means no hyphen
-    if (options.hyphenateCharacter === '') {
-      return null;
-    }
-    // Convert custom character to code points
-    const codePoints: number[] = [];
-    for (const char of options.hyphenateCharacter) {
-      const codePoint = char.codePointAt(0);
-      if (codePoint !== undefined) {
-        codePoints.push(codePoint);
-      }
-    }
-    return codePoints.length > 0 ? codePoints : null;
-  }
-
-  // Default: use standard hyphen
-  return [HYPHEN];
+  return Array.from(hyphenateCharacter, (char) => char.codePointAt(0)!);
 };
 
 /**
@@ -85,8 +64,8 @@ const breakLines = (
 
       line = slice(start, end, attributedString);
 
-      // Only hyphenation breaks are flagged; soft wrap breaks show nothing.
-      if (node.flagged && hyphenCodePoints !== null) {
+      // Only hyphenated breaks reserve width for the hyphen
+      if (node.width > 0) {
         for (const codePoint of hyphenCodePoints) {
           line = insertGlyph(line.string.length, codePoint, line);
         }
@@ -121,50 +100,53 @@ const getNodes = (
 ): Node[] => {
   let start = 0;
 
-  const hyphenWidth = getHyphenCodePoints(options) === null ? 0 : 5;
+  const hyphenWidth = getHyphenCodePoints(options).length > 0 ? 5 : 0;
 
-  const { syllables, syllableBreaks } = attributedString;
+  const { syllables } = attributedString;
 
   const hyphenPenalty =
     options.hyphenationPenalty || (align === 'justify' ? 100 : 600);
 
-  const result = syllables.reduce((acc: Node[], s: string, index: number) => {
-    const width = advanceWidthBetween(
-      start,
-      start + s.length,
-      attributedString,
-    );
+  const result = syllables.reduce(
+    (acc: Node[], { string: s, hyphen }, index: number) => {
+      const width = advanceWidthBetween(
+        start,
+        start + s.length,
+        attributedString,
+      );
 
-    if (s.trim() === '') {
-      const stretch = (width * opts.width) / opts.stretch;
-      const shrink = (width * opts.width) / opts.shrink;
-      const end = start + s.length;
+      if (s.trim() === '') {
+        const stretch = (width * opts.width) / opts.stretch;
+        const shrink = (width * opts.width) / opts.shrink;
+        const end = start + s.length;
 
-      // Add glue node. Glue nodes are used to fill the space between words.
-      acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
-    } else {
-      const next = syllables[index + 1];
-      const breakable = next !== undefined && next.trim() !== '';
-      const hyphenated =
-        breakable && (syllableBreaks?.[index] ?? 'hyphen') === 'hyphen';
-      const end = start + s.length;
+        // Add glue node. Glue nodes are used to fill the space between words.
+        acc.push(knuthPlass.glue(width, start, end, stretch, shrink));
+      } else {
+        const next = syllables[index + 1];
+        const withinWord = next !== undefined && next.string.trim() !== '';
+        const end = start + s.length;
 
-      // Add box node. Box nodes are used to represent words.
-      acc.push(knuthPlass.box(width, start, end, hyphenated));
+        // Add box node. Box nodes are used to represent words.
+        acc.push(knuthPlass.box(width, start, end, withinWord));
 
-      // Add penalty node. Penalty nodes are used to represent breaks inside
-      // words. Only hyphenation breaks cost a hyphen.
-      if (hyphenated) {
-        acc.push(knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1));
-      } else if (breakable) {
-        acc.push(knuthPlass.penalty(0, 0, 0));
+        if (withinWord) {
+          // Add penalty node. Penalty nodes are used to represent break points
+          // inside words. Breaks without a hyphen cost as little as a space.
+          acc.push(
+            hyphen
+              ? knuthPlass.penalty(hyphenWidth, hyphenPenalty, 1)
+              : knuthPlass.penalty(0, 0, 0),
+          );
+        }
       }
-    }
 
-    start += s.length;
+      start += s.length;
 
-    return acc;
-  }, []);
+      return acc;
+    },
+    [],
+  );
 
   // Add mandatory final glue
   result.push(knuthPlass.glue(0, start, start, knuthPlass.infinity, 0));

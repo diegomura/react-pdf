@@ -2,9 +2,21 @@ import { LineBreaker } from 'linebreak';
 
 import fromFragments from '../attributedString/fromFragments';
 import { Engines } from '../engines';
-import { AttributedString, LayoutOptions, SyllableBreak } from '../types';
+import {
+  AttributedString,
+  HyphenatedPart,
+  HyphenatedWord,
+  LayoutOptions,
+} from '../types';
 
-const SOFT_HYPHEN = '\u00ad';
+type Hyphen = '-' | null;
+
+type Part = { string: string; hyphen: Hyphen; explicit: boolean };
+
+const SOFT_HYPHEN = '­';
+
+// Scripts whose parts take no hyphen unless the callback asks for one
+const UNHYPHENATED_SCRIPTS = ['Han', 'Hiragana', 'Katakana', 'Bopomofo'];
 
 // break-all and keep-all act on letters and digits. A combining mark belongs
 // to the letter before it, so nothing may break before one.
@@ -23,12 +35,39 @@ const defaultHyphenate = (word: string) => [word];
 /**
  * Remove soft hyphens from word
  *
- * @param word
  * @returns Word without soft hyphens
+ * @param part
  */
-const removeSoftHyphens = (word: string) => {
-  return word.replaceAll(SOFT_HYPHEN, '');
+const removeSoftHyphens = (part: Part) => {
+  part.string = part.string.replaceAll(SOFT_HYPHEN, '');
+  return part;
 };
+
+/**
+ * Coerce hyphenation callback output into parts.
+ * Whitespace and parts already ending in a hyphen don't get one, and only a
+ * dash is supported for now, so any explicit value other than null is a dash.
+ *
+ * @param hyphenatedWord
+ * @param defaultHyphen
+ */
+const normalizeHyphenatedWord = (
+  hyphenatedWord: HyphenatedWord,
+  defaultHyphen: Hyphen,
+): Part[] =>
+  hyphenatedWord.map((part) => {
+    const { string, hyphen } =
+      typeof part === 'string' ? { string: part, hyphen: undefined } : part;
+
+    if (string.trim() === '') return { string, hyphen: null, explicit: false };
+
+    if (hyphen === undefined) {
+      const fallback = string.endsWith('-') ? null : defaultHyphen;
+      return { string, hyphen: fallback, explicit: false };
+    }
+
+    return { string, hyphen: hyphen === null ? null : '-', explicit: true };
+  });
 
 const firstChar = (text: string) => /^[\s\S]/u.exec(text)![0];
 
@@ -77,6 +116,9 @@ const wrapWords = (
   const breakAll = wordBreak === 'break-all';
   const keepAll = wordBreak === 'keep-all';
 
+  // CSS applies no hyphenation with break-all.
+  const hyphenationOff = hyphens === 'none' || breakAll;
+
   /**
    * @param uax14 - Whether UAX #14 allows the break
    * @param before - Character before the break
@@ -93,12 +135,16 @@ const wrapWords = (
   };
 
   /**
+   * Hyphens the callback sets explicitly win. Otherwise soft wrap
+   * opportunities break without a hyphen, and the other part ends break
+   * where UAX #14 lets a line start and end.
+   *
    * @param word - Word without white space
-   * @param hyphenAt - Offsets of hyphenation opportunities
-   * @returns Line break kind at each offset where the word may break
+   * @param parts - Hyphenation parts by their end offset
+   * @returns Hyphen at each offset where the word may break
    */
-  const getWordBreaks = (word: string, hyphenAt: Set<number>) => {
-    const breaks = new Map<number, SyllableBreak>();
+  const getWordBreaks = (word: string, parts: Map<number, Part>) => {
+    const breaks = new Map<number, Hyphen>();
     const breaker = new LineBreaker(word);
     const chars = Array.from(word);
 
@@ -113,16 +159,19 @@ const wrapWords = (
 
       const before = chars[i - 1];
       const after = chars[i];
+      const part = parts.get(offset);
 
-      if (isSoftBreak(uax14.has(offset), before, after)) {
-        breaks.set(offset, 'soft');
+      if (part?.explicit) {
+        breaks.set(offset, part.hyphen);
+      } else if (isSoftBreak(uax14.has(offset), before, after)) {
+        breaks.set(offset, null);
       } else if (
-        hyphenAt.has(offset) &&
+        part &&
         !(keepAll && uax14.has(offset)) &&
         !isLineStartProhibited(after) &&
         !isLineEndProhibited(before)
       ) {
-        breaks.set(offset, 'hyphen');
+        breaks.set(offset, part.hyphen);
       }
     }
 
@@ -134,35 +183,48 @@ const wrapWords = (
    * @returns Attributed string including syllables
    */
   return (attributedString: AttributedString) => {
-    const syllables: string[] = [];
-    const syllableBreaks: SyllableBreak[] = [];
+    const syllables: HyphenatedPart[] = [];
     const fragments = [];
 
     const builtinHyphenate = engines.wordHyphenation?.() || defaultHyphenate;
 
     const hyphenate = options.hyphenationCallback || builtinHyphenate;
 
-    // CSS applies no hyphenation with break-all.
-    const splitWord = (word: string): string[] => {
-      if (hyphens === 'none' || breakAll) return [removeSoftHyphens(word)];
-      if (hyphens === 'manual') return word.split(SOFT_HYPHEN);
+    const splitWord = (word: string, defaultHyphen: Hyphen) => {
+      let hyphenatedWord: HyphenatedWord;
 
-      return hyphenate(word, builtinHyphenate).map(removeSoftHyphens);
+      if (hyphenationOff) hyphenatedWord = [word];
+      else if (hyphens === 'manual') hyphenatedWord = word.split(SOFT_HYPHEN);
+      else hyphenatedWord = hyphenate(word, builtinHyphenate);
+
+      return normalizeHyphenatedWord(hyphenatedWord, defaultHyphen).map(
+        removeSoftHyphens,
+      );
     };
 
-    // A null break joins the syllable to the previous one.
-    const push = (syllable: string, breakBefore: SyllableBreak | null) => {
-      const last = syllables.length - 1;
+    // false joins the syllable to the previous one. undefined keeps the
+    // hyphen of the previous one.
+    const push = (
+      string: string,
+      hyphen: Hyphen,
+      breakBefore?: Hyphen | false,
+    ) => {
+      const previous = syllables[syllables.length - 1];
 
-      if (last >= 0 && breakBefore === null) {
-        syllables[last] += syllable;
+      if (!previous) {
+        syllables.push({ string, hyphen });
         return;
       }
 
-      if (last >= 0) syllableBreaks[last] = breakBefore!;
+      if (breakBefore === false) {
+        previous.string += string;
+        previous.hyphen = hyphen;
+        return;
+      }
 
-      syllables.push(syllable);
-      syllableBreaks.push('soft');
+      if (breakBefore !== undefined) previous.hyphen = breakBefore;
+
+      syllables.push({ string, hyphen });
     };
 
     let offset = 0;
@@ -172,54 +234,61 @@ const wrapWords = (
 
       const run = attributedString.runs[i];
 
+      const unhyphenated = UNHYPHENATED_SCRIPTS.includes(
+        run.attributes.script as string,
+      );
+
+      const defaultHyphen = unhyphenated || hyphenationOff ? null : '-';
+
       const words = attributedString.string
         .slice(run.start, run.end)
         .split(/([ ]+)/g)
         .filter(Boolean);
 
       for (let j = 0; j < words.length; j += 1) {
-        const parts = splitWord(words[j]);
-        const word = parts.join('');
+        const parts = splitWord(words[j], defaultHyphen);
+        const word = parts.map((part) => part.string).join('');
 
         string += word;
 
         if (word === '') continue;
 
-        const previous = syllables[syllables.length - 1];
-
         if (word.trim() === '') {
-          push(word, 'soft');
+          push(word, null);
           continue;
         }
 
-        // Words only meet without white space where a run ends inside a word.
-        const joinsPrevious = previous !== undefined && previous.trim() !== '';
+        const previous = syllables[syllables.length - 1];
 
-        let breakBefore: SyllableBreak | null = 'soft';
+        // Words only meet without white space where a run ends inside a word.
+        const joinsPrevious =
+          previous !== undefined && previous.string.trim() !== '';
+
+        let breakBefore: Hyphen | false | undefined;
         if (joinsPrevious) {
-          const before = lastChar(previous);
+          const before = lastChar(previous.string);
           const after = firstChar(word);
 
           const uax14 = canBreakBetween(before, after);
 
-          breakBefore = isSoftBreak(uax14, before, after) ? 'soft' : null;
+          breakBefore = isSoftBreak(uax14, before, after) ? null : false;
         }
 
-        const hyphenAt = new Set<number>();
+        const partsByEnd = new Map<number, Part>();
         let position = 0;
         for (const part of parts) {
-          position += part.length;
-          hyphenAt.add(position);
+          position += part.string.length;
+          partsByEnd.set(position, part);
         }
 
         let start = 0;
-        for (const [end, kind] of getWordBreaks(word, hyphenAt)) {
-          push(word.slice(start, end), breakBefore);
-          breakBefore = kind;
+        for (const [end, hyphen] of getWordBreaks(word, partsByEnd)) {
+          push(word.slice(start, end), hyphen, breakBefore);
+          breakBefore = hyphen;
           start = end;
         }
 
-        push(word.slice(start), breakBefore);
+        push(word.slice(start), parts[parts.length - 1].hyphen, breakBefore);
       }
 
       // Modify run start and end based on removed soft hyphens.
@@ -232,11 +301,7 @@ const wrapWords = (
       offset += runOffset;
     }
 
-    const result: AttributedString = {
-      ...fromFragments(fragments),
-      syllables,
-      syllableBreaks,
-    };
+    const result: AttributedString = { ...fromFragments(fragments), syllables };
 
     return result;
   };

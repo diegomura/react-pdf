@@ -20,14 +20,17 @@ const renderRun = (ctx: Context, run: Run) => {
   if (color) ctx.fillColor(color);
   ctx.fillOpacity(opacity!);
 
-  if (font) {
-    ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
-  }
+  // A run with no glyphs draws nothing: see renderText.
+  if (run.glyphs.length > 0) {
+    if (font) {
+      ctx.font(font.type === 'STANDARD' ? font.fullName : font, fontSize);
+    }
 
-  try {
-    renderGlyphs(ctx, run.glyphs!, run.positions!, 0, 0);
-  } catch (error) {
-    console.log(error);
+    try {
+      renderGlyphs(ctx, run.glyphs, run.positions!, 0, 0);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   ctx.translate(runAdvanceWidth!, 0);

@@ -54,7 +54,7 @@ const reverseRun = (run: Run, string: string) => {
   for (let i = positions.length - 1; i >= 0; i -= 1) {
     const position = positions[i];
 
-    if (position.xAdvance !== 0) {
+    if (!glyphs[i].isMark) {
       baseAdvance = position.xAdvance;
     } else if (baseAdvance) {
       positions[i] = { ...position, xOffset: position.xOffset + baseAdvance };

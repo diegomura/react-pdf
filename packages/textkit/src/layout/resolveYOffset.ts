@@ -10,8 +10,6 @@ const resolveRunYOffset = (run: Run) => {
   if (!run.positions) return run;
 
   const fontSize = run.attributes?.fontSize || 0;
-  // scalePositions already put GPOS xOffset/yOffset in points.
-  // Only add verticalAlign (sub/super), which is a fraction of an em.
   const verticalAlignPoints = (run.attributes?.yOffset || 0) * fontSize;
 
   for (let i = 0; i < run.positions.length; i += 1) {

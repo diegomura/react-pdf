@@ -170,7 +170,11 @@ const rowOf = (node: ContainerNode): Item => {
 
     if (offset <= 0.001) return item;
 
-    return { kind: 'column', children: [space(offset), FORBID_BREAK, item] };
+    return {
+      kind: 'column',
+      offsetCell: item,
+      children: [space(offset), FORBID_BREAK, item],
+    };
   });
 
   const bodyBottom = Math.max(

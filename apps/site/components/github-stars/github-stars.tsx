@@ -40,7 +40,8 @@ export async function GithubStars() {
 
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO}`, {
-      next: { revalidate: 3600 },
+      // Rendered in the shared nav, so this sets every page's ISR interval.
+      next: { revalidate: 86400 },
     });
     if (res.ok) stars = (await res.json()).stargazers_count;
   } catch {

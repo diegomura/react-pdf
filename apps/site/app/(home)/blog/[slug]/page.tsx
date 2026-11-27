@@ -68,6 +68,8 @@ export default async function BlogPost(props: {
   );
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return blogSource.getPages().map((p) => ({ slug: p.slugs[0] }));
 }

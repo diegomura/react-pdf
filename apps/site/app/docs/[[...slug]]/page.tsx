@@ -71,6 +71,9 @@ export default async function Page(props: {
   );
 }
 
+// Unknown slugs would otherwise render on demand as ISR, and crawlers hit plenty.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return source.generateParams();
 }

@@ -1,6 +1,6 @@
 import { matchPercent } from '@react-pdf/fns';
 import transformColor from '../utils/colors';
-import transformUnit from '../utils/units';
+import transformUnit, { VALUE_REGEX } from '../utils/units';
 import {
   Container,
   BorderSafeStyle,
@@ -10,37 +10,71 @@ import {
 } from '../types';
 import { processColorValue, processNoopValue, processUnitValue } from './utils';
 
-const BORDER_STYLES = ['dashed', 'dotted', 'solid'];
+// CSS border styles. Unsupported ones render as solid, and "none" or
+// "hidden" remove the border
+const BORDER_STYLES = new Map<string, BorderStyleValue | 'none'>([
+  ['solid', 'solid'],
+  ['dashed', 'dashed'],
+  ['dotted', 'dotted'],
+  ['double', 'solid'],
+  ['groove', 'solid'],
+  ['ridge', 'solid'],
+  ['inset', 'solid'],
+  ['outset', 'solid'],
+  ['none', 'none'],
+  ['hidden', 'none'],
+]);
 
-const BORDER_WIDTH_REGEX = /^-?\d+(?:\.\d+)?(?:in|mm|cm|pt|vw|vh|px|rem)?$/;
-
-// Keeps functional colors like "rgb(1, 2, 3)" as a single token
+// Splits on whitespace, keeping functional colors like "rgb(0, 0, 0)" whole
 const BORDER_TOKEN_REGEX = /[^\s(]+(?:\([^)]*\))?/g;
 
-type BorderParts = {
-  width?: string | number;
-  style?: BorderStyleValue;
-  color?: string;
-};
+// Parses border shorthand parts in any order (e.g., "solid 1px red")
+const parseBorderShorthand = (value: string) => {
+  const tokens = value.match(BORDER_TOKEN_REGEX) || [];
 
-const parseBorderShorthand = (value: string | number): BorderParts => {
-  if (typeof value === 'number') return { width: value };
+  if (tokens.length === 0) return null;
 
-  const tokens = `${value}`.match(BORDER_TOKEN_REGEX) || [];
-  const parts: BorderParts = {};
+  let width: string | undefined;
+  let style: BorderStyleValue | 'none' | undefined;
+  let color: string | undefined;
 
   for (const token of tokens) {
-    if (BORDER_STYLES.includes(token)) parts.style = token as BorderStyleValue;
-    else if (BORDER_WIDTH_REGEX.test(token)) parts.width = token;
-    else parts.color = token;
+    const tokenStyle = BORDER_STYLES.get(token.toLowerCase());
+
+    if (VALUE_REGEX.test(token)) {
+      if (width) return null;
+      width = token;
+    } else if (tokenStyle) {
+      if (style) return null;
+      style = tokenStyle;
+    } else {
+      if (color) return null;
+      color = token;
+    }
   }
 
-  return parts;
+  if (style === 'none') return { width: '0', color };
+
+  return { width, style, color };
 };
 
 type BorderKey = keyof BorderStyle;
 
-const resolveBorderShorthand = <K extends BorderKey>(
+const SIDES = [
+  'borderTop',
+  'borderRight',
+  'borderBottom',
+  'borderLeft',
+] as const;
+
+type Side = (typeof SIDES)[number];
+
+const isSide = (key: string): key is Side =>
+  (SIDES as readonly string[]).includes(key);
+
+// Resolves single-value props (e.g., borderColor: 'red', borderWidth: 5,
+// borderRadius: 10)
+const resolveSingleValue = <K extends BorderKey>(
   key: K,
   value: BorderStyle[K],
   container: Container,
@@ -98,32 +132,47 @@ const resolveBorderShorthand = <K extends BorderKey>(
     };
   }
 
-  const {
-    width: widthPart,
-    style,
-    color: colorPart,
-  } = parseBorderShorthand(value as string | number);
+  return { [key]: value };
+};
 
-  const color = colorPart ? transformColor(colorPart) : undefined;
+// Resolves border shorthands: any of width, style and color, in any order.
+// Omitted parts are left unset so other border styles still apply.
+const resolveBorderShorthand = <K extends BorderKey>(
+  key: K,
+  value: BorderStyle[K],
+  container: Container,
+): BorderSafeStyle => {
+  const parts = parseBorderShorthand(`${value}`);
+  const isFullShorthand = !!(parts?.width && parts.style && parts.color);
+
+  // Single-value props keep their own parsing, unless given a full
+  // "width style color" border
+  if (key !== 'border' && !isSide(key) && !isFullShorthand)
+    return resolveSingleValue(key, value, container);
+
+  if (!parts) return { [key]: value };
+
+  const sides: readonly Side[] = isSide(key) ? [key] : SIDES;
+
   const width =
-    widthPart === undefined ? undefined : transformUnit(container, widthPart);
+    parts.width !== undefined
+      ? transformUnit(container, parts.width)
+      : undefined;
+  const color =
+    parts.color !== undefined ? transformColor(parts.color) : undefined;
 
-  if (width !== undefined && typeof width !== 'number')
+  if (typeof width === 'string')
     throw new Error(`Invalid border width: ${width}`);
 
-  const sides = key.match(/(Top|Right|Bottom|Left)$/)
-    ? [key]
-    : ['borderTop', 'borderRight', 'borderBottom', 'borderLeft'];
-
-  const result: Record<string, unknown> = {};
+  const result: BorderSafeStyle = {};
 
   for (const side of sides) {
-    if (color !== undefined) result[`${side}Color`] = color;
-    if (style !== undefined) result[`${side}Style`] = style;
     if (width !== undefined) result[`${side}Width`] = width;
+    if (parts.style !== undefined) result[`${side}Style`] = parts.style;
+    if (color !== undefined) result[`${side}Color`] = color;
   }
 
-  return result as BorderSafeStyle;
+  return result;
 };
 
 const handlers = {

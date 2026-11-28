@@ -132,6 +132,19 @@ describe('text', () => {
     expect(image).toMatchImageSnapshot();
   });
 
+  test('should synthesize superscripts and subscripts the font lacks', async () => {
+    const image = await renderToImage(
+      <Document>
+        <Page size={[220, 70]} style={{ padding: 8, fontSize: 18 }}>
+          <Text>x², x³, x⁴, x¹⁰, xⁿ, x⁻¹</Text>
+          <Text>H₂O, x₀, x₍₁₎, xₐ, xₙ</Text>
+        </Page>
+      </Document>,
+    );
+
+    expect(image).toMatchImageSnapshot();
+  });
+
   test('should hyphenate text with soft hyphen', async () => {
     const shy = '\u00ad';
 

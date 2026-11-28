@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { fetchClient } from 'fumadocs-core/search/client/fetch';
+import { oramaStaticClient } from 'fumadocs-core/search/client/orama-static';
 import {
   SearchDialog,
   SearchDialogClose,
@@ -29,7 +29,7 @@ export default function VersionedSearchDialog(props: SharedProps) {
   const [tag, setTag] = useState(LATEST);
 
   const { search, setSearch, query } = useDocsSearch({
-    client: fetchClient({ tag }),
+    client: oramaStaticClient({ tag }),
   });
 
   return (

@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "react-pdf-site",
+  "main": "worker/mcp.ts",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Everything else is static and never invokes (or bills) the Worker.
+    "run_worker_first": ["/mcp", "/api/mcp/*"],
+  },
+}

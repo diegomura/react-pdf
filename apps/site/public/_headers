@@ -1,0 +1,6 @@
+/opengraph-image
+  Content-Type: image/png
+/api/search
+  Content-Type: application/json
+/docs/*.mdx
+  Content-Type: text/markdown; charset=utf-8

@@ -1,14 +1,27 @@
-import { describe, expect, it, vi } from 'vitest';
-import { GET, POST } from './route';
+import { describe, expect, it } from 'vitest';
+import worker from './mcp';
 
-vi.mock('@/lib/llm-text', () => ({
-  latestPages: () => [],
-  getLLMText: async () => '# Documentation',
-}));
+const assets: Record<string, string> = {
+  '/mcp-index.json': JSON.stringify([
+    { url: '/docs/v4/fonts', title: 'Fonts', body: 'Register a font' },
+  ]),
+  '/docs/v4/fonts.mdx': '# Fonts',
+};
 
-vi.mock('@/lib/source', () => ({
-  source: { getPage: () => undefined },
-}));
+const env = {
+  ASSETS: {
+    fetch: async (input: Request | URL) => {
+      const body =
+        assets[new URL(input instanceof URL ? input : input.url).pathname];
+      return body === undefined
+        ? new Response('Not found', { status: 404 })
+        : new Response(body);
+    },
+  },
+};
+
+const POST = (request: Request) => worker.fetch(request, env);
+const GET = POST;
 
 const request = (method: string, params: object = {}, modern = false) =>
   new Request('https://react-pdf.org/mcp', {
@@ -41,7 +54,7 @@ const request = (method: string, params: object = {}, modern = false) =>
     }),
   });
 
-describe('MCP serverless lifecycle', () => {
+describe('MCP worker', () => {
   it('does not advertise tool-change subscriptions', async () => {
     const response = await POST(request('server/discover', {}, true));
     const body = await response.json();
@@ -73,14 +86,34 @@ describe('MCP serverless lifecycle', () => {
     expect(text).toContain('read_doc');
   });
 
-  it('still runs documentation searches', async () => {
+  it('searches the static index', async () => {
     const response = await POST(
       request('tools/call', {
         name: 'search_docs',
-        arguments: { query: 'text' },
+        arguments: { query: 'register font' },
       }),
     );
-    expect(await response.text()).toContain('"text":"[]"');
+    expect(await response.text()).toContain('/docs/v4/fonts');
+  });
+
+  it('reads a page from its static markdown file', async () => {
+    const response = await POST(
+      request('tools/call', {
+        name: 'read_doc',
+        arguments: { url: '/docs/v4/fonts' },
+      }),
+    );
+    expect(await response.text()).toContain('# Fonts');
+  });
+
+  it('reports unknown pages as errors', async () => {
+    const response = await POST(
+      request('tools/call', {
+        name: 'read_doc',
+        arguments: { url: '/docs/v4/nope' },
+      }),
+    );
+    expect(await response.text()).toContain('"isError":true');
   });
 
   it('does not open legacy GET streams', async () => {

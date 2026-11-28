@@ -1,6 +1,7 @@
 import { SafeNode } from '@react-pdf/layout';
 import { Context } from '../types';
 import resolveHitSlop from '../utils/resolveHitSlop';
+import encodeUri from '../utils/encodeUri';
 
 const isString = (value: any): value is string => typeof value === 'string';
 
@@ -11,7 +12,7 @@ const renderLink = (ctx: Context, node: SafeNode, src: string) => {
 
   const isId = isSrcId(src);
   const method = isId ? 'goTo' : 'link';
-  const value = isId ? src.slice(1) : src;
+  const value = isId ? src.slice(1) : encodeUri(src);
   const { top, left, width, height } = node.box;
 
   const props = node.props || {};

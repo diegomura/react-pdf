@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import * as P from '@react-pdf/primitives';
 
@@ -71,5 +71,28 @@ describe('primitive renderCanvas', () => {
     const node = { type: P.Canvas, box, props: { paint } } as SafeCanvasNode;
 
     renderCanvas(ctx, node);
+  });
+
+  test('should return gradients so stops can be added', () => {
+    const ctx = createCTX();
+    const gradient = { stop: vi.fn() };
+    gradient.stop.mockReturnValue(gradient);
+    ctx.linearGradient = vi.fn().mockReturnValue(gradient);
+
+    const box = { top: 20, left: 40, width: 140, height: 200 };
+    const paint = (p) => {
+      const grad = p.linearGradient(0, 0, 100, 0);
+      grad.stop(0, 'red').stop(1, 'blue');
+      p.rect(0, 0, 100, 100).fill(grad);
+    };
+    const node = { type: P.Canvas, box, props: { paint } } as SafeCanvasNode;
+
+    renderCanvas(ctx, node);
+
+    expect(gradient.stop.mock.calls).toEqual([
+      [0, 'red'],
+      [1, 'blue'],
+    ]);
+    expect(ctx.fill).toHaveBeenCalledWith(gradient);
   });
 });

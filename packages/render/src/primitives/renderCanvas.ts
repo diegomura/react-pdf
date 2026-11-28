@@ -38,14 +38,17 @@ const availableMethods = [
   'radialGradient',
 ];
 
+// Gradients are returned so stops can be added before passing them to fill
+const gradientMethods = ['linearGradient', 'radialGradient'];
+
 const painter = (ctx: Context) => {
   const p = availableMethods.reduce(
     (acc, prop) => ({
       ...acc,
       [prop]: (...args: any) => {
         // @ts-expect-error ctx[prop] is a function
-        ctx[prop](...args);
-        return p;
+        const result = ctx[prop](...args);
+        return gradientMethods.includes(prop) ? result : p;
       },
     }),
     {},

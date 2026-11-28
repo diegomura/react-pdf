@@ -8,9 +8,15 @@ on:
   push:
     branches:
       - master
+      # TEMP: first test deploy to workers.dev; drop before merging
+      - site/static-export
     paths:
       - 'apps/site/**'
       - '.github/workflows/site.yml'
+  # Stars and changelog are fetched at build time, so rebuild daily
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -59,3 +65,12 @@ jobs:
       # gitignored next-env.d.ts a standalone tsc run needs
       - name: Build
         run: yarn build
+
+      - name: Deploy
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/site
+          wranglerVersion: '4.168.0'

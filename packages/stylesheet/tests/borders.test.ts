@@ -551,4 +551,56 @@ describe('resolve stylesheet borders', () => {
       borderBottomWidth: 2,
     });
   });
+
+  test('should resolve border shorthand in any order', () => {
+    const expected = resolveStyle({ border: '2px solid red' });
+
+    expect(resolveStyle({ border: 'solid 2px red' })).toEqual(expected);
+    expect(resolveStyle({ border: 'red solid 2px' })).toEqual(expected);
+    expect(resolveStyle({ border: '2px red solid' })).toEqual(expected);
+  });
+
+  test('should resolve side border shorthand in any order', () => {
+    const styles = resolveStyle({
+      borderBottom: 'rgb(255, 0, 255) dashed 1in',
+    });
+
+    expect(styles).toEqual({
+      borderBottomColor: '#FF00FF',
+      borderBottomStyle: 'dashed',
+      borderBottomWidth: 72,
+    });
+  });
+
+  test('should resolve border shorthand without color', () => {
+    const styles = resolveStyle({ borderTop: '1px solid' });
+
+    expect(styles).toEqual({ borderTopStyle: 'solid', borderTopWidth: 1 });
+  });
+
+  test('should resolve numeric border shorthand as width', () => {
+    expect(resolveStyle({ border: 3 })).toEqual({
+      borderTopWidth: 3,
+      borderRightWidth: 3,
+      borderBottomWidth: 3,
+      borderLeftWidth: 3,
+    });
+  });
+
+  test('should keep border color regardless of order with numeric side shorthand', () => {
+    const expected = {
+      borderTopColor: 'red',
+      borderRightColor: 'red',
+      borderBottomColor: 'red',
+      borderLeftColor: 'red',
+      borderBottomWidth: 2,
+    };
+
+    expect(resolveStyle({ borderColor: 'red', borderBottom: 2 })).toEqual(
+      expected,
+    );
+    expect(resolveStyle({ borderBottom: 2, borderColor: 'red' })).toEqual(
+      expected,
+    );
+  });
 });

@@ -10,12 +10,33 @@ import {
 } from '../types';
 import { processColorValue, processNoopValue, processUnitValue } from './utils';
 
-// Matches border shorthand: "width style color" (e.g., "1px solid red")
-const BORDER_SHORTHAND_REGEX =
-  /^(?<width>-?\d+(?:\.\d+)?(?:in|mm|cm|pt|vw|vh|px|rem)?)\s+(?<style>\S+)\s+(?<color>.+)$/;
+const BORDER_STYLES = ['dashed', 'dotted', 'solid'];
 
-const matchBorderShorthand = (value: string) =>
-  BORDER_SHORTHAND_REGEX.exec(value);
+const BORDER_WIDTH_REGEX = /^-?\d+(?:\.\d+)?(?:in|mm|cm|pt|vw|vh|px|rem)?$/;
+
+// Keeps functional colors like "rgb(1, 2, 3)" as a single token
+const BORDER_TOKEN_REGEX = /[^\s(]+(?:\([^)]*\))?/g;
+
+type BorderParts = {
+  width?: string | number;
+  style?: BorderStyleValue;
+  color?: string;
+};
+
+const parseBorderShorthand = (value: string | number): BorderParts => {
+  if (typeof value === 'number') return { width: value };
+
+  const tokens = `${value}`.match(BORDER_TOKEN_REGEX) || [];
+  const parts: BorderParts = {};
+
+  for (const token of tokens) {
+    if (BORDER_STYLES.includes(token)) parts.style = token as BorderStyleValue;
+    else if (BORDER_WIDTH_REGEX.test(token)) parts.width = token;
+    else parts.color = token;
+  }
+
+  return parts;
+};
 
 type BorderKey = keyof BorderStyle;
 
@@ -24,106 +45,85 @@ const resolveBorderShorthand = <K extends BorderKey>(
   value: BorderStyle[K],
   container: Container,
 ): BorderSafeStyle => {
-  const match = matchBorderShorthand(`${value}`);
-
-  // Handle shorthand properties that don't match the full border pattern
-  // (e.g., borderColor: 'red', borderWidth: 5, borderRadius: 10)
-  if (!match) {
-    if (key.match(/Color$/)) {
-      const color = transformColor(`${value}`);
-      return {
-        borderTopColor: color,
-        borderRightColor: color,
-        borderBottomColor: color,
-        borderLeftColor: color,
-      };
-    }
-
-    if (key.match(/Style$/)) {
-      const style = value as BorderStyleValue;
-
-      if (typeof style === 'number')
-        throw new Error(`Invalid border style: ${style}`);
-
-      return {
-        borderTopStyle: style,
-        borderRightStyle: style,
-        borderBottomStyle: style,
-        borderLeftStyle: style,
-      };
-    }
-
-    if (key.match(/Width$/)) {
-      const width = transformUnit(container, value);
-
-      if (typeof width !== 'number')
-        throw new Error(`Invalid border width: ${width}`);
-
-      return {
-        borderTopWidth: width,
-        borderRightWidth: width,
-        borderBottomWidth: width,
-        borderLeftWidth: width,
-      };
-    }
-
-    if (key.match(/Radius$/)) {
-      const radius = transformUnit(container, value) as number | Percentage;
-
-      // Percentages are resolved against the box later on, in layout
-      if (typeof radius !== 'number' && !matchPercent(radius))
-        throw new Error(`Invalid border radius: ${radius}`);
-
-      return {
-        borderTopLeftRadius: radius,
-        borderTopRightRadius: radius,
-        borderBottomRightRadius: radius,
-        borderBottomLeftRadius: radius,
-      };
-    }
-
-    return { [key]: value };
-  }
-
-  // Full border shorthand matched: "width style color"
-  const {
-    width: widthMatch,
-    style: styleMatch,
-    color: colorMatch,
-  } = match.groups!;
-
-  const style = styleMatch as BorderStyleValue;
-  const color = transformColor(colorMatch);
-  const width = transformUnit(container, widthMatch);
-
-  if (key.match(/(Top|Right|Bottom|Left)$/)) {
+  if (key.match(/Color$/)) {
+    const color = transformColor(`${value}`);
     return {
-      [`${key}Color`]: color,
-      [`${key}Style`]: style,
-      [`${key}Width`]: width,
+      borderTopColor: color,
+      borderRightColor: color,
+      borderBottomColor: color,
+      borderLeftColor: color,
     };
   }
 
-  if (typeof width !== 'number')
+  if (key.match(/Style$/)) {
+    const style = value as BorderStyleValue;
+
+    if (typeof style === 'number')
+      throw new Error(`Invalid border style: ${style}`);
+
+    return {
+      borderTopStyle: style,
+      borderRightStyle: style,
+      borderBottomStyle: style,
+      borderLeftStyle: style,
+    };
+  }
+
+  if (key.match(/Width$/)) {
+    const width = transformUnit(container, value);
+
+    if (typeof width !== 'number')
+      throw new Error(`Invalid border width: ${width}`);
+
+    return {
+      borderTopWidth: width,
+      borderRightWidth: width,
+      borderBottomWidth: width,
+      borderLeftWidth: width,
+    };
+  }
+
+  if (key.match(/Radius$/)) {
+    const radius = transformUnit(container, value) as number | Percentage;
+
+    // Percentages are resolved against the box later on, in layout
+    if (typeof radius !== 'number' && !matchPercent(radius))
+      throw new Error(`Invalid border radius: ${radius}`);
+
+    return {
+      borderTopLeftRadius: radius,
+      borderTopRightRadius: radius,
+      borderBottomRightRadius: radius,
+      borderBottomLeftRadius: radius,
+    };
+  }
+
+  const {
+    width: widthPart,
+    style,
+    color: colorPart,
+  } = parseBorderShorthand(value as string | number);
+
+  const color = colorPart ? transformColor(colorPart) : undefined;
+  const width =
+    widthPart === undefined ? undefined : transformUnit(container, widthPart);
+
+  if (width !== undefined && typeof width !== 'number')
     throw new Error(`Invalid border width: ${width}`);
 
-  if (typeof style === 'number')
-    throw new Error(`Invalid border style: ${style}`);
+  const sides = key.match(/(Top|Right|Bottom|Left)$/)
+    ? [key]
+    : ['borderTop', 'borderRight', 'borderBottom', 'borderLeft'];
 
-  return {
-    borderTopColor: color,
-    borderTopStyle: style,
-    borderTopWidth: width,
-    borderRightColor: color,
-    borderRightStyle: style,
-    borderRightWidth: width,
-    borderBottomColor: color,
-    borderBottomStyle: style,
-    borderBottomWidth: width,
-    borderLeftColor: color,
-    borderLeftStyle: style,
-    borderLeftWidth: width,
-  };
+  const result: Record<string, unknown> = {};
+
+  for (const side of sides) {
+    if (color !== undefined) result[`${side}Color`] = color;
+    if (style !== undefined) result[`${side}Style`] = style;
+    if (width !== undefined) result[`${side}Width`] = width;
+  }
+
+  return result as BorderSafeStyle;
 };
 
 const handlers = {

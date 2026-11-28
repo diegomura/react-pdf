@@ -291,10 +291,37 @@ const FarDownRows = (pageProps) => (
   </Document>
 );
 
+const LONG_CELL =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '.repeat(
+    3,
+  );
+
+const RowsWithLongCell = (pageProps) => (
+  <Document>
+    <Page size={[200, 200]} style={{ padding: 10 }} {...pageProps}>
+      {['A', 'B'].map((label) => (
+        <View
+          key={label}
+          style={{ flexDirection: 'row', borderBottom: '1pt solid black' }}
+        >
+          <Text style={{ width: 30, fontSize: 9 }}>{label}</Text>
+          <Text style={{ flex: 1, fontSize: 9 }}>{LONG_CELL}</Text>
+        </View>
+      ))}
+    </Page>
+  </Document>
+);
+
 describe('pageWrap (next engine)', () => {
   test('should split a view whose rows lie past 2^15 pt', async () => {
     expect(
       await renderToImage(<FarDownRows experimentalPagination />),
+    ).toMatchImageSnapshot();
+  });
+
+  test('should split a row with one long text cell', async () => {
+    expect(
+      await renderToImage(<RowsWithLongCell experimentalPagination />),
     ).toMatchImageSnapshot();
   });
 });

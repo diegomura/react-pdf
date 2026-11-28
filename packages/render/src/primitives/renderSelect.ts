@@ -11,12 +11,8 @@ const renderSelect = (ctx: Context, node: SafeSelectNode) => {
   // Element's name
   const name = node.props?.name || '';
 
-  // Fields inherit the active font, usually a subset missing the glyphs of
-  // values typed later. Viewers ship standard fonts in full.
-  ctx.font('Helvetica');
-
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   ctx.formCombo(

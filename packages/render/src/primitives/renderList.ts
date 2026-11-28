@@ -11,12 +11,8 @@ const renderList = (ctx: Context, node: SafeListNode) => {
   // Element's name
   const name = ('name' in node.props ? node.props.name || '' : '') as string;
 
-  // Fields inherit the active font, usually a subset missing the glyphs of
-  // values typed later. Viewers ship standard fonts in full.
-  ctx.font('Helvetica');
-
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   ctx.formList(

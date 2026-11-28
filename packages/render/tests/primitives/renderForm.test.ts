@@ -61,7 +61,7 @@ describe('primitive renderTextInput', () => {
     });
   });
 
-  test('should set a standard font before creating the field', () => {
+  test('should embed complete fonts in the form', () => {
     const ctx = createCTX();
     ctx._root = { data: {} };
     const box = { top: 0, left: 0, width: 100, height: 20 };
@@ -74,10 +74,7 @@ describe('primitive renderTextInput', () => {
 
     renderTextInput(ctx, node, { fieldSets: [], imageCache: new Map() });
 
-    expect(ctx.font).toHaveBeenCalledWith('Helvetica');
-    expect(ctx.font.mock.invocationCallOrder[0]).toBeLessThan(
-      ctx.initForm.mock.invocationCallOrder[0],
-    );
+    expect(ctx.initForm).toHaveBeenCalledWith({ embedFonts: true });
   });
 
   test('should fall back to style fontSize', () => {

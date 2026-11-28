@@ -15,12 +15,8 @@ const renderTextInput = (
   const name = node.props?.name || '';
   const fieldSetOptions = options.fieldSets?.at(0);
 
-  // Fields inherit the active font, usually a subset missing the glyphs of
-  // values typed later. Viewers ship standard fonts in full.
-  ctx.font('Helvetica');
-
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   const { MaxLen, ...fieldOptions } = parseTextInputOptions(

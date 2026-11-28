@@ -9,15 +9,8 @@ Font.register({
   src: new URL('../../layout/tests/assets/font.ttf', import.meta.url).pathname,
 });
 
-const fontOfDA = (document, size) => {
-  const id = document.match(new RegExp(`/DA \\(/(F\\d+) ${size} Tf 0 g\\)`))[1];
-  const ref = document.match(new RegExp(`/${id} (\\d+) 0 R`))[1];
-
-  return document.match(new RegExp(`\\n${ref} 0 obj[^]*?/BaseFont /(\\S+)`))[1];
-};
-
 describe('forms', () => {
-  test('should render text input values in a standard font instead of the document font subset', async () => {
+  test('should embed the complete font for text inputs instead of the document subset', async () => {
     const document = await ReactPDF.renderToString(
       <Document>
         <Page style={{ fontFamily: 'Custom' }}>
@@ -27,7 +20,8 @@ describe('forms', () => {
       </Document>,
     );
 
-    expect(fontOfDA(document, '12')).toBe('Helvetica');
+    expect(document).toMatch(/\/DA \(\/F\d+ 12 Tf 0 g\)/);
+    expect(document).toContain('/BaseFont /Roboto-Regular');
   });
 
   test('should use style fontSize for text inputs when the prop is not set', async () => {
@@ -44,6 +38,6 @@ describe('forms', () => {
       </Document>,
     );
 
-    expect(fontOfDA(document, '9\\.5')).toBe('Helvetica');
+    expect(document).toMatch(/\/DA \(\/F\d+ 9\.5 Tf 0 g\)/);
   });
 });

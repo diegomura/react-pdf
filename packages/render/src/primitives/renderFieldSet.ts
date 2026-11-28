@@ -9,7 +9,7 @@ const renderFieldSet = (
   const name = node.props?.name || '';
 
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   const formField = ctx.formField(name);

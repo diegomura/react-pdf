@@ -52,6 +52,7 @@ const getFragments = (fontStore: FontStore, instance) => {
     textDecorationColor,
     textDecorationStyle,
     textTransform,
+    letterSpacing,
     opacity,
   } = instance.props;
 
@@ -74,6 +75,7 @@ const getFragments = (fontStore: FontStore, instance) => {
     opacity,
     fontSize,
     color: fill,
+    characterSpacing: letterSpacing,
     underlineStyle: textDecorationStyle,
     underline:
       _textDecoration === 'underline' ||

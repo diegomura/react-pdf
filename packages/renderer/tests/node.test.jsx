@@ -90,6 +90,27 @@ describe('node', () => {
     expect(() => ReactPDF.usePDF()).toThrow();
   });
 
+  test('should reject with the error thrown while rendering', async () => {
+    const error = new Error('Broken component');
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const Broken = () => {
+      throw error;
+    };
+
+    const doc = (
+      <Document>
+        <Page>
+          <Broken />
+        </Page>
+      </Document>
+    );
+
+    await expect(ReactPDF.renderToString(doc)).rejects.toBe(error);
+
+    consoleError.mockRestore();
+  });
+
   test('should render a fragment', async () => {
     const mock = vi.fn();
 

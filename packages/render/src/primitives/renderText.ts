@@ -2,6 +2,7 @@ import { isNil } from '@react-pdf/fns';
 
 import renderGlyphs from './renderGlyphs';
 import parseColor from '../utils/parseColor';
+import encodeUri from '../utils/encodeUri';
 import { Context } from '../types';
 import { SafeTextNode } from '@react-pdf/layout';
 import {
@@ -81,7 +82,7 @@ const renderRun = (ctx: Context, run: Run) => {
     if (isSrcId(link)) {
       ctx.goTo(0, -height - descent, xAdvance, height, link.slice(1));
     } else {
-      ctx.link(0, -height - descent, xAdvance, height, link);
+      ctx.link(0, -height - descent, xAdvance, height, encodeUri(link));
     }
   }
 

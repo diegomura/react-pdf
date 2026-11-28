@@ -51,7 +51,7 @@ describe('measureText', () => {
 
       const dimensions = measureFunc(100, 2 /*Yoga.MeasureMode.AtMost*/, 50);
 
-      expect(dimensions.width).toStrictEqual(100);
+      expect(dimensions.width).toStrictEqual(92.52);
       expect(dimensions.height).toBe(39.599999999999994);
     });
   });

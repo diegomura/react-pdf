@@ -99,7 +99,11 @@ const getNodes = (
 
       if (s.trim() === '') {
         const stretch = (width * opts.width) / opts.stretch;
-        const shrink = (width * opts.width) / opts.shrink;
+        // Only justified text may shrink spaces. Ragged text (left, right,
+        // center) must wrap instead of being set wider than its box and then
+        // compressed to fit.
+        const shrink =
+          align === 'justify' ? (width * opts.width) / opts.shrink : 0;
         const end = start + s.length;
 
         // Add glue node. Glue nodes are used to fill the space between words.

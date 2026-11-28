@@ -28,6 +28,14 @@ const createRenderer: ReconcilerFactory = ({
     commitUpdate(instance, null, type, oldProps, newProps);
   };
 
+  let uncaughtError: unknown = null;
+
+  // Rethrown from updateContainer so callers get the error instead of a
+  // later failure on the empty document, matching React 18 behavior
+  const onUncaughtError = (error: unknown) => {
+    uncaughtError = error;
+  };
+
   const reconciler = Reconciler({
     appendChild,
     appendChildToContainer,
@@ -66,7 +74,7 @@ const createRenderer: ReconcilerFactory = ({
       false, // isStrictMode
       null, // concurrentUpdatesByDefaultOverride
       '', // identifierPrefix
-      logRecoverableError, // onUncaughtError
+      onUncaughtError, // onUncaughtError
       logRecoverableError, // onCaughtError
       logRecoverableError, // onRecoverableError
       null, // transitionCallbacks
@@ -76,6 +84,12 @@ const createRenderer: ReconcilerFactory = ({
   const updateContainer = (doc, mountNode, parentComponent, callback) => {
     reconciler.updateContainerSync(doc, mountNode, parentComponent, callback);
     reconciler.flushSyncWork();
+
+    if (uncaughtError) {
+      const error = uncaughtError;
+      uncaughtError = null;
+      throw error;
+    }
   };
 
   return {

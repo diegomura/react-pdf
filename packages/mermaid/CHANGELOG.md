@@ -1,5 +1,12 @@
 # @react-pdf/mermaid
 
+## 6.0.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/renderer@4.9.3
+
 ## 6.0.2
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @react-pdf/stylesheet
 
+## 6.3.5
+
+### Patch Changes
+
+- [#3607](https://github.com/diegomura/react-pdf/pull/3607) [`b79b312d015382b6331c8f79c0df0e6e7c72c0b7`](https://github.com/diegomura/react-pdf/commit/b79b312d015382b6331c8f79c0df0e6e7c72c0b7) Thanks [@Seybel](https://github.com/Seybel)! - Fix border shorthands only working in "width style color" order. Width, style and color can now be given in any order, and any of them can be omitted.
+
+  Fix numeric border shorthands like `borderBottom: 2` being ignored, which made `borderColor` depend on style order.
+
+  In border shorthands like `border` and `borderTop`, `none` and `hidden` now remove the border, style keywords are case-insensitive, and unsupported styles (`double`, `groove`, `ridge`, `inset`, `outset`) resolve to `solid`.
+
+- Updated dependencies []:
+  - @react-pdf/types@2.15.1
+
 ## 6.3.4
 
 ### Patch Changes

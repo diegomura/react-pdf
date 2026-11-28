@@ -1,5 +1,18 @@
 # @react-pdf/textkit
 
+## 7.1.1
+
+### Patch Changes
+
+- [#3614](https://github.com/diegomura/react-pdf/pull/3614) [`b730d151e2c9173409875317210cb476197d7480`](https://github.com/diegomura/react-pdf/commit/b730d151e2c9173409875317210cb476197d7480) Thanks [@iliev-blnk](https://github.com/iliev-blnk)! - fix: let substituted fonts win over the font stack in multi-child text, so characters at fragment boundaries (e.g. `{value}%`) no longer render with the first font of the stack
+
+- [#3618](https://github.com/diegomura/react-pdf/pull/3618) [`2089b23a9bed6e763e5392c5178982c40d78b137`](https://github.com/diegomura/react-pdf/commit/2089b23a9bed6e763e5392c5178982c40d78b137) Thanks [@BAHAA-THE-KING](https://github.com/BAHAA-THE-KING)! - Draw glyph offsets from the font at their real size, so Arabic dots and other marks are placed where the font puts them, and sub/super shifts stay correct for fonts that are not 1000 units per em
+
+- [#3657](https://github.com/diegomura/react-pdf/pull/3657) [`3162dd7f5508b5fe1081e458e4d492dc525849fa`](https://github.com/diegomura/react-pdf/commit/3162dd7f5508b5fe1081e458e4d492dc525849fa) Thanks [@bwang18](https://github.com/bwang18)! - Keep marks over their base letter in right-to-left text, so Arabic dots and hamza no longer land on the neighboring letter
+
+- Updated dependencies [[`90a31bd2acf34f12a29630ba679295110a4404cc`](https://github.com/diegomura/react-pdf/commit/90a31bd2acf34f12a29630ba679295110a4404cc)]:
+  - @react-pdf/font@4.3.0
+
 ## 7.1.0
 
 ### Minor Changes

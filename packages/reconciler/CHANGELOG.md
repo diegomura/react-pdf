@@ -1,5 +1,11 @@
 # @react-pdf/reconciler
 
+## 2.0.1
+
+### Patch Changes
+
+- [#3669](https://github.com/diegomura/react-pdf/pull/3669) [`a834e1c017499aad0e626e8835c43d956a62adbd`](https://github.com/diegomura/react-pdf/commit/a834e1c017499aad0e626e8835c43d956a62adbd) Thanks [@diegomura](https://github.com/diegomura)! - fix: rethrow errors thrown while rendering on React 19 instead of only logging them
+
 ## 2.0.0
 
 ### Major Changes

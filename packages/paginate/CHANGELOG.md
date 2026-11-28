@@ -1,5 +1,11 @@
 # @react-pdf/paginate
 
+## 1.0.3
+
+### Patch Changes
+
+- [#3584](https://github.com/diegomura/react-pdf/pull/3584) [`3b82f95af862af40c413605e6ba367922c0678d6`](https://github.com/diegomura/react-pdf/commit/3b82f95af862af40c413605e6ba367922c0678d6) Thanks [@exoego](https://github.com/exoego)! - Split a column whose children lie past 2^15 pt. Yoga's float32 rounding made touching siblings overlap there, so the column was mistaken for a wrapped one and drawn on a single page.
+
 ## 1.0.2
 
 ### Patch Changes

@@ -275,4 +275,15 @@ describe('standard fonts', () => {
 
     expect(font.data!.encode!(SOFT_HYPHEN)[1][0].advanceWidth).toBe(0);
   });
+
+  it('should lay out characters outside the encoding as empty glyphs', () => {
+    const fontStore = new FontStore();
+
+    const font = fontStore.getFont({ fontFamily: 'Helvetica' });
+    const { glyphs, positions } = font.data!.layout('a⁴b');
+
+    expect(glyphs.map((glyph) => glyph.id)).toEqual([0x61, 0, 0x62]);
+    expect(glyphs[1].codePoints).toEqual([0x2074]);
+    expect(positions[1].xAdvance).toBe(0);
+  });
 });

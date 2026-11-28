@@ -4,6 +4,7 @@ import FontStore from '@react-pdf/font';
 
 import { embedEmojis } from './emoji';
 import ignoreChars from './ignoreChars';
+import synthesizeScripts from './synthesizeScripts';
 import transformText from './transformText';
 import {
   SafeNode,
@@ -13,7 +14,7 @@ import {
   SafeTspanNode,
 } from '../types';
 
-const PREPROCESSORS = [ignoreChars, embedEmojis];
+const PREPROCESSORS = [ignoreChars, embedEmojis, synthesizeScripts];
 
 const isImage = (node: SafeNode): node is SafeImageNode =>
   node.type === P.Image;

@@ -126,11 +126,15 @@ class StandardFont implements Font {
   layout(str: string) {
     const [encoded, positions] = this.encode(str);
 
-    const glyphs = encoded.map((g: any, i: any) => {
-      const glyph = this.getGlyph(parseInt(g, 16));
-      glyph.advanceWidth = positions[i].advanceWidth;
-      return glyph;
-    });
+    const codePoints = Array.from(str, (char) => char.codePointAt(0)!);
+
+    const glyphs = encoded.map((g: any, i: any) =>
+      this.glyphForCode(
+        parseInt(g, 16),
+        codePoints[i],
+        positions[i].advanceWidth,
+      ),
+    );
 
     const advanceWidth = positions.reduce(
       (acc: any, p: any) => acc + p.advanceWidth,
@@ -151,8 +155,19 @@ class StandardFont implements Font {
   }
 
   glyphForCodePoint(codePoint: number) {
-    const glyph = this.getGlyph(codePoint);
-    glyph.advanceWidth = 400;
+    const [[encoded]] = this.encode(String.fromCodePoint(codePoint));
+    return this.glyphForCode(parseInt(encoded, 16), codePoint, 400);
+  }
+
+  // Standard fonts are single-byte, so code points outside their encoding
+  // would otherwise be truncated to an unrelated character when rendered.
+  private glyphForCode(code: number, codePoint: number, advanceWidth: number) {
+    if (code > 0xff) {
+      return { ...this.getGlyph(0), codePoints: [codePoint], advanceWidth: 0 };
+    }
+
+    const glyph = this.getGlyph(code);
+    glyph.advanceWidth = advanceWidth;
     return glyph;
   }
 

@@ -12,7 +12,7 @@ const renderSelect = (ctx: Context, node: SafeSelectNode) => {
   const name = node.props?.name || '';
 
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   ctx.formCombo(

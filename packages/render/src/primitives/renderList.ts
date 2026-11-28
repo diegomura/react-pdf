@@ -12,7 +12,7 @@ const renderList = (ctx: Context, node: SafeListNode) => {
   const name = ('name' in node.props ? node.props.name || '' : '') as string;
 
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   ctx.formList(

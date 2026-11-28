@@ -39,7 +39,7 @@ const parseTextInputOptions = (node: SafeTextInputNode, fieldSet: any) => {
     password: node.props?.password || false,
     noSpell: node.props?.noSpell || false,
     format: node.props?.format || undefined,
-    fontSize: node.props?.fontSize || undefined,
+    fontSize: node.props?.fontSize || node.style?.fontSize || undefined,
     MaxLen: node.props?.maxLength || undefined,
   });
 };

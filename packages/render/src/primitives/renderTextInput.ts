@@ -16,7 +16,7 @@ const renderTextInput = (
   const fieldSetOptions = options.fieldSets?.at(0);
 
   if (!ctx._root.data.AcroForm) {
-    ctx.initForm();
+    ctx.initForm({ embedFonts: true });
   }
 
   const { MaxLen, ...fieldOptions } = parseTextInputOptions(

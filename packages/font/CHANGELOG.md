@@ -1,5 +1,16 @@
 # @react-pdf/font
 
+## 4.3.0
+
+### Minor Changes
+
+- [#3463](https://github.com/diegomura/react-pdf/pull/3463) [`90a31bd2acf34f12a29630ba679295110a4404cc`](https://github.com/diegomura/react-pdf/commit/90a31bd2acf34f12a29630ba679295110a4404cc) Thanks [@stephenjudkins](https://github.com/stephenjudkins)! - Allow registering fonts from raw bytes (`Uint8Array`, `Buffer` or `ArrayBuffer`) and `blob:` URLs
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.15.1
+
 ## 4.2.0
 
 ### Minor Changes

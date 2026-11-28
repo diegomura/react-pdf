@@ -1,5 +1,12 @@
 # @react-pdf/tailwind
 
+## 0.2.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @react-pdf/types@2.15.1
+
 ## 0.2.2
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @react-pdf/examples
 
+## 3.6.5
+
+### Patch Changes
+
+- Updated dependencies [[`07efc15d5de19b5ee4987468e8286bc8b1875b4e`](https://github.com/diegomura/react-pdf/commit/07efc15d5de19b5ee4987468e8286bc8b1875b4e), [`895c02169252cdb34d41f84e480675a0b798c5a8`](https://github.com/diegomura/react-pdf/commit/895c02169252cdb34d41f84e480675a0b798c5a8), [`2089b23a9bed6e763e5392c5178982c40d78b137`](https://github.com/diegomura/react-pdf/commit/2089b23a9bed6e763e5392c5178982c40d78b137), [`917189a3b334922511b1ef9e4db93f07d2236609`](https://github.com/diegomura/react-pdf/commit/917189a3b334922511b1ef9e4db93f07d2236609), [`63373cbf8853a3bf4e1a93037cf124f9adc687ba`](https://github.com/diegomura/react-pdf/commit/63373cbf8853a3bf4e1a93037cf124f9adc687ba)]:
+  - @react-pdf/render@4.7.3
+  - @react-pdf/layout@5.2.3
+  - @react-pdf/svgkit@0.1.1
+  - @react-pdf/renderer@4.9.3
+  - @react-pdf/tailwind@0.2.3
+  - @react-pdf/math@6.0.3
+  - @react-pdf/mermaid@6.0.3
+
 ## 3.6.4
 
 ### Patch Changes

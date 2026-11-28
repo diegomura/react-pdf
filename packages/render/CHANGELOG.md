@@ -1,5 +1,21 @@
 # @react-pdf/render
 
+## 4.7.3
+
+### Patch Changes
+
+- [#3072](https://github.com/diegomura/react-pdf/pull/3072) [`07efc15d5de19b5ee4987468e8286bc8b1875b4e`](https://github.com/diegomura/react-pdf/commit/07efc15d5de19b5ee4987468e8286bc8b1875b4e) Thanks [@geonhwiii](https://github.com/geonhwiii)! - fix: return gradients from the Canvas painter so stops can be added
+
+- [#3666](https://github.com/diegomura/react-pdf/pull/3666) [`895c02169252cdb34d41f84e480675a0b798c5a8`](https://github.com/diegomura/react-pdf/commit/895c02169252cdb34d41f84e480675a0b798c5a8) Thanks [@diegomura](https://github.com/diegomura)! - fix: embed complete fonts for form fields so typed values keep their glyphs, and read TextInput fontSize from style
+
+- [#3618](https://github.com/diegomura/react-pdf/pull/3618) [`2089b23a9bed6e763e5392c5178982c40d78b137`](https://github.com/diegomura/react-pdf/commit/2089b23a9bed6e763e5392c5178982c40d78b137) Thanks [@BAHAA-THE-KING](https://github.com/BAHAA-THE-KING)! - Draw glyph offsets from the font at their real size, so Arabic dots and other marks are placed where the font puts them, and sub/super shifts stay correct for fonts that are not 1000 units per em
+
+- [#3667](https://github.com/diegomura/react-pdf/pull/3667) [`917189a3b334922511b1ef9e4db93f07d2236609`](https://github.com/diegomura/react-pdf/commit/917189a3b334922511b1ef9e4db93f07d2236609) Thanks [@diegomura](https://github.com/diegomura)! - fix: percent-encode non-ASCII characters in link URIs so viewers open them
+
+- Updated dependencies [[`b730d151e2c9173409875317210cb476197d7480`](https://github.com/diegomura/react-pdf/commit/b730d151e2c9173409875317210cb476197d7480), [`2089b23a9bed6e763e5392c5178982c40d78b137`](https://github.com/diegomura/react-pdf/commit/2089b23a9bed6e763e5392c5178982c40d78b137), [`3162dd7f5508b5fe1081e458e4d492dc525849fa`](https://github.com/diegomura/react-pdf/commit/3162dd7f5508b5fe1081e458e4d492dc525849fa)]:
+  - @react-pdf/textkit@7.1.1
+  - @react-pdf/types@2.15.1
+
 ## 4.7.2
 
 ### Patch Changes

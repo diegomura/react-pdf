@@ -1,5 +1,20 @@
 # @react-pdf/layout
 
+## 5.2.3
+
+### Patch Changes
+
+- [#3072](https://github.com/diegomura/react-pdf/pull/3072) [`07efc15d5de19b5ee4987468e8286bc8b1875b4e`](https://github.com/diegomura/react-pdf/commit/07efc15d5de19b5ee4987468e8286bc8b1875b4e) Thanks [@geonhwiii](https://github.com/geonhwiii)! - fix: return gradients from the Canvas painter so stops can be added
+
+- [#3670](https://github.com/diegomura/react-pdf/pull/3670) [`63373cbf8853a3bf4e1a93037cf124f9adc687ba`](https://github.com/diegomura/react-pdf/commit/63373cbf8853a3bf4e1a93037cf124f9adc687ba) Thanks [@diegomura](https://github.com/diegomura)! - fix: apply letterSpacing and textTransform to SVG text
+
+- Updated dependencies [[`b79b312d015382b6331c8f79c0df0e6e7c72c0b7`](https://github.com/diegomura/react-pdf/commit/b79b312d015382b6331c8f79c0df0e6e7c72c0b7), [`b730d151e2c9173409875317210cb476197d7480`](https://github.com/diegomura/react-pdf/commit/b730d151e2c9173409875317210cb476197d7480), [`90a31bd2acf34f12a29630ba679295110a4404cc`](https://github.com/diegomura/react-pdf/commit/90a31bd2acf34f12a29630ba679295110a4404cc), [`2089b23a9bed6e763e5392c5178982c40d78b137`](https://github.com/diegomura/react-pdf/commit/2089b23a9bed6e763e5392c5178982c40d78b137), [`3b82f95af862af40c413605e6ba367922c0678d6`](https://github.com/diegomura/react-pdf/commit/3b82f95af862af40c413605e6ba367922c0678d6), [`3162dd7f5508b5fe1081e458e4d492dc525849fa`](https://github.com/diegomura/react-pdf/commit/3162dd7f5508b5fe1081e458e4d492dc525849fa)]:
+  - @react-pdf/stylesheet@6.3.5
+  - @react-pdf/textkit@7.1.1
+  - @react-pdf/font@4.3.0
+  - @react-pdf/paginate@1.0.3
+  - @react-pdf/types@2.15.1
+
 ## 5.2.2
 
 ### Patch Changes

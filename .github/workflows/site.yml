@@ -8,8 +8,6 @@ on:
   push:
     branches:
       - master
-      # TEMP: first test deploy to workers.dev; drop before merging
-      - site/static-export
     paths:
       - 'apps/site/**'
       - '.github/workflows/site.yml'

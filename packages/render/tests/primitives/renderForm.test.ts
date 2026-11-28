@@ -61,6 +61,40 @@ describe('primitive renderTextInput', () => {
     });
   });
 
+  test('should set a standard font before creating the field', () => {
+    const ctx = createCTX();
+    ctx._root = { data: {} };
+    const box = { top: 0, left: 0, width: 100, height: 20 };
+    const node = {
+      type: P.TextInput,
+      style: {},
+      box,
+      props: { name: 'example' },
+    } as unknown as SafeTextInputNode;
+
+    renderTextInput(ctx, node, { fieldSets: [], imageCache: new Map() });
+
+    expect(ctx.font).toHaveBeenCalledWith('Helvetica');
+    expect(ctx.font.mock.invocationCallOrder[0]).toBeLessThan(
+      ctx.initForm.mock.invocationCallOrder[0],
+    );
+  });
+
+  test('should fall back to style fontSize', () => {
+    const ctx = createCTX();
+    const box = { top: 0, left: 0, width: 100, height: 20 };
+    const node = {
+      type: P.TextInput,
+      style: { fontSize: 9.5 },
+      box,
+      props: { name: 'example' },
+    } as unknown as SafeTextInputNode;
+
+    renderTextInput(ctx, node, { fieldSets: [], imageCache: new Map() });
+
+    expect(ctx._fieldDict.mock.calls[0][2]).toMatchObject({ fontSize: 9.5 });
+  });
+
   test('should omit MaxLen when maxLength is not set', () => {
     const ctx = createCTX();
     const box = { top: 0, left: 0, width: 100, height: 20 };
